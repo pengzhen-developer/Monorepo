@@ -1,0 +1,50 @@
+{
+  "_description1": "------------- 系统唯一配置文件",
+  "_description2": "------------- 使用 $peace.config 访问各配置项",
+
+  "api": {
+    "_description1": "------------- api 相关配置",
+    "_description2": "------------- 影响各子模块系统的请求地址",
+
+    "dev": {
+      "base": "https://devdoctor.hp.aijiayi.com"
+    },
+
+    "production": {
+      "base": "https://testdoctor.hp.aijiayi.com"
+    }
+  },
+
+  "axios": {
+    "_description1": "------------- http 相关配置",
+    "_description2": "------------- 影响 content-type 请求类型",
+    "_description3": "------------- timeout 影响 axios 超时时间（ms）",
+    "_description4": "------------- retry 影响 axios retry 重试次数",
+    "_description5": "------------- retryDelay 影响 axios retry 重试延迟时间（ms）",
+
+    "timeout": 60000,
+    "retry": 3,
+    "retryDelay": 1000
+  },
+
+  "theme": {
+    "_description1": "------------- 主题相关配置",
+    "_description2": "------------- title / subtitle 影响系统的网站title 和 subtitle",
+    "_description3": "------------- startPage 影响系统初始化的默认展示页",
+    "_description4": "------------- loggedPage 影响系统登陆后的默认展示页",
+
+    "title": "爱加医互联网医院",
+    "subtitle": "副标题",
+    "startPage": "/login",
+    "loggedPage": "/home"
+  },
+
+  "business": {
+    "_description1": "------------- 公司信息相关配置",
+    "_description2": "------------- 影响登录页面的版权，公司名称与跳转的公司主页",
+
+    "copyright": "Copyright ©公司名称 All rights reserved.",
+    "businessName": "公司名称",
+    "businessSite": "http://www.site.com/"
+  }
+}

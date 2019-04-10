@@ -1,0 +1,324 @@
+<template>
+  <div class="container">
+    <el-form :model="view.model" @keyup.enter.native="login" class="login-card">
+      <div class="title">医生PC端</div>
+      <div class="row" label prop="username">
+        <el-input placeholder="请输入手机号" type="text" v-model="view.model.username"></el-input>
+        <div class="tips" v-if="usernameError">{{ usernameError }}</div>
+      </div>
+      <div class="row" label prop="password">
+        <el-input placeholder="请输入验证码" ref="pwd" type="password" v-model="view.model.password"></el-input>
+        <div @click="reInput" class="close" v-if="passwordError">x</div>
+        <div class="tips" v-if="passwordError">{{ passwordError }}</div>
+      </div>
+      <div class="row btn">
+        <el-button :disabled="isDown" @click="getValidCode" type="success">
+          获取验证码
+          <span v-show="isDown">{{ `(${ down })` }}</span>
+        </el-button>
+        <el-button :disabled="isLoging" @click="login" type="primary">登录</el-button>
+      </div>
+    </el-form>
+    <div class="footer-text">Copyright @ 2018-2038 全息云通健康科技有限公司版权所有</div>
+  </div>
+</template>
+<script>
+import { mapState, mapActions } from 'vuex'
+
+export default {
+  name: 'login',
+
+  data() {
+    return {
+      api: {
+        sendSms: '/client/v1/Login/sendSms',
+        login: '/client/v1/Login/login'
+      },
+
+      view: {
+        model: {
+          username: '',
+          password: ''
+        }
+      },
+
+      isDown: false,
+      down: 60,
+
+      isLoging: false,
+      usernameError: '',
+      passwordError: ''
+    }
+  },
+
+  computed: {
+    ...mapState(['user'])
+  },
+
+  methods: {
+    ...mapActions('user', ['setUserInfo', 'removeUserInfo']),
+
+    // 获取验证码
+    getValidCode() {
+      if ($peace.valid.isEmpty(this.view.model.username)) {
+        this.usernameError = '请输入手机号码'
+        return
+      }
+
+      if (!$peace.valid.pattern.mobile.test(this.view.model.username)) {
+        this.usernameError = '请输入正确的手机号码'
+        return
+      }
+
+      this.isDown = true
+
+      let shutDownInterval = setInterval(() => {
+        this.down--
+      }, 1000)
+
+      setTimeout(() => {
+        this.down = 60
+        this.isDown = false
+
+        window.clearInterval(shutDownInterval)
+      }, 60000)
+
+      const param = new FormData()
+      param.append('tel', this.view.model.username)
+
+      this.$http.post(this.api.sendSms, param).then(res => {
+        $peace.util.alert(res.msg)
+      })
+    },
+
+    // 登录
+    login() {
+      this.isLoging = true
+
+      const res = this.valid()
+
+      if (res.valid) {
+        const param = new FormData()
+        param.append('tel', this.view.model.username)
+        param.append('smsCode', this.view.model.password)
+
+        this.$http.post(this.api.login, param).then(res => {
+          this.setUserInfo(res.data)
+
+          $peace.util.alert('登录成功，正在跳转...')
+
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 1000)
+        })
+      } else {
+        this.usernameError = res.usernameError
+        this.passwordError = res.passwordError
+      }
+
+      this.isLoging = false
+    },
+
+    // 验证
+    valid() {
+      this.usernameError = ''
+      this.passwordError = ''
+
+      let res = {
+        valid: true,
+        usernameError: '',
+        passwordError: ''
+      }
+
+      if ($peace.valid.isEmpty(this.view.model.username)) {
+        res.valid = false
+        res.usernameError = '请输入手机号码'
+
+        return res
+      }
+
+      if (!$peace.valid.pattern.mobile.test(this.view.model.username)) {
+        res.valid = false
+        res.usernameError = '请输入正确的手机号码'
+
+        return res
+      }
+
+      if ($peace.valid.isEmpty(this.view.model.password)) {
+        res.valid = false
+        res.passwordError = '请输入验证码'
+
+        return res
+      }
+
+      return res
+    },
+
+    // 重新输入密码
+    reInput() {
+      this.$refs.pwd.focus()
+
+      this.password = ''
+      this.showTips = false
+    }
+  },
+
+  created() {}
+}
+</script>
+
+<style lang="scss" scoped>
+@import './assets/css/element-var.scss';
+
+.container {
+  height: 100%;
+
+  position: relative;
+  z-index: 1;
+  padding-bottom: 60px;
+  background: url('./assets/images/bg.png') no-repeat;
+  background-size: 1920px auto;
+  background-position: center;
+
+  &:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 198, 174, 0.6);
+  }
+  .login-card {
+    position: relative;
+    top: 50%;
+    margin: 0 auto;
+    width: 320px;
+    transform: translateY(-50%);
+    .title {
+      font-size: 20px;
+      line-height: 28px;
+      color: #fff;
+    }
+    .row {
+      position: relative;
+      margin-top: 30px;
+      padding-left: 50px;
+      padding-right: 20px;
+      height: 50px;
+      border: 1px solid $--color-primary;
+      border-radius: 3px;
+      line-height: 50px;
+      background: linear-gradient(to right, $--color-primary 0, $--color-primary 50px, white 50px, white 100%);
+      .close {
+        position: absolute;
+        top: 17px;
+        right: 20px;
+        width: 16px;
+        height: 16px;
+        font-size: 26px;
+        text-align: center;
+        line-height: 12px;
+        color: $--color-primary;
+        display: block;
+        cursor: pointer;
+      }
+      .tips {
+        position: absolute;
+        top: 0;
+        right: -233px;
+        padding: 0 20px;
+        width: 208px;
+        height: 50px;
+        color: white;
+        line-height: 50px;
+        border-radius: 10px;
+        background-color: $--color-warning;
+        &:before {
+          position: absolute;
+          top: 21px;
+          left: -4px;
+          content: '';
+          border-radius: 3px;
+          border: 5px solid;
+          border-color: $--color-warning transparent transparent $--color-warning;
+          transform: rotate(-45deg);
+          display: block;
+        }
+      }
+      &:before {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 9px;
+        width: 32px;
+        height: 32px;
+        display: block;
+        background-image: url('~@/assets/images/icons/login/user.png');
+        background-repeat: no-repeat;
+        background-size: 32px auto;
+        background-position-x: 0;
+      }
+      &:nth-child(3):before {
+        background-image: url('~@/assets/images/icons/login/pwd.png');
+      }
+      &.btn {
+        margin-top: 40px;
+        padding: 0;
+        border: 0;
+        background: none;
+        &:before {
+          display: none;
+        }
+      }
+    }
+    .el-button {
+      width: 48%;
+      height: 100%;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+  }
+  .footer-text {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    height: 20px;
+  }
+}
+</style>
+<style lang="scss">
+.row {
+  .el-input {
+    height: 100%;
+    display: block;
+    &__inner {
+      font-size: 14px;
+      height: 46px;
+      border: 0;
+      vertical-align: top;
+      box-shadow: none;
+    }
+  }
+  ::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: #bcbcbc;
+  }
+  :-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #bcbcbc;
+  }
+  ::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #bcbcbc;
+  }
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #bcbcbc;
+  }
+}
+</style>
