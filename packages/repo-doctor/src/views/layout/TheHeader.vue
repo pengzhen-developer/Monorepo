@@ -77,6 +77,7 @@ export default {
   .header-container {
     width: 1200px;
     margin: 0 auto;
+    padding: 0 12px;
 
     display: flex;
     align-items: center;

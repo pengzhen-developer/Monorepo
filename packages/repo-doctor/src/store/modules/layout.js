@@ -1,20 +1,17 @@
 // initial state
 const state = {
   menuList: [
-    { closable: false, name: '首页', path: '/home', icon: 'el-icon-location-outline' },
-    { closable: true, name: '诊室', path: '/clinic', icon: '' },
-    {
-      closable: true,
-      name: '记录',
-      path: '',
-      icon: '',
-      children: [
-        { closable: false, name: '记录1', path: '/记录1', icon: 'el-icon-location-outline' },
-        { closable: false, name: '记录2', path: '/记录2', icon: 'el-icon-location-outline' }
-      ]
-    },
-    { closable: true, name: '我的', path: '/about', icon: '' },
-    { closable: true, name: '帮助', path: '/help', icon: '' }
+    { id: 1, pid: null, closable: false, name: '首页', path: '/home', icon: 'el-icon-location-outline' },
+    { id: 2, pid: null, closable: true, name: '诊室', path: '/clinic', icon: 'el-icon-location-outline' },
+    { id: 3, pid: null, closable: true, name: '记录', path: '123123', icon: 'el-icon-location-outline' },
+    { id: 31, pid: 3, closable: true, name: '问诊记录', path: '/record/inquiry', icon: 'el-icon-location-outline' },
+    { id: 32, pid: 3, closable: true, name: '处方记录', path: '/record/prescription', icon: 'el-icon-location-outline' },
+    { id: 4, pid: null, closable: true, name: '我的', path: '', icon: 'el-icon-location-outline' },
+    { id: 41, pid: 4, closable: true, name: '信息查看', path: '/sys/myInfo', icon: 'el-icon-location-outline' },
+    { id: 42, pid: 4, closable: true, name: '我的介绍', path: '/sys/myIntroduce', icon: 'el-icon-location-outline' },
+    { id: 43, pid: 4, closable: true, name: '出诊时间', path: '/sys/myTime', icon: 'el-icon-location-outline' },
+    { id: 44, pid: 4, closable: true, name: '服务设置', path: '/sys/myService', icon: 'el-icon-location-outline' },
+    { id: 5, pid: null, closable: true, name: '帮助', path: '/help', icon: 'el-icon-location-outline' }
   ],
 
   tabList: [],

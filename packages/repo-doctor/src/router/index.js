@@ -18,17 +18,51 @@ const router = new Router({
           name: 'home',
           component: () => import('./../views/Home.vue')
         },
+
         {
           path: 'clinic',
           meta: { Auth: true },
           name: 'clinic',
           component: () => import('./../views/clinic/Index.vue')
         },
+
         {
-          path: 'about',
+          path: '/record/inquiry',
           meta: { Auth: true },
-          name: 'about',
-          component: () => import('./../views/About.vue')
+          name: 'inquiry',
+          component: () => import('./../views/record/inquiry/Index.vue')
+        },
+
+        {
+          path: '/record/prescription',
+          meta: { Auth: true },
+          name: 'prescription',
+          component: () => import('./../views/record/prescription/Index.vue')
+        },
+
+        {
+          path: '/sys/myInfo',
+          meta: { Auth: true },
+          name: 'myInfo',
+          component: () => import('./../views/sys/myInfo/Index.vue')
+        },
+        {
+          path: '/sys/myIntroduce',
+          meta: { Auth: true },
+          name: 'myIntroduce',
+          component: () => import('./../views/sys/myIntroduce/Index.vue')
+        },
+        {
+          path: '/sys/myTime',
+          meta: { Auth: true },
+          name: 'myTime',
+          component: () => import('./../views/sys/myTime/Index.vue')
+        },
+        {
+          path: '/sys/myService',
+          meta: { Auth: true },
+          name: 'myService',
+          component: () => import('./../views/sys/myService/Index.vue')
         }
       ]
     },

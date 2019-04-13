@@ -10,8 +10,12 @@
       "base": "https://devdoctor.hp.aijiayi.com"
     },
 
-    "production": {
+    "test": {
       "base": "https://testdoctor.hp.aijiayi.com"
+    },
+
+    "production": {
+      "base": "https://doctor.hp.aijiayi.com"
     }
   },
 

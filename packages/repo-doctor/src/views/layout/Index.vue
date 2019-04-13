@@ -11,9 +11,9 @@
         <div class="layout-body-right-tab">
           <the-tab></the-tab>
         </div>
-        <div class="layout-body-right-content">
-          <router-view></router-view>
-        </div>
+        <el-scrollbar class="layout-body-right-content">
+          <router-view class="layout-body-right-content-dynamic-app"></router-view>
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -48,8 +48,6 @@ export default {
 
           this.pushTab(menu)
           this.selectTab(menu.path)
-
-          this.$router.push(path)
         }
 
         const path = val === '/' ? '/home' : val
@@ -75,6 +73,8 @@ export default {
 
 <style lang="scss" scoped>
 .layout {
+  background: #f9f9f9;
+
   .layout-body {
     width: 1200px;
     margin: 0 auto;
@@ -100,6 +100,20 @@ export default {
         align-items: center;
 
         height: 40px;
+      }
+
+      .layout-body-right-content {
+        height: calc(100vh - 100px);
+        padding: 10px 0 0 10px;
+
+        background: #f9f9f9;
+
+        .layout-body-right-content-dynamic-app {
+          padding: 20px;
+          height: 100%;
+
+          background: #fff;
+        }
       }
     }
   }

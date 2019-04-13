@@ -22,6 +22,27 @@ body {
   background-color: #fff;
 }
 
+h1,
+h2,
+h4,
+h4,
+h5,
+h6,
+p,
+a {
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #f2f2f2;
+  margin: 20px 0;
+  padding: 0;
+}
+
 #nprogress .bar {
   /* background: #ff0000; */
   position: fixed;
@@ -64,7 +85,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #c0c4cc;
-  min-height: 150px;
+  min-height: 10px;
   min-width: 150px;
   border-radius: 10px;
 }

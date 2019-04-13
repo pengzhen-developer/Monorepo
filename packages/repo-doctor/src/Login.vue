@@ -31,8 +31,8 @@ export default {
   data() {
     return {
       api: {
-        sendSms: '/client/v1/Login/sendSms',
-        login: '/client/v1/Login/login'
+        sendSms: 'client/v1/Login/sendSms',
+        login: 'client/v1/Login/login'
       },
 
       view: {
@@ -83,8 +83,9 @@ export default {
         window.clearInterval(shutDownInterval)
       }, 60000)
 
-      const param = new FormData()
-      param.append('tel', this.view.model.username)
+      const param = {
+        tel: this.view.model.username
+      }
 
       this.$http.post(this.api.sendSms, param).then(res => {
         $peace.util.alert(res.msg)
@@ -98,9 +99,10 @@ export default {
       const res = this.valid()
 
       if (res.valid) {
-        const param = new FormData()
-        param.append('tel', this.view.model.username)
-        param.append('smsCode', this.view.model.password)
+        const param = {
+          tel: this.view.model.username,
+          smsCode: this.view.model.password
+        }
 
         this.$http.post(this.api.login, param).then(res => {
           this.setUserInfo(res.data)
@@ -169,6 +171,14 @@ export default {
 
 <style lang="scss" scoped>
 @import './assets/css/element-var.scss';
+
+/* Change the white to any color ;) */
+/deep/ input:-webkit-autofill,
+/deep/ input:-webkit-autofill:hover,
+/deep/ input:-webkit-autofill:focus,
+/deep/ input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+}
 
 .container {
   height: 100%;

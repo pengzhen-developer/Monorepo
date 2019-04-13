@@ -1,1 +1,44 @@
 @import './element-var.scss';
+
+// Fix el-form
+
+.el-form-item {
+}
+
+// Fix el-button
+.el-button {
+  min-width: 80px;
+}
+
+// Fix pagination
+.el-pagination {
+  margin: 10px 0 0 0;
+}
+
+// Fix dialog
+.el-dialog__header {
+  display: flex;
+  align-items: center;
+  height: 30px;
+
+  padding: 0 10px;
+
+  background: rgba(233, 237, 241, 1);
+
+  .el-dialog__title {
+    width: 94px;
+    height: 22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(102, 102, 102, 1);
+    line-height: 22px;
+  }
+
+  .el-dialog__headerbtn {
+    font-size: 16px;
+    top: 6px;
+  }
+}
+.el-dialog__body {
+  padding: 10px;
+}

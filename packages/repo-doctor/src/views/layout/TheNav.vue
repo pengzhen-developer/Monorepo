@@ -5,7 +5,7 @@
     @select="menuSelect"
     class="nav-menu"
   >
-    <template v-for="menu in layout.menuList">
+    <template v-for="menu in menuListTree">
       <el-submenu
         :index="menu.path"
         :key="menu.path"
@@ -41,12 +41,17 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      menuList: []
+      menuListTree: []
     }
   },
 
   computed: {
     ...mapState(['layout'])
+  },
+
+  created() {
+    // list to tree
+    this.menuListTree = $peace.util.toTree(this.layout.menuList, 'id', 'pid', 'children')
   },
 
   mounted() {},
@@ -71,7 +76,9 @@ export default {
   border-left: none;
 }
 
-.el-menu-item {
+/deep/ .el-submenu,
+/deep/ .el-submenu__title,
+/deep/ .el-menu-item {
   height: 72px;
   line-height: 72px;
 
