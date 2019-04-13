@@ -3,7 +3,7 @@
  * @Description: 基础依赖入口，并以插件形式，向外暴露
  * @Date: 2018-07-05 16:07:33
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-10 11:00:22
+ * @Last Modified time: 2019-04-13 17:13:14
  */
 
 import axios from './axios'
@@ -22,6 +22,9 @@ import focus from './directive/focus'
 import cache from './helper/cache'
 import util from './helper/util'
 import valid from './helper/valid'
+
+// components
+import Table from './components/table'
 
 /**
  * 插件可选属性默认值
@@ -71,6 +74,10 @@ const install = function(Vue, options = DEFAULT_OPTIONS) {
   })
 
   // 注册 component
+  const components = [Table]
+  components.map(component => {
+    Vue.use(component)
+  })
 }
 
 /**

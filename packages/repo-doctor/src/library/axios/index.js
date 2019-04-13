@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-10 11:18:38
+ * @Last Modified time: 2019-04-13 20:54:30
  */
 
 import Axios from 'axios'
@@ -20,8 +20,30 @@ Axios.interceptors.request.use(
 
     // 其他请求，验证 token
     else {
-      request.url = $peace.config.api.base + request.url
+      // `transformRequest`允许在请求数据发送到服务器之前对其进行更改
+      // 这只适用于请求方法'PUT'，'POST'和'PATCH'
+      // 数组中的最后一个函数必须返回一个字符串，一个 ArrayBuffer或一个 Stream
+      request.transformRequest = [
+        function(data) {
+          const formData = new FormData()
+          for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+              if (data[key] instanceof Array || data[key] instanceof Object) {
+                formData.append(key, JSON.stringify(data[key]))
+              } else {
+                formData.append(key, data[key])
+              }
+            }
+          }
 
+          return formData
+        }
+      ]
+
+      // 配置 base url
+      request.url = $peace.config.api.base + '/' + request.url
+
+      // 配置 authorization
       request.headers.authorization = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
 
       return request
@@ -85,6 +107,8 @@ Axios.interceptors.response.use(
           $peace.util.error('Uncaught (in promise) Error: Request failed with status code' + error.response.status)
           break
       }
+    } else {
+      $peace.util.error('Uncaught (in promise) Error: ' + error.message)
     }
 
     return Promise.reject(error)

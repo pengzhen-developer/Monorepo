@@ -3,7 +3,7 @@
  * @Description: 常用方法
  * @Date: 2018-07-06 11:24:59
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-10 09:28:48
+ * @Last Modified time: 2019-04-13 19:50:39
  */
 
 const _PADCHAR = '='
@@ -84,6 +84,60 @@ export function toTree(nodes, idKey = 'id', pIdKey = 'pId', childrenKey = 'child
   }
 
   return roots
+}
+
+export function clone(item) {
+  if (!item) {
+    return item
+  } // null, undefined values check
+
+  let types = [Number, String, Boolean]
+  let result
+
+  // normalizing primitives if someone did new String('aaa'), or new Number('444');
+  types.forEach(function(type) {
+    if (item instanceof type) {
+      result = type(item)
+    }
+  })
+
+  if (typeof result == 'undefined') {
+    if (Object.prototype.toString.call(item) === '[object Array]') {
+      result = []
+      item.forEach(function(child, index) {
+        result[index] = clone(child)
+      })
+    } else if (typeof item == 'object') {
+      // testing that this is DOM
+      if (item.nodeType && typeof item.cloneNode == 'function') {
+        result = item.cloneNode(true)
+      } else if (!item.prototype) {
+        // check that this is a literal
+        if (item instanceof Date) {
+          result = new Date(item)
+        } else {
+          // it is an object literal
+          result = {}
+          for (let i in item) {
+            result[i] = clone(item[i])
+          }
+        }
+      } else {
+        // depending what you would like here,
+        // just keep the reference, or create new object
+        if (item.constructor) {
+          // would not advice to do that, reason? Read below
+          result = new item.constructor()
+        } else {
+          result = item
+        }
+      }
+    } else {
+      result = item
+    }
+  }
+
+  return result
 }
 
 /**
@@ -558,6 +612,7 @@ export function decode(s) {
 export default {
   queryUrlParam,
   toTree,
+  clone,
 
   formatDate,
   formatTime,
