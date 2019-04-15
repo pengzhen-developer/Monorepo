@@ -3,7 +3,7 @@
  * @Description: 基础依赖入口，并以插件形式，向外暴露
  * @Date: 2018-07-05 16:07:33
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-13 17:13:14
+ * @Last Modified time: 2019-04-13 21:34:21
  */
 
 import axios from './axios'
@@ -78,6 +78,9 @@ const install = function(Vue, options = DEFAULT_OPTIONS) {
   components.map(component => {
     Vue.use(component)
   })
+
+  console.log('-------框架加载完成-------')
+  console.log('-------使用内部命令查看详情-------')
 }
 
 /**

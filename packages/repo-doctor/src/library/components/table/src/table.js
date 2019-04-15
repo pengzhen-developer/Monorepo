@@ -25,7 +25,7 @@ const ExtendPaginationProp = {
   pageSizes: {
     type: Array,
     default() {
-      return [1, 5, 10, 20, 30, 40, 50, 100]
+      return [5, 10, 20, 30, 40, 50, 100]
     }
   },
   layout: {
