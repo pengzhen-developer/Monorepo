@@ -1,8 +1,8 @@
 <template>
-  <el-tabs @tab-click="tabClick" class="tabs" v-model="layout.selectTab">
+  <el-tabs @tab-click="tabClick" @tab-remove="tabRemove" class="tabs" v-model="layout.selectTab">
     <el-tab-pane
       :closable="tab.closable"
-      :key="tab.name"
+      :key="tab.path"
       :label="tab.name"
       :name="tab.path"
       v-for="tab in layout.tabList"
@@ -18,6 +18,16 @@ export default {
     ...mapState(['layout'])
   },
 
+  watch: {
+    'layout.tabList'(val) {
+      $peace.cache.set('LAYOUT_LIST', val, 'sessionStorage')
+    }
+  },
+
+  mounted() {
+    this.layout.tabList = $peace.cache.get('LAYOUT_LIST', 'sessionStorage') || this.layout.tabList
+  },
+
   methods: {
     ...mapActions('layout', ['selectTab', 'pushTab', 'unshiftTab', 'removeTab', 'clearTab']),
 
@@ -27,6 +37,29 @@ export default {
       this.selectTab(tab.name)
 
       this.$router.push(tab.name)
+    },
+
+    tabRemove(name) {
+      const index = this.layout.tabList.findIndex(item => item.path === name)
+      this.removeTab(name)
+
+      const nextTab = Object.assign({}, this.layout.tabList[index - 1])
+      nextTab.name = nextTab.path
+
+      this.tabClick(nextTab)
+    },
+
+    tabClear() {
+      this.clearTab()
+
+      if (this.layout.tabList.length === 0) {
+        this.$router.push('/')
+      } else {
+        const nextTab = Object.assign({}, this.layout.tabList[0])
+        nextTab.name = nextTab.path
+
+        this.tabClick(nextTab)
+      }
     }
   }
 }

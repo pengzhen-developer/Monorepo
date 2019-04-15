@@ -82,7 +82,11 @@ const mutations = {
    * @param {*} state
    */
   removeTab(state, argument) {
-    console.log(state, argument)
+    const index = state.tabList.findIndex(item => item.path === argument)
+
+    if (index !== -1) {
+      state.tabList.splice(index, 1)
+    }
   },
 
   /**
@@ -90,8 +94,8 @@ const mutations = {
    *
    * @param {*} state
    */
-  clearTab(state, argument) {
-    console.log(state, argument)
+  clearTab(state) {
+    state.tabList = state.tabList.filter(item => !item.closable)
   }
 }
 

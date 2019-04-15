@@ -11,9 +11,12 @@
         <div class="layout-body-right-tab">
           <the-tab></the-tab>
         </div>
-        <el-scrollbar class="layout-body-right-content">
-          <router-view class="layout-body-right-content-dynamic-app"></router-view>
-        </el-scrollbar>
+
+        <div class="layout-body-right-content">
+          <el-scrollbar class="layout-body-right-content-scrollbar">
+            <router-view class="layout-body-right-content-app"></router-view>
+          </el-scrollbar>
+        </div>
       </div>
     </div>
   </div>
@@ -103,16 +106,17 @@ export default {
       }
 
       .layout-body-right-content {
-        height: calc(100vh - 100px);
-        padding: 10px 0 0 10px;
+        margin: 10px 0 0 10px;
 
         background: #f9f9f9;
 
-        .layout-body-right-content-dynamic-app {
-          padding: 20px;
-          height: 100%;
-
+        .layout-body-right-content-scrollbar {
+          height: calc(100vh - 120px);
           background: #fff;
+        }
+
+        .layout-body-right-content-app {
+          padding: 20px 20px 0 20px;
         }
       }
     }
