@@ -7,19 +7,9 @@
             <el-input placeholder v-model="view.model.name"></el-input>
           </el-form-item>
           <el-form-item label="问诊下单时间">
-            <el-date-picker
-              :picker-options="view.rules.pickerOptionsStart"
-              placeholder
-              v-model="view.model.time_start"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
+            <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.time_start" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="character"></span>
-            <el-date-picker
-              :picker-options="view.rules.pickerOptionsEnd"
-              placeholder
-              v-model="view.model.time_end"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
+            <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.time_end" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label=" ">
             <el-button @click="get" type="primary">查询</el-button>
@@ -28,7 +18,7 @@
 
         <hr>
 
-        <peace-table pagination ref="table">
+        <peace-table ref="table">
           <peace-table-column label="问诊单号" prop="inquiry_no" width="180"></peace-table-column>
           <peace-table-column align="left" label="患者姓名" prop="name" sortable="custom"></peace-table-column>
           <peace-table-column label="性别" prop="sex"></peace-table-column>
@@ -45,7 +35,7 @@
         </peace-table>
 
         <el-dialog :visible.sync="dialog.visible" title="图文问诊记录" v-drag>
-          <TheDetail></TheDetail>
+          <chat-session-medical-detail :data="dialog.data"></chat-session-medical-detail>
         </el-dialog>
       </div>
     </div>
@@ -58,24 +48,26 @@
 </template>
 
 <script>
-import TheDetail from './TheDetail'
+import ChatSessionMedicalDetail from './../../clinic/ChatSessionMedicalDetail'
 
 export default {
   components: {
-    TheDetail
+    ChatSessionMedicalDetail
   },
 
   data() {
     return {
       api: {
-        inqueryInfo: 'client/v1/inquiry/recordList'
+        inqueryInfo: 'client/v1/inquiry/recordList',
+
+        getCase: 'client/v1/inquiry/getCase'
       },
 
       view: {
         model: {
           name: '',
-          time_start: '',
-          time_end: ''
+          time_start: new Date().proDate('{%d-7}').formatDate(),
+          time_end: new Date().formatDate()
         },
 
         rules: {
@@ -104,7 +96,9 @@ export default {
       dialog: {
         visible: false,
 
-        model: {}
+        model: {},
+
+        data: {}
       },
 
       data: []
@@ -128,8 +122,13 @@ export default {
       })
     },
 
-    showDetail() {
+    showDetail(row) {
       this.dialog.visible = true
+
+      // 获取病历信息
+      this.$http.post(this.api.getCase, { inquiry_no: row.inquiry_no }).then(res => {
+        this.dialog.data = { ...res.data }
+      })
     }
   }
 }

@@ -6,20 +6,10 @@
           <el-form-item label="患者姓名">
             <el-input placeholder v-model="view.model.familyName"></el-input>
           </el-form-item>
-          <el-form-item label="问诊下单时间">
-            <el-date-picker
-              :picker-options="view.rules.pickerOptionsStart"
-              placeholder
-              v-model="view.model.s_Date"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
+          <el-form-item label="处方下单时间">
+            <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.s_Date" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="character"></span>
-            <el-date-picker
-              :picker-options="view.rules.pickerOptionsEnd"
-              placeholder
-              v-model="view.model.e_Date"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
+            <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.e_Date" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label=" ">
             <el-button @click="get" type="primary">查询</el-button>
@@ -28,15 +18,14 @@
 
         <hr>
 
-        <peace-table pagination ref="table">
-          <peace-table-column label="处方编号" prop="inquiry_no" width="180"></peace-table-column>
-          <peace-table-column align="left" label="患者姓名" prop="familyName" sortable="custom"></peace-table-column>
-          <peace-table-column label="性别" prop="sex"></peace-table-column>
-          <peace-table-column label="年龄" prop="age"></peace-table-column>
-          <peace-table-column label="身份证号" prop="type"></peace-table-column>
-          <peace-table-column align="right" label="处方状态" prop="order_money"></peace-table-column>
+        <peace-table ref="table">
+          <peace-table-column label="处方编号" prop="prescriptionNo" width="180"></peace-table-column>
+          <peace-table-column align="left" label="患者姓名" prop="patient_name" sortable="custom"></peace-table-column>
+          <peace-table-column label="性别" prop="patient_sex"></peace-table-column>
+          <peace-table-column label="年龄" prop="patient_age"></peace-table-column>
+          <peace-table-column label="身份证号" prop="idcard" width="200"></peace-table-column>
+          <peace-table-column align="right" label="处方状态" prop="prescription_status"></peace-table-column>
           <peace-table-column label="订单时间" prop="created_time" width="180"></peace-table-column>
-          <peace-table-column label="订单状态" prop="status"></peace-table-column>
           <peace-table-column label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -45,7 +34,7 @@
         </peace-table>
 
         <el-dialog :visible.sync="dialog.visible" title="图文问诊记录" v-drag>
-          <TheDetail></TheDetail>
+          <chat-session-prescription-detail :data="dialog.data"></chat-session-prescription-detail>
         </el-dialog>
       </div>
     </div>
@@ -58,17 +47,19 @@
 </template>
 
 <script>
-import TheDetail from './TheDetail'
+import ChatSessionPrescriptionDetail from './../../clinic/ChatSessionPrescriptionDetail'
 
 export default {
   components: {
-    TheDetail
+    ChatSessionPrescriptionDetail
   },
 
   data() {
     return {
       api: {
-        inqueryInfo: 'client/v1/Prescribeprescrip/getPrescripList'
+        inqueryInfo: 'client/v1/Prescribeprescrip/getPrescripList',
+
+        getPrescription: 'client/v1/Prescribeprescrip/getPrescripInfo'
       },
 
       view: {
@@ -104,7 +95,9 @@ export default {
       dialog: {
         visible: false,
 
-        model: {}
+        model: {},
+
+        data: {}
       },
 
       data: []
@@ -122,14 +115,19 @@ export default {
       this.$refs.table.loadData({
         api: this.api.inqueryInfo,
         params: {
-          doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+          doctorId: 'yhudslljhl',
           ...this.view.model
         }
       })
     },
 
-    showDetail() {
+    showDetail(row) {
       this.dialog.visible = true
+
+      // 获取处方信息
+      this.$http.get(this.api.getPrescription, { params: { prescriptionId: row.id } }).then(res => {
+        this.dialog.data = { ...res.data }
+      })
     }
   }
 }

@@ -1,0 +1,307 @@
+<template>
+  <div>
+    <el-alert :closable="false" title="开处方" type="success">
+      <div slot="title">
+        <span>写病历</span>
+        <i @click="cancelMedical" class="el-alert__closebtn el-icon-close"></i>
+      </div>
+    </el-alert>
+
+    <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="120px" ref="form">
+      <el-row>
+        <el-form-item label="就诊时间" prop="visit_date">
+          <span>{{ medical.model.visit_date }}</span>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="科别" prop="dep_id">
+          <span>{{ $peace.cache.get('USER').list.docInfo.netdept_child }}</span>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="主诉" prop="base_illness">
+          <el-input :rows="3" placeholder type="textarea" v-model="medical.model.base_illness"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="现病史" prop="present_history">
+          <el-select
+            :remote-method="getPresent"
+            allow-create
+            filterable
+            multiple
+            placeholder="请选择现病史"
+            remote
+            style="width: 100%;"
+            v-model="medical.model.present_history"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="过敏史" prop="allergy_history">
+          <el-select
+            :remote-method="getAllergy"
+            allow-create
+            filterable
+            multiple
+            placeholder="请选择既往史"
+            remote
+            style="width: 100%;"
+            v-model="medical.model.allergy_history"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.allergy_history"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="既往史" prop="past_history">
+          <el-select
+            :remote-method="getPresent"
+            allow-create
+            filterable
+            multiple
+            placeholder="请选择既往史"
+            remote
+            style="width: 100%;"
+            v-model="medical.model.past_history"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="检查指标">
+          <div class="inspect">
+            <div class="item">
+              <span>体温</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.temperature"></el-input>
+              <span>度</span>
+            </div>
+            <div class="item">
+              <span>体重</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.weight"></el-input>
+              <span>kg</span>
+            </div>
+            <div class="item">
+              <span>心率</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.heart_rate"></el-input>
+              <span>bpm</span>
+            </div>
+            <div class="item">
+              <span>血压</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure"></el-input>
+              <span>mmHg</span>
+            </div>
+          </div>
+          <el-input :rows="3" placeholder="输入更多检查指标" type="textarea" v-model="medical.model.Inspection_index.More"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="诊断" prop="diagnose">
+          <el-select
+            :remote-method="getPresent"
+            allow-create
+            filterable
+            multiple
+            placeholder="请选择既往史"
+            remote
+            style="width: 100%;"
+            v-model="medical.model.diagnose"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="医嘱小结" prop="summary">
+          <el-input placeholder v-model="medical.model.summary"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row style="text-align: center;">
+        <el-form-item label=" ">
+          <el-button @click="sendMedical" type="primary">发送</el-button>
+          <el-button @click="saveMedical" type="success">保存</el-button>
+          <el-button @click="cancelMedical">取消</el-button>
+        </el-form-item>
+      </el-row>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import { state } from './util'
+
+export default {
+  props: {
+    session: Object
+  },
+
+  data() {
+    return {
+      api: {
+        addCase: 'client/v1/Prescribeprescrip/addCase',
+
+        getDiseaseInfo: 'client/v1/patient/getDiseaseInfo',
+        allergenList: 'client/v1/patient/allergenList'
+      },
+
+      medical: {
+        visible: false,
+
+        model: {
+          visit_date: new Date().formatDate(),
+          dep_id: $peace.cache.get('USER').list.docInfo.netdept_childId,
+          Inspection_index: {}
+        },
+
+        rules: {
+          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
+          dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
+          base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
+          diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
+        },
+
+        source: {
+          present_history: [],
+          allergy_history: []
+        }
+      }
+    }
+  },
+
+  methods: {
+    getPresent(query) {
+      if (query !== '' && query.length > 0) {
+        this.$http.post(this.api.getDiseaseInfo, { name: query }).then(res => {
+          this.medical.source.present_history = res.data.list
+        })
+      } else {
+        this.medical.source.present_history = []
+      }
+    },
+
+    getAllergy(query) {
+      if (query !== '' && query.length > 0) {
+        this.$http.post(this.api.allergenList, { name: query }).then(res => {
+          this.medical.source.allergy_history = res.data.list
+        })
+      } else {
+        this.medical.source.allergy_history = []
+      }
+    },
+
+    saveMedical() {
+      this.medical.visible = false
+    },
+
+    sendMedical() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          const params = {
+            doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+            inquiry_no: this.session.custom.ext.inquiryNo,
+            patient_id: this.session.custom.patients.patientId,
+            family_id: this.session.custom.patients.familyId,
+            patient_name: this.session.custom.patients.familyName,
+            sex: this.session.custom.patients.gender,
+            age: this.session.custom.patients.age,
+            id_card: this.session.custom.patients.idCard,
+
+            ...this.medical.model
+          }
+
+          params.Inspection_index = JSON.stringify(params.Inspection_index)
+          params.allergy_history = params.allergy_history.toString()
+          params.past_history = params.past_history.toString()
+          params.present_history = params.present_history.toString()
+
+          this.$http.post(this.api.addCase, params).then(res => {
+            // 给患者发送一个 custom 消息, 用于显示
+            // 1. 更改自定义消息体的状态
+            const tempCustomData = $peace.util.clone(this.session.custom)
+            tempCustomData.ext.talkState = 3
+
+            $peace.NIM.sendCustomMsg({
+              type: 'custom',
+              scene: 'p2p',
+              to: this.session.custom.patients.patientId,
+              text: '',
+              custom: JSON.stringify(tempCustomData),
+              content: JSON.stringify({
+                // 7 代表病历或处方消息
+                type: 7,
+                data: {
+                  appMsg: '',
+                  // 0 代表病历、1 代表处方
+                  sendType: state.sendType.病历消息,
+                  headImage: '',
+                  prescriptionId: '',
+                  time: new Date().formatDate(),
+                  title: '病历'
+                }
+              }),
+              done: (error, msg) => {
+                console.log('消息发送成功', error, msg)
+                this.$emit('updateMsgHistory', msg)
+                this.$emit('close')
+              }
+            })
+
+            $peace.util.alert(res.msg)
+          })
+        }
+      })
+    },
+
+    cancelMedical() {
+      $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
+        this.$emit('close')
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.el-form {
+  padding-top: 20px;
+  padding-right: 20px;
+}
+
+.inspect {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0 0 5px 0;
+
+  .item {
+    margin: 0 5px 0 0;
+
+    .el-input {
+      width: 56px;
+      padding: 0;
+
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid #d6d6d6;
+      border-left: none;
+
+      /deep/ .el-input__inner {
+        border: none;
+        padding: 0 10px;
+      }
+    }
+
+    & :first-child {
+      color: rgba(51, 51, 51, 1);
+    }
+
+    & :last-child {
+      color: rgba(153, 153, 153, 1);
+    }
+  }
+}
+</style>
+

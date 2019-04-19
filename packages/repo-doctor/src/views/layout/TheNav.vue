@@ -1,16 +1,7 @@
 <template>
-  <el-menu
-    :collapse="true"
-    :default-active="layout.selectTab"
-    @select="menuSelect"
-    class="nav-menu"
-  >
+  <el-menu :collapse="true" :default-active="layout.selectTab" @select="menuSelect" class="nav-menu">
     <template v-for="menu in menuListTree">
-      <el-submenu
-        :index="menu.path"
-        :key="menu.path"
-        v-if="menu.children && menu.children.length > 0"
-      >
+      <el-submenu :index="menu.path" :key="menu.path" v-if="menu.children && menu.children.length > 0">
         <template slot="title">
           <div class="nav-submenu">
             <i :class="menu.icon"></i>
@@ -18,11 +9,7 @@
           </div>
         </template>
 
-        <el-menu-item
-          :index="menuChildren.path"
-          :key="menuChildren.path"
-          v-for="menuChildren in menu.children"
-        >{{ menuChildren.name }}</el-menu-item>
+        <el-menu-item :index="menuChildren.path" :key="menuChildren.path" v-for="menuChildren in menu.children">{{ menuChildren.name }}</el-menu-item>
       </el-submenu>
 
       <el-menu-item :closable="menu.closable" :index="menu.path" :key="menu.path" v-else>
@@ -51,7 +38,8 @@ export default {
 
   created() {
     // list to tree
-    this.menuListTree = $peace.util.toTree(this.layout.menuList, 'id', 'pid', 'children')
+    const tempMenuList = $peace.util.clone(this.layout.menuList)
+    this.menuListTree = $peace.util.toTree(tempMenuList, 'id', 'pid', 'children')
   },
 
   mounted() {},
@@ -80,11 +68,11 @@ export default {
 /deep/ .el-submenu__title,
 /deep/ .el-menu-item {
   height: 72px;
-  line-height: 72px;
+  line-height: 1;
 
   .nav-submenu {
-    line-height: 72px;
     height: 72px;
+    line-height: 1;
 
     height: 100%;
     width: 100%;

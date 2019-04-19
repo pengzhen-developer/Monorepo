@@ -1,7 +1,12 @@
 @import './element-var.scss';
 
-// Fix el-form
+// Fix el-input
+.el-textarea__inner,
+.el-input__inner {
+  padding: 5px;
+}
 
+// Fix el-form
 .el-form-item {
 }
 
@@ -23,7 +28,7 @@
 
   padding: 0 10px;
 
-  background: rgba(233, 237, 241, 1);
+  background: transparent;
 
   .el-dialog__title {
     width: 94px;

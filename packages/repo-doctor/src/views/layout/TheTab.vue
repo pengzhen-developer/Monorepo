@@ -3,7 +3,7 @@
     <el-tab-pane
       :closable="tab.closable"
       :key="tab.path"
-      :label="tab.name"
+      :label="tab.title"
       :name="tab.path"
       v-for="tab in layout.tabList"
     ></el-tab-pane>

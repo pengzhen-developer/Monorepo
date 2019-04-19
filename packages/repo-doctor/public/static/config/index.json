@@ -2,11 +2,15 @@
   "_description1": "------------- 系统唯一配置文件",
   "_description2": "------------- 使用 $peace.config 访问各配置项",
 
+  "nim": {
+    "appKey": "987faa06038223aa9151e8e6e974314e"
+  },
+
   "api": {
     "_description1": "------------- api 相关配置",
     "_description2": "------------- 影响各子模块系统的请求地址",
 
-    "dev": {
+    "development": {
       "base": "https://devdoctor.hp.aijiayi.com"
     },
 
@@ -25,10 +29,13 @@
     "_description3": "------------- timeout 影响 axios 超时时间（ms）",
     "_description4": "------------- retry 影响 axios retry 重试次数",
     "_description5": "------------- retryDelay 影响 axios retry 重试延迟时间（ms）",
+    "_description6": "------------- devicetype 影响 axios header devicetype",
 
     "timeout": 60000,
     "retry": 3,
-    "retryDelay": 1000
+    "retryDelay": 1000,
+
+    "devicetype": "pc"
   },
 
   "theme": {

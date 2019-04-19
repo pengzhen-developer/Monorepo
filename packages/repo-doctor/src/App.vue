@@ -28,9 +28,9 @@ export default {
 #app {
   width: 100vw;
   height: 100vh;
-
   margin: 0 auto;
 
-  overflow: hidden;
+  min-height: 700px;
+  overflow: auto;
 }
 </style>

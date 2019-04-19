@@ -57,8 +57,6 @@
         <el-button @click="save" type="primary">保存</el-button>
       </el-form-item>
     </el-form>
-
-    <hr>
   </div>
 </template>
 

@@ -7,19 +7,17 @@
       <div class="header-right">
         <el-dropdown>
           <div class="header-right-message">
-            <el-badge :value="12" class="item">
-              <i class="el-icon-bell"></i>
-            </el-badge>
+            <!-- <el-badge :value="0" class="item"> -->
+            <img src="./../../assets/images/icons/top_icon_message.png">
+            <!-- </el-badge> -->
 
             <span>消息</span>
           </div>
 
           <el-dropdown-menu class="header-right-message-dropdown" slot="dropdown">
             <div class="header-right-message-dropdown-content">
-              <h4>消息列表</h4>
-              <el-dropdown-item :key="item" class="dropdown-item" v-for="item in 10">
-                <span>很多很多消息...</span>
-              </el-dropdown-item>
+              <h4>暂无消息</h4>
+              <el-dropdown-item class="dropdown-item"></el-dropdown-item>
             </div>
           </el-dropdown-menu>
         </el-dropdown>
@@ -35,16 +33,16 @@
           <el-dropdown-menu class="header-right-title-dropdown" slot="dropdown">
             <div class="header-right-title-dropdown-content">
               <h4>出诊状态</h4>
-              <el-dropdown-item class="dropdown-item">
+              <el-dropdown-item class="dropdown-item" disabled readonly>
                 <div class="circle online"></div>
                 <span>上线</span>
               </el-dropdown-item>
-              <el-dropdown-item class="dropdown-item">
+              <el-dropdown-item class="dropdown-item" disabled readonly>
                 <div class="circle offline"></div>
                 <span>离线</span>
               </el-dropdown-item>
               <hr>
-              <el-dropdown-item class="dropdown-item">
+              <el-dropdown-item @click.native="signOut" class="dropdown-item">
                 <div class="circle logout"></div>
                 <span>登出</span>
               </el-dropdown-item>
@@ -57,17 +55,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapState(['user'])
+  },
+
+  methods: {
+    ...mapActions('user', ['removeUserInfo']),
+
+    signOut() {
+      this.removeUserInfo()
+
+      this.$router.push('/login')
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .header {
+  min-width: 1200px;
   padding: 0 12px;
   height: 56px;
   background: rgba(0, 198, 174, 1);
@@ -264,7 +273,7 @@ export default {
       line-height: 28px;
 
       &.active {
-        background: #e6f9f7;
+        background: #abb9b8;
       }
 
       span {

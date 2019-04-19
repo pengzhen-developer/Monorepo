@@ -13,7 +13,11 @@
         </div>
 
         <div class="layout-body-right-content">
-          <el-scrollbar class="layout-body-right-content-scrollbar">
+          <el-scrollbar
+            :native="false"
+            :noresize="false"
+            class="layout-body-right-content-scrollbar"
+          >
             <router-view class="layout-body-right-content-app"></router-view>
           </el-scrollbar>
         </div>
@@ -111,12 +115,13 @@ export default {
         background: #f9f9f9;
 
         .layout-body-right-content-scrollbar {
-          height: calc(100vh - 120px);
           background: #fff;
         }
 
         .layout-body-right-content-app {
+          background: #fff;
           padding: 20px 20px 0 20px;
+          height: calc(100vh - 110px);
         }
       }
     }

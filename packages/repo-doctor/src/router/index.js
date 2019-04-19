@@ -13,19 +13,18 @@ const router = new Router({
       component: Home,
       children: [
         {
-          path: 'home',
+          path: '/home',
           meta: { Auth: true },
           name: 'home',
           component: () => import('./../views/Home.vue')
         },
 
         {
-          path: 'clinic',
+          path: '/clinic',
           meta: { Auth: true },
           name: 'clinic',
           component: () => import('./../views/clinic/Index.vue')
         },
-
         {
           path: '/record/inquiry',
           meta: { Auth: true },

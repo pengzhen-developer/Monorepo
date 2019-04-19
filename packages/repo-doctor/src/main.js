@@ -3,7 +3,7 @@
  * @Description: 程序入口文件
  * @Date: 2018-12-05 11:57:11
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-10 09:58:42
+ * @Last Modified time: 2019-04-19 09:56:11
  */
 import Vue from 'vue'
 
@@ -19,6 +19,9 @@ import axios from 'axios'
 
 // css
 import './assets/css/global.css'
+
+// icon
+import './assets/fonts/iconfont.css'
 
 // UI
 import ElUI from 'element-ui'
@@ -38,7 +41,9 @@ const setConfigInstance = () => {
     .then(res => {
       $peace.config = res.data
 
-      $peace.config.api = process.env.NODE_ENV === 'production' ? $peace.config.api.production : $peace.config.api.dev
+      // 黑操作
+      // url 加 MODE 参数, 可以实现动态的 api 访问
+      $peace.config.api = $peace.util.queryUrlParam('MODE') ? $peace.config.api[$peace.util.queryUrlParam('MODE')] : $peace.config.api[process.env.NODE_ENV]
     })
 }
 

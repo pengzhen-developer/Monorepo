@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  overflow: hidden;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;

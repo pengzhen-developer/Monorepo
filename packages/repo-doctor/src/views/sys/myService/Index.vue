@@ -10,12 +10,20 @@
       <div v-if="view.model.status === 1">
         <div class="input">
           <span>咨询费用</span>
+          <el-select placeholder style="width: 100px; margin: 0 20px" v-model="view.model.money">
+            <el-option :value="10" label="10"></el-option>
+            <el-option :value="20" label="20"></el-option>
+            <el-option :value="30" label="30"></el-option>
+            <el-option :value="50" label="50"></el-option>
+            <el-option label="自定义" value="自定义"></el-option>
+          </el-select>
           <el-input-number
             :max="500"
             :min="0"
             controls-position="right"
             placeholder
-            v-model="view.model.money"
+            v-if="view.model.money === '自定义'"
+            v-model="view.model.moneyForCustom"
           ></el-input-number>
           <span>元</span>
         </div>
@@ -42,7 +50,9 @@ export default {
       },
 
       view: {
-        model: {}
+        model: {
+          money: 10
+        }
       }
     }
   },
@@ -69,7 +79,7 @@ export default {
         doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
         tag: 'image',
         status: this.view.model.status,
-        money: this.view.model.status ? this.view.model.money : 0,
+        money: this.view.model.status ? (this.view.model.money === '自定义' ? this.view.model.moneyForCustom : this.view.model.money) : 0,
         inquiry_time: 0
       }
 

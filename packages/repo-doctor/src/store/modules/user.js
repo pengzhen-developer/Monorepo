@@ -34,6 +34,8 @@ const mutations = {
 
   removeUserInfo(state) {
     state.userInfo = {}
+
+    $peace.cache.remove('USER')
   }
 }
 
