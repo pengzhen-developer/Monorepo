@@ -3,16 +3,25 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-13 20:54:30
+ * @Last Modified time: 2019-04-19 09:10:08
  */
 
 import Axios from 'axios'
 import download from './download'
 import retry from './retry'
 
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+// 记录 axios 请求次数
+let ajaxCount = 0
+
 // 定义 http request 拦截器
 Axios.interceptors.request.use(
   function(request) {
+    ajaxCount++
+    nprogress.start()
+
     // 基于 mock , 直接发送请求
     if (request.url.indexOf('http://mock.eolinker.com/') !== -1) {
       return request
@@ -43,8 +52,10 @@ Axios.interceptors.request.use(
       // 配置 base url
       request.url = $peace.config.api.base + '/' + request.url
 
-      // 配置 authorization
+      // 配置 authorization、accesstoken
       request.headers.authorization = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
+      request.headers.accesstoken = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
+      request.headers.devicetype = $peace.config.axios.devicetype
 
       return request
     }
@@ -57,6 +68,11 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(
   function(response) {
+    ajaxCount--
+    if (ajaxCount === 0) {
+      nprogress.done(false)
+    }
+
     // 基于 mock , 直接返回数据
     if (response.config.url.indexOf('http://mock.eolinker.com/') !== -1) {
       return response.data
@@ -91,6 +107,11 @@ Axios.interceptors.response.use(
   },
 
   function(error) {
+    ajaxCount--
+    if (ajaxCount === 0) {
+      nprogress.done(false)
+    }
+
     // 超时处理
     if (error.code === 'ECONNABORTED') {
       if (!error.config.__isRetryComplete) {

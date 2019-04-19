@@ -3,7 +3,7 @@
  * @Description: 缓存
  * @Date: 2018-07-06 11:23:58
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-10 09:26:40
+ * @Last Modified time: 2019-04-19 08:59:23
  */
 
 import { encode, decode } from './util'
@@ -53,7 +53,7 @@ export function get(key = '', type = 'localStorage') {
  * @param {string} [type='localStorage']
  */
 export function remove(key = '', type = 'localStorage') {
-  window[type].removeItem(decode(key))
+  window[type].removeItem(encode(key))
 }
 
 /**

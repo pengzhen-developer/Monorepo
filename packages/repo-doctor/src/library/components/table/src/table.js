@@ -76,6 +76,12 @@ export default {
     }
   },
 
+  watch: {
+    data() {
+      this.internalData = this.data
+    }
+  },
+
   mounted() {
     this.$nextTick().then(() => {
       if (this.pagination) {
@@ -109,7 +115,7 @@ export default {
       this.config.params.field = prop
       this.config.params.order = order
 
-      this.loadData()
+      return this.loadData()
     },
 
     _generateConfig(config) {
@@ -133,13 +139,13 @@ export default {
     reloadData(config = {}) {
       this.Pagination.internalPageSize = 1
 
-      this.loadData(config)
+      return this.loadData(config)
     },
 
     loadData(config = {}) {
       this._generateConfig(config)
 
-      this.fetch()
+      return this.fetch()
     },
 
     fetch() {
@@ -149,12 +155,15 @@ export default {
         return
       }
 
-      $peace.$http.get(this.config.api, { params: this.config.params }).then(res => {
-        this.internalData = res.data.list
-
+      return $peace.$http.get(this.config.api, { params: this.config.params }).then(res => {
         if (this.pagination) {
+          this.internalData = res.data.list
           this.Pagination.internalTotal = res.data.count
+        } else {
+          this.internalData = res.data
         }
+
+        return res
       })
     }
   },

@@ -3,7 +3,7 @@
  * @Description: 基础依赖入口，并以插件形式，向外暴露
  * @Date: 2018-07-05 16:07:33
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-13 21:34:21
+ * @Last Modified time: 2019-04-18 15:28:16
  */
 
 import axios from './axios'

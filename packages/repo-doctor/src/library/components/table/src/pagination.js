@@ -21,13 +21,13 @@ export default {
     internalSizeChange(currentPageSize) {
       this.internalPageSize = currentPageSize
 
-      this.$parent.loadData()
+      return this.$parent.loadData()
     },
 
     internalCurrentChange(currentPage) {
       this.internalCurrentPage = currentPage
 
-      this.$parent.loadData()
+      return this.$parent.loadData()
     }
   },
 
