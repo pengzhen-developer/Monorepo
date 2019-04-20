@@ -87,9 +87,12 @@ export default {
         tel: this.view.model.username
       }
 
-      this.$http.post(this.api.sendSms, param).then(res => {
-        $peace.util.alert(res.msg)
-      })
+      this.$http
+        .create()
+        .post($peace.config.api.base + this.api.sendSms, param)
+        .then(res => {
+          $peace.util.alert(res.msg)
+        })
     },
 
     // 登录
@@ -106,7 +109,7 @@ export default {
 
         this.$http
           .create()
-          .post($peace.config.api + this.api.login, param)
+          .post($peace.config.api.base + this.api.login, param)
           .then(res => {
             this.setUserInfo(res.data)
 
