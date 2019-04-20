@@ -87,12 +87,9 @@ export default {
         tel: this.view.model.username
       }
 
-      this.$http
-        .create()
-        .post($peace.config.api.base + this.api.sendSms, param)
-        .then(res => {
-          $peace.util.alert(res.msg)
-        })
+      this.$http.post(this.api.sendSms, param).then(res => {
+        $peace.util.alert(res.msg)
+      })
     },
 
     // 登录
@@ -107,18 +104,15 @@ export default {
           smsCode: this.view.model.password
         }
 
-        this.$http
-          .create()
-          .post($peace.config.api.base + this.api.login, param)
-          .then(res => {
-            this.setUserInfo(res.data)
+        this.$http.post(this.api.login, param).then(res => {
+          this.setUserInfo(res.data)
 
-            $peace.util.alert('登录成功，正在跳转...')
+          $peace.util.alert('登录成功，正在跳转...')
 
-            setTimeout(() => {
-              this.$router.push('/')
-            }, 1000)
-          })
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 1000)
+        })
       } else {
         this.usernameError = res.usernameError
         this.passwordError = res.passwordError
