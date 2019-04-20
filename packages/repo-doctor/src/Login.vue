@@ -106,7 +106,7 @@ export default {
 
         this.$http
           .create()
-          .post(this.api.login, param)
+          .post($peace.config.api + this.api.login, param)
           .then(res => {
             this.setUserInfo(res.data)
 
