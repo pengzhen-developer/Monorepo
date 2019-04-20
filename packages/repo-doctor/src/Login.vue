@@ -104,15 +104,18 @@ export default {
           smsCode: this.view.model.password
         }
 
-        this.$http.post(this.api.login, param).then(res => {
-          this.setUserInfo(res.data)
+        this.$http
+          .create()
+          .post(this.api.login, param)
+          .then(res => {
+            this.setUserInfo(res.data)
 
-          $peace.util.alert('登录成功，正在跳转...')
+            $peace.util.alert('登录成功，正在跳转...')
 
-          setTimeout(() => {
-            this.$router.push('/')
-          }, 1000)
-        })
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 1000)
+          })
       } else {
         this.usernameError = res.usernameError
         this.passwordError = res.passwordError
