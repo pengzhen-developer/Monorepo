@@ -3,7 +3,7 @@
  * @Description: 程序入口文件
  * @Date: 2018-12-05 11:57:11
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 19:18:06
+ * @Last Modified time: 2019-04-20 19:21:41
  */
 import Vue from 'vue'
 
@@ -33,7 +33,7 @@ Vue.config.productionTip = false
 
 // 获取配置文件方法
 const setConfigInstance = () => {
-  const configFilePath = `${process.env.BASE_URL}static/config/index.json?t=${new Data()}`
+  const configFilePath = `${process.env.BASE_URL}static/config/index.json?t=${new Date()}`
 
   return axios
     .create()
