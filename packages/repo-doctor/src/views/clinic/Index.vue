@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 16:03:47
+ * @Last Modified time: 2019-04-20 18:11:09
  */
 
 <template>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SDK from './../../../public/static/js/NIM_Web_SDK_v6.2.0/js/NIM_Web_SDK_v6.2.0'
+import SDK from './../../../public/static/NIM_Web_SDK_v6.2.0/NIM_Web_SDK_v6.2.0'
 
 import { state } from './util'
 
