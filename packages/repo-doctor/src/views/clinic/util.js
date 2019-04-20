@@ -3,13 +3,15 @@
  * @Date: 2019-04-16 09:48:47
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-19 14:35:47
+ * @Last Modified time: 2019-04-20 16:47:47
  */
 
 export const state = {
   msgFlow: {
     患者消息: 'in',
     医生消息: 'out',
+
+    // 自定义扩展
     系统消息: 'system'
   },
 

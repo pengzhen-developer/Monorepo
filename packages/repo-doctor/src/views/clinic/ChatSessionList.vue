@@ -9,8 +9,8 @@
         </template>
 
         <template v-if="getMsgType(msg) === state.msgType['图片消息'] ">
-          <div :class="getMsgFlow(msg)" :style="{ width: msg.file.w, height: msg.file.h }" class="msg-body">
-            <img :height="msg.file.h" :src="msg.file.url" :width="msg.file.w">
+          <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.h > 400 ? 400 * 0.75 : msg.file.h) + 'px' }" class="msg-body image">
+            <img :src="msg.file.url" @click="previewImg(msg.file)">
           </div>
         </template>
 
@@ -21,7 +21,7 @@
         <template v-if="getMsgType(msg) === state.msgType['自定义消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
             <template v-if="getMsgFlow(msg) === state.msgFlow['患者消息'] ">
-              <span>TODO: 目前情况, 暂无此情况</span>
+              <span>TODO: 目前需求, 暂无此情况</span>
             </template>
 
             <template v-if="getMsgFlow(msg) === state.msgFlow['医生消息'] ">
@@ -49,12 +49,16 @@
       </li>
     </ul>
 
-    <el-dialog :visible.sync="medical.visible" width="562px">
+    <el-dialog :visible.sync="medical.visible" append-to-body width="562px">
       <chat-session-medical-detail :data="medical.data"></chat-session-medical-detail>
     </el-dialog>
 
-    <el-dialog :visible.sync="prescription.visible" width="562px">
+    <el-dialog :visible.sync="prescription.visible" append-to-body width="562px">
       <chat-session-prescription-detail :data="prescription.data"></chat-session-prescription-detail>
+    </el-dialog>
+
+    <el-dialog :visible.sync="image.visible" :width="image.model.w + 'px'" append-to-body class="preview-image" title="文件预览" top="0">
+      <img :src="image.model.url" @click="image.visible = false">
     </el-dialog>
   </div>
 </template>
@@ -99,6 +103,11 @@ export default {
         visible: false,
 
         data: undefined
+      },
+
+      image: {
+        visible: false,
+        model: {}
       }
     }
   },
@@ -145,6 +154,11 @@ export default {
       this.$http.get(this.api.getPrescription, { params: { prescriptionId: msg.content.data.prescriptionId } }).then(res => {
         this.prescription.data = { ...res.data }
       })
+    },
+
+    previewImg(file) {
+      this.image.visible = true
+      this.image.model = file
     }
   }
 }
@@ -163,6 +177,14 @@ li {
   align-items: center;
 
   margin: 5px 0;
+
+  &.image {
+    img {
+      cursor: zoom-in;
+      max-width: 400px;
+      max-height: 300px;
+    }
+  }
 
   &.system {
     justify-content: center;
@@ -205,6 +227,32 @@ li {
           color: rgba(255, 255, 255, 1);
         }
       }
+    }
+  }
+}
+
+.preview-image {
+  /deep/ .el-dialog__header {
+    display: none;
+  }
+
+  /deep/ .el-dialog {
+    height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /deep/ .el-dialog,
+  /deep/ .el-dialog__body {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    max-width: 85vw;
+
+    img {
+      cursor: zoom-out;
+      max-width: 100%;
     }
   }
 }

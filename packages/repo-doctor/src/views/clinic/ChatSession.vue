@@ -309,7 +309,6 @@ export default {
       this.$http.post(this.api.receiveInquiry, param).then(res => {
         $peace.util.alert(res.msg)
 
-        debugger
         // 更新当前 session 状态
         $peace.$set(this.internalSession.lastMsg, 'custom', res.data.ext)
       })

@@ -379,7 +379,16 @@ export default {
     addDrug() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.drug.source.list.push({ ...this.drug.model })
+          // 验证当前药品列表是否已存在
+          // 存在则叠加
+          // 不存在则新增
+          const drug = this.drug.source.list.find(item => item.drugid === this.drug.model.drugid)
+
+          if (drug) {
+            drug.number = parseInt(drug.number) + parseInt(this.drug.model.number)
+          } else {
+            this.drug.source.list.push({ ...this.drug.model })
+          }
         }
       })
     },

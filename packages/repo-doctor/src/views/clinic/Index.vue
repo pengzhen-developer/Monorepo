@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-19 15:16:13
+ * @Last Modified time: 2019-04-20 16:03:47
  */
 
 <template>
@@ -16,6 +16,8 @@
 
 <script>
 import SDK from './../../../public/static/js/NIM_Web_SDK_v6.2.0/js/NIM_Web_SDK_v6.2.0'
+
+import { state } from './util'
 
 import ChatSessions from './ChatSessions'
 import ChatSession from './ChatSession'
@@ -35,6 +37,8 @@ export default {
 
   data() {
     return {
+      state,
+
       // 会话列表
       sessions: undefined,
 
@@ -109,6 +113,17 @@ export default {
 
       // 收到消息时, 更新当前消息
       this.$refs.ChatSession.updateMsgHistory(msg)
+
+      // 验证是否退诊、转诊等问诊已结束状态
+      if (msg.type === state.msgType['自定义消息']) {
+        const tempMsg = $peace.util.clone(msg)
+
+        tempMsg.custom = JSON.parse(tempMsg.custom)
+
+        if (tempMsg.custom.ext.talkState === this.state.talkState['退诊'] || tempMsg.custom.ext.talkState === this.state.talkState['结束']) {
+          this.clearSession()
+        }
+      }
     },
 
     clearSession() {

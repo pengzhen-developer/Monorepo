@@ -216,6 +216,7 @@ export default {
           params.allergy_history = params.allergy_history.toString()
           params.past_history = params.past_history.toString()
           params.present_history = params.present_history.toString()
+          params.diagnose = params.diagnose.toString()
 
           this.$http.post(this.api.addCase, params).then(res => {
             // 给患者发送一个 custom 消息, 用于显示

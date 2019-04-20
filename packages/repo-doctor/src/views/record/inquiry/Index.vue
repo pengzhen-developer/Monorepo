@@ -34,8 +34,8 @@
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" title="图文问诊记录" v-drag>
-          <chat-session-medical-detail :data="dialog.data"></chat-session-medical-detail>
+        <el-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" v-drag width="1000px">
+          <chat-session-list :sessionMsgs="dialog.data"></chat-session-list>
         </el-dialog>
       </div>
     </div>
@@ -48,19 +48,23 @@
 </template>
 
 <script>
-import ChatSessionMedicalDetail from './../../clinic/ChatSessionMedicalDetail'
+import ChatSessionList from './../../clinic/ChatSessionList'
+
+import { state } from './../../clinic/util'
 
 export default {
   components: {
-    ChatSessionMedicalDetail
+    ChatSessionList
   },
 
   data() {
     return {
+      state,
+
       api: {
         inqueryInfo: 'client/v1/inquiry/recordList',
 
-        getCase: 'client/v1/inquiry/getCase'
+        getOneInquiry: 'client/v1/Patient/getOneInquiry'
       },
 
       view: {
@@ -98,7 +102,7 @@ export default {
 
         model: {},
 
-        data: {}
+        data: []
       },
 
       data: []
@@ -126,8 +130,50 @@ export default {
       this.dialog.visible = true
 
       // 获取病历信息
-      this.$http.post(this.api.getCase, { inquiry_no: row.inquiry_no }).then(res => {
-        this.dialog.data = { ...res.data }
+      this.$http.get(this.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
+        console.log(res)
+        // 格式化
+
+        res.data.forEach(item => {
+          item.custom = item.ext
+
+          if (row.doctor_id === item.from) {
+            item.flow = this.state.msgFlow['医生消息']
+          } else {
+            item.flow = this.state.msgFlow['患者消息']
+          }
+
+          switch (item.type) {
+            case 0:
+              item.type = this.state.msgType['文本消息']
+              item.text = item.body.msg
+              break
+            case 1:
+              item.type = this.state.msgType['图片消息']
+              item.file = item.body
+              break
+            case 2:
+              item.type = this.state.msgType['语音消息']
+              break
+            case 3:
+              item.type = this.state.msgType['视频消息']
+              break
+            case 4:
+              item.type = this.state.msgType['地理信息']
+              break
+            case 6:
+              item.type = this.state.msgType['文件']
+              break
+            case 100:
+              item.type = this.state.msgType['自定义消息']
+              item.content = item.body
+              break
+          }
+        })
+
+        this.dialog.data = res.data
+
+        console.log(row)
       })
     }
   }

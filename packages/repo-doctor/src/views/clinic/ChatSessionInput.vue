@@ -32,6 +32,7 @@
             <el-dropdown-item @click.native="quickReply('您好，是否做过检查、化验？如果有，请上传相关附件。')" style="padding: 5px 10px;">您好，是否做过检查、化验？如果有，请上传相关附件。</el-dropdown-item>
             <el-dropdown-item @click.native="quickReply('您好，病历已发送，请注意查收。')" style="padding: 5px 10px;">您好，病历已发送，请注意查收。</el-dropdown-item>
             <el-dropdown-item @click.native="quickReply('您好，处方已开具，请注意查收。')" style="padding: 5px 10px;">您好，处方已开具，请注意查收。</el-dropdown-item>
+            <el-dropdown-item @click.native="quickReply('您好，还有其它问题吗?')" style="padding: 5px 10px;">您好，还有其它问题吗?</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -103,19 +104,21 @@ export default {
 
     // 发送普通文本
     sendText() {
-      $peace.NIM.sendText({
-        scene: 'p2p',
-        to: this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom.patients.patientId,
-        text: this.ckEditor.currentMsg,
-        custom: JSON.stringify(this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom),
-        done: (error, msg) => {
-          console.log('消息发送成功', error, msg)
+      if (this.ckEditor.currentMsg) {
+        $peace.NIM.sendText({
+          scene: 'p2p',
+          to: this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom.patients.patientId,
+          text: this.ckEditor.currentMsg,
+          custom: JSON.stringify(this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom),
+          done: (error, msg) => {
+            console.log('消息发送成功', error, msg)
 
-          this.ckEditor.currentMsg = ''
+            this.ckEditor.currentMsg = ''
 
-          this.$emit('updateMsgHistory', msg)
-        }
-      })
+            this.$emit('updateMsgHistory', msg)
+          }
+        })
+      }
     },
 
     // 发送图片

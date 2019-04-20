@@ -7,6 +7,7 @@
           :action="api.uploadAvatar"
           :auto-upload="true"
           :data="extraUploadData"
+          :headers="extraHeaders"
           :on-success="uploadAvatarSuccess"
           accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
           class="upload"
@@ -45,10 +46,7 @@
           name="image"
         >
           <div class="el-upload__tip" slot="tip">请上传正反面</div>
-          <i
-            class="el-icon-plus"
-            v-show="view.model.cert_file && view.model.cert_file.length !== 2"
-          ></i>
+          <i class="el-icon-plus" v-show="view.model.cert_file && view.model.cert_file.length !== 2"></i>
         </el-upload>
       </el-form-item>
       <el-form-item label="图片要求：">支持jpg 、jpeg 、bmp 、gif 、png格式图片，大小不超过2M</el-form-item>
@@ -69,6 +67,12 @@ export default {
         upDoctorInfo: 'client/v1/Personalcenter/upDoctorInfo',
         uploadAvatar: $peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
         uploadCertFile: $peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
+      },
+
+      extraHeaders: {
+        authorization: $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined,
+        accesstoken: $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined,
+        devicetype: $peace.config.axios.devicetype
       },
 
       extraUploadData: {
