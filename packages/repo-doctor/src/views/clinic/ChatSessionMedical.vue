@@ -7,24 +7,28 @@
       </div>
     </el-alert>
 
-    <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="120px" ref="form">
+    <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="100px" ref="form">
       <el-row>
         <el-form-item label="就诊时间" prop="visit_date">
+          <span slot="label">就诊时间</span>
           <span>{{ medical.model.visit_date }}</span>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="科别" prop="dep_id">
+          <span slot="label">科别</span>
           <span>{{ $peace.cache.get('USER').list.docInfo.netdept_child }}</span>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="主诉" prop="base_illness">
+          <span slot="label">主诉</span>
           <el-input :rows="3" placeholder type="textarea" v-model="medical.model.base_illness"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="现病史" prop="present_history">
+          <span slot="label">现病史</span>
           <el-select
             :remote-method="getPresent"
             allow-create
@@ -41,6 +45,7 @@
       </el-row>
       <el-row>
         <el-form-item label="过敏史" prop="allergy_history">
+          <span slot="label">过敏史</span>
           <el-select
             :remote-method="getAllergy"
             allow-create
@@ -57,6 +62,7 @@
       </el-row>
       <el-row>
         <el-form-item label="既往史" prop="past_history">
+          <span slot="label">既往史</span>
           <el-select
             :remote-method="getPresent"
             allow-create
@@ -73,6 +79,7 @@
       </el-row>
       <el-row>
         <el-form-item label="检查指标">
+          <span slot="label">检查指标</span>
           <div class="inspect">
             <div class="item">
               <span>体温</span>
@@ -100,6 +107,7 @@
       </el-row>
       <el-row>
         <el-form-item label="诊断" prop="diagnose">
+          <span slot="label">诊断</span>
           <el-select
             :remote-method="getPresent"
             allow-create
@@ -116,6 +124,7 @@
       </el-row>
       <el-row>
         <el-form-item label="医嘱小结" prop="summary">
+          <span slot="label">医嘱小结</span>
           <el-input placeholder v-model="medical.model.summary"></el-input>
         </el-form-item>
       </el-row>
@@ -269,6 +278,14 @@ export default {
 .el-form {
   padding-top: 20px;
   padding-right: 20px;
+
+  .el-form-item__label span {
+    text-align-last: justify;
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    width: 4em;
+    display: inline-block;
+  }
 }
 
 .inspect {
