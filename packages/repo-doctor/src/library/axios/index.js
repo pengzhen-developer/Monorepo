@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-19 09:10:08
+ * @Last Modified time: 2019-04-22 12:18:16
  */
 
 import Axios from 'axios'
@@ -88,6 +88,18 @@ Axios.interceptors.response.use(
       // 正常请求，并且逻辑验证成功
       if (response.data && parseInt(response.data.code) === 200) {
         return response.data
+      }
+      // 鉴权失败
+      else if (response.data && parseInt(response.data.code) === 601) {
+        $peace.util.warning(response.data.msg)
+
+        // 移除登录消息
+        $peace.cache.remove()
+
+        // 跳转登录
+        $peace.$router.replace($peace.config.theme.startPage)
+
+        return
       }
       // 逻辑验证失败
       else {
