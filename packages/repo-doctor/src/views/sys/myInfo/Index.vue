@@ -38,6 +38,7 @@
           :class="{hideUploadIcon : view.model.cert_file && view.model.cert_file.length === 2}"
           :data="extraUploadData"
           :file-list="view.model.cert_file"
+          :headers="extraHeaders"
           :limit="2"
           :on-remove="uploadCertRemove"
           :on-success="uploadCertSuccess"
