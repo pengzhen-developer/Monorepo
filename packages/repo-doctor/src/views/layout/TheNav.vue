@@ -70,6 +70,15 @@ export default {
   height: 72px;
   line-height: 1;
 
+  &.is-active {
+    .nav-submenu {
+      label,
+      i {
+        color: $--color-primary;
+      }
+    }
+  }
+
   .nav-submenu {
     height: 72px;
     line-height: 1;

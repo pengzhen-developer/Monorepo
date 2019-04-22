@@ -1,5 +1,12 @@
 @import './element-var.scss';
 
+// Fix el-nav
+.el-menu-item {
+  &:focus {
+    background-color: transparent;
+  }
+}
+
 // Fix el-input
 .el-textarea__inner,
 .el-input__inner {
