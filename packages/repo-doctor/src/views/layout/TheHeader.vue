@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-container">
       <div class="header-left">
-        <span class="header-left-title">爱加医互联网医院</span>
+        <span class="header-left-title">{{ $peace.cache.get('USER').list.docInfo.netHospital_name }}</span>
       </div>
       <div class="header-right">
         <el-dropdown>
