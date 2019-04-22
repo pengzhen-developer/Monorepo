@@ -16,7 +16,7 @@
         >
           <div class="content-title">
             <div class="content-title-left">
-              <span class="item">{{ session.lastMsg.custom.patients.familyName }}</span>
+              <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
               <span class="item">{{ session.lastMsg.custom.patients.gender }}</span>
               <span class="item">{{ session.lastMsg.custom.patients.age }}</span>
             </div>
@@ -155,6 +155,7 @@ export default {
   }
 
   .content-session-item {
+    border-bottom: 1px solid #efefef;
     cursor: pointer;
     padding: 10px;
 
@@ -170,6 +171,11 @@ export default {
 
       .content-title-left {
         .item {
+          &.blod {
+            font-weight: bold;
+            font-size: 14px;
+          }
+
           font-size: 12px;
           margin: 0 10px 0 0;
 
@@ -213,6 +219,7 @@ export default {
       color: rgba(153, 153, 153, 1);
 
       .content-status-left {
+        font-size: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
