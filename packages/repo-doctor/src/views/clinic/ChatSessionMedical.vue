@@ -51,7 +51,7 @@
             allow-create
             filterable
             multiple
-            placeholder="请选择既往史"
+            placeholder="请选择过敏史"
             remote
             style="width: 100%;"
             v-model="medical.model.allergy_history"
@@ -98,7 +98,8 @@
             </div>
             <div class="item">
               <span>血压</span>
-              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure"></el-input>
+              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure_begin"></el-input>/
+              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure_end"></el-input>
               <span>mmHg</span>
             </div>
           </div>
@@ -113,7 +114,7 @@
             allow-create
             filterable
             multiple
-            placeholder="请选择既往史"
+            placeholder="请选择诊断"
             remote
             style="width: 100%;"
             v-model="medical.model.diagnose"
@@ -162,7 +163,11 @@ export default {
         model: {
           visit_date: new Date().formatDate(),
           dep_id: $peace.cache.get('USER').list.docInfo.netdept_childId,
-          Inspection_index: {}
+          Inspection_index: {
+            blood_pressure_begin: '',
+            blood_pressure_end: '',
+            blood_pressure: ''
+          }
         },
 
         rules: {
@@ -177,6 +182,17 @@ export default {
           allergy_history: []
         }
       }
+    }
+  },
+
+  watch: {
+    'medical.model.Inspection_index.blood_pressure_begin'() {
+      this.medical.model.Inspection_index.blood_pressure =
+        this.medical.model.Inspection_index.blood_pressure_begin + '/' + this.medical.model.Inspection_index.blood_pressure_end
+    },
+    'medical.model.Inspection_index.blood_pressure_end'() {
+      this.medical.model.Inspection_index.blood_pressure =
+        this.medical.model.Inspection_index.blood_pressure_begin + '/' + this.medical.model.Inspection_index.blood_pressure_end
     }
   },
 
