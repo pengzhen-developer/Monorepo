@@ -9,7 +9,9 @@
           </div>
         </template>
 
-        <el-menu-item :index="menuChildren.path" :key="menuChildren.path" v-for="menuChildren in menu.children">{{ menuChildren.name }}</el-menu-item>
+        <el-menu-item :index="menuChildren.path" :key="menuChildren.path" v-for="menuChildren in menu.children">
+          <label>{{ menuChildren.name }}</label>
+        </el-menu-item>
       </el-submenu>
 
       <el-menu-item :closable="menu.closable" :index="menu.path" :key="menu.path" v-else>
@@ -59,6 +61,25 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.el-menu.el-menu--popup {
+  box-shadow: 0 0 4px 1px #d0d0d0;
+  min-width: 50px;
+
+  /deep/ .el-menu-item {
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+
+    label {
+      display: block;
+      border-bottom: 1px solid #ececec;
+    }
+  }
+}
+</style>
+
+
 <style lang="scss" scoped>
 .nav-menu {
   border-left: none;
@@ -93,9 +114,13 @@ export default {
     i {
       font-size: 24px;
       margin-bottom: 4px;
+
+      color: #cecece;
     }
     label {
       line-height: 24px;
+
+      color: #cecece;
     }
   }
 }
