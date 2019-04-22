@@ -75,7 +75,7 @@
 
       <div style="text-align: center;">
         <el-button @click="over.visible = false" type>取消</el-button>
-        <el-button @click="overConfirm" type="primary">确认</el-button>
+        <el-button :disabled="!over.state" @click="overConfirm" type="primary">确认</el-button>
       </div>
     </el-dialog>
   </div>
@@ -144,7 +144,7 @@ export default {
         visible: false,
 
         // 退诊是否解决问题?
-        state: '已解决',
+        state: '',
 
         // 不满意原因
         description: '',
@@ -281,6 +281,10 @@ export default {
     // 显示退诊咨询狂
     showOver() {
       this.over.visible = true
+
+      this.over.state = ''
+      this.over.description = ''
+      this.over.description = ''
     },
 
     // 结束问诊
