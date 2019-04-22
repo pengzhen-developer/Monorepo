@@ -87,9 +87,17 @@ export default {
         tel: this.view.model.username
       }
 
-      this.$http.post(this.api.sendSms, param).then(res => {
-        $peace.util.alert(res.msg)
-      })
+      this.$http
+        .post(this.api.sendSms, param)
+        .then(res => {
+          $peace.util.alert(res.msg)
+        })
+        .catch(() => {
+          this.down = 0
+          this.isDown = false
+
+          window.clearInterval(shutDownInterval)
+        })
     },
 
     // 登录
