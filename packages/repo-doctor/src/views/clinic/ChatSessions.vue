@@ -118,6 +118,9 @@ export default {
       // 更新会话
       this.$parent.session = { ...session }
 
+      // 更新状态
+      this.$parent.$refs.ChatSession.resetState()
+
       // 更新历史消息
       // this.$nextTick(function() {
       //   this.$parent.$refs.ChatSession.getMsgHistory()

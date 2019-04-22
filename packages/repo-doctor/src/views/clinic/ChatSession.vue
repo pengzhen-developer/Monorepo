@@ -195,6 +195,12 @@ export default {
   },
 
   methods: {
+    resetState() {
+      this.medical.visible = false
+      this.prescription.visible = false
+      this.over.visible = false
+    },
+
     // 获取当前消息的历史消息记录
     getMsgHistory() {
       $peace.NIM.getHistoryMsgs({
