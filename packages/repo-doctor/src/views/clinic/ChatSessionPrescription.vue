@@ -21,7 +21,7 @@
 
       <h4>
         <span>处方药品</span>
-        <span>最多可添加 5 种药品</span>
+        <span style="color: #9B9B9B">（最多可添加 5 种药品）</span>
 
         <el-button @click="openDrugDialog" type="text">添加药品</el-button>
       </h4>
@@ -57,7 +57,7 @@
     </div>
 
     <el-dialog :visible.sync="drug.visible" title="新增药品" v-drag width="720px">
-      <el-form :model="drug.model" :rules="drug.rules" label-position="right" label-width="90px" ref="form">
+      <el-form :model="drug.model" :rules="drug.rules" label-position="right" label-width="80px" ref="form">
         <el-form-item label="药品名称" prop="drugid">
           <el-autocomplete
             :fetch-suggestions="querySearchAsync"
@@ -97,7 +97,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="单次剂量" prop="consump">
-              <el-input placeholder style="width: 80px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
+              <el-input placeholder style="width: 120px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
               {{ drug.model.unit }}
             </el-form-item>
           </el-col>
@@ -109,13 +109,15 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-button @click="addDrug" round style="float: right;" type="primary" v-show="drug.action === drug.ACTION_TYPE.INSERT">添加到处方</el-button>
+          <el-button @click="saveDrug" round style="float: right;" type="primary" v-show="drug.action === drug.ACTION_TYPE.EDIT">保存修改</el-button>
+        </el-row>
       </el-form>
 
       <h4>
         <span>已选药品</span>
-        <span>最多可添加 5 种药品</span>
-        <el-button @click="addDrug" round style="float: right;" type="primary" v-show="drug.action === drug.ACTION_TYPE.INSERT">添加到处方</el-button>
-        <el-button @click="saveDrug" round style="float: right;" type="primary" v-show="drug.action === drug.ACTION_TYPE.EDIT">保存修改</el-button>
+        <span style="color: #9B9B9B">（最多可添加 5 种药品）</span>
       </h4>
       <peace-table :data="drug.source.list" ref="table">
         <peace-table-column label="药品名称" prop="drug_name" show-overflow-tooltip></peace-table-column>
