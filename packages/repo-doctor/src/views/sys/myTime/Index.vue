@@ -176,7 +176,7 @@ export default {
     },
 
     buildTableData() {
-      const dateTypeList = ['早上', '下午', '晚上']
+      const dateTypeList = ['上午', '下午', '晚上']
 
       dateTypeList.forEach(dateType => {
         this.view.source.online.push({
