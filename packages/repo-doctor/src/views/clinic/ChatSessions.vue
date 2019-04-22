@@ -29,7 +29,7 @@
           </div>
 
           <div class="content-msg">
-            <span v-html="getLastMsg(session)"></span>
+            <div class="content-msg-detail" v-html="getLastMsg(session)"></div>
           </div>
 
           <div class="content-status">
@@ -202,13 +202,17 @@ export default {
     .content-msg {
       margin: 0 0 16px 0;
 
-      span {
-        font-size: 12px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .content-msg-detail {
         width: 180px;
-        display: block;
+        height: 20px;
+
+        /deep/ * {
+          font-size: 12px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
+        }
       }
     }
 
