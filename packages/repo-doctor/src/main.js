@@ -3,7 +3,7 @@
  * @Description: 程序入口文件
  * @Date: 2018-12-05 11:57:11
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 19:18:06
+ * @Last Modified time: 2019-04-22 11:30:02
  */
 import Vue from 'vue'
 
@@ -33,7 +33,7 @@ Vue.config.productionTip = false
 
 // 获取配置文件方法
 const setConfigInstance = () => {
-  const configFilePath = `${process.env.BASE_URL}static/config/index.json?t=${new Data()}`
+  const configFilePath = `${process.env.BASE_URL}static/config/index.json?t=${new Date()}`
 
   return axios
     .create()
@@ -43,7 +43,11 @@ const setConfigInstance = () => {
 
       // 黑操作
       // url 加 MODE 参数, 可以实现动态的 api 访问
-      $peace.config.api = $peace.util.queryUrlParam('MODE') ? $peace.config.api[$peace.util.queryUrlParam('MODE')] : $peace.config.api[process.env.NODE_ENV]
+      // 当存在 MODE 时, 优先实现 MODE 的环境
+      // 当不存在 MODE 时, 优先使用 VUE_APP_MODE
+      // 当不存在 VUE_APP_MODE
+      $peace.config.api =
+        $peace.config.api[$peace.util.queryUrlParam('MODE')] || $peace.config.api[process.env.VUE_APP_MODE] || $peace.config.api[process.env.NODE_ENV]
     })
 }
 
