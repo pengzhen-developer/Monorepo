@@ -5,7 +5,7 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
 
   // https://cli.vuejs.org/config/#assetsdir
-  assetsDir: process.env.outputDir,
+  assetsDir: process.env.outputDir || 'static',
 
   //增加vue.config.js文件配置css
   css: {
