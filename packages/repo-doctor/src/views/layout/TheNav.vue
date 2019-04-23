@@ -65,13 +65,14 @@ export default {
 .el-menu.el-menu--popup {
   box-shadow: 0 0 4px 1px #d0d0d0;
   min-width: 50px;
+  padding: 0;
 
   /deep/ .el-menu-item {
-    cursor: pointer;
     height: 40px;
     line-height: 40px;
 
     label {
+      cursor: pointer;
       display: block;
       border-bottom: 1px solid #ececec;
     }
@@ -90,6 +91,17 @@ export default {
 /deep/ .el-menu-item {
   height: 72px;
   line-height: 1;
+
+  &:hover {
+    background: transparent;
+
+    .nav-submenu {
+      label,
+      i {
+        color: $--color-primary;
+      }
+    }
+  }
 
   &.is-active {
     .nav-submenu {
