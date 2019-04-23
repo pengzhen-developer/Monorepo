@@ -12,7 +12,7 @@
   }
 
   &.active {
-    background: rgba(0, 198, 174, 1);
+    background: $--color-primary;
     color: #ffffff;
   }
 }
@@ -39,6 +39,10 @@
 .el-textarea__inner,
 .el-input__inner {
   padding: 5px;
+}
+
+.el-input--suffix .el-input__inner {
+  padding-right: 15px;
 }
 
 // Fix el-form
