@@ -6,7 +6,7 @@
           <el-form-item label="患者姓名">
             <el-input placeholder v-model="view.model.familyName"></el-input>
           </el-form-item>
-          <el-form-item label="处方下单时间">
+          <el-form-item label="处方开具时间">
             <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.s_Date" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="character"></span>
             <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.e_Date" value-format="yyyy-MM-dd"></el-date-picker>
@@ -18,14 +18,14 @@
 
         <hr>
 
-        <peace-table ref="table">
+        <peace-table pagination ref="table">
           <peace-table-column label="处方编号" prop="prescriptionNo" width="180"></peace-table-column>
-          <peace-table-column align="left" label="患者姓名" prop="patient_name" sortable="custom"></peace-table-column>
+          <peace-table-column align="left" label="患者姓名" prop="patient_name"></peace-table-column>
           <peace-table-column label="性别" prop="patient_sex"></peace-table-column>
           <peace-table-column label="年龄" prop="patient_age"></peace-table-column>
           <peace-table-column label="身份证号" prop="idcard" width="200"></peace-table-column>
           <peace-table-column align="right" label="处方状态" prop="prescription_status"></peace-table-column>
-          <peace-table-column label="订单时间" prop="created_time" width="180"></peace-table-column>
+          <peace-table-column label="开具时间" prop="created_time" width="180"></peace-table-column>
           <peace-table-column label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -33,7 +33,7 @@
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" title="图文问诊记录" v-drag>
+        <el-dialog :visible.sync="dialog.visible" title="处方详情" width="800px">
           <chat-session-prescription-detail :data="dialog.data"></chat-session-prescription-detail>
         </el-dialog>
       </div>
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       api: {
-        inqueryInfo: 'client/v1/Prescribeprescrip/getPrescripList',
+        prescripList: 'client/v1/Prescribeprescrip/prescripList',
 
         getPrescription: 'client/v1/Prescribeprescrip/getPrescripInfo'
       },
@@ -113,15 +113,15 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.inqueryInfo,
+        api: this.api.prescripList,
         params: {
-          doctorId: 'yhudslljhl',
           ...this.view.model
         }
       })
     },
 
     showDetail(row) {
+      this.dialog.data = {}
       this.dialog.visible = true
 
       // 获取处方信息

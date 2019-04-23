@@ -18,9 +18,9 @@
 
         <hr>
 
-        <peace-table ref="table">
+        <peace-table pagination ref="table">
           <peace-table-column label="问诊单号" prop="inquiry_no" width="180"></peace-table-column>
-          <peace-table-column align="left" label="患者姓名" prop="name" sortable="custom"></peace-table-column>
+          <peace-table-column align="left" label="患者姓名" prop="name"></peace-table-column>
           <peace-table-column label="性别" prop="sex"></peace-table-column>
           <peace-table-column label="年龄" prop="age"></peace-table-column>
           <peace-table-column label="问诊类型" prop="type"></peace-table-column>
@@ -34,7 +34,7 @@
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" v-drag width="1000px">
+        <el-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" top="5vh" width="800px">
           <chat-session-list :sessionMsgs="dialog.data"></chat-session-list>
         </el-dialog>
       </div>
@@ -127,13 +127,11 @@ export default {
     },
 
     showDetail(row) {
+      this.dialog.data = []
       this.dialog.visible = true
 
       // 获取病历信息
       this.$http.get(this.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
-        console.log(res)
-        // 格式化
-
         res.data.forEach(item => {
           item.custom = item.ext
 
@@ -172,8 +170,6 @@ export default {
         })
 
         this.dialog.data = res.data
-
-        console.log(row)
       })
     }
   }
@@ -227,5 +223,10 @@ export default {
     color: rgba(155, 155, 155, 1);
     line-height: 20px;
   }
+}
+
+/deep/ .el-dialog__body {
+  max-height: 85vh;
+  overflow-y: auto;
 }
 </style>
