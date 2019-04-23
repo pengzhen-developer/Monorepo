@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <el-dialog :visible.sync="drug.visible" title="新增药品" v-drag width="720px">
+    <el-dialog :visible.sync="drug.visible" title="新增药品" width="720px">
       <el-form :model="drug.model" :rules="drug.rules" label-position="right" label-width="80px" ref="form">
         <el-form-item label="药品名称" prop="drugid">
           <el-autocomplete
@@ -265,6 +265,13 @@ export default {
     this.$http.post(this.api.getCase, { inquiry_no: this.session.custom.ext.inquiryNo }).then(res => {
       this.drug.diagnose = res.data.diagnose
       this.drug.allergy_history = res.data.allergy_history
+    })
+  },
+
+  mounted() {
+    this.$nextTick(function() {
+      const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
+      scrollElement.scrollTop = 0
     })
   },
 

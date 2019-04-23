@@ -196,6 +196,13 @@ export default {
     }
   },
 
+  mounted() {
+    this.$nextTick(function() {
+      const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
+      scrollElement.scrollTop = 0
+    })
+  },
+
   methods: {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
