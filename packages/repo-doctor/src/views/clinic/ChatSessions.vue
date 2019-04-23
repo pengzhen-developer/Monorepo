@@ -18,11 +18,11 @@
             <div class="content-title-left">
               <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
               <span class="item">{{ session.lastMsg.custom.patients.gender }}</span>
-              <span class="item">{{ session.lastMsg.custom.patients.age }}</span>
+              <span class="item">{{ session.lastMsg.custom.patients.age }} 岁</span>
             </div>
 
             <div class="content-title-right">
-              <el-button :type="session.lastMsg.custom.ext.talkState === 1 ? 'danger' : 'success'" plain>
+              <el-button :type="session.lastMsg.custom.ext.talkState === 1 ? 'warning' : 'success'" plain>
                 <span>{{ session.lastMsg.custom.ext.talkState === 1 ? '待接诊' : '问诊中' }}</span>
               </el-button>
             </div>
@@ -190,6 +190,17 @@ export default {
 
       .content-title-right {
         .el-button {
+          &.el-button--warning {
+            border-color: #4395f5;
+            color: #4395f5 !important;
+            background: #e3f0ff !important;
+          }
+          &.el-button--success {
+            border-color: #00c6ae;
+            color: #00c6ae !important;
+            background: #dafaf6 !important;
+          }
+
           padding: 4px 8px;
           margin: 0;
           min-width: auto;
@@ -205,6 +216,11 @@ export default {
       .content-msg-detail {
         width: 180px;
         height: 20px;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
 
         /deep/ * {
           font-size: 12px;
@@ -217,6 +233,7 @@ export default {
     }
 
     .content-status {
+      font-size: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -230,10 +247,6 @@ export default {
 
         img {
           margin: 0 10px 0 0;
-        }
-
-        span {
-          font-size: 12px;
         }
       }
     }

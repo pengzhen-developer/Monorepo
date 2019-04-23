@@ -17,10 +17,10 @@
         <el-button disabled type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
-        <el-button @click="showMedical" type="text" v-show="isShowMedicalButton">
+        <el-button :disabled="!isShowMedicalButton" @click="showMedical" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_medical.png">写病历
         </el-button>
-        <el-button @click="showPrescription" type="text" v-show="isShowPrescriptionButton">
+        <el-button :disabled="!isShowPrescriptionButton" @click="showPrescription" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
       </div>
@@ -40,7 +40,9 @@
       </div>
     </div>
 
-    <ckeditor :config="ckEditor.editorConfig" :editor="ckEditor.editor" class="input" v-model="ckEditor.currentMsg"></ckeditor>
+    <div @keyup.ctrl.enter="clear" tabindex="0">
+      <ckeditor :config="ckEditor.editorConfig" :editor="ckEditor.editor" @ready="onEditorReady" class="input" tabindex="0" v-model.trim="ckEditor.currentMsg"></ckeditor>
+    </div>
   </div>
 </template>
 
@@ -96,6 +98,16 @@ export default {
   },
 
   methods: {
+    onEditorReady(editor) {
+      // Execute your own callback:
+      editor.keystrokes.set('Ctrl+Enter', (data, cancel) => {
+        this.sendText()
+
+        console.log(data, cancel)
+      })
+    },
+
+    // 快捷回复
     quickReply(quickText) {
       this.ckEditor.currentMsg = quickText
       this.sendText()
@@ -145,6 +157,12 @@ export default {
     // 发送处方
     showPrescription() {
       this.$emit('showPrescription')
+    },
+
+    clear() {
+      this.sendText()
+
+      this.ckEditor.currentMsg = ''
     }
   }
 }
@@ -161,7 +179,8 @@ export default {
   background: rgba(251, 251, 251, 1);
   height: 36px;
   align-items: center;
-  margin: 0 5px;
+  margin: 0;
+  padding: 0 5px;
 
   .shortcut {
     .el-button {
@@ -201,5 +220,9 @@ export default {
   height: 160px;
   border-color: #efefef !important;
   border-radius: 0 !important;
+}
+
+/deep/.ck.ck-toolbar {
+  display: none !important;
 }
 </style>

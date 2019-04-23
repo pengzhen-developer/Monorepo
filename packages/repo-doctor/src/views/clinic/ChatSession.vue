@@ -398,6 +398,7 @@ export default {
 
 .content {
   height: calc(100% - 250px);
+  border-bottom: 1px solid #f2f2f2;
 
   .scrollbar {
     height: 100%;

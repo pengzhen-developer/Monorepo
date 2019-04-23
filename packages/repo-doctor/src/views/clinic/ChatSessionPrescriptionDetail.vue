@@ -4,6 +4,7 @@
       :alt="getPrescriptionState(internalData.Prescription)"
       :src="`./static/images/clinic/${ getPrescriptionState(internalData.Prescription) }.png`"
       class="status-image"
+      v-show="getPrescriptionState(internalData.Prescription)"
     >
     <div class="pres-no">No.{{ internalData.PrescriptionNo }}</div>
     <div class="pres-title">
@@ -42,7 +43,7 @@
         <div class="info-row-label">
           <span>开具时间</span>
         </div>
-        <div class="info-row-content small-text">{{ internalData.PrescriptionTime || 'TODO' }}</div>
+        <div class="info-row-content small-text">{{ internalData.PrescriptionTime }}</div>
       </div>
     </div>
     <div class="rp-title">Rp</div>
@@ -115,7 +116,7 @@ export default {
 
   computed: {
     internalData() {
-      return this.data
+      return $peace.util.clone(this.data)
     },
 
     drugs() {

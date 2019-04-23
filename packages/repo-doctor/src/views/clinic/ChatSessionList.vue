@@ -57,7 +57,7 @@
       <chat-session-prescription-detail :data="prescription.data"></chat-session-prescription-detail>
     </el-dialog>
 
-    <el-dialog :visible.sync="image.visible" :width="image.model.w + 'px'" append-to-body class="preview-image" title="文件预览" top="0">
+    <el-dialog :visible.sync="image.visible" :width="image.model.w + 'px'" append-to-body class="preview-image" title="文件预览" top="5vh">
       <img :src="image.model.url" @click="image.visible = false">
     </el-dialog>
   </div>
@@ -190,7 +190,10 @@ li {
     justify-content: center;
 
     .msg-detail {
+      padding: 4px 10px 4px 10px;
       color: rgba(155, 155, 155, 1);
+      background: rgba(242, 242, 242, 1);
+      border-radius: 4px;
     }
   }
 
@@ -203,6 +206,10 @@ li {
       color: rgba(51, 51, 51, 1);
       border-radius: 4px;
       padding: 6px 10px 6px 10px;
+      display: inline-block;
+      max-width: 60%;
+      word-break: break-all;
+      white-space: normal;
     }
   }
 
@@ -211,20 +218,27 @@ li {
     justify-content: flex-end;
 
     .msg-detail {
-      background: rgba(0, 198, 174, 1);
-      color: rgba(255, 255, 255, 1);
+      background: #dafaf6;
+      color: #333333;
       border-radius: 4px;
       padding: 6px 10px 6px 10px;
+      display: inline-block;
+      max-width: 60%;
+      word-break: break-all;
+      white-space: normal;
 
       &.medical,
       &.prescription {
+        background: #fff;
+        border: 1px solid #f2f2f2;
+        padding: 8px 10px;
         cursor: pointer;
         display: inline-flex;
 
         p {
           margin: 0 0 2px 10px;
           font-size: 12px;
-          color: rgba(255, 255, 255, 1);
+          color: #333333;
         }
       }
     }
@@ -232,12 +246,15 @@ li {
 }
 
 .preview-image {
+  overflow: hidden;
+
   /deep/ .el-dialog__header {
     display: none;
   }
 
   /deep/ .el-dialog {
-    height: calc(100vh - 50px);
+    height: 90vh;
+    margin: 5vh auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -248,11 +265,11 @@ li {
     background: transparent;
     border: none;
     box-shadow: none;
-    max-width: 85vw;
 
     img {
       cursor: zoom-out;
-      max-width: 100%;
+      max-width: 100vw;
+      max-height: 90vh;
     }
   }
 }

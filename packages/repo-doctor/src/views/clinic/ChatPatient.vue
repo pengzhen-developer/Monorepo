@@ -107,8 +107,7 @@ export default {
 
 .chat-patient-tab {
   /deep/ .el-tabs__active-bar {
-    top: 0;
-    width: 50%;
+    display: none;
   }
 
   /deep/ .el-tabs__nav {
@@ -119,6 +118,10 @@ export default {
     width: 50%;
     padding: 0;
     text-align: center;
+
+    &.is-active {
+      border-top: 2px solid #00c6ae;
+    }
   }
 
   /deep/ {
