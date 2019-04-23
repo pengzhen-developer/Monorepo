@@ -3,7 +3,7 @@
  * @Description: 程序入口文件
  * @Date: 2018-12-05 11:57:11
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-22 11:49:59
+ * @Last Modified time: 2019-04-23 16:43:19
  */
 import Vue from 'vue'
 
@@ -40,14 +40,7 @@ const setConfigInstance = () => {
     .get(configFilePath)
     .then(res => {
       $peace.config = res.data
-
-      // 黑操作
-      // url 加 MODE 参数, 可以实现动态的 api 访问
-      // 当存在 MODE 时, 优先实现 MODE 的环境
-      // 当不存在 MODE 时, 优先使用 VUE_APP_MODE
-      // 当不存在 VUE_APP_MODE
-      $peace.config.api =
-        $peace.config.api[$peace.util.queryUrlParam('MODE')] || $peace.config.api[process.env.VUE_APP_MODE] || $peace.config.api[process.env.NODE_ENV]
+      $peace.config.api = $peace.config.api[process.env.VUE_APP_MODE] || $peace.config.api[process.env.NODE_ENV]
     })
 }
 
