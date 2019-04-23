@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-22 12:18:16
+ * @Last Modified time: 2019-04-23 14:10:15
  */
 
 import Axios from 'axios'
@@ -29,6 +29,7 @@ Axios.interceptors.request.use(
 
     // 其他请求，验证 token
     else {
+      // 用于将 json => form data
       // `transformRequest`允许在请求数据发送到服务器之前对其进行更改
       // 这只适用于请求方法'PUT'，'POST'和'PATCH'
       // 数组中的最后一个函数必须返回一个字符串，一个 ArrayBuffer或一个 Stream
@@ -53,9 +54,7 @@ Axios.interceptors.request.use(
       request.url = $peace.config.api.base + '/' + request.url
 
       // 配置 authorization、accesstoken
-      request.headers.authorization = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
       request.headers.accesstoken = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
-      request.headers.devicetype = $peace.config.axios.devicetype
 
       return request
     }
