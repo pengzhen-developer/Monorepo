@@ -162,8 +162,8 @@ export default {
 
       return $peace.$http[this.config.method](this.config.api, this.config.params).then(res => {
         if (this.pagination) {
-          this.internalData = res.data.list
-          this.Pagination.internalTotal = res.data.count
+          this.internalData = (res.data && res.data.list) || []
+          this.Pagination.internalTotal = (res.data && res.data.count) || 0
         } else {
           this.internalData = res.data
         }
