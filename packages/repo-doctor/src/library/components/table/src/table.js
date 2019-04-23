@@ -69,7 +69,7 @@ export default {
         // axios api
         api: '',
         // axios methods
-        method: 'get',
+        method: 'post',
         // axios params
         params: {}
       }
@@ -121,7 +121,7 @@ export default {
     _generateConfig(config) {
       // 获取当前的分页信息
       if (this.pagination) {
-        this.config.params.page = this.Pagination.internalCurrentPage
+        this.config.params.p = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
       }
 
@@ -134,6 +134,11 @@ export default {
           params: Object.assign({}, this.config.params, config.params)
         }
       )
+
+      // 区别 axios 对 get / post 不同的传参方式
+      if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
+        this.config.params = { params: this.config.params }
+      }
     },
 
     reloadData(config = {}) {
@@ -155,7 +160,7 @@ export default {
         return
       }
 
-      return $peace.$http.get(this.config.api, { params: this.config.params }).then(res => {
+      return $peace.$http[this.config.method](this.config.api, this.config.params).then(res => {
         if (this.pagination) {
           this.internalData = res.data.list
           this.Pagination.internalTotal = res.data.count
