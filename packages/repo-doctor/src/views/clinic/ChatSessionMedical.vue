@@ -137,7 +137,7 @@
       <el-row style="text-align: center;">
         <el-form-item label=" ">
           <el-button @click="sendMedical" type="primary">发送</el-button>
-          <el-button @click="saveMedical" type="success">保存</el-button>
+          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
           <el-button @click="cancelMedical">取消</el-button>
         </el-form-item>
       </el-row>
@@ -201,12 +201,7 @@ export default {
     }
   },
 
-  mounted() {
-    this.$nextTick(function() {
-      const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-      scrollElement.scrollTop = 0
-    })
-  },
+  mounted() {},
 
   methods: {
     getPresent(query) {

@@ -199,7 +199,9 @@ export default {
       this.$nextTick(function() {
         // 滚动到最底部
         const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
-        scrollElement.scrollTop = scrollElement.scrollHeight
+        if (scrollElement) {
+          scrollElement.scrollTop = scrollElement.scrollHeight
+        }
       })
     }
   },
