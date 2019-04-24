@@ -126,6 +126,8 @@ export default {
       api: {
         // 接受问诊
         receiveInquiry: 'client/v1/patient/receiveInquiry',
+        // 验证问诊
+        checkOverInquiry: 'client/v1/patient/checkOverInquiry',
         // 退出问诊
         quitInquiry: 'client/v1/patient/quitInquiry',
         // 正常结束问诊
@@ -298,11 +300,19 @@ export default {
 
     // 显示退诊咨询狂
     showOver() {
-      this.over.visible = true
+      this.$http.post(this.api.checkOverInquiry, { inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId }).then(res => {
+        if (res.data.caseStatus === 2 && res.data.status === 2) {
+          this.over.visible = true
 
-      this.over.state = ''
-      this.over.description = ''
-      this.over.description = ''
+          this.over.state = ''
+          this.over.description = ''
+          this.over.description = ''
+        } else if (res.data.caseStatus === 1 && res.data.status === 2) {
+          $peace.util.confirm('请填写病历', undefined, 'warning', () => {
+            this.showMedical()
+          })
+        }
+      })
     },
 
     // 结束问诊
