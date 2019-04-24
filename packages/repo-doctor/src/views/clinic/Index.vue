@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 18:11:09
+ * @Last Modified time: 2019-04-24 16:52:17
  */
 
 <template>
@@ -67,6 +67,7 @@ export default {
         onconnect: this.onConnect,
         onerror: this.onError,
         ondisconnect: this.ondisconnect,
+        onwillreconnect: this.onWillReconnect,
 
         // 会话
         onsessions: this.onSessions,
@@ -89,8 +90,40 @@ export default {
     onConnect() {
       console.log('SDK 连接成功')
     },
-    ondisconnect() {
+    ondisconnect(error) {
       console.log('SDK 断开连接')
+
+      if (error) {
+        console.log(error)
+        switch (error.code) {
+          // 账号或者密码错误, 请跳转到登录页面并提示错误
+          case 302:
+            // TODO:
+            // 在目前需求情况下，不会出现帐号密码错误
+            break
+          // 重复登录, 已经在其它端登录了, 请跳转到登录页面并提示错误
+          case 417:
+            $peace.util.warning(error.message)
+            $peace.$router.replace($peace.config.theme.startPage)
+            break
+          // 被踢, 请提示错误后跳转到登录页面
+          case 'kicked':
+            $peace.util.warning(error.message)
+            $peace.$router.replace($peace.config.theme.startPage)
+            break
+          default:
+            $peace.NIM.connect()
+            break
+        }
+      }
+    },
+    onWillReconnect(obj) {
+      // 此时说明 SDK 已经断开连接, 请开发者在界面上提示用户连接已断开, 而且正在重新建立连接
+      console.log('即将重连')
+      console.log(obj)
+
+      $peace.util.warning('网络异常，即将重连...')
+      $peace.util.warning(`${obj.duration / 1000} 秒后将进行第 ${obj.retryCount} 次重连`)
     },
     onError(error) {
       console.log('SDK 连接失败', error)
