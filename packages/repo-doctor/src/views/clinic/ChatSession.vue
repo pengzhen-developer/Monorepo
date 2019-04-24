@@ -15,46 +15,51 @@
       </div>
     </div>
 
-    <div class="content">
-      <el-scrollbar class="scrollbar">
-        <!-- 聊天列表 -->
-        <div v-show="!medical.visible && !prescription.visible">
-          <chat-session-list :sessionMsgs="sessionMsgs"></chat-session-list>
-        </div>
-        <!-- 病历 -->
-        <template v-if="medical.visible">
-          <chat-session-medical :session="lastSession" @close="closeMedical" @updateMsgHistory="updateMsgHistory"></chat-session-medical>
-        </template>
-        <!-- 处方 -->
-        <template v-if="prescription.visible">
-          <chat-session-prescription :session="lastSession" @close="closePrescription" @updateMsgHistory="updateMsgHistory"></chat-session-prescription>
-        </template>
-      </el-scrollbar>
-    </div>
-
-    <template v-if="internalSession && internalSession.lastMsg.custom.ext.talkState === state.talkState['未接诊']">
-      <div class="receive">
-        <div class="tip">
-          <span>请注意，请在</span>
-          <span class="count-down">限时时间</span>
-          <span>内接诊，未接诊将自动退费</span>
-        </div>
-        <div class="control">
-          <div @click="refuse">
-            <img src="./../../assets/images/icons/clinic/ic_refuse.png">
-            <span>退诊</span>
-          </div>
-          <div @click="receive">
-            <img src="./../../assets/images/icons/clinic/ic_accept.png">
-            <span>接诊</span>
-          </div>
-        </div>
-      </div>
+    <template v-if="medical.visible || prescription.visible">
+      <!-- 病历 -->
+      <template v-if="medical.visible">
+        <chat-session-medical :session="lastSession" @close="closeMedical" @updateMsgHistory="updateMsgHistory"></chat-session-medical>
+      </template>
+      <!-- 处方 -->
+      <template v-if="prescription.visible">
+        <chat-session-prescription :session="lastSession" @close="closePrescription" @updateMsgHistory="updateMsgHistory"></chat-session-prescription>
+      </template>
     </template>
+
     <template v-else>
-      <div class="input">
-        <chat-session-input :sessionMsgs="sessionMsgs" @showMedical="showMedical" @showPrescription="showPrescription" @updateMsgHistory="updateMsgHistory"></chat-session-input>
+      <div class="content">
+        <el-scrollbar class="scrollbar">
+          <!-- 聊天列表 -->
+          <div>
+            <chat-session-list :sessionMsgs="sessionMsgs"></chat-session-list>
+          </div>
+        </el-scrollbar>
       </div>
+
+      <template v-if="internalSession && internalSession.lastMsg.custom.ext.talkState === state.talkState['未接诊']">
+        <div class="receive">
+          <div class="tip">
+            <span>请注意，请在</span>
+            <span class="count-down">限时时间</span>
+            <span>内接诊，未接诊将自动退费</span>
+          </div>
+          <div class="control">
+            <div @click="refuse">
+              <img src="./../../assets/images/icons/clinic/ic_refuse.png">
+              <span>退诊</span>
+            </div>
+            <div @click="receive">
+              <img src="./../../assets/images/icons/clinic/ic_accept.png">
+              <span>接诊</span>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="input">
+          <chat-session-input :sessionMsgs="sessionMsgs" @showMedical="showMedical" @showPrescription="showPrescription" @updateMsgHistory="updateMsgHistory"></chat-session-input>
+        </div>
+      </template>
     </template>
 
     <el-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
@@ -212,6 +217,12 @@ export default {
         scene: 'p2p',
         to: this.internalSession.to,
         done: (error, obj) => {
+          if (error) {
+            $peace.util.alert(error.message)
+
+            return
+          }
+
           console.log('获取历史消息', obj)
 
           const msgs = deserializationSessionMsgs(obj.msgs)
