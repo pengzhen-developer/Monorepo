@@ -5,8 +5,13 @@
         <h4>{{ internalSession && internalSession.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4>{{ countDown }}</h4>
-        <el-button @click="showOver" plain type="success">结束问诊</el-button>
+        <h4 v-show="false">{{ countDown }}</h4>
+        <el-button
+          @click="showOver"
+          plain
+          type="success"
+          v-show="internalSession && internalSession.lastMsg.custom.ext.talkState !== state.talkState['未接诊']"
+        >结束问诊</el-button>
       </div>
     </div>
 
