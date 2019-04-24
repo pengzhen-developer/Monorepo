@@ -59,11 +59,18 @@
         </div>
         <div class="info-row-content">{{ internalData.allergy_history || '无' }}</div>
       </div>
-      <div class="info-row">
+      <div
+        class="info-row"
+        v-if="internalData.Inspection_index && 
+                internalData.Inspection_index.temperature && 
+                internalData.Inspection_index.weight && 
+                internalData.Inspection_index.heart_rate && 
+                internalData.Inspection_index.blood_pressure"
+      >
         <div class="info-row-label">
           <span>体检指标</span>
         </div>
-        <div class="info-row-content spec-row" v-if="internalData.Inspection_index">
+        <div class="info-row-content spec-row">
           <div class="info-row two-cols">
             <div class="info-row-label">体温</div>
             <div class="info-row-content">{{ internalData.Inspection_index.temperature || '- ' }} 度</div>
@@ -82,14 +89,14 @@
         <div class="info-row-label">
           <span>辅助检查</span>
         </div>
-        <div class="info-row-content">{{ internalData.Inspection_index && internalData.Inspection_index.More }}</div>
+        <div class="info-row-content">{{ internalData.Inspection_index && internalData.Inspection_index.More || '无' }}</div>
       </div>
       <div class="info-row">
         <div class="info-row-label">
           <span>诊断</span>
         </div>
         <div class="info-row-content">
-          <span :key="'diag_' + index" v-for="(diag, index) in data.diagnose">{{ diag }}</span>
+          <span :key="'diag_' + index" v-for="(diag, index) in data.diagnose">{{ diag || '无' }}</span>
         </div>
       </div>
       <div class="info-row">
@@ -97,7 +104,7 @@
           <span>医嘱小结</span>
         </div>
         <div class="info-row-content">
-          <div v-html="data.summary"></div>
+          <div v-html="data.summary  || '无' "></div>
         </div>
       </div>
     </div>
