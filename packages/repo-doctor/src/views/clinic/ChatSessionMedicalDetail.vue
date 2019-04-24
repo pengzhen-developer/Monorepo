@@ -49,15 +49,15 @@
       </div>
       <div class="info-row">
         <div class="info-row-label">
-          <span>既往史</span>
-        </div>
-        <div class="info-row-content">{{ internalData.past_history || '无' }}</div>
-      </div>
-      <div class="info-row">
-        <div class="info-row-label">
           <span>过敏史</span>
         </div>
         <div class="info-row-content">{{ internalData.allergy_history || '无' }}</div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-label">
+          <span>既往史</span>
+        </div>
+        <div class="info-row-content">{{ internalData.past_history || '无' }}</div>
       </div>
       <div
         class="info-row"
