@@ -75,7 +75,9 @@ export default {
     internalSessions() {
       if (this.sessions && isArray(this.sessions)) {
         return deserializationSessions(this.sessions).filter(
-          item => item.lastMsg.custom.ext.talkState === 1 || item.lastMsg.custom.ext.talkState === 2 || item.lastMsg.custom.ext.talkState === 3
+          item =>
+            item.lastMsg.custom.ext &&
+            (item.lastMsg.custom.ext.talkState === 1 || item.lastMsg.custom.ext.talkState === 2 || item.lastMsg.custom.ext.talkState === 3)
         )
       }
       return this.sessions

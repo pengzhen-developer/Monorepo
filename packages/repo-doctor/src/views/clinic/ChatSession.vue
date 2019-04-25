@@ -311,6 +311,12 @@ export default {
           $peace.util.confirm('请填写病历', undefined, 'warning', () => {
             this.showMedical()
           })
+        } else if (res.data.caseStatus === 1 && res.data.status === 1) {
+          $peace.util.confirm('非有效会话，确定退诊吗？', undefined, 'warning', () => {
+            this.refuse()
+          })
+        } else {
+          $peace.util.warning(res.msg)
         }
       })
     },
