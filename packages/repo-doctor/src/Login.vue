@@ -60,6 +60,8 @@ export default {
 
     // 获取验证码
     getValidCode() {
+      this.usernameError = ''
+
       if ($peace.valid.isEmpty(this.view.model.username)) {
         this.usernameError = '请输入手机号码'
         return
