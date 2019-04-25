@@ -319,6 +319,11 @@ export default {
     },
 
     sendPrescription() {
+      if (this.drug.source.list.length < 1) {
+        $peace.util.warning('请添加处方药品')
+        return
+      }
+
       const params = {
         doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
         openId: $peace.cache.get('USER').list.docInfo.openid,
