@@ -190,7 +190,8 @@ li {
     justify-content: center;
 
     .msg-detail {
-      padding: 4px 10px 4px 10px;
+      padding: 4px 10px;
+      margin: 6px 0;
       color: rgba(155, 155, 155, 1);
       background: rgba(242, 242, 242, 1);
       border-radius: 4px;
@@ -206,6 +207,7 @@ li {
       color: rgba(51, 51, 51, 1);
       border-radius: 4px;
       padding: 6px 10px 6px 10px;
+      margin: 6px 0;
       display: inline-block;
       max-width: 60%;
       word-break: break-all;
@@ -218,10 +220,11 @@ li {
     justify-content: flex-end;
 
     .msg-detail {
-      background: #dafaf6;
-      color: #333333;
+      background: #00c6ae;
+      color: #ffffff;
       border-radius: 4px;
       padding: 6px 10px 6px 10px;
+      margin: 6px 0;
       display: inline-block;
       max-width: 60%;
       word-break: break-all;
