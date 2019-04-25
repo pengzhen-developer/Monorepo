@@ -104,20 +104,6 @@ export default {
       this.$el.parentNode.appendChild(this.Pagination.$el)
     },
 
-    // 排序
-    _sortChange({ prop, order }) {
-      if (order === 'ascending') {
-        order = 'asc'
-      } else if (order === 'descending') {
-        order = 'desc'
-      }
-
-      this.config.params.field = prop
-      this.config.params.order = order
-
-      return this.loadData()
-    },
-
     _generateConfig(config) {
       // 获取当前的分页信息
       if (this.pagination) {
@@ -139,6 +125,20 @@ export default {
       if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
         this.config.params = { params: this.config.params }
       }
+    },
+
+    // 排序
+    internalSortChange({ prop, order }) {
+      if (order === 'ascending') {
+        order = 'asc'
+      } else if (order === 'descending') {
+        order = 'desc'
+      }
+
+      this.config.params.field = prop
+      this.config.params.order = order
+
+      return this.loadData()
     },
 
     reloadData(config = {}) {
@@ -185,9 +185,13 @@ export default {
       attrs: this.$attrs,
 
       // 扩展 listeners
-      on: Object.assign({}, this.$listeners, {
-        'sort-change': this._sortChange
-      }),
+      on: Object.assign(
+        {},
+        {
+          'sort-change': this.internalSortChange
+        },
+        this.$listeners
+      ),
 
       // 扩展 slots
       scopedSlots: this.$scopedSlots

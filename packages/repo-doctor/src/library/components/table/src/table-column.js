@@ -1,19 +1,34 @@
 import { TableColumn } from 'element-ui'
 
+const ExtendTableColumnProps = {
+  align: {
+    type: String,
+    default() {
+      return 'center'
+    }
+  },
+
+  'header-align': {
+    type: String,
+    default() {
+      return 'center'
+    }
+  }
+}
+
 export default {
   name: 'peace-table-column',
 
   props: {
-    ...TableColumn.props
+    ...TableColumn.props,
+
+    ...ExtendTableColumnProps
   },
 
   render(h) {
     return h(TableColumn, {
       // 扩展 props
-      props: Object.assign({}, this.$props, {
-        headerAlign: 'center',
-        align: 'center'
-      }),
+      props: this.$props,
 
       // 扩展 attrs
       attrs: this.$attrs,
