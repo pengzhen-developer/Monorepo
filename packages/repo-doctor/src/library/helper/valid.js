@@ -3,7 +3,7 @@
  * @Description: 验证
  * @Date: 2018-07-06 11:25:09
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-16 20:02:06
+ * @Last Modified time: 2019-04-25 14:54:50
  */
 
 // 声明可用 pattern
@@ -24,7 +24,7 @@ export const pattern = {
   interger: /^[0-9]*$/,
 
   // pInteger 验证, 验证正整数
-  pInterger: /^\d+$/,
+  pInterger: /^[1-9]\d*$/,
 
   // nInterger 验证, 验证负整数及0
   nInterger: /^((-\d+)|(0+))$/,

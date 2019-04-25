@@ -210,19 +210,16 @@ export default {
         rules: {
           drugid: [{ required: true, message: '请输入药品名称', trigger: 'change' }],
           number: [
-            { required: true, message: '请输入药品数量', trigger: 'blur' },
+            { required: true, message: '请输入药品数量', trigger: 'change' },
             { pattern: $peace.valid.pattern.pInterger, message: '请输入正确的药品数量', trigger: 'change' }
           ],
-          medication_days: [
-            { required: true, message: '请输入用药天数', trigger: 'blur' },
-            { pattern: $peace.valid.pattern.pInterger, message: '请输入正确的用药天数', trigger: 'change' }
-          ],
+          medication_days: [{ pattern: $peace.valid.pattern.pInterger, message: '请输入正确的用药天数', trigger: 'change' }],
           consump: [
-            { required: true, message: '请输入单次剂量', trigger: 'blur' },
+            { required: true, message: '请输入单次剂量', trigger: 'change' },
             { pattern: $peace.valid.pattern.pInterger, message: '请输入正确的单次剂量', trigger: 'change' }
           ],
-          dic_usage_id: [{ required: true, message: '请输入给药途径', trigger: 'blur' }],
-          dic_frequency_id: [{ required: true, message: '请输入用药频次', trigger: 'blur' }]
+          dic_usage_id: [{ required: true, message: '请输入给药途径', trigger: 'change' }],
+          dic_frequency_id: [{ required: true, message: '请输入用药频次', trigger: 'change' }]
         },
 
         source: {
@@ -394,7 +391,7 @@ export default {
           const currentDrugIndex = this.drug.source.list.findIndex(item => item.drugid === this.drug.model.drugid)
 
           if (currentDrugIndex !== -1) {
-            this.drug.source.list[currentDrugIndex] = { ...this.drug.model }
+            this.drug.source.list.splice(currentDrugIndex, 1, { ...this.drug.model })
           } else {
             this.drug.source.list.push({ ...this.drug.model })
           }
