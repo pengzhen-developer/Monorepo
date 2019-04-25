@@ -3,7 +3,7 @@
  * @Description: 程序入口文件
  * @Date: 2018-12-05 11:57:11
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-23 16:43:19
+ * @Last Modified time: 2019-04-24 16:11:36
  */
 import Vue from 'vue'
 
@@ -46,11 +46,14 @@ const setConfigInstance = () => {
 
 // 实例化 Vue App 方法
 const setVueAppInstance = () => {
-  $peace.__proto__ = new Vue({
+  const vueAppInstance = new Vue({
     render: h => h(App),
     router,
     store
   }).$mount('#app')
+
+  // 兼容 IE 9、10 低版本的 __proto__
+  Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
 
   // 记录是否初次加载完成
   $peace.isPostBack = true

@@ -103,7 +103,12 @@
               <span>mmHg</span>
             </div>
           </div>
-          <el-input :rows="3" placeholder="输入更多检查指标" type="textarea" v-model="medical.model.Inspection_index.More"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="辅助检查">
+          <span slot="label">辅助检查</span>
+          <el-input :rows="3" placeholder="请输入不少于10个字的描述" type="textarea" v-model="medical.model.Inspection_index.More"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -132,7 +137,7 @@
       <el-row style="text-align: center;">
         <el-form-item label=" ">
           <el-button @click="sendMedical" type="primary">发送</el-button>
-          <el-button @click="saveMedical" type="success">保存</el-button>
+          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
           <el-button @click="cancelMedical">取消</el-button>
         </el-form-item>
       </el-row>
@@ -196,12 +201,7 @@ export default {
     }
   },
 
-  mounted() {
-    this.$nextTick(function() {
-      const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-      scrollElement.scrollTop = 0
-    })
-  },
+  mounted() {},
 
   methods: {
     getPresent(query) {
@@ -231,6 +231,31 @@ export default {
     sendMedical() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          if (this.medical.model.Inspection_index.More && this.medical.model.Inspection_index.More.length < 10) {
+            $peace.util.warning('请输入至少 10 个字的辅助检查')
+            return
+          }
+          if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
+            $peace.util.warning('请输入正确的体温，最多保留一位小数')
+            return
+          }
+          if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
+            $peace.util.warning('请输入正确的体重，最多保留一位小数')
+            return
+          }
+          if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
+            $peace.util.warning('请输入正确的心率，最多保留一位小数')
+            return
+          }
+          if (this.medical.model.Inspection_index.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.blood_pressure_begin)) {
+            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            return
+          }
+          if (this.medical.model.Inspection_index.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.blood_pressure_end)) {
+            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            return
+          }
+
           const params = {
             doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
             inquiry_no: this.session.custom.ext.inquiryNo,

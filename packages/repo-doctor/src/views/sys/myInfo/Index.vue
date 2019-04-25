@@ -40,6 +40,7 @@
           :file-list="view.model.cert_file"
           :headers="extraHeaders"
           :limit="2"
+          :on-preview="handlePictureCardPreview"
           :on-remove="uploadCertRemove"
           :on-success="uploadCertSuccess"
           class="upload-list"
@@ -56,6 +57,10 @@
         <el-button @click="save" type="primary">保存</el-button>
       </el-form-item>
     </el-form>
+
+    <el-dialog :visible.sync="dialog.visible" top="5vh">
+      <img :src="dialog.imageUrl" alt width="100%">
+    </el-dialog>
   </div>
 </template>
 
@@ -82,6 +87,11 @@ export default {
 
       view: {
         model: {}
+      },
+
+      dialog: {
+        visible: false,
+        imageUrl: ''
       }
     }
   },
@@ -127,8 +137,8 @@ export default {
     },
 
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      this.dialog.imageUrl = file.url
+      this.dialog.visible = true
     },
 
     save() {
@@ -206,11 +216,6 @@ export default {
         /deep/ .el-upload--picture-card {
           display: none;
         }
-      }
-
-      /deep/ .el-upload-list--picture-card .el-upload-list__item-thumbnail {
-        width: auto;
-        height: auto;
       }
 
       /deep/ .el-upload-list--picture-card {

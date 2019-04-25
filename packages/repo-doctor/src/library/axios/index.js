@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-23 14:10:15
+ * @Last Modified time: 2019-04-24 19:47:49
  */
 
 import Axios from 'axios'
@@ -38,10 +38,12 @@ Axios.interceptors.request.use(
           const formData = new FormData()
           for (const key in data) {
             if (data.hasOwnProperty(key)) {
-              if (data[key] instanceof Array || data[key] instanceof Object) {
-                formData.append(key, JSON.stringify(data[key]))
-              } else {
-                formData.append(key, data[key])
+              if (data[key] !== undefined && data[key] !== null) {
+                if (data[key] instanceof Array || data[key] instanceof Object) {
+                  formData.append(key, JSON.stringify(data[key]))
+                } else {
+                  formData.append(key, data[key])
+                }
               }
             }
           }

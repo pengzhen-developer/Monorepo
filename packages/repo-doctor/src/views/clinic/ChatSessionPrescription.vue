@@ -51,7 +51,7 @@
 
       <div style="text-align: center;">
         <el-button @click="sendPrescription" type="primary">发送</el-button>
-        <el-button @click="savePrescription" type="success">保存</el-button>
+        <el-button @click="savePrescription" type="success" v-show="false">保存</el-button>
         <el-button @click="cancelPrescription">取消</el-button>
       </div>
     </div>
@@ -208,7 +208,7 @@ export default {
         },
 
         rules: {
-          drugid: [{ required: true, message: '请输入药品名称', trigger: 'blur' }],
+          drugid: [{ required: true, message: '请输入药品名称', trigger: 'change' }],
           number: [
             { required: true, message: '请输入药品数量', trigger: 'blur' },
             { pattern: $peace.valid.pattern.pInterger, message: '请输入正确的药品数量', trigger: 'change' }
@@ -268,12 +268,7 @@ export default {
     })
   },
 
-  mounted() {
-    this.$nextTick(function() {
-      const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-      scrollElement.scrollTop = 0
-    })
-  },
+  mounted() {},
 
   methods: {
     // 搜索药品
@@ -324,6 +319,11 @@ export default {
     },
 
     sendPrescription() {
+      if (this.drug.source.list.length < 1) {
+        $peace.util.warning('请添加处方药品')
+        return
+      }
+
       const params = {
         doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
         openId: $peace.cache.get('USER').list.docInfo.openid,
@@ -391,10 +391,10 @@ export default {
           // 验证当前药品列表是否已存在
           // 存在则叠加
           // 不存在则新增
-          const drug = this.drug.source.list.find(item => item.drugid === this.drug.model.drugid)
+          const currentDrugIndex = this.drug.source.list.findIndex(item => item.drugid === this.drug.model.drugid)
 
-          if (drug) {
-            drug.number = parseInt(drug.number) + parseInt(this.drug.model.number)
+          if (currentDrugIndex !== -1) {
+            this.drug.source.list[currentDrugIndex] = { ...this.drug.model }
           } else {
             this.drug.source.list.push({ ...this.drug.model })
           }
