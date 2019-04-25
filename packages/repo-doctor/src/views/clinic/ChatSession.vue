@@ -5,51 +5,71 @@
         <h4>{{ internalSession && internalSession.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4>{{ countDown }}</h4>
-        <el-button @click="showOver" plain type="success">结束问诊</el-button>
+        <h4 v-show="false">{{ countDown }}</h4>
+        <el-button
+          @click="showOver"
+          plain
+          type="success"
+          v-show="internalSession && internalSession.lastMsg.custom.ext.talkState !== state.talkState['未接诊']"
+        >结束问诊</el-button>
       </div>
     </div>
 
-    <div class="content">
-      <el-scrollbar class="scrollbar">
-        <!-- 聊天列表 -->
-        <div v-show="!medical.visible && !prescription.visible">
-          <chat-session-list :sessionMsgs="sessionMsgs"></chat-session-list>
-        </div>
-        <!-- 病历 -->
-        <template v-if="medical.visible">
-          <chat-session-medical :session="lastSession" @close="closeMedical" @updateMsgHistory="updateMsgHistory"></chat-session-medical>
-        </template>
-        <!-- 处方 -->
-        <template v-if="prescription.visible">
-          <chat-session-prescription :session="lastSession" @close="closePrescription" @updateMsgHistory="updateMsgHistory"></chat-session-prescription>
-        </template>
-      </el-scrollbar>
-    </div>
-
-    <template v-if="internalSession && internalSession.lastMsg.custom.ext.talkState === state.talkState['未接诊']">
-      <div class="receive">
-        <div class="tip">
-          <span>请注意，请在</span>
-          <span class="count-down">限时时间</span>
-          <span>内接诊，未接诊将自动退费</span>
-        </div>
-        <div class="control">
-          <div @click="refuse">
-            <img src="./../../assets/images/icons/clinic/ic_refuse.png">
-            <span>退诊</span>
-          </div>
-          <div @click="receive">
-            <img src="./../../assets/images/icons/clinic/ic_accept.png">
-            <span>接诊</span>
-          </div>
-        </div>
-      </div>
+    <template v-if="medical.visible || prescription.visible || transfer.visible">
+      <!-- 病历 -->
+      <template v-if="medical.visible">
+        <chat-session-medical :session="lastSession" @close="closeMedical" @updateMsgHistory="updateMsgHistory"></chat-session-medical>
+      </template>
+      <!-- 处方 -->
+      <template v-if="prescription.visible">
+        <chat-session-prescription :session="lastSession" @close="closePrescription" @updateMsgHistory="updateMsgHistory"></chat-session-prescription>
+      </template>
+      <!-- 双向转诊 -->
+      <template v-if="transfer.visible">
+        <chat-session-transfer :session="lastSession" @close="closeTransfer" @updateMsgHistory="updateMsgHistory"></chat-session-transfer>
+      </template>
     </template>
+
     <template v-else>
-      <div class="input">
-        <chat-session-input :sessionMsgs="sessionMsgs" @showMedical="showMedical" @showPrescription="showPrescription" @updateMsgHistory="updateMsgHistory"></chat-session-input>
+      <div class="content">
+        <el-scrollbar class="scrollbar">
+          <!-- 聊天列表 -->
+          <div>
+            <chat-session-list :sessionMsgs="sessionMsgs"></chat-session-list>
+          </div>
+        </el-scrollbar>
       </div>
+
+      <template v-if="internalSession && internalSession.lastMsg.custom.ext.talkState === state.talkState['未接诊']">
+        <div class="receive">
+          <div class="tip">
+            <span>请注意，请在</span>
+            <span class="count-down">限时时间</span>
+            <span>内接诊，未接诊将自动退费</span>
+          </div>
+          <div class="control">
+            <div @click="refuse">
+              <img src="./../../assets/images/icons/clinic/ic_refuse.png">
+              <span>退诊</span>
+            </div>
+            <div @click="receive">
+              <img src="./../../assets/images/icons/clinic/ic_accept.png">
+              <span>接诊</span>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="input">
+          <chat-session-input
+            :sessionMsgs="sessionMsgs"
+            @showMedical="showMedical"
+            @showPrescription="showPrescription"
+            @showTransfer="showTransfer"
+            @updateMsgHistory="updateMsgHistory"
+          ></chat-session-input>
+        </div>
+      </template>
     </template>
 
     <el-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
@@ -89,6 +109,8 @@ import { state, deserializationSessions, deserializationSessionMsgs } from './ut
 import ChatSessionMedical from './ChatSessionMedical'
 // 处方
 import ChatSessionPrescription from './ChatSessionPrescription'
+// 双向转诊
+import ChatSessionTransfer from './ChatSessionTransfer'
 // 聊天列表
 import ChatSessionList from './ChatSessionList'
 // 输入项
@@ -98,6 +120,7 @@ export default {
   components: {
     ChatSessionList,
     ChatSessionInput,
+    ChatSessionTransfer,
     ChatSessionMedical,
     ChatSessionPrescription
   },
@@ -116,6 +139,8 @@ export default {
       api: {
         // 接受问诊
         receiveInquiry: 'client/v1/patient/receiveInquiry',
+        // 验证问诊
+        checkOverInquiry: 'client/v1/patient/checkOverInquiry',
         // 退出问诊
         quitInquiry: 'client/v1/patient/quitInquiry',
         // 正常结束问诊
@@ -136,6 +161,11 @@ export default {
 
       // 处方
       prescription: {
+        visible: false
+      },
+
+      // 双向转诊
+      transfer: {
         visible: false
       },
 
@@ -189,7 +219,9 @@ export default {
       this.$nextTick(function() {
         // 滚动到最底部
         const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
-        scrollElement.scrollTop = scrollElement.scrollHeight
+        if (scrollElement) {
+          scrollElement.scrollTop = scrollElement.scrollHeight
+        }
       })
     }
   },
@@ -198,6 +230,7 @@ export default {
     resetState() {
       this.medical.visible = false
       this.prescription.visible = false
+      this.transfer.visible = false
       this.over.visible = false
     },
 
@@ -207,6 +240,12 @@ export default {
         scene: 'p2p',
         to: this.internalSession.to,
         done: (error, obj) => {
+          if (error) {
+            $peace.util.alert(error.message)
+
+            return
+          }
+
           console.log('获取历史消息', obj)
 
           const msgs = deserializationSessionMsgs(obj.msgs)
@@ -246,8 +285,15 @@ export default {
       }
     },
 
+    closeAll() {
+      this.medical.visible = false
+      this.prescription.visible = false
+      this.transfer.visible = false
+    },
+
     // 显示写病历页面
     showMedical() {
+      this.closeAll()
       this.medical.visible = true
     },
 
@@ -264,6 +310,7 @@ export default {
 
     // 显示写处方页面
     showPrescription() {
+      this.closeAll()
       this.prescription.visible = true
     },
 
@@ -278,13 +325,38 @@ export default {
       })
     },
 
+    // 显示双向转诊页面
+    showTransfer() {
+      this.closeAll()
+      this.transfer.visible = true
+    },
+
+    // 显示双向转诊页面
+    closeTransfer() {
+      this.transfer.visible = false
+
+      this.$nextTick().then(() => {
+        // 滚动到最底部
+        const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
+        scrollElement.scrollTop = scrollElement.scrollHeight
+      })
+    },
+
     // 显示退诊咨询狂
     showOver() {
-      this.over.visible = true
+      this.$http.post(this.api.checkOverInquiry, { inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId }).then(res => {
+        if (res.data.caseStatus === 2 && res.data.status === 2) {
+          this.over.visible = true
 
-      this.over.state = ''
-      this.over.description = ''
-      this.over.description = ''
+          this.over.state = ''
+          this.over.description = ''
+          this.over.description = ''
+        } else if (res.data.caseStatus === 1 && res.data.status === 2) {
+          $peace.util.confirm('请填写病历', undefined, 'warning', () => {
+            this.showMedical()
+          })
+        }
+      })
     },
 
     // 结束问诊

@@ -17,11 +17,14 @@
         <el-button disabled type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
-        <el-button :disabled="!isShowMedicalButton" @click="showMedical" type="text">
+        <el-button :disabled="!isShowMedicalButton" :title="!isShowMedicalButton ? '已经填写病历，无法再次修改' : ''" @click="showMedical" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_medical.png">写病历
         </el-button>
-        <el-button :disabled="!isShowPrescriptionButton" @click="showPrescription" type="text">
+        <el-button :disabled="!isShowPrescriptionButton" :title="!isShowPrescriptionButton ? '尚未填写病历，无法开具处方' : ''" @click="showPrescription" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
+        </el-button>
+        <el-button :disabled="!isShowTransferButton" @click="showTransfer" type="text">
+          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">双向转诊
         </el-button>
       </div>
 
@@ -94,6 +97,10 @@ export default {
 
     isShowPrescriptionButton() {
       return this.sessionMsgs && this.sessionMsgs[this.sessionMsgs.length - 1].custom.ext.talkState === state.talkState['已填写病历']
+    },
+
+    isShowTransferButton() {
+      return this.sessionMsgs && this.sessionMsgs[this.sessionMsgs.length - 1].custom.ext.talkState === state.talkState['已填写病历']
     }
   },
 
@@ -157,6 +164,11 @@ export default {
     // 发送处方
     showPrescription() {
       this.$emit('showPrescription')
+    },
+
+    // 双向转诊
+    showTransfer() {
+      this.$emit('showTransfer')
     },
 
     clear() {
