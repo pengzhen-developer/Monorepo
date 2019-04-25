@@ -57,7 +57,7 @@
       <chat-session-prescription-detail :data="prescription.data"></chat-session-prescription-detail>
     </el-dialog>
 
-    <el-dialog :visible.sync="image.visible" :width="image.model.w + 'px'" append-to-body class="preview-image" title="文件预览" top="5vh">
+    <el-dialog :visible.sync="image.visible" append-to-body class="preview-image" title="文件预览" top="5vh">
       <img :src="image.model.url" @click="image.visible = false">
     </el-dialog>
   </div>
