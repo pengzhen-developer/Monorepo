@@ -200,7 +200,7 @@ export default {
     sessionMsgs() {
       this.$nextTick(function() {
         // 滚动到最底部
-        const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
+        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
         if (scrollElement) {
           scrollElement.scrollTop = scrollElement.scrollHeight
         }
@@ -277,7 +277,7 @@ export default {
 
       this.$nextTick().then(() => {
         // 滚动到最底部
-        const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
+        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
         scrollElement.scrollTop = scrollElement.scrollHeight
       })
     },
@@ -293,54 +293,60 @@ export default {
 
       this.$nextTick().then(() => {
         // 滚动到最底部
-        const scrollElement = this.$el.querySelector('.layout-center .el-scrollbar__wrap')
+        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
         scrollElement.scrollTop = scrollElement.scrollHeight
       })
     },
 
     // 显示退诊咨询狂
     showOver() {
-      this.$http.post(this.api.checkOverInquiry, { inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId }).then(res => {
-        if (res.data.caseStatus === 2 && res.data.status === 2) {
-          this.over.visible = true
+      this.over.visible = true
 
-          this.over.state = ''
-          this.over.description = ''
-          this.over.description = ''
-        } else if (res.data.caseStatus === 1 && res.data.status === 2) {
-          $peace.util.confirm('请填写病历', undefined, 'warning', () => {
-            this.showMedical()
-          })
-        } else if (res.data.caseStatus === 1 && res.data.status === 1) {
-          $peace.util.confirm('非有效会话，确定退诊吗？', undefined, 'warning', () => {
-            this.refuse()
-          })
-        } else {
-          $peace.util.warning(res.msg)
-        }
-      })
+      this.over.state = ''
+      this.over.description = ''
+      this.over.other = ''
     },
 
     // 结束问诊
     overConfirm() {
       // 结束问诊流程
       if (this.over.state === '已解决') {
-        const param = {
-          doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
-          inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId
-        }
-        this.$http.post(this.api.overInquiry, param).then(res => {
-          $peace.util.alert(res.msg)
+        this.$http.post(this.api.checkOverInquiry, { inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId }).then(res => {
+          if (res.data.caseStatus === 2 && res.data.status === 2) {
+            const param = {
+              doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+              inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId
+            }
+            this.$http.post(this.api.overInquiry, param).then(res => {
+              $peace.util.alert(res.msg)
 
-          this.over.visible = false
-          this.$emit('clear')
+              this.over.visible = false
+              this.$emit('clear')
+            })
+          } else if (res.data.caseStatus === 1 && res.data.status === 2) {
+            $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+              this.over.visible = false
+              this.showMedical()
+            })
+          } else if (res.data.caseStatus === 1 && res.data.status === 1) {
+            $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
+              this.refuse()
+            })
+          } else {
+            $peace.util.warning(res.msg)
+          }
         })
       }
       // 退诊退费流程
       else if (this.over.state === '未解决') {
         const description = this.over.description === '其他' ? this.over.other : this.over.description
-
-        this.refuse(description)
+        if (!description) {
+          $peace.util.warning('请选择未解决原因。')
+        } else {
+          $peace.util.confirm('未解决用户问题，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
+            this.refuse(description)
+          })
+        }
       }
     },
 
@@ -374,13 +380,9 @@ export default {
         })
       }
 
-      if (over_cause instanceof MouseEvent) {
-        $peace.util.confirm('退诊后自动退还问诊费用，确定退诊吗？', undefined, 'warning', () => {
-          handleRefuse()
-        })
-      } else {
+      $peace.util.confirm('退诊后自动退还问诊费用，请再次确定是否退诊。', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
         handleRefuse()
-      }
+      })
     }
   }
 }
