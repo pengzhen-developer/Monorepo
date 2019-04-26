@@ -3,7 +3,7 @@
  * @Description: 常用方法
  * @Date: 2018-07-06 11:24:59
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-18 16:11:01
+ * @Last Modified time: 2019-04-26 08:49:26
  */
 
 const _PADCHAR = '='
@@ -292,21 +292,39 @@ export function success(msg = '提示', title = '提示', type = 'success') {
 /**
  * confirm 弹出提示
  *
+ * @export
  * @param {string} [msg='提示']
  * @param {string} [title='提示']
- * @param {string} [type='info']
+ * @param {string} [options={ type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' }]
  * @param {*} [successCallBack=() => {}]
  * @param {*} [errorCallBack=() => {}]
  */
-export function confirm(msg = '提示', title = '提示', type = 'info', successCallBack = () => {}, errorCallBack = () => {}) {
-  $peace
-    .$confirm(msg, title, {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: type
-    })
-    .then(successCallBack)
-    .catch(errorCallBack)
+export function confirm(
+  msg = '提示',
+  title = '提示',
+  options = { type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' },
+  successCallBack = () => {},
+  errorCallBack = () => {}
+) {
+  if (Object.prototype.toString.call(options) === '[object String]') {
+    $peace
+      .$confirm(msg, title, {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: options
+      })
+      .then(successCallBack)
+      .catch(errorCallBack)
+  } else {
+    $peace
+      .$confirm(msg, title, {
+        confirmButtonText: options.confirmButtonText,
+        cancelButtonText: options.cancelButtonText,
+        type: options.type
+      })
+      .then(successCallBack)
+      .catch(errorCallBack)
+  }
 }
 
 /**
