@@ -38,7 +38,7 @@
               <img src="./../../assets/images/icons/clinic/chat_icon_video.png" v-if="session.lastMsg.custom.ext.talkType == state.talkType['视频问诊']">
               {{ getTalkType(session.lastMsg.custom.ext.talkType) }}
             </div>
-            <span v-if="session.lastMsg.custom.ext.talkState === 1 ">{{ $peace.util.timeAgo(session.updateTime) }}</span>
+            <span v-if="session.lastMsg.custom.ext.talkState === 1 ">{{ new Date(session.updateTime).formatDate('MM-dd HH:mm') }}</span>
           </div>
         </div>
       </el-scrollbar>
