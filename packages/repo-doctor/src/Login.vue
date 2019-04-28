@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form :model="view.model" @keyup.enter.native="login" class="login-card">
-      <div class="title">医生PC端</div>
+      <div class="title">医生工作站</div>
       <div class="row" label prop="username">
         <el-input placeholder="请输入手机号" type="text" v-model="view.model.username"></el-input>
         <div class="tips" v-if="usernameError">{{ usernameError }}</div>
