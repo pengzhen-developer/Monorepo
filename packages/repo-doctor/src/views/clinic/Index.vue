@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-26 19:31:29
+ * @Last Modified time: 2019-04-28 16:26:00
  */
 
 <template>
@@ -63,6 +63,8 @@ export default {
         appKey: appKey,
         account: $peace.cache.get('USER').list.registerInfo.user_id,
         token: $peace.cache.get('USER').list.registerInfo.token,
+
+        db: false,
 
         // 系统
         onconnect: this.onConnect,

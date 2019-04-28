@@ -9,44 +9,52 @@
 
     <el-form :model="view.model" :rules="view.rules" label-position="right" label-width="120px" ref="form">
       <el-row>
-        <el-form-item label="初步诊断" prop="_初步诊断">
+        <el-form-item label="初步诊断" prop="diagnose">
           <span slot="label">初步诊断</span>
-          <span>{{ view.model._初步诊断 }}</span>
+          <span>{{ view.model.diagnose }}</span>
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="转诊医生" prop="_转诊医生">
+        <el-form-item label="转诊医生" prop="doctorInfo">
           <span slot="label">转诊医生</span>
-          <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model._转诊医生">请选择</el-button>
-          <template v-if="view.model._转诊医生">
+          <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
+          <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
-              <img :src="view.model._转诊医生.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
-              <span style="font-size:16px; font-weight:700;">{{view.model._转诊医生.name }}</span>
-              <span>{{view.model._转诊医生.doctor_title }}</span>
-              <span>{{view.model._转诊医生.netdept_name }}</span>
-              <span>{{view.model._转诊医生.netHospital_name }}</span>
-              <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model._转诊医生">修改</el-button>
+              <img :src="view.model.doctorInfo.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
+              <span style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.name }}</span>
+              <span>{{view.model.doctorInfo.doctor_title }}</span>
+              <span>{{view.model.doctorInfo.netdept_name }}</span>
+              <span>{{view.model.doctorInfo.netHospital_name }}</span>
+              <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model.doctorInfo">修改</el-button>
             </div>
           </template>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="期望转诊时间" prop="_期望转诊时间">
+        <el-form-item label="期望转诊时间" prop="expectDate" style="display: inline-block;">
           <span slot="label">期望转诊时间</span>
           <el-date-picker
-            format="yyyy-MM-dd HH:mm"
+            :picker-options="view.rules.pickerOptionsDate"
             placeholder
-            style="width: 185px;"
-            type="datetime"
-            v-model="view.model._期望转诊时间"
-            value-format="yyyy-MM-dd HH:mm"
+            style="width: 145px;"
+            v-model="view.model.expectDate"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
+        </el-form-item>
+        <el-form-item label label-width="0" prop="expectTime" style="display: inline-block; ">
+          <el-time-select
+            :picker-options="view.rules.pickerOptionsTime"
+            placeholder
+            style="width: 110px; margin-left: 5px;"
+            v-model="view.model.expectTime"
+            value-format="HH:mm"
+          ></el-time-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="转诊说明" prop="_转诊说明">
+        <el-form-item label="转诊说明" prop="referralCause">
           <span slot="label">转诊说明</span>
-          <el-input :rows="3" placeholder type="textarea" v-model="view.model._转诊说明"></el-input>
+          <el-input :rows="3" placeholder type="textarea" v-model="view.model.referralCause"></el-input>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center;">
@@ -59,7 +67,7 @@
 
     <el-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
       <div>
-        <el-input placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
+        <el-input clearable placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
         <el-button @click="get" round type="primary">查询</el-button>
       </div>
 
@@ -99,7 +107,8 @@ export default {
 
       api: {
         getCase: 'client/v1/inquiry/getCase',
-        referralDocListPc: 'client/v1/inquiry/referralDocListPc'
+        referralDocListPc: 'client/v1/inquiry/referralDocListPc',
+        addReferral: 'client/v1/inquiry/addReferral'
       },
 
       drug: {},
@@ -108,17 +117,37 @@ export default {
         visible: false,
 
         model: {
-          _初步诊断: undefined,
-          _转诊医生: undefined,
-          _期望转诊时间: undefined,
-          _转诊说明: undefined
+          diagnose: undefined,
+          doctorInfo: undefined,
+          expectDate: undefined,
+          expectTime: undefined,
+          referralCause: undefined
         },
 
         rules: {
-          _初步诊断: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
-          _转诊医生: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
-          _期望转诊时间: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          _转诊说明: [{ required: true, message: '请输入转诊说明', trigger: 'change' }]
+          diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
+          doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
+          expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
+          expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
+          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }],
+
+          pickerOptionsDate: {
+            disabledDate(time) {
+              return (
+                time.getTime() <
+                new Date()
+                  .formatDate('yyyy-MM-dd 00:00:00')
+                  .toDate()
+                  .getTime()
+              )
+            }
+          },
+
+          pickerOptionsTime: {
+            start: '08:00',
+            step: '00:30',
+            end: '18:00'
+          }
         }
       },
 
@@ -134,7 +163,7 @@ export default {
 
   created() {
     this.$http.post(this.api.getCase, { inquiry_no: this.session.custom.ext.inquiryNo }).then(res => {
-      this.view.model._初步诊断 = res.data.diagnose
+      this.view.model.diagnose = res.data.diagnose
     })
   },
 
@@ -159,13 +188,54 @@ export default {
     chose(row) {
       this.dialog.visible = false
 
-      this.view.model._转诊医生 = row
+      this.view.model.doctorInfo = row
     },
 
     sendTransfer() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          console.log('sendTransfer')
+          // 验证转诊时间
+          if (new Date(this.view.model.expectDate + ' ' + this.view.model.expectTime) <= new Date()) {
+            $peace.util.warning('期望转诊时间不能小于当前时间')
+          }
+          // 开始转诊
+          else {
+            const params = {
+              doctor_id: this.view.model.doctorInfo.doctor_id,
+              patient_id: this.session.custom.patients.patientId,
+              family_id: this.session.custom.patients.familyId,
+              inquiry_no: this.session.custom.ext.inquiryNo,
+              referral_cause: this.view.model.referralCause,
+              expect_time: this.view.model.expectDate + ' ' + this.view.model.expectTime
+            }
+
+            this.$http.post(this.api.addReferral, params).then(() => {
+              const redirect = () => {
+                this.$msgbox.close()
+                this.$router.push('/record/transfer')
+              }
+
+              const msg = (
+                <span style="text-align: left;">
+                  你的转诊已提交，可前往 【
+                  <el-button type="text" onclick={redirect}>
+                    转诊记录/我的转诊
+                  </el-button>
+                  】 查看转诊进度
+                </span>
+              )
+
+              this.$msgbox({
+                title: '提交成功',
+                message: msg,
+                showConfirmButton: false,
+                type: 'success',
+                center: true
+              })
+
+              this.$emit('close')
+            })
+          }
         }
       })
     },

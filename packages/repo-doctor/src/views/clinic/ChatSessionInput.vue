@@ -168,7 +168,16 @@ export default {
 
     // 双向转诊
     showTransfer() {
-      this.$emit('showTransfer')
+      $peace.util.confirm(
+        '转诊提交成功后， 本次咨询将自动关闭。',
+        undefined,
+        {
+          type: 'warning'
+        },
+        () => {
+          this.$emit('showTransfer')
+        }
+      )
     },
 
     clear() {
