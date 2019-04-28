@@ -58,7 +58,7 @@
             </strong>
           </div>
           <div>
-            <span>用法用量: {{ drug.medicationFrequency }}</span>
+            <span>用法用量: {{ drug.drugRoute }}。 每次{{ drug.OnceDose }}{{ drug.OnceUnit }}， {{ drug.medicationFrequency }}，{{ drug.medication_days ? drug.medication_days + '天' : '' }}</span>
           </div>
         </div>
       </div>
