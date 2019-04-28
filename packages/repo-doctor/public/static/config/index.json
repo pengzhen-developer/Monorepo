@@ -3,7 +3,19 @@
   "_description2": "------------- 使用 $peace.config 访问各配置项",
 
   "nim": {
-    "appKey": "987faa06038223aa9151e8e6e974314e"
+    "_description1": "------------- 云信 IM 相关配置",
+
+    "development": {
+      "appKey": "987faa06038223aa9151e8e6e974314e"
+    },
+
+    "test": {
+      "appKey": "987faa06038223aa9151e8e6e974314e"
+    },
+
+    "production": {
+      "appKey": "a5b5212d7ff034b508d6e889040ffdf7"
+    }
   },
 
   "api": {
