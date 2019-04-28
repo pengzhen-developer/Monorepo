@@ -82,6 +82,12 @@ export default {
     }
   },
 
+  created() {
+    if (this.pagination) {
+      this._generatePagination()
+    }
+  },
+
   mounted() {
     this.$nextTick().then(() => {
       if (this.pagination) {
@@ -91,8 +97,8 @@ export default {
   },
 
   methods: {
-    // 挂载分页组件
-    _mountPagination() {
+    // 生成分页组件
+    _generatePagination() {
       const pagination = Vue.extend(Pagination)
 
       this.Pagination = new pagination({
@@ -100,13 +106,16 @@ export default {
         parent: this,
         propsData: this.$props
       }).$mount()
+    },
 
+    // 挂载分页组件
+    _mountPagination() {
       this.$el.parentNode.appendChild(this.Pagination.$el)
     },
 
     _generateConfig(config) {
       // 获取当前的分页信息
-      if (this.pagination) {
+      if (this.Pagination) {
         this.config.params.p = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
       }
