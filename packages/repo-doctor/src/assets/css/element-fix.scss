@@ -60,29 +60,32 @@
 }
 
 // Fix dialog
-.el-dialog__header {
-  display: flex;
-  align-items: center;
-  height: 30px;
+.el-dialog {
+  .el-dialog__header {
+    display: flex;
+    align-items: center;
+    height: 30px;
 
-  padding: 0 10px;
+    padding: 0 10px;
 
-  background: transparent;
+    background: transparent;
 
-  .el-dialog__title {
-    width: 94px;
-    height: 22px;
-    font-size: 14px;
-    font-weight: 400;
-    color: rgba(102, 102, 102, 1);
-    line-height: 22px;
+    .el-dialog__title {
+      width: 94px;
+      height: 22px;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      line-height: 22px;
+    }
+
+    .el-dialog__headerbtn {
+      font-size: 16px;
+      top: 6px;
+    }
   }
-
-  .el-dialog__headerbtn {
-    font-size: 16px;
-    top: 6px;
+  .el-dialog__body {
+    background: #fff;
+    padding: 10px;
   }
-}
-.el-dialog__body {
-  padding: 10px;
 }
