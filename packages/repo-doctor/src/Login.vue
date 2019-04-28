@@ -7,7 +7,7 @@
         <div class="tips" v-if="usernameError">{{ usernameError }}</div>
       </div>
       <div class="row" label prop="password">
-        <el-input placeholder="请输入验证码" ref="pwd" type="password" v-model="view.model.password"></el-input>
+        <el-input placeholder="请输入验证码" ref="pwd" v-model="view.model.password"></el-input>
         <div @click="reInput" class="close" v-if="passwordError">x</div>
         <div class="tips" v-if="passwordError">{{ passwordError }}</div>
       </div>
