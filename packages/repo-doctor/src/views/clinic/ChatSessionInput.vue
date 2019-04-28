@@ -24,7 +24,7 @@
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
         <el-button :disabled="!isShowTransferButton" @click="showTransfer" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">双向转诊
+          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">申请转诊
         </el-button>
       </div>
 

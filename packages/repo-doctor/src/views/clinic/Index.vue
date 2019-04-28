@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-24 16:52:17
+ * @Last Modified time: 2019-04-26 19:31:29
  */
 
 <template>
@@ -58,8 +58,9 @@ export default {
   methods: {
     // 加载 NIM SDK
     initSDK() {
+      const appKey = $peace.config.nim[process.env.VUE_APP_MODE || process.env.NODE_ENV].appKey
       $peace.NIM = SDK.NIM.getInstance({
-        appKey: $peace.config.nim.appKey,
+        appKey: appKey,
         account: $peace.cache.get('USER').list.registerInfo.user_id,
         token: $peace.cache.get('USER').list.registerInfo.token,
 

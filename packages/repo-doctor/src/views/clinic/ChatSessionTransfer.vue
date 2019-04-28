@@ -14,18 +14,33 @@
           <span>{{ view.model._初步诊断 }}</span>
         </el-form-item>
       </el-row>
-      <el-row>
+      <el-row class="transfer-doctor">
         <el-form-item label="转诊医生" prop="_转诊医生">
           <span slot="label">转诊医生</span>
           <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model._转诊医生">请选择</el-button>
-          <span>{{ view.model._转诊医生 }}</span>
-          <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model._转诊医生">修改</el-button>
+          <template v-if="view.model._转诊医生">
+            <div class="transfer-doctor-info">
+              <img :src="view.model._转诊医生.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
+              <span style="font-size:16px; font-weight:700;">{{view.model._转诊医生.name }}</span>
+              <span>{{view.model._转诊医生.doctor_title }}</span>
+              <span>{{view.model._转诊医生.netdept_name }}</span>
+              <span>{{view.model._转诊医生.netHospital_name }}</span>
+              <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model._转诊医生">修改</el-button>
+            </div>
+          </template>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="期望转诊时间" prop="_期望转诊时间">
           <span slot="label">期望转诊时间</span>
-          <el-date-picker placeholder type="datetime" v-model="view.model._期望转诊时间"></el-date-picker>
+          <el-date-picker
+            format="yyyy-MM-dd HH:mm"
+            placeholder
+            style="width: 185px;"
+            type="datetime"
+            v-model="view.model._期望转诊时间"
+            value-format="yyyy-MM-dd HH:mm"
+          ></el-date-picker>
         </el-form-item>
       </el-row>
       <el-row>
@@ -42,19 +57,27 @@
       </el-row>
     </el-form>
 
-    <el-dialog :visible.sync="dialog.visible" title="选择转诊医生">
+    <el-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
       <div>
-        <el-input placeholder="请输入地区、医院或医生姓名" style="width: 300px;" v-model="dialog.model.doctorInfo"></el-input>
-        <el-button type="primary">查询</el-button>
+        <el-input placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
+        <el-button @click="get" round type="primary">查询</el-button>
       </div>
 
-      <peace-table :data="[{},{},{},{}]" :show-header="false" pagination ref="table">
-        <peace-table-column align="left" label="name" prop="name">
-          <template slot-scope="scope">{{ scope.$index }}xxxx 医院 xxxx 科室 xxxx 医生</template>
+      <hr>
+
+      <peace-table pagination ref="table">
+        <peace-table-column label="医生头像" prop="name" width="100px">
+          <template slot-scope="scope">
+            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
+          </template>
         </peace-table-column>
-        <peace-table-column align="left" label="name" prop="name">
-          <template>
-            <el-button @click="chose" type="text">选择</el-button>
+        <peace-table-column label="医生姓名" prop="name" width="100px"></peace-table-column>
+        <peace-table-column label="职称" prop="doctor_title" width="100px"></peace-table-column>
+        <peace-table-column label="科室" prop="netdept_name" width="100px"></peace-table-column>
+        <peace-table-column label="医院" prop="netHospital_name"></peace-table-column>
+        <peace-table-column label="操作" width="100px">
+          <template slot-scope="scope">
+            <el-button @click="chose(scope.row)" type="text">选择</el-button>
           </template>
         </peace-table-column>
       </peace-table>
@@ -75,7 +98,8 @@ export default {
       state,
 
       api: {
-        getCase: 'client/v1/inquiry/getCase'
+        getCase: 'client/v1/inquiry/getCase',
+        referralDocListPc: 'client/v1/inquiry/referralDocListPc'
       },
 
       drug: {},
@@ -91,17 +115,19 @@ export default {
         },
 
         rules: {
-          _初步诊断: [{ required: true, message: '请输入初步诊断', trigger: 'blur' }],
-          _转诊医生: [{ required: true, message: '请选择转诊医生', trigger: 'blur' }],
-          _期望转诊时间: [{ required: true, message: '请选择期望转诊时间', trigger: 'blur' }],
-          _转诊说明: [{ required: true, message: '请输入转诊说明', trigger: 'blur' }]
+          _初步诊断: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
+          _转诊医生: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
+          _期望转诊时间: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
+          _转诊说明: [{ required: true, message: '请输入转诊说明', trigger: 'change' }]
         }
       },
 
       dialog: {
         visible: false,
 
-        model: {}
+        model: {
+          name: undefined
+        }
       }
     }
   },
@@ -115,17 +141,25 @@ export default {
   mounted() {},
 
   methods: {
+    get() {
+      this.$refs.table.loadData({
+        api: this.api.referralDocListPc,
+        params: { inquiry_no: this.session.custom.ext.inquiryNo, name: this.dialog.model.name }
+      })
+    },
+
     choseTransfer() {
       this.dialog.visible = true
+
+      this.$nextTick(function() {
+        this.get()
+      })
     },
 
     chose(row) {
-      console.log(row)
-      $peace.util.confirm('确定要选择【xxxx 医院 xxxx 科室 xxxx 医生】吗？', undefined, undefined, () => {
-        this.view.model._转诊医生 = 'xxxx 医院 xxxx 科室 xxxx 医生'
+      this.dialog.visible = false
 
-        this.dialog.visible = false
-      })
+      this.view.model._转诊医生 = row
     },
 
     sendTransfer() {
@@ -137,7 +171,7 @@ export default {
     },
 
     cancelTransfer() {
-      $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
+      $peace.util.confirm('确定要退出转诊吗？当前所有数据将会被清除!', undefined, undefined, () => {
         this.$emit('close')
       })
     }
@@ -159,36 +193,18 @@ export default {
   }
 }
 
-.inspect {
-  display: flex;
-  justify-content: space-between;
+.transfer-doctor {
+  /deep/ .el-form-item--mini .el-form-item__label,
+  /deep/ .el-form-item--mini .el-form-item__content {
+    line-height: 40px;
+  }
 
-  margin: 0 0 5px 0;
+  &-info {
+    display: inline-flex;
+    align-items: center;
 
-  .item {
-    margin: 0 5px 0 0;
-
-    .el-input {
-      width: 56px;
-      padding: 0;
-
-      border-top: none;
-      border-right: none;
-      border-bottom: 1px solid #d6d6d6;
-      border-left: none;
-
-      /deep/ .el-input__inner {
-        border: none;
-        padding: 0 10px;
-      }
-    }
-
-    & :first-child {
-      color: rgba(51, 51, 51, 1);
-    }
-
-    & :last-child {
-      color: rgba(153, 153, 153, 1);
+    span {
+      margin: 0 10px;
     }
   }
 }
