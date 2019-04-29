@@ -4,7 +4,7 @@
       <span>No.ZHSSKJDF70237</span>
     </div>
     <div class="record-title">
-      <span>武汉市第一医院</span>
+      <span>{{ internalData.netHospital_name }}</span>
       <br>
       <span>转诊单</span>
     </div>
@@ -15,13 +15,13 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="患者姓名">
-              <span>患者姓名</span>
+              <span>{{ internalData.name }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别" label-width="auto">
+            <el-form-item label="性别">
               <span slot="label">性别</span>
-              <span>性别</span>
+              <span>{{ internalData.sex }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -29,39 +29,49 @@
           <el-col :span="12">
             <el-form-item label="年龄">
               <span slot="label">年龄</span>
-              <span>年龄</span>
+              <span>{{ internalData.age }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="科别" label-width="auto">
+            <el-form-item label="科别">
               <span slot="label">科别</span>
-              <span>科别</span>
+              <span>{{ internalData.netdept_child }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="转出医生">转出医生</el-form-item>
+            <el-form-item label="转出医生">
+              <span>{{ internalData.doc_name }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="初步诊断">初步诊断</el-form-item>
+            <el-form-item label="初步诊断">
+              <span>{{ internalData.diagnose }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="转诊原因">转诊原因</el-form-item>
+            <el-form-item label="转诊原因">
+              <span>{{ internalData.referral_cause }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="期望转诊时间">期望转诊时间</el-form-item>
+            <el-form-item label="期望转诊时间">
+              <span>{{ internalData.expect_time }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="申请提交时间">申请提交时间</el-form-item>
+            <el-form-item label="申请提交时间">
+              <!-- <span>{{ internalData.expect_time }}</span> -->
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -75,7 +85,7 @@
             <el-form-item label="转入医生">转入医生</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="科别" label-width="auto">
+            <el-form-item label="科别">
               <span slot="label">科别</span>
               <span>科别</span>
             </el-form-item>
@@ -150,8 +160,6 @@
 </template>
 <script>
 export default {
-  name: 'record-info',
-
   props: {
     data: {
       type: Object,
@@ -164,10 +172,6 @@ export default {
   computed: {
     internalData() {
       const temp = $peace.util.clone(this.data)
-
-      if (temp.Inspection_index) {
-        temp.Inspection_index = JSON.parse(temp.Inspection_index)
-      }
 
       return temp
     }
