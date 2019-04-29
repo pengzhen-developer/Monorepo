@@ -12,7 +12,7 @@
             <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.e_Date" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label=" ">
-            <el-button @click="get" type="primary">查询</el-button>
+            <el-button @click="get" round type="primary">查询</el-button>
           </el-form-item>
         </el-form>
 

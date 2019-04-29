@@ -13,7 +13,7 @@
         <el-input placeholder v-model="view.model._所属分组"></el-input>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button @click="get" type="primary">查询</el-button>
+        <el-button @click="get" round type="primary">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       api: {
-        get: 'get',
+        get: 'client/v1/getPatientDoctorList',
         getDetail: 'getDetail'
       },
 

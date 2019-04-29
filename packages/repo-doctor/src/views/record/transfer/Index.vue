@@ -2,44 +2,44 @@
   <div>
     <div class="header">
       <el-button-group>
-        <el-button :type=" view.action === view.source.state['我转诊的'] ? 'primary' : '' " @click="changeActive('我转诊的')">我转诊的</el-button>
-        <el-button :type=" view.action === view.source.state['转给我的'] ? 'primary' : '' " @click="changeActive('转给我的')">转给我的</el-button>
+        <el-button :type="view.model.referral_type === view.source.state['我转诊的'] ? 'primary' : '' " @click="changeActive('我转诊的')">我转诊的</el-button>
+        <el-button :type="view.model.referral_type === view.source.state['转给我的'] ? 'primary' : '' " @click="changeActive('转给我的')">转给我的</el-button>
       </el-button-group>
     </div>
 
     <hr>
 
-    <template v-if="view.action === view.source.state['我转诊的']">
+    <template v-if="view.model.referral_type === view.source.state['我转诊的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转出医生">
-          <el-input placeholder v-model="view.model._转出医生"></el-input>
+          <el-input placeholder v-model="view.model.docName"></el-input>
         </el-form-item>
         <el-form-item label="转入机构">
-          <el-input placeholder v-model="view.model._转入机构"></el-input>
+          <el-input placeholder v-model="view.model.hosName"></el-input>
         </el-form-item>
         <el-form-item label="转诊状态">
-          <el-select placeholder v-model="view.model._转诊状态">
-            <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in view.source._转诊状态"></el-option>
+          <el-select clearable placeholder v-model="view.model.transfer_status">
+            <el-option :key="item.key" :label="item.refferStatus" :value="item.key" v-for="item in view.source.transfer_status"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
-          <el-button @click="get" type="primary">查询</el-button>
+          <el-button @click="get" round type="primary">查询</el-button>
         </el-form-item>
       </el-form>
 
       <hr>
 
-      <peace-table :data="[{},{}]" pagination ref="table">
-        <peace-table-column label="姓名" prop="_姓名"></peace-table-column>
-        <peace-table-column label="年龄" prop="_年龄"></peace-table-column>
-        <peace-table-column label="性别" prop="_性别"></peace-table-column>
-        <peace-table-column label="初步诊断" prop="_初步诊断"></peace-table-column>
-        <peace-table-column label="转入机构" prop="_转入机构"></peace-table-column>
-        <peace-table-column label="转入医生" prop="_转入医生"></peace-table-column>
-        <peace-table-column label="期望转诊时间" prop="_期望转诊时间"></peace-table-column>
-        <peace-table-column label="申请时间" prop="_申请时间"></peace-table-column>
-        <peace-table-column label="转诊状态" prop="_转诊状态"></peace-table-column>
-        <peace-table-column label="操作">
+      <peace-table pagination ref="table">
+        <peace-table-column label="姓名" prop="family_name"></peace-table-column>
+        <peace-table-column label="年龄" prop="age"></peace-table-column>
+        <peace-table-column label="性别" prop="sex"></peace-table-column>
+        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
+        <peace-table-column label="转入机构" prop="netHospital_name"></peace-table-column>
+        <peace-table-column label="转入医生" prop="name"></peace-table-column>
+        <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="120px"></peace-table-column>
+        <peace-table-column label="操作" width="120px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
@@ -47,29 +47,29 @@
       </peace-table>
     </template>
 
-    <template v-else-if="view.action === view.source.state['转给我的']">
+    <template v-else-if="view.model.referral_type === view.source.state['转给我的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转出机构">
           <el-input placeholder v-model="view.model._转出机构"></el-input>
         </el-form-item>
         <el-form-item label=" ">
-          <el-button @click="get" type="primary">查询</el-button>
+          <el-button @click="get" round type="primary">查询</el-button>
         </el-form-item>
       </el-form>
 
       <hr>
 
-      <peace-table :data="[{},{}]" pagination ref="table">
-        <peace-table-column label="姓名" prop="_姓名"></peace-table-column>
-        <peace-table-column label="年龄" prop="_年龄"></peace-table-column>
-        <peace-table-column label="性别" prop="_性别"></peace-table-column>
-        <peace-table-column label="初步诊断" prop="_初步诊断"></peace-table-column>
-        <peace-table-column label="转出机构" prop="_转出机构"></peace-table-column>
-        <peace-table-column label="转入医生" prop="_转入医生"></peace-table-column>
-        <peace-table-column label="期望转诊时间" prop="_期望转诊时间"></peace-table-column>
-        <peace-table-column label="申请时间" prop="_申请时间"></peace-table-column>
-        <peace-table-column label="转诊状态" prop="_转诊状态"></peace-table-column>
-        <peace-table-column label="操作">
+      <peace-table pagination ref="table">
+        <peace-table-column label="姓名" prop="family_name"></peace-table-column>
+        <peace-table-column label="年龄" prop="age"></peace-table-column>
+        <peace-table-column label="性别" prop="sex"></peace-table-column>
+        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
+        <peace-table-column label="转出机构" prop="netHospital_name"></peace-table-column>
+        <peace-table-column label="转出医生" prop="name"></peace-table-column>
+        <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="120px"></peace-table-column>
+        <peace-table-column label="操作" width="120px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
@@ -78,7 +78,7 @@
     </template>
 
     <el-dialog :visible.sync="dialog.visible" custom-class="dialog" title="转诊详情">
-      <transfer-detail></transfer-detail>
+      <transfer-detail :data="dialog.data"></transfer-detail>
     </el-dialog>
   </div>
 </template>
@@ -94,33 +94,43 @@ export default {
   data() {
     return {
       api: {
-        get: 'get',
-        getDetail: 'getDetail'
+        getRefferStatus: 'client/v1/inquiry/getRefferStatus',
+        get: 'client/v1/inquiry/DoctorReferralListPc',
+        referralDoc: 'client/v1/inquiry/referralDoc'
       },
 
       view: {
         action: '我转诊的',
 
         model: {
-          _转出医生: undefined,
-          _转入机构: undefined,
-          _转诊状态: undefined
+          referral_type: 'out',
+          docName: '',
+          hosName: '',
+          transfer_status: ''
         },
 
         source: {
-          _转诊状态: [{ label: '问诊', value: '问诊' }, { label: '扫码', value: '扫码' }],
+          transfer_status: [{ label: '问诊', value: '问诊' }, { label: '扫码', value: '扫码' }],
 
           state: {
-            我转诊的: '我转诊的',
-            转给我的: '转给我的'
+            我转诊的: 'out',
+            转给我的: 'in'
           }
         }
       },
 
       dialog: {
-        visible: false
+        visible: false,
+
+        data: {}
       }
     }
+  },
+
+  created() {
+    this.$http.post(this.api.getRefferStatus).then(res => {
+      this.view.source.transfer_status = res.data
+    })
   },
 
   mounted() {
@@ -131,21 +141,38 @@ export default {
 
   methods: {
     changeActive(action) {
-      this.view.action = action
+      if (this.view.model.referral_type !== this.view.source.state[action]) {
+        this.view.model.referral_type = this.view.source.state[action]
 
-      this.get()
+        this.$nextTick(function() {
+          this.get()
+        })
+      }
     },
 
     get() {
       this.$refs.table.loadData({
         api: this.api.get,
-        params: {}
+        params: this.view.model
       })
     },
 
-    showDetail() {
+    showDetail(row) {
+      const params = {
+        referral_no: row.referral_no,
+        referral_type: this.view.model.referral_type
+      }
       this.dialog.visible = true
-      this.$http.get(this.api.getDetail)
+
+      this.$http.post(this.api.referralDoc, params).then(res => {
+        this.dialog.data = res.data
+      })
+    },
+
+    formatter(r, c, v) {
+      const temp = this.view.source.transfer_status.find(item => item.key === v)
+
+      return temp && temp.refferStatus
     }
   }
 }
