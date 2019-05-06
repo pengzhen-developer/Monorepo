@@ -50,7 +50,7 @@
 <script>
 import ChatSessionList from './../../clinic/ChatSessionList'
 
-import { state } from './../../clinic/util'
+import { STATE } from './../../clinic/util'
 
 export default {
   components: {
@@ -59,7 +59,7 @@ export default {
 
   data() {
     return {
-      state,
+      STATE,
 
       api: {
         inqueryInfo: 'client/v1/inquiry/recordList',
@@ -136,34 +136,34 @@ export default {
           item.custom = item.ext
 
           if (row.doctor_id === item.from) {
-            item.flow = this.state.msgFlow['医生消息']
+            item.flow = this.STATE.msgFlow['医生消息']
           } else {
-            item.flow = this.state.msgFlow['患者消息']
+            item.flow = this.STATE.msgFlow['患者消息']
           }
 
           switch (item.type) {
             case 0:
-              item.type = this.state.msgType['文本消息']
+              item.type = this.STATE.msgType['文本消息']
               item.text = item.body.msg
               break
             case 1:
-              item.type = this.state.msgType['图片消息']
+              item.type = this.STATE.msgType['图片消息']
               item.file = item.body
               break
             case 2:
-              item.type = this.state.msgType['语音消息']
+              item.type = this.STATE.msgType['语音消息']
               break
             case 3:
-              item.type = this.state.msgType['视频消息']
+              item.type = this.STATE.msgType['视频消息']
               break
             case 4:
-              item.type = this.state.msgType['地理信息']
+              item.type = this.STATE.msgType['地理信息']
               break
             case 6:
-              item.type = this.state.msgType['文件']
+              item.type = this.STATE.msgType['文件']
               break
             case 100:
-              item.type = this.state.msgType['自定义消息']
+              item.type = this.STATE.msgType['自定义消息']
               item.content = item.body
               break
           }

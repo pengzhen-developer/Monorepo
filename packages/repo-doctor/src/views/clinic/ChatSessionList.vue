@@ -1,38 +1,40 @@
 <template>
   <div>
     <ul>
-      <li :key="msg.time" v-for="msg in internalSessionMsgs">
-        <template v-if="getMsgType(msg) === state.msgType['文本消息'] ">
+      <li :key="msg.time" v-for="(msg, index) in recentSessionMsgs">
+        <div class="msg-body system" v-if="needShowMsgTime(index)">{{ msg.time.toDate().formatDate('MM月dd日 HH:mm:ss') }}</div>
+
+        <template v-if="getMsgType(msg) === STATE.msgType['文本消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
             <span class="msg-detail" v-html="msg.text"></span>
           </div>
         </template>
 
-        <template v-if="getMsgType(msg) === state.msgType['图片消息'] ">
+        <template v-if="getMsgType(msg) === STATE.msgType['图片消息'] ">
           <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.h > 400 ? 400 * 0.75 : msg.file.h) + 'px' }" class="msg-body image">
             <img :src="msg.file.url" @click="previewImg(msg.file)">
           </div>
         </template>
 
-        <template v-if="getMsgType(msg) === state.msgType['视频消息'] ">
+        <template v-if="getMsgType(msg) === STATE.msgType['视频消息'] ">
           <span>TODO: [ 通话时长 10:32]</span>
         </template>
 
-        <template v-if="getMsgType(msg) === state.msgType['自定义消息'] ">
+        <template v-if="getMsgType(msg) === STATE.msgType['自定义消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
-            <template v-if="getMsgFlow(msg) === state.msgFlow['患者消息'] ">
+            <template v-if="getMsgFlow(msg) === STATE.msgFlow['患者消息'] ">
               <span>TODO: 目前需求, 暂无此情况</span>
             </template>
 
-            <template v-if="getMsgFlow(msg) === state.msgFlow['医生消息'] ">
-              <div @click="showMedical(msg)" class="msg-detail medical" v-if="getSendType(msg) === state.sendType['病历消息']">
+            <template v-if="getMsgFlow(msg) === STATE.msgFlow['医生消息'] ">
+              <div @click="showMedical(msg)" class="msg-detail medical" v-if="getSendType(msg) === STATE.sendType['病历消息']">
                 <img src="./../../assets/images/icons/clinic/ic_rp.png">
                 <div>
                   <p>病历</p>
                   <p>查看详情</p>
                 </div>
               </div>
-              <div @click="showPrescription(msg)" class="msg-detail prescription" v-if="getSendType(msg) === state.sendType['处方消息']">
+              <div @click="showPrescription(msg)" class="msg-detail prescription" v-if="getSendType(msg) === STATE.sendType['处方消息']">
                 <img src="./../../assets/images/icons/clinic/ic_medical record.png">
                 <div>
                   <p>处方</p>
@@ -41,7 +43,7 @@
               </div>
             </template>
 
-            <template v-if="getMsgFlow(msg) === state.msgFlow['系统消息'] ">
+            <template v-if="getMsgFlow(msg) === STATE.msgFlow['系统消息'] ">
               <span class="msg-detail" v-html="msg.content.data.appMsg"></span>
             </template>
           </div>
@@ -64,7 +66,8 @@
 </template>
 
 <script>
-import { state } from './util'
+import { mapState } from 'vuex'
+import { STATE, DeserializationSessionMsgs } from './util'
 
 import ChatSessionMedicalDetail from './ChatSessionMedicalDetail'
 import ChatSessionPrescriptionDetail from './ChatSessionPrescriptionDetail'
@@ -75,15 +78,6 @@ export default {
     ChatSessionPrescriptionDetail
   },
 
-  props: {
-    sessionMsgs: {
-      type: Array,
-      default() {
-        return undefined
-      }
-    }
-  },
-
   data() {
     return {
       api: {
@@ -91,7 +85,7 @@ export default {
         getPrescription: 'client/v1/Prescribeprescrip/getPrescripInfo'
       },
 
-      state,
+      STATE,
 
       medical: {
         visible: false,
@@ -113,12 +107,51 @@ export default {
   },
 
   computed: {
-    internalSessionMsgs() {
-      return this.sessionMsgs
+    ...mapState(['chat']),
+
+    // 最近一次就诊
+    recentSessionMsgs() {
+      let recentSessionMsgs
+
+      if (this.chat.sessionMsgs) {
+        const msgs = DeserializationSessionMsgs(this.chat.sessionMsgs.msgs)
+
+        // 过滤历史记录到最近一次就诊
+        let notReciveindex = msgs.findIndex(item => item.custom.ext.talkState === 1)
+        let hasReciveindex = msgs
+          .concat([])
+          .splice(notReciveindex)
+          .findIndex(item => item.custom.ext.talkState !== 1)
+
+        notReciveindex = notReciveindex === -1 ? msgs.length : notReciveindex
+        hasReciveindex = hasReciveindex === -1 ? msgs.length : hasReciveindex
+
+        recentSessionMsgs = msgs.splice(0, notReciveindex + hasReciveindex).reverse()
+
+        this.scrollToBottom()
+      }
+
+      return recentSessionMsgs
     }
   },
 
   methods: {
+    // 是否需要显示系统时间
+    needShowMsgTime(index) {
+      if (index === 0) {
+        return true
+      } else {
+        const prevMsg = this.recentSessionMsgs[index - 1]
+        const currentMsg = this.recentSessionMsgs[index]
+
+        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 2) {
+          return true
+        }
+
+        return false
+      }
+    },
+
     getMsgType(msg) {
       return msg.type
     },
@@ -126,7 +159,7 @@ export default {
     getMsgFlow(msg) {
       // 后台系统消息
       if (msg.content && msg.content.type == 8) {
-        return this.state.msgFlow['系统消息']
+        return this.STATE.msgFlow['系统消息']
       }
 
       return msg.flow
@@ -156,9 +189,20 @@ export default {
       })
     },
 
+    // 预览图片
     previewImg(file) {
       this.image.visible = true
       this.image.model = file
+    },
+
+    // 滚动到最底部
+    scrollToBottom() {
+      this.$nextTick().then(() => {
+        const scrollElement = document.body.querySelector('.content-chat-list .el-scrollbar__wrap')
+        if (scrollElement) {
+          scrollElement.scrollTop = scrollElement.scrollHeight
+        }
+      })
     }
   }
 }

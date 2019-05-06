@@ -94,24 +94,16 @@
 </template>
 
 <script>
-import { state } from './util'
+import { mapState } from 'vuex'
+
+import { STATE } from './util'
+import config from './config'
 
 export default {
-  props: {
-    session: Object
-  },
-
   data() {
     return {
-      state,
-
-      api: {
-        getCase: 'client/v1/inquiry/getCase',
-        referralDocListPc: 'client/v1/inquiry/referralDocListPc',
-        addReferral: 'client/v1/inquiry/addReferral'
-      },
-
-      drug: {},
+      STATE,
+      config,
 
       view: {
         visible: false,
@@ -161,8 +153,12 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['chat'])
+  },
+
   created() {
-    this.$http.post(this.api.getCase, { inquiry_no: this.session.custom.ext.inquiryNo }).then(res => {
+    this.$http.post(this.config.api.getCase, { inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
       this.view.model.diagnose = res.data.diagnose
     })
   },
@@ -172,8 +168,8 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.referralDocListPc,
-        params: { inquiry_no: this.session.custom.ext.inquiryNo, name: this.dialog.model.name }
+        api: this.config.api.referralDocListPc,
+        params: { inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo, name: this.dialog.model.name }
       })
     },
 
@@ -202,14 +198,14 @@ export default {
           else {
             const params = {
               doctor_id: this.view.model.doctorInfo.doctor_id,
-              patient_id: this.session.custom.patients.patientId,
-              family_id: this.session.custom.patients.familyId,
-              inquiry_no: this.session.custom.ext.inquiryNo,
+              patient_id: this.chat.session.lastMsg.custom.patients.patientId,
+              family_id: this.chat.session.lastMsg.custom.patients.familyId,
+              inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo,
               referral_cause: this.view.model.referralCause,
               expect_time: this.view.model.expectDate + ' ' + this.view.model.expectTime
             }
 
-            this.$http.post(this.api.addReferral, params).then(() => {
+            this.$http.post(this.config.api.addReferral, params).then(() => {
               const redirect = () => {
                 this.$msgbox.close()
                 this.$router.push('/record/transfer')

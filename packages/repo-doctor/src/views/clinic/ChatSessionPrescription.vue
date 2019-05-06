@@ -150,7 +150,10 @@
 </template>
 
 <script>
-import { state } from './util'
+import { mapState, mapMutations } from 'vuex'
+
+import { STATE } from './util'
+import config from './config'
 
 const ACTION_TYPE = {
   EDIT: 'EDIT',
@@ -158,21 +161,9 @@ const ACTION_TYPE = {
 }
 
 export default {
-  props: {
-    session: Object
-  },
-
   data() {
     return {
-      api: {
-        drugUsageList: 'client/v1/Prescribeprescrip/drugUsageList',
-        drugFrequencyList: 'client/v1/Prescribeprescrip/drugFrequencyList',
-        drugsList: 'client/v1/Prescribeprescrip/drugsList',
-        drugsListById: 'client/v1/Prescribeprescrip/drugsListById',
-
-        getCase: 'client/v1/inquiry/getCase',
-        subPrescrip: 'client/v1/Prescribeprescrip/subPrescrip'
-      },
+      config,
 
       prescription: {
         source: {
@@ -232,6 +223,10 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['chat'])
+  },
+
   watch: {
     'prescription.source.list'(val) {
       if (val.length > 5) {
@@ -251,15 +246,15 @@ export default {
   },
 
   created() {
-    this.$http.get(this.api.drugUsageList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id } }).then(res => {
+    this.$http.get(this.config.api.drugUsageList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id } }).then(res => {
       this.drug.source.dic_usage = res.data
     })
 
-    this.$http.get(this.api.drugFrequencyList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id } }).then(res => {
+    this.$http.get(this.config.api.drugFrequencyList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id } }).then(res => {
       this.drug.source.dic_frequency = res.data
     })
 
-    this.$http.post(this.api.getCase, { inquiry_no: this.session.custom.ext.inquiryNo }).then(res => {
+    this.$http.post(this.config.api.getCase, { inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
       this.drug.diagnose = res.data.diagnose
       this.drug.allergy_history = res.data.allergy_history
     })
@@ -268,13 +263,15 @@ export default {
   mounted() {},
 
   methods: {
+    ...mapMutations('chat', ['updateSessionMsg']),
+
     // 搜索药品
     querySearchAsync(queryString, cb) {
       this.drug.action = this.drug.ACTION_TYPE.INSERT
 
       if (queryString) {
         this.$http
-          .get(this.api.drugsList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id, drugname: queryString } })
+          .get(this.config.api.drugsList, { params: { hospitalId: $peace.cache.get('USER').list.docInfo.netHospital_id, drugname: queryString } })
           .then(res => {
             cb(res.data)
           })
@@ -324,23 +321,23 @@ export default {
       const params = {
         doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
         openId: $peace.cache.get('USER').list.docInfo.openid,
-        inquiry_no: this.session.custom.ext.inquiryNo,
-        family_id: this.session.custom.patients.familyId,
+        inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo,
+        family_id: this.chat.session.lastMsg.custom.patients.familyId,
         diagnose: this.drug.diagnose,
         allergy_history: this.drug.allergy_history,
         drugsJson: JSON.stringify(this.drug.source.list)
       }
 
-      this.$http.post(this.api.subPrescrip, params).then(res => {
+      this.$http.post(this.config.api.subPrescrip, params).then(res => {
         // 给患者发送一个 custom 消息, 用于显示
         // 1. 更改自定义消息体的状态
-        const tempCustomData = $peace.util.clone(this.session.custom)
+        const tempCustomData = $peace.util.clone(this.chat.session.lastMsg.custom)
         tempCustomData.ext.talkState = 3
 
         $peace.NIM.sendCustomMsg({
           type: 'custom',
           scene: 'p2p',
-          to: this.session.custom.patients.patientId,
+          to: this.chat.session.lastMsg.custom.patients.patientId,
           text: '',
           custom: JSON.stringify(tempCustomData),
           content: JSON.stringify({
@@ -349,7 +346,7 @@ export default {
             data: {
               appMsg: '',
               // 0 代表病历、1 代表处方
-              sendType: state.sendType.处方消息,
+              sendType: STATE.sendType.处方消息,
               headImage: '',
               // 处方 id
               prescriptionId: res.data,
@@ -358,8 +355,14 @@ export default {
             }
           }),
           done: (error, msg) => {
-            console.log('消息发送成功', error, msg)
-            this.$emit('updateMsgHistory', msg)
+            if (error) {
+              $peace.util.alert(error.message)
+
+              return
+            }
+            console.log(new Date().formatTime() + ': ' + '消息发送成功', msg)
+
+            this.updateSessionMsg(msg)
             this.$emit('close')
           }
         })

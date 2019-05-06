@@ -16,11 +16,15 @@ export default {
       this.restoreUserInfo()
 
       document.title = $peace.cache.get('USER').list.docInfo.netHospital_name
+
+      this.initSDK()
     }
   },
 
   methods: {
-    ...mapActions('user', ['restoreUserInfo'])
+    ...mapActions('user', ['restoreUserInfo']),
+
+    ...mapActions('chat', ['initSDK'])
   }
 }
 </script>

@@ -5,86 +5,94 @@
       <span>问诊列表</span>
     </div>
 
-    <div class="content" v-if="internalSessions && internalSessions.length > 0">
-      <el-scrollbar class="scrollbar">
-        <div
-          :class="{ active: $parent.session && $parent.session.id === session.id }"
-          :key="session.id"
-          @click="updateCurrentSession(session)"
-          class="content-session-item"
-          v-for="session in internalSessions"
-        >
-          <div class="content-title">
-            <div class="content-title-left">
-              <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
-              <span class="item">{{ session.lastMsg.custom.patients.gender }}</span>
-              <span class="item">{{ session.lastMsg.custom.patients.age }} 岁</span>
+    <template v-if="sessions && sessions.length > 0">
+      <div class="body">
+        <el-scrollbar class="scrollbar">
+          <div
+            :class="{ active: chat.session && chat.session.id === session.id }"
+            :key="session.id"
+            @click="selectSession(session)"
+            class="content"
+            v-for="session in sessions"
+          >
+            <div class="content-title">
+              <div class="content-title-left">
+                <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
+                <span class="item">{{ session.lastMsg.custom.patients.gender }}</span>
+                <span class="item">{{ session.lastMsg.custom.patients.age }} 岁</span>
+              </div>
+
+              <div class="content-title-right">
+                <el-button :type="session.lastMsg.custom.ext.talkState === 1 ? 'warning' : 'success'" plain round>
+                  <span>{{ session.lastMsg.custom.ext.talkState === 1 ? '待接诊' : '问诊中' }}</span>
+                </el-button>
+              </div>
             </div>
 
-            <div class="content-title-right">
-              <el-button :type="session.lastMsg.custom.ext.talkState === 1 ? 'warning' : 'success'" plain>
-                <span>{{ session.lastMsg.custom.ext.talkState === 1 ? '待接诊' : '问诊中' }}</span>
-              </el-button>
+            <div class="content-msg">
+              <div class="content-msg-detail" v-html="getLastMsg(session)"></div>
+            </div>
+
+            <div class="content-status">
+              <div class="content-status-left">
+                <template v-if="session.lastMsg.custom.ext.talkType == STATE.talkType['图文问诊']">
+                  <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">
+                </template>
+                <template v-if="session.lastMsg.custom.ext.talkType == STATE.talkType['视频问诊']">
+                  <img src="./../../assets/images/icons/clinic/chat_icon_video.png">
+                </template>
+
+                <span>{{ getTalkType(session.lastMsg.custom.ext.talkType) }}</span>
+              </div>
+              <span v-if="session.lastMsg.custom.ext.talkState === 1 ">{{ new Date(session.updateTime).formatDate('MM-dd HH:mm') }}</span>
             </div>
           </div>
+        </el-scrollbar>
+      </div>
+    </template>
 
-          <div class="content-msg">
-            <div class="content-msg-detail" v-html="getLastMsg(session)"></div>
-          </div>
-
-          <div class="content-status">
-            <div class="content-status-left">
-              <img src="./../../assets/images/icons/clinic/chat_icon_pic.png" v-if="session.lastMsg.custom.ext.talkType == state.talkType['图文问诊']">
-              <img src="./../../assets/images/icons/clinic/chat_icon_video.png" v-if="session.lastMsg.custom.ext.talkType == state.talkType['视频问诊']">
-              {{ getTalkType(session.lastMsg.custom.ext.talkType) }}
-            </div>
-            <span v-if="session.lastMsg.custom.ext.talkState === 1 ">{{ new Date(session.updateTime).formatDate('MM-dd HH:mm') }}</span>
-          </div>
-        </div>
-      </el-scrollbar>
-    </div>
-    <div class="no-data" v-else>
-      <img src="./../../assets/images/icons/clinic/ic_no one.png">
-      <span>暂无患者</span>
-    </div>
+    <template v-else>
+      <div class="body-no-data">
+        <img src="./../../assets/images/icons/clinic/ic_no one.png">
+        <span>暂无患者</span>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import { isArray } from 'util'
+import { mapState, mapActions } from 'vuex'
 
-import { state, deserializationSessions } from './util.js'
+import { STATE } from './util'
 
 export default {
-  props: {
-    sessions: {
-      type: Array,
-      default() {
-        return undefined
-      }
-    }
-  },
-
   data() {
     return {
-      state
+      STATE
     }
   },
 
   computed: {
-    internalSessions() {
-      if (this.sessions && isArray(this.sessions)) {
-        return deserializationSessions(this.sessions).filter(
-          item =>
-            item.lastMsg.custom.ext &&
-            (item.lastMsg.custom.ext.talkState === 1 || item.lastMsg.custom.ext.talkState === 2 || item.lastMsg.custom.ext.talkState === 3)
-        )
+    ...mapState(['chat']),
+
+    sessions() {
+      let sessions
+
+      if (this.chat.sessions) {
+        sessions = this.chat.sessions.filter(session => {
+          const ext = session.lastMsg.custom.ext
+
+          return ext.talkState === 1 || ext.talkState === 2 || ext.talkState === 3
+        })
       }
-      return this.sessions
+
+      return sessions
     }
   },
 
   methods: {
+    ...mapActions('chat', ['selectSession']),
+
     getLastMsg(session) {
       const msgType = session.lastMsg.type
 
@@ -108,25 +116,7 @@ export default {
     },
 
     getTalkType(talkType) {
-      return Object.keys(state.talkType).find(key => state.talkType[key] === talkType)
-    },
-    getTalkState(talkState) {
-      return Object.keys(state.talkState).find(key => state.talkState[key] === talkState)
-    },
-
-    // 更新当前会话
-    // 更新当前会话历史消息
-    updateCurrentSession(session) {
-      // 更新会话
-      this.$parent.session = { ...session }
-
-      // 更新状态
-      this.$parent.$refs.ChatSession.resetState()
-
-      // 更新历史消息
-      // this.$nextTick(function() {
-      //   this.$parent.$refs.ChatSession.getMsgHistory()
-      // })
+      return Object.keys(STATE.talkType).find(key => STATE.talkType[key] === talkType)
     }
   }
 }
@@ -148,7 +138,7 @@ export default {
   }
 }
 
-.content {
+.body {
   height: calc(100% - 50px);
 
   .scrollbar {
@@ -156,30 +146,31 @@ export default {
     overflow: hidden;
   }
 
-  .content-session-item {
-    border-bottom: 1px solid #efefef;
+  .content {
     cursor: pointer;
+
+    border-bottom: 1px solid #efefef;
     padding: 10px;
 
     &.active {
       background: rgba(244, 244, 244, 1);
     }
 
-    .content-title {
+    &-title {
       display: flex;
       justify-content: space-between;
 
       margin: 0 0 5px 0;
 
-      .content-title-left {
+      &-left {
         .item {
+          font-size: 12px;
+          margin: 0 10px 0 0;
+
           &.blod {
             font-weight: bold;
             font-size: 14px;
           }
-
-          font-size: 12px;
-          margin: 0 10px 0 0;
 
           & :first-child {
             font-size: 14px;
@@ -190,39 +181,37 @@ export default {
         }
       }
 
-      .content-title-right {
+      &-right {
         .el-button {
+          min-width: auto;
+          margin: 0;
+          padding: 4px 8px;
+          font-size: 12px;
+
           &.el-button--warning {
             border-color: #4395f5;
-            color: #4395f5 !important;
-            background: #e3f0ff !important;
+            color: #4395f5;
+            background: #e3f0ff;
           }
           &.el-button--success {
             border-color: #00c6ae;
-            color: #00c6ae !important;
-            background: #dafaf6 !important;
+            color: #00c6ae;
+            background: #dafaf6;
           }
-
-          padding: 4px 8px;
-          margin: 0;
-          min-width: auto;
-          border-radius: 10px;
-          font-size: 12px;
         }
       }
     }
 
-    .content-msg {
+    &-msg {
       margin: 0 0 16px 0;
 
-      .content-msg-detail {
-        width: 180px;
-        height: 20px;
+      &-detail {
         font-size: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         display: block;
+        height: 22px;
 
         /deep/ * {
           font-size: 12px;
@@ -234,14 +223,14 @@ export default {
       }
     }
 
-    .content-status {
+    &-status {
       font-size: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: rgba(153, 153, 153, 1);
 
-      .content-status-left {
+      &-left {
         font-size: 12px;
         display: flex;
         align-items: center;
@@ -255,7 +244,7 @@ export default {
   }
 }
 
-.no-data {
+.body-no-data {
   height: calc(100% - 50px);
 
   display: flex;

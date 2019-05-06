@@ -146,21 +146,16 @@
 </template>
 
 <script>
-import { state } from './util'
+import { mapState, mapMutations } from 'vuex'
+
+import { STATE } from './util'
+import config from './config'
 
 export default {
-  props: {
-    session: Object
-  },
-
   data() {
     return {
-      api: {
-        addCase: 'client/v1/Prescribeprescrip/addCase',
-
-        getDiseaseInfo: 'client/v1/patient/getDiseaseInfo',
-        allergenList: 'client/v1/patient/allergenList'
-      },
+      STATE,
+      config,
 
       medical: {
         visible: false,
@@ -176,10 +171,10 @@ export default {
         },
 
         rules: {
-          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
-          dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
-          base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
-          diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
+          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'change' }],
+          dep_id: [{ required: true, message: '请输入科别', trigger: 'change' }],
+          base_illness: [{ required: true, message: '请输入主诉', trigger: 'change' }],
+          diagnose: [{ required: true, message: '请输入诊断', trigger: 'change' }]
         },
 
         source: {
@@ -188,6 +183,10 @@ export default {
         }
       }
     }
+  },
+
+  computed: {
+    ...mapState(['chat'])
   },
 
   watch: {
@@ -204,9 +203,11 @@ export default {
   mounted() {},
 
   methods: {
+    ...mapMutations('chat', ['updateSessionMsg']),
+
     getPresent(query) {
       if (query !== '' && query.length > 0) {
-        this.$http.post(this.api.getDiseaseInfo, { name: query }).then(res => {
+        this.$http.post(this.config.api.getDiseaseInfo, { name: query }).then(res => {
           this.medical.source.present_history = res.data.list
         })
       } else {
@@ -216,7 +217,7 @@ export default {
 
     getAllergy(query) {
       if (query !== '' && query.length > 0) {
-        this.$http.post(this.api.allergenList, { name: query }).then(res => {
+        this.$http.post(this.config.api.allergenList, { name: query }).then(res => {
           this.medical.source.allergy_history = res.data.list
         })
       } else {
@@ -258,13 +259,13 @@ export default {
 
           const params = {
             doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
-            inquiry_no: this.session.custom.ext.inquiryNo,
-            patient_id: this.session.custom.patients.patientId,
-            family_id: this.session.custom.patients.familyId,
-            patient_name: this.session.custom.patients.familyName,
-            sex: this.session.custom.patients.gender,
-            age: this.session.custom.patients.age,
-            id_card: this.session.custom.patients.idCard,
+            inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo,
+            patient_id: this.chat.session.lastMsg.custom.patients.patientId,
+            family_id: this.chat.session.lastMsg.custom.patients.familyId,
+            patient_name: this.chat.session.lastMsg.custom.patients.familyName,
+            sex: this.chat.session.lastMsg.custom.patients.gender,
+            age: this.chat.session.lastMsg.custom.patients.age,
+            id_card: this.chat.session.lastMsg.custom.patients.idCard,
 
             ...this.medical.model
           }
@@ -275,16 +276,16 @@ export default {
           params.present_history = params.present_history.toString()
           params.diagnose = params.diagnose.toString()
 
-          this.$http.post(this.api.addCase, params).then(res => {
+          this.$http.post(this.config.api.addCase, params).then(res => {
             // 给患者发送一个 custom 消息, 用于显示
             // 1. 更改自定义消息体的状态
-            const tempCustomData = $peace.util.clone(this.session.custom)
+            const tempCustomData = $peace.util.clone(this.chat.session.lastMsg.custom)
             tempCustomData.ext.talkState = 3
 
             $peace.NIM.sendCustomMsg({
               type: 'custom',
               scene: 'p2p',
-              to: this.session.custom.patients.patientId,
+              to: this.chat.session.lastMsg.custom.patients.patientId,
               text: '',
               custom: JSON.stringify(tempCustomData),
               content: JSON.stringify({
@@ -293,7 +294,7 @@ export default {
                 data: {
                   appMsg: '',
                   // 0 代表病历、1 代表处方
-                  sendType: state.sendType.病历消息,
+                  sendType: this.STATE.sendType.病历消息,
                   headImage: '',
                   prescriptionId: '',
                   time: new Date().formatDate(),
@@ -301,8 +302,14 @@ export default {
                 }
               }),
               done: (error, msg) => {
-                console.log('消息发送成功', error, msg)
-                this.$emit('updateMsgHistory', msg)
+                if (error) {
+                  $peace.util.alert(error.message)
+
+                  return
+                }
+                console.log(new Date().formatTime() + ': ' + '消息发送成功', msg)
+
+                this.updateSessionMsg(msg)
                 this.$emit('close')
               }
             })

@@ -19,7 +19,7 @@
 
     <hr>
 
-    <peace-table :data="[{},{}]" pagination ref="table">
+    <peace-table pagination ref="table">
       <peace-table-column label="患者姓名" prop="_患者姓名" width="180"></peace-table-column>
       <peace-table-column label="最近咨询" prop="_最近咨询"></peace-table-column>
       <peace-table-column label="患者来源" prop="_患者来源"></peace-table-column>

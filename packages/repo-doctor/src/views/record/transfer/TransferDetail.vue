@@ -125,17 +125,23 @@
       <el-form :model="view.model">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="审核结果">审核结果</el-form-item>
+            <el-form-item label="审核结果">
+              <span>{{ internalData.send_referral_suggest   }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="审核意见">审核意见</el-form-item>
+            <el-form-item label="审核意见">
+              <span>{{ internalData.send_check_suggest }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="审核时间">审核时间</el-form-item>
+            <el-form-item label="审核时间">
+              <span>{{ internalData.send_check_time }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>

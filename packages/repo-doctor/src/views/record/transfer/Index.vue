@@ -30,7 +30,7 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="姓名" prop="family_name"></peace-table-column>
+        <peace-table-column label="姓名" prop="name"></peace-table-column>
         <peace-table-column label="年龄" prop="age"></peace-table-column>
         <peace-table-column label="性别" prop="sex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
@@ -60,7 +60,7 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="姓名" prop="family_name"></peace-table-column>
+        <peace-table-column label="姓名" prop="name"></peace-table-column>
         <peace-table-column label="年龄" prop="age"></peace-table-column>
         <peace-table-column label="性别" prop="sex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>

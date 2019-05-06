@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-24 19:47:49
+ * @Last Modified time: 2019-05-05 12:44:19
  */
 
 import Axios from 'axios'
@@ -95,7 +95,7 @@ Axios.interceptors.response.use(
         $peace.util.warning(response.data.msg)
 
         // 移除登录消息
-        $peace.cache.remove()
+        $peace.cache.clear()
 
         // 跳转登录
         $peace.$router.replace($peace.config.theme.startPage)

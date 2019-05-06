@@ -3,10 +3,10 @@
  * @Date: 2019-04-16 09:48:47
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 16:47:47
+ * @Last Modified time: 2019-05-05 16:50:51
  */
 
-export const state = {
+export const STATE = {
   msgFlow: {
     患者消息: 'in',
     医生消息: 'out',
@@ -66,7 +66,7 @@ export const state = {
  * @param {*} sessions
  * @returns
  */
-export function deserializationSessions(sessions) {
+export function DeserializationSessions(sessions) {
   let temp = $peace.util.clone(sessions)
 
   if (temp) {
@@ -96,7 +96,7 @@ export function deserializationSessions(sessions) {
  * @param {*} sessions
  * @returns
  */
-export function deserializationSessionMsgs(msgs) {
+export function DeserializationSessionMsgs(msgs) {
   let temp = $peace.util.clone(msgs)
 
   if (temp) {
@@ -118,9 +118,9 @@ export function deserializationSessionMsgs(msgs) {
 }
 
 export default {
-  state,
+  STATE,
 
-  deserializationSessions,
+  DeserializationSessions,
 
-  deserializationSessionMsgs
+  DeserializationSessionMsgs
 }
