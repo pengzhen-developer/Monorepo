@@ -1,3 +1,11 @@
+/*
+ * @Author: PengZhen 
+ * @Date: 2019-04-16 09:16:09 
+ * @Description: 我的诊室
+ * @Last Modified by: PengZhen
+ * @Last Modified time: 2019-05-06 11:21:06
+ */
+
 <template>
   <div class="clinic">
     <!-- 会话列表 -->

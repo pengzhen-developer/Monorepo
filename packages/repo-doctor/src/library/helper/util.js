@@ -3,7 +3,7 @@
  * @Description: 常用方法
  * @Date: 2018-07-06 11:24:59
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-05 14:30:00
+ * @Last Modified time: 2019-05-06 11:18:01
  */
 
 const _PADCHAR = '='

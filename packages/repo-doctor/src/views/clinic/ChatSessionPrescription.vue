@@ -305,11 +305,11 @@ export default {
       this.drug.model.number = 1
 
       // 其他值默认为空
-      this.drug.model.medication_days = undefined
-      this.drug.model.dic_usage = undefined
-      this.drug.model.dic_usage_id = undefined
-      this.drug.model.dic_frequency = undefined
-      this.drug.model.dic_frequency_id = undefined
+      this.drug.model.medication_days = ''
+      this.drug.model.dic_usage = ''
+      this.drug.model.dic_usage_id = ''
+      this.drug.model.dic_frequency = ''
+      this.drug.model.dic_frequency_id = ''
     },
 
     sendPrescription() {
@@ -318,6 +318,11 @@ export default {
         return
       }
 
+      const temp = $peace.util.clone(this.drug.source.list)
+      temp.forEach(item => {
+        item.medication_days = item.medication_days ? item.medication_days : 0
+      })
+
       const params = {
         doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
         openId: $peace.cache.get('USER').list.docInfo.openid,
@@ -325,7 +330,7 @@ export default {
         family_id: this.chat.session.lastMsg.custom.patients.familyId,
         diagnose: this.drug.diagnose,
         allergy_history: this.drug.allergy_history,
-        drugsJson: JSON.stringify(this.drug.source.list)
+        drugsJson: JSON.stringify(temp)
       }
 
       this.$http.post(this.config.api.subPrescrip, params).then(res => {
