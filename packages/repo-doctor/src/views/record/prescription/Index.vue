@@ -33,9 +33,9 @@
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" title="处方详情" width="800px">
+        <peace-dialog :visible.sync="dialog.visible" title="处方详情" width="800px">
           <chat-session-prescription-detail :data="dialog.data"></chat-session-prescription-detail>
-        </el-dialog>
+        </peace-dialog>
       </div>
     </div>
 

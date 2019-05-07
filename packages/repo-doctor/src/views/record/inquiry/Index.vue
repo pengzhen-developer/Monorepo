@@ -34,9 +34,9 @@
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" top="5vh" width="800px">
-          <chat-session-list :sessionMsgs="dialog.data"></chat-session-list>
-        </el-dialog>
+        <peace-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" top="5vh" width="800px">
+          <chat-session-list :localSessionMsgs="dialog.data"></chat-session-list>
+        </peace-dialog>
       </div>
     </div>
 

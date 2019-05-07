@@ -58,9 +58,9 @@
       </el-form-item>
     </el-form>
 
-    <el-dialog :visible.sync="dialog.visible" top="5vh">
+    <peace-dialog :visible.sync="dialog.visible" top="5vh">
       <img :src="dialog.imageUrl" alt width="100%">
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 
