@@ -61,6 +61,9 @@
 
 // Fix dialog
 .el-dialog {
+  margin: 10vh auto;
+  max-height: 80vh;
+
   .el-dialog__header {
     display: flex;
     align-items: center;
