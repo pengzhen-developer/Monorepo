@@ -110,7 +110,15 @@ export default {
 
     // 挂载分页组件
     _mountPagination() {
-      this.$el.parentNode.appendChild(this.Pagination.$el)
+      const container = document.createElement('div')
+      const parent = this.$el.parentNode
+      if (parent.lastChild == this.$el) {
+        parent.appendChild(container)
+      } else {
+        parent.insertBefore(container, this.$el.nextSibling)
+      }
+
+      container.appendChild(this.Pagination.$el)
     },
 
     _generateConfig(config) {
@@ -184,25 +192,9 @@ export default {
 
   render(h) {
     return h(Table, {
-      // 扩展 props
-      props: Object.assign({}, this.$props, {
-        data: this.internalData,
-        stripe: true
-      }),
-
-      // 扩展 attrs
+      props: { ...this.$props, data: this.internalData },
       attrs: this.$attrs,
-
-      // 扩展 listeners
-      on: Object.assign(
-        {},
-        {
-          'sort-change': this.internalSortChange
-        },
-        this.$listeners
-      ),
-
-      // 扩展 slots
+      on: { ...this.$listeners, 'sort-change': this.internalSortChange },
       scopedSlots: this.$scopedSlots
     })
   }

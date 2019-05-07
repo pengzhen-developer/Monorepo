@@ -1,32 +1,25 @@
-import { TableColumn } from 'element-ui'
+import { Dialog } from 'element-ui'
 
-const ExtendTableColumnProps = {
-  align: {
+const ExtendDialogProps = {
+  top: {
     type: String,
     default() {
-      return 'center'
-    }
-  },
-
-  'show-overflow-tooltip': {
-    type: Boolean,
-    default() {
-      return true
+      return '10vh'
     }
   }
 }
 
 export default {
-  name: 'peace-table-column',
+  name: 'peace-dialog',
 
   props: {
-    ...TableColumn.props,
+    ...Dialog.props,
 
-    ...ExtendTableColumnProps
+    ...ExtendDialogProps
   },
 
   render(h) {
-    return h(TableColumn, {
+    return h(Dialog, {
       // 扩展 props
       props: this.$props,
 
