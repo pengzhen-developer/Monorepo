@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <el-dialog :visible.sync="drug.visible" title="新增药品" width="720px">
+    <peace-dialog :visible.sync="drug.visible" title="新增药品" width="720px">
       <el-form :model="drug.model" :rules="drug.rules" label-position="right" label-width="80px" ref="form">
         <el-form-item label="药品名称" prop="drugid">
           <el-autocomplete
@@ -145,7 +145,7 @@
         <el-button @click="cancelDrug">取消</el-button>
         <el-button @click="saveDrugToPrescription" type="primary">保存</el-button>
       </div>
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 

@@ -8,7 +8,7 @@ export default {
     // 结束问诊前，验证问诊状态
     checkOverInquiry: 'client/v1/patient/checkOverInquiry',
     // 结束问诊
-    overInquiry: 'client/v1/patient/checkOverInquiry',
+    overInquiry: 'client/v1/patient/overInquiry',
 
     // 写病历
     addCase: 'client/v1/Prescribeprescrip/addCase',

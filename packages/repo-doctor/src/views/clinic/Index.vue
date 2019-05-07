@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-06 11:21:06
+ * @Last Modified time: 2019-05-07 10:55:21
  */
 
 <template>
@@ -20,6 +20,8 @@
 </template> 
 
 <script>
+import { mapMutations } from 'vuex'
+
 import ChatSessions from './ChatSessions'
 import ChatSession from './ChatSession'
 import ChatPatient from './ChatPatient'
@@ -29,6 +31,14 @@ export default {
     ChatSessions,
     ChatSession,
     ChatPatient
+  },
+
+  methods: {
+    ...mapMutations('chat', ['clearSession'])
+  },
+
+  destroyed() {
+    this.clearSession()
   }
 }
 </script>

@@ -59,7 +59,7 @@
       </template>
     </div>
 
-    <el-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
+    <peace-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
       <h4 style="margin: 0 0 30px 0; font-size: 18px;">您是否已经解决了患者的问题？</h4>
 
       <el-radio-group v-model="over.state">
@@ -84,7 +84,7 @@
         <el-button @click="over.visible = false" type>取消</el-button>
         <el-button :disabled="!over.state" @click="overConfirmAgain" type="primary">确认</el-button>
       </div>
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 
@@ -188,7 +188,7 @@ export default {
         .then(res => {
           $peace.util.alert(res.msg)
         })
-        .catch(() => {
+        .finally(() => {
           this.over.visible = false
         })
     },
@@ -221,14 +221,14 @@ export default {
               }
 
               this.$http
-                .post(this.api.overInquiry, param)
+                .post(this.config.api.overInquiry, param)
                 .then(res => {
                   $peace.util.alert(res.msg)
 
                   this.over.visible = false
                   this.clearSession()
                 })
-                .catch(() => {
+                .finally(() => {
                   this.over.visible = false
                 })
             }
@@ -250,7 +250,7 @@ export default {
               $peace.util.warning(res.msg)
             }
           })
-          .catch(() => {
+          .finally(() => {
             this.over.visible = false
           })
       } else if (this.over.state === '未解决') {

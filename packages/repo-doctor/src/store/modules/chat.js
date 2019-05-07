@@ -104,11 +104,11 @@ const sdkUtil = {
 
     // 更新当前消息列表
     if ($peace.$store.state.chat.session && $peace.$store.state.chat.session.id === msg.sessionId) {
-      $peace.$store.commit('chat/unshiftSessionMsg', msg)
+      $peace.$store.commit('chat/updateSessionMsg', msg)
 
       // 验证是否退诊或结束
       // 问诊为已退针或者已结束，应该从问诊列表删除。
-      const lastMsg = $peace.$store.chat.sessionMsgs.msgs[0]
+      const lastMsg = $peace.$store.state.chat.sessionMsgs.msgs[0]
       if (lastMsg.type === STATE.msgType['自定义消息']) {
         if (lastMsg.custom.ext.talkState === STATE.talkState['退诊'] || lastMsg.custom.ext.talkState === STATE.talkState['结束']) {
           $peace.$store.commit('chat/clearSession')

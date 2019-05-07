@@ -15,12 +15,12 @@
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="转诊医生" prop="doctorInfo">
+        <el-form-item label="转诊医生" prop="doctorInfo" style="margin: 0 0 5px 0;">
           <span slot="label">转诊医生</span>
           <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
-              <img :src="view.model.doctorInfo.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
+              <img :src="view.model.doctorInfo.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;">
               <span style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.name }}</span>
               <span>{{view.model.doctorInfo.doctor_title }}</span>
               <span>{{view.model.doctorInfo.netdept_name }}</span>
@@ -57,7 +57,7 @@
           <el-input :rows="3" placeholder type="textarea" v-model="view.model.referralCause"></el-input>
         </el-form-item>
       </el-row>
-      <el-row style="text-align: center;">
+      <el-row style="text-align: center; margin: 20px 0 0 0;">
         <el-form-item label=" ">
           <el-button @click="sendTransfer" type="primary">提交</el-button>
           <el-button @click="cancelTransfer">取消</el-button>
@@ -65,7 +65,7 @@
       </el-row>
     </el-form>
 
-    <el-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
+    <peace-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
       <div>
         <el-input clearable placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
         <el-button @click="get" round type="primary">查询</el-button>
@@ -76,25 +76,25 @@
       <peace-table pagination ref="table">
         <peace-table-column label="医生头像" prop="name" width="100px">
           <template slot-scope="scope">
-            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radis: 50%;">
+            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;">
           </template>
         </peace-table-column>
-        <peace-table-column label="医生姓名" prop="name" width="100px"></peace-table-column>
-        <peace-table-column label="职称" prop="doctor_title" width="100px"></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="医生姓名" prop="name" width="100px"></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="职称" prop="doctor_title" width="100px"></peace-table-column>
         <peace-table-column label="科室" prop="netdept_name" width="100px"></peace-table-column>
-        <peace-table-column label="医院" prop="netHospital_name"></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="医院" prop="netHospital_name" show-overflow-tooltip></peace-table-column>
         <peace-table-column label="操作" width="100px">
           <template slot-scope="scope">
             <el-button @click="chose(scope.row)" type="text">选择</el-button>
           </template>
         </peace-table-column>
       </peace-table>
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import { STATE } from './util'
 import config from './config'
@@ -166,6 +166,8 @@ export default {
   mounted() {},
 
   methods: {
+    ...mapMutations('chat', ['clearSession']),
+
     get() {
       this.$refs.table.loadData({
         api: this.config.api.referralDocListPc,
@@ -212,7 +214,7 @@ export default {
               }
 
               const msg = (
-                <span style="text-align: left;">
+                <span style="text-align: left; font-size: 14px;">
                   你的转诊已提交，可前往 【
                   <el-button type="text" onclick={redirect}>
                     转诊记录/我的转诊
@@ -229,6 +231,7 @@ export default {
                 center: true
               })
 
+              this.clearSession()
               this.$emit('close')
             })
           }
@@ -244,6 +247,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+/deep/ .el-message-box--center .el-message-box__status {
+  padding-right: 15px;
+  padding-top: 2px;
+}
+</style>
 
 <style lang="scss" scoped>
 .el-form {

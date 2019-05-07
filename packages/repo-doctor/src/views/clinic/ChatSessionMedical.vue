@@ -163,6 +163,7 @@ export default {
         model: {
           visit_date: new Date().formatDate(),
           dep_id: $peace.cache.get('USER').list.docInfo.netdept_childId,
+          diagnose: '',
           Inspection_index: {
             blood_pressure_begin: '',
             blood_pressure_end: '',
@@ -171,10 +172,10 @@ export default {
         },
 
         rules: {
-          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'change' }],
-          dep_id: [{ required: true, message: '请输入科别', trigger: 'change' }],
-          base_illness: [{ required: true, message: '请输入主诉', trigger: 'change' }],
-          diagnose: [{ required: true, message: '请输入诊断', trigger: 'change' }]
+          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
+          dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
+          base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
+          diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
         },
 
         source: {

@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li :key="msg.time" v-for="(msg, index) in recentSessionMsgs">
-        <div class="msg-body system" v-if="needShowMsgTime(index)">{{ msg.time.toDate().formatDate('MM月dd日 HH:mm:ss') }}</div>
+        <div class="msg-body system system-time" v-if="needShowMsgTime(index)">{{ showMsgTime(msg) }}</div>
 
         <template v-if="getMsgType(msg) === STATE.msgType['文本消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
@@ -11,8 +11,8 @@
         </template>
 
         <template v-if="getMsgType(msg) === STATE.msgType['图片消息'] ">
-          <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.h > 400 ? 400 * 0.75 : msg.file.h) + 'px' }" class="msg-body image">
-            <img :src="msg.file.url" @click="previewImg(msg.file)">
+          <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.h > 400 ? 400 * 0.75 : msg.file.h) + 10 + 'px' }" class="msg-body msg-detail image">
+            <img :src="msg.file.url" @click="previewImg(msg.file)" class="msg-detail">
           </div>
         </template>
 
@@ -30,7 +30,7 @@
               <div @click="showMedical(msg)" class="msg-detail medical" v-if="getSendType(msg) === STATE.sendType['病历消息']">
                 <img src="./../../assets/images/icons/clinic/ic_rp.png">
                 <div>
-                  <p>病历</p>
+                  <p style="font-size: 14px;">病历</p>
                   <p>查看详情</p>
                 </div>
               </div>
@@ -51,17 +51,17 @@
       </li>
     </ul>
 
-    <el-dialog :visible.sync="medical.visible" append-to-body width="562px">
+    <peace-dialog :visible.sync="medical.visible" append-to-body width="562px">
       <chat-session-medical-detail :data="medical.data"></chat-session-medical-detail>
-    </el-dialog>
+    </peace-dialog>
 
-    <el-dialog :visible.sync="prescription.visible" append-to-body width="562px">
+    <peace-dialog :visible.sync="prescription.visible" append-to-body width="562px">
       <chat-session-prescription-detail :data="prescription.data"></chat-session-prescription-detail>
-    </el-dialog>
+    </peace-dialog>
 
-    <el-dialog :visible.sync="image.visible" append-to-body class="preview-image" title="文件预览" top="5vh">
+    <peace-dialog :visible.sync="image.visible" append-to-body class="preview-image" title="文件预览" top="5vh">
       <img :src="image.model.url" @click="image.visible = false">
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 
@@ -76,6 +76,15 @@ export default {
   components: {
     ChatSessionMedicalDetail,
     ChatSessionPrescriptionDetail
+  },
+
+  props: {
+    localSessionMsgs: {
+      type: Array,
+      default() {
+        return undefined
+      }
+    }
   },
 
   data() {
@@ -131,7 +140,7 @@ export default {
         this.scrollToBottom()
       }
 
-      return recentSessionMsgs
+      return this.localSessionMsgs || recentSessionMsgs
     }
   },
 
@@ -150,6 +159,12 @@ export default {
 
         return false
       }
+    },
+
+    showMsgTime(msg) {
+      const time = msg.time || msg.sendtime
+
+      return time.toDate().formatDate('MM月dd日 HH:mm:ss')
     },
 
     getMsgType(msg) {
@@ -228,6 +243,12 @@ li {
       max-width: 400px;
       max-height: 300px;
     }
+
+    .msg-detail {
+      border: 1px solid #f3f3f3;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
   }
 
   &.system {
@@ -240,6 +261,13 @@ li {
       background: rgba(242, 242, 242, 1);
       border-radius: 4px;
     }
+  }
+
+  &.system-time {
+    color: #9b9b9b;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
   }
 
   &.in {
@@ -278,7 +306,7 @@ li {
       &.prescription {
         background: #fff;
         border: 1px solid #f2f2f2;
-        padding: 8px 10px;
+        padding: 10px 12px;
         cursor: pointer;
         display: inline-flex;
 
