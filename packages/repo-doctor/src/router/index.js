@@ -32,18 +32,6 @@ const router = new Router({
           name: '/prescription/myPrescription',
           component: () => import('./../views/prescription/myPrescription/Index.vue')
         },
-        {
-          path: '/prescription/groupManage',
-          meta: { Auth: true },
-          name: '/prescription/groupManage',
-          component: () => import('./../views/prescription/groupManage/Index.vue')
-        },
-        {
-          path: '/prescription/advice',
-          meta: { Auth: true },
-          name: '/prescription/advice',
-          component: () => import('./../views/prescription/advice/Index.vue')
-        },
 
         {
           path: '/record/inquiry',
