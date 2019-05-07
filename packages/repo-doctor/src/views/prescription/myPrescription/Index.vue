@@ -31,14 +31,16 @@
       </peace-table-column>
     </peace-table>
 
-    <el-dialog :visible.sync="dialog.visible" append-to-body title="患者详情" top="5vh" width="800px">
-      <prescription-detail></prescription-detail>
-    </el-dialog>
+    <peace-dialog :visible.sync="dialog.visible" append-to-body title="患者详情" width="690px">
+      <prescription-detail :data="dialog.data"></prescription-detail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import PrescriptionDetail from './PrescriptionDetail'
+
+import config from './config'
 
 export default {
   components: {
@@ -47,10 +49,7 @@ export default {
 
   data() {
     return {
-      api: {
-        get: 'client/v1/getPatientDoctorList',
-        getDetail: 'getDetail'
-      },
+      config,
 
       view: {
         model: {
@@ -65,7 +64,9 @@ export default {
       },
 
       dialog: {
-        visible: false
+        visible: true,
+
+        data: {}
       }
     }
   },
@@ -79,14 +80,18 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.get,
-        params: {}
+        api: this.config.api.getPatientDoctorList,
+        params: this.view.model
       })
     },
 
     showDetail() {
+      this.dialog.data = {}
       this.dialog.visible = true
-      this.$http.get(this.api.getDetail)
+
+      this.$http.get(this.api.getPatientDoctorView).then(res => {
+        this.dialog.data = res.data
+      })
     }
   }
 }
