@@ -9,7 +9,7 @@
 
     <hr>
 
-    <template v-if="view.model.referral_type === view.source.state['我转诊的']">
+    <div key="out" v-if="view.model.referral_type === view.source.state['我转诊的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转出医生">
           <el-input placeholder v-model="view.model.docName"></el-input>
@@ -30,27 +30,27 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="姓名" prop="name"></peace-table-column>
+        <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
         <peace-table-column label="年龄" prop="age"></peace-table-column>
         <peace-table-column label="性别" prop="sex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
-        <peace-table-column label="转入机构" prop="netHospital_name"></peace-table-column>
+        <peace-table-column align="left" label="转入机构" min-width="200px" prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转入医生" prop="name"></peace-table-column>
         <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
-        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="120px"></peace-table-column>
-        <peace-table-column label="操作" width="120px">
+        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
+        <peace-table-column label="操作" width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
-    </template>
+    </div>
 
-    <template v-else-if="view.model.referral_type === view.source.state['转给我的']">
+    <div key="in" v-if="view.model.referral_type === view.source.state['转给我的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转出机构">
-          <el-input placeholder v-model="view.model._转出机构"></el-input>
+          <el-input placeholder v-model="view.model.hosName"></el-input>
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get" round type="primary">查询</el-button>
@@ -60,30 +60,32 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="姓名" prop="name"></peace-table-column>
+        <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
         <peace-table-column label="年龄" prop="age"></peace-table-column>
         <peace-table-column label="性别" prop="sex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
-        <peace-table-column label="转出机构" prop="netHospital_name"></peace-table-column>
+        <peace-table-column align="left" label="转出机构" min-width="200px" prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转出医生" prop="name"></peace-table-column>
         <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
-        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="120px"></peace-table-column>
-        <peace-table-column label="操作" width="120px">
+        <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
+        <peace-table-column label="操作" width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
-    </template>
+    </div>
 
-    <el-dialog :visible.sync="dialog.visible" custom-class="dialog" title="转诊详情">
-      <transfer-detail :data="dialog.data"></transfer-detail>
-    </el-dialog>
+    <peace-dialog :visible.sync="dialog.visible" custom-class="dialog" title="转诊详情">
+      <transfer-detail :data="dialog.data" :type="view.model.referral_type" @close="close"></transfer-detail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import config from './config'
+
 import TransferDetail from './TransferDetail'
 
 export default {
@@ -93,11 +95,7 @@ export default {
 
   data() {
     return {
-      api: {
-        getRefferStatus: 'client/v1/inquiry/getRefferStatus',
-        get: 'client/v1/inquiry/DoctorReferralListPc',
-        referralDoc: 'client/v1/inquiry/referralDoc'
-      },
+      config,
 
       view: {
         action: '我转诊的',
@@ -128,7 +126,7 @@ export default {
   },
 
   created() {
-    this.$http.post(this.api.getRefferStatus).then(res => {
+    this.$http.post(this.config.api.getRefferStatus).then(res => {
       this.view.source.transfer_status = res.data
     })
   },
@@ -152,21 +150,29 @@ export default {
 
     get() {
       this.$refs.table.loadData({
-        api: this.api.get,
+        api: this.config.api.getDoctorReferralListPc,
         params: this.view.model
       })
     },
 
     showDetail(row) {
+      this.dialog.data = undefined
+      this.dialog.visible = true
+
       const params = {
         referral_no: row.referral_no,
         referral_type: this.view.model.referral_type
       }
-      this.dialog.visible = true
 
-      this.$http.post(this.api.referralDoc, params).then(res => {
+      this.$http.post(this.config.api.referralDocPc, params).then(res => {
         this.dialog.data = res.data
       })
+    },
+
+    close() {
+      this.dialog.visible = false
+
+      this.get()
     },
 
     formatter(r, c, v) {
@@ -235,10 +241,10 @@ export default {
   width: 580px;
   margin: 5vh auto !important;
   max-height: 90vh !important;
-  min-height: 600px !important;
+  min-height: 200px !important;
 
   .el-dialog__body {
-    height: calc(90vh - 30px);
+    max-height: calc(90vh - 30px);
     overflow: auto;
   }
 }

@@ -1,21 +1,25 @@
 <template>
   <div class="record">
+    <img :src="`./static/images/transfer/${ getState() }.png`" class="status-image" v-if="getState()">
+
     <div class="record-no">
-      <span>No.ZHSSKJDF70237</span>
+      <span>No.{{ internalData.referral_no }}</span>
     </div>
     <div class="record-title">
-      <span>{{ internalData.netHospital_name }}</span>
+      <span>{{ internalData.send_hos_name }}</span>
       <br>
       <span>转诊单</span>
     </div>
+
+    <!-- 转出信息 -->
     <div class="record-content">
       <span class="title">转出信息</span>
 
-      <el-form :model="view.model">
+      <el-form>
         <el-row>
           <el-col :span="12">
             <el-form-item label="患者姓名">
-              <span>{{ internalData.name }}</span>
+              <span>{{ internalData.family_name }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -35,14 +39,14 @@
           <el-col :span="12">
             <el-form-item label="科别">
               <span slot="label">科别</span>
-              <span>{{ internalData.netdept_child }}</span>
+              <span>{{ internalData.send_dept_child }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="转出医生">
-              <span>{{ internalData.doc_name }}</span>
+              <span>{{ internalData.send_doc_name }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -70,70 +74,57 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="申请提交时间">
-              <!-- <span>{{ internalData.expect_time }}</span> -->
+              <span>{{ internalData.created_time }}</span>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
+
+    <!-- 转入信息 -->
     <div class="record-content">
       <span class="title">转入信息</span>
 
-      <el-form :model="view.model">
+      <el-form>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="转入医生">转入医生</el-form-item>
+            <el-form-item label="转入医生">
+              <span>{{ internalData.receive_doc_name }}</span>
+            </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="科别">
               <span slot="label">科别</span>
-              <span>科别</span>
+              <span>{{ internalData.receive_dept_child }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="转入机构">转入机构</el-form-item>
+            <el-form-item label="转入机构">
+              <span>{{ internalData.receive_hos_name }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
-    <div class="record-content">
+
+    <!-- 转出机构审核信息 -->
+    <div class="record-content" v-if="internalData.send_check_time">
       <span class="title">转出机构审核信息</span>
 
-      <el-form :model="view.model">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="审核结果">审核结果</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="审核意见">审核意见</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="审核时间">审核时间</el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
-    <div class="record-content">
-      <span class="title">转入机构审核信息</span>
-
-      <el-form :model="view.model">
+      <el-form>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <span>{{ internalData.send_referral_suggest   }}</span>
+              <span>{{ internalData.send_check_status }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核意见">
-              <span>{{ internalData.send_check_suggest }}</span>
+              <span>{{ internalData.send_check_suggest || '无' }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -146,25 +137,84 @@
         </el-row>
       </el-form>
     </div>
-    <div class="record-content">
-      <span class="title">转诊结果</span>
 
-      <el-form :model="view.model">
+    <!-- 转入机构审核信息 -->
+    <div class="record-content" v-if="internalData.receive_check_time">
+      <span class="title">转入机构审核信息</span>
+
+      <el-form>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="转诊意见">审核结果</el-form-item>
+            <el-form-item label="审核结果">
+              <span>{{ internalData.receive_check_status }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="提交时间">审核意见</el-form-item>
+            <el-form-item label="审核意见">
+              <span>{{ internalData.receive_check_suggest || '无' }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="审核时间">
+              <span>{{ internalData.receive_check_time }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+
+    <!-- 转诊结果 - 转给我的 - 需审核 -->
+    <div class="record-content" v-if="type === 'in' &&  internalData.transfer_status === 4">
+      <span class="title">转诊结果</span>
+
+      <el-form :model="view.model" inline>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="转诊意见" prop="referral_suggest">
+              <el-input :rows="4" placeholder="请输入转诊意见" style="width: 435px;" type="textarea" v-model="view.model.referral_suggest"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <br>
+        <el-row>
+          <el-col :span="24" style="text-align: center;">
+            <el-button :disabled="!view.model.referral_suggest" @click="receiveReferralPc" type="primary">提交</el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+
+    <!-- 转诊结果 -->
+    <div class="record-content" v-else-if="internalData.referral_time">
+      <span class="title">转诊结果</span>
+
+      <el-form>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="转诊意见">
+              <span>{{ internalData.referral_suggest || '无' }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item :label="internalData.transfer_status === 7 ? '关闭时间' : '提交时间'">
+              <span>{{ internalData.referral_time }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
   </div>
 </template>
+
 <script>
+import config from './config'
+
 export default {
   props: {
     data: {
@@ -172,6 +222,10 @@ export default {
       default() {
         return {}
       }
+    },
+
+    type: {
+      type: String
     }
   },
 
@@ -185,9 +239,37 @@ export default {
 
   data() {
     return {
+      config,
+
       view: {
-        mode: {}
+        model: {
+          referral_suggest: ''
+        }
+      },
+
+      dialog: {
+        visible: false,
+        data: []
       }
+    }
+  },
+
+  methods: {
+    getState() {
+      return this.internalData.referral_status
+    },
+
+    receiveReferralPc() {
+      const params = {
+        referral_no: this.internalData.referral_no,
+        referral_suggest: this.view.model.referral_suggest
+      }
+
+      this.$http.post(this.config.api.receiveReferralPc, params).then(res => {
+        $peace.util.alert(res.msg)
+
+        this.$emit('close')
+      })
     }
   }
 }
@@ -196,6 +278,15 @@ export default {
 <style lang="scss" scoped>
 .record {
   padding: 0 20px;
+
+  .status-image {
+    position: absolute;
+    top: 55px;
+    right: 40px;
+    width: 102px;
+    height: 55px;
+    display: block;
+  }
 
   .record-no {
     font-size: 14px;
