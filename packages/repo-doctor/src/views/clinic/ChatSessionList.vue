@@ -23,7 +23,7 @@
         <template v-if="getMsgType(msg) === STATE.msgType['自定义消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
             <template v-if="getMsgFlow(msg) === STATE.msgFlow['患者消息'] ">
-              <span>TODO: 目前需求, 暂无此情况</span>
+              <!-- <span>TODO: 目前需求, 暂无此情况</span> -->
             </template>
 
             <template v-if="getMsgFlow(msg) === STATE.msgFlow['医生消息'] ">

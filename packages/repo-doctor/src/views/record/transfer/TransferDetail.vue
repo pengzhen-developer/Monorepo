@@ -175,7 +175,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="转诊意见" prop="referral_suggest">
-              <el-input :rows="4" placeholder="请输入转诊意见" style="width: 435px;" type="textarea" v-model="view.model.referral_suggest"></el-input>
+              <el-input :rows="4" placeholder="请输入转诊意见" style="width: 400px;" type="textarea" v-model="view.model.referral_suggest"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -280,12 +280,11 @@ export default {
   padding: 0 20px;
 
   .status-image {
-    position: absolute;
-    top: 55px;
-    right: 40px;
+    position: relative;
+    float: right;
+    top: 25px;
     width: 102px;
     height: 55px;
-    display: block;
   }
 
   .record-no {

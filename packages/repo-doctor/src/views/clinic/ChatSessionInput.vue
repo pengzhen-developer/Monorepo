@@ -14,7 +14,7 @@
             <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">图片
           </el-button>
         </el-upload>
-        <el-button disabled type="text">
+        <el-button @click="sendVideo(chat.session)" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
         <el-button @click="showMedical" type="text">
@@ -25,6 +25,9 @@
         </el-button>
         <el-button @click="showTransfer" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">申请转诊
+        </el-button>
+        <el-button @click="OverOverOver" type="text" v-show="false">
+          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
         </el-button>
       </div>
     </div>
@@ -50,7 +53,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import { STATE } from './util.js'
 
 import Vue from 'vue'
@@ -115,6 +118,7 @@ export default {
 
   methods: {
     ...mapMutations('chat', ['updateSessionMsg']),
+    ...mapActions('chat', ['sendVideo']),
 
     onEditorReady(editor) {
       // Execute your own callback:
@@ -212,10 +216,52 @@ export default {
       }
     },
 
+    // 快捷发送
     quickSend() {
       this.sendText()
 
       this.ckEditor.currentMsg = ''
+    },
+
+    // 黑科技，强行退诊，不走数据库的，请小心行事!!!!!!!!!!!!!!
+    OverOverOver() {
+      $peace.util.confirm(
+        '黑科技，强行退诊，不走数据库的，请小心行事!',
+        undefined,
+        {
+          type: 'warning'
+        },
+        () => {
+          // 给患者发送一个 custom 消息, 用于显示
+          // 1. 更改自定义消息体的状态
+          const tempCustomData = $peace.util.clone(this.chat.session.lastMsg.custom)
+          tempCustomData.ext.talkState = 4
+
+          $peace.NIM.sendCustomMsg({
+            type: 'custom',
+            scene: 'p2p',
+            to: this.chat.session.lastMsg.custom.patients.patientId,
+            text: '',
+            custom: JSON.stringify(tempCustomData),
+            content: JSON.stringify({
+              data: { appMsg: '黑科技退诊, 请无视' },
+              type: 8,
+              wechatMsg: '医生退诊，本次咨询结束，如有疑问可再次预约咨询。',
+              description: '黑科技退诊，请无视就好。'
+            }),
+            done: (error, msg) => {
+              if (error) {
+                $peace.util.alert(error.message)
+
+                return
+              }
+              console.log(new Date().formatTime() + ': ' + '黑科技，强行退诊成功', msg)
+
+              this.updateSessionMsg(msg)
+            }
+          })
+        }
+      )
     }
   }
 }

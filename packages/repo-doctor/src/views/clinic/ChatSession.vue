@@ -150,8 +150,10 @@ export default {
   },
 
   watch: {
-    'chat.session'() {
-      this.closeAllDialog()
+    'chat.session'(newValue, oldValue) {
+      if (newValue && oldValue && newValue.id !== oldValue.id) {
+        this.closeAllDialog()
+      }
     }
   },
 
