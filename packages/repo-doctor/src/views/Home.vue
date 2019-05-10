@@ -123,7 +123,8 @@ export default {
       font-size: 38px;
       line-height: 52px;
       color: #fff;
-      text-decoration-color: #fff;
+
+      text-decoration: none;
     }
     &-text {
       margin-top: 5px;
@@ -144,7 +145,7 @@ export default {
       &:first-of-type {
         border-top: 0;
         .row-icon {
-          background-image: url('~@/assets/images/icons/home/ic into@2x.png');
+          background-image: url('~@/assets/images/icons/home/ic_wait @2x.png');
         }
       }
       .row-icon {
@@ -160,12 +161,12 @@ export default {
         line-height: 20px;
       }
       .row-number {
-        width: 2em;
         text-align: center;
         font-size: 30px;
         line-height: 42px;
         color: #fff;
-        text-decoration-color: #fff;
+
+        text-decoration: none;
       }
     }
   }

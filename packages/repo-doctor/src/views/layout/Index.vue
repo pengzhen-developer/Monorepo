@@ -13,12 +13,10 @@
         </div>
 
         <div class="layout-body-right-content">
-          <el-scrollbar
-            :native="false"
-            :noresize="false"
-            class="layout-body-right-content-scrollbar"
-          >
-            <router-view class="layout-body-right-content-app"></router-view>
+          <el-scrollbar :native="false" :noresize="false" class="layout-body-right-content-scrollbar">
+            <transition mode="out-in" name="el-fade-in-linear">
+              <router-view class="layout-body-right-content-app"></router-view>
+            </transition>
           </el-scrollbar>
         </div>
       </div>
