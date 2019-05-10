@@ -51,7 +51,9 @@
 
 // Fix el-button
 .el-button {
-  min-width: 80px;
+  &:not(.is-circle) {
+    min-width: 80px;
+  }
 }
 
 // Fix pagination
