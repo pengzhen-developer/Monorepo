@@ -1,19 +1,19 @@
 <template>
-  <div>
+  <div v-if="internalData.user_info && internalData.inquiry_list">
     <div class="header">
-      <img class="header-img" src="./../../../assets/images/404.png">
+      <img :src="internalData.user_info.weixin_head_url" class="header-img">
 
       <div class="header-info">
         <div class="first-line">
-          <span class="name">姓名</span>
-          <span class="sex">男</span>
+          <span class="name">{{ internalData.user_info.patient_remarks || internalData.user_info.real_name || internalData.user_info.weixin_name }}</span>
+          <span class="sex">{{ internalData.user_info.sex }}</span>
         </div>
         <div class="second-line">
           <span class="label">微信昵称</span>
-          <span class="value">巴萨</span>
+          <span class="value">{{ internalData.user_info.weixin_name }}</span>
 
           <span class="label">联系方式</span>
-          <span class="value">13000000000</span>
+          <span class="value">{{ internalData.user_info.tel }}</span>
         </div>
       </div>
     </div>
@@ -22,24 +22,24 @@
 
     <div class="center">
       <div class="vertical-line"></div>
-      <span class="title">咨询记录 (3)</span>
+      <span class="title">咨询记录 ({{ internalData.inquiry_list.length }})</span>
     </div>
-    <div :key="item" v-for="item in 3">
+    <div :key="inquiry.inquiry_no" v-for="inquiry in internalData.inquiry_list">
       <div class="center">
         <div class="circle"></div>
-        <span class="time">2019-03-21 13:32</span>
+        <span class="time">{{ inquiry.updated_time }}</span>
       </div>
 
       <div class="detail">
         <div class="info">
           <div class="left">
-            <span class="name">巴伦</span>
-            <span class="age">男</span>
-            <span class="age">30岁</span>
-            <el-tag>挚友</el-tag>
+            <span class="name">{{ inquiry.family_name }}</span>
+            <span class="age">{{ inquiry.sex }}</span>
+            <span class="age">{{ inquiry.age }}</span>
+            <el-tag>{{ inquiry.relation }}</el-tag>
           </div>
           <div class="right">
-            <el-button @click="showDetail(item)" type="text">查看详情</el-button>
+            <el-button @click="showDetail(inquiry)" type="text">查看详情</el-button>
           </div>
         </div>
 
@@ -47,15 +47,16 @@
 
         <div class="chat">
           <span class="title">病情描述：</span>
+          <span v-html="inquiry.DESCRIBE"></span>
         </div>
         <div class="tag">
-          <el-tag size="medium" type>
+          <el-tag size="medium" type v-if="inquiry.case_no">
             <img src="./../../../assets/images/icons/clinic/ic_medical record.png">病历
           </el-tag>
-          <el-tag size="medium" type>
+          <el-tag size="medium" type v-if="inquiry.prescribe_prescrip_count">
             <img src="./../../../assets/images/icons/clinic/ic_rp.png">处方
           </el-tag>
-          <el-tag size="medium" type>
+          <el-tag size="medium" type v-if="inquiry.referral_count">
             <img src="./../../../assets/images/icons/clinic/ic_zhuanzhen.png">转诊单
           </el-tag>
         </div>
@@ -72,6 +73,7 @@
 import ChatSessionList from './../../clinic/ChatSessionList'
 
 import config from './config'
+import { STATE } from './../../clinic/util'
 
 export default {
   components: {
@@ -90,6 +92,8 @@ export default {
   data() {
     return {
       config,
+
+      STATE,
 
       dialog: {
         visible: false,
