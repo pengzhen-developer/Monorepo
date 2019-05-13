@@ -49,6 +49,8 @@
 <script>
 import ChatSessionPrescriptionDetail from './../../clinic/ChatSessionPrescriptionDetail'
 
+import config from './config'
+
 export default {
   components: {
     ChatSessionPrescriptionDetail
@@ -56,11 +58,7 @@ export default {
 
   data() {
     return {
-      api: {
-        prescripList: 'client/v1/Prescribeprescrip/prescripList',
-
-        getPrescription: 'client/v1/Prescribeprescrip/getPrescripInfo'
-      },
+      config,
 
       view: {
         model: {
@@ -113,7 +111,7 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.prescripList,
+        api: this.config.api.prescripList,
         params: {
           ...this.view.model
         }
@@ -125,7 +123,7 @@ export default {
       this.dialog.visible = true
 
       // 获取处方信息
-      this.$http.get(this.api.getPrescription, { params: { prescriptionId: row.id } }).then(res => {
+      this.$http.get(this.config.api.getPrescription, { params: { prescriptionId: row.id } }).then(res => {
         this.dialog.data = { ...res.data }
       })
     }

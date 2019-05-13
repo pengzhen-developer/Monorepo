@@ -50,6 +50,7 @@
 <script>
 import ChatSessionList from './../../clinic/ChatSessionList'
 
+import config from './config'
 import { STATE } from './../../clinic/util'
 
 export default {
@@ -59,13 +60,9 @@ export default {
 
   data() {
     return {
+      config,
+
       STATE,
-
-      api: {
-        inqueryInfo: 'client/v1/inquiry/recordList',
-
-        getOneInquiry: 'client/v1/Patient/getOneInquiry'
-      },
 
       view: {
         model: {
@@ -118,7 +115,7 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.inqueryInfo,
+        api: this.config.api.inqueryInfo,
         params: {
           doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
           ...this.view.model
@@ -131,7 +128,7 @@ export default {
       this.dialog.visible = true
 
       // 获取病历信息
-      this.$http.get(this.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
+      this.$http.get(this.config.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
         res.data.forEach(item => {
           item.custom = item.ext
 
