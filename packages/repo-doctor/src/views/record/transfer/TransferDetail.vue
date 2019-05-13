@@ -1,6 +1,8 @@
 <template>
   <div class="record">
-    <img :src="`./static/images/transfer/${ getState() }.png`" class="status-image" v-if="getState()">
+    <div class="status-image">
+      <img :src="`./static/images/transfer/${ getState() }.png`" v-if="getState()">
+    </div>
 
     <div class="record-no">
       <span>No.{{ internalData.referral_no }}</span>
@@ -282,7 +284,7 @@ export default {
   .status-image {
     position: relative;
     float: right;
-    top: 25px;
+    top: 20px;
     width: 102px;
     height: 55px;
   }
@@ -297,6 +299,7 @@ export default {
     text-align: center;
 
     padding-bottom: 20px;
+    padding-left: 100px;
     margin-bottom: 20px;
     border-bottom: 1px dashed #bfbfbf;
 
