@@ -116,7 +116,7 @@ export default {
       background-repeat: no-repeat;
     }
     &-content {
-      margin-left: 60px;
+      margin-left: 40px;
       text-align: center;
     }
     &-number {
@@ -134,12 +134,12 @@ export default {
   }
   .row-2 {
     flex-wrap: wrap;
-    border-left: 1px solid #effeef;
+    border-left: 1px solid rgba(239, 239, 239, 0.4);
     &-item {
       padding-left: 30px;
       width: 100%;
       height: 50%;
-      border-top: 1px solid #efefef;
+      border-top: 1px solid rgba(239, 239, 239, 0.4);
       display: flex;
       align-items: center;
       &:first-of-type {

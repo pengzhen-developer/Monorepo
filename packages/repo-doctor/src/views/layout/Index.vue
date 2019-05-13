@@ -98,7 +98,7 @@ export default {
     }
 
     .layout-body-right {
-      flex: 1;
+      width: calc(1200px - 65px);
 
       .layout-body-right-tab {
         display: flex;

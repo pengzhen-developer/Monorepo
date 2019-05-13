@@ -1,62 +1,5 @@
 <template>
   <div id="app">
-    <!-- 视频元素 -->
-    <transition name="el-fade-in-linear">
-      <div class="video" v-drag v-show="chat.beCall === '邀请' || chat.beCall === '收到' || chat.beCall === '接听'">
-        <div class="video-top">
-          <div class="video-remoteContainer" id="remoteContainer"></div>
-          <div class="video-localContainer" id="localContainer"></div>
-
-          <div class="video-top-title drag-title drag-header">
-            <i class="el-icon-minus"></i>
-            <i class="el-icon-full-screen"></i>
-            <i class="el-icon-close"></i>
-          </div>
-
-          <template v-if="chat.beCall === '邀请' || chat.beCall === '收到'">
-            <div class="video-top-info">
-              <img src="./assets/images/doctor-pic.png">
-              <br>
-              <p class="video-top-info-nick">阿贝贝</p>
-              <p class="video-top-info-status">等待对方接受邀请</p>
-            </div>
-          </template>
-        </div>
-
-        <div class="video-bottom">
-          <!-- 发起视频邀请时 -->
-          <template v-if="chat.beCall === '邀请'">
-            <el-button @click="rejectVideo" circle class="hang_up">
-              <span class="video-bottom-text">挂断</span>
-            </el-button>
-            <el-button @click="acceptVideo" circle class="mute-not">
-              <span class="video-bottom-text">静音</span>
-            </el-button>
-          </template>
-
-          <!-- 发起视频邀请时 -->
-          <template v-if="chat.beCall === '收到'">
-            <el-button @click="rejectVideo" circle class="hang_up">
-              <span class="video-bottom-text">挂断</span>
-            </el-button>
-            <el-button @click="acceptVideo" circle class="answer">
-              <span class="video-bottom-text">接听</span>
-            </el-button>
-          </template>
-
-          <!-- 接听视频邀请时 -->
-          <template v-if="chat.beCall === '接听'">
-            <el-button @click="rejectVideo" circle class="hang_up">
-              <span class="video-bottom-text">挂断</span>
-            </el-button>
-            <el-button @click="muteVideo" circle class="mute">
-              <span class="video-bottom-text">静音</span>
-            </el-button>
-          </template>
-        </div>
-      </div>
-    </transition>
-
     <router-view/>
   </div>
 </template>
@@ -77,16 +20,11 @@ export default {
       this.restoreUserInfo()
 
       document.title = $peace.cache.get('USER').list.docInfo.netHospital_name
-
-      // 初始化 IM
-      this.initNIM()
     }
   },
 
   methods: {
-    ...mapActions('user', ['restoreUserInfo']),
-
-    ...mapActions('chat', ['initNIM', 'acceptVideo', 'rejectVideo', 'muteVideo', 'hangUpVideo'])
+    ...mapActions('user', ['restoreUserInfo'])
   }
 }
 </script>
@@ -104,13 +42,37 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.video-dialog {
+  position: fixed;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  overflow: unset;
+
+  margin: 0;
+
+  /deep/ .el-dialog.is-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: auto;
+    margin: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  /deep/ .el-dialog__body {
+    height: calc(100% - 30px);
+    padding: 0;
+  }
+}
+
 .video {
-  height: 640px;
-  width: 360px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-height: 680px;
 
   background-color: #3b3b3b;
   color: #ffffff;
@@ -129,22 +91,9 @@ export default {
     z-index: 0;
   }
 
-  .video-localContainer {
-    top: 40px;
-    left: 40px;
-    width: 81px;
-    height: 125px;
-  }
-
-  .video-remoteContainer {
-    top: 40px;
-    width: 100%;
-    height: 100%;
-  }
-
   .video-top {
     flex: 1;
-    z-index: 1;
+    z-index: 5;
 
     .video-top-title {
       position: absolute;
@@ -189,16 +138,18 @@ export default {
 
   .video-bottom {
     padding: 0 0 70px 0;
-    z-index: 1;
+    z-index: 5;
 
     .el-button {
-      width: 40px;
-      height: 40px;
-      background-size: 40px auto;
+      width: 56px;
+      height: 56px;
+      background-size: 56px auto;
       background-repeat: no-repeat;
       background-position: center;
       background-color: transparent;
       border: 0;
+      display: inline-flex;
+      justify-content: center;
 
       &.hang_up {
         background-image: url('./assets/images/icons/clinic/btn_hang_up@2x.png');
@@ -207,6 +158,9 @@ export default {
         background-image: url('./assets/images/icons/clinic/btn_answer@2x.png');
       }
       &.mute {
+        background-image: url('./assets/images/icons/clinic/btn_mute_click@2x.png');
+      }
+      &.mute-not {
         background-image: url('./assets/images/icons/clinic/btn_mute_not clickable@2x.png');
       }
 
@@ -221,9 +175,10 @@ export default {
       }
 
       .video-bottom-text {
+        line-height: 1;
         font-size: 12px;
         position: relative;
-        top: 35px;
+        top: 55px;
         color: rgba(255, 255, 255, 1);
       }
     }
