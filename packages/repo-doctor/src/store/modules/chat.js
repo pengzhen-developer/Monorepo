@@ -185,6 +185,7 @@ const WebRTCUtil = {
     WebRTCUtil.onCallRejected()
     WebRTCUtil.onCallAccepted()
     WebRTCUtil.onRemoteTrack()
+    WebRTCUtil.onControl()
     WebRTCUtil.onHangup()
   },
 
@@ -283,10 +284,69 @@ const WebRTCUtil = {
       // 设置对方预览画面大小
       $peace.WebRTC.setVideoViewRemoteSize({
         account: obj.account,
-        width: 360,
-        height: 640,
+        width: document.getElementById('remoteContainer').parentElement.clientWidth,
+        height: document.getElementById('remoteContainer').parentElement.clientHeight,
         cut: true
       })
+    })
+  },
+
+  // 监听控制
+  onControl() {
+    $peace.WebRTC.on('control', function(obj) {
+      // 如果不是当前通话的指令, 直接丢掉
+      if ($peace.WebRTC.notCurrentChannelId(obj)) {
+        console.log('非当前通话的控制信息')
+        return
+      }
+
+      var type = obj.type
+      switch (type) {
+        // NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON 通知对方自己打开了音频
+        case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON:
+          console.log('对方打开了麦克风')
+          break
+        // NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF 通知对方自己关闭了音频
+        case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF:
+          console.log('对方关闭了麦克风')
+          break
+        // NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_ON 通知对方自己打开了视频
+        case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_ON:
+          console.log('对方打开了摄像头')
+          break
+        // NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_OFF 通知对方自己关闭了视频
+        case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_OFF:
+          console.log('对方关闭了摄像头')
+          break
+        // NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_REJECT 拒绝从音频切换到视频
+        case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_REJECT:
+          console.log('对方拒绝从音频切换到视频通话')
+          break
+        // NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO 请求从音频切换到视频
+        case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO:
+          console.log('对方请求从音频切换到视频通话')
+          break
+        // NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_AGREE 同意从音频切换到视频
+        case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_AGREE:
+          console.log('对方同意从音频切换到视频通话')
+          break
+        // NETCALL_CONTROL_COMMAND_SWITCH_VIDEO_TO_AUDIO 从视频切换到音频
+        case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_VIDEO_TO_AUDIO:
+          console.log('对方请求从视频切换为音频')
+          break
+        // NETCALL_CONTROL_COMMAND_BUSY 占线
+        case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
+          console.log('对方占线')
+          break
+        // NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID 自己的摄像头不可用
+        case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
+          console.log('对方摄像头不可用')
+          break
+        // NETCALL_CONTROL_COMMAND_SELF_ON_BACKGROUND 自己处于后台
+        // NETCALL_CONTROL_COMMAND_START_NOTIFY_RECEIVED 告诉发送方自己已经收到请求了（用于通知发送方开始播放提示音）
+        // NETCALL_CONTROL_COMMAND_NOTIFY_RECORD_START 通知对方自己开始录制视频了
+        // NETCALL_CONTROL_COMMAND_NOTIFY_RECORD_STOP 通知对方自己结束录制视频了
+      }
     })
   },
 
@@ -294,8 +354,11 @@ const WebRTCUtil = {
   onHangup() {
     $peace.WebRTC.on('hangup', function(obj) {
       console.log('on hangup', obj)
+
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
+        $peace.util.alert('对方已挂断')
+
         WebRTCUtil.hangUpVideo()
       }
     })
@@ -345,11 +408,12 @@ const WebRTCUtil = {
         //预览本地画面
         $peace.WebRTC.startLocalStream(document.getElementById('localContainer'))
 
+        $peace.a = document.getElementById('localContainer')
+
         // 设置本地预览画面大小
         $peace.WebRTC.setVideoViewSize({
-          width: 81,
-          height: 125,
-          cut: true
+          width: document.getElementById('localContainer').parentElement.clientWidth / 3,
+          height: document.getElementById('localContainer').parentElement.clientHeight / 3
         })
       })
       .catch(function(err) {
@@ -376,13 +440,19 @@ const WebRTCUtil = {
         // 成功发起呼叫
         console.log('call success', obj)
 
+        // 更新视频状态
+        $peace.$store.commit('chat/setBeCall', '邀请')
+
+        // 存储当前视频
         WebRTCUtil.STATE.beCalledInfo = obj
       })
       .catch(function(err) {
         // 被叫不在线
-        if (err.event.code === 11001) {
-          console.log('callee offline', err)
+        if (err.code === 11000) {
+          $peace.util.warning('对方离线, 通话不可送达')
         }
+
+        WebRTCUtil.hangUpVideo()
       })
 
     // 超时 30s，主叫挂断
@@ -405,8 +475,9 @@ const WebRTCUtil = {
     // 清理通话状态
     WebRTCUtil.clearState()
 
-    // 清理 vuex beCall
+    // 清理 vuex beCall mute
     $peace.$store.commit('chat/setBeCall', undefined)
+    $peace.$store.commit('chat/setMute', false)
   }
 }
 
@@ -420,7 +491,13 @@ const state = {
   // 当前会话消息列表
   sessionMsgs: undefined,
 
-  beCall: undefined
+  // 视频状态
+  // 邀请、接听、拒绝、挂断
+  beCall: undefined,
+
+  // 音频是否静音状态
+  // true、false
+  mute: false
 }
 
 const actions = {
@@ -481,9 +558,7 @@ const actions = {
   },
 
   // 主叫发送视频请求
-  sendVideo({ commit }, session) {
-    commit('setBeCall', '邀请')
-
+  sendVideo(argu, session) {
     WebRTCUtil.sendVideo(session)
   },
 
@@ -523,10 +598,43 @@ const actions = {
   },
 
   // 静音
-  muteVideo() {
-    $peace.WebRTC.stopDevice(WebRTC.DEVICE_TYPE_AUDIO_IN).then(function() {
-      console.log('麦克风关闭成功')
+  muteVideo({ commit }) {
+    $peace.WebRTC.stopDevice(WebRTC.DEVICE_TYPE_AUDIO_IN)
+      .then(function() {
+        commit('setMute', true)
+
+        // 通知对方自己关闭了麦克风
+        $peace.WebRTC.control({
+          command: WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF
+        })
+
+        console.log('麦克风关闭成功')
+      })
+      .catch(() => {
+        console.log('麦克风关闭失败')
+      })
+  },
+
+  // 取消静音
+  noMuteVideo({ commit }) {
+    $peace.WebRTC.startDevice({
+      type: WebRTC.DEVICE_TYPE_AUDIO_IN
     })
+      .then(() => {
+        commit('setMute', false)
+
+        // 通知对方我方开启了麦克风
+        $peace.WebRTC.control({
+          command: WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON
+        })
+
+        $peace.WebRTC.setCaptureVolume(255)
+
+        console.log('麦克风开启成功')
+      })
+      .catch(() => {
+        console.log('麦克风开启失败')
+      })
   },
 
   // 主叫 / 被叫挂断视频
@@ -534,6 +642,26 @@ const actions = {
     commit('setBeCall', '挂断')
 
     WebRTCUtil.hangUpVideo()
+  },
+
+  // 切换本地、远端视频
+  toggleFullVideo() {
+    // 设置对方预览画面大小
+    $peace.WebRTC.setVideoViewRemoteSize({
+      width: document.getElementById('remoteContainer').parentElement.clientWidth,
+      height: document.getElementById('remoteContainer').parentElement.clientHeight
+    })
+
+    // 设置本地预览画面大小
+    $peace.WebRTC.setVideoViewSize({
+      width: document.getElementById('localContainer').parentElement.clientWidth / 3,
+      height: document.getElementById('localContainer').parentElement.clientHeight / 3
+    })
+  },
+
+  // 清理 session
+  clearSession({ commit }) {
+    commit('clearSession')
   }
 }
 
@@ -619,6 +747,16 @@ const mutations = {
    */
   setBeCall(state, beCallState) {
     state.beCall = beCallState
+  },
+
+  /**
+   * 视频状态
+   *
+   * @param {*} state
+   * @param {*} beCallState
+   */
+  setMute(state, muteState) {
+    state.mute = muteState
   }
 }
 

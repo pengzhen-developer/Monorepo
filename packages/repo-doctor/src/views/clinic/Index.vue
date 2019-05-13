@@ -3,11 +3,14 @@
  * @Date: 2019-04-16 09:16:09 
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-07 10:55:21
+ * @Last Modified time: 2019-05-13 10:35:19
  */
 
 <template>
   <div class="clinic">
+    <!-- 视频问诊 -->
+    <chat-video></chat-video>
+
     <!-- 会话列表 -->
     <chat-sessions class="left"></chat-sessions>
 
@@ -20,7 +23,9 @@
 </template> 
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
+
+import ChatVideo from './ChatVideo'
 
 import ChatSessions from './ChatSessions'
 import ChatSession from './ChatSession'
@@ -28,15 +33,23 @@ import ChatPatient from './ChatPatient'
 
 export default {
   components: {
+    ChatVideo,
+
     ChatSessions,
     ChatSession,
     ChatPatient
   },
 
   methods: {
-    ...mapMutations('chat', ['clearSession'])
+    ...mapActions('chat', ['clearSession', 'initNIM'])
   },
 
+  // 初始化 IM
+  created() {
+    this.initNIM()
+  },
+
+  // 销毁 IM
   destroyed() {
     this.clearSession()
   }
