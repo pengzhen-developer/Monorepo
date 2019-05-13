@@ -20,14 +20,18 @@
     <hr>
 
     <peace-table pagination ref="table">
-      <peace-table-column label="患者姓名" prop="real_name" width="100"></peace-table-column>
+      <peace-table-column label="患者姓名" prop="real_name" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.patient_remarks || scope.row.real_name || scope.row.weixin_name }}</span>
+        </template>
+      </peace-table-column>
       <peace-table-column align="left" label="最近咨询" min-width="300">
         <template slot-scope="scope">
-          <span>{{ scope.row.family_name}}</span>
-          <span>{{ scope.row.sex}}</span>
-          <span>{{ scope.row.family_age}}</span>
-          <span>{{ scope.row.diagnose}}</span>
-          <span>{{ scope.row.family_time}}</span>
+          <span>{{ scope.row.family_name }}</span>
+          <span>{{ scope.row.sex }}</span>
+          <span>{{ scope.row.family_age }}</span>
+          <span>{{ scope.row.diagnose }}</span>
+          <span>{{ scope.row.family_time }}</span>
         </template>
       </peace-table-column>
       <peace-table-column :formatter="(r,c,v) => { return this.view.source.group_name.find(item => item.key === v).source }" label="患者来源" prop="source"></peace-table-column>
