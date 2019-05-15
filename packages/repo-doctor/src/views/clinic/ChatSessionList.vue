@@ -11,7 +11,7 @@
         </template>
 
         <template v-if="getMsgType(msg) === STATE.msgType['图片消息'] ">
-          <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.h > 400 ? 400 * 0.75 : msg.file.h) + 10 + 'px' }" class="msg-body msg-detail image">
+          <div :class="getMsgFlow(msg)" :style="{ height: (msg.file.w > 400 ? 400 * 0.75 : msg.file.h) + 10 + 'px' }" class="msg-body msg-detail image">
             <img :src="msg.file.url" @click="previewImg(msg.file)" class="msg-detail">
           </div>
         </template>
@@ -237,6 +237,8 @@ li {
   margin: 5px 0;
 
   &.image {
+    max-height: 160px;
+
     img {
       cursor: zoom-in;
       max-width: 400px;
