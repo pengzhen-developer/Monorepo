@@ -27,11 +27,11 @@
       </peace-table-column>
       <peace-table-column align="left" label="最近咨询" min-width="300">
         <template slot-scope="scope">
-          <span>{{ scope.row.family_name }}</span>
-          <span>{{ scope.row.sex }}</span>
-          <span>{{ scope.row.family_age }}</span>
-          <span>{{ scope.row.diagnose }}</span>
-          <span>{{ scope.row.family_time }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.family_name }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.family_sex }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.family_age }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.diagnose }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.family_time }}</span>
         </template>
       </peace-table-column>
       <peace-table-column :formatter="(r,c,v) => { return this.view.source.group_name.find(item => item.key === v).source }" label="患者来源" prop="source"></peace-table-column>
