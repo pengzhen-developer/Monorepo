@@ -28,7 +28,7 @@
           <div class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <router-link class="card-item-number" to="/record/transfer">{{ view.source.count5 }}</router-link>
+              <router-link class="card-item-number" to="/record/transfer">{{ view.source.count4 }}</router-link>
               <div class="card-item-text">待转入患者</div>
             </div>
           </div>

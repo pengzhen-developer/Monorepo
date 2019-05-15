@@ -18,8 +18,6 @@ export default {
     // restore info
     if ($peace.cache.get('USER')) {
       this.restoreUserInfo()
-
-      document.title = $peace.cache.get('USER').list.docInfo.netHospital_name
     }
   },
 

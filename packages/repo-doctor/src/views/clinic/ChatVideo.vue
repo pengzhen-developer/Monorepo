@@ -141,6 +141,7 @@ export default {
     height: calc(100% - 30px);
     max-height: 100vh;
     padding: 0;
+    overflow: hidden;
   }
 }
 

@@ -41,6 +41,8 @@ const setConfigInstance = () => {
     .then(res => {
       $peace.config = res.data
       $peace.config.api = $peace.config.api[process.env.VUE_APP_MODE] || $peace.config.api[process.env.NODE_ENV]
+
+      document.title = $peace.config.theme.title
     })
 }
 

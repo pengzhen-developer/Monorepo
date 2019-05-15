@@ -3,7 +3,7 @@
  * @Date: 2019-04-16 09:48:47
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-07 19:08:28
+ * @Last Modified time: 2019-05-15 11:43:25
  */
 
 export const STATE = {
@@ -83,7 +83,7 @@ export function DeserializationSessions(sessions) {
     })
 
     // 过滤垃圾数据
-    temp = temp.filter(item => item.lastMsg.custom)
+    temp = temp.filter(item => item.lastMsg.custom && item.lastMsg.custom.ext)
   }
 
   return temp
@@ -113,7 +113,7 @@ export function DeserializationSessionMsgs(msgs) {
     })
 
     // 过滤垃圾数据
-    temp = temp.filter(item => item.custom)
+    temp = temp.filter(item => item.custom && item.custom.ext)
   }
 
   return temp
