@@ -4,7 +4,12 @@
       <div>
         <el-form :model="view.model" inline>
           <el-form-item label="患者姓名">
-            <el-input placeholder v-model="view.model.name"></el-input>
+            <el-input placeholder style="width: 90px;" v-model="view.model.name"></el-input>
+          </el-form-item>
+          <el-form-item label="问诊类型">
+            <el-select clearable placeholder style="width: 110px;" v-model="view.model.inquiryType">
+              <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in view.source.inquiryType"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="问诊下单时间">
             <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.time_start" value-format="yyyy-MM-dd"></el-date-picker>
@@ -68,7 +73,8 @@ export default {
         model: {
           name: '',
           time_start: new Date().proDate('{%d-7}').formatDate(),
-          time_end: new Date().formatDate()
+          time_end: new Date().formatDate(),
+          inquiryType: ''
         },
 
         rules: {
@@ -91,6 +97,10 @@ export default {
               }
             }
           }
+        },
+
+        source: {
+          inquiryType: [{ label: '图文问诊', value: 'image' }, { label: '视频问诊', value: 'video' }]
         }
       },
 
@@ -134,7 +144,7 @@ export default {
 
           if (row.doctor_id === item.from) {
             item.flow = this.STATE.msgFlow['医生消息']
-          } else {
+          } else if (row.patient_id === item.from) {
             item.flow = this.STATE.msgFlow['患者消息']
           }
 
@@ -162,6 +172,11 @@ export default {
             case 100:
               item.type = this.STATE.msgType['自定义消息']
               item.content = item.body
+
+              // 视频消息默认为医生消息
+              if (item.body.type === 9 && item.body.data.sendType === 3) {
+                item.flow = this.STATE.msgFlow['医生消息']
+              }
               break
           }
         })
@@ -220,10 +235,5 @@ export default {
     color: rgba(155, 155, 155, 1);
     line-height: 20px;
   }
-}
-
-/deep/ .el-dialog__body {
-  max-height: 85vh;
-  overflow-y: auto;
 }
 </style>

@@ -14,7 +14,7 @@
             <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">图片
           </el-button>
         </el-upload>
-        <el-button @click="sendVideo(chat.session)" type="text">
+        <el-button @click="sendVideoBefore" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
         <el-button @click="showMedical" type="text">
@@ -178,6 +178,16 @@ export default {
           this.updateSessionMsg(msg)
         }
       })
+    },
+
+    // 发送视频
+    sendVideoBefore() {
+      // 仅视频问诊才能提起视频请求
+      if (this.chat.session.lastMsg.custom.ext.talkType === STATE.talkType['视频问诊']) {
+        this.sendVideo(this.chat.session)
+      } else {
+        $peace.util.warning('只有视频问诊才能进行发起视频')
+      }
     },
 
     // 发送病历

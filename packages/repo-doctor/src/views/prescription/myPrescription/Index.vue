@@ -167,9 +167,4 @@ export default {
     line-height: 20px;
   }
 }
-
-/deep/ .el-dialog__body {
-  max-height: 85vh;
-  overflow-y: auto;
-}
 </style>

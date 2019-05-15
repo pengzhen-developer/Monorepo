@@ -160,7 +160,7 @@ const WebRTCUtil = {
       needBadge: true,
       needPushNick: true,
       pushContent: '',
-      custom: '测试自定义数据',
+      custom: '测试视频问诊',
       pushPayload: '',
       sound: '',
       forceKeepCalling: 0
@@ -187,6 +187,7 @@ const WebRTCUtil = {
     WebRTCUtil.onRemoteTrack()
     WebRTCUtil.onControl()
     WebRTCUtil.onHangup()
+    WebRTCUtil.onCallerAckSync()
   },
 
   // 被叫监听音视频
@@ -215,7 +216,7 @@ const WebRTCUtil = {
         }
 
         if (WebRTCUtil.STATE.busy) {
-          // 通知主叫正忙
+          // 通知对方正忙
           $peace.WebRTC.control({
             channelId: channelId,
             command: WebRTC.NETCALL_CONTROL_COMMAND_BUSY
@@ -250,6 +251,13 @@ const WebRTCUtil = {
       console.log('on callAccepted')
 
       $peace.$store.commit('chat/setBeCall', '接听')
+
+      // 记录视频问诊
+      const videoProcessApi = '/client/v1/video/process'
+      const params = { inquiryId: $peace.$store.state.chat.session.lastMsg.custom.ext.inquiryId, action: 'start' }
+      $peace.$http.post(videoProcessApi, params).then(res => {
+        console.log(res)
+      })
 
       // 记录被叫信息
       WebRTCUtil.STATE.beCalledInfo = obj
@@ -337,6 +345,9 @@ const WebRTCUtil = {
         // NETCALL_CONTROL_COMMAND_BUSY 占线
         case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
           console.log('对方占线')
+
+          $peace.util.warning('对方占线')
+          WebRTCUtil.hangUpVideo()
           break
         // NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID 自己的摄像头不可用
         case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
@@ -357,9 +368,22 @@ const WebRTCUtil = {
 
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
-        $peace.util.alert('对方已挂断')
+        $peace.util.alert('通话结束')
 
         WebRTCUtil.hangUpVideo()
+      }
+    })
+  },
+
+  // 其他端已处理
+  onCallerAckSync() {
+    $peace.WebRTC.on('onCallerAckSync', function(obj) {
+      if (WebRTCUtil.STATE.beCalledInfo && obj.channelId === WebRTCUtil.STATE.beCalledInfo.channelId) {
+        console.log('on caller ack async:', obj)
+
+        $peace.util.alert('当前通话已经其它端处理')
+
+        WebRTCUtil.clearState()
       }
     })
   },
@@ -426,10 +450,21 @@ const WebRTCUtil = {
   // 发送视频邀请
   sendVideo(session) {
     console.log(session)
+
+    // 发送视频问诊, 并修改自定义消息体
+    WebRTCUtil.STATE.pushConfig.custom = $peace.util.clone(state.session.lastMsg.custom)
+    WebRTCUtil.STATE.pushConfig.custom.ext.name = WebRTCUtil.STATE.pushConfig.custom.doctor.doctorName
+    WebRTCUtil.STATE.pushConfig.custom.ext.idcard = ''
+    WebRTCUtil.STATE.pushConfig.custom.ext.phone = ''
+    WebRTCUtil.STATE.pushConfig.custom.ext.id = ''
+
+    WebRTCUtil.STATE.pushConfig.custom = JSON.stringify(WebRTCUtil.STATE.pushConfig.custom)
+
     $peace.WebRTC.call({
       type: WebRTC.NETCALL_TYPE_VIDEO,
+      account: session.lastMsg.custom.patients.patientId,
       // 泰樑的
-      account: 'unayuzpaar',
+      // account: 'unayuzpaar',
       // 周佳的
       // account: 'ywoiuwkhbc',
       pushConfig: WebRTCUtil.STATE.pushConfig,
@@ -478,6 +513,23 @@ const WebRTCUtil = {
     // 清理 vuex beCall mute
     $peace.$store.commit('chat/setBeCall', undefined)
     $peace.$store.commit('chat/setMute', false)
+
+    // 记录视频问诊
+    const videoProcessApi = '/client/v1/video/process'
+    const params = { inquiryId: state.session.lastMsg.custom.ext.inquiryId, action: 'over' }
+    $peace.$http.post(videoProcessApi, params).then(res => {
+      console.log(res)
+
+      // TODO
+      // const lastMsg = state.session.lastMsg
+      // const custom = $peace.util.clone(lastMsg.custom)
+      // const content = $peace.util.clone(lastMsg.content)
+
+      // content.type = 7
+      // content.data.sendType = 3
+      // content.data.title = '视频'
+      // content.data.video = {}
+    })
   }
 }
 
@@ -525,7 +577,12 @@ const actions = {
       onupdatesession: NIMUtil.onUpdateSession,
 
       // 消息
-      onmsg: NIMUtil.onMsg
+      onmsg: NIMUtil.onMsg,
+
+      // 过滤所有系统消息
+      shouldIgnoreNotification() {
+        return true
+      }
     })
 
     return $peace.NIM
@@ -533,6 +590,9 @@ const actions = {
 
   // 选中会话列表的一条会话
   selectSession({ commit }, session) {
+    // 重置会话未读数
+    $peace.NIM.resetSessionUnread(session.id)
+
     // 清理会话
     commit('clearSession')
 

@@ -51,13 +51,13 @@
         </div>
         <div class="tag">
           <el-tag size="medium" type v-if="inquiry.case_no">
-            <img src="./../../../assets/images/icons/clinic/ic_medical record.png">病历
+            <img src="./../../../assets/images/icons/clinic/ic_bingli@2x.png">病历
           </el-tag>
           <el-tag size="medium" type v-if="inquiry.prescribe_prescrip_count">
-            <img src="./../../../assets/images/icons/clinic/ic_rp.png">处方
+            <img src="./../../../assets/images/icons/clinic/ic_chuf@2x.png">处方
           </el-tag>
           <el-tag size="medium" type v-if="inquiry.referral_count">
-            <img src="./../../../assets/images/icons/clinic/ic_zhuanzhen.png">转诊单
+            <img src="./../../../assets/images/icons/clinic/ic_zhuanzhen@2x.png">转诊单
           </el-tag>
         </div>
       </div>
@@ -119,9 +119,9 @@ export default {
         res.data.forEach(item => {
           item.custom = item.ext
 
-          if (row.doctor_id === item.from) {
+          if (this.internalData.user_info.doctor_id === item.from) {
             item.flow = this.STATE.msgFlow['医生消息']
-          } else {
+          } else if (this.internalData.user_info.patient_id === item.from) {
             item.flow = this.STATE.msgFlow['患者消息']
           }
 
@@ -145,6 +145,9 @@ export default {
               break
             case 6:
               item.type = this.STATE.msgType['文件']
+              break
+            case 7:
+              item.type = this.STATE.msgType['自定义消息']
               break
             case 100:
               item.type = this.STATE.msgType['自定义消息']
@@ -296,7 +299,7 @@ export default {
       border: 0;
 
       img {
-        width: 14px;
+        width: 16px;
         height: 16px;
         margin: 0 10px 0 0;
       }

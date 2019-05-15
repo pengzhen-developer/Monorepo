@@ -16,16 +16,11 @@
           </div>
         </template>
 
-        <template v-if="getMsgType(msg) === STATE.msgType['视频消息'] ">
-          <span>TODO: [ 通话时长 10:32]</span>
-        </template>
-
         <template v-if="getMsgType(msg) === STATE.msgType['自定义消息'] ">
           <div :class="getMsgFlow(msg)" class="msg-body">
             <template v-if="getMsgFlow(msg) === STATE.msgFlow['患者消息'] ">
               <!-- <span>TODO: 目前需求, 暂无此情况</span> -->
             </template>
-
             <template v-if="getMsgFlow(msg) === STATE.msgFlow['医生消息'] ">
               <div @click="showMedical(msg)" class="msg-detail medical" v-if="getSendType(msg) === STATE.sendType['病历消息']">
                 <img src="./../../assets/images/icons/clinic/ic_rp.png">
@@ -40,6 +35,10 @@
                   <p>处方</p>
                   <p>查看详情</p>
                 </div>
+              </div>
+              <div class="msg-detail video" v-if="getSendType(msg) === STATE.sendType['视频消息']">
+                <span>通话时长 {{ msg.content.data.video }}</span>
+                <img src="./../../assets/images/icons/clinic/ic_video_left@2x.png">
               </div>
             </template>
 
@@ -173,7 +172,7 @@ export default {
 
     getMsgFlow(msg) {
       // 后台系统消息
-      if (msg.content && msg.content.type == 8) {
+      if (msg.content && msg.content.type === 8) {
         return this.STATE.msgFlow['系统消息']
       }
 
@@ -314,6 +313,17 @@ li {
           margin: 0 0 2px 10px;
           font-size: 12px;
           color: #333333;
+        }
+      }
+
+      &.video {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          margin: 0 0 0 10px;
+          width: 16px;
         }
       }
     }

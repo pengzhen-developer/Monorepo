@@ -17,7 +17,9 @@
           >
             <div class="content-title">
               <div class="content-title-left">
-                <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
+                <el-badge :hidden="session.unread === 0" :value="session.unread" style="margin: 0 10px 0 0;">
+                  <span class="item blod">{{ session.lastMsg.custom.patients.familyName }}</span>
+                </el-badge>
                 <span class="item">{{ session.lastMsg.custom.patients.gender }}</span>
                 <span class="item">{{ session.lastMsg.custom.patients.age }} 岁</span>
               </div>
@@ -170,6 +172,7 @@ export default {
           &.blod {
             font-weight: bold;
             font-size: 14px;
+            margin-right: 10px;
           }
 
           & :first-child {

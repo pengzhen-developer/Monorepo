@@ -2,17 +2,20 @@
   <div>
     <transition name="el-fade-in-linear">
       <el-dialog
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
         :fullscreen="full"
-        :modal="false"
+        :modal="true"
+        :show-close="false"
         :visible="chat.beCall === '邀请' || chat.beCall === '收到' || chat.beCall === '接听'"
-        @close="hangUpVideo"
         class="video-dialog"
         top="0"
         v-drag
         width="360px"
       >
         <div class="el-dialog__title" slot="title">
-          <button @click="toggleFull" class="el-dialog__headerbtn" style="margin-right: 30px;" type="button">
+          <span>视频中...</span>
+          <button @click="toggleFull" class="el-dialog__headerbtn" style="margin-right: 0;" type="button">
             <i class="el-dialog__close el-icon el-icon-copy-document"></i>
           </button>
         </div>
@@ -23,7 +26,7 @@
               <div class="video-top-info">
                 <img src="./../../assets/images/doctor-pic.png">
                 <br>
-                <p class="video-top-info-nick">阿贝贝</p>
+                <p class="video-top-info-nick">{{ chat.session.lastMsg.custom.patients.familyName }}</p>
                 <p class="video-top-info-status">等待对方接受邀请</p>
               </div>
             </template>
@@ -32,7 +35,7 @@
           <div class="video-bottom">
             <!-- 发起视频邀请时 -->
             <template v-if="chat.beCall === '邀请'">
-              <el-button @click="rejectVideo" circle class="hang_up">
+              <el-button @click="hangUpVideo" circle class="hang_up">
                 <span class="video-bottom-text">挂断</span>
               </el-button>
             </template>
@@ -87,9 +90,23 @@ export default {
     ...mapActions('chat', ['initNIM', 'acceptVideo', 'rejectVideo', 'muteVideo', 'noMuteVideo', 'toggleFullVideo', 'hangUpVideo']),
 
     toggleFull() {
+      const dom = document.body.querySelector('.video-dialog .el-dialog')
       this.full = !this.full
 
+      if (this.full) {
+        // 记录当前位置
+        this.position = {
+          left: dom.style.left,
+          top: dom.style.top
+        }
+      }
+
       this.$nextTick(function() {
+        if (!this.full) {
+          dom.style.left = this.position.left
+          dom.style.top = this.position.top
+        }
+
         this.toggleFullVideo()
       })
     }
@@ -105,6 +122,8 @@ export default {
   bottom: auto;
   left: 0;
   overflow: unset;
+  height: 0;
+  width: 0;
 
   margin: 0;
 
@@ -120,6 +139,7 @@ export default {
 
   /deep/ .el-dialog__body {
     height: calc(100% - 30px);
+    max-height: 100vh;
     padding: 0;
   }
 }

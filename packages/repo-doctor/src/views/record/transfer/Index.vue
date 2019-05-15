@@ -236,16 +236,4 @@ export default {
     line-height: 20px;
   }
 }
-
-/deep/ .dialog {
-  width: 580px;
-  margin: 5vh auto !important;
-  max-height: 90vh !important;
-  min-height: 200px !important;
-
-  .el-dialog__body {
-    max-height: calc(90vh - 30px);
-    overflow: auto;
-  }
-}
 </style>
