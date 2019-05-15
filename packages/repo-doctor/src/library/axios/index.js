@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-06 11:17:36
+ * @Last Modified time: 2019-05-13 15:49:37
  */
 
 import Axios from 'axios'
@@ -53,7 +53,9 @@ Axios.interceptors.request.use(
       ]
 
       // 配置 base url
-      request.url = $peace.config.api.base + '/' + request.url
+      if (!$peace.valid.url(request.url)) {
+        request.url = $peace.config.api.base + '/' + request.url
+      }
 
       // 配置 authorization、accesstoken
       request.headers.accesstoken = $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined
