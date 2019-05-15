@@ -4,31 +4,31 @@
       <div class="title">待办事项</div>
       <div class="content">
         <div class="card into">
-          <div class="card-item">
+          <div @click="redirect('/clinic')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <router-link class="card-item-number" to="/clinic">{{ view.source.count5 }}</router-link>
+              <div class="card-item-number">{{ view.source.count5 }}</div>
               <div class="card-item-text">待处理患者</div>
             </div>
           </div>
           <div class="card-item row-2">
-            <div class="row-2-item">
+            <div @click="redirect('/clinic')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">接诊中</div>
-              <router-link class="row-number" to="/clinic">{{ view.source.count3 }}</router-link>
+              <div class="row-number">{{ view.source.count3 }}</div>
             </div>
-            <div class="row-2-item">
+            <div @click="redirect('/clinic')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">待接诊</div>
-              <router-link class="row-number" to="/clinic">{{ view.source.count2 }}</router-link>
+              <div class="row-number">{{ view.source.count2 }}</div>
             </div>
           </div>
         </div>
         <div class="card out">
-          <div class="card-item">
+          <div @click="redirect('/record/transfer')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <router-link class="card-item-number" to="/record/transfer">{{ view.source.count4 }}</router-link>
+              <div class="card-item-number">{{ view.source.count4 }}</div>
               <div class="card-item-text">待转入患者</div>
             </div>
           </div>
@@ -59,6 +59,12 @@ export default {
     this.$http.post(this.config.api.waitList).then(res => {
       this.view.source = res.data
     })
+  },
+
+  methods: {
+    redirect(path) {
+      this.$router.push(path)
+    }
   }
 }
 </script>
@@ -109,6 +115,7 @@ export default {
     justify-content: center;
     align-items: center;
     vertical-align: top;
+    cursor: pointer;
     &-logo {
       width: 46px;
       height: 46px;
