@@ -39,7 +39,7 @@
         <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
         <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
-        <peace-table-column label="操作" width="100px">
+        <peace-table-column fixed="right" label="操作" width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
@@ -69,7 +69,7 @@
         <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
         <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
-        <peace-table-column label="操作" width="100px">
+        <peace-table-column fixed="right" label="操作" width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
           </template>
