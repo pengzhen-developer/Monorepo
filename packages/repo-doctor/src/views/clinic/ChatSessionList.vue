@@ -347,14 +347,17 @@ li {
 
   /deep/ .el-dialog,
   /deep/ .el-dialog__body {
+    width: auto;
+    max-width: 90vw;
+    max-height: 90vh;
     background: transparent;
     border: none;
     box-shadow: none;
 
     img {
       cursor: zoom-out;
-      max-width: 100vw;
-      max-height: 90vh;
+      max-width: 90vw;
+      max-height: calc(90vh - 30px);
     }
   }
 }

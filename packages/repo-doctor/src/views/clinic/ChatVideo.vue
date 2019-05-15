@@ -35,7 +35,7 @@
           <div class="video-bottom">
             <!-- 发起视频邀请时 -->
             <template v-if="chat.beCall === '邀请'">
-              <el-button @click="hangUpVideo" circle class="hang_up">
+              <el-button @click="rejectVideo" circle class="hang_up">
                 <span class="video-bottom-text">挂断</span>
               </el-button>
             </template>

@@ -97,11 +97,13 @@ const NIMUtil = {
   onUpdateSession(session) {
     console.log(new Date().formatTime() + ': ' + '收到会话更新', session)
 
-    $peace.$store.commit('chat/setSessions', session)
-
     if ($peace.$store.state.chat.session && $peace.$store.state.chat.session.id === session.id) {
+      session.unread = 0
+
       $peace.$store.commit('chat/updateSession', session)
     }
+
+    $peace.$store.commit('chat/setSessions', session)
   },
 
   /**
@@ -227,7 +229,7 @@ const WebRTCUtil = {
             beCalledInfo: obj
           })
 
-          WebRTCUtil.hangUpVideo()
+          WebRTCUtil.hangUpVideo({ record: false })
         }
       }
     })
@@ -241,7 +243,7 @@ const WebRTCUtil = {
       $peace.$store.commit('chat/setBeCall', '拒绝')
 
       // 取消呼叫倒计时
-      WebRTCUtil.hangUpVideo()
+      WebRTCUtil.hangUpVideo({ recode: false })
     })
   },
 
@@ -347,7 +349,7 @@ const WebRTCUtil = {
           console.log('对方占线')
 
           $peace.util.warning('对方占线')
-          WebRTCUtil.hangUpVideo()
+          WebRTCUtil.hangUpVideo({ record: false })
           break
         // NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID 自己的摄像头不可用
         case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
@@ -370,7 +372,7 @@ const WebRTCUtil = {
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
         $peace.util.alert('通话结束')
 
-        WebRTCUtil.hangUpVideo()
+        WebRTCUtil.hangUpVideo({ record: true })
       }
     })
   },
@@ -443,7 +445,7 @@ const WebRTCUtil = {
       .catch(function(err) {
         console.log('发生错误')
         console.log(err)
-        WebRTCUtil.hangUpVideo()
+        WebRTCUtil.hangUpVideo({ record: false })
       })
   },
 
@@ -487,7 +489,7 @@ const WebRTCUtil = {
           $peace.util.warning('对方离线, 通话不可送达')
         }
 
-        WebRTCUtil.hangUpVideo()
+        WebRTCUtil.hangUpVideo({ record: false })
       })
 
     // 超时 30s，主叫挂断
@@ -495,13 +497,13 @@ const WebRTCUtil = {
       if (!$peace.WebRTC.callAccepted) {
         console.log('超时未接听, hangup')
         $peace.util.warning('对方长时间未接听，已取消')
-        WebRTCUtil.hangUpVideo()
+        WebRTCUtil.hangUpVideo({ record: false })
       }
     }, 1000 * 30)
   },
 
   // 挂断并清理视频
-  hangUpVideo() {
+  hangUpVideo({ record }) {
     console.log('挂断')
 
     // 挂断
@@ -514,22 +516,14 @@ const WebRTCUtil = {
     $peace.$store.commit('chat/setBeCall', undefined)
     $peace.$store.commit('chat/setMute', false)
 
-    // 记录视频问诊
-    const videoProcessApi = '/client/v1/video/process'
-    const params = { inquiryId: state.session.lastMsg.custom.ext.inquiryId, action: 'over' }
-    $peace.$http.post(videoProcessApi, params).then(res => {
-      console.log(res)
-
-      // TODO
-      // const lastMsg = state.session.lastMsg
-      // const custom = $peace.util.clone(lastMsg.custom)
-      // const content = $peace.util.clone(lastMsg.content)
-
-      // content.type = 7
-      // content.data.sendType = 3
-      // content.data.title = '视频'
-      // content.data.video = {}
-    })
+    if (record) {
+      // 记录视频问诊
+      const videoProcessApi = '/client/v1/video/process'
+      const params = { inquiryId: state.session.lastMsg.custom.ext.inquiryId, action: 'over' }
+      $peace.$http.post(videoProcessApi, params).then(res => {
+        console.log(res)
+      })
+    }
   }
 }
 
@@ -654,7 +648,7 @@ const actions = {
     }
 
     // 直接拒绝通话
-    WebRTCUtil.hangUpVideo()
+    WebRTCUtil.hangUpVideo({ record: false })
   },
 
   // 静音
@@ -701,7 +695,7 @@ const actions = {
   hangUpVideo({ commit }) {
     commit('setBeCall', '挂断')
 
-    WebRTCUtil.hangUpVideo()
+    WebRTCUtil.hangUpVideo({ record: true })
   },
 
   // 切换本地、远端视频

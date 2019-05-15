@@ -15,7 +15,7 @@
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="转诊医生" prop="doctorInfo" style="margin: 0 0 5px 0;">
+        <el-form-item label="转诊医生" prop="doctorInfo">
           <span slot="label">转诊医生</span>
           <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
@@ -187,6 +187,8 @@ export default {
       this.dialog.visible = false
 
       this.view.model.doctorInfo = row
+
+      this.$refs.form.validate()
     },
 
     sendTransfer() {

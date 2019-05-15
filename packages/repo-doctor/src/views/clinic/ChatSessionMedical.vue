@@ -98,8 +98,8 @@
             </div>
             <div class="item">
               <span>血压</span>
-              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure_begin"></el-input>/
-              <el-input placeholder v-model="medical.model.Inspection_index.blood_pressure_end"></el-input>
+              <el-input placeholder v-model="medical.model.blood_pressure_begin"></el-input>/
+              <el-input placeholder v-model="medical.model.blood_pressure_end"></el-input>
               <span>mmHg</span>
             </div>
           </div>
@@ -164,10 +164,14 @@ export default {
           visit_date: new Date().formatDate(),
           dep_id: $peace.cache.get('USER').list.docInfo.netdept_childId,
           diagnose: '',
+          blood_pressure_begin: '',
+          blood_pressure_end: '',
           Inspection_index: {
-            blood_pressure_begin: '',
-            blood_pressure_end: '',
-            blood_pressure: ''
+            blood_pressure: '',
+            temperature: '',
+            weight: '',
+            heart_rate: '',
+            More: ''
           }
         },
 
@@ -191,13 +195,11 @@ export default {
   },
 
   watch: {
-    'medical.model.Inspection_index.blood_pressure_begin'() {
-      this.medical.model.Inspection_index.blood_pressure =
-        this.medical.model.Inspection_index.blood_pressure_begin + '/' + this.medical.model.Inspection_index.blood_pressure_end
+    'medical.model.blood_pressure_begin'() {
+      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     },
-    'medical.model.Inspection_index.blood_pressure_end'() {
-      this.medical.model.Inspection_index.blood_pressure =
-        this.medical.model.Inspection_index.blood_pressure_begin + '/' + this.medical.model.Inspection_index.blood_pressure_end
+    'medical.model.blood_pressure_end'() {
+      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     }
   },
 
@@ -249,11 +251,11 @@ export default {
             $peace.util.warning('请输入正确的心率，最多保留一位小数')
             return
           }
-          if (this.medical.model.Inspection_index.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.blood_pressure_begin)) {
+          if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
             $peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
-          if (this.medical.model.Inspection_index.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.blood_pressure_end)) {
+          if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
             $peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
