@@ -82,8 +82,8 @@
         <peace-table-column align="left" header-align="left" label="医生姓名" prop="name" width="100px"></peace-table-column>
         <peace-table-column align="left" header-align="left" label="职称" prop="doctor_title" width="100px"></peace-table-column>
         <peace-table-column label="科室" prop="netdept_name" width="100px"></peace-table-column>
-        <peace-table-column align="left" header-align="left" label="医院" prop="netHospital_name" show-overflow-tooltip></peace-table-column>
-        <peace-table-column fixed="right" label="操作" width="100px">
+        <peace-table-column align="left" header-align="left" label="医院" prop="netHospital_name"></peace-table-column>
+        <peace-table-column fixed="right" label="操作" width="120px">
           <template slot-scope="scope">
             <el-button @click="chose(scope.row)" type="text">选择</el-button>
           </template>
