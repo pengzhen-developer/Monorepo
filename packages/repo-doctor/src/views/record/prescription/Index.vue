@@ -26,7 +26,7 @@
           <peace-table-column label="身份证号" prop="idcard" width="200"></peace-table-column>
           <peace-table-column align="right" label="处方状态" prop="prescription_status"></peace-table-column>
           <peace-table-column label="开具时间" prop="created_time" width="180"></peace-table-column>
-          <peace-table-column label="操作">
+          <peace-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
             </template>

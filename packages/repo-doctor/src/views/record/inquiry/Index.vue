@@ -32,7 +32,7 @@
           <peace-table-column align="right" label="订单金额" prop="order_money"></peace-table-column>
           <peace-table-column label="订单时间" prop="created_time" width="180"></peace-table-column>
           <peace-table-column label="订单状态" prop="status"></peace-table-column>
-          <peace-table-column label="操作">
+          <peace-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
             </template>

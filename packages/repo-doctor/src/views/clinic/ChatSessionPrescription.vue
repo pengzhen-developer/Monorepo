@@ -38,7 +38,7 @@
           </template>
         </peace-table-column>
         <peace-table-column label="数量" prop="number" width="80px"></peace-table-column>
-        <peace-table-column align="center" label="操作" width="80px">
+        <peace-table-column align="center" fixed="right" label="操作" width="80px">
           <template slot-scope="scope">
             <el-button @click="changeDrugToPrescription(scope)" type="text">修改</el-button>
             <br>
@@ -130,7 +130,7 @@
           </template>
         </peace-table-column>
         <peace-table-column label="数量" prop="number" width="80px"></peace-table-column>
-        <peace-table-column align="center" label="操作" width="80px">
+        <peace-table-column align="center" fixed="right" label="操作" width="80px">
           <template slot-scope="scope">
             <el-button @click="changeDrug(scope)" type="text">修改</el-button>
             <br>

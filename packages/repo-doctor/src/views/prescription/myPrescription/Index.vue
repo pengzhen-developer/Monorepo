@@ -36,7 +36,7 @@
       </peace-table-column>
       <peace-table-column :formatter="(r,c,v) => { return this.view.source.group_name.find(item => item.key === v).source }" label="患者来源" prop="source"></peace-table-column>
       <peace-table-column label="所属分组" min-width="200" prop="group_names"></peace-table-column>
-      <peace-table-column label="操作">
+      <peace-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
         </template>
