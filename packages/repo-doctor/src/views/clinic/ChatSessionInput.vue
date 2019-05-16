@@ -14,46 +14,53 @@
             <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">图片
           </el-button>
         </el-upload>
-        <el-button disabled type="text">
+        <el-button @click="sendVideoBefore" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
-        <el-button :disabled="!isShowMedicalButton" :title="!isShowMedicalButton ? '已经填写病历，无法再次修改' : ''" @click="showMedical" type="text">
+        <el-button @click="showMedical" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_medical.png">写病历
         </el-button>
-        <el-button :disabled="!isShowPrescriptionButton" :title="!isShowPrescriptionButton ? '尚未填写病历，无法开具处方' : ''" @click="showPrescription" type="text">
+        <el-button @click="showPrescription" type="text">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
-      </div>
-
-      <div class="send">
-        <el-dropdown class="quick-reply" placement="top">
-          <el-button round type="text">快速回复</el-button>
-          <el-dropdown-menu slot="dropdown" style="overflow: hidden;">
-            <el-dropdown-item @click.native="quickReply('您好，是否做过检查、化验？如果有，请上传相关附件。')" style="padding: 5px 10px;">您好，是否做过检查、化验？如果有，请上传相关附件。</el-dropdown-item>
-            <el-dropdown-item @click.native="quickReply('您好，病历已发送，请注意查收。')" style="padding: 5px 10px;">您好，病历已发送，请注意查收。</el-dropdown-item>
-            <el-dropdown-item @click.native="quickReply('您好，处方已开具，请注意查收。')" style="padding: 5px 10px;">您好，处方已开具，请注意查收。</el-dropdown-item>
-            <el-dropdown-item @click.native="quickReply('您好，还有其它问题吗?')" style="padding: 5px 10px;">您好，还有其它问题吗?</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-        <el-button @click="sendText" class="quick-send" round type="primary">发送</el-button>
+        <el-button @click="showTransfer" type="text">
+          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">申请转诊
+        </el-button>
+        <el-button @click="OverOverOver" type="text" v-show="false">
+          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
+        </el-button>
       </div>
     </div>
 
-    <div @keyup.ctrl.enter="clear" tabindex="0">
+    <div @keyup.ctrl.enter="quickSend" class="input" tabindex="0">
       <ckeditor :config="ckEditor.editorConfig" :editor="ckEditor.editor" @ready="onEditorReady" class="input" tabindex="0" v-model.trim="ckEditor.currentMsg"></ckeditor>
+    </div>
+
+    <div class="send">
+      <el-dropdown class="quick-reply" placement="top">
+        <el-button round type="text">快速回复</el-button>
+        <el-dropdown-menu slot="dropdown" style="overflow: hidden;">
+          <el-dropdown-item @click.native="quickReply('您好，是否做过检查、化验？如果有，请上传相关附件。')" style="padding: 5px 10px;">您好，是否做过检查、化验？如果有，请上传相关附件。</el-dropdown-item>
+          <el-dropdown-item @click.native="quickReply('您好，病历已发送，请注意查收。')" style="padding: 5px 10px;">您好，病历已发送，请注意查收。</el-dropdown-item>
+          <el-dropdown-item @click.native="quickReply('您好，处方已开具，请注意查收。')" style="padding: 5px 10px;">您好，处方已开具，请注意查收。</el-dropdown-item>
+          <el-dropdown-item @click.native="quickReply('您好，还有其它问题吗?')" style="padding: 5px 10px;">您好，还有其它问题吗?</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+      <el-button @click="sendText" class="quick-send" round type="primary">发送</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { STATE } from './util.js'
+
 import Vue from 'vue'
 import CKEditor from '@ckeditor/ckeditor5-vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn'
 Vue.use(CKEditor)
-
-import { state } from './util.js'
 
 export default {
   props: {
@@ -67,7 +74,7 @@ export default {
 
   data() {
     return {
-      state,
+      STATE,
 
       ckEditor: {
         editor: ClassicEditor,
@@ -84,20 +91,35 @@ export default {
   },
 
   computed: {
-    internalSessionMsgs() {
-      return this.sessionMsgs
+    ...mapState(['chat']),
+
+    lastMsg() {
+      let lastMsg
+
+      if (this.chat.sessionMsgs) {
+        lastMsg = this.chat.sessionMsgs.msgs[0]
+      }
+
+      return lastMsg
     },
 
     isShowMedicalButton() {
-      return this.sessionMsgs && this.sessionMsgs[this.sessionMsgs.length - 1].custom.ext.talkState === state.talkState['未填写病历']
+      return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['未填写病历']
     },
 
     isShowPrescriptionButton() {
-      return this.sessionMsgs && this.sessionMsgs[this.sessionMsgs.length - 1].custom.ext.talkState === state.talkState['已填写病历']
+      return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
+    },
+
+    isShowTransferButton() {
+      return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
     }
   },
 
   methods: {
+    ...mapMutations('chat', ['updateSessionMsg']),
+    ...mapActions('chat', ['sendVideo']),
+
     onEditorReady(editor) {
       // Execute your own callback:
       editor.keystrokes.set('Ctrl+Enter', (data, cancel) => {
@@ -119,15 +141,19 @@ export default {
       if (this.ckEditor.currentMsg) {
         $peace.NIM.sendText({
           scene: 'p2p',
-          to: this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom.patients.patientId,
+          to: this.chat.session.lastMsg.custom.patients.patientId,
           text: this.ckEditor.currentMsg,
-          custom: JSON.stringify(this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom),
+          custom: JSON.stringify(this.lastMsg.custom),
           done: (error, msg) => {
-            console.log('消息发送成功', error, msg)
+            if (error) {
+              $peace.util.alert(error.message)
+
+              return
+            }
+            console.log(new Date().formatTime() + ': ' + '消息发送成功', msg)
 
             this.ckEditor.currentMsg = ''
-
-            this.$emit('updateMsgHistory', msg)
+            this.updateSessionMsg(msg)
           }
         })
       }
@@ -139,37 +165,117 @@ export default {
         scene: 'p2p',
         type: 'image',
         blob: file.raw,
-        to: this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom.patients.patientId,
-        custom: JSON.stringify(this.internalSessionMsgs[this.internalSessionMsgs.length - 1].custom),
+        to: this.lastMsg.custom.patients.patientId,
+        custom: JSON.stringify(this.lastMsg.custom),
         done: (error, msg) => {
-          console.log('图片发送成功', error, msg)
+          if (error) {
+            $peace.util.alert(error.message)
 
-          this.$emit('updateMsgHistory', msg)
+            return
+          }
+
+          console.log(new Date().formatTime() + ': ' + '图片发送成功', error, msg)
+          this.updateSessionMsg(msg)
         }
       })
     },
 
+    // 发送视频
+    sendVideoBefore() {
+      // 仅视频问诊才能提起视频请求
+      if (this.chat.session.lastMsg.custom.ext.talkType === STATE.talkType['视频问诊']) {
+        this.sendVideo(this.chat.session)
+      } else {
+        $peace.util.warning('只有视频问诊才能进行发起视频')
+      }
+    },
+
     // 发送病历
     showMedical() {
-      this.$emit('showMedical')
+      if (!this.isShowMedicalButton) {
+        $peace.util.warning('已经填写病历，无法再次修改')
+      } else {
+        this.$emit('showMedical')
+      }
     },
 
     // 发送处方
     showPrescription() {
-      this.$emit('showPrescription')
+      if (!this.isShowPrescriptionButton) {
+        $peace.util.warning('尚未填写病历，无法开具处方')
+      } else {
+        this.$emit('showPrescription')
+      }
     },
 
-    clear() {
+    // 双向转诊
+    showTransfer() {
+      if (!this.isShowTransferButton) {
+        $peace.util.warning('尚未填写病历，无法申请转诊')
+      } else {
+        $peace.util.confirm(
+          '转诊提交成功后， 本次咨询将自动关闭。',
+          undefined,
+          {
+            type: 'warning'
+          },
+          () => {
+            this.$emit('showTransfer')
+          }
+        )
+      }
+    },
+
+    // 快捷发送
+    quickSend() {
       this.sendText()
 
       this.ckEditor.currentMsg = ''
+    },
+
+    // 黑科技，强行退诊，不走数据库的，请小心行事!!!!!!!!!!!!!!
+    OverOverOver() {
+      $peace.util.confirm(
+        '黑科技，强行退诊，不走数据库的，请小心行事!',
+        undefined,
+        {
+          type: 'warning'
+        },
+        () => {
+          // 给患者发送一个 custom 消息, 用于显示
+          // 1. 更改自定义消息体的状态
+          const tempCustomData = $peace.util.clone(this.chat.session.lastMsg.custom)
+          tempCustomData.ext.talkState = 4
+
+          $peace.NIM.sendCustomMsg({
+            type: 'custom',
+            scene: 'p2p',
+            to: this.chat.session.lastMsg.custom.patients.patientId,
+            text: '',
+            custom: JSON.stringify(tempCustomData),
+            content: JSON.stringify({
+              data: { appMsg: '黑科技退诊, 请无视' },
+              type: 8,
+              wechatMsg: '医生退诊，本次咨询结束，如有疑问可再次预约咨询。',
+              description: '黑科技退诊，请无视就好。'
+            }),
+            done: (error, msg) => {
+              if (error) {
+                $peace.util.alert(error.message)
+
+                return
+              }
+              console.log(new Date().formatTime() + ': ' + '黑科技，强行退诊成功', msg)
+
+              this.updateSessionMsg(msg)
+            }
+          })
+        }
+      )
     }
   }
 }
 </script>
-
-
-
 
 <style lang="scss" scoped>
 .tool {
@@ -216,13 +322,28 @@ export default {
   }
 }
 
-/deep/ .ck-editor__editable {
-  height: 160px;
-  border-color: #efefef !important;
-  border-radius: 0 !important;
+.input {
+  max-width: 700px;
+
+  /deep/ .ck.ck-editor__editable {
+    height: 120px;
+    border: 0;
+    border-color: #efefef !important;
+    border-radius: 0 !important;
+  }
+
+  /deep/ .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+    border: 0;
+    box-shadow: none !important;
+  }
+
+  /deep/.ck.ck-toolbar {
+    display: none !important;
+  }
 }
 
-/deep/.ck.ck-toolbar {
-  display: none !important;
+.send {
+  margin: 5px 5px 0 0;
+  text-align: right;
 }
 </style>

@@ -3,10 +3,10 @@
  * @Date: 2019-04-16 09:48:47
  * @Description: 我的诊室
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-20 16:47:47
+ * @Last Modified time: 2019-05-15 11:43:25
  */
 
-export const state = {
+export const STATE = {
   msgFlow: {
     患者消息: 'in',
     医生消息: 'out',
@@ -32,7 +32,9 @@ export const state = {
   // 自定义消息体的病历 / 处方
   sendType: {
     病历消息: 0,
-    处方消息: 1
+    处方消息: 1,
+    音频消息: 2,
+    视频消息: 3
   },
 
   // 问诊状态
@@ -66,7 +68,7 @@ export const state = {
  * @param {*} sessions
  * @returns
  */
-export function deserializationSessions(sessions) {
+export function DeserializationSessions(sessions) {
   let temp = $peace.util.clone(sessions)
 
   if (temp) {
@@ -81,7 +83,7 @@ export function deserializationSessions(sessions) {
     })
 
     // 过滤垃圾数据
-    temp = temp.filter(item => item.lastMsg.custom)
+    temp = temp.filter(item => item.lastMsg.custom && item.lastMsg.custom.ext)
   }
 
   return temp
@@ -96,7 +98,7 @@ export function deserializationSessions(sessions) {
  * @param {*} sessions
  * @returns
  */
-export function deserializationSessionMsgs(msgs) {
+export function DeserializationSessionMsgs(msgs) {
   let temp = $peace.util.clone(msgs)
 
   if (temp) {
@@ -111,16 +113,16 @@ export function deserializationSessionMsgs(msgs) {
     })
 
     // 过滤垃圾数据
-    temp = temp.filter(item => item.custom)
+    temp = temp.filter(item => item.custom && item.custom.ext)
   }
 
   return temp
 }
 
 export default {
-  state,
+  STATE,
 
-  deserializationSessions,
+  DeserializationSessions,
 
-  deserializationSessionMsgs
+  DeserializationSessionMsgs
 }

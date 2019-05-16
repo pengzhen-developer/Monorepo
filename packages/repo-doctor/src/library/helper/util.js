@@ -3,7 +3,7 @@
  * @Description: 常用方法
  * @Date: 2018-07-06 11:24:59
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-26 08:49:26
+ * @Last Modified time: 2019-05-16 16:35:20
  */
 
 const _PADCHAR = '='
@@ -296,34 +296,42 @@ export function success(msg = '提示', title = '提示', type = 'success') {
  * @param {string} [msg='提示']
  * @param {string} [title='提示']
  * @param {string} [options={ type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' }]
- * @param {*} [successCallBack=() => {}]
- * @param {*} [errorCallBack=() => {}]
+ * @param {*} [confirmCallBack=() => {}]
+ * @param {*} [cancelCallBack=() => {}]
  */
 export function confirm(
   msg = '提示',
   title = '提示',
   options = { type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' },
-  successCallBack = () => {},
-  errorCallBack = () => {}
+  confirmCallBack,
+  cancelCallBack
 ) {
   if (Object.prototype.toString.call(options) === '[object String]') {
-    $peace
-      .$confirm(msg, title, {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: options
-      })
-      .then(successCallBack)
-      .catch(errorCallBack)
+    $peace.$confirm(msg, title, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: options,
+      callback: action => {
+        if (action === 'confirm') {
+          confirmCallBack && confirmCallBack()
+        } else {
+          cancelCallBack && cancelCallBack()
+        }
+      }
+    })
   } else {
-    $peace
-      .$confirm(msg, title, {
-        confirmButtonText: options.confirmButtonText,
-        cancelButtonText: options.cancelButtonText,
-        type: options.type
-      })
-      .then(successCallBack)
-      .catch(errorCallBack)
+    $peace.$confirm(msg, title, {
+      confirmButtonText: options.confirmButtonText,
+      cancelButtonText: options.cancelButtonText,
+      type: options.type,
+      callback: action => {
+        if (action === 'confirm') {
+          confirmCallBack && confirmCallBack()
+        } else {
+          cancelCallBack && cancelCallBack()
+        }
+      }
+    })
   }
 }
 

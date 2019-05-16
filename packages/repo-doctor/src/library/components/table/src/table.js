@@ -82,6 +82,12 @@ export default {
     }
   },
 
+  created() {
+    if (this.pagination) {
+      this._generatePagination()
+    }
+  },
+
   mounted() {
     this.$nextTick().then(() => {
       if (this.pagination) {
@@ -91,8 +97,8 @@ export default {
   },
 
   methods: {
-    // 挂载分页组件
-    _mountPagination() {
+    // 生成分页组件
+    _generatePagination() {
       const pagination = Vue.extend(Pagination)
 
       this.Pagination = new pagination({
@@ -100,27 +106,24 @@ export default {
         parent: this,
         propsData: this.$props
       }).$mount()
-
-      this.$el.parentNode.appendChild(this.Pagination.$el)
     },
 
-    // 排序
-    _sortChange({ prop, order }) {
-      if (order === 'ascending') {
-        order = 'asc'
-      } else if (order === 'descending') {
-        order = 'desc'
+    // 挂载分页组件
+    _mountPagination() {
+      const container = document.createElement('div')
+      const parent = this.$el.parentNode
+      if (parent.lastChild == this.$el) {
+        parent.appendChild(container)
+      } else {
+        parent.insertBefore(container, this.$el.nextSibling)
       }
 
-      this.config.params.field = prop
-      this.config.params.order = order
-
-      return this.loadData()
+      container.appendChild(this.Pagination.$el)
     },
 
     _generateConfig(config) {
       // 获取当前的分页信息
-      if (this.pagination) {
+      if (this.Pagination) {
         this.config.params.p = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
       }
@@ -139,6 +142,20 @@ export default {
       if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
         this.config.params = { params: this.config.params }
       }
+    },
+
+    // 排序
+    internalSortChange({ prop, order }) {
+      if (order === 'ascending') {
+        order = 'asc'
+      } else if (order === 'descending') {
+        order = 'desc'
+      }
+
+      this.config.params.field = prop
+      this.config.params.order = order
+
+      return this.loadData()
     },
 
     reloadData(config = {}) {
@@ -175,21 +192,9 @@ export default {
 
   render(h) {
     return h(Table, {
-      // 扩展 props
-      props: Object.assign({}, this.$props, {
-        data: this.internalData,
-        stripe: true
-      }),
-
-      // 扩展 attrs
+      props: { ...this.$props, data: this.internalData },
       attrs: this.$attrs,
-
-      // 扩展 listeners
-      on: Object.assign({}, this.$listeners, {
-        'sort-change': this._sortChange
-      }),
-
-      // 扩展 slots
+      on: { ...this.$listeners, 'sort-change': this.internalSortChange },
       scopedSlots: this.$scopedSlots
     })
   }

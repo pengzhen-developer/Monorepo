@@ -12,7 +12,7 @@
             <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.e_Date" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label=" ">
-            <el-button @click="get" type="primary">查询</el-button>
+            <el-button @click="get" round type="primary">查询</el-button>
           </el-form-item>
         </el-form>
 
@@ -26,16 +26,16 @@
           <peace-table-column label="身份证号" prop="idcard" width="200"></peace-table-column>
           <peace-table-column align="right" label="处方状态" prop="prescription_status"></peace-table-column>
           <peace-table-column label="开具时间" prop="created_time" width="180"></peace-table-column>
-          <peace-table-column label="操作">
+          <peace-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
             </template>
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" title="处方详情" width="800px">
+        <peace-dialog :visible.sync="dialog.visible" title="处方详情" width="800px">
           <chat-session-prescription-detail :data="dialog.data"></chat-session-prescription-detail>
-        </el-dialog>
+        </peace-dialog>
       </div>
     </div>
 
@@ -49,6 +49,8 @@
 <script>
 import ChatSessionPrescriptionDetail from './../../clinic/ChatSessionPrescriptionDetail'
 
+import config from './config'
+
 export default {
   components: {
     ChatSessionPrescriptionDetail
@@ -56,11 +58,7 @@ export default {
 
   data() {
     return {
-      api: {
-        prescripList: 'client/v1/Prescribeprescrip/prescripList',
-
-        getPrescription: 'client/v1/Prescribeprescrip/getPrescripInfo'
-      },
+      config,
 
       view: {
         model: {
@@ -113,7 +111,7 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.prescripList,
+        api: this.config.api.prescripList,
         params: {
           ...this.view.model
         }
@@ -125,7 +123,7 @@ export default {
       this.dialog.visible = true
 
       // 获取处方信息
-      this.$http.get(this.api.getPrescription, { params: { prescriptionId: row.id } }).then(res => {
+      this.$http.get(this.config.api.getPrescription, { params: { prescriptionId: row.id } }).then(res => {
         this.dialog.data = { ...res.data }
       })
     }
