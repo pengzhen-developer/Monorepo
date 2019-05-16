@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" v-if="$peace.cache.get('USER')">
     <div class="header-container">
       <div class="header-left">
         <span class="header-left-title">{{ $peace.cache.get('USER').list.docInfo.netHospital_name }}</span>
@@ -68,7 +68,9 @@ export default {
     signOut() {
       this.removeUserInfo()
 
-      this.$router.push('/login')
+      this.$router.replace('/login')
+
+      window.location.reload()
     }
   }
 }
