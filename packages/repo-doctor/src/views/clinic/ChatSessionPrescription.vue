@@ -298,7 +298,7 @@ export default {
       this.drug.model.drug_name = item.drug_name
       this.drug.model.drug_factory = item.drug_factory
       this.drug.model.drug_spec = item.drug_spec
-      this.drug.model.unit = item.drug_dept
+      this.drug.model.unit = item.drug_unit
 
       // 默认药品数量、单词剂量值
       this.drug.model.consump = 1
