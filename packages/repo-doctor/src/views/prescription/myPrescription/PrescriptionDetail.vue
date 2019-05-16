@@ -35,7 +35,7 @@
           <div class="left">
             <span class="name">{{ inquiry.family_name }}</span>
             <span class="age">{{ inquiry.sex }}</span>
-            <span class="age">{{ inquiry.age }}</span>
+            <span class="age">{{ inquiry.age }}岁</span>
             <el-tag>{{ inquiry.relation }}</el-tag>
           </div>
           <div class="right">

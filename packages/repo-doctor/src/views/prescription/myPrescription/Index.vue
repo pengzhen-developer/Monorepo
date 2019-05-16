@@ -29,7 +29,7 @@
         <template slot-scope="scope">
           <span style="margin-right: 8px;">{{ scope.row.family_name }}</span>
           <span style="margin-right: 8px;">{{ scope.row.family_sex }}</span>
-          <span style="margin-right: 8px;">{{ scope.row.family_age }}</span>
+          <span style="margin-right: 8px;">{{ scope.row.family_age }}岁</span>
           <span style="margin-right: 8px;">{{ scope.row.diagnose }}</span>
           <span style="margin-right: 8px;">{{ scope.row.family_time }}</span>
         </template>
