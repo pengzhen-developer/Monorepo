@@ -56,7 +56,7 @@
     "_description3": "------------- startPage 影响系统初始化的默认展示页",
     "_description4": "------------- loggedPage 影响系统登陆后的默认展示页",
 
-    "title": "爱家医互联网医院",
+    "title": "万家云医互联网医院",
     "subtitle": "副标题",
     "startPage": "/login",
     "loggedPage": "/home"
