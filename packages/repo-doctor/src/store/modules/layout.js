@@ -5,7 +5,7 @@ const state = {
     { id: 2, pid: null, closable: true, name: '诊室', title: '我的诊室', path: '/clinic', icon: 'icon_ic_consultingroom' },
     { id: 3, pid: null, closable: true, name: '患者', path: '患者', icon: 'icon_ic_huanzhe' },
     { id: 31, pid: 3, closable: true, name: '我的患者', title: '我的患者', path: '/prescription/myPrescription' },
-    { id: 4, pid: null, closable: true, name: '问诊', path: '问诊', icon: 'icon_ic_inquiry' },
+    { id: 4, pid: null, closable: true, name: '记录', path: '记录', icon: 'icon_ic_inquiry' },
     { id: 41, pid: 4, closable: true, name: '问诊记录', title: '问诊记录', path: '/record/inquiry' },
     { id: 42, pid: 4, closable: true, name: '处方记录', title: '处方记录', path: '/record/prescription' },
     { id: 42, pid: 4, closable: true, name: '转诊记录', title: '转诊记录', path: '/record/transfer' },

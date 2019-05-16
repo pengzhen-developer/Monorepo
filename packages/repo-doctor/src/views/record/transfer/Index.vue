@@ -11,7 +11,7 @@
 
     <div key="out" v-if="view.model.referral_type === view.source.state['我转诊的']">
       <el-form :model="view.model" inline>
-        <el-form-item label="转出医生">
+        <el-form-item label="转入医生">
           <el-input placeholder v-model="view.model.docName"></el-input>
         </el-form-item>
         <el-form-item label="转入机构">

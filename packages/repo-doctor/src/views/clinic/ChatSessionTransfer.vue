@@ -9,7 +9,7 @@
 
     <el-form :model="view.model" :rules="view.rules" label-position="right" label-width="120px" ref="form">
       <el-row>
-        <el-form-item label="初步诊断" prop="diagnose">
+        <el-form-item label="初步诊断">
           <span slot="label">初步诊断</span>
           <span>{{ view.model.diagnose }}</span>
         </el-form-item>
