@@ -364,15 +364,20 @@ const WebRTCUtil = {
   },
 
   // 挂断的通知
+  // 当一方挂断之后, 另一方会收到 hangup 事件, 此时做一些清理工作即可
   onHangup() {
     $peace.WebRTC.on('hangup', function(obj) {
       console.log('on hangup', obj)
 
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
-        $peace.util.alert('通话结束')
+        $peace.util.alert('对方已拒绝')
 
-        WebRTCUtil.hangUpVideo({ record: true })
+        if (state.beCall === '接听') {
+          WebRTCUtil.hangUpVideo({ record: true })
+        } else {
+          WebRTCUtil.hangUpVideo({ record: false })
+        }
       }
     })
   },
@@ -455,10 +460,10 @@ const WebRTCUtil = {
 
     // 发送视频问诊, 并修改自定义消息体
     WebRTCUtil.STATE.pushConfig.custom = $peace.util.clone(state.session.lastMsg.custom)
-    WebRTCUtil.STATE.pushConfig.custom.ext.name = WebRTCUtil.STATE.pushConfig.custom.doctor.doctorName
-    WebRTCUtil.STATE.pushConfig.custom.ext.idcard = ''
-    WebRTCUtil.STATE.pushConfig.custom.ext.phone = ''
-    WebRTCUtil.STATE.pushConfig.custom.ext.id = ''
+    WebRTCUtil.STATE.pushConfig.custom.name = WebRTCUtil.STATE.pushConfig.custom.doctor.doctorName
+    WebRTCUtil.STATE.pushConfig.custom.idcard = ''
+    WebRTCUtil.STATE.pushConfig.custom.phone = ''
+    WebRTCUtil.STATE.pushConfig.custom.id = ''
 
     WebRTCUtil.STATE.pushConfig.custom = JSON.stringify(WebRTCUtil.STATE.pushConfig.custom)
 
