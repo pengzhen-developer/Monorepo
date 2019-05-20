@@ -36,8 +36,8 @@
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
         <peace-table-column align="left" label="转入机构" min-width="200px" prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转入医生" prop="name"></peace-table-column>
-        <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
-        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="期望转诊时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
         <peace-table-column fixed="right" label="操作" width="100px">
           <template slot-scope="scope">
