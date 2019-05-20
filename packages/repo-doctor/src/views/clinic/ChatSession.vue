@@ -215,8 +215,21 @@ export default {
         this.$http
           .post(this.config.api.checkOverInquiry, param)
           .then(res => {
+            // 非有效会话，提示退诊
+            if (res.data.status === 1) {
+              $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
+                this.refuse()
+              })
+            }
+            // 未填写病历，提示填写病历
+            else if (res.data.caseStatus === 1) {
+              $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+                this.over.visible = false
+                this.showMedical()
+              })
+            }
             // 可正常结束
-            if (res.data.caseStatus === 2 && res.data.status === 2) {
+            else if (res.data.caseStatus === 2 && res.data.status === 2) {
               const param = {
                 doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
                 inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
@@ -233,19 +246,6 @@ export default {
                 .finally(() => {
                   this.over.visible = false
                 })
-            }
-            // 未填写病历，提示填写病历
-            else if (res.data.caseStatus === 1 && res.data.status === 2) {
-              $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
-                this.over.visible = false
-                this.showMedical()
-              })
-            }
-            // 非有效会话，提示退诊
-            else if (res.data.caseStatus === 1 && res.data.status === 1) {
-              $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-                this.refuse()
-              })
             }
             // 未知情况
             else {
