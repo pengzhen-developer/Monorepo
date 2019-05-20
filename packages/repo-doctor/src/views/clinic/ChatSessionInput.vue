@@ -24,7 +24,7 @@
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
         <el-button @click="showTransfer" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">申请转诊
+          <img src="./../../assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
         </el-button>
         <el-button @click="OverOverOver" type="text" v-show="false">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
