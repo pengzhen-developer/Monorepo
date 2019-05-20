@@ -200,6 +200,8 @@ export default {
           }
           // 开始转诊
           else {
+            this.$emit('close')
+
             const params = {
               doctor_id: this.view.model.doctorInfo.doctor_id,
               patient_id: this.chat.session.lastMsg.custom.patients.patientId,
@@ -234,7 +236,6 @@ export default {
               })
 
               this.clearSession()
-              this.$emit('close')
             })
           }
         }
