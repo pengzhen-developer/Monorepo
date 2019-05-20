@@ -98,10 +98,10 @@ export default {
       config,
 
       view: {
-        action: '我转诊的',
+        action: '',
 
         model: {
-          referral_type: 'out',
+          referral_type: (this.$route.params && this.$route.params.referral_type) || 'out',
           docName: '',
           hosName: '',
           transfer_status: ''

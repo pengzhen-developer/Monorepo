@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="card out">
-          <div @click="redirect('/record/transfer')" class="card-item">
+          <div @click="redirect('/record/transfer', { referral_type: 'in' })" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
               <div class="card-item-number">{{ view.source.count4 }}</div>
@@ -62,8 +62,12 @@ export default {
   },
 
   methods: {
-    redirect(path) {
-      this.$router.push(path)
+    redirect(name, params) {
+      if (params) {
+        this.$router.push({ name, params })
+      } else {
+        this.$router.push(name)
+      }
     }
   }
 }
