@@ -141,6 +141,8 @@ const WebRTCUtil = {
     busy: undefined,
     // 音视频类型
     type: undefined,
+    // 视频市场定时器
+    videoTimeInterval: undefined,
 
     // 会话配置
     sessionConfig: {
@@ -236,9 +238,12 @@ const WebRTCUtil = {
   },
 
   // 被叫拒绝的通知
+  // 通话未连接， 对方拒绝
   onCallRejected() {
     $peace.WebRTC.on('callRejected', function() {
       console.log('on callRejected')
+
+      $peace.util.warning('对方已拒绝')
 
       $peace.$store.commit('chat/setBeCall', '拒绝')
 
@@ -253,6 +258,11 @@ const WebRTCUtil = {
       console.log('on callAccepted')
 
       $peace.$store.commit('chat/setBeCall', '接听')
+
+      const videoTimeBegin = new Date()
+      WebRTCUtil.videoTimeInterval = setInterval(() => {
+        $peace.$store.commit('chat/setVideoTime', videoTimeBegin)
+      }, 500)
 
       // 记录视频问诊
       const videoProcessApi = '/client/v1/video/process'
@@ -371,13 +381,12 @@ const WebRTCUtil = {
 
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
-        $peace.util.alert('对方已拒绝')
+        $peace.util.warning('对方已挂断')
 
         if (state.beCall === '接听') {
-          $peace.util.alert('对方已挂断')
+          // 接听情况下，挂断时候才需要向后端发送 over ，记录通话时间
           WebRTCUtil.hangUpVideo({ record: true })
         } else {
-          $peace.util.alert('对方已拒绝')
           WebRTCUtil.hangUpVideo({ record: false })
         }
       }
@@ -390,7 +399,7 @@ const WebRTCUtil = {
       if (WebRTCUtil.STATE.beCalledInfo && obj.channelId === WebRTCUtil.STATE.beCalledInfo.channelId) {
         console.log('on caller ack async:', obj)
 
-        $peace.util.alert('当前通话已经其它端处理')
+        $peace.util.warning('当前通话已经其它端处理')
 
         WebRTCUtil.clearState()
       }
@@ -513,6 +522,9 @@ const WebRTCUtil = {
   hangUpVideo({ record }) {
     console.log('挂断')
 
+    // 清空视频时长定时器
+    window.clearInterval(WebRTCUtil.videoTimeInterval)
+
     // 挂断
     $peace.WebRTC.hangup()
 
@@ -550,7 +562,10 @@ const state = {
 
   // 音频是否静音状态
   // true、false
-  mute: false
+  mute: false,
+
+  // 视频通话时长
+  videoTime: undefined
 }
 
 const actions = {
@@ -727,6 +742,16 @@ const actions = {
 }
 
 const mutations = {
+  /**
+   * 选中 sessions
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  setVideoTime(state, videoTime) {
+    state.videoTime = $peace.util.formatDuration(new Date() - videoTime)
+  },
+
   /**
    * 选中 sessions
    *
