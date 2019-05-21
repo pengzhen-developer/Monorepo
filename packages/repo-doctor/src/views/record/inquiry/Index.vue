@@ -7,7 +7,7 @@
             <el-input placeholder style="width: 90px;" v-model="view.model.name"></el-input>
           </el-form-item>
           <el-form-item label="问诊类型">
-            <el-select clearable placeholder style="width: 110px;" v-model="view.model.inquiryType">
+            <el-select clearable placeholder="全部" style="width: 110px;" v-model="view.model.inquiryType">
               <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in view.source.inquiryType"></el-option>
             </el-select>
           </el-form-item>

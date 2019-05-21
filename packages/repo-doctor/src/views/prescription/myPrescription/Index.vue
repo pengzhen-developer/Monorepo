@@ -5,7 +5,7 @@
         <el-input placeholder v-model="view.model.patient_name"></el-input>
       </el-form-item>
       <el-form-item label="患者来源">
-        <el-select clearable placeholder v-model="view.model.source">
+        <el-select clearable placeholder="全部" v-model="view.model.source">
           <el-option :key="item.key" :label="item.source" :value="item.key" v-for="item in view.source.group_name"></el-option>
         </el-select>
       </el-form-item>
