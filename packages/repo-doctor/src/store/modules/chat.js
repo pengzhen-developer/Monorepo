@@ -374,8 +374,10 @@ const WebRTCUtil = {
         $peace.util.alert('对方已拒绝')
 
         if (state.beCall === '接听') {
+          $peace.util.alert('对方已挂断')
           WebRTCUtil.hangUpVideo({ record: true })
         } else {
+          $peace.util.alert('对方已拒绝')
           WebRTCUtil.hangUpVideo({ record: false })
         }
       }
@@ -491,7 +493,7 @@ const WebRTCUtil = {
       .catch(function(err) {
         // 被叫不在线
         if (err.code === 11000) {
-          $peace.util.warning('对方离线, 通话不可送达')
+          $peace.util.warning('对方离线')
         }
 
         WebRTCUtil.hangUpVideo({ record: false })
@@ -501,7 +503,7 @@ const WebRTCUtil = {
     WebRTCUtil.hangupTimer = setTimeout(function() {
       if (!$peace.WebRTC.callAccepted) {
         console.log('超时未接听, hangup')
-        $peace.util.warning('对方长时间未接听，已取消')
+        $peace.util.warning('对方无应答')
         WebRTCUtil.hangUpVideo({ record: false })
       }
     }, 1000 * 30)
