@@ -6,7 +6,8 @@
         <h4>{{ chat.session.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4 v-show="false">TODO : 倒计时</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">{{ negativeDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">{{ positiveDuration }}</h4>
         <el-button @click="overConfirm" plain type="success" v-show="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">结束问诊</el-button>
       </div>
     </div>
@@ -36,9 +37,9 @@
         <template v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">
           <div class="receive">
             <div class="tip">
-              <span>请注意，请在</span>
-              <span class="count-down">限时时间</span>
-              <span>内接诊，未接诊将自动退费</span>
+              <span>请注意，请</span>
+              <span class="count-down">尽快</span>
+              <span>接诊，未接诊将自动退费</span>
             </div>
             <div class="control">
               <div @click="refuseConfirm">
@@ -119,6 +120,11 @@ export default {
       STATE,
       config,
 
+      // 已接诊计时
+      positiveDuration: '',
+      // 未接诊倒计时
+      negativeDuration: '',
+
       over: {
         visible: false,
 
@@ -151,10 +157,32 @@ export default {
 
   watch: {
     'chat.session'(newValue, oldValue) {
+      window.clearInterval(this.durationInterval)
+
       if (newValue && oldValue && newValue.id !== oldValue.id) {
         this.closeAllDialog()
       }
+
+      // 获取当前问诊记录
+      if (this.chat.session) {
+        this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+          if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
+            this.durationInterval = setInterval(() => {
+              this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
+              console.log(this.positiveDuration)
+            }, 1000)
+
+            console.log(this.durationInterval)
+          }
+        })
+      }
     }
+  },
+
+  created() {},
+
+  destroyed() {
+    window.clearInterval(this.durationInterval)
   },
 
   methods: {
@@ -369,6 +397,12 @@ export default {
     .tip {
       padding: 40px 0;
       color: #333333;
+      text-align: center;
+      text-align-last: justify;
+      text-align: justify;
+      text-justify: distribute-all-lines;
+      width: 19rem;
+      display: inline-block;
 
       .count-down {
         font-weight: bold;
