@@ -169,10 +169,7 @@ export default {
           if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
             this.durationInterval = setInterval(() => {
               this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
-              console.log(this.positiveDuration)
             }, 1000)
-
-            console.log(this.durationInterval)
           }
         })
       }
