@@ -524,6 +524,7 @@ const WebRTCUtil = {
 
     // 清空视频时长定时器
     window.clearInterval(WebRTCUtil.videoTimeInterval)
+    $peace.$store.commit('chat/clearVideoTime', undefined)
 
     // 挂断
     $peace.WebRTC.hangup()
@@ -743,13 +744,23 @@ const actions = {
 
 const mutations = {
   /**
-   * 选中 sessions
+   * 设定视频时长
    *
    * @param {*} state
    * @param {*} session
    */
   setVideoTime(state, videoTime) {
     state.videoTime = $peace.util.formatDuration(new Date() - videoTime)
+  },
+
+  /**
+   * 清空视频时长
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  clearVideoTime(state) {
+    state.videoTime = undefined
   },
 
   /**
