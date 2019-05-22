@@ -221,7 +221,7 @@ export default {
                 <span style="text-align: left; font-size: 14px;">
                   你的转诊已提交，可前往 【
                   <el-button type="text" onclick={redirect}>
-                    转诊记录/我的转诊
+                    转诊记录-我的转诊
                   </el-button>
                   】 查看转诊进度
                 </span>
