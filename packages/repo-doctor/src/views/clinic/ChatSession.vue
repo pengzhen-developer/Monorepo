@@ -164,15 +164,15 @@ export default {
       }
 
       // 获取当前问诊记录
-      if (this.chat.session) {
-        this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+      this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+        if (this.chat.session) {
           if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
             this.durationInterval = setInterval(() => {
               this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
             }, 1000)
           }
-        })
-      }
+        }
+      })
     }
   },
 

@@ -23,7 +23,7 @@
     "_description2": "------------- 影响各子模块系统的请求地址",
 
     "development": {
-      "base": "https://devdoctor.hp.aijiayi.com"
+      "base": "https://testdoctor.hp.aijiayi.com"
     },
 
     "test": {
