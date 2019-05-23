@@ -4,7 +4,12 @@
       <div>
         <el-form :model="view.model" inline>
           <el-form-item label="患者姓名">
-            <el-input placeholder v-model="view.model.name"></el-input>
+            <el-input placeholder style="width: 90px;" v-model="view.model.name"></el-input>
+          </el-form-item>
+          <el-form-item label="问诊类型">
+            <el-select clearable placeholder="全部" style="width: 110px;" v-model="view.model.inquiryType">
+              <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in view.source.inquiryType"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="问诊下单时间">
             <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.time_start" value-format="yyyy-MM-dd"></el-date-picker>
@@ -12,7 +17,7 @@
             <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.time_end" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label=" ">
-            <el-button @click="get" type="primary">查询</el-button>
+            <el-button @click="get" round type="primary">查询</el-button>
           </el-form-item>
         </el-form>
 
@@ -27,16 +32,16 @@
           <peace-table-column align="right" label="订单金额" prop="order_money"></peace-table-column>
           <peace-table-column label="订单时间" prop="created_time" width="180"></peace-table-column>
           <peace-table-column label="订单状态" prop="status"></peace-table-column>
-          <peace-table-column label="操作">
+          <peace-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
             </template>
           </peace-table-column>
         </peace-table>
 
-        <el-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" top="5vh" width="800px">
-          <chat-session-list :sessionMsgs="dialog.data"></chat-session-list>
-        </el-dialog>
+        <peace-dialog :visible.sync="dialog.visible" append-to-body title="图文问诊记录" top="5vh" width="800px">
+          <chat-session-list :localSessionMsgs="dialog.data"></chat-session-list>
+        </peace-dialog>
       </div>
     </div>
 
@@ -50,7 +55,8 @@
 <script>
 import ChatSessionList from './../../clinic/ChatSessionList'
 
-import { state } from './../../clinic/util'
+import config from './config'
+import { STATE } from './../../clinic/util'
 
 export default {
   components: {
@@ -59,19 +65,16 @@ export default {
 
   data() {
     return {
-      state,
+      config,
 
-      api: {
-        inqueryInfo: 'client/v1/inquiry/recordList',
-
-        getOneInquiry: 'client/v1/Patient/getOneInquiry'
-      },
+      STATE,
 
       view: {
         model: {
           name: '',
           time_start: new Date().proDate('{%d-7}').formatDate(),
-          time_end: new Date().formatDate()
+          time_end: new Date().formatDate(),
+          inquiryType: ''
         },
 
         rules: {
@@ -94,6 +97,10 @@ export default {
               }
             }
           }
+        },
+
+        source: {
+          inquiryType: [{ label: '图文问诊', value: 'image' }, { label: '视频问诊', value: 'video' }]
         }
       },
 
@@ -118,7 +125,7 @@ export default {
   methods: {
     get() {
       this.$refs.table.loadData({
-        api: this.api.inqueryInfo,
+        api: this.config.api.inqueryInfo,
         params: {
           doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
           ...this.view.model
@@ -131,40 +138,45 @@ export default {
       this.dialog.visible = true
 
       // 获取病历信息
-      this.$http.get(this.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
+      this.$http.get(this.config.api.getOneInquiry, { params: { inquiryNo: row.inquiry_no } }).then(res => {
         res.data.forEach(item => {
           item.custom = item.ext
 
           if (row.doctor_id === item.from) {
-            item.flow = this.state.msgFlow['医生消息']
-          } else {
-            item.flow = this.state.msgFlow['患者消息']
+            item.flow = this.STATE.msgFlow['医生消息']
+          } else if (row.patient_id === item.from) {
+            item.flow = this.STATE.msgFlow['患者消息']
           }
 
           switch (item.type) {
             case 0:
-              item.type = this.state.msgType['文本消息']
+              item.type = this.STATE.msgType['文本消息']
               item.text = item.body.msg
               break
             case 1:
-              item.type = this.state.msgType['图片消息']
+              item.type = this.STATE.msgType['图片消息']
               item.file = item.body
               break
             case 2:
-              item.type = this.state.msgType['语音消息']
+              item.type = this.STATE.msgType['语音消息']
               break
             case 3:
-              item.type = this.state.msgType['视频消息']
+              item.type = this.STATE.msgType['视频消息']
               break
             case 4:
-              item.type = this.state.msgType['地理信息']
+              item.type = this.STATE.msgType['地理信息']
               break
             case 6:
-              item.type = this.state.msgType['文件']
+              item.type = this.STATE.msgType['文件']
               break
             case 100:
-              item.type = this.state.msgType['自定义消息']
+              item.type = this.STATE.msgType['自定义消息']
               item.content = item.body
+
+              // 视频消息默认为医生消息
+              if (item.body.type === 9 && item.body.data.sendType === 3) {
+                item.flow = this.STATE.msgFlow['医生消息']
+              }
               break
           }
         })
@@ -223,10 +235,5 @@ export default {
     color: rgba(155, 155, 155, 1);
     line-height: 20px;
   }
-}
-
-/deep/ .el-dialog__body {
-  max-height: 85vh;
-  overflow-y: auto;
 }
 </style>

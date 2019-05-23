@@ -9,58 +9,71 @@ const router = new Router({
     {
       path: '/',
       meta: { Auth: true },
-      name: 'home',
+      name: '/',
       component: Home,
       children: [
         {
           path: '/home',
           meta: { Auth: true },
-          name: 'home',
+          name: '/home',
           component: () => import('./../views/Home.vue')
         },
 
         {
           path: '/clinic',
           meta: { Auth: true },
-          name: 'clinic',
+          name: '/clinic',
           component: () => import('./../views/clinic/Index.vue')
-        },
-        {
-          path: '/record/inquiry',
-          meta: { Auth: true },
-          name: 'inquiry',
-          component: () => import('./../views/record/inquiry/Index.vue')
         },
 
         {
+          path: '/prescription/myPrescription',
+          meta: { Auth: true },
+          name: '/prescription/myPrescription',
+          component: () => import('./../views/prescription/myPrescription/Index.vue')
+        },
+
+        {
+          path: '/record/inquiry',
+          meta: { Auth: true },
+          name: '/record/inquiry',
+          component: () => import('./../views/record/inquiry/Index.vue')
+        },
+        {
           path: '/record/prescription',
           meta: { Auth: true },
-          name: 'prescription',
+          name: '/record/prescription',
           component: () => import('./../views/record/prescription/Index.vue')
+        },
+        {
+          path: '/record/transfer',
+          meta: { Auth: true },
+          name: '/record/transfer',
+          component: () => import('./../views/record/transfer/Index.vue')
         },
 
         {
           path: '/sys/myInfo',
           meta: { Auth: true },
-          name: 'myInfo',
+          name: '/sys/myInfo',
           component: () => import('./../views/sys/myInfo/Index.vue')
         },
         {
           path: '/sys/myIntroduce',
           meta: { Auth: true },
-          name: 'myIntroduce',
+          name: '/sys/myIntroduce',
           component: () => import('./../views/sys/myIntroduce/Index.vue')
         },
         {
           path: '/sys/myTime',
           meta: { Auth: true },
-          name: 'myTime',
+          name: '/sys/myTime',
           component: () => import('./../views/sys/myTime/Index.vue')
         },
         {
           path: '/sys/myService',
           meta: { Auth: true },
-          name: 'myService',
+          name: '/sys/myService',
           component: () => import('./../views/sys/myService/Index.vue')
         }
       ]
@@ -69,7 +82,7 @@ const router = new Router({
     {
       path: '/login',
       meta: { Auth: false },
-      name: 'login',
+      name: '/login',
       component: () => import('./../Login.vue')
     }
   ]

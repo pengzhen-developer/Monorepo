@@ -89,8 +89,8 @@ export default {
 /deep/ .el-submenu,
 /deep/ .el-submenu__title,
 /deep/ .el-menu-item {
-  height: 72px;
   line-height: 1;
+  margin: 10px 0;
 
   &:hover {
     background: transparent;
@@ -121,6 +121,7 @@ export default {
 
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-flow: column;
 
     i {

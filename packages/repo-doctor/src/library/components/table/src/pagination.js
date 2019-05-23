@@ -46,10 +46,14 @@ export default {
       attrs: this.$attrs,
 
       // 扩展 listeners
-      on: Object.assign({}, this.$listeners, {
-        'size-change': this.internalSizeChange,
-        'current-change': this.internalCurrentChange
-      }),
+      on: Object.assign(
+        {},
+        {
+          'size-change': this.internalSizeChange,
+          'current-change': this.internalCurrentChange
+        },
+        this.$listeners
+      ),
 
       // 扩展 slots
       scopedSlots: this.$scopedSlots

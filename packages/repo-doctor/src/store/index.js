@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 
 import user from './modules/user'
 import layout from './modules/layout'
+import chat from './modules/chat'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     user,
-    layout
+    layout,
+    chat
   }
 })

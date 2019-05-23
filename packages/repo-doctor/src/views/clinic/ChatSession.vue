@@ -1,68 +1,66 @@
 <template>
-  <div v-if="internalSession && internalSession.id">
+  <div v-if="chat.session && chat.session.id">
+    <!-- 标题 -->
     <div class="header">
       <div class="left">
-        <h4>{{ internalSession && internalSession.lastMsg.custom.patients.familyName }}</h4>
+        <h4>{{ chat.session.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4 v-show="false">{{ countDown }}</h4>
-        <el-button
-          @click="showOver"
-          plain
-          type="success"
-          v-show="internalSession && internalSession.lastMsg.custom.ext.talkState !== state.talkState['未接诊']"
-        >结束问诊</el-button>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">{{ negativeDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">{{ positiveDuration }}</h4>
+        <el-button @click="overConfirm" plain type="success" v-show="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">结束问诊</el-button>
       </div>
     </div>
 
-    <template v-if="medical.visible || prescription.visible">
+    <!-- 内容 -->
+    <div class="content">
       <!-- 病历 -->
       <template v-if="medical.visible">
-        <chat-session-medical :session="lastSession" @close="closeMedical" @updateMsgHistory="updateMsgHistory"></chat-session-medical>
+        <chat-session-medical @close="closeMedical"></chat-session-medical>
       </template>
       <!-- 处方 -->
-      <template v-if="prescription.visible">
-        <chat-session-prescription :session="lastSession" @close="closePrescription" @updateMsgHistory="updateMsgHistory"></chat-session-prescription>
+      <template v-else-if="prescription.visible">
+        <chat-session-prescription @close="closePrescription"></chat-session-prescription>
       </template>
-    </template>
-
-    <template v-else>
-      <div class="content">
-        <el-scrollbar class="scrollbar">
-          <!-- 聊天列表 -->
-          <div>
-            <chat-session-list :sessionMsgs="sessionMsgs"></chat-session-list>
-          </div>
-        </el-scrollbar>
-      </div>
-
-      <template v-if="internalSession && internalSession.lastMsg.custom.ext.talkState === state.talkState['未接诊']">
-        <div class="receive">
-          <div class="tip">
-            <span>请注意，请在</span>
-            <span class="count-down">限时时间</span>
-            <span>内接诊，未接诊将自动退费</span>
-          </div>
-          <div class="control">
-            <div @click="refuse">
-              <img src="./../../assets/images/icons/clinic/ic_refuse.png">
-              <span>退诊</span>
-            </div>
-            <div @click="receive">
-              <img src="./../../assets/images/icons/clinic/ic_accept.png">
-              <span>接诊</span>
-            </div>
-          </div>
-        </div>
+      <!-- 双向转诊 -->
+      <template v-else-if="transfer.visible">
+        <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
       </template>
+      <!-- 医患问诊 -->
       <template v-else>
-        <div class="input">
-          <chat-session-input :sessionMsgs="sessionMsgs" @showMedical="showMedical" @showPrescription="showPrescription" @updateMsgHistory="updateMsgHistory"></chat-session-input>
-        </div>
-      </template>
-    </template>
+        <!-- 消息列表页 -->
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-list></chat-session-list>
+        </el-scrollbar>
 
-    <el-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
+        <!-- 未接诊 -->
+        <template v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">
+          <div class="receive">
+            <div class="tip">
+              <span>请注意，请</span>
+              <span class="count-down">尽快</span>
+              <span>接诊，未接诊将自动退费</span>
+            </div>
+            <div class="control">
+              <div @click="refuseConfirm">
+                <img src="./../../assets/images/icons/clinic/ic_refuse.png">
+                <span>退诊</span>
+              </div>
+              <div @click="receive">
+                <img src="./../../assets/images/icons/clinic/ic_accept.png">
+                <span>接诊</span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- 已急诊 -->
+        <template v-else>
+          <chat-session-input @showMedical="showMedical" @showPrescription="showPrescription" @showTransfer="showTransfer"></chat-session-input>
+        </template>
+      </template>
+    </div>
+
+    <peace-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
       <h4 style="margin: 0 0 30px 0; font-size: 18px;">您是否已经解决了患者的问题？</h4>
 
       <el-radio-group v-model="over.state">
@@ -77,7 +75,7 @@
           <el-radio label="缺少诊疗依据" style="margin: 0 0 20px 0;">缺少诊疗依据</el-radio>
           <br>
           <el-radio label="其他">其他</el-radio>
-          <el-input placeholder style="display: inline-block; width: 150px" v-if="over.description === '其他'" v-model="over.other"></el-input>
+          <el-input placeholder style="display: inline-block; width: 150px" v-if="over.description === '其他'" v-model="over.otherDescription"></el-input>
         </el-radio-group>
       </el-radio-group>
 
@@ -85,261 +83,206 @@
 
       <div style="text-align: center;">
         <el-button @click="over.visible = false" type>取消</el-button>
-        <el-button :disabled="!over.state" @click="overConfirm" type="primary">确认</el-button>
+        <el-button :disabled="!over.state" @click="overConfirmAgain" type="primary">确认</el-button>
       </div>
-    </el-dialog>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
-import { isArray } from 'util'
-import { state, deserializationSessions, deserializationSessionMsgs } from './util'
+import { mapState, mapMutations } from 'vuex'
 
-// 病历
-import ChatSessionMedical from './ChatSessionMedical'
-// 处方
-import ChatSessionPrescription from './ChatSessionPrescription'
+import { STATE } from './util'
+import config from './config'
+
 // 聊天列表
 import ChatSessionList from './ChatSessionList'
 // 输入项
 import ChatSessionInput from './ChatSessionInput'
+// 病历
+import ChatSessionMedical from './ChatSessionMedical'
+// 处方
+import ChatSessionPrescription from './ChatSessionPrescription'
+// 双向转诊
+import ChatSessionTransfer from './ChatSessionTransfer'
 
 export default {
   components: {
     ChatSessionList,
     ChatSessionInput,
     ChatSessionMedical,
-    ChatSessionPrescription
-  },
-
-  props: {
-    session: {
-      type: Object,
-      default() {
-        return undefined
-      }
-    }
+    ChatSessionPrescription,
+    ChatSessionTransfer
   },
 
   data() {
     return {
-      api: {
-        // 接受问诊
-        receiveInquiry: 'client/v1/patient/receiveInquiry',
-        // 验证问诊
-        checkOverInquiry: 'client/v1/patient/checkOverInquiry',
-        // 退出问诊
-        quitInquiry: 'client/v1/patient/quitInquiry',
-        // 正常结束问诊
-        overInquiry: 'client/v1/patient/overInquiry'
+      STATE,
+      config,
+
+      // 已接诊计时
+      positiveDuration: '',
+      // 未接诊倒计时
+      negativeDuration: '',
+
+      over: {
+        visible: false,
+
+        // 是否解决患者问题?
+        state: '',
+        // 未解决原因
+        description: '',
+        // 未解决的其它原因
+        otherDescription: ''
       },
-
-      state,
-
-      // 历史记录详情
-      sessionMsgs: undefined,
-      // 最后一条消息
-      lastSession: undefined,
 
       // 病历
       medical: {
         visible: false
       },
-
       // 处方
       prescription: {
         visible: false
       },
-
-      // 结束问诊
-      over: {
-        visible: false,
-
-        // 退诊是否解决问题?
-        state: '',
-
-        // 不满意原因
-        description: '',
-        // 其他原因
-        other: ''
-      },
-
-      countDown: undefined
+      // 双向转诊
+      transfer: {
+        visible: false
+      }
     }
-  },
-
-  created() {
-    const countDown = new Date().proDate('{%H+1}')
-
-    this.countDownInterval = setInterval(() => {
-      this.countDown = (countDown.getTime() - new Date().getTime()).toDate().formatDate('mm:ss')
-    }, 1000)
-  },
-
-  destroyed() {
-    window.clearInterval(this.countDownInterval)
   },
 
   computed: {
-    internalSession() {
-      if (this.session) {
-        return deserializationSessions([this.session])[0]
-      }
-
-      return this.session
-    }
+    ...mapState(['chat'])
   },
 
   watch: {
-    internalSession() {
-      if (this.internalSession && this.internalSession.to) {
-        this.getMsgHistory()
-      }
-    },
+    'chat.session'(newValue, oldValue) {
+      window.clearInterval(this.durationInterval)
 
-    sessionMsgs() {
-      this.$nextTick(function() {
-        // 滚动到最底部
-        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-        if (scrollElement) {
-          scrollElement.scrollTop = scrollElement.scrollHeight
+      if (newValue && oldValue && newValue.id !== oldValue.id) {
+        this.closeAllDialog()
+      }
+
+      // 获取当前问诊记录
+      this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+        if (this.chat.session) {
+          if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
+            this.durationInterval = setInterval(() => {
+              this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
+            }, 1000)
+          }
         }
       })
     }
   },
 
+  created() {},
+
+  destroyed() {
+    window.clearInterval(this.durationInterval)
+  },
+
   methods: {
-    resetState() {
-      this.medical.visible = false
-      this.prescription.visible = false
-      this.over.visible = false
-    },
+    ...mapMutations('chat', ['clearSession']),
 
-    // 获取当前消息的历史消息记录
-    getMsgHistory() {
-      $peace.NIM.getHistoryMsgs({
-        scene: 'p2p',
-        to: this.internalSession.to,
-        done: (error, obj) => {
-          if (error) {
-            $peace.util.alert(error.message)
-
-            return
-          }
-
-          console.log('获取历史消息', obj)
-
-          const msgs = deserializationSessionMsgs(obj.msgs)
-
-          // 获取最近一次就诊全记录
-          // [ 2,1,1,2,2,1 ]
-          // 以上数据, 需要获取 [ 2,1,1 ]
-
-          // 从 [0] 开始, 筛选最近一条 '未接诊'
-          let notReciveindex = msgs.findIndex(item => item.custom.ext.talkState === 1)
-          // 从 [最近一条未接诊] 开始, 筛选最近一条 '非未接诊'
-          let hasReciveindex = msgs
-            .concat([])
-            .splice(notReciveindex)
-            .findIndex(item => item.custom.ext.talkState !== 1)
-
-          notReciveindex = notReciveindex === -1 ? msgs.length : notReciveindex
-          hasReciveindex = hasReciveindex === -1 ? msgs.length : hasReciveindex
-
-          this.sessionMsgs = msgs.splice(0, notReciveindex + hasReciveindex).reverse()
-          this.lastSession = this.sessionMsgs[this.sessionMsgs.length - 1]
-        }
-      })
-    },
-
-    // 更新当前消息的历史消息记录
-    updateMsgHistory(msg) {
-      if (this.internalSession && this.internalSession.id === msg.sessionId) {
-        if (isArray(msg)) {
-          msg = deserializationSessionMsgs(msg)
-        } else {
-          msg = deserializationSessionMsgs([msg])
-        }
-
-        this.sessionMsgs = this.sessionMsgs.concat(msg)
-        this.lastSession = this.sessionMsgs[this.sessionMsgs.length - 1]
+    // 接诊
+    receive() {
+      const param = {
+        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+        inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
       }
-    },
 
-    // 显示写病历页面
-    showMedical() {
-      this.medical.visible = true
-    },
-
-    // 关闭写病历页面
-    closeMedical() {
-      this.medical.visible = false
-
-      this.$nextTick().then(() => {
-        // 滚动到最底部
-        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-        scrollElement.scrollTop = scrollElement.scrollHeight
+      this.$http.post(this.config.api.receiveInquiry, param).then(res => {
+        $peace.util.alert(res.msg)
       })
     },
 
-    // 显示写处方页面
-    showPrescription() {
-      this.prescription.visible = true
+    // 退诊确认
+    refuseConfirm() {
+      $peace.util.confirm('退诊后自动退还问诊费用，请再次确定是否退诊。', undefined, { type: 'warning', confirmButtonText: '退诊' }, this.refuse)
     },
 
-    // 关闭写处方页面
-    closePrescription() {
-      this.prescription.visible = false
+    // 退诊
+    refuse(description) {
+      const param = {
+        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+        inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId,
+        over_cause: description
+      }
 
-      this.$nextTick().then(() => {
-        // 滚动到最底部
-        const scrollElement = document.body.querySelector('.layout-center .el-scrollbar__wrap')
-        scrollElement.scrollTop = scrollElement.scrollHeight
-      })
+      this.$http
+        .post(this.config.api.quitInquiry, param)
+        .then(res => {
+          $peace.util.alert(res.msg)
+        })
+        .finally(() => {
+          this.over.visible = false
+        })
     },
 
-    // 显示退诊咨询狂
-    showOver() {
+    // 结束问诊确认
+    overConfirm() {
       this.over.visible = true
 
       this.over.state = ''
       this.over.description = ''
-      this.over.other = ''
+      this.over.otherDescription = ''
     },
 
-    // 结束问诊
-    overConfirm() {
-      // 结束问诊流程
+    // 结束问诊二次确认
+    overConfirmAgain() {
       if (this.over.state === '已解决') {
-        this.$http.post(this.api.checkOverInquiry, { inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId }).then(res => {
-          if (res.data.caseStatus === 2 && res.data.status === 2) {
-            const param = {
-              doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
-              inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId
-            }
-            this.$http.post(this.api.overInquiry, param).then(res => {
-              $peace.util.alert(res.msg)
+        const param = {
+          inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
+        }
 
-              this.over.visible = false
-              this.$emit('clear')
-            })
-          } else if (res.data.caseStatus === 1 && res.data.status === 2) {
-            $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
-              this.over.visible = false
-              this.showMedical()
-            })
-          } else if (res.data.caseStatus === 1 && res.data.status === 1) {
-            $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-              this.refuse()
-            })
-          } else {
-            $peace.util.warning(res.msg)
-          }
-        })
-      }
-      // 退诊退费流程
-      else if (this.over.state === '未解决') {
-        const description = this.over.description === '其他' ? this.over.other : this.over.description
+        // 验证是否可结束
+        this.$http
+          .post(this.config.api.checkOverInquiry, param)
+          .then(res => {
+            // 非有效会话，提示退诊
+            if (res.data.status === 1) {
+              $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
+                this.refuse()
+              })
+            }
+            // 未填写病历，提示填写病历
+            else if (res.data.caseStatus === 1) {
+              $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+                this.over.visible = false
+                this.showMedical()
+              })
+            }
+            // 可正常结束
+            else if (res.data.caseStatus === 2 && res.data.status === 2) {
+              const param = {
+                doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+                inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
+              }
+
+              this.$http
+                .post(this.config.api.overInquiry, param)
+                .then(res => {
+                  $peace.util.alert(res.msg)
+
+                  this.over.visible = false
+                  this.clearSession()
+                })
+                .finally(() => {
+                  this.over.visible = false
+                })
+            }
+            // 未知情况
+            else {
+              $peace.util.warning(res.msg)
+            }
+          })
+          .finally(() => {
+            this.over.visible = false
+          })
+      } else if (this.over.state === '未解决') {
+        const description = this.over.description === '其他' ? this.over.otherDescription : this.over.description
+
         if (!description) {
           $peace.util.warning('请选择未解决原因。')
         } else {
@@ -350,39 +293,41 @@ export default {
       }
     },
 
-    // 接诊
-    receive() {
-      const param = {
-        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
-        inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId
-      }
-      this.$http.post(this.api.receiveInquiry, param).then(res => {
-        $peace.util.alert(res.msg)
-
-        // 更新当前 session 状态
-        $peace.$set(this.internalSession.lastMsg, 'custom', res.data.ext)
-      })
+    // 写病历
+    showMedical() {
+      this.medical.visible = true
     },
 
-    // 退诊
-    refuse(over_cause) {
-      const handleRefuse = () => {
-        const param = {
-          doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
-          inquiryId: this.internalSession.lastMsg.custom.ext.inquiryId,
-          over_cause: over_cause
-        }
-        this.$http.post(this.api.quitInquiry, param).then(res => {
-          $peace.util.alert(res.msg)
+    // 关闭写病历页面
+    closeMedical() {
+      this.medical.visible = false
+    },
 
-          this.over.visible = false
-          this.$emit('clear')
-        })
-      }
+    // 显示写处方页面
+    showPrescription() {
+      this.prescription.visible = true
+    },
 
-      $peace.util.confirm('退诊后自动退还问诊费用，请再次确定是否退诊。', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-        handleRefuse()
-      })
+    // 关闭写处方页面
+    closePrescription() {
+      this.prescription.visible = false
+    },
+
+    // 显示申请转诊页面
+    showTransfer() {
+      this.transfer.visible = true
+    },
+
+    // 显示双向转诊页面
+    closeTransfer() {
+      this.transfer.visible = false
+    },
+
+    // 关闭所有弹框
+    closeAllDialog() {
+      this.closeMedical()
+      this.closePrescription()
+      this.closeTransfer()
     }
   }
 }
@@ -396,9 +341,8 @@ export default {
   justify-content: space-between;
   align-items: center;
 
-  height: 50px;
   border-bottom: 1px solid #f2f2f2;
-  background: rgba(249, 249, 249, 1);
+  background: #f9f9f9;
 
   .left {
     img {
@@ -433,46 +377,50 @@ export default {
 }
 
 .content {
-  height: calc(100% - 250px);
-  border-bottom: 1px solid #f2f2f2;
+  height: calc(100% - 50px);
 
-  .scrollbar {
-    height: 100%;
+  &-chat-list {
+    border-bottom: 1px solid #f2f2f2;
   }
-}
 
-.receive {
-  width: 310px;
-  margin: 0 auto;
+  &-scrollbar {
+    height: calc(100% - 200px);
+  }
 
-  .tip {
-    margin: 40px 0;
+  .receive {
+    width: 310px;
+    margin: 0 auto;
 
-    color: #333333;
+    .tip {
+      padding: 40px 0;
+      color: #333333;
+      text-align: center;
+      text-align-last: justify;
+      text-align: justify;
+      text-justify: distribute-all-lines;
+      width: 19rem;
+      display: inline-block;
 
-    .count-down {
-      font-weight: bold;
-      color: #00c6ae;
+      .count-down {
+        font-weight: bold;
+        color: #00c6ae;
+      }
     }
-  }
 
-  .control {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    div {
+    .control {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      flex-flow: column;
 
-      cursor: pointer;
+      div {
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+
+        cursor: pointer;
+      }
     }
   }
-}
-
-/deep/ .el-upload-list__item {
-  display: none;
 }
 
 .over-dialog {
@@ -485,3 +433,4 @@ export default {
   }
 }
 </style>
+

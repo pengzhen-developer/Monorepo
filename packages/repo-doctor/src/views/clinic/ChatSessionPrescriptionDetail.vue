@@ -54,7 +54,7 @@
             <strong>
               <span style="margin-right: 10px;">{{ drug.drugName }}</span>
               <span>{{ drug.drugSpecifications }}</span>
-              <span class="ft">x {{ drug.drugQty }} {{ drug.OnceUnit }}</span>
+              <span class="ft">x {{ drug.drugQty }}</span>
             </strong>
           </div>
           <div>
@@ -100,7 +100,7 @@
   </div>
 </template>
 <script>
-import { state } from './util'
+import { STATE } from './util'
 
 export default {
   name: 'pres-info',
@@ -111,6 +111,12 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+
+  data() {
+    return {
+      STATE
     }
   },
 
@@ -126,7 +132,7 @@ export default {
 
   methods: {
     getPrescriptionState(prescriptionState) {
-      return Object.keys(state.prescriptionState).find(key => state.prescriptionState[key] === prescriptionState)
+      return Object.keys(this.STATE.prescriptionState).find(key => this.STATE.prescriptionState[key] === prescriptionState)
     }
   }
 }
