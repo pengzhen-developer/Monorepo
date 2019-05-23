@@ -6,11 +6,11 @@
     "_description1": "------------- 云信 IM 相关配置",
 
     "development": {
-      "appKey": "987faa06038223aa9151e8e6e974314e"
+      "appKey": "a5b5212d7ff034b508d6e889040ffdf7"
     },
 
     "test": {
-      "appKey": "987faa06038223aa9151e8e6e974314e"
+      "appKey": "a5b5212d7ff034b508d6e889040ffdf7"
     },
 
     "production": {
@@ -23,11 +23,11 @@
     "_description2": "------------- 影响各子模块系统的请求地址",
 
     "development": {
-      "base": "https://testdoctor.hp.aijiayi.com"
+      "base": "https://doctor.hp.aijiayi.com"
     },
 
     "test": {
-      "base": "https://testdoctor.hp.aijiayi.com"
+      "base": "https://doctor.hp.aijiayi.com"
     },
 
     "production": {
