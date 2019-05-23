@@ -1,10 +1,10 @@
 {
   "name": "peace",
-  "version": "v0.3.0-007",
+  "version": "v0.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode test",
+    "build": "vue-cli-service build --mode prod",
     "build:prod": "vue-cli-service build --mode prod",
     "build:test": "vue-cli-service build --mode test",
     "build:dev": "vue-cli-service build --mode dev",
