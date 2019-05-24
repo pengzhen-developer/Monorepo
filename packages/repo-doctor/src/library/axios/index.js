@@ -3,7 +3,7 @@
  * @Date: 2018-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-13 15:49:37
+ * @Last Modified time: 2019-05-16 16:35:22
  */
 
 import Axios from 'axios'

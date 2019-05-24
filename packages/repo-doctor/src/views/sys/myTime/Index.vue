@@ -226,9 +226,9 @@ export default {
                       : key === 'Friday'
                       ? 5
                       : key === 'Saturday'
-                      ? 7
+                      ? 6
                       : key === 'Sunday'
-                      ? 1
+                      ? 7
                       : ''
                 })
               }
@@ -256,9 +256,9 @@ export default {
                       : key === 'Friday'
                       ? 5
                       : key === 'Saturday'
-                      ? 7
+                      ? 6
                       : key === 'Sunday'
-                      ? 1
+                      ? 7
                       : ''
                 })
               }

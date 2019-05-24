@@ -54,7 +54,7 @@
             <strong>
               <span style="margin-right: 10px;">{{ drug.drugName }}</span>
               <span>{{ drug.drugSpecifications }}</span>
-              <span class="ft">x {{ drug.drugQty }} {{ drug.OnceUnit }}</span>
+              <span class="ft">x {{ drug.drugQty }}</span>
             </strong>
           </div>
           <div>

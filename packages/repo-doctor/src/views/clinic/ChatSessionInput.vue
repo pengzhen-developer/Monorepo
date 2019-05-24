@@ -24,7 +24,7 @@
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
         <el-button @click="showTransfer" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">申请转诊
+          <img src="./../../assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
         </el-button>
         <el-button @click="OverOverOver" type="text" v-show="false">
           <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
@@ -55,6 +55,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { STATE } from './util.js'
+import config from './config'
 
 import Vue from 'vue'
 import CKEditor from '@ckeditor/ckeditor5-vue'
@@ -75,6 +76,7 @@ export default {
   data() {
     return {
       STATE,
+      config,
 
       ckEditor: {
         editor: ClassicEditor,
@@ -210,20 +212,39 @@ export default {
 
     // 双向转诊
     showTransfer() {
-      if (!this.isShowTransferButton) {
-        $peace.util.warning('尚未填写病历，无法申请转诊')
-      } else {
-        $peace.util.confirm(
-          '转诊提交成功后， 本次咨询将自动关闭。',
-          undefined,
-          {
-            type: 'warning'
-          },
-          () => {
-            this.$emit('showTransfer')
-          }
-        )
+      const param = {
+        inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
       }
+
+      this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
+        // 非有效会话，提示无法进行转诊
+        if (res.data.status === 1) {
+          $peace.util.warning('非有效会话，无法进行转诊')
+        }
+        // 未填写病历，提示填写病历
+        else if (res.data.caseStatus === 1) {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+            this.showMedical()
+          })
+        }
+        // 可正常转诊
+        else if (res.data.caseStatus === 2 && res.data.status === 2) {
+          $peace.util.confirm(
+            '转诊提交成功后， 本次咨询将自动关闭。',
+            undefined,
+            {
+              type: 'warning'
+            },
+            () => {
+              this.$emit('showTransfer')
+            }
+          )
+        }
+        // 未知情况
+        else {
+          $peace.util.warning(res.msg)
+        }
+      })
     },
 
     // 快捷发送

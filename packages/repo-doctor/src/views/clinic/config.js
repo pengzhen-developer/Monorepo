@@ -1,5 +1,8 @@
 export default {
   api: {
+    // 获取问诊订单详情
+    getInquiryByNo: 'client/v1/inquiry/getInquiryByNo',
+
     // 接诊
     receiveInquiry: 'client/v1/patient/receiveInquiry',
     // 退诊

@@ -3,7 +3,7 @@
  * @Description: 常用方法
  * @Date: 2018-07-06 11:24:59
  * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-06 11:18:01
+ * @Last Modified time: 2019-05-16 16:35:20
  */
 
 const _PADCHAR = '='
@@ -237,6 +237,35 @@ export function formatTime(date, format = 'yyyy-MM-dd HH:mm:ss') {
   } else {
     return date.toDate().formatDate(format)
   }
+}
+
+/**
+ * 格式化时间间隔
+ *
+ * @param {*} date
+ * @param {int} time 毫秒数
+ * @returns
+ */
+export function formatDuration(time) {
+  var days = time / 1000 / 60 / 60 / 24
+  var daysRound = Math.floor(days)
+  var hours = time / 1000 / 60 / 60 - 24 * daysRound
+  var hoursRound = Math.floor(hours)
+  var minutes = time / 1000 / 60 - 24 * 60 * daysRound - 60 * hoursRound
+  var minutesRound = Math.floor(minutes)
+  var seconds = Math.ceil(time / 1000 - 24 * 60 * 60 * daysRound - 60 * 60 * hoursRound - 60 * minutesRound)
+
+  if (hoursRound < 10) {
+    hoursRound = '0' + hoursRound
+  }
+  if (minutesRound < 10) {
+    minutesRound = '0' + minutesRound
+  }
+
+  if (seconds < 10) {
+    seconds = '0' + seconds
+  }
+  return hoursRound + ':' + minutesRound + ':' + seconds
 }
 
 /**
@@ -687,6 +716,7 @@ export default {
   timeAgo,
   formatDate,
   formatTime,
+  formatDuration,
   formatNum,
 
   notify,

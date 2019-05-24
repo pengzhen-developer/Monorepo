@@ -141,6 +141,8 @@ const WebRTCUtil = {
     busy: undefined,
     // 音视频类型
     type: undefined,
+    // 视频市场定时器
+    videoTimeInterval: undefined,
 
     // 会话配置
     sessionConfig: {
@@ -236,9 +238,12 @@ const WebRTCUtil = {
   },
 
   // 被叫拒绝的通知
+  // 通话未连接， 对方拒绝
   onCallRejected() {
     $peace.WebRTC.on('callRejected', function() {
       console.log('on callRejected')
+
+      $peace.util.warning('对方已拒绝')
 
       $peace.$store.commit('chat/setBeCall', '拒绝')
 
@@ -253,6 +258,11 @@ const WebRTCUtil = {
       console.log('on callAccepted')
 
       $peace.$store.commit('chat/setBeCall', '接听')
+
+      const videoTimeBegin = new Date()
+      WebRTCUtil.videoTimeInterval = setInterval(() => {
+        $peace.$store.commit('chat/setVideoTime', videoTimeBegin)
+      }, 500)
 
       // 记录视频问诊
       const videoProcessApi = '/client/v1/video/process'
@@ -364,15 +374,21 @@ const WebRTCUtil = {
   },
 
   // 挂断的通知
+  // 当一方挂断之后, 另一方会收到 hangup 事件, 此时做一些清理工作即可
   onHangup() {
     $peace.WebRTC.on('hangup', function(obj) {
       console.log('on hangup', obj)
 
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!WebRTCUtil.STATE.beCalledInfo || WebRTCUtil.STATE.beCalledInfo.channelId === obj.channelId) {
-        $peace.util.alert('通话结束')
+        $peace.util.warning('对方已挂断')
 
-        WebRTCUtil.hangUpVideo({ record: true })
+        if (state.beCall === '接听') {
+          // 接听情况下，挂断时候才需要向后端发送 over ，记录通话时间
+          WebRTCUtil.hangUpVideo({ record: true })
+        } else {
+          WebRTCUtil.hangUpVideo({ record: false })
+        }
       }
     })
   },
@@ -383,7 +399,7 @@ const WebRTCUtil = {
       if (WebRTCUtil.STATE.beCalledInfo && obj.channelId === WebRTCUtil.STATE.beCalledInfo.channelId) {
         console.log('on caller ack async:', obj)
 
-        $peace.util.alert('当前通话已经其它端处理')
+        $peace.util.warning('当前通话已经其它端处理')
 
         WebRTCUtil.clearState()
       }
@@ -455,10 +471,10 @@ const WebRTCUtil = {
 
     // 发送视频问诊, 并修改自定义消息体
     WebRTCUtil.STATE.pushConfig.custom = $peace.util.clone(state.session.lastMsg.custom)
-    WebRTCUtil.STATE.pushConfig.custom.ext.name = WebRTCUtil.STATE.pushConfig.custom.doctor.doctorName
-    WebRTCUtil.STATE.pushConfig.custom.ext.idcard = ''
-    WebRTCUtil.STATE.pushConfig.custom.ext.phone = ''
-    WebRTCUtil.STATE.pushConfig.custom.ext.id = ''
+    WebRTCUtil.STATE.pushConfig.custom.name = WebRTCUtil.STATE.pushConfig.custom.doctor.doctorName
+    WebRTCUtil.STATE.pushConfig.custom.idcard = ''
+    WebRTCUtil.STATE.pushConfig.custom.phone = ''
+    WebRTCUtil.STATE.pushConfig.custom.id = ''
 
     WebRTCUtil.STATE.pushConfig.custom = JSON.stringify(WebRTCUtil.STATE.pushConfig.custom)
 
@@ -486,7 +502,7 @@ const WebRTCUtil = {
       .catch(function(err) {
         // 被叫不在线
         if (err.code === 11000) {
-          $peace.util.warning('对方离线, 通话不可送达')
+          $peace.util.warning('对方离线')
         }
 
         WebRTCUtil.hangUpVideo({ record: false })
@@ -496,7 +512,7 @@ const WebRTCUtil = {
     WebRTCUtil.hangupTimer = setTimeout(function() {
       if (!$peace.WebRTC.callAccepted) {
         console.log('超时未接听, hangup')
-        $peace.util.warning('对方长时间未接听，已取消')
+        $peace.util.warning('对方无应答')
         WebRTCUtil.hangUpVideo({ record: false })
       }
     }, 1000 * 30)
@@ -505,6 +521,10 @@ const WebRTCUtil = {
   // 挂断并清理视频
   hangUpVideo({ record }) {
     console.log('挂断')
+
+    // 清空视频时长定时器
+    window.clearInterval(WebRTCUtil.videoTimeInterval)
+    $peace.$store.commit('chat/clearVideoTime', undefined)
 
     // 挂断
     $peace.WebRTC.hangup()
@@ -543,7 +563,10 @@ const state = {
 
   // 音频是否静音状态
   // true、false
-  mute: false
+  mute: false,
+
+  // 视频通话时长
+  videoTime: undefined
 }
 
 const actions = {
@@ -720,6 +743,26 @@ const actions = {
 }
 
 const mutations = {
+  /**
+   * 设定视频时长
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  setVideoTime(state, videoTime) {
+    state.videoTime = $peace.util.formatDuration(new Date() - videoTime)
+  },
+
+  /**
+   * 清空视频时长
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  clearVideoTime(state) {
+    state.videoTime = undefined
+  },
+
   /**
    * 选中 sessions
    *

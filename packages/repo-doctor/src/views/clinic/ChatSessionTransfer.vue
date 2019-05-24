@@ -54,7 +54,7 @@
       <el-row>
         <el-form-item label="转诊说明" prop="referralCause">
           <span slot="label">转诊说明</span>
-          <el-input :rows="3" placeholder type="textarea" v-model="view.model.referralCause"></el-input>
+          <el-input :rows="3" placeholder="请至少输入5个字符" type="textarea" v-model="view.model.referralCause"></el-input>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center; margin: 20px 0 0 0;">
@@ -121,7 +121,7 @@ export default {
           doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }],
+          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字符', trigger: 'change' }],
 
           pickerOptionsDate: {
             disabledDate(time) {
@@ -200,6 +200,8 @@ export default {
           }
           // 开始转诊
           else {
+            this.$emit('close')
+
             const params = {
               doctor_id: this.view.model.doctorInfo.doctor_id,
               patient_id: this.chat.session.lastMsg.custom.patients.patientId,
@@ -219,7 +221,7 @@ export default {
                 <span style="text-align: left; font-size: 14px;">
                   你的转诊已提交，可前往 【
                   <el-button type="text" onclick={redirect}>
-                    转诊记录/我的转诊
+                    转诊记录-我的转诊
                   </el-button>
                   】 查看转诊进度
                 </span>
@@ -234,7 +236,6 @@ export default {
               })
 
               this.clearSession()
-              this.$emit('close')
             })
           }
         }

@@ -52,6 +52,7 @@
 
             <!-- 接听视频邀请时 -->
             <template v-if="chat.beCall === '接听'">
+              <div class="time">{{ chat.videoTime }}</div>
               <el-button @click="hangUpVideo" circle class="hang_up">
                 <span class="video-bottom-text">挂断</span>
               </el-button>
@@ -77,7 +78,12 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['chat'])
+    ...mapState(['chat']),
+
+    a() {
+      console.log(1)
+      return this.$store.state.chat.videoTime
+    }
   },
 
   data() {
@@ -258,6 +264,9 @@ export default {
         top: 55px;
         color: rgba(255, 255, 255, 1);
       }
+    }
+
+    .video-time {
     }
   }
 }

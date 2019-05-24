@@ -14,18 +14,18 @@
           <div class="card-item row-2">
             <div @click="redirect('/clinic')" class="row-2-item">
               <div class="row-icon"></div>
-              <div class="row-text">接诊中</div>
-              <div class="row-number">{{ view.source.count3 }}</div>
+              <div class="row-text">待接诊</div>
+              <div class="row-number">{{ view.source.count2 }}</div>
             </div>
             <div @click="redirect('/clinic')" class="row-2-item">
               <div class="row-icon"></div>
-              <div class="row-text">待接诊</div>
-              <div class="row-number">{{ view.source.count2 }}</div>
+              <div class="row-text">问诊中</div>
+              <div class="row-number">{{ view.source.count3 }}</div>
             </div>
           </div>
         </div>
         <div class="card out">
-          <div @click="redirect('/record/transfer')" class="card-item">
+          <div @click="redirect('/record/transfer', { referral_type: 'in' })" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
               <div class="card-item-number">{{ view.source.count4 }}</div>
@@ -62,8 +62,12 @@ export default {
   },
 
   methods: {
-    redirect(path) {
-      this.$router.push(path)
+    redirect(name, params) {
+      if (params) {
+        this.$router.push({ name, params })
+      } else {
+        this.$router.push(name)
+      }
     }
   }
 }
@@ -75,18 +79,21 @@ export default {
     margin-top: 20px;
   }
   .title {
-    margin-bottom: 5px;
-    padding-left: 10px;
-    color: #333;
+    width: 64px;
+    height: 22px;
     font-size: 16px;
-    line-height: 30px;
+    font-family: PingFangSC-Semibold;
+    font-weight: 600;
+    color: rgba(51, 51, 51, 1);
+    line-height: 22px;
+    margin-bottom: 15px;
   }
   .content {
     font-size: 0;
   }
 }
 .card {
-  font-size: 1rem;
+  font-size: 14px;
   border-radius: 4px;
   display: inline-block;
   overflow: hidden;
@@ -136,7 +143,7 @@ export default {
     &-text {
       margin-top: 5px;
       line-height: 22px;
-      font-size: 1rem;
+      font-size: 14px;
     }
   }
   .row-2 {
@@ -165,12 +172,10 @@ export default {
       .row-text {
         margin-left: 35px;
         margin-right: 20px;
-        line-height: 20px;
       }
       .row-number {
         text-align: center;
         font-size: 30px;
-        line-height: 42px;
         color: #fff;
 
         text-decoration: none;

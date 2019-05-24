@@ -18,7 +18,7 @@
           <el-input placeholder v-model="view.model.hosName"></el-input>
         </el-form-item>
         <el-form-item label="转诊状态">
-          <el-select clearable placeholder v-model="view.model.transfer_status">
+          <el-select clearable placeholder="全部" v-model="view.model.transfer_status">
             <el-option :key="item.key" :label="item.refferStatus" :value="item.key" v-for="item in view.source.transfer_status"></el-option>
           </el-select>
         </el-form-item>
@@ -36,8 +36,8 @@
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
         <peace-table-column align="left" label="转入机构" min-width="200px" prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转入医生" prop="name"></peace-table-column>
-        <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
-        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="期望转诊时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
         <peace-table-column fixed="right" label="操作" width="100px">
           <template slot-scope="scope">
@@ -66,8 +66,8 @@
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
         <peace-table-column align="left" label="转出机构" min-width="200px" prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转出医生" prop="name"></peace-table-column>
-        <peace-table-column label="期望转诊时间" prop="created_time" width="150px"></peace-table-column>
-        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="期望转诊时间" prop="expect_time" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="created_time" width="150px"></peace-table-column>
         <peace-table-column :formatter="formatter" label="转诊状态" prop="transfer_status" width="100px"></peace-table-column>
         <peace-table-column fixed="right" label="操作" width="100px">
           <template slot-scope="scope">
@@ -98,10 +98,10 @@ export default {
       config,
 
       view: {
-        action: '我转诊的',
+        action: '',
 
         model: {
-          referral_type: 'out',
+          referral_type: (this.$route.params && this.$route.params.referral_type) || 'out',
           docName: '',
           hosName: '',
           transfer_status: ''
