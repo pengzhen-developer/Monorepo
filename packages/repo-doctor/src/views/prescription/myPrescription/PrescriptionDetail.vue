@@ -51,13 +51,13 @@
         </div>
         <div class="tag">
           <el-tag size="medium" type v-if="inquiry.case_no">
-            <img src="./../../../assets/images/icons/clinic/ic_bingli@2x.png">病历
+            <img src="~@/assets/images/icons/clinic/ic_bingli@2x.png">病历
           </el-tag>
           <el-tag size="medium" type v-if="inquiry.prescribe_prescrip_count">
-            <img src="./../../../assets/images/icons/clinic/ic_chuf@2x.png">处方
+            <img src="~@/assets/images/icons/clinic/ic_chuf@2x.png">处方
           </el-tag>
           <el-tag size="medium" type v-if="inquiry.referral_count">
-            <img src="./../../../assets/images/icons/clinic/ic_zhuanzhen@2x.png">转诊单
+            <img src="~@/assets/images/icons/clinic/ic_zhuanzhen@2x.png">转诊单
           </el-tag>
         </div>
       </div>
@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import ChatSessionList from './../../clinic/ChatSessionList'
+import ChatSessionList from '@/views/clinic/inquiry/ChatSessionList'
 
 import config from './config'
-import { STATE } from './../../clinic/util'
+import { STATE } from '@/views/clinic/inquiry/util'
 
 export default {
   components: {

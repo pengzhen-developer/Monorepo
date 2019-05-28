@@ -14,7 +14,7 @@
           name="image"
           ref="uploadAvatar"
         >
-          <img class="modify" slot="trigger" src="./../../../assets/images/ic_modify.png">
+          <img class="modify" slot="trigger" src="~@/assets/images/ic_modify.png">
         </el-upload>
       </el-form-item>
       <el-form-item label="帐号：">{{ view.model.id }}</el-form-item>
