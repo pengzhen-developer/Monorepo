@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-alert :closable="false" title="双向转诊" type="success">
+    <el-alert :closable="false" title="申请会诊" type="success">
       <div slot="title">
-        <span>双向转诊</span>
+        <span>申请会诊</span>
         <i @click="cancelTransfer" class="el-alert__closebtn el-icon-close"></i>
       </div>
     </el-alert>
@@ -15,8 +15,8 @@
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="转诊医生" prop="doctorInfo">
-          <span slot="label">转诊医生</span>
+        <el-form-item label="会诊医生" prop="doctorInfo">
+          <span slot="label">会诊医生</span>
           <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
@@ -31,8 +31,8 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="期望转诊时间" prop="expectDate" style="display: inline-block;">
-          <span slot="label">期望转诊时间</span>
+        <el-form-item label="期望会诊时间" prop="expectDate" style="display: inline-block;">
+          <span slot="label">期望会诊时间</span>
           <el-date-picker
             :picker-options="view.rules.pickerOptionsDate"
             placeholder
@@ -52,9 +52,9 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="转诊说明" prop="referralCause">
-          <span slot="label">转诊说明</span>
-          <el-input :rows="3" placeholder="请至少输入5个字符" type="textarea" v-model="view.model.referralCause"></el-input>
+        <el-form-item label="会诊说明" prop="referralCause">
+          <span slot="label">会诊说明</span>
+          <el-input :rows="3" placeholder type="textarea" v-model="view.model.referralCause"></el-input>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center; margin: 20px 0 0 0;">
@@ -65,7 +65,7 @@
       </el-row>
     </el-form>
 
-    <peace-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
+    <peace-dialog :visible.sync="dialog.visible" title="选择会诊医生" width="700px">
       <div>
         <el-input clearable placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
         <el-button @click="get" round type="primary">查询</el-button>
@@ -118,10 +118,10 @@ export default {
 
         rules: {
           diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
-          doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
-          expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字符', trigger: 'change' }],
+          doctorInfo: [{ required: true, message: '请选择会诊医生', trigger: 'change' }],
+          expectDate: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
+          expectTime: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
+          referralCause: [{ required: true, message: '请输入会诊说明', trigger: 'change' }],
 
           pickerOptionsDate: {
             disabledDate(time) {
@@ -194,14 +194,12 @@ export default {
     sendTransfer() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          // 验证转诊时间
+          // 验证会诊时间
           if (new Date(this.view.model.expectDate + ' ' + this.view.model.expectTime) <= new Date()) {
-            $peace.util.warning('期望转诊时间不能小于当前时间')
+            $peace.util.warning('期望会诊时间不能小于当前时间')
           }
-          // 开始转诊
+          // 开始会诊
           else {
-            this.$emit('close')
-
             const params = {
               doctor_id: this.view.model.doctorInfo.doctor_id,
               patient_id: this.chat.session.lastMsg.custom.patients.patientId,
@@ -219,11 +217,11 @@ export default {
 
               const msg = (
                 <span style="text-align: left; font-size: 14px;">
-                  你的转诊已提交，可前往 【
+                  你的会诊已提交，可前往 【
                   <el-button type="text" onclick={redirect}>
-                    转诊记录-我的转诊
+                    会诊记录/我发起的
                   </el-button>
-                  】 查看转诊进度
+                  】 查看会诊进度
                 </span>
               )
 
@@ -236,6 +234,7 @@ export default {
               })
 
               this.clearSession()
+              this.$emit('close')
             })
           }
         }
@@ -243,7 +242,7 @@ export default {
     },
 
     cancelTransfer() {
-      $peace.util.confirm('确定要退出转诊吗？当前所有数据将会被清除!', undefined, undefined, () => {
+      $peace.util.confirm('关闭页面后已经编辑的内容将重新编辑，确认关闭？', undefined, undefined, () => {
         this.$emit('close')
       })
     }

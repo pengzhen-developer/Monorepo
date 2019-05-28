@@ -24,7 +24,7 @@
           <div class="video-top">
             <template v-if="chat.beCall === '邀请' || chat.beCall === '收到'">
               <div class="video-top-info">
-                <img src="./../../assets/images/doctor-pic.png">
+                <img src="~@/assets/images/doctor-pic.png">
                 <br>
                 <p class="video-top-info-nick">{{ chat.session.lastMsg.custom.patients.familyName }}</p>
                 <p class="video-top-info-status">等待对方接受邀请</p>
@@ -235,16 +235,16 @@ export default {
       justify-content: center;
 
       &.hang_up {
-        background-image: url('./../../assets/images/icons/clinic/btn_hang_up@2x.png');
+        background-image: url('~@/assets/images/icons/clinic/btn_hang_up@2x.png');
       }
       &.answer {
-        background-image: url('./../../assets/images/icons/clinic/btn_answer@2x.png');
+        background-image: url('~@/assets/images/icons/clinic/btn_answer@2x.png');
       }
       &.mute {
-        background-image: url('./../../assets/images/icons/clinic/btn_mute_click@2x.png');
+        background-image: url('~@/assets/images/icons/clinic/btn_mute_click@2x.png');
       }
       &.mute-not {
-        background-image: url('./../../assets/images/icons/clinic/btn_mute_not clickable@2x.png');
+        background-image: url('~@/assets/images/icons/clinic/btn_mute_not clickable@2x.png');
       }
 
       & + .el-button {

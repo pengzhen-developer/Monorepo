@@ -2,7 +2,7 @@ import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0'
 import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
 NIM.use(WebRTC)
 
-import { STATE, DeserializationSessions, DeserializationSessionMsgs } from './../../views/clinic/util'
+import { STATE, DeserializationSessions, DeserializationSessionMsgs } from '@/views/clinic/inquiry/util'
 import { isArray } from 'util'
 
 const NIMUtil = {

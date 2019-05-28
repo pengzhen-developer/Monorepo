@@ -11,23 +11,26 @@
           style="display: inline-block;"
         >
           <el-button slot="trigger" type="text">
-            <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">图片
+            <img src="~@/assets/images/icons/clinic/chat_icon_pic.png">图片
           </el-button>
         </el-upload>
         <el-button @click="sendVideoBefore" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
+          <img src="~@/assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
         <el-button @click="showMedical" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_medical.png">写病历
+          <img src="~@/assets/images/icons/clinic/chat_icon_medical.png">写病历
         </el-button>
         <el-button @click="showPrescription" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
+          <img src="~@/assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
         <el-button @click="showTransfer" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
+          <img src="~@/assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
+        </el-button>
+        <el-button @click="showConsultation" type="text">
+          <img src="~@/assets/images/icons/clinic/yuanchenghuizhen1.png">申请会诊
         </el-button>
         <el-button @click="OverOverOver" type="text" v-show="false">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
+          <img src="~@/assets/images/icons/clinic/chat_icon_pr.png">强行退诊
         </el-button>
       </div>
     </div>
@@ -114,6 +117,10 @@ export default {
     },
 
     isShowTransferButton() {
+      return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
+    },
+
+    isShowConsultationButton() {
       return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
     }
   },
@@ -210,7 +217,7 @@ export default {
       }
     },
 
-    // 双向转诊
+    // 申请转诊
     showTransfer() {
       const param = {
         inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
@@ -245,6 +252,24 @@ export default {
           $peace.util.warning(res.msg)
         }
       })
+    },
+
+    // 申请会诊
+    showConsultation() {
+      if (!this.isShowConsultationButton) {
+        $peace.util.warning('尚未填写病历，无法申请会诊')
+      } else {
+        $peace.util.confirm(
+          '会诊提交成功后， 本次咨询将自动关闭。',
+          undefined,
+          {
+            type: 'warning'
+          },
+          () => {
+            this.$emit('showConsultation')
+          }
+        )
+      }
     },
 
     // 快捷发送

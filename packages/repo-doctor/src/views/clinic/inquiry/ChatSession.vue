@@ -26,6 +26,10 @@
       <template v-else-if="transfer.visible">
         <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
       </template>
+      <!-- 双向转诊 -->
+      <template v-else-if="consultation.visible">
+        <chat-session-consultation @close="closeConsultation"></chat-session-consultation>
+      </template>
       <!-- 医患问诊 -->
       <template v-else>
         <!-- 消息列表页 -->
@@ -43,11 +47,11 @@
             </div>
             <div class="control">
               <div @click="refuseConfirm">
-                <img src="./../../assets/images/icons/clinic/ic_refuse.png">
+                <img src="~@/assets/images/icons/clinic/ic_refuse.png">
                 <span>退诊</span>
               </div>
               <div @click="receive">
-                <img src="./../../assets/images/icons/clinic/ic_accept.png">
+                <img src="~@/assets/images/icons/clinic/ic_accept.png">
                 <span>接诊</span>
               </div>
             </div>
@@ -55,7 +59,7 @@
         </template>
         <!-- 已急诊 -->
         <template v-else>
-          <chat-session-input @showMedical="showMedical" @showPrescription="showPrescription" @showTransfer="showTransfer"></chat-session-input>
+          <chat-session-input @showConsultation="showConsultation" @showMedical="showMedical" @showPrescription="showPrescription" @showTransfer="showTransfer"></chat-session-input>
         </template>
       </template>
     </div>
@@ -103,8 +107,10 @@ import ChatSessionInput from './ChatSessionInput'
 import ChatSessionMedical from './ChatSessionMedical'
 // 处方
 import ChatSessionPrescription from './ChatSessionPrescription'
-// 双向转诊
+// 申请转诊
 import ChatSessionTransfer from './ChatSessionTransfer'
+// 申请会诊
+import ChatSessionConsultation from './ChatSessionConsultation'
 
 export default {
   components: {
@@ -112,7 +118,8 @@ export default {
     ChatSessionInput,
     ChatSessionMedical,
     ChatSessionPrescription,
-    ChatSessionTransfer
+    ChatSessionTransfer,
+    ChatSessionConsultation
   },
 
   data() {
@@ -144,8 +151,12 @@ export default {
       prescription: {
         visible: false
       },
-      // 双向转诊
+      // 申请转诊
       transfer: {
+        visible: false
+      },
+      // 申请会诊
+      consultation: {
         visible: false
       }
     }
@@ -307,7 +318,6 @@ export default {
     showPrescription() {
       this.prescription.visible = true
     },
-
     // 关闭写处方页面
     closePrescription() {
       this.prescription.visible = false
@@ -317,10 +327,18 @@ export default {
     showTransfer() {
       this.transfer.visible = true
     },
-
-    // 显示双向转诊页面
+    // 关闭申请转诊页面
     closeTransfer() {
       this.transfer.visible = false
+    },
+
+    // 显示申请会诊页面
+    showConsultation() {
+      this.consultation.visible = true
+    },
+    // 关闭申请会诊页面
+    closeConsultation() {
+      this.consultation.visible = false
     },
 
     // 关闭所有弹框
@@ -328,6 +346,7 @@ export default {
       this.closeMedical()
       this.closePrescription()
       this.closeTransfer()
+      this.closeConsultation()
     }
   }
 }

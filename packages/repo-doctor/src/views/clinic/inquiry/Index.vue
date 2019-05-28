@@ -1,9 +1,7 @@
 /*
  * @Author: PengZhen 
  * @Date: 2019-04-16 09:16:09 
- * @Description: 我的诊室
- * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-13 10:35:19
+ * @Description: 我的诊室 - 我的问诊
  */
 
 <template>
