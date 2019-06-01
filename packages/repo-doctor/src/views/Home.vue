@@ -4,7 +4,7 @@
       <div class="title">待办事项</div>
       <div class="content">
         <div class="card into">
-          <div @click="redirect('/clinic')" class="card-item">
+          <div @click="redirect('/clinic/inquiry')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
               <div class="card-item-number">{{ view.source.count5 }}</div>
@@ -12,12 +12,12 @@
             </div>
           </div>
           <div class="card-item row-2">
-            <div @click="redirect('/clinic')" class="row-2-item">
+            <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">待接诊</div>
               <div class="row-number">{{ view.source.count2 }}</div>
             </div>
-            <div @click="redirect('/clinic')" class="row-2-item">
+            <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">问诊中</div>
               <div class="row-number">{{ view.source.count3 }}</div>
