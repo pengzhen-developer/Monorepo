@@ -7,26 +7,46 @@
 <template>
   <div class="consultation">
     <!-- 房间列表 -->
-    <chat-rooms class="left"></chat-rooms>
+    <ChatTeams class="left" v-if="chat.teams"></ChatTeams>
 
     <!-- 房间明细 -->
-    <chat-room class="center"></chat-room>
+    <ChatTeam class="center" v-if="chat.team"></ChatTeam>
 
     <!-- 会诊详情 -->
-    <chat-consultation class="right"></chat-consultation>
+    <ChatConsultation class="right" v-if="chat.team"></ChatConsultation>
   </div>
 </template>
 
 <script>
-import ChatRooms from './ChatRooms'
-import ChatRoom from './ChatRoom'
+import ChatTeams from './ChatTeams'
+import ChatTeam from './ChatTeam'
 import ChatConsultation from './ChatConsultation'
+
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
-    ChatRooms,
-    ChatRoom,
+    ChatTeams,
+    ChatTeam,
     ChatConsultation
+  },
+
+  computed: {
+    ...mapState(['chat'])
+  },
+
+  // 初始化 IM
+  created() {
+    this.initNIM(true)
+  },
+
+  methods: {
+    ...mapActions('chat', ['clearSession', 'initNIM'])
+  },
+
+  // 销毁 IM
+  destroyed() {
+    this.clearSession()
   }
 }
 </script>

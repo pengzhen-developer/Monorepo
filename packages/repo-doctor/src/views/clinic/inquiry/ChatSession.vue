@@ -6,8 +6,8 @@
         <h4>{{ chat.session.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">{{ negativeDuration }}</h4>
-        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">{{ positiveDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊'] && negativeDuration !== '00:00:00'">{{ negativeDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊'] && positiveDuration !== '00:00:00'">{{ positiveDuration }}</h4>
         <el-button @click="overConfirm" plain type="success" v-show="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">结束问诊</el-button>
       </div>
     </div>
@@ -16,24 +16,32 @@
     <div class="content">
       <!-- 病历 -->
       <template v-if="medical.visible">
-        <chat-session-medical @close="closeMedical"></chat-session-medical>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-medical @close="closeMedical"></chat-session-medical>
+        </el-scrollbar>
       </template>
       <!-- 处方 -->
       <template v-else-if="prescription.visible">
-        <chat-session-prescription @close="closePrescription"></chat-session-prescription>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-prescription @close="closePrescription"></chat-session-prescription>
+        </el-scrollbar>
       </template>
-      <!-- 双向转诊 -->
+      <!-- 转诊 -->
       <template v-else-if="transfer.visible">
-        <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
+        </el-scrollbar>
       </template>
-      <!-- 双向转诊 -->
+      <!-- 会诊 -->
       <template v-else-if="consultation.visible">
-        <chat-session-consultation @close="closeConsultation"></chat-session-consultation>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-consultation @close="closeConsultation"></chat-session-consultation>
+        </el-scrollbar>
       </template>
       <!-- 医患问诊 -->
       <template v-else>
         <!-- 消息列表页 -->
-        <el-scrollbar class="content-chat-list content-scrollbar">
+        <el-scrollbar class="content-chat-list content-scrollbar-chat">
           <chat-session-list></chat-session-list>
         </el-scrollbar>
 
@@ -168,22 +176,25 @@ export default {
 
   watch: {
     'chat.session'(newValue, oldValue) {
-      window.clearInterval(this.durationInterval)
+      window.clearInterval(this.positiveDurationInterval)
+      this.positiveDuration = '00:00:00'
 
-      if (newValue && oldValue && newValue.id !== oldValue.id) {
-        this.closeAllDialog()
-      }
-
-      // 获取当前问诊记录
-      this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
-        if (this.chat.session) {
-          if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
-            this.durationInterval = setInterval(() => {
-              this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
-            }, 1000)
-          }
+      if (newValue) {
+        if (newValue && oldValue && newValue.id !== oldValue.id) {
+          this.closeAllDialog()
         }
-      })
+
+        // 获取当前问诊记录
+        this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+          if (this.chat.session) {
+            if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
+              this.positiveDurationInterval = setInterval(() => {
+                this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
+              }, 1000)
+            }
+          }
+        })
+      }
     }
   },
 
@@ -398,12 +409,16 @@ export default {
 .content {
   height: calc(100% - 50px);
 
-  &-chat-list {
+  .content-chat-list {
     border-bottom: 1px solid #f2f2f2;
   }
 
-  &-scrollbar {
+  .content-scrollbar-chat {
     height: calc(100% - 200px);
+  }
+
+  .content-scrollbar {
+    height: 100%;
   }
 
   .receive {

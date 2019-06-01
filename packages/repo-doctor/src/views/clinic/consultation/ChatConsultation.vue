@@ -1,11 +1,11 @@
 <template>
-  <div class="chat-consultation">
+  <div class="chat-consultation" v-if="chat.team">
     <div class="header">
       <img src="~@/assets/images/icons/clinic/electronicmedical_icon.png">
       <span>会诊申请单</span>
     </div>
 
-    <div class="body">
+    <div class="body" v-if="data">
       <el-scrollbar class="scrollbar">
         <div class="card">
           <div class="title">
@@ -20,9 +20,9 @@
                 src="https://wx.qlogo.cn/mmopen/vi_32/HMuHCjwyfmXyuoMdrcf3YZqsQcpgYzPCasrTBhoic3SV541hCgGN2TK3ticFYUCF3wS9XNjTHia6N5W1ibQIRTvlVA/132"
               >
 
-              <span style="font-weight:600; color: rgba(51,51,51,1);">长大山</span>
-              <span>男</span>
-              <span>27岁</span>
+              <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.familyName }}</span>
+              <span>{{ data.familySex }}</span>
+              <span>{{ data.familyAge }}</span>
             </div>
             <div class="item">
               <i class="el-icon-arrow-right"></i>
@@ -44,14 +44,14 @@
 
             <div class="doctor-info">
               <div>
-                <span style="font-weight:600; color: rgba(51,51,51,1);">长大山</span>
+                <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.fromDoctorName }}</span>
               </div>
               <div>
-                <span>神经内科</span>
-                <span>副主任医师</span>
+                <span>{{ data.fromDeptName }}</span>
+                <span>{{ data.fromDoctorTitle }}</span>
               </div>
               <div>
-                <span title="全息互联网医院全息互联网医院全息互联网医院">全息互联网医院全息互联网医院全息互联网医院</span>
+                <span :title="data.fromHospitalName">{{ data.fromHospitalName }}</span>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
                 <span>初步诊断</span>
               </div>
               <div class="content">
-                <span>过敏性皮炎</span>
+                <el-tag :key="item" style="margin-right: 5px; color: #00c6ae;" type="primary" v-for="item in data.familyDisagnose.split(',')">{{ item }}</el-tag>
               </div>
             </div>
             <div class="item">
@@ -79,7 +79,7 @@
                 <span>申请会诊说明</span>
               </div>
               <div class="content">
-                <span>1.病症长期难以确诊；2.诊疗方案不理想；3.需采取手术等创伤性治疗；4.多家医院诊断或治疗方案不一致；5.诊断出重大疾病希望再次确诊。</span>
+                <span>{{ data.consultExplain }}</span>
               </div>
             </div>
             <div class="item">
@@ -88,7 +88,7 @@
                 <span>期望会诊时间</span>
               </div>
               <div class="content">
-                <span>2019-05-09 10:30</span>
+                <span>{{ data.expectTime }}</span>
               </div>
             </div>
             <div class="item">
@@ -97,7 +97,7 @@
                 <span>提交申请时间</span>
               </div>
               <div class="content">
-                <span>2019-05-08 10:28</span>
+                <span>{{ data.createdTime }}</span>
               </div>
             </div>
           </div>
@@ -111,26 +111,32 @@
 
           <div class="content time-line">
             <el-timeline>
-              <el-timeline-item
-                :color="activity.color"
-                :icon="activity.icon"
-                :key="index"
-                :size="activity.size"
-                :timestamp="activity.content"
-                :type="activity.type"
-                placement="top"
-                v-for="(activity, index) in activities"
-              >
-                <el-tag class="timestamp_extend">审核通过</el-tag>
+              <el-timeline-item :timestamp="data.outCheckTime" placement="top" type="primary">
+                <el-tag class="timestamp_extend">{{ data.outCheckStatus === 3 ? '已通过' : '' }}</el-tag>
 
                 <div class="timestamp_remark">
                   <p>
                     <span>审核机构：</span>
-                    <span>全息互联网医院</span>
+                    <span>{{ data.fromHospitalName }}</span>
                   </p>
                   <p>
                     <span>审核备注：</span>
-                    <span>同意转诊，病情危急，应应抓紧时间组织会议。</span>
+                    <span>{{ data.outCheckSuggest || '同意会诊' }}</span>
+                  </p>
+                </div>
+              </el-timeline-item>
+
+              <el-timeline-item :timestamp="data.inCheckTime" placement="top" type="primary">
+                <el-tag class="timestamp_extend">{{ data.inCheckStatus === 3 ? '已通过' : '' }}</el-tag>
+
+                <div class="timestamp_remark">
+                  <p>
+                    <span>审核机构：</span>
+                    <span>{{ data.toHospitalName }}</span>
+                  </p>
+                  <p>
+                    <span>审核备注：</span>
+                    <span>{{ data.inCheckSuggest || '同意会诊' }}</span>
                   </p>
                 </div>
               </el-timeline-item>
@@ -159,36 +165,23 @@ export default {
     ChatSessionList
   },
 
-  computed: {
-    ...mapState(['chat'])
-  },
-
   data() {
     return {
       config,
       STATE,
 
+      data: undefined,
+
       activities: [
         {
           content: '2018-04-12 20:46',
           timestamp: '123123',
-          size: 'large',
-          type: 'primary',
-          icon: 'el-icon-more'
+          type: 'primary'
         },
         {
-          content: '支持自定义颜色',
+          content: '2018-04-15 20:46',
           timestamp: '2018-04-03 20:46',
-          color: '#0bbd87'
-        },
-        {
-          content: '支持自定义尺寸',
-          timestamp: '2018-04-03 20:46',
-          size: 'large'
-        },
-        {
-          content: '默认样式的节点',
-          timestamp: '2018-04-03 20:46'
+          type: 'primary'
         }
       ],
 
@@ -197,6 +190,20 @@ export default {
         data: undefined
       }
     }
+  },
+
+  computed: {
+    ...mapState(['chat'])
+  },
+
+  watch: {
+    'chat.team'() {
+      this.getConsultationDetail()
+    }
+  },
+
+  created() {
+    this.getConsultationDetail()
   },
 
   methods: {
@@ -255,6 +262,18 @@ export default {
 
         this.dialog.data = res.data
       })
+    },
+
+    getConsultationDetail() {
+      if (this.chat.team) {
+        const params = {
+          consultNo: 'HZ8355686534531728'
+        }
+
+        this.$http.post(this.config.api.getConsultInfo, params).then(res => {
+          this.data = res.data.info
+        })
+      }
     }
   }
 }
@@ -422,10 +441,29 @@ export default {
               }
             }
 
+            /deep/ .el-timeline-item__node--normal {
+              width: 8px;
+              height: 8px;
+              top: 2px;
+            }
+
+            /deep/ .el-timeline-item__tail {
+              left: 2px;
+              top: 2px;
+            }
+
+            /deep/ .el-timeline-item__wrapper {
+              padding-left: 16px;
+
+              .el-timeline-item__timestamp.is-top {
+                padding-top: 2px;
+              }
+            }
+
             .timestamp_extend {
               position: absolute;
-              top: 4px;
-              right: 10px;
+              top: 1px;
+              right: 0;
 
               font-size: 12px;
               background: #fff;

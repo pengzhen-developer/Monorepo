@@ -2,24 +2,25 @@
   <div>
     <div class="header">
       <el-button-group>
-        <el-button :type="view.model.referral_type === view.source.state['我发起的'] ? 'primary' : '' " @click="changeActive('我发起的')">我发起的</el-button>
-        <el-button :type="view.model.referral_type === view.source.state['邀请我的'] ? 'primary' : '' " @click="changeActive('邀请我的')">邀请我的</el-button>
+        <el-button :type="view.action === source.action.OUT ? 'primary' : '' " @click="changeAction(source.action.OUT)">我发起的</el-button>
+        <el-button :type="view.action === source.action.IN ? 'primary' : '' " @click="changeAction(source.action.IN)">邀请我的</el-button>
       </el-button-group>
     </div>
 
     <hr>
 
-    <div key="out" v-if="view.model.referral_type === view.source.state['我发起的']">
-      <el-form :model="view.model" inline>
+    <!-- 我发起的 -->
+    <div :key="source.action.OUT" v-if="view.action === source.action.OUT">
+      <el-form :model="view.outModel" inline>
         <el-form-item label="邀请医生">
-          <el-input placeholder v-model="view.model.docName"></el-input>
+          <el-input placeholder v-model="view.outModel.toDoctorName"></el-input>
         </el-form-item>
         <el-form-item label="邀请机构">
-          <el-input placeholder v-model="view.model.hosName"></el-input>
+          <el-input placeholder v-model="view.outModel.toHospitalName"></el-input>
         </el-form-item>
         <el-form-item label="会诊状态">
-          <el-select clearable placeholder v-model="view.model.transfer_status">
-            <el-option :key="item.key" :label="item.refferStatus" :value="item.key" v-for="item in view.source.transfer_status"></el-option>
+          <el-select clearable placeholder v-model="view.outModel.consultStatus">
+            <el-option :key="item.key" :label="item.value" :value="item.key" v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
@@ -30,15 +31,15 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
-        <peace-table-column label="年龄" prop="age"></peace-table-column>
-        <peace-table-column label="性别" prop="sex"></peace-table-column>
-        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
-        <peace-table-column align="left" label="邀请机构" min-width="200px" prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="邀请医生" prop="name"></peace-table-column>
-        <peace-table-column label="期望会诊时间" prop="created_time" width="150px"></peace-table-column>
-        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
-        <peace-table-column :formatter="formatter" label="会诊状态" prop="transfer_status" width="100px"></peace-table-column>
+        <peace-table-column label="患者姓名" prop="familyName"></peace-table-column>
+        <peace-table-column label="年龄" prop="familyAge"></peace-table-column>
+        <peace-table-column label="性别" prop="familySex"></peace-table-column>
+        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="familyDisagnose"></peace-table-column>
+        <peace-table-column align="left" label="邀请机构" min-width="200px" prop="toHospitalName"></peace-table-column>
+        <peace-table-column label="邀请医生" prop="toDoctorName"></peace-table-column>
+        <peace-table-column label="期望会诊时间" prop="expectTime" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="createdTime" width="150px"></peace-table-column>
+        <peace-table-column :formatter="formatterConsultStatus" label="会诊状态" prop="consultStatus" width="100px"></peace-table-column>
         <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="150px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -48,17 +49,18 @@
       </peace-table>
     </div>
 
-    <div key="in" v-if="view.model.referral_type === view.source.state['邀请我的']">
-      <el-form :model="view.model" inline>
+    <!-- 邀请我的 -->
+    <div :key="source.action.IN" v-if="view.action === source.action.IN">
+      <el-form :model="view.inModel" inline>
         <el-form-item label="申请医生">
-          <el-input placeholder v-model="view.model.docName"></el-input>
+          <el-input placeholder v-model="view.inModel.inDoctorName"></el-input>
         </el-form-item>
         <el-form-item label="申请机构">
-          <el-input placeholder v-model="view.model.hosName"></el-input>
+          <el-input placeholder v-model="view.inModel.inHospitalName"></el-input>
         </el-form-item>
         <el-form-item label="会诊状态">
-          <el-select clearable placeholder v-model="view.model.transfer_status">
-            <el-option :key="item.key" :label="item.refferStatus" :value="item.key" v-for="item in view.source.transfer_status"></el-option>
+          <el-select clearable placeholder v-model="view.inModel.consultStatus">
+            <el-option :key="item.key" :label="item.value" :value="item.key" v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
@@ -69,15 +71,15 @@
       <hr>
 
       <peace-table pagination ref="table">
-        <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
-        <peace-table-column label="年龄" prop="age"></peace-table-column>
-        <peace-table-column label="性别" prop="sex"></peace-table-column>
-        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="diagnose"></peace-table-column>
-        <peace-table-column align="left" label="申请机构" min-width="200px" prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="申请医生" prop="name"></peace-table-column>
-        <peace-table-column label="期望会诊时间" prop="created_time" width="150px"></peace-table-column>
-        <peace-table-column label="申请时间" prop="expect_time" width="150px"></peace-table-column>
-        <peace-table-column :formatter="formatter" label="会诊状态" prop="transfer_status" width="100px"></peace-table-column>
+        <peace-table-column label="患者姓名" prop="familyName"></peace-table-column>
+        <peace-table-column label="年龄" prop="familyAge"></peace-table-column>
+        <peace-table-column label="性别" prop="familySex"></peace-table-column>
+        <peace-table-column align="left" label="初步诊断" min-width="200px" prop="familyDisagnose"></peace-table-column>
+        <peace-table-column align="left" label="申请机构" min-width="200px" prop="fromHospitalName"></peace-table-column>
+        <peace-table-column label="申请医生" prop="fromDoctorName"></peace-table-column>
+        <peace-table-column label="期望会诊时间" prop="expectTime" width="150px"></peace-table-column>
+        <peace-table-column label="申请时间" prop="createdTime" width="150px"></peace-table-column>
+        <peace-table-column :formatter="formatterConsultStatus" label="会诊状态" prop="consultStatus" width="100px"></peace-table-column>
         <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="150px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -88,14 +90,13 @@
     </div>
 
     <peace-dialog :visible.sync="dialog.visible" custom-class="dialog" title="会诊详情">
-      <consultation-detail :data="dialog.data" :type="view.model.referral_type" @close="close"></consultation-detail>
+      <consultation-detail :data="dialog.data" @close="() => dialog.visible = false"></consultation-detail>
     </peace-dialog>
   </div>
 </template>
 
 <script>
 import config from './config'
-
 import ConsultationDetail from './ConsultationDetail'
 
 export default {
@@ -108,37 +109,40 @@ export default {
       config,
 
       view: {
-        action: '我发起的',
+        action: undefined,
 
-        model: {
-          referral_type: 'out',
-          docName: '',
-          hosName: '',
-          transfer_status: ''
+        outModel: {
+          toDoctorName: undefined,
+          toHospitalName: undefined,
+          consultStatus: undefined
         },
 
-        source: {
-          transfer_status: [{ label: '问诊', value: '问诊' }, { label: '扫码', value: '扫码' }],
-
-          state: {
-            我发起的: 'out',
-            邀请我的: 'in'
-          }
+        inModel: {
+          inDoctorName: undefined,
+          inHospitalName: undefined,
+          consultStatus: undefined
         }
       },
 
       dialog: {
         visible: false,
 
-        data: {}
+        data: undefined
+      },
+
+      source: {
+        action: {
+          OUT: 'out',
+          IN: 'in'
+        },
+
+        consultStatus: []
       }
     }
   },
 
   created() {
-    this.$http.post(this.config.api.getRefferStatus).then(res => {
-      this.view.source.transfer_status = res.data
-    })
+    this.view.action = this.source.action.OUT
   },
 
   mounted() {
@@ -148,21 +152,32 @@ export default {
   },
 
   methods: {
-    changeActive(action) {
-      if (this.view.model.referral_type !== this.view.source.state[action]) {
-        this.view.model.referral_type = this.view.source.state[action]
+    changeAction(action) {
+      this.view.action = action
 
-        this.$nextTick(function() {
-          this.get()
-        })
-      }
+      this.$nextTick().then(() => {
+        this.get()
+      })
     },
 
     get() {
-      this.$refs.table.loadData({
-        api: this.config.api.getDoctorReferralListPc,
-        params: this.view.model
-      })
+      if (this.view.action === this.source.action.OUT) {
+        const api = this.config.api.getOutConsultList
+        const params = this.view.outModel
+
+        this.$refs.table.loadData({
+          api,
+          params
+        })
+      } else {
+        const api = this.config.api.getInConsultList
+        const params = this.view.outModel
+
+        this.$refs.table.loadData({
+          api,
+          params
+        })
+      }
     },
 
     showDetail(row) {
@@ -170,23 +185,16 @@ export default {
       this.dialog.visible = true
 
       const params = {
-        referral_no: row.referral_no,
-        referral_type: this.view.model.referral_type
+        consultNo: row.consultNo
       }
 
-      this.$http.post(this.config.api.referralDocPc, params).then(res => {
-        this.dialog.data = res.data
+      this.$http.post(this.config.api.getConsultInfo, params).then(res => {
+        this.dialog.data = res.data.info
       })
     },
 
-    close() {
-      this.dialog.visible = false
-
-      this.get()
-    },
-
-    formatter(r, c, v) {
-      const temp = this.view.source.transfer_status.find(item => item.key === v)
+    formatterConsultStatus(r, c, v) {
+      const temp = this.source.consultStatus.find(item => item.key === v)
 
       return temp && temp.refferStatus
     }
@@ -194,56 +202,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .header {
   text-align: center;
 }
-
-.character {
-  display: inline-flex;
-
-  &:before {
-    content: '';
-    background: #e7e7e1;
-    width: 15px;
-    height: 1px;
-    position: relative;
-    top: -4px;
-    margin: 0 10px;
-  }
-}
-
-.el-form-item {
-  margin-right: 60px;
-
-  .el-input {
-    width: 140px;
-    height: 27px;
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
-    border-radius: 3px;
-  }
-}
-
-.no-data {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column;
-
-  img {
-    display: block;
-    width: 150px;
-    height: 150px;
-  }
-
-  span {
-    margin-top: 20px;
-    font-weight: 400;
-    color: rgba(155, 155, 155, 1);
-    line-height: 20px;
-  }
-}
 </style>
+

@@ -18,7 +18,7 @@
           <el-input placeholder v-model="view.model.hosName"></el-input>
         </el-form-item>
         <el-form-item label="转诊状态">
-          <el-select clearable placeholder="全部" v-model="view.model.transfer_status">
+          <el-select clearable filterable placeholder="全部" v-model="view.model.transfer_status">
             <el-option :key="item.key" :label="item.refferStatus" :value="item.key" v-for="item in view.source.transfer_status"></el-option>
           </el-select>
         </el-form-item>

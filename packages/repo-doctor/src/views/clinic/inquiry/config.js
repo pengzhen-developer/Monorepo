@@ -20,6 +20,19 @@ export default {
     // 获取患者过敏信息
     allergenList: 'client/v1/patient/allergenList',
 
+    // 获取既往史
+    OldIllnessList: '/client/v1/patient/OldIllnessList',
+    // 添加既往史
+    addOldIllness: 'client/v1/patient/addOldIllness',
+    // 获取诊断
+    IllnessList: '/client/v1/patient/IllnessList',
+    // 添加诊断
+    addIllness: 'client/v1/patient/addIllness',
+    // 获取过敏源
+    allergens: '/client/v1/patient/allergens',
+    // 添加过敏源
+    addAllergen: 'client/v1/patient/addAllergen',
+
     // 获取病历详情
     getCase: 'client/v1/inquiry/getCase',
 
@@ -35,6 +48,11 @@ export default {
     // 获取转诊医生列表
     referralDocListPc: 'client/v1/inquiry/referralDocListPc',
     // 问诊转诊提交
-    addReferral: 'client/v1/inquiry/addReferral'
+    addReferral: 'client/v1/inquiry/addReferral',
+
+    // 获取会诊医生列表
+    chooseConsultationDoctor: 'client/v1/consult/chooseDoctor',
+    // 会诊提交
+    doConsultationApply: 'client/v1/consult/doApply'
   }
 }

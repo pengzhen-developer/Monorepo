@@ -119,10 +119,37 @@ export function DeserializationSessionMsgs(msgs) {
   return temp
 }
 
+/**
+ * 反序列化 sessions
+ * 对话消息的扩展信息, 都以 JSON 字符串的形式, 存储在消息体上
+ * 反序列化 sessions, 有助于显示数据和进行类型判断
+ *
+ * @export
+ * @param {*} sessions
+ * @returns
+ */
+export function DeserializationTeams(teams) {
+  let temp = $peace.util.clone(teams)
+
+  if (temp) {
+    temp.forEach(team => {
+      if (team.custom && !(team.custom instanceof Object)) {
+        team.custom = JSON.parse(team.custom)
+      }
+    })
+
+    // 过滤垃圾数据
+    temp = temp.filter(item => item.custom)
+  }
+
+  return temp
+}
+
 export default {
   STATE,
 
   DeserializationSessions,
+  DeserializationTeams,
 
   DeserializationSessionMsgs
 }

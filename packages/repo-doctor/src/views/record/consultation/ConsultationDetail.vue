@@ -5,29 +5,29 @@
     </div>
 
     <div class="record-no">
-      <span>No.{{ internalData.referral_no }}</span>
+      <span>No.{{ internalData.consultNo }}</span>
     </div>
     <div class="record-title">
-      <span>{{ internalData.send_hos_name }}</span>
+      <span>{{ internalData.fromHospitalName }}</span>
       <br>
       <span>会诊单</span>
     </div>
 
     <!-- 转出信息 -->
     <div class="record-content">
-      <span class="title">发起申请信息</span>
+      <span class="title">申请信息</span>
 
       <el-form>
         <el-row>
           <el-col :span="12">
             <el-form-item label="患者姓名">
-              <span>{{ internalData.family_name }}</span>
+              <span>{{ internalData.familyName }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="性别">
               <span slot="label">性别</span>
-              <span>{{ internalData.sex }}</span>
+              <span>{{ internalData.familySex }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,76 +35,76 @@
           <el-col :span="12">
             <el-form-item label="年龄">
               <span slot="label">年龄</span>
-              <span>{{ internalData.age }}</span>
+              <span>{{ internalData.familyAge }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="科别">
               <span slot="label">科别</span>
-              <span>{{ internalData.send_dept_child }}</span>
+              <span>{{ internalData.fromDeptName }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="申请医生">
-              <span>{{ internalData.send_doc_name }}</span>
+              <span>{{ internalData.fromDoctorName }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="初步诊断">
-              <span>{{ internalData.diagnose }}</span>
+              <span>{{ internalData.familyDisagnose }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="会诊原因">
-              <span>{{ internalData.referral_cause }}</span>
+            <el-form-item label="申请会诊说明">
+              <span>{{ internalData.consultExplain }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="期望会诊时间">
-              <span>{{ internalData.expect_time }}</span>
+              <span>{{ internalData.expectTime }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="申请提交时间">
-              <span>{{ internalData.created_time }}</span>
+              <span>{{ internalData.createdTime }}</span>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
 
-    <!-- 转入信息 -->
+    <!-- 受邀会诊医生 -->
     <div class="record-content">
-      <span class="title">邀请会诊医生</span>
+      <span class="title">受邀会诊医生</span>
 
       <el-form>
         <el-row>
           <el-col :span="12">
             <el-form-item label="医生姓名">
-              <span>{{ internalData.receive_doc_name }}</span>
+              <span>{{ internalData.toDoctorName }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="科别">
               <span slot="label">科别</span>
-              <span>{{ internalData.receive_dept_child }}</span>
+              <span>{{ internalData.toDeptName }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="机构名称">
-              <span>{{ internalData.receive_hos_name }}</span>
+              <span>{{ internalData.toHospitalName }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -112,28 +112,28 @@
     </div>
 
     <!-- 发起机构审核信息 -->
-    <div class="record-content" v-if="internalData.send_check_time">
+    <div class="record-content" v-if="internalData.outCheckTime">
       <span class="title">发起机构审核信息</span>
 
       <el-form>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <span>{{ internalData.send_check_status }}</span>
+              <span>{{ internalData.outCheckStatus }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核意见">
-              <span>{{ internalData.send_check_suggest || '无' }}</span>
+              <span>{{ internalData.outCheckSuggest || '同意会诊' }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核时间">
-              <span>{{ internalData.send_check_time }}</span>
+              <span>{{ internalData.outCheckTime }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -141,72 +141,51 @@
     </div>
 
     <!-- 受邀机构审核信息 -->
-    <div class="record-content" v-if="internalData.receive_check_time">
+    <div class="record-content" v-if="internalData.inCheckTime">
       <span class="title">受邀机构审核信息</span>
 
       <el-form>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <span>{{ internalData.receive_check_status }}</span>
+              <span>{{ internalData.inCheckStatus }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核意见">
-              <span>{{ internalData.receive_check_suggest || '无' }}</span>
+              <span>{{ internalData.inCheckSuggest || '同意会诊' }}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核时间">
-              <span>{{ internalData.receive_check_time }}</span>
+              <span>{{ internalData.inCheckTime }}</span>
             </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
-
-    <!-- 会议记录 - 转给我的 - 需审核 -->
-    <div class="record-content" v-if="type === 'in' &&  internalData.transfer_status === 4">
-      <span class="title">会议记录</span>
-
-      <el-form :model="view.model" inline>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="会诊意见" prop="referral_suggest">
-              <el-input :rows="4" placeholder="请输入会诊意见" style="width: 400px;" type="textarea" v-model="view.model.referral_suggest"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <br>
-        <el-row>
-          <el-col :span="24" style="text-align: center;">
-            <el-button :disabled="!view.model.referral_suggest" @click="receiveReferralPc" type="primary">提交</el-button>
           </el-col>
         </el-row>
       </el-form>
     </div>
 
     <!-- 会议记录 -->
-    <div class="record-content" v-else-if="internalData.referral_time">
-      <template v-if="internalData.transfer_status === 7">
+    <div class="record-content" v-else-if="internalData.consultEndTime">
+      <template v-if="internalData.consultStatus === 8">
         <span class="title">会诊关闭信息</span>
 
         <el-form>
           <el-row>
             <el-col :span="24">
               <el-form-item label="关闭时间">
-                <span>todo</span>
+                <span>{{ internalData.consultEndTime }}</span>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item label="关闭原因">
-                <span>todo</span>
+                <span>{{ internalData.closeReason || '期望会诊时间已过期' }}</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -219,21 +198,21 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="开始时间">
-                <span>todo</span>
+                <span>{{ internalData.consultStartTime }}</span>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item label="结束时间">
-                <span>todo</span>
+                <span>{{ internalData.consultEndTime }}</span>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item label="会诊意见">
-                <span>todo</span>
+                <span>{{ internalData.consultSuggest }}</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -244,8 +223,6 @@
 </template>
 
 <script>
-import config from './config'
-
 export default {
   props: {
     data: {
@@ -253,10 +230,6 @@ export default {
       default() {
         return {}
       }
-    },
-
-    type: {
-      type: String
     }
   },
 
@@ -269,38 +242,12 @@ export default {
   },
 
   data() {
-    return {
-      config,
-
-      view: {
-        model: {
-          referral_suggest: ''
-        }
-      },
-
-      dialog: {
-        visible: false,
-        data: []
-      }
-    }
+    return {}
   },
 
   methods: {
     getState() {
-      return this.internalData.referral_status
-    },
-
-    receiveReferralPc() {
-      const params = {
-        referral_no: this.internalData.referral_no,
-        referral_suggest: this.view.model.referral_suggest
-      }
-
-      this.$http.post(this.config.api.receiveReferralPc, params).then(res => {
-        $peace.util.alert(res.msg)
-
-        this.$emit('close')
-      })
+      return this.internalData.consultStatus
     }
   }
 }

@@ -10,18 +10,18 @@
     <chat-video></chat-video>
 
     <!-- 会话列表 -->
-    <chat-sessions class="left"></chat-sessions>
+    <chat-sessions class="left" v-if="chat.sessions"></chat-sessions>
 
     <!-- 消息列表 -->
-    <chat-session class="center"></chat-session>
+    <chat-session class="center" v-if="chat.session"></chat-session>
 
     <!-- 患者详情 -->
-    <chat-patient class="right"></chat-patient>
+    <chat-patient class="right" v-if="chat.session"></chat-patient>
   </div>
 </template> 
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import ChatVideo from './ChatVideo'
 
@@ -36,6 +36,10 @@ export default {
     ChatSessions,
     ChatSession,
     ChatPatient
+  },
+
+  computed: {
+    ...mapState(['chat'])
   },
 
   methods: {
@@ -63,7 +67,7 @@ export default {
 
   .left,
   .right {
-    width: 214px;
+    width: 230px;
 
     border: 1px solid #efefef;
   }
