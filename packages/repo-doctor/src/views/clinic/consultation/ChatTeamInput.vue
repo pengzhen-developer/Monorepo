@@ -1,29 +1,101 @@
 <template>
   <div>
-    <el-dialog :title="video.title" :visible.sync="video.visible" center custom-class="video-class" width="500px">
-      <!-- 己方视频 -->
-      <div class="videoContaier" id="mainContaier"></div>
+    <el-dialog :visible.sync="consultSuggestDialog.visible" title="填写会诊意见">
+      <br>
 
-      <!-- 他人视频 -->
-      <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in remoteList"></div>
+      <el-form :model="consultSuggestDialog.model" label-width="80px">
+        <el-form-item label="会诊意见">
+          <el-input
+            :rows="8"
+            maxlength="1000"
+            placeholder="请填写会诊意见，包括治疗方案、患者与家属关注问题等内容的分析等，提交成功后本次会诊将结束。"
+            type="textarea"
+            v-model="consultSuggestDialog.model.consultSuggest"
+          ></el-input>
 
-      <template slot="footer">
-        <el-button @click="leaveVideo" circle icon="el-icon-close" plain></el-button>
+          <label class="msg">最多可以输入1000字，还可以输入 {{ summaryMaxLength }} 字</label>
+        </el-form-item>
+        <el-form-item label=" ">
+          <div style="text-align: center;">
+            <el-button @click="consultSuggestDialog.visible = false" type>取消</el-button>
+            <el-button @click="saveConsultSuggest" type="primary">确定</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog :visible.sync="invitedDialog.visible" title="邀请协同医生">
+      <div>
+        <el-input placeholder="请输入医生姓名、职称、科室" style="width: calc(100% - 120px); margin-right: 20px;" v-model="invitedDialog.model.keyword"></el-input>
+        <el-button @click="getInvitedDoctor" type="primary">查询</el-button>
+      </div>
+
+      <br>
+      <br>
+
+      <peace-table :layout="'total,  -> , prev, pager, next, slot'" :pageSize="5" pagination ref="table" v-if="invitedDialog.visible">
+        <el-table-column align="center" label=" " width="45">
+          <template slot-scope="scope">
+            <el-checkbox-group @change="val => invitedChange(val, scope.row)" v-model="invitedDialog.chooseListForCheckBox">
+              <el-checkbox :label="scope.row.doctorId"></el-checkbox>
+            </el-checkbox-group>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="头像" width="60">
+          <template slot-scope="scope">
+            <img :src="scope.row.avartor" height="40px" style="border-radius: 50%;" width="40px">
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="姓名" prop="doctorName" width="80"></el-table-column>
+        <el-table-column align="center" label="职称" prop="doctorTitle" width="100"></el-table-column>
+        <el-table-column label="科室" prop="deptName" width="120"></el-table-column>
+        <el-table-column label="医院" prop="hospitalName"></el-table-column>
+      </peace-table>
+
+      <br>
+
+      <template v-if="invitedDialog.chooseList.length">
+        <div style="margin: 20px 0; color:rgba(51,51,51,1);">已选择医生 （{{ invitedDialog.chooseList.length }}）</div>
+        <div style="border:1px solid rgba(204,204,204,1); min-height: 110px;">
+          <el-tag
+            :key="item.doctorId"
+            @close="closeInvitedChange(item.doctorId)"
+            closable
+            style="margin: 10px; height: 32px; padding: 5px 15px; "
+            type
+            v-for="item in invitedDialog.chooseList"
+          >{{ item.doctorName }}</el-tag>
+        </div>
+
+        <br>
+
+        <div style="text-align: center;">
+          <el-button @click="invitedDialog.visible = false" type>取消</el-button>
+          <el-button @click="saveInvited" type="primary">确定</el-button>
+        </div>
       </template>
     </el-dialog>
 
     <div class="tool">
       <div class="shortcut">
-        <el-button @click="邀请医生" type="text">
+        <el-button
+          @click="showInvited"
+          type="text"
+          v-show="chat.team.custom.consultation.startDoctor[0].doctorId !== user.userInfo.list.docInfo.doctor_id && 
+                  teamStatus === TEAM_STATUS.距开始"
+        >
           <img src="~@/assets/images/icons/clinic/chat_icon_video.png">邀请医生
         </el-button>
-        <el-button @click="sendVideo" type="text">
+
+        <el-button @click="sendVideo" type="text" v-show="teamStatus !== TEAM_STATUS.距开始">
           <img src="~@/assets/images/icons/clinic/chat_icon_video.png">发起视频
         </el-button>
-        <el-button @click="joinVideoRoom" type="text">
-          <img src="~@/assets/images/icons/clinic/chat_icon_video.png">加入视频
-        </el-button>
-        <el-button @click="sendRemark" type="text">
+
+        <el-button
+          @click="showConsultSuggest"
+          type="text"
+          v-show="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id && teamStatus === TEAM_STATUS.会诊中"
+        >
           <img src="~@/assets/images/icons/clinic/chat_icon_video.png">会诊意见
         </el-button>
       </div>
@@ -32,17 +104,45 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import config from './config'
 
-import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
+import { mapState, mapActions } from 'vuex'
+
+const TEAM_STATUS = {
+  距开始: '距开始',
+  距结束: '距结束',
+  会诊中: '会诊中'
+}
 
 export default {
   data() {
     return {
+      TEAM_STATUS,
+      config,
+
       remoteList: [],
 
       dialog: {
         visible: false
+      },
+
+      invitedDialog: {
+        visible: false,
+
+        chooseList: [],
+        chooseListForCheckBox: [],
+
+        model: {
+          keyword: ''
+        }
+      },
+
+      consultSuggestDialog: {
+        visible: false,
+
+        model: {
+          consultSuggest: ''
+        }
       },
 
       video: {
@@ -53,7 +153,40 @@ export default {
   },
 
   computed: {
-    ...mapState(['chat'])
+    ...mapState(['chat', 'user']),
+
+    summaryMaxLength() {
+      if (this.consultSuggestDialog.model.consultSuggest) {
+        return 1000 - this.consultSuggestDialog.model.consultSuggest.length
+      } else {
+        return 1000
+      }
+    },
+
+    // 获取当前群组（会诊）状态
+    teamStatus() {
+      if (!this.data && this.chat.team && this.chat.team.custom) {
+        const consultStatus = this.chat.team.custom.consultation.consultStatus
+        const expectTime = this.chat.team.custom.consultation.expectTime
+        const expectOverTime = this.chat.team.custom.consultation.expectOverTime
+
+        if (consultStatus === 5) {
+          if (new Date() < new Date(expectTime)) {
+            return TEAM_STATUS.距开始
+          }
+
+          if (new Date() > new Date(expectTime) && new Date() < new Date(expectOverTime)) {
+            return TEAM_STATUS.距结束
+          }
+        }
+
+        if (consultStatus === 6) {
+          return TEAM_STATUS.会诊中
+        }
+      }
+
+      return ''
+    }
   },
 
   created() {
@@ -65,194 +198,95 @@ export default {
   },
 
   methods: {
-    邀请医生() {
-      this.dialog.visible = true
+    ...mapActions('chat', ['clearTeam']),
+
+    showInvited() {
+      this.invitedDialog.visible = true
+      this.invitedDialog.model.keyword = ''
+      this.invitedDialog.chooseList = []
+      this.invitedDialog.chooseListForCheckBox = []
+
+      this.$nextTick(function() {
+        this.getInvitedDoctor()
+      })
+    },
+
+    getInvitedDoctor() {
+      const params = {
+        keyword: this.invitedDialog.model.keyword
+      }
+
+      this.$refs.table.loadData({
+        api: this.config.api.inviteDoctor,
+        params
+      })
+    },
+
+    invitedChange(val, row) {
+      const index = val.findIndex(item => item === row.doctorId)
+
+      if (index !== -1) {
+        this.invitedDialog.chooseList.push(row)
+      } else {
+        this.invitedDialog.chooseList.splice(index, 1)
+      }
+
+      this.invitedDialog.chooseListForCheckBox = val
+    },
+
+    closeInvitedChange(doctorId) {
+      const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === doctorId)
+      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(item => item === doctorId)
+
+      if (index !== -1) {
+        this.invitedDialog.chooseList.splice(index, 1)
+        this.invitedDialog.chooseListForCheckBox.splice(checkboxIndex, 1)
+      }
+    },
+
+    saveInvited() {
+      const params = {
+        consultNo: this.chat.team.custom.consultation.consultNo,
+        inviteDoctorIds: this.invitedDialog.chooseList.map(item => item.doctorId)
+      }
+      this.$http.post(this.config.api.chooseInviteDoctor, params, { headers: { 'Content-Type': 'application/json' } }).then(res => {
+        $peace.util.alert(res.msg)
+
+        this.invitedDialog.visible = false
+      })
     },
 
     sendVideo() {
+      const channel = this.chat.team.id.replace('team-', '') + '-' + new Date().getTime()
+
       // step 1. 创建群视频房间
-      this.createVideoRoom().then(() => {
+      $peace.consultationComponent.createVideoRoom(channel).then(() => {
         // step 2. 加入群视频房间
-        this.joinVideoRoom().then(() => {
-          window.alert('需要发送开始了')
-
-          // 开始视频
-          const params = {
-            consultNo: this.chat.team.custom.consultation.consultNo,
-            action: 'start'
-          }
-
-          this.$http.post('client/v1/video/processConsult', params)
-        })
+        $peace.consultationComponent.joinVideoRoom(channel, this.chat.team.custom.consultation.consultNo, true)
       })
     },
 
-    sendRemark() {
-      const params = {
-        consultNo: this.chat.team.custom.consultation.consultNo,
-        consultSuggest: '建议测试'
-      }
-
-      this.$http.post('client/v1/consult/submitSuggest', params)
+    showConsultSuggest() {
+      this.consultSuggestDialog.visible = true
+      this.consultSuggestDialog.model.consultSuggest = ''
     },
 
-    createVideoRoom() {
-      return $peace.WebRTC.createChannel({
-        //必填, 房间名
-        channelName: 'channel-' + this.chat.team.id.replace('team-', ''),
-        //可选
-        custom: 'channel-' + this.chat.team.id.replace('team-', ''),
-        // 是否支持WebRTC方式接入，可选，默认为不开启
-        webrtcEnable: true
-      })
-        .then(obj => {
-          console.log(obj)
-        })
-        .catch(obj => {
-          console.log(obj)
-        })
-    },
-
-    joinVideoRoom() {
-      this.video.visible = true
-
-      const sessionConfig = {
-        videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
-        videoFrameRate: WebRTC.CHAT_VIDEO_FRAME_RATE_15,
-        videoEncodeMode: WebRTC.CHAT_VIDEO_ENCODEMODE_NORMAL,
-        videoBitrate: 0,
-        recordVideo: false,
-        recordAudio: false,
-        highAudio: false,
-        bypassRtmp: false,
-        rtmpUrl: '',
-        rtmpRecord: false,
-        splitMode: WebRTC.LAYOUT_SPLITLATTICETILE
-      }
-
-      return $peace.WebRTC.joinChannel({
-        channelName: 'channel-' + this.chat.team.id.replace('team-', ''), //必填
-        type: WebRTC.NETCALL_TYPE_VIDEO,
-        sessionConfig: sessionConfig
-      }).then(obj => {
-        // 加入房间成功后的上层逻辑操作
-        // eg: 开启摄像头
-        // eg: 开启麦克风
-        // eg: 开启本地流
-        // eg: 设置音量采集、播放
-        // eg: 设置视频画面尺寸等等，具体请参照p2p呼叫模式
-
-        console.log('加入成功', obj)
-
-        $peace.WebRTC.startRtc()
-          .then(() => {
-            // 开启麦克风
-            return $peace.WebRTC.startDevice({
-              type: WebRTC.DEVICE_TYPE_AUDIO_IN
-            }).catch(err => {
-              console.log('启动麦克风失败')
-              console.error(err)
-            })
-          })
-          .then(() => {
-            // 设置采集音量
-            $peace.WebRTC.setCaptureVolume(255)
-            // 开启摄像头
-            return $peace.WebRTC.startDevice({
-              type: WebRTC.DEVICE_TYPE_VIDEO,
-              width: 640,
-              height: 480
-            }).catch(err => {
-              console.log('启动摄像头失败')
-              console.error(err)
-            })
-          })
-          .then(() => {
-            //预览本地画面
-            $peace.WebRTC.startLocalStream(document.getElementById('mainContaier'))
-            // 设置本地预览画面大小
-            $peace.WebRTC.setVideoViewSize({
-              width: 250,
-              height: 250,
-              cut: true
-            })
-          })
-          .then(() => {
-            // 设置互动者角色
-            $peace.WebRTC.changeRoleToPlayer()
-          })
-          .catch(err => {
-            console.log('发生错误')
-            console.log(err)
-            $peace.WebRTC.hangup()
-          })
-      })
-    },
-
-    remoteTrack(obj) {
-      console.log('other user join', obj)
-
-      this.video.title = '这里显示通话时长 10:00'
-
-      if (this.remoteList.findIndex(item => item.account === obj.account) === -1) {
-        this.remoteList.push(obj)
-
-        this.$nextTick(function() {
-          console.log(document.getElementById('remoteContaier' + obj.account))
-
-          // 播放对方声音
-          $peace.WebRTC.startDevice({
-            type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
-          }).catch(err => {
-            console.log('播放对方的声音失败')
-            console.error(err)
-          })
-          // 预览对方视频画面
-          $peace.WebRTC.startRemoteStream({
-            account: obj.account,
-            node: document.getElementById('remoteContaier' + obj.account)
-          })
-          // 设置对方预览画面大小
-          $peace.WebRTC.setVideoViewRemoteSize({
-            account: obj.account,
-            width: 250,
-            height: 250,
-            cut: true
-          })
-        })
-      }
-    },
-
-    leaveChannel(obj) {
-      console.log('other user leave', obj)
-
-      const index = this.remoteList.findIndex(item => item.account === obj.account)
-
-      if (index !== -1) {
-        this.remoteList.splice(index, 1)
-
-        console.log(this.remoteList)
-      }
-    },
-
-    leaveVideo() {
-      $peace.WebRTC.leaveChannel().then(obj => {
-        console.log('user leave', obj)
-
-        console.log(this.remoteList)
-
-        if (this.remoteList.length === 0) {
-          // 开始视频
-          const params = {
-            consultNo: this.chat.team.custom.consultation.consultNo,
-            action: 'over'
-          }
-
-          this.$http.post('client/v1/video/processConsult', params)
+    saveConsultSuggest() {
+      if (this.consultSuggestDialog.model.consultSuggest) {
+        const params = {
+          consultNo: this.chat.team.custom.consultation.consultNo,
+          consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
 
-        this.video.visible = false
-      })
+        this.$http.post('client/v1/consult/submitSuggest', params).then(res => {
+          $peace.util.alert(res.msg)
+
+          this.clearTeam()
+          this.consultSuggestDialog.visible = false
+        })
+      } else {
+        $peace.util.alert('请填写会诊意见')
+      }
     }
   }
 }
@@ -301,5 +335,9 @@ export default {
   /deep/ .el-upload-list__item {
     display: none;
   }
+}
+
+/deep/ .el-checkbox__label {
+  display: none;
 }
 </style>

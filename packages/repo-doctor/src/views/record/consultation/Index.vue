@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item label="会诊状态">
           <el-select clearable placeholder v-model="view.outModel.consultStatus">
-            <el-option :key="item.key" :label="item.value" :value="item.key" v-for="item in source.consultStatus"></el-option>
+            <el-option :key="item.consultStatus" :label="item.consultTxt" :value="item.consultStatus" v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
@@ -43,7 +43,7 @@
         <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="150px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
-            <el-button @click="showDetail(scope.row)" type="text">会诊记录</el-button>
+            <el-button @click="showMessageHistory(scope.row)" type="text" v-show="scope.row.consultStatus === 7">会诊记录</el-button>
           </template>
         </peace-table-column>
       </peace-table>
@@ -60,7 +60,7 @@
         </el-form-item>
         <el-form-item label="会诊状态">
           <el-select clearable placeholder v-model="view.inModel.consultStatus">
-            <el-option :key="item.key" :label="item.value" :value="item.key" v-for="item in source.consultStatus"></el-option>
+            <el-option :key="item.consultStatus" :label="item.consultTxt" :value="item.consultStatus" v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
@@ -83,7 +83,7 @@
         <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="150px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
-            <el-button @click="showDetail(scope.row)" type="text">会诊记录</el-button>
+            <el-button @click="showMessageHistory(scope.row)" type="text" v-show="scope.row.consultStatus === 7">会诊记录</el-button>
           </template>
         </peace-table-column>
       </peace-table>
@@ -92,16 +92,24 @@
     <peace-dialog :visible.sync="dialog.visible" custom-class="dialog" title="会诊详情">
       <consultation-detail :data="dialog.data" @close="() => dialog.visible = false"></consultation-detail>
     </peace-dialog>
+
+    <peace-dialog :visible.sync="chatRecord.visible" custom-class="dialog" title="会诊详情">
+      <ChatTeamList :data="chatRecord.data" @close="() => chatRecord.visible = false"></ChatTeamList>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import config from './config'
 import ConsultationDetail from './ConsultationDetail'
+import ChatTeamList from './../../clinic/consultation/ChatTeamList'
+
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    ConsultationDetail
+    ConsultationDetail,
+    ChatTeamList
   },
 
   data() {
@@ -130,15 +138,33 @@ export default {
         data: undefined
       },
 
+      chatRecord: {
+        visible: false,
+        data: undefined
+      },
+
       source: {
         action: {
           OUT: 'out',
           IN: 'in'
         },
 
-        consultStatus: []
+        consultStatus: [
+          { consultStatus: 1, consultTxt: '发起待审核' },
+          { consultStatus: 2, consultTxt: '发起已拒绝' },
+          { consultStatus: 3, consultTxt: '邀请待审核' },
+          { consultStatus: 4, consultTxt: '邀请已拒绝' },
+          { consultStatus: 5, consultTxt: '等待会诊' },
+          { consultStatus: 6, consultTxt: '会诊中' },
+          { consultStatus: 7, consultTxt: '会诊已完成' },
+          { consultStatus: 8, consultTxt: '会诊已关闭' }
+        ]
       }
     }
+  },
+
+  computed: {
+    ...mapState(['user'])
   },
 
   created() {
@@ -193,10 +219,33 @@ export default {
       })
     },
 
-    formatterConsultStatus(r, c, v) {
-      const temp = this.source.consultStatus.find(item => item.key === v)
+    showMessageHistory(row) {
+      this.chatRecord.visible = true
+      this.chatRecord.data = undefined
 
-      return temp && temp.refferStatus
+      const params = {
+        consultNo: row.consultNo
+      }
+
+      this.$http.post(this.config.api.getChatRecord, params).then(res => {
+        res.data.info.forEach(item => {
+          item.custom = item.ext && JSON.parse(item.ext)
+
+          if (this.user.userInfo.list.docInfo.doctor_id === item.from) {
+            item.flow = 'out'
+          } else {
+            item.flow = 'in'
+          }
+        })
+
+        this.chatRecord.data = res.data.info.filter(item => item.type === 0)
+      })
+    },
+
+    formatterConsultStatus(r, c, v) {
+      const temp = this.source.consultStatus.find(item => item.consultStatus === v)
+
+      return temp && temp.consultTxt
     }
   }
 }

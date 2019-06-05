@@ -7,48 +7,79 @@
 
     <div class="body">
       <el-scrollbar class="scrollbar">
-        <div :key="team.id" @click="selectTeam(team)" class="consultation-item" v-for="team in chat.teams">
+        <div
+          :class="{ active: chat.team && chat.team.id === team.id }"
+          :key="team.id"
+          @click="selectTeam(team)"
+          class="consultation-item"
+          v-for="team in chatTeams"
+        >
           <template v-if="team.custom">
             <div class="title">
               <div class="status">
-                <i class="el-icon-alarm-clock"></i>
-                <span>根据会诊状态变更</span>
-              </div>
-              <div class="time">
-                <span>{{ team.custom.consultation.consultStatus }}</span>
-              </div>
-            </div>
-
-            <div class="title">
-              <div class="status">
-                <i class="el-icon-alarm-clock"></i>
                 <!-- 距开始 -->
                 <span v-if="team.custom.consultation.consultStatus === 5 && 
                       new Date(team.custom.consultation.expectTime) > new Date()">
+                  <i class="icon_ic_wait_groupconsultation"></i>
                   <span>距开始还剩</span>
-                  <span>{{ $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd }} 天</span>
-                  <span>{{ $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH }} 小时</span>
+
+                  <template v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd !== 0">
+                    <span style="margin: 0 0 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].dd }} 天</span>
+                  </template>
+
+                  <template v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH !== 0">
+                    <span style="margin: 0 0 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].HH }} 时</span>
+                  </template>
+
+                  <template
+                    v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd === 0 && 
+                          $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH === 0"
+                  >
+                    <span style="margin: 0 0 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].mm }} 分</span>
+                  </template>
                 </span>
 
                 <!-- 距关闭 -->
                 <span
-                  v-if="team.custom.consultation.consultStatus === 5 && 
+                  v-else-if="team.custom.consultation.consultStatus === 5 && 
                       new Date() > new Date(team.custom.consultation.expectTime) && 
                       new Date() < new Date(team.custom.consultation.expectOverTime)"
-                >距关闭还剩 {{ $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectOverTime)).dd }} 天 {{ $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectOverTime)).HH }} 小时</span>
+                >
+                  <i class="icon_ic_wait_groupconsultation"></i>
+                  <span>距关闭还剩</span>
+                  <span style="color: #FF0000;">{{ durationEnd[team.id] && durationEnd[team.id].mm }} 分</span>
+                </span>
 
                 <!-- 会诊中 -->
-                <span v-if="team.custom.consultation.consultStatus === 6">会诊中</span>
+                <span style="color: #00C6AE;" v-else-if="team.custom.consultation.consultStatus === 6">
+                  <i class="icon_ic_ing_groupconsultation"></i>
+                  <span>{{ consultStatus.find(item => item.consultStatus === team.custom.consultation.consultStatus).consultTxt }}</span>
+                </span>
+
+                <!-- 例外情况 -->
+                <span v-else>
+                  <span>会诊超时</span>
+                </span>
               </div>
               <div class="time">
-                <span>10:12</span>
+                <span></span>
               </div>
             </div>
 
             <div class="doctor">
-              <span>申请医生：</span>
-              <span class="name">{{ team.custom.consultation.startDoctor[0].doctorName }}</span>
-              <el-tag type="parmary">{{ team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id ? '我邀请的' : '邀请我的'}}</el-tag>
+              <!-- 我发起的会诊 -->
+              <template v-if="team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id">
+                <span>受邀医生：</span>
+                <span class="name">{{ team.custom.consultation.receiveDoctor.map(item => item.doctorName).toString() }}</span>
+                <el-tag type="parmary">我邀请的</el-tag>
+              </template>
+
+              <!-- 我受邀的会诊 -->
+              <template v-else>
+                <span>发起医生：</span>
+                <span class="name">{{ team.custom.consultation.startDoctor.map(item => item.doctorName).toString() }}</span>
+                <el-tag type="parmary">我邀请的</el-tag>
+              </template>
             </div>
             <div class="patient">
               <span>患者信息：</span>
@@ -68,18 +99,70 @@ import { mapState, mapActions } from 'vuex'
 import config from './config'
 
 export default {
-  computed: {
-    ...mapState(['chat', 'user'])
-  },
+  inject: ['consultStatus'],
 
   data() {
     return {
-      config
+      config,
+
+      durationInterval: [],
+      durationEnd: {},
+      duration: {}
+    }
+  },
+
+  computed: {
+    ...mapState(['chat', 'user']),
+
+    chatTeams() {
+      const teams = $peace.util.clone(this.chat.teams)
+
+      return teams.filter(item => item.custom && (item.custom.consultation.consultStatus === 5 || item.custom.consultation.consultStatus === 6))
+    }
+  },
+
+  watch: {
+    chatTeams: {
+      handler(newValue) {
+        // 移除所有定时器
+        this.durationInterval.forEach(interval => window.clearInterval(interval))
+        this.durationInterval = []
+        this.duration = {}
+        this.durationEnd = {}
+
+        if (newValue) {
+          this.chatTeams.forEach(team => {
+            const intervalHander = () => {
+              if (new Date() < new Date(team.custom.consultation.expectTime)) {
+                const duration = $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime))
+                this.$set(this.duration, team.id, duration)
+              } else {
+                this.$set(this.duration, team.id, undefined)
+              }
+
+              if (new Date() < new Date(team.custom.consultation.expectOverTime)) {
+                const durationEnd = $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectOverTime))
+                this.$set(this.durationEnd, team.id, durationEnd)
+              } else {
+                this.$set(this.durationEnd, team.id, undefined)
+              }
+            }
+
+            intervalHander()
+            this.durationInterval.push(setInterval(intervalHander, 1000))
+          })
+        }
+      },
+      immediate: true
     }
   },
 
   methods: {
     ...mapActions('chat', ['selectTeam'])
+  },
+
+  destroyed() {
+    this.durationInterval.forEach(interval => window.clearInterval(interval))
   }
 }
 </script>
@@ -114,12 +197,15 @@ export default {
       border-bottom: 1px solid #efefef;
       padding: 0 10px;
 
+      &.active {
+        background: #f4f4f4;
+      }
+
       .title {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 14px 0 12px 0;
-        color: #00c6ae;
 
         .status {
           font-weight: 400;

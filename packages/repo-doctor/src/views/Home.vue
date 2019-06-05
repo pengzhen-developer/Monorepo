@@ -7,7 +7,7 @@
           <div @click="redirect('/clinic/inquiry')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.count5 }}</div>
+              <div class="card-item-number">{{ view.source.inReferralCount }}</div>
               <div class="card-item-text">待处理患者</div>
             </div>
           </div>
@@ -15,12 +15,12 @@
             <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">待接诊</div>
-              <div class="row-number">{{ view.source.count2 }}</div>
+              <div class="row-number">{{ view.source.waitInquiryCount }}</div>
             </div>
             <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">问诊中</div>
-              <div class="row-number">{{ view.source.count3 }}</div>
+              <div class="row-number">{{ view.source.processInquiryCount }}</div>
             </div>
           </div>
         </div>
@@ -28,8 +28,34 @@
           <div @click="redirect('/record/transfer', { referral_type: 'in' })" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.count4 }}</div>
+              <div class="card-item-number">{{ view.source.waitHandleInquiryCount }}</div>
               <div class="card-item-text">待转入患者</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="content">
+        <div class="card into">
+          <div @click="redirect('/clinic/consultation')" class="card-item">
+            <div class="card-item-logo"></div>
+            <div class="card-item-content">
+              <div class="card-item-number">{{ view.source.waitConsultCount }}</div>
+              <div class="card-item-text">待会诊患者</div>
+            </div>
+          </div>
+          <div class="card-item row-2">
+            <div @click="redirect('/clinic/consultation')" class="row-2-item">
+              <div class="row-icon"></div>
+              <div class="row-text">我发起的</div>
+              <div class="row-number">{{ view.source.fromConsultCount }}</div>
+            </div>
+            <div @click="redirect('/clinic/consultation')" class="row-2-item">
+              <div class="row-icon"></div>
+              <div class="row-text">我邀请的</div>
+              <div class="row-number">{{ view.source.toConsultCount }}</div>
             </div>
           </div>
         </div>
@@ -57,7 +83,7 @@ export default {
 
   created() {
     this.$http.post(this.config.api.waitList).then(res => {
-      this.view.source = res.data
+      this.view.source = res.data.info
     })
   },
 

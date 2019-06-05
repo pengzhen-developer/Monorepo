@@ -1,7 +1,7 @@
 <template>
   <div class="chat-consultation" v-if="chat.team">
     <div class="header">
-      <img src="~@/assets/images/icons/clinic/electronicmedical_icon.png">
+      <i class="icon_archives_icon_applicationinformation"></i>
       <span>会诊申请单</span>
     </div>
 
@@ -9,7 +9,7 @@
       <el-scrollbar class="scrollbar">
         <div class="card">
           <div class="title">
-            <img src="~@/assets/images/icons/clinic/archives_icon_marry.png">
+            <i class="icon_archives_icon_patient"></i>
             <span>患者信息：</span>
           </div>
 
@@ -32,8 +32,16 @@
 
         <div class="card">
           <div class="title">
-            <img src="~@/assets/images/icons/clinic/archives_icon_marry.png">
-            <span>发起医生：</span>
+            <i class="icon_archives_icon_doctor"></i>
+            <!-- 我发起的会诊 -->
+            <template v-if="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id">
+              <span>受邀医生：</span>
+            </template>
+
+            <!-- 我受邀的会诊 -->
+            <template v-else>
+              <span>发起医生：</span>
+            </template>
           </div>
 
           <div class="content doctor">
@@ -44,11 +52,28 @@
 
             <div class="doctor-info">
               <div>
-                <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.fromDoctorName }}</span>
+                <!-- 我发起的会诊 -->
+                <template v-if="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id">
+                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.toDoctorName }}</span>
+                </template>
+
+                <!-- 我受邀的会诊 -->
+                <template v-else>
+                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.fromDoctorName }}</span>
+                </template>
               </div>
               <div>
-                <span>{{ data.fromDeptName }}</span>
-                <span>{{ data.fromDoctorTitle }}</span>
+                <!-- 我发起的会诊 -->
+                <template v-if="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id">
+                  <span>{{ data.toDeptName }}</span>
+                  <span>{{ data.toDoctorTitle }}</span>
+                </template>
+
+                <!-- 我受邀的会诊 -->
+                <template v-else>
+                  <span>{{ data.fromDeptName }}</span>
+                  <span>{{ data.fromDoctorTitle }}</span>
+                </template>
               </div>
               <div>
                 <span :title="data.fromHospitalName">{{ data.fromHospitalName }}</span>
@@ -59,7 +84,7 @@
 
         <div class="card">
           <div class="title">
-            <img src="~@/assets/images/icons/clinic/archives_icon_marry.png">
+            <i class="icon_archives_icon_applicationinformation"></i>
             <span>申请会诊信息：</span>
           </div>
 
@@ -70,7 +95,7 @@
                 <span>初步诊断</span>
               </div>
               <div class="content">
-                <el-tag :key="item" style="margin-right: 5px; color: #00c6ae;" type="primary" v-for="item in data.familyDisagnose.split(',')">{{ item }}</el-tag>
+                <el-tag :key="item" style="margin-right: 5px; border: none; " type="info" v-for="item in data.familyDisagnose.split(',')">{{ item }}</el-tag>
               </div>
             </div>
             <div class="item">
@@ -105,7 +130,7 @@
 
         <div class="card">
           <div class="title">
-            <img src="~@/assets/images/icons/clinic/archives_icon_marry.png">
+            <i class="icon_archives_icon_toexamine"></i>
             <span>审核意见：</span>
           </div>
 
@@ -172,19 +197,6 @@ export default {
 
       data: undefined,
 
-      activities: [
-        {
-          content: '2018-04-12 20:46',
-          timestamp: '123123',
-          type: 'primary'
-        },
-        {
-          content: '2018-04-15 20:46',
-          timestamp: '2018-04-03 20:46',
-          type: 'primary'
-        }
-      ],
-
       dialog: {
         visible: false,
         data: undefined
@@ -193,7 +205,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['chat'])
+    ...mapState(['chat', 'user'])
   },
 
   watch: {
@@ -267,7 +279,7 @@ export default {
     getConsultationDetail() {
       if (this.chat.team) {
         const params = {
-          consultNo: 'HZ8355686534531728'
+          consultNo: this.chat.team.custom.consultation.consultNo
         }
 
         this.$http.post(this.config.api.getConsultInfo, params).then(res => {
@@ -291,8 +303,10 @@ export default {
     border-bottom: 1px solid #f2f2f2;
     background: rgba(255, 255, 255, 1);
 
-    img {
-      margin: 0 10px 0 0;
+    i {
+      font-weight: bold;
+      font-size: 18px;
+      margin: 0 5px 0 0;
     }
   }
 
@@ -328,11 +342,10 @@ export default {
         justify-content: center;
         margin: 0 0 10px 0;
 
-        img {
+        i {
+          font-weight: bold;
           display: inline-block;
-          width: 20px;
-          height: 20px;
-          margin-right: 10px;
+          margin-right: 5px;
         }
 
         span {

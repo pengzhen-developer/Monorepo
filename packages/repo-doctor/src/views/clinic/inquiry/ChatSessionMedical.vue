@@ -123,7 +123,7 @@
               style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
               type="info"
               v-for="item in medical.model.diagnose"
-            >诊断{{ item.name }}</el-tag>
+            >{{ item.name }}</el-tag>
             <el-button @click="changedialog('诊断')" type="text">修改</el-button>
           </template>
 

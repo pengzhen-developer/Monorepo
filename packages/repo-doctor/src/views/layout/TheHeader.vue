@@ -94,7 +94,7 @@ export default {
     align-items: center;
 
     .header-left {
-      width: 500px;
+      text-align: left;
 
       .header-left-title {
         font-size: 22px;

@@ -175,26 +175,48 @@ export default {
   },
 
   watch: {
-    'chat.session'(newValue, oldValue) {
-      window.clearInterval(this.positiveDurationInterval)
-      this.positiveDuration = '00:00:00'
+    'chat.session': {
+      handler(newValue, oldValue) {
+        // 监听 session 变化，更新 session 显示
+        // 1. 切换 session 时，清除上一个 session 所有的状态
+        // 2. 切换 session 时, 更新计时器
+        // 3. 当前 session 变更时, 根据问诊状态更新计时器
 
-      if (newValue) {
+        // 1. 切换 session 时，清除上一个 session 所有的状态
         if (newValue && oldValue && newValue.id !== oldValue.id) {
           this.closeAllDialog()
+
+          window.clearInterval(this.positiveDurationInterval)
+          this.positiveDuration = '00:00:00'
         }
 
-        // 获取当前问诊记录
-        this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
-          if (this.chat.session) {
-            if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
+        // 2. 切换 session 时, 更新计时器
+        if ((newValue && oldValue && newValue.id !== oldValue.id) || (newValue && !oldValue)) {
+          window.clearInterval(this.positiveDurationInterval)
+          this.positiveDuration = '00:00:00'
+
+          this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+            this.positiveDurationInterval = setInterval(() => {
+              this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date())
+            }, 1000)
+          })
+        }
+
+        // 3. 当前 session 变更时, 根据问诊状态更新计时器
+        if (newValue && oldValue && newValue.id === oldValue.id) {
+          if (newValue.lastMsg.custom.ext.talkState !== oldValue.lastMsg.custom.ext.talkState) {
+            window.clearInterval(this.positiveDurationInterval)
+            this.positiveDuration = '00:00:00'
+
+            this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
               this.positiveDurationInterval = setInterval(() => {
-                this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
+                this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date())
               }, 1000)
-            }
+            })
           }
-        })
-      }
+        }
+      },
+      immediate: true
     }
   },
 
@@ -264,9 +286,14 @@ export default {
           .then(res => {
             // 非有效会话，提示退诊
             if (res.data.status === 1) {
-              $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-                this.refuse()
-              })
+              $peace.util.confirm(
+                '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？',
+                undefined,
+                { type: 'warning', confirmButtonText: '退诊' },
+                () => {
+                  this.refuse()
+                }
+              )
             }
             // 未填写病历，提示填写病历
             else if (res.data.caseStatus === 1) {
