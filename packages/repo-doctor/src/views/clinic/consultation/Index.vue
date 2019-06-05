@@ -16,11 +16,10 @@
       custom-class="video-class"
       width="520px"
     >
-      <!-- 己方视频 -->
-      <div class="videoContaier" id="mainContaier"></div>
-
-      <!-- 他人视频 -->
-      <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in video.remoteList"></div>
+      <!-- 视频 -->
+      <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in video.remoteList">
+        <i class="el-icon-loading" style="position: absolute;"></i>
+      </div>
 
       <template slot="footer">
         <el-button @click="leaveVideo" circle class="hang_up">
@@ -114,6 +113,18 @@ export default {
           this.chat.teams.forEach(item => {
             // 当前会诊存在视频
             if (item.custom && item.custom.consultation && item.custom.consultation.channel) {
+              // 将参与视频的所有人保存起来
+              const receiveDoctor = item.custom.consultation.receiveDoctor
+              const startDoctor = item.custom.consultation.startDoctor
+              const cooperationDoctors = item.custom.consultation.cooperationDoctors
+
+              this.video.remoteList = receiveDoctor.concat(startDoctor).concat(cooperationDoctors)
+
+              this.video.remoteList.forEach(item => {
+                item.account = item.doctorId
+              })
+
+              // 提示视频消息
               if (
                 !this.channelNotifyList.includes(item.custom.consultation.channel) &&
                 item.custom.consultation.channelFromId !== this.user.userInfo.list.docInfo.doctor_id
@@ -158,12 +169,14 @@ export default {
 
     'chat.teamMsgs': {
       handler() {
-        this.$nextTick(function() {
-          const scrollElement = document.body.querySelector('.chat-team-list-scrollbar .el-scrollbar__wrap')
-          if (scrollElement) {
-            scrollElement.scrollTop = scrollElement.scrollHeight
-          }
-        })
+        if (this.chat.teamMsgs) {
+          this.$nextTick(function() {
+            const scrollElement = document.body.querySelector('.chat-team-list-scrollbar .el-scrollbar__wrap')
+            if (scrollElement) {
+              scrollElement.scrollTop = scrollElement.scrollHeight
+            }
+          })
+        }
       },
       immediate: true
     }
@@ -190,6 +203,90 @@ export default {
     },
 
     joinVideoRoom(channelName, consultNo, isCreateRoom = true) {
+      const joinChannel = () => {
+        const sessionConfig = {
+          videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
+          videoFrameRate: WebRTC.CHAT_VIDEO_FRAME_RATE_15,
+          videoEncodeMode: WebRTC.CHAT_VIDEO_ENCODEMODE_NORMAL,
+          videoBitrate: 0,
+          recordVideo: false,
+          recordAudio: false,
+          highAudio: false,
+          bypassRtmp: false,
+          rtmpUrl: '',
+          rtmpRecord: false,
+          splitMode: WebRTC.LAYOUT_SPLITLATTICETILE
+        }
+
+        $peace.WebRTC.joinChannel({
+          type: WebRTC.NETCALL_TYPE_VIDEO,
+          sessionConfig: sessionConfig,
+          channelName: channelName
+        })
+          .then(obj => {
+            this.video.visible = true
+
+            // 加入房间成功后的上层逻辑操作
+            // eg: 开启摄像头
+            // eg: 开启麦克风
+            // eg: 开启本地流
+            // eg: 设置音量采集、播放
+            // eg: 设置视频画面尺寸等等，具体请参照p2p呼叫模式
+
+            console.log('加入成功', obj)
+
+            $peace.WebRTC.startRtc()
+              .then(() => {
+                // 开启麦克风
+                return $peace.WebRTC.startDevice({
+                  type: WebRTC.DEVICE_TYPE_AUDIO_IN
+                }).catch(err => {
+                  console.log('启动麦克风失败')
+                  console.error(err)
+                })
+              })
+              .then(() => {
+                // 设置采集音量
+                $peace.WebRTC.setCaptureVolume(255)
+                // 开启摄像头
+                return $peace.WebRTC.startDevice({
+                  type: WebRTC.DEVICE_TYPE_VIDEO,
+                  width: 640,
+                  height: 480
+                }).catch(err => {
+                  console.log('启动摄像头失败')
+                  console.error(err)
+                })
+              })
+              .then(() => {
+                //预览本地画面
+                $peace.WebRTC.startLocalStream(document.getElementById('remoteContaier' + this.user.userInfo.list.docInfo.doctor_id))
+                // 设置本地预览画面大小
+                $peace.WebRTC.setVideoViewSize({
+                  width: 250,
+                  height: 250,
+                  cut: true
+                })
+              })
+              .then(() => {
+                // 设置为互动者角色，可以发送自己的音频和视频给房间中的其他人
+                $peace.WebRTC.changeRoleToPlayer()
+              })
+              .catch(err => {
+                console.log('发生错误')
+                console.log(err)
+                $peace.WebRTC.hangup()
+              })
+          })
+          .catch(res => {
+            this.video.visible = false
+
+            console.error(res)
+
+            $peace.util.warning(res.desc)
+          })
+      }
+
       // 开始视频
       if (isCreateRoom) {
         this.video.title = ''
@@ -201,115 +298,40 @@ export default {
           action: 'start',
           channel: channelName
         }
-        this.$http.post('client/v1/video/processConsult', params)
+        this.$http
+          .post('client/v1/video/processConsult', params)
+          .then(() => {
+            joinChannel()
+          })
+          .catch(res => {
+            $peace.util.warning(res.data.msg)
+          })
       } else {
         const params = {
           consultNo: consultNo,
           action: 'join',
           channel: channelName
         }
-        this.$http.post('client/v1/video/processConsult', params).then(() => {
-          this.video.title = ''
-          this.durationInterval.forEach(interval => window.clearInterval(interval))
-          this.durationInterval = []
+        this.$http.post('client/v1/video/processConsult', params)
 
-          const now = new Date()
-          const interval = setInterval(() => {
-            this.video.title = $peace.util.formatDuration(now, new Date())
-          }, 1000)
-          this.durationInterval.push(interval)
-        })
+        joinChannel()
+
+        this.video.title = ''
+        this.durationInterval.forEach(interval => window.clearInterval(interval))
+        this.durationInterval = []
+
+        const now = new Date()
+        const interval = setInterval(() => {
+          this.video.title = $peace.util.formatDuration(now, new Date())
+        }, 1000)
+        this.durationInterval.push(interval)
       }
-
-      const sessionConfig = {
-        videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
-        videoFrameRate: WebRTC.CHAT_VIDEO_FRAME_RATE_15,
-        videoEncodeMode: WebRTC.CHAT_VIDEO_ENCODEMODE_NORMAL,
-        videoBitrate: 0,
-        recordVideo: false,
-        recordAudio: false,
-        highAudio: false,
-        bypassRtmp: false,
-        rtmpUrl: '',
-        rtmpRecord: false,
-        splitMode: WebRTC.LAYOUT_SPLITLATTICETILE
-      }
-
-      return $peace.WebRTC.joinChannel({
-        type: WebRTC.NETCALL_TYPE_VIDEO,
-        sessionConfig: sessionConfig,
-        channelName: channelName
-      })
-        .then(obj => {
-          this.video.visible = true
-
-          // 加入房间成功后的上层逻辑操作
-          // eg: 开启摄像头
-          // eg: 开启麦克风
-          // eg: 开启本地流
-          // eg: 设置音量采集、播放
-          // eg: 设置视频画面尺寸等等，具体请参照p2p呼叫模式
-
-          console.log('加入成功', obj)
-
-          $peace.WebRTC.startRtc()
-            .then(() => {
-              // 开启麦克风
-              return $peace.WebRTC.startDevice({
-                type: WebRTC.DEVICE_TYPE_AUDIO_IN
-              }).catch(err => {
-                console.log('启动麦克风失败')
-                console.error(err)
-              })
-            })
-            .then(() => {
-              // 设置采集音量
-              $peace.WebRTC.setCaptureVolume(255)
-              // 开启摄像头
-              return $peace.WebRTC.startDevice({
-                type: WebRTC.DEVICE_TYPE_VIDEO,
-                width: 640,
-                height: 480
-              }).catch(err => {
-                console.log('启动摄像头失败')
-                console.error(err)
-              })
-            })
-            .then(() => {
-              //预览本地画面
-              $peace.WebRTC.startLocalStream(document.getElementById('mainContaier'))
-              // 设置本地预览画面大小
-              $peace.WebRTC.setVideoViewSize({
-                width: 250,
-                height: 250,
-                cut: true
-              })
-            })
-            .then(() => {
-              // 设置为互动者角色，可以发送自己的音频和视频给房间中的其他人
-              $peace.WebRTC.changeRoleToPlayer()
-            })
-            .catch(err => {
-              console.log('发生错误')
-              console.log(err)
-              $peace.WebRTC.hangup()
-            })
-        })
-        .catch(res => {
-          this.video.visible = false
-
-          console.error(res)
-
-          $peace.util.warning(res.desc)
-        })
     },
 
     remoteTrack(obj) {
       console.log('other user join', obj)
 
       if (this.video.remoteList.findIndex(item => item.account === obj.account) === -1) {
-        this.video.remoteList.push(obj)
-
         this.video.title = ''
         this.durationInterval.forEach(interval => window.clearInterval(interval))
         this.durationInterval = []
@@ -359,13 +381,15 @@ export default {
     leaveVideo() {
       $peace.WebRTC.leaveChannel().then(obj => {
         console.log('user leave', obj)
-
         console.log(this.video.remoteList)
 
-        if (this.video.remoteList.length === 0) {
+        if (this.video.remoteList.length === 1) {
+          const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation && item.custom.consultation.channel).custom.consultation
+            .consultNo
+
           // 结束视频
           const params = {
-            consultNo: this.chat.team.custom.consultation.consultNo,
+            consultNo: consultNo,
             action: 'over'
           }
 
@@ -423,11 +447,20 @@ export default {
     background: #2b2d2f;
   }
 
+  .el-dialog__body {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .videoContaier {
     width: 250px;
     height: 250px;
     border-radius: 6px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
   }
 
   .el-button {
