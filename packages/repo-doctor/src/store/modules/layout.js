@@ -16,7 +16,8 @@ const state = {
     { id: 51, pid: 5, closable: true, name: '信息查看', title: '信息查看', path: '/sys/myInfo' },
     { id: 52, pid: 5, closable: true, name: '我的介绍', title: '我的介绍', path: '/sys/myIntroduce' },
     { id: 53, pid: 5, closable: true, name: '出诊时间', title: '出诊时间', path: '/sys/myTime' },
-    { id: 54, pid: 5, closable: true, name: '服务设置', title: '服务设置', path: '/sys/myService' }
+    { id: 54, pid: 5, closable: true, name: '服务设置', title: '服务设置', path: '/sys/myService' },
+    { id: 55, pid: 5, closable: true, name: '我的药房', title: '我的药房', path: '/sys/myPharmacy' }
     // { id: 5, pid: null, closable: true, name: '帮助', title: '帮助', path: '/help', icon: 'icon_ic_help' }
   ],
 

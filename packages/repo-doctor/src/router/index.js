@@ -87,7 +87,19 @@ const router = new Router({
           meta: { Auth: true },
           name: '/sys/myService',
           component: () => import('./../views/sys/myService/Index.vue')
+        },
+        {
+          path: '/sys/myPharmacy',
+          meta: { Auth: true },
+          name: '/sys/myPharmacy',
+          component: () => import('./../views/sys/myPharmacy/Index.vue')
         }
+        // {
+        //   path: '/sys/myService',
+        //   meta: { Auth: true },
+        //   name: '/sys/myService',
+        //   component: () => import('./../views/sys/myService/Index.vue')
+        // }
       ]
     },
 
