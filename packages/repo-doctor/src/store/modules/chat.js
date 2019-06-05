@@ -2,7 +2,7 @@ import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0'
 import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
 NIM.use(WebRTC)
 
-import { STATE, DeserializationSessions, DeserializationSessionMsgs, DeserializationTeams } from '@/views/clinic/inquiry/util'
+import { STATE, DeserializationSessions, DeserializationSessionMsgs, DeserializationTeams, DeserializationTeamMsgs } from '@/views/clinic/inquiry/util'
 import { isArray } from 'util'
 
 const NIMUtil = {
@@ -92,7 +92,7 @@ const NIMUtil = {
     // set Teams
     $peace.$store.commit('chat/setTeams', sessions.filter(item => item.scene === 'team'))
     // 通知群组（会诊）需要更新状态
-    $peace.$store.commit('chat/setTeamNotify', state.teams)
+    $peace.$store.commit('chat/setTeamNotify', state.teams.map(item => item.id))
   },
 
   /**
@@ -137,11 +137,34 @@ const NIMUtil = {
       }
     }
 
-    // 更新当前群消息列表
-    if (state.team && state.team.id === msg.sessionId) {
-      $peace.$store.commit('chat/updateTeamMsg', msg)
+    // 消息来源于群
+    if (msg.scene === 'team') {
+      const lastMsg = msg
 
-      $peace.$store.commit('chat/setTeamNotify', [msg])
+      // 消息是通知类型
+      if (lastMsg.type === 'custom') {
+        lastMsg.custom = JSON.parse(lastMsg.custom)
+
+        // 通知状态需要变更
+        if (lastMsg.custom.type === 'mutation') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+
+        // 通知创建了视频房间
+        // 通知关闭了视频房间
+        if (lastMsg.custom.type === 'createChannel' || lastMsg.custom.type === 'quitChannel') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+
+        if (lastMsg.custom.type === 'process') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+      }
+
+      // 消息来源与当前选中群相同，则更新消息列表
+      if (state.team && state.team.id === msg.sessionId) {
+        $peace.$store.commit('chat/updateTeamMsg', msg)
+      }
     }
   }
 }
@@ -593,36 +616,25 @@ const state = {
 
 const getters = {
   teamNotifyForWatch: state => {
-    if (state.teamNotify) {
-      console.log('当前通知需要变更的群组（会诊）:', state.teamNotify)
+    if (state.teamNotify && state.teamNotify.length > 0) {
+      console.log('当前通知需要状态变更的群组（会诊）:', state.teamNotify)
+
       const getInfoByTeamId = 'client/v1/consult/getInfoByTeamId'
 
       $peace.$http
-        .post(
-          getInfoByTeamId,
-          { teamIdList: state.teamNotify.map(item => (item.id ? item.id.replace('team-', '') : item.sessionId.replace('team-', ''))) },
-          { headers: { 'Content-Type': 'application/json' } }
-        )
+        .post(getInfoByTeamId, { teamIdList: state.teamNotify.map(item => item.replace('team-', '')) }, { headers: { 'Content-Type': 'application/json' } })
         .then(res => {
-          debugger
           // 将当前群组状态更新到回话
           // 更新会诊信息到到 teams
-          res.data.list.forEach(item => {
-            const index = state.teamNotify.findIndex(temp => temp.id === 'team-' + item.teamId)
+          $peace.$store.commit('chat/updateTeams', res.data.list)
 
-            if (index !== -1) {
-              state.teamNotify[index].custom = item
-            } else {
-              delete state.teamNotify[index].custom
-            }
-
-            $peace.$store.commit('chat/updateTeams', state.teamNotify)
-          })
+          // 更新会诊信息到 team
+          $peace.$store.commit('chat/updateTeam', res.data.list)
         })
         .catch(res => console.error(res))
-
-      return state.teamNotify
     }
+
+    return 'team status mutation'
   }
 }
 
@@ -685,7 +697,6 @@ const actions = {
           return
         }
 
-        msgsObj.msgs = DeserializationSessionMsgs(msgsObj.msgs)
         commit('setSessionMsg', msgsObj)
       }
     })
@@ -693,6 +704,7 @@ const actions = {
 
   // 选中群列表的一个群
   selectTeam({ commit }, team) {
+    commit('clearTeam')
     commit('setTeam', team)
 
     $peace.NIM.getHistoryMsgs({
@@ -813,6 +825,11 @@ const actions = {
   // 清理 session
   clearSession({ commit }) {
     commit('clearSession')
+  },
+
+  // 清理 team
+  clearTeam({ commit }) {
+    commit('clearTeam')
   }
 }
 
@@ -824,7 +841,7 @@ const mutations = {
    * @param {*} session
    */
   setVideoTime(state, videoTime) {
-    state.videoTime = $peace.util.formatDuration(new Date() - videoTime)
+    state.videoTime = $peace.util.formatDuration(videoTime, new Date())
   },
 
   /**
@@ -863,10 +880,38 @@ const mutations = {
     state.teams = deserializationTeams
   },
 
-  updateTeams(state, teams) {
-    const serializationSessions = $peace.NIM.mergeSessions(state.teams, teams)
+  updateTeams(state, teamsMutation) {
+    if (state.teams) {
+      const teamsState = $peace.util.clone(state.teams)
 
-    state.teams = serializationSessions
+      teamsMutation.forEach(teamMutation => {
+        const team = teamsState.find(team => team.id.replace('team-', '') === teamMutation.teamId)
+
+        if (team) {
+          team.custom = teamMutation
+        }
+      })
+
+      state.teams = teamsState
+    }
+  },
+
+  updateTeam(state, teamsMutation) {
+    if (state.team) {
+      const teamState = $peace.util.clone(state.team)
+
+      teamsMutation.forEach(teamMutation => {
+        if (teamMutation.teamId === teamState.id.replace('team-', '')) {
+          teamState.custom = teamMutation
+        }
+      })
+
+      if (teamState.custom.consultation.consultStatus === 7 || teamState.custom.consultation.consultStatus === 8) {
+        state.team = undefined
+      } else {
+        state.team = teamState
+      }
+    }
   },
 
   /**
@@ -875,8 +920,8 @@ const mutations = {
    * @param {*} state
    * @param {*} teams
    */
-  setTeamNotify(state, teams) {
-    state.teamNotify = teams
+  setTeamNotify(state, teamIds) {
+    state.teamNotify = teamIds
   },
 
   /**
@@ -920,10 +965,22 @@ const mutations = {
    * @param {*} session
    */
   setSessionMsg(state, msgsObj) {
+    if (isArray(msgsObj.msgs)) {
+      msgsObj.msgs = DeserializationSessionMsgs(msgsObj.msgs)
+    } else {
+      msgsObj.msgs = DeserializationSessionMsgs([msgsObj.msgs])
+    }
+
     state.sessionMsgs = msgsObj
   },
 
   setTeamMsg(state, msgsObj) {
+    if (isArray(msgsObj.msgs)) {
+      msgsObj.msgs = DeserializationTeamMsgs(msgsObj.msgs)
+    } else {
+      msgsObj.msgs = DeserializationTeamMsgs([msgsObj.msgs])
+    }
+
     state.teamMsgs = msgsObj
   },
 
@@ -944,8 +1001,10 @@ const mutations = {
   },
 
   updateTeamMsg(state, msg) {
-    if (!isArray(msg)) {
-      msg = [msg]
+    if (isArray(msg)) {
+      msg = DeserializationTeamMsgs(msg)
+    } else {
+      msg = DeserializationTeamMsgs([msg])
     }
 
     state.teamMsgs.msgs.unshift(...msg)
@@ -959,8 +1018,16 @@ const mutations = {
   clearSession(state) {
     state.session = undefined
     state.sessionMsgs = undefined
+  },
 
+  /**
+   * 清空信息
+   *
+   * @param {*} state
+   */
+  clearTeam(state) {
     state.team = undefined
+    state.teamMsgs = undefined
   },
 
   /**

@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ getState() }.png`" v-if="getState()">
+      <img :src="`./static/images/consultation/${ getState() }.png`" v-if="getState()">
     </div>
 
     <div class="record-no">
@@ -112,14 +112,14 @@
     </div>
 
     <!-- 发起机构审核信息 -->
-    <div class="record-content" v-if="internalData.outCheckTime">
+    <div class="record-content" v-if="internalData.consultStatus >= 3 ">
       <span class="title">发起机构审核信息</span>
 
       <el-form>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <span>{{ internalData.outCheckStatus }}</span>
+              <span>{{ formatterCheckStatus(internalData.outCheckStatus) }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -141,14 +141,14 @@
     </div>
 
     <!-- 受邀机构审核信息 -->
-    <div class="record-content" v-if="internalData.inCheckTime">
+    <div class="record-content" v-if="internalData.consultStatus >= 5 ">
       <span class="title">受邀机构审核信息</span>
 
       <el-form>
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <span>{{ internalData.inCheckStatus }}</span>
+              <span>{{ formatterCheckStatus(internalData.inCheckStatus) }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,7 +170,8 @@
     </div>
 
     <!-- 会议记录 -->
-    <div class="record-content" v-else-if="internalData.consultEndTime">
+    <div class="record-content" v-if="internalData.consultStatus >= 7 ">
+      <!-- 会诊关闭 -->
       <template v-if="internalData.consultStatus === 8">
         <span class="title">会诊关闭信息</span>
 
@@ -191,6 +192,8 @@
           </el-row>
         </el-form>
       </template>
+
+      <!-- 会诊正常完成 -->
       <template v-else>
         <span class="title">会议记录</span>
 
@@ -242,12 +245,37 @@ export default {
   },
 
   data() {
-    return {}
+    return {
+      checkStatus: [{ checkStatus: 1, checkTxt: '未审核' }, { checkStatus: 2, checkTxt: '已拒绝' }, { checkStatus: 3, checkTxt: '已通过' }],
+
+      consultStatus: [
+        { consultStatus: 1, consultTxt: '发起待审核' },
+        { consultStatus: 2, consultTxt: '发起已拒绝' },
+        { consultStatus: 3, consultTxt: '邀请待审核' },
+        { consultStatus: 4, consultTxt: '邀请已拒绝' },
+        { consultStatus: 5, consultTxt: '等待会诊' },
+        { consultStatus: 6, consultTxt: '会诊中' },
+        { consultStatus: 7, consultTxt: '会诊已完成' },
+        { consultStatus: 8, consultTxt: '会诊已关闭' }
+      ]
+    }
   },
 
   methods: {
     getState() {
-      return this.internalData.consultStatus
+      return this.formatterConsultStatus(this.internalData.consultStatus)
+    },
+
+    formatterCheckStatus(v) {
+      const temp = this.checkStatus.find(item => item.checkStatus === v)
+
+      return temp && temp.checkTxt
+    },
+
+    formatterConsultStatus(v) {
+      const temp = this.consultStatus.find(item => item.consultStatus === v)
+
+      return temp && temp.consultTxt
     }
   }
 }
@@ -263,6 +291,11 @@ export default {
     top: 20px;
     width: 102px;
     height: 55px;
+
+    img {
+      width: 102px;
+      height: 55px;
+    }
   }
 
   .record-no {

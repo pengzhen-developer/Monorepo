@@ -56,7 +56,7 @@
             <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.allergy_history.split(',')">{{item}}</el-tag>
           </template>
           <template v-else>
-            <span>'无'</span>
+            <span>无</span>
           </template>
         </div>
       </div>
@@ -69,7 +69,7 @@
             <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.past_history.split(',')">{{item}}</el-tag>
           </template>
           <template v-else>
-            <span>'无'</span>
+            <span>无</span>
           </template>
         </div>
       </div>
@@ -114,7 +114,7 @@
             <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.diagnose.split(',')">{{item}}</el-tag>
           </template>
           <template v-else>
-            <span>'无'</span>
+            <span>无</span>
           </template>
         </div>
       </div>

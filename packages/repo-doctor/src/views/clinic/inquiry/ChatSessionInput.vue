@@ -226,7 +226,7 @@ export default {
       this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
         // 非有效会话，提示无法进行转诊
         if (res.data.status === 1) {
-          $peace.util.warning('非有效会话，无法进行转诊')
+          $peace.util.warning('系统检测到当前为无效会话，无法进行转诊')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
@@ -256,20 +256,39 @@ export default {
 
     // 申请会诊
     showConsultation() {
-      if (!this.isShowConsultationButton) {
-        $peace.util.warning('尚未填写病历，无法申请会诊')
-      } else {
-        $peace.util.confirm(
-          '会诊提交成功后， 本次咨询将自动关闭。',
-          undefined,
-          {
-            type: 'warning'
-          },
-          () => {
-            this.$emit('showConsultation')
-          }
-        )
+      const param = {
+        inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
       }
+
+      this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
+        // 非有效会话，提示无法进行转诊
+        if (res.data.status === 1) {
+          $peace.util.warning('系统检测到当前为无效会话，无法进行转诊')
+        }
+        // 未填写病历，提示填写病历
+        else if (res.data.caseStatus === 1) {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+            this.showMedical()
+          })
+        }
+        // 可正常会诊
+        else if (res.data.caseStatus === 2 && res.data.status === 2) {
+          $peace.util.confirm(
+            '会诊提交成功后， 本次咨询将自动关闭。',
+            undefined,
+            {
+              type: 'warning'
+            },
+            () => {
+              this.$emit('showConsultation')
+            }
+          )
+        }
+        // 未知情况
+        else {
+          $peace.util.warning(res.msg)
+        }
+      })
     },
 
     // 快捷发送

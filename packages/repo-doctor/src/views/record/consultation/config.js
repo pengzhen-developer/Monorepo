@@ -9,6 +9,8 @@ export default {
     getInConsultList: 'client/v1/consult/getInConsultList',
 
     // 获取会诊详情
-    getConsultInfo: 'client/v1/consult/getConsultInfo'
+    getConsultInfo: 'client/v1/consult/getConsultInfo',
+    // 获取会诊聊天记录
+    getChatRecord: 'client/v1/consult/getChatRecord'
   }
 }

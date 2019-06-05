@@ -3,7 +3,7 @@
     <el-alert :closable="false" title="申请会诊" type="success">
       <div slot="title">
         <span>申请会诊</span>
-        <i @click="cancelTransfer" class="el-alert__closebtn el-icon-close"></i>
+        <i @click="cancelConsultaltion" class="el-alert__closebtn el-icon-close"></i>
       </div>
     </el-alert>
 
@@ -14,18 +14,18 @@
           <span>{{ view.model.diagnose }}</span>
         </el-form-item>
       </el-row>
-      <el-row class="transfer-doctor">
+      <el-row class="consultaltion-doctor">
         <el-form-item label="会诊医生" prop="doctorInfo">
           <span slot="label">会诊医生</span>
-          <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
+          <el-button @click="choseConsultaltion" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
-            <div class="transfer-doctor-info">
+            <div class="consultaltion-doctor-info">
               <img :src="view.model.doctorInfo.avartor" style="width: 40px; height: 40px; border-radius: 50%;">
               <span style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.doctorName }}</span>
               <span>{{view.model.doctorInfo.doctorTitle }}</span>
               <span>{{view.model.doctorInfo.deptName }}</span>
               <span>{{view.model.doctorInfo.hospitalName }}</span>
-              <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model.doctorInfo">修改</el-button>
+              <el-button @click="choseConsultaltion" style="min-width: auto;" type="text" v-show="view.model.doctorInfo">修改</el-button>
             </div>
           </template>
         </el-form-item>
@@ -54,13 +54,18 @@
       <el-row>
         <el-form-item label="会诊说明" prop="referralCause">
           <span slot="label">会诊说明</span>
-          <el-input :rows="3" placeholder type="textarea" v-model="view.model.referralCause"></el-input>
+          <el-input :rows="3" maxlength="500" placeholder="请至少输入5个字" type="textarea" v-model="view.model.referralCause"></el-input>
+          <span style="color: rgba(155, 155, 155, 1); font-size: 12px;">
+            <span>最多可以输入500字，还可以输入</span>
+            <span>{{ 500 - (view.model.referralCause ? view.model.referralCause.length : 0) }}</span>
+            <span>字</span>
+          </span>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center; margin: 20px 0 0 0;">
         <el-form-item label=" ">
-          <el-button @click="sendTransfer" type="primary">提交</el-button>
-          <el-button @click="cancelTransfer">取消</el-button>
+          <el-button @click="sendConsultaltion" type="primary">提交</el-button>
+          <el-button @click="cancelConsultaltion">取消</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -121,7 +126,7 @@ export default {
           doctorInfo: [{ required: true, message: '请选择会诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
-          referralCause: [{ required: true, message: '请输入会诊说明', trigger: 'change' }],
+          referralCause: [{ required: true, message: '请输入会诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字', trigger: 'change' }],
 
           pickerOptionsDate: {
             disabledDate(time) {
@@ -175,7 +180,7 @@ export default {
       })
     },
 
-    choseTransfer() {
+    choseConsultaltion() {
       this.dialog.visible = true
 
       this.$nextTick(function() {
@@ -188,10 +193,10 @@ export default {
 
       this.view.model.doctorInfo = row
 
-      this.$refs.form.validate()
+      this.$refs.form.validateField('doctorInfo')
     },
 
-    sendTransfer() {
+    sendConsultaltion() {
       this.$refs.form.validate(valid => {
         if (valid) {
           // 验证会诊时间
@@ -242,10 +247,14 @@ export default {
       })
     },
 
-    cancelTransfer() {
-      $peace.util.confirm('关闭页面后已经编辑的内容将重新编辑，确认关闭？', undefined, undefined, () => {
+    cancelConsultaltion() {
+      if (this.view.model.doctorInfo || this.view.model.expectDate || this.view.model.expectTime || this.view.model.referralCause) {
+        $peace.util.confirm('关闭页面后已经编辑的内容将重新编辑，确认关闭？', undefined, undefined, () => {
+          this.$emit('close')
+        })
+      } else {
         this.$emit('close')
-      })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+      }
     }
   }
 }
@@ -272,7 +281,7 @@ export default {
   }
 }
 
-.transfer-doctor {
+.consultaltion-doctor {
   /deep/ .el-form-item--mini .el-form-item__label,
   /deep/ .el-form-item--mini .el-form-item__content {
     line-height: 40px;
