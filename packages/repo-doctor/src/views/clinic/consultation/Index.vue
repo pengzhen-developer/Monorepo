@@ -231,6 +231,8 @@ export default {
           .then(obj => {
             this.video.visible = true
 
+            this.video.remoteCurrentList.push(obj)
+
             // 加入房间成功后的上层逻辑操作
             // eg: 开启摄像头
             // eg: 开启麦克风
@@ -326,30 +328,29 @@ export default {
         this.video.remoteCurrentList.push(obj)
       }
 
-      this.$nextTick(function() {
-        // 播放对方声音
-        $peace.WebRTC.startDevice({
-          type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
-        }).catch(err => {
-          console.log('播放对方的声音失败')
-          console.error(err)
-        })
-        // 预览对方视频画面
-        $peace.WebRTC.startRemoteStream({
-          account: obj.account,
-          node: document.getElementById('remoteContaier' + obj.account)
-        })
-        // 设置对方预览画面大小
-        $peace.WebRTC.setVideoViewRemoteSize({
-          account: obj.account,
-          width: 250,
-          height: 250,
-          cut: true
-        })
+      // 播放对方声音
+      $peace.WebRTC.startDevice({
+        type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
+      }).catch(err => {
+        console.log('播放对方的声音失败')
+        console.error(err)
+      })
+      // 预览对方视频画面
+      $peace.WebRTC.startRemoteStream({
+        account: obj.account,
+        node: document.getElementById('remoteContaier' + obj.account)
+      })
+      // 设置对方预览画面大小
+      $peace.WebRTC.setVideoViewRemoteSize({
+        account: obj.account,
+        width: 250,
+        height: 250,
+        cut: true
       })
     },
 
     leaveChannel(obj) {
+      $peace.WebRTC.stopRemoteStream(obj.account)
       console.log('other user leave', obj)
 
       const index = this.video.remoteCurrentList.findIndex(item => item.account === obj.account)
@@ -362,13 +363,22 @@ export default {
     },
 
     leaveVideo() {
+      $peace.WebRTC.hangup()
+
+      const index = this.video.remoteCurrentList.findIndex(item => item.account === this.user.userInfo.list.docInfo.doctor_id)
+
+      if (index !== -1) {
+        this.video.remoteCurrentList.splice(index, 1)
+
+        console.log(this.video.remoteCurrentList)
+      }
+
       $peace.WebRTC.leaveChannel().then(obj => {
         console.log('user leave', obj)
         console.log(this.video.remoteCurrentList)
 
         if (this.video.remoteCurrentList.length === 0) {
-          const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation && item.custom.consultation.channel).custom.consultation
-            .consultNo
+          const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation).custom.consultation.consultNo
 
           // 结束视频
           const params = {
