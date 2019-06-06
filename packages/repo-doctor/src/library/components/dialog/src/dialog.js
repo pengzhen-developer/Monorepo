@@ -6,6 +6,13 @@ const ExtendDialogProps = {
     default() {
       return '10vh'
     }
+  },
+
+  'close-on-click-modal': {
+    type: Boolean,
+    default() {
+      return false
+    }
   }
 }
 
