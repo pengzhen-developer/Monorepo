@@ -218,11 +218,9 @@ const WebRTCUtil = {
   initWebRTC(forVideoRTC = false) {
     $peace.WebRTC = WebRTC.getInstance({
       nim: $peace.NIM,
-      container: document.getElementById('localContainer'),
-      remoteContainer: document.getElementById('remoteContainer'),
       chromeId: '',
       // 是否开启日志打印
-      debug: false
+      debug: true
     })
 
     if (forVideoRTC) {
@@ -669,7 +667,10 @@ const actions = {
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      }
+      },
+
+      // 是否开启日志打印
+      debug: true
     })
 
     return $peace.NIM
