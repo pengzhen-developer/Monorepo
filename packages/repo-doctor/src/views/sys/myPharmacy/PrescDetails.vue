@@ -20,10 +20,10 @@
         <span>{{ data.age }}</span>
       </div>
     </div>
+    <span class="label">
+      <span>RP</span>
+    </span>
     <div class="drug-list">
-      <span class="label">
-        <span>rp</span>
-      </span>
       <div
         :key="drug.id"
         class="drug-item"
@@ -33,13 +33,14 @@
           <span>{{ drug.drug_name }}</span>
           <span>{{ drug.drug_spec }}</span>
           <span>{{ drug.drug_factory }}</span>
+          <span>&nbsp;x{{ drug.number }}</span>
         </div>
         <div class="row-two">
           <span>用法用量：</span>
-          <span>{{ drug.dic_usage_id.drugway_name }}</span>。
-          <span>{{ drug.unit }}</span>，
-          <span>{{ drug.dic_frequency_id.drugtimes_name }}</span>，
-          <span>{{ drug.medication_days }}</span>
+          <span>{{ drug.dic_usage }}</span>。
+          <span>每次{{ drug.consump }}{{ drug.drug_unit }}</span>，
+          <span>{{ drug.dic_frequency }}</span>，
+          <span>{{ drug.medication_days }}天</span>
         </div>
       </div>
     </div>
