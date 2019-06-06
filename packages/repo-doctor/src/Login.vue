@@ -94,10 +94,11 @@ export default {
         .then(res => {
           $peace.util.alert(res.msg)
         })
-        .catch(() => {
+        .catch(res => {
           this.down = 0
           this.isDown = false
 
+          $peace.util.warning(res.data.msg)
           window.clearInterval(shutDownInterval)
         })
     },
