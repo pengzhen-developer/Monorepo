@@ -97,7 +97,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="单次剂量" prop="consump">
-              <el-input placeholder style="width: 120px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
+              <el-input placeholder style="width: 100px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
               {{ drug.model.unit }}
             </el-form-item>
           </el-col>
