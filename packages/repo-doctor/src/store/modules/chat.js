@@ -156,6 +156,7 @@ const NIMUtil = {
           $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
         }
 
+        // 通知需要做更新
         if (lastMsg.custom.type === 'process') {
           $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
         }

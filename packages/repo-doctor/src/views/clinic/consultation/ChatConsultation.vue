@@ -221,15 +221,15 @@ export default {
   methods: {
     showDetail() {
       const row = {
-        doctor_id: 'ewghekrsbm',
-        patient_id: 'hwzxwvfxhl'
+        doctor_id: this.user.userInfo.list.docInfo.doctor_id,
+        patient_id: this.data.patientId
       }
 
       this.dialog.data = []
       this.dialog.visible = true
 
       // 获取病历信息
-      this.$http.get(this.config.api.getOneInquiry, { params: { inquiryNo: 'WZ6399751675174332' } }).then(res => {
+      this.$http.get(this.config.api.getOneInquiry, { params: { inquiryNo: this.data.inquiryNo } }).then(res => {
         res.data.forEach(item => {
           item.custom = item.ext
 

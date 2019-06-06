@@ -257,7 +257,7 @@ export default {
     },
 
     sendVideo() {
-      const channel = this.chat.team.id.replace('team-', '') + '-' + new Date().getTime()
+      const channel = this.chat.team.custom.consultation.channel || this.chat.team.id.replace('team-', '') + '-' + new Date().getTime()
 
       // step 1. 创建群视频房间
       $peace.consultationComponent.createVideoRoom(channel).then(() => {

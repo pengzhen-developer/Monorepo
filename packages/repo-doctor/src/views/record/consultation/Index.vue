@@ -53,10 +53,10 @@
     <div :key="source.action.IN" v-if="view.action === source.action.IN">
       <el-form :model="view.inModel" inline>
         <el-form-item label="申请医生">
-          <el-input placeholder v-model="view.inModel.inDoctorName"></el-input>
+          <el-input placeholder v-model="view.inModel.fromDoctorName"></el-input>
         </el-form-item>
         <el-form-item label="申请机构">
-          <el-input placeholder v-model="view.inModel.inHospitalName"></el-input>
+          <el-input placeholder v-model="view.inModel.fromHospitalName"></el-input>
         </el-form-item>
         <el-form-item label="会诊状态">
           <el-select clearable placeholder v-model="view.inModel.consultStatus">
@@ -126,8 +126,8 @@ export default {
         },
 
         inModel: {
-          inDoctorName: undefined,
-          inHospitalName: undefined,
+          fromDoctorName: undefined,
+          fromHospitalName: undefined,
           consultStatus: undefined
         }
       },
@@ -197,7 +197,7 @@ export default {
         })
       } else {
         const api = this.config.api.getInConsultList
-        const params = this.view.outModel
+        const params = this.view.inModel
 
         this.$refs.table.loadData({
           api,

@@ -21,9 +21,18 @@
 
               <template
                 v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
-                          $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH === 0"
+                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
+                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).mm !== 0"
               >
                 <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].mm }} 分</span>
+              </template>
+
+              <template
+                v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
+                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
+                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).mm === 0"
+              >
+                <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].ss }} 秒</span>
               </template>
             </span>
           </div>
@@ -51,7 +60,13 @@
           <div class="count-down">
             <span>距会诊关闭时间还剩</span>
             <span class="count-down-time" style="margin: 0 5px;">
-              <span>{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].mm }} 分</span>
+              <template v-if=" durationEnd[chat.team.id] && durationEnd[chat.team.id].mm !== 0">
+                <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].mm }} 分</span>
+              </template>
+
+              <template v-if="durationEnd[chat.team.id] && durationEnd[chat.team.id].mm === 0">
+                <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].ss }} 秒</span>
+              </template>
             </span>
           </div>
           <div class="count-down-message">请尽快发起视频会诊，超期系统将自动关闭会诊单</div>
@@ -66,7 +81,7 @@
       :closable="false"
       class="chat-team-waring"
       show-icon
-      style
+      style="position: absolute; z-index: 1"
       title
       type="warning"
       v-if="chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel"
@@ -82,7 +97,7 @@
     </el-alert>
 
     <template v-if="data || teamMsgs">
-      <ul>
+      <ul :class="{ showVideo: chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel }">
         <li :key="msg.time" v-for="(msg, index) in data || teamMsgs">
           <!-- 消息时间 -->
           <div class="msg-body system system-time" v-if="needShowMsgTime(index)">
@@ -90,7 +105,7 @@
           </div>
 
           <!-- 消息发送者 -->
-          <div :style="{ 'text-align': getMsgFlow(msg) === 'out' ? 'right' : 'left' }" style="margin: 0 10px 0 5px;">{{ msg.fromNick }}</div>
+          <!-- <div :style="{ 'text-align': getMsgFlow(msg) === 'out' ? 'right' : 'left' }" style="margin: 0 10px 0 5px;">{{ msg.fromNick }}</div> -->
 
           <!-- 文本消息 -->
           <div :class="getMsgFlow(msg)" class="msg-body">
@@ -312,6 +327,17 @@ export default {
 
     display: flex;
     align-items: center;
+  }
+}
+
+ul {
+  &.showVideo {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 60px;
+    height: calc(100% - 60px);
+    z-index: 0;
   }
 }
 
