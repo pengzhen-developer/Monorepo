@@ -10,7 +10,11 @@
         <span>药品数量</span>
       </div>
       <div class="info-row-content">
-        <el-input placeholder="请输入" v-model="drug.number"></el-input>
+        <el-input
+          placeholder="请输入"
+          type="number"
+          v-model.number="drug.number"
+        ></el-input>
       </div>
     </div>
     <div class="info-row">
@@ -19,8 +23,9 @@
       </div>
       <div class="info-row-content">
         <el-input
-          placeholder="请输入"
-          v-model="drug.medication_days"
+          placeholder="请输入（非必填）"
+          type="number"
+          v-model.number="drug.medication_days"
         ></el-input>
       </div>
     </div>
@@ -31,7 +36,7 @@
       <div class="info-row-content">
         <el-select
           placeholder="请选择"
-          v-model="drug.dic_frequency_id"
+          v-model="drug._frequency"
           value-key="id"
         >
           <el-option
@@ -47,8 +52,9 @@
       <div class="info-row-label">
         <span>单次剂量</span>
       </div>
-      <div class="info-row-content">
-        <el-input placeholder="请输入" v-model="drug.unit"></el-input>
+      <div class="info-row-content spec-input">
+        <el-input class placeholder="请输入" v-model="drug.consump"></el-input>
+        <span>{{ drugInfo.drug_unit }}</span>
       </div>
     </div>
     <div class="info-row">
@@ -58,7 +64,7 @@
       <div class="info-row-content">
         <el-select
           placeholder="请选择"
-          v-model="drug.dic_usage_id"
+          v-model="drug._usage"
           value-key="id"
         >
           <el-option
@@ -79,7 +85,7 @@
       >上一步</el-button>
       <el-button
         :disabled="isDisabled"
-        @click="$emit('submit', Object.assign(drugInfo, drug))"
+        @click="saveDrugUsage"
         type="primary"
       >完成</el-button>
     </div>
@@ -100,10 +106,10 @@ export default {
       default() {
         return {
           number: 1,
-          medication_days: 7,
-          dic_frequency_id: '',
-          unit: '',
-          dic_usage_id: ''
+          medication_days: '',
+          _frequency: '',
+          consump: '',
+          _usage: ''
         }
       }
     },
@@ -123,12 +129,22 @@ export default {
   computed: {
     isDisabled() {
       return this.drug.number > -1 &&
-        this.drug.medication_days &&
-        this.drug.dic_frequency_id &&
-        this.drug.unit &&
-        this.drug.dic_usage_id
+        this.drug._frequency &&
+        this.drug.consump &&
+        this.drug._usage
         ? false
         : true
+    }
+  },
+  methods: {
+    saveDrugUsage() {
+      const drug = this.drug
+      drug.dic_frequency_id = drug._frequency.id
+      drug.dic_usage_id = drug._usage.id
+      drug.dic_frequency = drug._frequency.drugtimes_name
+      drug.dic_usage = drug._usage.drugway_name
+
+      this.$emit('submit', Object.assign(this.drugInfo, drug))
     }
   },
   created() {
@@ -142,13 +158,13 @@ export default {
     this.$http.get(api, { params }).then(res => {
       this.frequencys = res.data
       if (res.data && res.data.length) {
-        this.drug.dic_frequency_id = res.data[0]
+        this.drug._frequency = res.data[0]
       }
     })
     this.$http.get(api2, { params }).then(res => {
       this.usages = res.data
       if (res.data && res.data.length) {
-        this.drug.dic_usage_id = res.data[0]
+        this.drug._usage = res.data[0]
       }
     })
   }
@@ -163,7 +179,11 @@ export default {
 }
 .usage {
   padding: 10px 20px;
+  .drug-info > span {
+    margin: 0 5px;
+  }
 }
+
 .drug-info {
   font-weight: bold;
   font-weight: 600;
@@ -192,6 +212,17 @@ export default {
   }
   &-content {
     width: 180px;
+  }
+  /deep/ .spec-input {
+    display: inline-flex;
+    justify-content: space-between;
+    .el-input {
+      width: 140px;
+    }
+    .el-input,
+    span {
+      vertical-align: middle;
+    }
   }
 }
 </style>

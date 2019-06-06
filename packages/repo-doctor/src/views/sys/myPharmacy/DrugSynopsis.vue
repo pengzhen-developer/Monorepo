@@ -22,10 +22,26 @@
     </div>
     <div class="info-item">
       <div class="info-item-title">
+        <span>成份</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.zycf }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
         <span>适应症</span>
       </div>
       <div class="info-item-content">
         <span>{{ data.syz }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
+        <span>用法用量</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.yfyl }}</span>
       </div>
     </div>
     <div class="info-item">
@@ -42,6 +58,38 @@
       </div>
       <div class="info-item-content">
         <pre>{{ data.zysx }}</pre>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
+        <span>毒理研究</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.yldx }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
+        <span>批准文号</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.pzwh }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
+        <span>生产企业</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.scqy }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-item-title">
+        <span>药品分类</span>
+      </div>
+      <div class="info-row-content">
+        <span>{{ data.ypfl }}</span>
       </div>
     </div>
   </div>
@@ -66,9 +114,10 @@ span {
 }
 pre {
   margin: 0;
+  white-space: normal;
 }
 .drug-info {
-  padding: 10px 20px;
+  padding: 0px 20px;
 }
 .info-item {
   padding: 7px;

@@ -50,7 +50,7 @@
     <div style="text-align: center;">
       <el-button
         :disabled="!selected"
-        @click="$emit('nextStep', selected)"
+        @click="nextStep"
         type="primary"
       >下一步</el-button>
       <el-button @click="$emit('cancel')" plain type="primary">取消</el-button>
@@ -113,6 +113,27 @@ export default {
         this.addToCache(drugname)
       })
     },
+    nextStep() {
+      console.log(this.selected)
+      const {
+        drug_factory,
+        drug_name,
+        drug_spec,
+        drug_unit,
+        id,
+        license_number
+      } = this.selected
+      const obj = {
+        drug_factory,
+        drug_name,
+        drug_spec,
+        drug_unit,
+        id,
+        drugid: id,
+        license_number
+      }
+      this.$emit('nextStep', obj)
+    },
     // 添加到常用药品
     intoDrugList(row) {
       this.$confirm('添加到常用药品？', '提示', {
@@ -174,6 +195,9 @@ export default {
     color: $--color-primary;
     cursor: pointer;
   }
+}
+/deep/ .el-checkbox__inner {
+  border-radius: 100%;
 }
 
 .search {

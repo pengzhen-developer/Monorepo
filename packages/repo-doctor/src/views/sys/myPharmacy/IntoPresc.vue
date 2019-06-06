@@ -7,6 +7,7 @@
         @change="chooseItem"
         filterable
         placeholder="请输入诊断"
+        ref="diagnosis"
         remote
         style="width: calc(100% - 90px);"
         v-model="dialog.chooseItem"
@@ -61,6 +62,7 @@
           <span>{{ drug.drug_name }}</span>
           <span>{{ drug.drug_spec }}</span>
           <span>{{ drug.drug_factory }}</span>
+          <span>&nbsp;x{{ drug.number }}</span>
           <div style="float: right;">
             <el-button
               @click="openEditDrugDialog(drug, index)"
@@ -71,10 +73,10 @@
         </div>
         <div class="row-two">
           <span>用法用量：</span>
-          <span>{{ drug.dic_usage_id.drugway_name }}</span>。
-          <span>{{ drug.unit }}</span>，
-          <span>{{ drug.dic_frequency_id.drugtimes_name }}</span>，
-          <span>{{ drug.medication_days }}</span>
+          <span>{{ drug.dic_usage }}</span>。
+          <span>每次{{ drug.consump }}{{ drug.drug_unit }}</span>，
+          <span>{{ drug.dic_frequency }}</span>，
+          <span>{{ drug.medication_days }}天</span>
         </div>
       </div>
     </div>
@@ -241,6 +243,11 @@ export default {
     },
     // 打开添加药品 Dialog
     openDrugDialog() {
+      const isMax = this.drugList.length >= 5
+      if (isMax) {
+        this.$message.warning('处方药品最多可添加 5 种药品')
+        return
+      }
       this.step = 1
       this.drugDialog.visible = true
     },
@@ -255,8 +262,20 @@ export default {
       this.step += 1
     },
     saveDrug(param) {
+      const list = this.drugList
+
+      for (let [i, len] = [0, list.length]; i < len; i += 1) {
+        const element = list[i]
+        if (element.id === param.id) {
+          param.number += element.number
+          this.drugList[i] = param
+          this.closeDrugDialog()
+          return
+        }
+      }
       this.drugList.push(param)
       this.closeDrugDialog()
+      console.log(this.drugList)
     },
     // 打开修改药品用法 Dialog
     openEditDrugDialog(data, index) {
@@ -277,8 +296,31 @@ export default {
     },
     submit() {
       const drug = this.drugList
+      const diagnosis = this.dialog.chooseItem
+      if (!diagnosis) {
+        this.$confirm('临床诊断尚未选择，选择后才能保存', '', {
+          confirmButtonText: '前往选择',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$refs.diagnosis.focus()
+        })
+        return
+      }
+      if (!drug.length) {
+        this.$confirm('处方药品尚未添加，添加后才能保存', '', {
+          confirmButtonText: '前往添加',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.openDrugDialog()
+        })
+        return
+      }
       const params = {
-        diagnosis: this.dialog.chooseItem,
+        diagnosis,
         drugjson: JSON.stringify(drug),
         sex: this.presc.sex,
         age: this.presc.age
@@ -287,9 +329,12 @@ export default {
     }
   },
   created() {
-    this.dialog.chooseItem = this.data.diagnosis
-    this.drugList = JSON.parse(this.data.drugjson)
-    console.log(this.drugList)
+    const data = this.data
+    console.log(data)
+    if (!(!data.diagnosis || (data.rp && !data.rp.length))) {
+      this.dialog.chooseItem = this.data.diagnosis
+      this.drugList = JSON.parse(this.data.drugjson)
+    }
   }
 }
 </script>
@@ -360,6 +405,7 @@ export default {
   }
 }
 .footer {
+  margin-top: 10px;
   text-align: center;
 }
 </style>

@@ -130,6 +130,7 @@
     </div>
 
     <peace-dialog
+      :close-on-click-modal="false"
       :visible.sync="drugDialog.visible"
       custom-class="dialog"
       title="添加药品"
