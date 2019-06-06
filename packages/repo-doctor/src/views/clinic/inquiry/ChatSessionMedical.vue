@@ -34,47 +34,50 @@
             allow-create
             filterable
             multiple
-            placeholder="请选择现病史"
+            placeholder="请输入现病史"
             remote
             style="width: 100%;"
             v-model="medical.model.present_history"
           >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="过敏史" prop="allergy_history">
           <span slot="label">过敏史</span>
-          <el-select
-            :remote-method="getAllergy"
-            allow-create
-            filterable
-            multiple
-            placeholder="请选择过敏史"
-            remote
-            style="width: 100%;"
-            v-model="medical.model.allergy_history"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.allergy_history"></el-option>
-          </el-select>
+          <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
+            <el-tag
+              :key="item.id"
+              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              type="info"
+              v-for="item in medical.model.allergy_history"
+            >{{ item.name }}</el-tag>
+            <el-button @click="changedialog('过敏史')" type="text">修改</el-button>
+          </template>
+
+          <template v-else>
+            <el-button @click="showdialog('过敏史')" type="text">请选择</el-button>
+          </template>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="既往史" prop="past_history">
           <span slot="label">既往史</span>
-          <el-select
-            :remote-method="getPresent"
-            allow-create
-            filterable
-            multiple
-            placeholder="请选择既往史"
-            remote
-            style="width: 100%;"
-            v-model="medical.model.past_history"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
-          </el-select>
+
+          <template v-if="medical.model.past_history && medical.model.past_history.length > 0">
+            <el-tag
+              :key="item.id"
+              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              type="info"
+              v-for="item in medical.model.past_history"
+            >{{ item.name }}</el-tag>
+            <el-button @click="changedialog('既往史')" type="text">修改</el-button>
+          </template>
+
+          <template v-else>
+            <el-button @click="showdialog('既往史')" type="text">请选择</el-button>
+          </template>
         </el-form-item>
       </el-row>
       <el-row>
@@ -114,18 +117,19 @@
       <el-row>
         <el-form-item label="诊断" prop="diagnose">
           <span slot="label">诊断</span>
-          <el-select
-            :remote-method="getPresent"
-            allow-create
-            filterable
-            multiple
-            placeholder="请选择诊断"
-            remote
-            style="width: 100%;"
-            v-model="medical.model.diagnose"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in medical.source.present_history"></el-option>
-          </el-select>
+          <template v-if="medical.model.diagnose && medical.model.diagnose.length > 0">
+            <el-tag
+              :key="item.id"
+              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              type="info"
+              v-for="item in medical.model.diagnose"
+            >{{ item.name }}</el-tag>
+            <el-button @click="changedialog('诊断')" type="text">修改</el-button>
+          </template>
+
+          <template v-else>
+            <el-button @click="showdialog('诊断')" type="text">请选择</el-button>
+          </template>
         </el-form-item>
       </el-row>
       <el-row>
@@ -142,6 +146,121 @@
         </el-form-item>
       </el-row>
     </el-form>
+
+    <el-dialog :title="'添加' + dialog.title" :visible.sync="dialog.visible">
+      <div style="margin-bottom: 10px">
+        <template v-if="dialog.title === '过敏史'">
+          <el-select
+            :remote-method="getAllergy"
+            @change="chooseItem"
+            allow-create
+            filterable
+            placeholder="请输入过敏史"
+            remote
+            style="width: 100%;"
+            v-model="dialog.chooseItem"
+            value-key="id"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item" v-for="item in dialog.source.allergy_history"></el-option>
+          </el-select>
+        </template>
+        <template v-if="dialog.title === '既往史'">
+          <el-select
+            :remote-method="getPresent"
+            @change="chooseItem"
+            allow-create
+            filterable
+            placeholder="请输入既往史"
+            remote
+            style="width: 100%;"
+            v-model="dialog.chooseItem"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+          </el-select>
+        </template>
+        <template v-if="dialog.title === '诊断'">
+          <el-select
+            :remote-method="getPresent"
+            @change="chooseItem"
+            allow-create
+            filterable
+            placeholder="请输入诊断"
+            remote
+            style="width: 100%;"
+            v-model="dialog.chooseItem"
+          >
+            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+          </el-select>
+        </template>
+      </div>
+
+      <div style="margin: 10px 0;" v-if="dialog.chooseData.length > 0">
+        <p>已选{{dialog.title}}</p>
+
+        <div style="margin: 10px 0;">
+          <el-tag
+            :key="item.id"
+            @close="closeItem(item)"
+            closable
+            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+            v-for="item in dialog.chooseData"
+          >{{ item.name }}</el-tag>
+        </div>
+      </div>
+
+      <template v-if="dialog.title === '诊断'">
+        <div style="margin: 10px 0;">
+          <p>常见{{dialog.title}}</p>
+
+          <div style="margin: 10px 0;">
+            <el-tag
+              :key="item.id"
+              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+              @click="chooseItem(item)"
+              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              v-for="item in dialog.source.IllnessList"
+            >{{ item.name }}</el-tag>
+          </div>
+        </div>
+      </template>
+
+      <template v-if="dialog.title === '过敏史'">
+        <div style="margin: 10px 0;">
+          <p>常见{{dialog.title}}</p>
+
+          <div style="margin: 10px 0;">
+            <el-tag
+              :key="item.id"
+              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+              @click="chooseItem(item)"
+              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              v-for="item in dialog.source.allergens"
+            >{{ item.name }}</el-tag>
+          </div>
+        </div>
+      </template>
+
+      <template v-if="dialog.title === '既往史'">
+        <div style="margin: 10px 0;">
+          <p>常见{{dialog.title}}</p>
+
+          <div style="margin: 10px 0;">
+            <el-tag
+              :key="item.id"
+              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+              @click="chooseItem(item)"
+              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              v-for="item in dialog.source.OldIllnessList"
+            >{{ item.name }}</el-tag>
+          </div>
+        </div>
+      </template>
+
+      <div style="margin-bottom: 10px; text-align: center;">
+        <el-button @click="saveItem" type="primary">保存</el-button>
+        <el-button @click="dialog.visible = false">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,11 +299,30 @@ export default {
           dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
           base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
           diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
-        },
+        }
+      },
 
+      dialog: {
+        visible: false,
+
+        // 标题
+        title: '',
+        // 已选中项
+        chooseData: [],
+        // 当前选中项
+        chooseItem: '',
+
+        // 远程搜素数据源
         source: {
           present_history: [],
-          allergy_history: []
+          allergy_history: [],
+
+          // 过敏史
+          allergens: [],
+          // 既往史
+          OldIllnessList: [],
+          // 诊断
+          IllnessList: []
         }
       }
     }
@@ -203,6 +341,18 @@ export default {
     }
   },
 
+  created() {
+    this.$http.post(this.config.api.allergens).then(res => {
+      this.dialog.source.allergens = res.data.list
+    })
+    this.$http.post(this.config.api.IllnessList).then(res => {
+      this.dialog.source.IllnessList = res.data.list
+    })
+    this.$http.post(this.config.api.OldIllnessList).then(res => {
+      this.dialog.source.OldIllnessList = res.data.list
+    })
+  },
+
   mounted() {},
 
   methods: {
@@ -211,20 +361,20 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         this.$http.post(this.config.api.getDiseaseInfo, { name: query }).then(res => {
-          this.medical.source.present_history = res.data.list
+          this.dialog.source.present_history = res.data.list
         })
       } else {
-        this.medical.source.present_history = []
+        this.dialog.source.present_history = []
       }
     },
 
     getAllergy(query) {
       if (query !== '' && query.length > 0) {
         this.$http.post(this.config.api.allergenList, { name: query }).then(res => {
-          this.medical.source.allergy_history = res.data.list
+          this.dialog.source.allergy_history = res.data.list
         })
       } else {
-        this.medical.source.allergy_history = []
+        this.dialog.source.allergy_history = []
       }
     },
 
@@ -274,10 +424,10 @@ export default {
           }
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
-          params.allergy_history = params.allergy_history.toString()
-          params.past_history = params.past_history.toString()
           params.present_history = params.present_history.toString()
-          params.diagnose = params.diagnose.toString()
+          params.allergy_history = params.allergy_history && params.allergy_history.map(item => item.name).toString()
+          params.past_history = params.past_history && params.past_history.map(item => item.name).toString()
+          params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
 
           this.$http.post(this.config.api.addCase, params).then(res => {
             // 给患者发送一个 custom 消息, 用于显示
@@ -321,6 +471,80 @@ export default {
           })
         }
       })
+    },
+
+    showdialog(title) {
+      this.dialog.title = title
+      this.dialog.chooseData = []
+
+      this.dialog.visible = true
+    },
+
+    changedialog(title) {
+      this.showdialog(title)
+
+      this.$nextTick(function() {
+        if (title === '过敏史') {
+          this.dialog.chooseData = [...this.medical.model.allergy_history]
+        } else if (title === '既往史') {
+          this.dialog.chooseData = [...this.medical.model.past_history]
+        } else if (title === '诊断') {
+          this.dialog.chooseData = [...this.medical.model.diagnose]
+        }
+      })
+    },
+
+    chooseItem(item) {
+      if (!item.id) {
+        item = {
+          name: item
+        }
+      }
+      if (this.dialog.title === '过敏史') {
+        if (item.name === '无') {
+          this.dialog.chooseData = []
+        } else {
+          const index = this.dialog.chooseData.findIndex(existItem => existItem.name === '无')
+
+          if (index !== -1) {
+            this.dialog.chooseData.splice(index, 1)
+          }
+        }
+      }
+
+      const index = this.dialog.chooseData.findIndex(existItem => existItem.id === item.id && existItem.name === item.name)
+
+      if (index === -1) {
+        this.dialog.chooseData.push(item)
+
+        // 选中后， 清空状态
+        this.dialog.chooseItem = ''
+        this.dialog.source.present_history = []
+        this.dialog.source.allergy_history = []
+      }
+    },
+
+    closeItem(item) {
+      const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
+
+      if (index !== -1) {
+        this.dialog.chooseData.splice(index, 1)
+      }
+    },
+
+    saveItem() {
+      if (this.dialog.title === '过敏史') {
+        this.medical.model.allergy_history = [...this.dialog.chooseData]
+      } else if (this.dialog.title === '既往史') {
+        this.medical.model.past_history = [...this.dialog.chooseData]
+      } else if (this.dialog.title === '诊断') {
+        this.medical.model.diagnose = [...this.dialog.chooseData]
+      }
+
+      console.log(this.hasExist)
+      console.log(this.hasExistNative)
+
+      this.dialog.visible = false
     },
 
     cancelMedical() {

@@ -7,6 +7,15 @@ module.exports = {
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: process.env.outputDir || 'static',
 
+  // https://cli.vuejs.org/zh/config/#configurewebpack
+  configureWebpack: config => {
+    // externals 请参考 https://webpack.docschina.org/configuration/externals/
+    config.externals = {
+      '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0': 'NIM',
+      '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0': 'WebRTC'
+    }
+  },
+
   //增加vue.config.js文件配置css
   css: {
     loaderOptions: {

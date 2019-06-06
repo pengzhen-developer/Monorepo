@@ -20,11 +20,12 @@
     <hr>
 
     <peace-table pagination ref="table">
-      <peace-table-column label="患者姓名" prop="real_name" width="100">
+      <peace-table-column label="患者姓名" prop="real_name" width="140">
         <template slot-scope="scope">
           <span>{{ scope.row.patient_remarks || scope.row.real_name || scope.row.weixin_name }}</span>
         </template>
       </peace-table-column>
+      <peace-table-column label="联系方式" prop="concat" width="100"></peace-table-column>
       <peace-table-column align="left" label="最近咨询" min-width="300">
         <template slot-scope="scope">
           <span style="margin-right: 8px;">{{ scope.row.family_name }}</span>

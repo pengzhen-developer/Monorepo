@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-alert :closable="false" title="双向转诊" type="success">
+    <el-alert :closable="false" title="申请转诊" type="success">
       <div slot="title">
-        <span>双向转诊</span>
+        <span>申请转诊</span>
         <i @click="cancelTransfer" class="el-alert__closebtn el-icon-close"></i>
       </div>
     </el-alert>
@@ -54,7 +54,12 @@
       <el-row>
         <el-form-item label="转诊说明" prop="referralCause">
           <span slot="label">转诊说明</span>
-          <el-input :rows="3" placeholder="请至少输入5个字符" type="textarea" v-model="view.model.referralCause"></el-input>
+          <el-input :rows="3" maxlength="500" placeholder="请至少输入5个字" type="textarea" v-model="view.model.referralCause"></el-input>
+          <span style="color: rgba(155, 155, 155, 1); font-size: 12px;">
+            <span>最多可以输入500字，还可以输入</span>
+            <span>{{ 500 - (view.model.referralCause ? view.model.referralCause.length : 0) }}</span>
+            <span>字</span>
+          </span>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center; margin: 20px 0 0 0;">
@@ -121,7 +126,7 @@ export default {
           doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字符', trigger: 'change' }],
+          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字', trigger: 'change' }],
 
           pickerOptionsDate: {
             disabledDate(time) {
@@ -188,7 +193,7 @@ export default {
 
       this.view.model.doctorInfo = row
 
-      this.$refs.form.validate()
+      this.$refs.form.validateField('doctorInfo')
     },
 
     sendTransfer() {

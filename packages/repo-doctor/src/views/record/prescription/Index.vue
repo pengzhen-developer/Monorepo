@@ -40,14 +40,14 @@
     </div>
 
     <div class="no-data" v-else>
-      <img src="./../../../assets/images/not-status.png">
+      <img src="~@/assets/images/not-status.png">
       <span>暂无问诊记录</span>
     </div>
   </div>
 </template>
 
 <script>
-import ChatSessionPrescriptionDetail from './../../clinic/ChatSessionPrescriptionDetail'
+import ChatSessionPrescriptionDetail from '@/views/clinic/inquiry/ChatSessionPrescriptionDetail'
 
 import config from './config'
 

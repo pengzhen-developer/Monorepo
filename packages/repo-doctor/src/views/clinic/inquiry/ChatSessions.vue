@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <img src="./../../assets/images/icons/clinic/inquirylist_icon.png">
+      <img src="~@/assets/images/icons/clinic/inquirylist_icon.png">
       <span>问诊列表</span>
     </div>
 
@@ -38,10 +38,10 @@
             <div class="content-status">
               <div class="content-status-left">
                 <template v-if="session.lastMsg.custom.ext.talkType == STATE.talkType['图文问诊']">
-                  <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">
+                  <img src="~@/assets/images/icons/clinic/chat_icon_pic.png">
                 </template>
                 <template v-if="session.lastMsg.custom.ext.talkType == STATE.talkType['视频问诊']">
-                  <img src="./../../assets/images/icons/clinic/chat_icon_video.png">
+                  <img src="~@/assets/images/icons/clinic/chat_icon_video.png">
                 </template>
 
                 <span>{{ getTalkType(session.lastMsg.custom.ext.talkType) }}</span>
@@ -55,7 +55,7 @@
 
     <template v-else>
       <div class="body-no-data">
-        <img src="./../../assets/images/icons/clinic/ic_no one.png">
+        <img src="~@/assets/images/icons/clinic/ic_no one.png">
         <span>暂无患者</span>
       </div>
     </template>

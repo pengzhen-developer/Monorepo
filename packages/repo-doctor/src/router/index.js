@@ -20,10 +20,16 @@ const router = new Router({
         },
 
         {
-          path: '/clinic',
+          path: '/clinic/inquiry',
           meta: { Auth: true },
-          name: '/clinic',
-          component: () => import('./../views/clinic/Index.vue')
+          name: '/clinic/inquiry',
+          component: () => import('./../views/clinic/inquiry/Index.vue')
+        },
+        {
+          path: '/clinic/consultation',
+          meta: { Auth: true },
+          name: '/clinic/consultation',
+          component: () => import('./../views/clinic/consultation/Index.vue')
         },
 
         {
@@ -51,6 +57,12 @@ const router = new Router({
           name: '/record/transfer',
           component: () => import('./../views/record/transfer/Index.vue')
         },
+        {
+          path: '/record/consultation',
+          meta: { Auth: true },
+          name: '/record/consultation',
+          component: () => import('./../views/record/consultation/Index.vue')
+        },
 
         {
           path: '/sys/myInfo',
@@ -75,7 +87,19 @@ const router = new Router({
           meta: { Auth: true },
           name: '/sys/myService',
           component: () => import('./../views/sys/myService/Index.vue')
+        },
+        {
+          path: '/sys/myPharmacy',
+          meta: { Auth: true },
+          name: '/sys/myPharmacy',
+          component: () => import('./../views/sys/myPharmacy/Index.vue')
         }
+        // {
+        //   path: '/sys/myService',
+        //   meta: { Auth: true },
+        //   name: '/sys/myService',
+        //   component: () => import('./../views/sys/myService/Index.vue')
+        // }
       ]
     },
 

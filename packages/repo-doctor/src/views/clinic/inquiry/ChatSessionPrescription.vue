@@ -97,7 +97,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="单次剂量" prop="consump">
-              <el-input placeholder style="width: 120px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
+              <el-input placeholder style="width: 100px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
               {{ drug.model.unit }}
             </el-form-item>
           </el-col>
@@ -300,7 +300,7 @@ export default {
       this.drug.model.drug_spec = item.drug_spec
       this.drug.model.unit = item.drug_unit
 
-      // 默认药品数量、单词剂量值
+      // 默认药品数量、单次剂量值
       this.drug.model.consump = 1
       this.drug.model.number = 1
 
