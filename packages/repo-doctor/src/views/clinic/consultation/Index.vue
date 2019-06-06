@@ -14,11 +14,15 @@
       :visible.sync="video.visible"
       center
       custom-class="video-class"
+      v-drag
       width="520px"
     >
       <!-- 视频 -->
       <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in video.remoteList">
-        <i class="el-icon-loading" style="position: absolute;"></i>
+        <i class="el-icon-more-outline" style="position: absolute; font-size: 20px; text-align: center;">
+          <p style="font-size: 14px;">{{ item.doctorName }}</p>
+          <p style="font-size: 14px;">等待加入中</p>
+        </i>
       </div>
 
       <template slot="footer">
@@ -79,6 +83,7 @@ export default {
       video: {
         visible: false,
         remoteList: [],
+        remoteCurrentList: [],
         title: ''
       }
     }
@@ -289,10 +294,6 @@ export default {
 
       // 开始视频
       if (isCreateRoom) {
-        this.video.title = ''
-        this.durationInterval.forEach(interval => window.clearInterval(interval))
-        this.durationInterval = []
-
         const params = {
           consultNo: consultNo,
           action: 'start',
@@ -315,75 +316,57 @@ export default {
         this.$http.post('client/v1/video/processConsult', params)
 
         joinChannel()
-
-        this.video.title = ''
-        this.durationInterval.forEach(interval => window.clearInterval(interval))
-        this.durationInterval = []
-
-        const now = new Date()
-        const interval = setInterval(() => {
-          this.video.title = $peace.util.formatDuration(now, new Date())
-        }, 1000)
-        this.durationInterval.push(interval)
       }
     },
 
     remoteTrack(obj) {
       console.log('other user join', obj)
 
-      if (this.video.remoteList.findIndex(item => item.account === obj.account) === -1) {
-        this.video.title = ''
-        this.durationInterval.forEach(interval => window.clearInterval(interval))
-        this.durationInterval = []
-        const now = new Date()
-        const interval = setInterval(() => {
-          this.video.title = $peace.util.formatDuration(now, new Date())
-        }, 1000)
-
-        this.durationInterval.push(interval)
-
-        this.$nextTick(function() {
-          // 播放对方声音
-          $peace.WebRTC.startDevice({
-            type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
-          }).catch(err => {
-            console.log('播放对方的声音失败')
-            console.error(err)
-          })
-          // 预览对方视频画面
-          $peace.WebRTC.startRemoteStream({
-            account: obj.account,
-            node: document.getElementById('remoteContaier' + obj.account)
-          })
-          // 设置对方预览画面大小
-          $peace.WebRTC.setVideoViewRemoteSize({
-            account: obj.account,
-            width: 250,
-            height: 250,
-            cut: true
-          })
-        })
+      if (this.video.remoteCurrentList.findIndex(item => item.account === obj.account) === -1) {
+        this.video.remoteCurrentList.push(obj)
       }
+
+      this.$nextTick(function() {
+        // 播放对方声音
+        $peace.WebRTC.startDevice({
+          type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
+        }).catch(err => {
+          console.log('播放对方的声音失败')
+          console.error(err)
+        })
+        // 预览对方视频画面
+        $peace.WebRTC.startRemoteStream({
+          account: obj.account,
+          node: document.getElementById('remoteContaier' + obj.account)
+        })
+        // 设置对方预览画面大小
+        $peace.WebRTC.setVideoViewRemoteSize({
+          account: obj.account,
+          width: 250,
+          height: 250,
+          cut: true
+        })
+      })
     },
 
     leaveChannel(obj) {
       console.log('other user leave', obj)
 
-      const index = this.video.remoteList.findIndex(item => item.account === obj.account)
+      const index = this.video.remoteCurrentList.findIndex(item => item.account === obj.account)
 
       if (index !== -1) {
-        this.video.remoteList.splice(index, 1)
+        this.video.remoteCurrentList.splice(index, 1)
 
-        console.log(this.video.remoteList)
+        console.log(this.video.remoteCurrentList)
       }
     },
 
     leaveVideo() {
       $peace.WebRTC.leaveChannel().then(obj => {
         console.log('user leave', obj)
-        console.log(this.video.remoteList)
+        console.log(this.video.remoteCurrentList)
 
-        if (this.video.remoteList.length === 1) {
+        if (this.video.remoteCurrentList.length === 0) {
           const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation && item.custom.consultation.channel).custom.consultation
             .consultNo
 
@@ -455,12 +438,13 @@ export default {
   .videoContaier {
     width: 250px;
     height: 250px;
-    border-radius: 6px;
+    border-radius: 2px;
     display: flex;
     flex-direction: column;
 
     justify-content: center;
     align-items: center;
+    background: #000;
   }
 
   .el-button {

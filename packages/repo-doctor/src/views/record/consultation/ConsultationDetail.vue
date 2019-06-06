@@ -112,7 +112,7 @@
     </div>
 
     <!-- 发起机构审核信息 -->
-    <div class="record-content" v-if="internalData.consultStatus >= 3 ">
+    <div class="record-content" v-if="internalData.consultStatus >= 2 ">
       <span class="title">发起机构审核信息</span>
 
       <el-form>
@@ -141,7 +141,7 @@
     </div>
 
     <!-- 受邀机构审核信息 -->
-    <div class="record-content" v-if="internalData.consultStatus >= 5 ">
+    <div class="record-content" v-if="internalData.consultStatus >= 4 ">
       <span class="title">受邀机构审核信息</span>
 
       <el-form>
