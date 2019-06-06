@@ -278,8 +278,8 @@ export default {
           consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
 
-        this.$http.post('client/v1/consult/submitSuggest', params).then(res => {
-          $peace.util.alert(res.msg)
+        this.$http.post('client/v1/consult/submitSuggest', params).then(() => {
+          $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.clearTeam()
           this.consultSuggestDialog.visible = false

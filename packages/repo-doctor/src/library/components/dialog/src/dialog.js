@@ -13,6 +13,13 @@ const ExtendDialogProps = {
     default() {
       return false
     }
+  },
+
+  width: {
+    type: String,
+    default() {
+      return '600px'
+    }
   }
 }
 
