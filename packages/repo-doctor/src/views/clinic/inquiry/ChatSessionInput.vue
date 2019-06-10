@@ -230,7 +230,7 @@ export default {
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
-          $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning', confirmButtonText: '去填写' }, () => {
             this.showMedical()
           })
         }
@@ -263,11 +263,11 @@ export default {
       this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
         // 非有效会话，提示无法进行转诊
         if (res.data.status === 1) {
-          $peace.util.warning('系统检测到当前为无效会话，无法进行转诊')
+          $peace.util.warning('系统检测到当前为无效会话，无法进行会诊')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
-          $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning', confirmButtonText: '去填写' }, () => {
             this.showMedical()
           })
         }
