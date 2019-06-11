@@ -197,7 +197,7 @@ export default {
 
           this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
             this.positiveDurationInterval = setInterval(() => {
-              this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date())
+              this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date(new Date().getTime() + $peace.serverDateDiff))
             }, 1000)
           })
         }
@@ -210,7 +210,7 @@ export default {
 
             this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
               this.positiveDurationInterval = setInterval(() => {
-                this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date())
+                this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date(new Date().getTime() + $peace.serverDateDiff))
               }, 1000)
             })
           }

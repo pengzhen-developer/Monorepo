@@ -10,7 +10,25 @@
     </div>
 
     <div class="body">
-      <el-alert :closable="false" class="chat-team-waring" show-icon style title type="warning">
+      <el-alert
+        :closable="false"
+        class="chat-team-waring"
+        show-icon
+        title
+        type="warning"
+        v-if="chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel"
+      >
+        <div slot="title" style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
+          <span>你有一个视频会议正在进行中，</span>
+
+          <el-button
+            @click="$peace.consultationComponent.joinChannel(chat.team.custom.consultation.channel, chat.team.custom.consultation.consultNo)"
+            type="text"
+          >点击进入</el-button>
+        </div>
+      </el-alert>
+
+      <el-alert :closable="false" class="chat-team-waring" show-icon style title type="warning" v-else>
         <div slot="title" style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
           <span>
             视频结束后请填写
@@ -20,9 +38,7 @@
       </el-alert>
 
       <!-- 聊天记录 -->
-      <el-scrollbar class="chat-team-list-scrollbar">
-        <ChatTeamList class="chat-team-list"></ChatTeamList>
-      </el-scrollbar>
+      <ChatTeamList class="chat-team-list"></ChatTeamList>
 
       <!-- 输入与控制 -->
       <ChatTeamInput class="chat-team-input"></ChatTeamInput>
@@ -100,12 +116,8 @@ export default {
   .body {
     height: calc(100% - 50px);
 
-    .chat-team-list-scrollbar {
+    .chat-team-list {
       height: calc(100% - 234px);
-
-      .chat-team-list {
-        height: 100%;
-      }
     }
 
     .chat-team-waring {

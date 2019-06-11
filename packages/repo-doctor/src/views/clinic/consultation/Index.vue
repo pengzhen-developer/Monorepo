@@ -1,3 +1,4 @@
+
 /*
  * @Author: PengZhen 
  * @Date: 2019-05/27
@@ -18,15 +19,16 @@
       width="520px"
     >
       <!-- 视频 -->
-      <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in video.remoteList">
-        <i class="el-icon-more-outline" style="position: absolute; font-size: 20px; text-align: center;">
+      <div :id="'remoteContaier' + item.account" :key="item.account" class="videoContaier" v-for="item in video.remoteUserList">
+        <div style="position: absolute; text-align: center;">
           <p style="font-size: 14px;">{{ item.doctorName }}</p>
           <p style="font-size: 14px;">等待加入中</p>
-        </i>
+          <i class="el-icon-loading" style="font-size: 20px; text-align: center;"></i>
+        </div>
       </div>
 
       <template slot="footer">
-        <el-button @click="leaveVideo" circle class="hang_up">
+        <el-button @click="leaveChannel" circle class="hang_up">
           <span class="video-bottom-text">挂断</span>
         </el-button>
       </template>
@@ -47,13 +49,27 @@
 </template>
 
 <script>
-import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
+import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0'
 
 import ChatTeams from './ChatTeams'
 import ChatTeam from './ChatTeam'
 import ChatConsultation from './ChatConsultation'
 
 import { mapState, mapActions } from 'vuex'
+
+const sessionConfig = {
+  videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
+  videoFrameRate: WebRTC.CHAT_VIDEO_FRAME_RATE_15,
+  videoEncodeMode: WebRTC.CHAT_VIDEO_ENCODEMODE_NORMAL,
+  videoBitrate: 0,
+  recordVideo: false,
+  recordAudio: false,
+  highAudio: false,
+  bypassRtmp: false,
+  rtmpUrl: '',
+  rtmpRecord: false,
+  splitMode: WebRTC.LAYOUT_SPLITLATTICETILE
+}
 
 export default {
   components: {
@@ -77,93 +93,72 @@ export default {
 
   data() {
     return {
-      channelNotifyList: [],
-      durationInterval: [],
-
       video: {
         visible: false,
-        remoteList: [],
-        remoteCurrentList: [],
-        title: ''
+        title: '',
+
+        remoteUserList: [],
+        remoteUserJoinedList: [],
+        channelNotifyList: []
       }
     }
-  },
-
-  computed: {
-    ...mapState(['chat', 'user'])
-  },
-
-  created() {
-    $peace.consultationComponent = this
-
-    // 初始化 IM，会诊专用
-    this.initNIM(true)
-
-    // IM 初始化完成后，监听回调函数
-    const interval = setInterval(() => {
-      if ($peace.WebRTC) {
-        // 在回调里监听对方加入通话，并显示对方的视频画面
-        $peace.WebRTC.on('remoteTrack', this.remoteTrack)
-        $peace.WebRTC.on('leaveChannel', this.leaveChannel)
-
-        window.clearInterval(interval)
-      }
-    }, 100)
   },
 
   watch: {
     'chat.teams': {
       handler() {
         if (this.chat.teams) {
-          this.chat.teams.forEach(item => {
-            // 当前会诊存在视频
-            if (item.custom && item.custom.consultation && item.custom.consultation.channel) {
-              // 将参与视频的所有人保存起来
-              const receiveDoctor = item.custom.consultation.receiveDoctor
-              const startDoctor = item.custom.consultation.startDoctor
-              const cooperationDoctors = item.custom.consultation.cooperationDoctors
+          this.chat.teams.forEach(team => {
+            // 当前存在会诊
+            if (team.custom && team.custom.consultation) {
+              // 将参与视频的所有人保存起来, 生成 html, 用于挂载视频流
+              if (this.video.remoteUserList && this.video.remoteUserList.length === 0) {
+                const remoteUserList = team.custom.consultation.startDoctor
+                  .concat(team.custom.consultation.receiveDoctor)
+                  .concat(team.custom.consultation.cooperationDoctors)
 
-              this.video.remoteList = receiveDoctor.concat(startDoctor).concat(cooperationDoctors)
-
-              this.video.remoteList.forEach(item => {
-                item.account = item.doctorId
-              })
-
-              // 提示视频消息
-              if (
-                !this.channelNotifyList.includes(item.custom.consultation.channel) &&
-                item.custom.consultation.channelFromId !== this.user.userInfo.list.docInfo.doctor_id
-              ) {
-                const message = (
-                  <div>
-                    <el-button
-                      type="success"
-                      onclick={() => {
-                        this.joinVideoRoom(item.custom.consultation.channel, item.custom.consultation.consultNo, false)
-                        channel.close()
-                      }}
-                    >
-                      接受
-                    </el-button>
-                    <el-button type="danger" onclick={() => channel.close()}>
-                      拒绝
-                    </el-button>
-                  </div>
-                )
-
-                const channel = $peace.$notify.success({
-                  title: '你收到一个新的视频邀请',
-                  message: message,
-                  position: 'top-right',
-                  duration: 0,
-                  showClose: false
+                remoteUserList.forEach(item => {
+                  item.account = item.doctorId
                 })
 
-                setTimeout(() => {
-                  channel.close()
-                }, 30000)
+                this.video.remoteUserList = remoteUserList
+              }
 
-                this.channelNotifyList.push(item.custom.consultation.channel)
+              // 提示当前用户是否存在视频邀请
+              if (team.custom.consultation.channel && team.custom.consultation.channelFromId !== this.user.userInfo.list.docInfo.doctor_id) {
+                // 只提示一次
+                if (!this.video.channelNotifyList.includes(team.custom.consultation.channel)) {
+                  this.video.channelNotifyList.push(team.custom.consultation.channel)
+
+                  const joinChannel = () => {
+                    this.joinChannel(team.custom.consultation.channel, team.custom.consultation.consultNo)
+                    channelMessage.close()
+                  }
+
+                  const message = (
+                    <div>
+                      <el-button type="success" onclick={() => joinChannel()}>
+                        接受
+                      </el-button>
+                      <el-button type="danger" onclick={() => channelMessage.close()}>
+                        拒绝
+                      </el-button>
+                    </div>
+                  )
+
+                  const channelMessage = $peace.$notify.success({
+                    title: '你收到一个新的视频邀请',
+                    message: message,
+                    position: 'top-right',
+                    duration: 0,
+                    showClose: false
+                  })
+
+                  // 定时关闭弹框提示
+                  setTimeout(() => {
+                    channelMessage.close()
+                  }, 30000)
+                }
               }
             }
           })
@@ -187,60 +182,43 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['chat', 'user'])
+  },
+
+  created() {
+    $peace.consultationComponent = this
+
+    // 初始化 IM
+    this.initNIM()
+    this.initWebRTCForPersons()
+
+    // IM 初始化完成后
+    // 监听对方加入通话
+    // 监听对方离开通话
+    setTimeout(() => {
+      if ($peace.WebRTC) {
+        $peace.WebRTC.on('remoteTrack', this.onRemoteTrack)
+        $peace.WebRTC.on('leaveChannel', this.onLeaveChannel)
+      }
+    }, 5000)
+  },
+
   methods: {
-    ...mapActions('chat', ['clearTeam', 'initNIM']),
+    ...mapActions('chat', ['clearTeam', 'initNIM', 'initWebRTCForPersons']),
 
-    createVideoRoom(channel) {
-      return $peace.WebRTC.createChannel({
-        //必填, 房间名
-        channelName: channel,
-        //可选
-        custom: channel,
-        // 是否支持WebRTC方式接入，可选，默认为不开启
-        webrtcEnable: true
-      })
-        .then(obj => {
-          console.log(obj)
-        })
-        .catch(obj => {
-          console.log(obj)
-        })
-    },
-
-    joinVideoRoom(channelName, consultNo, isCreateRoom = true) {
-      const joinChannel = () => {
-        const sessionConfig = {
-          videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
-          videoFrameRate: WebRTC.CHAT_VIDEO_FRAME_RATE_15,
-          videoEncodeMode: WebRTC.CHAT_VIDEO_ENCODEMODE_NORMAL,
-          videoBitrate: 0,
-          recordVideo: false,
-          recordAudio: false,
-          highAudio: false,
-          bypassRtmp: false,
-          rtmpUrl: '',
-          rtmpRecord: false,
-          splitMode: WebRTC.LAYOUT_SPLITLATTICETILE
-        }
-
-        $peace.WebRTC.joinChannel({
+    // 用户主动加入频道
+    joinChannel(channelName, consultNo) {
+      const joinChannelHandler = () => {
+        return $peace.WebRTC.joinChannel({
           type: WebRTC.NETCALL_TYPE_VIDEO,
           sessionConfig: sessionConfig,
           channelName: channelName
         })
           .then(obj => {
-            this.video.visible = true
-
-            this.video.remoteCurrentList.push(obj)
-
-            // 加入房间成功后的上层逻辑操作
-            // eg: 开启摄像头
-            // eg: 开启麦克风
-            // eg: 开启本地流
-            // eg: 设置音量采集、播放
-            // eg: 设置视频画面尺寸等等，具体请参照p2p呼叫模式
-
-            console.log('加入成功', obj)
+            if (this.video.remoteUserJoinedList.findIndex(item => item.account === obj.account) === -1) {
+              this.video.remoteUserJoinedList.push(obj)
+            }
 
             $peace.WebRTC.startRtc()
               .then(() => {
@@ -258,8 +236,8 @@ export default {
                 // 开启摄像头
                 return $peace.WebRTC.startDevice({
                   type: WebRTC.DEVICE_TYPE_VIDEO,
-                  width: 640,
-                  height: 480
+                  width: 250,
+                  height: 250
                 }).catch(err => {
                   console.log('启动摄像头失败')
                   console.error(err)
@@ -276,133 +254,146 @@ export default {
                 })
               })
               .then(() => {
-                // 设置为互动者角色，可以发送自己的音频和视频给房间中的其他人
+                // 设置互动者角色
                 $peace.WebRTC.changeRoleToPlayer()
               })
               .catch(err => {
-                console.log('发生错误')
-                console.log(err)
+                console.error(err)
                 $peace.WebRTC.hangup()
               })
           })
-          .catch(res => {
-            this.video.visible = false
-
-            console.error(res)
-
-            $peace.util.warning(res.desc)
+          .catch(obj => {
+            $peace.util.alert(obj)
           })
       }
 
-      // 开始视频
-      if (isCreateRoom) {
-        const params = {
-          consultNo: consultNo,
-          action: 'start',
-          channel: channelName
-        }
-        this.$http
-          .post('client/v1/video/processConsult', params)
+      const createChannelHandler = () => {
+        return $peace.WebRTC.createChannel({
+          channelName: channelName,
+          custom: channelName,
+          webrtcEnable: true
+        }).then(obj => {
+          console.log('create channel', obj)
+
+          return obj
+        })
+      }
+
+      const params = {
+        consultNo: consultNo,
+        action: 'join',
+        channel: channelName
+      }
+
+      this.$http.post('client/v1/video/processConsult', params).then(() => {
+        this.video.visible = true
+
+        // 未避免 channel 异常，尝试先创建 channel，再加入
+        createChannelHandler()
           .then(() => {
-            joinChannel()
+            joinChannelHandler()
           })
-          .catch(res => {
-            $peace.util.warning(res.data.msg)
+          .catch(error => {
+            // 20110 : 重复操作，频道已创建
+            // 20111 : 对象(用户/群/聊天室)不存在
+            if (error.code === 20110 || error.code === 20111) {
+              return joinChannelHandler()
+            }
+
+            console.error(error)
           })
-      } else {
-        const params = {
-          consultNo: consultNo,
-          action: 'join',
-          channel: channelName
-        }
-        this.$http.post('client/v1/video/processConsult', params)
-
-        joinChannel()
-      }
-    },
-
-    remoteTrack(obj) {
-      console.log('other user join', obj)
-
-      if (this.video.remoteCurrentList.findIndex(item => item.account === obj.account) === -1) {
-        this.video.remoteCurrentList.push(obj)
-      }
-
-      // 播放对方声音
-      $peace.WebRTC.startDevice({
-        type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
-      }).catch(err => {
-        console.log('播放对方的声音失败')
-        console.error(err)
-      })
-      // 预览对方视频画面
-      $peace.WebRTC.startRemoteStream({
-        account: obj.account,
-        node: document.getElementById('remoteContaier' + obj.account)
-      })
-      // 设置对方预览画面大小
-      $peace.WebRTC.setVideoViewRemoteSize({
-        account: obj.account,
-        width: 250,
-        height: 250,
-        cut: true
       })
     },
 
-    leaveChannel(obj) {
-      $peace.WebRTC.stopRemoteStream(obj.account)
-      console.log('other user leave', obj)
-
-      const index = this.video.remoteCurrentList.findIndex(item => item.account === obj.account)
-
-      if (index !== -1) {
-        this.video.remoteCurrentList.splice(index, 1)
-
-        console.log(this.video.remoteCurrentList)
-      }
-    },
-
-    leaveVideo() {
+    // 用户主动离开频道
+    leaveChannel() {
       $peace.WebRTC.hangup()
 
-      const index = this.video.remoteCurrentList.findIndex(item => item.account === this.user.userInfo.list.docInfo.doctor_id)
-
+      const index = this.video.remoteUserJoinedList.findIndex(item => item.account === this.user.userInfo.list.docInfo.doctor_id)
       if (index !== -1) {
-        this.video.remoteCurrentList.splice(index, 1)
-
-        console.log(this.video.remoteCurrentList)
+        this.video.remoteUserJoinedList.splice(index, 1)
       }
 
-      $peace.WebRTC.leaveChannel().then(obj => {
-        console.log('user leave', obj)
-        console.log(this.video.remoteCurrentList)
+      $peace.WebRTC.leaveChannel().then(() => {
+        this.video.visible = false
 
-        if (this.video.remoteCurrentList.length === 0) {
+        // 验证当前频道是否还存在用户, 用以结束视频
+        if (this.video.remoteUserJoinedList.length === 0) {
           const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation).custom.consultation.consultNo
 
-          // 结束视频
           const params = {
             consultNo: consultNo,
             action: 'over'
           }
 
-          this.$http.post('client/v1/video/processConsult', params).then(() => {
-            this.durationInterval.forEach(interval => window.clearInterval(interval))
-            this.durationInterval = []
-          })
+          this.$http.post('client/v1/video/processConsult', params)
+        }
+      })
+    },
+
+    // 监听到用户离开频道
+    onLeaveChannel(obj) {
+      console.log('on leave channel', obj)
+
+      $peace.WebRTC.stopRemoteStream(obj.account)
+
+      const index = this.video.remoteUserJoinedList.findIndex(item => item.account === obj.account)
+      if (index !== -1) {
+        this.video.remoteUserJoinedList.splice(index, 1)
+      }
+
+      const leaveUser = this.video.remoteUserList.find(item => item.account === obj.account)
+      if (leaveUser) {
+        $peace.util.alert(`${leaveUser.doctorName}离开房间`)
+      }
+    },
+
+    // 收到远程轨道信息
+    onRemoteTrack(obj) {
+      console.log('on remote track', obj)
+
+      if (this.video.remoteUserJoinedList.findIndex(item => item.account === obj.account) === -1) {
+        this.video.remoteUserJoinedList.push(obj)
+      }
+
+      // 音频：播放对方的音频
+      if (obj.track.kind === 'audio') {
+        // 播放对方声音
+        $peace.WebRTC.startDevice({
+          type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
+        }).catch(err => {
+          console.log('播放对方的声音失败')
+          console.error(err)
+        })
+      }
+
+      // 视频：展示对方的画面
+      if (obj.track.kind === 'video') {
+        const joinUser = this.video.remoteUserList.find(item => item.account === obj.account)
+        if (joinUser) {
+          $peace.util.alert(`${joinUser.doctorName}进入房间`)
         }
 
-        this.video.visible = false
-      })
+        // 预览加入的同学的视频流
+        $peace.WebRTC.startRemoteStream({
+          account: obj.account,
+          node: document.getElementById('remoteContaier' + obj.account)
+        })
+
+        // 设置对方预览画面大小
+        $peace.WebRTC.setVideoViewRemoteSize({
+          account: obj.account,
+          width: 250,
+          height: 250,
+          cut: true
+        })
+      }
     }
   },
 
   // 销毁 IM
   destroyed() {
     this.clearTeam()
-
-    this.durationInterval.forEach(interval => window.clearInterval(interval))
-    this.durationInterval = []
   }
 }
 </script>
