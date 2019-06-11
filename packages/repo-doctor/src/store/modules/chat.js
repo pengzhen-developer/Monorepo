@@ -674,7 +674,6 @@ const actions = {
       handler()
     }
 
-    debugger
     WebRTCUtil.onBeCalling()
     WebRTCUtil.onCallRejected()
     WebRTCUtil.onCallAccepted()
