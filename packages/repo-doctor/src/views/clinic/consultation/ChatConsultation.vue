@@ -146,7 +146,7 @@
                   </p>
                   <p>
                     <span>审核备注：</span>
-                    <span>{{ data.outCheckSuggest || '同意会诊' }}</span>
+                    <span>{{ data.outCheckSuggest }}</span>
                   </p>
                 </div>
               </el-timeline-item>
@@ -161,7 +161,7 @@
                   </p>
                   <p>
                     <span>审核备注：</span>
-                    <span>{{ data.inCheckSuggest || '同意会诊' }}</span>
+                    <span>{{ data.inCheckSuggest }}</span>
                   </p>
                 </div>
               </el-timeline-item>
