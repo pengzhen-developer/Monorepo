@@ -196,12 +196,14 @@ export default {
     // IM 初始化完成后
     // 监听对方加入通话
     // 监听对方离开通话
-    setTimeout(() => {
+    const interval = setInterval(() => {
       if ($peace.WebRTC) {
         $peace.WebRTC.on('remoteTrack', this.onRemoteTrack)
         $peace.WebRTC.on('leaveChannel', this.onLeaveChannel)
+
+        window.clearInterval(interval)
       }
-    }, 5000)
+    }, 100)
   },
 
   methods: {
