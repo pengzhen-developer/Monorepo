@@ -218,9 +218,9 @@ export default {
     },
 
     invitedChange(val, row) {
-      const index = val.findIndex(item => item === row.doctorId)
+      const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === row.doctorId)
 
-      if (index !== -1) {
+      if (index === -1) {
         this.invitedDialog.chooseList.push(row)
       } else {
         this.invitedDialog.chooseList.splice(index, 1)
