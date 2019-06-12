@@ -656,23 +656,16 @@ const actions = {
 
   // 初始化 WebRTC
   initWebRTC() {
-    const handler = () => {
-      $peace.WebRTC = WebRTC.getInstance({
-        nim: $peace.NIM,
-        chromeId: '',
-        debug: false
-      })
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
     }
 
-    if ($peace.WebRTC) {
-      $peace.WebRTC.destroy({
-        done: () => {
-          handler()
-        }
-      })
-    } else {
-      handler()
-    }
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
 
     WebRTCUtil.onBeCalling()
     WebRTCUtil.onCallRejected()
@@ -685,24 +678,16 @@ const actions = {
 
   // 初始化多人音视频 WebRTC
   initWebRTCForPersons() {
-    const handler = () => {
-      $peace.WebRTC = WebRTC.getInstance({
-        nim: $peace.NIM,
-        chromeId: '',
-        // 是否开启日志打印
-        debug: false
-      })
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
     }
 
-    if ($peace.WebRTC) {
-      $peace.WebRTC.destroy({
-        done: () => {
-          handler()
-        }
-      })
-    } else {
-      handler()
-    }
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
   },
 
   // 选中会话列表的一条会话

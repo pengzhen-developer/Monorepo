@@ -99,7 +99,9 @@ export default {
 
         remoteUserList: [],
         remoteUserJoinedList: [],
-        channelNotifyList: []
+        channelNotifyList: [],
+
+        consultation: undefined
       }
     }
   },
@@ -107,57 +109,34 @@ export default {
   watch: {
     'chat.teams': {
       handler() {
+        this.video.consultation = undefined
+
         if (this.chat.teams) {
+          this.closeNotify()
+
           this.chat.teams.forEach(team => {
-            // 当前存在会诊
-            if (team.custom && team.custom.consultation) {
+            // 当前会诊存在视频
+            if (team.custom && team.custom.consultation && team.custom.consultation.channel) {
+              this.video.consultation = team.custom.consultation
+
               // 将参与视频的所有人保存起来, 生成 html, 用于挂载视频流
-              if (this.video.remoteUserList && this.video.remoteUserList.length === 0) {
-                const remoteUserList = team.custom.consultation.startDoctor
-                  .concat(team.custom.consultation.receiveDoctor)
-                  .concat(team.custom.consultation.cooperationDoctors)
+              const remoteUserList = team.custom.consultation.startDoctor
+                .concat(team.custom.consultation.receiveDoctor)
+                .concat(team.custom.consultation.cooperationDoctors)
 
-                remoteUserList.forEach(item => {
-                  item.account = item.doctorId
-                })
+              remoteUserList.forEach(item => {
+                item.account = item.doctorId
+              })
 
-                this.video.remoteUserList = remoteUserList
-              }
+              this.video.remoteUserList = remoteUserList
 
               // 提示当前用户是否存在视频邀请
-              if (team.custom.consultation.channel && team.custom.consultation.channelFromId !== this.user.userInfo.list.docInfo.doctor_id) {
-                // 只提示一次
-                if (!this.video.channelNotifyList.includes(team.custom.consultation.channel)) {
-                  this.video.channelNotifyList.push(team.custom.consultation.channel)
+              // 仅提醒一次
+              if (!this.video.channelNotifyList.includes(team.custom.consultation.channel)) {
+                this.video.channelNotifyList.push(team.custom.consultation.channel)
 
-                  const joinChannel = () => {
-                    this.joinChannel(team.custom.consultation.channel, team.custom.consultation.consultNo)
-                    channelMessage.close()
-                  }
-
-                  const message = (
-                    <div>
-                      <el-button type="success" onclick={() => joinChannel()}>
-                        接受
-                      </el-button>
-                      <el-button type="danger" onclick={() => channelMessage.close()}>
-                        拒绝
-                      </el-button>
-                    </div>
-                  )
-
-                  const channelMessage = $peace.$notify.success({
-                    title: '你收到一个新的视频邀请',
-                    message: message,
-                    position: 'top-right',
-                    duration: 0,
-                    showClose: false
-                  })
-
-                  // 定时关闭弹框提示
-                  setTimeout(() => {
-                    channelMessage.close()
-                  }, 30000)
+                if (team.custom.consultation.channelFromId !== this.user.userInfo.list.docInfo.doctor_id) {
+                  this.showNotify(team)
                 }
               }
             }
@@ -171,11 +150,34 @@ export default {
       handler() {
         if (this.chat.teamMsgs) {
           this.$nextTick(function() {
-            const scrollElement = document.body.querySelector('.chat-team-list-scrollbar .el-scrollbar__wrap')
-            if (scrollElement) {
-              scrollElement.scrollTop = scrollElement.scrollHeight
-            }
+            setTimeout(() => {
+              const scrollElement = document.body.querySelector('.chat-team-list-scrollbar .el-scrollbar__wrap')
+              if (scrollElement) {
+                scrollElement.scrollTop = scrollElement.scrollHeight
+              }
+            }, 100)
           })
+        }
+      },
+      immediate: true
+    },
+
+    'video.visible': {
+      handler() {
+        this.video.title = '正在进行视频会议'
+        let interval = undefined
+
+        if (this.video.visible) {
+          setInterval(() => {
+            if (this.video.consultation && this.video.consultation.channelTime) {
+              this.video.title = $peace.util.formatDuration(
+                new Date(this.video.consultation.channelTime),
+                new Date(new Date().getTime() + $peace.serverDateDiff)
+              )
+            }
+          }, 1000)
+        } else {
+          window.clearInterval(interval)
         }
       },
       immediate: true
@@ -187,9 +189,9 @@ export default {
   },
 
   created() {
+    let loadingFullPage = undefined
     $peace.consultationComponent = this
 
-    // 初始化 IM
     this.initNIM()
     this.initWebRTCForPersons()
 
@@ -198,16 +200,55 @@ export default {
     // 监听对方离开通话
     const interval = setInterval(() => {
       if ($peace.WebRTC) {
+        loadingFullPage && loadingFullPage.close()
+
         $peace.WebRTC.on('remoteTrack', this.onRemoteTrack)
         $peace.WebRTC.on('leaveChannel', this.onLeaveChannel)
 
         window.clearInterval(interval)
+      } else {
+        loadingFullPage = $peace.$loading({
+          lock: true,
+          text: '正在初始化通讯功能，请稍后',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.05)'
+        })
       }
-    }, 100)
+    }, 10)
   },
 
   methods: {
     ...mapActions('chat', ['clearTeam', 'initNIM', 'initWebRTCForPersons']),
+
+    closeNotify() {
+      $peace.consultationComponent && $peace.consultationComponent.channelMessage && $peace.consultationComponent.channelMessage.close()
+    },
+
+    showNotify(team) {
+      const joinChannel = () => {
+        this.joinChannel(team.custom.consultation.channel, team.custom.consultation.consultNo)
+        this.closeNotify()
+      }
+
+      const messageBody = (
+        <div>
+          <el-button type="success" onclick={() => joinChannel()}>
+            接受
+          </el-button>
+          <el-button type="danger" onclick={() => this.closeNotify()}>
+            拒绝
+          </el-button>
+        </div>
+      )
+
+      $peace.consultationComponent.channelMessage = $peace.$notify.success({
+        title: '你收到一个新的视频邀请',
+        message: messageBody,
+        position: 'bottom-right',
+        duration: 0,
+        showClose: false
+      })
+    },
 
     // 用户主动加入频道
     joinChannel(channelName, consultNo) {
@@ -221,8 +262,9 @@ export default {
             if (this.video.remoteUserJoinedList.findIndex(item => item.account === obj.account) === -1) {
               this.video.remoteUserJoinedList.push(obj)
             }
-
-            $peace.WebRTC.startRtc()
+          })
+          .then(() => {
+            return $peace.WebRTC.startRtc()
               .then(() => {
                 // 开启麦克风
                 return $peace.WebRTC.startDevice({
@@ -248,6 +290,7 @@ export default {
               .then(() => {
                 //预览本地画面
                 $peace.WebRTC.startLocalStream(document.getElementById('remoteContaier' + this.user.userInfo.list.docInfo.doctor_id))
+
                 // 设置本地预览画面大小
                 $peace.WebRTC.setVideoViewSize({
                   width: 250,
@@ -281,16 +324,10 @@ export default {
         })
       }
 
-      const params = {
-        consultNo: consultNo,
-        action: 'join',
-        channel: channelName
-      }
-
-      this.$http.post('client/v1/video/processConsult', params).then(() => {
+      if (this.video.consultation && this.video.consultation.channelFromId === this.user.userInfo.list.docInfo.doctor_id) {
         this.video.visible = true
 
-        // 未避免 channel 异常，尝试先创建 channel，再加入
+        // 为避免 channel 异常，尝试先创建 channel，再加入
         createChannelHandler()
           .then(() => {
             joinChannelHandler()
@@ -304,19 +341,43 @@ export default {
 
             console.error(error)
           })
-      })
+      } else {
+        const params = {
+          consultNo: consultNo,
+          action: 'join',
+          channel: channelName
+        }
+
+        this.$http.post('client/v1/video/processConsult', params).then(() => {
+          this.video.visible = true
+          // 为避免 channel 异常，尝试先创建 channel，再加入
+          createChannelHandler()
+            .then(() => {
+              joinChannelHandler()
+            })
+            .catch(error => {
+              // 20110 : 重复操作，频道已创建
+              // 20111 : 对象(用户/群/聊天室)不存在
+              if (error.code === 20110 || error.code === 20111) {
+                return joinChannelHandler()
+              }
+
+              console.error(error)
+            })
+        })
+      }
     },
 
     // 用户主动离开频道
     leaveChannel() {
       $peace.WebRTC.hangup()
 
-      const index = this.video.remoteUserJoinedList.findIndex(item => item.account === this.user.userInfo.list.docInfo.doctor_id)
-      if (index !== -1) {
-        this.video.remoteUserJoinedList.splice(index, 1)
-      }
-
       $peace.WebRTC.leaveChannel().then(() => {
+        const index = this.video.remoteUserJoinedList.findIndex(item => item.account === this.user.userInfo.list.docInfo.doctor_id)
+        if (index !== -1) {
+          this.video.remoteUserJoinedList.splice(index, 1)
+        }
+
         this.video.visible = false
 
         // 验证当前频道是否还存在用户, 用以结束视频
@@ -396,6 +457,8 @@ export default {
   // 销毁 IM
   destroyed() {
     this.clearTeam()
+
+    this.closeNotify()
   }
 }
 </script>
