@@ -149,7 +149,8 @@ export default {
 
       // 区别 axios 对 get / post 不同的传参方式
       if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
-        this.config.params = this.config.params.params ? this.config.params : { params: this.config.params }
+        delete this.config.params.params
+        this.config.params = { params: this.config.params }
       }
     },
 
