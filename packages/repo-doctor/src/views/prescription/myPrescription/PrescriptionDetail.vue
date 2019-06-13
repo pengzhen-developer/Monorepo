@@ -177,11 +177,12 @@ export default {
 
   .header-info {
     .first-line {
+      text-align: left;
       margin: 0 0 10px 0;
 
       .name {
         font-weight: bold;
-        margin: 0 20px 0 0;
+        margin: 0 10px 0 0;
       }
       .sex {
         font-size: 12px;

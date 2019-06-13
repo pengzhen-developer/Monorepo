@@ -140,9 +140,9 @@
       </el-row>
       <el-row style="text-align: center;">
         <el-form-item label=" ">
-          <el-button @click="sendMedical" type="primary">发送</el-button>
-          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
           <el-button @click="cancelMedical">取消</el-button>
+          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
+          <el-button @click="sendMedical" type="primary">发送</el-button>
         </el-form-item>
       </el-row>
     </el-form>
