@@ -158,6 +158,13 @@ const NIMUtil = {
         if (lastMsg.custom.type === 'process') {
           $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
         }
+
+        // 通知有人拒绝，需要做提示
+        if (lastMsg.custom.type === 'refuse') {
+          if ($peace.cache.get('USER').list.docInfo.doctor_id !== msg.custom.doctorId) {
+            $peace.util.warning(msg.custom.text)
+          }
+        }
       }
 
       // 消息来源与当前选中群相同，则更新消息列表
@@ -893,7 +900,20 @@ const mutations = {
     const serializationTeams = $peace.NIM.mergeSessions(state.teams, teams)
     const deserializationTeams = DeserializationTeams(serializationTeams)
 
-    state.teams = deserializationTeams
+    state.teams = deserializationTeams.sort((a, b) => {
+      if (a.custom && b.custom) {
+        const aStatus = a.custom.consultation.consultStatus
+        const bStatus = b.custom.consultation.consultStatus
+        const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+        const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+        if (aStatus === bStatus) {
+          return aTime - bTime
+        } else {
+          return bStatus - aStatus
+        }
+      }
+    })
   },
 
   updateTeams(state, teamsMutation) {
@@ -908,7 +928,18 @@ const mutations = {
         }
       })
 
-      state.teams = teamsState
+      state.teams = teamsState.sort((a, b) => {
+        const aStatus = a.custom.consultation.consultStatus
+        const bStatus = b.custom.consultation.consultStatus
+        const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+        const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+        if (aStatus === bStatus) {
+          return aTime - bTime
+        } else {
+          return bStatus - aStatus
+        }
+      })
     }
   },
 
