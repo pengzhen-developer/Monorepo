@@ -1,19 +1,8 @@
 <template>
   <div class="into-drug">
     <div class="search">
-      <el-input
-        @keyup.enter.native="search(drugname)"
-        class="search-input"
-        clearable
-        placeholder="请输入药品名称或拼音字母"
-        v-model="drugname"
-      ></el-input>
-      <el-button
-        @click="search(drugname)"
-        class="search-btn"
-        round
-        type="primary"
-      >搜索</el-button>
+      <el-input @keyup.enter.native="search(drugname)" class="search-input" clearable placeholder="请输入药品名称或拼音字母" v-model="drugname"></el-input>
+      <el-button @click="search(drugname)" class="search-btn" round type="primary">搜索</el-button>
     </div>
     <div class="content">
       <div class="history" v-if="!list.length">
@@ -23,23 +12,12 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div
-          :key="'history_' + item"
-          class="history-item"
-          v-for="item in history"
-        >
+        <div :key="'history_' + item" class="history-item" v-for="item in history">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
       <div v-else>
-        <el-table
-          :data="list"
-          :show-header="false"
-          @row-click="handleSelect"
-          max-height="300"
-          ref="singleTable"
-          size="small"
-        >
+        <el-table :data="list" :show-header="false" @row-click="handleSelect" height="300" ref="singleTable" size="small">
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="drug_name"></el-table-column>
           <el-table-column prop="drug_spec" width="100"></el-table-column>
@@ -48,11 +26,7 @@
       </div>
     </div>
     <div style="text-align: center;">
-      <el-button
-        :disabled="!selected"
-        @click="nextStep"
-        type="primary"
-      >下一步</el-button>
+      <el-button :disabled="!selected" @click="nextStep" type="primary">下一步</el-button>
       <el-button @click="$emit('cancel')" plain type="primary">取消</el-button>
     </div>
   </div>
@@ -100,8 +74,7 @@ export default {
 
       const api = this.config.api.getPrescDrugList
       const params = {
-        hospitalId: this.$peace.cache.get('USER').list.docInfo
-          .netHospital_id,
+        hospitalId: this.$peace.cache.get('USER').list.docInfo.netHospital_id,
         drugname
       }
 
@@ -115,14 +88,7 @@ export default {
     },
     nextStep() {
       console.log(this.selected)
-      const {
-        drug_factory,
-        drug_name,
-        drug_spec,
-        drug_unit,
-        id,
-        license_number
-      } = this.selected
+      const { drug_factory, drug_name, drug_spec, drug_unit, id, license_number } = this.selected
       const obj = {
         drug_factory,
         drug_name,
