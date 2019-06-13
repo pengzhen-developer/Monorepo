@@ -171,11 +171,14 @@ export default {
         const expectOverTime = this.chat.team.custom.consultation.expectOverTime
 
         if (consultStatus === 5) {
-          if (new Date() < new Date(expectTime)) {
+          if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(expectTime)) {
             return TEAM_STATUS.距开始
           }
 
-          if (new Date() > new Date(expectTime) && new Date() < new Date(expectOverTime)) {
+          if (
+            new Date(new Date().getTime() + $peace.serverDateDiff) > new Date(expectTime) &&
+            new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(expectOverTime)
+          ) {
             return TEAM_STATUS.距结束
           }
         }
@@ -186,14 +189,6 @@ export default {
       }
 
       return ''
-    }
-  },
-
-  created() {
-    if ($peace.WebRTC) {
-      // 在回调里监听对方加入通话，并显示对方的视频画面
-      $peace.WebRTC.on('remoteTrack', this.remoteTrack)
-      $peace.WebRTC.on('leaveChannel', this.leaveChannel)
     }
   },
 
@@ -223,9 +218,9 @@ export default {
     },
 
     invitedChange(val, row) {
-      const index = val.findIndex(item => item === row.doctorId)
+      const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === row.doctorId)
 
-      if (index !== -1) {
+      if (index === -1) {
         this.invitedDialog.chooseList.push(row)
       } else {
         this.invitedDialog.chooseList.splice(index, 1)
@@ -257,13 +252,10 @@ export default {
     },
 
     sendVideo() {
-      const channel = this.chat.team.custom.consultation.channel || this.chat.team.id.replace('team-', '') + '-' + new Date().getTime()
+      const channelName = this.chat.team.custom.consultation.channel || this.chat.team.id.replace('team-', '') + '-' + new Date().getTime()
+      const consultNo = this.chat.team.custom.consultation.consultNo
 
-      // step 1. 创建群视频房间
-      $peace.consultationComponent.createVideoRoom(channel).then(() => {
-        // step 2. 加入群视频房间
-        $peace.consultationComponent.joinVideoRoom(channel, this.chat.team.custom.consultation.consultNo, true)
-      })
+      $peace.consultationComponent.joinChannel(channelName, consultNo)
     },
 
     showConsultSuggest() {

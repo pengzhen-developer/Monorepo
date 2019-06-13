@@ -126,7 +126,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核意见">
-              <span>{{ internalData.outCheckSuggest || '同意会诊' }}</span>
+              <span>{{ internalData.outCheckSuggest }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -155,7 +155,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核意见">
-              <span>{{ internalData.inCheckSuggest || '同意会诊' }}</span>
+              <span>{{ internalData.inCheckSuggest }}</span>
             </el-form-item>
           </el-col>
         </el-row>

@@ -185,6 +185,20 @@ export function timeAgo(time) {
 }
 
 /**
+ * 获取服务器时间与本地时间差
+ * 注意该方法时异步的
+ *
+ * @export
+ */
+export async function getServerDateDiff() {
+  $peace.serverDateDiff = 0
+
+  const getServiceTime = 'client/v1/consult/getServiceTime'
+  const serverDate = await $peace.$http.post(getServiceTime)
+  $peace.serverDateDiff = serverDate.data.serviceTime - new Date()
+}
+
+/**
  * 格式化时间对象
  *
  * @export
@@ -733,6 +747,8 @@ export default {
 
   timeAgo,
   getDuration,
+
+  getServerDateDiff,
   formatDate,
   formatTime,
   formatDuration,

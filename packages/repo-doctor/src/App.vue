@@ -21,6 +21,13 @@ export default {
     }
   },
 
+  mounted() {
+    this.$nextTick(function() {
+      // 更新本地于服务器时间差
+      $peace.util.getServerDateDiff()
+    })
+  },
+
   methods: {
     ...mapActions('user', ['restoreUserInfo'])
   }

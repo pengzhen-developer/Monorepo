@@ -7,7 +7,7 @@
           <div @click="redirect('/clinic/inquiry')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.inReferralCount }}</div>
+              <div class="card-item-number">{{ view.source.waitHandleInquiryCount }}</div>
               <div class="card-item-text">待处理患者</div>
             </div>
           </div>
@@ -29,7 +29,7 @@
           <div @click="redirect('/record/transfer', { referral_type: 'in' })" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.waitHandleInquiryCount }}</div>
+              <div class="card-item-number">{{ view.source.inReferralCount }}</div>
               <div class="card-item-text">待转入患者</div>
             </div>
           </div>

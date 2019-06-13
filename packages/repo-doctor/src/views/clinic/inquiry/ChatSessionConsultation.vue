@@ -176,7 +176,7 @@ export default {
     get() {
       this.$refs.table.loadData({
         api: this.config.api.chooseConsultationDoctor,
-        params: { inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo, name: this.dialog.model.name }
+        params: { inquiry_no: this.chat.session.lastMsg.custom.ext.inquiryNo, keyword: this.dialog.model.name }
       })
     },
 

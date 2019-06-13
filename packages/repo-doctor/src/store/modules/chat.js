@@ -1,5 +1,5 @@
-import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0'
-import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
+import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.5.0'
+import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0'
 NIM.use(WebRTC)
 
 import { STATE, DeserializationSessions, DeserializationSessionMsgs, DeserializationTeams, DeserializationTeamMsgs } from '@/views/clinic/inquiry/util'
@@ -13,8 +13,6 @@ const NIMUtil = {
    */
   onConnect() {
     console.log(new Date().formatTime() + ': ' + '连接成功')
-
-    WebRTCUtil.initWebRTC()
   },
 
   /**
@@ -213,28 +211,6 @@ const WebRTCUtil = {
 
   // 挂断定时器
   hangupTimer: undefined,
-
-  // 初始化 WebRTC
-  initWebRTC(forVideoRTC = false) {
-    $peace.WebRTC = WebRTC.getInstance({
-      nim: $peace.NIM,
-      container: document.getElementById('localContainer'),
-      remoteContainer: document.getElementById('remoteContainer'),
-      chromeId: '',
-      // 是否开启日志打印
-      debug: false
-    })
-
-    if (forVideoRTC) {
-      WebRTCUtil.onBeCalling()
-      WebRTCUtil.onCallRejected()
-      WebRTCUtil.onCallAccepted()
-      WebRTCUtil.onRemoteTrack()
-      WebRTCUtil.onControl()
-      WebRTCUtil.onHangup()
-      WebRTCUtil.onCallerAckSync()
-    }
-  },
 
   // 被叫监听音视频
   onBeCalling() {
@@ -669,10 +645,49 @@ const actions = {
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      }
+      },
+
+      // 是否开启日志打印
+      debug: false
     })
 
     return $peace.NIM
+  },
+
+  // 初始化 WebRTC
+  initWebRTC() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
+
+    WebRTCUtil.onBeCalling()
+    WebRTCUtil.onCallRejected()
+    WebRTCUtil.onCallAccepted()
+    WebRTCUtil.onRemoteTrack()
+    WebRTCUtil.onControl()
+    WebRTCUtil.onHangup()
+    WebRTCUtil.onCallerAckSync()
+  },
+
+  // 初始化多人音视频 WebRTC
+  initWebRTCForPersons() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
   },
 
   // 选中会话列表的一条会话

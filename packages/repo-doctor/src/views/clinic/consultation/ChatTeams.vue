@@ -20,31 +20,31 @@
                 <!-- 距开始 -->
                 <span
                   v-if="team.custom.consultation.consultStatus === 5 && 
-                        new Date(team.custom.consultation.expectTime) > new Date()"
+                        new Date(team.custom.consultation.expectTime) > new Date(new Date().getTime() + $peace.serverDateDiff)"
                 >
                   <i class="icon_ic_wait_groupconsultation"></i>
                   <span>距开始还剩</span>
 
-                  <template v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd !== 0">
+                  <template v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).dd !== 0">
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].dd }} 天</span>
                   </template>
 
-                  <template v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH !== 0">
+                  <template v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).HH !== 0">
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].HH }} 时</span>
                   </template>
 
                   <template
-                    v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd === 0 && 
-                          $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH === 0 && 
-                          $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).mm !== 0"
+                    v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).dd === 0 && 
+                          $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).HH === 0 && 
+                          $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).mm !== 0"
                   >
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].mm }} 分</span>
                   </template>
 
                   <template
-                    v-if="$peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).dd === 0 && 
-                          $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).HH === 0 && 
-                          $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime)).mm === 0"
+                    v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).dd === 0 && 
+                          $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).HH === 0 && 
+                          $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).mm === 0"
                   >
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].ss }} 秒</span>
                   </template>
@@ -53,8 +53,8 @@
                 <!-- 距关闭 -->
                 <span
                   v-else-if="team.custom.consultation.consultStatus === 5 && 
-                             new Date() > new Date(team.custom.consultation.expectTime) && 
-                             new Date() < new Date(team.custom.consultation.expectOverTime)"
+                             new Date(new Date().getTime() + $peace.serverDateDiff) > new Date(team.custom.consultation.expectTime) && 
+                             new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(team.custom.consultation.expectOverTime)"
                 >
                   <i class="icon_ic_wait_groupconsultation"></i>
                   <span>距关闭还剩</span>
@@ -150,15 +150,15 @@ export default {
         if (newValue) {
           this.chatTeams.forEach(team => {
             const intervalHander = () => {
-              if (new Date() < new Date(team.custom.consultation.expectTime)) {
-                const duration = $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectTime))
+              if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(team.custom.consultation.expectTime)) {
+                const duration = $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime))
                 this.$set(this.duration, team.id, duration)
               } else {
                 this.$set(this.duration, team.id, undefined)
               }
 
-              if (new Date() < new Date(team.custom.consultation.expectOverTime)) {
-                const durationEnd = $peace.util.getDuration(new Date(), new Date(team.custom.consultation.expectOverTime))
+              if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(team.custom.consultation.expectOverTime)) {
+                const durationEnd = $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectOverTime))
                 this.$set(this.durationEnd, team.id, durationEnd)
               } else {
                 this.$set(this.durationEnd, team.id, undefined)
