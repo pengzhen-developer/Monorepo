@@ -143,6 +143,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .el-table {
+  &__row {
+    cursor: pointer;
+  }
+}
 .el-button {
   &--primary.is-plain {
     color: $--color-primary;
@@ -162,8 +167,11 @@ export default {
     cursor: pointer;
   }
 }
-/deep/ .el-checkbox__inner {
-  border-radius: 100%;
+/deep/ .el-checkbox {
+  pointer-events: none;
+  &__inner {
+    border-radius: 100%;
+  }
 }
 
 .search {
