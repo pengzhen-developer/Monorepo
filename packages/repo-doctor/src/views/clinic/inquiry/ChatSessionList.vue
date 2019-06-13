@@ -156,7 +156,7 @@ export default {
         const prevMsg = this.recentSessionMsgs[index - 1]
         const currentMsg = this.recentSessionMsgs[index]
 
-        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 2) {
+        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 3) {
           return true
         }
 
