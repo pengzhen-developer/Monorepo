@@ -263,17 +263,18 @@ export function formatTime(date, format = 'yyyy-MM-dd HH:mm:ss') {
 export function formatDuration(bgTime, endTime) {
   const duration = this.getDuration(bgTime, endTime)
 
-  if (duration.dd < 10) {
-    duration.dd = '0' + duration.dd
+  duration.HH = duration.HH + duration.dd * 24
+
+  if (duration.HH < 10) {
+    duration.HH = '0' + duration.HH
   }
   if (duration.mm < 10) {
     duration.mm = '0' + duration.mm
   }
-
   if (duration.ss < 10) {
     duration.ss = '0' + duration.ss
   }
-  return duration.dd + ':' + duration.mm + ':' + duration.ss
+  return duration.HH + ':' + duration.mm + ':' + duration.ss
 }
 
 /**
