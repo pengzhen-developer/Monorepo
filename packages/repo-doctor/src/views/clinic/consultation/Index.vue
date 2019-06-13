@@ -230,12 +230,27 @@ export default {
         this.closeNotify()
       }
 
+      const refuseChannel = () => {
+        const consultNo = this.chat.teams.find(item => item.custom && item.custom.consultation).custom.consultation.consultNo
+
+        const params = {
+          consultNo: consultNo,
+          action: 'refuse'
+        }
+
+        // 发送拒绝请求
+        this.$http.post('client/v1/video/processConsult', params)
+
+        // 关闭弹框提示
+        this.closeNotify()
+      }
+
       const messageBody = (
         <div>
           <el-button type="success" onclick={() => joinChannel()}>
             接受
           </el-button>
-          <el-button type="danger" onclick={() => this.closeNotify()}>
+          <el-button type="danger" onclick={() => refuseChannel()}>
             拒绝
           </el-button>
         </div>
