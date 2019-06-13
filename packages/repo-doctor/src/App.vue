@@ -23,8 +23,10 @@ export default {
 
   mounted() {
     this.$nextTick(function() {
-      // 更新本地于服务器时间差
-      $peace.util.getServerDateDiff()
+      if ($peace.cache.get('USER')) {
+        // 更新本地于服务器时间差
+        $peace.util.getServerDateDiff()
+      }
     })
   },
 

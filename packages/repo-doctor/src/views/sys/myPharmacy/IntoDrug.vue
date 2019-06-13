@@ -1,19 +1,8 @@
 <template>
   <div class="into-drug">
     <div class="search">
-      <el-input
-        @keyup.enter.native="search(drugname)"
-        class="search-input"
-        clearable
-        placeholder="请输入药品名称或拼音字母"
-        v-model="drugname"
-      ></el-input>
-      <el-button
-        @click="search(drugname)"
-        class="search-btn"
-        round
-        type="primary"
-      >搜索</el-button>
+      <el-input @keyup.enter.native="search(drugname)" class="search-input" clearable placeholder="请输入药品名称或拼音字母" v-model="drugname"></el-input>
+      <el-button @click="search(drugname)" class="search-btn" round type="primary">搜索</el-button>
     </div>
     <div class="content">
       <div class="history" v-if="!list.length">
@@ -23,31 +12,18 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div
-          :key="'history_' + item"
-          class="history-item"
-          v-for="item in history"
-        >
+        <div :key="'history_' + item" class="history-item" v-for="item in history">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
       <div v-else>
-        <el-table
-          :data="list"
-          :show-header="false"
-          max-height="300"
-          size="small"
-        >
+        <el-table :data="list" :show-header="false" height="300" size="small">
           <el-table-column label prop="drug_name"></el-table-column>
           <el-table-column label prop="drug_spec"></el-table-column>
           <el-table-column label prop="drug_factory"></el-table-column>
           <el-table-column align="center" width="60">
             <template slot-scope="scope">
-              <i
-                @click="intoDrugList(scope.row)"
-                class="el-icon-circle-plus"
-                v-if="scope.row.status !== '正常'"
-              ></i>
+              <i @click="intoDrugList(scope.row)" class="el-icon-circle-plus" v-if="scope.row.status !== '正常'"></i>
               <span v-else>已添加</span>
             </template>
           </el-table-column>

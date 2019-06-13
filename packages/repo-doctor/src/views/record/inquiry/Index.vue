@@ -72,8 +72,8 @@ export default {
       view: {
         model: {
           name: '',
-          time_start: new Date().proDate('{%d-7}').formatDate(),
-          time_end: new Date().formatDate(),
+          time_start: '',
+          time_end: '',
           inquiryType: ''
         },
 
