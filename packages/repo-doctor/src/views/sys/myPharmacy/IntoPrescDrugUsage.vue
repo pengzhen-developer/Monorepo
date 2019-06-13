@@ -121,7 +121,7 @@ export default {
   data() {
     return {
       config,
-      drug: Object.assign({}, this.data),
+      drug: '',
       usages: [],
       frequencys: []
     }
@@ -154,7 +154,16 @@ export default {
       hospitalId: this.$peace.cache.get('USER').list.docInfo
         .netHospital_id
     }
-
+    this.drug = Object.assign({}, this.data, {
+      _usage: {
+        id: this.data.dic_usage_id,
+        drugway_name: this.data.dic_usage
+      },
+      _frequency: {
+        id: this.data.dic_frequency_id,
+        drugtimes_name: this.data.dic_frequency
+      }
+    })
     this.$http.get(api, { params }).then(res => {
       this.frequencys = res.data
       if (res.data && res.data.length) {

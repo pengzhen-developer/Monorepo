@@ -306,6 +306,7 @@ export default {
       } else {
         const api = this.config.api.getPrescList
         const params = { name: this.view.prescModel.name }
+        console.log(params)
 
         this.$refs.table.loadData({
           method: 'get',
