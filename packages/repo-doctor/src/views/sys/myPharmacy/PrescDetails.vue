@@ -39,8 +39,10 @@
           <span>用法用量：</span>
           <span>{{ drug.dic_usage }}</span>。
           <span>每次{{ drug.consump }}{{ drug.drug_unit }}</span>，
-          <span>{{ drug.dic_frequency }}</span>，
-          <span>{{ drug.medication_days }}天</span>
+          <span>{{ drug.dic_frequency }}</span>
+          <span
+            v-if="drug.medication_days"
+          >，{{ drug.medication_days }}天</span>
         </div>
       </div>
     </div>
