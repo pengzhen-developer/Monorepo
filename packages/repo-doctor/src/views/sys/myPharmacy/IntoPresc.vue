@@ -275,7 +275,6 @@ export default {
       }
       this.drugList.push(param)
       this.closeDrugDialog()
-      console.log(this.drugList)
     },
     // 打开修改药品用法 Dialog
     openEditDrugDialog(data, index) {
@@ -330,7 +329,6 @@ export default {
   },
   created() {
     const data = this.data
-    console.log(data)
     if (!(!data.diagnosis || (data.rp && !data.rp.length))) {
       this.dialog.chooseItem = this.data.diagnosis
       this.drugList = JSON.parse(this.data.drugjson)

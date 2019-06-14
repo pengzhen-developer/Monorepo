@@ -306,7 +306,6 @@ export default {
       } else {
         const api = this.config.api.getPrescList
         const params = { name: this.view.prescModel.name }
-        console.log(params)
 
         this.$refs.table.loadData({
           method: 'get',
@@ -430,7 +429,6 @@ export default {
     // ----------- 常用处方 -------------
     // 查看常用处方
     openViewPrescDialog(data) {
-      console.log(data)
       this.viewPrescDialog.data = data
       this.viewPrescDialog.visible = true
     },
@@ -449,8 +447,7 @@ export default {
     intoPresc(params) {
       const api = this.config.api.intoPresc
 
-      this.$http.post(api, params).then(res => {
-        console.log(res.data)
+      this.$http.post(api, params).then(() => {
         this.closePrescDialog()
         this.$message.success('常用处方添加成功')
         this.get()
@@ -476,8 +473,7 @@ export default {
         commonPrescriptionId: this.currentPrescId
       })
 
-      this.$http.post(api, params).then(res => {
-        console.log(res.data)
+      this.$http.post(api, params).then(() => {
         this.closeEditPrescDialog()
         this.$message.success('常用处方修改成功')
         this.get()
