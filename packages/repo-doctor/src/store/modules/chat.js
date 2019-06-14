@@ -928,7 +928,9 @@ const mutations = {
         }
       })
 
+      // 筛选出没有 custom ， 并且会诊状态不在等待会诊和会诊中状态的
       teamsState = teamsState.filter(item => item.custom)
+      teamsState = teamsState.filter(item => item.custom.consultation.consultStatus === 5 || item.custom.consultation.consultStatus === 6)
 
       state.teams = teamsState.sort((a, b) => {
         if (a.custom && b.custom) {
