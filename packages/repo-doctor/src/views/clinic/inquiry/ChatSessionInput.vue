@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div @keyup.ctrl.enter="quickSend" class="input" tabindex="0">
+    <div class="input" tabindex="0">
       <ckeditor :config="ckEditor.editorConfig" :editor="ckEditor.editor" @ready="onEditorReady" class="input" tabindex="0" v-model.trim="ckEditor.currentMsg"></ckeditor>
     </div>
 

@@ -918,7 +918,7 @@ const mutations = {
 
   updateTeams(state, teamsMutation) {
     if (state.teams) {
-      const teamsState = $peace.util.clone(state.teams)
+      let teamsState = $peace.util.clone(state.teams)
 
       teamsMutation.forEach(teamMutation => {
         const team = teamsState.find(team => team.id.replace('team-', '') === teamMutation.teamId)
@@ -928,16 +928,20 @@ const mutations = {
         }
       })
 
-      state.teams = teamsState.sort((a, b) => {
-        const aStatus = a.custom.consultation.consultStatus
-        const bStatus = b.custom.consultation.consultStatus
-        const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
-        const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+      teamsState = teamsState.filter(item => item.custom)
 
-        if (aStatus === bStatus) {
-          return aTime - bTime
-        } else {
-          return bStatus - aStatus
+      state.teams = teamsState.sort((a, b) => {
+        if (a.custom && b.custom) {
+          const aStatus = a.custom.consultation.consultStatus
+          const bStatus = b.custom.consultation.consultStatus
+          const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+          const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+          if (aStatus === bStatus) {
+            return aTime - bTime
+          } else {
+            return bStatus - aStatus
+          }
         }
       })
     }
