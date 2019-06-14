@@ -1,6 +1,6 @@
 {
   "name": "peace",
-  "version": "v0.4.0-005",
+  "version": "v0.4.0-006",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
