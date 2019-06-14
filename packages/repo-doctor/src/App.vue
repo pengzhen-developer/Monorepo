@@ -15,6 +15,8 @@ export default {
   },
 
   created() {
+    $peace.serverDateDiff = 0
+
     // restore info
     if ($peace.cache.get('USER')) {
       this.restoreUserInfo()
