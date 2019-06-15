@@ -94,7 +94,7 @@
         <el-button
           @click="showConsultSuggest"
           type="text"
-          v-show="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id && teamStatus === TEAM_STATUS.会诊中"
+          v-show="chat.team.custom.consultation.receiveDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id && teamStatus === TEAM_STATUS.会诊中"
         >
           <img src="~@/assets/images/icons/clinic/chat_icon_video.png">会诊意见
         </el-button>
