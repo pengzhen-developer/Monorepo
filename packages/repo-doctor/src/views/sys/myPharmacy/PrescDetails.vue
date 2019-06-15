@@ -24,11 +24,7 @@
       <span>RP</span>
     </span>
     <div class="drug-list">
-      <div
-        :key="drug.id"
-        class="drug-item"
-        v-for="(drug) in drugList"
-      >
+      <div :key="drug.id" class="drug-item" v-for="(drug) in drugList">
         <div class="row-one">
           <span>{{ drug.drug_name }}</span>
           <span>{{ drug.drug_spec }}</span>
@@ -38,11 +34,9 @@
         <div class="row-two">
           <span>用法用量：</span>
           <span>{{ drug.dic_usage }}</span>。
-          <span>每次{{ drug.consump }}{{ drug.drug_unit }}</span>，
+          <span>每次{{ drug.consump }}{{ drug.drug_unit || drug.unit }}</span>，
           <span>{{ drug.dic_frequency }}</span>
-          <span
-            v-if="drug.medication_days"
-          >，{{ drug.medication_days }}天</span>
+          <span v-if="drug.medication_days">，{{ drug.medication_days }}天</span>
         </div>
       </div>
     </div>

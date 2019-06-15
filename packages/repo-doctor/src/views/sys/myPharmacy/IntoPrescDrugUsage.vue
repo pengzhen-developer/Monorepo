@@ -10,11 +10,7 @@
         <span>药品数量</span>
       </div>
       <div class="info-row-content">
-        <el-input
-          placeholder="请输入"
-          type="number"
-          v-model.number="drug.number"
-        ></el-input>
+        <el-input placeholder="请输入" type="number" v-model.number="drug.number"></el-input>
       </div>
     </div>
     <div class="info-row">
@@ -22,11 +18,7 @@
         <span>用药天数</span>
       </div>
       <div class="info-row-content">
-        <el-input
-          placeholder="请输入（非必填）"
-          type="number"
-          v-model.number="drug.medication_days"
-        ></el-input>
+        <el-input placeholder="请输入（非必填）" type="number" v-model.number="drug.medication_days"></el-input>
       </div>
     </div>
     <div class="info-row">
@@ -34,17 +26,8 @@
         <span>用药频次</span>
       </div>
       <div class="info-row-content">
-        <el-select
-          placeholder="请选择"
-          v-model="drug._frequency"
-          value-key="id"
-        >
-          <el-option
-            :key="item.id"
-            :label="item.drugtimes_name"
-            :value="item"
-            v-for="item in frequencys"
-          ></el-option>
+        <el-select placeholder="请选择" v-model="drug._frequency" value-key="id">
+          <el-option :key="item.id" :label="item.drugtimes_name" :value="item" v-for="item in frequencys"></el-option>
         </el-select>
       </div>
     </div>
@@ -54,7 +37,7 @@
       </div>
       <div class="info-row-content spec-input">
         <el-input class placeholder="请输入" v-model="drug.consump"></el-input>
-        <span>{{ drugInfo.drug_unit }}</span>
+        <span>{{ drugInfo.drug_unit || drug.unit }}</span>
       </div>
     </div>
     <div class="info-row">
@@ -62,32 +45,14 @@
         <span>给药途径</span>
       </div>
       <div class="info-row-content">
-        <el-select
-          placeholder="请选择"
-          v-model="drug._usage"
-          value-key="id"
-        >
-          <el-option
-            :key="item.id"
-            :label="item.drugway_name"
-            :value="item"
-            v-for="item in usages"
-          ></el-option>
+        <el-select placeholder="请选择" v-model="drug._usage" value-key="id">
+          <el-option :key="item.id" :label="item.drugway_name" :value="item" v-for="item in usages"></el-option>
         </el-select>
       </div>
     </div>
     <div style="text-align: center;">
-      <el-button
-        @click="$emit('prevStep')"
-        plain
-        type="primary"
-        v-if="!edit"
-      >上一步</el-button>
-      <el-button
-        :disabled="isDisabled"
-        @click="saveDrugUsage"
-        type="primary"
-      >完成</el-button>
+      <el-button @click="$emit('prevStep')" plain type="primary" v-if="!edit">上一步</el-button>
+      <el-button :disabled="isDisabled" @click="saveDrugUsage" type="primary">完成</el-button>
     </div>
   </div>
 </template>
@@ -128,20 +93,17 @@ export default {
   },
   computed: {
     isDisabled() {
-      return this.drug.number > -1 &&
-        this.drug._frequency &&
-        this.drug.consump &&
-        this.drug._usage
-        ? false
-        : true
+      return this.drug.number > -1 && this.drug._frequency && this.drug.consump && this.drug._usage ? false : true
     }
   },
   methods: {
     saveDrugUsage() {
+      debugger
       const drug = this.drug
       drug.dic_frequency_id = drug._frequency.id
       drug.dic_usage_id = drug._usage.id
       drug.dic_frequency = drug._frequency.drugtimes_name
+      drug.dic_usage = drug._usage.drugway_name
       drug.dic_usage = drug._usage.drugway_name
 
       this.$emit('submit', Object.assign(this.drugInfo, drug))
@@ -151,8 +113,7 @@ export default {
     const api = this.config.api.getFrequencys
     const api2 = this.config.api.getUsages
     const params = {
-      hospitalId: this.$peace.cache.get('USER').list.docInfo
-        .netHospital_id
+      hospitalId: this.$peace.cache.get('USER').list.docInfo.netHospital_id
     }
     this.drug = Object.assign({}, this.data, {
       _usage: {
