@@ -15,10 +15,12 @@
 
           <div @click="showDetail" class="content patient">
             <div class="item">
-              <img
+              <div
                 class="doctor-img"
-                src="https://wx.qlogo.cn/mmopen/vi_32/HMuHCjwyfmXyuoMdrcf3YZqsQcpgYzPCasrTBhoic3SV541hCgGN2TK3ticFYUCF3wS9XNjTHia6N5W1ibQIRTvlVA/132"
+                style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;"
               >
+                <span style="color: #fff; margin: 0;">{{ data.familyName.substr(data.familyName.length - 2, data.familyName.length) }}</span>
+              </div>
 
               <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.familyName }}</span>
               <span>{{ data.familySex }}</span>
@@ -45,10 +47,12 @@
           </div>
 
           <div class="content doctor">
-            <img
-              class="doctor-img"
-              src="https://wx.qlogo.cn/mmopen/vi_32/HMuHCjwyfmXyuoMdrcf3YZqsQcpgYzPCasrTBhoic3SV541hCgGN2TK3ticFYUCF3wS9XNjTHia6N5W1ibQIRTvlVA/132"
-            >
+            <template v-if="chat.team.custom.consultation.startDoctor[0].doctorId === user.userInfo.list.docInfo.doctor_id">
+              <img :src="data.toPhoto" class="doctor-img">
+            </template>
+            <template v-else>
+              <img :src="data.fromPhoto" class="doctor-img">
+            </template>
 
             <div class="doctor-info">
               <div>
