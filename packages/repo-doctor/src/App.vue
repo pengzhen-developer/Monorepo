@@ -15,10 +15,21 @@ export default {
   },
 
   created() {
+    $peace.serverDateDiff = 0
+
     // restore info
     if ($peace.cache.get('USER')) {
       this.restoreUserInfo()
     }
+  },
+
+  mounted() {
+    this.$nextTick(function() {
+      if ($peace.cache.get('USER')) {
+        // 更新本地于服务器时间差
+        $peace.util.getServerDateDiff()
+      }
+    })
   },
 
   methods: {

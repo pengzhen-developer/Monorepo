@@ -33,24 +33,26 @@ Axios.interceptors.request.use(
       // `transformRequest`允许在请求数据发送到服务器之前对其进行更改
       // 这只适用于请求方法'PUT'，'POST'和'PATCH'
       // 数组中的最后一个函数必须返回一个字符串，一个 ArrayBuffer或一个 Stream
-      request.transformRequest = [
-        function(data) {
-          const formData = new FormData()
-          for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-              if (data[key] !== undefined && data[key] !== null) {
-                if (data[key] instanceof Array || data[key] instanceof Object) {
-                  formData.append(key, JSON.stringify(data[key]))
-                } else {
-                  formData.append(key, data[key])
+      if (request.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+        request.transformRequest = [
+          function(data) {
+            const formData = new FormData()
+            for (const key in data) {
+              if (data.hasOwnProperty(key)) {
+                if (data[key] !== undefined && data[key] !== null) {
+                  if (data[key] instanceof Array || data[key] instanceof Object) {
+                    formData.append(key, JSON.stringify(data[key]))
+                  } else {
+                    formData.append(key, data[key])
+                  }
                 }
               }
             }
-          }
 
-          return formData
-        }
-      ]
+            return formData
+          }
+        ]
+      }
 
       // 配置 base url
       if (!$peace.valid.url(request.url)) {
@@ -92,6 +94,12 @@ Axios.interceptors.response.use(
       if (response.data && parseInt(response.data.code) === 200) {
         return response.data
       }
+      // 一般错误提示
+      else if (response.data && parseInt(response.data.code) === 201) {
+        $peace.util.warning(response.data.msg)
+
+        return Promise.reject(response)
+      }
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === 601) {
         $peace.util.warning(response.data.msg)
@@ -102,11 +110,11 @@ Axios.interceptors.response.use(
         // 跳转登录
         $peace.$router.replace($peace.config.theme.startPage)
 
-        return
+        return Promise.reject(response)
       }
       // 逻辑验证失败
       else {
-        $peace.util.warning(response.data.msg)
+        // $peace.util.warning(response.data.msg)
 
         return Promise.reject(response)
       }

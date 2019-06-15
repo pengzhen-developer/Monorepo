@@ -51,21 +51,35 @@
         <div class="info-row-label">
           <span>过敏史</span>
         </div>
-        <div class="info-row-content">{{ internalData.allergy_history || '无' }}</div>
+        <div class="info-row-content">
+          <template v-if="internalData.allergy_history">
+            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.allergy_history.split(',')">{{item}}</el-tag>
+          </template>
+          <template v-else>
+            <span>无</span>
+          </template>
+        </div>
       </div>
       <div class="info-row">
         <div class="info-row-label">
           <span>既往史</span>
         </div>
-        <div class="info-row-content">{{ internalData.past_history || '无' }}</div>
+        <div class="info-row-content">
+          <template v-if="internalData.past_history">
+            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.past_history.split(',')">{{item}}</el-tag>
+          </template>
+          <template v-else>
+            <span>无</span>
+          </template>
+        </div>
       </div>
       <div
         class="info-row"
         v-if="internalData.Inspection_index && 
-                internalData.Inspection_index.temperature && 
-                internalData.Inspection_index.weight && 
-                internalData.Inspection_index.heart_rate && 
-                internalData.Inspection_index.blood_pressure"
+             (internalData.Inspection_index.temperature ||
+              internalData.Inspection_index.weight ||
+              internalData.Inspection_index.heart_rate ||
+              internalData.Inspection_index.blood_pressure)"
       >
         <div class="info-row-label">
           <span>体检指标</span>
@@ -96,7 +110,12 @@
           <span>诊断</span>
         </div>
         <div class="info-row-content">
-          <span :key="'diag_' + index" v-for="(diag, index) in data.diagnose">{{ diag || '无' }}</span>
+          <template v-if="internalData.diagnose">
+            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.diagnose.split(',')">{{item}}</el-tag>
+          </template>
+          <template v-else>
+            <span>无</span>
+          </template>
         </div>
       </div>
       <div class="info-row">

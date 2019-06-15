@@ -4,32 +4,55 @@
       <div class="title">待办事项</div>
       <div class="content">
         <div class="card into">
-          <div @click="redirect('/clinic')" class="card-item">
+          <div @click="redirect('/clinic/inquiry')" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.count5 }}</div>
+              <div class="card-item-number">{{ view.source.waitHandleInquiryCount }}</div>
               <div class="card-item-text">待处理患者</div>
             </div>
           </div>
           <div class="card-item row-2">
-            <div @click="redirect('/clinic')" class="row-2-item">
+            <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">待接诊</div>
-              <div class="row-number">{{ view.source.count2 }}</div>
+              <div class="row-number">{{ view.source.waitInquiryCount }}</div>
             </div>
-            <div @click="redirect('/clinic')" class="row-2-item">
+            <div @click="redirect('/clinic/inquiry')" class="row-2-item">
               <div class="row-icon"></div>
               <div class="row-text">问诊中</div>
-              <div class="row-number">{{ view.source.count3 }}</div>
+              <div class="row-number">{{ view.source.processInquiryCount }}</div>
             </div>
           </div>
         </div>
+
         <div class="card out">
           <div @click="redirect('/record/transfer', { referral_type: 'in' })" class="card-item">
             <div class="card-item-logo"></div>
             <div class="card-item-content">
-              <div class="card-item-number">{{ view.source.count4 }}</div>
+              <div class="card-item-number">{{ view.source.inReferralCount }}</div>
               <div class="card-item-text">待转入患者</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card consultation">
+          <div @click="redirect('/clinic/consultation')" class="card-item">
+            <div class="card-item-logo"></div>
+            <div class="card-item-content">
+              <div class="card-item-number">{{ view.source.waitConsultCount }}</div>
+              <div class="card-item-text">待会诊患者</div>
+            </div>
+          </div>
+          <div class="card-item row-2">
+            <div @click="redirect('/clinic/consultation')" class="row-2-item">
+              <div class="row-icon"></div>
+              <div class="row-text">我发起</div>
+              <div class="row-number">{{ view.source.fromConsultCount }}</div>
+            </div>
+            <div @click="redirect('/clinic/consultation')" class="row-2-item">
+              <div class="row-icon1"></div>
+              <div class="row-text">邀请我</div>
+              <div class="row-number">{{ view.source.toConsultCount }}</div>
             </div>
           </div>
         </div>
@@ -57,7 +80,7 @@ export default {
 
   created() {
     this.$http.post(this.config.api.waitList).then(res => {
-      this.view.source = res.data
+      this.view.source = res.data.info
     })
   },
 
@@ -114,8 +137,30 @@ export default {
       background-image: url('~@/assets/images/icons/home/ic into@2x.png');
     }
   }
+  &.consultation {
+    background-image: url('~@/assets/images/icons/home/bg_green_high@2x.png');
+    .card-item-logo {
+      background-image: url('~@/assets/images/icons/home/computer.png');
+    }
+
+    .row-icon {
+      width: 20px;
+      height: 20px;
+      background-image: url('~@/assets/images/icons/home/shenqing@2x.png') !important;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .row-icon1 {
+      width: 20px;
+      height: 20px;
+      background-image: url('~@/assets/images/icons/home/yaoqingjiangli@2x.png') !important;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
   &-item {
-    width: 250px;
+    width: 200px;
     height: 110px;
     color: #fff;
     display: inline-flex;

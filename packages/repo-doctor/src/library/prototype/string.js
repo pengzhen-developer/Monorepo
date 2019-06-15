@@ -85,9 +85,9 @@ String.prototype.toDate = function() {
   var c = a.length > 1 ? a[1].split(':') : ''
 
   var localDate = new Date(Date.UTC(b[0] || 0, (b[1] || 1) - 1, b[2] || 1, (c[0] || 8) - 8, c[1] || 0, c[2] || 0))
-  var localOffset = localDate.getTimezoneOffset() * 60 * 1000
+  // var localOffset = localDate.getTimezoneOffset() * 60 * 1000
 
-  return new Date(localDate.getTime() + localOffset)
+  return new Date(localDate.getTime())
 }
 
 /**

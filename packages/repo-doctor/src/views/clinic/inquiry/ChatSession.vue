@@ -6,8 +6,8 @@
         <h4>{{ chat.session.lastMsg.custom.patients.familyName }}</h4>
       </div>
       <div class="right">
-        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊']">{{ negativeDuration }}</h4>
-        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">{{ positiveDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState === STATE.talkState['未接诊'] && negativeDuration !== '00:00:00'">{{ negativeDuration }}</h4>
+        <h4 v-if="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊'] && positiveDuration !== '00:00:00'">{{ positiveDuration }}</h4>
         <el-button @click="overConfirm" plain type="success" v-show="chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']">结束问诊</el-button>
       </div>
     </div>
@@ -16,20 +16,32 @@
     <div class="content">
       <!-- 病历 -->
       <template v-if="medical.visible">
-        <chat-session-medical @close="closeMedical"></chat-session-medical>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-medical @close="closeMedical"></chat-session-medical>
+        </el-scrollbar>
       </template>
       <!-- 处方 -->
       <template v-else-if="prescription.visible">
-        <chat-session-prescription @close="closePrescription"></chat-session-prescription>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-prescription @close="closePrescription"></chat-session-prescription>
+        </el-scrollbar>
       </template>
-      <!-- 双向转诊 -->
+      <!-- 转诊 -->
       <template v-else-if="transfer.visible">
-        <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-transfer @close="closeTransfer"></chat-session-transfer>
+        </el-scrollbar>
+      </template>
+      <!-- 会诊 -->
+      <template v-else-if="consultation.visible">
+        <el-scrollbar class="content-chat-list content-scrollbar">
+          <chat-session-consultation @close="closeConsultation"></chat-session-consultation>
+        </el-scrollbar>
       </template>
       <!-- 医患问诊 -->
       <template v-else>
         <!-- 消息列表页 -->
-        <el-scrollbar class="content-chat-list content-scrollbar">
+        <el-scrollbar class="content-chat-list content-scrollbar-chat">
           <chat-session-list></chat-session-list>
         </el-scrollbar>
 
@@ -43,11 +55,11 @@
             </div>
             <div class="control">
               <div @click="refuseConfirm">
-                <img src="./../../assets/images/icons/clinic/ic_refuse.png">
+                <img src="~@/assets/images/icons/clinic/ic_refuse.png">
                 <span>退诊</span>
               </div>
               <div @click="receive">
-                <img src="./../../assets/images/icons/clinic/ic_accept.png">
+                <img src="~@/assets/images/icons/clinic/ic_accept.png">
                 <span>接诊</span>
               </div>
             </div>
@@ -55,7 +67,7 @@
         </template>
         <!-- 已急诊 -->
         <template v-else>
-          <chat-session-input @showMedical="showMedical" @showPrescription="showPrescription" @showTransfer="showTransfer"></chat-session-input>
+          <chat-session-input @showConsultation="showConsultation" @showMedical="showMedical" @showPrescription="showPrescription" @showTransfer="showTransfer"></chat-session-input>
         </template>
       </template>
     </div>
@@ -103,8 +115,10 @@ import ChatSessionInput from './ChatSessionInput'
 import ChatSessionMedical from './ChatSessionMedical'
 // 处方
 import ChatSessionPrescription from './ChatSessionPrescription'
-// 双向转诊
+// 申请转诊
 import ChatSessionTransfer from './ChatSessionTransfer'
+// 申请会诊
+import ChatSessionConsultation from './ChatSessionConsultation'
 
 export default {
   components: {
@@ -112,7 +126,8 @@ export default {
     ChatSessionInput,
     ChatSessionMedical,
     ChatSessionPrescription,
-    ChatSessionTransfer
+    ChatSessionTransfer,
+    ChatSessionConsultation
   },
 
   data() {
@@ -144,8 +159,12 @@ export default {
       prescription: {
         visible: false
       },
-      // 双向转诊
+      // 申请转诊
       transfer: {
+        visible: false
+      },
+      // 申请会诊
+      consultation: {
         visible: false
       }
     }
@@ -156,23 +175,48 @@ export default {
   },
 
   watch: {
-    'chat.session'(newValue, oldValue) {
-      window.clearInterval(this.durationInterval)
+    'chat.session': {
+      handler(newValue, oldValue) {
+        // 监听 session 变化，更新 session 显示
+        // 1. 切换 session 时，清除上一个 session 所有的状态
+        // 2. 切换 session 时, 更新计时器
+        // 3. 当前 session 变更时, 根据问诊状态更新计时器
 
-      if (newValue && oldValue && newValue.id !== oldValue.id) {
-        this.closeAllDialog()
-      }
+        // 1. 切换 session 时，清除上一个 session 所有的状态
+        if (newValue && oldValue && newValue.id !== oldValue.id) {
+          this.closeAllDialog()
 
-      // 获取当前问诊记录
-      this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
-        if (this.chat.session) {
-          if (this.chat.session.lastMsg.custom.ext.talkState !== STATE.talkState['未接诊']) {
-            this.durationInterval = setInterval(() => {
-              this.positiveDuration = $peace.util.formatDuration(new Date() - new Date(res.data.created_time))
+          window.clearInterval(this.positiveDurationInterval)
+          this.positiveDuration = '00:00:00'
+        }
+
+        // 2. 切换 session 时, 更新计时器
+        if ((newValue && oldValue && newValue.id !== oldValue.id) || (newValue && !oldValue)) {
+          window.clearInterval(this.positiveDurationInterval)
+          this.positiveDuration = '00:00:00'
+
+          this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+            this.positiveDurationInterval = setInterval(() => {
+              this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date(new Date().getTime() + $peace.serverDateDiff))
             }, 1000)
+          })
+        }
+
+        // 3. 当前 session 变更时, 根据问诊状态更新计时器
+        if (newValue && oldValue && newValue.id === oldValue.id) {
+          if (newValue.lastMsg.custom.ext.talkState !== oldValue.lastMsg.custom.ext.talkState) {
+            window.clearInterval(this.positiveDurationInterval)
+            this.positiveDuration = '00:00:00'
+
+            this.$http.post(this.config.api.getInquiryByNo, { inquiryNo: this.chat.session.lastMsg.custom.ext.inquiryNo }).then(res => {
+              this.positiveDurationInterval = setInterval(() => {
+                this.positiveDuration = $peace.util.formatDuration(new Date(res.data.created_time), new Date(new Date().getTime() + $peace.serverDateDiff))
+              }, 1000)
+            })
           }
         }
-      })
+      },
+      immediate: true
     }
   },
 
@@ -242,9 +286,14 @@ export default {
           .then(res => {
             // 非有效会话，提示退诊
             if (res.data.status === 1) {
-              $peace.util.confirm('非有效会话，此时结束咨询将做退诊处理，确定退诊吗？', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-                this.refuse()
-              })
+              $peace.util.confirm(
+                '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？',
+                undefined,
+                { type: 'warning', confirmButtonText: '退诊' },
+                () => {
+                  this.refuse()
+                }
+              )
             }
             // 未填写病历，提示填写病历
             else if (res.data.caseStatus === 1) {
@@ -307,7 +356,6 @@ export default {
     showPrescription() {
       this.prescription.visible = true
     },
-
     // 关闭写处方页面
     closePrescription() {
       this.prescription.visible = false
@@ -317,10 +365,18 @@ export default {
     showTransfer() {
       this.transfer.visible = true
     },
-
-    // 显示双向转诊页面
+    // 关闭申请转诊页面
     closeTransfer() {
       this.transfer.visible = false
+    },
+
+    // 显示申请会诊页面
+    showConsultation() {
+      this.consultation.visible = true
+    },
+    // 关闭申请会诊页面
+    closeConsultation() {
+      this.consultation.visible = false
     },
 
     // 关闭所有弹框
@@ -328,6 +384,7 @@ export default {
       this.closeMedical()
       this.closePrescription()
       this.closeTransfer()
+      this.closeConsultation()
     }
   }
 }
@@ -379,12 +436,16 @@ export default {
 .content {
   height: calc(100% - 50px);
 
-  &-chat-list {
+  .content-chat-list {
     border-bottom: 1px solid #f2f2f2;
   }
 
-  &-scrollbar {
+  .content-scrollbar-chat {
     height: calc(100% - 200px);
+  }
+
+  .content-scrollbar {
+    height: 100%;
   }
 
   .receive {

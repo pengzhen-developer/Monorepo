@@ -40,14 +40,14 @@
     </div>
 
     <div class="no-data" v-else>
-      <img src="./../../../assets/images/not-status.png">
+      <img src="~@/assets/images/not-status.png">
       <span>暂无问诊记录</span>
     </div>
   </div>
 </template>
 
 <script>
-import ChatSessionPrescriptionDetail from './../../clinic/ChatSessionPrescriptionDetail'
+import ChatSessionPrescriptionDetail from '@/views/clinic/inquiry/ChatSessionPrescriptionDetail'
 
 import config from './config'
 
@@ -63,8 +63,8 @@ export default {
       view: {
         model: {
           familyName: '',
-          s_Date: new Date().proDate('{%d-7}').formatDate(),
-          e_Date: new Date().formatDate()
+          s_Date: '',
+          e_Date: ''
         },
 
         rules: {

@@ -46,17 +46,17 @@
     </div>
 
     <div class="no-data" v-else>
-      <img src="./../../../assets/images/not-status.png">
+      <img src="~@/assets/images/not-status.png">
       <span>暂无问诊记录</span>
     </div>
   </div>
 </template>
 
 <script>
-import ChatSessionList from './../../clinic/ChatSessionList'
+import ChatSessionList from '@/views/clinic/inquiry/ChatSessionList'
 
 import config from './config'
-import { STATE } from './../../clinic/util'
+import { STATE } from '@/views/clinic/inquiry/util'
 
 export default {
   components: {
@@ -72,8 +72,8 @@ export default {
       view: {
         model: {
           name: '',
-          time_start: new Date().proDate('{%d-7}').formatDate(),
-          time_end: new Date().formatDate(),
+          time_start: '',
+          time_end: '',
           inquiryType: ''
         },
 

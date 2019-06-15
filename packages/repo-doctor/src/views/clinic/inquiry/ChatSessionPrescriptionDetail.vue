@@ -10,7 +10,7 @@
     <div class="pres-title">
       <span>{{ internalData.MedicalInstitutionName }}</span>
       <br>
-      <span>普通处方笺</span>
+      <span>处方笺</span>
     </div>
     <div class="pres-info">
       <div class="info-row two-cols">

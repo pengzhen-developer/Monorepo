@@ -8,7 +8,7 @@
         <el-dropdown>
           <div class="header-right-message">
             <!-- <el-badge :value="0" class="item"> -->
-            <img src="./../../assets/images/icons/top_icon_message.png">
+            <img src="~@/assets/images/icons/top_icon_message.png">
             <!-- </el-badge> -->
 
             <span>消息</span>
@@ -94,7 +94,7 @@ export default {
     align-items: center;
 
     .header-left {
-      width: 500px;
+      text-align: left;
 
       .header-left-title {
         font-size: 22px;

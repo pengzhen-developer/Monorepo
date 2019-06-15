@@ -1,8 +1,8 @@
-import NIM from './../../../public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0'
-import WebRTC from './../../../public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
+import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.5.0'
+import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0'
 NIM.use(WebRTC)
 
-import { STATE, DeserializationSessions, DeserializationSessionMsgs } from './../../views/clinic/util'
+import { STATE, DeserializationSessions, DeserializationSessionMsgs, DeserializationTeams, DeserializationTeamMsgs } from '@/views/clinic/inquiry/util'
 import { isArray } from 'util'
 
 const NIMUtil = {
@@ -13,8 +13,6 @@ const NIMUtil = {
    */
   onConnect() {
     console.log(new Date().formatTime() + ': ' + '连接成功')
-
-    WebRTCUtil.initWebRTC()
   },
 
   /**
@@ -86,7 +84,13 @@ const NIMUtil = {
   onSessions(sessions) {
     console.log(new Date().formatTime() + ': ' + '收到会话列表', sessions)
 
-    $peace.$store.commit('chat/setSessions', sessions)
+    // set Sessions
+    $peace.$store.commit('chat/setSessions', sessions.filter(item => item.scene === 'p2p'))
+
+    // set Teams
+    $peace.$store.commit('chat/setTeams', sessions.filter(item => item.scene === 'team'))
+    // 通知群组（会诊）需要更新状态
+    $peace.$store.commit('chat/setTeamNotify', state.teams.map(item => item.id))
   },
 
   /**
@@ -103,7 +107,10 @@ const NIMUtil = {
       $peace.$store.commit('chat/updateSession', session)
     }
 
-    $peace.$store.commit('chat/setSessions', session)
+    // set Sessions
+    $peace.$store.commit('chat/setSessions', [session].filter(item => item.scene === 'p2p'))
+    // set Teams
+    $peace.$store.commit('chat/setTeams', [session].filter(item => item.scene === 'team'))
   },
 
   /**
@@ -114,17 +121,55 @@ const NIMUtil = {
   onMsg(msg) {
     console.log(new Date().formatTime() + ': ' + '收到消息', msg)
 
-    // 更新当前消息列表
-    if ($peace.$store.state.chat.session && $peace.$store.state.chat.session.id === msg.sessionId) {
+    // 更新当前会话消息列表
+    if (state.session && state.session.id === msg.sessionId) {
       $peace.$store.commit('chat/updateSessionMsg', msg)
 
       // 验证是否退诊或结束
       // 问诊为已退针或者已结束，应该从问诊列表删除。
-      const lastMsg = $peace.$store.state.chat.sessionMsgs.msgs[0]
+      const lastMsg = state.sessionMsgs.msgs[0]
       if (lastMsg.type === STATE.msgType['自定义消息']) {
         if (lastMsg.custom.ext.talkState === STATE.talkState['退诊'] || lastMsg.custom.ext.talkState === STATE.talkState['结束']) {
           $peace.$store.commit('chat/clearSession')
         }
+      }
+    }
+
+    // 消息来源于群
+    if (msg.scene === 'team') {
+      const lastMsg = msg
+
+      // 消息是通知类型
+      if (lastMsg.type === 'custom') {
+        lastMsg.custom = JSON.parse(lastMsg.custom)
+
+        // 通知状态需要变更
+        if (lastMsg.custom.type === 'mutation') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+
+        // 通知创建了视频房间
+        // 通知关闭了视频房间
+        if (lastMsg.custom.type === 'createChannel' || lastMsg.custom.type === 'quitChannel') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+
+        // 通知需要做更新
+        if (lastMsg.custom.type === 'process') {
+          $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
+        }
+
+        // 通知有人拒绝，需要做提示
+        if (lastMsg.custom.type === 'refuse') {
+          if ($peace.cache.get('USER').list.docInfo.doctor_id !== msg.custom.doctorId) {
+            $peace.util.warning(msg.custom.text)
+          }
+        }
+      }
+
+      // 消息来源与当前选中群相同，则更新消息列表
+      if (state.team && state.team.id === msg.sessionId) {
+        $peace.$store.commit('chat/updateTeamMsg', msg)
       }
     }
   }
@@ -173,26 +218,6 @@ const WebRTCUtil = {
 
   // 挂断定时器
   hangupTimer: undefined,
-
-  // 初始化 WebRTC
-  initWebRTC() {
-    $peace.WebRTC = WebRTC.getInstance({
-      nim: $peace.NIM,
-      container: document.getElementById('localContainer'),
-      remoteContainer: document.getElementById('remoteContainer'),
-      chromeId: '',
-      // 是否开启日志打印
-      debug: false
-    })
-
-    WebRTCUtil.onBeCalling()
-    WebRTCUtil.onCallRejected()
-    WebRTCUtil.onCallAccepted()
-    WebRTCUtil.onRemoteTrack()
-    WebRTCUtil.onControl()
-    WebRTCUtil.onHangup()
-    WebRTCUtil.onCallerAckSync()
-  },
 
   // 被叫监听音视频
   onBeCalling() {
@@ -557,16 +582,44 @@ const state = {
   // 当前会话消息列表
   sessionMsgs: undefined,
 
-  // 视频状态
-  // 邀请、接听、拒绝、挂断
+  // 当前群聊列表
+  teams: undefined,
+  // 当前群聊存在状态变更
+  teamNotify: undefined,
+  // 当前群聊
+  team: undefined,
+  teamMsgs: undefined,
+
+  // 视频状态 : 邀请、接听、拒绝、挂断
   beCall: undefined,
-
-  // 音频是否静音状态
-  // true、false
+  // 音频是否静音状态 : true、false
   mute: false,
-
   // 视频通话时长
   videoTime: undefined
+}
+
+const getters = {
+  teamNotifyForWatch: state => {
+    if (state.teamNotify && state.teamNotify.length > 0) {
+      console.log('当前通知需要状态变更的群组（会诊）:', state.teamNotify)
+
+      const getInfoByTeamId = 'client/v1/consult/getInfoByTeamId'
+
+      $peace.$http
+        .post(getInfoByTeamId, { teamIdList: state.teamNotify.map(item => item.replace('team-', '')) }, { headers: { 'Content-Type': 'application/json' } })
+        .then(res => {
+          // 将当前群组状态更新到回话
+          // 更新会诊信息到到 teams
+          $peace.$store.commit('chat/updateTeams', res.data.list)
+
+          // 更新会诊信息到 team
+          $peace.$store.commit('chat/updateTeam', res.data.list)
+        })
+        .catch(res => console.error(res))
+    }
+
+    return 'team status mutation'
+  }
 }
 
 const actions = {
@@ -599,10 +652,49 @@ const actions = {
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      }
+      },
+
+      // 是否开启日志打印
+      debug: false
     })
 
     return $peace.NIM
+  },
+
+  // 初始化 WebRTC
+  initWebRTC() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
+
+    WebRTCUtil.onBeCalling()
+    WebRTCUtil.onCallRejected()
+    WebRTCUtil.onCallAccepted()
+    WebRTCUtil.onRemoteTrack()
+    WebRTCUtil.onControl()
+    WebRTCUtil.onHangup()
+    WebRTCUtil.onCallerAckSync()
+  },
+
+  // 初始化多人音视频 WebRTC
+  initWebRTCForPersons() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
   },
 
   // 选中会话列表的一条会话
@@ -618,7 +710,7 @@ const actions = {
 
     // 获取会话历史消息
     $peace.NIM.getHistoryMsgs({
-      scene: 'p2p',
+      scene: session.scene,
       to: session.to,
       done: (error, msgsObj) => {
         console.log(new Date().formatTime() + ': ' + '获取历史会话', msgsObj)
@@ -628,8 +720,25 @@ const actions = {
           return
         }
 
-        msgsObj.msgs = DeserializationSessionMsgs(msgsObj.msgs)
         commit('setSessionMsg', msgsObj)
+      }
+    })
+  },
+
+  // 选中群列表的一个群
+  selectTeam({ commit }, team) {
+    commit('clearTeam')
+    commit('setTeam', team)
+
+    $peace.NIM.getHistoryMsgs({
+      scene: team.scene,
+      to: team.to,
+      done: (error, msgsObj) => {
+        if (error) {
+          throw new Error(error)
+        }
+        console.log(new Date().formatTime() + ': ' + '获取历史会话', msgsObj)
+        commit('setTeamMsg', msgsObj)
       }
     })
   },
@@ -739,6 +848,11 @@ const actions = {
   // 清理 session
   clearSession({ commit }) {
     commit('clearSession')
+  },
+
+  // 清理 team
+  clearTeam({ commit }) {
+    commit('clearTeam')
   }
 }
 
@@ -750,7 +864,7 @@ const mutations = {
    * @param {*} session
    */
   setVideoTime(state, videoTime) {
-    state.videoTime = $peace.util.formatDuration(new Date() - videoTime)
+    state.videoTime = $peace.util.formatDuration(videoTime, new Date())
   },
 
   /**
@@ -777,6 +891,93 @@ const mutations = {
   },
 
   /**
+   * 选中 teams
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  setTeams(state, teams) {
+    const serializationTeams = $peace.NIM.mergeSessions(state.teams, teams)
+    const deserializationTeams = DeserializationTeams(serializationTeams)
+
+    state.teams = deserializationTeams.sort((a, b) => {
+      if (a.custom && b.custom) {
+        const aStatus = a.custom.consultation.consultStatus
+        const bStatus = b.custom.consultation.consultStatus
+        const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+        const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+        if (aStatus === bStatus) {
+          return aTime - bTime
+        } else {
+          return bStatus - aStatus
+        }
+      }
+    })
+  },
+
+  updateTeams(state, teamsMutation) {
+    if (state.teams) {
+      let teamsState = $peace.util.clone(state.teams)
+
+      teamsMutation.forEach(teamMutation => {
+        const team = teamsState.find(team => team.id.replace('team-', '') === teamMutation.teamId)
+
+        if (team) {
+          team.custom = teamMutation
+        }
+      })
+
+      // 筛选出没有 custom ， 并且会诊状态不在等待会诊和会诊中状态的
+      teamsState = teamsState.filter(item => item.custom)
+      teamsState = teamsState.filter(item => item.custom.consultation.consultStatus === 5 || item.custom.consultation.consultStatus === 6)
+
+      state.teams = teamsState.sort((a, b) => {
+        if (a.custom && b.custom) {
+          const aStatus = a.custom.consultation.consultStatus
+          const bStatus = b.custom.consultation.consultStatus
+          const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+          const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+          if (aStatus === bStatus) {
+            return aTime - bTime
+          } else {
+            return bStatus - aStatus
+          }
+        }
+      })
+    }
+  },
+
+  updateTeam(state, teamsMutation) {
+    if (state.team) {
+      const teamState = $peace.util.clone(state.team)
+
+      teamsMutation.forEach(teamMutation => {
+        if (teamMutation.teamId === teamState.id.replace('team-', '')) {
+          teamState.custom = teamMutation
+        }
+      })
+
+      if (teamState.custom.consultation.consultStatus === 7 || teamState.custom.consultation.consultStatus === 8) {
+        state.team = undefined
+      } else {
+        state.team = teamState
+      }
+    }
+  },
+
+  /**
+   * teams 存在状态变更
+   *
+   * @param {*} state
+   * @param {*} teams
+   */
+  setTeamNotify(state, teamIds) {
+    state.teamNotify = teamIds
+  },
+
+  /**
    * 选中 session
    *
    * @param {*} state
@@ -786,6 +987,16 @@ const mutations = {
     const deserializationSession = DeserializationSessions([session])[0]
 
     state.session = deserializationSession
+  },
+
+  /**
+   * 选中群
+   *
+   * @param {*} state
+   * @param {*} session
+   */
+  setTeam(state, team) {
+    state.team = team
   },
 
   /**
@@ -807,7 +1018,23 @@ const mutations = {
    * @param {*} session
    */
   setSessionMsg(state, msgsObj) {
+    if (isArray(msgsObj.msgs)) {
+      msgsObj.msgs = DeserializationSessionMsgs(msgsObj.msgs)
+    } else {
+      msgsObj.msgs = DeserializationSessionMsgs([msgsObj.msgs])
+    }
+
     state.sessionMsgs = msgsObj
+  },
+
+  setTeamMsg(state, msgsObj) {
+    if (isArray(msgsObj.msgs)) {
+      msgsObj.msgs = DeserializationTeamMsgs(msgsObj.msgs)
+    } else {
+      msgsObj.msgs = DeserializationTeamMsgs([msgsObj.msgs])
+    }
+
+    state.teamMsgs = msgsObj
   },
 
   /**
@@ -826,6 +1053,16 @@ const mutations = {
     state.sessionMsgs.msgs.unshift(...msg)
   },
 
+  updateTeamMsg(state, msg) {
+    if (isArray(msg)) {
+      msg = DeserializationTeamMsgs(msg)
+    } else {
+      msg = DeserializationTeamMsgs([msg])
+    }
+
+    state.teamMsgs.msgs.unshift(...msg)
+  },
+
   /**
    * 清空信息
    *
@@ -834,6 +1071,16 @@ const mutations = {
   clearSession(state) {
     state.session = undefined
     state.sessionMsgs = undefined
+  },
+
+  /**
+   * 清空信息
+   *
+   * @param {*} state
+   */
+  clearTeam(state) {
+    state.team = undefined
+    state.teamMsgs = undefined
   },
 
   /**
@@ -861,6 +1108,7 @@ export default {
   namespaced: true,
 
   state,
+  getters,
   actions,
   mutations
 }

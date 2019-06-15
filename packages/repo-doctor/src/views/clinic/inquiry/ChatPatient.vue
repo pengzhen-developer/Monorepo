@@ -1,7 +1,7 @@
 <template>
   <div v-if="chat.session && chat.session.id">
     <div class="header">
-      <img src="./../../assets/images/icons/clinic/electronicmedical_icon.png">
+      <img src="~@/assets/images/icons/clinic/electronicmedical_icon.png">
       <span>电子病历</span>
     </div>
     <div class="body">
@@ -10,7 +10,7 @@
           <el-tab-pane class="health" label="健康档单">
             <div class="health-item">
               <div class="health-item-title">
-                <img src="../../assets/images/icons/clinic/archives_icon_marry.png">
+                <img src="~@/assets/images/icons/clinic/archives_icon_marry.png">
                 <h4>婚育史：</h4>
               </div>
               <div class="health-item-description">
@@ -19,7 +19,7 @@
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="../../assets/images/icons/clinic/archives_icon_marry copy.png">
+                <img src="~@/assets/images/icons/clinic/archives_icon_marry copy.png">
                 <h4>手术和外伤：</h4>
               </div>
               <div class="health-item-description">
@@ -28,7 +28,7 @@
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="../../assets/images/icons/clinic/archives_icon_medical.png">
+                <img src="~@/assets/images/icons/clinic/archives_icon_medical.png">
                 <h4>家族病史：</h4>
               </div>
               <div class="health-item-description">
@@ -37,7 +37,7 @@
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="../../assets/images/icons/clinic/archives_icon_allergy.png">
+                <img src="~@/assets/images/icons/clinic/archives_icon_allergy.png">
                 <h4>过敏史：</h4>
               </div>
               <div class="health-item-description">
@@ -46,7 +46,7 @@
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="../../assets/images/icons/clinic/archives_icon_habit.png">
+                <img src="~@/assets/images/icons/clinic/archives_icon_habit.png">
                 <h4>个人习惯：</h4>
               </div>
               <div class="health-item-description">

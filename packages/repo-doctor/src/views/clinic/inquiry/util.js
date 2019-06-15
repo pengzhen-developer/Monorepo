@@ -119,10 +119,69 @@ export function DeserializationSessionMsgs(msgs) {
   return temp
 }
 
+/**
+ * 反序列化 Teams
+ * 对话消息的扩展信息, 都以 JSON 字符串的形式, 存储在消息体上
+ * 反序列化 Teams, 有助于显示数据和进行类型判断
+ *
+ * @export
+ * @param {*} Teams
+ * @returns
+ */
+export function DeserializationTeams(teams) {
+  let temp = $peace.util.clone(teams)
+
+  if (temp) {
+    temp.forEach(team => {
+      if (team.custom && !(team.custom instanceof Object)) {
+        team.custom = JSON.parse(team.custom)
+      }
+
+      if (team.content && !(team.content instanceof Object)) {
+        team.content = JSON.parse(team.content)
+      }
+    })
+
+    // 过滤垃圾数据
+    // temp = temp.filter(item => item.custom)
+  }
+
+  return temp
+}
+
+/**
+ * 反序列化 Team msgs
+ * 对话消息的扩展信息, 都以 JSON 字符串的形式, 存储在消息体上
+ * 反序列化 sessions, 有助于显示数据和进行类型判断
+ *
+ * @export
+ * @param {*} Team Messages
+ * @returns
+ */
+export function DeserializationTeamMsgs(msgs) {
+  let temp = $peace.util.clone(msgs)
+
+  if (temp) {
+    temp.forEach(msg => {
+      if (msg.custom && !(msg.custom instanceof Object)) {
+        msg.custom = JSON.parse(msg.custom)
+      }
+
+      if (msg.content && !(msg.content instanceof Object)) {
+        msg.content = JSON.parse(msg.content)
+      }
+    })
+  }
+
+  return temp
+}
+
 export default {
   STATE,
 
   DeserializationSessions,
+  DeserializationTeams,
 
-  DeserializationSessionMsgs
+  DeserializationSessionMsgs,
+  DeserializationTeamMsgs
 }

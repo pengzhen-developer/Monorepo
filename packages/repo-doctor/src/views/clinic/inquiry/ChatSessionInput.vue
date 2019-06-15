@@ -11,28 +11,31 @@
           style="display: inline-block;"
         >
           <el-button slot="trigger" type="text">
-            <img src="./../../assets/images/icons/clinic/chat_icon_pic.png">图片
+            <img src="~@/assets/images/icons/clinic/chat_icon_pic.png">图片
           </el-button>
         </el-upload>
         <el-button @click="sendVideoBefore" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_video.png">视频
+          <img src="~@/assets/images/icons/clinic/chat_icon_video.png">视频
         </el-button>
         <el-button @click="showMedical" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_medical.png">写病历
+          <img src="~@/assets/images/icons/clinic/chat_icon_medical.png">写病历
         </el-button>
         <el-button @click="showPrescription" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">开处方
+          <img src="~@/assets/images/icons/clinic/chat_icon_pr.png">开处方
         </el-button>
         <el-button @click="showTransfer" type="text">
-          <img src="./../../assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
+          <img src="~@/assets/images/icons/clinic/chat_icon_zhuanzhen.png">申请转诊
+        </el-button>
+        <el-button @click="showConsultation" type="text">
+          <img src="~@/assets/images/icons/clinic/yuanchenghuizhen1.png">申请会诊
         </el-button>
         <el-button @click="OverOverOver" type="text" v-show="false">
-          <img src="./../../assets/images/icons/clinic/chat_icon_pr.png">强行退诊
+          <img src="~@/assets/images/icons/clinic/chat_icon_pr.png">强行退诊
         </el-button>
       </div>
     </div>
 
-    <div @keyup.ctrl.enter="quickSend" class="input" tabindex="0">
+    <div class="input" tabindex="0">
       <ckeditor :config="ckEditor.editorConfig" :editor="ckEditor.editor" @ready="onEditorReady" class="input" tabindex="0" v-model.trim="ckEditor.currentMsg"></ckeditor>
     </div>
 
@@ -114,6 +117,10 @@ export default {
     },
 
     isShowTransferButton() {
+      return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
+    },
+
+    isShowConsultationButton() {
       return this.lastMsg && this.lastMsg.custom.ext.talkState === STATE.talkState['已填写病历']
     }
   },
@@ -210,7 +217,7 @@ export default {
       }
     },
 
-    // 双向转诊
+    // 申请转诊
     showTransfer() {
       const param = {
         inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
@@ -219,11 +226,11 @@ export default {
       this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
         // 非有效会话，提示无法进行转诊
         if (res.data.status === 1) {
-          $peace.util.warning('非有效会话，无法进行转诊')
+          $peace.util.warning('系统检测到当前为无效会话，无法进行转诊')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
-          $peace.util.confirm('请填写病历', undefined, { type: 'warning' }, () => {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning', confirmButtonText: '去填写' }, () => {
             this.showMedical()
           })
         }
@@ -237,6 +244,43 @@ export default {
             },
             () => {
               this.$emit('showTransfer')
+            }
+          )
+        }
+        // 未知情况
+        else {
+          $peace.util.warning(res.msg)
+        }
+      })
+    },
+
+    // 申请会诊
+    showConsultation() {
+      const param = {
+        inquiryId: this.chat.session.lastMsg.custom.ext.inquiryId
+      }
+
+      this.$http.post(this.config.api.checkOverInquiry, param).then(res => {
+        // 非有效会话，提示无法进行转诊
+        if (res.data.status === 1) {
+          $peace.util.warning('系统检测到当前为无效会话，无法进行会诊')
+        }
+        // 未填写病历，提示填写病历
+        else if (res.data.caseStatus === 1) {
+          $peace.util.confirm('请填写病历', undefined, { type: 'warning', confirmButtonText: '去填写' }, () => {
+            this.showMedical()
+          })
+        }
+        // 可正常会诊
+        else if (res.data.caseStatus === 2 && res.data.status === 2) {
+          $peace.util.confirm(
+            '会诊提交成功后， 本次咨询将自动关闭。',
+            undefined,
+            {
+              type: 'warning'
+            },
+            () => {
+              this.$emit('showConsultation')
             }
           )
         }

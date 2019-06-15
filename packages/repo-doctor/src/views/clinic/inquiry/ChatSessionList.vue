@@ -27,14 +27,14 @@
             </template>
             <template v-if="getMsgFlow(msg) === STATE.msgFlow['医生消息'] ">
               <div @click="showMedical(msg)" class="msg-detail medical" v-if="getSendType(msg) === STATE.sendType['病历消息']">
-                <img src="./../../assets/images/icons/clinic/ic_rp.png">
+                <img src="~@/assets/images/icons/clinic/ic_rp.png">
                 <div>
                   <p style="font-size: 14px;">病历</p>
                   <p>查看详情</p>
                 </div>
               </div>
               <div @click="showPrescription(msg)" class="msg-detail prescription" v-if="getSendType(msg) === STATE.sendType['处方消息']">
-                <img src="./../../assets/images/icons/clinic/ic_medical record.png">
+                <img src="~@/assets/images/icons/clinic/ic_medical record.png">
                 <div>
                   <p>处方</p>
                   <p>查看详情</p>
@@ -42,7 +42,7 @@
               </div>
               <div class="msg-detail video" v-if="getSendType(msg) === STATE.sendType['视频消息']">
                 <span>通话时长 {{ msg.content.data.video }}</span>
-                <img src="./../../assets/images/icons/clinic/ic_video_left@2x.png">
+                <img src="~@/assets/images/icons/clinic/ic_video_left@2x.png" style="width: 18px; height: 12px; margin-left: 10px;">
               </div>
             </template>
 
@@ -156,7 +156,7 @@ export default {
         const prevMsg = this.recentSessionMsgs[index - 1]
         const currentMsg = this.recentSessionMsgs[index]
 
-        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 2) {
+        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 3) {
           return true
         }
 

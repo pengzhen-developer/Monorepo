@@ -185,6 +185,18 @@ export function timeAgo(time) {
 }
 
 /**
+ * 获取服务器时间与本地时间差
+ * 注意该方法时异步的
+ *
+ * @export
+ */
+export async function getServerDateDiff() {
+  const getServiceTime = 'client/v1/consult/getServiceTime'
+  const serverDate = await $peace.$http.post(getServiceTime)
+  $peace.serverDateDiff = serverDate.data.serviceTime - new Date()
+}
+
+/**
  * 格式化时间对象
  *
  * @export
@@ -246,26 +258,45 @@ export function formatTime(date, format = 'yyyy-MM-dd HH:mm:ss') {
  * @param {int} time 毫秒数
  * @returns
  */
-export function formatDuration(time) {
-  var days = time / 1000 / 60 / 60 / 24
-  var daysRound = Math.floor(days)
-  var hours = time / 1000 / 60 / 60 - 24 * daysRound
-  var hoursRound = Math.floor(hours)
-  var minutes = time / 1000 / 60 - 24 * 60 * daysRound - 60 * hoursRound
-  var minutesRound = Math.floor(minutes)
-  var seconds = Math.ceil(time / 1000 - 24 * 60 * 60 * daysRound - 60 * 60 * hoursRound - 60 * minutesRound)
+export function formatDuration(bgTime, endTime) {
+  const duration = this.getDuration(bgTime, endTime)
 
-  if (hoursRound < 10) {
-    hoursRound = '0' + hoursRound
-  }
-  if (minutesRound < 10) {
-    minutesRound = '0' + minutesRound
-  }
+  duration.HH = duration.HH + duration.dd * 24
 
-  if (seconds < 10) {
-    seconds = '0' + seconds
+  if (duration.HH < 10) {
+    duration.HH = '0' + duration.HH
   }
-  return hoursRound + ':' + minutesRound + ':' + seconds
+  if (duration.mm < 10) {
+    duration.mm = '0' + duration.mm
+  }
+  if (duration.ss < 10) {
+    duration.ss = '0' + duration.ss
+  }
+  return duration.HH + ':' + duration.mm + ':' + duration.ss
+}
+
+/**
+ * 获取时间间隔
+ *
+ * @export
+ * @param {*} bgTime
+ * @param {*} endTime
+ * @returns
+ */
+export function getDuration(bgTime, endTime) {
+  const totalSecs = (endTime - bgTime) / 1000
+
+  const dd = Math.floor(totalSecs / 3600 / 24)
+  const HH = Math.floor((totalSecs - dd * 24 * 3600) / 3600)
+  const mm = Math.floor((totalSecs - dd * 24 * 3600 - HH * 3600) / 60)
+  const ss = Math.floor(totalSecs - dd * 24 * 3600 - HH * 3600 - mm * 60)
+
+  return {
+    dd,
+    HH,
+    mm,
+    ss
+  }
 }
 
 /**
@@ -714,6 +745,9 @@ export default {
   clone,
 
   timeAgo,
+  getDuration,
+
+  getServerDateDiff,
   formatDate,
   formatTime,
   formatDuration,

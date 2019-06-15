@@ -96,6 +96,10 @@ export default {
     })
   },
 
+  destroyed() {
+    this._removePagination()
+  },
+
   methods: {
     // 生成分页组件
     _generatePagination() {
@@ -119,6 +123,11 @@ export default {
       }
 
       container.appendChild(this.Pagination.$el)
+      this._PaginationContainer = container
+    },
+
+    _removePagination() {
+      this._PaginationContainer && this._PaginationContainer.remove()
     },
 
     _generateConfig(config) {
@@ -140,6 +149,7 @@ export default {
 
       // 区别 axios 对 get / post 不同的传参方式
       if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
+        delete this.config.params.params
         this.config.params = { params: this.config.params }
       }
     },
@@ -180,7 +190,7 @@ export default {
       return $peace.$http[this.config.method](this.config.api, this.config.params).then(res => {
         if (this.pagination) {
           this.internalData = (res.data && res.data.list) || []
-          this.Pagination.internalTotal = (res.data && res.data.count) || 0
+          this.Pagination.internalTotal = (res.data && res.data.count) || (res.data && res.data.total) || 0
         } else {
           this.internalData = res.data
         }

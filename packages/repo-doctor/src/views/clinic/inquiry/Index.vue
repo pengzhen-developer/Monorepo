@@ -1,9 +1,7 @@
 /*
  * @Author: PengZhen 
  * @Date: 2019-04-16 09:16:09 
- * @Description: 我的诊室
- * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-13 10:35:19
+ * @Description: 我的诊室 - 我的问诊
  */
 
 <template>
@@ -12,18 +10,18 @@
     <chat-video></chat-video>
 
     <!-- 会话列表 -->
-    <chat-sessions class="left"></chat-sessions>
+    <chat-sessions class="left" v-if="chat.sessions"></chat-sessions>
 
     <!-- 消息列表 -->
-    <chat-session class="center"></chat-session>
+    <chat-session class="center" v-if="chat.session"></chat-session>
 
     <!-- 患者详情 -->
-    <chat-patient class="right"></chat-patient>
+    <chat-patient class="right" v-if="chat.session"></chat-patient>
   </div>
 </template> 
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import ChatVideo from './ChatVideo'
 
@@ -40,13 +38,18 @@ export default {
     ChatPatient
   },
 
+  computed: {
+    ...mapState(['chat'])
+  },
+
   methods: {
-    ...mapActions('chat', ['clearSession', 'initNIM'])
+    ...mapActions('chat', ['clearSession', 'initNIM', 'initWebRTC'])
   },
 
   // 初始化 IM
   created() {
     this.initNIM()
+    this.initWebRTC()
   },
 
   // 销毁 IM
@@ -65,7 +68,7 @@ export default {
 
   .left,
   .right {
-    width: 214px;
+    width: 230px;
 
     border: 1px solid #efefef;
   }
