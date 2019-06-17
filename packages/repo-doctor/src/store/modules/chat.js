@@ -1,5 +1,5 @@
-import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0'
-import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
+import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.5.0'
+import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0'
 NIM.use(WebRTC)
 
 import { STATE, DeserializationSessions, DeserializationSessionMsgs, DeserializationTeams, DeserializationTeamMsgs } from '@/views/clinic/inquiry/util'
@@ -13,8 +13,6 @@ const NIMUtil = {
    */
   onConnect() {
     console.log(new Date().formatTime() + ': ' + '连接成功')
-
-    WebRTCUtil.initWebRTC()
   },
 
   /**
@@ -160,6 +158,13 @@ const NIMUtil = {
         if (lastMsg.custom.type === 'process') {
           $peace.$store.commit('chat/setTeamNotify', [msg.sessionId])
         }
+
+        // 通知有人拒绝，需要做提示
+        if (lastMsg.custom.type === 'refuse') {
+          if ($peace.cache.get('USER').list.docInfo.doctor_id !== msg.custom.doctorId) {
+            $peace.util.warning(msg.custom.text)
+          }
+        }
       }
 
       // 消息来源与当前选中群相同，则更新消息列表
@@ -213,28 +218,6 @@ const WebRTCUtil = {
 
   // 挂断定时器
   hangupTimer: undefined,
-
-  // 初始化 WebRTC
-  initWebRTC(forVideoRTC = false) {
-    $peace.WebRTC = WebRTC.getInstance({
-      nim: $peace.NIM,
-      container: document.getElementById('localContainer'),
-      remoteContainer: document.getElementById('remoteContainer'),
-      chromeId: '',
-      // 是否开启日志打印
-      debug: false
-    })
-
-    if (forVideoRTC) {
-      WebRTCUtil.onBeCalling()
-      WebRTCUtil.onCallRejected()
-      WebRTCUtil.onCallAccepted()
-      WebRTCUtil.onRemoteTrack()
-      WebRTCUtil.onControl()
-      WebRTCUtil.onHangup()
-      WebRTCUtil.onCallerAckSync()
-    }
-  },
 
   // 被叫监听音视频
   onBeCalling() {
@@ -669,10 +652,49 @@ const actions = {
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      }
+      },
+
+      // 是否开启日志打印
+      debug: false
     })
 
     return $peace.NIM
+  },
+
+  // 初始化 WebRTC
+  initWebRTC() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
+
+    WebRTCUtil.onBeCalling()
+    WebRTCUtil.onCallRejected()
+    WebRTCUtil.onCallAccepted()
+    WebRTCUtil.onRemoteTrack()
+    WebRTCUtil.onControl()
+    WebRTCUtil.onHangup()
+    WebRTCUtil.onCallerAckSync()
+  },
+
+  // 初始化多人音视频 WebRTC
+  initWebRTCForPersons() {
+    if ($peace.WebRTC) {
+      $peace.WebRTC.destroy()
+    }
+
+    $peace.WebRTC = WebRTC.getInstance({
+      nim: $peace.NIM,
+      chromeId: '',
+      // 是否开启日志打印
+      debug: false
+    })
   },
 
   // 选中会话列表的一条会话
@@ -878,12 +900,25 @@ const mutations = {
     const serializationTeams = $peace.NIM.mergeSessions(state.teams, teams)
     const deserializationTeams = DeserializationTeams(serializationTeams)
 
-    state.teams = deserializationTeams
+    state.teams = deserializationTeams.sort((a, b) => {
+      if (a.custom && b.custom) {
+        const aStatus = a.custom.consultation.consultStatus
+        const bStatus = b.custom.consultation.consultStatus
+        const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+        const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+        if (aStatus === bStatus) {
+          return aTime - bTime
+        } else {
+          return bStatus - aStatus
+        }
+      }
+    })
   },
 
   updateTeams(state, teamsMutation) {
     if (state.teams) {
-      const teamsState = $peace.util.clone(state.teams)
+      let teamsState = $peace.util.clone(state.teams)
 
       teamsMutation.forEach(teamMutation => {
         const team = teamsState.find(team => team.id.replace('team-', '') === teamMutation.teamId)
@@ -893,7 +928,24 @@ const mutations = {
         }
       })
 
-      state.teams = teamsState
+      // 筛选出没有 custom ， 并且会诊状态不在等待会诊和会诊中状态的
+      teamsState = teamsState.filter(item => item.custom)
+      teamsState = teamsState.filter(item => item.custom.consultation.consultStatus === 5 || item.custom.consultation.consultStatus === 6)
+
+      state.teams = teamsState.sort((a, b) => {
+        if (a.custom && b.custom) {
+          const aStatus = a.custom.consultation.consultStatus
+          const bStatus = b.custom.consultation.consultStatus
+          const aTime = new Date(a.custom.consultation.expectOverTime).getTime()
+          const bTime = new Date(b.custom.consultation.expectOverTime).getTime()
+
+          if (aStatus === bStatus) {
+            return aTime - bTime
+          } else {
+            return bStatus - aStatus
+          }
+        }
+      })
     }
   },
 

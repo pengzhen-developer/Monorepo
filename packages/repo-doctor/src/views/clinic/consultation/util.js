@@ -1,5 +1,33 @@
-import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0'
-import config from './config'
+import NIM from '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.5.0'
+import WebRTC from '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0'
+
+/**
+ * 初始化 NIM
+ *
+ * @export
+ */
+export function initNIM() {
+  const appKey = $peace.config.nim[process.env.VUE_APP_MODE || process.env.NODE_ENV].appKey
+  const account = $peace.cache.get('USER').list.registerInfo.user_id
+  const token = $peace.cache.get('USER').list.registerInfo.token
+
+  $peace.NIM = NIM.getInstance({
+    appKey,
+    account,
+    token,
+
+    db: false,
+    debug: true,
+
+    onconnect: function() {
+      $peace.WebRTC = WebRTC.getInstance({
+        nim: $peace.NIM,
+        chromeId: '',
+        debug: true
+      })
+    }
+  })
+}
 
 /**
  * 创建视频房间

@@ -26,7 +26,7 @@
         <div
           :key="'history_' + item"
           class="history-item"
-          v-for="item in history"
+          v-for="item in renderHistory"
         >
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
@@ -36,7 +36,7 @@
           :data="list"
           :show-header="false"
           @row-click="handleSelect"
-          max-height="300"
+          height="286"
           ref="singleTable"
           size="small"
         >
@@ -106,15 +106,15 @@ export default {
       }
 
       this.$http.get(api, { params }).then(res => {
-        console.log(res.data, this.list)
         setTimeout(() => {
-          this.list = [].concat(res.data)
+          if (res.data && res.data.length) {
+            this.list = [].concat(res.data)
+          }
         }, 0)
         this.addToCache(drugname)
       })
     },
     nextStep() {
-      console.log(this.selected)
       const {
         drug_factory,
         drug_name,
@@ -177,6 +177,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .el-table {
+  &__row {
+    cursor: pointer;
+  }
+}
 .el-button {
   &--primary.is-plain {
     color: $--color-primary;
@@ -196,8 +201,11 @@ export default {
     cursor: pointer;
   }
 }
-/deep/ .el-checkbox__inner {
-  border-radius: 100%;
+/deep/ .el-checkbox {
+  pointer-events: none;
+  &__inner {
+    border-radius: 100%;
+  }
 }
 
 .search {

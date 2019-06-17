@@ -11,8 +11,8 @@ module.exports = {
   configureWebpack: config => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
     config.externals = {
-      '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.3.0': 'NIM',
-      '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.3.0': 'WebRTC'
+      '/public/static/NIM_Web_SDK/NIM_Web_NIM_v6.5.0': 'NIM',
+      '/public/static/NIM_Web_SDK/NIM_Web_WebRTC_v6.5.0': 'WebRTC'
     }
   },
 

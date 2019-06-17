@@ -76,10 +76,10 @@
       <div
         class="info-row"
         v-if="internalData.Inspection_index && 
-                internalData.Inspection_index.temperature && 
-                internalData.Inspection_index.weight && 
-                internalData.Inspection_index.heart_rate && 
-                internalData.Inspection_index.blood_pressure"
+             (internalData.Inspection_index.temperature ||
+              internalData.Inspection_index.weight ||
+              internalData.Inspection_index.heart_rate ||
+              internalData.Inspection_index.blood_pressure)"
       >
         <div class="info-row-label">
           <span>体检指标</span>

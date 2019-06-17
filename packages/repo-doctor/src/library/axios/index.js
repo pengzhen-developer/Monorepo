@@ -94,6 +94,12 @@ Axios.interceptors.response.use(
       if (response.data && parseInt(response.data.code) === 200) {
         return response.data
       }
+      // 一般错误提示
+      else if (response.data && parseInt(response.data.code) === 201) {
+        $peace.util.warning(response.data.msg)
+
+        return Promise.reject(response)
+      }
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === 601) {
         $peace.util.warning(response.data.msg)
@@ -104,7 +110,7 @@ Axios.interceptors.response.use(
         // 跳转登录
         $peace.$router.replace($peace.config.theme.startPage)
 
-        return
+        return Promise.reject(response)
       }
       // 逻辑验证失败
       else {

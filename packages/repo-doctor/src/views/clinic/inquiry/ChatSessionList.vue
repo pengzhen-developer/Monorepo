@@ -42,7 +42,7 @@
               </div>
               <div class="msg-detail video" v-if="getSendType(msg) === STATE.sendType['视频消息']">
                 <span>通话时长 {{ msg.content.data.video }}</span>
-                <img src="~@/assets/images/icons/clinic/ic_video_left@2x.png" style="width: 18px; height: 18px; margin-left: 10px;">
+                <img src="~@/assets/images/icons/clinic/ic_video_left@2x.png" style="width: 18px; height: 12px; margin-left: 10px;">
               </div>
             </template>
 
@@ -156,7 +156,7 @@ export default {
         const prevMsg = this.recentSessionMsgs[index - 1]
         const currentMsg = this.recentSessionMsgs[index]
 
-        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 2) {
+        if (currentMsg.time - prevMsg.time >= 1000 * 60 * 3) {
           return true
         }
 

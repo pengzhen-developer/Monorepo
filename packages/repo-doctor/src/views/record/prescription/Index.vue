@@ -63,8 +63,8 @@ export default {
       view: {
         model: {
           familyName: '',
-          s_Date: new Date().proDate('{%d-7}').formatDate(),
-          e_Date: new Date().formatDate()
+          s_Date: '',
+          e_Date: ''
         },
 
         rules: {

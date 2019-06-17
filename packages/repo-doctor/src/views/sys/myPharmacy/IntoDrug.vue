@@ -26,7 +26,7 @@
         <div
           :key="'history_' + item"
           class="history-item"
-          v-for="item in history"
+          v-for="item in renderHistory"
         >
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
@@ -35,7 +35,7 @@
         <el-table
           :data="list"
           :show-header="false"
-          max-height="300"
+          height="300"
           size="small"
         >
           <el-table-column label prop="drug_name"></el-table-column>

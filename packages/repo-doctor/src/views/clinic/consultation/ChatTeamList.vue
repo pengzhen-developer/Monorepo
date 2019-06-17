@@ -1,129 +1,116 @@
 <template>
   <div>
-    <!-- 距开始 -->
-    <template v-if="!data && teamStatus === TEAM_STATUS.距开始">
-      <div class="consultation-content">
-        <div class="consultation-status">
-          <div class="clock">
-            <img src="~@/assets/images/icons/clinic/ic_daojishi_green@2x.png">
-          </div>
+    <el-scrollbar class="chat-team-list-scrollbar" style="height: 100%;">
+      <!-- 距开始 -->
+      <template v-if="!data && teamStatus === TEAM_STATUS.距开始">
+        <div class="consultation-content">
+          <div class="consultation-status">
+            <div class="clock">
+              <img src="~@/assets/images/icons/clinic/ic_daojishi_green@2x.png">
+            </div>
 
-          <div class="count-down">
-            <span>距会诊开始时间还剩</span>
-            <span class="count-down-time">
-              <template v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).dd !== 0">
-                <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].dd }} 天</span>
-              </template>
+            <div class="count-down">
+              <span>距会诊开始时间还剩</span>
+              <span class="count-down-time">
+                <template
+                  v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).dd !== 0"
+                >
+                  <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].dd }} 天</span>
+                </template>
 
-              <template v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH !== 0">
-                <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].HH }} 时</span>
-              </template>
+                <template
+                  v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).HH !== 0"
+                >
+                  <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].HH }} 时</span>
+                </template>
 
-              <template
-                v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
-                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
-                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).mm !== 0"
-              >
-                <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].mm }} 分</span>
-              </template>
+                <template
+                  v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
+                      $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
+                      $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).mm !== 0"
+                >
+                  <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].mm }} 分</span>
+                </template>
 
-              <template
-                v-if="$peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
-                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
-                      $peace.util.getDuration(new Date(), new Date(chat.team.custom.consultation.expectTime)).mm === 0"
-              >
-                <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].ss }} 秒</span>
-              </template>
-            </span>
-          </div>
-          <div class="count-down-message">
-            <span>请在</span>
-            <span class="count-down-time" style="margin: 0 5px;">
-              <span>{{ chat.team.custom.consultation.expectTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}</span>
-              <span>-</span>
-              <span>{{ chat.team.custom.consultation.expectOverTime.toDate().formatDate('HH:mm') }}</span>
-            </span>
-            <span>发起视频会诊，超期系统将自动关闭会诊单</span>
+                <template
+                  v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).dd === 0 && 
+                      $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).HH === 0 && 
+                      $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(chat.team.custom.consultation.expectTime)).mm === 0"
+                >
+                  <span style="margin: 0 0 0 5px;">{{ duration[chat.team.id] && duration[chat.team.id].ss }} 秒</span>
+                </template>
+              </span>
+            </div>
+            <div class="count-down-message">
+              <span>请在</span>
+              <span class="count-down-time" style="margin: 0 5px;">
+                <span>{{ chat.team.custom.consultation.expectTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}</span>
+                <span>-</span>
+                <span>{{ chat.team.custom.consultation.expectOverTime.toDate().formatDate('HH:mm') }}</span>
+              </span>
+              <span>发起视频会诊，超期系统将自动关闭会诊单</span>
+            </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <!-- 距关闭 -->
-    <template v-if="!data && teamStatus === TEAM_STATUS.距结束">
-      <div class="consultation-content">
-        <div class="consultation-status danger">
-          <div class="clock">
-            <img src="~@/assets/images/icons/clinic/ic_daojishi_red@2x.png">
+      <!-- 距关闭 -->
+      <template v-if="!data && teamStatus === TEAM_STATUS.距结束">
+        <div class="consultation-content">
+          <div class="consultation-status danger">
+            <div class="clock">
+              <img src="~@/assets/images/icons/clinic/ic_daojishi_red@2x.png">
+            </div>
+
+            <div class="count-down">
+              <span>距会诊关闭时间还剩</span>
+              <span class="count-down-time" style="margin: 0 5px;">
+                <template v-if=" durationEnd[chat.team.id] && durationEnd[chat.team.id].mm !== 0">
+                  <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].mm }} 分</span>
+                </template>
+
+                <template v-if="durationEnd[chat.team.id] && durationEnd[chat.team.id].mm === 0">
+                  <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].ss }} 秒</span>
+                </template>
+              </span>
+            </div>
+            <div class="count-down-message">请尽快发起视频会诊，超期系统将自动关闭会诊单</div>
           </div>
-
-          <div class="count-down">
-            <span>距会诊关闭时间还剩</span>
-            <span class="count-down-time" style="margin: 0 5px;">
-              <template v-if=" durationEnd[chat.team.id] && durationEnd[chat.team.id].mm !== 0">
-                <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].mm }} 分</span>
-              </template>
-
-              <template v-if="durationEnd[chat.team.id] && durationEnd[chat.team.id].mm === 0">
-                <span style="color: #FF0000;">{{ durationEnd[chat.team.id] && durationEnd[chat.team.id].ss }} 秒</span>
-              </template>
-            </span>
-          </div>
-          <div class="count-down-message">请尽快发起视频会诊，超期系统将自动关闭会诊单</div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <!-- 会诊中 -->
-    <template v-if="!data && teamStatus === TEAM_STATUS.会诊中"></template>
+      <!-- 会诊中 -->
+      <template v-if="!data && teamStatus === TEAM_STATUS.会诊中"></template>
 
-    <el-alert
-      :closable="false"
-      class="chat-team-waring"
-      show-icon
-      style="position: absolute; z-index: 1"
-      title
-      type="warning"
-      v-if="chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel"
-    >
-      <div slot="title" style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
-        <span>你有一个视频会议正在进行中，</span>
+      <template v-if="data || teamMsgs">
+        <ul :class="{ showVideo: chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel }">
+          <li :key="msg.time" v-for="(msg, index) in data || teamMsgs">
+            <!-- 消息时间 -->
+            <div class="msg-body system system-time" v-if="needShowMsgTime(index)">
+              <span>{{ showMsgTime(msg) }}</span>
+            </div>
 
-        <el-button
-          @click="$peace.consultationComponent.joinVideoRoom(chat.team.custom.consultation.channel, chat.team.custom.consultation.consultNo)"
-          type="text"
-        >点击进入</el-button>
-      </div>
-    </el-alert>
+            <!-- 消息发送者 -->
+            <!-- <div :style="{ 'text-align': getMsgFlow(msg) === 'out' ? 'right' : 'left' }" style="margin: 0 10px 0 5px;">{{ msg.fromNick }}</div> -->
 
-    <template v-if="data || teamMsgs">
-      <ul :class="{ showVideo: chat.team && chat.team.custom && chat.team.custom.consultation && chat.team.custom.consultation.channel }">
-        <li :key="msg.time" v-for="(msg, index) in data || teamMsgs">
-          <!-- 消息时间 -->
-          <div class="msg-body system system-time" v-if="needShowMsgTime(index)">
-            <span>{{ showMsgTime(msg) }}</span>
-          </div>
+            <!-- 文本消息 -->
+            <div :class="getMsgFlow(msg)" class="msg-body">
+              <template v-if="msg.custom.type === 'video'">
+                <div class="msg-detail">
+                  <i class="icon_ic_video_right" style="margin: 0 10px 0 0;" v-show="msg.flow === 'in'"></i>
+                  <span>{{ msg.custom.text }}</span>
+                  <i class="icon_ic_video_left" style="margin: 0 0 0 10px;" v-show="msg.flow === 'out'"></i>
+                </div>
+              </template>
 
-          <!-- 消息发送者 -->
-          <!-- <div :style="{ 'text-align': getMsgFlow(msg) === 'out' ? 'right' : 'left' }" style="margin: 0 10px 0 5px;">{{ msg.fromNick }}</div> -->
-
-          <!-- 文本消息 -->
-          <div :class="getMsgFlow(msg)" class="msg-body">
-            <template v-if="msg.custom.type === 'video'">
-              <div class="msg-detail">
-                <i class="icon_ic_video_right" style="margin: 0 10px 0 0;" v-show="msg.flow === 'in'"></i>
-                <span>{{ msg.custom.text }}</span>
-                <i class="icon_ic_video_left" style="margin: 0 0 0 10px;" v-show="msg.flow === 'out'"></i>
-              </div>
-            </template>
-
-            <template v-else>
-              <span class="msg-detail" v-html="msg.custom && msg.custom.text || msg.text"></span>
-            </template>
-          </div>
-        </li>
-      </ul>
-    </template>
+              <template v-else>
+                <span class="msg-detail" v-html="msg.custom && msg.custom.text || msg.text"></span>
+              </template>
+            </div>
+          </li>
+        </ul>
+      </template>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -176,11 +163,14 @@ export default {
         const expectOverTime = this.chat.team.custom.consultation.expectOverTime
 
         if (consultStatus === 5) {
-          if (new Date() < new Date(expectTime)) {
+          if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(expectTime)) {
             return TEAM_STATUS.距开始
           }
 
-          if (new Date() > new Date(expectTime) && new Date() < new Date(expectOverTime)) {
+          if (
+            new Date(new Date().getTime() + $peace.serverDateDiff) > new Date(expectTime) &&
+            new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(expectOverTime)
+          ) {
             return TEAM_STATUS.距结束
           }
         }
@@ -205,15 +195,21 @@ export default {
 
         if (newValue) {
           const interval = setInterval(() => {
-            if (new Date() < new Date(this.chat.team.custom.consultation.expectTime)) {
-              const duration = $peace.util.getDuration(new Date(), new Date(this.chat.team.custom.consultation.expectTime))
+            if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(this.chat.team.custom.consultation.expectTime)) {
+              const duration = $peace.util.getDuration(
+                new Date(new Date().getTime() + $peace.serverDateDiff),
+                new Date(this.chat.team.custom.consultation.expectTime)
+              )
               this.$set(this.duration, this.chat.team.id, duration)
             } else {
               this.$set(this.duration, this.chat.team.id, undefined)
             }
 
-            if (new Date() < new Date(this.chat.team.custom.consultation.expectOverTime)) {
-              const durationEnd = $peace.util.getDuration(new Date(), new Date(this.chat.team.custom.consultation.expectOverTime))
+            if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(this.chat.team.custom.consultation.expectOverTime)) {
+              const durationEnd = $peace.util.getDuration(
+                new Date(new Date().getTime() + $peace.serverDateDiff),
+                new Date(this.chat.team.custom.consultation.expectOverTime)
+              )
               this.$set(this.durationEnd, this.chat.team.id, durationEnd)
             } else {
               this.$set(this.durationEnd, this.chat.team.id, undefined)

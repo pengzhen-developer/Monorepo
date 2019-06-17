@@ -43,12 +43,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('chat', ['clearSession', 'initNIM'])
+    ...mapActions('chat', ['clearSession', 'initNIM', 'initWebRTC'])
   },
 
   // 初始化 IM
   created() {
     this.initNIM()
+    this.initWebRTC()
   },
 
   // 销毁 IM

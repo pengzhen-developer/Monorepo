@@ -50,9 +50,9 @@
       <hr>
 
       <div style="text-align: center;">
-        <el-button @click="sendPrescription" type="primary">发送</el-button>
-        <el-button @click="savePrescription" type="success" v-show="false">保存</el-button>
         <el-button @click="cancelPrescription">取消</el-button>
+        <el-button @click="savePrescription" type="success" v-show="false">保存</el-button>
+        <el-button @click="sendPrescription" type="primary">发送</el-button>
       </div>
     </div>
 
@@ -310,6 +310,11 @@ export default {
       this.drug.model.dic_usage_id = ''
       this.drug.model.dic_frequency = ''
       this.drug.model.dic_frequency_id = ''
+
+      setTimeout(() => {
+        this.$refs.form.clearValidate()
+        this.$refs.form.validateField('drugid')
+      }, 0)
     },
 
     sendPrescription() {
