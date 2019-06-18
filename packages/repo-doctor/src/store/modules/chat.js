@@ -574,7 +574,7 @@ const WebRTCUtil = {
 
 const state = {
   // 会话列表
-  sessions: undefined,
+  sessions: [],
 
   // 当前会话
   session: undefined,
@@ -583,7 +583,7 @@ const state = {
   sessionMsgs: undefined,
 
   // 当前群聊列表
-  teams: undefined,
+  teams: [],
   // 当前群聊存在状态变更
   teamNotify: undefined,
   // 当前群聊
