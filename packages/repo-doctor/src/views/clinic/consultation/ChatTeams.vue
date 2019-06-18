@@ -289,7 +289,7 @@ export default {
       }
     }
   }
-
+  
   .body-no-data {
     height: calc(100% - 50px);
 
