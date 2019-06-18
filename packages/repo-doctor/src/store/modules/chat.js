@@ -583,7 +583,7 @@ const state = {
   sessionMsgs: undefined,
 
   // 当前群聊列表
-  teams: undefined,
+  teams: [],
   // 当前群聊存在状态变更
   teamNotify: undefined,
   // 当前群聊
