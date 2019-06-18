@@ -5,7 +5,7 @@
       <span>会诊列表</span>
     </div>
 
-    <div class="body">
+    <template class="body" v-if="chatTeams && chatTeams.length > 0">
       <el-scrollbar class="scrollbar">
         <div
           :class="{ active: chat.team && chat.team.id === team.id }"
@@ -25,11 +25,15 @@
                   <i class="icon_ic_wait_groupconsultation"></i>
                   <span>距开始还剩</span>
 
-                  <template v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).dd !== 0">
+                  <template
+                    v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).dd !== 0"
+                  >
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].dd }} 天</span>
                   </template>
 
-                  <template v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).HH !== 0">
+                  <template
+                    v-if="$peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectTime)).HH !== 0"
+                  >
                     <span style="margin: 0 5px; color: #00C6AE;">{{ duration[team.id] && duration[team.id].HH }} 时</span>
                   </template>
 
@@ -107,7 +111,14 @@
           </template>
         </div>
       </el-scrollbar>
-    </div>
+    </template>
+
+    <template v-else>
+      <div class="body-no-data">
+        <img src="~@/assets/images/icons/clinic/ic_no one.png">
+        <span>暂无会诊</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -158,7 +169,10 @@ export default {
               }
 
               if (new Date(new Date().getTime() + $peace.serverDateDiff) < new Date(team.custom.consultation.expectOverTime)) {
-                const durationEnd = $peace.util.getDuration(new Date(new Date().getTime() + $peace.serverDateDiff), new Date(team.custom.consultation.expectOverTime))
+                const durationEnd = $peace.util.getDuration(
+                  new Date(new Date().getTime() + $peace.serverDateDiff),
+                  new Date(team.custom.consultation.expectOverTime)
+                )
                 this.$set(this.durationEnd, team.id, durationEnd)
               } else {
                 this.$set(this.durationEnd, team.id, undefined)
@@ -273,6 +287,21 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .body-no-data {
+    height: calc(100% - 50px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    span {
+      margin: 20px 0 0 0;
+      color: rgba(155, 155, 155, 1);
     }
   }
 }
