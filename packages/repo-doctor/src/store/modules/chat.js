@@ -574,7 +574,7 @@ const WebRTCUtil = {
 
 const state = {
   // 会话列表
-  sessions: undefined,
+  sessions: [],
 
   // 当前会话
   session: undefined,
