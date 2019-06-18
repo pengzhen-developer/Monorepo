@@ -56,7 +56,7 @@
     <template v-else>
       <div class="body-no-data">
         <img src="~@/assets/images/icons/clinic/ic_no one.png">
-        <span>暂无患者</span>
+        <span>暂无问诊</span>
       </div>
     </template>
   </div>
