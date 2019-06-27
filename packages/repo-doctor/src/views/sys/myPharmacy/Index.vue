@@ -2,31 +2,18 @@
   <div>
     <div class="header">
       <el-button-group>
-        <el-button
-          :type="view.action === source.action.DRUG ? 'primary' : '' "
-          @click="changeAction(source.action.DRUG)"
-        >常用药品</el-button>
-        <el-button
-          :type="view.action === source.action.PRESC ? 'primary' : '' "
-          @click="changeAction(source.action.PRESC)"
-        >常用处方</el-button>
+        <el-button :type="view.action === source.action.DRUG ? 'primary' : '' " @click="changeAction(source.action.DRUG)">常用药品</el-button>
+        <el-button :type="view.action === source.action.PRESC ? 'primary' : '' " @click="changeAction(source.action.PRESC)">常用处方</el-button>
       </el-button-group>
     </div>
 
     <hr>
 
     <!-- 常用药品 -->
-    <div
-      :key="source.action.DRUG"
-      v-if="view.action === source.action.DRUG"
-    >
+    <div :key="source.action.DRUG" v-if="view.action === source.action.DRUG">
       <el-form inline>
         <el-form-item label=" ">
-          <el-button
-            @click="openDrugDialog"
-            icon="el-icon-plus"
-            type="primary"
-          >添加药品</el-button>
+          <el-button @click="openDrugDialog" icon="el-icon-plus" type="primary">添加药品</el-button>
         </el-form-item>
       </el-form>
 
@@ -34,36 +21,13 @@
 
       <peace-table pagination ref="table">
         <peace-table-column type="index"></peace-table-column>
-        <peace-table-column
-          align="left"
-          label="药品名称"
-          min-width="200"
-          prop="drug_name"
-        ></peace-table-column>
+        <peace-table-column align="left" label="药品名称" min-width="200" prop="drug_name"></peace-table-column>
         <peace-table-column label="规格" prop="drug_spec"></peace-table-column>
-        <peace-table-column
-          align="left"
-          label="厂家"
-          min-width="200"
-          prop="drug_factory"
-        ></peace-table-column>
-        <peace-table-column
-          align="left"
-          label="添加时间"
-          prop="created_time"
-          width="180"
-        ></peace-table-column>
-        <peace-table-column
-          :show-overflow-tooltip="false"
-          fixed="right"
-          label="操作"
-          width="150px"
-        >
+        <peace-table-column align="left" label="厂家" min-width="200" prop="drug_factory"></peace-table-column>
+        <peace-table-column align="left" label="添加时间" prop="created_time" width="180"></peace-table-column>
+        <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="150px">
           <template slot-scope="scope">
-            <el-button
-              @click="getSynopsis(scope.row)"
-              type="text"
-            >查看说明书</el-button>
+            <el-button @click="getSynopsis(scope.row)" type="text">查看说明书</el-button>
             <el-button @click="deleted(scope.row)" type="text">删除</el-button>
           </template>
         </peace-table-column>
@@ -71,10 +35,7 @@
     </div>
 
     <!-- 常用处方 -->
-    <div
-      :key="source.action.PRESC"
-      v-if="view.action === source.action.PRESC"
-    >
+    <div :key="source.action.PRESC" v-if="view.action === source.action.PRESC">
       <el-form :model="view.prescModel" inline>
         <el-form-item label="临床诊断">
           <el-input placeholder v-model="view.prescModel.name"></el-input>
@@ -84,11 +45,7 @@
         </el-form-item>
         <br>
         <el-form-item>
-          <el-button
-            @click="openPrescDialog"
-            icon="el-icon-plus"
-            type="primary"
-          >添加处方</el-button>
+          <el-button @click="openPrescDialog" icon="el-icon-plus" type="primary">添加处方</el-button>
         </el-form-item>
       </el-form>
 
@@ -98,101 +55,43 @@
         <peace-table-column label="临床诊断" prop="diagnosis"></peace-table-column>
         <peace-table-column label="性别" prop="sex"></peace-table-column>
         <peace-table-column label="年龄" prop="age"></peace-table-column>
-        <peace-table-column
-          align="left"
-          label="处方药品"
-          min-width="300px"
-          prop="drugjson"
-        >
+        <peace-table-column align="left" label="处方药品" min-width="300px" prop="drugjson">
           <template slot-scope="scope">
             <span>{{ format(scope.row.drugjson) }}</span>
           </template>
         </peace-table-column>
-        <peace-table-column
-          :show-overflow-tooltip="false"
-          fixed="right"
-          label="操作"
-          width="180px"
-        >
+        <peace-table-column :show-overflow-tooltip="false" fixed="right" label="操作" width="180px">
           <template slot-scope="scope">
-            <el-button
-              @click="openViewPrescDialog(scope.row)"
-              type="text"
-            >查看详情</el-button>
-            <el-button
-              @click="openEditPrescDialog(scope.row)"
-              type="text"
-            >修改</el-button>
+            <el-button @click="openViewPrescDialog(scope.row)" type="text">查看详情</el-button>
+            <el-button @click="openEditPrescDialog(scope.row)" type="text">修改</el-button>
             <el-button @click="deleted(scope.row)" type="text">删除</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <peace-dialog
-      :close-on-click-modal="false"
-      :visible.sync="drugDialog.visible"
-      custom-class="dialog"
-      title="添加药品"
-      v-if="drugDialog.visible"
-    >
+    <peace-dialog :close-on-click-modal="false" :visible.sync="drugDialog.visible" custom-class="dialog" title="添加药品" v-if="drugDialog.visible">
       <into-drug @cancel="cancel" @into="intoDrug"></into-drug>
     </peace-dialog>
 
-    <peace-dialog
-      :close-on-click-modal="false"
-      :visible.sync="prescDialog.visible"
-      custom-class="dialog"
-      title="添加处方"
-      v-if="prescDialog.visible"
-    >
+    <peace-dialog :close-on-click-modal="false" :visible.sync="prescDialog.visible" custom-class="dialog" title="添加处方" v-if="prescDialog.visible">
       <into-presc @cancel="cancel" @submit="intoPresc"></into-presc>
     </peace-dialog>
 
-    <peace-dialog
-      :close-on-click-modal="false"
-      :visible.sync="viewPrescDialog.visible"
-      custom-class="dialog"
-      title="处方详情"
-      v-if="viewPrescDialog.visible"
-    >
+    <peace-dialog :close-on-click-modal="false" :visible.sync="viewPrescDialog.visible" custom-class="dialog" title="处方详情" v-if="viewPrescDialog.visible">
       <presc-details :data="viewPrescDialog.data"></presc-details>
     </peace-dialog>
 
-    <peace-dialog
-      :close-on-click-modal="false"
-      :visible.sync="editPrescDialog.visible"
-      custom-class="dialog"
-      title="修改处方"
-      v-if="editPrescDialog.visible"
-    >
-      <into-presc
-        :data="editPrescDialog.data"
-        @cancel="closeEditPrescDialog"
-        @submit="editPresc"
-      ></into-presc>
+    <peace-dialog :close-on-click-modal="false" :visible.sync="editPrescDialog.visible" custom-class="dialog" title="修改处方" v-if="editPrescDialog.visible">
+      <into-presc :data="editPrescDialog.data" @cancel="closeEditPrescDialog" @submit="editPresc"></into-presc>
     </peace-dialog>
 
-    <peace-dialog
-      :visible.sync="synopsisListDialog.visible"
-      custom-class="dialog"
-      title="药品说明书列表"
-    >
-      <drug-synopsis-list
-        :data="synopsisListDialog.data"
-        @getInfo="showSynopsis"
-      ></drug-synopsis-list>
+    <peace-dialog :visible.sync="synopsisListDialog.visible" custom-class="dialog" title="药品说明书列表">
+      <drug-synopsis-list :data="synopsisListDialog.data" @getInfo="showSynopsis"></drug-synopsis-list>
     </peace-dialog>
 
-    <peace-dialog
-      :visible.sync="synopsisDialog.visible"
-      custom-class="dialog"
-      title="药品说明书"
-    >
-      <drug-synopsis
-        :data="synopsisDialog.data"
-        @close="() => synopsisDialog.visible = false"
-      ></drug-synopsis>
+    <peace-dialog :visible.sync="synopsisDialog.visible" custom-class="dialog" title="药品说明书">
+      <drug-synopsis :data="synopsisDialog.data" @close="() => synopsisDialog.visible = false"></drug-synopsis>
     </peace-dialog>
   </div>
 </template>
@@ -332,7 +231,7 @@ export default {
         factory: row.drug_factory
       }
 
-      this.$http.get(api, { params }).then(res => {
+      this.http.get(api, { params }).then(res => {
         if (!res.data || !res.data.length) {
           this.$message.warning('没有查询到药品相关说明书！')
         } else if (res.data.length === 1) {
@@ -355,7 +254,7 @@ export default {
         pzwh: row.pzwh
       }
 
-      this.$http.get(api, { params }).then(res => {
+      this.http.get(api, { params }).then(res => {
         this.synopsisDialog.data = res.data
       })
     },
@@ -363,9 +262,7 @@ export default {
     // 删除记录
     deleted(row) {
       const isDrugList = this.isDrugList
-      const api = isDrugList
-        ? this.config.api.removeDrug
-        : this.config.api.removePresc
+      const api = isDrugList ? this.config.api.removeDrug : this.config.api.removePresc
       const params = isDrugList
         ? {
             commonlyUsedDrug_id: row.commonlyuseddrug_id
@@ -373,17 +270,13 @@ export default {
         : {
             id: row.id
           }
-      const msg = isDrugList
-        ? `从常用药品列表中删除 <br><strong>${
-            row.drug_name
-          }</strong>`
-        : `删除此常用处方？`
+      const msg = isDrugList ? `从常用药品列表中删除 <br><strong>${row.drug_name}</strong>` : `删除此常用处方？`
 
       this.$confirm(msg, '提示', {
         dangerouslyUseHTMLString: true,
         type: 'error'
       }).then(() => {
-        this.$http.post(api, params).then(res => {
+        this.http.post(api, params).then(res => {
           const msg = res.data.msg || '删除成功'
           this.$message.success(msg)
           this.get()
@@ -415,7 +308,7 @@ export default {
     // 添加药品
     intoDrug(params) {
       const drugId = params
-      this.$http
+      this.http
         .post(this.config.api.intoDrug, {
           drug_id: drugId
         })
@@ -447,7 +340,7 @@ export default {
     intoPresc(params) {
       const api = this.config.api.intoPresc
 
-      this.$http.post(api, params).then(() => {
+      this.http.post(api, params).then(() => {
         this.closePrescDialog()
         this.$message.success('常用处方添加成功')
         this.get()
@@ -473,7 +366,7 @@ export default {
         commonPrescriptionId: this.currentPrescId
       })
 
-      this.$http.post(api, params).then(() => {
+      this.http.post(api, params).then(() => {
         this.closeEditPrescDialog()
         this.$message.success('常用处方修改成功')
         this.get()

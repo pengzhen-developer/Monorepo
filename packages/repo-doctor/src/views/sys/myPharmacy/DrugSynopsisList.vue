@@ -6,10 +6,7 @@
     <el-table-column label="规格" min-width="80" prop="gg"></el-table-column>
     <el-table-column fixed="right" width="150">
       <template slot-scope="scope">
-        <el-button
-          @click="$emit('getInfo', scope.row)"
-          type="text"
-        >查看说明书</el-button>
+        <el-button @click="$emit('getInfo', scope.row)" type="text">查看说明书</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -19,7 +16,7 @@ export default {
   name: 'DrugSynopsisList',
   props: {
     data: {
-      type: Object,
+      type: Array,
       default() {
         return {}
       }

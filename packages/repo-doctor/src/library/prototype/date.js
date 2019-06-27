@@ -16,7 +16,7 @@
  */
 
 Date.prototype.formatDate = function(formatStr) {
-  if ($peace.valid.isEmpty(formatStr)) {
+  if (!formatStr) {
     formatStr = 'yyyy-MM-dd'
   }
 
@@ -45,7 +45,7 @@ Date.prototype.formatDate = function(formatStr) {
  * e.g.         new Date().formatTime('yyyy-MM-dd HH:mm:ss')  =>  '2016-12-12 12:00:00'
  */
 Date.prototype.formatTime = function(formatStr) {
-  if ($peace.valid.isEmpty(formatStr)) {
+  if (!formatStr) {
     formatStr = 'yyyy-MM-dd HH:mm:ss'
   }
 

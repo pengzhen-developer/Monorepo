@@ -115,6 +115,7 @@ export default {
     // 挂载分页组件
     _mountPagination() {
       const container = document.createElement('div')
+      container.style.marginTop = '10px'
       const parent = this.$el.parentNode
       if (parent.lastChild == this.$el) {
         parent.appendChild(container)
@@ -143,6 +144,7 @@ export default {
         {
           api: config.api || this.config.api,
           method: config.method || this.config.method,
+          fetch: config.fetch || this.config.fetch,
           params: Object.assign({}, this.config.params, config.params)
         }
       )
@@ -150,6 +152,7 @@ export default {
       // 区别 axios 对 get / post 不同的传参方式
       if (this.config.method.toLocaleLowerCase() === 'get' || this.config.method.toLocaleLowerCase() === 'delete') {
         delete this.config.params.params
+
         this.config.params = { params: this.config.params }
       }
     },
@@ -181,22 +184,33 @@ export default {
     },
 
     fetch() {
-      if (!this.config.api) {
-        console.warn('表格尚未配置 api, 无法获取远端数据!')
-
-        return
-      }
-
-      return $peace.$http[this.config.method](this.config.api, this.config.params).then(res => {
+      // 当远端数据请求成功时
+      const fetchThenFunction = res => {
         if (this.pagination) {
           this.internalData = (res.data && res.data.list) || []
           this.Pagination.internalTotal = (res.data && res.data.count) || (res.data && res.data.total) || 0
         } else {
-          this.internalData = res.data
+          this.internalData = res.data.list || res.data
         }
 
         return res
-      })
+      }
+
+      // 传递了加载方法，使用加载方法加载
+      if (this.config.fetch) {
+        return this.config.fetch(this.config.params).then(fetchThenFunction)
+      }
+
+      // 传递了远端api， 使用 api 加载
+      else if (this.config.api) {
+        console.warn('api 请求形式已过期，请使用 fetch 定义数据加载方式')
+        return $peace.http[this.config.method](this.config.api, this.config.params).then(fetchThenFunction)
+      }
+
+      // 异常
+      else {
+        return new Error('未正确配置加载方法, 无法获取远端数据!')
+      }
     }
   },
 

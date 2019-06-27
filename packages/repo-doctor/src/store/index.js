@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 
 import user from './modules/user'
 import layout from './modules/layout'
-import chat from './modules/chat'
+import inquiry from './modules/inquiry'
+import consultation from './modules/consultation'
 
 Vue.use(Vuex)
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   modules: {
     user,
     layout,
-    chat
+    inquiry,
+    consultation
   }
 })

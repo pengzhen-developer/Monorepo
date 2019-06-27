@@ -1,99 +1,43 @@
-@import './element-var.scss';
-
-// Fix el-pager
-.el-pager li {
-  background: rgba(240, 242, 245, 1);
-  color: #606266;
-  min-width: 28px;
-  margin: 0 10px 0 0;
-
-  &:last-child {
-    margin: 0;
-  }
-
-  &.active {
-    background: $--color-primary;
-    color: #ffffff;
-  }
-}
-
-// Fix el-table
-.el-table--mini {
+.el-table--mini,
+.el-button--mini,
+.el-input--mini {
   font-size: 14px;
-  color: #606266;
-
-  thead {
-    font-weight: 600;
-    color: rgba(51, 51, 51, 1);
-  }
 }
 
-// Fix el-nav
-.el-menu-item {
-  &:focus {
-    background-color: transparent;
-  }
-}
-
-// Fix el-input
-.el-textarea__inner,
-.el-input__inner {
-  // padding: 5px;
-}
-
-.el-input--suffix .el-input__inner {
-  padding-right: 15px;
-}
-
-// Fix el-form
-.el-form-item {
-}
-
-// Fix el-button
-.el-button {
-  // &:not(.is-circle) {
-  //   min-width: 80px;
-  // }
-}
-
-// Fix pagination
-.el-pagination {
-  margin: 10px 0 0 0;
-}
-
-// Fix dialog
 .el-dialog {
-  margin: 10vh auto;
-  max-height: 80vh;
-  width: 600px;
-
   .el-dialog__header {
-    height: 30px;
-    line-height: 30px;
-    padding: 0 10px;
-    vertical-align: middle;
-
-    background: transparent;
+    display: flex;
+    align-items: center;
+    background: #e9edf1;
+    padding: 6px 10px;
 
     .el-dialog__title {
-      width: 94px;
-      height: 22px;
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(102, 102, 102, 1);
-      line-height: 22px;
+      font-size: 16px;
     }
 
     .el-dialog__headerbtn {
-      font-size: 16px;
-      top: 6px;
+      top: 10px;
+      right: 10px;
     }
   }
 
   .el-dialog__body {
+    padding: 15px 10px;
     background: #fff;
     padding: 10px;
-    max-height: calc(80vh - 30px);
-    overflow: auto;
+  }
+}
+
+.el-form {
+  &.el-form--inline {
+    .el-input {
+      width: 140px;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
+      border-radius: 3px;
+    }
+
+    .el-form-item + .el-form-item {
+      margin-left: 40px;
+    }
   }
 }

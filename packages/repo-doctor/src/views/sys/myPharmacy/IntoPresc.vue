@@ -163,7 +163,7 @@ export default {
     selectDiagnosis() {},
     getPresent(query) {
       if (query !== '' && query.length > 0) {
-        this.$http.post(this.config.api.getDiseaseInfo, { name: query }).then(res => {
+        this.http.post(this.config.api.getDiseaseInfo, { name: query }).then(res => {
           this.dialog.source.present_history = res.data.list
         })
       } else {

@@ -11,7 +11,7 @@ const ExtendTableColumnProps = {
   'show-overflow-tooltip': {
     type: Boolean,
     default() {
-      return true
+      return false
     }
   }
 }

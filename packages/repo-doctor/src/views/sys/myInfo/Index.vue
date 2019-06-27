@@ -14,7 +14,7 @@
           name="image"
           ref="uploadAvatar"
         >
-          <img class="modify" slot="trigger" src="~@/assets/images/ic_modify.png">
+          <img class="modify" slot="trigger" src="~@src/assets/images/sys/ic_modify.png">
         </el-upload>
       </el-form-item>
       <el-form-item label="帐号：">{{ view.model.id }}</el-form-item>
@@ -58,31 +58,29 @@
       </el-form-item>
     </el-form>
 
-    <peace-dialog :visible.sync="dialog.visible" top="5vh">
+    <!-- <peace-dialog :visible.sync="dialog.visible" top="5vh">
       <img :src="dialog.imageUrl" alt width="100%">
-    </peace-dialog>
+    </peace-dialog>-->
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
       api: {
-        getDoctorInfo: 'client/v1/Personalcenter/getDoctorInfo',
-        upDoctorInfo: 'client/v1/Personalcenter/upDoctorInfo',
-        uploadAvatar: $peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
-        uploadCertFile: $peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
+        uploadAvatar: peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
+        uploadCertFile: peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
       },
 
       extraHeaders: {
-        authorization: $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined,
-        accesstoken: $peace.cache.get('USER') ? $peace.cache.get('USER').list.loginInfo.token : undefined,
-        devicetype: $peace.config.axios.devicetype
+        accesstoken: this.$store.state.user.userInfo.list.loginInfo.token
       },
 
       extraUploadData: {
-        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id
+        doctorId: this.$store.state.user.userInfo.list.docInfo.doctor_id
       },
 
       view: {
@@ -104,11 +102,9 @@ export default {
 
   methods: {
     get() {
-      const params = {
-        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id
-      }
+      const params = this.extraUploadData
 
-      this.$http.get(this.api.getDoctorInfo, { params }).then(res => {
+      peace.service.personalCenter.getDoctorInfo(params).then(res => {
         res.data.cert_file = JSON.parse(res.data.cert_file)
         res.data.cert_file = res.data.cert_file.map(item => {
           return {
@@ -121,7 +117,7 @@ export default {
     },
 
     uploadAvatarSuccess(res) {
-      $peace.util.alert(res.msg)
+      peace.util.alert(res.msg)
 
       this.get()
     },
@@ -151,7 +147,7 @@ export default {
       })
 
       if (cert_file.length !== 2) {
-        $peace.util.warning('请上传正反面医师资格证书')
+        peace.util.warning('请上传正反面，共2张医师资格证书')
 
         return
       }
@@ -162,8 +158,8 @@ export default {
         cert_file: cert_file
       }
 
-      this.$http.post(this.api.upDoctorInfo, params).then(res => {
-        $peace.util.alert(res.msg)
+      peace.service.personalCenter.upDoctorInfo(params).then(res => {
+        peace.util.alert(res.msg)
 
         this.get()
       })

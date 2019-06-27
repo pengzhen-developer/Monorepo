@@ -1,79 +1,145 @@
-/*
- * @Author: PengZhen 
- * @Date: 2019-04-16 09:16:09 
- * @Description: 我的诊室 - 我的问诊
- */
-
 <template>
-  <div class="clinic">
-    <!-- 视频问诊 -->
-    <chat-video></chat-video>
-
-    <!-- 会话列表 -->
-    <chat-sessions class="left" v-if="chat.sessions"></chat-sessions>
-
-    <!-- 消息列表 -->
-    <chat-session class="center" v-if="chat.session"></chat-session>
-
-    <!-- 患者详情 -->
-    <chat-patient class="right" v-if="chat.session"></chat-patient>
+  <div class="inquiry">
+    <div class="inquiry-left">
+      <InquirySessions></InquirySessions>
+    </div>
+    <div class="inquiry-center" v-if="$store.state.inquiry.session && $store.state.inquiry.session.id">
+      <InquirySession></InquirySession>
+    </div>
+    <div class="inquiry-right" v-if="$store.state.inquiry.session && $store.state.inquiry.session.id">
+      <InquiryPatient></InquiryPatient>
+    </div>
   </div>
-</template> 
+</template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import peace from '@src/library'
 
-import ChatVideo from './ChatVideo'
-
-import ChatSessions from './ChatSessions'
-import ChatSession from './ChatSession'
-import ChatPatient from './ChatPatient'
+import InquirySessions from './InquirySessions'
+import InquirySession from './InquirySession'
+import InquiryPatient from './InquiryPatient'
 
 export default {
   components: {
-    ChatVideo,
-
-    ChatSessions,
-    ChatSession,
-    ChatPatient
+    InquirySessions,
+    InquirySession,
+    InquiryPatient
   },
 
-  computed: {
-    ...mapState(['chat'])
+  data() {
+    return {
+      intervalList: []
+    }
+  },
+
+  watch: {
+    // 监听 sessions 变化
+    // 更新定时器
+    '$store.state.inquiry.sessions': {
+      handler(sessions) {
+        // 清理已存在的 sessions interval
+        this.intervalList.forEach(intervalObject => window.clearInterval(intervalObject.intervalValue))
+        this.intervalList = []
+
+        // 清理 loading
+        this.loading && this.loading.close()
+
+        sessions.forEach(session => {
+          const intervalObject = {
+            id: session.id,
+            value: undefined,
+            intervalValue: undefined
+          }
+          this.intervalList.push(intervalObject)
+
+          this.intervalHandler(intervalObject, session)
+          intervalObject.intervalValue = setInterval(() => this.intervalHandler(intervalObject, session), 500)
+        })
+      },
+      immediate: true
+    }
+  },
+
+  created() {
+    $peace.inquiryComponent = this
   },
 
   methods: {
-    ...mapActions('chat', ['clearSession', 'initNIM', 'initWebRTC'])
-  },
+    /**
+     * 定时器处理方法
+     *
+     * @export
+     * @param {*} intervalObject 引用参数, 定时器直接更新该值
+     * @param {*} session
+     */
+    intervalHandler(intervalObject, session) {
+      // 待接诊, 未到自动退诊时间, 倒计时
+      if (
+        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+        new Date() < session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+      ) {
+        const overEndTime = session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
 
-  // 初始化 IM
-  created() {
-    this.initNIM()
-    this.initWebRTC()
-  },
+        intervalObject.value = peace.util.formatDuration(new Date(), overEndTime)
+      }
 
-  // 销毁 IM
-  destroyed() {
-    this.clearSession()
+      // 待接诊, 已到到自动退诊时间, 等待服务端同步
+      else if (
+        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+        new Date() > session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+      ) {
+        this.loading = $peace.$loading({
+          lock: true,
+          text: '正在同步数据，请稍后······',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.05)'
+        })
+
+        // 给 30s 时间用来做缓冲
+        setTimeout(() => {
+          if (this.loading && this.loading.visible) {
+            window.location.reload()
+          }
+        }, 1000 * 30)
+      }
+
+      // 已接诊, 正计时
+      else if (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
+        const acceptTime = session.content.inquiryInfo.acceptTime.toDate().getTime()
+
+        intervalObject.value = peace.util.formatDuration(acceptTime, new Date())
+      }
+
+      // 异常
+      else {
+        console.error('【 我的问诊 】【 定时器 】', new Date(), session)
+      }
+    },
+
+    // 定时器 - 获取问诊时间
+    getIntervalValue(session) {
+      return session && this.intervalList.find(intervalObject => intervalObject.id === session.id).value
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.clinic {
+.inquiry {
   margin: 0 !important;
   padding: 0 !important;
-
   display: flex;
 
-  .left,
-  .right {
+  height: calc(100vh - 56px - 40px - 20px);
+
+  .inquiry-left,
+  .inquiry-right {
     width: 230px;
 
     border: 1px solid #efefef;
   }
 
-  .center {
+  .inquiry-center {
     flex: 1;
 
     border: 1px solid #efefef;
@@ -82,3 +148,4 @@ export default {
   }
 }
 </style>
+

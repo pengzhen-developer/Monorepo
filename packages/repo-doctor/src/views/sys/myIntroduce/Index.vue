@@ -2,23 +2,11 @@
   <div class="about">
     <el-form :model="view.model" label-suffix label-width="120px">
       <el-form-item label="我的简介：">
-        <el-input
-          :rows="8"
-          maxlength="500"
-          placeholder
-          type="textarea"
-          v-model="view.model.summary"
-        ></el-input>
+        <el-input :rows="8" maxlength="500" placeholder type="textarea" v-model="view.model.summary"></el-input>
         <label class="msg">最多可以输入500字，还可以输入 {{ summaryMaxLength }} 字</label>
       </el-form-item>
       <el-form-item label="我的擅长：">
-        <el-input
-          :rows="8"
-          maxlength="500"
-          placeholder
-          type="textarea"
-          v-model="view.model.special_skill"
-        ></el-input>
+        <el-input :rows="8" maxlength="500" placeholder type="textarea" v-model="view.model.special_skill"></el-input>
         <label class="msg">最多可以输入500字，还可以输入 {{ specialSkillMaxLength }}字</label>
       </el-form-item>
       <el-form-item label=" ">
@@ -29,15 +17,11 @@
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
-      api: {
-        getDoctorInfo: 'client/v1/Personalcenter/getDoctorInfo',
-
-        upDoctorIntroduce: 'client/v1/Personalcenter/upDoctorIntroduce'
-      },
-
       view: {
         model: {}
       }
@@ -71,24 +55,24 @@ export default {
   methods: {
     get() {
       const params = {
-        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id
+        doctorId: this.$store.state.user.userInfo.list.docInfo.doctor_id
       }
 
-      this.$http.get(this.api.getDoctorInfo, { params }).then(res => {
+      peace.service.personalCenter.getDoctorInfo(params).then(res => {
         this.view.model = res.data
       })
     },
 
     save() {
       const params = {
-        doctorId: $peace.cache.get('USER').list.docInfo.doctor_id,
+        doctorId: this.$store.state.user.userInfo.list.docInfo.doctor_id,
         type: '0',
         summary: this.view.model.summary,
         special_skill: this.view.model.special_skill
       }
 
-      this.$http.post(this.api.upDoctorIntroduce, params).then(res => {
-        $peace.util.alert(res.msg)
+      peace.service.personalCenter.upDoctorIntroduce(params).then(res => {
+        peace.util.alert(res.msg)
 
         this.get()
       })

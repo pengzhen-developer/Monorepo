@@ -33,18 +33,22 @@ export default {
   },
 
   render(h) {
-    return h(Dialog, {
-      // 扩展 props
-      props: this.$props,
+    return h(
+      Dialog,
+      {
+        // 扩展 props
+        props: this.$props,
 
-      // 扩展 attrs
-      attrs: this.$attrs,
+        // 扩展 attrs
+        attrs: this.$attrs,
 
-      // 扩展 listeners
-      on: this.$listeners,
+        // 扩展 listeners
+        on: this.$listeners,
 
-      // 扩展 slots
-      scopedSlots: this.$scopedSlots
-    })
+        // 扩展 slots
+        scopedSlots: this.$scopedSlots
+      },
+      this.$slots
+    )
   }
 }
