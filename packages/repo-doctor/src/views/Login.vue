@@ -116,6 +116,7 @@ export default {
 
           // 初始化 IM
           peace.service.IM.initNIM()
+          peace.service.IM.initWebRTC()
 
           setTimeout(() => {
             this.$router.push('/')
