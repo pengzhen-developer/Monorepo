@@ -181,7 +181,8 @@ export function onUpdateSession(session) {
     // 处理 inquiry
     if (session.scene === 'p2p') {
       // 当前 session update 存在状态更新, 更新 sessions 为最新状态
-      if (session.lastMsg.type === 'custom') {
+      // 因 resetSessionUnread 重置会话未读数，会触发 onUpdateSession 回调，使用 typeof session.lastMsg.content 验证是否已经更新状态
+      if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
         peace.service.IM.setInquirySessionStatus(session)
       }
 
@@ -203,7 +204,7 @@ export function onUpdateSession(session) {
     // 处理 consultation
     else if (session.scene === 'team') {
       // 当前 session update 存在状态更新, 更新 sessions 为最新状态
-      if (session.lastMsg.type === 'custom') {
+      if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
         peace.service.IM.setConsultationSessionStatus(session)
       }
 

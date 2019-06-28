@@ -47,6 +47,11 @@ export default {
     }
   }
 
+  /deep/ .el-tabs__nav-next,
+  /deep/ .el-tabs__nav-prev {
+    line-height: 40px;
+  }
+
   /deep/ .el-tabs__active-bar {
     display: none;
   }

@@ -1,8 +1,6 @@
 
 <template>
   <div class="consultation">
-    <ConsultationVideo></ConsultationVideo>
-
     <div class="consultation-left">
       <ConsultationSessions></ConsultationSessions>
     </div>

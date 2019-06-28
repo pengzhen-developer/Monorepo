@@ -125,6 +125,8 @@ export default {
         vertical-align: middle;
       }
       .first-line {
+        display: flex;
+        align-items: center;
         text-align: left;
         margin: 0 0 10px 0;
 

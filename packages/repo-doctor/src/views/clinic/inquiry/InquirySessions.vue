@@ -16,7 +16,7 @@
         >
           <div class="inquiry-patient">
             <div class="inquiry-patient-left">
-              <el-badge :hidden="session.unread === 0" :value="session.unread" style="margin: 0 10px 0 0;">
+              <el-badge is-dot :hidden="session.unread === 0" :value="session.unread" style="margin: 0 10px 0 0;">
                 <span>{{ session.content.patientInfo.familyName }}</span>
               </el-badge>
               <span>{{ session.content.patientInfo.familySex }}</span>

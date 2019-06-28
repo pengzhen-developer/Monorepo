@@ -40,7 +40,8 @@ export default {
     return {
       view: {
         model: {
-          money: 10
+          money: 10,
+          status: 0
         }
       }
     }
@@ -59,7 +60,9 @@ export default {
       }
 
       peace.service.personalCenter.getDoctorInfo(params).then(res => {
-        this.view.model = res.data.doctor_consultation_setting[0]
+        if (res.data.doctor_consultation_setting && res.data.doctor_consultation_setting.length > 0) {
+          this.view.model = res.data.doctor_consultation_setting[0]
+        }
       })
     },
 
@@ -72,7 +75,7 @@ export default {
         inquiry_time: 0
       }
 
-     peace.service.personalCenter.upConsultationSet(params).then(res => {
+      peace.service.personalCenter.upConsultationSet(params).then(res => {
         peace.util.alert(res.msg)
 
         this.get()

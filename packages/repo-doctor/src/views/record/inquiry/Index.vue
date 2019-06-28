@@ -10,9 +10,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="问诊下单时间">
-        <el-date-picker :picker-options="view.rules.pickerOptionsStart" style="width: 130px;" v-model="view.model.time_start" value-format="yyyy-MM-dd"></el-date-picker>
+        <el-date-picker :picker-options="view.rules.pickerOptionsStart" style="width: 145px;" v-model="view.model.time_start" value-format="yyyy-MM-dd"></el-date-picker>
         <span class="character"></span>
-        <el-date-picker :picker-options="view.rules.pickerOptionsEnd" style="width: 130px;" v-model="view.model.time_end" value-format="yyyy-MM-dd"></el-date-picker>
+        <el-date-picker :picker-options="view.rules.pickerOptionsEnd" style="width: 145px;" v-model="view.model.time_end" value-format="yyyy-MM-dd"></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="get" round type="primary">查询</el-button>

@@ -224,6 +224,7 @@ export default {
     }
 
     .message-body {
+      white-space: pre;
       padding: 5px 10px;
       display: inline-block;
       border-radius: 4px;

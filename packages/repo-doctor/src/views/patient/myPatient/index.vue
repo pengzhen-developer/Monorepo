@@ -28,13 +28,13 @@
         </template>
       </peace-table-column>
       <peace-table-column label="联系方式" prop="contact" width="120"></peace-table-column>
-      <peace-table-column align="left" label="最近咨询" min-width="300">
+      <peace-table-column align="left" label="最近咨询" min-width="300" show-overflow-tooltip>
         <template slot-scope="scope">
-          <span style="margin-right: 8px;">{{ scope.row.family_name }}</span>
-          <span style="margin-right: 8px;">{{ scope.row.family_sex }}</span>
-          <span style="margin-right: 8px;">{{ scope.row.family_age }}岁</span>
-          <span style="margin-right: 8px;">{{ scope.row.diagnose }}</span>
-          <span style="margin-right: 8px;">{{ scope.row.family_time }}</span>
+          <span>{{ scope.row.family_name }}</span>&nbsp;
+          <span>{{ scope.row.family_sex }}</span>&nbsp;
+          <span>{{ scope.row.family_age }}岁</span>&nbsp;
+          <span>{{ scope.row.diagnose }}</span>&nbsp;
+          <span>{{ scope.row.family_time }}</span>&nbsp;
         </template>
       </peace-table-column>
       <peace-table-column :formatter="(r,c,v) => { return this.source.group_name.find(item => item.key === v).source }" label="患者来源" prop="source"></peace-table-column>
