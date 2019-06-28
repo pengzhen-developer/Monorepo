@@ -1,7 +1,5 @@
-@import './normalize.css';
-@import './font.css';
-
 * {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -17,13 +15,15 @@ html {
 
 body {
   margin: 0;
-  font-family: PingFangSC-Regular, Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue,
-    Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family: PingFangSC-Regular, Chinese Quote, -apple-system,
+    BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
+    Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol;
   font-size: 14px;
   font-weight: 400;
   font-variant: tabular-nums;
   line-height: 1.5;
-  color: rgb(0, 0, 0);
+  color: #333333;
   background-color: #fff;
 }
 
@@ -48,6 +48,17 @@ hr {
   padding: 0;
 }
 
+.el-loading-mask.is-fullscreen {
+  cursor: wait;
+}
+
+.el-icon-male {
+  color: #3890ff;
+}
+.el-icon-female {
+  color: #f56c6c;
+}
+
 #nprogress .bar {
   /* background: #ff0000; */
   position: fixed;
@@ -70,17 +81,19 @@ hr {
 
   width: 24px;
   height: 24px;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border: solid 4px transparent;
   border-top-color: #5daf34;
   border-left-color: #f56c6c;
   border-radius: 50%;
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
   animation: nprogress-spinner 400ms linear infinite;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track-piece {
@@ -89,16 +102,16 @@ hr {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c0c4cc;
-  min-height: 10px;
+  background: rgba(144, 147, 153, 0.3);
+  min-height: 8px;
   min-width: 150px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:vertical:hover {
-  background: #9e9e9e;
+  background: rgba(144, 147, 153, 0.7);
 }
 
 ::-webkit-scrollbar-thumb:horizontal:hover {
-  background: #9e9e9e;
+  background: rgba(144, 147, 153, 0.7);
 }

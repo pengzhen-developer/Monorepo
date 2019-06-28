@@ -1,56 +1,59 @@
 /*
  * @Author: PengZhen
- * @Description: 缓存
- * @Date: 2018-07-06 11:23:58
- * @Last Modified by: PengZhen
- * @Last Modified time: 2019-04-19 08:59:23
+ * @Description: 缓存类
+ * @Date: 2018-07-06
  */
 
-import { encode, decode } from './util'
+import { encode, decode } from './common'
 
 /**
  * set cache
  *
  * @export
- * @param {string} [key='']
- * @param {*} value
- * @param {string} [type='localStorage']
+ * @param {string} [key=''] 需要设置的缓存键
+ * @param {*} value 需要设置的缓存值
+ * @param {string} [type='localStorage'] 需要设置的存储类型，可选 localStorage / sessionStorage，默认 'localStorage'
+ * @returns {*}
  */
 export function set(key = '', value, type = 'localStorage') {
   const encodeKey = encode(key)
 
-  if (!$peace.valid.isEmpty(value)) {
+  if (value !== null) {
     const encodeValue = encode(window.unescape(window.encodeURIComponent(JSON.stringify(value))))
 
     window[type].setItem(encodeKey, encodeValue)
   }
+
+  return value
 }
 
 /**
  *
- * get cache
+ * 获取存储值
  *
  * @export
- * @param {string} [key='']
- * @param {string} [type='localStorage']
- * @returns
+ * @param {string} [key=''] 需要获取的缓存键
+ * @param {string} [type='localStorage'] 需要获取的存储类型，可选 localStorage / sessionStorage，默认 'localStorage'
+ * @returns {*}
  */
 export function get(key = '', type = 'localStorage') {
   const encodeKey = encode(key)
-
   const value = window[type].getItem(encodeKey)
 
-  if (!$peace.valid.isEmpty(value)) {
+  if (value !== null) {
     return JSON.parse(window.decodeURIComponent(window.escape(decode(value))))
   }
+
+  return value
 }
 
 /**
- * remove cache
+ * remove cache by key
  *
  * @export
- * @param {string} [key='']
- * @param {string} [type='localStorage']
+ * @param {string} [key=''] 需要移除的缓存键
+ * @param {string} [type='localStorage'] 需要移除的缓存类型，可选 localStorage / sessionStorage，默认 'localStorage'
+ * @returns {*}
  */
 export function remove(key = '', type = 'localStorage') {
   window[type].removeItem(encode(key))
@@ -62,8 +65,8 @@ export function remove(key = '', type = 'localStorage') {
  * @export
  */
 export function clear() {
-  window.sessionStorage.clear()
   window.localStorage.clear()
+  window.sessionStorage.clear()
 }
 
 export default {

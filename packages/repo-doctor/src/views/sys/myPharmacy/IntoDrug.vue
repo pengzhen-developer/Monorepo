@@ -1,19 +1,8 @@
 <template>
   <div class="into-drug">
     <div class="search">
-      <el-input
-        @keyup.enter.native="search(drugname)"
-        class="search-input"
-        clearable
-        placeholder="请输入药品名称或拼音字母"
-        v-model="drugname"
-      ></el-input>
-      <el-button
-        @click="search(drugname)"
-        class="search-btn"
-        round
-        type="primary"
-      >搜索</el-button>
+      <el-input @keyup.enter.native="search(drugname)" class="search-input" clearable placeholder="请输入药品名称或拼音字母" v-model="drugname"></el-input>
+      <el-button @click="search(drugname)" class="search-btn" round type="primary">搜索</el-button>
     </div>
     <div class="content">
       <div class="history" v-if="!list.length">
@@ -23,31 +12,18 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div
-          :key="'history_' + item"
-          class="history-item"
-          v-for="item in renderHistory"
-        >
+        <div :key="'history_' + item" class="history-item" v-for="item in historyList">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
       <div v-else>
-        <el-table
-          :data="list"
-          :show-header="false"
-          height="300"
-          size="small"
-        >
+        <el-table :data="list" :show-header="false" height="300" size="small">
           <el-table-column label prop="drug_name"></el-table-column>
           <el-table-column label prop="drug_spec"></el-table-column>
           <el-table-column label prop="drug_factory"></el-table-column>
           <el-table-column align="center" width="60">
             <template slot-scope="scope">
-              <i
-                @click="intoDrugList(scope.row)"
-                class="el-icon-circle-plus"
-                v-if="scope.row.status !== '正常'"
-              ></i>
+              <i @click="intoDrugList(scope.row)" class="el-icon-circle-plus" v-if="scope.row.status !== '正常'"></i>
               <span v-else>已添加</span>
             </template>
           </el-table-column>
@@ -57,6 +33,7 @@
   </div>
 </template>
 <script>
+import peace from '@src/library'
 import config from './config'
 // 药品搜索记录
 const CACHE_KEY = 'drugSearchHistorys'
@@ -68,7 +45,7 @@ export default {
       drugname: '',
       config: config,
       showHistory: true,
-      history: [],
+      historyList: [],
       list: []
     }
   },
@@ -77,12 +54,6 @@ export default {
       if (!val) {
         this.list = []
       }
-    }
-  },
-  computed: {
-    renderHistory() {
-      const list = [].concat(this.history)
-      return list.reverse().slice(0, 20)
     }
   },
   methods: {
@@ -97,7 +68,7 @@ export default {
       }
       const api = this.config.api.getDrugs
 
-      this.$http.get(api, { params: { drugname } }).then(res => {
+      this.http.get(api, { params: { drugname } }).then(res => {
         this.list = res.data || []
         this.addToCache(drugname)
       })
@@ -113,29 +84,26 @@ export default {
     },
     // 获取历史 Search 记录
     getByCache() {
-      return this.$peace.cache.get(CACHE_KEY)
+      this.historyList = peace.cache.get(CACHE_KEY)
     },
     // 搜索记录添加到缓存
     addToCache(_history) {
-      if (!_history) return
-      if (typeof _history === 'string') {
-        _history = [_history]
-      }
+      this.historyList.unshift(_history)
 
-      this.history = [...new Set(this.history.concat(_history))]
+      this.historyList = [...new Set(this.historyList)]
 
-      this.$peace.cache.set(CACHE_KEY, this.history)
+      peace.cache.set(CACHE_KEY, this.historyList)
     },
     // 清空历史 Search 记录
     clear() {
-      if (!this.history.length) return
+      if (!this.historyList.length) return
 
-      this.$peace.cache.remove(CACHE_KEY)
-      this.history = []
+      peace.cache.remove(CACHE_KEY)
+      this.historyList = []
     }
   },
   created() {
-    this.addToCache(this.getByCache())
+    this.getByCache()
   }
 }
 </script>

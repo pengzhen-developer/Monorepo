@@ -1,10 +1,21 @@
 import { Pagination } from 'element-ui'
 
+const ExtendPaginationProps = {
+  background: {
+    type: Boolean,
+    default() {
+      return true
+    }
+  }
+}
+
 export default {
   name: 'peace-pagination',
 
   props: {
-    ...Pagination.props
+    ...Pagination.props,
+
+    ...ExtendPaginationProps
   },
 
   data() {

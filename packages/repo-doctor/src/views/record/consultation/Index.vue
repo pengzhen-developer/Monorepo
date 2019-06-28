@@ -35,7 +35,7 @@
         <peace-table-column label="年龄" prop="familyAge"></peace-table-column>
         <peace-table-column label="性别" prop="familySex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="familyDisagnose"></peace-table-column>
-        <peace-table-column align="left" label="邀请机构" min-width="200px" prop="toHospitalName"></peace-table-column>
+        <peace-table-column align="left" label="邀请机构" min-width="160px" prop="toHospitalName"></peace-table-column>
         <peace-table-column label="邀请医生" prop="toDoctorName"></peace-table-column>
         <peace-table-column label="期望会诊时间" prop="expectTime" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="createdTime" width="150px"></peace-table-column>
@@ -75,7 +75,7 @@
         <peace-table-column label="年龄" prop="familyAge"></peace-table-column>
         <peace-table-column label="性别" prop="familySex"></peace-table-column>
         <peace-table-column align="left" label="初步诊断" min-width="200px" prop="familyDisagnose"></peace-table-column>
-        <peace-table-column align="left" label="申请机构" min-width="200px" prop="fromHospitalName"></peace-table-column>
+        <peace-table-column align="left" label="申请机构" min-width="160px" prop="fromHospitalName"></peace-table-column>
         <peace-table-column label="申请医生" prop="fromDoctorName"></peace-table-column>
         <peace-table-column label="期望会诊时间" prop="expectTime" width="150px"></peace-table-column>
         <peace-table-column label="申请时间" prop="createdTime" width="150px"></peace-table-column>
@@ -89,58 +89,54 @@
       </peace-table>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible" custom-class="dialog" title="会诊详情">
-      <consultation-detail :data="dialog.data" @close="() => dialog.visible = false"></consultation-detail>
+    <peace-dialog :visible.sync="dialog.visible" title="会诊详情">
+      <TheConsultationDetail :data="dialog.data" @close="() => dialog.visible = false"></TheConsultationDetail>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatRecord.visible" custom-class="dialog" title="会诊详情">
-      <ChatTeamList :data="chatRecord.data" @close="() => chatRecord.visible = false"></ChatTeamList>
+    <peace-dialog :visible.sync="chatRecord.visible" title="会诊详情">
+      <ConsultationSessionMessageList :data="chatRecord.data" @close="() => chatRecord.visible = false"></ConsultationSessionMessageList>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import config from './config'
-import ConsultationDetail from './ConsultationDetail'
-import ChatTeamList from './../../clinic/consultation/ChatTeamList'
+import peace from '@src/library'
 
-import { mapState } from 'vuex'
+import TheConsultationDetail from './TheConsultationDetail'
+import ConsultationSessionMessageList from '@src/views/clinic/consultation/ConsultationSessionMessageList'
 
 export default {
   components: {
-    ConsultationDetail,
-    ChatTeamList
+    TheConsultationDetail,
+    ConsultationSessionMessageList
   },
 
   data() {
     return {
-      config,
-
       view: {
         action: undefined,
 
         outModel: {
-          toDoctorName: undefined,
-          toHospitalName: undefined,
-          consultStatus: undefined
+          toDoctorName: '',
+          toHospitalName: '',
+          consultStatus: ''
         },
 
         inModel: {
-          fromDoctorName: undefined,
-          fromHospitalName: undefined,
-          consultStatus: undefined
+          fromDoctorName: '',
+          fromHospitalName: '',
+          consultStatus: ''
         }
       },
 
       dialog: {
         visible: false,
-
-        data: undefined
+        data: {}
       },
 
       chatRecord: {
         visible: false,
-        data: undefined
+        data: []
       },
 
       source: {
@@ -149,26 +145,17 @@ export default {
           IN: 'in'
         },
 
-        consultStatus: [
-          { consultStatus: 1, consultTxt: '发起待审核' },
-          { consultStatus: 2, consultTxt: '发起已拒绝' },
-          { consultStatus: 3, consultTxt: '邀请待审核' },
-          { consultStatus: 4, consultTxt: '邀请已拒绝' },
-          { consultStatus: 5, consultTxt: '等待会诊' },
-          { consultStatus: 6, consultTxt: '会诊中' },
-          { consultStatus: 7, consultTxt: '会诊已完成' },
-          { consultStatus: 8, consultTxt: '会诊已关闭' }
-        ]
+        consultStatus: []
       }
     }
   },
 
-  computed: {
-    ...mapState(['user'])
-  },
-
   created() {
     this.view.action = this.source.action.OUT
+
+    peace.service.consult.getConsultStatusMap().then(res => {
+      this.source.consultStatus = res.data
+    })
   },
 
   mounted() {
@@ -188,57 +175,57 @@ export default {
 
     get() {
       if (this.view.action === this.source.action.OUT) {
-        const api = this.config.api.getOutConsultList
+        const fetch = peace.service.consult.getOutConsultList
         const params = this.view.outModel
 
-        this.$refs.table.loadData({
-          api,
-          params
-        })
+        this.$refs.table.loadData({ fetch, params })
       } else {
-        const api = this.config.api.getInConsultList
+        const fetch = peace.service.consult.getInConsultList
         const params = this.view.inModel
 
-        this.$refs.table.loadData({
-          api,
-          params
-        })
+        this.$refs.table.loadData({ fetch, params })
       }
     },
 
     showDetail(row) {
-      this.dialog.data = undefined
       this.dialog.visible = true
+      this.dialog.data = {}
 
       const params = {
         consultNo: row.consultNo
       }
 
-      this.$http.post(this.config.api.getConsultInfo, params).then(res => {
+      peace.service.consult.getConsultInfo(params).then(res => {
         this.dialog.data = res.data.info
       })
     },
 
     showMessageHistory(row) {
-      this.chatRecord.visible = true
-      this.chatRecord.data = undefined
-
       const params = {
         consultNo: row.consultNo
       }
 
-      this.$http.post(this.config.api.getChatRecord, params).then(res => {
-        res.data.info.forEach(item => {
-          item.custom = item.ext && JSON.parse(item.ext)
+      peace.service.consult.getChatRecord(params).then(res => {
+        const historyMessageFormatHandler = messages => {
+          if (messages && Array.isArray(messages)) {
+            messages.forEach(message => {
+              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
-          if (this.user.userInfo.list.docInfo.doctor_id === item.from) {
-            item.flow = 'out'
-          } else {
-            item.flow = 'in'
+              message.time = message.sendtime
+              message.flow = this.$store.state.user.userInfo.list.docInfo.doctor_id === message.from ? 'out' : 'in'
+              message.type = messageTypeMap[message.type]
+              message.text = message.body.msg
+              message.content = message.body
+              message.file = message.body
+            })
           }
-        })
+        }
 
-        this.chatRecord.data = res.data.info.filter(item => item.type === 0)
+        historyMessageFormatHandler(res.data.info)
+
+        this.chatRecord.data = []
+        this.chatRecord.data = res.data.info
+        this.chatRecord.visible = true
       })
     },
 

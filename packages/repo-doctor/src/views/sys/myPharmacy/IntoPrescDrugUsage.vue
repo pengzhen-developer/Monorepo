@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     saveDrugUsage() {
-      debugger
       const drug = this.drug
       drug.dic_frequency_id = drug._frequency.id
       drug.dic_usage_id = drug._usage.id
@@ -113,7 +112,7 @@ export default {
     const api = this.config.api.getFrequencys
     const api2 = this.config.api.getUsages
     const params = {
-      hospitalId: this.$peace.cache.get('USER').list.docInfo.netHospital_id
+      hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
     }
     this.drug = Object.assign({}, this.data, {
       _usage: {
@@ -125,13 +124,13 @@ export default {
         drugtimes_name: this.data.dic_frequency
       }
     })
-    this.$http.get(api, { params }).then(res => {
+    this.http.get(api, { params }).then(res => {
       this.frequencys = res.data
       if (res.data && res.data.length) {
         this.drug._frequency = res.data[0]
       }
     })
-    this.$http.get(api2, { params }).then(res => {
+    this.http.get(api2, { params }).then(res => {
       this.usages = res.data
       if (res.data && res.data.length) {
         this.drug._usage = res.data[0]

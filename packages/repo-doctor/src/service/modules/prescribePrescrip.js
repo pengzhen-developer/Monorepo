@@ -1,0 +1,96 @@
+import peace from '@src/library'
+
+/**
+ * 获取处方列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function prescripList(params) {
+  const prescripList = 'client/v1/Prescribeprescrip/prescripList'
+
+  return peace.http.post(prescripList, params)
+}
+
+/**
+ * 发处方
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function subPrescrip(params) {
+  const subPrescrip = 'client/v1/Prescribeprescrip/subPrescrip'
+
+  return peace.http.post(subPrescrip, params)
+}
+
+/**
+ * 自动完成 - 获取药品列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function drugsList(params) {
+  const drugsList = 'client/v1/Prescribeprescrip/drugsList'
+
+  return peace.http.get(drugsList, { params })
+}
+
+/**
+ * 获取药品用法
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function drugUsageList(params) {
+  const drugUsageList = 'client/v1/Prescribeprescrip/drugUsageList'
+
+  return peace.http.get(drugUsageList, { params })
+}
+
+/**
+ * 获取药品频次字典
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function drugFrequencyList(params) {
+  const drugFrequencyList = 'client/v1/Prescribeprescrip/drugFrequencyList'
+
+  return peace.http.get(drugFrequencyList, { params })
+}
+
+/**
+ * 获取处方详情
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getPrescripInfo(params) {
+  const getPrescripInfo = 'client/v1/Prescribeprescrip/getPrescripInfo'
+
+  return peace.http.get(getPrescripInfo, { params })
+}
+
+export default {
+  /** 获取处方列表 */
+  prescripList,
+
+  /** 获取药品用法 */
+  drugUsageList,
+  /** 获取药品频次字典 */
+  drugFrequencyList,
+  /** 发处方 */
+  subPrescrip,
+  /** 获取处方详情 */
+  getPrescripInfo,
+
+  /** 自动完成 - 获取药品列表 */
+  drugsList
+}
