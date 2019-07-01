@@ -2,7 +2,10 @@
   <div class="consultation-session-message-list">
     <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
       <!-- 文本消息 -->
-      <template v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊">
+      <template
+        v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
+              getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊"
+      >
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
@@ -67,6 +70,11 @@ export default {
 
       // 过滤无效数据
       sessionMessages = sessionMessages.filter(message => {
+        // 屏蔽未知消息
+        if (!message.type) {
+          return false
+        }
+
         // 屏蔽系统消息
         if (message.type === 'notification') {
           return false
@@ -76,7 +84,8 @@ export default {
         if (message.type === 'custom') {
           if (
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道
+            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
+            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊
           )
             return false
         }
@@ -147,15 +156,7 @@ export default {
       // system
       if (message.type === 'custom') {
         if (message.content && message.content.code) {
-          if (
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊
-          ) {
+          if (message.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
             return 'system'
           }
         }
