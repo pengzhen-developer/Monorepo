@@ -106,6 +106,7 @@ export default {
         if (this.consultation.visible) {
           setInterval(() => {
             if (this.currentSession.content.consultInfo.channelTime) {
+              // 避免服务器与本地时间不一致，导致时间格式化为 "0-1:59:59"
               this.consultation.title = peace.util.formatDuration(new Date(this.currentSession.content.consultInfo.channelTime), new Date())
             }
           }, 1000)

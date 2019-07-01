@@ -69,7 +69,7 @@
           <el-col :span="6">
             <div style="margin: 0 0 10px 0">私人医生</div>
             <div class="card private-doctor">
-              <div @click="redirect('/patient/privateDoctor')" class="card-item">
+              <div @click="redirect('/patient/privateDoctor', { type: 1 })" class="card-item">
                 <div class="card-item-logo"></div>
                 <div class="card-item-content">
                   <div class="card-item-number">{{ viewModel.waitHandlePrivateDoctorCount }}</div>
@@ -95,13 +95,21 @@ export default {
     }
   },
 
+  activated() {
+    this.get()
+  },
+
   created() {
-    service.patient.waitList().then(res => {
-      this.viewModel = res.data.info
-    })
+    this.get()
   },
 
   methods: {
+    get() {
+      service.patient.waitList().then(res => {
+        this.viewModel = res.data.info
+      })
+    },
+
     redirect(name, params) {
       if (params) {
         this.$router.push({ name, params })

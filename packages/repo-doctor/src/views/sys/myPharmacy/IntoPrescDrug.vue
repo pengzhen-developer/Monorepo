@@ -12,7 +12,7 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div :key="'history_' + item" class="history-item" v-for="item in renderHistory">
+        <div :key="'history_' + item" class="history-item" v-for="item in history.slice(0, 20)">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
@@ -117,16 +117,13 @@ export default {
     },
     // 获取历史 Search 记录
     getByCache() {
-      return peace.cache.get(CACHE_KEY)
+      this.history = peace.cache.get(CACHE_KEY) || []
     },
     // 搜索记录添加到缓存
     addToCache(_history) {
-      if (!_history) return
-      if (typeof _history === 'string') {
-        _history = [_history]
-      }
+      this.history.unshift(_history)
 
-      this.history = [...new Set(this.history.concat(_history))]
+      this.history = [...new Set(this.history)]
 
       peace.cache.set(CACHE_KEY, this.history)
     },
@@ -139,7 +136,7 @@ export default {
     }
   },
   created() {
-    this.addToCache(this.getByCache())
+    this.getByCache()
   }
 }
 </script>

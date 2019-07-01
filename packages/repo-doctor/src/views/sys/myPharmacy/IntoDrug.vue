@@ -12,7 +12,7 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div :key="'history_' + item" class="history-item" v-for="item in historyList">
+        <div :key="'history_' + item" class="history-item" v-for="item in historyList.slice(0, 20)">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default {
     },
     // 获取历史 Search 记录
     getByCache() {
-      this.historyList = peace.cache.get(CACHE_KEY)
+      this.historyList = peace.cache.get(CACHE_KEY) || []
     },
     // 搜索记录添加到缓存
     addToCache(_history) {

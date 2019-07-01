@@ -190,6 +190,12 @@ export function confirm(
  * @returns
  */
 export function formatDuration(bgTime, endTime) {
+  if (bgTime > endTime) {
+    console.warn('【 peace 】【 util 】【 formatDuration 】格式化时间间隔出错，开始时间不能大于结束时间。', new Date())
+
+    return ''
+  }
+
   const duration = this.getDuration(bgTime, endTime)
 
   duration.HH = duration.HH + duration.dd * 24
