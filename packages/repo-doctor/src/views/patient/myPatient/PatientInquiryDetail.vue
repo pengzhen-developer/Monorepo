@@ -16,6 +16,7 @@
             <!-- <span class="age">{{ inquiry.sex }}</span> -->
             <span class="age" v-if="inquiry.age">{{ inquiry.age }}岁</span>
             <el-tag>{{ inquiry.relation }}</el-tag>
+            <span v-if="inquiry.isPrivateDoctor" class="private-doctor">私</span>
           </div>
           <div class="right">
             <el-button @click="showDetail(inquiry)" type="text">查看详情</el-button>
@@ -221,6 +222,17 @@ export default {
     hr {
       margin: 5px 0;
     }
+  }
+
+  .private-doctor {
+    background: #00c6ae;
+    height: 17px;
+    font-size: 12px;
+    font-weight: 400;
+    color: white;
+    line-height: 17px;
+    padding: 0 4px;
+    margin: 0 10px 0 0;
   }
 }
 </style>
