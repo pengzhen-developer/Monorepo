@@ -59,7 +59,7 @@
 
     <div class="body-no-data" v-else>
       <img src="~@src/assets/images/inquiry/ic_no one.png">
-      <span>暂无问诊</span>
+      <span>暂无会诊</span>
     </div>
   </div>
 </template>
@@ -113,7 +113,7 @@ export default {
 
       // 重置会话未读数
       $peace.NIM.resetSessionUnread(session.id)
-      // 获取本次问诊历史消息
+      // 获取本次会诊历史消息
       $peace.NIM.getHistoryMsgs({
         scene: session.scene,
         to: session.to,
