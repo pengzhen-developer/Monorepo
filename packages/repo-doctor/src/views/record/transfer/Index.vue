@@ -123,6 +123,14 @@ export default {
     }
   },
 
+  activated() {
+    if (this.$route.params && this.$route.params.referral_type) {
+      this.view.model.referral_type = this.$route.params.referral_type
+
+      this.get()
+    }
+  },
+
   created() {
     peace.service.inquiry.getRefferStatus().then(res => {
       this.source.transfer_status = res.data

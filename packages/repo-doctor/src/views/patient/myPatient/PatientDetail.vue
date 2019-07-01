@@ -30,17 +30,16 @@
     </div>
 
     <div class="content">
-      <el-tabs class="tab">
-        <el-tab-pane label="咨询记录">
-          <PatientInquiryDetail :patientInfo="patientInfo"></PatientInquiryDetail>
-        </el-tab-pane>
-        <el-tab-pane label="健康档案">
-          <!-- <PatientHealthRecord></PatientHealthRecord> -->
+      <el-tabs class="tab" v-model="activeTab">
+        <el-tab-pane label="咨询记录" name="咨询记录">
+          <PatientInquiryDetail v-if="patientInfo && patientInfo.inquiry_list &&  patientInfo.inquiry_list.length > 0" :patientInfo="patientInfo"></PatientInquiryDetail>
 
-          <div class="body-no-data">
-            <img src="~@src/assets/images/inquiry/ic_no one.png">
-            <span>暂无记录</span>
-          </div>
+          <NoData v-else></NoData>
+        </el-tab-pane>
+        <el-tab-pane label="健康档案" name="健康档案">
+          <PatientHealthRecord v-if="false"></PatientHealthRecord>
+
+          <NoData v-else></NoData>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -50,18 +49,22 @@
 <script>
 import peace from '@src/library'
 
+import NoData from '@src/views/components/NoData'
 import PatientInquiryDetail from './PatientInquiryDetail'
-// import PatientHealthRecord from './PatientHealthRecord'
+import PatientHealthRecord from './PatientHealthRecord'
 
 export default {
   components: {
-    PatientInquiryDetail
-    // PatientHealthRecord
+    NoData,
+    PatientInquiryDetail,
+    PatientHealthRecord
   },
 
   data() {
     return {
-      patientInfo: undefined
+      patientInfo: undefined,
+
+      activeTab: '咨询记录'
     }
   },
 
@@ -74,6 +77,18 @@ export default {
       },
       immediate: true
     }
+  },
+
+  activated() {
+    this.activeTab = this.activeTab
+  },
+
+  deactivated() {
+    this.activeTab = this.activeTab
+  },
+
+  created() {
+    this.get()
   },
 
   methods: {
@@ -197,21 +212,6 @@ export default {
 }
 .el-icon-female {
   color: #f56c6c;
-}
-
-.body-no-data {
-  height: calc(100vh - 410px);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-direction: column;
-
-  span {
-    margin: 20px 0 0 0;
-    color: rgba(155, 155, 155, 1);
-  }
 }
 </style>
 

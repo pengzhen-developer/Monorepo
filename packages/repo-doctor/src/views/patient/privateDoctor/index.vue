@@ -250,7 +250,7 @@ export default {
     return {
       view: {
         model: {
-          type: 1,
+          type: (this.$route.params && this.$route.params.type) || 1,
 
           startTime: '',
           endTime: ''
@@ -310,6 +310,14 @@ export default {
           { key: 5, value: '年卡/365天' }
         ]
       }
+    }
+  },
+
+  activated() {
+    if (this.$route.params && this.$route.params.type) {
+      this.view.model.type = this.$route.params.type
+
+      this.get()
     }
   },
 
