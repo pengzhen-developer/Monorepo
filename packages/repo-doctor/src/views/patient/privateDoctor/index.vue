@@ -11,9 +11,14 @@
     <div class="body" key="待接单" v-if="view.model.type === source.state['待接单']">
       <el-form :model="view.model" inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.startTime" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker
+            :picker-options="view.rules.pickerOptionsStartForReceive"
+            placeholder
+            v-model="view.modelForReceive.startTime"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.endTime" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :picker-options="view.rules.pickerOptionsEndForReceive" placeholder v-model="view.modelForReceive.endTime" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get" type="primary">查询</el-button>
@@ -43,9 +48,14 @@
     <div class="body" key="服务中" v-if="view.model.type === source.state['服务中']">
       <el-form :model="view.model" inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStart" placeholder v-model="view.model.startTime" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker
+            :picker-options="view.rules.pickerOptionsStartForService"
+            placeholder
+            v-model="view.modelForService.startTime"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEnd" placeholder v-model="view.model.endTime" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :picker-options="view.rules.pickerOptionsEndForService" placeholder v-model="view.modelForService.endTime" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get" type="primary">查询</el-button>
@@ -250,8 +260,15 @@ export default {
     return {
       view: {
         model: {
-          type: (this.$route.params && this.$route.params.type) || 1,
+          type: (this.$route.params && this.$route.params.type) || 1
+        },
 
+        modelForReceive: {
+          startTime: '',
+          endTime: ''
+        },
+
+        modelForService: {
           startTime: '',
           endTime: ''
         },
@@ -262,20 +279,40 @@ export default {
         },
 
         rules: {
-          pickerOptionsStart: {
+          pickerOptionsStartForReceive: {
             disabledDate: time => {
-              if (this.view.model.startTime) {
-                return time.getTime() > this.view.model.startTime.toDate().getTime() || time.getTime() > Date.now()
+              if (this.view.modelForReceive.endTime) {
+                return time.getTime() > this.view.modelForReceive.endTime.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
             }
           },
 
-          pickerOptionsEnd: {
+          pickerOptionsEndForReceive: {
             disabledDate: time => {
-              if (this.view.model.endTime) {
-                return time.getTime() < this.view.model.endTime.toDate().getTime() || time.getTime() > Date.now()
+              if (this.view.modelForReceive.startTime) {
+                return time.getTime() < this.view.modelForReceive.startTime.toDate().getTime() || time.getTime() > Date.now()
+              } else {
+                return time.getTime() > Date.now()
+              }
+            }
+          },
+
+          pickerOptionsStartForService: {
+            disabledDate: time => {
+              if (this.view.modelForService.endTime) {
+                return time.getTime() > this.view.modelForService.endTime.toDate().getTime() || time.getTime() > Date.now()
+              } else {
+                return time.getTime() > Date.now()
+              }
+            }
+          },
+
+          pickerOptionsEndForService: {
+            disabledDate: time => {
+              if (this.view.modelForService.startTime) {
+                return time.getTime() < this.view.modelForService.startTime.toDate().getTime() || time.getTime() >= Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -339,7 +376,23 @@ export default {
     },
 
     get() {
-      if (this.view.model.type === 3) {
+      if (this.view.model.type === 1) {
+        const fetch = peace.service.privateDoctor.privateDoctorOrderList
+        const params = { ...this.view.modelForReceive, type: this.view.model.type }
+
+        this.$refs.table.loadData({
+          fetch,
+          params
+        })
+      } else if (this.view.model.type === 2) {
+        const fetch = peace.service.privateDoctor.privateDoctorOrderList
+        const params = { ...this.view.modelForReceive, type: this.view.model.type }
+
+        this.$refs.table.loadData({
+          fetch,
+          params
+        })
+      } else if (this.view.model.type === 3) {
         const fetch = peace.service.privateDoctor.acceptRecordList
         const params = this.view.modelForRecord
 
