@@ -9,16 +9,24 @@
       <div class="info-row-label">
         <span>药品数量</span>
       </div>
-      <div class="info-row-content">
-        <el-input placeholder="请输入" type="number" v-model.number="drug.number"></el-input>
+      <div class="info-row-content spec-input">
+        <el-input-number :min="1" :precision="0" controls-position="right" placeholder="请输入（非必填）" style="text-align: left; width: 240px;" v-model="drug.number"></el-input-number>
       </div>
     </div>
     <div class="info-row">
       <div class="info-row-label">
         <span>用药天数</span>
       </div>
-      <div class="info-row-content">
-        <el-input placeholder="请输入（非必填）" type="number" v-model.number="drug.medication_days"></el-input>
+      <div class="info-row-content spec-input">
+        <el-input-number
+          :max="7"
+          :min="1"
+          :precision="0"
+          controls-position="right"
+          placeholder="请输入（非必填）"
+          style="text-align: left; width: 240px;"
+          v-model="drug.medication_days"
+        ></el-input-number>
       </div>
     </div>
     <div class="info-row">
@@ -36,7 +44,14 @@
         <span>单次剂量</span>
       </div>
       <div class="info-row-content spec-input">
-        <el-input class placeholder="请输入" v-model="drug.consump"></el-input>
+        <el-input-number
+          :min="1"
+          :precision="0"
+          controls-position="right"
+          placeholder="请输入（非必填）"
+          style="text-align: left; margin-right: 10px;"
+          v-model="drug.consump"
+        ></el-input-number>
         <span>{{ drugInfo.drug_unit || drug.unit }}</span>
       </div>
     </div>
@@ -185,9 +200,13 @@ export default {
   /deep/ .spec-input {
     display: inline-flex;
     justify-content: space-between;
-    .el-input {
-      width: 140px;
+    .el-input,
+    .el-input-number {
+      .el-input__inner {
+        text-align: left;
+      }
     }
+
     .el-input,
     span {
       vertical-align: middle;
