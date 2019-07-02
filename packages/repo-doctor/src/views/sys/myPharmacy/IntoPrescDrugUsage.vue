@@ -10,7 +10,7 @@
         <span>药品数量</span>
       </div>
       <div class="info-row-content spec-input">
-        <el-input-number :min="1" :precision="0" controls-position="right" placeholder="请输入（非必填）" style="text-align: left; width: 240px;" v-model="drug.number"></el-input-number>
+        <el-input-number :min="1" :precision="0" controls-position="right" placeholder="请输入" style="text-align: left; width: 240px;" v-model="drug.number"></el-input-number>
       </div>
     </div>
     <div class="info-row">
@@ -23,7 +23,7 @@
           :min="1"
           :precision="0"
           controls-position="right"
-          placeholder="请输入（非必填）"
+          placeholder="请输入"
           style="text-align: left; width: 240px;"
           v-model="drug.medication_days"
         ></el-input-number>
@@ -48,7 +48,7 @@
           :min="1"
           :precision="0"
           controls-position="right"
-          placeholder="请输入（非必填）"
+          placeholder="请输入"
           style="text-align: left; margin-right: 10px;"
           v-model="drug.consump"
         ></el-input-number>
@@ -86,9 +86,9 @@ export default {
       default() {
         return {
           number: 1,
-          medication_days: '',
+          medication_days: undefined,
           _frequency: '',
-          consump: '',
+          consump: undefined,
           _usage: ''
         }
       }
