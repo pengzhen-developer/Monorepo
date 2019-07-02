@@ -66,7 +66,7 @@
         <peace-table-column label="到期时间" prop="validityTime"></peace-table-column>
         <peace-table-column label="购买时间" prop="purchaseTime" width="150px"></peace-table-column>
         <peace-table-column label="接单时间" prop="acceptTime" width="150px"></peace-table-column>
-        <peace-table-column label="服务期间接诊次数" prop="inquiryCount" width="80"></peace-table-column>
+        <peace-table-column label="服务期间问诊次数" prop="inquiryCount" width="80"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="showPatientDetail(scope.row)" type="text">查看详情</el-button>
@@ -106,7 +106,7 @@
         <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
         <peace-table-column label="购买时间" prop="purchaseTime" width="150px"></peace-table-column>
         <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value" label="接单状态" prop="orderStatus" width="150px"></peace-table-column>
-        <peace-table-column label="操作时间" prop="expireTime" width="150px"></peace-table-column>
+        <peace-table-column label="操作时间" prop="acceptTime" width="150px"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="showReceiveDialog(scope.row)" type="text">查看详情</el-button>
@@ -119,7 +119,7 @@
       <el-form :model="receiveDialog.data" inline>
         <div>
           <el-form-item label="患者信息：">
-            <img :src="receiveDialog.data.patientPhoto" style="margin: 0 10px 0 0;">
+            <img :src="receiveDialog.data.patientPhoto" style="margin: 0 10px 0 0;" />
             <span
               style="margin: 0 20px 0 0; font-size: 16px;"
             >{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
@@ -134,7 +134,7 @@
             >{{ source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus).value }}</el-button>
           </el-form-item>
 
-          <hr class="character-dashad">
+          <hr class="character-dashad" />
         </div>
 
         <div>
@@ -174,7 +174,7 @@
         <!-- 已接单 -->
         <template v-if="receiveDialog.data.orderStatus === 3">
           <div>
-            <hr class="character-solid">
+            <hr class="character-solid" />
 
             <el-form-item label="接单意见：">同意接单</el-form-item>
           </div>
@@ -185,7 +185,7 @@
         <!-- 已拒绝 -->
         <template v-else-if="receiveDialog.data.orderStatus === 4">
           <div>
-            <hr class="character-solid">
+            <hr class="character-solid" />
 
             <el-form-item label="接单意见：">拒绝接单</el-form-item>
           </div>
@@ -199,7 +199,7 @@
         <!-- 已退单 -->
         <template v-else-if="receiveDialog.data.orderStatus === 6">
           <div>
-            <hr class="character-solid">
+            <hr class="character-solid" />
 
             <el-form-item label="退单原因：">超时未接单，系统自动退单</el-form-item>
           </div>
@@ -209,7 +209,7 @@
         </template>
         <template v-else>
           <div>
-            <hr class="character-solid">
+            <hr class="character-solid" />
 
             <el-form-item label="接单意见：">
               <el-radio-group v-model="receiveDialog.model.acceptOpinion">
