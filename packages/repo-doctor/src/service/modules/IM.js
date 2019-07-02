@@ -208,10 +208,18 @@ export function onUpdateSession(session) {
       if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
         peace.service.IM.setConsultationSessionStatus(session)
 
-        // 加入频道和拒绝加入频道，通过通知推送，并通知当前用户（不通知当前操作人）
-        // 退出频道因为只调用一次接口，因此在 IM 的监听中通知当前用户（不通知当前操作人）
+        // 加入频道和拒绝加入频道，通过通知推送，并通知当前用户（不通知操作人）
+        // 强制解散频道，通过通知推送，强制关闭其它正在进行中的视频会诊，并通知当前用户（不通知操作人）
         // 详见 ConsultationVideo.vue => onLeaveChannel
         if (session.lastMsg.from !== Store.state.user.userInfo.list.docInfo.doctor_id) {
+          if (session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.强制解散频道) {
+            peace.util.alert(session.lastMsg.content.data.showTextInfo.doctorClientText)
+
+            // 关闭视频流， 关闭视频窗口
+            $peace.consultationVideoComponent.consultation.visible = false
+            $peace.WebRTC.leaveChannel()
+          }
+
           if (
             session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.同意加入频道 ||
             session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.拒绝加入频道

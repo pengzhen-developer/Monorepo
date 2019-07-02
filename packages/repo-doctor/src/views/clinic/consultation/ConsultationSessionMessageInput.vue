@@ -28,7 +28,7 @@
         v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                 $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中"
       >
-        <img src="~@/assets/images/inquiry/chat_icon_video.png" />会诊意见
+        <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊意见
       </el-button>
     </div>
 
@@ -164,8 +164,40 @@ export default {
     },
 
     snedConsultSuggest() {
-      this.consultSuggestDialog.visible = true
-      this.consultSuggestDialog.model.consultSuggest = ''
+      // 验证当前频道信息
+      // 验证当前频道信息
+      if (this.$store.getters['consultation/consultInfo'].channelFromId) {
+        const message = '您参与的视频会话其他参与者还未挂断，填写会诊意见将关闭视频会话'
+        const confirmOption = { type: 'warning' }
+
+        peace.util.confirm(message, undefined, confirmOption, () => {
+          const consultNo = this.$store.getters['consultation/consultInfo'].consultNo
+
+          // 强制解散 （仅为了通知相关人）
+          const dissolveHandler = function() {
+            const params = { consultNo: consultNo, action: 'dissolve' }
+
+            return peace.service.video.processConsult(params)
+          }
+
+          // 结束视频会诊
+          const overHandler = function() {
+            const params = { consultNo: consultNo, action: 'over' }
+
+            return peace.service.video.processConsult(params)
+          }
+
+          // 1. 强制解散，通知对方
+          // 2. 当前用户关闭视频会诊，执行 over
+          // 3. 正常会诊意见填写
+          dissolveHandler()
+            .then(overHandler())
+            .then(() => {
+              this.consultSuggestDialog.visible = true
+              this.consultSuggestDialog.model.consultSuggest = ''
+            })
+        })
+      }
     },
 
     getInvitedDoctor() {
