@@ -197,6 +197,9 @@ export default {
               this.consultSuggestDialog.model.consultSuggest = ''
             })
         })
+      } else {
+        this.consultSuggestDialog.visible = true
+        this.consultSuggestDialog.model.consultSuggest = ''
       }
     },
 
