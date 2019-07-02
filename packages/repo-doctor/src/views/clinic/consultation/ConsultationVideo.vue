@@ -164,8 +164,7 @@ export default {
 
       const leaveUser = this.consultation.remoteUserList.find(item => item.account === leaveChannelObject.account)
       if (leaveUser && leaveUser.account !== this.$store.state.user.userInfo.list.docInfo.doctor_id) {
-        // Firefox 兼容性问题, 再未找到合适方法之前, 暂时关闭
-        // peace.util.alert(`${leaveUser.doctorName}离开频道`)
+        peace.util.alert(`${leaveUser.doctorName}已退出本次会诊`)
       }
     },
 

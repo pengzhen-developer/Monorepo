@@ -204,8 +204,21 @@ export function onUpdateSession(session) {
     // 处理 consultation
     else if (session.scene === 'team') {
       // 当前 session update 存在状态更新, 更新 sessions 为最新状态
+      // 因 resetSessionUnread 重置会话未读数，会触发 onUpdateSession 回调，使用 typeof session.lastMsg.content 验证是否已经更新状态
       if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
         peace.service.IM.setConsultationSessionStatus(session)
+
+        // 加入频道和拒绝加入频道，通过通知推送，并通知当前用户（不通知当前操作人）
+        // 退出频道因为只调用一次接口，因此在 IM 的监听中通知当前用户（不通知当前操作人）
+        // 详见 ConsultationVideo.vue => onLeaveChannel
+        if (session.lastMsg.from !== Store.state.user.userInfo.list.docInfo.doctor_id) {
+          if (
+            session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.同意加入频道 ||
+            session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.拒绝加入频道
+          ) {
+            peace.util.alert(session.lastMsg.content.data.showTextInfo.doctorClientText)
+          }
+        }
       }
 
       // 将新 sessions 更新到 sessions store

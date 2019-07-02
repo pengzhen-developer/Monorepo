@@ -35,7 +35,7 @@
         <!-- 消息内容 -->
         <div class="message-body">
           <span>{{ getMessageText(message) }}</span>
-          <img src="~@/assets/images/inquiry/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;">
+          <img src="~@/assets/images/inquiry/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" />
         </div>
       </template>
 
@@ -49,8 +49,8 @@
         </template>
 
         <!-- 消息内容 -->
-        <div :style="{ height: message.file.w > 400 ? message.file.h / message.file.w * 400 + 5 + 'px' : message.file.h + 5 + 'px' }" v-viewer>
-          <img :src="message.file.url" style="max-width: 400px;">
+        <div v-viewer>
+          <img :src="message.file.url" style="max-width: 400px; " title="查看大图" />
         </div>
       </template>
 
@@ -65,7 +65,7 @@
 
         <!-- 消息内容 -->
         <div @click="getCaseDetail(message)" class="message-body case">
-          <img src="~@src/assets/images/inquiry/ic_rp.png">
+          <img src="~@src/assets/images/inquiry/ic_rp.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">病历</p>
             <p>查看详情</p>
@@ -84,7 +84,7 @@
 
         <!-- 消息内容 -->
         <div @click="getRecipeDetail(message)" class="message-body recipe">
-          <img src="~@src/assets/images/inquiry/ic_medical record.png">
+          <img src="~@src/assets/images/inquiry/ic_medical record.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">处方</p>
             <p>查看详情</p>
