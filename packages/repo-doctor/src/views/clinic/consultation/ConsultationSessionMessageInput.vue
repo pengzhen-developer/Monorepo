@@ -8,7 +8,7 @@
         v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                 $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始"
       >
-        <img src="~@/assets/images/inquiry/chat_icon_video.png" />邀请医生
+        <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
       <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
