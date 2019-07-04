@@ -65,7 +65,7 @@
 
         <!-- 消息内容 -->
         <div @click="getCaseDetail(message)" class="message-body case">
-          <img src="~@src/assets/images/inquiry/ic_rp.png" />
+          <img src="~@src/assets/images/inquiry/ic_medical record.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">病历</p>
             <p>查看详情</p>
@@ -84,7 +84,7 @@
 
         <!-- 消息内容 -->
         <div @click="getRecipeDetail(message)" class="message-body recipe">
-          <img src="~@src/assets/images/inquiry/ic_medical record.png" />
+          <img src="~@src/assets/images/inquiry/ic_rp.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">处方</p>
             <p>查看详情</p>
