@@ -332,7 +332,8 @@ export default {
     }
 
     .message-body {
-      white-space: pre;
+      white-space: pre-wrap;
+      word-wrap: break-word;
       display: inline-block;
       padding: 5px 10px;
       border-radius: 4px;
