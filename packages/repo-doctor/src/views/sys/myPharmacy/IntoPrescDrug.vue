@@ -1,19 +1,8 @@
 <template>
   <div class="into-drug">
     <div class="search">
-      <el-input
-        @keyup.enter.native="search(drugname)"
-        class="search-input"
-        clearable
-        placeholder="请输入药品名称或拼音字母"
-        v-model="drugname"
-      ></el-input>
-      <el-button
-        @click="search(drugname)"
-        class="search-btn"
-        round
-        type="primary"
-      >搜索</el-button>
+      <el-input @keyup.enter.native="search(drugname)" class="search-input" clearable placeholder="请输入药品名称或拼音字母" v-model="drugname"></el-input>
+      <el-button @click="search(drugname)" class="search-btn" round type="primary">搜索</el-button>
     </div>
     <div class="content">
       <div class="history" v-if="!list.length">
@@ -23,23 +12,12 @@
             <i class="el-icon-delete primary"></i>
           </span>
         </div>
-        <div
-          :key="'history_' + item"
-          class="history-item"
-          v-for="item in renderHistory"
-        >
+        <div :key="'history_' + item" class="history-item" v-for="item in history.slice(0, 20)">
           <span @click="search(item)" class="pointer">{{ item }}</span>
         </div>
       </div>
       <div v-else>
-        <el-table
-          :data="list"
-          :show-header="false"
-          @row-click="handleSelect"
-          height="286"
-          ref="singleTable"
-          size="small"
-        >
+        <el-table :data="list" :show-header="false" @row-click="handleSelect" height="286" ref="singleTable" size="small">
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="drug_name"></el-table-column>
           <el-table-column prop="drug_spec" width="100"></el-table-column>
@@ -48,16 +26,13 @@
       </div>
     </div>
     <div style="text-align: center;">
-      <el-button
-        :disabled="!selected"
-        @click="nextStep"
-        type="primary"
-      >下一步</el-button>
+      <el-button :disabled="!selected" @click="nextStep" type="primary">下一步</el-button>
       <el-button @click="$emit('cancel')" plain type="primary">取消</el-button>
     </div>
   </div>
 </template>
 <script>
+import peace from '@src/library'
 import config from './config'
 // 药品搜索记录
 const CACHE_KEY = 'prescDrugSearchHistorys'
@@ -100,12 +75,11 @@ export default {
 
       const api = this.config.api.getPrescDrugList
       const params = {
-        hospitalId: this.$peace.cache.get('USER').list.docInfo
-          .netHospital_id,
+        hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id,
         drugname
       }
 
-      this.$http.get(api, { params }).then(res => {
+      this.http.get(api, { params }).then(res => {
         setTimeout(() => {
           if (res.data && res.data.length) {
             this.list = [].concat(res.data)
@@ -115,14 +89,7 @@ export default {
       })
     },
     nextStep() {
-      const {
-        drug_factory,
-        drug_name,
-        drug_spec,
-        drug_unit,
-        id,
-        license_number
-      } = this.selected
+      const { drug_factory, drug_name, drug_spec, drug_unit, id, license_number } = this.selected
       const obj = {
         drug_factory,
         drug_name,
@@ -150,29 +117,26 @@ export default {
     },
     // 获取历史 Search 记录
     getByCache() {
-      return this.$peace.cache.get(CACHE_KEY)
+      this.history = peace.cache.get(CACHE_KEY) || []
     },
     // 搜索记录添加到缓存
     addToCache(_history) {
-      if (!_history) return
-      if (typeof _history === 'string') {
-        _history = [_history]
-      }
+      this.history.unshift(_history)
 
-      this.history = [...new Set(this.history.concat(_history))]
+      this.history = [...new Set(this.history)]
 
-      this.$peace.cache.set(CACHE_KEY, this.history)
+      peace.cache.set(CACHE_KEY, this.history)
     },
     // 清空历史 Search 记录
     clear() {
       if (!this.history.length) return
 
-      this.$peace.cache.remove(CACHE_KEY)
+      peace.cache.remove(CACHE_KEY)
       this.history = []
     }
   },
   created() {
-    this.addToCache(this.getByCache())
+    this.getByCache()
   }
 }
 </script>

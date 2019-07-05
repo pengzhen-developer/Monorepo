@@ -1,78 +1,47 @@
 /*
  * @Author: PengZhen
  * @Description: 基础依赖入口，并以插件形式，向外暴露
- * @Date: 2018-07-05 16:07:33
- * @Last Modified by: PengZhen
- * @Last Modified time: 2019-05-07 15:48:21
+ * @Date: 2017-07-05 16:07:33
  */
-
-import axios from './axios'
 
 // prototype
 import './prototype/date'
 import './prototype/number'
 import './prototype/string'
 
-// directive
-import has from './directive/has'
-import drag from './directive/drag'
-import focus from './directive/focus'
-
-// helper
-import cache from './helper/cache'
-import util from './helper/util'
-import valid from './helper/valid'
-
 // components
 import Table from './components/table'
 import Dialog from './components/dialog'
 
-/**
- * 插件可选属性默认值
- */
-const DEFAULT_OPTIONS = {
-  axios: {
-    // 是否启用 axios
-    enable: true,
-    // axios 请求超时时间
-    timeout: 30000,
-    // axios 请求超时时，需要的重试次数 (0: 不重试)
-    retry: 4,
-    // axios 请求超时时，重试的间隔延迟时间 (默认 1000ms )
-    retryDelay: 1000
-  }
-}
+// directive
+import drag from './directive/drag'
+import focus from './directive/focus'
 
-/**
- * 定义插件加载方法
- *
- * @param {*} Vue
- */
-const install = function(Vue, options = DEFAULT_OPTIONS) {
-  // 挂载内部属性
-  const $peace = { cache, util, valid }
+// http
+import http from './http'
+
+// util
+import util from './helper/util'
+import cache from './helper/cache'
+import validate from './helper/validate'
+
+// config
+import config from '@src/config'
+// type
+import type from '@src/type'
+// service
+import service from '@src/service'
+
+const install = function(Vue) {
+  const peace = { http, util, cache, validate, config, type, service }
 
   // 暴露全局实例
-  Window.$peace = $peace
-  global.$peace = $peace
+  Window.$peace = peace
+  global.$peace = peace
 
-  // 挂载到 Vue 全局属性
-  Vue.prototype.$peace = $peace
-
-  if (options.axios.enable) {
-    axios.defaults.headers[`Content-Type`] = `application/x-www-form-urlencoded`
-    axios.defaults.timeout = options.axios.timeout
-    axios.defaults.retry = options.axios.retry
-    axios.defaults.retryDelay = options.axios.retryDelay
-
-    Vue.prototype.$http = axios
-  }
-
-  // 注册 directive
-  const directive = [has, drag, focus]
-  directive.map(directive => {
-    Vue.directive(directive.name, directive)
-  })
+  // 挂载到 Vue
+  Vue.prototype.http = http
+  Vue.prototype.$peace = peace
 
   // 注册 component
   const components = [Table, Dialog]
@@ -80,11 +49,38 @@ const install = function(Vue, options = DEFAULT_OPTIONS) {
     Vue.use(component)
   })
 
+  // 注册 directive
+  const directive = [drag, focus]
+  directive.map(directive => {
+    Vue.directive(directive.name, directive)
+  })
+
   console.log('-------框架加载完成-------')
   console.log('-------使用内部命令查看详情-------')
 }
 
-/**
- * 暴露插件加载方法
- */
-export default { install }
+export default {
+  /** http 请求类 */
+  http,
+
+  /** 工具类 */
+  util,
+
+  /** 缓存类 */
+  cache,
+
+  /** 验证类 */
+  validate,
+
+  /** 服务类 */
+  service,
+
+  /** 配置 */
+  config,
+
+  /** 常量 */
+  type,
+
+  /** vue plugin */
+  install
+}

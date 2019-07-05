@@ -9,16 +9,24 @@
       <div class="info-row-label">
         <span>药品数量</span>
       </div>
-      <div class="info-row-content">
-        <el-input placeholder="请输入" type="number" v-model.number="drug.number"></el-input>
+      <div class="info-row-content spec-input">
+        <el-input-number :min="1" :precision="0" controls-position="right" placeholder="请输入" style="text-align: left; width: 240px;" v-model="drug.number"></el-input-number>
       </div>
     </div>
     <div class="info-row">
       <div class="info-row-label">
         <span>用药天数</span>
       </div>
-      <div class="info-row-content">
-        <el-input placeholder="请输入（非必填）" type="number" v-model.number="drug.medication_days"></el-input>
+      <div class="info-row-content spec-input">
+        <el-input-number
+          :max="7"
+          :min="1"
+          :precision="0"
+          controls-position="right"
+          placeholder="请输入"
+          style="text-align: left; width: 240px;"
+          v-model="drug.medication_days"
+        ></el-input-number>
       </div>
     </div>
     <div class="info-row">
@@ -36,7 +44,14 @@
         <span>单次剂量</span>
       </div>
       <div class="info-row-content spec-input">
-        <el-input class placeholder="请输入" v-model="drug.consump"></el-input>
+        <el-input-number
+          :min="1"
+          :precision="0"
+          controls-position="right"
+          placeholder="请输入"
+          style="text-align: left; margin-right: 10px;"
+          v-model="drug.consump"
+        ></el-input-number>
         <span>{{ drugInfo.drug_unit || drug.unit }}</span>
       </div>
     </div>
@@ -71,9 +86,9 @@ export default {
       default() {
         return {
           number: 1,
-          medication_days: '',
+          medication_days: undefined,
           _frequency: '',
-          consump: '',
+          consump: undefined,
           _usage: ''
         }
       }
@@ -98,7 +113,6 @@ export default {
   },
   methods: {
     saveDrugUsage() {
-      debugger
       const drug = this.drug
       drug.dic_frequency_id = drug._frequency.id
       drug.dic_usage_id = drug._usage.id
@@ -113,7 +127,7 @@ export default {
     const api = this.config.api.getFrequencys
     const api2 = this.config.api.getUsages
     const params = {
-      hospitalId: this.$peace.cache.get('USER').list.docInfo.netHospital_id
+      hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
     }
     this.drug = Object.assign({}, this.data, {
       _usage: {
@@ -125,13 +139,13 @@ export default {
         drugtimes_name: this.data.dic_frequency
       }
     })
-    this.$http.get(api, { params }).then(res => {
+    this.http.get(api, { params }).then(res => {
       this.frequencys = res.data
       if (res.data && res.data.length) {
         this.drug._frequency = res.data[0]
       }
     })
-    this.$http.get(api2, { params }).then(res => {
+    this.http.get(api2, { params }).then(res => {
       this.usages = res.data
       if (res.data && res.data.length) {
         this.drug._usage = res.data[0]
@@ -186,9 +200,13 @@ export default {
   /deep/ .spec-input {
     display: inline-flex;
     justify-content: space-between;
-    .el-input {
-      width: 140px;
+    .el-input,
+    .el-input-number {
+      .el-input__inner {
+        text-align: left;
+      }
     }
+
     .el-input,
     span {
       vertical-align: middle;

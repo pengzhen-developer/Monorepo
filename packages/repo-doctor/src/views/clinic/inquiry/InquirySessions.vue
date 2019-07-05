@@ -1,0 +1,262 @@
+<template>
+  <div class="inquiry-sessions">
+    <div class="header">
+      <img src="~@src/assets/images/inquiry/inquirylist_icon.png">
+      <span>问诊列表</span>
+    </div>
+
+    <div class="body" v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
+      <el-scrollbar class="body-scrollbar">
+        <div
+          :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
+          :key="session.id"
+          @click="selectSession(session)"
+          class="inquiry"
+          v-for="session in $store.state.inquiry.sessions"
+        >
+          <div class="inquiry-patient">
+            <div class="inquiry-patient-left">
+              <el-badge is-dot :hidden="session.unread === 0" :value="session.unread" style="margin: 0 10px 0 0;">
+                <span>{{ session.content.patientInfo.familyName }}</span>
+              </el-badge>
+              <span>{{ session.content.patientInfo.familySex }}</span>
+              <span>{{ session.content.patientInfo.familyAge }}岁</span>
+            </div>
+
+            <div class="inquiry-patient-right">
+              <el-tag
+                effect="plain"
+                style="border-radius: 20px; border-color: #4395f5; color: #4395f5; background: #e3f0f0;"
+                type="warning"
+                v-if="session.content.inquiryInfo.inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊"
+              >{{ getInquiryStatus(session) }}</el-tag>
+              <el-tag
+                effect="plain"
+                style="border-radius: 20px; border-color: #00c6ae; color: #00c6ae; background: #dafaf6;"
+                type="primary"
+                v-if="session.content.inquiryInfo.inquiryStatus  === $peace.type.INQUIRY.INQUIRY_STATUS.问诊中"
+              >{{ getInquiryStatus(session) }}</el-tag>
+            </div>
+          </div>
+
+          <div class="inquiry-last-message">
+            <span v-html="getLastMessage(session)"></span>
+          </div>
+
+          <div class="inquiry-status">
+            <div class="inquiry-status-left">
+              <img src="~@src/assets/images/inquiry/chat_icon_pic.png" v-if="session.content.inquiryInfo.inquiryType === $peace.type.INQUIRY.INQUIRY_TYPE.图文问诊">
+              <img
+                src="~@src/assets/images/inquiry/chat_icon_video.png"
+                v-if="session.content.inquiryInfo.inquiryType === $peace.type.INQUIRY.INQUIRY_TYPE.视频问诊"
+              >
+              <span>{{ getInquiryType(session) }}</span>
+              <span class="private-doctor" v-if="session.content.inquiryInfo.isPrivateDoctor">私</span>
+            </div>
+            <div>{{ $peace.inquiryComponent.getIntervalValue(session) }}</div>
+          </div>
+        </div>
+      </el-scrollbar>
+    </div>
+
+    <div class="body-no-data" v-else>
+      <img src="~@src/assets/images/inquiry/ic_no one.png">
+      <span>暂无问诊</span>
+    </div>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+export default {
+  methods: {
+    getLastMessage(session) {
+      const messageType = session.lastMsg.type
+
+      switch (messageType) {
+        case 'text':
+          return session.lastMsg.text
+        case 'image':
+          return '【图片】'
+        case 'video':
+          return '【视频】'
+        case 'custom':
+          // 病历
+          if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历) {
+            return '【病历】'
+          }
+          // 处方
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方) {
+            return '【处方】'
+          }
+          // 视频通话
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
+            return '【视频通话】'
+          }
+          // 其它
+          else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
+            return session.lastMsg.content.data.showTextInfo.doctorClientText
+          }
+      }
+    },
+
+    getInquiryStatus(session) {
+      return Object.keys(peace.type.INQUIRY.INQUIRY_STATUS).find(key => peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.inquiryInfo.inquiryStatus)
+    },
+
+    getInquiryType(session) {
+      return Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
+    },
+
+    selectSession(session) {
+      const doneHandler = (error, message) => {
+        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
+
+        if (error) {
+          throw new Error(error)
+        }
+
+        peace.service.IM.resetInquirySession()
+        peace.service.IM.resetInquirySessionMessages()
+
+        peace.service.IM.setInquirySession(session)
+        peace.service.IM.setInquirySessionMessages(message.msgs)
+      }
+
+      // 重置会话未读数
+      $peace.NIM.resetSessionUnread(session.id)
+      // 获取本次问诊历史消息
+      $peace.NIM.getHistoryMsgs({
+        beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
+        scene: session.scene,
+        to: session.to,
+        done: doneHandler
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+$--header-height: 50px;
+
+.inquiry-sessions {
+  height: 100%;
+
+  .header {
+    height: $--header-height;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 1px solid #f2f2f2;
+
+    img {
+      margin: 0 10px 0 0;
+    }
+  }
+
+  .body {
+    height: calc(100% - #{$--header-height});
+
+    .body-scrollbar {
+      height: 100%;
+    }
+
+    .inquiry {
+      padding: 10px;
+      border-bottom: 1px solid #efefef;
+      cursor: pointer;
+
+      &.active {
+        background: rgba(244, 244, 244, 1);
+      }
+
+      .inquiry-patient {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0 5px 0;
+
+        .inquiry-patient-left {
+          display: flex;
+          align-items: center;
+
+          span {
+            font-size: 12px;
+            margin-left: 15px;
+
+            &:first-child {
+              font-size: 14px;
+              margin-left: 0;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+
+      .inquiry-last-message {
+        margin: 0 0 15px 0;
+
+        /deep/ * {
+          font-size: 12px;
+          line-height: 22px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
+        }
+      }
+
+      .inquiry-status {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+
+        font-size: 12px;
+        color: #999;
+
+        .inquiry-status-left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            margin: 0 10px 0 0;
+          }
+        }
+
+        .private-doctor {
+          height: 16px;
+          background: rgba(218, 250, 246, 1);
+          border-radius: 2px;
+          padding: 0 4px;
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(0, 198, 174, 1);
+          line-height: 17px;
+
+          margin: 0 0 0 10px;
+        }
+      }
+    }
+  }
+
+  .body-no-data {
+    height: calc(100% - 50px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    span {
+      margin: 20px 0 0 0;
+      color: rgba(155, 155, 155, 1);
+    }
+  }
+}
+</style>
+
