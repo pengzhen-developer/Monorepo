@@ -17,7 +17,7 @@
       </el-form-item>
     </el-form>
 
-    <hr>
+    <hr />
 
     <peace-table pagination ref="table">
       <peace-table-column label="患者姓名" prop="real_name" width="140">
@@ -32,7 +32,7 @@
         <template slot-scope="scope">
           <span>{{ scope.row.family_name }}</span>&nbsp;
           <span>{{ scope.row.family_sex }}</span>&nbsp;
-          <span>{{ scope.row.family_age }}岁</span>&nbsp;
+          <span v-if="scope.row.family_age">{{ scope.row.family_age }}岁</span>&nbsp;
           <span>{{ scope.row.diagnose }}</span>&nbsp;
           <span>{{ scope.row.family_time }}</span>&nbsp;
         </template>

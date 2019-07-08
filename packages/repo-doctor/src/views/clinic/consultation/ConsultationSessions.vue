@@ -1,7 +1,7 @@
 <template>
   <div class="consultation-sessions">
     <div class="header">
-      <img src="~@src/assets/images/inquiry/inquirylist_icon.png">
+      <img src="~@src/assets/images/inquiry/inquirylist_icon.png" />
       <span>会诊列表</span>
     </div>
 
@@ -43,9 +43,19 @@
           </div>
 
           <div class="consultation-doctor">
-            <span>受邀医生：</span>
-            <span class="name">{{ session.content.consultInfo.receiveDoctor.map(item => item.doctorName).toString() }}</span>
-            <el-tag type="parmary">我邀请的</el-tag>
+            <!-- 发起方 -->
+            <template v-if="session.content.consultInfo.startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
+              <span>受邀医生：</span>
+              <span class="name">{{ session.content.consultInfo.receiveDoctor.map(item => item.doctorName).toString() }}</span>
+              <el-tag type="parmary">我邀请的</el-tag>
+            </template>
+
+            <!-- 受邀方 -->
+            <template v-if="session.content.consultInfo.receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
+              <span>发起医生：</span>
+              <span class="name">{{ session.content.consultInfo.startDoctor.map(item => item.doctorName).toString() }}</span>
+              <el-tag type="parmary">邀请我的</el-tag>
+            </template>
           </div>
           <div class="consultation-patient">
             <span>患者信息：</span>
@@ -58,8 +68,8 @@
     </div>
 
     <div class="body-no-data" v-else>
-      <img src="~@src/assets/images/inquiry/ic_no one.png">
-      <span>暂无问诊</span>
+      <img src="~@src/assets/images/inquiry/ic_no one.png" />
+      <span>暂无会诊</span>
     </div>
   </div>
 </template>
@@ -113,7 +123,7 @@ export default {
 
       // 重置会话未读数
       $peace.NIM.resetSessionUnread(session.id)
-      // 获取本次问诊历史消息
+      // 获取本次会诊历史消息
       $peace.NIM.getHistoryMsgs({
         scene: session.scene,
         to: session.to,

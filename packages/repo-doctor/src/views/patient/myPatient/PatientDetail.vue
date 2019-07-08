@@ -5,7 +5,7 @@
     </div>-->
 
     <div class="header">
-      <img :src="patientInfo.user_info.weixin_head_url" class="header-img">
+      <img :src="patientInfo.user_info.weixin_head_url" class="header-img" />
 
       <div class="header-info">
         <div class="first-line">

@@ -8,7 +8,7 @@
         v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                 $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始"
       >
-        <img src="~@/assets/images/inquiry/chat_icon_video.png">邀请医生
+        <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
       <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
@@ -18,17 +18,17 @@
         v-show="$peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束 ||
                 $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中 "
       >
-        <img src="~@/assets/images/inquiry/chat_icon_video.png">发起视频
+        <img src="~@/assets/images/inquiry/chat_icon_video.png" />发起视频
       </el-button>
 
-      <!-- 会诊生效后, 发起方医生能够填写会诊意见, 用于结束会诊 -->
+      <!-- 会诊生效后, 受邀方医生能够填写会诊意见, 用于结束会诊 -->
       <el-button
         @click="snedConsultSuggest"
         type="text"
         v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                 $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中"
       >
-        <img src="~@/assets/images/inquiry/chat_icon_video.png">会诊意见
+        <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊意见
       </el-button>
     </div>
 
@@ -38,8 +38,8 @@
         <el-button @click="getInvitedDoctor" type="primary">查询</el-button>
       </div>
 
-      <br>
-      <br>
+      <br />
+      <br />
 
       <peace-table :layout="'total,  -> , prev, pager, next, slot'" :pageSize="5" pagination ref="table" v-if="invitedDialog.visible">
         <el-table-column align="center" label=" " width="45">
@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column align="center" label="头像" width="60">
           <template slot-scope="scope">
-            <img :src="scope.row.avartor" height="40px" style="border-radius: 50%;" width="40px">
+            <img :src="scope.row.avartor" height="40px" style="border-radius: 50%;" width="40px" />
           </template>
         </el-table-column>
         <el-table-column align="center" label="姓名" prop="doctorName" width="80"></el-table-column>
@@ -60,7 +60,7 @@
         <el-table-column label="医院" prop="hospitalName"></el-table-column>
       </peace-table>
 
-      <br>
+      <br />
 
       <template v-if="invitedDialog.chooseList.length">
         <div style="margin: 20px 0; color:rgba(51,51,51,1);">已选择医生 （{{ invitedDialog.chooseList.length }}）</div>
@@ -75,7 +75,7 @@
           >{{ item.doctorName }}</el-tag>
         </div>
 
-        <br>
+        <br />
 
         <div style="text-align: center;">
           <el-button @click="invitedDialog.visible = false" type>取消</el-button>
@@ -85,7 +85,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="consultSuggestDialog.visible" title="填写会诊意见">
-      <br>
+      <br />
 
       <el-form :model="consultSuggestDialog.model" label-width="80px">
         <el-form-item label="会诊意见">
@@ -164,8 +164,42 @@ export default {
     },
 
     snedConsultSuggest() {
-      this.consultSuggestDialog.visible = true
-      this.consultSuggestDialog.model.consultSuggest = ''
+      // 验证当前频道信息
+      if (this.$store.getters['consultation/consultInfo'].channelFromId) {
+        const message = '您参与的视频会话其他参与者还未挂断，填写会诊意见将关闭视频会话'
+        const confirmOption = { type: 'warning' }
+
+        peace.util.confirm(message, undefined, confirmOption, () => {
+          const consultNo = this.$store.getters['consultation/consultInfo'].consultNo
+
+          // 强制解散 （仅为了通知相关人）
+          const dissolveHandler = function() {
+            const params = { consultNo: consultNo, action: 'dissolve' }
+
+            return peace.service.video.processConsult(params)
+          }
+
+          // 结束视频会诊
+          const overHandler = function() {
+            const params = { consultNo: consultNo, action: 'over' }
+
+            return peace.service.video.processConsult(params)
+          }
+
+          // 1. 强制解散，通知对方
+          // 2. 当前用户关闭视频会诊，执行 over
+          // 3. 正常会诊意见填写
+          dissolveHandler()
+            .then(overHandler())
+            .then(() => {
+              this.consultSuggestDialog.visible = true
+              this.consultSuggestDialog.model.consultSuggest = ''
+            })
+        })
+      } else {
+        this.consultSuggestDialog.visible = true
+        this.consultSuggestDialog.model.consultSuggest = ''
+      }
     },
 
     getInvitedDoctor() {

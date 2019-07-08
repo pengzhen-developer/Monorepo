@@ -2,7 +2,7 @@
   <div class="about">
     <el-form :model="view.model" label-suffix label-width="120px">
       <el-form-item label="个人头像：">
-        <img :src="view.model.avartor" class="avartor">
+        <img :src="view.model.avartor" class="avartor" />
         <el-upload
           :action="api.uploadAvatar"
           :auto-upload="true"
@@ -14,7 +14,7 @@
           name="image"
           ref="uploadAvatar"
         >
-          <img class="modify" slot="trigger" src="~@src/assets/images/sys/ic_modify.png">
+          <img class="modify" slot="trigger" src="~@src/assets/images/sys/ic_modify.png" />
         </el-upload>
       </el-form-item>
       <el-form-item label="帐号：">{{ view.model.id }}</el-form-item>
@@ -58,9 +58,9 @@
       </el-form-item>
     </el-form>
 
-    <!-- <peace-dialog :visible.sync="dialog.visible" top="5vh">
-      <img :src="dialog.imageUrl" alt width="100%">
-    </peace-dialog>-->
+    <peace-dialog :visible.sync="dialog.visible" title="图片预览">
+      <img :src="dialog.imageUrl" alt width="100%" />
+    </peace-dialog>
   </div>
 </template>
 
