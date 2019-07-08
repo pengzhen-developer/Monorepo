@@ -7,7 +7,7 @@
       </el-button-group>
     </div>
 
-    <hr>
+    <hr />
 
     <!-- 常用药品 -->
     <div :key="source.action.DRUG" v-if="view.action === source.action.DRUG">
@@ -17,7 +17,7 @@
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column type="index"></peace-table-column>
@@ -43,13 +43,13 @@
         <el-form-item>
           <el-button @click="get" round type="primary">查询</el-button>
         </el-form-item>
-        <br>
+        <br />
         <el-form-item>
           <el-button @click="openPrescDialog" icon="el-icon-plus" type="primary">添加处方</el-button>
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="临床诊断" prop="diagnosis"></peace-table-column>
@@ -376,9 +376,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   text-align: center;
 }
 </style>
-

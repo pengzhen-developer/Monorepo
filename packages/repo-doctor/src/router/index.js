@@ -53,16 +53,17 @@ const router = new Router({
 
         // 患者 - 患者详情
         {
-          path: '/patient/myPatient/patientDetail/:id',
-          name: '/patient/myPatient/patientDetail',
+          path: '/patient/patientDetail/:id',
+          name: '/patient/patientDetail',
           meta: { Auth: true },
-          component: () => import('@src/views/patient/myPatient/PatientDetail.vue')
+          component: () => import('@src/views/patient/patientDetail/index.vue')
         },
-        // 患者 - 患者详情 - 患者数据
+        // 患者 - 患者详情 - 患者报告
         {
-          path: '/patient/myPatient/patientDetail/:id/patientHealthData',
-          name: '/patient/myPatient/patientDetail/patientHealthData',
-          component: () => import('@src/views/patient/myPatient/PatientHealthData.vue')
+          path: '/patient/patientDetail/Report/:dataId/:idCard/:serviceId/:type',
+          name: '/patient/patientDetail/Report',
+          meta: { Auth: true },
+          component: () => import('@src/views/patient/patientDetail/Report.vue')
         },
 
         // 记录 - 问诊记录

@@ -82,6 +82,7 @@ export default {
       peace.service.login
         .sendSms(param)
         .then(res => {
+          this.$refs.pwd.focus()
           peace.validate.isEmpty('')
           peace.util.alert(res.msg, null, peace.type.SYSTEM.MESSAGE.SUCCESS)
         })

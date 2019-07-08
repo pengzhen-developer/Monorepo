@@ -1,8 +1,8 @@
 <template>
   <div class="patient-health-record">
-    <el-tabs type="border-card" v-model="activedTab">
+    <el-tabs type="border-card" v-model="activeTab">
       <el-tab-pane :key="patient.family_id" :label="patient.name" :name="patient.family_id" v-for="patient in list">
-        <PatientHealthRecordDetails :details="currentDetails"/>
+        <PatientHealthRecordDetails :details="currentDetails" />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -17,7 +17,7 @@ export default {
   components: { PatientHealthRecordDetails },
   data() {
     return {
-      activedTab: '',
+      activeTab: '',
       currentDetails: '',
       list: [],
       patientId: this.$route.params.id
@@ -30,7 +30,7 @@ export default {
         this.list = res.data
         if (res.data.length) {
           this.currentDetails = res.data[0]
-          this.activedTab = res.data[0].family_id
+          this.activeTab = res.data[0].family_id
         }
       })
     }
