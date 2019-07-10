@@ -22,16 +22,16 @@ const router = new Router({
           },
           component: () => import('@src/views/home/index.vue')
         },
-        // 首页-详情
+        // 首页-医生列表
         {
-          path: '/home/detail',
-          name: '/home/detail',
+          path: '/home/doctorList',
+          name: '/home/doctorList',
           meta: {
             back: {
-              title: '详情页'
+              title: '医生列表'
             }
           },
-          component: () => import('@src/views/home/detail/index.vue')
+          component: () => import('@src/views/home/DoctorList.vue')
         },
 
         // 消息
