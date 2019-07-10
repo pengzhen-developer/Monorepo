@@ -30,11 +30,8 @@ export function initNIM(
 ) {
   const appKey = peace.config.NIM.key
 
-  // todo
-  // const account = Store.state.user.userInfo.list.registerInfo.user_id
-  // const token = Store.state.user.userInfo.list.registerInfo.token
-  const account = 'mbnbxzzdzl'
-  const token = 'a29093276850b6c45e1011045dc2842a'
+  const account = Store.state.user.userInfo.registerInfo.userId
+  const token = Store.state.user.userInfo.registerInfo.imToken
   const db = false
 
   if (!$peace.NIM) {
