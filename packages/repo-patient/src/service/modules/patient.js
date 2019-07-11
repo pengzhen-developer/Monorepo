@@ -1,6 +1,19 @@
 import peace from '@src/library'
 
 /**
+ * 获取医生列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getDoctorList(params) {
+  const getDoctorList = 'client/v1/Doctor/getDoctorList'
+
+  return peace.http.post(getDoctorList, params)
+}
+
+/**
  * 获取我的家人
  *
  * @export
@@ -13,22 +26,9 @@ export function getMyFamilyList(params) {
   return peace.http.post(getMyFamilyList, params)
 }
 
-/**
- * 请求登录
- *
- * @export
- * @param {*} params 参数列表
- * @returns
- */
-export function login(params) {
-  const login = 'h5/v1/Account/login'
-
-  return peace.http.post(login, params)
-}
-
 export default {
+  /** 获取医生列表 */
+  getDoctorList,
   /** 获取我的家人 */
-  getMyFamilyList,
-  /** 登录 */
-  login
+  getMyFamilyList
 }

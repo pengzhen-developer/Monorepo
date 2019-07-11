@@ -4,16 +4,14 @@
       <h4 class="login-form-title">手机快捷登录</h4>
 
       <van-field placeholder="请输入手机号" ref="tel" v-model="tel" />
-      <van-field placeholder="请输入验证码" ref="smsCode" readonly
-        clickable
-        :value="smsCode"
-        @touchstart.native.stop="showKeyboard = true">
+      <van-field :value="smsCode" @touchstart.native.stop="showKeyboard = true" clickable placeholder="请输入验证码" readonly ref="smsCode">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === 60 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
-      <van-number-keyboard v-model="smsCode" :show="showKeyboard" :maxlength="6" @blur="showKeyboard = false"/>
+      <van-number-keyboard :maxlength="6" :show="showKeyboard" @blur="showKeyboard = false" v-model="smsCode" />
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
+        <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button>
     </div>
 
     <div class="login-footer">
@@ -107,6 +105,26 @@ export default {
       setTimeout(() => {
         this.$router.push(peace.config.system.homePage)
       }, 1000)
+    },
+
+    signInByMockForSISI(){
+        const mockLoginData = {"patientInfo":{"id":"rjgqjjxfle","tel":"18674052544","realName":"AJY93445475","regTime":"2019-07-10 14:56:03"},"loginInfo":{"tel":"18674052544","accessToken":"_ce682229e4e803f035b9d5d6d29c7700"},"registerInfo":{"userId":"rjgqjjxfle","imToken":"fb40659d78920e9a5cfc2ebf29bbf741","nickname":"AJY93445475"}}
+
+        // 提示登录成功
+        peace.util.alert('登录成功，正在跳转...')
+
+        // 更新 vuex store
+        this.$store.commit('user/setUserInfo', mockLoginData)
+
+        // 存储到本地缓存
+        peace.cache.set(peace.type.USER.INFO, mockLoginData, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
+
+        // 初始化 IM
+        peace.service.IM.initNIM()
+
+        setTimeout(() => {
+            this.$router.push(peace.config.system.homePage)
+        }, 1000)
     }
   }
 }

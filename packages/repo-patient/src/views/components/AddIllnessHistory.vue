@@ -7,14 +7,21 @@
 
       <hr />
 
-      <h4>已选既往用药</h4>
+      <h4>已选既往史</h4>
       <div class="checked-list">
         <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in illnessHistory">{{ item.value }}</van-tag>
       </div>
 
-      <h4>常见既往用药</h4>
+      <h4>常见既往史</h4>
       <div class="not-checked-list">
-        <van-tag :class="{ checked: item.checked }" :key="item.value" @click="check(item)" class="tag" plain v-for="item in illnessHistoryTODO">{{ item.value }}</van-tag>
+        <van-tag
+          :class="{ checked: item.checked }"
+          :key="item.value"
+          @click="check(item)"
+          class="tag"
+          plain
+          v-for="item in illnessHistoryCommonly"
+        >{{ item.value }}</van-tag>
       </div>
     </div>
 
@@ -29,6 +36,8 @@
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
@@ -42,38 +51,61 @@ export default {
       // 已选
       illnessHistory: [],
       // 常见
-      illnessHistoryTODO: []
+      illnessHistoryCommonly: []
     }
   },
 
   created() {
-    this.illnessHistoryTODO = [
-      { value: '无', checked: false },
-      { value: '既往史1', checked: false },
-      { value: '既往史2', checked: false },
-      { value: '既往史3', checked: false },
-      { value: '既往史4', checked: false },
-      { value: '既往史5', checked: false },
-      { value: '既往史6', checked: false }
-    ]
-
-    // 接收参数
-    if (this.$route.params.illnessHistory) {
-      this.$route.params.illnessHistory.forEach(illness => {
-        this.illnessHistory.push({ value: illness, checked: true })
-
-        if (this.illnessHistoryTODO.find(item => item.value === illness)) {
-          this.illnessHistoryTODO.find(item => item.value === illness).checked = true
-        }
-      })
-    }
+    this.getIllnessHistoryCommonly().then(() => {
+      this.parmasHandler()
+    })
   },
 
   methods: {
+    getIllnessHistoryCommonly() {
+      const params = { type: '1', isCommon: '1' }
+
+      return peace.service.inquiry.searchIllInfo(params).then(res => {
+        this.illnessHistoryCommonly = res.data.map(item => {
+          return {
+            value: item.name,
+            checked: false
+          }
+        })
+
+        this.illnessHistoryCommonly.unshift({
+          value: '无',
+          checked: false
+        })
+      })
+    },
+
+    parmasHandler() {
+      // 处理参数
+      // 根据传递参数,还原选中
+      if (this.$route.params.illnessHistory) {
+        this.$route.params.illnessHistory.forEach(illness => {
+          this.illnessHistory.push({ value: illness, checked: true })
+
+          console.log(this.illnessHistoryCommonly)
+          if (this.illnessHistoryCommonly.find(item => item.value === illness)) {
+            this.illnessHistoryCommonly.find(item => item.value === illness).checked = true
+          }
+        })
+      }
+    },
+
     onSearch() {
-      this.showIllnessHistory = true
-      this.searchIllnessHistory = ''
-      this.illnessHistoryList = ['搜索出来的']
+      const params = {
+        keyword: this.searchIllnessHistory,
+        type: '1'
+      }
+      peace.service.inquiry.searchIllInfo(params).then(res => {
+        this.illnessHistoryList = res.data.map(item => item.name)
+
+        this.showIllnessHistory = true
+        this.searchIllnessHistory = ''
+      })
     },
     onCancel() {
       this.showIllnessHistory = false
@@ -88,14 +120,14 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.illnessHistory = []
-        this.illnessHistoryTODO.forEach(item => (item.checked = false))
+        this.illnessHistoryCommonly.forEach(item => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
         const index = this.illnessHistory.findIndex(item => item.value === '无')
 
         if (index !== -1) {
-          this.illnessHistoryTODO[0].checked = false
+          this.illnessHistoryCommonly[0].checked = false
           this.illnessHistory.splice(index, 1)
         }
       }
