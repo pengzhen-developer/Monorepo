@@ -171,7 +171,7 @@
             goDoctorListPage(){},
             goDeptPage(){
                 let json = window.btoa(JSON.stringify({
-                    hsp:  this.hsp.nethospitalInfo
+                    netHospitalId:  this.hsp.nethospitalInfo.netHospitalId
                 }))
                 this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
             },

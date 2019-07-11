@@ -1,91 +1,97 @@
 <template>
-<div>
-    <van-tree-select
-            :items="items"
-            :main-active-index="mainActiveIndex"
-            :active-id="activeId"
-            @navclick="onNavClick"
-            @itemclick="onItemClick"
-    />
-</div>
+    <div>
+        <van-tree-select
+                :items="items"
+                :main-active-index="mainActiveIndex"
+                :active-id="activeId"
+                @navclick="onNavClick"
+                @itemclick="onItemClick"
+        />
+    </div>
 </template>
 
 <script>
     import peace from '@src/library';
 
     export default {
-        props: {
-
-        },
-        data(){
-            return{
+        props: {},
+        data() {
+            return {
                 data: {},
-                hsp:{},
-                items:[],
-                checkDept:{},
+                hsp: {},
+                items: [],
+                checkDept: {},
                 // 左侧高亮元素的index
                 mainActiveIndex: 0,
                 // 被选中元素的id
-                activeId: 1,
-                deptParent:[],
-                deptChild:[],
+                activeId: '',
+                deptParent: [],
+                deptChild: [],
             }
         },
         created() {
             let params = JSON.parse(window.atob($peace.$route.params.json));
-                this.hsp = params;
-                this.getDeptList({},function () {
-                    this.data.deptParent.length && this.initDeptChild();
+            this.hsp = params || {};
+            this.getDeptList({},() =>{
+                this.deptParent.map((item) =>{
+                    // this.initDeptChild();
+                    this.getDeptList({
+                        deptId: item.id,
+                        name: item.netdeptName,
+                        level: 2
+                    })
+                    return;
                 })
-
+            })
         },
         methods: {
-            initDeptChild: function(){
-                var me = this;
-
-                me.getDeptList({
-                    deptId: this.deptParent[0].id,
-                    name: this.deptParent[0].netdeptName,
-                    level: 2
-                })
-            },
-            getDeptList(obj, callback){
-                let me = this, hsp = me.hsp, data, arr=[];
-
-                if(obj.level == 2 && this.checkDept.deptId == obj.deptId){
-                    return;
-                }
+            // initDeptChild: function () {
+            //     var me = this;
+            //
+            //     me.getDeptList({
+            //         deptId: this.deptParent[0].id,
+            //         name: this.deptParent[0].netdeptName,
+            //         level: 2
+            //     })
+            // },
+            getDeptList(obj, callback) {
+                let data, arr = [];
 
                 data = {
-                    netHospitalId: obj.netHospitalId || hsp.netHospitalId || '',
-                    deptId: obj.deptId || hsp.deptId || '',
-                    level: obj.level || hsp.level || 1
+                    netHospitalId: obj.netHospitalId || this.hsp.netHospitalId || '',
+                    deptId: obj.deptId || this.hsp.deptId || '',
+                    level: obj.level || this.hsp.level || 1
                 };
 
                 peace.service.hospital.getDeptList(data).then(res => {
-                    console.log(res)
+                    // let me = this;
+
                     if (data.level == 1) {
                         this.deptParent = res.data.list || [];
-                        this.items = res.data.list.map(item =>{
+                        res.data.list.map(item => {
                             return arr.push({
                                 text: item.netdeptName,
                                 id: item.id
                             })
                         })
+                        this.items = arr;
                         this.hospitalInfo = res.data.hospitalInfo;
+                    }else {
+                        this.deptChild = res.data.list || [];
+                        this.items.map(item => {
+                            if (obj.deptId == item.id) {
+                                this.deptChild.map(it => {
+                                    return arr.push({
+                                        text: it.netdeptName,
+                                        id: it.id
+                                    })
+                                })
+                                item.children = arr;
+                            }
+                            return;
+                        })
                     }
-                    this.deptChild = (data.level == 1 ? [] : res.data.list);
-                    this.hospitalInfo = res.data.hospitalInfo || {};
-                    this.checkDept.deptId = (data.level == 2 ? obj.deptId : '');
-                    this.checkDept.name = (data.level == 2 ? obj.name : '');
-                    this.items.map(item =>{
-                        if(this.checkDept.deptId == item.id){
-                            item.children = this.deptChild
-                        }else {
-                            item.children = []
-                        }
-                        return;
-                    })
+                    console.log(this.items)
                     callback && callback()
                 })
             },
