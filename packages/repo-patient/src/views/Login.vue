@@ -4,13 +4,10 @@
       <h4 class="login-form-title">手机快捷登录</h4>
 
       <van-field placeholder="请输入手机号" ref="tel" v-model="tel" />
-      <van-field placeholder="请输入验证码" ref="smsCode" readonly
-        clickable
-        :value="smsCode"
-        @touchstart.native.stop="showKeyboard = true">
+      <van-field :value="smsCode" @touchstart.native.stop="showKeyboard = true" clickable placeholder="请输入验证码" readonly ref="smsCode">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === 60 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
-      <van-number-keyboard v-model="smsCode" :show="showKeyboard" :maxlength="6" @blur="showKeyboard = false"/>
+      <van-number-keyboard :maxlength="6" :show="showKeyboard" @blur="showKeyboard = false" v-model="smsCode" />
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>

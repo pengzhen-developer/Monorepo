@@ -128,7 +128,7 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-color: transparent;
-    background-image: url('~@/assets/images/bg_doctor homepage.png');
+    background-image: url('~@src/assets/images/bg_doctor homepage.png');
 
     .title-description {
       display: flex;

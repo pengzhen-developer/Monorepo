@@ -20,7 +20,7 @@
           @click="check(item)"
           class="tag"
           plain
-          v-for="item in allergicHistoryTODO"
+          v-for="item in allergicHistoryCommonly"
         >{{ item.value }}</van-tag>
       </div>
     </div>
@@ -30,54 +30,69 @@
     </div>
 
     <van-popup position="bottom" v-model="showAllergicHistory">
-      <van-picker :columns="AllergicHistoryList" @cancel="showAllergicHistory = false" @confirm="onConfirm" show-toolbar />
+      <van-picker :columns="allergicHistoryList" @cancel="showAllergicHistory = false" @confirm="onConfirm" show-toolbar />
     </van-popup>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
       showAllergicHistory: false,
       searchAllergicHistory: '',
-      AllergicHistoryList: [],
 
+      // 搜索
+      allergicHistoryList: [],
       // 已选
       allergicHistory: [],
       // 常见
-      allergicHistoryTODO: []
+      allergicHistoryCommonly: []
     }
   },
 
   created() {
-    this.allergicHistoryTODO = [
-      { value: '无', checked: false },
-      { value: '过敏1', checked: false },
-      { value: '过敏2', checked: false },
-      { value: '过敏3', checked: false },
-      { value: '过敏4', checked: false },
-      { value: '过敏5', checked: false },
-      { value: '过敏6', checked: false }
-    ]
-
-    // 接收参数
-    if (this.$route.params.allergicHistory) {
-      this.$route.params.allergicHistory.forEach(allergic => {
-        this.allergicHistory.push({ value: allergic, checked: true })
-
-        if (this.allergicHistoryTODO.find(item => item.value === allergic)) {
-          this.allergicHistoryTODO.find(item => item.value === allergic).checked = true
-        }
-      })
-    }
+    this.getAllergicHistoryCommonly().then(() => {
+      this.parmasHandler()
+    })
   },
 
   methods: {
+    getAllergicHistoryCommonly() {
+      const params = { type: '2', isCommon: '1' }
+
+      return peace.service.inquiry.searchIllInfo(params).then(res => {
+        this.allergicHistoryCommonly = res.data.map(item => {
+          return {
+            value: item.name,
+            checked: false
+          }
+        })
+
+        // 接口已经有无了...... 不用手动添加了
+      })
+    },
+
+    parmasHandler() {
+      // 处理参数
+      // 根据传递参数,还原选中
+      if (this.$route.params.allergicHistory) {
+        this.$route.params.allergicHistory.forEach(allergic => {
+          this.allergicHistory.push({ value: allergic, checked: true })
+
+          if (this.allergicHistoryCommonly.find(item => item.value === allergic)) {
+            this.allergicHistoryCommonly.find(item => item.value === allergic).checked = true
+          }
+        })
+      }
+    },
+
     onSearch() {
       this.showAllergicHistory = true
       this.searchAllergicHistory = ''
-      this.AllergicHistoryList = ['搜索出来的']
+      this.allergicHistoryList = ['搜索出来的']
     },
     onCancel() {
       this.showAllergicHistory = false
@@ -92,14 +107,14 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
-        this.allergicHistoryTODO.forEach(item => (item.checked = false))
+        this.allergicHistoryCommonly.forEach(item => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
         const index = this.allergicHistory.findIndex(item => item.value === '无')
 
         if (index !== -1) {
-          this.allergicHistoryTODO[0].checked = false
+          this.allergicHistoryCommonly[0].checked = false
           this.allergicHistory.splice(index, 1)
         }
       }

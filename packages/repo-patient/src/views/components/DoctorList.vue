@@ -1,36 +1,35 @@
 <template>
   <div class="doctor-list">
-    <div :key="item" @click="redict" class="item" v-for="item in 5">
+    <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail" class="item" v-for="doctor in doctorList">
       <div class="avatar">
-        <img />
+        <img :src="doctor.doctorInfo.avartor" />
       </div>
       <div class="detail">
         <div class="title-doctor">
-          <span class="title-doctor-name">张逗豆</span>
-          <span>副主任医生</span>
-          <span>妇产科</span>
+          <span class="title-doctor-name">{{ doctor.doctorInfo.doctorName }}</span>
+          <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+          <span>{{ doctor.doctorInfo.deptName }}</span>
           <van-tag plain>离线</van-tag>
         </div>
         <div class="title-hospital">
-          <span>郑州大学第一附属医院</span>
+          <span>{{ doctor.doctorInfo.hospitalName }}</span>
         </div>
         <div class="title-description">
           <span class="title-description-label">擅长:</span>
-          <span class="title-description-detail">临床工作经验丰富，擅长治疗儿童呼呼吸道 感染性疾病，儿童过敏...</span>
+          <span class="title-description-detail">{{ doctor.doctorInfo.specialSkill || '暂未填写' }}</span>
         </div>
         <div class="title-service">
           <div>
-            <span class="title-service-money">￥50</span>
-            <span class="title-service-money-extend">起</span>
+            <span class="title-service-money">{{ getServiceMoney(doctor) }}</span>
           </div>
 
-          <div>
-            <div class="title-service-item">
-              <i></i>
+          <div class="title-service-item">
+            <div @click.stop="redictToApply('image')" class="title-service-item" v-if="canShowImageInquiry(doctor)">
+              <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
               <span>图文咨询</span>
             </div>
-            <div class="title-service-item">
-              <i></i>
+            <div @click.stop="redictToApply('video')" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
+              <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
               <span>视频咨询</span>
             </div>
           </div>
@@ -41,10 +40,53 @@
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
+  data() {
+    return {
+      doctorList: []
+    }
+  },
+
+  created() {
+    this.get()
+  },
+
   methods: {
-    redict() {
+    get() {
+      peace.service.patient.getDoctorList().then(res => {
+        this.doctorList = res.data
+      })
+    },
+
+    getServiceMoney(doctor) {
+      const moneyList = [doctor.consultationList[0].money, doctor.consultationList[1].money, doctor.consultationList[2].money]
+      const minMoney = Math.min.apply(null, moneyList)
+
+      if (minMoney === 0) {
+        return '免费'
+      } else {
+        return `${minMoney}起`
+      }
+    },
+
+    canShowImageInquiry(doctor) {
+      // 图文咨询
+      return doctor.consultationList[0].status
+    },
+
+    canShowVideoInquiry(doctor) {
+      // 视频咨询
+      return doctor.consultationList[1].status
+    },
+
+    redictToDetail() {
       this.$router.push('/components/doctorDetail')
+    },
+
+    redictToApply() {
+      this.$router.push('/components/DoctorInquiryApply')
     }
   }
 }
@@ -69,6 +111,7 @@ export default {
     }
 
     .detail {
+      width: 100%;
       margin: 0 0 0 10px;
 
       .title-doctor {
@@ -111,7 +154,7 @@ export default {
 
         .title-service-money {
           color: #fb2828;
-          font-size: 18px;
+          font-size: 16px;
         }
         .title-service-money-extend {
           color: #fb2828;
