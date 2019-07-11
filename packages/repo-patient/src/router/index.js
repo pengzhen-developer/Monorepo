@@ -60,7 +60,7 @@ const router = new Router({
 
         // 医生列表
         {
-          path: '/components/doctorList',
+          path: '/components/doctorList/:json',
           name: '/components/doctorList',
           meta: {
             auth: true,
