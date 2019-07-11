@@ -58,6 +58,19 @@ const router = new Router({
           component: () => import('@src/views/setting/index.vue')
         },
 
+        // 我的家人
+        {
+          path: '/setting/myFamilyMembers',
+          name: '/setting/myFamilyMembers',
+          meta: {
+            auth: true,
+            back: {
+              title: '我的家人'
+            }
+          },
+          component: () => import('@src/views/setting/MyFamilyMembers.vue')
+        },
+
         // 医生列表
         {
           path: '/components/doctorList/:json',
@@ -105,7 +118,8 @@ const router = new Router({
               title: '图文咨询'
             }
           },
-          component: () => import('@src/views/components/DoctorInquiryApply.vue')
+          component: () =>
+            import('@src/views/components/DoctorInquiryApply.vue')
         },
 
         // 添加既往史
@@ -130,7 +144,8 @@ const router = new Router({
               title: '添加过敏史'
             }
           },
-          component: () => import('@src/views/components/AddAllergicHistory.vue')
+          component: () =>
+            import('@src/views/components/AddAllergicHistory.vue')
         },
 
         // 添加过敏史
@@ -179,7 +194,12 @@ router.beforeEach((to, from, next) => {
     peace.referrer = to
 
     // 验证权限
-    if (peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)) {
+    if (
+      peace.cache.get(
+        peace.type.USER.INFO,
+        peace.type.SYSTEM.CACHE.LOCAL_STORAGE
+      )
+    ) {
       return next()
     } else {
       return next(peace.config.system.noauthPage)
