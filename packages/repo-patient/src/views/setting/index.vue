@@ -3,11 +3,20 @@
     <h4>我的</h4>
 
     <van-cell-group>
-      <van-cell is-link title="我的家人" value />
+      <van-cell
+        is-link
+        title="我的家人"
+        to="/setting/myFamilyMembers"
+        value
+      />
       <van-cell is-link title="我的医生" value />
       <van-cell is-link title="收获地址" value />
       <van-cell @click="signOut" is-link title="退出登录" value>
-        <van-icon class="van-cell__right-icon" name="close" slot="right-icon" />
+        <van-icon
+          class="van-cell__right-icon"
+          name="close"
+          slot="right-icon"
+        />
       </van-cell>
     </van-cell-group>
   </div>
