@@ -8,11 +8,13 @@ import IM from './modules/IM'
 
 import login from './modules/login'
 import inquiry from './modules/inquiry'
+import index from './modules/index'
 import patient from './modules/patient'
 
 export default {
   IM,
   inquiry,
   login,
+  index,
   patient
 }
