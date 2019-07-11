@@ -1,47 +1,57 @@
 <template>
   <div class="layout">
-    <!-- 返回 -->
-    <template v-if="$route.meta.back">
-      <van-nav-bar :title="$route.meta.back.title" @click-left="back" class="layout-navbar" left-arrow left-text=" " />
-    </template>
+    <!-- 顶部返回 nav-bar -->
+    <transition mode="out-in" name="van-fade">
+      <template v-if="$route.meta.back">
+        <van-nav-bar :title="$route.meta.back.title" @click-left="back" class="layout-navbar" left-arrow left-text=" " />
+      </template>
+    </transition>
 
-    <!-- keepAlive -->
+    <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
+      <transition mode="out-in" name="van-fade">
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+      </transition>
 
-      <!-- not keepAlive -->
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <transition mode="out-in" name="van-fade">
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
+      </transition>
     </div>
 
-    <template v-if="!($route.meta.tabBar && $route.meta.tabBar.visible === false)">
-      <van-tabbar class="layout-tabbar" v-model="active">
-        <van-tabbar-item to="/home/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>首页</span>
-        </van-tabbar-item>
+    <!-- 底部导航 tabbar -->
+    <transition mode="out-in" name="van-fade">
+      <template v-if="!($route.meta.tabBar && $route.meta.tabBar.visible === false)">
+        <van-tabbar class="layout-tabbar" v-model="active">
+          <van-tabbar-item to="/home/index">
+            <i class="icon_ic_datatrends" slot="icon"></i>
+            <span>首页</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="search" to="/message/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>消息</span>
-        </van-tabbar-item>
+          <van-tabbar-item icon="search" to="/message/index">
+            <i class="icon_ic_datatrends" slot="icon"></i>
+            <span>消息</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="setting-o" to="/file/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>健康档案</span>
-        </van-tabbar-item>
+          <van-tabbar-item icon="setting-o" to="/file/index">
+            <i class="icon_ic_datatrends" slot="icon"></i>
+            <span>健康档案</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="setting-o" to="/setting/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>个人中心</span>
-        </van-tabbar-item>
-      </van-tabbar>
-    </template>
+          <van-tabbar-item icon="setting-o" to="/setting/index">
+            <i class="icon_ic_datatrends" slot="icon"></i>
+            <span>个人中心</span>
+          </van-tabbar-item>
+        </van-tabbar>
+      </template>
+    </transition>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
@@ -65,6 +75,10 @@ export default {
     }
   },
 
+  created() {
+    this.$router.push(peace.config.system.homePage)
+  },
+
   methods: {
     back() {
       this.$router.go(-1)
@@ -80,6 +94,7 @@ export default {
   flex-direction: column;
 
   .layout-content {
+    width: 100%;
     flex: 1;
     overflow: auto;
   }

@@ -9,7 +9,7 @@
 export default {
   methods: {
     redirectDetailPage() {
-      this.$router.push('/home/doctorList')
+      this.$router.push('/components/doctorList')
     }
   }
 }

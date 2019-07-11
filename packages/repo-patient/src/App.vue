@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition mode="out-in" name="van-fade">
+      <router-view />
+    </transition>
   </div>
 </template>
 
@@ -25,3 +27,4 @@ export default {
 
 <style>
 </style>
+

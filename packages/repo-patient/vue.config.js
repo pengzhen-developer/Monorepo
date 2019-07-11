@@ -38,7 +38,8 @@ module.exports = {
 
       less: {
         modifyVars: {
-          green: '#00c6ae'
+          green: '#00c6ae',
+          blue: '#00c6ae',
         }
       },
 

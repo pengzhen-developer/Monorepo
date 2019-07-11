@@ -1,6 +1,6 @@
 <template>
   <div class="message-list">
-    <div @click="hideTools" class="inquiry-session-message-list">
+    <div @click="hideTools" class="item">
       <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
         <!-- 文本消息 -->
         <template
@@ -95,13 +95,13 @@
       </div>
     </div>
 
-    <div class="inquiry-session-message-input">
+    <div class="input">
       <van-field :autosize="{ maxHeight: 60, minHeight: 20 }" @focus="hideTools" placeholder="请输入" rows="1" type="textarea" v-model="message">
         <van-icon @click="showTools" name="add-o" slot="right-icon" />
         <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
       </van-field>
 
-      <div class="inquiry-session-message-input-tools" v-show="tools.visible">
+      <div class="input-tools" v-show="tools.visible">
         <van-row justify="space-between" type="flex">
           <van-col class="flex-center" span="6">
             <van-uploader>
@@ -294,7 +294,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .inquiry-session-message-list {
+  .item {
     overflow: auto;
     padding: 5px 10px;
     flex: 1;
@@ -366,14 +366,14 @@ export default {
     }
   }
 
-  .inquiry-session-message-input {
+  .input {
     min-height: 50px;
     position: relative;
     bottom: 0;
     left: 0;
     z-index: 1;
 
-    .inquiry-session-message-input-tools {
+    .input-tools {
       padding: 20px;
 
       .flex-center {

@@ -4,9 +4,13 @@
       <h4 class="login-form-title">手机快捷登录</h4>
 
       <van-field placeholder="请输入手机号" ref="tel" v-model="tel" />
-      <van-field placeholder="请输入验证码" ref="smsCode" v-model="smsCode">
+      <van-field placeholder="请输入验证码" ref="smsCode" readonly
+        clickable
+        :value="smsCode"
+        @touchstart.native.stop="showKeyboard = true">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === 60 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
+      <van-number-keyboard v-model="smsCode" :show="showKeyboard" :maxlength="6" @blur="showKeyboard = false"/>
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
@@ -27,6 +31,7 @@ export default {
     return {
       tel: '',
       smsCode: '',
+      showKeyboard: false,
       countDown: 60
     }
   },
@@ -82,61 +87,9 @@ export default {
     signInByMock() {
       // todo
       const mockLoginData = {
-        docInfo: {
-          id: 'sdhnqkdvyv',
-          doctor_id: 'unayuzpaar',
-          name: '何泰樑',
-          id_card: '42900419920518429X',
-          hospital_name: '武汉市第一医院',
-          dep_name: '内科',
-          is_pass: 'on',
-          cert_file: '[{"img":"https://devapi.hp.aijiayi.com/img/img_certificate.png"},{"img":"https://devapi.hp.aijiayi.com/img/img_certificate.png"}]',
-          doctor_title: '副主任医师',
-          created_time: '2019-03-29 13:49:38',
-          cert_no: 'A14514',
-          netHospital_name: '武汉市第一医院',
-          netHospital_id: 'vpnrstbnvh',
-          netdept_name: '内科',
-          netdept_child: '呼吸内科',
-          dep_child: '呼吸内科',
-          pass_reason: null,
-          platdept_name: '内科',
-          platdept_child: '普通外科',
-          netdept_nameId: 'euxmmbqxdt',
-          netdept_childId: 'tdmvmnfzfy',
-          tel: '13164606327',
-          photoDoc: 'https://devdoctor.hp.aijiayi.com/data/20190424/20190424101327jbeaxg_500_500.png',
-          qr_ticket: '',
-          openid: '7bbfeb38b9ecdc9bq92e4w8c05y99d9a66b',
-          sign_status: 2,
-          avartor: 'https://devdoctor.hp.aijiayi.com/data/20190424/20190424101327jbeaxg_500_500.png'
-        },
-        loginInfo: {
-          id: 'ffapnptksm',
-          tel: '13164606327',
-          s_date: '2019-07-08 09:27:39',
-          e_date: '2019-07-15 09:27:39',
-          accessToken: '_d62e776641c43f02f16be0390cb09a88',
-          uid: 'rglnwqnypr'
-        },
-        registerInfo: {
-          id: 'coeoloqjhw',
-          user_id: 'unayuzpaar',
-          token: '57509078b6dd9b0a2444d040eb94bb47',
-          nickname: '何泰樑',
-          created_time: '2019-06-28 08:56:39',
-          tel: '13164606327',
-          birth: '',
-          email: '',
-          sign: '',
-          icon: '',
-          gender: 0,
-          type: 1,
-          to_img: null
-        },
-        patientInfo: {
-          id: 'mbnbxzzdzl'
-        }
+        patientInfo: { id: 'yhasfnnays', tel: '13007120720', realName: 'AJY49666111', regTime: '2019-07-10 11:26:13' },
+        loginInfo: { tel: '13007120720', accessToken: '_83bf3489efda0de88996ff9041eb6a98' },
+        registerInfo: { userId: 'yhasfnnays', imToken: '04236b23c334901c291fc6d593aa2215', nickname: 'AJY49666111' }
       }
 
       // 提示登录成功

@@ -90,7 +90,7 @@ export default {
       })
 
       // 跳转详细详情
-      this.$router.push('/message/messageList')
+      this.$router.push('/components/messageList')
     }
   }
 }

@@ -21,8 +21,7 @@ Vue.use(library.install)
 // UI
 import Vant from 'vant'
 import 'vant/lib/icon/local.css'
-import 'vant/lib//index.css'
-import 'vant/lib/style/base.less'
+import 'vant/lib/index.less'
 Vue.use(Vant)
 
 // css

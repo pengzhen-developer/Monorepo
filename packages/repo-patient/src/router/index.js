@@ -10,44 +10,68 @@ const router = new Router({
     {
       path: '/',
       name: '/',
-      meta: { Auth: true },
+      meta: {
+        auth: true
+      },
       component: () => import('@src/views/components/layout/index.vue'),
+
       children: [
         // 首页
         {
           path: '/home/index',
           name: '/home/index',
           meta: {
-            keepAlive: true
+            auth: true
           },
           component: () => import('@src/views/home/index.vue')
         },
-        // 首页-医生列表
-        {
-          path: '/home/doctorList',
-          name: '/home/doctorList',
-          meta: {
-            back: {
-              title: '医生列表'
-            }
-          },
-          component: () => import('@src/views/home/DoctorList.vue')
-        },
-
         // 消息
         {
           path: '/message/index',
           name: '/message/index',
           meta: {
-            keepAlive: true
+            auth: true
           },
           component: () => import('@src/views/message/index.vue')
         },
-        // 消息 - 消息列表
+
+        // 健康档案
         {
-          path: '/message/messageList',
-          name: '/message/messageList',
+          path: '/file/index',
+          name: '/file/index',
           meta: {
+            auth: true
+          },
+          component: () => import('@src/views/file/index.vue')
+        },
+        // 我的
+        {
+          path: '/setting/index',
+          name: '/setting/index',
+          meta: {
+            auth: true
+          },
+          component: () => import('@src/views/setting/index.vue')
+        },
+
+        // 医生列表
+        {
+          path: '/components/doctorList',
+          name: '/components/doctorList',
+          meta: {
+            auth: true,
+            back: {
+              title: '医生列表'
+            }
+          },
+          component: () => import('@src/views/components/DoctorList.vue')
+        },
+        // 消息列表
+        {
+          path: '/components/messageList',
+          name: '/components/messageList',
+          meta: {
+            auth: true,
             back: {
               visible: true,
               title: '消息列表'
@@ -56,27 +80,77 @@ const router = new Router({
               visible: false
             }
           },
-          component: () => import('@src/views/message/MessageList.vue')
+          component: () => import('@src/views/components/MessageList.vue')
+        },
+        // 医生主页
+        {
+          path: '/components/doctorDetail',
+          name: '/components/doctorDetail',
+          meta: {
+            auth: true,
+            back: {
+              title: '医生主页'
+            }
+          },
+          component: () => import('@src/views/components/DoctorDetail.vue')
+        },
+        // 申请图文问诊
+        {
+          path: '/components/doctorInquiryApply',
+          name: '/components/doctorInquiryApply',
+          meta: {
+            auth: true,
+            back: {
+              title: '图文咨询'
+            }
+          },
+          component: () => import('@src/views/components/DoctorInquiryApply.vue')
         },
 
-        // 健康档案
+        // 添加既往史
         {
-          path: '/file/index',
-          name: '/file/index',
+          path: '/components/addIllnessHistory',
+          name: '/components/addIllnessHistory',
           meta: {
-            keepAlive: true
+            auth: true,
+            back: {
+              title: '添加过敏史'
+            },
+            tabBar: {
+              visible: false
+            }
           },
-          component: () => import('@src/views/file/index.vue')
+          component: () => import('@src/views/components/AddIllnessHistory.vue')
         },
-
-        // 我的
+        // 添加过敏史
         {
-          path: '/setting/index',
-          name: '/setting/index',
+          path: '/components/addAllergicHistory',
+          name: '/components/addAllergicHistory',
           meta: {
-            keepAlive: true
+            auth: true,
+            back: {
+              title: '添加过敏史'
+            },
+            tabBar: {
+              visible: false
+            }
           },
-          component: () => import('@src/views/setting/index.vue')
+          component: () => import('@src/views/components/AddAllergicHistory.vue')
+        },
+        // 添加既往用药
+        {
+          path: '/components/addPastDrug',
+          name: '/components/addPastDrug',
+          meta: {
+            auth: true,
+            back: {
+              title: '添加既往用药'
+            },
+            tabBar: {
+              visible: false
+            }
+          },
+          component: () => import('@src/views/components/AddPastDrug.vue')
         }
       ]
     },
@@ -90,13 +164,24 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  $peace.referrer = from
+
+  // 默认开始 keepAlive, 根据 route 参数修改
+  to.meta.keepAlive = true
+  if (to.params.hasOwnProperty('keepAlive')) {
+    to.meta.keepAlive = to.params.keepAlive
+  }
+  if (to.query.hasOwnProperty('keepAlive')) {
+    to.meta.keepAlive = to.query.keepAlive
+  }
+
   // 1. 是否需要验证权限
-  if (!to.meta.hasOwnProperty('Auth') || to.meta.Auth === false) {
+  if (!to.meta.hasOwnProperty('auth') || to.meta.auth === false) {
     return next()
   }
 
   // 2. 需要验证权限的情况下
-  if (to.meta.Auth === true) {
+  if (to.meta.auth === true) {
     // 记录 referrer
     peace.referrer = to
 
@@ -104,7 +189,7 @@ router.beforeEach((to, from, next) => {
     if (peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)) {
       return next()
     } else {
-      return next(peace.config.system.noAuthPage)
+      return next(peace.config.system.noauthPage)
     }
   }
 })
