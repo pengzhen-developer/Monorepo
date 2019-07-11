@@ -21,7 +21,8 @@ const router = new Router({
           path: '/home/index',
           name: '/home/index',
           meta: {
-            auth: true
+            auth: true,
+            tabBar: true
           },
           component: () => import('@src/views/home/index.vue')
         },
@@ -30,7 +31,8 @@ const router = new Router({
           path: '/message/index',
           name: '/message/index',
           meta: {
-            auth: true
+            auth: true,
+            tabBar: true
           },
           component: () => import('@src/views/message/index.vue')
         },
@@ -40,7 +42,8 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            auth: true
+            auth: true,
+            tabBar: true
           },
           component: () => import('@src/views/file/index.vue')
         },
@@ -49,7 +52,8 @@ const router = new Router({
           path: '/setting/index',
           name: '/setting/index',
           meta: {
-            auth: true
+            auth: true,
+            tabBar: true
           },
           component: () => import('@src/views/setting/index.vue')
         },
@@ -75,9 +79,6 @@ const router = new Router({
             back: {
               visible: true,
               title: '消息列表'
-            },
-            tabBar: {
-              visible: false
             }
           },
           component: () => import('@src/views/components/MessageList.vue')
@@ -115,9 +116,6 @@ const router = new Router({
             auth: true,
             back: {
               title: '添加过敏史'
-            },
-            tabBar: {
-              visible: false
             }
           },
           component: () => import('@src/views/components/AddIllnessHistory.vue')
@@ -130,27 +128,22 @@ const router = new Router({
             auth: true,
             back: {
               title: '添加过敏史'
-            },
-            tabBar: {
-              visible: false
             }
           },
           component: () => import('@src/views/components/AddAllergicHistory.vue')
         },
-        // 添加既往用药
+
+        // 添加过敏史
         {
-          path: '/components/addPastDrug',
-          name: '/components/addPastDrug',
+          path: '/components/informedConsent',
+          name: '/components/informedConsent',
           meta: {
             auth: true,
             back: {
-              title: '添加既往用药'
-            },
-            tabBar: {
-              visible: false
+              title: '知情同意书'
             }
           },
-          component: () => import('@src/views/components/AddPastDrug.vue')
+          component: () => import('@src/views/components/InformedConsent.vue')
         }
       ]
     },

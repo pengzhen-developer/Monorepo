@@ -8,9 +8,11 @@ import IM from './modules/IM'
 
 import login from './modules/login'
 import inquiry from './modules/inquiry'
+import patient from './modules/patient'
 
 export default {
   IM,
   inquiry,
-  login
+  login,
+  patient
 }

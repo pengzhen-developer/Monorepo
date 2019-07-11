@@ -20,9 +20,9 @@
     <div class="divider"></div>
 
     <van-cell-group>
-      <van-field :value="value" @click="就诊人 = true" clickable label="就诊人" placeholder="请选择就诊人" readonly right-icon="arrow" />
-      <van-popup position="bottom" v-model="就诊人">
-        <van-picker :columns="columns" @cancel="showPicker = false" @confirm="onConfirm" show-toolbar />
+      <van-field :value="model.就诊人" @click="show就诊人 = true" clickable label="就诊人" placeholder="请选择就诊人" readonly right-icon="arrow" />
+      <van-popup position="bottom" v-model="show就诊人">
+        <van-picker :columns="source.就诊人" @cancel="show就诊人 = false" @confirm="selectPatient" show-toolbar />
       </van-popup>
     </van-cell-group>
 
@@ -38,9 +38,11 @@
 
     <van-cell-group>
       <van-field label="是否复诊">
-        <van-switch active-color="#00c6ae" slot="right-icon" v-model="model.是否复诊" />
+        <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.是否复诊" />
       </van-field>
     </van-cell-group>
+
+    <div class="divider"></div>
 
     <van-cell-group>
       <van-field :value="model.illnessHistory" @click="showIllnessHistory" clickable label="既往史" placeholder="请选择诊断" readonly right-icon="arrow" />
@@ -49,12 +51,12 @@
     <van-cell-group>
       <van-field :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
       <van-popup position="bottom" v-model="showConfirmTime">
-        <van-datetime-picker @cancel="showConfirmTime = false" type="date" v-model="model.confirmTime" />
+        <van-datetime-picker @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
       </van-popup>
     </van-cell-group>
 
     <van-cell-group>
-      <van-field :value="model.pastDrug" @click="showPastDrug" clickable label="既往用药" placeholder="请选择既往用药" readonly right-icon="arrow" />
+      <van-field autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
     </van-cell-group>
 
     <van-cell-group>
@@ -63,37 +65,74 @@
 
     <van-cell-group>
       <van-field label="是否怀孕">
-        <van-switch active-color="#00c6ae" slot="right-icon" v-model="model.是否怀孕" />
+        <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.是否怀孕" />
       </van-field>
     </van-cell-group>
 
     <van-cell-group>
       <van-field label="是否不良反应">
-        <van-switch active-color="#00c6ae" slot="right-icon" v-model="model.是否不良反应" />
+        <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.是否不良反应" />
       </van-field>
     </van-cell-group>
+
+    <div class="divider"></div>
+
+    <van-cell-group>
+      <van-field label="本次复诊情况">
+        <van-radio-group slot="right-icon" v-model="model.本次复诊情况">
+          <van-radio name="1">本院同医生复诊</van-radio>
+          <van-radio name="2">本院非同医生复诊</van-radio>
+          <van-radio name="3">非本院复诊</van-radio>
+        </van-radio-group>
+      </van-field>
+    </van-cell-group>
+
+    <div class="footer">
+      <van-checkbox v-model="model.知情同意">
+        <span>我已阅读并同意</span>
+        <a @click="redirect" class="informed-consent">《知情同意书》</a>
+      </van-checkbox>
+      <van-button style="width: 100%;" type="primary">保存</van-button>
+    </div>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
+      show就诊人: false,
+      showConfirmTime: false,
+
       model: {
         就诊人: '',
         病情描述: '',
         附件上传: [],
         是否复诊: false,
-        是否怀孕: false,
-        是否不良反应: false,
 
+        // 既往史
         illnessHistory: '',
+        // 确认时间
         confirmTime: '',
+        // 既往用药
         pastDrug: '',
-        allergicHistory: ''
+        // 过敏史
+        allergicHistory: '',
+        // 是否怀孕
+        是否怀孕: false,
+        // 是否不良反应
+        是否不良反应: false,
+        // 本次复诊情况
+        本次复诊情况: false,
+        // 知情同意
+        知情同意: false
       },
 
       source: {
+        就诊人: [],
+
         confirmIllness: [],
         pastDrug: [],
         allergicHistory: []
@@ -115,23 +154,37 @@ export default {
     }
   },
 
+  created() {
+    peace.service.patient.getMyFamilyList().then(() => {
+      this.source.就诊人 = ['家人1', '家人2']
+    })
+  },
+
   methods: {
+    redirect() {
+      this.$router.push({
+        name: '/components/informedConsent',
+        params: {
+          keepAlive: false
+        }
+      })
+    },
+
+    selectPatient(value) {
+      this.show就诊人 = false
+      this.model.就诊人 = value
+    },
+    selectConfirmTime(value) {
+      this.showConfirmTime = false
+      this.model.confirmTime = value.formatDate()
+    },
+
     showIllnessHistory() {
       this.$router.push({
         name: '/components/addIllnessHistory',
         params: {
           keepAlive: false,
-          pastDrug: this.model.illnessHistory
-        }
-      })
-    },
-
-    showPastDrug() {
-      this.$router.push({
-        name: '/components/addPastDrug',
-        params: {
-          keepAlive: false,
-          pastDrug: this.model.pastDrug
+          illnessHistory: this.model.illnessHistory
         }
       })
     },
@@ -193,9 +246,34 @@ export default {
     }
   }
 
+  /deep/ .van-uploader__upload,
+  /deep/ .van-uploader__preview-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  /deep/ .van-radio {
+    margin: 0 0 10px 0;
+  }
+
   .divider {
     height: 10px;
     background: #f5f5f5;
+  }
+
+  .footer {
+    text-align: center;
+    background: #f5f5f5;
+    padding: 20px 10px;
+
+    .informed-consent {
+      color: $-color--primary;
+    }
+
+    .van-checkbox {
+      margin: 0 0 10px 0;
+      justify-content: center;
+    }
   }
 }
 </style>

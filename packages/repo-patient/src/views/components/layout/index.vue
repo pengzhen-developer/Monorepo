@@ -22,7 +22,7 @@
 
     <!-- 底部导航 tabbar -->
     <transition mode="out-in" name="van-fade">
-      <template v-if="!($route.meta.tabBar && $route.meta.tabBar.visible === false)">
+      <template v-if="$route.meta.tabBar">
         <van-tabbar class="layout-tabbar" v-model="active">
           <van-tabbar-item to="/home/index">
             <i class="icon_ic_datatrends" slot="icon"></i>
@@ -76,7 +76,9 @@ export default {
   },
 
   created() {
-    this.$router.push(peace.config.system.homePage)
+    if (this.$route.path === '/') {
+      this.$router.push(peace.config.system.homePage)
+    }
   },
 
   methods: {

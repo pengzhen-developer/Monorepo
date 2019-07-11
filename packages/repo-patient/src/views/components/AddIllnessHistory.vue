@@ -113,7 +113,7 @@ export default {
       }
     },
     save() {
-      this.$router.push({
+      this.$router.replace({
         name: $peace.referrer.name,
         params: {
           illnessHistory: this.illnessHistory
@@ -136,7 +136,7 @@ export default {
 
     .search {
       .search-label {
-        color: $-color--parimary;
+        color: $-color--primary;
         border-radius: 10px;
       }
     }
@@ -164,7 +164,7 @@ export default {
 
         &.checked {
           background-color: #d9f7f3 !important;
-          color: $-color--parimary !important;
+          color: $-color--primary !important;
         }
       }
     }
