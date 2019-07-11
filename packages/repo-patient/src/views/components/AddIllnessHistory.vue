@@ -9,7 +9,7 @@
 
       <h4>已选既往史</h4>
       <div class="checked-list">
-        <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in illnessHistory">{{ item.value }}</van-tag>
+        <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in confirmIllness">{{ item.value }}</van-tag>
       </div>
 
       <h4>常见既往史</h4>
@@ -20,7 +20,7 @@
           @click="check(item)"
           class="tag"
           plain
-          v-for="item in illnessHistoryCommonly"
+          v-for="item in confirmIllnessCommonly"
         >{{ item.value }}</van-tag>
       </div>
     </div>
@@ -30,7 +30,7 @@
     </div>
 
     <van-popup position="bottom" v-model="showIllnessHistory">
-      <van-picker :columns="illnessHistoryList" @cancel="showIllnessHistory = false" @confirm="onConfirm" show-toolbar />
+      <van-picker :columns="confirmIllnessList" @cancel="showIllnessHistory = false" @confirm="onConfirm" show-toolbar />
     </van-popup>
   </div>
 </template>
@@ -47,11 +47,11 @@ export default {
       searchIllnessHistory: '',
 
       // 搜索
-      illnessHistoryList: [],
+      confirmIllnessList: [],
       // 已选
-      illnessHistory: [],
+      confirmIllness: [],
       // 常见
-      illnessHistoryCommonly: []
+      confirmIllnessCommonly: []
     }
   },
 
@@ -66,14 +66,14 @@ export default {
       const params = { type: '1', isCommon: '1' }
 
       return peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.illnessHistoryCommonly = res.data.map(item => {
+        this.confirmIllnessCommonly = res.data.map(item => {
           return {
             value: item.name,
             checked: false
           }
         })
 
-        this.illnessHistoryCommonly.unshift({
+        this.confirmIllnessCommonly.unshift({
           value: '无',
           checked: false
         })
@@ -83,13 +83,13 @@ export default {
     parmasHandler() {
       // 处理参数
       // 根据传递参数,还原选中
-      if (this.$route.params.illnessHistory) {
-        this.$route.params.illnessHistory.forEach(illness => {
-          this.illnessHistory.push({ value: illness, checked: true })
+      if (this.$route.params.confirmIllness) {
+        this.$route.params.confirmIllness.forEach(illness => {
+          this.confirmIllness.push({ value: illness, checked: true })
 
-          console.log(this.illnessHistoryCommonly)
-          if (this.illnessHistoryCommonly.find(item => item.value === illness)) {
-            this.illnessHistoryCommonly.find(item => item.value === illness).checked = true
+          console.log(this.confirmIllnessCommonly)
+          if (this.confirmIllnessCommonly.find(item => item.value === illness)) {
+            this.confirmIllnessCommonly.find(item => item.value === illness).checked = true
           }
         })
       }
@@ -101,7 +101,7 @@ export default {
         type: '1'
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.illnessHistoryList = res.data.map(item => item.name)
+        this.confirmIllnessList = res.data.map(item => item.name)
 
         this.showIllnessHistory = true
         this.searchIllnessHistory = ''
@@ -119,36 +119,36 @@ export default {
     check(currentItem) {
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
-        this.illnessHistory = []
-        this.illnessHistoryCommonly.forEach(item => (item.checked = false))
+        this.confirmIllness = []
+        this.confirmIllnessCommonly.forEach(item => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.illnessHistory.findIndex(item => item.value === '无')
+        const index = this.confirmIllness.findIndex(item => item.value === '无')
 
         if (index !== -1) {
-          this.illnessHistoryCommonly[0].checked = false
-          this.illnessHistory.splice(index, 1)
+          this.confirmIllnessCommonly[0].checked = false
+          this.confirmIllness.splice(index, 1)
         }
       }
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.illnessHistory.findIndex(item => item.value === currentItem.value)
+        const index = this.confirmIllness.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
-          this.illnessHistory.splice(index, 1)
+          this.confirmIllness.splice(index, 1)
         }
       } else {
         currentItem.checked = true
-        this.illnessHistory.push(currentItem)
+        this.confirmIllness.push(currentItem)
       }
     },
     save() {
       this.$router.replace({
         name: $peace.referrer.name,
         params: {
-          illnessHistory: this.illnessHistory
+          confirmIllness: this.confirmIllness
         }
       })
     }

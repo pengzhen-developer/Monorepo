@@ -97,7 +97,7 @@ const router = new Router({
         },
         // 申请图文问诊
         {
-          path: '/components/doctorInquiryApply',
+          path: '/components/doctorInquiryApply/:json',
           name: '/components/doctorInquiryApply',
           meta: {
             auth: true,

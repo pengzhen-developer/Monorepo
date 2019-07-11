@@ -11,7 +11,7 @@
     <div class="layout-content">
       <transition mode="out-in" name="van-fade">
         <keep-alive>
-          <router-view v-if="$route.meta.keepAlive"></router-view>
+          <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
       </transition>
 

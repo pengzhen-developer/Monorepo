@@ -2,17 +2,17 @@
   <div class="doctor-inquiry-apply">
     <div class="title">
       <div class="title-avatar">
-        <img />
+        <img :src="doctor.doctorInfo.avartor" />
       </div>
 
       <div class="title-info">
         <div class="title-doctor">
-          <span class="title-doctor-name">张逗豆</span>
-          <span>副主任医生</span>
-          <span>妇产科</span>
+          <span class="title-doctor-name">{{ doctor.doctorInfo.name }}</span>
+          <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+          <span>{{ doctor.doctorInfo.deptName }}</span>
         </div>
         <div class="title-hospital">
-          <span>郑州大学第一附属医院</span>
+          <span>{{ doctor.doctorInfo.hospitalName }}</span>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
 
     <van-cell-group>
       <van-field label="附件上传">
-        <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="model.attachment" />
+        <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="attachment" />
       </van-field>
     </van-cell-group>
 
@@ -46,7 +46,7 @@
 
     <template v-if="model.isAgain">
       <van-cell-group>
-        <van-field :value="model.illnessHistory" @click="showIllnessHistory" clickable label="既往史" placeholder="请选择诊断" readonly right-icon="arrow" />
+        <van-field :value="model.confirmIllness" @click="showIllnessHistory" clickable label="确认病种" placeholder="请选择诊断" readonly right-icon="arrow" />
       </van-cell-group>
 
       <van-cell-group>
@@ -92,7 +92,7 @@
         <span>我已阅读并同意</span>
         <a @click="redirect" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
-      <van-button style="width: 100%;" type="primary">保存</van-button>
+      <van-button @click="apply" style="width: 100%;" type="primary">保存</van-button>
     </div>
   </div>
 </template>
@@ -103,20 +103,35 @@ import peace from '@src/library'
 export default {
   data() {
     return {
+      // 显示家人弹框
       showFamily: false,
+      // 显示确认时间弹框
       showConfirmTime: false,
+      // 附件列表
+      attachment: [],
+
+      // 医生信息
+      doctor: {
+        doctorInfo: {}
+      },
 
       model: {
+        // 医生 (医生 ID)
+        doctorId: '0',
         // 就诊人 (家人 ID)
         familyId: '',
+        // 问诊类型
+        consultingType: 'image',
+        // 问诊类型
+        consultingTypeId: '',
         // 病情描述
         illnessDescribe: '',
         // 附件
         attachment: [],
         // 是否复诊
         isAgain: false,
-        // 既往史
-        illnessHistory: '',
+        // 确认疾病(既往史)
+        confirmIllness: '',
         // 确认时间
         confirmTime: '',
         // 既往用药
@@ -144,8 +159,8 @@ export default {
   },
 
   activated() {
-    if (this.$route.params.illnessHistory) {
-      this.model.illnessHistory = this.$route.params.illnessHistory.map(item => item.value).toString()
+    if (this.$route.params.confirmIllness) {
+      this.model.confirmIllness = this.$route.params.confirmIllness.map(item => item.value).toString()
     }
 
     if (this.$route.params.allergicHistory) {
@@ -154,6 +169,12 @@ export default {
   },
 
   created() {
+    const params = JSON.parse(window.atob(this.$route.params.json))
+
+    peace.service.doctor.getDoctorInfo(params).then(res => {
+      this.doctor = res.data
+    })
+
     peace.service.patient.getMyFamilyList().then(() => {
       this.source.familyList = ['家人1', '家人2']
     })
@@ -188,7 +209,7 @@ export default {
         name: '/components/addIllnessHistory',
         params: {
           keepAlive: false,
-          illnessHistory: this.model.illnessHistory && this.model.illnessHistory.split(',')
+          confirmIllness: this.model.confirmIllness && this.model.confirmIllness.split(',')
         }
       })
     },
@@ -201,6 +222,38 @@ export default {
           allergicHistory: this.model.allergicHistory && this.model.allergicHistory.split(',')
         }
       })
+    },
+
+    apply() {
+      this.uploadHandler().then(() => {
+        this.applyHandler()
+      })
+    },
+
+    uploadHandler() {
+      debugger
+      if (this.attachment.length > 0) {
+        const params = new FormData()
+
+        for (var i = 0; i < this.attachment.length; i++) {
+          params.append('file[]', this.attachment[i].file)
+        }
+        params.append('source', 'inquiryApply')
+
+        return peace.service.inquiry.images(params).then(res => {
+          this.model.attachment = res.data
+        })
+      } else {
+        return new Promise(resolve => {
+          resolve()
+        })
+      }
+    },
+
+    applyHandler() {
+      const params = this.model
+
+      peace.service.inquiry.apply(params)
     }
   }
 }

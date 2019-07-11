@@ -24,11 +24,11 @@
           </div>
 
           <div class="title-service-item">
-            <div @click.stop="redictToApply('image')" class="title-service-item" v-if="canShowImageInquiry(doctor)">
+            <div @click.stop="redictToApply(doctor, 'image')" class="title-service-item" v-if="canShowImageInquiry(doctor)">
               <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
               <span>图文咨询</span>
             </div>
-            <div @click.stop="redictToApply('video')" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
+            <div @click.stop="redictToApply(doctor, 'video')" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
               <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
               <span>视频咨询</span>
             </div>
@@ -53,9 +53,15 @@ export default {
     this.get()
   },
 
+  activated() {
+    this.get()
+  },
+
   methods: {
     get() {
-      peace.service.patient.getDoctorList().then(res => {
+      const params = JSON.parse(window.atob(this.$route.params.json))
+
+      peace.service.patient.getDoctorList(params).then(res => {
         this.doctorList = res.data
       })
     },
@@ -85,8 +91,10 @@ export default {
       this.$router.push('/components/doctorDetail')
     },
 
-    redictToApply() {
-      this.$router.push('/components/DoctorInquiryApply')
+    redictToApply(doctor) {
+      const json = window.btoa(JSON.stringify({ doctorId: doctor.doctorInfo.doctorId }))
+
+      this.$router.push(`/components/doctorInquiryApply/${json}`)
     }
   }
 }
