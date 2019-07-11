@@ -174,4 +174,7 @@ export default {
   width: (60px/2);
   height: (60px/2);
 }
+.van-cell{
+  padding: 0.4rem;
+}
 </style>

@@ -6,14 +6,13 @@
                 avatar
                 :row="3"
                 :loading="loading"
-                v-for="(item,index) in items"
-                @click="goMenuPage"
+                v-for="(item,index) in data"
                 :nethospitalid="item.netHospitalId"
                 :name="item.hospitalName"
                 type="organHome"
-                v-if="index < max"
+                v-if="index < showNum"
         >
-            <div class="cards">
+            <div class="cards" @click="goMenuPage(item)">
                 <div class="card-avatar">
                     <img class="" :src="item.icon"/>
                 </div>
@@ -25,7 +24,7 @@
                         </div>
                     </div>
                     <div class="block">
-                        <van-tag plain  type="success" v-for="it in item.tags"> {{it}}</van-tag>
+                        <van-tag plain  type="success" v-for="it in (item.tags || item.labels)"> {{it}}</van-tag>
                     </div>
                 </div>
             </div>
@@ -35,6 +34,8 @@
 </template>
 
 <script>
+    import peace from '@src/library';
+
     export default {
         props: {
             items: {
@@ -52,21 +53,35 @@
         },
         data(){
             return {
-                loading: true
+                loading: true,
+                data: [],
+                showNum:100
             }
         },
         created(){
-            console.log(this.items)
+            this.data = this.items || [];
+            this.showNum = this.max;
+
+            if(!this.data.length){
+                peace.service.hospital.getNethospitalList({page:1}).then(res => {
+                    this.data = res.data.netHospitals || []
+                    this.showNum = this.data.length;
+                })
+            }
         },
         mounted() {
             this.loading = false;
         },
         methods: {
             goMenuPage(item){
-                console.log(item)
+                let json = window.btoa(JSON.stringify({
+                    netHospitalId: item.netHospitalId
+                }))
+                this.$router.push(`/hospital/HospitalHome/${json}`)
             },
         }
     };
+
 </script>
 
 <style lang="scss" scoped>
@@ -111,7 +126,7 @@
         }
         .card-small{
             font-weight: normal;
-            font-size: 13rpx;
+            font-size: 13px;
             line-height: 1.5;
             display: inline;
             vertical-align: text-bottom;

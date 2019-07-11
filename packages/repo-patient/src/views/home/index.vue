@@ -17,9 +17,9 @@
         </div>
         <!--三方-->
         <div class="panel panel-block panel-clear">
-            <div class="block-items" v-for="item in data.card" @click="goMenuPage" :id="item.id"
+            <div class="block-items" v-for="item in data.card" @click="goMenuPage(item,{type:item.id})" :id="item.id"
                  :type="item.id">
-                <div :class="[true ? 'block-items-card' : '',item.icon,item.status ? '' : 'disabled']">{{item.text}}
+                <div :class="['block-items-card', item.icon, item.id == 'appoint' ? '' : 'disabled']">{{item.text}}
                 </div>
             </div>
         </div>
@@ -75,6 +75,12 @@
                         }))
                         this.$router.push(`/components/doctorList/${json}`)
                         break;
+                    case 'appoint':
+                        json = window.btoa(JSON.stringify({
+                            doctorTag: item.id
+                        }))
+                        this.$router.push(`/hospital/HospitalList/${json}`)
+                        break;
 
                     default:
                         // _f.goMenuPage();
@@ -84,6 +90,7 @@
             }
         }
     }
+//    JSON.parse(window.atob($peace.$route.params.json))
 </script>
 
 <style lang="scss" scoped>

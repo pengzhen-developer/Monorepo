@@ -159,7 +159,44 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/components/InformedConsent.vue')
-        }
+        },
+
+        // 医院列表
+        {
+            path: '/hospital/HospitalList/:json',
+            name: '/hospital/HospitalList',
+            meta: {
+                auth: true,
+                back: {
+                    title: '医院列表'
+                }
+            },
+            component: () => import('@src/views/hospital/HospitalList.vue')
+        },
+        // 医院主页
+        {
+          path: '/hospital/HospitalHome/:json',
+          name: '/hospital/HospitalHome',
+          meta: {
+            auth: true,
+            back: {
+              title: '医院主页'
+            }
+          },
+          component: () => import('@src/views/hospital/HospitalHome.vue')
+        },
+        // 医院科室二联动
+        {
+          path: '/hospital/depart/hospitalDepartSelect/:json',
+          name: '/hospital/depart/hospitalDepartSelect',
+          meta: {
+            auth: true,
+            back: {
+              title: '科室选择'
+            }
+          },
+          component: () => import('@src/views/hospital/depart/hospitalDepartSelect.vue')
+        },
       ]
     },
 

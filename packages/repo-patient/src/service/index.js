@@ -12,6 +12,7 @@ import index from './modules/index'
 
 import patient from './modules/patient'
 import doctor from './modules/doctor'
+import hospital from './modules/hospital'
 
 export default {
   IM,
@@ -19,5 +20,6 @@ export default {
   login,
   index,
   patient,
-  doctor
+  doctor,
+  hospital
 }
