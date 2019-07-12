@@ -15,40 +15,18 @@
     </div>
     <!--菜单-->
     <div class="block">
-      <div
-        :id="item.id"
-        :key="item.id"
-        @click="goMenuPage"
-        class="block-items block-transverse-icon"
-        v-for="item in module"
-      >
+      <div :id="item.id" :key="item.id" @click="goMenuPage" class="block-items block-transverse-icon" v-for="item in module">
         <div :class="['icon', item.icon]"></div>
         {{item.text}}
       </div>
     </div>
 
     <van-cell-group>
-      <van-cell
-        icon="friends-o"
-        is-link
-        title="我的家人"
-        to="/setting/myFamilyMembers"
-        value
-      />
+      <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
       <van-cell icon="manager-o" is-link title="我的医生" value />
       <van-cell icon="location-o" is-link title="收货地址" value />
-      <van-cell
-        @click="signOut"
-        icon="setting-o"
-        is-link
-        title="退出登录"
-        value
-      >
-        <van-icon
-          class="van-cell__right-icon"
-          name="close"
-          slot="right-icon"
-        />
+      <van-cell @click="signOut" icon="setting-o" is-link title="退出登录" value>
+        <van-icon class="van-cell__right-icon" name="close" slot="right-icon" />
       </van-cell>
     </van-cell-group>
   </div>
@@ -107,8 +85,13 @@ export default {
 }
 </script>
 
+<style scoped src="./../style/components.css"></style>
+<style scoped src="./../style/elements.css"></style>
+<style scoped src="./../style/grid.css"></style>
+<style scoped src="./../style/icon.css"></style>
+<style scoped src="./../style/modules.css"></style>
+
 <style lang="scss" scoped>
-@import '~@src/views/style/style.css';
 /*user-card*/
 .user-card {
   background-color: #00c6ae;
@@ -174,7 +157,7 @@ export default {
   width: (60px/2);
   height: (60px/2);
 }
-.van-cell{
+.van-cell {
   padding: 0.4rem;
 }
 </style>
