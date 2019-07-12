@@ -7,15 +7,11 @@
 
     <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">
-      <transition mode="out-in" name="van-fade">
-        <keep-alive>
-          <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
-        </keep-alive>
-      </transition>
+      <keep-alive>
+        <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
 
-      <transition mode="out-in" name="van-fade">
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
-      </transition>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
 
     <!-- 底部导航 tabbar -->

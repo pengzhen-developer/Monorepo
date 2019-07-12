@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="my-family-members">
     <div class="content">
       <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
         <template slot="title">
@@ -22,6 +22,8 @@
   </div>
 </template>
 <script>
+import peace from '@src/library'
+
 import FamilyMembersModel from '@src/views/components/FamilyMembersModel'
 
 export default {
@@ -33,63 +35,14 @@ export default {
 
   data() {
     return {
-      members: [
-        {
-          id: 'zhoujiejie',
-          name: '周杰杰',
-          sex: '男',
-          age: 28,
-          relation: '亲友'
-        },
-        {
-          id: 'wangkeke',
-          name: '王可可',
-          age: 3,
-          sex: '女',
-          relation: '孩子'
-        },
-        {
-          id: 'wangfang',
-          name: '王芳',
-          age: 38,
-          sex: '女',
-          relation: '爱人'
-        },
-        {
-          id: 'wangfang',
-          name: '王芳',
-          age: 38,
-          sex: '女',
-          relation: '爱人'
-        },
-        {
-          id: 'wangfang',
-          name: '王芳',
-          age: 38,
-          sex: '女',
-          relation: '爱人'
-        },
-        {
-          id: 'wangfang',
-          name: '王芳',
-          age: 38,
-          sex: '女',
-          relation: '爱人'
-        },
-        {
-          id: 'kexinru',
-          name: '可心如',
-          age: 38,
-          sex: '男',
-          relation: '本人'
-        }
-      ],
+      members: [],
 
       dialog: {
         visible: false
       }
     }
   },
+
   methods: {
     // 查看家人详细信息
     toViewDetails() {
@@ -97,22 +50,28 @@ export default {
     }
   },
 
-  created() {}
+  created() {
+    // 获取现有家人
+    peace.service.patient.getMyFamilyList().then(res => {
+      this.members = res.data
+    })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.container {
+.my-family-members {
   position: relative;
   background-color: #f5f5f5;
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+
   .content {
     flex: 1;
     overflow-y: auto;
   }
+
   .bottom {
     padding: 15px;
     .van-button {
@@ -120,6 +79,7 @@ export default {
     }
   }
 }
+
 .van-cell {
   &__title {
     .custom-title,

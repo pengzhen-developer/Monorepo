@@ -1,31 +1,40 @@
 <template>
   <div class="message">
-    <div
-      :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
-      :key="session.id"
-      @click="selectSession(session)"
-      class="message-item"
-      v-for="session in $store.state.inquiry.sessions"
-    >
-      <div class="message-item-avatar">
-        <img :src="session.content.doctorInfo.doctorAvatar" />
-      </div>
-      <div class="message-item-detail">
-        <div class="message-item-detail-title">
-          <div class="message-item-detail-title-doctor">
-            <span>{{ session.content.doctorInfo.doctorName }}</span>
-            <span style="margin: 0 5px;">|</span>
-            <span>{{ session.content.doctorInfo.doctorTitle }}</span>
+    <template v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
+      <div
+        :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
+        :key="session.id"
+        @click="selectSession(session)"
+        class="message-item"
+        v-for="session in $store.state.inquiry.sessions"
+      >
+        <div class="message-item-avatar">
+          <img :src="session.content.doctorInfo.doctorAvatar" />
+        </div>
+        <div class="message-item-detail">
+          <div class="message-item-detail-title">
+            <div class="message-item-detail-title-doctor">
+              <span>{{ session.content.doctorInfo.doctorName }}</span>
+              <span style="margin: 0 5px;">|</span>
+              <span>{{ session.content.doctorInfo.doctorTitle }}</span>
+            </div>
+            <div class="message-item-detail-title-time">
+              <span>{{ session.content.timestamp.toDate().formatDate('HH:mm:ss') }}</span>
+            </div>
           </div>
-          <div class="message-item-detail-title-time">
-            <span>{{ session.content.timestamp.toDate().formatDate('HH:mm:ss') }}</span>
+          <div class="message-item-detail-content">
+            <span v-html="getLastMessage(session)"></span>
           </div>
         </div>
-        <div class="message-item-detail-content">
-          <span v-html="getLastMessage(session)"></span>
-        </div>
       </div>
-    </div>
+    </template>
+
+    <template v-else>
+      <div class="no-data" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+        <img src="@src/assets/images/ic_no consultation copy@2x.png" style="width: 160px; height: 100px;" />
+        <p style="font-size: 15px; color: #999999;">暂无数据</p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -56,6 +65,10 @@ export default {
           // 视频通话
           else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '【视频通话】'
+          }
+          // 私人医生服务提醒
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒) {
+            return '【自定义消息】'
           }
           // 其它
           else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
@@ -99,6 +112,7 @@ export default {
 <style lang="scss" scoped>
 .message {
   width: 100%;
+  height: 100%;
 
   .message-item {
     width: 100%;

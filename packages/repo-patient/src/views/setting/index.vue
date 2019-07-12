@@ -71,7 +71,7 @@ export default {
       setTimeout(() => {
         // 重定向
         this.$router.replace(peace.config.system.loginPage)
-      }, 400)
+      }, 200)
 
       setTimeout(() => {
         // 刷新页面，确保 vuex store 被清空

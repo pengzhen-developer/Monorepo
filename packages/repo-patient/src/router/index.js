@@ -94,6 +94,7 @@ const router = new Router({
           name: '/components/doctorList',
           meta: {
             auth: true,
+            keepAlive: true,
             navbar: {
               title: '医生列表',
               back: true

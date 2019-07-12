@@ -36,7 +36,7 @@
           <!-- 消息内容 -->
           <div class="message-body">
             <span>{{ getMessageText(message) }}</span>
-            <!-- <img src="~@/assets/images/inquiry/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" /> -->
+            <!-- <img src="~@/assets/images/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" /> -->
           </div>
         </template>
 
@@ -50,8 +50,8 @@
           </template>
 
           <!-- 消息内容 -->
-          <div v-viewer>
-            <img :src="message.file.url" style="max-width: 400px; " title="查看大图" />
+          <div>
+            <img :src="message.file.url" style="max-width: 200px; " title="查看大图" />
           </div>
         </template>
 
@@ -66,7 +66,7 @@
 
           <!-- 消息内容 -->
           <div @click="getCaseDetail(message)" class="message-body case">
-            <!-- <img src="~@src/assets/images/inquiry/ic_medical record.png" /> -->
+            <img src="~@src/assets/images/pic_medication recommendations.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">病历</p>
               <p>查看详情</p>
@@ -85,7 +85,7 @@
 
           <!-- 消息内容 -->
           <div @click="getRecipeDetail(message)" class="message-body recipe">
-            <!-- <img src="~@src/assets/images/inquiry/ic_rp.png" /> -->
+            <img src="~@src/assets/images/pic_medication recommendations.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">处方</p>
               <p>查看详情</p>
@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    <div class="input">
+    <div class="input" v-if="canShowInput">
       <van-field :autosize="{ maxHeight: 60, minHeight: 20 }" @focus="hideTools" placeholder="请输入" rows="1" type="textarea" v-model="message">
         <van-icon @click="showTools" name="add-o" slot="right-icon" />
         <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
@@ -104,7 +104,7 @@
       <div class="input-tools" v-show="tools.visible">
         <van-row justify="space-between" type="flex">
           <van-col class="flex-center" span="6">
-            <van-uploader>
+            <van-uploader :after-read="sendMessageImage">
               <div class="flex-center">
                 <van-button icon="photo"></van-button>
                 <p>图片</p>
@@ -115,22 +115,24 @@
             <van-button icon="phone-o" />
             <p>拍照</p>
           </van-col>
-          <van-col class="flex-center" span="6">
-            <van-button icon="star-o" />
-            <p>hhh</p>
-          </van-col>
-          <van-col class="flex-center" span="6">
-            <van-button icon="star-o" />
-            <p>hhh</p>
-          </van-col>
         </van-row>
       </div>
     </div>
+
+    <peace-dialog :visible.sync="caseDetail.visible">
+      <TheCase :data="caseDetail.data"></TheCase>
+    </peace-dialog>
+    <peace-dialog :visible.sync="recipeDetail.visible">
+      <TheRecipe :data="recipeDetail.data"></TheRecipe>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
+
+import TheCase from '@src/views/components/TheCase'
+import TheRecipe from '@src/views/components/TheRecipe'
 
 export default {
   props: {
@@ -140,6 +142,11 @@ export default {
         return undefined
       }
     }
+  },
+
+  components: {
+    TheCase,
+    TheRecipe
   },
 
   data() {
@@ -175,18 +182,29 @@ export default {
 
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
-          if (
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
-          )
-            return false
+          // if (
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
+          // )
+          //   return false
         }
 
         return true
       })
 
       return sessionMessages
+    },
+
+    canShowInput() {
+      if (
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+      ) {
+        return true
+      } else {
+        return false
+      }
     }
   },
 
@@ -278,11 +296,57 @@ export default {
       }
     },
 
+    sendMessageImage(file) {
+      if (file) {
+        const doneHandler = (error, message) => {
+          console.warn('【 IM 】【 sendFile 】', new Date(), message)
+
+          if (error) {
+            throw new Error(error)
+          }
+        }
+
+        $peace.NIM.sendFile({
+          scene: this.$store.state.inquiry.session.scene,
+          to: this.$store.getters['inquiry/doctorInfo'].doctorId,
+          type: 'image',
+          blob: file.file,
+          done: doneHandler
+        })
+      }
+    },
+
     showTools() {
       this.tools.visible = true
     },
+
     hideTools() {
       this.tools.visible = false
+    },
+
+    getCaseDetail(message) {
+      this.caseDetail.visible = true
+
+      const params = {
+        inquiryNo: message.content.data.inquiryInfo.inquiryNo,
+        inquiryId: message.content.data.inquiryInfo.inquiryId
+      }
+
+      peace.service.patient.getCaseInfo(params).then(res => {
+        this.caseDetail.data = res.data
+      })
+    },
+
+    getRecipeDetail(message) {
+      this.recipeDetail.visible = true
+
+      const params = {
+        prescribeId: message.content.data.recipeInfo.recipeId
+      }
+
+      peace.service.patient.getPrescripInfo(params).then(res => {
+        this.recipeDetail.data = res.data
+      })
     }
   }
 }
@@ -357,6 +421,11 @@ export default {
           cursor: pointer;
           display: inline-flex;
 
+          img {
+            width: 50px;
+            height: 44px;
+          }
+
           p {
             margin: 0 0 2px 5px;
             color: #333333;
@@ -372,6 +441,7 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 1;
+    border-top: 1px solid #f5f5f5;
 
     .input-tools {
       padding: 20px;

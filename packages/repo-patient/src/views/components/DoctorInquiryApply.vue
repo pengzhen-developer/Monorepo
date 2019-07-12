@@ -56,7 +56,7 @@
     <template v-if="model.isAgain">
       <van-cell-group>
         <van-field :value="model.confirmIllness" @click="showAddIllnessHistory = true" clickable label="确认病种" placeholder="请选择诊断" readonly right-icon="arrow" />
-        
+
         <peace-dialog :visible.sync="showAddIllnessHistory">
           <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
         </peace-dialog>
@@ -107,9 +107,13 @@
     <div class="footer">
       <van-checkbox v-model="model.informedConsent">
         <span>我已阅读并同意</span>
-        <a @click="redirect" class="informed-consent">《知情同意书》</a>
+        <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
       <van-button :disabled="!model.informedConsent" @click="apply" style="width: 100%;" type="primary">保存</van-button>
+
+      <peace-dialog :visible.sync="showInformedConsent">
+        <InformedConsent></InformedConsent>
+      </peace-dialog>
     </div>
   </div>
 </template>
@@ -119,11 +123,13 @@ import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
+import InformedConsent from '@src/views/components/InformedConsent'
 
 export default {
   components: {
     AddAllergicHistory,
-    AddIllnessHistory
+    AddIllnessHistory,
+    InformedConsent
   },
 
   data() {
@@ -132,6 +138,8 @@ export default {
       showAddAllergicHistory: false,
       // 显示过敏史
       showAddIllnessHistory: false,
+      // 显示知情同意书
+      showInformedConsent: false,
 
       // 显示家人弹框
       showFamily: false,
@@ -186,16 +194,6 @@ export default {
         pastDrug: [],
         allergicHistory: []
       }
-    }
-  },
-
-  activated() {
-    if (this.$route.params.confirmIllness) {
-      this.model.confirmIllness = this.$route.params.confirmIllness.map(item => item.value).toString()
-    }
-
-    if (this.$route.params.allergicHistory) {
-      this.model.allergicHistory = this.$route.params.allergicHistory.map(item => item.value).toString()
     }
   },
 
