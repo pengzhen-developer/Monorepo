@@ -10,6 +10,7 @@ import './prototype/number'
 import './prototype/string'
 
 // components
+import Dialog from './components/dialog'
 
 // directive
 import drag from './directive/drag'
@@ -42,7 +43,7 @@ const install = function(Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = []
+  const components = [Dialog]
   components.map(component => {
     Vue.use(component)
   })
