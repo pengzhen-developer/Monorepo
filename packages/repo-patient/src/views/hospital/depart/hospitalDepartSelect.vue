@@ -1,12 +1,28 @@
 <template>
     <div>
+        <div class="card" ref="hsp">
+            <div class="card-avatar">
+                <img class="" :src="hospitalInfo.icon"/>
+            </div>
+            <div class="card-body">
+                <div class="card-name">{{hospitalInfo.name}}</div>
+                <div class="block">
+                        <div :key="index" v-for="(item,index) in hospitalInfo.deptList" class="card-small">{{ (index == 0 ? '' : ' / ' ) + item}}</div>
+                </div>
+                <div class="block">
+                        <div :key="item" v-for="item in hospitalInfo.tags" class="card-label">
+                            {{item}}
+                        </div>
+                </div>
+            </div>
+        </div>
         <van-tree-select
                 :items="items"
+                :height="height"
                 :main-active-index="mainActiveIndex"
                 :active-id="activeId"
                 @navclick="onNavClick"
-                @itemclick="onItemClick"
-        />
+                @itemclick="onItemClick"/>
     </div>
 </template>
 
@@ -18,9 +34,10 @@
         data() {
             return {
                 data: {},
-                hsp: {},
+                hospitalInfo: {},
                 items: [],
                 checkDept: {},
+                height: 500,
                 // 左侧高亮元素的index
                 mainActiveIndex: 0,
                 // 被选中元素的id
@@ -30,76 +47,55 @@
             }
         },
         created() {
-            let params = JSON.parse(window.atob($peace.$route.params.json));
+           const params = peace.util.decode(this.$route.params.json)
             this.hsp = params || {};
-            this.getDeptList({},() =>{
-                this.deptParent.map((item) =>{
-                    // this.initDeptChild();
-                    this.getDeptList({
-                        deptId: item.id,
-                        name: item.netdeptName,
-                        level: 2
-                    })
-                    return;
-                })
-            })
+            this.getDeptList()
         },
         methods: {
-            // initDeptChild: function () {
-            //     var me = this;
-            //
-            //     me.getDeptList({
-            //         deptId: this.deptParent[0].id,
-            //         name: this.deptParent[0].netdeptName,
-            //         level: 2
-            //     })
-            // },
-            getDeptList(obj, callback) {
-                let data, arr = [];
+            getDeptList() {
+                let data, items = [];
 
                 data = {
-                    netHospitalId: obj.netHospitalId || this.hsp.netHospitalId || '',
-                    deptId: obj.deptId || this.hsp.deptId || '',
-                    level: obj.level || this.hsp.level || 1
+                    netHospitalId: this.hsp.netHospitalId
                 };
-
                 peace.service.hospital.getDeptList(data).then(res => {
-                    // let me = this;
-
-                    if (data.level == 1) {
-                        this.deptParent = res.data.list || [];
-                        res.data.list.map(item => {
-                            return arr.push({
-                                text: item.netdeptName,
-                                id: item.id
+                    res.data.list.map(item =>{
+                        items.push({
+                            text: item.netdeptName,
+                            id: item.id,
+                            children: item.childDept.map(it =>{
+                                return {
+                                    text: it.netdeptName,
+                                    id: it.id,
+                                };
                             })
                         })
-                        this.items = arr;
-                        this.hospitalInfo = res.data.hospitalInfo;
-                    }else {
-                        this.deptChild = res.data.list || [];
-                        this.items.map(item => {
-                            if (obj.deptId == item.id) {
-                                this.deptChild.map(it => {
-                                    return arr.push({
-                                        text: it.netdeptName,
-                                        id: it.id
-                                    })
-                                })
-                                item.children = arr;
-                            }
-                            return;
-                        })
-                    }
-                    console.log(this.items)
-                    callback && callback()
+                        return items
+                    })
+                    this.items = items;
+                    this.activeId = items[0].children[0] ? items[0].children[0].id : '';
+                    this.hospitalInfo = res.data.hospitalInfo;
+                    this.height = +(window.innerHeight - (this.$refs.hsp.offsetHeight + 52));
                 })
             },
             onNavClick(index) {
                 this.mainActiveIndex = index;
+
+                if(!this.items[index].children.length){
+                    this.goDoctorListPage(this.items[index].id)
+                }
             },
             onItemClick(data) {
                 this.activeId = data.id;
+                this.goDoctorListPage(this.activeId)
+            },
+            goDoctorListPage(deptId){
+                let json =  peace.util.encode({
+                    deptId,
+                    netHospitalId: this.hsp.netHospitalId,
+                })
+
+                this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
             }
         }
     }
@@ -108,5 +104,32 @@
 
 <style lang="scss" scoped>
     @import "~@src/views/style/style.css";
+
+    .content{
+        height: 100%;
+        overflow: hidden;
+    }
+    .card{
+        border-bottom:1px solid #E8E8E8;
+        border-top:1px solid #e8e8e8;
+        padding:10px;
+        margin: 0;
+    }
+    .card .card-label{
+        margin-top:5px;
+        margin-right:5px;
+        margin-bottom:5px;
+
+    }
+    .van-tree-select__nav-item--active{
+        border-color:#00c6ae
+    }
+    .van-icon-checked:before{
+        content: "\F02F";
+        color: #00c6ae;
+    }
+    .van-tree-select__item--active{
+        color: #00c6ae;
+    }
 
 </style>

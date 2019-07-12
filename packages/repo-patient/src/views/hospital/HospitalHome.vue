@@ -69,14 +69,14 @@
       </div>
 
       <!--科室-->
-      <div class="panel" style="padding-right:0; padding-bottom: 6px; " v-if="hsp.deptList.length">
+      <div class="panel" style="padding-right:0; padding-bottom: 6px; " v-if="hsp.deptList && hsp.deptList[0]">
         <div class="panel-tit">
           <div class="tit">医院科室</div>
         </div>
         <div class="panel-body">
           <div
             :key="index"
-            @click="goDoctorListPage(item,{nethospitalInfo:hsp.nethospitalInfo})"
+            @click="goDoctorListPage(item)"
             class="label"
             data-id="item.id"
             data-name="item.netdeptName"
@@ -89,8 +89,8 @@
       </div>
 
       <!--医生-->
-      <div class="panel" style="border-top:10px solid #f5f5f5">
-        <div class="panel-tit" style="padding-bottom: 0" v-if="hsp.doctorList.length">
+      <div class="panel" style="border-top:10px solid #f5f5f5" v-if="hsp.doctorList.length">
+        <div class="panel-tit" style="padding-bottom: 0">
           <div class="tit">医院医生</div>
         </div>
         <div class="panel-body">
@@ -126,7 +126,7 @@ export default {
     }
   },
   created() {
-    let params = JSON.parse(window.atob($peace.$route.params.json))
+    let params = peace.util.decode($peace.$route.params.json)
     console.log(params)
     peace.service.hospital
       .getHospitalInfo({
@@ -142,14 +142,22 @@ export default {
     },
     goMenuPage(item) {
       console.log(item)
+      if(!item.status){
+        peace.util.alert('服务暂未开通');
+        return;
+      }
+      this.goDeptPage();
     },
-    goDoctorListPage() {},
+    goDoctorListPage(item) {
+      let json = peace.util.encode({
+        deptId: item.id,
+        netHospitalId: this.hsp.nethospitalInfo.netHospitalId
+      })
+
+      this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
+    },
     goDeptPage() {
-      let json = window.btoa(
-        JSON.stringify({
-          netHospitalId: this.hsp.nethospitalInfo.netHospitalId
-        })
-      )
+      let json = peace.util.encode({netHospitalId: this.hsp.nethospitalInfo.netHospitalId})
       this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
     },
     goDoctorHomeIndexPage() {}

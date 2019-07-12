@@ -4,18 +4,18 @@
             <div
                     class="block-items"
                     v-bind:class="{'last':index == items.length -1}"
-                    v-for="(item,index) in items"
-                    @click="goMenuPage"
+                    v-for="(item,index) in lists"
+                    @click="goMenuPage(item)"
                     :deptid="item.id"
                     :txt="item.text"
-                    v-if = "index < max"
+                    v-if = "index < showNum"
             >
-                <img class="block-ico" :src="item.icon"></img>
+                <img class="block-ico" :src="item.icon" />
                 <div class="block-tit">{{item.text}}</div>
             </div>
             <div
                     class="block-items"
-                    @click="goMenuPage"
+                    @click="goDeptItemsPage()"
                     v-if = "items.length > max"
             >
                 <img class="block-ico" :src="moreIcon"></img>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    // import peace from '@src/library'
+    import peace from '@src/library'
 
     export default {
         props: {
@@ -52,16 +52,33 @@
         },
         data() {
             return {
-                // loading: true
+                lists: [],
+                showNum: 100,
             }
         },
         created() {
-            console.log(this.items)
+            this.lists = this.items || [];
+            this.showNum = this.max;
+
+            if(this.lists.length === 0){
+                peace.service.index.getMenu().then(res => {
+                    this.lists = res.data.department
+                    this.showNum = res.data.department.length
+                })
+            }
         },
         methods: {
             goMenuPage(item) {
-                console.log(item)
+                let json = peace.util.encode({
+                    'deptId': item.id,
+                    'txt': item.text,
+                    'txtId':item.id
+                })
+                this.$router.push(`/components/doctorList/${json}`)
             },
+            goDeptItemsPage(){
+                this.$router.push(`/hospital/depart/HospitalDepartList/`)
+            }
         }
     }
 </script>

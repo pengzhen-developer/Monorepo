@@ -2,7 +2,7 @@
 <template>
   <div>
     <van-skeleton
-      :key="item"
+      :key="item.netHospitalId"
       :loading="loading"
       :name="item.hospitalName"
       :nethospitalid="item.netHospitalId"
@@ -54,31 +54,41 @@ export default {
     return {
       loading: true,
       data: [],
-      showNum: 100
+      showNum: 100,
+      params:{},
     }
   },
   created() {
-    this.data = this.items || []
-    this.showNum = this.max
+    const params = peace.util.decode(this.$route.params.json)
+    this.params = params;
+    this.data = this.items || [];
+    this.showNum = this.max;
 
-    if (!this.data.length) {
-      peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
-        this.data = res.data.netHospitals || []
-        this.showNum = this.data.length
-      })
-    }
+    if (!this.data.length)
+      this.getHspList();
   },
   mounted() {
     this.loading = false
   },
   methods: {
     goMenuPage(item) {
-      let json = window.btoa(
-        JSON.stringify({
-          netHospitalId: item.netHospitalId
-        })
-      )
+      let json = peace.util.encode({netHospitalId: item.netHospitalId})
       this.$router.push(`/hospital/HospitalHome/${json}`)
+    },
+    getHspList(){
+      if(this.params.type == 'recommendHsp'){
+        peace.service.index.getMenu().then(res => {
+          this.data = res.data.recommendOrgan
+          this.showNum = res.data.recommendOrgan.length
+        })
+      }
+
+      if(this.params.type == 'appoint'){
+        peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
+          this.data = res.data.netHospitals || []
+          this.showNum = this.data.length
+        })
+      }
     }
   }
 }

@@ -5,8 +5,8 @@
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    margin: (10px/2) 0;
-    font-size: (26px/2);
+    margin: 5px 0;
+    font-size: 13px;
     color: #000;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .card .card-name {
-    font-size: (34px/2);
+    font-size: 17px;
     font-weight: 600;
     line-height: 2;
     overflow: hidden;
@@ -55,7 +55,7 @@
 
 .card .card-small, .card .card-brief {
     font-weight: normal;
-    font-size: (26px/2);
+    font-size: 13px;
     line-height: 1.5;
 }
 

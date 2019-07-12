@@ -221,6 +221,30 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/hospital/depart/hospitalDepartSelect.vue')
+        },
+        // 预约挂号医生列表
+        {
+          path: '/appoint/doctor/appointDoctorList/:json',
+          name: '/appoint/doctor/appointDoctorList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择医生',
+              back: true
+            }
+          },
+          component: () => import('@src/views/appoint/doctor/appointDoctorList.vue')
+        },
+        {
+          path: 'hospital/depart/HospitalDepartList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择科室',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/depart/HospitalDepartList.vue')
         }
       ]
     },

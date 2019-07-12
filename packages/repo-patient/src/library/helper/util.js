@@ -235,6 +235,37 @@ export function getDuration(bgTime, endTime) {
     ss
   }
 }
+/**
+ * encode the Object
+ *
+ * @export
+ * @param {*}
+ * @param {*}
+ * @returns
+ */
+export function encode(obj) {
+  let params, data = obj;
+
+  if(!(data instanceof Object)){
+    $peace.util.alert('非法入参')
+  }
+  params = window.encodeURIComponent(JSON.stringify( obj||{}))
+  return params;
+}
+/**
+ * decode the Object
+ *
+ * @export
+ * @param {*}
+ * @param {*}
+ * @returns
+ */
+export function decode(obj) {
+  let params, data = obj;
+
+  params =JSON.parse(window.decodeURIComponent(data || "{}"))
+  return params;
+}
 
 /**
  * 常用工具类
@@ -252,5 +283,7 @@ export default {
   confirm,
 
   formatDuration,
-  getDuration
+  getDuration,
+  encode,
+  decode,
 }

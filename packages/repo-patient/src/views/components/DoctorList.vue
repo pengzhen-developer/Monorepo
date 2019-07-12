@@ -58,8 +58,8 @@ export default {
 
   methods: {
     get() {
-      const params = JSON.parse(window.atob(this.$route.params.json))
-
+      const params = peace.util.decode(this.$route.params.json);
+      console.log(params)
       peace.service.patient.getDoctorList(params).then(res => {
         this.doctorList = res.data
       })
@@ -78,7 +78,7 @@ export default {
 
     canShowImageInquiry(doctor) {
       // doctor.consultationList[0] 固定为图文咨询
-      const params = JSON.parse(window.atob(this.$route.params.json))
+      const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
         return doctor.consultationList[0].status && doctor.consultationList[0].money === 0
@@ -89,7 +89,7 @@ export default {
 
     canShowVideoInquiry(doctor) {
       // doctor.consultationList[0] 固定为视频咨询
-      const params = JSON.parse(window.atob(this.$route.params.json))
+     const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
         return doctor.consultationList[1].status && doctor.consultationList[1].money === 0
