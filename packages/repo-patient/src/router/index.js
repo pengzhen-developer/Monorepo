@@ -22,7 +22,11 @@ const router = new Router({
           name: '/home/index',
           meta: {
             auth: true,
-            tabBar: true
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '首页'
+            }
           },
           component: () => import('@src/views/home/index.vue')
         },
@@ -32,7 +36,11 @@ const router = new Router({
           name: '/message/index',
           meta: {
             auth: true,
-            tabBar: true
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '消息'
+            }
           },
           component: () => import('@src/views/message/index.vue')
         },
@@ -43,7 +51,11 @@ const router = new Router({
           name: '/file/index',
           meta: {
             auth: true,
-            tabBar: true
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '健康档案'
+            }
           },
           component: () => import('@src/views/file/index.vue')
         },
@@ -53,7 +65,11 @@ const router = new Router({
           name: '/setting/index',
           meta: {
             auth: true,
-            tabBar: true
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '个人中心'
+            }
           },
           component: () => import('@src/views/setting/index.vue')
         },
@@ -64,8 +80,9 @@ const router = new Router({
           name: '/setting/myFamilyMembers',
           meta: {
             auth: true,
-            back: {
-              title: '我的家人'
+            navbar: {
+              title: '我的家人',
+              back: true
             }
           },
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
@@ -77,8 +94,9 @@ const router = new Router({
           name: '/components/doctorList',
           meta: {
             auth: true,
-            back: {
-              title: '医生列表'
+            navbar: {
+              title: '医生列表',
+              back: true
             }
           },
           component: () => import('@src/views/components/DoctorList.vue')
@@ -89,21 +107,22 @@ const router = new Router({
           name: '/components/messageList',
           meta: {
             auth: true,
-            back: {
-              visible: true,
-              title: '消息列表'
+            navbar: {
+              title: '消息列表',
+              back: true
             }
           },
           component: () => import('@src/views/components/MessageList.vue')
         },
         // 医生主页
         {
-          path: '/components/doctorDetail',
+          path: '/components/doctorDetail/:json',
           name: '/components/doctorDetail',
           meta: {
             auth: true,
-            back: {
-              title: '医生主页'
+            navbar: {
+              title: '医生主页',
+              back: true
             }
           },
           component: () => import('@src/views/components/DoctorDetail.vue')
@@ -114,12 +133,12 @@ const router = new Router({
           name: '/components/doctorInquiryApply',
           meta: {
             auth: true,
-            back: {
-              title: '图文咨询'
+            navbar: {
+              title: '图文咨询',
+              back: true
             }
           },
-          component: () =>
-            import('@src/views/components/DoctorInquiryApply.vue')
+          component: () => import('@src/views/components/DoctorInquiryApply.vue')
         },
 
         // 添加既往史
@@ -128,8 +147,9 @@ const router = new Router({
           name: '/components/addIllnessHistory',
           meta: {
             auth: true,
-            back: {
-              title: '添加过敏史'
+            navbar: {
+              title: '添加过敏史',
+              back: true
             }
           },
           component: () => import('@src/views/components/AddIllnessHistory.vue')
@@ -140,12 +160,12 @@ const router = new Router({
           name: '/components/addAllergicHistory',
           meta: {
             auth: true,
-            back: {
-              title: '添加过敏史'
+            navbar: {
+              title: '添加过敏史',
+              back: true
             }
           },
-          component: () =>
-            import('@src/views/components/AddAllergicHistory.vue')
+          component: () => import('@src/views/components/AddAllergicHistory.vue')
         },
 
         // 添加过敏史
@@ -154,8 +174,9 @@ const router = new Router({
           name: '/components/informedConsent',
           meta: {
             auth: true,
-            back: {
-              title: '知情同意书'
+            navbar: {
+              title: '知情同意书',
+              back: true
             }
           },
           component: () => import('@src/views/components/InformedConsent.vue')
@@ -163,15 +184,16 @@ const router = new Router({
 
         // 医院列表
         {
-            path: '/hospital/HospitalList/:json',
-            name: '/hospital/HospitalList',
-            meta: {
-                auth: true,
-                back: {
-                    title: '医院列表'
-                }
-            },
-            component: () => import('@src/views/hospital/HospitalList.vue')
+          path: '/hospital/HospitalList/:json',
+          name: '/hospital/HospitalList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '医院列表',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/HospitalList.vue')
         },
         // 医院主页
         {
@@ -179,8 +201,9 @@ const router = new Router({
           name: '/hospital/HospitalHome',
           meta: {
             auth: true,
-            back: {
-              title: '医院主页'
+            navbar: {
+              title: '医院主页',
+              back: true
             }
           },
           component: () => import('@src/views/hospital/HospitalHome.vue')
@@ -191,12 +214,13 @@ const router = new Router({
           name: '/hospital/depart/hospitalDepartSelect',
           meta: {
             auth: true,
-            back: {
-              title: '科室选择'
+            navbar: {
+              title: '科室选择',
+              back: true
             }
           },
           component: () => import('@src/views/hospital/depart/hospitalDepartSelect.vue')
-        },
+        }
       ]
     },
 
@@ -211,8 +235,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   $peace.referrer = from
 
-  // 默认开始 keepAlive, 根据 route 参数修改
-  to.meta.keepAlive = true
+  // 根据 route 参数修改 keepAlive
   if (to.params.hasOwnProperty('keepAlive')) {
     to.meta.keepAlive = to.params.keepAlive
   }
@@ -231,12 +254,7 @@ router.beforeEach((to, from, next) => {
     peace.referrer = to
 
     // 验证权限
-    if (
-      peace.cache.get(
-        peace.type.USER.INFO,
-        peace.type.SYSTEM.CACHE.LOCAL_STORAGE
-      )
-    ) {
+    if (peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)) {
       return next()
     } else {
       return next(peace.config.system.noauthPage)

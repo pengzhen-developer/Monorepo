@@ -2,8 +2,8 @@
   <div class="layout">
     <!-- 顶部返回 nav-bar -->
     <transition mode="out-in" name="van-fade">
-      <template v-if="$route.meta.back">
-        <van-nav-bar :title="$route.meta.back.title" @click-left="back" class="layout-navbar" left-arrow left-text=" " />
+      <template v-if="$route.meta.navbar">
+        <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" left-text=" " />
       </template>
     </transition>
 
