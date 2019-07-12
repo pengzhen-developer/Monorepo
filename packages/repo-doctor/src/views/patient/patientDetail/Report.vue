@@ -1,7 +1,7 @@
 <template>
   <div class="report">
     <template v-if="this.$route.params.type === $peace.type.HEALTH.TYPE.血氧">
-      <RecordBloodOxygen></RecordBloodOxygen>
+      <ReportBloodOxygen></ReportBloodOxygen>
     </template>
     <template v-if="this.$route.params.type === $peace.type.HEALTH.TYPE.血压">
       <ReportBloodPressure></ReportBloodPressure>
@@ -16,14 +16,14 @@
 </template>
 
 <script>
-import RecordBloodOxygen from './RecordBloodOxygen'
+import ReportBloodOxygen from './ReportBloodOxygen'
 import ReportBloodPressure from './ReportBloodPressure'
 import ReportBloodSugar from './ReportBloodSugar'
 import ReportBodyFat from './ReportBodyFat'
 
 export default {
   components: {
-    RecordBloodOxygen,
+    ReportBloodOxygen,
     ReportBloodPressure,
     ReportBloodSugar,
     ReportBodyFat

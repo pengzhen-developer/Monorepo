@@ -14,12 +14,9 @@
         <p class="center-title">
           {{ data.systolicPressure }} / {{ data.diastolicPressure }}
           <span class="center-title-unit">mmHg</span>
+          <el-tag :type="getTagType(data.resultType)" class="center-title-tag">{{ getTagText(data.resultType) }}</el-tag>
         </p>
         <p class="center-text" v-if="this.type === '2'">{{ data.createdTime }}</p>
-      </div>
-
-      <div class="tag">
-        <el-tag :type="getTagType(data.resultType)" class="tag-tag">{{ getTagText(data.resultType) }}</el-tag>
       </div>
 
       <div class="right" v-if="this.type === '2'">
@@ -46,7 +43,7 @@ export default {
         case '0': // 暂无数据
           return ''
         case '1': // 偏高
-          return 'error'
+          return 'danger'
         case '2': // 正常
           return ''
         case '3': // 偏低
@@ -112,6 +109,8 @@ export default {
   }
 
   .center {
+    flex: 1;
+
     .center-title {
       font-size: 20px;
       color: rgba(56, 72, 92, 1);
@@ -120,20 +119,16 @@ export default {
         font-size: 12px;
         color: rgba(56, 72, 92, 1);
       }
+
+      .center-title-tag {
+        border-radius: 10px;
+        margin: 0 0 0 10px;
+      }
     }
 
     .center-text {
       font-size: 12px;
       color: rgba(153, 153, 153, 1);
-    }
-  }
-
-  .tag {
-    width: 110px;
-    margin: 0 0 0 10px;
-
-    .tag-tag {
-      border-radius: 10px;
     }
   }
 

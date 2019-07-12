@@ -37,7 +37,7 @@
             </div>
             <div class="report-recent-row">
               <label>平均动脉压：</label>
-              <span>{{ view.model.meanpulsation }}</span>
+              <span>{{ view.model.meanArterialPressure }}</span>
             </div>
             <div class="report-recent-row">
               <label>分析结果：</label>
@@ -83,7 +83,7 @@
       <peace-table pagination ref="tableHistory">
         <peace-table-column label="收缩压（mmHg）" prop="systolicPressure" width="150"></peace-table-column>
         <peace-table-column label="舒张压（mmHg）" prop="diastolicPressure" width="150"></peace-table-column>
-        <peace-table-column label="平均动脉压（mmHg）" prop="meanpulsation"></peace-table-column>
+        <peace-table-column label="平均动脉压（mmHg）" prop="meanArterialPressure"></peace-table-column>
         <peace-table-column label="脉率" prop="pulseRate" width="120"></peace-table-column>
         <peace-table-column label="分析结果" prop="result"></peace-table-column>
         <peace-table-column label="检测时间" prop="measureTime"></peace-table-column>
@@ -172,7 +172,7 @@ export default {
                   <span style="color: rgba(51,51,51,1);">${params[0].data.value}/${params[1].data.value}mmHg</span>
                   <br/>
                   <span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">平均动脉压：</span> 
-                  <span style="color: rgba(51,51,51,1);">${params[0].data.meanpulsation}</span>
+                  <span style="color: rgba(51,51,51,1);">${params[0].data.meanArterialPressure}</span>
                   <br/>
                   <span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">分析结果：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.result}</span>
@@ -215,7 +215,7 @@ export default {
     },
 
     openReport(row) {
-      const params = { reportId: row.id }
+      const params = { reportId: row.id, idCard: this.$route.params.idCard }
       peace.service.health.getWeekDetail(params).then(res => {
         var win = window.open()
         win.document.write(res.data.message)

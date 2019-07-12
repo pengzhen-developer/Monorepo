@@ -210,7 +210,7 @@ export default {
     },
 
     openReport(row) {
-      const params = { reportId: row.id }
+      const params = { reportId: row.id, idCard: this.$route.params.idCard }
       peace.service.health.getWeekDetail(params).then(res => {
         var win = window.open()
         win.document.write(res.message)
