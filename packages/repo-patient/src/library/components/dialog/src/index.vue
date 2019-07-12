@@ -54,6 +54,7 @@ export default {
 
   .content {
     flex: 1;
+    overflow: auto;
   }
 }
 </style>
