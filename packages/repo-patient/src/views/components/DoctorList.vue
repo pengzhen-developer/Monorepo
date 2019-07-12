@@ -1,15 +1,14 @@
 <template>
   <div class="doctor-list">
-    <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail" class="item" v-for="doctor in doctorList">
-      <div class="avatar">
-        <img :src="doctor.doctorInfo.avartor" />
+    <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail(doctor.doctorInfo)" class="item" v-for="doctor in doctorList">
+      <div>
+        <img :src="doctor.doctorInfo.avartor" class="avatar" />
       </div>
       <div class="detail">
         <div class="title-doctor">
           <span class="title-doctor-name">{{ doctor.doctorInfo.doctorName }}</span>
           <span>{{ doctor.doctorInfo.doctorTitle }}</span>
           <span>{{ doctor.doctorInfo.deptName }}</span>
-          <van-tag plain>离线</van-tag>
         </div>
         <div class="title-hospital">
           <span>{{ doctor.doctorInfo.hospitalName }}</span>
@@ -24,11 +23,11 @@
           </div>
 
           <div class="title-service-item">
-            <div @click.stop="redictToApply(doctor, 'image')" class="title-service-item" v-if="canShowImageInquiry(doctor)">
+            <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="title-service-item" v-if="canShowImageInquiry(doctor)">
               <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
               <span>图文咨询</span>
             </div>
-            <div @click.stop="redictToApply(doctor, 'video')" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
+            <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
               <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
               <span>视频咨询</span>
             </div>
@@ -78,21 +77,37 @@ export default {
     },
 
     canShowImageInquiry(doctor) {
-      // 图文咨询
-      return doctor.consultationList[0].status
+      // doctor.consultationList[0] 固定为图文咨询
+      const params = JSON.parse(window.atob(this.$route.params.json))
+
+      if (params.doctorTag === 'freeConsult') {
+        return doctor.consultationList[0].status && doctor.consultationList[0].money === 0
+      } else {
+        return doctor.consultationList[0].status
+      }
     },
 
     canShowVideoInquiry(doctor) {
-      // 视频咨询
-      return doctor.consultationList[1].status
+      // doctor.consultationList[0] 固定为视频咨询
+      const params = JSON.parse(window.atob(this.$route.params.json))
+
+      if (params.doctorTag === 'freeConsult') {
+        return doctor.consultationList[1].status && doctor.consultationList[1].money === 0
+      } else {
+        return doctor.consultationList[1].status
+      }
     },
 
-    redictToDetail() {
-      this.$router.push('/components/doctorDetail')
+    redictToDetail(doctorInfo) {
+      const json = window.btoa(JSON.stringify({ doctorId: doctorInfo.doctorId }))
+
+      this.$router.push(`/components/doctorDetail/${json}`)
     },
 
-    redictToApply(doctor) {
-      const json = window.btoa(JSON.stringify({ doctorId: doctor.doctorInfo.doctorId }))
+    redictToApply(doctorInfo, doctorConsultation) {
+      const json = window.btoa(
+        JSON.stringify({ doctorId: doctorInfo.doctorId, consultingType: doctorConsultation.tag, consultingTypeId: doctorConsultation.consultingTypeId })
+      )
 
       this.$router.push(`/components/doctorInquiryApply/${json}`)
     }
@@ -109,13 +124,11 @@ export default {
     border-bottom: 1px solid #efefef;
 
     .avatar {
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: rgba(241, 248, 255, 1);
-        border: 1px solid rgba(221, 225, 234, 1);
-      }
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(241, 248, 255, 1);
+      border: 1px solid rgba(221, 225, 234, 1);
     }
 
     .detail {

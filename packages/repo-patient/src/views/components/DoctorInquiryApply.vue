@@ -20,14 +20,23 @@
     <div class="divider"></div>
 
     <van-cell-group>
-      <van-field :value="model.familyId" @click="showFamily = true" clickable label="就诊人" placeholder="请选择就诊人" readonly right-icon="arrow" />
+      <van-field :value="model.familyName" @click="showFamily = true" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
       <van-popup position="bottom" v-model="showFamily">
-        <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar />
+        <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
       </van-popup>
     </van-cell-group>
 
     <van-cell-group>
-      <van-field autosize label="病情描述" placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。" rows="5" type="textarea" v-model="model.illnessDescribe" />
+      <van-field
+        autosize
+        label="病情描述"
+        maxlength="255"
+        placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
+        required
+        rows="5"
+        type="textarea"
+        v-model="model.illnessDescribe"
+      />
     </van-cell-group>
 
     <van-cell-group>
@@ -46,7 +55,11 @@
 
     <template v-if="model.isAgain">
       <van-cell-group>
-        <van-field :value="model.confirmIllness" @click="showIllnessHistory" clickable label="确认病种" placeholder="请选择诊断" readonly right-icon="arrow" />
+        <van-field :value="model.confirmIllness" @click="showAddIllnessHistory = true" clickable label="确认病种" placeholder="请选择诊断" readonly right-icon="arrow" />
+        
+        <peace-dialog :visible.sync="showAddIllnessHistory">
+          <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
+        </peace-dialog>
       </van-cell-group>
 
       <van-cell-group>
@@ -61,7 +74,11 @@
       </van-cell-group>
 
       <van-cell-group>
-        <van-field :value="model.allergicHistory" @click="showAllergicHistory" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+        <van-field :value="model.allergicHistory" @click="showAddAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+
+        <peace-dialog :visible.sync="showAddAllergicHistory">
+          <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model="model.allergicHistory"></AddAllergicHistory>
+        </peace-dialog>
       </van-cell-group>
 
       <van-cell-group>
@@ -92,7 +109,7 @@
         <span>我已阅读并同意</span>
         <a @click="redirect" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
-      <van-button @click="apply" style="width: 100%;" type="primary">保存</van-button>
+      <van-button :disabled="!model.informedConsent" @click="apply" style="width: 100%;" type="primary">保存</van-button>
     </div>
   </div>
 </template>
@@ -100,9 +117,22 @@
 <script>
 import peace from '@src/library'
 
+import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
+import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
+
 export default {
+  components: {
+    AddAllergicHistory,
+    AddIllnessHistory
+  },
+
   data() {
     return {
+      // 显示确认病种
+      showAddAllergicHistory: false,
+      // 显示过敏史
+      showAddIllnessHistory: false,
+
       // 显示家人弹框
       showFamily: false,
       // 显示确认时间弹框
@@ -117,8 +147,9 @@ export default {
 
       model: {
         // 医生 (医生 ID)
-        doctorId: '0',
+        doctorId: '',
         // 就诊人 (家人 ID)
+        familyName: '',
         familyId: '',
         // 问诊类型
         consultingType: 'image',
@@ -170,13 +201,16 @@ export default {
 
   created() {
     const params = JSON.parse(window.atob(this.$route.params.json))
+    this.model.doctorId = params.doctorId
+    this.model.consultingType = params.consultingType
+    this.model.consultingTypeId = params.consultingTypeId
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
       this.doctor = res.data
     })
 
-    peace.service.patient.getMyFamilyList().then(() => {
-      this.source.familyList = ['家人1', '家人2']
+    peace.service.patient.getMyFamilyList().then(res => {
+      this.source.familyList = res.data
     })
   },
 
@@ -194,9 +228,10 @@ export default {
       console.log(file)
     },
 
-    selectFamily(value) {
+    selectFamily(familyObject) {
       this.showFamily = false
-      this.model.familyId = value
+      this.model.familyName = familyObject.name
+      this.model.familyId = familyObject.id
     },
 
     selectConfirmTime(value) {
@@ -205,23 +240,11 @@ export default {
     },
 
     showIllnessHistory() {
-      this.$router.push({
-        name: '/components/addIllnessHistory',
-        params: {
-          keepAlive: false,
-          confirmIllness: this.model.confirmIllness && this.model.confirmIllness.split(',')
-        }
-      })
+      this.showAddIllnessHistory = true
     },
 
     showAllergicHistory() {
-      this.$router.push({
-        name: '/components/addAllergicHistory',
-        params: {
-          keepAlive: false,
-          allergicHistory: this.model.allergicHistory && this.model.allergicHistory.split(',')
-        }
-      })
+      this.showAddAllergicHistory = true
     },
 
     apply() {
@@ -231,7 +254,6 @@ export default {
     },
 
     uploadHandler() {
-      debugger
       if (this.attachment.length > 0) {
         const params = new FormData()
 
@@ -253,7 +275,19 @@ export default {
     applyHandler() {
       const params = this.model
 
-      peace.service.inquiry.apply(params)
+      // 验证必填
+      if (!this.model.familyName) {
+        return peace.util.alert('请选择就诊人')
+      }
+      if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
+        return peace.util.alert('请输入不少于5个字的病情描述')
+      }
+
+      peace.service.inquiry.apply(params).then(res => {
+        if (res.data.errorState !== 0) {
+          peace.util.alert(res.msg)
+        }
+      })
     }
   }
 }

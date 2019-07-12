@@ -39,8 +39,19 @@
 import peace from '@src/library'
 
 export default {
+  props: {
+    value: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
+  },
+
   data() {
     return {
+      internalValue: this.value,
+
       // 显示搜索框
       showIllnessHistory: false,
       // 搜索关键字
@@ -81,15 +92,17 @@ export default {
     },
 
     parmasHandler() {
-      // 处理参数
-      // 根据传递参数,还原选中
-      if (this.$route.params.confirmIllness) {
-        this.$route.params.confirmIllness.forEach(illness => {
-          this.confirmIllness.push({ value: illness, checked: true })
+      if (this.internalValue) {
+        if (typeof this.internalValue === 'string') {
+          this.internalValue = this.internalValue.split(',')
+        }
+
+        this.internalValue.forEach(allergic => {
+          this.confirmIllness.push({ value: allergic, checked: true })
 
           console.log(this.confirmIllnessCommonly)
-          if (this.confirmIllnessCommonly.find(item => item.value === illness)) {
-            this.confirmIllnessCommonly.find(item => item.value === illness).checked = true
+          if (this.confirmIllnessCommonly.find(item => item.value === allergic)) {
+            this.confirmIllnessCommonly.find(item => item.value === allergic).checked = true
           }
         })
       }
@@ -107,10 +120,12 @@ export default {
         this.searchIllnessHistory = ''
       })
     },
+
     onCancel() {
       this.showIllnessHistory = false
       this.searchIllnessHistory = ''
     },
+
     onConfirm(value) {
       this.check({ value: value })
       this.onCancel()
@@ -144,13 +159,11 @@ export default {
         this.confirmIllness.push(currentItem)
       }
     },
+
     save() {
-      this.$router.replace({
-        name: $peace.referrer.name,
-        params: {
-          confirmIllness: this.confirmIllness
-        }
-      })
+      this.$emit('input', this.confirmIllness.map(item => item.value).toString())
+
+      this.$emit('onSave')
     }
   }
 }

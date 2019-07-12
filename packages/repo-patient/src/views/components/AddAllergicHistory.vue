@@ -39,8 +39,19 @@
 import peace from '@src/library'
 
 export default {
+  props: {
+    value: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
+  },
+
   data() {
     return {
+      internalValue: this.value,
+
       showAllergicHistory: false,
       searchAllergicHistory: '',
 
@@ -76,10 +87,12 @@ export default {
     },
 
     parmasHandler() {
-      // 处理参数
-      // 根据传递参数,还原选中
-      if (this.$route.params.allergicHistory) {
-        this.$route.params.allergicHistory.forEach(allergic => {
+      if (this.internalValue) {
+        if (typeof this.internalValue === 'string') {
+          this.internalValue = this.internalValue.split(',')
+        }
+
+        this.internalValue.forEach(allergic => {
           this.allergicHistory.push({ value: allergic, checked: true })
 
           if (this.allergicHistoryCommonly.find(item => item.value === allergic)) {
@@ -131,13 +144,11 @@ export default {
         this.allergicHistory.push(currentItem)
       }
     },
+
     save() {
-      this.$router.replace({
-        name: $peace.referrer.name,
-        params: {
-          allergicHistory: this.allergicHistory
-        }
-      })
+      this.$emit('input', this.allergicHistory.map(item => item.value).toString())
+
+      this.$emit('onSave')
     }
   }
 }

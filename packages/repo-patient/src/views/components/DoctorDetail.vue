@@ -1,19 +1,19 @@
 <template>
-  <div class="doctor-detail">
+  <div class="doctor-detail" v-if="doctor">
     <div class="title">
       <div class="title-description">
         <div class="title-description-avatar">
-          <img />
+          <img :src="doctor.doctorInfo.avartor" />
         </div>
 
         <div class="title-description-info">
           <div class="title-doctor">
-            <span class="title-doctor-name">张逗豆</span>
-            <span>副主任医生</span>
-            <span>妇产科</span>
+            <span class="title-doctor-name">{{ doctor.doctorInfo.name }}</span>
+            <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+            <span>{{ doctor.doctorInfo.deptName }}</span>
           </div>
           <div class="title-hospital">
-            <span>郑州大学第一附属医院</span>
+            <span>{{ doctor.doctorInfo.hospitalName }}</span>
           </div>
         </div>
       </div>
@@ -21,28 +21,26 @@
 
     <div class="description">
       <div class="description-service">
-        <div @click="redirect" class="description-service-item">
+        <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="description-service-item">
           <img src="@src/assets/images/ic_tuwen.png" />
           <p>图文咨询</p>
           <p>
-            <span class="money">￥10</span>
-            <span>/次</span>
+            <span class="money">{{ doctor.consultationList[0].money === 0 ? '免费' : doctor.consultationList[0].money + '/次' }}</span>
           </p>
         </div>
-        <div class="description-service-item">
+        <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="description-service-item">
           <img src="@src/assets/images/ic_video_open.png" />
           <p>视频咨询</p>
           <p>
-            <span class="money">￥100</span>
-            <span>/次</span>
+            <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : doctor.consultationList[1].money + '/次' }}</span>
           </p>
         </div>
       </div>
 
       <div class="description-item">
         <van-collapse v-model="activeCollapseNames">
-          <van-collapse-item name="1" title="擅长">儿童过敏性疾病，如:过敏性哮喘，过敏性鼻炎，过敏性咳嗽。儿童慢性咳嗽、婴幼儿喘息、儿童喘…</van-collapse-item>
-          <van-collapse-item name="2" title="简介">儿研所呼吸科主治医师、北京大医学部硕士学位哈哈，2002年开始执业北京大医学部硕士学位的刚…</van-collapse-item>
+          <van-collapse-item name="1" title="擅长">{{ doctor.doctorInfo.specialSkill || '暂未填写' }}</van-collapse-item>
+          <van-collapse-item name="2" title="简介">{{ doctor.doctorInfo.summary || '暂未填写' }}</van-collapse-item>
         </van-collapse>
       </div>
     </div>
@@ -68,26 +66,61 @@
             <tbody>
               <tr>
                 <td class="time-table-col border">上午</td>
-                <td :key="item" class="time-table-col border primary" v-for="item in 7">
-                  <span v-if="item % 2 === 0 ">√</span>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[0].weekList">
+                  <span v-if="item.status">√</span>
                 </td>
               </tr>
               <tr>
                 <td class="time-table-col border">下午</td>
-                <td :key="item" class="time-table-col border primary" v-for="item in 7">
-                  <span v-if="item % 2 === 1">√</span>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[1].weekList">
+                  <span v-if="item.status">√</span>
                 </td>
               </tr>
               <tr>
                 <td class="time-table-col border">晚上</td>
-                <td :key="item" class="time-table-col border primary" v-for="item in 7">
-                  <span v-if="item % 2 === 0">√</span>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[2].weekList">
+                  <span v-if="item.status">√</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </van-tab>
-        <van-tab title="线下咨询时间"></van-tab>
+        <van-tab title="线下咨询时间">
+          <table class="time-table">
+            <thead>
+              <tr>
+                <th class="time-table-col border"></th>
+                <th class="time-table-col border">周一</th>
+                <th class="time-table-col border">周二</th>
+                <th class="time-table-col border">周三</th>
+                <th class="time-table-col border">周四</th>
+                <th class="time-table-col border">周五</th>
+                <th class="time-table-col border">周六</th>
+                <th class="time-table-col border">周日</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="time-table-col border">上午</td>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[0].weekList">
+                  <span v-if="item.status">√</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="time-table-col border">下午</td>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[1].weekList">
+                  <span v-if="item.status">√</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="time-table-col border">晚上</td>
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[2].weekList">
+                  <span v-if="item.status">√</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </van-tab>
       </van-tabs>
     </div>
 
@@ -100,17 +133,34 @@
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   data() {
     return {
+      // 医生信息
+      doctor: undefined,
+
       activeCollapseNames: ['1', '2'],
       activeTabs: ''
     }
   },
 
+  created() {
+    const params = JSON.parse(window.atob(this.$route.params.json))
+
+    peace.service.doctor.getDoctorInfo(params).then(res => {
+      this.doctor = res.data
+    })
+  },
+
   methods: {
-    redirect() {
-      this.$router.push('/components/doctorInquiryApply')
+    redictToApply(doctorInfo, doctorConsultation) {
+      const json = window.btoa(
+        JSON.stringify({ doctorId: doctorInfo.doctorId, consultingType: doctorConsultation.tag, consultingTypeId: doctorConsultation.consultingTypeId })
+      )
+
+      this.$router.push(`/components/doctorInquiryApply/${json}`)
     }
   }
 }

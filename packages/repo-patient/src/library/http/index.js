@@ -104,7 +104,7 @@ axios.interceptors.response.use(
       }
 
       // 鉴权失败
-      else if (response.data && parseInt(response.data.code) === 601) {
+      else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
         // 清空所有缓存
@@ -112,7 +112,9 @@ axios.interceptors.response.use(
         // 跳转提示页
         router.replace($peace.config.system.noAuthPage)
 
-        window.location.reload()
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
 
         return Promise.reject(response)
       }

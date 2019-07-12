@@ -1,32 +1,12 @@
 <template>
   <div class="container">
     <div class="content">
-      <van-cell
-        :key="item.id"
-        @click="toViewDetails(item)"
-        border
-        class="info"
-        is-link
-        v-for="item in members"
-      >
+      <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
         <template slot="title">
           <span class="custom-title">{{ item.name }}</span>
-          <van-icon
-            class-prefix="ic"
-            class="danger"
-            name="ic_girls"
-            v-if="item.sex === '男'"
-          />
-          <van-icon
-            class-prefix="ic"
-            class="blue"
-            name="ic_boys"
-            v-else-if="item.sex === '女'"
-          />
-          <span
-            class="custom-age"
-            v-if="item.age"
-          >{{ item.age }}岁</span>
+          <van-icon class-prefix="ic" class="danger" name="ic_girls" v-if="item.sex === '男'" />
+          <van-icon class-prefix="ic" class="blue" name="ic_boys" v-else-if="item.sex === '女'" />
+          <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
           <van-tag plain round>{{ item.relation }}</van-tag>
         </template>
       </van-cell>
@@ -35,21 +15,22 @@
       <div class="tips">温馨提示：最多添加10位家人</div>
       <van-button @click="toViewDetails" type="primary">新增家人</van-button>
     </div>
-    <full-screen-dialog
-      :visible.sync="dialog.visible"
-      v-if="dialog.visible"
-    >
+
+    <peace-dialog :visible.sync="dialog.visible">
       <FamilyMembersModel />
-    </full-screen-dialog>
+    </peace-dialog>
   </div>
 </template>
 <script>
-import FullScreenDialog from '@src/views/components/FullScreenDialog'
 import FamilyMembersModel from '@src/views/components/FamilyMembersModel'
 
 export default {
   name: 'MyFamilyMembers',
-  components: { FamilyMembersModel, FullScreenDialog },
+
+  components: {
+    FamilyMembersModel
+  },
+
   data() {
     return {
       members: [
@@ -103,6 +84,7 @@ export default {
           relation: '本人'
         }
       ],
+
       dialog: {
         visible: false
       }
@@ -110,14 +92,15 @@ export default {
   },
   methods: {
     // 查看家人详细信息
-    toViewDetails(info) {
-      console.log(info)
+    toViewDetails() {
       this.dialog.visible = true
     }
   },
+
   created() {}
 }
 </script>
+
 <style lang="scss" scoped>
 .container {
   position: relative;

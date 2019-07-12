@@ -59,7 +59,7 @@ export default {
           }
           // 其它
           else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
-            return session.lastMsg.content.data.showTextInfo.doctorClientText
+            return session.lastMsg.content.data.showTextInfo.patientClientText
           }
       }
     },
@@ -98,6 +98,8 @@ export default {
 
 <style lang="scss" scoped>
 .message {
+  width: 100%;
+
   .message-item {
     width: 100%;
     display: flex;
@@ -110,6 +112,8 @@ export default {
     }
 
     .message-item-avatar {
+      width: 50px;
+
       img {
         width: 50px;
         height: 50px;
@@ -120,8 +124,8 @@ export default {
     }
 
     .message-item-detail {
-      width: 100%;
-      margin: 0 10px;
+      width: calc(100% - 50px);
+      padding: 0 10px;
 
       .message-item-detail-title {
         display: flex;
@@ -143,6 +147,11 @@ export default {
       .message-item-detail-content {
         font-size: 14px;
         color: #999999;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
       }
     }
   }

@@ -215,13 +215,8 @@ export function setInquirySessions(sessions) {
 
   // 过滤 [待接诊] / [问诊中] 数据
   const filterMethod = session => {
-    if (session.scene === 'p2p' && session.content) {
-      if (
-        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
-        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
-      ) {
-        return true
-      }
+    if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
+      return true
     }
 
     return false

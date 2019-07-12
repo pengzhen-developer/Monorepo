@@ -11,7 +11,7 @@
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
-        <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button>
+      <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button>
     </div>
 
     <div class="login-footer">
@@ -85,9 +85,9 @@ export default {
     signInByMock() {
       // todo
       const mockLoginData = {
-        patientInfo: { id: 'yhasfnnays', tel: '13007120720', realName: 'AJY49666111', regTime: '2019-07-10 11:26:13' },
-        loginInfo: { tel: '13007120720', accessToken: '_83bf3489efda0de88996ff9041eb6a98' },
-        registerInfo: { userId: 'yhasfnnays', imToken: '04236b23c334901c291fc6d593aa2215', nickname: 'AJY49666111' }
+        patientInfo: { id: 'mbnbxzzdzl', tel: '13007120720', realName: 'AJY49666111', regTime: '2019-07-10 11:26:13' },
+        loginInfo: { tel: '13007120720', accessToken: '_d62e776641c43f02f16be0390cb09a88' },
+        registerInfo: { userId: 'mbnbxzzdzl', imToken: 'a29093276850b6c45e1011045dc2842a', nickname: 'AJY49666111' }
       }
 
       // 提示登录成功
@@ -107,24 +107,28 @@ export default {
       }, 1000)
     },
 
-    signInByMockForSISI(){
-        const mockLoginData = {"patientInfo":{"id":"rjgqjjxfle","tel":"18674052544","realName":"AJY93445475","regTime":"2019-07-10 14:56:03"},"loginInfo":{"tel":"18674052544","accessToken":"_ce682229e4e803f035b9d5d6d29c7700"},"registerInfo":{"userId":"rjgqjjxfle","imToken":"fb40659d78920e9a5cfc2ebf29bbf741","nickname":"AJY93445475"}}
+    signInByMockForSISI() {
+      const mockLoginData = {
+        patientInfo: { id: 'rjgqjjxfle', tel: '18674052544', realName: 'AJY93445475', regTime: '2019-07-10 14:56:03' },
+        loginInfo: { tel: '18674052544', accessToken: '_ce682229e4e803f035b9d5d6d29c7700' },
+        registerInfo: { userId: 'rjgqjjxfle', imToken: 'fb40659d78920e9a5cfc2ebf29bbf741', nickname: 'AJY93445475' }
+      }
 
-        // 提示登录成功
-        peace.util.alert('登录成功，正在跳转...')
+      // 提示登录成功
+      peace.util.alert('登录成功，正在跳转...')
 
-        // 更新 vuex store
-        this.$store.commit('user/setUserInfo', mockLoginData)
+      // 更新 vuex store
+      this.$store.commit('user/setUserInfo', mockLoginData)
 
-        // 存储到本地缓存
-        peace.cache.set(peace.type.USER.INFO, mockLoginData, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
+      // 存储到本地缓存
+      peace.cache.set(peace.type.USER.INFO, mockLoginData, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
 
-        // 初始化 IM
-        peace.service.IM.initNIM()
+      // 初始化 IM
+      peace.service.IM.initNIM()
 
-        setTimeout(() => {
-            this.$router.push(peace.config.system.homePage)
-        }, 1000)
+      setTimeout(() => {
+        this.$router.push(peace.config.system.homePage)
+      }, 1000)
     }
   }
 }
