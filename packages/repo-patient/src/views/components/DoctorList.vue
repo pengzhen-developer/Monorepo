@@ -58,8 +58,7 @@ export default {
 
   methods: {
     get() {
-      const params = peace.util.decode(this.$route.params.json);
-      console.log(params)
+      const params = peace.util.decode(this.$route.params.json)
       peace.service.patient.getDoctorList(params).then(res => {
         this.doctorList = res.data
       })
@@ -89,7 +88,7 @@ export default {
 
     canShowVideoInquiry(doctor) {
       // doctor.consultationList[0] 固定为视频咨询
-     const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
         return doctor.consultationList[1].status && doctor.consultationList[1].money === 0
@@ -99,15 +98,17 @@ export default {
     },
 
     redictToDetail(doctorInfo) {
-      const json = window.btoa(JSON.stringify({ doctorId: doctorInfo.doctorId }))
+      const json = peace.util.encode({ doctorId: doctorInfo.doctorId })
 
       this.$router.push(`/components/doctorDetail/${json}`)
     },
 
     redictToApply(doctorInfo, doctorConsultation) {
-      const json = window.btoa(
-        JSON.stringify({ doctorId: doctorInfo.doctorId, consultingType: doctorConsultation.tag, consultingTypeId: doctorConsultation.consultingTypeId })
-      )
+      const json = peace.util.encode({
+        doctorId: doctorInfo.doctorId,
+        consultingType: doctorConsultation.tag,
+        consultingTypeId: doctorConsultation.consultingTypeId
+      })
 
       this.$router.push(`/components/doctorInquiryApply/${json}`)
     }

@@ -154,7 +154,7 @@ export default {
   },
 
   created() {
-    const params = JSON.parse(window.atob(this.$route.params.json))
+    const params = peace.util.decode(this.$route.params.json)
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
       this.doctor = res.data
@@ -163,9 +163,11 @@ export default {
 
   methods: {
     redictToApply(doctorInfo, doctorConsultation) {
-      const json = window.btoa(
-        JSON.stringify({ doctorId: doctorInfo.doctorId, consultingType: doctorConsultation.tag, consultingTypeId: doctorConsultation.consultingTypeId })
-      )
+      const json = peace.util.encode({
+        doctorId: doctorInfo.doctorId,
+        consultingType: doctorConsultation.tag,
+        consultingTypeId: doctorConsultation.consultingTypeId
+      })
 
       this.$router.push(`/components/doctorInquiryApply/${json}`)
     },

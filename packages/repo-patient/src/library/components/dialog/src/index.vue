@@ -2,8 +2,8 @@
   <transition name="van-slide-up">
     <div class="full-screen-dialog" ref="dialog" v-if="visible">
       <div class="title">
-        <van-nav-bar>
-          <van-icon @click="close" name="arrow-left" slot="left" />
+        <van-nav-bar :title="title">
+          <van-icon @click="close" name="cross" slot="right" />
         </van-nav-bar>
       </div>
 
@@ -20,8 +20,15 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: () => {
+      default() {
         return false
+      }
+    },
+
+    title: {
+      type: String,
+      default() {
+        return ''
       }
     }
   },

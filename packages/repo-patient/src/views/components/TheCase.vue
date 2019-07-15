@@ -104,7 +104,6 @@ export default {
 <style lang="scss" scoped>
 .the-case {
   background-color: #f5f5f5;
-  height: 100%;
 
   .prescript {
     background: #fff;

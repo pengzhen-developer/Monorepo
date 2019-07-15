@@ -28,9 +28,9 @@
       </div>
     </div>
     <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
-<!--    <van-cell is-link value="常见人群" />-->
-<!--    <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>-->
-    <van-cell is-link value="推荐互联网医院" @click="goMenuPage({},{type:'recommendHsp'})"/>
+    <!--    <van-cell is-link value="常见人群" />-->
+    <!--    <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>-->
+    <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院" />
     <HspPage :items="data.recommendOrgan" :max="2"></HspPage>
   </div>
 </template>
@@ -44,7 +44,7 @@ import DepartPage from '@src/views/hospital/depart/HospitalDepartList'
 export default {
   components: {
     HspPage,
-    DepartPage,
+    DepartPage
     // Humens
   },
   data() {
@@ -62,13 +62,13 @@ export default {
       let json
       switch (data.type) {
         case 'guide':
-          json = peace.util.encode({doctorTag: item.id})
+          json = peace.util.encode({ doctorTag: item.id })
           this.$router.push(`/components/doctorList/${json}`)
           break
         case 'appoint':
         case 'recommendHsp':
           // 开通预约的医院列表
-          json = peace.util.encode({doctorTag: item.id,type:data.type})
+          json = peace.util.encode({ doctorTag: item.id, type: data.type })
           this.$router.push(`/hospital/HospitalList/${json}`)
           break
         default:
@@ -100,7 +100,7 @@ export default {
   box-sizing: border-box;
   background-color: #fff;
   /*margin: 10px 0;*/
-  padding: 10px 15px;
+  padding: 10px 10px;
   border-radius: 0;
   font-size: 15px;
 

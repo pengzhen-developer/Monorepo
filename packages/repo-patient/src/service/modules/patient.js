@@ -52,7 +52,31 @@ export function getPrescripInfo(params) {
   return peace.http.post(getPrescripInfo, params)
 }
 
+/**
+ * 获取咨询列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function inquiryList(params) {
+  const inquiryList = 'client/v1/account/inquiryList'
 
+  return peace.http.post(inquiryList, params)
+}
+
+/**
+ * 获取处方列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getMyPrescripList(params) {
+  const getMyPrescripList = 'client/v1/Patient/getMyPrescripList'
+
+  return peace.http.post(getMyPrescripList, params)
+}
 
 export default {
   /** 获取医生列表 */
@@ -61,6 +85,10 @@ export default {
   getMyFamilyList,
   /** 获取病历详情 */
   getCaseInfo,
+  /** 获取处方列表 */
+  getMyPrescripList,
   /** 获取处方详情 */
-  getPrescripInfo
+  getPrescripInfo,
+  /** 获取咨询列表 */
+  inquiryList
 }

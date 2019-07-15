@@ -88,6 +88,34 @@ const router = new Router({
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
         },
 
+        // 我的咨询
+        {
+          path: '/setting/userConsultList',
+          name: '/setting/userConsultList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的咨询',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/UserConsultList.vue')
+        },
+
+        // 用药建议
+        {
+          path: '/components/theRecipeList/:json',
+          name: '/components/theRecipeList/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '用药建议',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/TheRecipeList.vue')
+        },
+
         // 医生列表
         {
           path: '/components/doctorList/:json',

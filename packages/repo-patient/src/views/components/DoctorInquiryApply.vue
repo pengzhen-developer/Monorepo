@@ -198,7 +198,7 @@ export default {
   },
 
   created() {
-    const params = JSON.parse(window.atob(this.$route.params.json))
+    const params = peace.util.decode(this.$route.params.json)
     this.model.doctorId = params.doctorId
     this.model.consultingType = params.consultingType
     this.model.consultingTypeId = params.consultingTypeId

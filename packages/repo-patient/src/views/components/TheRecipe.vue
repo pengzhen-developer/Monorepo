@@ -117,7 +117,6 @@ export default {
 }
 </script>
 
-
 <style scoped src="./../style/components.css"></style>
 <style scoped src="./../style/elements.css"></style>
 <style scoped src="./../style/grid.css"></style>
