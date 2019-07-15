@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="padding-style scroll-x">
+    <div class="scroll-x">
       <div class="box-scroll">
         <div class="scroll-items">
           <div :class="['item', activeIndex == 'all' ? 'active' : '']" @click="checkTime({index:'all'})">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="content">
-      <div :key="item.doctorId" @click="goHomeIndex(item)" class="card" v-for="item in doctorList">
+      <div :key="item.doctorId" @click="goDoctorHomePage(item)" class="card" v-for="item in doctorList">
         <div class="card-avatar avatar-circular">
           <img class src="item.doctorInfo.avartor" />
         </div>
@@ -23,7 +23,7 @@
           <div class="card-name">
             {{item.doctorInfo.doctorName}}
             <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
-            <van-button @click="goDoctorHomePage" hairline plain size="mini" type="primary" v-if="activeIndex == 'all'">预约</van-button>
+            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary" v-if="activeIndex == 'all'">预约</van-button>
           </div>
           <div class="card-small">评分：7.6 预约量：123</div>
           <div class="card-brief" v-if="item.doctorInfo.specialSkill">
@@ -209,183 +209,138 @@ export default {
     goHomeIndex(item) {
       let doctorInfo = item
       console.log(doctorInfo, item)
-    }
+    },
+    goDoctorAppointPage(item){
+        let json = peace.util.encode({
+            doctorId: item.doctorInfo.doctorId
+        });
+
+      this.$router.push(`../appointDoctorSelect/${json}`);
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '~@src/views/style/style.css';
-.scroll-x {
-  box-sizing: border-box;
-  position: relative;
-  position: fixed;
-  width: 100%;
-  height: 56px;
-  border-top: 1px solid #f5f5f5;
-  border-bottom: 10px solid #f5f5f5;
-}
-.scroll-x .box-scroll {
-  overflow: hidden;
-  height: 45px;
-}
-.box-scroll .scroll-items {
-  background: #fff;
-  color: #000;
-  font-size: 13px;
-  display: flex;
-  overflow-x: auto;
-  justify-content: space-between;
-  padding: 0;
-  height: 100%;
-}
-.box-scroll .scroll-items > .item {
-  text-align: center;
-  font-size: 13px;
-  color: #000;
-  font-weight: bold;
-  flex-basis: 66px;
-  flex-shrink: 0;
-  white-space: nowrap;
-  border-right: 1px solid #f5f5f5;
-  padding: 4px;
-}
-.box-scroll .scroll-items > .item .week {
-}
-.box-scroll .scroll-items > .item .time {
-  color: #999;
-  font-size: 11px;
-  font-weight: normal;
-}
-.scroll-items .item.active {
-  color: #fff;
-  background: #00c6ae;
-  border-right-color: #00c6ae;
-}
-.scroll-items .item.active .time {
-  color: #fff;
-}
 /*·       doctor*/
-.content {
-  overflow: hidden;
-  padding-top: 56px;
-}
-.card {
-  padding: 7px 5px;
-  border-bottom: 1px solid #dedede;
-}
-.card-brief {
-  color: #999;
-}
-.card .card-brief,
-.card .p-small {
-  display: flex;
-  align-items: baseline;
-  line-height: 1.3;
-  font-size: 13px;
-  padding: 7px 0;
-}
-.card .card-small,
-.card .card-brief {
-  /*line-height: 1.3;*/
-}
-.card-brief {
-}
-.card-brief,
-.p-small {
-  display: 1;
-  overflow: hidden;
-}
-.card-brief .span,
-.p-small .span {
-  position: relative;
-  flex: 1;
-}
-.card-brief .span.s,
-.p-small .span.s {
-  flex: 0 0 auto;
-  /*width: ;*/
-}
-.card-brief .span.xl {
-  flex: 0 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.card .card-name {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-.card .card-name .card-small {
-  flex: 1;
-  align-self: center;
-  padding-top: 5px;
-  padding-left: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.van-button--primary {
-  color: #00c6ae;
-  flex: 0 0 auto;
-  width: 62px;
-  margin-right: 10px;
-  align-self: center;
-}
+    .content{
+        overflow: hidden;
+        padding-top: 56px;
+    }
+    .card{
+        padding:7px 5px;
+        border-bottom: 1px solid #DEDEDE;
+    }
+    .card-brief{
+        color: #999;
+    }
+    .card .card-brief,.card .p-small{
+        display: flex;
+        align-items:baseline;
+        line-height: 1.3;
+        font-size: 13px;
+        padding: 7px 0;
+    }
+    .card .card-small,.card .card-brief{
+        /*line-height: 1.3;*/
+    }
+    .card-brief{
+
+    }
+    .card-brief,.p-small{
+        /*display: 1;*/
+        overflow: hidden;
+    }
+    .card-brief .span,.p-small .span{
+        position: relative;
+        flex: 1;
+    }
+    .card-brief .span.s,.p-small .span.s{
+        flex: 0 0 auto;
+        /*width: ;*/
+    }
+    .card-brief .span.xl{
+        flex: 0 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .card .card-name{
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+    }
+    .card .card-name .card-small{
+        flex: 1;
+        align-self: center;
+        padding-top: 5px;
+        padding-left: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .van-button--primary{
+        color: #00c6ae;
+        flex: 0 0 auto;
+        width: 62px;
+        margin-right: 10px;
+        align-self: center;
+    }
 /*    box-appoint*/
-.box-appoint {
-  margin: 5px 0;
-  padding-top: 5px;
-  clear: both;
-  margin-right: 10px;
-}
-.bar-line {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  align-items: stretch;
-  justify-content: space-around;
-  width: 100%;
-  border-radius: 15px;
-  min-height: 25px;
-  box-sizing: border-box;
-  color: #00c6ae;
-  background: #ddf7f4;
-}
-.bar-line + .bar-line {
-  margin-top: 5px;
-}
-.bar-line > .item {
-  flex: 1;
-  text-align: center;
-  font-size: 12px;
-  padding: 3px 0;
-}
-.bar-line > .item:first-child {
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-  flex: 1.3;
-}
-.bar-line > .item:last-child {
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-}
-.bar-line > .item.active {
-  background: #00c6ae;
-  color: #fff;
-}
-.bar-line > .item.disabled {
-  background: #e1e1e1;
-  color: #999;
-}
-.bar-line.disabled {
-  background: #f3f3f3;
-  color: #999;
-}
+    .box-appoint{
+        margin: 5px 0;
+        padding-top: 5px;
+        clear: both;
+        margin-right: 10px;
+    }
+    .bar-line{
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-around;
+        width: 100%;
+        border-radius: 15px;
+        min-height: 25px;
+        box-sizing: border-box;
+        color: #00c6ae;
+        background: #DDF7F4;
+    }
+    .bar-line +.bar-line{
+        margin-top: 5px;
+    }
+    .bar-line>.item{
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        padding: 3px 0;
+    }
+    .bar-line>.item:first-child{
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        flex:1.3;
+    }
+    .bar-line>.item:last-child{
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+    .bar-line>.item.active{
+        background: #00c6ae;
+        color: #fff;
+    }
+    .bar-line>.item.disabled{
+        background: #E1E1E1;
+        color: #999;
+    }
+    .bar-line.disabled{
+        background: #F3F3F3;
+        color: #999;
+    }
 </style>
 
