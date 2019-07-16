@@ -170,7 +170,11 @@ export default {
       let json = peace.util.encode({netHospitalId: this.hsp.nethospitalInfo.netHospitalId,id: item.id,Date: new Date()})
       this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
     },
-    goDoctorHomeIndexPage() {}
+    goDoctorHomeIndexPage(item) {
+      const json = peace.util.encode({ doctorId: item.doctorId })
+
+      this.$router.push(`/components/doctorDetail/${json}`)
+    }
   }
 }
 </script>
