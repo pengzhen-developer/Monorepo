@@ -59,6 +59,7 @@
                     netHospitalId: this.hsp.netHospitalId
                 };
                 peace.service.hospital.getDeptList(data).then(res => {
+                    this.hospitalInfo = res.data.hospitalInfo;
                     res.data.list.map(item =>{
                         items.push({
                             text: item.netdeptName,
@@ -74,7 +75,6 @@
                     })
                     this.items = items;
                     this.activeId = items[0].children[0] ? items[0].children[0].id : '';
-                    this.hospitalInfo = res.data.hospitalInfo;
                     this.height = +(window.innerHeight - (this.$refs.hsp.offsetHeight + 52));
                 })
             },

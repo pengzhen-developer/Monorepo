@@ -272,6 +272,42 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/hospital/depart/HospitalDepartList.vue')
+        },
+        {
+          path: '/appoint/doctor/appointDoctorSelect/:json',
+          name: '/appoint/doctor/appointDoctorSelect',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择就诊时间',
+              back: true
+            }
+          },
+          component: () => import('@src/views/appoint/doctor/appointDoctorSelect.vue')
+        },
+        {
+          path: '/appoint/order/appointOrderSubmit/:json',
+          name: '/appoint/order/appointOrderSubmit',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '预约信息',
+              back: true
+            }
+          },
+          component: () => import('@src/views/appoint/order/appointOrderSubmit.vue')
+        },
+        {
+          path: '/setting/userDoctorList',
+          name: '/setting/userDoctorList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的医生',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/userDoctorList.vue')
         }
       ]
     },

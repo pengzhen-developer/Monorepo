@@ -116,10 +116,24 @@ export function getMyPrescripList(params) {
 
   return peace.http.post(getMyPrescripList, params)
 }
+/**
+ * 获取我的医生列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getUserDctList() {
+  const getUserDctList = 'client/v1/account/getMyDoctor'
+
+  return peace.http.post(getUserDctList)
+}
 
 export default {
   /** 获取医生列表 */
   getDoctorList,
+  /** 获取我的医生列表 */
+  getUserDctList,
   /** 获取我的家人 */
   getMyFamilyList,
   /** 新增我的家人 */

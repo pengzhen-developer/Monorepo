@@ -4,7 +4,7 @@
       <div class="banner-img"></div>
     </div>
     <!--导流-->
-    <div class="panel panel-block panel-block-m" v-if="data.guide">
+    <div class="panel panel-block panel-block-m panel-home" v-if="data.guide">
       <div :doctortag="item.id" :key="item.id" @click="goMenuPage(item,{type:'guide'})" class="block-items" data-type="guide" v-for="item in data.guide">
         <div :class="[true ? 'block-ico' : '', item.icon]"></div>
         <div class="block-tit">{{item.text}}</div>
@@ -17,8 +17,8 @@
         <div :class="['block-items-card', item.icon, item.id == 'appoint' ? '' : 'disabled']">{{item.text}}</div>
       </div>
     </div>
-    <div class="panel flex">
-      <div @click="goMenuPage(this)" class="card-simple icon_01_01_11" type="userDoctor">
+    <div class="panel flex" style="padding-top: 0;padding-bottom:0">
+      <div @click="goMenuPage('',{type:'userDoctor'})" class="card-simple icon_01_01_11" type="userDoctor">
         <div class="card-tit">我的医生</div>
         <div class="card-brief">便捷查找您的医生</div>
       </div>
@@ -27,7 +27,7 @@
         <div class="card-brief">个人咨询详情管理</div>
       </div>
     </div>
-    <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
+    <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="margin-top:0;border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
     <!--    <van-cell is-link value="常见人群" />-->
     <!--    <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>-->
     <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院" />
@@ -70,7 +70,10 @@ export default {
           // 开通预约的医院列表
           json = peace.util.encode({ doctorTag: item.id, type: data.type })
           this.$router.push(`/hospital/HospitalList/${json}`)
-          break
+          break;
+        case  'userDoctor':
+          this.$router.push(`/setting/userDoctorlist`)
+              break;
         default:
           peace.util.alert('暂未开放')
           // _f.goMenuPage();
@@ -79,7 +82,6 @@ export default {
     }
   }
 }
-//    JSON.parse(window.atob($peace.$route.params.json))
 </script>
 
 <style lang="scss" scoped>
@@ -99,11 +101,17 @@ export default {
   position: relative;
   box-sizing: border-box;
   background-color: #fff;
-  /*margin: 10px 0;*/
+  margin: 0;
   padding: 10px 10px;
   border-radius: 0;
   font-size: 15px;
 
+  &.panel-home{
+    box-shadow: none;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   &.panel-clear {
     box-shadow: none !important;
   }

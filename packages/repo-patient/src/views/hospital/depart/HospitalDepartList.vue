@@ -1,4 +1,5 @@
 <template>
+<!--  -->
   <div>
     <div class="panel panel-block panel-block-s">
       <div
@@ -9,11 +10,10 @@
         class="block-items"
         v-bind:class="{'last':index == items.length -1}"
         v-for="(item,index) in lists"
+        v-if="index < showNum"
       >
-        <template v-if="index < showNum">
           <img :src="item.icon" class="block-ico" />
           <div class="block-tit">{{item.text}}</div>
-        </template>
       </div>
       <div @click="goDeptItemsPage()" class="block-items" v-if="items.length > max">
         <img :src="moreIcon" class="block-ico" />
@@ -88,7 +88,8 @@ export default {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-
+  margin-top: 0;
+  margin-bottom: 0;
   .block-items {
     font-size: inherit;
     padding: 5px 5px;
