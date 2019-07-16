@@ -6,14 +6,14 @@
                 <img class="" src="doctorInfo.avartor" />
             </div>
             <div class="card-body">
-                <div class="card-name">{{doctorInfo.doctorName}}
+                <div class="card-name">{{doctorInfo.name}}
                     <div class="card-small">
                         {{doctorInfo.doctorTitle}} {{doctorInfo.deptName}}</div>
 
                 </div>
-                <div class="card-small">
-                    评分：7.6  预约量：123
-                </div>
+<!--                <div class="card-small">-->
+<!--                    评分：7.6  预约量：123-->
+<!--                </div>-->
                 <div class="card-brief" v-if="doctorInfo.specialSkill">
                     <div class="span s">擅长：</div>
                     <div class="span xl">
@@ -29,98 +29,46 @@
         <div class="scroll-x">
             <div class="box-scroll">
                 <div class="scroll-items">
-                    <div :class="['item', index == activeIndex ? 'active' : '', item.disabled ? 'disabled' : '']" :key="index" @click="checkTime(item)" v-for="(item,index) in dateList">
+                    <div :class="['item', index == activeIndex ? 'active' : '', item.disabled ? 'disabled' : '']" :key="index" @click="checkTime(index)" v-for="(item,index) in dateList">
                         <div class="week">{{item.week}}</div>
-                        <div class="time">{{item.time}}</div>
+                        <div class="time">{{item.date}}</div>
                     </div>
                 </div>
             </div>
         </div>
 <!--        号源-->
         <div class="source">
-            <div v-if="activeIndex !=1" class="g-two">
+            <div class="g-two" v-if="AM.length">
                 <div class="left">上午</div>
                 <div class="content">
-                    <div class="f-two">
-                        <div class="content">
-                            08:00-08:59 ￥26.5 <div class="label label-default">剩余0</div>
+                    <div class="f-two" v-for="(item,index) in AM" :key="index">
+                        <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
+                            <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
+                            <div class="inline">￥26.5</div>
+                            <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
                         </div>
                         <div class="right">
-                            <div class="btn disabled btn-none"> 已过期 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            08:00-08:59 ￥26.5 <div class="label label-default">剩余0</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn disabled btn-none"> 已过期 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            08:00-08:59 ￥26.5 <div class="label label-blue">剩余6</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn btn-blue"> 预约 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            08:00-08:59 ￥26.5 <div class="label label-red">剩余1</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn btn-blue" @click="goAppointOrderSubmitPage()"> 预约 </div>
+                            <div class="btn btn-blue" @click="goAppointOrderSubmitPage(item)"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-if="activeIndex!=1" class="g-two">
+            <div class="g-two" v-if="PM.length">
                 <div class="left">下午</div>
                 <div class="content">
-                    <div class="f-two">
-                        <div class="content">
-                            <div class="inline disabled"> 08:00-08:59</div>
-                            <div class="inline disabled">￥26.5</div>
-                            <div class="label disabled">剩余0</div>
+                    <div class="f-two" v-for="(item,index) in PM" :key="index">
+                        <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
+                            <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
+                            <div class="inline">￥26.5</div>
+                            <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
                         </div>
                         <div class="right">
-                            <div class="btn disabled btn-none"> 已过期 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            <div class="inline disabled"> 08:00-08:59</div>
-                            <div class="inline disabled">￥26.5</div>
-                            <div class="label disabled">剩余0</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn disabled btn-none"> 已过期 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            <div class="inline disabled"> 08:00-08:59</div>
-                            <div class="inline disabled">￥26.5</div>
-                            <div class="label label-red">剩余1</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn btn-blue"> 预约 </div>
-                        </div>
-                    </div>
-                    <div class="f-two">
-                        <div class="content">
-                            <div class="inline disabled"> 08:00-08:59</div>
-                            <div class="inline disabled">￥26.5</div>
-                            <div class="label label-blue">剩余6</div>
-                        </div>
-                        <div class="right">
-                            <div class="btn btn-blue"> 预约 </div>
+                            <div class="btn btn-blue"  @click="goAppointOrderSubmitPage(item)"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="none-page" v-if="activeIndex == 1">
+            <div class="none-page" v-if="!AM.length && !PM.length">
                 <div class="icon icon_none_source"></div>
                 <div class="none-text">当日暂时无号源哦
                 <div>请查看其他日期号源</div>
@@ -137,45 +85,79 @@
         props: {},
         data() {
             return {
-                doctorInfo: {
-                    doctorName:'张三',
-                    doctorTitle:'教授',
-                    deptName:'临床医学',
-                    specialSkill:'啦啦啦啦啦啦啦啦绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿'
-                },
+                // doctorInfo: {
+                //     doctorName:'张三',
+                //     doctorTitle:'教授',
+                //     deptName:'临床医学',
+                //     specialSkill:'啦啦啦啦啦啦啦啦绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿'
+                // },
+                doctorInfo: {},
+                params: {},
                 activeIndex: 0,
-                dateList: [
-                    { time: '01-07', week: '周一', index: 0 },
-                    { time: '01-08', week: '周二', index: 1},
-                    { time: '01-09', week: '周三', index: 2, disabled: true },
-                    { time: '01-10', week: '周四', index: 3},
-                    { time: '01-11', week: '周五', index: 4},
-                    { time: '01-12', week: '周六', index: 5},
-                    { time: '01-13', week: '周日', index: 6}
-                ]
+                // dateList: [
+                //     { time: '01-07', week: '周一', index: 0 },
+                //     { time: '01-08', week: '周二', index: 1},
+                //     { time: '01-09', week: '周三', index: 2, disabled: true },
+                //     { time: '01-10', week: '周四', index: 3},
+                //     { time: '01-11', week: '周五', index: 4},
+                //     { time: '01-12', week: '周六', index: 5},
+                //     { time: '01-13', week: '周日', index: 6}
+                // ],
+                dateList:[],
+                AM:[],
+                PM:[]
             }
         },
         created() {
             const params = peace.util.decode(this.$route.params.json)
-            console.log(params);
-            // peace.service.xx.xx({
-            //     xx: params.xx
-            // }).then(res => {
-            //     this.data = res.data
-            // })
+            this.params = params;
+            this.getData()
+
         },
         methods: {
-            checkTime(item){
+            getData(){
+                peace.service.appoint.choiceVisitingTime({
+                    doctorId: this.params.doctorId,
+                    hospitalCode: this.params.hospitalCode
+                }).then(res => {
+                    this.dateList = res.data.weekDate || [];
+                    this.doctorInfo = res.data.list.doctorInfo || {};
+                    this.initSource();
+                })
+            },
+            initSource(){
+                this.activeIndex = this.dateList.findIndex((item) =>{
+                    return !item.disabled
+                });
+                ~this.activeIndex && this.getSourceData(this.dateList[this.activeIndex]);
+            },
+            getSourceData(item){
+                peace.service.appoint.choiceVisitingTimeByWeek({
+                    hospitalCode: this.params.hospitalCode,
+                    doctorId: this.params.doctorId,
+                    timeSharing: item.year + '-' + item.date
+                }).then(res => {
+                    this.AM = res.data.list.AM || [];
+                    this.PM = res.data.list.PM || [];
+                })
+            },
+            checkTime(index){
+                let item = this.dateList[index];
+
                 if(item.disabled){
                     return;
                 }
-                this.activeIndex = item.index
+                this.activeIndex = index;
+                this.getSourceData(item)
             },
-            goAppointOrderSubmitPage(){
+            goAppointOrderSubmitPage(item){
                let json = peace.util.encode({
                         a:1
                 })
-                this.$router.push(`/appoint/order/appointOrderSubmit${json}`)
+
+                if(!item.isExpire && item.number){
+                    this.$router.push(`../../order/appointOrderSubmit/${json}`);
+                }
             }
         }
     }
@@ -306,7 +288,7 @@
         padding-right: 8px;
         vertical-align: middle;
     }
-    .inline.disabled{
+    .content.disabled .inline{
         color: #c4c4c4;
     }
     .inline.blue{
@@ -322,7 +304,7 @@
         color: #F2223B;
         border: 1px solid #F2223B;
     }
-    .label.disabled{
+    .content.disabled .label{
         color: #c4c4c4;
         border-color: #c4c4c4;
     }
@@ -336,7 +318,7 @@
         padding: 6px;
         border-radius: 5px;
     }
-    .right>.btn.disabled{
+    .content.disabled+.right>.btn{
         background: #fff;
         border: none;
         color: #c4c4c4;

@@ -11,8 +11,8 @@
       title
       type="organHome"
       v-for="(item,index) in data"
+      v-if="index < showNum"
     >
-      <template v-if="index < showNum">
         <div @click="goMenuPage(item)" class="cards">
           <div class="card-avatar">
             <img :src="item.icon" class />
@@ -27,7 +27,6 @@
             </div>
           </div>
         </div>
-      </template>
     </van-skeleton>
   </div>
 </template>
@@ -76,16 +75,25 @@ export default {
       this.$router.push(`/hospital/HospitalHome/${json}`)
     },
     getHspList(){
+      // 推荐医院
       if(this.params.type == 'recommendHsp'){
         peace.service.index.getMenu().then(res => {
           this.data = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
         })
       }
-
-      if(this.params.type == 'appoint'){
+      // 报告单医院
+      if(this.params.type == 'report'){
         peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
           this.data = res.data.netHospitals || []
+          this.showNum = this.data.length
+        })
+      }
+
+      // 预约医院
+      if(this.params.type == 'appoint'){
+        peace.service.hospital.getHospitalByRegister({ p: 1, size:100 }).then(res => {
+          this.data = res.data.list || []
           this.showNum = this.data.length
         })
       }

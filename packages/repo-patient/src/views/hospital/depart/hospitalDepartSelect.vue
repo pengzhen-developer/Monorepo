@@ -33,7 +33,12 @@
         props: {},
         data() {
             return {
+                idMappingServe:{
+                    'consult': 'getDeptList',
+                    'appointment': 'getRealDeptByRegister',
+                },
                 data: {},
+                params: {},
                 hospitalInfo: {},
                 items: [],
                 checkDept: {},
@@ -48,7 +53,7 @@
         },
         created() {
            const params = peace.util.decode(this.$route.params.json)
-            this.hsp = params || {};
+            this.params = params || {};
             this.getDeptList()
         },
         methods: {
@@ -56,9 +61,9 @@
                 let data, items = [];
 
                 data = {
-                    netHospitalId: this.hsp.netHospitalId
+                    netHospitalId: this.params.netHospitalId
                 };
-                peace.service.hospital.getDeptList(data).then(res => {
+                peace.service.hospital[this.idMappingServe[this.params.id]](data).then(res => {
                     this.hospitalInfo = res.data.hospitalInfo;
                     res.data.list.map(item =>{
                         items.push({
@@ -79,23 +84,42 @@
                 })
             },
             onNavClick(index) {
-                this.mainActiveIndex = index;
+                let item = this.items[index];
 
-                if(!this.items[index].children.length){
-                    this.goDoctorListPage(this.items[index].id)
+                this.mainActiveIndex = index;
+                if(!item.children.length && this.params.id == 'consult'){
+                    this.goDoctorListPage({
+                        netHospitalId: this.hospitalInfo.netHospitalId,
+                        level:1,
+                        txtId:item.id,
+                        txt:item.text
+                    })
                 }
             },
             onItemClick(data) {
                 this.activeId = data.id;
-                this.goDoctorListPage(this.activeId)
-            },
-            goDoctorListPage(deptId){
-                let json =  peace.util.encode({
-                    deptId,
-                    netHospitalId: this.hsp.netHospitalId,
+                this.goDoctorListPage({
+                    // 咨询入参
+                    netHospitalId: this.hospitalInfo.netHospitalId,
+                    level:2,
+                    deptChildId:data.id,
+                    deptChild:data.text,
+                    // 预约入参
+                    hospitalCode: this.hospitalInfo.netHospitalId,
+                    twoLevelDeptId: data.id,
                 })
+            },
+            goDoctorListPage(obj){
+                let json =  peace.util.encode(obj)
 
-                this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
+                if(this.params.id == 'consult'){ // 咨询入口
+                    this.$router.push(`/components/doctorList/${json}`)
+                    return;
+                }
+                if(this.params.id == 'appointment'){ // 预约入口
+                    this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
+                    return;
+                }
             }
         }
     }

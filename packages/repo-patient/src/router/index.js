@@ -242,6 +242,7 @@ const router = new Router({
           name: '/hospital/depart/hospitalDepartSelect',
           meta: {
             auth: true,
+            keepAlive: true,
             navbar: {
               title: '科室选择',
               back: true
