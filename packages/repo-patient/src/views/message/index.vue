@@ -92,6 +92,8 @@ export default {
         peace.service.IM.setInquirySessionMessages(message.msgs)
       }
 
+      peace.service.IM.resetInquirySession()
+      peace.service.IM.resetInquirySessionMessages()
       // 重置会话未读数
       $peace.NIM.resetSessionUnread(session.id)
       // 获取本次问诊历史消息

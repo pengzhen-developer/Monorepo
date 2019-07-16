@@ -112,7 +112,7 @@
             </van-uploader>
           </van-col>
           <van-col class="flex-center" span="6">
-            <van-button icon="phone-o" />
+            <input accept="image/*" capture="camera" multiple="multiple" type="file" />
             <p>拍照</p>
           </van-col>
         </van-row>

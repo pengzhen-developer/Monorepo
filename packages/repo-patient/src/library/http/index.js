@@ -9,12 +9,20 @@ import retry from './retry'
 
 import router from '@src/router'
 
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
+// 记录 http 请求次数
+let httpCount = 0
+
 // 挂载实例方法
 axios.download = download
 
 // 定义 http request 拦截器
 axios.interceptors.request.use(
   function(request) {
+    httpCount++
+    nprogress.start()
+
     // 基于 mock , 直接发送请求
     if (request.url.indexOf('http://mock.eolinker.com/') !== -1) {
       return request
@@ -61,6 +69,11 @@ axios.interceptors.request.use(
   },
 
   function(error) {
+    httpCount--
+    if (httpCount === 0) {
+      nprogress.done(false)
+    }
+
     return Promise.reject(error)
   }
 )
@@ -68,6 +81,11 @@ axios.interceptors.request.use(
 // 定义 http response 拦截器
 axios.interceptors.response.use(
   function(response) {
+    httpCount--
+    if (httpCount === 0) {
+      nprogress.done(false)
+    }
+
     // 基于 mock , 直接返回数据
     if (response.config.url.indexOf('http://mock.eolinker.com/') !== -1) {
       return response.data
@@ -134,6 +152,11 @@ axios.interceptors.response.use(
   },
 
   function(error) {
+    httpCount--
+    if (httpCount === 0) {
+      nprogress.done(false)
+    }
+
     // 超时处理
     if (error.code === 'ECONNABORTED') {
       if (!error.config.__isRetryComplete) {

@@ -1,6 +1,17 @@
 <template>
   <div class="the-recipe-list">
-    <div :class="{ new: item.isRead }" :data-index="index" :key="index" @click="goprescripDetailPage(item)" class="word-list" v-for="(item, index) in data">
+    <!-- 
+      todo:
+      暂时屏蔽未读消息
+    -->
+    <div
+      :class="{ new: false || item.isRead }"
+      :data-index="index"
+      :key="index"
+      @click="goprescripDetailPage(item)"
+      class="word-list"
+      v-for="(item, index) in data"
+    >
       <div class="word-avatar">
         <div class="icon"></div>
       </div>
@@ -86,12 +97,6 @@ export default {
   }
 }
 </script>
-
-<style scoped src="./../style/components.css"></style>
-<style scoped src="./../style/elements.css"></style>
-<style scoped src="./../style/grid.css"></style>
-<style scoped src="./../style/icon.css"></style>
-<style scoped src="./../style/modules.css"></style>
 
 <style lang="scss" scoped>
 .the-recipe-list {

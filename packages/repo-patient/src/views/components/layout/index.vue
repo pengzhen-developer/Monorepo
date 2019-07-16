@@ -2,41 +2,49 @@
   <div class="layout">
     <!-- 顶部返回 nav-bar -->
     <template v-if="$route.meta.navbar">
-      <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" left-text=" " />
+      <transition mode="out-in" name="van-fade">
+        <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" left-text=" " />
+      </transition>
     </template>
 
     <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">
-      <keep-alive>
-        <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
+      <transition mode="out-in" name="van-fade">
+        <keep-alive>
+          <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+      </transition>
 
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <transition mode="out-in" name="van-fade">
+        <router-view :key="$route.fullPath" v-if="!$route.meta.keepAlive"></router-view>
+      </transition>
     </div>
 
     <!-- 底部导航 tabbar -->
     <template v-if="$route.meta.tabBar">
-      <van-tabbar class="layout-tabbar" v-model="active">
-        <van-tabbar-item to="/home/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>首页</span>
-        </van-tabbar-item>
+      <transition mode="out-in" name="van-fade">
+        <van-tabbar class="layout-tabbar" v-model="active">
+          <van-tabbar-item to="/home/index">
+            <i class="van-icon van-icon-like-o" slot="icon"></i>
+            <span>首页</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="search" to="/message/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>消息</span>
-        </van-tabbar-item>
+          <van-tabbar-item icon="search" to="/message/index">
+            <i class="van-icon van-icon-comment-o" slot="icon"></i>
+            <span>消息</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="setting-o" to="/file/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>健康档案</span>
-        </van-tabbar-item>
+          <van-tabbar-item icon="setting-o" to="/file/index">
+            <i class="van-icon van-icon-gift-card-o" slot="icon"></i>
+            <span>健康档案</span>
+          </van-tabbar-item>
 
-        <van-tabbar-item icon="setting-o" to="/setting/index">
-          <i class="icon_ic_datatrends" slot="icon"></i>
-          <span>个人中心</span>
-        </van-tabbar-item>
-      </van-tabbar>
+          <van-tabbar-item icon="setting-o" to="/setting/index">
+            <i class="van-icon van-icon-user-o" slot="icon"></i>
+            <span>个人中心</span>
+          </van-tabbar-item>
+        </van-tabbar>
+      </transition>
     </template>
   </div>
 </template>
@@ -80,6 +88,12 @@ export default {
   }
 }
 </script>
+
+<style src="./../../style/components.css"></style>
+<style src="./../../style/elements.css"></style>
+<style src="./../../style/grid.css"></style>
+<style src="./../../style/icon.css"></style>
+<style src="./../../style/modules.css"></style>
 
 <style lang="scss" scoped>
 .layout {

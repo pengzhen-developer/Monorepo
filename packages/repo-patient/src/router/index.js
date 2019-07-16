@@ -122,7 +122,6 @@ const router = new Router({
           name: '/components/doctorList',
           meta: {
             auth: true,
-            keepAlive: true,
             navbar: {
               title: '医生列表',
               back: true
@@ -307,10 +306,13 @@ router.beforeEach((to, from, next) => {
     peace.referrer = to
 
     // 验证权限
-    if (peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)) {
+    if (
+      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
+      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo.accessToken
+    ) {
       return next()
     } else {
-      return next(peace.config.system.noauthPage)
+      return next(peace.config.system.noAuthPage)
     }
   }
 })

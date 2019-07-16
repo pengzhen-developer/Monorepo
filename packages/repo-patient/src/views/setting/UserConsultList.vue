@@ -143,13 +143,6 @@ export default {
 }
 </script>
 
-
-<style scoped src="./../style/components.css"></style>
-<style scoped src="./../style/elements.css"></style>
-<style scoped src="./../style/grid.css"></style>
-<style scoped src="./../style/icon.css"></style>
-<style scoped src="./../style/modules.css"></style>
-
 <style lang="scss" scoped>
 .userConsultList {
   min-height: 100%;

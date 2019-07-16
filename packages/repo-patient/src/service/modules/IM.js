@@ -3,8 +3,8 @@ import peace from '@src/library'
 import Store from '@src/store'
 
 import NIM from '/public/static/IM/NIM_Web_NIM_v6.5.5'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
-NIM.use(WebRTC)
+// import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+// NIM.use(WebRTC)
 
 /**
  * 初始化 IM
@@ -71,9 +71,9 @@ export function initWebRTC() {
     $peace.WebRTC.destroy()
   }
 
-  $peace.WebRTC = WebRTC.getInstance({
-    nim: $peace.NIM
-  })
+  // $peace.WebRTC = WebRTC.getInstance({
+  //   nim: $peace.NIM
+  // })
 }
 
 /**

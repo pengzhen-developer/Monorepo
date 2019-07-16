@@ -4,8 +4,8 @@
       <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
         <template slot="title">
           <span class="custom-title">{{ item.name }}</span>
-          <van-icon class-prefix="ic" class="danger" name="ic_girls" v-if="item.sex === '男'" />
-          <van-icon class-prefix="ic" class="blue" name="ic_boys" v-else-if="item.sex === '女'" />
+          <van-icon class-prefix="ic" class="danger" name="ic_boys" v-if="item.sex === '男'" />
+          <van-icon class-prefix="ic" class="blue" name="ic_girls" v-else-if="item.sex === '女'" />
           <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
           <van-tag plain round>{{ item.relation }}</van-tag>
         </template>
@@ -13,11 +13,11 @@
     </div>
     <div class="bottom">
       <div class="tips">温馨提示：最多添加10位家人</div>
-      <van-button @click="toViewDetails" type="primary">新增家人</van-button>
+      <van-button @click="toAdd" type="primary">新增家人</van-button>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible">
-      <FamilyMembersModel />
+    <peace-dialog :title="dialog.title" :visible.sync="dialog.visible">
+      <FamilyMembersModel :data="dialog.data" @onComplete="onComplete" />
     </peace-dialog>
   </div>
 </template>
@@ -38,23 +38,42 @@ export default {
       members: [],
 
       dialog: {
-        visible: false
+        visible: false,
+        title: '',
+        data: undefined
       }
     }
   },
 
-  methods: {
-    // 查看家人详细信息
-    toViewDetails() {
-      this.dialog.visible = true
-    }
+  created() {
+    this.get()
   },
 
-  created() {
-    // 获取现有家人
-    peace.service.patient.getMyFamilyList().then(res => {
-      this.members = res.data
-    })
+  methods: {
+    get() {
+      // 获取现有家人
+      peace.service.patient.getMyFamilyList().then(res => {
+        this.members = res.data
+      })
+    },
+
+    onComplete() {
+      this.get()
+      this.dialog.visible = false
+    },
+
+    // 查看家人详细信息
+    toViewDetails(item) {
+      this.dialog.title = '家人信息'
+      this.dialog.visible = true
+      this.dialog.data = item
+    },
+
+    toAdd() {
+      this.dialog.title = '新增家人'
+      this.dialog.visible = true
+      this.dialog.data = undefined
+    }
   }
 }
 </script>

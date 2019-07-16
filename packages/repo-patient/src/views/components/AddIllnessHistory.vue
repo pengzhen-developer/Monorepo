@@ -150,13 +150,22 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.confirmIllness.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
           this.confirmIllness.splice(index, 1)
         }
+        if (indexCommonly !== -1) {
+          this.confirmIllnessCommonly[indexCommonly].checked = false
+        }
       } else {
         currentItem.checked = true
         this.confirmIllness.push(currentItem)
+
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
+        if (indexCommonly !== -1) {
+          this.confirmIllnessCommonly[indexCommonly].checked = true
+        }
       }
     },
 

@@ -103,9 +103,16 @@ export default {
     },
 
     onSearch() {
-      this.showAllergicHistory = true
-      this.searchAllergicHistory = ''
-      this.allergicHistoryList = ['搜索出来的']
+      const params = {
+        keyword: this.searchAllergicHistory,
+        type: '2'
+      }
+      peace.service.inquiry.searchIllInfo(params).then(res => {
+        this.allergicHistoryList = res.data.map(item => item.name)
+
+        this.showAllergicHistory = true
+        this.searchAllergicHistory = ''
+      })
     },
     onCancel() {
       this.showAllergicHistory = false
@@ -135,13 +142,22 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.allergicHistory.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allergicHistory.splice(index, 1)
         }
+        if (indexCommonly !== -1) {
+          this.allergicHistoryCommonly[indexCommonly].checked = false
+        }
       } else {
         currentItem.checked = true
         this.allergicHistory.push(currentItem)
+
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
+        if (indexCommonly !== -1) {
+          this.allergicHistoryCommonly[indexCommonly].checked = true
+        }
       }
     },
 

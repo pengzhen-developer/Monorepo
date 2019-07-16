@@ -27,6 +27,45 @@ export function getMyFamilyList(params) {
 }
 
 /**
+ * 新增我的家人
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function bindFamily(params) {
+  const bindFamily = 'client/v1/Patient/bindFamily'
+
+  return peace.http.post(bindFamily, params)
+}
+
+/**
+ * 修改我的家人
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function upbindFamily(params) {
+  const upbindFamily = 'client/v1/Patient/upbindFamily'
+
+  return peace.http.post(upbindFamily, params)
+}
+
+/**
+ * 删除我的家人
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function DelFamily(params) {
+  const DelFamily = 'client/v1/Patient/DelFamily'
+
+  return peace.http.post(DelFamily, params)
+}
+
+/**
  * 获取病历详情
  *
  * @export
@@ -83,6 +122,12 @@ export default {
   getDoctorList,
   /** 获取我的家人 */
   getMyFamilyList,
+  /** 新增我的家人 */
+  bindFamily,
+  /** 修改我的家人 */
+  upbindFamily,
+  /** 删除我的家人 */
+  DelFamily,
   /** 获取病历详情 */
   getCaseInfo,
   /** 获取处方列表 */

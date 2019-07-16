@@ -1,153 +1,207 @@
+
+
+
+
 <template>
   <div class="container">
-    <div class="form">
-      <van-field
-        label="姓名"
-        placeholder="请输入姓名"
-        required
-        v-model="info.name"
-      />
-      <van-field
-        label="身份证号"
-        placeholder="请输入身份证号"
-        required
-        v-model="info.idCard"
-      />
-      <van-field
-        @click="showPopup('Relation')"
-        label="关系"
-        placeholder="请选择"
-        readonly
-        required
-        right-icon="arrow"
-        v-model="info.relation"
-      />
-      <van-field
-        @click="showPopup('Sex')"
-        label="性别"
-        placeholder="请选择"
-        readonly
-        required
-        right-icon="arrow"
-        v-model="info.sex"
-      />
-      <van-field
-        @click="showPopup('Birthday')"
-        label="生日"
-        placeholder="请选择"
-        readonly
-        required
-        right-icon="arrow"
-        v-model="info.birthday"
-      />
-      <van-field
-        label="过敏史"
-        placeholder="请填写过敏史"
-        v-model="info.allergies"
-      />
-    </div>
-    <div class="bottom">
-      <van-button
-        @click="deleted"
-        plain
-        type="primary"
-        v-if="isEdit"
-      >删除</van-button>
-      <van-button @click="submit" type="primary">保存</van-button>
-    </div>
+    <template v-if="isEdit">
+      <div class="form">
+        <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
+        <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
+        <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
+        <van-field :disabled="isEdit" label="性别" placeholder="请选择" readonly v-model="model.sex" />
+        <van-field :disabled="isEdit" label="生日" placeholder="请输入" readonly v-model="model.birthday" />
+        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+        <peace-dialog :visible.sync="showAllergicHistory">
+          <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+        </peace-dialog>
+      </div>
+      <div class="bottom">
+        <van-button @click="deleted" plain type="primary">删除</van-button>
+        <van-button @click="submit" type="primary">保存</van-button>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="form">
+        <van-field error label="姓名" placeholder="请输入姓名" required v-model="model.name" />
+        <van-field label="身份证号" placeholder="请输入身份证号" required v-model="model.idcard" />
+        <van-field @click="showPopupRelation('Relation')" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
+        <van-field @click="showPopupSex('Sex')" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
+        <van-field @click="showPopupBirthday('Birthday')" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
+        <van-field label="过敏史" placeholder="请填写过敏史" v-model="model.allergic_history" />
+      </div>
+      <div class="bottom">
+        <van-button @click="submit" type="primary">保存</van-button>
+      </div>
+    </template>
+
     <!-- 关系 -->
     <van-popup position="bottom" v-model="showRelation">
-      <van-picker
-        :columns="relations"
-        @cancel="closeAllPopup"
-        @confirm="setRelation"
-        show-toolbar
-      />
+      <van-picker :columns="relations" @cancel="closeAllPopup" @confirm="setRelation" show-toolbar />
     </van-popup>
     <!-- 性别 -->
     <van-popup position="bottom" v-model="showSex">
-      <van-picker
-        :columns="sexs"
-        @cancel="closeAllPopup"
-        @confirm="setSex"
-        show-toolbar
-      />
+      <van-picker :columns="sexs" @cancel="closeAllPopup" @confirm="setSex" show-toolbar />
     </van-popup>
     <!-- 生日 -->
-    <!-- <van-popup position="bottom" v-model="showRelation">
-      <van-picker :columns="options" @change="onChange" />
-    </van-popup>-->
+    <van-popup position="bottom" v-model="showBirthday">
+      <van-datetime-picker :max-date="maxDate" :min-date="minDate" @cancel="showBirthday = false" @confirm="selectTime" type="date" />
+    </van-popup>
   </div>
 </template>
 <script>
+import peace from '@src/library'
+
+import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
+
 export default {
-  name: 'FamilyMembersModel',
+  components: {
+    AddAllergicHistory
+  },
+
   props: {
     data: {
       type: Object,
       default: () => {
         return {
           name: '',
-          idCard: '',
+          idcard: '',
           relation: '',
           sex: '',
           birthday: '',
-          allergies: ''
+          allergic_history: ''
         }
       }
     }
   },
+
   data() {
     return {
-      info: Object.assign({}, this.data),
-      relations: ['亲友', '孩子', '爱人', '本人'],
+      model: Object.assign({}, this.data),
+      relations: ['本人', '父母', '爱人', '孩子', '挚友'],
       sexs: ['男', '女'],
+
+      minDate: new Date().proDate('{%y-150}'),
+      maxDate: new Date(),
+
+      showAllergicHistory: false,
       showRelation: false,
       showSex: false,
       showBirthday: false
     }
   },
+
   computed: {
     isEdit() {
-      return !!this.data.name
+      return !!this.data.familyId
     }
   },
+
+  watch: {
+    // 根据身份证解析性别和生日
+    'model.idcard'(val) {
+      if (peace.validate.idCard(val)) {
+        if (val.length == 15) {
+          this.model.sexKey = val.toString().charAt(14) % 2
+          this.model.sex = this.model.sexKey ? '男' : '女'
+          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+        }
+        if (val.length == 18) {
+          this.model.sexKey = val.toString().charAt(16) % 2
+          this.model.sex = this.model.sexKey ? '男' : '女'
+          this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
+        }
+      }
+    }
+  },
+
   methods: {
+    selectTime(value) {
+      this.showBirthday = false
+      this.model.birthday = value.formatDate()
+    },
+
     setRelation(val) {
-      this.info.relation = val
+      this.model.relation = val
       this.closeAllPopup()
     },
+
     setSex(val) {
-      this.info.sex = val
+      this.model.sex = val
       this.closeAllPopup()
     },
-    // 显示指定弹出层
-    showPopup(_key) {
-      this.closeAllPopup()
-      const key = `show${_key}`
-      this[key] = true
+
+    showPopupRelation() {
+      this.showRelation = true
     },
+
+    showPopupSex() {
+      this.showSex = true
+    },
+
+    showPopupBirthday() {
+      this.showBirthday = true
+    },
+
     // 关闭所有弹出层
     closeAllPopup() {
       this.showRelation = false
       this.showSex = false
       this.showBirthday = false
     },
+
     // 保存
     submit() {
-      const params = this.info
+      const params = this.model
+
+      if (!this.model.name) {
+        return peace.util.alert('请输入姓名')
+      }
+      if (!this.model.idcard) {
+        return peace.util.alert('请输入身份证号')
+      }
+      if (!this.model.relation) {
+        return peace.util.alert('请选择关系')
+      }
+      if (!this.model.sex) {
+        return peace.util.alert('请选择性别')
+      }
+      if (!this.model.birthday) {
+        return peace.util.alert('请选择出生日期')
+      }
 
       if (this.isEdit) {
-        this.$emit('edit', params)
+        const params = {
+          familyId: this.model.familyId,
+          allergic_history: this.model.allergic_history
+        }
+
+        peace.service.patient.upbindFamily(params).then(res => {
+          peace.util.alert(res.msg)
+
+          this.$emit('onComplete')
+        })
       } else {
-        this.$emit('submit', params)
+        peace.service.patient.bindFamily(params).then(res => {
+          peace.util.alert(res.msg)
+
+          this.$emit('onComplete')
+        })
       }
     },
+
     // 删除
     deleted() {
-      const params = this.info
+      const params = {
+        familyId: this.model.familyId
+      }
 
-      this.$emit('deleted', params)
+      peace.service.patient.DelFamily(params).then(res => {
+        peace.util.alert(res.msg)
+
+        this.$emit('onComplete')
+      })
     }
   }
 }

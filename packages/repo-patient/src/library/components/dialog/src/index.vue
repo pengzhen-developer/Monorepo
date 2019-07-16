@@ -3,7 +3,7 @@
     <div class="full-screen-dialog" ref="dialog" v-if="visible">
       <div class="title">
         <van-nav-bar :title="title">
-          <van-icon @click="close" name="cross" slot="right" />
+          <van-icon @click="close" name="cross" slot="left" />
         </van-nav-bar>
       </div>
 
