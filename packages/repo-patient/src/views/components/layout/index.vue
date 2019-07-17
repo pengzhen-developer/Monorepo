@@ -3,7 +3,7 @@
     <!-- 顶部返回 nav-bar -->
     <template v-if="$route.meta.navbar">
       <transition mode="out-in" name="van-fade">
-        <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" left-text=" " />
+        <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" :tag="$route.meta.navbar.title" left-text=" " />
       </transition>
     </template>
 
@@ -25,22 +25,22 @@
       <transition mode="out-in" name="van-fade">
         <van-tabbar class="layout-tabbar" v-model="active">
           <van-tabbar-item to="/home/index">
-            <i class="van-icon van-icon-like-o" slot="icon"></i>
+            <i class="van-icon van-icon-like" slot="icon"></i>
             <span>首页</span>
           </van-tabbar-item>
 
-          <van-tabbar-item icon="search" to="/message/index">
-            <i class="van-icon van-icon-comment-o" slot="icon"></i>
+          <van-tabbar-item to="/message/index">
+            <i class="van-icon van-icon-comment" slot="icon"></i>
             <span>消息</span>
           </van-tabbar-item>
 
-          <van-tabbar-item icon="setting-o" to="/file/index">
-            <i class="van-icon van-icon-gift-card-o" slot="icon"></i>
+          <van-tabbar-item to="/file/index">
+            <i class="van-icon van-icon-gift-card" slot="icon"></i>
             <span>健康档案</span>
           </van-tabbar-item>
 
-          <van-tabbar-item icon="setting-o" to="/setting/index">
-            <i class="van-icon van-icon-user-o" slot="icon"></i>
+          <van-tabbar-item to="/setting/index">
+            <i class="van-icon van-icon-manager" slot="icon"></i>
             <span>个人中心</span>
           </van-tabbar-item>
         </van-tabbar>
@@ -89,13 +89,22 @@ export default {
 }
 </script>
 
-<style src="./../../style/components.css"></style>
-<style src="./../../style/elements.css"></style>
-<style src="./../../style/grid.css"></style>
-<style src="./../../style/icon.css"></style>
-<style src="./../../style/modules.css"></style>
+<style src="./../../style/style.css"></style>
 
 <style lang="scss" scoped>
+
+[tag*='个人中心'] {
+  background-color: #00c6ae;
+
+  &::after{
+    border: 0 solid red;
+  }
+  
+  .van-nav-bar__title{
+    color: #f5f5f5;
+  }
+}
+
 .layout {
   height: 100%;
   display: flex;

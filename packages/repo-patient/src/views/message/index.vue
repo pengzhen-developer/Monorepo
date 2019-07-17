@@ -1,14 +1,7 @@
 <template>
   <div class="message">
     <template v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
-      <div
-        :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
-        :id="session.id"
-        :key="session.id"
-        @click="selectSession(session)"
-        class="message-item"
-        v-for="session in $store.state.inquiry.sessions"
-      >
+      <div :id="session.id" :key="session.id" @click="selectSession(session)" class="message-item" v-for="session in $store.state.inquiry.sessions">
         <div class="message-item-avatar">
           <img :src="session.content.doctorInfo.doctorAvatar" />
         </div>
@@ -45,7 +38,13 @@ import peace from '@src/library'
 export default {
   activated() {
     if (this.$route.params.sessionId) {
-      this.$el.querySelector(`#${this.$route.params.sessionId}`) && this.$el.querySelector(`#${this.$route.params.sessionId}`).click()
+      const interval = setInterval(() => {
+        if (this.$el.querySelector(`#${this.$route.params.sessionId}`)) {
+          window.clearInterval(interval)
+
+          this.$el.querySelector(`#${this.$route.params.sessionId}`).click()
+        }
+      }, 100)
     }
   },
 

@@ -294,9 +294,7 @@ export default {
       peace.service.inquiry.apply(params).then(res => {
         this.sending = false
 
-        if (res.data.errorState !== 0) {
-          peace.util.alert(res.msg)
-
+        if (res.data.errorState === 0) {
           // 跳转消息页
           this.$router.push({
             name: '/message/index',
@@ -305,6 +303,7 @@ export default {
             }
           })
         }
+        peace.util.alert(res.msg)
       })
     }
   }

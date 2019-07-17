@@ -25,9 +25,7 @@
       <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
       <van-cell icon="manager-o" is-link title="我的医生" to="/setting/userDoctorList" value />
       <van-cell icon="location-o" is-link title="收货地址" value />
-      <van-cell @click="signOut" icon="setting-o" is-link title="退出登录" value>
-        <van-icon class="van-cell__right-icon" name="close" slot="right-icon" />
-      </van-cell>
+      <van-cell @click="signOut" icon="close" title="退出登录" value></van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -63,6 +61,7 @@ export default {
       userInfo: this.$store.state.user.userInfo || {}
     }
   },
+
   methods: {
     signOut() {
       // 清空所有缓存
@@ -78,6 +77,7 @@ export default {
         window.location.reload()
       }, 500)
     },
+
     goMenuPage(item) {
       switch (item.id) {
         case 'consult':
