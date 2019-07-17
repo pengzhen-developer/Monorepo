@@ -1,40 +1,49 @@
 <template>
   <div class="doctor-list">
-    <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail(doctor.doctorInfo)" class="item" v-for="doctor in doctorList">
-      <div>
-        <img :src="doctor.doctorInfo.avartor" class="avatar" />
-      </div>
-      <div class="detail">
-        <div class="title-doctor">
-          <span class="title-doctor-name">{{ doctor.doctorInfo.doctorName }}</span>
-          <span>{{ doctor.doctorInfo.doctorTitle }}</span>
-          <span>{{ doctor.doctorInfo.deptName }}</span>
+    <template v-if="doctorList && doctorList.length > 0">
+      <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail(doctor.doctorInfo)" class="item" v-for="doctor in doctorList">
+        <div>
+          <img :src="doctor.doctorInfo.avartor" class="avatar" />
         </div>
-        <div class="title-hospital">
-          <span>{{ doctor.doctorInfo.hospitalName }}</span>
-        </div>
-        <div class="title-description">
-          <span class="title-description-label">擅长:</span>
-          <span class="title-description-detail">{{ doctor.doctorInfo.specialSkill || '暂未填写' }}</span>
-        </div>
-        <div class="title-service">
-          <div>
-            <span class="title-service-money">{{ getServiceMoney(doctor) }}</span>
+        <div class="detail">
+          <div class="title-doctor">
+            <span class="title-doctor-name">{{ doctor.doctorInfo.doctorName }}</span>
+            <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+            <span>{{ doctor.doctorInfo.deptName }}</span>
           </div>
+          <div class="title-hospital">
+            <span>{{ doctor.doctorInfo.hospitalName }}</span>
+          </div>
+          <div class="title-description">
+            <span class="title-description-label">擅长:</span>
+            <span class="title-description-detail">{{ doctor.doctorInfo.specialSkill || '暂未填写' }}</span>
+          </div>
+          <div class="title-service">
+            <div>
+              <span class="title-service-money">{{ getServiceMoney(doctor) }}</span>
+            </div>
 
-          <div class="title-service-item">
-            <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="title-service-item" v-if="canShowImageInquiry(doctor)">
-              <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
-              <span>图文咨询</span>
-            </div>
-            <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
-              <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
-              <span>视频咨询</span>
+            <div class="title-service-item">
+              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="title-service-item" v-if="canShowImageInquiry(doctor)">
+                <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
+                <span>图文咨询</span>
+              </div>
+              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
+                <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
+                <span>视频咨询</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
+
+    <template v-else>
+      <div class="none-page">
+        <i class="icon icon_none_doctor"></i>
+        <div class="none-text">暂无医生信息</div>
+      </div>
+    </template>
   </div>
 </template>
 

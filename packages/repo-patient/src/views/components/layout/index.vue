@@ -3,7 +3,14 @@
     <!-- 顶部返回 nav-bar -->
     <template v-if="$route.meta.navbar">
       <transition mode="out-in" name="van-fade">
-        <van-nav-bar :left-arrow="$route.meta.navbar.back" :title="$route.meta.navbar.title" @click-left="back" class="layout-navbar" :tag="$route.meta.navbar.title" left-text=" " />
+        <van-nav-bar
+          :left-arrow="$route.meta.navbar.back"
+          :tag="$route.meta.navbar.title"
+          :title="$route.meta.navbar.title"
+          @click-left="back"
+          class="layout-navbar"
+          left-text=" "
+        />
       </transition>
     </template>
 
@@ -34,10 +41,10 @@
             <span>消息</span>
           </van-tabbar-item>
 
-          <van-tabbar-item to="/file/index">
+          <!-- <van-tabbar-item to="/file/index">
             <i class="van-icon van-icon-gift-card" slot="icon"></i>
             <span>健康档案</span>
-          </van-tabbar-item>
+          </van-tabbar-item>-->
 
           <van-tabbar-item to="/setting/index">
             <i class="van-icon van-icon-manager" slot="icon"></i>
@@ -92,15 +99,14 @@ export default {
 <style src="./../../style/style.css"></style>
 
 <style lang="scss" scoped>
-
 [tag*='个人中心'] {
   background-color: #00c6ae;
 
-  &::after{
+  &::after {
     border: 0 solid red;
   }
-  
-  .van-nav-bar__title{
+
+  .van-nav-bar__title {
     color: #f5f5f5;
   }
 }

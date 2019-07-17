@@ -105,6 +105,45 @@ export function inquiryList(params) {
 }
 
 /**
+ * 获取问诊详情
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function inquiryDetail(params) {
+  const inquiryDetail = 'client/v1/account/inquiryDetail'
+
+  return peace.http.post(inquiryDetail, params)
+}
+
+/**
+ * 获取咨询详情
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function chatDetail(params) {
+  const chatDetail = 'client/v1/account/chatDetail'
+
+  return peace.http.post(chatDetail, params)
+}
+
+/**
+ * 取消咨询
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function cancel(params) {
+  const cancel = 'client/v1/order/cancel'
+
+  return peace.http.post(cancel, params)
+}
+
+/**
  * 获取处方列表
  *
  * @export
@@ -116,6 +155,7 @@ export function getMyPrescripList(params) {
 
   return peace.http.post(getMyPrescripList, params)
 }
+
 /**
  * 获取我的医生列表
  *
@@ -141,6 +181,7 @@ export function getOrderList(params) {
 
   return peace.http.post(getOrderList, params)
 }
+
 /**
  * 获取我的订单详情
  *
@@ -153,6 +194,7 @@ export function getOrderDetail(params) {
 
   return peace.http.post(getOrderDetail, params)
 }
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -174,8 +216,14 @@ export default {
   getPrescripInfo,
   /** 获取咨询列表 */
   inquiryList,
+  /** 获取咨询详情 */
+  chatDetail,
+  /** 获取问诊详情 */
+  inquiryDetail,
+  /** 取消咨询 */
+  cancel,
   /**获取订单列表 */
   getOrderList,
   /**获取订单详情 */
-  getOrderDetail,
+  getOrderDetail
 }

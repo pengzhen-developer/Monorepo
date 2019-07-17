@@ -26,7 +26,7 @@
     <template v-else>
       <div class="no-data" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
         <img src="@src/assets/images/ic_no consultation copy@2x.png" style="width: 160px; height: 100px;" />
-        <p style="font-size: 15px; color: #999999;">暂无数据</p>
+        <p style="font-size: 15px; color: #999999;">暂无消息</p>
       </div>
     </template>
   </div>
