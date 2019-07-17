@@ -22,7 +22,7 @@
         <div class="card-tit">我的医生</div>
         <div class="card-brief">便捷查找您的医生</div>
       </div>
-      <div @click="goMenuPage(this)" class="card-simple icon_01_01_12" type="userConsult">
+      <div @click="goMenuPage('',{type:'userConsult'})" class="card-simple icon_01_01_12" type="userConsult">
         <div class="card-tit">我的咨询</div>
         <div class="card-brief">个人咨询详情管理</div>
       </div>
@@ -73,7 +73,10 @@ export default {
           break;
         case  'userDoctor':
           this.$router.push(`/setting/userDoctorlist`)
-              break;
+          break;
+        case 'userConsult':
+          this.$router.push('/setting/userConsultList')
+          break;
         default:
           peace.util.alert('暂未开放')
           // _f.goMenuPage();

@@ -3,7 +3,7 @@
 <!--        医生信息-->
         <div class="card">
             <div class="card-avatar avatar-circular">
-                <img class="" src="doctorInfo.avartor" />
+                <img class="" :src="doctorInfo.avartor" />
             </div>
             <div class="card-body">
                 <div class="card-name">{{doctorInfo.name}}
@@ -48,7 +48,7 @@
                             <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
                         </div>
                         <div class="right">
-                            <div class="btn btn-blue" @click="goAppointOrderSubmitPage(item)"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
+                            <div class="btn btn-blue" @click="goAppointOrderSubmitPage(item,{type:'AM'})"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
                         </div>
                         <div class="right">
-                            <div class="btn btn-blue"  @click="goAppointOrderSubmitPage(item)"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
+                            <div class="btn btn-blue"  @click="goAppointOrderSubmitPage(item,{type:'PM'})"> {{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}} </div>
                         </div>
                     </div>
                 </div>
@@ -150,10 +150,13 @@
                 this.activeIndex = index;
                 this.getSourceData(item)
             },
-            goAppointOrderSubmitPage(item){
-               let json = peace.util.encode({
-                        a:1
-                })
+            goAppointOrderSubmitPage(item,obj){
+                let json = {};
+                json.doctorInfo = this.doctorInfo;
+                json.source = item;
+                json.source.type = obj.type;
+                json.date = this.dateList[this.activeIndex];
+               json = peace.util.encode(json);
 
                 if(!item.isExpire && item.number){
                     this.$router.push(`../../order/appointOrderSubmit/${json}`);

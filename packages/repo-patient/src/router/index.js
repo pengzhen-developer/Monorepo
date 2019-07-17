@@ -309,6 +309,30 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/userDoctorList.vue')
+        },
+        {
+          path: '/setting/order/userOrderList',
+          name: '/setting/order/userOrderList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的订单',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userOrderList.vue')
+        },
+        {
+          path: '/setting/order/userOrderDetail/:json',
+          name: '/setting/order/userOrderDetail',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '订单详情',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userOrderDetail.vue')
         }
       ]
     },

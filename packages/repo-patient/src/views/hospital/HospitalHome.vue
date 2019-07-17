@@ -63,7 +63,8 @@
           data-text="item.text"
           v-for="item in hsp.guide"
         >
-          <div :class="['block-ico',item.icon, item.status ? '' : 'disabled']"></div>
+          <div :class="['block-ico',item.icon, item.status ? '' : 'disabled', item.id == 'appointment' && hsp.nethospitalInfo.isOpenRegister == 1 ? 'disabled' : ''
+]"></div>
           <div class="block-tit">{{item.text}}</div>
         </div>
       </div>
@@ -142,7 +143,7 @@ export default {
     },
     goMenuPage(item) {
       console.log(item)
-      if(!item.status){
+      if(!item.status || (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 1)){
         peace.util.alert('服务暂未开通');
         return;
       }
@@ -150,7 +151,7 @@ export default {
         peace.util.alert('敬请期待');
         return;
       }
-      if(item.id == 'appointment'){
+      if(item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 2){
         this.goDeptPage(item);
       }
     },

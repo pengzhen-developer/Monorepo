@@ -103,6 +103,10 @@ axios.interceptors.response.use(
         return response.data
       }
 
+      if (response.data && parseInt(response.data.code) === 202) {
+        return Promise.reject(response)
+      }
+
       // 请求正常，并且逻辑验证失败
       else if (response.data && parseInt(response.data.code) === 201) {
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)

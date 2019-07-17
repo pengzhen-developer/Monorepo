@@ -15,7 +15,7 @@
     </div>
     <!--菜单-->
     <div class="block">
-      <div :id="item.id" :key="item.id" @click="goMenuPage(item)" class="block-items block-transverse-icon" v-for="item in module">
+      <div :key="item.id" @click="goMenuPage(item)" class="block-items block-transverse-icon" v-for="item in module">
         <div :class="['icon', item.icon]"></div>
         {{item.text}}
       </div>
@@ -61,7 +61,6 @@ export default {
       userInfo: this.$store.state.user.userInfo || {}
     }
   },
-
   methods: {
     signOut() {
       // 清空所有缓存
@@ -77,17 +76,22 @@ export default {
         window.location.reload()
       }, 500)
     },
-
     goMenuPage(item) {
       switch (item.id) {
         case 'consult':
           this.$router.push('/setting/userConsultList')
           break
+        case 'order':
+          this.$router.push('/setting/order/userOrderList')
+          break;
         case 'prescrip':
           // todo
           // 待优化项
           // router 已经定义该组件需要参数，传递无意义的空对象 {}，查询所有
           this.$router.push(`/components/theRecipeList/${peace.util.encode({})}`)
+              break;
+        default:
+          break;
       }
     }
   }

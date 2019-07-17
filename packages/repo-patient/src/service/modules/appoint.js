@@ -39,8 +39,25 @@ export function choiceVisitingTimeByWeek(params) {
     return peace.http.post(choiceVisitingTimeByWeek, params)
 }
 
+/**
+ * 预约挂号订单提交
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function orderSubmit(params) {
+    const choiceVisitingTimeByWeek = 'register/v1/register/orderSubmit'
+
+    return peace.http.post(choiceVisitingTimeByWeek, params,{
+        headers: {
+            post: { 'Content-Type': 'application/json' }
+        }})
+}
+
 export default {
     choiceDoctor, // 预约挂号医生列表
     choiceVisitingTime, // 预约挂号医生排班页
     choiceVisitingTimeByWeek, // 预约挂号医生排班
+    orderSubmit, // 预约挂号订单提交
 }

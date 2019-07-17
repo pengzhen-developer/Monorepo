@@ -7,7 +7,7 @@
             <div class="week">不限</div>
             <div class="week">日期</div>
           </div>
-          <div :class="['item', activeIndex == index ? 'active' : '']" :key="index" @click="checkTime({index})" v-for="(item,index) in dateList">
+          <div :class="['item', activeIndex == index ? 'active' : '',item.disabled ? 'disabled' : '']" :key="index" @click="checkTime({index})" v-for="(item,index) in dateList">
             <div class="week">{{item.week}}</div>
             <div class="time">{{item.date}}</div>
           </div>
@@ -23,29 +23,29 @@
           <div class="card-name">
             {{item.doctorInfo.name}}
             <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
-            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary" v-if="activeIndex == 'all'">预约</van-button>
+            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary">预约</van-button>
           </div>
-          <div class="card-small">评分：-- 预约量：--</div>
+<!--          <div class="card-small">评分：&#45;&#45; 预约量：&#45;&#45;</div>-->
           <div class="card-brief" v-if="item.doctorInfo.specialSkill">
             <div class="span s">擅长：</div>
             <div class="span xl">{{item.doctorInfo.specialSkill}}</div>
           </div>
-          <div class="box-appoint" v-if="activeIndex!='all'">
-            <div v-if="item.AM" :class="['bar-line', item.AM.bookingTotal ? '' :'disabled']">
-              <div class="item">{{item.timeSharing}} 上午</div>
-              <div class="item">{{item.AM.sourceLevelType == 1 ? '普通' : '专家'}}门诊</div>
-              <div class="item">￥{{item.AM.unitPrice}}</div>
-              <div    @click.stop="goAppointOrderSubmitPage(item,item.AM)"
-                      :class="['item', item.AM.bookingTotal ? 'active' :'disabled']">{{item.AM.bookingTotal ? '预约' : '约满'}}</div>
-            </div>
-            <div v-if="item.PM" :class="['bar-line', item.PM.bookingTotal ? '' :'disabled']">
-              <div class="item">01-09 上午</div>
-              <div class="item">专家门诊</div>
-              <div class="item">￥{{item.PM.unitPrice}}</div>
-              <div  @click.stop="goAppointOrderSubmitPage(item,item.PM)"
-                    :class="['item', item.PM.bookingTotal? 'active' :'disabled']">{{item.PM.bookingTotal ? '预约' : '约满'}}</div>
-            </div>
-          </div>
+<!--          <div class="box-appoint" v-if="activeIndex!='all'">-->
+<!--            <div v-if="item.AM" :class="['bar-line', item.AM.bookingTotal ? '' :'disabled']">-->
+<!--              <div class="item">{{item.timeSharing}} 上午</div>-->
+<!--              <div class="item">{{item.AM.sourceLevelType == 1 ? '普通' : '专家'}}门诊</div>-->
+<!--              <div class="item">￥{{item.AM.unitPrice}}</div>-->
+<!--              <div    @click.stop="goAppointOrderSubmitPage(item,item.AM)"-->
+<!--                      :class="['item', item.AM.bookingTotal ? 'active' :'disabled']">{{item.AM.bookingTotal ? '预约' : '约满'}}</div>-->
+<!--            </div>-->
+<!--            <div v-if="item.PM" :class="['bar-line', item.PM.bookingTotal ? '' :'disabled']">-->
+<!--              <div class="item">01-09 上午</div>-->
+<!--              <div class="item">专家门诊</div>-->
+<!--              <div class="item">￥{{item.PM.unitPrice}}</div>-->
+<!--              <div  @click.stop="goAppointOrderSubmitPage(item,item.PM)"-->
+<!--                    :class="['item', item.PM.bookingTotal? 'active' :'disabled']">{{item.PM.bookingTotal ? '预约' : '约满'}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
       <div class="none-page" v-if="!doctorList.length">
@@ -85,36 +85,36 @@ export default {
         timeSharing,
       }).then(res => {
         !this.dateList.length && (this.dateList = res.data.weekDate),
-                this.dateList = [    //时间筛选
-                  {
-                    "date": "2019-07-15",
-                    "week": "星期一"
-                  },
-                  {
-                    "date": "2019-07-16",
-                    "week": "星期二"
-                  },
-                  {
-                    "date": "2019-07-17",
-                    "week": "星期三"
-                  },
-                  {
-                    "date": "2019-07-18",
-                    "week": "星期四"
-                  },
-                  {
-                    "date": "2019-07-19",
-                    "week": "星期五"
-                  },
-                  {
-                    "date": "2019-07-20",
-                    "week": "星期六"
-                  },
-                  {
-                    "date": "2019-07-21",
-                    "week": "星期日"
-                  }
-                ]
+                // this.dateList = [    //时间筛选
+                //   {
+                //     "date": "2019-07-15",
+                //     "week": "星期一"
+                //   },
+                //   {
+                //     "date": "2019-07-16",
+                //     "week": "星期二"
+                //   },
+                //   {
+                //     "date": "2019-07-17",
+                //     "week": "星期三"
+                //   },
+                //   {
+                //     "date": "2019-07-18",
+                //     "week": "星期四"
+                //   },
+                //   {
+                //     "date": "2019-07-19",
+                //     "week": "星期五"
+                //   },
+                //   {
+                //     "date": "2019-07-20",
+                //     "week": "星期六"
+                //   },
+                //   {
+                //     "date": "2019-07-21",
+                //     "week": "星期日"
+                //   }
+                // ]
         this.doctorList = res.data.list
         // this.doctorList =  [
         //   {
@@ -218,16 +218,17 @@ export default {
       this.$router.push(`../appointDoctorSelect/${json}`);
     },
     // 预约订单提交页
-    goAppointOrderSubmitPage(item,source){
-      console.log(item,source)
-      let json = peace.util.encode({
-      });
-
-      // 有号源才可以挂号
-      if(source.unitPrice){
-        this.$router.push(`../../order/appointOrderSubmit/${json}`);
-      }
-    }
+    // goAppointOrderSubmitPage(item,source){
+    //   let json = {};
+    //   json.doctorInfo = item.doctorInfo;
+    //   json.order = source;
+    //   json = peace.util.encode(json);
+    //
+    //   // 有号源才可以挂号
+    //   if(source.unitPrice){
+    //     this.$router.push(`../../order/appointOrderSubmit/${json}`);
+    //   }
+    // }
   }
 }
 </script>
