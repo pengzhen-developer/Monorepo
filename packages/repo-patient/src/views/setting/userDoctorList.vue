@@ -45,33 +45,33 @@
         },
         created() {
             peace.service.patient.getUserDctList().then(res => {
-                this.doctorList = res.data
-                this.doctorList = [{
-                    "doctorId": "unayuzpaar",  //医生id
-                    "name": "何泰樑",           //医生姓名
-                    "avartor":                   "https://devdoctor.hp.aijiayi.com/data/20190424/20190424101327jbeaxg_500_500.png",//医生头像
-                    "summary": "擅长心脑血管手术，具有丰富", //简介
-                    "specialSkill": "擅长治疗感冒发烧兔兔",//特长
-                    "doctorTitle": "副主任医师",//职称
-                    "nethospitalId": "vpnrstbnvh",//医院id
-                    "hospitalName": "武汉市第一医院",//医院名称
-                    "deptName": "呼吸内科",//一级科室
-                    "netdept_name": "内科",//二级科室
-                },
-                    {
-                        "doctorId": "yhudslljhl",
-                        "name": "罗安康",
-                        "avartor": "https://devdoctor.hp.aijiayi.com/img/doctordefault.png",
-                        "summary": "",
-                        "specialSkill": "",
-                        "doctorTitle": "医师",
-                        "nethospitalId": "cgdsqeyusr",
-                        "hospitalName": "武汉九州通医院",
-                        "deptName": "小儿科",
-                        "netdept_name": "儿科",
-                        "isPrivateDoctorOnce": true,
-                        "endTime": "2019-08-08"
-                    }]
+                this.doctorList = res.data || []
+                // this.doctorList = [{
+                //     "doctorId": "unayuzpaar",  //医生id
+                //     "name": "何泰樑",           //医生姓名
+                //     "avartor":                   "https://devdoctor.hp.aijiayi.com/data/20190424/20190424101327jbeaxg_500_500.png",//医生头像
+                //     "summary": "擅长心脑血管手术，具有丰富", //简介
+                //     "specialSkill": "擅长治疗感冒发烧兔兔",//特长
+                //     "doctorTitle": "副主任医师",//职称
+                //     "nethospitalId": "vpnrstbnvh",//医院id
+                //     "hospitalName": "武汉市第一医院",//医院名称
+                //     "deptName": "呼吸内科",//一级科室
+                //     "netdept_name": "内科",//二级科室
+                // },
+                //     {
+                //         "doctorId": "yhudslljhl",
+                //         "name": "罗安康",
+                //         "avartor": "https://devdoctor.hp.aijiayi.com/img/doctordefault.png",
+                //         "summary": "",
+                //         "specialSkill": "",
+                //         "doctorTitle": "医师",
+                //         "nethospitalId": "cgdsqeyusr",
+                //         "hospitalName": "武汉九州通医院",
+                //         "deptName": "小儿科",
+                //         "netdept_name": "儿科",
+                //         "isPrivateDoctorOnce": true,
+                //         "endTime": "2019-08-08"
+                //     }]
             })
 
         },

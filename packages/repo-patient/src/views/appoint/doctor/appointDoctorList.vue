@@ -9,7 +9,7 @@
           </div>
           <div :class="['item', activeIndex == index ? 'active' : '']" :key="index" @click="checkTime({index})" v-for="(item,index) in dateList">
             <div class="week">{{item.week}}</div>
-            <div class="time">{{item.time}}</div>
+            <div class="time">{{item.date}}</div>
           </div>
         </div>
       </div>
@@ -17,33 +17,41 @@
     <div class="content">
       <div :key="item.doctorId" @click="goDoctorHomePage(item)" class="card" v-for="item in doctorList">
         <div class="card-avatar avatar-circular">
-          <img class src="item.doctorInfo.avartor" />
+          <img class :src="item.doctorInfo.avartor" />
         </div>
         <div class="card-body">
           <div class="card-name">
-            {{item.doctorInfo.doctorName}}
+            {{item.doctorInfo.name}}
             <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
             <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary" v-if="activeIndex == 'all'">预约</van-button>
           </div>
-          <div class="card-small">评分：7.6 预约量：123</div>
+          <div class="card-small">评分：-- 预约量：--</div>
           <div class="card-brief" v-if="item.doctorInfo.specialSkill">
             <div class="span s">擅长：</div>
             <div class="span xl">{{item.doctorInfo.specialSkill}}</div>
           </div>
           <div class="box-appoint" v-if="activeIndex!='all'">
-            <div class="bar-line">
-              <div class="item">01-09 上午</div>
-              <div class="item">专家门诊</div>
-              <div class="item">￥26.5</div>
-              <div class="item active">预约</div>
+            <div v-if="item.AM" :class="['bar-line', item.AM.bookingTotal ? '' :'disabled']">
+              <div class="item">{{item.timeSharing}} 上午</div>
+              <div class="item">{{item.AM.sourceLevelType == 1 ? '普通' : '专家'}}门诊</div>
+              <div class="item">￥{{item.AM.unitPrice}}</div>
+              <div    @click.stop="goAppointOrderSubmitPage(item,item.AM)"
+                      :class="['item', item.AM.bookingTotal ? 'active' :'disabled']">{{item.AM.bookingTotal ? '预约' : '约满'}}</div>
             </div>
-            <div class="bar-line disabled">
+            <div v-if="item.PM" :class="['bar-line', item.PM.bookingTotal ? '' :'disabled']">
               <div class="item">01-09 上午</div>
               <div class="item">专家门诊</div>
-              <div class="item">￥26.5</div>
-              <div class="item disabled">约满</div>
+              <div class="item">￥{{item.PM.unitPrice}}</div>
+              <div  @click.stop="goAppointOrderSubmitPage(item,item.PM)"
+                    :class="['item', item.PM.bookingTotal? 'active' :'disabled']">{{item.PM.bookingTotal ? '预约' : '约满'}}</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="none-page" v-if="!doctorList.length">
+        <div class="icon icon_none_source"></div>
+        <div class="none-text">当日暂无可预约医生
+          <div>请查看其他日期</div>
         </div>
       </div>
     </div>
@@ -61,162 +69,165 @@ export default {
       data: {},
       doctorList: [],
       activeIndex: 'all',
-      dateList: [
-        { time: '01-07', week: '周一' },
-        { time: '01-08', week: '周二' },
-        { time: '01-09', week: '周三' },
-        { time: '01-10', week: '周四' },
-        { time: '01-11', week: '周五' },
-        { time: '01-12', week: '周六' },
-        { time: '01-13', week: '周日' }
-      ]
+      params: {},
+      dateList: []
     }
   },
   created() {
-    const params = peace.util.decode(this.$route.params.json)
-    console.log(params)
-    this.doctorList = [
-      {
-        doctorInfo: {
-          doctorId: 'ndxticolxc',
-          doctorName: '潘英志',
-          status: 1,
-          avartor: 'https://testdoctor.hp.aijiayi.com/img/doctordefault.png',
-          specialSkill: '',
-          summary: '',
-          hospitalName: '上医馆',
-          doctorTitle: '医师',
-          nethospitalId: 'yuewnhalis',
-          deptName: '胸外科',
-          money: 0,
-          sign_status: 2,
-          netdept_nameId: 'yftedyguyd',
-          platdept_name: '外科',
-          platdept_child: '胸外科'
-        },
-        consultationList: {
-          '0': {
-            consultingTypeId: 'mqfocpezkrlipcdvcltq',
-            tag: 'image',
-            status: 1,
-            money: 0,
-            count: 1,
-            type: 0,
-            inquiry_time: 0,
-            icon: 'icon_01_01_09',
-            tagName: '图文咨询',
-            packageContent: '免费'
-          },
-          '2': {
-            consultingTypeId: 'bjxwlzihdcafelhonjqp',
-            tag: 'prvivateDoctor',
-            status: 1,
-            money: 1000,
-            count: 2,
-            type: 1,
-            inquiry_time: 0,
-            icon: 'icon_01_01_08',
-            tagName: '私人医生',
-            packageContent: '￥1000/周'
-          },
-          '1': {
-            consultingTypeId: 'dofzwooxzteowmdfekjo',
-            tag: 'video',
-            status: 1,
-            money: 0,
-            count: 1,
-            type: 0,
-            inquiry_time: 0,
-            icon: 'icon_01_01_08',
-            tagName: '视频咨询',
-            packageContent: '免费'
-          }
-        }
-      },
-      {
-        doctorInfo: {
-          doctorId: 'dswjutldne',
-          doctorName: '黄润全',
-          status: 1,
-          avartor: 'https://testdoctor.hp.aijiayi.com/img/doctordefault.png',
-          specialSkill: '阿三顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶水水水水水水水水水水水水水水水水水水水',
-          summary: '',
-          hospitalName: '全息综合门诊部',
-          doctorTitle: '医师',
-          nethospitalId: 'nvuhyojcez',
-          deptName: '神经外科',
-          money: 0,
-          sign_status: 2,
-          netdept_nameId: 'pkijzeptte',
-          platdept_name: '外科',
-          platdept_child: '神经外科'
-        },
-        consultationList: {
-          '0': {
-            consultingTypeId: 'hhwtxykcjvlfnepgnjhr',
-            tag: 'image',
-            status: 1,
-            money: 0,
-            count: 1,
-            type: 0,
-            inquiry_time: 0,
-            icon: 'icon_01_01_09',
-            tagName: '图文咨询',
-            packageContent: '免费'
-          },
-          '2': {
-            consultingTypeId: 'cqtuuyxkecagtlwdubuw',
-            tag: 'prvivateDoctor',
-            status: 1,
-            money: 0,
-            count: 2,
-            type: 1,
-            inquiry_time: 0,
-            icon: 'icon_01_01_08',
-            tagName: '私人医生',
-            packageContent: '￥0/周'
-          },
-          '1': {
-            consultingTypeId: 'fyopixepmswhrqzlmqhv',
-            tag: 'video',
-            status: 1,
-            money: 0,
-            count: 1,
-            type: 0,
-            inquiry_time: 0,
-            icon: 'icon_01_01_08',
-            tagName: '视频咨询',
-            packageContent: '免费'
-          }
-        }
-      }
-    ]
-
-    // peace.service.xx.xx({
-    //     xx: params.xx
-    // }).then(res => {
-    //     this.data = res.data
-    // })
+    this.params = peace.util.decode(this.$route.params.json)
+    this.getData();
   },
   methods: {
-    checkTime(index) {
-      this.activeIndex = index.index
-      // get doctorList of the index( = >time)
+    getData(timeSharing){
+      peace.service.appoint.choiceDoctor({
+        hospitalCode: this.params.hospitalCode,
+        twoLevelDeptId: this.params.twoLevelDeptId,
+        timeSharing,
+      }).then(res => {
+        !this.dateList.length && (this.dateList = res.data.weekDate),
+                this.dateList = [    //时间筛选
+                  {
+                    "date": "2019-07-15",
+                    "week": "星期一"
+                  },
+                  {
+                    "date": "2019-07-16",
+                    "week": "星期二"
+                  },
+                  {
+                    "date": "2019-07-17",
+                    "week": "星期三"
+                  },
+                  {
+                    "date": "2019-07-18",
+                    "week": "星期四"
+                  },
+                  {
+                    "date": "2019-07-19",
+                    "week": "星期五"
+                  },
+                  {
+                    "date": "2019-07-20",
+                    "week": "星期六"
+                  },
+                  {
+                    "date": "2019-07-21",
+                    "week": "星期日"
+                  }
+                ]
+        this.doctorList = res.data.list
+        // this.doctorList =  [
+        //   {
+        //     "doctorName": "何泰樑",     //医生名称
+        //     "departmentName": "普通外科", //二级科室
+        //     "sourceCode": "A71DFQEOMAA0000Z",//号源编码
+        //     "hospitalCode": "vpnrstbnvh",//医院id
+        //     "departmentCode": "sphdorrfmxsqylfymcpc",//科室id
+        //     "doctorCode": "unayuzpaar",//医生id
+        //     "doctorInfo": {
+        //       "doctorId": "unayuzpaar",
+        //       "name": "何泰樑",
+        //       "avartor": "https://devdoctor.hp.aijiayi.com/data/20190424/20190424101327jbeaxg_500_500.png",//医生头像
+        //       "summary": "擅长心脑血管手术，具有丰富",//简介
+        //       "specialSkill": "擅长治疗感冒发烧兔兔", //擅长
+        //       "doctorTitle": "副主任医师", //职称
+        //       "nethospitalId": "vpnrstbnvh", //医院id
+        //       "hospitalName": "武汉市第一医院",//医院名称
+        //       "deptName": "呼吸内科", //二级科室
+        //       "netdeptName": "内科" //一级科室
+        //     },
+        //     "timeSharing": "2019-07-15",//号源日期
+        //     "examinationObject": null,//对象（1，个人  2，团体  3，个人/团体）
+        //     "createTime": "2019-07-15 17:17:38",//创建时间
+        //     "lastmodifiedTime": "2019-07-15 17:17:38",//最后一次修改时间
+        //     "bookingTotal": 20,
+        //     "PM": { //下午
+        //       "bookingStart": "13:00:00",//开始时间
+        //       "bookingEnd": "18:00:00",//结束时间
+        //       "unitPrice": 0,//单价
+        //       "bookingTotal": 0,
+        //       "sourceLevelType":"1"//1=普通门诊、2=专家号
+        //     },
+        //     "AM": {//上午
+        //       "bookingStart": "07:00:00",
+        //       "bookingEnd": "12:00:00",
+        //       "unitPrice": '0',
+        //       "bookingTotal": 5,
+        //       "sourceLevelType":"2"//1=普通门诊、2=专家号
+        //     }
+        //   },
+        //   {
+        //     "doctorName": "刘熠",
+        //     "departmentName": "普通外科",
+        //     "sourceCode": "A71DFQ91NP80000Z",
+        //     "hospitalCode": "cgdsqeyusr",
+        //     "departmentCode": "uvaisvfmekodtnkdwjop",
+        //     "doctorCode": "ewghekrsbm",
+        //     "doctorInfo": {
+        //       "doctorId": "ewghekrsbm",
+        //       "name": "刘熠",
+        //       "avartor": "https://devdoctor.hp.aijiayi.com/data/20190625/20190625120845hgkkli_640_640.png",
+        //       "summary": "刘熠，医学博士，教授、主任医师，硕士研究生导师，儿童内科学系主任、儿童睡眠医学科主任。\n\n浙江省医学重点学科儿童睡眠医学创新学科带头人。\n中国医师协会睡眠医学专业委员会第二届委员会儿童睡眠医学组副组长，中国睡眠研究会儿童睡眠医学专业委员会第一届常务委员。\n中国医师协会毕业后医学教育儿科专业委员会副总干事，浙江省医师协会儿科医师分会第一届委员会常务委员，中华医学会浙江省儿科分会委员。\n\n曾赴奥地利格拉茨医科大学、美国路易斯威尔大学Kosair儿童医院访学。2015年获得浙江省科学技术厅科技进步奖三等奖，2011年获浙江省医药卫生科技奖三等奖，浙江省高等学校科研成果奖二等奖，温州市科学技术进步奖二等奖，国家发明专利1项，实用新型专利2项。\n\n目前主持国家自然基金、省部级和厅局级课题4项，近5年发表SCI、国家一级和省级核心期刊论文50篇。荣获2015年中国医师协会国家级“住院医师心中好老师”，温州市卫生和计划生育委员会第二届“瓯越名医”光荣称号。",
+        //       "specialSkill": "儿童睡眠障碍疾病：  \n\n鼾症、阻塞性睡眠呼吸暂停综合征(包括入睡时打呼噜、鼻塞、张口呼吸、呼吸用力、睡眠不安、多汗、遗尿等)、失眠（包括入睡困难、频繁",
+        //       "doctorTitle": "医师",
+        //       "nethospitalId": "cgdsqeyusr",
+        //       "hospitalName": "武汉九州通医院",
+        //       "deptName": "普通外科",
+        //       "netdeptName": "外科"
+        //     },
+        //     "timeSharing": "2019-07-15",
+        //     "examinationObject": null,
+        //     "createTime": "2019-07-15 15:37:43",
+        //     "lastmodifiedTime": "2019-07-15 15:37:43",
+        //     "bookingTotal": 2,
+        //     "AM": {
+        //       "bookingStart": "08:00:00",
+        //       "bookingEnd": "11:30:00",
+        //       "unitPrice": null,
+        //       "sourceLevelType":"1"//1=普通门诊、2=专家号
+        //     },
+        //     "PM": {
+        //       "bookingStart": "14:00:00",
+        //       "bookingEnd": "17:30:00",
+        //       "unitPrice": null,
+        //       "sourceLevelType":"1"//1=普通门诊、2=专家号
+        //     }
+        //   }
+        // ]
+        // })
+      })
     },
+    checkTime(obj) {
+      const item = this.dateList[obj.index] || {};
+      this.activeIndex = obj.index;
+      this.getData(item.date)
+    },
+    // 医生主页
     goDoctorHomePage(item) {
-      console.log(item)
+      const json = peace.util.encode({ doctorId: item.doctorInfo.doctorId })
+
+      this.$router.push(`/components/doctorDetail/${json}`)
     },
-    goHomeIndex(item) {
-      let doctorInfo = item
-      console.log(doctorInfo, item)
-    },
+    // 医生挂号页
     goDoctorAppointPage(item){
         let json = peace.util.encode({
-            doctorId: item.doctorInfo.doctorId
+            doctorId: item.doctorInfo.doctorId,
+            hospitalCode: item.doctorInfo.nethospitalId
         });
 
       this.$router.push(`../appointDoctorSelect/${json}`);
     },
+    // 预约订单提交页
+    goAppointOrderSubmitPage(item,source){
+      console.log(item,source)
+      let json = peace.util.encode({
+      });
+
+      // 有号源才可以挂号
+      if(source.unitPrice){
+        this.$router.push(`../../order/appointOrderSubmit/${json}`);
+      }
+    }
   }
 }
 </script>

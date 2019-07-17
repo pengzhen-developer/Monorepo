@@ -1,6 +1,21 @@
 <template>
     <div>
-            预约挂号订单提交页
+        <!--        医生信息-->
+        <div class="card">
+            <div class="card-avatar avatar-circular">
+                <img class="" src="doctorInfo.avartor" />
+            </div>
+            <div class="card-body">
+                <div class="card-name">{{doctorInfo.name}}
+                    <div class="card-small">
+                        {{doctorInfo.doctorTitle}} {{doctorInfo.deptName}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="dl-addr">
+            <div class="dt">就诊医院</div>
+            <div class="dd">华中科技大学同济医学院附属医院</div>
+        </div>
     </div>
 </template>
 
