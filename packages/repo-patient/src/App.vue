@@ -22,7 +22,7 @@ export default {
     if (peace.cache.get(peace.type.USER.INFO)) {
       this.$store.commit('user/restoreUserInfo', peace.cache.get(peace.type.USER.INFO))
 
-      // peace.service.IM.initNIM()
+      peace.service.IM.initNIM()
     }
   }
 }

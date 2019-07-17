@@ -4,14 +4,7 @@
       todo:
       暂时屏蔽未读消息
     -->
-    <div
-      :class="{ new: false || item.isRead }"
-      :data-index="index"
-      :key="index"
-      @click="goprescripDetailPage(item)"
-      class="word-list"
-      v-for="(item, index) in data"
-    >
+    <div :data-index="index" :key="index" @click="goprescripDetailPage(item)" class="word-list" v-for="(item, index) in internalData">
       <div class="word-avatar">
         <div class="icon"></div>
       </div>
@@ -31,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="tips-bottom" v-if="data.length">
+    <div class="tips-bottom" v-if="internalData && internalData.length">
       <div>为确保广大患者的用药安全，请注意：</div>
       <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
       <div>2. 用药建议开具3日内有效。</div>
@@ -58,9 +51,18 @@ export default {
     TheRecipe
   },
 
+  props: {
+    data: {
+      type: Array,
+      default() {
+        return undefined
+      }
+    }
+  },
+
   data() {
     return {
-      data: [],
+      internalData: [],
 
       recipeDetail: {
         visible: false,
@@ -69,8 +71,19 @@ export default {
     }
   },
 
+  watch: {
+    data: {
+      handler() {
+        this.internalData = this.data
+      },
+      immediate: true
+    }
+  },
+
   created() {
-    this.get()
+    if (!this.data) {
+      this.get()
+    }
   },
 
   methods: {
@@ -78,7 +91,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.patient.getMyPrescripList(params).then(res => {
-        this.data = res.data
+        this.internalData = res.data
       })
     },
 
@@ -175,10 +188,11 @@ export default {
   .word-title .label {
     flex: initial;
     width: 60px;
-    height: 18px;
+    height: 22px;
     margin-right: 10px;
     border: 0;
     border-radius: 2px;
+    text-align: center;
   }
   .word-list .word-inline {
     display: flex;

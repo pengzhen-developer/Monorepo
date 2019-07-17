@@ -3,6 +3,7 @@
     <template v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
       <div
         :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
+        :id="session.id"
         :key="session.id"
         @click="selectSession(session)"
         class="message-item"
@@ -42,6 +43,12 @@
 import peace from '@src/library'
 
 export default {
+  activated() {
+    if (this.$route.params.sessionId) {
+      this.$el.querySelector(`#${this.$route.params.sessionId}`) && this.$el.querySelector(`#${this.$route.params.sessionId}`).click()
+    }
+  },
+
   methods: {
     getLastMessage(session) {
       const messageType = session.lastMsg.type

@@ -22,12 +22,12 @@
               </div>
               <div class="strip-info">
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
-                <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div>
+                <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
               <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }" class="strip-eye">{{item.inquiryInfo.statusTxt}}</div>
             </div>
           </div>
-          <div :data-index="index" @click="goUserConsultDetailPage" class="panel-body" style="padding-top: 0">
+          <div :data-index="index" @click="goUserConsultDetailPage(item)" class="panel-body" style="padding-top: 0">
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
@@ -35,16 +35,19 @@
               <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">{{item.inquiryInfo.isFree ? '免费' : item.inquiryInfo.orderMoney }}</div>
             </div>
           </div>
-          <div class="panel-bottom" v-if="item.inquiryInfo.inquiryStatus == '1' || item.inquiryInfo.inquiryStatus == '2'">
-            <!--<div class="time">咨询倒计时:{{item.inquiryInfo.inquiryCancelTime}}</div>-->
-            <div class="time"></div>
-            <div :data-index="index" @click="goChatingPage" class="label blue" v-if="item.inquiryInfo.inquiryStatus == '2'">咨询记录</div>
-            <div :data-index="index" @click="showCancellPop" class="label blue">取消订单</div>
+          <div class="panel-bottom" style="padding-left: 0" v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+            <div :data-index="index" @click="goChatingPage(item)" class="label blue" v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+            <div :data-index="index" @click="showCancellPop(item)" class="label blue">取消订单</div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0" v-if="item.inquiryInfo.inquiryStatus == '3' ||item.inquiryInfo.inquiryStatus == '5'">
+          <div class="panel-bottom" style="padding-left: 0">
             <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue" data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
             <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue" data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
-            <div :data-index="index" @click="goChatingPage" class="label blue">咨询记录</div>
+            <div
+              :data-index="index"
+              @click="goChatingPage(item)"
+              class="label blue"
+              v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 4 || item.inquiryInfo.inquiryStatus === 5"
+            >咨询记录</div>
           </div>
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
@@ -60,17 +63,39 @@
     <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
+
+    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
+      <TheRecipeList :data="recipeList.data"></TheRecipeList>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
+      <MessageList :data="chatingPage.data"></MessageList>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="consultDetail.visible" title="咨询详情">
+      <ConsultDetail :data="consultDetail.data"></ConsultDetail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 
+import { Dialog } from 'vant'
+
 import TheCase from '@src/views/components/TheCase'
+import TheRecipeList from '@src/views/components/TheRecipeList'
+import MessageList from '@src/views/components/MessageList'
+import ConsultDetail from '@src/views/components/ConsultDetail'
 
 export default {
   components: {
-    TheCase
+    TheCase,
+    TheRecipeList,
+    MessageList,
+    ConsultDetail,
+
+    [Dialog.Component.name]: Dialog.Component
   },
 
   data() {
@@ -94,6 +119,16 @@ export default {
       recipeList: {
         visible: false,
         data: []
+      },
+
+      chatingPage: {
+        visible: false,
+        data: []
+      },
+
+      consultDetail: {
+        visible: false,
+        data: {}
       }
     }
   },
@@ -126,19 +161,90 @@ export default {
     },
 
     gouserPrescripListPage(item) {
-      const params = peace.util.encode({
+      this.recipeList.visible = true
+
+      const params = {
         familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      })
+      }
 
-      this.$router.push(`/components/theRecipeList/${params}`)
+      peace.service.patient.getMyPrescripList(params).then(res => {
+        this.recipeList.data = res.data
+      })
     },
 
-    goChatingPage() {},
+    goChatingPage(item) {
+      // 问诊中时, 咨询记录跳转聊天页
+      if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
+        this.$router.push({
+          name: '/message/index',
+          params: {
+            sessionId: 'p2p-' + item.doctorInfo.doctorId
+          }
+        })
+      }
+      // 非问诊中,显示历史记录
+      else {
+        this.chatingPage.visible = true
 
-    showCancellPop() {},
+        const params = {
+          inquiryNo: item.inquiryInfo.inquiryNo
+        }
 
-    goUserConsultDetailPage() {}
+        peace.service.patient.chatDetail(params).then(res => {
+          const historyMessageFormatHandler = messages => {
+            if (messages && Array.isArray(messages)) {
+              messages.forEach(message => {
+                const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
+
+                message.time = message.sendtime
+                message.flow = item.doctorInfo.doctorId === message.from ? 'in' : 'out'
+                message.type = messageTypeMap[message.type]
+                message.text = message.body.msg
+                message.content = message.body
+                message.file = message.body
+              })
+            }
+          }
+
+          historyMessageFormatHandler(res.data.msgList)
+
+          this.chatingPage.data = res.data.msgList
+        })
+      }
+    },
+
+    goUserConsultDetailPage(item) {
+      this.consultDetail.visible = true
+
+      const params = {
+        inquiryId: item.inquiryInfo.inquiryId
+      }
+
+      peace.service.patient.inquiryDetail(params).then(res => {
+        this.consultDetail.data = res.data
+      })
+    },
+
+    showCancellPop(item) {
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否确认取消咨询？'
+      })
+        .then(() => {
+          const params = {
+            orderNo: item.inquiryInfo.orderNo
+          }
+          peace.service.patient.cancel(params).then(res => {
+            peace.util.alert(res.msg)
+
+            this.get()
+          })
+        })
+        .catch(() => {
+          // on cancel
+        })
+    }
   }
 }
 </script>

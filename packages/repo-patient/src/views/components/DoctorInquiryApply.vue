@@ -109,7 +109,7 @@
         <span>我已阅读并同意</span>
         <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
-      <van-button :disabled="!model.informedConsent" @click="apply" style="width: 100%;" type="primary">保存</van-button>
+      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">保存</van-button>
 
       <peace-dialog :visible.sync="showInformedConsent">
         <InformedConsent></InformedConsent>
@@ -134,6 +134,8 @@ export default {
 
   data() {
     return {
+      sending: false,
+
       // 显示确认病种
       showAddAllergicHistory: false,
       // 显示过敏史
@@ -209,6 +211,7 @@ export default {
 
     peace.service.patient.getMyFamilyList().then(res => {
       this.source.familyList = res.data
+      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
     })
   },
 
@@ -228,8 +231,13 @@ export default {
 
     selectFamily(familyObject) {
       this.showFamily = false
-      this.model.familyName = familyObject.name
-      this.model.familyId = familyObject.id
+
+      if (familyObject.id === undefined && familyObject.name === '添加就诊人') {
+        this.$router.push('/setting/myFamilyMembers')
+      } else {
+        this.model.familyName = familyObject.name
+        this.model.familyId = familyObject.id
+      }
     },
 
     selectConfirmTime(value) {
@@ -281,9 +289,21 @@ export default {
         return peace.util.alert('请输入不少于5个字的病情描述')
       }
 
+      this.sending = true
+
       peace.service.inquiry.apply(params).then(res => {
+        this.sending = false
+
         if (res.data.errorState !== 0) {
           peace.util.alert(res.msg)
+
+          // 跳转消息页
+          this.$router.push({
+            name: '/message/index',
+            params: {
+              sessionId: 'p2p-' + this.model.doctorId
+            }
+          })
         }
       })
     }

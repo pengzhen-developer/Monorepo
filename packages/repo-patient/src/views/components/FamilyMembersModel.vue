@@ -26,9 +26,9 @@
       <div class="form">
         <van-field error label="姓名" placeholder="请输入姓名" required v-model="model.name" />
         <van-field label="身份证号" placeholder="请输入身份证号" required v-model="model.idcard" />
-        <van-field @click="showPopupRelation('Relation')" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
-        <van-field @click="showPopupSex('Sex')" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
-        <van-field @click="showPopupBirthday('Birthday')" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
+        <van-field @click="showPopupRelation" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
+        <van-field @click="showPopupSex" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
+        <van-field @click="showPopupBirthday" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
         <van-field label="过敏史" placeholder="请填写过敏史" v-model="model.allergic_history" />
       </div>
       <div class="bottom">

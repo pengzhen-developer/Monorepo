@@ -3,11 +3,13 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field placeholder="请输入手机号" ref="tel" v-model="tel" />
-      <van-field :value="smsCode" @touchstart.native.stop="showKeyboard = true" clickable placeholder="请输入验证码" readonly ref="smsCode">
+      <van-field :value="tel" @touchstart.native.stop="showKeyboardForTel = true" clickable placeholder="请输入手机号" readonly ref="tel"></van-field>
+      <van-number-keyboard :maxlength="6" :show="showKeyboardForTel" @blur="showKeyboardForTel = false" v-model="tel" />
+
+      <van-field :value="smsCode" @touchstart.native.stop="showKeyboardForSms = true" clickable placeholder="请输入验证码" readonly ref="smsCode">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === 60 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
-      <van-number-keyboard :maxlength="6" :show="showKeyboard" @blur="showKeyboard = false" v-model="smsCode" />
+      <van-number-keyboard :maxlength="6" :show="showKeyboardForSms" @blur="showKeyboardForSms = false" v-model="smsCode" />
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
@@ -29,7 +31,8 @@ export default {
     return {
       tel: '',
       smsCode: '',
-      showKeyboard: false,
+      showKeyboardForTel: false,
+      showKeyboardForSms: false,
       countDown: 60
     }
   },

@@ -124,6 +124,8 @@
           </van-tab>
         </van-tabs>
       </div>
+
+      <div class="divider"></div>
       <!-- 
       <div class="estimated">
         <van-tag class="tag" plain round>响应及时</van-tag>
@@ -133,7 +135,7 @@
       -->
     </div>
 
-    <div class="footer">
+    <div class="footer" v-if="canShowReserve">
       <van-button @click="redictToReserve" type="primary">预约挂号</van-button>
     </div>
   </div>
@@ -161,6 +163,26 @@ export default {
     })
   },
 
+  computed: {
+    canShowReserve() {
+      const workLineLength = this.doctor.workOnLine.length + this.doctor.workUnderLine.length
+      let index = 0
+
+      this.doctor.workOnLine.forEach(workOnLineItem => {
+        index += workOnLineItem.weekList.findIndex(weekListItem => weekListItem.status === 1)
+      })
+      this.doctor.workUnderLine.forEach(workUnderLineItem => {
+        index += workUnderLineItem.weekList.findIndex(weekListItem => weekListItem.status === 1)
+      })
+
+      if (index === -workLineLength) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
+
   methods: {
     redictToApply(doctorInfo, doctorConsultation) {
       const json = peace.util.encode({
@@ -173,7 +195,12 @@ export default {
     },
 
     redictToReserve() {
-      this.$router.push(`/components/doctorInquiryApply/${this.$route.params.json}`)
+      const json = peace.util.encode({
+        doctorId: this.doctor.doctorInfo.doctorId,
+        hospitalCode: this.doctor.doctorInfo.nethospitalid
+      })
+
+      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     }
   }
 }
@@ -340,6 +367,10 @@ export default {
     .van-button {
       width: 100%;
     }
+  }
+
+  /deep/ .van-cell:not(:last-child)::after {
+    border: 0;
   }
 }
 </style>

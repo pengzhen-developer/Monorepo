@@ -51,7 +51,7 @@
 
           <!-- 消息内容 -->
           <div>
-            <img :src="message.file.url" style="max-width: 200px; " title="查看大图" />
+            <img :src="message.file.url" @click="viewImage(message.file.url)" style="max-width: 200px; " />
           </div>
         </template>
 
@@ -96,24 +96,20 @@
     </div>
 
     <div class="input" v-if="canShowInput">
-      <van-field :autosize="{ maxHeight: 60, minHeight: 20 }" @focus="hideTools" placeholder="请输入" rows="1" type="textarea" v-model="message">
+      <van-field :autosize="{ maxHeight: 60, minHeight: 20 }" @focus="hideTools" rows="1" type="textarea" v-model="message">
         <van-icon @click="showTools" name="add-o" slot="right-icon" />
         <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
       </van-field>
 
       <div class="input-tools" v-show="tools.visible">
         <van-row justify="space-between" type="flex">
-          <van-col class="flex-center" span="6">
+          <van-col class="flex-left" span="6">
             <van-uploader :after-read="sendMessageImage">
               <div class="flex-center">
                 <van-button icon="photo"></van-button>
                 <p>图片</p>
               </div>
             </van-uploader>
-          </van-col>
-          <van-col class="flex-center" span="6">
-            <input accept="image/*" capture="camera" multiple="multiple" type="file" />
-            <p>拍照</p>
           </van-col>
         </van-row>
       </div>
@@ -130,6 +126,10 @@
 
 <script>
 import peace from '@src/library'
+
+import Vue from 'vue'
+import { ImagePreview } from 'vant'
+Vue.use(ImagePreview)
 
 import TheCase from '@src/views/components/TheCase'
 import TheRecipe from '@src/views/components/TheRecipe'
@@ -166,6 +166,21 @@ export default {
         visible: false,
         data: {}
       }
+    }
+  },
+
+  watch: {
+    '$store.state.inquiry.sessionMessages': {
+      handler() {
+        this.$nextTick(function() {
+          const element = document.querySelector('.message-list .item')
+
+          if (element) {
+            element.scrollTop = element.scrollHeight
+          }
+        })
+      },
+      immediate: true
     }
   },
 
@@ -347,6 +362,10 @@ export default {
       peace.service.patient.getPrescripInfo(params).then(res => {
         this.recipeDetail.data = res.data
       })
+    },
+
+    viewImage(path) {
+      ImagePreview([path])
     }
   }
 }
