@@ -55,9 +55,25 @@ export function orderSubmit(params) {
         }})
 }
 
+/**
+ * 预约挂号订单取消
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function orderCancel(params) {
+    const orderCancel = 'register/v1/Register/orderCancel'
+
+    return peace.http.post(orderCancel, params,{
+        headers: {
+            post: { 'Content-Type': 'application/json' }
+        }})
+}
 export default {
     choiceDoctor, // 预约挂号医生列表
     choiceVisitingTime, // 预约挂号医生排班页
     choiceVisitingTimeByWeek, // 预约挂号医生排班
     orderSubmit, // 预约挂号订单提交
+    orderCancel, // 预约挂号订单取消
 }

@@ -24,7 +24,7 @@
     <van-cell-group>
       <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
       <van-cell icon="manager-o" is-link title="我的医生" to="/setting/userDoctorList" value />
-      <van-cell icon="location-o" is-link title="收货地址" value />
+<!--      <van-cell icon="location-o" is-link title="收货地址" value />-->
       <van-cell @click="signOut" icon="close" title="退出登录" value></van-cell>
     </van-cell-group>
   </div>
@@ -83,6 +83,9 @@ export default {
           break
         case 'order':
           this.$router.push('/setting/order/userOrderList')
+          break;
+        case 'drug':
+          peace.util.alert('敬请期待')
           break;
         case 'prescrip':
           // todo
