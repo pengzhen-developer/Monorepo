@@ -153,6 +153,7 @@ export default {
 
       if (!this.showBtn) {
         peace.util.alert('请勿重复提交')
+        return;
       }
       this.getOrderSubmit(data)
     },

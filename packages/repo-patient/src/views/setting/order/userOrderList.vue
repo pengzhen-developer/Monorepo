@@ -52,7 +52,7 @@
                         <div class="time">订单编号：{{item.orderNo}}</div>
                         <div class="label blue" @click="goPay(item)"  data-orderid="item.orderId" v-if="item.orderStatus == '1'">继续支付</div>
                         <div class="label blue" @click="canselOrder(item)"
-                             data-orderid="item.orderId" v-if="item.orderStatus == '3'">申请退号</div>
+                             data-orderid="item.orderId" v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="info.orderInfo">
     <!--TOP-->
     <div class="module nmg">
       <div class="strong">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
