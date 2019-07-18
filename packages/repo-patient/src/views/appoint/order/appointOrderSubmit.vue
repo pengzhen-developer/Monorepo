@@ -73,8 +73,8 @@
                 <li>· 实名制预约，就诊人信息不符将无法取号；</li>
             </ul>
         </div>
-        <div class="fixed-bottom" v-if="showBtn">
-            <div class="btn btn-blue block" @click="submitOrder">提交</div>
+        <div class="fixed-bottom">
+            <div :class="['btn','btn-blue', 'block', showBtn ? '' : 'disabled']" @click="submitOrder">提交</div>
         </div>
     </div>
 </template>
@@ -160,24 +160,31 @@
                  this.showFmlDicFn()
                  return;
              }
+
+             if(!this.showBtn){
+                 peace.util.alert('请勿重复提交')
+             }
              this.getOrderSubmit(data);
             },
             getOrderSubmit(data){
                 peace.service.appoint.orderSubmit(data).then(res =>{
-                    this.showBtn = false;
-                    let json = peace.util.encode({
-                        orderInfo:res.data.orderInfo,
-                    })
-                    this.$router.push(`/setting/order/userOrderDetail/${json}`)
-                    console.log(res)
+                    this.goPage(res.data);
                 }).catch(res =>{
                     Dialog.alert({
                         title: '预约失败',
-                        message: res.msg
+                        message: res.data.msg
                     }).then(() => {
                         this.$router.go(-1)
                     });
                 })
+            },
+            goPage(data){
+                this.showBtn = false;
+
+                let json = peace.util.encode({
+                    orderInfo:data.orderInfo,
+                })
+                this.$router.push(`/setting/order/userOrderDetail/${json}`)
             }
         }
     }

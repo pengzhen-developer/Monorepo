@@ -291,6 +291,7 @@ const router = new Router({
           name: '/appoint/order/appointOrderSubmit',
           meta: {
             auth: true,
+            keepAlive: true,
             navbar: {
               title: '预约信息',
               back: true

@@ -103,14 +103,25 @@
             }
         },
         created() {
-            peace.service.patient.getOrderList({orderType:'register'}).then(res => {
-                this.orderList = res.data.list || [];
-            })
+            this.getData();
         },
         methods: {
             goPay(){},
+            getData(){
+                peace.service.patient.getOrderList({orderType:'register'}).then(res => {
+                    this.orderList = res.data.list || [];
+                })
+            },
             canselOrder(item){
-                console.log(item)
+                if(!item.cancelState){
+                    return;
+                }
+                peace.service.appoint.orderCancel({
+                    orderNo: item.orderNo,
+                }).then(res => {
+                    peace.util.alert(res.msg || '取消成功')
+                    this.getData();
+                })
             },
             goOrderDetailPage(item){
                 let json = peace.util.encode({

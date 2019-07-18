@@ -5,28 +5,28 @@
             <div class="strong">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
             <div class="brief">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}</div>
             <div class="module-body">
-                <div :class="['label', 'blue', 'info.orderInfo.canselState' ? '' : 'disabled']" @click="showCancellPop"
+                <div :class="['label', 'blue', info.orderInfo.cancelState ? '' : 'disabled']" @click="canselOrder"
                       v-if="info.orderInfo.orderStatus == '1' || info.orderInfo.orderStatus == '3'">
-                    {{info.orderInfo.canselState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}
+                    {{info.orderInfo.cancelState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}
                 </div>
             </div>
         </div>
         <!--医生名片-->
-        <div class="card">
+        <div class="card pd">
             <div class="card-avatar avatar-circular">
-                <img class="" :src="info.doctorInfo.avartor" />
+                <img class="" :src="info.doctorInfo.avartor || info.doctorInfo.doctorAvartor" />
             </div>
             <div class="card-body">
                 <div class="card-name">
-                    {{info.doctorInfo.name}}
+                    {{info.doctorInfo.name || info.doctorInfo.doctorName}}
                     <div class="card-small">{{info.doctorInfo.doctorTitle}}
                         {{info.doctorInfo.deptName}}
 <!--                        <div class="label label-private" wx:if="{{info.doctorInfo.isPrivateDoctor}}">私人医生</div>-->
                     </div>
                 </div>
-<!--                <div class="card-small">-->
-<!--                    {{info.doctorInfo.hospitalName}}-->
-<!--                </div>-->
+                <div class="card-small">
+                    {{info.doctorInfo.hospitalName}}
+                </div>
             </div>
         </div>
         <!--订单内容-->
@@ -77,7 +77,7 @@
             <div class="dl-packet">
                 <div class="dt">订单时间</div>
                 <div class="dd">
-                    {{info.orderInfo.orderTime}}
+                    {{info.orderInfo.orderDate}}
                 </div>
             </div>
         </div>
@@ -99,13 +99,34 @@
                 page: {
                     statusDic: {
                         register: {
-                            1:'待支付',
-                            2:'已取消',
-                            3:'预约成功',
-                            4:'已完成',
-                            5:'已退号',
-                            6:'退款中',
-                            7:'已退款',
+                            1:{
+                                text: '待支付',
+                                small:'15分钟内未付款，订单将自动取消'
+                            },
+                            2:{
+                                text: '已取消',
+                                small:''
+                            },
+                            3:{
+                                text: '预约成功',
+                                small:'请按时入院就诊，过号无效'
+                            },
+                            4:{
+                                text: '已完成',
+                                small:'若未到院就诊，请到医院办理退号退款手续'
+                            },
+                            5:{
+                                text: '已退号',
+                                small:'您的挂号订单已退号，退号后费用将原路返还，请注意查收'
+                            },
+                            6:{
+                                text: '退款中',
+                                small:'已为您发起退款，到账时间以微信为准'
+                            },
+                            7:{
+                                text: '已退款',
+                                small:'退款已完成。祝您健康！'
+                            },
                         },
                     },
                     cfgDic: {
@@ -132,7 +153,18 @@
                 }).then(res => {
                     this.info = res.data || {}
                 })
-            }
+            },
+            canselOrder(){
+                if(!this.info.orderInfo.cancelState){
+                    return;
+                }
+                peace.service.appoint.orderCancel({
+                    orderNo: this.info.orderInfo.orderNo,
+                }).then(res => {
+                    peace.util.alert(res.msg || '取消成功')
+                    this.getData();
+                })
+            },
         }
     }
 
@@ -141,17 +173,152 @@
 <style lang="scss" scoped>
     @import "~@src/views/style/style.css";
 
+    .dl-addr{
+        font-size: 14px;
+        .dd{
+            color: #666;
+            text-align: right;
+            flex: 1;
+            &.blue{
+                color: #00c6ae;
+            }
+        }
+    }
     .form-dl{
         border-bottom: 1px solid #f5f5f5;
         .form-dt{
             font-size: 14px;
         }
         .form-dd{
+            flex: 1;
+            text-align: right;
             font-size: 14px;
         }
     }
     .order{
-        padding-bottom: 5px;
+        padding: 10px 15px;
+        border-bottom: 10px solid #f5f5f5;
+    }
+    .nmg{
+        margin-top: 0;
+        border-bottom: 10px solid #f5f5f5;
+    }
+    .card.pd{
+        margin: 0;
+        padding: 5px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    .module .strong{
+        font-weight: 600;
+        font-size: (36px/2);
+        line-height: (36px/2);
+        padding: (20px/2) (30px/2);
+    }
+    .module .brief{
+        font-size:(26px/2);
+        padding: 0 (30px/2);
+    }
+    .module .small{
+        font-size: (30px/2);
+        padding: (20px/2) (30px/2);
     }
 
+    .module .module-body{
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        justify-content: space-between;
+        padding:(20px/2);
+    }
+    .module-body .label{
+        flex: 1;
+        text-align: center;
+        font-size: (26px/2);
+        padding: (16px/2) (24px/2);
+        margin: (10px/2);
+        border-radius: (40px/2);
+        &.disabled{
+            background: #EEEEEE;
+            border-color: #EEEEEE;
+            color: #999;
+        }
+    }
+    .card{
+        background: #fff;
+        padding: (20px/2) (30px/2);
+    }
+    .b{
+        display: block;
+        font-weight: 600;
+    }
+    .b,.span,.ul{
+        padding: (20px/2) (30px/2) 0 (30px/2);
+    }
+
+    .dl-packet{
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        color: #999;
+        font-size: (26px/2);
+    }
+    .dl-packet .dt{
+        flex: 0 0 auto;
+        width: 130px;
+        padding: (10px/2) (30px/2);
+    }
+    .dl-packet .dd{
+        flex: 1;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        text-align: right;
+        padding: (10px/2) (30px/2);
+    }
+    .pdtb{
+        padding:(20px/2) 0 ;
+        border-top: 10px solid #f5f5f5;
+    }
+    .right{
+        text-align: right;
+    }
+    .money{
+        color: #F2223B;
+        font-size: (36px/2);
+        display: inline;
+        padding-left:(15px/2);
+    }
+    .ul{
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        padding-bottom:15px;
+    }
+    .ul .li{
+        flex: 0 0 auto;
+        width: (90px/2);
+        height: (90px/2);
+        margin-right: (25px/2);
+        border: (2px/2) solid #E5E5E5;
+        padding: (10px/2);
+    }
+    .label.label-private{
+        font-size: (16px/2);
+        padding: (2px/2) (4px/2);
+        border-radius: (5px/2);
+        color: #F7E9B3;
+        background: #504C4F;
+        border-color: #504C4F;
+        vertical-align: text-top;
+        margin-top: (5px/2);
+
+    }
 </style>

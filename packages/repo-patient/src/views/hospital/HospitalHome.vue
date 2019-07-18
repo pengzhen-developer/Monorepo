@@ -85,7 +85,7 @@
           >
             <template v-if="index < 7">{{item.netdeptName}}</template>
           </div>
-          <div @click="goDeptPage({id:'consult'})" class="label" v-if="hsp.deptList.length">更多</div>
+          <div @click="goDeptPage({id:'consult'})" class="label" v-if="hsp.deptList.length > 7">更多</div>
         </div>
       </div>
 
