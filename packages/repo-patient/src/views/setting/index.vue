@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="setting">
     <div class="user-card">
       <div class="user-img">
         <img class="img-avatar" mode="cover" />
@@ -24,7 +24,7 @@
     <van-cell-group>
       <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
       <van-cell icon="manager-o" is-link title="我的医生" to="/setting/userDoctorList" value />
-<!--      <van-cell icon="location-o" is-link title="收货地址" value />-->
+      <!--      <van-cell icon="location-o" is-link title="收货地址" value />-->
       <van-cell @click="signOut" icon="close" title="退出登录" value></van-cell>
     </van-cell-group>
   </div>
@@ -83,18 +83,18 @@ export default {
           break
         case 'order':
           this.$router.push('/setting/order/userOrderList')
-          break;
+          break
         case 'drug':
           peace.util.alert('敬请期待')
-          break;
+          break
         case 'prescrip':
           // todo
           // 待优化项
           // router 已经定义该组件需要参数，传递无意义的空对象 {}，查询所有
           this.$router.push(`/components/theRecipeList/${peace.util.encode({})}`)
-              break;
+          break
         default:
-          break;
+          break
       }
     }
   }
@@ -102,6 +102,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.setting {
+  width: 100%;
+  height: 100%;
+}
+
 /*user-card*/
 .user-card {
   background-color: #00c6ae;

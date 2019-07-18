@@ -52,6 +52,7 @@
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
       </template>
+
       <template v-else>
         <div class="none-page">
           <div class="icon icon_none_consult"></div>
@@ -69,7 +70,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
-      <MessageList :data="chatingPage.data"></MessageList>
+      <MessageList :data="chatingPage.data" :navBar="false"></MessageList>
     </peace-dialog>
 
     <peace-dialog :visible.sync="consultDetail.visible" title="咨询详情">

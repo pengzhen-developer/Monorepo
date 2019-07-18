@@ -29,7 +29,8 @@
         </div>
       </div>
     </div>
-    <div class="none-page" v-if="!doctorList.length">
+
+    <div class="none-page" v-else>
       <div class="icon icon_none_doctor"></div>
       <div class="none-text">暂无医生信息</div>
     </div>
@@ -41,16 +42,19 @@ import peace from '@src/library'
 
 export default {
   props: {},
+
   data() {
     return {
       doctorList: []
     }
   },
+
   created() {
     peace.service.patient.getUserDctList().then(res => {
       this.doctorList = res.data
     })
   },
+
   methods: {
     goHomeIndex(item) {
       let json = peace.util.encode({

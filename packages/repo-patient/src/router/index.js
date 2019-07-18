@@ -134,11 +134,7 @@ const router = new Router({
           path: '/components/messageList',
           name: '/components/messageList',
           meta: {
-            auth: true,
-            navbar: {
-              title: '消息列表',
-              back: true
-            }
+            auth: true
           },
           component: () => import('@src/views/components/MessageList.vue')
         },

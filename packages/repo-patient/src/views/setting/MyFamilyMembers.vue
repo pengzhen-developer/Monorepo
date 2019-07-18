@@ -1,20 +1,29 @@
 <template>
   <div class="my-family-members">
-    <div class="content">
-      <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
-        <template slot="title">
-          <span class="custom-title">{{ item.name }}</span>
-          <van-icon class-prefix="ic" class="danger" name="ic_boys" v-if="item.sex === '男'" />
-          <van-icon class-prefix="ic" class="blue" name="ic_girls" v-else-if="item.sex === '女'" />
-          <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
-          <van-tag plain round>{{ item.relation }}</van-tag>
-        </template>
-      </van-cell>
-    </div>
-    <div class="bottom">
-      <div class="tips">温馨提示：最多添加10位家人</div>
-      <van-button @click="toAdd" type="primary">新增家人</van-button>
-    </div>
+    <template v-if="members && members.length > 0">
+      <div class="content">
+        <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
+          <template slot="title">
+            <span class="custom-title">{{ item.name }}</span>
+            <van-icon class-prefix="ic" class="danger" name="ic_boys" v-if="item.sex === '男'" />
+            <van-icon class-prefix="ic" class="blue" name="ic_girls" v-else-if="item.sex === '女'" />
+            <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
+            <van-tag plain round>{{ item.relation }}</van-tag>
+          </template>
+        </van-cell>
+      </div>
+      <div class="bottom">
+        <div class="tips">温馨提示：最多添加10位家人</div>
+        <van-button @click="toAdd" type="primary">新增家人</van-button>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="none-page">
+        <div class="icon icon_none_family"></div>
+        <div class="none-text">您还未添加家人</div>
+      </div>
+    </template>
 
     <peace-dialog :title="dialog.title" :visible.sync="dialog.visible">
       <FamilyMembersModel :data="dialog.data" @onComplete="onComplete" />

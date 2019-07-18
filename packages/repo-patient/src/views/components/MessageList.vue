@@ -1,5 +1,7 @@
 <template>
   <div class="message-list">
+    <van-nav-bar v-if="navBar" :title="$store.getters['inquiry/doctorInfo'].doctorName" @click-left="back" class="layout-navbar" left-arrow left-text=" " />
+
     <div @click="hideTools" class="item">
       <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
         <!-- 文本消息 -->
@@ -141,6 +143,13 @@ export default {
       default() {
         return undefined
       }
+    },
+
+    navBar: {
+      type: Boolean,
+      default(){
+        return true
+      }
     }
   },
 
@@ -224,7 +233,7 @@ export default {
   },
 
   methods: {
-    onClickLeft() {
+    back() {
       this.$router.go(-1)
     },
 
