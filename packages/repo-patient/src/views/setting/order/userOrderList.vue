@@ -135,7 +135,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~@src/views/style/style.css";
     .userConsultList{
         height: 100%;
     }

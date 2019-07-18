@@ -113,6 +113,10 @@ export default {
     },
 
     redictToApply(doctorInfo, doctorConsultation) {
+      if (doctorConsultation.tag === 'video') {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
+
       const json = peace.util.encode({
         doctorId: doctorInfo.doctorId,
         consultingType: doctorConsultation.tag,
@@ -174,6 +178,12 @@ export default {
         .title-description-detail {
           margin: 0 0 0 40px;
           display: block;
+
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
         }
       }
 

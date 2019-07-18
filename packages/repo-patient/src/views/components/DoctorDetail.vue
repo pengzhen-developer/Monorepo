@@ -185,6 +185,10 @@ export default {
 
   methods: {
     redictToApply(doctorInfo, doctorConsultation) {
+      if (doctorConsultation.tag === 'video') {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
+
       const json = peace.util.encode({
         doctorId: doctorInfo.doctorId,
         consultingType: doctorConsultation.tag,

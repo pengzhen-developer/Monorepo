@@ -26,7 +26,7 @@
           <div class="dt">电话：</div>
           <div :class="['dd', hsp.nethospitalInfo.phoneNumber ? 'blue': '']">
             {{hsp.nethospitalInfo.phoneNumber || '暂无'}}
-<!--            <div @click="goSummaryPage" class="label blue mr" v-if="hsp.nethospitalInfo.brief">医院简介</div>-->
+            <!--            <div @click="goSummaryPage" class="label blue mr" v-if="hsp.nethospitalInfo.brief">医院简介</div>-->
           </div>
         </div>
         <div class="dl pb">
@@ -63,8 +63,10 @@
           data-text="item.text"
           v-for="item in hsp.guide"
         >
-          <div :class="['block-ico',item.icon, item.status ? '' : 'disabled', item.id == 'appointment' && hsp.nethospitalInfo.isOpenRegister == 1 ? 'disabled' : ''
-]"></div>
+          <div
+            :class="['block-ico',item.icon, item.status ? '' : 'disabled', item.id == 'appointment' && hsp.nethospitalInfo.isOpenRegister == 1 ? 'disabled' : ''
+]"
+          ></div>
           <div class="block-tit">{{item.text}}</div>
         </div>
       </div>
@@ -143,32 +145,32 @@ export default {
     },
     goMenuPage(item) {
       console.log(item)
-      if(!item.status || (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 1)){
-        peace.util.alert('服务暂未开通');
-        return;
+      if (!item.status || (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 1)) {
+        peace.util.alert('服务暂未开通')
+        return
       }
-      if(item.id == 'physical'){
-        peace.util.alert('敬请期待');
-        return;
+      if (item.id == 'physical') {
+        peace.util.alert('敬请期待')
+        return
       }
-      if(item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 2){
-        this.goDeptPage(item);
+      if (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 2) {
+        this.goDeptPage(item)
       }
     },
     // 咨询业务医生列表入口
     goDoctorListPage(item) {
       let json = peace.util.encode({
         netHospitalId: this.hsp.nethospitalInfo.netHospitalId,
-        level:1,
-        txt:item.netdeptName,
-        txtId:item.id
+        level: 1,
+        txt: item.netdeptName,
+        txtId: item.id
       })
 
       this.$router.push(`/components/doctorList/${json}`)
       // this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
     },
     goDeptPage(item) {
-      let json = peace.util.encode({netHospitalId: this.hsp.nethospitalInfo.netHospitalId,id: item.id,Date: new Date()})
+      let json = peace.util.encode({ netHospitalId: this.hsp.nethospitalInfo.netHospitalId, id: item.id, Date: new Date() })
       this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
     },
     goDoctorHomeIndexPage(item) {
@@ -181,8 +183,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@src/views/style/style.css';
-
 .cards {
   background-color: #fff;
   margin: 0;

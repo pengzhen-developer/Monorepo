@@ -96,6 +96,7 @@ export default {
 }
 </script>
 
+
 <style src="./../../style/style.css"></style>
 
 <style lang="scss" scoped>
