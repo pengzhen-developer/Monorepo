@@ -29,7 +29,10 @@
         <van-field @click="showPopupRelation" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
         <van-field @click="showPopupSex" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
         <van-field @click="showPopupBirthday" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
-        <van-field label="过敏史" placeholder="请填写过敏史" v-model="model.allergic_history" />
+        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+        <peace-dialog :visible.sync="showAllergicHistory">
+          <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+        </peace-dialog>
       </div>
       <div class="bottom">
         <van-button @click="submit" type="primary">保存</van-button>

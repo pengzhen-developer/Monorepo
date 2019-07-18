@@ -164,7 +164,7 @@ export default {
       json = peace.util.encode(json)
 
       if (!item.isExpire && item.number) {
-        this.$router.push(`../../order/appointOrderSubmit/${json}`)
+        this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
       }
     }
   }

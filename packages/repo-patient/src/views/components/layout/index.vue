@@ -72,8 +72,7 @@ export default {
         const activeDictionary = {
           '/home/index': 0,
           '/message/index': 1,
-          '/file/index': 2,
-          '/setting/index': 3
+          '/setting/index': 2
         }
 
         this.active = activeDictionary[val] || this.active

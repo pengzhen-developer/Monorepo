@@ -74,13 +74,13 @@
       <div class="namelist-dl npd">
         <div class="dt">医师：</div>
         <div class="dd">
-          <img :src="data.doctorSignImage" />
+          <img :src="data.doctorSignImage" v-if="data.doctorSignImage" />
         </div>
       </div>
       <div class="namelist-dl npd">
         <div class="dt">审核药师：</div>
         <div class="dd">
-          <img :src="data.prescriptionSign" />
+          <img :src="data.prescriptionSign" v-if="data.prescriptionSign" />
         </div>
       </div>
       <div class="namelist-dl">
