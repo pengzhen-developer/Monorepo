@@ -250,7 +250,8 @@ export function encode(obj) {
   if (!(data instanceof Object)) {
     console.error('非法入参')
   }
-  params = window.encodeURIComponent(JSON.stringify(obj || {}))
+
+  params = window.btoa(window.encodeURIComponent(JSON.stringify(obj || {})))
   return params
 }
 /**
@@ -265,7 +266,7 @@ export function decode(obj) {
   let params,
     data = obj
 
-  params = JSON.parse(window.decodeURIComponent(data || '{}'))
+  params = JSON.parse(window.decodeURIComponent(window.atob(data || 'JTdCJTdE')))
   return params
 }
 
