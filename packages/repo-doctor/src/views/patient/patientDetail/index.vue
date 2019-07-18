@@ -1,35 +1,41 @@
 <template>
   <div class="patient-detail">
     <div class="header" v-if="patientInfo">
-      <img :src="patientInfo.user_info.weixin_head_url" class="header-img" />
+      <img :src="patientInfo.userInfo.wxHeadUrl" class="header-img" />
 
       <div class="header-info">
         <div class="first-line">
-          <span class="name">{{ patientInfo.user_info.patient_remarks || patientInfo.user_info.real_name || patientInfo.user_info.weixin_name }}</span>
-          <span class="sex" v-if="patientInfo.user_info.sex">
-            <i :class="[patientInfo.user_info.sex === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
+          <span class="name">{{ patientInfo.userInfo.remark || patientInfo.userInfo.realName || patientInfo.userInfo.wxName }}</span>
+          <span class="sex" v-if="patientInfo.userInfo.sex">
+            <i :class="[patientInfo.userInfo.sex === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
           </span>
 
-          <div style="display: inline-block; margin-left: 10px;" v-if="patientInfo.privateDoctor.isPrivateDoctor">
+          <div style="display: inline-block; margin-left: 10px;" v-if="patientInfo.userInfo.isPrivateDoctor">
             <span class="sex private-doctor">私人医生</span>
-            <span class="date" style="display: inline-block; margin-left: 10px;">{{ patientInfo.privateDoctor.validityTime }} 到期</span>
+            <span class="date" style="display: inline-block; margin-left: 10px;">{{ patientInfo.userInfo.validityTime }} 到期</span>
           </div>
         </div>
         <div class="second-line">
           <span class="label">微信昵称</span>
-          <span class="value">{{ patientInfo.user_info.weixin_name }}</span>
+          <span class="value">{{ patientInfo.userInfo.wxName }}</span>
 
           <span class="label">联系方式</span>
-          <span class="value">{{ patientInfo.user_info.tel }}</span>
+          <span class="value">{{ patientInfo.userInfo.tel }}</span>
         </div>
       </div>
     </div>
 
     <div class="content">
       <el-tabs class="tab" v-model="activeTab">
-        <el-tab-pane label="咨询记录" name="咨询记录">
-          <PatientInquiryDetail></PatientInquiryDetail>
+        <!-- 家人列表 -->
+        <el-tab-pane label="家人列表" name="家人列表">
+          <MyFamilys :data="patientInfo.familyList"></MyFamilys>
         </el-tab-pane>
+        <!-- 咨询记录 -->
+        <!-- <el-tab-pane label="咨询记录" name="咨询记录">
+          <PatientInquiryDetail></PatientInquiryDetail>
+        </el-tab-pane>-->
+        <!-- 健康档案 -->
         <el-tab-pane label="健康档案" name="健康档案">
           <PatientHealthRecord></PatientHealthRecord>
         </el-tab-pane>
@@ -40,18 +46,20 @@
 
 <script>
 import peace from '@src/library'
-import PatientInquiryDetail from './PatientInquiryDetail'
+// import PatientInquiryDetail from './PatientInquiryDetail'
+import MyFamilys from './MyFamilys'
 import PatientHealthRecord from './PatientHealthRecord'
 
 export default {
   components: {
-    PatientInquiryDetail,
+    MyFamilys,
+    // PatientInquiryDetail,
     PatientHealthRecord
   },
 
   data() {
     return {
-      activeTab: '健康档案',
+      activeTab: '家人列表',
 
       patientInfo: undefined
     }
@@ -63,9 +71,9 @@ export default {
 
   methods: {
     get() {
-      const params = { patientid: this.$route.params.id }
+      const params = { patientId: this.$route.params.id }
 
-      peace.service.patient.patientListDescPc(params).then(res => {
+      peace.service.patient.getPatientHome(params).then(res => {
         this.patientInfo = res.data
       })
     }

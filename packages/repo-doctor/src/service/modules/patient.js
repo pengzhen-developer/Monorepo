@@ -51,6 +51,19 @@ export function patientListDescPc(params) {
 }
 
 /**
+ * 获取某个患者详情信息（新）
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getPatientHome(params) {
+  const getPatientHome = '/client/v1/Patient/getPatientHome'
+
+  return peace.http.post(getPatientHome, params)
+}
+
+/**
  * 获取过敏源
  *
  * @export
@@ -128,6 +141,19 @@ export function getOneInquiry(params) {
   return peace.http.get(getOneInquiry, { params })
 }
 
+/**
+ * 获取咨询记录
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getAdvisoryRecord(params) {
+  const getAdvisoryRecord = 'client/v1/Patient/getPatientInquiryList'
+
+  return peace.http.post(getAdvisoryRecord, params)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -138,6 +164,7 @@ export default {
   patientListPc,
   /** 获取某个患者详情信息 */
   patientListDescPc,
+  getPatientHome,
 
   /** 获取过敏源 */
   allergens,

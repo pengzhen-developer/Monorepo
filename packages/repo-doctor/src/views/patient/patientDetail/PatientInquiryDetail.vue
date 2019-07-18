@@ -16,6 +16,8 @@
             <span class="age" v-if="inquiry.age">{{ inquiry.age }}岁</span>
             <el-tag>{{ inquiry.relation }}</el-tag>
             <span class="private-doctor" v-if="inquiry.isPrivateDoctor">私</span>
+            <!-- 随访 -->
+            <!-- <el-tag>{{ inquiry }}</el-tag> -->
           </div>
           <div class="right">
             <el-button @click="showDetail(inquiry)" type="text">查看详情</el-button>
@@ -58,11 +60,17 @@ export default {
     InquirySessionMessageList
   },
 
+  props: {
+    patientInquiryList: {
+      type: Array
+    }
+  },
+
   data() {
     return {
       activeName: 'first',
 
-      patientInquiryList: [],
+      // patientInquiryList: [],
 
       inquriyMessageDialog: {
         visible: false,
@@ -71,18 +79,18 @@ export default {
     }
   },
 
-  created() {
-    this.get()
-  },
+  // created() {
+  //   this.get()
+  // },
 
   methods: {
-    get() {
-      const params = { patientid: this.$route.params.id }
+    // get() {
+    //   const params = { patientid: this.$route.params.id }
 
-      peace.service.patient.patientListDescPc(params).then(res => {
-        this.patientInquiryList = res.data.inquiry_list
-      })
-    },
+    //   peace.service.patient.patientListDescPc(params).then(res => {
+    //     this.patientInquiryList = res.data.inquiry_list
+    //   })
+    // },
 
     showDetail(row) {
       const params = { inquiryNo: row.inquiry_no }
