@@ -3,9 +3,7 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field :value="tel" @touchstart.native.stop="showKeyboardForTel = true" clickable placeholder="请输入手机号" readonly ref="tel"></van-field>
-      <van-number-keyboard :maxlength="6" :show="showKeyboardForTel" @blur="showKeyboardForTel = false" v-model="tel" />
-
+      <van-field placeholder="请输入手机号" ref="tel" v-model="tel"></van-field>
       <van-field :value="smsCode" @touchstart.native.stop="showKeyboardForSms = true" clickable placeholder="请输入验证码" readonly ref="smsCode">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === 60 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
@@ -13,13 +11,13 @@
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
       <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
-      <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button>
+      <!-- <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button> -->
     </div>
 
-    <div class="login-footer">
+    <!-- <div class="login-footer">
       <span class="gray">进入爱加医即代表你已同意</span>
       <span>用户协议及隐私策略</span>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -41,6 +39,7 @@ export default {
     sendSms() {
       if (!(this.tel && peace.validate.pattern.mobile.test(this.tel))) {
         this.$refs.tel.focus()
+        this.showKeyboardForSms = false
         return peace.util.alert('请输入正确的手机号')
       }
 
@@ -139,8 +138,7 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 
@@ -148,6 +146,7 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     margin: 80px 10px 0 10px;
 
@@ -166,7 +165,7 @@ export default {
   }
 
   .login-footer {
-    height: 50px;
+    margin: 0 0 10px 0;
     text-align: center;
   }
 }

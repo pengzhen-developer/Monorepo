@@ -231,6 +231,12 @@ export default {
     peace.service.patient.getMyFamilyList().then(res => {
       this.source.familyList = res.data
       this.source.familyList.push({ id: undefined, name: '添加就诊人' })
+
+      const family = res.data.find(item => item.relation === '本人')
+      if (family) {
+        this.model.familyName = family.name
+        this.model.familyId = family.familyId
+      }
     })
   },
 
@@ -255,7 +261,8 @@ export default {
         this.$router.push({
           name: '/setting/myFamilyMembers',
           params: {
-            back: true
+            back: true,
+            addFamily: true
           }
         })
       } else {
