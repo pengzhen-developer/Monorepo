@@ -36,10 +36,21 @@
             <span>首页</span>
           </van-tabbar-item>
 
-          <van-tabbar-item to="/message/index">
-            <i class="van-icon van-icon-comment" slot="icon"></i>
-            <span>消息</span>
-          </van-tabbar-item>
+          <template v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
+            <van-tabbar-item
+              :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
+              to="/message/index"
+            >
+              <i class="van-icon van-icon-comment" slot="icon"></i>
+              <span>消息</span>
+            </van-tabbar-item>
+          </template>
+          <template v-else>
+            <van-tabbar-item to="/message/index">
+              <i class="van-icon van-icon-comment" slot="icon"></i>
+              <span>消息</span>
+            </van-tabbar-item>
+          </template>
 
           <!-- <van-tabbar-item to="/file/index">
             <i class="van-icon van-icon-gift-card" slot="icon"></i>

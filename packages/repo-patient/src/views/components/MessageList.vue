@@ -1,6 +1,6 @@
 <template>
   <div class="message-list">
-    <van-nav-bar v-if="navBar" :title="$store.getters['inquiry/doctorInfo'].doctorName" @click-left="back" class="layout-navbar" left-arrow left-text=" " />
+    <van-nav-bar :title="$store.getters['inquiry/doctorInfo'].doctorName" @click-left="back" class="layout-navbar" left-arrow left-text=" " v-if="navBar" />
 
     <div @click="hideTools" class="item">
       <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
@@ -22,8 +22,26 @@
             </div>
           </template>
 
-          <!-- 消息内容 -->
-          <div class="message-body" v-html="getMessageText(message)"></div>
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : 
+                                                                                         getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div class="message-body">
+              <div v-html="getMessageText(message)"></div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <div
+                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+            </div>
+          </div>
         </template>
 
         <!-- 视频消息 -->
@@ -98,7 +116,14 @@
     </div>
 
     <div class="input" v-if="canShowInput">
-      <van-field :autosize="{ maxHeight: 60, minHeight: 20 }" @focus="hideTools" rows="1" type="textarea" v-model="message">
+      <van-field
+        :autosize="{ maxHeight: 60, minHeight: 20 }"
+        @focus="hideTools"
+        rows="1"
+        type="textarea"
+        v-model="message"
+        v-on:keyup.enter.stop="sendMessageText"
+      >
         <van-icon @click="showTools" name="add-o" slot="right-icon" />
         <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
       </van-field>
@@ -147,7 +172,7 @@ export default {
 
     navBar: {
       type: Boolean,
-      default(){
+      default() {
         return true
       }
     }
@@ -401,6 +426,16 @@ export default {
           color: rgba(51, 51, 51, 1);
           background: rgba(243, 243, 243, 1);
         }
+
+        .message-avatar {
+          margin: 0 5px 0 0;
+
+          img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+          }
+        }
       }
 
       &.out {
@@ -409,6 +444,16 @@ export default {
         .message-body {
           color: rgba(255, 255, 255, 1);
           background: rgba(0, 198, 174, 1);
+        }
+
+        .message-avatar {
+          margin: 0 0 0 5px;
+
+          img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+          }
         }
       }
 

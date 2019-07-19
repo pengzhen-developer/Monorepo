@@ -419,7 +419,6 @@ export default {
   onSessions,
   /** 初始化完成后, 收到会话更新的回调 */
   onUpdateSession,
-
   /** 初始化完成后, 收到消息的回调 */
   onMsg,
 
