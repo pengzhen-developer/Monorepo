@@ -48,16 +48,11 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: 999;
   background-color: #fff;
 
   display: flex;
   flex-direction: column;
-
-  .title {
-  }
 
   .content {
     flex: 1;

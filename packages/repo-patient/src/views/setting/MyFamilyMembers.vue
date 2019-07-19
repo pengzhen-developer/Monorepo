@@ -12,10 +12,6 @@
           </template>
         </van-cell>
       </div>
-      <div class="bottom">
-        <div class="tips">温馨提示：最多添加10位家人</div>
-        <van-button @click="toAdd" type="primary">新增家人</van-button>
-      </div>
     </template>
 
     <template v-else>
@@ -24,6 +20,11 @@
         <div class="none-text">您还未添加家人</div>
       </div>
     </template>
+
+    <div class="bottom">
+      <div class="tips">温馨提示：最多添加10位家人</div>
+      <van-button @click="toAdd" type="primary">新增家人</van-button>
+    </div>
 
     <peace-dialog :title="dialog.title" :visible.sync="dialog.visible">
       <FamilyMembersModel :data="dialog.data" @onComplete="onComplete" />
@@ -55,7 +56,13 @@ export default {
   },
 
   created() {
-    this.get()
+    if (this.$route.params.addFamily) {
+      this.dialog.title = '新增家人'
+      this.dialog.visible = true
+      this.dialog.data = undefined
+    } else {
+      this.get()
+    }
   },
 
   methods: {
@@ -67,7 +74,7 @@ export default {
     },
 
     onComplete() {
-      if (this.$router.params.back) {
+      if (this.$route.params.back) {
         this.$router.go(-1)
       } else {
         this.dialog.visible = false

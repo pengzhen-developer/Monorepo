@@ -23,8 +23,7 @@
           </template>
 
           <div
-            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : 
-                                                                                         getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
             style="display: flex; align-items: center;"
           >
             <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
@@ -69,9 +68,24 @@
             </div>
           </template>
 
-          <!-- 消息内容 -->
-          <div>
-            <img :src="message.file.url" @click="viewImage(message.file.url)" style="max-width: 200px; " />
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div>
+              <img :src="message.file.url" @click="viewImage(message.file.url)" style="max-width: 200px; " />
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <div
+                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+            </div>
           </div>
         </template>
 
@@ -84,12 +98,27 @@
             </div>
           </template>
 
-          <!-- 消息内容 -->
-          <div @click="getCaseDetail(message)" class="message-body case">
-            <img src="~@src/assets/images/pic_medication recommendations.png" />
-            <div style="text-align: left;">
-              <p style="font-size: 14px;">病历</p>
-              <p>查看详情</p>
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div @click="getCaseDetail(message)" class="message-body case">
+              <img src="~@src/assets/images/pic_medication recommendations.png" />
+              <div style="text-align: left;">
+                <p style="font-size: 14px;">病历</p>
+                <p>查看详情</p>
+              </div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <div
+                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
             </div>
           </div>
         </template>
@@ -103,12 +132,27 @@
             </div>
           </template>
 
-          <!-- 消息内容 -->
-          <div @click="getRecipeDetail(message)" class="message-body recipe">
-            <img src="~@src/assets/images/pic_medication recommendations.png" />
-            <div style="text-align: left;">
-              <p style="font-size: 14px;">处方</p>
-              <p>查看详情</p>
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div @click="getRecipeDetail(message)" class="message-body recipe">
+              <img src="~@src/assets/images/pic_medication recommendations.png" />
+              <div style="text-align: left;">
+                <p style="font-size: 14px;">处方</p>
+                <p>查看详情</p>
+              </div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <div
+                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
             </div>
           </div>
         </template>

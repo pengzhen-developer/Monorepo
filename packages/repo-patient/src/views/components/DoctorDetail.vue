@@ -165,21 +165,9 @@ export default {
 
   computed: {
     canShowReserve() {
-      const workLineLength = this.doctor.workOnLine.length + this.doctor.workUnderLine.length
-      let index = 0
+      const params = peace.util.decode(this.$route.params.json)
 
-      this.doctor.workOnLine.forEach(workOnLineItem => {
-        index += workOnLineItem.weekList.findIndex(weekListItem => weekListItem.status === 1)
-      })
-      this.doctor.workUnderLine.forEach(workUnderLineItem => {
-        index += workUnderLineItem.weekList.findIndex(weekListItem => weekListItem.status === 1)
-      })
-
-      if (index === -workLineLength) {
-        return false
-      } else {
-        return true
-      }
+      return params.isAppoint
     }
   },
 

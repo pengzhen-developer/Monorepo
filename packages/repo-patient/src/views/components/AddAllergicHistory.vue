@@ -217,11 +217,6 @@ export default {
   }
 
   .save {
-    min-height: 50px;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
   }
 }
 </style>
