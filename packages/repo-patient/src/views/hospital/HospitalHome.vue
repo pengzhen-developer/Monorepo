@@ -84,7 +84,7 @@
             data-id="item.id"
             data-name="item.netdeptName"
             v-for="(item,index) in hsp.oneDeptList"
-            v-if="index < 7"
+            v-if="index <  7"
           >
             {{item.netdeptName}}
           </div>
