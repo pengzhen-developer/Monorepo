@@ -30,7 +30,7 @@
           <el-tag :key="item" class="tag" type="info" v-for="item in scope.row.tag">{{ item }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="病程记录" prop="courseCount" width="100">
+      <el-table-column align="center" label="病程记录" prop="courseCount" width="100">
         <template slot-scope="scope">
           <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount }}</el-button>
         </template>
