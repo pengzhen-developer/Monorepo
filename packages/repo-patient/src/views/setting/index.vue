@@ -2,7 +2,7 @@
   <div class="setting">
     <div class="user-card">
       <div class="user-img">
-        <img class="img-avatar" mode="cover" />
+        <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png"/>
       </div>
       <div class="user-info">
         <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
