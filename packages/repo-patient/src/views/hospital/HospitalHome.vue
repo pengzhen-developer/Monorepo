@@ -84,8 +84,9 @@
             data-id="item.id"
             data-name="item.netdeptName"
             v-for="(item,index) in hsp.oneDeptList"
+            v-if="index < 7"
           >
-            <template v-if="index < 7">{{item.netdeptName}}</template>
+            {{item.netdeptName}}
           </div>
           <div @click="goDeptPage({id:'consult'})" class="label" v-if="hsp.deptList.length > 7">更多</div>
         </div>
