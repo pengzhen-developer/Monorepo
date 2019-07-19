@@ -2,13 +2,13 @@
   <div>
     <el-form :model="viewModel" inline>
       <el-form-item label="随访状态">
-        <el-select placeholder v-model="viewModel.status">
+        <el-select placeholder="请选择" v-model="viewModel.status">
           <el-option :key="item.key" :label="item.status" :value="item.key" v-for="item in dataSource.status"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="标签">
-        <el-select multiple placeholder style="width: 400px;" v-model="viewModel.tag">
+        <el-select multiple placeholder="请选择" style="width: 400px;" v-model="viewModel.tag">
           <el-option :key="item.tag" :label="item.tag" :value="item.tag" v-for="item in dataSource.tag"></el-option>
         </el-select>
       </el-form-item>
@@ -75,6 +75,7 @@ export default {
   created() {
     peace.service.follow.getFollowStatus().then(res => {
       this.dataSource.status = res.data
+      this.viewModel.status = res.data[0] && res.data[0].key
     })
 
     peace.service.follow.getTags({ type: 'disease' }).then(res => {
