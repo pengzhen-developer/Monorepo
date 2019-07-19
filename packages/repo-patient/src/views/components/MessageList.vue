@@ -415,6 +415,16 @@ export default {
 
     hideTools() {
       this.tools.visible = false
+
+      const scrollTop = this.$el.querySelector('.item').scrollTop
+      const innerHeight = window.innerHeight
+
+      const interval = setInterval(() => {
+        if (innerHeight !== window.innerHeight) {
+          window.clearInterval(interval)
+          this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
+        }
+      }, 1)
     },
 
     getCaseDetail(message) {
