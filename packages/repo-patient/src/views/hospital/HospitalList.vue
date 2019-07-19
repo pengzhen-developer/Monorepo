@@ -71,8 +71,20 @@ export default {
   },
   methods: {
     goMenuPage(item) {
-      let json = peace.util.encode({netHospitalId: item.netHospitalId})
-      this.$router.push(`/hospital/HospitalHome/${json}`)
+      if(this.params.type == 'appoint'){
+        let json = peace.util.encode({ netHospitalId: item.netHospitalId, id: 'appointment', Date: new Date() })
+
+        this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+        return;
+      }
+
+      if(this.params.type == 'recommendHsp'){
+        let json = peace.util.encode({netHospitalId: item.netHospitalId})
+
+        this.$router.push(`/hospital/HospitalHome/${json}`)
+        return;
+      }
+
     },
     getHspList(){
       // 推荐医院

@@ -53,72 +53,6 @@
           <!--          </div>-->
         </div>
       </div>
-      <div :key="item.doctorId" @click="goDoctorHomePage(item)" class="card" v-for="item in doctorList">
-        <div class="card-avatar avatar-circular">
-          <img :src="item.doctorInfo.avartor" class />
-        </div>
-        <div class="card-body">
-          <div class="card-name">
-            {{item.doctorInfo.name}}
-            <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
-            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary">预约</van-button>
-          </div>
-          <!--          <div class="card-small">评分：&#45;&#45; 预约量：&#45;&#45;</div>-->
-          <div class="card-brief" v-if="item.doctorInfo.specialSkill">
-            <div class="span s">擅长：</div>
-            <div class="span xl">{{item.doctorInfo.specialSkill}}</div>
-          </div>
-          <!--          <div class="box-appoint" v-if="activeIndex!='all'">-->
-          <!--            <div v-if="item.AM" :class="['bar-line', item.AM.bookingTotal ? '' :'disabled']">-->
-          <!--              <div class="item">{{item.timeSharing}} 上午</div>-->
-          <!--              <div class="item">{{item.AM.sourceLevelType == 1 ? '普通' : '专家'}}门诊</div>-->
-          <!--              <div class="item">￥{{item.AM.unitPrice}}</div>-->
-          <!--              <div    @click.stop="goAppointOrderSubmitPage(item,item.AM)"-->
-          <!--                      :class="['item', item.AM.bookingTotal ? 'active' :'disabled']">{{item.AM.bookingTotal ? '预约' : '约满'}}</div>-->
-          <!--            </div>-->
-          <!--            <div v-if="item.PM" :class="['bar-line', item.PM.bookingTotal ? '' :'disabled']">-->
-          <!--              <div class="item">01-09 上午</div>-->
-          <!--              <div class="item">专家门诊</div>-->
-          <!--              <div class="item">￥{{item.PM.unitPrice}}</div>-->
-          <!--              <div  @click.stop="goAppointOrderSubmitPage(item,item.PM)"-->
-          <!--                    :class="['item', item.PM.bookingTotal? 'active' :'disabled']">{{item.PM.bookingTotal ? '预约' : '约满'}}</div>-->
-          <!--            </div>-->
-          <!--          </div>-->
-        </div>
-      </div>
-      <div :key="item.doctorId" @click="goDoctorHomePage(item)" class="card" v-for="item in doctorList">
-        <div class="card-avatar avatar-circular">
-          <img :src="item.doctorInfo.avartor" class />
-        </div>
-        <div class="card-body">
-          <div class="card-name">
-            {{item.doctorInfo.name}}
-            <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
-            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary">预约</van-button>
-          </div>
-          <!--          <div class="card-small">评分：&#45;&#45; 预约量：&#45;&#45;</div>-->
-          <div class="card-brief" v-if="item.doctorInfo.specialSkill">
-            <div class="span s">擅长：</div>
-            <div class="span xl">{{item.doctorInfo.specialSkill}}</div>
-          </div>
-          <!--          <div class="box-appoint" v-if="activeIndex!='all'">-->
-          <!--            <div v-if="item.AM" :class="['bar-line', item.AM.bookingTotal ? '' :'disabled']">-->
-          <!--              <div class="item">{{item.timeSharing}} 上午</div>-->
-          <!--              <div class="item">{{item.AM.sourceLevelType == 1 ? '普通' : '专家'}}门诊</div>-->
-          <!--              <div class="item">￥{{item.AM.unitPrice}}</div>-->
-          <!--              <div    @click.stop="goAppointOrderSubmitPage(item,item.AM)"-->
-          <!--                      :class="['item', item.AM.bookingTotal ? 'active' :'disabled']">{{item.AM.bookingTotal ? '预约' : '约满'}}</div>-->
-          <!--            </div>-->
-          <!--            <div v-if="item.PM" :class="['bar-line', item.PM.bookingTotal ? '' :'disabled']">-->
-          <!--              <div class="item">01-09 上午</div>-->
-          <!--              <div class="item">专家门诊</div>-->
-          <!--              <div class="item">￥{{item.PM.unitPrice}}</div>-->
-          <!--              <div  @click.stop="goAppointOrderSubmitPage(item,item.PM)"-->
-          <!--                    :class="['item', item.PM.bookingTotal? 'active' :'disabled']">{{item.PM.bookingTotal ? '预约' : '约满'}}</div>-->
-          <!--            </div>-->
-          <!--          </div>-->
-        </div>
-      </div>
       <div class="none-page" v-if="!doctorList.length">
         <div class="icon icon_none_source"></div>
         <div class="none-text">
@@ -273,12 +207,12 @@ export default {
     },
     checkTime(obj) {
       const item = this.dateList[obj.index] || {}
-      this.activeIndex = obj.index
-      this.getData(item.year + '-' + item.date)
+      this.activeIndex = obj.index;
+      this.getData(item.date ? item.year + '-' + item.date : '')
     },
     // 医生主页
     goDoctorHomePage(item) {
-      const json = peace.util.encode({ doctorId: item.doctorInfo.doctorId })
+      const json = peace.util.encode({ doctorId: item.doctorInfo.doctorId, isAppoint: true })
 
       this.$router.push(`/components/doctorDetail/${json}`)
     },
