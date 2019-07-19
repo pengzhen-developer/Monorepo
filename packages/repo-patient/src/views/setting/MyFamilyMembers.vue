@@ -67,8 +67,12 @@ export default {
     },
 
     onComplete() {
-      this.get()
-      this.dialog.visible = false
+      if (this.$router.params.back) {
+        this.$router.go(-1)
+      } else {
+        this.dialog.visible = false
+        this.get()
+      }
     },
 
     // 查看家人详细信息

@@ -4,6 +4,9 @@
       <div :id="session.id" :key="session.id" @click="selectSession(session)" class="message-item" v-for="session in $store.state.inquiry.sessions">
         <div class="message-item-avatar">
           <img :src="session.content.doctorInfo.doctorAvatar" />
+          <div class="message-item-unread" v-if="session.unread !== 0">
+            <div class="van-info van-info-message">{{ session.unread }}</div>
+          </div>
         </div>
         <div class="message-item-detail">
           <div class="message-item-detail-title">
@@ -142,6 +145,16 @@ export default {
         border-radius: 50%;
         background: rgba(241, 248, 255, 1);
         border: 1px solid rgba(221, 225, 234, 1);
+      }
+
+      .message-item-unread {
+        position: absolute;
+
+        .van-info-message {
+          position: relative;
+          top: -50px;
+          right: -30px;
+        }
       }
     }
 

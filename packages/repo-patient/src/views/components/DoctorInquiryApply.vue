@@ -1,120 +1,139 @@
 <template>
   <div class="doctor-inquiry-apply">
-    <div class="title">
-      <div class="title-avatar">
-        <img :src="doctor.doctorInfo.avartor" />
+    <div class="content">
+      <div class="title">
+        <div class="title-avatar">
+          <img :src="doctor.doctorInfo.avartor" />
+        </div>
+
+        <div class="title-info">
+          <div class="title-doctor">
+            <span class="title-doctor-name">{{ doctor.doctorInfo.name }}</span>
+            <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+            <span>{{ doctor.doctorInfo.deptName }}</span>
+          </div>
+          <div class="title-hospital">
+            <span>{{ doctor.doctorInfo.hospitalName }}</span>
+          </div>
+        </div>
       </div>
 
-      <div class="title-info">
-        <div class="title-doctor">
-          <span class="title-doctor-name">{{ doctor.doctorInfo.name }}</span>
-          <span>{{ doctor.doctorInfo.doctorTitle }}</span>
-          <span>{{ doctor.doctorInfo.deptName }}</span>
-        </div>
-        <div class="title-hospital">
-          <span>{{ doctor.doctorInfo.hospitalName }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <van-cell-group>
-      <van-field :value="model.familyName" @click="showFamily = true" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
-      <van-popup position="bottom" v-model="showFamily">
-        <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
-      </van-popup>
-    </van-cell-group>
-
-    <van-cell-group>
-      <van-field
-        autosize
-        label="病情描述"
-        maxlength="255"
-        placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
-        required
-        rows="5"
-        type="textarea"
-        v-model="model.illnessDescribe"
-      />
-    </van-cell-group>
-
-    <van-cell-group>
-      <van-field label="附件上传">
-        <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="attachment" />
-      </van-field>
-    </van-cell-group>
-
-    <van-cell-group>
-      <van-field label="是否复诊">
-        <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isAgain" />
-      </van-field>
-    </van-cell-group>
-
-    <div class="divider"></div>
-
-    <template v-if="model.isAgain">
-      <van-cell-group>
-        <van-field :value="model.confirmIllness" @click="showAddIllnessHistory = true" clickable label="确认病种" placeholder="请选择诊断" readonly right-icon="arrow" />
-
-        <peace-dialog :visible.sync="showAddIllnessHistory">
-          <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
-        </peace-dialog>
-      </van-cell-group>
+      <div class="divider"></div>
 
       <van-cell-group>
-        <van-field :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
-        <van-popup position="bottom" v-model="showConfirmTime">
-          <van-datetime-picker @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
+        <van-field :value="model.familyName" @click="showFamily = true" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
+        <van-popup position="bottom" v-model="showFamily">
+          <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
         </van-popup>
       </van-cell-group>
 
       <van-cell-group>
-        <van-field autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
+        <van-field
+          autosize
+          label="病情描述"
+          maxlength="255"
+          placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
+          required
+          rows="5"
+          type="textarea"
+          v-model="model.illnessDescribe"
+        />
       </van-cell-group>
 
       <van-cell-group>
-        <van-field :value="model.allergicHistory" @click="showAddAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
-
-        <peace-dialog :visible.sync="showAddAllergicHistory">
-          <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model="model.allergicHistory"></AddAllergicHistory>
-        </peace-dialog>
-      </van-cell-group>
-
-      <van-cell-group>
-        <van-field label="是否怀孕">
-          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isPregnancy" />
+        <van-field label="附件上传">
+          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="attachment" />
         </van-field>
       </van-cell-group>
 
       <van-cell-group>
-        <van-field label="是否不良反应">
-          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
+        <van-field label="是否复诊">
+          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isAgain" />
         </van-field>
       </van-cell-group>
 
-      <van-cell-group>
-        <van-field label="本次复诊情况">
-          <van-radio-group slot="right-icon" v-model="model.againType">
-            <van-radio name="1">本院同医生复诊</van-radio>
-            <van-radio name="2">本院非同医生复诊</van-radio>
-            <van-radio name="3">非本院复诊</van-radio>
-          </van-radio-group>
-        </van-field>
-      </van-cell-group>
-    </template>
+      <template v-if="model.isAgain">
+        <div class="divider"></div>
+
+        <van-cell-group>
+          <van-field
+            :value="model.confirmIllness"
+            @click="showAddIllnessHistory = true"
+            clickable
+            label="确认病种"
+            placeholder="请选择诊断"
+            readonly
+            right-icon="arrow"
+          />
+
+          <peace-dialog :visible.sync="showAddIllnessHistory">
+            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
+          </peace-dialog>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
+          <van-popup position="bottom" v-model="showConfirmTime">
+            <van-datetime-picker @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
+          </van-popup>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field
+            :value="model.allergicHistory"
+            @click="showAddAllergicHistory= true"
+            clickable
+            label="过敏史"
+            placeholder="请选择过敏史"
+            readonly
+            right-icon="arrow"
+          />
+
+          <peace-dialog :visible.sync="showAddAllergicHistory">
+            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model="model.allergicHistory"></AddAllergicHistory>
+          </peace-dialog>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field label="是否怀孕">
+            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isPregnancy" />
+          </van-field>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field label="是否不良反应">
+            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
+          </van-field>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field label="本次复诊情况">
+            <van-radio-group slot="right-icon" v-model="model.againType">
+              <van-radio name="1">本院同医生复诊</van-radio>
+              <van-radio name="2">本院非同医生复诊</van-radio>
+              <van-radio name="3">非本院复诊</van-radio>
+            </van-radio-group>
+          </van-field>
+        </van-cell-group>
+      </template>
+    </div>
 
     <div class="footer">
       <van-checkbox v-model="model.informedConsent">
         <span>我已阅读并同意</span>
         <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
-      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">保存</van-button>
 
-      <peace-dialog :visible.sync="showInformedConsent">
-        <InformedConsent></InformedConsent>
-      </peace-dialog>
+      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">保存</van-button>
     </div>
+
+    <peace-dialog :visible.sync="showInformedConsent">
+      <InformedConsent></InformedConsent>
+    </peace-dialog>
   </div>
 </template>
 
@@ -233,7 +252,12 @@ export default {
       this.showFamily = false
 
       if (familyObject.id === undefined && familyObject.name === '添加就诊人') {
-        this.$router.push('/setting/myFamilyMembers')
+        this.$router.push({
+          name: '/setting/myFamilyMembers',
+          params: {
+            back: true
+          }
+        })
       } else {
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
@@ -313,63 +337,73 @@ export default {
 <style lang="scss" scoped>
 .doctor-inquiry-apply {
   height: 100%;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 
-  .title {
-    display: flex;
-    align-items: center;
-    height: 80px;
-    padding: 0 20px;
+  .content {
+    flex: 1;
+    overflow: auto;
 
-    .title-avatar {
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: rgba(241, 248, 255, 1);
-        border: 1px solid rgba(221, 225, 234, 1);
-      }
-    }
+    .title {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      height: 80px;
+      padding: 0 20px;
 
-    .title-info {
-      margin: 0 0 0 20px;
-
-      .title-doctor {
-        color: #000000;
-        margin: 0 0 5px 0;
-
-        .title-doctor-name {
-          font-size: 18px;
-          font-weight: 600;
-        }
-
-        span {
-          margin: 0 10px 0 0;
+      .title-avatar {
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background: rgba(241, 248, 255, 1);
+          border: 1px solid rgba(221, 225, 234, 1);
         }
       }
 
-      .title-hospital {
-        margin: 0 0 5px 0;
-        color: #000000;
+      .title-info {
+        margin: 0 0 0 20px;
+
+        .title-doctor {
+          color: #000000;
+          margin: 0 0 5px 0;
+
+          .title-doctor-name {
+            font-size: 18px;
+            font-weight: 600;
+          }
+
+          span {
+            margin: 0 10px 0 0;
+          }
+        }
+
+        .title-hospital {
+          margin: 0 0 5px 0;
+          color: #000000;
+        }
       }
     }
-  }
 
-  /deep/ .van-uploader__upload,
-  /deep/ .van-uploader__preview-image {
-    width: 50px;
-    height: 50px;
-  }
+    /deep/ .van-uploader__upload,
+    /deep/ .van-uploader__preview-image {
+      width: 50px;
+      height: 50px;
+    }
 
-  /deep/ .van-radio {
-    margin: 0 0 10px 0;
-  }
+    /deep/ .van-radio {
+      margin: 0 0 10px 0;
+    }
 
-  .divider {
-    height: 10px;
-    background: #f5f5f5;
+    .divider {
+      height: 10px;
+      background: #f5f5f5;
+    }
   }
 
   .footer {
+    height: 100px;
     text-align: center;
     background: #f5f5f5;
     padding: 20px 10px;
