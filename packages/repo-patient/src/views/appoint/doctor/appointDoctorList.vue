@@ -208,7 +208,7 @@ export default {
     checkTime(obj) {
       const item = this.dateList[obj.index] || {}
       this.activeIndex = obj.index
-      this.getData(item.date)
+      this.getData(item.year + '-' + item.date)
     },
     // 医生主页
     goDoctorHomePage(item) {
