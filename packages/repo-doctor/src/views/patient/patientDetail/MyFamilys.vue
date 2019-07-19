@@ -18,8 +18,8 @@
             <span class="text">咨询记录</span>
           </div>
           <div class="rt">
-            <span class="numbers">{{ item.inquiryCount || 0 }}次</span>
-            <el-button @click="getInquiryDetail(item)" type="text">查看详情</el-button>
+            <span class="numbers">{{ item.inquiryNum || 0 }}次</span>
+            <el-button :disabled="!item.inquiryNum" @click="getInquiryDetail(item)" type="text">查看详情</el-button>
           </div>
         </div>
         <div class="card-content-row">
@@ -31,23 +31,19 @@
           </div>
           <div class="rt">
             <span class="numbers">{{ item.courseCount || 0 }}次</span>
-            <el-button @click="getDiseaseCourseDetail(item)" type="text">查看详情</el-button>
+            <el-button :disabled="!item.courseCount" @click="getDiseaseCourseDetail(item)" type="text">查看详情</el-button>
           </div>
         </div>
       </div>
     </div>
-    <el-dialog :visible.sync="patientInquiryDetailDialog.visile" title="咨询记录">
-      <el-radio-group disabled size="mini" v-model="recodeType">
-        <el-radio-button label="问诊记录"></el-radio-button>
-        <el-radio-button label="随访记录"></el-radio-button>
-      </el-radio-group>
 
-      <PatientInquiryDetail :data="patientInquiryDetailDialog.inquiryData" v-if="recodeType === '问诊记录'"></PatientInquiryDetail>
-      <PatientInquiryDetail :data="patientInquiryDetailDialog.followUpData" v-else></PatientInquiryDetail>
-    </el-dialog>
-    <el-dialog :visible.sync="diseaseCourseDialog.visible" title="病程记录">
-      <DiseaseCourse></DiseaseCourse>
-    </el-dialog>
+    <peace-dialog :visible.sync="patientInquiryDetailDialog.visible" title="咨询记录">
+      <PatientInquiryDetail :id="patientInquiryDetailDialog.id"></PatientInquiryDetail>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="diseaseCourseDialog.visible" title="病程记录">
+      <DiseaseCourse :id="diseaseCourseDialog.id"></DiseaseCourse>
+    </peace-dialog>
   </div>
 </template>
 <script>
@@ -55,35 +51,44 @@ import DiseaseCourse from './DiseaseCourse'
 import PatientInquiryDetail from './PatientInquiryDetail'
 
 export default {
-  name: 'MyFamilys',
+  components: {
+    DiseaseCourse,
+    PatientInquiryDetail
+  },
+
   props: {
     data: {
       type: Array
     }
   },
-  components: { DiseaseCourse, PatientInquiryDetail },
+
   data() {
     return {
       sex: '男',
+
       diseaseCourseDialog: {
-        visible: false
+        visible: false,
+        id: ''
       },
+
       patientInquiryDetailDialog: {
         visible: false,
-
-        inquiryData: [],
-        followUpData: [],
-      },
-      recodeType: '问诊记录'
+        id: ''
+      }
     }
   },
   methods: {
     // 获取咨询记录
-    getInquiryDetail() {
-      
+    getInquiryDetail(item) {
+      this.patientInquiryDetailDialog.visible = true
+      this.patientInquiryDetailDialog.id = item.familyId
     },
+
     // 获取病程记录
-    getDiseaseCourseDetail() {}
+    getDiseaseCourseDetail(item) {
+      this.diseaseCourseDialog.visible = true
+      this.diseaseCourseDialog.id = item.familyId
+    }
   }
 }
 </script>

@@ -40,6 +40,7 @@ export const config = {
       { id: 3, pid: null, closable: true, name: '患者', path: '患者', icon: 'icon_ic_huanzhe' },
       { id: 31, pid: 3, closable: true, name: '我的患者', title: '我的患者', path: '/patient/myPatient' },
       { id: 32, pid: 3, closable: true, name: '私人医生', title: '私人医生', path: '/patient/privateDoctor' },
+      { id: 33, pid: 3, closable: true, name: '患者随访', title: '患者随访', path: '/patient/follow' },
       { id: 4, pid: null, closable: true, name: '记录', path: '记录', icon: 'icon_ic_inquiry' },
       { id: 41, pid: 4, closable: true, name: '问诊记录', title: '问诊记录', path: '/record/inquiry' },
       { id: 42, pid: 4, closable: true, name: '处方记录', title: '处方记录', path: '/record/prescription' },
@@ -50,7 +51,8 @@ export const config = {
       { id: 52, pid: 5, closable: true, name: '我的介绍', title: '我的介绍', path: '/sys/myIntroduce' },
       { id: 53, pid: 5, closable: true, name: '出诊时间', title: '出诊时间', path: '/sys/myServiceTime' },
       { id: 54, pid: 5, closable: true, name: '服务设置', title: '服务设置', path: '/sys/myServiceSetting' },
-      { id: 55, pid: 5, closable: true, name: '我的药房', title: '我的药房', path: '/sys/myPharmacy' }
+      { id: 55, pid: 5, closable: true, name: '我的药房', title: '我的药房', path: '/sys/myPharmacy' },
+      { id: 56, pid: 5, closable: true, name: '我的随访', title: '我的随访', path: '/sys/myFollow' }
     ]
   },
 

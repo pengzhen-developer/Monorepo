@@ -1,20 +1,20 @@
 <template>
-  <div class="patient-inquiry-detail">
+  <div class="patient-inquiry-detail" v-if="patientInquiryList">
     <div :key="inquiry.inquiry_no" v-for="inquiry in patientInquiryList">
       <div class="center">
         <div class="circle"></div>
-        <span class="time">{{ inquiry.updated_time }}</span>
+        <span class="time">{{ inquiry.updatedTime }}</span>
       </div>
 
       <div class="detail">
         <div class="info">
           <div class="left">
-            <span class="name">{{ inquiry.family_name }}</span>
-            <span class="age" v-if="inquiry.sex">
-              <i :class="[inquiry.sex === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
+            <span class="name">{{ inquiry.familyName }}</span>
+            <span class="age" v-if="inquiry.familyAge">
+              <i :class="[inquiry.familyAge === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
             </span>
-            <span class="age" v-if="inquiry.age">{{ inquiry.age }}岁</span>
-            <el-tag>{{ inquiry.relation }}</el-tag>
+            <span class="age" v-if="inquiry.familyAge">{{ inquiry.familyAge }}岁</span>
+            <el-tag>{{ inquiry.familyRelation }}</el-tag>
             <span class="private-doctor" v-if="inquiry.isPrivateDoctor">私</span>
             <!-- 随访 -->
             <!-- <el-tag>{{ inquiry }}</el-tag> -->
@@ -28,23 +28,23 @@
 
         <div class="chat">
           <span class="title">病情描述：</span>
-          <span v-html="inquiry.DESCRIBE"></span>
+          <span v-html="inquiry.describe"></span>
         </div>
         <div class="tag">
-          <el-tag size="medium" type v-if="inquiry.case_no">
+          <el-tag size="medium" type v-if="inquiry.caseNo">
             <img src="~@src/assets/images/inquiry/ic_bingli@2x.png" />病历
           </el-tag>
-          <el-tag size="medium" type v-if="inquiry.prescribe_prescrip_count">
+          <el-tag size="medium" type v-if="inquiry.prescribePrescripCount">
             <img src="~@src/assets/images/inquiry/ic_chuf@2x.png" />处方
           </el-tag>
-          <el-tag size="medium" type v-if="inquiry.referral_count">
+          <el-tag size="medium" type v-if="inquiry.referralCount">
             <img src="~@src/assets/images/inquiry/ic_zhuanzhen@2x.png" />转诊单
           </el-tag>
         </div>
       </div>
     </div>
 
-    <peace-dialog :visible.sync="inquriyMessageDialog.visible" title="图文问诊记录">
+    <peace-dialog :visible.sync="inquriyMessageDialog.visible" append-to-body title="图文问诊记录">
       <InquirySessionMessageList :data="inquriyMessageDialog.messageList"></InquirySessionMessageList>
     </peace-dialog>
   </div>
@@ -61,16 +61,12 @@ export default {
   },
 
   props: {
-    patientInquiryList: {
-      type: Array
-    }
+    id: String
   },
 
   data() {
     return {
-      activeName: 'first',
-
-      // patientInquiryList: [],
+      patientInquiryList: undefined,
 
       inquriyMessageDialog: {
         visible: false,
@@ -79,21 +75,31 @@ export default {
     }
   },
 
-  // created() {
-  //   this.get()
-  // },
+  watch: {
+    id: {
+      handler() {
+        this.get()
+      },
+      immediate: true
+    }
+  },
 
   methods: {
-    // get() {
-    //   const params = { patientid: this.$route.params.id }
+    get() {
+      this.patientInquiryList = undefined
 
-    //   peace.service.patient.patientListDescPc(params).then(res => {
-    //     this.patientInquiryList = res.data.inquiry_list
-    //   })
-    // },
+      const params = {
+        familyId: this.id,
+        tag: 'inquiry'
+      }
+
+      peace.service.patient.getPatientInquiryList(params).then(res => {
+        this.patientInquiryList = res.data.list
+      })
+    },
 
     showDetail(row) {
-      const params = { inquiryNo: row.inquiry_no }
+      const params = { inquiryNo: row.inquiryNo }
 
       peace.service.patient.getOneInquiry(params).then(res => {
         const historyMessageFormatHandler = messages => {

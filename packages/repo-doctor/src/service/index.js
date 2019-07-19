@@ -1,5 +1,6 @@
 import IM from './modules/IM'
 
+import follow from './modules/follow'
 import consult from './modules/consult'
 import inquiry from './modules/inquiry'
 import login from './modules/login'
@@ -15,6 +16,8 @@ export default {
   /** 登录 */
   login,
 
+  /** 随访 */
+  follow,
   /** 个人中心 */
   personalCenter,
   /** 患者 */

@@ -50,6 +50,13 @@ const router = new Router({
           meta: { Auth: true },
           component: () => import('@src/views/patient/privateDoctor/index.vue')
         },
+        // 患者 - 患者随访
+        {
+          path: '/patient/follow',
+          name: '/patient/follow',
+          meta: { Auth: true },
+          component: () => import('@src/views/patient/follow/index.vue')
+        },
 
         // 患者 - 患者详情
         {
@@ -129,6 +136,13 @@ const router = new Router({
           name: '/sys/myPharmacy',
           meta: { Auth: true },
           component: () => import('@src/views/sys/myPharmacy/index.vue')
+        },
+        // 我的 - 我的随访
+        {
+          path: '/sys/myFollow',
+          name: '/sys/myFollow',
+          meta: { Auth: true },
+          component: () => import('@src/views/sys/myFollow/index.vue')
         }
       ]
     },

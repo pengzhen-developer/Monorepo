@@ -58,7 +58,7 @@ export function patientListDescPc(params) {
  * @returns
  */
 export function getPatientHome(params) {
-  const getPatientHome = '/client/v1/Patient/getPatientHome'
+  const getPatientHome = 'client/v1/Patient/getPatientHome'
 
   return peace.http.post(getPatientHome, params)
 }
@@ -154,6 +154,32 @@ export function getAdvisoryRecord(params) {
   return peace.http.post(getAdvisoryRecord, params)
 }
 
+/**
+ * 获取咨询记录
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function myInstructionLists(params) {
+  const myLists = 'client/v1/patient_instruction/myLists'
+
+  return peace.http.post(myLists, params)
+}
+
+/**
+ * 用户主页咨询列表接口
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getPatientInquiryList(params) {
+  const getPatientInquiryList = 'client/v1/Patient/getPatientInquiryList'
+
+  return peace.http.post(getPatientInquiryList, params)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -179,5 +205,11 @@ export default {
   allergenList,
 
   /** 获取单次问诊历史消息 */
-  getOneInquiry
+  getOneInquiry,
+
+  /** 获取我的患教列表 */
+  myInstructionLists,
+
+  /** 获取咨询列表 */
+  getPatientInquiryList
 }

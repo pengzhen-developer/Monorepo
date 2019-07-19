@@ -25,16 +25,12 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" v-if="patientInfo">
       <el-tabs class="tab" v-model="activeTab">
         <!-- 家人列表 -->
         <el-tab-pane label="家人列表" name="家人列表">
           <MyFamilys :data="patientInfo.familyList"></MyFamilys>
         </el-tab-pane>
-        <!-- 咨询记录 -->
-        <!-- <el-tab-pane label="咨询记录" name="咨询记录">
-          <PatientInquiryDetail></PatientInquiryDetail>
-        </el-tab-pane>-->
         <!-- 健康档案 -->
         <el-tab-pane label="健康档案" name="健康档案">
           <PatientHealthRecord></PatientHealthRecord>
@@ -46,7 +42,6 @@
 
 <script>
 import peace from '@src/library'
-// import PatientInquiryDetail from './PatientInquiryDetail'
 import MyFamilys from './MyFamilys'
 import PatientHealthRecord from './PatientHealthRecord'
 
