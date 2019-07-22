@@ -165,7 +165,7 @@
         @focus="hideTools"
         rows="1"
         type="textarea"
-        v-model="message"
+        v-model.trim="message"
         v-on:keyup.enter.stop="sendMessageText"
       >
         <van-icon @click="showTools" name="add-o" slot="right-icon" />
@@ -386,6 +386,8 @@ export default {
           text: this.message,
           done: doneHandler
         })
+      } else {
+        peace.util.alert('请输入消息内容')
       }
     },
 

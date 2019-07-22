@@ -5,8 +5,8 @@
         <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
           <template slot="title">
             <span class="custom-title">{{ item.name }}</span>
-            <van-icon class-prefix="ic" class="danger" name="ic_boys" v-if="item.sex === '男'" />
-            <van-icon class-prefix="ic" class="blue" name="ic_girls" v-else-if="item.sex === '女'" />
+            <van-icon class-prefix="ic" class="primary" name="ic_boys" v-if="item.sex === '男'" />
+            <van-icon class-prefix="ic" class="danger" name="ic_girls" v-else-if="item.sex === '女'" />
             <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
             <van-tag plain round>{{ item.relation }}</van-tag>
           </template>
@@ -27,7 +27,7 @@
     </div>
 
     <peace-dialog :title="dialog.title" :visible.sync="dialog.visible">
-      <FamilyMembersModel :data="dialog.data" @onComplete="onComplete" />
+      <FamilyMembersModel :canShowSelf="members && !members.find(item => item.relation === '本人')" :data="dialog.data" @onComplete="onComplete" />
     </peace-dialog>
   </div>
 </template>
