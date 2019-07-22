@@ -97,7 +97,6 @@ export default {
     },
 
     edit(params) {
-      console.log('编辑', params)
       peace.service.patient
         .addMyInstruction(params)
         .then(() => {
@@ -109,7 +108,19 @@ export default {
         })
     },
 
-    remove() {}
+    remove(row) {
+      peace.util.confirm('确定删除吗？', undefined, undefined, () => {
+        const params = {
+          id: row.id
+        }
+
+        peace.service.patient.delInstruction(params).then(res => {
+          peace.util.alert(res.msg)
+
+          this.get()
+        })
+      })
+    }
   }
 }
 </script>

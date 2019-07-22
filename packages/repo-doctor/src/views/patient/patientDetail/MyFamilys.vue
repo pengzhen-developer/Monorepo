@@ -13,7 +13,7 @@
         <div class="card-content-row">
           <div class="lt">
             <span class="icon">
-              <i class="icon_ic_talklog"></i>
+              <img src="~@src/assets/images/inquiry/ic_record of course of disease.png" />
             </span>
             <span class="text">咨询记录</span>
           </div>
@@ -25,7 +25,7 @@
         <div class="card-content-row">
           <div class="lt">
             <span class="icon">
-              <i class="icon_V"></i>
+              <img src="~@src/assets/images/inquiry/ic_talk log.png" />
             </span>
             <span class="text">病程记录</span>
           </div>

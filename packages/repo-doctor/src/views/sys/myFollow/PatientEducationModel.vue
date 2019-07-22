@@ -113,17 +113,13 @@ export default {
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <link rel="stylesheet" href="https://devpatient.hp.aijiayi.com/static/style/quill.snow.css">
+        <link rel="stylesheet" href="https://devpatient.hp.aijiayi.com/static/style/quill.snow.css?t=${new Date().getTime()}">
         <title>${data.title}</title>
       </head>
-      <body>
-        <div style="padding: 12px 15px 3px 15px; font-size: 20px;">
-          ${data.title}
-        </div>
+      <body class="ql-snow">
+        <div style="padding: 12px 15px 3px 15px; font-size: 20px;">${data.title}</div>
         <div style="height: calc(100% - 43px);">
-          <div class="ql-editor" style="white-space: unset;">
-            ${data.content}
-          </div>
+          <div class="ql-editor" style="white-space: unset;">${data.content}</div>
         </div>
       </body>
       </html>

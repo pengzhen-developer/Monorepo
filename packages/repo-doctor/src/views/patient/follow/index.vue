@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column align="center" label="病程记录" prop="courseCount" width="100">
         <template slot-scope="scope">
-          <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount }}</el-button>
+          <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount || '暂无' }}</el-button>
         </template>
       </el-table-column>
     </peace-table>
@@ -101,8 +101,12 @@ export default {
     },
 
     view(row) {
-      this.dialog.visible = true
-      this.dialog.id = row.familyId
+      if (row.courseCount) {
+        this.dialog.visible = true
+        this.dialog.id = row.familyId
+      }else{
+        peace.util.alert('暂无病程记录')
+      }
     },
 
     formatStatus(r, c, v) {
