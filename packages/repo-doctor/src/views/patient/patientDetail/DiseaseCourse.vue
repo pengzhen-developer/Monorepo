@@ -77,7 +77,9 @@ export default {
 
   methods: {
     get() {
-      this.data = undefined
+      if (this.data && this.data.downInfo && this.data.downInfo.list) {
+        this.data.downInfo.list = []
+      }
 
       const params = {
         familyId: this.id,
@@ -100,6 +102,10 @@ export default {
 
 <style lang="scss" scoped>
 .disease-course {
+  .el-form .el-form-item--mini.el-form-item {
+    margin-bottom: 4px;
+  }
+
   .info-row-first {
     .name {
       font-size: 16px;

@@ -32,7 +32,12 @@
       </el-table-column>
       <el-table-column align="center" label="病程记录" prop="courseCount" width="100">
         <template slot-scope="scope">
-          <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount || '暂无' }}</el-button>
+          <template v-if="scope.row.courseCount">
+            <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount }}</el-button>
+          </template>
+          <template v-else>
+            暂无
+          </template>
         </template>
       </el-table-column>
     </peace-table>
