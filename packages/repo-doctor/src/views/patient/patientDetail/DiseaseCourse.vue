@@ -8,30 +8,17 @@
 
     <hr class="dashed" />
 
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>标签</span>
-      </div>
-      <div class="info-row-content">
+    <el-form label-width="80px">
+      <el-form-item label="标签">
         <el-tag :key="item" type="info" v-for="item in data.upInfo.couseInfo.diseaseInfo.tag">{{ item }}</el-tag>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>诊断</span>
-      </div>
-      <div class="info-row-content">
+      </el-form-item>
+      <el-form-item label="诊断">
         <el-tag :key="item" type="info" v-for="item in data.upInfo.couseInfo.diagnoseInfo.tag">{{ item }}</el-tag>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>基本病情</span>
-      </div>
-      <div class="info-row-content">
+      </el-form-item>
+      <el-form-item label="基本病情">
         <span>{{ data.upInfo.couseInfo.illnessInfo && data.upInfo.couseInfo.illnessInfo.illness }}</span>
-      </div>
-    </div>
+      </el-form-item>
+    </el-form>
 
     <hr />
 
@@ -133,20 +120,10 @@ export default {
     }
   }
 
-  .info-row {
-    display: flex;
-    align-items: center;
-    margin: 5px 0;
-
-    .info-row-label {
-      width: 4rem;
-      text-align-last: justify;
-      text-align: justify;
-    }
-
-    .info-row-content {
-      margin: 0 0 0 20px;
-    }
+  /deep/ .el-form-item__label {
+    width: 4rem;
+    text-align-last: justify;
+    text-align: justify;
   }
 
   .info-detail {
