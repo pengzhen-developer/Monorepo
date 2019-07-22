@@ -266,10 +266,9 @@ export function onMsg(message) {
 export function setInquirySessions(sessions) {
   const serializationSessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
-
   // 过滤 [待接诊] / [问诊中] 数据
   const filterMethod = session => {
-    if (session.scene === 'p2p' && session.content) {
+    if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
       if (
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
@@ -314,7 +313,7 @@ export function setConsultationSessions(sessions) {
 
   // 过滤 [等待会诊] / [会诊中] 数据
   const filterMethod = session => {
-    if (session.scene === 'team' && session.content) {
+    if (session.scene === 'team' && session.content && session.content.consultInfo) {
       if (
         session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
         session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中

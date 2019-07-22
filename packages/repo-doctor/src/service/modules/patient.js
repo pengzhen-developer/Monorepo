@@ -51,6 +51,19 @@ export function patientListDescPc(params) {
 }
 
 /**
+ * 获取某个患者详情信息（新）
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getPatientHome(params) {
+  const getPatientHome = 'client/v1/Patient/getPatientHome'
+
+  return peace.http.post(getPatientHome, params)
+}
+
+/**
  * 获取过敏源
  *
  * @export
@@ -128,6 +141,75 @@ export function getOneInquiry(params) {
   return peace.http.get(getOneInquiry, { params })
 }
 
+/**
+ * 获取咨询记录
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getAdvisoryRecord(params) {
+  const getAdvisoryRecord = 'client/v1/Patient/getPatientInquiryList'
+
+  return peace.http.post(getAdvisoryRecord, params)
+}
+
+/**
+ * 获取咨询记录
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function myInstructionLists(params) {
+  const myLists = 'client/v1/patient_instruction/myLists'
+
+  return peace.http.post(myLists, params)
+}
+
+/**
+ * 用户主页咨询列表接口
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getPatientInquiryList(params) {
+  const getPatientInquiryList = 'client/v1/Patient/getPatientInquiryList'
+
+  return peace.http.post(getPatientInquiryList, params)
+}
+
+/**
+ * 新增或修改我的患教
+ * @param {*} params
+ */
+export function addMyInstruction(params) {
+  const addMyInstruction = '/client/v1/Patient_instruction/addMyInstruction'
+
+  return peace.http.post(addMyInstruction, params)
+}
+
+/**
+ * 删除我的患教
+ * @param {*} params
+ */
+export function delInstruction(params) {
+  const del = '/client/v1/Patient_instruction/del'
+
+  return peace.http.post(del, params)
+}
+
+/**
+ * 上传图片
+ * @param {*} image
+ */
+export function uploadImage(image) {
+  const uploadImage = '/client/v1/Patient_instruction/upload'
+
+  return peace.http.post(uploadImage, image)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -138,6 +220,7 @@ export default {
   patientListPc,
   /** 获取某个患者详情信息 */
   patientListDescPc,
+  getPatientHome,
 
   /** 获取过敏源 */
   allergens,
@@ -152,5 +235,18 @@ export default {
   allergenList,
 
   /** 获取单次问诊历史消息 */
-  getOneInquiry
+  getOneInquiry,
+
+  /** 获取我的患教列表 */
+  myInstructionLists,
+
+  /** 获取咨询列表 */
+  getPatientInquiryList,
+
+  /** 新增或修改我的患教 */
+  addMyInstruction,
+  /** 删除我的患教 */
+  delInstruction,
+  /** 修改我的患教 - 上传图片 */
+  uploadImage
 }

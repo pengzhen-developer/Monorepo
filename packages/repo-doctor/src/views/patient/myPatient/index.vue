@@ -99,7 +99,7 @@ export default {
         closable: true,
         name: row.patient_remarks || row.real_name || row.weixin_name,
         title: row.patient_remarks || row.real_name || row.weixin_name,
-        path: '/patient/myPatient/patientDetail/' + row.patient_id
+        path: '/patient/patientDetail/' + row.patient_id
       }
 
       // 将当前选中的项，添加到 tab

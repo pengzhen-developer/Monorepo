@@ -1,0 +1,191 @@
+<template>
+  <div class="record-all">
+    <template v-if="healthInfo && healthInfo.length > 0">
+      <!-- 全部 -->
+      <!-- 就诊病历 -->
+      <template v-if="type === '1' || type === '3'">
+        <div :key="health.timeLine" class="time-line" v-for="health in healthInfo">
+          <div class="time-line-header">
+            <span class="time-line-node"></span>
+            <span class="time-line-time">{{ health.timeLine }}</span>
+          </div>
+
+          <div class="time-line-content">
+            <el-row :gutter="30">
+              <el-col :key="healthItem.id" :span="8" v-for="healthItem in health.list">
+                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.病历">
+                  <div class="time-line-content-card">
+                    <RecordCase :data="healthItem" :type="type"></RecordCase>
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.处方">
+                  <div class="time-line-content-card">
+                    <RecordPrescribe :data="healthItem" :type="type"></RecordPrescribe>
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血压">
+                  <div class="time-line-content-card">
+                    <RecordBloodPressure :data="healthItem" :type="type"></RecordBloodPressure>
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血糖">
+                  <div class="time-line-content-card">
+                    <RecordBloodSugar :data="healthItem" :type="type"></RecordBloodSugar>
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血氧">
+                  <div class="time-line-content-card">
+                    <RecordBloodOxygen :data="healthItem" :type="type"></RecordBloodOxygen>
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.体脂">
+                  <div class="time-line-content-card">
+                    <RecordBodyFat :data="healthItem" :type="type"></RecordBodyFat>
+                  </div>
+                </template>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </template>
+
+      <!-- 日常检测 -->
+      <template v-else-if="type === '2'">
+        <div class="time-line-content">
+          <el-row :gutter="30">
+            <el-col :span="12">
+              <!-- 血压 -->
+              <div class="time-line-content-card">
+                <RecordBloodPressure :data="healthInfo.find(item => item.healthType === 'bloodPressureData')" :type="type"></RecordBloodPressure>
+              </div>
+            </el-col>
+
+            <el-col :span="12">
+              <!-- 血糖 -->
+              <div class="time-line-content-card">
+                <RecordBloodSugar :data="healthInfo.find(item => item.healthType === 'bloodSugarData')" :type="type"></RecordBloodSugar>
+              </div>
+            </el-col>
+
+            <el-col :span="12">
+              <!-- 血氧 -->
+              <div class="time-line-content-card">
+                <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'oxyGenData')" :type="type"></RecordBloodOxygen>
+              </div>
+            </el-col>
+
+            <el-col :span="12">
+              <!-- 体脂 -->
+              <div class="time-line-content-card">
+                <RecordBodyFat :data="healthInfo.find(item => item.healthType === 'bodyFat')" :type="type"></RecordBodyFat>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </template>
+
+      <!-- 住院病历 -->
+      <!-- 体检报告 -->
+      <!-- 其它 -->
+      <template v-else-if="type === '4' || type === '5' || type === '6'">
+        <NoData></NoData>
+      </template>
+    </template>
+
+    <template v-else>
+      <NoData></NoData>
+    </template>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+import RecordCase from './RecordCase'
+import RecordPrescribe from './RecordPrescribe'
+import RecordBloodPressure from './RecordBloodPressure'
+import RecordBloodSugar from './RecordBloodSugar'
+import RecordBloodOxygen from './RecordBloodOxygen'
+import RecordBodyFat from './RecordBodyFat'
+
+import NoData from '@src/views/components/NoData'
+
+export default {
+  props: {
+    id: String,
+    type: String
+  },
+
+  components: {
+    RecordCase,
+    RecordPrescribe,
+    RecordBloodPressure,
+    RecordBloodSugar,
+    RecordBloodOxygen,
+    RecordBodyFat,
+
+    NoData
+  },
+
+  data() {
+    return {
+      healthInfo: []
+    }
+  },
+
+  created() {
+    this.get()
+  },
+
+  methods: {
+    get() {
+      const params = { familyId: this.id, type: this.type }
+
+      peace.service.health.allHealthList(params).then(res => {
+        this.healthInfo = res.data.healthInfo
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.record-all {
+  .time-line {
+    margin: 0 0 15px 0;
+
+    .time-line-header {
+      display: flex;
+      align-items: center;
+      margin: 0 0 10px 0;
+
+      .time-line-node {
+        width: 5px;
+        height: 5px;
+        background: #00c6ae;
+        border-radius: 50%;
+        margin: 0 20px 0 0;
+      }
+
+      .time-line-time {
+        color: rgba(153, 153, 153, 1);
+      }
+    }
+  }
+
+  .time-line-content {
+    .time-line-content-card {
+      height: 64px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
+      border-radius: 4px;
+      margin: 0 0 10px 0;
+    }
+  }
+}
+</style>
