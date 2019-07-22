@@ -191,6 +191,16 @@ export function addMyInstruction(params) {
 }
 
 /**
+ * 删除我的患教
+ * @param {*} params
+ */
+export function delInstruction(params) {
+  const del = '/client/v1/Patient_instruction/del'
+
+  return peace.http.post(del, params)
+}
+
+/**
  * 上传图片
  * @param {*} image
  */
@@ -233,7 +243,10 @@ export default {
   /** 获取咨询列表 */
   getPatientInquiryList,
 
-  /** 患教 */
+  /** 新增或修改我的患教 */
   addMyInstruction,
+  /** 删除我的患教 */
+  delInstruction,
+  /** 修改我的患教 - 上传图片 */
   uploadImage
 }
