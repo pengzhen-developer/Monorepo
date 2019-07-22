@@ -70,7 +70,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
-      <MessageList :data="chatingPage.data" :navBar="false"></MessageList>
+      <MessageList :data="chatingPage.data" :doctorInfo="chatingPage.doctorInfo" :navBar="false"></MessageList>
     </peace-dialog>
 
     <peace-dialog :visible.sync="consultDetail.visible" title="咨询详情">
@@ -124,7 +124,8 @@ export default {
 
       chatingPage: {
         visible: false,
-        data: []
+        data: [],
+        doctorInfo: {}
       },
 
       consultDetail: {
@@ -211,6 +212,7 @@ export default {
           historyMessageFormatHandler(res.data.msgList)
 
           this.chatingPage.data = res.data.msgList
+          this.chatingPage.doctorInfo = res.data.doctorInfo
         })
       }
     },

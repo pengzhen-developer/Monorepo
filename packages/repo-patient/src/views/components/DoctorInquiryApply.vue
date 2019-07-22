@@ -21,7 +21,7 @@
       <div class="divider"></div>
 
       <van-cell-group>
-        <van-field :value="model.familyName" @click="showFamily = true" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
+        <van-field :value="model.familyName" @click="checkFamily" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
         <van-popup position="bottom" v-model="showFamily">
           <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
         </van-popup>
@@ -108,6 +108,7 @@
           <van-field label="是否不良反应">
             <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
           </van-field>
+          <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
         </van-cell-group>
 
         <van-cell-group>
@@ -128,7 +129,7 @@
         <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
 
-      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">保存</van-button>
+      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">提交</van-button>
     </div>
 
     <peace-dialog :visible.sync="showInformedConsent">
@@ -202,8 +203,9 @@ export default {
         isPregnancy: false,
         // 是否不良反应
         isBadEffect: false,
+        isBadEffectText: '',
         // 本次复诊情况
-        againType: false,
+        againType: 0,
         // 知情同意
         informedConsent: false
       },
@@ -236,6 +238,9 @@ export default {
       if (family) {
         this.model.familyName = family.name
         this.model.familyId = family.familyId
+      } else if (res.data.length > 0) {
+        this.model.familyName = res.data[0].name
+        this.model.familyId = res.data[0].familyId
       }
     })
   },
@@ -284,7 +289,35 @@ export default {
       this.showAddAllergicHistory = true
     },
 
+    checkFamily() {
+      if (this.source.familyList && this.source.familyList.length > 1) {
+        this.showFamily = true
+      } else {
+        this.$router.push({
+          name: '/setting/myFamilyMembers',
+          params: {
+            back: true,
+            addFamily: true
+          }
+        })
+      }
+    },
+
     apply() {
+      // 验证
+      if (!this.model.familyName) {
+        return peace.util.alert('请选择就诊人')
+      }
+      if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
+        return peace.util.alert('请输入不少于5个字的病情描述')
+      }
+      if (this.model.isBadEffect && this.model.isBadEffectText.length <= 5) {
+        return peace.util.alert('请输入不少于5个字的不良反应')
+      }
+      if (this.model.againType === 0) {
+        return peace.util.alert('请选择本次复诊情况')
+      }
+
       this.uploadHandler().then(() => {
         this.applyHandler()
       })
@@ -310,18 +343,9 @@ export default {
     },
 
     applyHandler() {
-      const params = this.model
-
-      // 验证必填
-      if (!this.model.familyName) {
-        return peace.util.alert('请选择就诊人')
-      }
-      if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
-        return peace.util.alert('请输入不少于5个字的病情描述')
-      }
-
       this.sending = true
 
+      const params = this.model
       peace.service.inquiry.apply(params).then(res => {
         this.sending = false
 

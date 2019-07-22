@@ -33,7 +33,7 @@
             <img src="@src/assets/images/ic_video_open.png" />
             <p>视频咨询</p>
             <p>
-              <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : doctor.consultationList[1].money + '/次' }}</span>
+              <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : '￥' + doctor.consultationList[1].money + '/次' }}</span>
             </p>
           </div>
         </div>
@@ -68,19 +68,25 @@
                 <tr>
                   <td class="time-table-col border">上午</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[0].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
                 <tr>
                   <td class="time-table-col border">下午</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[1].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
                 <tr>
                   <td class="time-table-col border">晚上</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[2].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -104,19 +110,25 @@
                 <tr>
                   <td class="time-table-col border">上午</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[0].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
                 <tr>
                   <td class="time-table-col border">下午</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[1].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
                 <tr>
                   <td class="time-table-col border">晚上</td>
                   <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[2].weekList">
-                    <span v-if="item.status">√</span>
+                    <span v-if="item.status">
+                      <van-icon name="success" />
+                    </span>
                   </td>
                 </tr>
               </tbody>

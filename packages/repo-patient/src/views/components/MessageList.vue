@@ -27,7 +27,7 @@
             style="display: flex; align-items: center;"
           >
             <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
@@ -36,9 +36,7 @@
             </div>
 
             <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <div
-                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
@@ -73,7 +71,7 @@
             style="display: flex; align-items: center;"
           >
             <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
@@ -82,9 +80,7 @@
             </div>
 
             <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <div
-                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
@@ -103,7 +99,7 @@
             style="display: flex; align-items: center;"
           >
             <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
@@ -116,9 +112,7 @@
             </div>
 
             <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <div
-                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
@@ -137,7 +131,7 @@
             style="display: flex; align-items: center;"
           >
             <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="$store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
@@ -150,9 +144,7 @@
             </div>
 
             <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <div
-                style="width: 30px; height: 30px; background: #BBE7FF; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-              >{{ $store.state.user.userInfo.patientInfo.realName.substr($store.state.user.userInfo.patientInfo.realName.length - 2, $store.state.user.userInfo.patientInfo.realName.length) }}</div>
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
@@ -211,6 +203,13 @@ export default {
       type: Array,
       default() {
         return undefined
+      }
+    },
+
+    doctorInfo: {
+      type: Object,
+      default() {
+        return {}
       }
     },
 
@@ -487,8 +486,8 @@ export default {
           margin: 0 5px 0 0;
 
           img {
-            width: 28px;
-            height: 28px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
           }
         }
@@ -506,8 +505,8 @@ export default {
           margin: 0 0 0 5px;
 
           img {
-            width: 28px;
-            height: 28px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
           }
         }

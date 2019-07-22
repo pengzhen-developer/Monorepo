@@ -80,7 +80,7 @@ export default {
       if (minMoney === 0) {
         return '免费'
       } else {
-        return `${minMoney}起`
+        return `￥${minMoney}起`
       }
     },
 

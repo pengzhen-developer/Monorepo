@@ -10,8 +10,8 @@
       <van-number-keyboard :maxlength="6" :show="showKeyboardForSms" @blur="showKeyboardForSms = false" v-model="smsCode" />
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
-      <!-- <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
-      <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button>-->
+      <van-button @click="signInByMock" class="login-form-sign-in" type="primary">模拟登录 - 彭真的账号</van-button>
+      <!-- <van-button @click="signInByMockForSISI" class="login-form-sign-in" type="primary">模拟登录 - 思思的账号</van-button> -->
     </div>
 
     <!-- <div class="login-footer">

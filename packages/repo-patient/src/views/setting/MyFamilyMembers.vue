@@ -90,6 +90,10 @@ export default {
     },
 
     toAdd() {
+      if (this.members && this.members.length >= 10) {
+        return peace.util.alert('您最多可添加 10 位家人')
+      }
+
       this.dialog.title = '新增家人'
       this.dialog.visible = true
       this.dialog.data = undefined

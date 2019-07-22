@@ -49,7 +49,7 @@
     </van-popup>
     <!-- 生日 -->
     <van-popup position="bottom" v-model="showBirthday">
-      <van-datetime-picker :max-date="maxDate" :min-date="minDate" @cancel="showBirthday = false" @confirm="selectTime" type="date" />
+      <van-datetime-picker :max-date="maxDate" :min-date="minDate" @cancel="showBirthday = false" @confirm="selectTime" type="date" v-model="currentDate" />
     </van-popup>
   </div>
 </template>
@@ -93,6 +93,7 @@ export default {
       sexs: ['男', '女'],
 
       minDate: new Date().proDate('{%y-150}'),
+      currentDate: new Date(),
       maxDate: new Date(),
 
       showAllergicHistory: false,
