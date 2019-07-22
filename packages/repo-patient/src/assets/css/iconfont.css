@@ -2,8 +2,8 @@
 
 @import './../font/iconfont.css';
 
-[class^='icon_'],
-[class*=' icon'] {
+[class^='ic-'],
+[class*=' ic'] {
   display: inline-block;
   font-family: iconfont !important;
   font-weight: 400;

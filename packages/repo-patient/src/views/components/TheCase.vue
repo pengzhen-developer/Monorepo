@@ -70,7 +70,7 @@
               <div class="dd">{{data.inspectionIndex.blood_pressure ? data.inspectionIndex.blood_pressure + 'mmHg' : '--'}}</div>
             </div>
             <div class="namelist-dl" style="flex-basis: 100%">
-              <div class="dt" style="width:150rpx">辅助检查：</div>
+              <div class="dt" style="width:75px">辅助检查：</div>
               <div class="dd">{{data.inspectionIndex.More}}</div>
             </div>
           </div>
@@ -167,6 +167,39 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.form-code {
+  background: #f8f8f8;
+  padding: 0 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+.namelist-dl.bb {
+  border-bottom: 1px solid #ebebeb;
+}
+.namelist-dl {
+  flex: 0 1 50%;
+  font-size: 15px;
+  padding: 10px 0;
+  display: flex;
+}
+.namelist-dl .dt {
+  flex: 0 0 auto;
+  width: 50px;
+  color: #000;
+}
+.namelist-dl .dd {
+  flex: 1 1 auto;
+  color: #666;
+  width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .form-dl {
   background-color: #fff;
   padding: 10px;

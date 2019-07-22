@@ -76,6 +76,13 @@ export default {
           allergic_history: ''
         }
       }
+    },
+
+    canShowSelf: {
+      type: Boolean,
+      default() {
+        return true
+      }
     }
   },
 
@@ -116,6 +123,15 @@ export default {
           this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
       }
+    },
+
+    canShowSelf: {
+      handler() {
+        if (!this.canShowSelf) {
+          this.relations.splice(0, 1)
+        }
+      },
+      immediate: true
     }
   },
 

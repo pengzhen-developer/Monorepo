@@ -218,5 +218,14 @@ export default {
 
   .save {
   }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #f2f2f2;
+    margin: 10px 0;
+    padding: 0;
+  }
 }
 </style>
