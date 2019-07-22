@@ -20,7 +20,7 @@
       <div class="info-row-label">
         <span>详细内容</span>
       </div>
-      <div class="info-row-content" style="height: 446px;">
+      <div class="info-row-content" style="width: 500px; height: 446px;">
         <quill-editor :options="editorOption" class="is-editor" ref="Editor" style="height: 400px;" v-model="article.content"></quill-editor>
       </div>
     </div>
@@ -102,6 +102,7 @@ export default {
 
       return parentDom.innerHTML
     },
+
     // 获取渲染的 HTML
     getTemplateByContent(data) {
       // 渲染 HTML 文件
@@ -119,7 +120,7 @@ export default {
       <body class="ql-snow">
         <div style="padding: 12px 15px 3px 15px; font-size: 20px;">${data.title}</div>
         <div style="height: calc(100% - 43px);">
-          <div class="ql-editor" style="white-space: unset;">${data.content}</div>
+          <div class="ql-editor">${data.content}</div>
         </div>
       </body>
       </html>
@@ -171,7 +172,10 @@ export default {
   },
   created() {
     if (this.data) {
-      this.article = this.data
+      const { title, content } = this.data
+      this.article = Object.assign({}, this.data, {
+        content: this.removeTitleInContent(title, content)
+      })
     }
   }
 }

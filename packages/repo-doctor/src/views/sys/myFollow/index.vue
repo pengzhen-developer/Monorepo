@@ -22,8 +22,8 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="previewDialog.visible" title="患教详情" v-if="previewDialog.visible" width="375px">
-      <!-- <PatientEducationPreview :data="previewDialog.data" /> -->
-      <iframe :src="previewDialog.data.detailUrl" class="iframe" frameborder="0"></iframe>
+      <PatientEducationPreview :data="previewDialog.data" />
+      <!-- <iframe :src="previewDialog.data.detailUrl" class="iframe" frameborder="0"></iframe> -->
     </peace-dialog>
   </div>
 </template>
@@ -31,10 +31,10 @@
 <script>
 import peace from '@src/library'
 import PatientEducationModel from './PatientEducationModel'
-// import PatientEducationPreview from './PatientEducationPreview'
+import PatientEducationPreview from './PatientEducationPreview'
 
 export default {
-  components: { PatientEducationModel },
+  components: { PatientEducationModel, PatientEducationPreview },
   mounted() {
     this.$nextTick().then(() => {
       this.get()
