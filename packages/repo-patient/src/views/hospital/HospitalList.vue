@@ -1,0 +1,184 @@
+/** eslint-disable */
+<template>
+  <div>
+    <van-skeleton
+      :key="item.netHospitalId"
+      :loading="loading"
+      :name="item.hospitalName"
+      :nethospitalid="item.netHospitalId"
+      :row="3"
+      avatar
+      title
+      type="organHome"
+      v-for="(item,index) in data"
+      v-if="index < showNum"
+    >
+        <div @click="goMenuPage(item)" class="cards">
+          <div class="card-avatar">
+            <img :src="item.icon" class />
+          </div>
+          <div class="card-body">
+            <div class="card-name">{{item.hospitalName}}</div>
+            <div class="block">
+              <div :key="tit" class="card-small" v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
+            </div>
+            <div class="block">
+              <van-tag :key="it" plain type="success" v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
+            </div>
+          </div>
+        </div>
+    </van-skeleton>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+export default {
+  props: {
+    items: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    max: {
+      type: Number,
+      default: function() {
+        return this.items.length
+      }
+    }
+  },
+  data() {
+    return {
+      loading: true,
+      data: [],
+      showNum: 100,
+      params:{},
+    }
+  },
+  created() {
+    const params = peace.util.decode(this.$route.params.json)
+    this.params = params || {};
+    this.data = this.items || [];
+    this.showNum = this.max;
+
+    if (!this.data.length)
+      this.getHspList();
+  },
+  mounted() {
+    this.loading = false
+  },
+  methods: {
+    goMenuPage(item) {
+      if(this.params.type == 'appoint'){
+        let json = peace.util.encode({ netHospitalId: item.netHospitalId, id: 'appointment', Date: new Date() })
+
+        this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+        return;
+      }
+
+      if(this.params.type == 'recommendHsp' || true){
+        let json = peace.util.encode({netHospitalId: item.netHospitalId})
+
+        this.$router.push(`/hospital/HospitalHome/${json}`)
+        return;
+      }
+
+    },
+    getHspList(){
+      // 推荐医院
+      if(this.params.type == 'recommendHsp'){
+        peace.service.index.getMenu().then(res => {
+          this.data = res.data.recommendOrgan
+          this.showNum = res.data.recommendOrgan.length
+        })
+      }
+      // 报告单医院
+      if(this.params.type == 'report'){
+        peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
+          this.data = res.data.netHospitals || []
+          this.showNum = this.data.length
+        })
+      }
+
+      // 预约医院
+      if(this.params.type == 'appoint'){
+        peace.service.hospital.getHospitalByRegister({ p: 1, size:100 }).then(res => {
+          this.data = res.data.list || []
+          this.showNum = this.data.length
+        })
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.cards {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  margin: 15px 10px;
+  font-size: 13px;
+  color: #000;
+  border: 0;
+  border-bottom: 1px solid #f5f5f5;
+  &:first-child {
+    margin-top: 0;
+  }
+  .card-avatar {
+    position: relative;
+    flex: none;
+    border: 1px solid #dde1ea;
+    width: 60px;
+    height: 60px;
+    margin: 6px;
+    margin-right: 14px;
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    flex: 0 0 auto;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .card-body {
+    flex: 1 0 1%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+  .card-small {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.5;
+    display: inline;
+    vertical-align: text-bottom;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 2;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .block {
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.van-tag {
+  padding: 0.1em 0.5em;
+  margin-right: 5px;
+}
+</style>

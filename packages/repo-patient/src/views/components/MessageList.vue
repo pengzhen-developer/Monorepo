@@ -1,0 +1,592 @@
+<template>
+  <div class="message-list">
+    <van-nav-bar :title="$store.getters['inquiry/doctorInfo'].doctorName" @click-left="back" class="layout-navbar" left-arrow left-text=" " v-if="navBar" />
+
+    <div @click="hideTools" class="item">
+      <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
+        <!-- 文本消息 -->
+        <template
+          v-if="getMessageType(message) === 'text' || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊"
+        >
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            </div>
+          </template>
+
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div class="message-body">
+              <div v-html="getMessageText(message)"></div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            </div>
+          </div>
+        </template>
+
+        <!-- 视频消息 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            </div>
+          </template>
+
+          <!-- 消息内容 -->
+          <div class="message-body">
+            <span>{{ getMessageText(message) }}</span>
+            <!-- <img src="~@/assets/images/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" /> -->
+          </div>
+        </template>
+
+        <!-- 图片消息 -->
+        <template v-else-if="getMessageType(message) === 'image'">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            </div>
+          </template>
+
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div>
+              <img :src="message.file.url" @click="viewImage(message.file.url)" style="max-width: 200px; " />
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            </div>
+          </div>
+        </template>
+
+        <!-- 病历消息 -->
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            </div>
+          </template>
+
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div @click="getCaseDetail(message)" class="message-body case">
+              <img src="~@src/assets/images/pic_medication recommendations.png" />
+              <div style="text-align: left;">
+                <p style="font-size: 14px;">病历</p>
+                <p>查看详情</p>
+              </div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            </div>
+          </div>
+        </template>
+
+        <!-- 处方消息 -->
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            </div>
+          </template>
+
+          <div
+            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+            style="display: flex; align-items: center;"
+          >
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
+              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+            </div>
+
+            <!-- 消息内容 -->
+            <div @click="getRecipeDetail(message)" class="message-body recipe">
+              <img src="~@src/assets/images/pic_medication recommendations.png" />
+              <div style="text-align: left;">
+                <p style="font-size: 14px;">处方</p>
+                <p>查看详情</p>
+              </div>
+            </div>
+
+            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <div class="input" v-if="canShowInput">
+      <van-field
+        :autosize="{ maxHeight: 60, minHeight: 20 }"
+        @focus="hideTools"
+        rows="1"
+        type="textarea"
+        v-model.trim="message"
+        v-on:keyup.enter.stop="sendMessageText"
+      >
+        <van-icon @click="showTools" name="add-o" slot="right-icon" />
+        <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
+      </van-field>
+
+      <div class="input-tools" v-show="tools.visible">
+        <van-row justify="space-between" type="flex">
+          <van-col class="flex-left" span="6">
+            <van-uploader :after-read="sendMessageImage">
+              <div class="flex-center">
+                <van-button icon="photo"></van-button>
+                <p>图片</p>
+              </div>
+            </van-uploader>
+          </van-col>
+        </van-row>
+      </div>
+    </div>
+
+    <peace-dialog :visible.sync="caseDetail.visible">
+      <TheCase :data="caseDetail.data"></TheCase>
+    </peace-dialog>
+    <peace-dialog :visible.sync="recipeDetail.visible">
+      <TheRecipe :data="recipeDetail.data"></TheRecipe>
+    </peace-dialog>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+import Vue from 'vue'
+import { ImagePreview } from 'vant'
+Vue.use(ImagePreview)
+
+import TheCase from '@src/views/components/TheCase'
+import TheRecipe from '@src/views/components/TheRecipe'
+
+export default {
+  props: {
+    data: {
+      type: Array,
+      default() {
+        return undefined
+      }
+    },
+
+    doctorInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+
+    navBar: {
+      type: Boolean,
+      default() {
+        return true
+      }
+    }
+  },
+
+  components: {
+    TheCase,
+    TheRecipe
+  },
+
+  data() {
+    return {
+      message: '',
+
+      tools: {
+        visible: false
+      },
+
+      caseDetail: {
+        visible: false,
+        data: {}
+      },
+
+      recipeDetail: {
+        visible: false,
+        data: {}
+      }
+    }
+  },
+
+  watch: {
+    '$store.state.inquiry.sessionMessages': {
+      handler() {
+        this.$nextTick(function() {
+          const element = document.querySelector('.message-list .item')
+
+          if (element) {
+            element.scrollTop = element.scrollHeight
+          }
+        })
+      },
+      immediate: true
+    }
+  },
+
+  computed: {
+    messageList() {
+      let sessionMessages = this.data || this.$store.state.inquiry.sessionMessages
+
+      // 过滤无效数据
+      sessionMessages = sessionMessages.filter(message => {
+        // 屏蔽系统消息
+        if (message.type === 'notification') {
+          return false
+        }
+
+        // 屏蔽部分自定义消息
+        if (message.type === 'custom') {
+          // if (
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
+          // )
+          //   return false
+        }
+
+        return true
+      })
+
+      return sessionMessages
+    },
+
+    canShowInput() {
+      if (
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+
+  methods: {
+    back() {
+      this.$router.go(-1)
+    },
+
+    // 是否需要显示系统时间
+    isShowMessageTime(message, index) {
+      if (index === 0) {
+        return true
+      } else {
+        const prevMessage = this.messageList[index - 1]
+        const currentMessage = this.messageList[index]
+
+        if (currentMessage.time - prevMessage.time >= 1000 * 60 * 3) {
+          return true
+        }
+
+        return false
+      }
+    },
+
+    getMessageType(message) {
+      // text
+      // image
+      // custom
+      if (message.type === 'custom') {
+        if (message.content && message.content.code) {
+          return message.content.code
+        }
+      } else {
+        return message.type
+      }
+    },
+
+    getMessageFlow(message) {
+      // out
+      // in
+      // system
+      if (message.type === 'custom') {
+        if (message.content && message.content.code) {
+          if (
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊
+          ) {
+            return 'system'
+          }
+        }
+      }
+
+      return message.flow
+    },
+
+    getMessageText(message) {
+      if (message.content && message.content.data && message.content.data.showTextInfo) {
+        return message.content.data.showTextInfo.patientClientText
+      }
+
+      if (message.text) {
+        return message.text
+      }
+    },
+
+    sendMessageText() {
+      if (this.message) {
+        const doneHandler = (error, message) => {
+          console.warn('【 IM 】【 sendText 】', new Date(), message)
+
+          this.message = ''
+
+          if (error) {
+            throw new Error(error)
+          }
+        }
+
+        $peace.NIM.sendText({
+          scene: this.$store.state.inquiry.session.scene,
+          to: this.$store.getters['inquiry/doctorInfo'].doctorId,
+          text: this.message,
+          done: doneHandler
+        })
+      } else {
+        peace.util.alert('请输入消息内容')
+      }
+    },
+
+    sendMessageImage(file) {
+      if (file) {
+        const doneHandler = (error, message) => {
+          console.warn('【 IM 】【 sendFile 】', new Date(), message)
+
+          if (error) {
+            throw new Error(error)
+          }
+        }
+
+        $peace.NIM.sendFile({
+          scene: this.$store.state.inquiry.session.scene,
+          to: this.$store.getters['inquiry/doctorInfo'].doctorId,
+          type: 'image',
+          blob: file.file,
+          done: doneHandler
+        })
+      }
+    },
+
+    showTools() {
+      this.tools.visible = true
+    },
+
+    hideTools() {
+      this.tools.visible = false
+
+      const scrollTop = this.$el.querySelector('.item').scrollTop
+      const innerHeight = window.innerHeight
+
+      const interval = setInterval(() => {
+        if (innerHeight !== window.innerHeight) {
+          window.clearInterval(interval)
+          this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
+        }
+      }, 1)
+    },
+
+    getCaseDetail(message) {
+      this.caseDetail.visible = true
+
+      const params = {
+        inquiryNo: message.content.data.inquiryInfo.inquiryNo,
+        inquiryId: message.content.data.inquiryInfo.inquiryId
+      }
+
+      peace.service.patient.getCaseInfo(params).then(res => {
+        this.caseDetail.data = res.data
+      })
+    },
+
+    getRecipeDetail(message) {
+      this.recipeDetail.visible = true
+
+      const params = {
+        prescribeId: message.content.data.recipeInfo.recipeId
+      }
+
+      peace.service.patient.getPrescripInfo(params).then(res => {
+        this.recipeDetail.data = res.data
+      })
+    },
+
+    viewImage(path) {
+      ImagePreview([path])
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.message-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .item {
+    overflow: auto;
+    padding: 5px 10px;
+    flex: 1;
+
+    .message {
+      margin: 0 0 10px 0;
+
+      &.in {
+        text-align: left;
+
+        .message-body {
+          color: rgba(51, 51, 51, 1);
+          background: rgba(243, 243, 243, 1);
+        }
+
+        .message-avatar {
+          margin: 0 5px 0 0;
+
+          img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      &.out {
+        text-align: right;
+
+        .message-body {
+          color: rgba(255, 255, 255, 1);
+          background: rgba(0, 198, 174, 1);
+        }
+
+        .message-avatar {
+          margin: 0 0 0 5px;
+
+          img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      &.system {
+        text-align: center;
+        max-width: 80%;
+        margin: 6px auto;
+
+        .message-body {
+          color: rgba(155, 155, 155, 1);
+          background: rgba(242, 242, 242, 1);
+        }
+      }
+
+      &.time {
+        font-size: 12px;
+        text-align: center;
+        margin: 0 0 5px 0;
+
+        .message-body {
+          color: rgba(155, 155, 155, 1);
+          background: rgb(255, 255, 255);
+        }
+      }
+
+      .message-body {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        display: inline-block;
+        padding: 5px 5px;
+        border-radius: 6px;
+
+        &.case,
+        &.recipe {
+          background: #fff;
+          border: 1px solid #f2f2f2;
+          padding: 5px;
+          cursor: pointer;
+          display: inline-flex;
+
+          img {
+            width: 50px;
+            height: 44px;
+          }
+
+          p {
+            margin: 0 0 2px 5px;
+            color: #333333;
+          }
+        }
+      }
+    }
+  }
+
+  .input {
+    min-height: 50px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    border-top: 1px solid #f5f5f5;
+
+    .input-tools {
+      padding: 20px;
+
+      .flex-center {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        p {
+          margin: 5px 0 0 0;
+        }
+      }
+    }
+  }
+}
+</style>
+
