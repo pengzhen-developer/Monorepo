@@ -22,18 +22,28 @@
 
       <div class="description">
         <div class="description-service">
-          <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="description-service-item">
+          <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="description-service-item" v-if="doctor.consultationList[0]">
             <img src="@src/assets/images/ic_tuwen.png" />
             <p>图文咨询</p>
             <p>
-              <span class="money">{{ doctor.consultationList[0].money === 0 ? '免费' : doctor.consultationList[0].money + '/次' }}</span>
+              <tempate v-if="doctor.consultationList[0]">
+                <span class="money">{{ doctor.consultationList[0].money === 0 ? '免费' : doctor.consultationList[0].money + '/次' }}</span>
+              </tempate>
+              <template v-else>
+                <span>暂未开放</span>
+              </template>
             </p>
           </div>
-          <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="description-service-item">
+          <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="description-service-item" v-if="doctor.consultationList[1]">
             <img src="@src/assets/images/ic_video_open.png" />
             <p>视频咨询</p>
             <p>
-              <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : '￥' + doctor.consultationList[1].money + '/次' }}</span>
+              <tempate v-if="doctor.consultationList[1]">
+                <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : doctor.consultationList[1].money + '/次' }}</span>
+              </tempate>
+              <template v-else>
+                <span>暂未开放</span>
+              </template>
             </p>
           </div>
         </div>
