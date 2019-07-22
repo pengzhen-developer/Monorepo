@@ -59,25 +59,25 @@ export default {
         case 'text':
           return session.lastMsg.text
         case 'image':
-          return '【图片】'
+          return '[图片]'
         case 'video':
-          return '【视频】'
+          return '[视频]'
         case 'custom':
           // 病历
           if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历) {
-            return '【病历】'
+            return '[病历]'
           }
           // 处方
           else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方) {
-            return '【处方】'
+            return '[处方]'
           }
           // 视频通话
           else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
-            return '【视频通话】'
+            return '[视频通话]'
           }
           // 私人医生服务提醒
           else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒) {
-            return '【自定义消息】'
+            return '[自定义消息]'
           }
           // 其它
           else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
@@ -88,7 +88,7 @@ export default {
 
     selectSession(session) {
       const doneHandler = (error, message) => {
-        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
+        console.warn('[ IM ][ getHistoryMsgs ]', new Date(), message)
 
         if (error) {
           throw new Error(error)
