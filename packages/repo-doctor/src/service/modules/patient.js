@@ -180,6 +180,26 @@ export function getPatientInquiryList(params) {
   return peace.http.post(getPatientInquiryList, params)
 }
 
+/**
+ * 新增或修改我的患教
+ * @param {*} params
+ */
+export function addMyInstruction(params) {
+  const addMyInstruction = '/client/v1/Patient_instruction/addMyInstruction'
+
+  return peace.http.post(addMyInstruction, params)
+}
+
+/**
+ * 上传图片
+ * @param {*} image
+ */
+export function uploadImage(image) {
+  const uploadImage = '/client/v1/Patient_instruction/upload'
+
+  return peace.http.post(uploadImage, image)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -211,5 +231,9 @@ export default {
   myInstructionLists,
 
   /** 获取咨询列表 */
-  getPatientInquiryList
+  getPatientInquiryList,
+
+  /** 患教 */
+  addMyInstruction,
+  uploadImage
 }

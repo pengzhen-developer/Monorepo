@@ -1,6 +1,7 @@
 // 配置请参考 https://cli.vuejs.org/config/#global-cli-config
 
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   // https://cli.vuejs.org/config/#vue-config-js
@@ -19,14 +20,19 @@ module.exports = {
   },
 
   // https://cli.vuejs.org/zh/config/#configurewebpack
-  configureWebpack: config => {
+  configureWebpack: {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
-    config.externals = {
+    externals: {
       '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
       '/public/static/IM/NIM_Web_WebRTC_v6.5.5': 'WebRTC'
-    }
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill/dist/quill.js',
+        Quill: 'quill/dist/quill.js'
+      })
+    ]
   },
-
   //增加vue.config.js文件配置css
   css: {
     loaderOptions: {
