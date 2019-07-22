@@ -28,13 +28,13 @@ export const SYSTEM = {
  */
 export const USER = {
   /** user info */
-  INFO: 'user.info',
+  INFO: 'pc.user.info',
 
   /** user token */
-  TOKEN: 'user.token',
+  TOKEN: 'pc.user.token',
 
   /** 最近操作功能列表 */
-  TAB_LIST: 'user.tabList'
+  TAB_LIST: 'pc.user.tabList'
 }
 
 /**
