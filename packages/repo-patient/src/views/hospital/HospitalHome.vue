@@ -304,6 +304,11 @@ export default {
 .cards .card-avatar {
   width: (120px * 0.5);
   height: (120px * 0.5);
+  img{
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+  }
 }
 
 /*.cards .card-avatar{*/

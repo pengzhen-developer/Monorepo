@@ -59,7 +59,7 @@ export default {
   },
   created() {
     const params = peace.util.decode(this.$route.params.json)
-    this.params = params;
+    this.params = params || {};
     this.data = this.items || [];
     this.showNum = this.max;
 
@@ -78,7 +78,7 @@ export default {
         return;
       }
 
-      if(this.params.type == 'recommendHsp'){
+      if(this.params.type == 'recommendHsp' || true){
         let json = peace.util.encode({netHospitalId: item.netHospitalId})
 
         this.$router.push(`/hospital/HospitalHome/${json}`)
