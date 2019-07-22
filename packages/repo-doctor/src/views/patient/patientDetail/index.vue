@@ -29,7 +29,8 @@
       <el-tabs class="tab" v-model="activeTab">
         <!-- 家人列表 -->
         <el-tab-pane label="家人列表" name="家人列表">
-          <MyFamilys :data="patientInfo.familyList"></MyFamilys>
+          <MyFamilys :data="patientInfo.familyList" v-if="patientInfo.familyList && patientInfo.familyList.length > 0"></MyFamilys>
+          <NoData v-else></NoData>
         </el-tab-pane>
         <!-- 健康档案 -->
         <el-tab-pane label="健康档案" name="健康档案">
@@ -45,11 +46,15 @@ import peace from '@src/library'
 import MyFamilys from './MyFamilys'
 import PatientHealthRecord from './PatientHealthRecord'
 
+import NoData from '@src/views/components/NoData'
+
 export default {
   components: {
     MyFamilys,
     // PatientInquiryDetail,
-    PatientHealthRecord
+    PatientHealthRecord,
+
+    NoData
   },
 
   data() {
