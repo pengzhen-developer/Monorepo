@@ -45,7 +45,7 @@
           <div :key="index" class="f-two" v-for="(item,index) in AM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
-              <div class="inline">￥26.5</div>
+              <div class="inline">￥{{item.unitPrice}}</div>
               <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -60,7 +60,7 @@
           <div :key="index" class="f-two" v-for="(item,index) in PM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
-              <div class="inline">￥26.5</div>
+              <div class="inline">￥{{item.unitPrice}}</div>
               <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -316,6 +316,7 @@ export default {
 .content.disabled .label {
   color: #c4c4c4;
   border-color: #c4c4c4;
+  background: #fff;
 }
 .right > .btn {
   font-size: 14px;
