@@ -56,10 +56,11 @@
         <div class="divider"></div>
 
         <van-cell-group>
-          <van-field
+          <van-field 
             :value="model.confirmIllness"
             @click="showAddIllnessHistory = true"
-            clickable
+            clickable 
+            required
             label="确认病种"
             placeholder="请选择诊断"
             readonly
@@ -72,21 +73,21 @@
         </van-cell-group>
 
         <van-cell-group>
-          <van-field :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
+          <van-field required :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
           <van-popup position="bottom" v-model="showConfirmTime">
-            <van-datetime-picker @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
+            <van-datetime-picker :max-date="new Date()" :value="new Date()" @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
           </van-popup>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
+          <van-field required autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
         </van-cell-group>
 
         <van-cell-group>
           <van-field
             :value="model.allergicHistory"
             @click="showAddAllergicHistory= true"
-            clickable
+            clickable required
             label="过敏史"
             placeholder="请选择过敏史"
             readonly
@@ -99,20 +100,20 @@
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="是否怀孕">
+          <van-field required label="是否怀孕">
             <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isPregnancy" />
           </van-field>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="是否不良反应">
+          <van-field required label="是否不良反应">
             <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
           </van-field>
           <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="本次复诊情况">
+          <van-field label="本次复诊情况" required>
             <van-radio-group slot="right-icon" v-model="model.againType">
               <van-radio name="1">本院同医生复诊</van-radio>
               <van-radio name="2">本院非同医生复诊</van-radio>
@@ -314,8 +315,24 @@ export default {
       if (this.model.isBadEffect && this.model.isBadEffectText.length <= 5) {
         return peace.util.alert('请输入不少于5个字的不良反应')
       }
-      if (this.model.againType === 0) {
-        return peace.util.alert('请选择本次复诊情况')
+
+      // 复诊必填验证
+      if(this.model.isAgain){
+        if(!this.model.confirmIllness){
+          return peace.util.alert('请确认病种')
+        }
+        if(!this.model.confirmTime){
+          return peace.util.alert('请确认时间')
+        }
+        if(!this.model.pastDrug){
+          return peace.util.alert('请输入既往用药')
+        }
+        if(!this.model.allergicHistory){
+          return peace.util.alert('请选择过敏史')
+        }
+        if (this.model.againType === 0) {
+          return peace.util.alert('请选择本次复诊情况')
+        }
       }
 
       this.uploadHandler().then(() => {
