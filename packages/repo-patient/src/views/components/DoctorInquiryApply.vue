@@ -285,6 +285,7 @@ export default {
       } else {
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
+        this.model.allergicHistory = familyObject.allergicHistory
       }
     },
 
