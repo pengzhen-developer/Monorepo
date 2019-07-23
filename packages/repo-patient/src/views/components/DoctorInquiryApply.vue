@@ -378,13 +378,15 @@ export default {
         this.sending = false
 
         if (res.data.errorState === 0) {
-          // 跳转消息页
-          this.$router.push({
-            name: '/message/index',
-            params: {
-              sessionId: 'p2p-' + this.model.doctorId
-            }
-          })
+          // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+          setTimeout(() => {
+            this.$router.push({
+              name: '/message/index',
+              params: {
+                sessionId: 'p2p-' + this.model.doctorId
+              }
+            })
+          }, 1000)
         }
         peace.util.alert(res.msg)
       })
