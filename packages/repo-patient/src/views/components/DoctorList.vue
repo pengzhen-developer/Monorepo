@@ -116,7 +116,12 @@ export default {
     },
 
     redictToDetail(doctorInfo) {
-      const json = peace.util.encode({ doctorId: doctorInfo.doctorId })
+      const params = peace.util.decode(this.$route.params.json)
+      const json = peace.util.encode(
+        Object.assign(params, {
+          doctorId: doctorInfo.doctorId
+        })
+      )
 
       this.$router.push(`/components/doctorDetail/${json}`)
     },
@@ -126,11 +131,14 @@ export default {
         return peace.util.alert('暂未开放，敬请期待')
       }
 
-      const json = peace.util.encode({
-        doctorId: doctorInfo.doctorId,
-        consultingType: doctorConsultation.tag,
-        consultingTypeId: doctorConsultation.consultingTypeId
-      })
+      const params = peace.util.decode(this.$route.params.json)
+      const json = peace.util.encode(
+        Object.assign(params, {
+          doctorId: doctorInfo.doctorId,
+          consultingType: doctorConsultation.tag,
+          consultingTypeId: doctorConsultation.consultingTypeId
+        })
+      )
 
       this.$router.push(`/components/doctorInquiryApply/${json}`)
     }
