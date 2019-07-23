@@ -88,7 +88,7 @@ export default {
 
     selectSession(session) {
       const doneHandler = (error, message) => {
-        console.warn('[ IM ][ getHistoryMsgs ]', new Date(), message)
+        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
         if (error) {
           throw new Error(error)
