@@ -205,7 +205,7 @@ export default {
         // 附件
         attachment: [],
         // 是否复诊
-        isAgain: false,
+        isAgain: true,
         // 确认疾病(既往史)
         confirmIllness: '',
         // 确认时间
@@ -220,7 +220,7 @@ export default {
         isBadEffect: false,
         isBadEffectText: '',
         // 本次复诊情况
-        againType: 0,
+        againType: '3',
         // 知情同意
         informedConsent: false
       },
@@ -240,7 +240,6 @@ export default {
     this.model.doctorId = params.doctorId
     this.model.consultingType = params.consultingType
     this.model.consultingTypeId = params.consultingTypeId
-    this.model.isAgain = params.doctorTag === 'againInquiry'
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
       this.doctor = res.data
