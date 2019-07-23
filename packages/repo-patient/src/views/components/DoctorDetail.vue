@@ -26,9 +26,9 @@
             <img src="@src/assets/images/ic_tuwen.png" />
             <p>图文咨询</p>
             <p>
-              <tempate v-if="doctor.consultationList[0]">
+              <template v-if="doctor.consultationList[0]">
                 <span class="money">{{ doctor.consultationList[0].money === 0 ? '免费' : doctor.consultationList[0].money + '/次' }}</span>
-              </tempate>
+              </template>
               <template v-else>
                 <span>暂未开放</span>
               </template>
@@ -38,9 +38,9 @@
             <img src="@src/assets/images/ic_video_open.png" />
             <p>视频咨询</p>
             <p>
-              <tempate v-if="doctor.consultationList[1]">
+              <template v-if="doctor.consultationList[1]">
                 <span class="money">{{ doctor.consultationList[1].money === 0 ? '免费' : doctor.consultationList[1].money + '/次' }}</span>
-              </tempate>
+              </template>
               <template v-else>
                 <span>暂未开放</span>
               </template>
