@@ -22,7 +22,7 @@
 
       <van-cell-group>
         <van-field :value="model.familyName" @click="checkFamily" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
-        <van-popup position="bottom" v-model="showFamily">
+        <van-popup position="bottom" v-model.trim="showFamily">
           <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
         </van-popup>
       </van-cell-group>
@@ -36,19 +36,19 @@
           required
           rows="5"
           type="textarea"
-          v-model="model.illnessDescribe"
+          v-model.trim="model.illnessDescribe"
         />
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="附件上传">
-          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="attachment" />
+          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model.trim="attachment" />
         </van-field>
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="是否复诊">
-          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isAgain" />
+          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isAgain" />
         </van-field>
       </van-cell-group>
 
@@ -68,7 +68,7 @@
           />
 
           <peace-dialog :visible.sync="showAddIllnessHistory">
-            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
+            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model.trim="model.confirmIllness"></AddIllnessHistory>
           </peace-dialog>
         </van-cell-group>
 
@@ -83,13 +83,13 @@
             required
             right-icon="arrow"
           />
-          <van-popup position="bottom" v-model="showConfirmTime">
+          <van-popup position="bottom" v-model.trim="showConfirmTime">
             <van-datetime-picker :max-date="new Date()" :value="new Date()" @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
           </van-popup>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field autosize label="既往用药" placeholder="请输入既往用药" required rows="2" type="textarea" v-model="model.pastDrug" />
+          <van-field autosize label="既往用药" placeholder="请输入既往用药" required rows="2" type="textarea" v-model.trim="model.pastDrug" />
         </van-cell-group>
 
         <van-cell-group>
@@ -105,26 +105,26 @@
           />
 
           <peace-dialog :visible.sync="showAddAllergicHistory">
-            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model="model.allergicHistory"></AddAllergicHistory>
+            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model.trim="model.allergicHistory"></AddAllergicHistory>
           </peace-dialog>
         </van-cell-group>
 
         <van-cell-group>
           <van-field label="是否怀孕" required>
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isPregnancy" />
+            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isPregnancy" />
           </van-field>
         </van-cell-group>
 
         <van-cell-group>
           <van-field label="是否不良反应" required>
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
+            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" />
           </van-field>
           <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
         </van-cell-group>
 
         <van-cell-group>
           <van-field label="本次复诊情况" required>
-            <van-radio-group slot="right-icon" v-model="model.againType">
+            <van-radio-group slot="right-icon" v-model.trim="model.againType">
               <van-radio name="1">本院同医生复诊</van-radio>
               <van-radio name="2">本院非同医生复诊</van-radio>
               <van-radio name="3">非本院复诊</van-radio>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="footer">
-      <van-checkbox v-model="model.informedConsent">
+      <van-checkbox v-model.trim="model.informedConsent">
         <span>我已阅读并同意</span>
         <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
