@@ -156,6 +156,10 @@ import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
 import InformedConsent from '@src/views/components/InformedConsent'
 
+import Vue from 'vue'
+import { Dialog } from 'vant'
+Vue.use(Dialog)
+
 export default {
   components: {
     AddAllergicHistory,
@@ -388,8 +392,30 @@ export default {
               }
             })
           }, 1000)
+
+          return peace.util.alert(res.msg)
         }
-        peace.util.alert(res.msg)
+        if (res.data.errorState === 2) {
+          return Dialog.confirm({
+            title: '提示',
+            message: res.msg,
+            confirmButtonText: '继续咨询'
+          })
+            .then(() => {
+              // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+              setTimeout(() => {
+                this.$router.push({
+                  name: '/message/index',
+                  params: {
+                    sessionId: 'p2p-' + this.model.doctorId
+                  }
+                })
+              }, 1000)
+            })
+            .catch(() => {
+              // on cancel
+            })
+        }
       })
     }
   }
