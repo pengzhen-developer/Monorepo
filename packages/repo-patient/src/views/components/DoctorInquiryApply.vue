@@ -247,34 +247,34 @@ export default {
       this.doctor = res.data
     })
 
-    peace.service.patient.getMyFamilyList().then(res => {
-      this.source.familyList = res.data
-      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
+    peace.service.patient.getMyFamilyList().then(familyList => {
+      this.source.familyList = familyList.data
 
-      const family = res.data.find(item => item.relation === '本人')
-      if (family) {
-        this.model.familyName = family.name
-        this.model.familyId = family.familyId
-        this.model.allergicHistory = family.allergicHistory
+      if (familyList.length !== 0) {
+        peace.service.patient.getLast({ doctorId: params.doctorId }).then(lastFamily => {
+          // 1. 优先选中最后一个就诊人
+          // 2. 其次选中关系为本人
+          // 3. 最后选中家人列表的第一个就诊人
+          const family = this.source.familyList.find(
+            item => item.id === lastFamily.data.familyId || item.relation === '本人' || item.familyId === this.source.familyList[0].id
+          )
 
-        // 判断否能显示是否怀孕
-        if (family.sex === '女' && family.age >= 14) {
-          this.showPregnancy = true
-        } else {
-          this.showPregnancy = false
-        }
-      } else if (res.data.length > 0) {
-        this.model.familyName = res.data[0].name
-        this.model.familyId = res.data[0].familyId
-        this.model.allergicHistory = res.data[0].allergicHistory
+          if (family) {
+            this.model.familyName = family.name
+            this.model.familyId = family.familyId
+            this.model.allergicHistory = family.allergicHistory
 
-        // 判断否能显示是否怀孕
-        if (res.data[0].sex === '女' && res.data[0].age >= 14) {
-          this.showPregnancy = true
-        } else {
-          this.showPregnancy = false
-        }
+            // 判断否能显示是否怀孕
+            if (family.sex === '女' && family.age >= 14) {
+              this.showPregnancy = true
+            } else {
+              this.showPregnancy = false
+            }
+          }
+        })
       }
+
+      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
     })
   },
 
