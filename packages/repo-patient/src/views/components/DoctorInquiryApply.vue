@@ -60,8 +60,8 @@
             :value="model.confirmIllness"
             @click="showAddIllnessHistory = true"
             clickable
-            label="确认病种"
-            placeholder="请选择诊断"
+            label="确认疾病"
+            placeholder="请选择疾病"
             readonly
             required
             right-icon="arrow"
@@ -109,7 +109,7 @@
           </peace-dialog>
         </van-cell-group>
 
-        <van-cell-group>
+        <van-cell-group v-show="showPregnancy">
           <van-field label="是否怀孕" required>
             <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isPregnancy" />
           </van-field>
@@ -171,12 +171,14 @@ export default {
     return {
       sending: false,
 
-      // 显示确认病种
+      // 显示确认疾病
       showAddAllergicHistory: false,
       // 显示过敏史
       showAddIllnessHistory: false,
       // 显示知情同意书
       showInformedConsent: false,
+      // 显示是否怀孕
+      showPregnancy: true,
 
       // 显示家人弹框
       showFamily: false,
@@ -253,9 +255,25 @@ export default {
       if (family) {
         this.model.familyName = family.name
         this.model.familyId = family.familyId
+        this.model.allergicHistory = family.allergicHistory
+
+        // 判断否能显示是否怀孕
+        if (family.sex === '女' && family.age >= 14) {
+          this.showPregnancy = true
+        } else {
+          this.showPregnancy = false
+        }
       } else if (res.data.length > 0) {
         this.model.familyName = res.data[0].name
         this.model.familyId = res.data[0].familyId
+        this.model.allergicHistory = res.data[0].allergicHistory
+
+        // 判断否能显示是否怀孕
+        if (res.data[0].sex === '女' && res.data[0].age >= 14) {
+          this.showPregnancy = true
+        } else {
+          this.showPregnancy = false
+        }
       }
     })
   },
@@ -289,6 +307,13 @@ export default {
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
         this.model.allergicHistory = familyObject.allergicHistory
+
+        // 判断否能显示是否怀孕
+        if (familyObject.sex === '女' && familyObject.age >= 14) {
+          this.showPregnancy = true
+        } else {
+          this.showPregnancy = false
+        }
       }
     },
 
@@ -334,7 +359,7 @@ export default {
       // 复诊必填验证
       if (this.model.isAgain) {
         if (!this.model.confirmIllness) {
-          return peace.util.alert('请确认病种')
+          return peace.util.alert('请确认疾病')
         }
         if (!this.model.confirmTime) {
           return peace.util.alert('请确认时间')
