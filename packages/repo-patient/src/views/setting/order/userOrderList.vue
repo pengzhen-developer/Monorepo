@@ -28,7 +28,7 @@
                         </div>
                         <div class="small" v-if="item.orderType=='register'">
                             <div class="small-time">
-                                就诊人：张三
+                                就诊人：{{item.familyName}}
                             </div>
                         </div>
                         <div class="small" v-if="item.orderType=='register'">
