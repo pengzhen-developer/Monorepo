@@ -170,6 +170,19 @@ export function getMyPrescripList(params) {
 }
 
 /**
+ * 关注医生
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function attention(params) {
+  const attention = 'client/v1/Patient/attention'
+
+  return peace.http.post(attention, params)
+}
+
+/**
  * 获取我的医生列表
  *
  * @export
@@ -240,5 +253,7 @@ export default {
   /** 获取订单详情 */
   getOrderDetail,
   /** 获取最后一个就诊人 */
-  getLast
+  getLast,
+  /** 关注医生 */
+  attention
 }
