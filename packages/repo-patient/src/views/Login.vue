@@ -9,7 +9,7 @@
       </van-field>
       <van-number-keyboard :maxlength="6" :show="showKeyboardForSms" @blur="showKeyboardForSms = false" v-model="smsCode" />
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入爱家医</van-button>
+      <van-button @click="signIn" class="login-form-sign-in" type="primary">登录/注册</van-button>
     </div>
 
     <!-- <div class="login-footer">
