@@ -1,7 +1,8 @@
 <template>
   <div class="patient-detail">
     <div class="header" v-if="patientInfo">
-      <img :src="patientInfo.userInfo.wxHeadUrl" class="header-img" />
+      <img v-if="patientInfo.userInfo.wxHeadUrl" :src="patientInfo.userInfo.wxHeadUrl" class="header-img" />
+      <img v-else src="~@/assets/images/ic_head portrait.png" class="header-img" />
 
       <div class="header-info">
         <div class="first-line">
@@ -16,11 +17,11 @@
           </div>
         </div>
         <div class="second-line">
-          <span class="label">微信昵称</span>
-          <span class="value">{{ patientInfo.userInfo.wxName }}</span>
+          <span class="label" v-if="patientInfo.userInfo.wxName">微信昵称</span>
+          <span class="value" v-if="patientInfo.userInfo.wxName">{{ patientInfo.userInfo.wxName }}</span>
 
-          <span class="label">联系方式</span>
-          <span class="value">{{ patientInfo.userInfo.tel }}</span>
+          <span class="label" v-if="patientInfo.userInfo.tel">联系方式</span>
+          <span class="value" v-if="patientInfo.userInfo.tel">{{ patientInfo.userInfo.tel }}</span>
         </div>
       </div>
     </div>
