@@ -69,7 +69,7 @@ export default {
         this.dialog.data = row
       } else {
         this.dialog.title = '新增患教'
-        this.dialog.data = {}
+        this.dialog.data = ''
       }
       this.dialog.visible = true
     },
