@@ -453,7 +453,7 @@ export default {
         closable: true,
         name: row.patientRemarks || row.patientName || row.patientWxName,
         title: row.patientRemarks || row.patientName || row.patientWxName,
-        path: '/patient/myPatient/patientDetail/' + row.patientId,
+        path: '/patient/patientDetail/' + row.patientId,
         icon: 'icon_nav_icon_homecopy'
       }
 
