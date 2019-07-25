@@ -14,7 +14,7 @@
         <p class="center-title">
           {{ data.systolicPressure }} / {{ data.diastolicPressure }}
           <span class="center-title-unit">mmHg</span>
-          <el-tag :type="getTagType(data.resultType)" class="center-title-tag">{{ getTagText(data.resultType) }}</el-tag>
+          <el-tag :type="getTagType(data.resultType)" class="center-title-tag">{{ data.result }}</el-tag>
         </p>
         <p class="center-text" v-if="this.type === '2'">{{ data.createdTime }}</p>
       </div>
