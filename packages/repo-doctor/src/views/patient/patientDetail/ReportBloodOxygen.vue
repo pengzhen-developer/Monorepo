@@ -35,7 +35,7 @@
               </div>
             </div>
             <div class="report-recent-row">
-              <label>心率：</label>
+              <label>脉率：</label>
               <span>{{ view.model.pulseRate }}次/分</span>
             </div>
             <div class="report-recent-row">
@@ -156,7 +156,7 @@ export default {
           return `<span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血氧浓度：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.bloodOxygen}%</span>
                   <br/>
-                  <span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">心率：</span> 
+                  <span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">脉率：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.pulseRate}次/分</span>
                   <br/>
                   <span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">分析结果：</span> 
