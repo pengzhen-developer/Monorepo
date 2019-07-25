@@ -42,11 +42,11 @@ export default {
         case '0': // 暂无数据
           return ''
         case '1': // 偏低
-          return 'danger'
+          return 'warning'
         case '2': // 正常
           return ''
         case '3': // 供养不足
-          return 'warning'
+          return 'danger'
         default:
           return 'info'
       }
