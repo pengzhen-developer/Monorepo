@@ -37,7 +37,7 @@
             </div>
             <div class="report-recent-row">
               <label>测量状态：</label>
-              <span>{{ view.model.measureState === '1' ? '空腹' : '饭后' }}</span>
+              <span>{{ view.model.measureState === '1' ? '空腹' : '餐后' }}</span>
             </div>
             <div class="report-recent-row">
               <label>分析结果：</label>
