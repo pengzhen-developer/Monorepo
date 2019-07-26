@@ -117,12 +117,11 @@ export default {
 
 <style lang="scss" scoped>
 .private-doctor {
-  background: rgba(0, 198, 174, 1);
   height: 17px;
   font-size: 12px;
-  font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: rgba(255, 255, 255, 1);
+  background: #00c6ae;
+  color: #ffffff;
   line-height: 17px;
   padding: 0 4px;
 

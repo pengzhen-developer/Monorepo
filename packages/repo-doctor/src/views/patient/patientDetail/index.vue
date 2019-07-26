@@ -1,8 +1,8 @@
 <template>
   <div class="patient-detail">
     <div class="header" v-if="patientInfo">
-      <img v-if="patientInfo.userInfo.wxHeadUrl" :src="patientInfo.userInfo.wxHeadUrl" class="header-img" />
-      <img v-else src="~@/assets/images/ic_head portrait.png" class="header-img" />
+      <img :src="patientInfo.userInfo.wxHeadUrl" class="header-img" v-if="patientInfo.userInfo.wxHeadUrl" />
+      <img class="header-img" src="~@/assets/images/ic_head portrait.png" v-else />
 
       <div class="header-info">
         <div class="first-line">
@@ -132,8 +132,8 @@ export default {
           color: rgba(153, 153, 153, 1);
         }
         .private-doctor {
-          background: #504c4f;
-          color: #f7f9b3;
+          background: #00c6ae;
+          color: #ffffff;
           padding: 3px 5px 2px 5px;
           border-radius: 4px;
           font-size: 12px;

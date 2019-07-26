@@ -244,10 +244,10 @@ export default {
 
   .private-doctor {
     background: #00c6ae;
+    color: #ffffff;
     height: 17px;
     font-size: 12px;
     font-weight: 400;
-    color: white;
     line-height: 17px;
     padding: 0 4px;
     margin: 0 10px 0 0;

@@ -19,7 +19,7 @@
       </el-form-item>
     </el-form>
 
-    <hr>
+    <hr />
 
     <peace-table pagination ref="table">
       <peace-table-column label="问诊单号" prop="inquiry_no" width="180"></peace-table-column>
@@ -152,12 +152,11 @@ export default {
 
 <style lang="scss" scoped>
 .private-doctor {
-  background: rgba(0, 198, 174, 1);
+  background: #00c6ae;
+  color: #ffffff;
   height: 17px;
   font-size: 12px;
-  font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: rgba(255, 255, 255, 1);
   line-height: 17px;
   padding: 0 4px;
 
