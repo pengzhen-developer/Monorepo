@@ -3,11 +3,10 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field placeholder="请输入手机号" ref="tel" v-model="tel"></van-field>
-      <van-field :value="smsCode" @touchstart.native.stop="showKeyboard" clickable placeholder="请输入验证码" readonly>
+      <van-field pattern="\d*" placeholder="请输入手机号" ref="tel" type="number" v-model="tel"></van-field>
+      <van-field clickable maxlength="6" pattern="\d*" placeholder="请输入验证码" type="number" v-model="smsCode">
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
-      <van-number-keyboard :maxlength="6" :show="showKeyboardForSms" @blur="showKeyboardForSms = false" v-model="smsCode" />
 
       <van-button @click="signIn" class="login-form-sign-in" type="primary">登录/注册</van-button>
     </div>
