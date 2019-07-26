@@ -100,29 +100,44 @@ export default {
     this.doctorInfo = this.params.doctorInfo
     this.date = this.params.date
     console.log(this.params)
-    peace.service.patient.getMyFamilyList().then(res => {
-      this.fmlList = res.data || []
-      this.fml = this.fmlList[0] || {}
-      this.fmlDic =
-        this.fmlList.map(item => {
-          return {
-            name: item.name,
-            subname: '(' + item.relation + ')'
-          }
-        }) || []
-    })
+    this.initFml();
   },
   methods: {
+    initFml(){
+      peace.service.patient.getMyFamilyList().then(res => {
+        this.fmlList = res.data || []
+        this.fml = this.fmlList[0] || {}
+        this.fmlDic =
+                this.fmlList.map(item => {
+                  return {
+                    name: item.name,
+                    subname: '(' + item.relation + ')'
+                  }
+                }) || []
+      })
+    },
     zdConfirm(val) {
       this.order.zdType = val
       this.showZdDic = false
     },
     showFmlDicFn() {
-      if (this.fmlList.length) {
-        this.showFmlDic = true
-      } else {
-        peace.util.alert('请先前往个人中心添加就诊人')
-      }
+      peace.service.patient.getMyFamilyList().then(res => {
+        this.fmlList = res.data || []
+        this.fmlDic =
+                this.fmlList.map(item => {
+                  return {
+                    name: item.name,
+                    subname: '(' + item.relation + ')'
+                  }
+                }) || [];
+
+        if (this.fmlList.length) {
+          this.showFmlDic = true
+        } else {
+          peace.util.alert('请先前往个人中心添加就诊人')
+        }
+
+      })
     },
     fmlConfirm(item, index) {
       this.fml = this.fmlList[index]
