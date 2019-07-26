@@ -27,7 +27,7 @@
             <div class="report-recent-row">
               <div class="report-recent-col">
                 <label>血压：</label>
-                <span>{{ view.model.diastolicPressure + '/' + view.model.systolicPressure }} mmHg</span>
+                <span>{{ view.model.systolicPressure + '/' + view.model.diastolicPressure }} mmHg</span>
               </div>
 
               <div class="report-recent-col">
