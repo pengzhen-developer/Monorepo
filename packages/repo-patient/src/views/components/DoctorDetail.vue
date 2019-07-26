@@ -145,6 +145,10 @@
         </van-tab>
       </van-tabs>
     </div>
+
+    <div class="footer" v-if="canShowReserve">
+      <van-button @click="redictToReserve" type="primary">预约挂号</van-button>
+    </div>
   </div>
 </template>
 
@@ -243,6 +247,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.footer {
+  height: 44px;
+  margin-top: 10px;
+
+  .van-button {
+    width: 100%;
+  }
+}
+
 .doctor-detail {
   height: 100%;
   display: flex;
