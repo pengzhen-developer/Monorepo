@@ -5,7 +5,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
-      <div class="form">
+      <div class="form form-for-family">
         <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
         <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
         <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
@@ -23,7 +23,7 @@
     </template>
 
     <template v-else>
-      <div class="form">
+      <div class="form form-for-family">
         <van-field error label="姓名" placeholder="请输入姓名" required v-model="model.name" />
         <van-field label="身份证号" placeholder="请输入身份证号" required v-model="model.idcard" />
         <van-field @click="showPopupRelation" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
@@ -244,15 +244,11 @@ export default {
     }
   }
 }
-.form {
-  /deep/ .van-field {
-    &__control {
-      color: #666;
-      text-align: right;
-      &::placeholder {
-        color: #ccc;
-      }
-    }
+/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
+  color: #666;
+  text-align: right;
+  &::placeholder {
+    color: #ccc;
   }
 }
 </style>
