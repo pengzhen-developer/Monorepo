@@ -224,9 +224,9 @@ export default {
         // 过敏史
         allergicHistory: '',
         // 是否怀孕
-        isPregnancy: false,
+        isPregnancy: undefined,
         // 是否不良反应
-        isBadEffect: false,
+        isBadEffect: undefined,
         isBadEffectText: '',
         // 本次复诊情况
         againType: '3',
