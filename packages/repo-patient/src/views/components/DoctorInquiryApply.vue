@@ -111,13 +111,20 @@
 
         <van-cell-group v-show="showPregnancy">
           <van-field label="是否怀孕" required>
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isPregnancy" />
+            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isPregnancy">
+              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false" style="margin: 0;">否</van-radio>
+            </van-radio-group>
           </van-field>
         </van-cell-group>
 
         <van-cell-group>
           <van-field label="是否不良反应" required>
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" />
+            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isBadEffect">
+              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false" style="margin: 0;">否</van-radio>
+            </van-radio-group>
+            <!-- <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" /> -->
           </van-field>
           <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
         </van-cell-group>
@@ -237,6 +244,21 @@ export default {
     }
   },
 
+  watch: {
+    'model.isAgain'() {
+      if (this.model.isAgain === false) {
+        this.model.confirmIllness = ''
+        this.model.confirmTime = ''
+        this.model.pastDrug = ''
+        this.model.allergicHistory = ''
+        this.model.isPregnancy = false
+        this.model.isBadEffect = false
+        this.model.isBadEffectText = ''
+        this.model.againType = '3'
+      }
+    }
+  },
+
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.model.doctorId = params.doctorId
@@ -352,9 +374,6 @@ export default {
       if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
         return peace.util.alert('请输入不少于5个字的病情描述')
       }
-      if (this.model.isBadEffect && this.model.isBadEffectText.length <= 5) {
-        return peace.util.alert('请输入不少于5个字的不良反应')
-      }
 
       // 复诊必填验证
       if (this.model.isAgain) {
@@ -369,6 +388,9 @@ export default {
         }
         if (!this.model.allergicHistory) {
           return peace.util.alert('请选择过敏史')
+        }
+        if (this.model.isBadEffect && !this.model.isBadEffectText) {
+          return peace.util.alert('请输入不良反应')
         }
         if (this.model.againType === 0) {
           return peace.util.alert('请选择本次复诊情况')
