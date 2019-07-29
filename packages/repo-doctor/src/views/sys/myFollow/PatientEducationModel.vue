@@ -154,11 +154,9 @@ export default {
 
         if (!title) {
           params.title = this.getTitle(content)
-        } else {
-          params.content = this.removeTitleInContent(title, content)
         }
-
         params.templateHtml = this.getTemplateByContent(params)
+
         if (id) {
           this.$emit('edit', params)
         } else {

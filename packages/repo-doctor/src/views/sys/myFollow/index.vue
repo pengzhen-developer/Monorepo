@@ -84,7 +84,6 @@ export default {
     },
 
     submit(params) {
-      console.log(params)
       peace.service.patient
         .addMyInstruction(params)
         .then(() => {
