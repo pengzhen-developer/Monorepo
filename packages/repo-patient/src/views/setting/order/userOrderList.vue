@@ -119,7 +119,7 @@
                 peace.service.appoint.orderCancel({
                     orderNo: item.orderNo,
                 }).then(res => {
-                    peace.util.alert(res.msg || '取消成功')
+                    peace.util.alert(res.msg || '退号成功')
                     this.getData();
                 })
             },
