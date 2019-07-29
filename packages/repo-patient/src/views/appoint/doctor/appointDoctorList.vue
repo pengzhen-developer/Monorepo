@@ -206,7 +206,11 @@ export default {
         })
     },
     checkTime(obj) {
-      const item = this.dateList[obj.index] || {}
+      const item = this.dateList[obj.index] || {};
+
+      if (item.disabled) {
+        return
+      }
       this.activeIndex = obj.index;
       this.getData(item.date ? item.year + '-' + item.date : '')
     },
