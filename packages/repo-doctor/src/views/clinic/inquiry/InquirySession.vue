@@ -2,7 +2,7 @@
   <div class="inquiry-session">
     <div class="header">
       <div class="header-description">
-        <span class="name">{{ $store.getters['inquiry/inquiryInfo'].familyName }}</span>
+        <span class="name">{{ $store.getters['inquiry/patientInfo'].familyName }}</span>
       </div>
       <div class="header-control">
         <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
@@ -50,21 +50,21 @@
 
       <el-radio-group v-model="over.state">
         <el-radio label="已解决" style="margin: 0 0 20px 0;">已解决</el-radio>
-        <br>
+        <br />
         <el-radio label="未解决" style="margin: 0 0 20px 0;">未解决</el-radio>
-        <br>
+        <br />
 
         <el-radio-group style="margin: 0 0 5px 20px;" v-if="over.state === '未解决' " v-model="over.description">
           <el-radio label="不对症" style="margin: 0 0 20px 0;">不对症</el-radio>
-          <br>
+          <br />
           <el-radio label="缺少诊疗依据" style="margin: 0 0 20px 0;">缺少诊疗依据</el-radio>
-          <br>
+          <br />
           <el-radio label="其他">其他</el-radio>
           <el-input placeholder style="display: inline-block; width: 150px" v-if="over.description === '其他'" v-model="over.otherDescription"></el-input>
         </el-radio-group>
       </el-radio-group>
 
-      <hr>
+      <hr />
 
       <div style="text-align: center;">
         <el-button @click="over.visible = false" type>取消</el-button>
