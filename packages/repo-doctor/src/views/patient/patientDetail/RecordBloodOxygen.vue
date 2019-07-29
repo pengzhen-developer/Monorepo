@@ -39,16 +39,10 @@ export default {
   methods: {
     getTagType(resultType) {
       switch (resultType) {
-        case '0': // 暂无数据
-          return ''
-        case '1': // 偏低
-          return 'warning'
         case '2': // 正常
           return ''
-        case '3': // 供养不足
-          return 'danger'
         default:
-          return 'info'
+          return 'warning'
       }
     },
 
