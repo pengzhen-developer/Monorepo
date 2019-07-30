@@ -95,6 +95,7 @@ export default {
       }
 
       const parentDom = parseToDom(content)
+
       if (title === parentDom.firstElementChild.innerHTML) {
         parentDom.removeChild(parentDom.firstElementChild)
         return parentDom.innerHTML
@@ -154,7 +155,15 @@ export default {
 
         if (!title) {
           params.title = this.getTitle(content)
+        } else {
+          params.content = this.removeTitleInContent(title, content)
         }
+
+        if (!params.content) {
+          this.article.content = ''
+          return this.$message.warning('请输入详细内容，标题和内容第一行不能相同！')
+        }
+
         params.templateHtml = this.getTemplateByContent(params)
 
         if (id) {

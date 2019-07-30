@@ -53,6 +53,7 @@ const generateRequest = (params, call) => {
  */
 const formatImgSrc = (content, uploadApi) => {
   const srcArray = getImageSrcArray(content)
+  console.log(srcArray)
   return axios.all(generateRequest(srcArray, uploadApi)).then(
     axios.spread((...args) => {
       const srcArr = args.map(val => val.data.fileName)
