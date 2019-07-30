@@ -96,8 +96,19 @@ export default {
 
   watch: {
     '$store.state.inquiry.session': {
-      handler(newValue) {
-        if (newValue && newValue.content && newValue.content.patientInfo && newValue.content.patientInfo.familyId) {
+      handler(newValue, oldValue) {
+        if (
+          oldValue === undefined ||
+          (newValue &&
+            newValue.content &&
+            newValue.content.patientInfo &&
+            newValue.content.patientInfo.familyId &&
+            oldValue &&
+            oldValue.content &&
+            oldValue.content.patientInfo &&
+            oldValue.content.patientInfo.familyId &&
+            oldValue.content.patientInfo.familyId !== newValue.content.patientInfo.familyId)
+        ) {
           const params = { familyId: newValue.content.patientInfo.familyId }
 
           peace.service.health.getOneHealth(params).then(res => {
