@@ -230,7 +230,7 @@ export function onUpdateSession(session) {
 
         if (session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
           // 结束会诊时， 关闭所有的通知
-          $peace.consultationVideoComponent.closeNotify()
+          $peace.consultationVideoComponent && $peace.consultationVideoComponent.closeNotify()
         }
       }
 
