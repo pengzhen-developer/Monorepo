@@ -7,10 +7,8 @@
       </el-button-group>
     </div>
 
-    <hr>
-
     <!-- 我发起的 -->
-    <div :key="source.action.OUT" v-if="view.action === source.action.OUT">
+    <div :key="source.action.OUT" class="content" v-if="view.action === source.action.OUT">
       <el-form :model="view.outModel" inline>
         <el-form-item label="邀请医生">
           <el-input placeholder v-model="view.outModel.toDoctorName"></el-input>
@@ -28,7 +26,7 @@
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="患者姓名" prop="familyName"></peace-table-column>
@@ -50,7 +48,7 @@
     </div>
 
     <!-- 邀请我的 -->
-    <div :key="source.action.IN" v-if="view.action === source.action.IN">
+    <div :key="source.action.IN" class="content" v-if="view.action === source.action.IN">
       <el-form :model="view.inModel" inline>
         <el-form-item label="申请医生">
           <el-input placeholder v-model="view.inModel.fromDoctorName"></el-input>
@@ -68,7 +66,7 @@
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="患者姓名" prop="familyName"></peace-table-column>
@@ -238,9 +236,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   text-align: center;
+  margin: -20px -20px 0;
+  background: #f9f9f9;
+  padding: 20px;
+}
+
+.content {
+  padding: 20px 0 0 0;
 }
 </style>
 

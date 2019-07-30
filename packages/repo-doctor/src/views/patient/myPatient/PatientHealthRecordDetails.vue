@@ -5,7 +5,7 @@
         <span class="name">{{ details.name }}</span>
         <span class="sex" v-if="details.sex">
           <i class="el-icon-male" v-if="details.sex === '男'"></i>
-          <i class="el-icon-male" v-else></i>
+          <i class="el-icon-female" v-else></i>
         </span>
         <span class="age" v-if="details.age">{{ details.age }}岁</span>
         <span class="relation">{{ details.relation }}</span>

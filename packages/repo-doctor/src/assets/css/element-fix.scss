@@ -29,15 +29,23 @@
 }
 
 .el-form {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 20px;
+  }
+
   &.el-form--inline {
+    .el-form-item__content > .el-input.el-input--mini,
+    .el-form-item__content > .el-select.el-select--mini {
+      width: 130px;
+    }
+
     .el-input {
-      width: 140px;
       box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
       border-radius: 3px;
     }
 
     .el-form-item + .el-form-item {
-      margin-left: 40px;
+      margin-left: 20px;
     }
   }
 }

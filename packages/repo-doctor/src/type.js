@@ -28,13 +28,13 @@ export const SYSTEM = {
  */
 export const USER = {
   /** user info */
-  INFO: 'user.info',
+  INFO: 'pc.user.info',
 
   /** user token */
-  TOKEN: 'user.token',
+  TOKEN: 'pc.user.token',
 
   /** 最近操作功能列表 */
-  TAB_LIST: 'user.tabList'
+  TAB_LIST: 'pc.user.tabList'
 }
 
 /**
@@ -153,6 +153,47 @@ export const CONSULTATION = {
   }
 }
 
+/**
+ * 健康档案
+ */
+export const HEALTH = {
+  HEALTH_TYPE: {
+    血氧: 'oxyGenData',
+    血压: 'bloodPressuredata',
+    血糖: 'bloodSugarData',
+    体脂: 'bodyFat',
+    病历: 'case',
+    处方: 'prescribe'
+  },
+
+  TYPE: {
+    血糖: '1',
+    血压: '2',
+    心电: '3',
+    体温: '4',
+    血氧: '5',
+    体重: '6',
+    运动: '7',
+    体脂: '8',
+    睡眠: '9'
+  },
+
+  SERVICE_ID: {
+    血压监测月报: '301',
+    血糖监测月报: '302',
+    睡眠监测月报: '309',
+    运动监测月报: '310',
+    体重监测月报: '311',
+    血压监测周报: '304',
+    血糖监测周报: '305',
+    睡眠监测周报: '306',
+    运动监测周报: '317',
+    体重监测周报: '318',
+    完美档案: '704',
+    无: '-'
+  }
+}
+
 export default {
   /** 系统消息类型常量 */
   SYSTEM,
@@ -164,5 +205,8 @@ export default {
   INQUIRY,
 
   /** 会诊类型常量 */
-  CONSULTATION
+  CONSULTATION,
+
+  /** 健康档案 */
+  HEALTH
 }

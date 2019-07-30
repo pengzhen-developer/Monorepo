@@ -74,8 +74,8 @@
         </peace-table-column>
         <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
         <peace-table-column label="到期时间" prop="validityTime"></peace-table-column>
-        <peace-table-column label="购买时间" prop="purchaseTime" width="150px"></peace-table-column>
-        <peace-table-column label="接单时间" prop="acceptTime" width="150px"></peace-table-column>
+        <peace-table-column label="购买时间" prop="purchaseTime" width="160px"></peace-table-column>
+        <peace-table-column label="接单时间" prop="acceptTime" width="160px"></peace-table-column>
         <peace-table-column label="服务期间问诊次数" prop="inquiryCount" width="80"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
@@ -114,9 +114,9 @@
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
         </peace-table-column>
         <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
-        <peace-table-column label="购买时间" prop="purchaseTime" width="150px"></peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value" label="接单状态" prop="orderStatus" width="150px"></peace-table-column>
-        <peace-table-column label="操作时间" prop="acceptTime" width="150px"></peace-table-column>
+        <peace-table-column label="购买时间" prop="purchaseTime" width="160px"></peace-table-column>
+        <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value" label="接单状态" prop="orderStatus" width="100px"></peace-table-column>
+        <peace-table-column label="操作时间" prop="acceptTime" width="160px"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="showReceiveDialog(scope.row)" type="text">查看详情</el-button>
@@ -453,7 +453,7 @@ export default {
         closable: true,
         name: row.patientRemarks || row.patientName || row.patientWxName,
         title: row.patientRemarks || row.patientName || row.patientWxName,
-        path: '/patient/myPatient/patientDetail/' + row.patientId,
+        path: '/patient/patientDetail/' + row.patientId,
         icon: 'icon_nav_icon_homecopy'
       }
 

@@ -71,7 +71,6 @@ export default {
       setTimeout(() => {
         this.down = 60
         this.isDown = false
-
         window.clearInterval(shutDownInterval)
       }, 60000)
 
@@ -82,11 +81,12 @@ export default {
       peace.service.login
         .sendSms(param)
         .then(res => {
+          this.$refs.pwd.focus()
           peace.validate.isEmpty('')
           peace.util.alert(res.msg, null, peace.type.SYSTEM.MESSAGE.SUCCESS)
         })
         .catch(() => {
-          this.down = 0
+          this.down = 60
           this.isDown = false
           window.clearInterval(shutDownInterval)
         })

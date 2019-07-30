@@ -14,7 +14,7 @@
       </el-form-item>
     </el-form>
 
-    <hr>
+    <hr />
 
     <peace-table pagination ref="table">
       <peace-table-column label="处方编号" prop="prescriptionNo" width="180"></peace-table-column>
@@ -22,7 +22,7 @@
       <peace-table-column label="性别" prop="patient_sex"></peace-table-column>
       <peace-table-column label="年龄" prop="patient_age"></peace-table-column>
       <peace-table-column label="身份证号" prop="idcard" width="200"></peace-table-column>
-      <peace-table-column align="right" label="处方状态" prop="prescription_status"></peace-table-column>
+      <peace-table-column align="right" label="处方状态" prop="prescription_status" width="140"></peace-table-column>
       <peace-table-column label="开具时间" prop="created_time" width="180"></peace-table-column>
       <peace-table-column fixed="right" label="操作">
         <template slot-scope="scope">

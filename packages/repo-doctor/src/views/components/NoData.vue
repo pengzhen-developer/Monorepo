@@ -1,12 +1,39 @@
 <template>
   <div class="no-data">
-    <img src="~@src/assets/images/inquiry/ic_no one.png">
-    <span>暂无记录</span>
+    <img :src="imgDictionary[type]" />
+    <span>{{ text }}</span>
   </div>
 </template>
 
 <script>
-export default {}
+const imgDictionary = {
+  default: require('@src/assets/images/inquiry/ic_no one.png'),
+  health: require('@src/assets/images/inquiry/img_xizunkong.png')
+}
+
+export default {
+  props: {
+    type: {
+      type: String,
+      default() {
+        return 'default'
+      }
+    },
+
+    text: {
+      type: String,
+      default() {
+        return '暂无记录'
+      }
+    }
+  },
+
+  data() {
+    return {
+      imgDictionary
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

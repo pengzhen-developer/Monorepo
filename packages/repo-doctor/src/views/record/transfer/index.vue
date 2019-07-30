@@ -7,9 +7,7 @@
       </el-button-group>
     </div>
 
-    <hr>
-
-    <div key="out" v-if="view.model.referral_type === source.state['我转诊的']">
+    <div class="content" key="out" v-if="view.model.referral_type === source.state['我转诊的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转入医生">
           <el-input placeholder v-model="view.model.docName"></el-input>
@@ -27,7 +25,7 @@
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
@@ -47,7 +45,7 @@
       </peace-table>
     </div>
 
-    <div key="in" v-if="view.model.referral_type === source.state['转给我的']">
+    <div class="content" key="in" v-if="view.model.referral_type === source.state['转给我的']">
       <el-form :model="view.model" inline>
         <el-form-item label="转出机构">
           <el-input placeholder v-model="view.model.hosName"></el-input>
@@ -57,7 +55,7 @@
         </el-form-item>
       </el-form>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="患者姓名" prop="family_name"></peace-table-column>
@@ -193,19 +191,12 @@ export default {
 <style lang="scss" scoped>
 .header {
   text-align: center;
+  margin: -20px -20px 0;
+  background: #f9f9f9;
+  padding: 20px;
 }
 
-.character {
-  display: inline-flex;
-
-  &:before {
-    content: '';
-    background: #e7e7e1;
-    width: 15px;
-    height: 1px;
-    position: relative;
-    top: -4px;
-    margin: 0 10px;
-  }
+.content {
+  padding: 20px 0 0 0;
 }
 </style>

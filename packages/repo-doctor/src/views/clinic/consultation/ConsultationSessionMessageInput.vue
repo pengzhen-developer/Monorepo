@@ -165,7 +165,6 @@ export default {
 
     snedConsultSuggest() {
       // 验证当前频道信息
-      // 验证当前频道信息
       if (this.$store.getters['consultation/consultInfo'].channelFromId) {
         const message = '您参与的视频会话其他参与者还未挂断，填写会诊意见将关闭视频会话'
         const confirmOption = { type: 'warning' }
