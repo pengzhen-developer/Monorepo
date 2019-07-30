@@ -224,9 +224,9 @@ export default {
         // 过敏史
         allergicHistory: '',
         // 是否怀孕
-        isPregnancy: false,
+        isPregnancy: undefined,
         // 是否不良反应
-        isBadEffect: false,
+        isBadEffect: undefined,
         isBadEffectText: '',
         // 本次复诊情况
         againType: '3',
@@ -277,9 +277,20 @@ export default {
           // 1. 优先选中最后一个就诊人
           // 2. 其次选中关系为本人
           // 3. 最后选中家人列表的第一个就诊人
-          const family = this.source.familyList.find(
-            item => item.id === lastFamily.data.familyId || item.relation === '本人' || item.familyId === this.source.familyList[0].id
-          )
+
+          let family = undefined
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.id === lastFamily.data.familyId)
+          }
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.relation === '本人')
+          }
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.familyId === this.source.familyList[0].id)
+          }
 
           if (family) {
             this.model.familyName = family.name
