@@ -227,6 +227,11 @@ export function onUpdateSession(session) {
             peace.util.alert(session.lastMsg.content.data.showTextInfo.doctorClientText)
           }
         }
+
+        if (session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
+          // 结束会诊时， 关闭所有的通知
+          $peace.consultationVideoComponent.closeNotify()
+        }
       }
 
       // 将新 sessions 更新到 sessions store
