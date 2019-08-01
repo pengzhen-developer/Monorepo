@@ -14,7 +14,7 @@
         <p class="center-title">
           {{ data.bloodOxygen }}
           <span class="center-title-unit">%</span>
-          <el-tag :type="getTagType(data.resultType)" class="center-title-tag">{{ getTagText(data.resultType) }}</el-tag>
+          <el-tag :title="data.result" :type="getTagType(data.resultType)" class="center-title-tag">{{ data.result }}</el-tag>
         </p>
         <p class="center-text" v-if="this.type === '2'">{{ data.createdTime }}</p>
       </div>
@@ -39,16 +39,10 @@ export default {
   methods: {
     getTagType(resultType) {
       switch (resultType) {
-        case '0': // 暂无数据
-          return ''
-        case '1': // 偏高
-          return 'danger'
         case '2': // 正常
           return ''
-        case '3': // 供养不足
-          return 'warning'
         default:
-          return 'info'
+          return 'warning'
       }
     },
 
@@ -56,8 +50,8 @@ export default {
       switch (resultType) {
         case '0': // 暂无数据
           return '暂无'
-        case '1': // 偏高
-          return '偏高'
+        case '1': // 偏低
+          return '偏低'
         case '2': // 正常
           return '正常'
         case '3': // 供养不足
@@ -122,6 +116,12 @@ export default {
       .center-title-tag {
         border-radius: 10px;
         margin: 0 0 0 10px;
+        display: inline-block;
+        max-width: 70px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        vertical-align: middle;
       }
     }
 

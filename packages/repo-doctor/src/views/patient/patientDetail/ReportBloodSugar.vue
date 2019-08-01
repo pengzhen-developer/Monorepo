@@ -37,7 +37,7 @@
             </div>
             <div class="report-recent-row">
               <label>测量状态：</label>
-              <span>{{ view.model.measureState === '1' ? '空腹' : '饭后' }}</span>
+              <span>{{ view.model.measureState === '1' ? '空腹' : '餐后' }}</span>
             </div>
             <div class="report-recent-row">
               <label>分析结果：</label>
@@ -109,7 +109,7 @@
         </peace-table-column>
         <peace-table-column label="分析结果" prop="result"></peace-table-column>
         <peace-table-column label="检测时间" prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源" prop="measureTime"></peace-table-column>
+        <peace-table-column label="来源" prop="measureMethod"></peace-table-column>
       </peace-table>
     </div>
   </div>

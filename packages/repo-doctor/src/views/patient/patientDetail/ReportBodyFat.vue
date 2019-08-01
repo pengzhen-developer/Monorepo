@@ -36,7 +36,8 @@
             </div>
             <div class="report-recent-row">
               <label>体重：</label>
-              <span>{{ view.model.weight }}kg</span>
+              <span v-if="view.model.weight">{{ view.model.weight }}kg</span>
+              <span v-else>——</span>
             </div>
             <div class="report-recent-row">
               <label>分析结果：</label>

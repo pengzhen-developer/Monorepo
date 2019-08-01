@@ -93,12 +93,12 @@
       <!-- 体检报告 -->
       <!-- 其它 -->
       <template v-else-if="type === '4' || type === '5' || type === '6'">
-        <NoData></NoData>
+        <NoData type="health"></NoData>
       </template>
     </template>
 
     <template v-else>
-      <NoData></NoData>
+      <NoData type="health"></NoData>
     </template>
   </div>
 </template>

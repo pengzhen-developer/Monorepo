@@ -5,7 +5,7 @@
         <div class="card-title">
           <span class="name">{{ item.familyName }}</span>
           <span class="sex" v-if="item.familySex">
-            <i :class="[item.familySex  ? 'el-icon-male' : 'el-icon-female']"></i>
+            <i :class="[item.familySex === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
           </span>
           <span class="age" v-if="item.familyAge">{{ item.familyAge }}岁</span>
           <el-tag>{{ item.familyRelation }}</el-tag>

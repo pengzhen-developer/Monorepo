@@ -8,6 +8,7 @@
 
     <peace-table pagination ref="table">
       <el-table-column align="left" label="患教标题" prop="title"></el-table-column>
+      <el-table-column align="left" label="疾病" prop="diseaseTag" width="200"></el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -69,7 +70,7 @@ export default {
         this.dialog.data = row
       } else {
         this.dialog.title = '新增患教'
-        this.dialog.data = {}
+        this.dialog.data = ''
       }
       this.dialog.visible = true
     },
@@ -84,7 +85,6 @@ export default {
     },
 
     submit(params) {
-      console.log(params)
       peace.service.patient
         .addMyInstruction(params)
         .then(() => {

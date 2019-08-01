@@ -10,10 +10,10 @@
     </div>
     <div class="info-row">
       <div class="info-row-label">
-        <span>疾病标签</span>
+        <span>疾病</span>
       </div>
       <div class="info-row-content">
-        <el-input placeholder="请输入疾病标签（疾病名称）" v-model="article.diseaseTag"></el-input>
+        <el-input :maxlength="25" placeholder="请输入疾病标签（疾病名称），最多25个字符" v-model="article.diseaseTag"></el-input>
       </div>
     </div>
     <div class="info-row">
@@ -158,7 +158,13 @@ export default {
           params.content = this.removeTitleInContent(title, content)
         }
 
+        if (!params.content) {
+          this.article.content = ''
+          return this.$message.warning('请输入详细内容，标题和内容第一行不能相同！')
+        }
+
         params.templateHtml = this.getTemplateByContent(params)
+
         if (id) {
           this.$emit('edit', params)
         } else {
