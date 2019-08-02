@@ -88,7 +88,15 @@
       <br />
 
       <el-form :model="consultSuggestDialog.model" label-width="80px">
-        <el-form-item label="会诊意见">
+        <el-form-item label="会诊所见">
+          <el-input :rows="8" maxlength="1000" placeholder="请填写会诊所见情况" type="textarea" v-model="consultSuggestDialog.model.consultFind"></el-input>
+
+          <label class="msg">最多可以输入1000字，还可以输入 {{ summaryMaxLength }} 字</label>
+        </el-form-item>
+        <el-form-item label="目前诊断">
+          <el-input placeholder="请选择" v-model="consultSuggestDialog.model.consultDiagnose"></el-input>
+        </el-form-item>
+        <el-form-item label="建议">
           <el-input
             :rows="8"
             maxlength="1000"
@@ -251,9 +259,11 @@ export default {
     },
 
     saveConsultSuggest() {
-      if (this.consultSuggestDialog.model.consultSuggest) {
+      if (this.consultSuggestDialog.model.consultSuggest || this.consultSuggestDialog.model.consultDiagnose || this.consultSuggestDialog.model.consultFind) {
         const params = {
           consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
+          consultDiagnose: this.consultSuggestDialog.model.consultDiagnose,
+          consultFind: this.consultSuggestDialog.model.consultFind,
           consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
 

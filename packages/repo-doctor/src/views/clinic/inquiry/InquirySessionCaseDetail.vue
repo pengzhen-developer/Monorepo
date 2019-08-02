@@ -3,7 +3,7 @@
     <div class="record-no">No.{{ internalData.case_no }}</div>
     <div class="record-title">
       <span>{{ internalData.netHospital_name }}</span>
-      <br>
+      <br />
       <span>门(急)诊病历</span>
     </div>
     <div class="record-info">
@@ -124,6 +124,30 @@
         </div>
         <div class="info-row-content">
           <div v-html="data.summary  || '无' "></div>
+        </div>
+      </div>
+      <div
+        class="info-row"
+        v-if="internalData.Inspection_index && 
+             (internalData.Inspection_index.temperature ||
+              internalData.Inspection_index.weight ||
+              internalData.Inspection_index.heart_rate)
+      "
+      >
+        <div class="info-row-label">
+          <span>其他检查</span>
+        </div>
+        <div class="info-row-content spec-row">
+          <div class="info-row two-cols">
+            <div class="info-row-label">谷丙转氨酶(ALT)</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.temperature || '- ' }} IU/ml</div>
+            <div class="info-row-label">谷草转氨酶(AST)</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.weight || '- ' }} IU/ml</div>
+          </div>
+          <div class="info-row two-cols">
+            <div class="info-row-label">HBV-DNA</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.heart_rate || '- ' }} IU/ml</div>
+          </div>
         </div>
       </div>
     </div>

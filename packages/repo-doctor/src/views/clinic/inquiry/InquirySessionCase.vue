@@ -9,6 +9,14 @@
 
     <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="100px" ref="form">
       <el-row>
+        <el-form-item label="写病历">
+          <span slot="label">写病历</span>
+          <el-select v-model="medical.type">
+            <el-option :key="type.label" :label="type.label" :value="type.value" v-for="type in typeOptions"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
         <el-form-item label="就诊时间" prop="visit_date">
           <span slot="label">就诊时间</span>
           <span>{{ medical.model.visit_date }}</span>
@@ -136,6 +144,28 @@
         <el-form-item label="医嘱小结" prop="summary">
           <span slot="label">医嘱小结</span>
           <el-input placeholder v-model="medical.model.summary"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row v-if="medical.type === 2">
+        <el-form-item label="其他检查" prop="summary">
+          <span slot="label">其他检查</span>
+          <div class="inspect small-text">
+            <div class="item">
+              <span>谷丙转氨酶(ALT)</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.temperature"></el-input>
+              <span>IU/ml</span>
+            </div>
+            <div class="item">
+              <span>谷草转氨酶(AST)</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.weight"></el-input>
+              <span>IU/ml</span>
+            </div>
+            <div class="item">
+              <span>HBV-DNA</span>
+              <el-input placeholder v-model="medical.model.Inspection_index.heart_rate"></el-input>
+              <span>IU/ml</span>
+            </div>
+          </div>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center;">
@@ -292,6 +322,7 @@ export default {
             More: ''
           }
         },
+        type: 1,
 
         rules: {
           visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
@@ -300,6 +331,7 @@ export default {
           diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
         }
       },
+      typeOptions: [{ value: 1, label: '通用病历模板' }, { value: 2, label: '肝病病历模板' }],
 
       dialog: {
         visible: false,
@@ -550,6 +582,11 @@ export default {
   justify-content: space-between;
 
   margin: 0 0 5px 0;
+
+  &.small-text {
+    white-space: nowrap;
+    font-size: 12px;
+  }
 
   .item {
     margin: 0 5px 0 0;
