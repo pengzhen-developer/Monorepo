@@ -224,7 +224,8 @@ export default {
     goDoctorAppointPage(item) {
       let json = peace.util.encode({
         doctorId: item.doctorInfo.doctorId,
-        hospitalCode: item.doctorInfo.nethospitalId
+        hospitalCode: item.doctorInfo.nethospitalId,
+        time: this.activeIndex == 'all' ? '' : this.dateList[this.activeIndex].date
       })
 
       this.$router.push(`../appointDoctorSelect/${json}`)
