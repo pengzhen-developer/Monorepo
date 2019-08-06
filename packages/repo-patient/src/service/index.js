@@ -14,6 +14,7 @@ import patient from './modules/patient'
 import doctor from './modules/doctor'
 import hospital from './modules/hospital'
 import appoint from './modules/appoint'
+import diagnose from './modules/diagnose'
 
 export default {
   IM,
@@ -24,4 +25,5 @@ export default {
   doctor,
   hospital,
   appoint,
+  diagnose,
 }

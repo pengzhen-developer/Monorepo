@@ -81,6 +81,10 @@ export default {
           json = peace.util.encode({date: new Date()})
           this.$router.push(`/record/recordCondition/${json}`)
           break
+        case 'default':
+          json = peace.util.encode({date: new Date()})
+          this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
+          break;
         default:
           peace.util.alert('暂未开放')
           // _f.goMenuPage();

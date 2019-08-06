@@ -356,6 +356,19 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/record/recordHome.vue')
+        },
+        {
+          path: '/diagnose/select/diagnoseSelectBody/:json',
+          name: '/diagnose/select/diagnoseSelectBody',
+          meta: {
+            keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '选择症状',
+              back: true
+            }
+          },
+          component: () => import('@src/views/diagnose/select/diagnoseSelectBody.vue')
         }
       ]
     },
