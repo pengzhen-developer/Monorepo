@@ -55,11 +55,13 @@ export default {
       data: [],
       showNum: 100,
       params:{},
+      type: 'recommendHsp' // 默认值
     }
   },
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params || {};
+    this.type = params.type || this.type;
     this.data = this.items || [];
     this.showNum = this.max;
 
@@ -73,28 +75,27 @@ export default {
   },
   methods: {
     goMenuPage(item) {
-      if(this.params.type == 'appoint'){
+      if(this.type == 'appoint'){
         let json = peace.util.encode({ netHospitalId: item.netHospitalId, id: 'appointment', Date: new Date() })
 
         this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
         return;
       }
 
-      if(this.params.type == 'recommendHsp'){
-        let json = peace.util.encode({netHospitalId: item.netHospitalId})
-
-        this.$router.push(`/hospital/HospitalHome/${json}`)
-        return;
-      }
-
-      if(this.params.type == 'report'){
+      if(this.type == 'report'){
         $peace.$recordCondition.formData.hsp = item;
         $peace.$recordCondition.canSubmitProcesses();
         this.$router.go(-1);
         $peace.$recordCondition = null;
         return;
       }
+        // 没有type值时 默认为recommendHsp
+      if(this.type == 'recommendHsp'){
+          let json = peace.util.encode({netHospitalId: item.netHospitalId})
 
+          this.$router.push(`/hospital/HospitalHome/${json}`)
+          return;
+      }
     },
     getHspList(){
       // 推荐医院
