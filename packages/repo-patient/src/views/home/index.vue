@@ -14,7 +14,7 @@
     <!--三方-->
     <div class="panel panel-block panel-clear">
       <div :id="item.id" :key="item.id" :type="item.id" @click="goMenuPage(item,{type:item.id})" class="block-items" v-for="item in data.card">
-        <div :class="['block-items-card', item.icon, item.id == 'appoint' ? '' : 'disabled']">{{item.text}}</div>
+        <div :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">{{item.text}}</div>
       </div>
     </div>
     <div class="panel flex" style="padding-top: 0;padding-bottom:0">
@@ -28,8 +28,8 @@
       </div>
     </div>
     <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="margin-top:0;border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
-    <!--    <van-cell is-link value="常见人群" />-->
-    <!--    <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>-->
+        <van-cell is-link value="常见人群" />
+        <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>
     <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院" />
     <HspPage :items="data.recommendOrgan" :max="2"></HspPage>
   </div>
@@ -38,14 +38,14 @@
 <script>
 import peace from '@src/library'
 import HspPage from '@src/views/hospital/HospitalList'
-// import Humens from '@src/views/diagnose/select/diagnoseSelectHumen'
+import Humens from '@src/views/diagnose/select/diagnoseSelectHumen'
 import DepartPage from '@src/views/hospital/depart/HospitalDepartList'
 
 export default {
   components: {
     HspPage,
-    DepartPage
-    // Humens
+    DepartPage,
+    Humens
   },
   data() {
     return {
@@ -76,6 +76,10 @@ export default {
           break
         case 'userConsult':
           this.$router.push('/setting/userConsultList')
+          break
+        case 'record':
+          json = peace.util.encode({date: new Date()})
+          this.$router.push(`/record/recordCondition/${json}`)
           break
         default:
           peace.util.alert('暂未开放')

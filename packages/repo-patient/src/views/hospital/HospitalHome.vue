@@ -151,7 +151,16 @@ export default {
         return
       }
       if (item.id == 'physical') {
-        peace.util.alert('敬请期待')
+        let json = peace.util.encode({
+          hsp:{
+            netHospitalId: this.hsp.nethospitalInfo.netHospitalId,
+            hospitalName: this.hsp.nethospitalInfo.name
+          },
+          banHsp: true,
+          date: new Date()
+        })
+
+        this.$router.push(`/record/recordCondition/${json}`)
         return
       }
       if (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 2) {

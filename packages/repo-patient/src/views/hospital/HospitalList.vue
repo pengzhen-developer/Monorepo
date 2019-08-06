@@ -63,8 +63,10 @@ export default {
     this.data = this.items || [];
     this.showNum = this.max;
 
-    if (!this.data.length)
+    if (!this.data.length){
       this.getHspList();
+      console.log(this.data)
+    }
   },
   mounted() {
     this.loading = false
@@ -78,10 +80,18 @@ export default {
         return;
       }
 
-      if(this.params.type == 'recommendHsp' || true){
+      if(this.params.type == 'recommendHsp'){
         let json = peace.util.encode({netHospitalId: item.netHospitalId})
 
         this.$router.push(`/hospital/HospitalHome/${json}`)
+        return;
+      }
+
+      if(this.params.type == 'report'){
+        $peace.$recordCondition.formData.hsp = item;
+        $peace.$recordCondition.canSubmitProcesses();
+        this.$router.go(-1);
+        $peace.$recordCondition = null;
         return;
       }
 

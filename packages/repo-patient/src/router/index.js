@@ -330,6 +330,32 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/order/userOrderDetail.vue')
+        },
+        {
+          path: '/record/recordCondition/:json',
+          name: '/record/recordCondition',
+          meta: {
+            keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '查询报告',
+              back: true
+            }
+          },
+          component: () => import('@src/views/record/recordCondition.vue')
+        },
+        {
+          path: '/record/recordHome/:json',
+          name: '/record/recordHome',
+          meta: {
+            // keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '查询报告',
+              back: true
+            }
+          },
+          component: () => import('@src/views/record/recordHome.vue')
         }
       ]
     },

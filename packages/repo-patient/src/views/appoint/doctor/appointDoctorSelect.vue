@@ -129,7 +129,6 @@ export default {
         })
     },
     initSource() {
-      debugger
       this.activeIndex = this.dateList.findIndex(item => {
         // 默认用户已选的日期，如没有则默认第一条非禁用的日期
         return this.params.time ? this.params.time == item.date : !item.disabled
