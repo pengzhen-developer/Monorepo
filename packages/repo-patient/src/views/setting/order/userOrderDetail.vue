@@ -3,7 +3,7 @@
     <!--TOP-->
     <div class="module nmg">
       <div class="strong">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
-      <div class="brief">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}</div>
+      <div class="brief">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}</div>
       <div class="module-body">
         <div
           :class="['label', 'blue', info.orderInfo.cancelState ? '' : 'disabled']"
@@ -123,7 +123,7 @@ export default {
           }
         },
         cfgDic: {
-          1: '可取消订单',
+          1: '号源生效后不可退号',
           2: '不可退当天号源',
           3: '不可退3天内号源'
         }
@@ -157,7 +157,7 @@ export default {
           orderNo: this.info.orderInfo.orderNo
         })
         .then(res => {
-          peace.util.alert(res.msg || '取消成功')
+          peace.util.alert(res.msg || '退号成功')
           this.getData()
         })
     }

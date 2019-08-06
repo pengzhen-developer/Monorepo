@@ -22,7 +22,7 @@
 
       <van-cell-group>
         <van-field :value="model.familyName" @click="checkFamily" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
-        <van-popup position="bottom" v-model="showFamily">
+        <van-popup position="bottom" v-model.trim="showFamily">
           <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
         </van-popup>
       </van-cell-group>
@@ -36,19 +36,19 @@
           required
           rows="5"
           type="textarea"
-          v-model="model.illnessDescribe"
+          v-model.trim="model.illnessDescribe"
         />
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="附件上传">
-          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model="attachment" />
+          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model.trim="attachment" />
         </van-field>
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="是否复诊">
-          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isAgain" />
+          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isAgain" />
         </van-field>
       </van-cell-group>
 
@@ -60,26 +60,36 @@
             :value="model.confirmIllness"
             @click="showAddIllnessHistory = true"
             clickable
-            label="确认病种"
-            placeholder="请选择诊断"
+            label="确认疾病"
+            placeholder="请选择疾病"
             readonly
+            required
             right-icon="arrow"
           />
 
           <peace-dialog :visible.sync="showAddIllnessHistory">
-            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model="model.confirmIllness"></AddIllnessHistory>
+            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model.trim="model.confirmIllness"></AddIllnessHistory>
           </peace-dialog>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field :value="model.confirmTime" @click="showConfirmTime = true" clickable label="确认时间" placeholder="请选择时间" readonly right-icon="arrow" />
-          <van-popup position="bottom" v-model="showConfirmTime">
-            <van-datetime-picker @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
+          <van-field
+            :value="model.confirmTime"
+            @click="showConfirmTime = true"
+            clickable
+            label="确认时间"
+            placeholder="请选择时间"
+            readonly
+            required
+            right-icon="arrow"
+          />
+          <van-popup position="bottom" v-model.trim="showConfirmTime">
+            <van-datetime-picker :max-date="new Date()" :value="new Date()" @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
           </van-popup>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field autosize label="既往用药" placeholder="请输入既往用药" rows="2" type="textarea" v-model="model.pastDrug" />
+          <van-field autosize label="既往用药" placeholder="请输入既往用药" required rows="2" type="textarea" v-model.trim="model.pastDrug" />
         </van-cell-group>
 
         <van-cell-group>
@@ -90,30 +100,38 @@
             label="过敏史"
             placeholder="请选择过敏史"
             readonly
+            required
             right-icon="arrow"
           />
 
           <peace-dialog :visible.sync="showAddAllergicHistory">
-            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model="model.allergicHistory"></AddAllergicHistory>
+            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model.trim="model.allergicHistory"></AddAllergicHistory>
           </peace-dialog>
         </van-cell-group>
 
-        <van-cell-group>
-          <van-field label="是否怀孕">
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isPregnancy" />
+        <van-cell-group v-show="showPregnancy">
+          <van-field label="是否怀孕" required>
+            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isPregnancy">
+              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false" style="margin: 0;">否</van-radio>
+            </van-radio-group>
           </van-field>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="是否不良反应">
-            <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model="model.isBadEffect" />
+          <van-field label="是否不良反应" required>
+            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isBadEffect">
+              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false" style="margin: 0;">否</van-radio>
+            </van-radio-group>
+            <!-- <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" /> -->
           </van-field>
           <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="本次复诊情况">
-            <van-radio-group slot="right-icon" v-model="model.againType">
+          <van-field label="本次复诊情况" required>
+            <van-radio-group slot="right-icon" v-model.trim="model.againType">
               <van-radio name="1">本院同医生复诊</van-radio>
               <van-radio name="2">本院非同医生复诊</van-radio>
               <van-radio name="3">非本院复诊</van-radio>
@@ -124,7 +142,7 @@
     </div>
 
     <div class="footer">
-      <van-checkbox v-model="model.informedConsent">
+      <van-checkbox v-model.trim="model.informedConsent">
         <span>我已阅读并同意</span>
         <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
       </van-checkbox>
@@ -145,6 +163,10 @@ import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
 import InformedConsent from '@src/views/components/InformedConsent'
 
+import Vue from 'vue'
+import { Dialog } from 'vant'
+Vue.use(Dialog)
+
 export default {
   components: {
     AddAllergicHistory,
@@ -156,12 +178,14 @@ export default {
     return {
       sending: false,
 
-      // 显示确认病种
+      // 显示确认疾病
       showAddAllergicHistory: false,
       // 显示过敏史
       showAddIllnessHistory: false,
       // 显示知情同意书
       showInformedConsent: false,
+      // 显示是否怀孕
+      showPregnancy: true,
 
       // 显示家人弹框
       showFamily: false,
@@ -190,7 +214,7 @@ export default {
         // 附件
         attachment: [],
         // 是否复诊
-        isAgain: false,
+        isAgain: true,
         // 确认疾病(既往史)
         confirmIllness: '',
         // 确认时间
@@ -200,12 +224,12 @@ export default {
         // 过敏史
         allergicHistory: '',
         // 是否怀孕
-        isPregnancy: false,
+        isPregnancy: undefined,
         // 是否不良反应
-        isBadEffect: false,
+        isBadEffect: undefined,
         isBadEffectText: '',
         // 本次复诊情况
-        againType: 0,
+        againType: '3',
         // 知情同意
         informedConsent: false
       },
@@ -220,6 +244,21 @@ export default {
     }
   },
 
+  watch: {
+    'model.isAgain'() {
+      if (this.model.isAgain === false) {
+        this.model.confirmIllness = ''
+        this.model.confirmTime = ''
+        this.model.pastDrug = ''
+        this.model.allergicHistory = ''
+        this.model.isPregnancy = false
+        this.model.isBadEffect = false
+        this.model.isBadEffectText = ''
+        this.model.againType = '3'
+      }
+    }
+  },
+
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.model.doctorId = params.doctorId
@@ -230,18 +269,45 @@ export default {
       this.doctor = res.data
     })
 
-    peace.service.patient.getMyFamilyList().then(res => {
-      this.source.familyList = res.data
-      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
+    peace.service.patient.getMyFamilyList().then(familyList => {
+      this.source.familyList = familyList.data
 
-      const family = res.data.find(item => item.relation === '本人')
-      if (family) {
-        this.model.familyName = family.name
-        this.model.familyId = family.familyId
-      } else if (res.data.length > 0) {
-        this.model.familyName = res.data[0].name
-        this.model.familyId = res.data[0].familyId
+      if (familyList.length !== 0) {
+        peace.service.patient.getLast({ doctorId: params.doctorId }).then(lastFamily => {
+          // 1. 优先选中最后一个就诊人
+          // 2. 其次选中关系为本人
+          // 3. 最后选中家人列表的第一个就诊人
+
+          let family = undefined
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.id === lastFamily.data.familyId)
+          }
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.relation === '本人')
+          }
+
+          if (!family) {
+            family = this.source.familyList.find(item => item.familyId === this.source.familyList[0].id)
+          }
+
+          if (family) {
+            this.model.familyName = family.name
+            this.model.familyId = family.familyId
+            this.model.allergicHistory = family.allergicHistory
+
+            // 判断否能显示是否怀孕
+            if (family.sex === '女' && family.age >= 14) {
+              this.showPregnancy = true
+            } else {
+              this.showPregnancy = false
+            }
+          }
+        })
       }
+
+      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
     })
   },
 
@@ -273,6 +339,14 @@ export default {
       } else {
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
+        this.model.allergicHistory = familyObject.allergicHistory
+
+        // 判断否能显示是否怀孕
+        if (familyObject.sex === '女' && familyObject.age >= 14) {
+          this.showPregnancy = true
+        } else {
+          this.showPregnancy = false
+        }
       }
     },
 
@@ -311,11 +385,27 @@ export default {
       if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
         return peace.util.alert('请输入不少于5个字的病情描述')
       }
-      if (this.model.isBadEffect && this.model.isBadEffectText.length <= 5) {
-        return peace.util.alert('请输入不少于5个字的不良反应')
-      }
-      if (this.model.againType === 0) {
-        return peace.util.alert('请选择本次复诊情况')
+
+      // 复诊必填验证
+      if (this.model.isAgain) {
+        if (!this.model.confirmIllness) {
+          return peace.util.alert('请确认疾病')
+        }
+        if (!this.model.confirmTime) {
+          return peace.util.alert('请确认时间')
+        }
+        if (!this.model.pastDrug) {
+          return peace.util.alert('请输入既往用药')
+        }
+        if (!this.model.allergicHistory) {
+          return peace.util.alert('请选择过敏史')
+        }
+        if (this.model.isBadEffect && !this.model.isBadEffectText) {
+          return peace.util.alert('请输入不良反应')
+        }
+        if (this.model.againType === 0) {
+          return peace.util.alert('请选择本次复诊情况')
+        }
       }
 
       this.uploadHandler().then(() => {
@@ -350,15 +440,39 @@ export default {
         this.sending = false
 
         if (res.data.errorState === 0) {
-          // 跳转消息页
-          this.$router.push({
-            name: '/message/index',
-            params: {
-              sessionId: 'p2p-' + this.model.doctorId
-            }
-          })
+          // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+          setTimeout(() => {
+            this.$router.push({
+              name: '/message/index',
+              params: {
+                sessionId: 'p2p-' + this.model.doctorId
+              }
+            })
+          }, 1000)
+
+          return peace.util.alert(res.msg)
         }
-        peace.util.alert(res.msg)
+        if (res.data.errorState === 2) {
+          return Dialog.confirm({
+            title: '提示',
+            message: res.msg,
+            confirmButtonText: '继续咨询'
+          })
+            .then(() => {
+              // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+              setTimeout(() => {
+                this.$router.push({
+                  name: '/message/index',
+                  params: {
+                    sessionId: 'p2p-' + this.model.doctorId
+                  }
+                })
+              }, 1000)
+            })
+            .catch(() => {
+              // on cancel
+            })
+        }
       })
     }
   }

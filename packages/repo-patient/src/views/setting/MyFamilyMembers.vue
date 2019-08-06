@@ -60,9 +60,9 @@ export default {
       this.dialog.title = '新增家人'
       this.dialog.visible = true
       this.dialog.data = undefined
-    } else {
-      this.get()
     }
+
+    this.get()
   },
 
   methods: {

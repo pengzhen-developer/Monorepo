@@ -108,7 +108,12 @@ export default {
         type: '2'
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allergicHistoryList = res.data.map(item => item.name)
+        this.allergicHistoryList = res.data.map(item => {
+          return {
+            text: item.name,
+            disabled: !!this.allergicHistory.find(temp => temp.value === item.name)
+          }
+        })
 
         this.showAllergicHistory = true
         this.searchAllergicHistory = ''
@@ -119,7 +124,7 @@ export default {
       this.searchAllergicHistory = ''
     },
     onConfirm(value) {
-      this.check({ value: value })
+      this.check({ value: value.text })
       this.onCancel()
     },
 

@@ -52,10 +52,10 @@
             </van-tabbar-item>
           </template>
 
-          <!-- <van-tabbar-item to="/file/index">
-            <i class="van-icon van-icon-gift-card" slot="icon"></i>
+          <van-tabbar-item to="/file/index">
+            <i class="van-icon van-icon-invition" slot="icon"></i>
             <span>健康档案</span>
-          </van-tabbar-item>-->
+          </van-tabbar-item>
 
           <van-tabbar-item to="/setting/index">
             <i class="van-icon van-icon-manager" slot="icon"></i>
@@ -83,7 +83,8 @@ export default {
         const activeDictionary = {
           '/home/index': 0,
           '/message/index': 1,
-          '/setting/index': 2
+          '/file/index': 2,
+          '/setting/index': 3
         }
 
         this.active = activeDictionary[val] || this.active

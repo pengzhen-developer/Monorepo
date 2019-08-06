@@ -16,7 +16,7 @@
               <span>{{ session.content.doctorInfo.doctorTitle }}</span>
             </div>
             <div class="message-item-detail-title-time">
-              <span>{{ session.content.timestamp.toDate().formatDate('HH:mm:ss') }}</span>
+              <span>{{ session.updateTime.toDate().formatDate('HH:mm:ss') }}</span>
             </div>
           </div>
           <div class="message-item-detail-content">
@@ -88,7 +88,7 @@ export default {
 
     selectSession(session) {
       const doneHandler = (error, message) => {
-        console.warn('[ IM ][ getHistoryMsgs ]', new Date(), message)
+        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
         if (error) {
           throw new Error(error)

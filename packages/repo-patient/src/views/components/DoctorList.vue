@@ -74,7 +74,16 @@ export default {
     },
 
     getServiceMoney(doctor) {
-      const moneyList = [doctor.consultationList[0].money, doctor.consultationList[1].money, doctor.consultationList[2].money]
+      let moneyList = []
+
+      for (const key in doctor.consultationList) {
+        if (doctor.consultationList.hasOwnProperty(key)) {
+          const element = doctor.consultationList[key]
+
+          moneyList.push(element.money)
+        }
+      }
+
       const minMoney = Math.min.apply(null, moneyList)
 
       if (minMoney === 0) {
@@ -89,25 +98,30 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[0].status && doctor.consultationList[0].money === 0
+        return doctor.consultationList[0] && doctor.consultationList[0].status && doctor.consultationList[0].money === 0
       } else {
-        return doctor.consultationList[0].status
+        return doctor.consultationList[0] && doctor.consultationList[0].status
       }
     },
 
     canShowVideoInquiry(doctor) {
-      // doctor.consultationList[0] 固定为视频咨询
+      // doctor.consultationList[1] 固定为视频咨询
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[1].status && doctor.consultationList[1].money === 0
+        return doctor.consultationList[1] && doctor.consultationList[1].status && doctor.consultationList[1].money === 0
       } else {
-        return doctor.consultationList[1].status
+        return doctor.consultationList[1] && doctor.consultationList[1].status
       }
     },
 
     redictToDetail(doctorInfo) {
-      const json = peace.util.encode({ doctorId: doctorInfo.doctorId })
+      const params = peace.util.decode(this.$route.params.json)
+      const json = peace.util.encode(
+        Object.assign(params, {
+          doctorId: doctorInfo.doctorId
+        })
+      )
 
       this.$router.push(`/components/doctorDetail/${json}`)
     },
@@ -117,11 +131,14 @@ export default {
         return peace.util.alert('暂未开放，敬请期待')
       }
 
-      const json = peace.util.encode({
-        doctorId: doctorInfo.doctorId,
-        consultingType: doctorConsultation.tag,
-        consultingTypeId: doctorConsultation.consultingTypeId
-      })
+      const params = peace.util.decode(this.$route.params.json)
+      const json = peace.util.encode(
+        Object.assign(params, {
+          doctorId: doctorInfo.doctorId,
+          consultingType: doctorConsultation.tag,
+          consultingTypeId: doctorConsultation.consultingTypeId
+        })
+      )
 
       this.$router.push(`/components/doctorInquiryApply/${json}`)
     }

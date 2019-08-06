@@ -114,7 +114,12 @@ export default {
         type: '1'
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.confirmIllnessList = res.data.map(item => item.name)
+        this.confirmIllnessList = res.data.map(item => {
+          return {
+            text: item.name,
+            disabled: !!this.confirmIllness.find(temp => temp.value === item.name)
+          }
+        })
 
         this.showIllnessHistory = true
         this.searchIllnessHistory = ''
@@ -127,7 +132,7 @@ export default {
     },
 
     onConfirm(value) {
-      this.check({ value: value })
+      this.check({ value: value.text })
       this.onCancel()
     },
 

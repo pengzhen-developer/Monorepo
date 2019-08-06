@@ -514,7 +514,6 @@ export default {
 
       &.system {
         text-align: center;
-        max-width: 80%;
         margin: 6px auto;
 
         .message-body {
@@ -540,6 +539,7 @@ export default {
         display: inline-block;
         padding: 5px 5px;
         border-radius: 6px;
+        max-width: 80%;
 
         &.case,
         &.recipe {

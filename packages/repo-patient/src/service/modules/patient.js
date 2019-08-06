@@ -131,6 +131,19 @@ export function chatDetail(params) {
 }
 
 /**
+ * 获取最后一个就诊人
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getLast(params) {
+  const getLast = 'client/v1/inquiry/getLast'
+
+  return peace.http.post(getLast, params)
+}
+
+/**
  * 取消咨询
  *
  * @export
@@ -154,6 +167,19 @@ export function getMyPrescripList(params) {
   const getMyPrescripList = 'client/v1/Patient/getMyPrescripList'
 
   return peace.http.post(getMyPrescripList, params)
+}
+
+/**
+ * 关注医生
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function attention(params) {
+  const attention = 'client/v1/Patient/attention'
+
+  return peace.http.post(attention, params)
 }
 
 /**
@@ -222,8 +248,12 @@ export default {
   inquiryDetail,
   /** 取消咨询 */
   cancel,
-  /**获取订单列表 */
+  /** 获取订单列表 */
   getOrderList,
-  /**获取订单详情 */
-  getOrderDetail
+  /** 获取订单详情 */
+  getOrderDetail,
+  /** 获取最后一个就诊人 */
+  getLast,
+  /** 关注医生 */
+  attention
 }
