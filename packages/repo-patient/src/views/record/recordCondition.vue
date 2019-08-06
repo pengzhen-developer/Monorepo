@@ -47,26 +47,21 @@
         },
         methods: {
             goFamilyResourcePage(){
-                peace.service.patient.getMyFamilyList().then(res => {
-                    this.fmlList = res.data || []
-                    this.fmlDic =
-                        this.fmlList.map(item => {
-                            return {
-                                name: item.name,
-                                subname: '(' + item.relation + ')'
-                            }
-                        }) || [];
+                !$peace.$recordCondition && ($peace.$recordCondition = this);
 
-                    if (this.fmlList.length) {
-                        this.showFmlDic = true;
-                    } else {
-                        peace.util.alert('请先前往个人中心添加就诊人')
+                this.$router.push({
+                    name: '/setting/myFamilyMembers',
+                    params: {
+                        link: 'recordCondition'
                     }
-                    this.canSubmitProcesses();
                 })
             },
             fmlConfirm(item, index) {
-                console.log(item,index)
+                if(item.id == 'addFamily'){
+                    this.addFamily();
+                    this.showFmlDic = false;
+                    return;
+                }
                 this.formData.family = this.fmlList[index];
                 this.canSubmitProcesses();
                 this.showFmlDic = false;
@@ -85,7 +80,7 @@
                     return;
                 }
 
-                $peace.$recordCondition = this;
+                !$peace.$recordCondition && ($peace.$recordCondition = this);
                 this.$router.push(`/hospital/HospitalList/${json}`)
             },
             goRecordPage(){

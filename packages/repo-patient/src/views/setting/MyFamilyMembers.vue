@@ -84,9 +84,20 @@ export default {
 
     // 查看家人详细信息
     toViewDetails(item) {
-      this.dialog.title = '家人信息'
-      this.dialog.visible = true
-      this.dialog.data = item
+      switch (this.$route.params.link) {
+        case 'recordCondition':
+          $peace.$recordCondition.formData.family = item;
+          $peace.$recordCondition.canSubmitProcesses();
+          $peace.$recordCondition = null;
+          this.$router.go(-1)
+          break;
+        default:
+          this.dialog.title = '家人信息'
+          this.dialog.visible = true
+          this.dialog.data = item
+          break
+      }
+
     },
 
     toAdd() {
