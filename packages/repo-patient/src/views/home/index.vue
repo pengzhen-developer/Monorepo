@@ -28,7 +28,7 @@
       </div>
     </div>
     <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="margin-top:0;border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
-        <van-cell is-link value="常见人群" />
+        <van-cell  @click="goMenuPage({},{type:'crowdLists'})" is-link value="常见人群" />
         <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>
     <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院" />
     <HspPage :items="data.recommendOrgan" :max="2"></HspPage>
@@ -84,6 +84,10 @@ export default {
         case 'default':
           json = peace.util.encode({date: new Date()})
           this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
+          break;
+        case 'crowdLists':
+          json = peace.util.encode({date: new Date()})
+          this.$router.push(`/diagnose/select/diagnoseSelectHumen/${json}`)
           break;
         default:
           peace.util.alert('暂未开放')

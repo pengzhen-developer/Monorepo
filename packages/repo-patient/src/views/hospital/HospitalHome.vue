@@ -48,7 +48,7 @@
       <!--                    </div>-->
       <!--                </div>-->
       <!--            </div>-->
-      <van-notice-bar background="#fff" color="#999" left-icon="volume-o">{{hsp.notices[0]}}</van-notice-bar>
+      <van-notice-bar background="#fff" color="#999" left-icon="volume-o" v-if="hsp.notices[0]">{{hsp.notices[0].content}}</van-notice-bar>
       <!---->
       <!--业务-->
       <div class="panel panel-block panel-block-s" style="margin-top: 0;padding-left: 10px">

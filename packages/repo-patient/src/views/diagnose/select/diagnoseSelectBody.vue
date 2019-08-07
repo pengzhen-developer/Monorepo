@@ -58,10 +58,25 @@
                 })
             },
             onItemClick(data){
+                let json = {};
 
+                this.activeId = data.id;
+                json = peace.util.encode({
+                    id: data.id,
+                    title: data.name,
+                    date: new Date()
+                })
+                this.$router.push(`/diagnose/diagnoseHome/${json}`)
             },
             onNavClick(index){
-                this.mainActiveIndex = index
+                // let json = {};
+                this.mainActiveIndex = index;
+                // if (!this.items[index].children || !this.items[index].children.length){
+                //     json = peace.util.encode({
+                //         id: this.items[index].id
+                //     })
+                //     this.$router.push(`/diagnose/diagnoseHome/${json}`)
+                // }
             },
         }
     }

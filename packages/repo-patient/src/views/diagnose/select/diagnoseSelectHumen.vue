@@ -1,60 +1,58 @@
 <template>
-    <div :class="{'mg': true,'module': max == items.length}" v-if="data && data.length">
+    <div :class="{'mg': true,'module': Max == Items.length}" v-if="Data && Data.length">
         <div class="grid-two">
             <div class="grid-left">
                 <div class="bg-card"
-                     @click="goMenuPage"
+                     @click="goMenuPage(Data[0])"
                      :type="appraise"
-                     :style="{backgroundImage: 'url(' + data[0].icon + ')'}"
-                     :code="data[0].code">
+                     :style="{backgroundImage: 'url(' + Data[0].icon + ')'}"
+                     :code="Data[0].code">
                     <div class="tit">
-                        {{data[0].text}}
+                        {{Data[0].text}}
                     </div>
-                    <div class="txt" v-for="item in data[0].diseaseLists">
+                    <div class="txt" v-for="(item, index) in Data[0].diseaseLists" :key="index">
                         {{item.name}}
                     </div>
                 </div>
             </div>
             <div class="grid-right">
                 <div class="bg-card"
-                     @click="goMenuPage"
+                     @click="goMenuPage(Data[1])"
                      :type="appraise"
-                     :style="{backgroundImage: 'url(' + data[1].icon + ')'}"
-                     :code="data[1].code">
+                     :style="{backgroundImage: 'url(' + Data[1].icon + ')'}"
+                     :code="Data[1].code">
                     <div class="tit">
-                        {{data[1].text}}
+                        {{Data[1].text}}
                     </div>
-                    <div class="txt" v-for="item in data[1].diseaseLists">
+                    <div class="txt" v-for="(item, index) in Data[1].diseaseLists" :key="index">
                         {{item.name}}
                     </div>
                 </div>
                 <div class="bg-card"
-                     @click="goMenuPage"
+                     @click="goMenuPage(Data[2])"
                      :type="appraise"
-                     :style="{backgroundImage: 'url(' + data[2].icon + ')'}"
-                     :code="data[2].code">
+                     :style="{backgroundImage: 'url(' + Data[2].icon + ')'}"
+                     :code="Data[2].code">
                     <div class="tit">
-                        {{data[2].text}}
+                        {{Data[2].text}}
                     </div>
-                    <div class="txt" v-for="item in data[2].diseaseLists">
+                    <div class="txt" v-for="(item, index) in Data[2].diseaseLists" :key="index">
                         {{item.name}}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="girl-thr" v-if="items && items.length">
+        <div class="girl-thr" v-if="Items && Items.length">
             <div class="bg-card"
-                 @click="goMenuPage"
+                 @click="goMenuPage(item)"
                  data-type="appraise"
-                 v-for="(item,index) in items"
-                 v-if = "index < max"
-                 :code="item.code"
-                 :value="item.text"
+                 v-for="(item,index) in Items"
+                 v-if = "index < Max"
                  :style="{background: itemsMap[index] }">
                 <div class="tit">
                     {{item.text}}
                 </div>
-                <div class="txt" v-for="it in item.diseaseLists">
+                <div class="txt" v-for="(it, index) in item.diseaseLists" :key="index">
                     {{it.name}}
                 </div>
             </div>
@@ -63,6 +61,7 @@
 </template>
 
 <script>
+    import peace from '@src/library'
 
     export default {
         props: {
@@ -104,16 +103,38 @@
                     6:'#FAF8FF',
                     7:'#FAF8FF',
                 },
-                abc:'https://devservice.hp.aijiayi.com/images/icon_02_01_12.png'
+                Data: [],
+                Items: [],
+                Max: 3,
+                Appraise:'appraise'
             }
         },
         created() {
-            console.log(this.items)
-            console.log(this.data)
+            if(this.items.length  && this.data.length){
+                this.Items = this.items;
+                this.Data = this.data;
+                this.Max = this.max;
+                this.Appraise = this.appraise || this.Appraise
+                return;
+            }
+            this.getData();
         },
         methods: {
+            getData(){
+                let me = this;
+                peace.service.diagnose.diagnoseList().then(res => {
+                    me.Items = res.data.crowdLists;
+                    me.Data = res.data.crowdListsDisease;
+                    me.Max =  me.Items.length;
+                })
+            },
             goMenuPage(item) {
-                console.log(item)
+                let json = peace.util.encode({
+                    serviceCode: item.code,
+                    title: item.text,
+                    date: new Date()
+                })
+                this.$router.push(`/diagnose/diagnoseGroup/${json}`)
             },
         }
     }
@@ -123,7 +144,7 @@
     .module{
         background-color: #fff;
         margin: (30px/2) 0;
-        padding: 15px;
+        /*padding: 15px;*/
         font-size: (30px/2);
     }
     .grid-two{

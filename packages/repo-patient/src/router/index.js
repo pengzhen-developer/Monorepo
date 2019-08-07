@@ -369,6 +369,58 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/diagnose/select/diagnoseSelectBody.vue')
+        },
+        {
+          path: '/diagnose/diagnoseHome/:json',
+          name: '/diagnose/diagnoseHome',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '疾病',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/diagnoseHome.vue')
+        },
+        {
+          path: '/diagnose/diagnoseGroup/:json',
+          name: '/diagnose/diagnoseGroup',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '疾病人群',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/diagnoseGroup.vue')
+        },
+        {
+          path: '/diagnose/select/diagnoseSelectHumen/:json',
+          name: '/diagnose/select/diagnoseSelectHumen',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '常见人群',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/select/diagnoseSelectHumen.vue')
+        },
+        {
+          path: '/diagnose/diagnoseName/:json',
+          name: '/diagnose/diagnoseName',
+          meta: {
+            // keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '疾病描述',
+              back: true
+            }
+          },
+          component: () => import('@src/views/diagnose/diagnoseName.vue')
         }
       ]
     },
