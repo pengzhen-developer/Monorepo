@@ -387,8 +387,8 @@
         border-color: #AC91FF;
     }
     .label.label-video{
-        background: #888;
-        border-color: #888;
+        background: #00C6AE;
+        border-color: #00C6AE;
     }
     .load{
         text-align: center;
