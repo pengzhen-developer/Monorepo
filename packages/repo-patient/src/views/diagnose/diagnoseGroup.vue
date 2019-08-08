@@ -46,7 +46,7 @@
                     <div class="card-small">
                         {{item.doctorTitle}}
                             <div :class="['label', 'label-'+it]" v-for="(it, i) in item.serviceList" :key="i">
-                                {{it == 'image' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : '视频'}}
+                                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                             </div>
                     </div>
                 </div>
