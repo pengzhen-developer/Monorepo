@@ -88,24 +88,96 @@
       <br />
 
       <el-form :model="consultSuggestDialog.model" label-width="80px">
-        <el-form-item label="会诊意见">
+        <el-form-item label="会诊所见">
+          <el-input :maxlength="500" :rows="8" placeholder="请填写会诊所见情况" resize="none" type="textarea" v-model="consultSuggestDialog.model.consultFind"></el-input>
+
+          <!-- <label class="msg">最多可以输入1000字，还可以输入 {{ summaryMaxLength }} 字</label> -->
+        </el-form-item>
+        <!-- <el-form-item label="目前诊断">
+          <el-input placeholder="请选择" v-model="consultSuggestDialog.model.consultDiagnose"></el-input>
+        </el-form-item>-->
+        <el-form-item label="目前诊断" prop="diagnose">
+          <span slot="label">目前诊断</span>
+          <template v-if="consultSuggestDialog.model.consultDiagnose && consultSuggestDialog.model.consultDiagnose.length > 0">
+            <el-tag
+              :key="item.id"
+              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+              type="info"
+              v-for="item in consultSuggestDialog.model.consultDiagnose"
+            >{{ item.name }}</el-tag>
+            <el-button @click="showDiagnoseDialog(consultSuggestDialog.model.consultDiagnose)" type="text">修改</el-button>
+          </template>
+
+          <template v-else>
+            <el-button @click="showDiagnoseDialog()" type="text">请选择</el-button>
+          </template>
+        </el-form-item>
+        <el-form-item label="建议">
           <el-input
+            :maxlength="500"
             :rows="8"
-            maxlength="1000"
             placeholder="请填写会诊意见，包括治疗方案、患者与家属关注问题等内容的分析等，提交成功后本次会诊将结束。"
+            resize="none"
             type="textarea"
             v-model="consultSuggestDialog.model.consultSuggest"
           ></el-input>
-
-          <label class="msg">最多可以输入1000字，还可以输入 {{ summaryMaxLength }} 字</label>
         </el-form-item>
         <el-form-item label=" ">
           <div style="text-align: center;">
             <el-button @click="consultSuggestDialog.visible = false" type>取消</el-button>
-            <el-button @click="saveConsultSuggest" type="primary">确定</el-button>
+            <el-button @click="saveConsultSuggest" type="primary">确定并签名</el-button>
           </div>
         </el-form-item>
       </el-form>
+    </peace-dialog>
+    <peace-dialog :visible.sync="diagnoseDialog.visible" append-to-body title="选择诊断">
+      <div style="margin-bottom: 10px">
+        <el-select
+          :remote-method="getPresent"
+          @change="chooseItem"
+          allow-create
+          filterable
+          placeholder="请输入诊断"
+          remote
+          style="width: 100%;"
+          v-model="diagnoseDialog.chooseItem"
+        >
+          <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in diagnoseDialog.source.present_history"></el-option>
+        </el-select>
+      </div>
+
+      <div style="margin: 10px 0;" v-if="diagnoseDialog.chooseData.length > 0">
+        <p>已选诊断</p>
+
+        <div style="margin: 10px 0;">
+          <el-tag
+            :key="item.id"
+            @close="closeItem(item)"
+            closable
+            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+            v-for="item in diagnoseDialog.chooseData"
+          >{{ item.name }}</el-tag>
+        </div>
+      </div>
+
+      <div style="margin: 10px 0;">
+        <p>常见诊断</p>
+
+        <div style="margin: 10px 0;">
+          <el-tag
+            :key="item.id"
+            :type="diagnoseDialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+            @click="chooseItem(item)"
+            style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+            v-for="item in diagnoseDialog.source.IllnessList"
+          >{{ item.name }}</el-tag>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 10px; text-align: center;">
+        <el-button @click="diagnoseDialog.visible = false">取消</el-button>
+        <el-button @click="saveItem" type="primary">保存</el-button>
+      </div>
     </peace-dialog>
   </div>
 </template>
@@ -133,6 +205,17 @@ export default {
         model: {
           consultSuggest: ''
         }
+      },
+      diagnoseDialog: {
+        visible: false,
+
+        chooseData: [],
+        chooseItem: [],
+        source: {
+          // 诊断
+          present_history: [],
+          IllnessList: []
+        }
       }
     }
   },
@@ -148,6 +231,58 @@ export default {
   },
 
   methods: {
+    showDiagnoseDialog(data) {
+      if (data && data.length) {
+        this.diagnoseDialog.chooseData = [...data]
+      }
+
+      this.diagnoseDialog.visible = true
+    },
+
+    getPresent(query) {
+      if (query !== '' && query.length > 0) {
+        const params = { name: query }
+
+        peace.service.patient.getDiseaseInfo(params).then(res => {
+          this.diagnoseDialog.source.present_history = res.data.list
+        })
+      } else {
+        this.diagnoseDialog.source.present_history = []
+      }
+    },
+
+    chooseItem(item) {
+      if (!item.id) {
+        item = {
+          name: item
+        }
+      }
+
+      const index = this.diagnoseDialog.chooseData.findIndex(existItem => existItem.id === item.id && existItem.name === item.name)
+
+      if (index === -1) {
+        this.diagnoseDialog.chooseData.push(item)
+
+        // 选中后， 清空状态
+        this.diagnoseDialog.chooseItem = ''
+        this.diagnoseDialog.present_history = []
+      }
+    },
+
+    closeItem(item) {
+      const index = this.diagnoseDialog.chooseData.findIndex(existItem => existItem === item)
+
+      if (index !== -1) {
+        this.diagnoseDialog.chooseData.splice(index, 1)
+      }
+    },
+
+    saveItem() {
+      this.consultSuggestDialog.model.consultDiagnose = [...this.diagnoseDialog.chooseData]
+
+      this.diagnoseDialog.visible = false
+    },
+
     sendInvited() {
       this.invitedDialog.visible = true
       this.invitedDialog.model.keyword = ''
@@ -251,9 +386,13 @@ export default {
     },
 
     saveConsultSuggest() {
-      if (this.consultSuggestDialog.model.consultSuggest) {
+      if (this.consultSuggestDialog.model.consultSuggest && this.consultSuggestDialog.model.consultDiagnose && this.consultSuggestDialog.model.consultFind) {
+        const diagnose = this.consultSuggestDialog.model.consultDiagnose
+
         const params = {
           consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
+          consultDiagnose: diagnose.map(v => v.name),
+          consultFind: this.consultSuggestDialog.model.consultFind,
           consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
 
@@ -263,9 +402,14 @@ export default {
           this.consultSuggestDialog.visible = false
         })
       } else {
-        $peace.util.alert('请填写会诊意见')
+        $peace.util.alert('请完整填写会诊所见、目前诊断、建议')
       }
     }
+  },
+  created() {
+    peace.service.patient.IllnessList().then(res => {
+      this.diagnoseDialog.source.IllnessList = res.data.list
+    })
   }
 }
 </script>
@@ -332,5 +476,9 @@ export default {
   /deep/ .el-checkbox__label {
     display: none;
   }
+}
+.msg {
+  color: #999;
+  font-size: 12px;
 }
 </style>

@@ -60,7 +60,7 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: 'https://testdoctor.hp.aijiayi.com/'
+    base: 'https://devdoctor.hp.aijiayi.com/'
   },
 
   /**
