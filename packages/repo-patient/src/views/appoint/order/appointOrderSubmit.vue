@@ -166,10 +166,10 @@ export default {
         return
       }
 
-      if (!this.showBtn) {
-        peace.util.alert('请勿重复提交')
-        return;
-      }
+      // if (!this.showBtn) {
+      //   peace.util.alert('请勿重复提交')
+      //   return;
+      // }
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
@@ -188,7 +188,7 @@ export default {
         })
     },
     goPage(data) {
-      this.showBtn = false
+      // this.showBtn = false
 
       let json = peace.util.encode({
         orderInfo: data.orderInfo

@@ -12,7 +12,13 @@
           <div class="card-brief">{{doctor.doctorInfo.hospitalName}}</div>
         </div>
       </div>
-      <div class="outline nmgb">
+      <div class="list" v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
+        <div class="list-items list-vertical-icon">
+          <div class="icon icon_hsp"></div>
+          {{doctor.doctorInfo.hospitalName}}   {{doctor.doctorInfo.deptName}}
+        </div>
+      </div>
+      <div class="outline nmgb" v-if="doctor.consultationList">
         <div class="outline-header">
           <div class="outline-tit">问诊服务</div>
         </div>
@@ -43,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="box">
+    <div class="box"  v-if="doctor.doctorInfo.summary || doctor.doctorInfo.specialSkill">
       <div class="outline nmg">
         <div class="outline-header">
           <div class="outline-tit">擅长</div>
@@ -57,7 +63,7 @@
         <div class="outline-body mh80">{{doctor.doctorInfo.summary || '暂未填写'}}</div>
       </div>
     </div>
-    <div class="time">
+    <div class="time" v-if="doctor.workOnLine || doctor.workUnderLine">
       <van-tabs v-model="activeTabs">
         <van-tab title="线上咨询时间">
           <table class="time-table">
@@ -145,7 +151,6 @@
         </van-tab>
       </van-tabs>
     </div>
-
     <div class="footer" v-if="canShowReserve">
       <van-button @click="redictToReserve" type="primary">预约挂号</van-button>
     </div>
@@ -331,7 +336,7 @@ export default {
   }
   .card-share {
     position: absolute;
-    top: 20px;
+    top: 10px;
     right: 0;
     box-sizing: border-box;
     width: 50px;
@@ -588,5 +593,25 @@ export default {
   .alert .inline {
     display: inline;
   }
+}
+.card .card-small, .card .card-brief{
+  vertical-align: middle;
+}
+.list-items.icon-next::after{
+  content:'';
+  top:17.5px;
+}
+.list-items.list-vertical-icon{
+  padding-left: 25px;
+}
+.icon.icon_hsp{
+  width: 22px;
+  height: 22px;
+}
+.icon.icon_hsp::before{
+  content: '';
+  width: 22px;
+  height: 22px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAARVBMVEVHcEw/0tEq0sgs08lR0dhc0twk08UV079H09Ix08ss0sku08lQ0dhg0N0Z0sE60s4h0sQx0stE0dNS0dhA0tFZ0dsp0sd0T3nWAAAADnRSTlMAvpx5sYbB7jgYTvLVb94/lrUAAAEmSURBVDjLxZXbksIgEESJJhi8oCDw/5/qYLhOYMhubdW2Pp7q6hzBMMaY4FLKF8RBlM8TYoyeBNvlJDfYJTrA+r6HL56VRfPGGm302oTjDJV2eLoD++bvjNj8nTFodkebq82j5nMODfsVhdWwotcM+LWEyc0QfkoZN+MHJJuTZ3XUsyp/b8LzLadsFsJ/cbNANjZ4fkOsvYsjngNsH7WNVaQUmyO81M2VjGqGreHkeXfqiObqpvTgvmeALW4GmodMfBpsHnnGm2nPyMY1Z2xjb27kuWWD9Kye9AP+2LMoD5L5N8+/sOEap67hOf8V/PV5dq/OTWl5Pn4HGyeJ9Nx4p8zL8o7wGl6C2bNCT6h1hK2dgzdkI80AVCfYsjNHgetaZd4+kMcHlqdWnqitHbkAAAAASUVORK5CYII=");
 }
 </style>

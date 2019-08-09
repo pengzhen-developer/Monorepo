@@ -330,6 +330,97 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/order/userOrderDetail.vue')
+        },
+        {
+          path: '/record/recordCondition/:json',
+          name: '/record/recordCondition',
+          meta: {
+            keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '查询报告',
+              back: true
+            }
+          },
+          component: () => import('@src/views/record/recordCondition.vue')
+        },
+        {
+          path: '/record/recordHome/:json',
+          name: '/record/recordHome',
+          meta: {
+            // keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '查询报告',
+              back: true
+            }
+          },
+          component: () => import('@src/views/record/recordHome.vue')
+        },
+        {
+          path: '/diagnose/select/diagnoseSelectBody/:json',
+          name: '/diagnose/select/diagnoseSelectBody',
+          meta: {
+            keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '选择症状',
+              back: true
+            }
+          },
+          component: () => import('@src/views/diagnose/select/diagnoseSelectBody.vue')
+        },
+        {
+          path: '/diagnose/diagnoseHome/:json',
+          name: '/diagnose/diagnoseHome',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '疾病',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/diagnoseHome.vue')
+        },
+        {
+          path: '/diagnose/diagnoseGroup/:json',
+          name: '/diagnose/diagnoseGroup',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '疾病人群',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/diagnoseGroup.vue')
+        },
+        {
+          path: '/diagnose/select/diagnoseSelectHumen/:json',
+          name: '/diagnose/select/diagnoseSelectHumen',
+          meta: {
+              keepAlive: true,
+              auth: true,
+              navbar: {
+                  title: '常见人群',
+                  back: true
+              }
+          },
+          component: () => import('@src/views/diagnose/select/diagnoseSelectHumen.vue')
+        },
+        {
+          path: '/diagnose/diagnoseName/:json',
+          name: '/diagnose/diagnoseName',
+          meta: {
+            // keepAlive: true,
+            auth: true,
+            navbar: {
+              title: '疾病描述',
+              back: true
+            }
+          },
+          component: () => import('@src/views/diagnose/diagnoseName.vue')
         }
       ]
     },
