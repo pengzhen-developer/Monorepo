@@ -1,7 +1,7 @@
 <template>
   <div class="inquiry-patient">
     <div class="header">
-      <img src="~@src/assets/images/inquiry/electronicmedical_icon.png" />
+      <img src="~@src/assets/images/inquiry/electronicmedical_icon.png">
       <span>电子病历</span>
     </div>
 
@@ -11,65 +11,47 @@
           <el-tab-pane class="health" label="健康档单">
             <div class="health-item">
               <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_marry.png" />
-                <h4>婚姻状态：</h4>
+                <img src="~@src/assets/images/inquiry/archives_icon_marry.png">
+                <h4>婚育史：</h4>
               </div>
               <div class="health-item-description">
-                <span>{{ healthRecord.maritalStatus || '暂无' }}</span>
+                <span>暂无</span>
               </div>
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_baby.png" />
-                <h4>生育状态：</h4>
-              </div>
-              <div class="health-item-description">
-                <span>{{ healthRecord.fertilityStatus || '暂无' }}</span>
-              </div>
-            </div>
-            <div class="health-item">
-              <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_marry copy.png" />
+                <img src="~@src/assets/images/inquiry/archives_icon_marry copy.png">
                 <h4>手术和外伤：</h4>
               </div>
               <div class="health-item-description">
-                <span>{{ healthRecord.surgeryTrauma || '暂无' }}</span>
+                <span>暂无</span>
               </div>
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_medical.png" />
+                <img src="~@src/assets/images/inquiry/archives_icon_medical.png">
                 <h4>家族病史：</h4>
               </div>
               <div class="health-item-description">
-                <span>{{ healthRecord.familyHistory || '暂无' }}</span>
+                <span>暂无</span>
               </div>
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_habit.png" />
-                <h4>药物过敏：</h4>
+                <img src="~@src/assets/images/inquiry/archives_icon_allergy.png">
+                <h4>过敏史：</h4>
               </div>
               <div class="health-item-description">
-                <span>{{ healthRecord.drugAllergy || '暂无' }}</span>
+                <span>暂无</span>
               </div>
             </div>
             <div class="health-item">
               <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_allergy.png" />
-                <h4>食物/接触物过敏：</h4>
-              </div>
-              <div class="health-item-description">
-                <span>{{ healthRecord.foodAllergy || '暂无' }}</span>
-              </div>
-            </div>
-            <div class="health-item">
-              <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_habit3.png" />
+                <img src="~@src/assets/images/inquiry/archives_icon_habit.png">
                 <h4>个人习惯：</h4>
               </div>
               <div class="health-item-description">
-                <span>{{ healthRecord.personalHabit || '暂无' }}</span>
+                <span>暂无</span>
               </div>
             </div>
           </el-tab-pane>
@@ -85,30 +67,7 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
-export default {
-  data() {
-    return {
-      healthRecord: {}
-    }
-  },
-
-  watch: {
-    '$store.state.inquiry.session': {
-      handler(newValue) {
-        if (newValue && newValue.content && newValue.content.patientInfo && newValue.content.patientInfo.familyId) {
-          const params = { familyId: newValue.content.patientInfo.familyId }
-
-          peace.service.health.getOneHealth(params).then(res => {
-            this.healthRecord = res.data.personalInfo
-          })
-        }
-      },
-      immediate: true
-    }
-  }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>

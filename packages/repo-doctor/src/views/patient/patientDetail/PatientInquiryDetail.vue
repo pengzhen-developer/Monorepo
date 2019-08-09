@@ -10,8 +10,8 @@
         <div class="info">
           <div class="left">
             <span class="name">{{ inquiry.familyName }}</span>
-            <span class="age" v-if="inquiry.familyAge">
-              <i :class="[inquiry.familyAge === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
+            <span class="age" v-if="inquiry.familySex">
+              <i :class="[inquiry.familySex === '男' ? 'el-icon-male' : 'el-icon-female']"></i>
             </span>
             <span class="age" v-if="inquiry.familyAge">{{ inquiry.familyAge }}岁</span>
             <el-tag>{{ inquiry.familyRelation }}</el-tag>

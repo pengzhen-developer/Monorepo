@@ -144,10 +144,28 @@ export default {
 
   methods: {
     get() {
-      const params = { familyId: this.id, type: this.type }
+      const params = { familyId: this.id, type: this.type, p: 1, size: 9999 }
 
       peace.service.health.allHealthList(params).then(res => {
-        this.healthInfo = res.data.healthInfo
+        // 格式化时间线
+        if (this.type === '1' || this.type === '3') {
+          const data = []
+
+          const time = Array.from(new Set(res.data.list.map(item => item.createdTime)))
+
+          time.forEach(item => {
+            const list = res.data.list.filter(temp => temp.createdTime === item)
+
+            data.push({
+              timeLine: item,
+              list: list
+            })
+          })
+
+          this.healthInfo = data
+        } else {
+          this.healthInfo = res.data.list
+        }
       })
     }
   }

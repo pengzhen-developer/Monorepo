@@ -9,6 +9,15 @@
 
     <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="100px" ref="form">
       <el-row>
+        <el-form-item label="写病历">
+          <span slot="label">写病历</span>
+          <el-select @change="handleChangeType" v-model="medical.type">
+            <el-option key="base" label="通用模板" value></el-option>
+            <el-option :key="type.templateName" :label="type.templateName" :value="type.templateId" v-for="type in typeOptions"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
         <el-form-item label="就诊时间" prop="visit_date">
           <span slot="label">就诊时间</span>
           <span>{{ medical.model.visit_date }}</span>
@@ -136,6 +145,28 @@
         <el-form-item label="医嘱小结" prop="summary">
           <span slot="label">医嘱小结</span>
           <el-input placeholder v-model="medical.model.summary"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row v-if="medical.type === 'ldqonaubvy'">
+        <el-form-item label="其他检查" prop="summary">
+          <span class="primary" slot="label">其他检查</span>
+          <div class="inspect small-text">
+            <div class="item">
+              <span>谷丙转氨酶(ALT)</span>
+              <el-input placeholder v-model="medical.model.ALT"></el-input>
+              <span>IU/ml</span>
+            </div>
+            <div class="item">
+              <span>谷草转氨酶(AST)</span>
+              <el-input placeholder v-model="medical.model.AST"></el-input>
+              <span>IU/ml</span>
+            </div>
+            <div class="item">
+              <span>HBV-DNA</span>
+              <el-input placeholder v-model="medical.model.HBV"></el-input>
+              <span>IU/ml</span>
+            </div>
+          </div>
         </el-form-item>
       </el-row>
       <el-row style="text-align: center;">
@@ -290,8 +321,12 @@ export default {
             weight: '',
             heart_rate: '',
             More: ''
-          }
+          },
+          ALT: '',
+          AST: '',
+          HBV: ''
         },
+        type: '',
 
         rules: {
           visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
@@ -300,6 +335,7 @@ export default {
           diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
         }
       },
+      typeOptions: [{ value: 1, label: '通用病历模板' }, { value: 2, label: '肝病病历模板' }],
 
       dialog: {
         visible: false,
@@ -337,6 +373,7 @@ export default {
   },
 
   created() {
+    this.getOptions()
     peace.service.patient.allergens().then(res => {
       this.dialog.source.allergens = res.data.list
     })
@@ -353,6 +390,28 @@ export default {
   mounted() {},
 
   methods: {
+    handleChangeType(val) {
+      if (!val) return
+      const templateKey = 'templateChangeTips'
+      const currentTemplate = peace.cache.get(templateKey)
+      if (currentTemplate !== val) {
+        this.$alert('肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)', '提示', {
+          confirmButtonText: '知道了'
+        })
+        peace.cache.set(templateKey, val)
+      }
+    },
+
+    getOptions() {
+      peace.service.inquiry.getRecordTemplate().then(res => {
+        const data = res.data.info
+
+        this.typeOptions = data.templateList
+        this.medical.type = data.choseTemplateId
+        this.handleChangeType(this.medical.type)
+      })
+    },
+
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
@@ -407,6 +466,23 @@ export default {
             return
           }
 
+          const alt = this.medical.model.ALT
+          const ast = this.medical.model.AST
+          // const hbv = this.medical.model.HBV
+
+          if (alt && !/^\d+(\.\d{1,1})?$/.test(alt) && parseInt(alt) >= 0 && parseInt(alt) <= 1000) {
+            $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
+            return
+          }
+          if (ast && !/^\d+(\.\d{1,1})?$/.test(ast) && parseInt(ast) >= 0 && parseInt(ast) <= 1000) {
+            $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
+            return
+          }
+          // if (hbv && !/^\d+(\.\d{1,1})?$/.test(hbv)) {
+          //   $peace.util.warning('请输入正确的HBV-DNA(HBV)，最多保留一位小数')
+          //   return
+          // }
+
           const params = {
             inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
             patient_id: this.$store.getters['inquiry/patientInfo'].patientId,
@@ -417,6 +493,11 @@ export default {
             id_card: this.$store.getters['inquiry/patientInfo'].idCard,
 
             ...this.medical.model
+          }
+          // 病历模板
+          const type = this.medical.type
+          if (type) {
+            params.template_id = type
           }
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
@@ -551,6 +632,11 @@ export default {
 
   margin: 0 0 5px 0;
 
+  &.small-text {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
   .item {
     margin: 0 5px 0 0;
 
@@ -577,6 +663,9 @@ export default {
       color: rgba(153, 153, 153, 1);
     }
   }
+}
+.primary {
+  color: $--color-primary;
 }
 </style>
 

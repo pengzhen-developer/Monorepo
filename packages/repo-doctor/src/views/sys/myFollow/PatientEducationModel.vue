@@ -95,7 +95,6 @@ export default {
       }
 
       const parentDom = parseToDom(content)
-
       if (title === parentDom.firstElementChild.innerHTML) {
         parentDom.removeChild(parentDom.firstElementChild)
         return parentDom.innerHTML

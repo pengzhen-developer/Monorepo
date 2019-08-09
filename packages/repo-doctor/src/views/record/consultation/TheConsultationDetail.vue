@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/consultation/${ getState() }.png`" v-if="getState()">
+      <img :src="`./static/images/consultation/${ getState() }.png`" v-if="getState()" />
     </div>
 
     <div class="record-no">
@@ -9,7 +9,7 @@
     </div>
     <div class="record-title">
       <span>{{ internalData.fromHospitalName }}</span>
-      <br>
+      <br />
       <span>会诊单</span>
     </div>
 
@@ -200,6 +200,35 @@
         <el-form>
           <el-row>
             <el-col :span="24">
+              <el-form-item label="会诊所见">
+                <span>{{ internalData.consultFind }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="目前诊断">
+                <span>{{ internalData.consultDiagnose }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="建议">
+                <span slot="label">建议</span>
+                <span>{{ internalData.consultSuggest }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="医生签名">
+                <img :src="internalData.doctorSignImg" alt="医生签名" style="height: 20px" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
               <el-form-item label="开始时间">
                 <span>{{ internalData.consultStartTime }}</span>
               </el-form-item>
@@ -209,13 +238,6 @@
             <el-col :span="24">
               <el-form-item label="结束时间">
                 <span>{{ internalData.consultEndTime }}</span>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="会诊意见">
-                <span>{{ internalData.consultSuggest }}</span>
               </el-form-item>
             </el-col>
           </el-row>

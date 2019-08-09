@@ -14,7 +14,7 @@
         <p class="center-title">
           {{ data.bloodOxygen }}
           <span class="center-title-unit">%</span>
-          <el-tag :type="getTagType(data.resultType)" class="center-title-tag">{{ data.result }}</el-tag>
+          <el-tag :title="data.result" :type="getTagType(data.resultType)" class="center-title-tag">{{ data.result }}</el-tag>
         </p>
         <p class="center-text" v-if="this.type === '2'">{{ data.createdTime }}</p>
       </div>
@@ -116,6 +116,12 @@ export default {
       .center-title-tag {
         border-radius: 10px;
         margin: 0 0 0 10px;
+        display: inline-block;
+        max-width: 70px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        vertical-align: middle;
       }
     }
 
