@@ -147,7 +147,11 @@ export function chooseInviteDoctor(params) {
 export function submitSuggest(params) {
   const submitSuggest = 'client/v1/consult/submitSuggest'
 
-  return peace.http.post(submitSuggest, params)
+  return peace.http.post(submitSuggest, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 export default {

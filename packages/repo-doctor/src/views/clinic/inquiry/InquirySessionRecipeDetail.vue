@@ -5,11 +5,11 @@
       :src="`./static/images/inquiry/${ getPrescriptionState(internalData.Prescription) }.png`"
       class="status-image"
       v-show="getPrescriptionState(internalData.Prescription)"
-    >
+    />
     <div class="pres-no">No.{{ internalData.PrescriptionNo }}</div>
     <div class="pres-title">
       <span>{{ internalData.MedicalInstitutionName }}</span>
-      <br>
+      <br />
       <span>处方笺</span>
     </div>
     <div class="pres-info">
@@ -67,13 +67,13 @@
           <span>医师</span>
         </div>
         <div class="info-row-content">
-          <img :src="internalData.DoctorSignImage" alt="医师签名" v-if="internalData.DoctorSignImage">
+          <img :src="internalData.DoctorSignImage" alt="医师签名" v-if="internalData.DoctorSignImage" />
         </div>
         <div class="info-row-label">
           <span>审方药师</span>
         </div>
         <div class="info-row-content">
-          <img :src="internalData.PrescriptionSign" alt="审方药师签名" v-if="internalData.PrescriptionSign">
+          <img :src="internalData.PrescriptionSign" alt="审方药师签名" v-if="internalData.PrescriptionSign" />
         </div>
       </div>
       <div class="info-row two-cols">
@@ -113,14 +113,14 @@ export default {
   data() {
     return {
       prescriptionState: {
-        未审方: 0,
-        质疑中: 1,
-        申诉中: 2,
-        已通过: 3,
-        已分配: 4,
-        已发药: 5,
-        已拒绝: 6,
-        已作废: 7
+        未审方: '0',
+        质疑中: '1',
+        申诉中: '2',
+        已通过: '3',
+        已分配: '4',
+        已发药: '5',
+        已拒绝: '6',
+        已作废: '7'
       }
     }
   },

@@ -79,31 +79,34 @@
              (internalData.Inspection_index.temperature ||
               internalData.Inspection_index.weight ||
               internalData.Inspection_index.heart_rate ||
-              internalData.Inspection_index.blood_pressure)"
+              internalData.Inspection_index.blood_pressure ||
+              internalData.Inspection_index.More)"
       >
         <div class="info-row-label">
           <span>体检指标</span>
         </div>
         <div class="info-row-content spec-row">
-          <div class="info-row two-cols">
+          <div class="info-row" v-if="internalData.Inspection_index.temperature">
             <div class="info-row-label">体温</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.temperature || '- ' }} 度</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.temperature }} 度</div>
+          </div>
+          <div class="info-row" v-if="internalData.Inspection_index.weight">
             <div class="info-row-label">体重</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.weight || '- ' }} kg</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.weight }} kg</div>
           </div>
-          <div class="info-row two-cols">
+          <div class="info-row" v-if="internalData.Inspection_index.heart_rate">
             <div class="info-row-label">心率</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.heart_rate || '- ' }} bpm</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.heart_rate }} bpm</div>
+          </div>
+          <div class="info-row" v-if="internalData.Inspection_index.blood_pressure">
             <div class="info-row-label">血压</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.blood_pressure || '- ' }} mmHg</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.blood_pressure }} mmHg</div>
+          </div>
+          <div class="info-row" v-if="internalData.Inspection_index.More">
+            <div class="info-row-label">辅助检查</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.More }}</div>
           </div>
         </div>
-      </div>
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>辅助检查</span>
-        </div>
-        <div class="info-row-content">{{ internalData.Inspection_index && internalData.Inspection_index.More || '无' }}</div>
       </div>
       <div class="info-row">
         <div class="info-row-label">
@@ -128,25 +131,26 @@
       </div>
       <div
         class="info-row"
-        v-if="internalData.Inspection_index && 
-             (internalData.Inspection_index.temperature ||
-              internalData.Inspection_index.weight ||
-              internalData.Inspection_index.heart_rate)
-      "
+        v-if="internalData.otherCheck && 
+             (internalData.otherCheck.ALT ||
+              internalData.otherCheck.AST ||
+              internalData.otherCheck.HBV)"
       >
         <div class="info-row-label">
           <span>其他检查</span>
         </div>
         <div class="info-row-content spec-row">
-          <div class="info-row two-cols">
+          <div class="info-row" v-if="internalData.otherCheck.ALT">
             <div class="info-row-label">谷丙转氨酶(ALT)</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.temperature || '- ' }} IU/ml</div>
-            <div class="info-row-label">谷草转氨酶(AST)</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.weight || '- ' }} IU/ml</div>
+            <div class="info-row-content">{{ internalData.otherCheck.ALT }} IU/ml</div>
           </div>
-          <div class="info-row two-cols">
+          <div class="info-row" v-if="internalData.otherCheck.AST">
+            <div class="info-row-label">谷草转氨酶(AST)</div>
+            <div class="info-row-content">{{ internalData.otherCheck.AST }} IU/ml</div>
+          </div>
+          <div class="info-row" v-if="internalData.otherCheck.HBV">
             <div class="info-row-label">HBV-DNA</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.heart_rate || '- ' }} IU/ml</div>
+            <div class="info-row-content">{{ internalData.otherCheck.HBV }} IU/ml</div>
           </div>
         </div>
       </div>
@@ -245,13 +249,14 @@ export default {
     }
     &-content {
       font-size: 12px;
+      width: 80px !important;
     }
   }
 }
 
 .record {
   position: relative;
-  padding: 7px 30px;
+  padding: 7px 20px;
   &-no {
     padding-left: 11px;
     font-size: 14px;
@@ -268,6 +273,9 @@ export default {
   &-info {
     padding: 0 11px 5px 11px;
     border-bottom: 1px dashed #bfbfbf;
+    &:last-of-type {
+      border-bottom: 0;
+    }
   }
 }
 </style>

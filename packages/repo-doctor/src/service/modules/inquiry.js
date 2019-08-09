@@ -101,6 +101,19 @@ export function checkOverInquiry(params) {
 }
 
 /**
+ * 获取病历模板
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getRecordTemplate() {
+  const getRecordTemplate = 'client/v1/Prescribeprescrip/getCaseTemplate'
+
+  return peace.http.post(getRecordTemplate)
+}
+
+/**
  * 发病历
  *
  * @export
@@ -198,6 +211,8 @@ export default {
 
   /** 校验问诊状态 */
   checkOverInquiry,
+  /** 获取病历模板 */
+  getRecordTemplate,
   /** 发病历 */
   addCase,
   /** 获取病历详情 */

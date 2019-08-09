@@ -17,7 +17,7 @@
       <div>
         <span>{{ drug.allergy_history }}</span>
       </div>
-      <hr>
+      <hr />
 
       <h4>
         <span>处方药品</span>
@@ -32,7 +32,7 @@
         <peace-table-column label="用量">
           <template slot-scope="scope">
             {{ scope.row.dic_frequency }}
-            <br>
+            <br />
             一次
             {{ scope.row.consump }} {{ scope.row.unit }}
           </template>
@@ -41,13 +41,13 @@
         <peace-table-column align="center" fixed="right" label="操作" width="80px">
           <template slot-scope="scope">
             <el-button @click="changeDrugToPrescription(scope)" type="text">修改</el-button>
-            <br>
+            <br />
             <el-button @click="removeDrugToPrescription(scope)" type="text">删除</el-button>
           </template>
         </peace-table-column>
       </peace-table>
 
-      <hr>
+      <hr />
 
       <div style="text-align: center;">
         <el-button @click="close">取消</el-button>
@@ -96,8 +96,8 @@
 
         <el-row>
           <el-col :span="8">
-            <el-form-item label="单次剂量" prop="consump">
-              <el-input placeholder style="width: 80px; margin-right: 10px;" v-model.number="drug.model.consump"></el-input>
+            <el-form-item label="单次剂量" prop="consump" style="white-space: nowrap;">
+              <el-input placeholder style="width: 60px; margin-right: 10px;" v-model="drug.model.consump"></el-input>
               {{ drug.model.unit }}
             </el-form-item>
           </el-col>
@@ -125,7 +125,7 @@
         <peace-table-column label="用量">
           <template slot-scope="scope">
             {{ scope.row.dic_frequency }}
-            <br>
+            <br />
             一次{{ scope.row.consump }} {{ scope.row.unit }}
           </template>
         </peace-table-column>
@@ -133,13 +133,13 @@
         <peace-table-column align="center" fixed="right" label="操作" width="80px">
           <template slot-scope="scope">
             <el-button @click="changeDrug(scope)" type="text">修改</el-button>
-            <br>
+            <br />
             <el-button @click="removeDrug(scope)" type="text">删除</el-button>
           </template>
         </peace-table-column>
       </peace-table>
 
-      <hr>
+      <hr />
 
       <div style="text-align: center;">
         <el-button @click="cancelDrug">取消</el-button>
@@ -200,10 +200,7 @@ export default {
             { pattern: peace.validate.pattern.pInterger, message: '请输入正确的药品数量', trigger: 'change' }
           ],
           medication_days: [{ pattern: peace.validate.pattern.pInterger, message: '请输入正确的用药天数', trigger: 'change' }],
-          consump: [
-            { required: true, message: '请输入单次剂量', trigger: 'change' },
-            { pattern: peace.validate.pattern.pInterger, message: '请输入正确的单次剂量', trigger: 'change' }
-          ],
+          consump: [{ required: true, message: '请输入单次剂量', trigger: 'change' }],
           dic_usage_id: [{ required: true, message: '请输入给药途径', trigger: 'change' }],
           dic_frequency_id: [{ required: true, message: '请输入用药频次', trigger: 'change' }]
         },
