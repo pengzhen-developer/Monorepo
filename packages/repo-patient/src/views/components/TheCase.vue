@@ -48,28 +48,28 @@
       <div
         class="form-dl"
         style="display: block;"
-        v-if="data.inspectionIndex &&( data.inspectionIndex.temperature || data.inspectionIndex.weight || data.inspectionIndex.heart_rate || data.inspectionIndex.blood_pressure  || data.inspectionIndex.More)"
+        v-if="data.inspectionIndex"
       >
         <div class="form-dt">
           检查指标
           <div class="form-code">
-            <div class="namelist-dl bb">
+            <div class="namelist-dl bb" v-if="data.inspectionIndex.temperature">
               <div class="dt">体温：</div>
               <div class="dd">{{data.inspectionIndex.temperature ? data.inspectionIndex.temperature + '度' : '--'}}</div>
             </div>
-            <div class="namelist-dl bb">
+            <div class="namelist-dl bb" v-if="data.inspectionIndex.weight">
               <div class="dt">体重：</div>
               <div class="dd">{{data.inspectionIndex.weight ? data.inspectionIndex.weight + 'kg' : '--'}}</div>
             </div>
-            <div :class="data.inspectionIndex.More ? 'bb' : ''" class="namelist-dl">
+            <div class="namelist-dl bb" v-if="data.inspectionIndex.heart_rate">
               <div class="dt">心率：</div>
               <div class="dd">{{data.inspectionIndex.heart_rate ? data.inspectionIndex.heart_rate + 'bpm' : '--'}}</div>
             </div>
-            <div :class="data.inspectionIndex.More ? 'bb' : ''" class="namelist-dl">
+            <div class="namelist-dl bb" v-if="data.inspectionIndex.blood_pressure">
               <div class="dt">血压：</div>
               <div class="dd">{{data.inspectionIndex.blood_pressure ? data.inspectionIndex.blood_pressure + 'mmHg' : '--'}}</div>
             </div>
-            <div class="namelist-dl" style="flex-basis: 100%">
+            <div class="namelist-dl" style="flex-basis: 100%" v-if="data.inspectionIndex.More">
               <div class="dt" style="width:75px">辅助检查：</div>
               <div class="dd">{{data.inspectionIndex.More}}</div>
             </div>
@@ -97,6 +97,7 @@ export default {
         return undefined
       }
     }
+
   }
 }
 </script>
@@ -181,7 +182,7 @@ export default {
   border-bottom: 1px solid #ebebeb;
 }
 .namelist-dl {
-  flex: 0 1 50%;
+  flex: 0 1 100%;
   font-size: 15px;
   padding: 10px 0;
   display: flex;
