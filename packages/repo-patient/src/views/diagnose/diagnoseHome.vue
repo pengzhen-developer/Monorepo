@@ -375,6 +375,10 @@
         background: #888;
         border-color: #888;
     }
+    .label.label-register{
+        background: #74B0FF;
+        border-color: #74B0FF;
+    }
     .card{
         background: #fff;
         padding: 10px 15px;

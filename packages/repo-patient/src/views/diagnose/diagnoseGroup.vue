@@ -390,6 +390,10 @@
         background: #00C6AE;
         border-color: #00C6AE;
     }
+    .label.label-register{
+        background: #74B0FF;
+        border-color: #74B0FF;
+    }
     .load{
         text-align: center;
         width: 100%;
