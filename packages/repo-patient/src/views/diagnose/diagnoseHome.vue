@@ -116,7 +116,7 @@
                 this.showLoadingType = true;
                 this.doctorList = [];
                 peace.service.diagnose.doctorList({
-                    crowdCode: this.params.serviceCode,
+                    diseaseCode: this.params.id,
                     city: this.checkCity,
                     p: 1,
                     size: 50
