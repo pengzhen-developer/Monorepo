@@ -225,7 +225,8 @@ export default {
       let json = peace.util.encode({
         doctorId: item.doctorInfo.doctorId,
         hospitalCode: item.doctorInfo.nethospitalId,
-        time: this.activeIndex == 'all' ? '' : this.dateList[this.activeIndex].date
+        time: this.activeIndex == 'all' ? '' : this.dateList[this.activeIndex].date,
+        date: new Date()
       })
 
       this.$router.push(`../appointDoctorSelect/${json}`)

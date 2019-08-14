@@ -275,6 +275,7 @@ const router = new Router({
           name: '/appoint/doctor/appointDoctorSelect',
           meta: {
             auth: true,
+            keepAlive: true,
             navbar: {
               title: '选择就诊时间',
               back: true

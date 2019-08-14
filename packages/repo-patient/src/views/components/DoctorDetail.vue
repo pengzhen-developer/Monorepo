@@ -242,7 +242,8 @@ export default {
     redictToReserve() {
       const json = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
-        hospitalCode: this.doctor.doctorInfo.nethospitalid
+        hospitalCode: this.doctor.doctorInfo.nethospitalid,
+        date: new Date()
       })
 
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)

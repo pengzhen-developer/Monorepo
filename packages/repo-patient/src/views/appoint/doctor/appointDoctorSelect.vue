@@ -96,6 +96,7 @@ export default {
       doctorInfo: {},
       params: {},
       activeIndex: 0,
+      activeDate: '',
       // dateList: [
       //     { time: '01-07', week: '周一', index: 0 },
       //     { time: '01-08', week: '周二', index: 1},
@@ -113,6 +114,12 @@ export default {
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params
+    this.activeDate = params.time
+
+    // this.getData()
+  },
+  activated(){
+    console.log('active')
     this.getData()
   },
   methods: {
@@ -131,7 +138,7 @@ export default {
     initSource() {
       this.activeIndex = this.dateList.findIndex(item => {
         // 默认用户已选的日期，如没有则默认第一条非禁用的日期
-        return this.params.time ? this.params.time == item.date : !item.disabled
+        return this.activeDate ? this.activeDate == item.date : !item.disabled
       })
       ~this.activeIndex && this.getSourceData(this.dateList[this.activeIndex])
     },
@@ -154,6 +161,7 @@ export default {
         return
       }
       this.activeIndex = index
+      this.activeDate = item.date
       this.getSourceData(item)
     },
     goAppointOrderSubmitPage(item, obj) {
