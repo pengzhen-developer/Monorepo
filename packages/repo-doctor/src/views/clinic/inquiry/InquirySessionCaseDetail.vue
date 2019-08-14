@@ -244,7 +244,6 @@ export default {
     font-size: 0;
     border-bottom: 1px solid #e5e5e5;
     &:last-of-type {
-      padding-top: 10px;
       border-bottom: 0;
     }
     &-content {

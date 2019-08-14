@@ -470,18 +470,14 @@ export default {
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if (alt && !/^\d+(\.\d{1,1})?$/.test(alt) && parseInt(alt) >= 0 && parseInt(alt) <= 1000) {
+          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || (parseInt(alt) < 0 || parseInt(alt) > 1000)) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if (ast && !/^\d+(\.\d{1,1})?$/.test(ast) && parseInt(ast) >= 0 && parseInt(ast) <= 1000) {
+          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || (parseInt(ast) < 0 || parseInt(ast) > 1000)) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          // if (hbv && !/^\d+(\.\d{1,1})?$/.test(hbv)) {
-          //   $peace.util.warning('请输入正确的HBV-DNA(HBV)，最多保留一位小数')
-          //   return
-          // }
 
           const params = {
             inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
@@ -497,7 +493,7 @@ export default {
           // 病历模板
           const type = this.medical.type
           if (type) {
-            params.template_id = type
+            params.templateId = type
           }
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)

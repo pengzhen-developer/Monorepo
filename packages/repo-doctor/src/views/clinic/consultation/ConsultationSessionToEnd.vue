@@ -3,11 +3,11 @@
     <div class="consultation-content">
       <div class="consultation-status danger">
         <div class="clock">
-          <img src="~@/assets/images/inquiry/ic_daojishi_red@2x.png">
+          <img src="~@/assets/images/inquiry/ic_daojishi_red@2x.png" />
         </div>
 
         <div class="count-down">
-          <span>距会诊开始时间还剩</span>
+          <span>距会诊结束时间还剩</span>
           <span class="count-down-time">
             <span style="margin: 0 5px; color: #FF0000;">{{ $peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
           </span>

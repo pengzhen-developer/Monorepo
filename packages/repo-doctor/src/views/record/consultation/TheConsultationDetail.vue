@@ -195,7 +195,7 @@
 
       <!-- 会诊正常完成 -->
       <template v-else>
-        <span class="title">会议记录</span>
+        <span class="title">会诊小结</span>
 
         <el-form>
           <el-row>

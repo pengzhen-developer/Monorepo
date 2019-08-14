@@ -88,7 +88,7 @@
       <br />
 
       <el-form :model="consultSuggestDialog.model" label-width="80px">
-        <el-form-item label="会诊所见">
+        <el-form-item label="会诊所见" required>
           <el-input :maxlength="500" :rows="8" placeholder="请填写会诊所见情况" resize="none" type="textarea" v-model="consultSuggestDialog.model.consultFind"></el-input>
 
           <!-- <label class="msg">最多可以输入1000字，还可以输入 {{ summaryMaxLength }} 字</label> -->
@@ -96,7 +96,7 @@
         <!-- <el-form-item label="目前诊断">
           <el-input placeholder="请选择" v-model="consultSuggestDialog.model.consultDiagnose"></el-input>
         </el-form-item>-->
-        <el-form-item label="目前诊断" prop="diagnose">
+        <el-form-item label="目前诊断" prop="diagnose" required>
           <span slot="label">目前诊断</span>
           <template v-if="consultSuggestDialog.model.consultDiagnose && consultSuggestDialog.model.consultDiagnose.length > 0">
             <el-tag
@@ -112,7 +112,7 @@
             <el-button @click="showDiagnoseDialog()" type="text">请选择</el-button>
           </template>
         </el-form-item>
-        <el-form-item label="建议">
+        <el-form-item label="建议" required>
           <el-input
             :maxlength="500"
             :rows="8"

@@ -240,7 +240,8 @@ export default {
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
           ) {
             return 'system'
           }
