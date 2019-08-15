@@ -6,7 +6,7 @@
     <div class="header-right">
       <el-dropdown>
         <div class="header-right-message">
-          <img src="~@src/assets/images/layout/top_icon_message.png">
+          <img src="~@src/assets/images/layout/top_icon_message.png" />
           <span>消息</span>
         </div>
 
@@ -20,7 +20,7 @@
 
       <el-dropdown>
         <div class="header-right-title">
-          <img :src="$store.state.user.userInfo.list.docInfo.avartor">
+          <img :src="$store.state.user.userInfo.list.docInfo.avartor" />
           <!-- <div class="circle online"></div> -->
           <span>欢迎您，</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.name }}</span>
@@ -63,7 +63,9 @@ export default {
       this.$router.replace(peace.config.system.loginPage)
 
       // 刷新页面，确保 vuex store 被清空
-      window.location.reload()
+      setTimeout(() => {
+        window.location.reload()
+      }, 0)
     }
   }
 }
