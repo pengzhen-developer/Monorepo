@@ -20,7 +20,7 @@
           <el-button @click="choseConsultaltion" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
             <div class="consultaltion-doctor-info">
-              <img :src="view.model.doctorInfo.avartor" style="width: 40px; height: 40px; border-radius: 50%;">
+              <img :src="view.model.doctorInfo.avartor" style="width: 40px; height: 40px; border-radius: 50%;" />
               <span style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.doctorName }}</span>
               <span>{{view.model.doctorInfo.doctorTitle }}</span>
               <span>{{view.model.doctorInfo.deptName }}</span>
@@ -76,12 +76,12 @@
         <el-button @click="get" round type="primary">查询</el-button>
       </div>
 
-      <hr>
+      <hr />
 
       <peace-table pagination ref="table">
         <peace-table-column label="医生头像" prop="name" width="100px">
           <template slot-scope="scope">
-            <img :src="scope.row.avartor" style="width: 40px; height: 40px; border-radius: 50%;">
+            <img :src="scope.row.avartor" style="width: 40px; height: 40px; border-radius: 50%;" />
           </template>
         </peace-table-column>
         <peace-table-column align="left" header-align="left" label="医生姓名" prop="doctorName" width="100px"></peace-table-column>
@@ -195,7 +195,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           // 验证会诊时间
-          if (new Date(this.view.model.expectDate + ' ' + this.view.model.expectTime) <= new Date()) {
+          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
             $peace.util.warning('期望会诊时间不能小于当前时间')
           }
           // 开始会诊
