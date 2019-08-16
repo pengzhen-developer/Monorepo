@@ -44,7 +44,7 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: 'https://testpatient.hp.aijiayi.com/'
+    base: 'https://patient.hp.aijiayi.com/'
   },
 
   /**
