@@ -113,8 +113,7 @@ export default {
   data() {
     return {
       prescriptionState: {
-        未审方: '0',
-        质疑中: '1',
+        未审方: '1',
         申诉中: '2',
         已通过: '3',
         已分配: '4',
