@@ -80,7 +80,7 @@ export default {
       // 等待会诊, 未到期望时间, 显示倒计时
       if (
         session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
-        new Date() < new Date(session.content.consultInfo.expectTime)
+        new Date() < dayjs(session.content.consultInfo.expectTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectTime.toDate().getTime()
 
@@ -103,8 +103,8 @@ export default {
       // 等待接诊, 已到期望时间, 未到结束时间, 显示会诊结束倒计时
       else if (
         session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
-        new Date() > new Date(session.content.consultInfo.expectTime) &&
-        new Date() < new Date(session.content.consultInfo.expectOverTime)
+        new Date() > dayjs(session.content.consultInfo.expectTime).toDate() &&
+        new Date() < dayjs(session.content.consultInfo.expectOverTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectOverTime.toDate().getTime()
 
@@ -127,7 +127,7 @@ export default {
       // 等待接诊, 已到结束时间, 等待服务端同步
       else if (
         session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
-        new Date() > new Date(session.content.consultInfo.expectOverTime)
+        new Date() > dayjs(session.content.consultInfo.expectOverTime).toDate()
       ) {
         this.loading = $peace.$loading({
           lock: true,

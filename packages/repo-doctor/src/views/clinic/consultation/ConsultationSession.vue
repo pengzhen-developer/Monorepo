@@ -88,7 +88,7 @@ export default {
       // 等待会诊, 并且当前时间小于期望时间
       if (session && session.content && session.content.consultInfo) {
         if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊) {
-          if (new Date() < new Date(session.content.consultInfo.expectTime)) {
+          if (new Date() < dayjs(session.content.consultInfo.expectTime).toDate()) {
             return true
           }
         }
@@ -103,7 +103,7 @@ export default {
       // 等待会诊, 并且当前时间大于期望时间, 小于期望结束时间
       if (session && session.content && session.content.consultInfo) {
         if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊) {
-          if (new Date() > new Date(session.content.consultInfo.expectTime) && new Date() < new Date(session.content.consultInfo.expectOverTime)) {
+          if (new Date() > dayjs(session.content.consultInfo.expectTime).toDate() && new Date() < dayjs(session.content.consultInfo.expectOverTime).toDate()) {
             return true
           }
         }

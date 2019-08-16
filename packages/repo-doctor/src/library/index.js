@@ -9,6 +9,8 @@ import './prototype/date'
 import './prototype/number'
 import './prototype/string'
 
+import dayjs from 'dayjs'
+
 // components
 import Table from './components/table'
 import Dialog from './components/dialog'
@@ -38,6 +40,8 @@ const install = function(Vue) {
   // 暴露全局实例
   Window.$peace = peace
   global.$peace = peace
+  Window.dayjs = dayjs
+  global.dayjs = dayjs
 
   // 挂载到 Vue
   Vue.prototype.http = http

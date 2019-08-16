@@ -12,10 +12,19 @@
             <div class="health-item">
               <div class="health-item-title">
                 <img src="~@src/assets/images/inquiry/archives_icon_marry.png" />
-                <h4>婚育史：</h4>
+                <h4>婚姻状态：</h4>
               </div>
               <div class="health-item-description">
-                <span>暂无</span>
+                <span>{{ healthRecord.maritalStatus || '暂无' }}</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-item-title">
+                <img src="~@src/assets/images/inquiry/archives_icon_baby.png" />
+                <h4>生育状态：</h4>
+              </div>
+              <div class="health-item-description">
+                <span>{{ healthRecord.fertilityStatus || '暂无' }}</span>
               </div>
             </div>
             <div class="health-item">
@@ -24,7 +33,7 @@
                 <h4>手术和外伤：</h4>
               </div>
               <div class="health-item-description">
-                <span>暂无</span>
+                <span>{{ healthRecord.surgeryTrauma || '暂无' }}</span>
               </div>
             </div>
             <div class="health-item">
@@ -33,25 +42,34 @@
                 <h4>家族病史：</h4>
               </div>
               <div class="health-item-description">
-                <span>暂无</span>
-              </div>
-            </div>
-            <div class="health-item">
-              <div class="health-item-title">
-                <img src="~@src/assets/images/inquiry/archives_icon_allergy.png" />
-                <h4>过敏史：</h4>
-              </div>
-              <div class="health-item-description">
-                <span>暂无</span>
+                <span>{{ healthRecord.familyHistory || '暂无' }}</span>
               </div>
             </div>
             <div class="health-item">
               <div class="health-item-title">
                 <img src="~@src/assets/images/inquiry/archives_icon_habit.png" />
+                <h4>药物过敏：</h4>
+              </div>
+              <div class="health-item-description">
+                <span>{{ healthRecord.drugAllergy || '暂无' }}</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-item-title">
+                <img src="~@src/assets/images/inquiry/archives_icon_allergy.png" />
+                <h4>食物/接触物过敏：</h4>
+              </div>
+              <div class="health-item-description">
+                <span>{{ healthRecord.foodAllergy || '暂无' }}</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-item-title">
+                <img src="~@src/assets/images/inquiry/archives_icon_habit3.png" />
                 <h4>个人习惯：</h4>
               </div>
               <div class="health-item-description">
-                <span>暂无</span>
+                <span>{{ healthRecord.personalHabit || '暂无' }}</span>
               </div>
             </div>
           </el-tab-pane>
