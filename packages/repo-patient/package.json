@@ -1,6 +1,6 @@
 {
-  "name": "pre",
-  "version": "0.2.0-001",
+  "name": "dev",
+  "version": "0.3.0-001",
   "private": true,
   "scripts": {
     "start": "npm run serve",
