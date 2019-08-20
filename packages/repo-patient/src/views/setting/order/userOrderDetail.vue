@@ -84,6 +84,7 @@
 
 <script>
 import peace from '@src/library'
+import { Dialog } from 'vant'
 
 export default {
   props: {},
@@ -152,14 +153,21 @@ export default {
       if (!this.info.orderInfo.cancelState) {
         return
       }
-      peace.service.appoint
-        .orderCancel({
-          orderNo: this.info.orderInfo.orderNo
-        })
-        .then(res => {
-          peace.util.alert(res.msg || '退号成功')
-          this.getData()
-        })
+      Dialog.confirm({
+        message: '是否确认退号？'
+      }).then(() => {
+        peace.service.appoint
+                .orderCancel({
+                  orderNo: this.info.orderInfo.orderNo
+                })
+                .then(res => {
+                  peace.util.alert(res.msg || '退号成功')
+                  this.getData()
+                })
+      }).catch(() => {
+        // on cancel
+      });
+
     }
   }
 }

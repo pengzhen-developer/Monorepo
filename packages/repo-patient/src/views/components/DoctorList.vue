@@ -14,9 +14,9 @@
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
           </div>
-          <div class="title-description">
+          <div class="title-description" v-if="doctor.doctorInfo.specialSkill">
             <span class="title-description-label">擅长:</span>
-            <span class="title-description-detail">{{ doctor.doctorInfo.specialSkill || '暂未填写' }}</span>
+            <span class="title-description-detail">{{doctor.doctorInfo.specialSkill}}</span>
           </div>
           <div class="title-service">
             <div>

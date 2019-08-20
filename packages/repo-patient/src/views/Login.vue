@@ -8,7 +8,7 @@
         <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">登录/注册</van-button>
+      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
     </div>
 
     <!-- <div class="login-footer">

@@ -484,7 +484,7 @@ export default {
 
         .message-avatar {
           margin: 0 5px 0 0;
-
+          align-self: flex-start;
           img {
             width: 38px;
             height: 38px;
@@ -494,7 +494,7 @@ export default {
       }
 
       &.out {
-        text-align: right;
+        /*text-align: right;*/
 
         .message-body {
           color: rgba(255, 255, 255, 1);
@@ -503,7 +503,7 @@ export default {
 
         .message-avatar {
           margin: 0 0 0 5px;
-
+          align-self: flex-start;
           img {
             width: 38px;
             height: 38px;

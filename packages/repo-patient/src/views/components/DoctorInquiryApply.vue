@@ -60,8 +60,8 @@
             :value="model.confirmIllness"
             @click="showAddIllnessHistory = true"
             clickable
-            label="确认疾病"
-            placeholder="请选择疾病"
+            label="初诊诊断"
+            placeholder="请选择诊断"
             readonly
             required
             right-icon="arrow"
@@ -77,8 +77,8 @@
             :value="model.confirmTime"
             @click="showConfirmTime = true"
             clickable
-            label="确认时间"
-            placeholder="请选择时间"
+            label="初诊时间"
+            placeholder="请选择初诊时间"
             readonly
             required
             right-icon="arrow"
