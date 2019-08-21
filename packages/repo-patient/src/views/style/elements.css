@@ -54,6 +54,37 @@ img {
   border-color: #00c6ae;
   color: #00c6ae;
 }
+/*tag*/
+.tag{
+  display: inline-block;
+  border: 1px solid #aaa;
+  vertical-align: text-bottom;
+  border-radius: 2px;
+  color: #fff;
+  padding: 0 2px;
+  margin-right: 2.5px;
+  font-size: 9px;
+}
+.tag.tag-image{
+  background: #00C6AE;
+  border-color: #00C6AE;
+}
+.tag.tag-appoint{
+  background: #74B0FF;
+  border-color: #74B0FF;
+}
+.tag.tag-prvivateDoctor{
+  background: #AC91FF;
+  border-color: #AC91FF;
+}
+.tag.tag-video{
+  background: #00C6AE;
+  border-color: #00C6AE;
+}
+.tag.tag-register{
+  background: #74B0FF;
+  border-color: #74B0FF;
+}
 /*btn*/
 .btn {
   box-sizing: border-box;

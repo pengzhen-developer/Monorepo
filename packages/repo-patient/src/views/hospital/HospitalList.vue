@@ -23,7 +23,7 @@
               <div :key="tit" class="card-small" v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
             </div>
             <div class="block">
-              <van-tag :key="it" plain type="success" v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
+              <van-tag :key="it" v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
             </div>
           </div>
         </div>
@@ -191,5 +191,7 @@ export default {
 .van-tag {
   padding: 0.1em 0.5em;
   margin-right: 5px;
+  background: #E5F9F6 !important;
+  color: #00C6AE;
 }
 </style>

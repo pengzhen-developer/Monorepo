@@ -105,9 +105,13 @@
             <div class="card-body">
               <div class="card-name">
                 {{item.name}}
-                <div class="card-small">{{item.doctorTitle}} {{item.deptName}}</div>
+                <div class="card-small">{{item.doctorTitle}}
+                  <div :class="['tag', 'tag-'+it]" v-for="(it, i) in item.serviceList" :key="i">
+                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                  </div>
+                </div>
               </div>
-              <div class="card-small" v-if="item.nethospitalName">{{item.nethospitalName}}</div>
+              <div class="card-small">{{item.nethospitalName}} {{item.deptName}}</div>
               <div class="card-brief" v-if="item.specialSkill">
                 <div class="span s">擅长：</div>
                 <div class="span xl">{{item.specialSkill}}</div>
