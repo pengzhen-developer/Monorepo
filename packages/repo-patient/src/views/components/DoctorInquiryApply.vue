@@ -52,7 +52,7 @@
         </van-field>
       </van-cell-group>
 
-      <template v-if="model.isAgain">
+      <div v-show="model.isAgain">
         <div class="divider"></div>
 
         <van-cell-group>
@@ -138,7 +138,7 @@
             </van-radio-group>
           </van-field>
         </van-cell-group>
-      </template>
+      </div>
     </div>
 
     <div class="footer">
@@ -247,14 +247,14 @@ export default {
   watch: {
     'model.isAgain'() {
       if (this.model.isAgain === false) {
-        this.model.confirmIllness = ''
-        this.model.confirmTime = ''
-        this.model.pastDrug = ''
-        this.model.allergicHistory = ''
-        this.model.isPregnancy = false
-        this.model.isBadEffect = false
-        this.model.isBadEffectText = ''
-        this.model.againType = '3'
+        // this.model.confirmIllness = ''
+        // this.model.confirmTime = ''
+        // this.model.pastDrug = ''
+        // this.model.allergicHistory = ''
+        // this.model.isPregnancy = false
+        // this.model.isBadEffect = false
+        // this.model.isBadEffectText = ''
+        // this.model.againType = '3'
       }
     }
   },
@@ -346,6 +346,7 @@ export default {
           this.showPregnancy = true
         } else {
           this.showPregnancy = false
+          this.model.isPregnancy = ''
         }
       }
     },
