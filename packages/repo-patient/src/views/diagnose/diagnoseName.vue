@@ -31,13 +31,14 @@
                     }
                 },
                 data: {},
-                checkedData:'',
+                checkedData: 'intro',
                 params: {},
                 txt: ''
             }
         },
         created() {
             this.params = peace.util.decode(this.$route.params.json)
+            this.checkedData = this.params.checkedData || this.checkedData
             this.page.hideTab = !!this.params.txt
             !this.params.txt && (this.getBodySymptomDetail())
         },
@@ -48,7 +49,6 @@
                 }).then(res => {
                     this.page.isGet = true
                     this.data = res.data
-                    this.checkedData = 'intro'
                     this.setStyle(this.data.info[this.checkedData])
                 })
             },

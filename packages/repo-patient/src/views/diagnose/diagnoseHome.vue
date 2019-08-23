@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="card cards" v-if="data.info">
-            <div class="card-avatar">
-                <img class="" :src="page.icon.logo" />
-            </div>
+        <div class="card card-paper" v-if="data.info">
             <div class="card-body">
                 <div class="card-name">{{data.info.name}}</div>
                 <div class="block">
@@ -11,6 +8,20 @@
                         {{item}}
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="tab">
+            <div :class="['tab-item', checkedData == 'intro' ? 'active' : '']" data-id="intro" @click="changeTab({id:'intro'})">
+                <div class="span">简介</div>
+            </div>
+            <div :class="['tab-item', checkedData == 'pathogenyDescr' ? 'active' : '']" data-id="pathogenyDescr" @click="changeTab({id:'pathogenyDescr'})">
+                <div class="span">病因</div>
+            </div>
+            <div :class="['tab-item', checkedData == 'diagnosisDescr' ? 'active' : '']"  data-id="diagnosisDescr" @click="changeTab({id:'diagnosisDescr'})">
+                <div class="span">诊断</div>
+            </div>
+            <div :class="['tab-item', checkedData == 'treatmentDescr' ? 'active' : '']" data-id="treatmentDescr" @click="changeTab({id:'treatmentDescr'})">
+                <div class="span">治疗</div>
             </div>
         </div>
         <div class="box-block" v-if="txt">
@@ -91,7 +102,8 @@
                 checkCity: '武汉',
                 showCityDic: false,
                 showLoadingType: true,
-                cityDic:[{name:'武汉'}]
+                cityDic:[{name:'武汉'}],
+                checkedData: 'intro'
             }
         },
         created() {
@@ -106,11 +118,15 @@
                     code: this.params.id
                 }).then(res => {
                     this.data = res.data;
-                    this.txt = this.delHtml(res.data.info.intro)
+                    this.txt = this.delHtml(this.data.info[this.checkedData])
                 })
             },
             delHtml: function (html) {
-                return html && html.replace(/<[^>]+>/g, '')
+                return html && html.replace(/<[^>]+>/g, '') || '暂无描述'
+            },
+            changeTab(obj){
+                this.checkedData = obj.id;
+                this.txt = this.delHtml(this.data.info[obj.id])
             },
             getDoctList(){
                 this.showLoadingType = true;
@@ -145,7 +161,10 @@
                 this.$router.push(`/components/doctorDetail/${json}`)
             },
             goDiagnoseNamePage(){
-                let json = peace.util.encode(this.params)
+                let json = this.params;
+
+                json.checkedData = this.checkedData
+                json = peace.util.encode(json)
                 this.$router.push(`/diagnose/diagnoseName/${json}`)
             },
         }
@@ -403,7 +422,7 @@
         background: #fff;
         color: #000;
         font-size: 13px;
-        padding: 10px 15px;
+        padding: 15px 15px;
         border-bottom: 1px solid #f5f5f5;
 
     }
@@ -433,5 +452,33 @@
         text-align: center;
         width: 100%;
         margin: 30px auto;
+    }
+    .card-paper{
+        margin: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #e5e5e5;
+    }
+    .tab{
+        margin-bottom: 0;
+    }
+    .tab .tab-item{
+        font-size: 16px;
+        color: #333;
+    }
+    .tab .tab-item.active .span{
+        color: #00C6AE;
+    }
+    .tab .tab-item.active .span::before{
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        background-color:#00C6AE ;
+        height: 0px;
+        border: 1px solid #00C6AE;
+        border-radius: 5px;
+        bottom: -6px;
+        /*left: 50%;*/
+        /*margin-left: -8px;*/
     }
 </style>
