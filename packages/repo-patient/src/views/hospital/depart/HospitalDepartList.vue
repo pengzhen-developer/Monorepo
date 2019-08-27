@@ -90,6 +90,8 @@ export default {
   display: flex;
   margin-top: 0;
   margin-bottom: 0;
+  padding-bottom: 10px;
+  border-bottom: 0;
   .block-items {
     font-size: inherit;
     padding: 5px 5px;

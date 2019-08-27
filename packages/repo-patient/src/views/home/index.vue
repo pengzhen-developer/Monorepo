@@ -27,10 +27,10 @@
         <div class="card-brief">个人咨询详情管理</div>
       </div>
     </div>
-    <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon" style="margin-top:0;border-bottom: 10px solid #f5f5f5;padding-bottom: 10px"></DepartPage>
-        <van-cell  @click="goMenuPage({},{type:'crowdLists'})" is-link value="常见人群" />
-        <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"></Humens>
-    <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院" />
+    <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon"></DepartPage>
+        <van-cell  @click="goMenuPage({},{type:'crowdLists'})" is-link value="常见人群"  style="border-top:10px solid #f5f5f5"/>
+        <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"  style="padding-bottom:10px"></Humens>
+    <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院"  style="border-top:10px solid #f5f5f5" />
     <HspPage :items="data.recommendOrgan" :max="2"></HspPage>
   </div>
 </template>
@@ -118,6 +118,7 @@ export default {
   padding: 10px 10px;
   border-radius: 0;
   font-size: 15px;
+  border-bottom: 0;
 
   &.panel-home {
     box-shadow: none;

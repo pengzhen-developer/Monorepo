@@ -39,15 +39,13 @@
             <div :data-index="index" @click="goChatingPage(item)" class="label blue" v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
             <div :data-index="index" @click="showCancellPop(item)" class="label blue">取消订单</div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0">
+          <div class="panel-bottom" style="padding-left: 0" v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
             <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue" data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
             <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue" data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
             <div
               :data-index="index"
               @click="goChatingPage(item)"
-              class="label blue"
-              v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 4 || item.inquiryInfo.inquiryStatus === 5"
-            >咨询记录</div>
+              class="label blue">咨询记录</div>
           </div>
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
@@ -255,7 +253,7 @@ export default {
 <style lang="scss" scoped>
 .userConsultList {
   min-height: 100%;
-  background: #f5f5f5;
+  /*background: #f5f5f5;*/
   color: #999;
 }
 
@@ -365,12 +363,12 @@ export default {
   background: #fff;
 }
 .card-strip .avatar img {
-  padding: 2px;
+  /*padding: 2px;*/
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  margin-top: -1px;
-  margin-left: -1px;
+  /*width: 26px;*/
+  /*height: 26px;*/
+  /*margin-top: -1px;*/
+  /*margin-left: -1px;*/
   border: 1px solid #f3f3f3;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="the-recipe-list">
+  <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
     <!-- 
       todo:
       暂时屏蔽未读消息
@@ -114,9 +114,10 @@ export default {
 <style lang="scss" scoped>
 .the-recipe-list {
   min-height: 100%;
-  background: #f5f5f5;
   padding: 15px;
-
+  &.bg{
+    background: #f5f5f5;
+  }
   .word-list {
     position: relative;
     background: #fff;

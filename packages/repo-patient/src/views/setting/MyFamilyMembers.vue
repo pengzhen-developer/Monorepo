@@ -116,7 +116,7 @@ export default {
 <style lang="scss" scoped>
 .my-family-members {
   position: relative;
-  background-color: #f5f5f5;
+  /*background-color: #f5f5f5;*/
   height: 100%;
   display: flex;
   flex-direction: column;

@@ -258,6 +258,7 @@
         display: flex;
         font-size: (30px/2);
         align-items:center;
+        padding-top: 10px;
     }
     .card-strip .avatar{
         box-sizing: border-box;

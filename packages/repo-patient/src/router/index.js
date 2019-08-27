@@ -21,7 +21,7 @@ const router = new Router({
           path: '/home/index',
           name: '/home/index',
           meta: {
-            auth: true,
+            auth: false,
             keepAlive: true,
             tabBar: true,
             navbar: {
@@ -35,7 +35,7 @@ const router = new Router({
           path: '/message/index',
           name: '/message/index',
           meta: {
-            auth: true,
+            auth: false,
             keepAlive: true,
             tabBar: true,
             navbar: {
@@ -50,7 +50,7 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            auth: true,
+            auth: false,
             keepAlive: true,
             tabBar: true,
             navbar: {
@@ -121,7 +121,7 @@ const router = new Router({
           path: '/components/doctorList/:json',
           name: '/components/doctorList',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '医生列表',
               back: true
@@ -134,7 +134,7 @@ const router = new Router({
           path: '/components/messageList',
           name: '/components/messageList',
           meta: {
-            auth: true
+            auth: false
           },
           component: () => import('@src/views/components/MessageList.vue')
         },
@@ -143,7 +143,7 @@ const router = new Router({
           path: '/components/doctorDetail/:json',
           name: '/components/doctorDetail',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '医生主页',
               back: true
@@ -180,7 +180,7 @@ const router = new Router({
         },
         // 添加过敏史
         {
-          path: '/components/addAllergicHistory',
+          path: '/components/addAllergicHistory:json',
           name: '/components/addAllergicHistory',
           meta: {
             auth: true,
@@ -211,7 +211,7 @@ const router = new Router({
           path: '/hospital/HospitalList/:json',
           name: '/hospital/HospitalList',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '医院列表',
               back: true
@@ -224,7 +224,7 @@ const router = new Router({
           path: '/hospital/HospitalHome/:json',
           name: '/hospital/HospitalHome',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '医院主页',
               back: true
@@ -237,7 +237,7 @@ const router = new Router({
           path: '/hospital/depart/hospitalDepartSelect/:json',
           name: '/hospital/depart/hospitalDepartSelect',
           meta: {
-            auth: true,
+            auth: false,
             keepAlive: true,
             navbar: {
               title: '科室选择',
@@ -262,7 +262,7 @@ const router = new Router({
         {
           path: 'hospital/depart/HospitalDepartList',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '选择科室',
               back: true
@@ -274,7 +274,7 @@ const router = new Router({
           path: '/appoint/doctor/appointDoctorSelect/:json',
           name: '/appoint/doctor/appointDoctorSelect',
           meta: {
-            auth: true,
+            auth: false,
             keepAlive: true,
             navbar: {
               title: '选择就诊时间',
@@ -337,7 +337,7 @@ const router = new Router({
           name: '/record/recordCondition',
           meta: {
             keepAlive: true,
-            auth: true,
+            auth: false,
             navbar: {
               title: '查询报告',
               back: true
@@ -363,7 +363,7 @@ const router = new Router({
           name: '/diagnose/select/diagnoseSelectBody',
           meta: {
             keepAlive: true,
-            auth: true,
+            auth: false,
             navbar: {
               title: '选择症状',
               back: true
@@ -376,7 +376,7 @@ const router = new Router({
           name: '/diagnose/diagnoseHome',
           meta: {
               keepAlive: true,
-              auth: true,
+              auth: false,
               navbar: {
                   title: '疾病',
                   back: true
@@ -389,7 +389,7 @@ const router = new Router({
           name: '/diagnose/diagnoseGroup',
           meta: {
               keepAlive: true,
-              auth: true,
+              auth: false,
               navbar: {
                   title: '疾病人群',
                   back: true
@@ -402,7 +402,7 @@ const router = new Router({
           name: '/diagnose/select/diagnoseSelectHumen',
           meta: {
               keepAlive: true,
-              auth: true,
+              auth: false,
               navbar: {
                   title: '常见人群',
                   back: true
@@ -415,7 +415,7 @@ const router = new Router({
           name: '/diagnose/diagnoseName',
           meta: {
             // keepAlive: true,
-            auth: true,
+            auth: false,
             navbar: {
               title: '疾病描述',
               back: true
