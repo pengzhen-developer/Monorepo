@@ -1,7 +1,3 @@
-
-
-
-
 <template>
   <div class="container">
     <template v-if="isEdit">
@@ -11,9 +7,13 @@
         <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
         <van-field :disabled="isEdit" label="性别" placeholder="请选择" readonly v-model="model.sex" />
         <van-field :disabled="isEdit" label="生日" placeholder="请输入" readonly v-model="model.birthday" />
-        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />
+        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />
         <peace-dialog :visible.sync="showAllergicHistory">
           <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+        </peace-dialog>
+        <peace-dialog :visible.sync="showFoodAllergy">
+          <AddFoodAllergy @onSave="showFoodAllergy = false" v-model="model.foodAllergy"></AddFoodAllergy>
         </peace-dialog>
       </div>
       <div class="bottom">
@@ -29,9 +29,13 @@
         <van-field @click="showPopupRelation" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
         <van-field @click="showPopupSex" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
         <van-field @click="showPopupBirthday" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
-        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="过敏史" placeholder="请选择过敏史" readonly right-icon="arrow" />
+        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />
+        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />
         <peace-dialog :visible.sync="showAllergicHistory">
           <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+        </peace-dialog>
+        <peace-dialog :visible.sync="showFoodAllergy">
+          <AddFoodAllergy @onSave="showFoodAllergy = false" v-model="model.foodAllergy"></AddFoodAllergy>
         </peace-dialog>
       </div>
       <div class="bottom">
@@ -57,10 +61,12 @@
 import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
+import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 
 export default {
   components: {
-    AddAllergicHistory
+    AddAllergicHistory,
+    AddFoodAllergy
   },
 
   props: {
@@ -73,7 +79,8 @@ export default {
           relation: '',
           sex: '',
           birthday: '',
-          allergic_history: ''
+          allergic_history: '',
+          foodAllergy: ''
         }
       }
     },
@@ -97,6 +104,7 @@ export default {
       maxDate: new Date(),
 
       showAllergicHistory: false,
+      showFoodAllergy: false,
       showRelation: false,
       showSex: false,
       showBirthday: false
@@ -194,7 +202,8 @@ export default {
       if (this.isEdit) {
         const params = {
           familyId: this.model.familyId,
-          allergic_history: this.model.allergic_history
+          allergic_history: this.model.allergic_history,
+          foodAllergy: this.model.foodAllergy
         }
 
         peace.service.patient.upbindFamily(params).then(res => {
@@ -227,6 +236,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .container {
   display: flex;
   flex-direction: column;
@@ -242,6 +252,10 @@ export default {
     .van-button + .van-button {
       margin-left: 10px;
     }
+  }
+  /deep/ .van-cell__title{
+    flex: 1;
+    width: auto;
   }
 }
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {

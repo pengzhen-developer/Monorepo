@@ -108,9 +108,10 @@ export default {
         type: '2'
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allergicHistoryList = res.data.map(item => {
+        this.allergicHistoryList = (res.data && res.data.length ? res.data : [{name: this.searchAllergicHistory,needAdd: true}]).map(item => {
           return {
             text: item.name,
+            needAdd: item.needAdd,
             disabled: !!this.allergicHistory.find(temp => temp.value === item.name)
           }
         })
@@ -124,11 +125,14 @@ export default {
       this.searchAllergicHistory = ''
     },
     onConfirm(value) {
-      this.check({ value: value.text })
+      this.check({ value: value.text, needAdd: value.needAdd })
       this.onCancel()
     },
 
     check(currentItem) {
+      if (currentItem.needAdd) {
+        peace.service.inquiry.addAllergen({name: currentItem.value,type:1})
+      }
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []

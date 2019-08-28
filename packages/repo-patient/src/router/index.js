@@ -180,7 +180,7 @@ const router = new Router({
         },
         // 添加过敏史
         {
-          path: '/components/addAllergicHistory:json',
+          path: '/components/addAllergicHistory',
           name: '/components/addAllergicHistory',
           meta: {
             auth: true,
@@ -191,8 +191,21 @@ const router = new Router({
           },
           component: () => import('@src/views/components/AddAllergicHistory.vue')
         },
-
         // 添加过敏史
+        {
+          path: '/components/AddFoodAllergy',
+          name: '/components/AddFoodAllergy',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '添加过敏史',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/AddFoodAllergy.vue')
+        },
+
+        // 知情同意书
         {
           path: '/components/informedConsent',
           name: '/components/informedConsent',

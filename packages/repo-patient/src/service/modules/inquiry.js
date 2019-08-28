@@ -29,6 +29,18 @@ export function searchIllInfo(params) {
 
   return peace.http.post(searchIllInfo, params)
 }
+/**
+ * 添加到过敏史个人库
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function addAllergen(params) {
+  const addAllergen = 'client//v1/Inquiry/addAllergen'
+
+  return peace.http.post(addAllergen, params)
+}
 
 /**
  * 提交问诊时，图片上传
@@ -70,6 +82,9 @@ export default {
 
   /** 搜索过敏史以及疾病既往史 */
   searchIllInfo,
+
+  /** 添加到过敏史个人库 */
+  addAllergen,
   /** 提交问诊时，图片上传 */
   images,
   /** 提交问诊 */

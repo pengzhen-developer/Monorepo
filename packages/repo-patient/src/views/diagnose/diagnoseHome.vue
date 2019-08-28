@@ -33,7 +33,7 @@
             </div>
 
         </div>
-        <div class="panel">
+        <div class="panel" style="border-color: #fff">
             <div class="panel-head">
                 <div class="head-tit">问医生</div>
                 <!--                <picker mode="selector" bindchange="bindCityChange" value="{{index}}" range="{{cityList}}" range-key="name">-->
