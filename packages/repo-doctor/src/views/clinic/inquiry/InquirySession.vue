@@ -5,7 +5,7 @@
         <span class="name">{{ $store.getters['inquiry/patientInfo'].familyName }}</span>
       </div>
       <div class="header-control">
-        <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
+        <!-- <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span> -->
         <el-button
           @click="overConfirm"
           plain
