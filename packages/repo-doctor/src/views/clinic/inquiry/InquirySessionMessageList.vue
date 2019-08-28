@@ -314,7 +314,8 @@ export default {
     &.system {
       text-align: center;
       max-width: 80%;
-      margin: 10px auto;
+      margin: 5px auto;
+      font-size: 12px;
 
       .message-body {
         color: rgba(155, 155, 155, 1);
