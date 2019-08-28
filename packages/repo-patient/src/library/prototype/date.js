@@ -36,7 +36,63 @@ Date.prototype.formatDate = function(formatStr) {
   return formatStr.replace(/(yyyy|MM?|dd?|HH?|ss?|mm?)/g, function() {
     return dict[arguments[0]]
   })
-}
+},
+/**
+ * 输入Unix时间戳，返回指定时间格式
+ */
+Date.prototype.calcTimeHeader = function() {
+  // 格式化传入时间
+  let date = new Date(parseInt(this.valueOf())),
+      year = date.getUTCFullYear(),
+      month = date.getUTCMonth(),
+      day = date.getDate(),
+      hour = date.getHours(),
+      minute = date.getUTCMinutes()
+  // 获取当前时间
+  let currentDate = new Date(),
+      currentYear = date.getUTCFullYear(),
+      currentMonth = date.getUTCMonth(),
+      currentDay = currentDate.getDate()
+  // 计算是否是同一天
+  if (currentYear == year && currentMonth == month && currentDay == day) {//同一天直接返回
+    if (hour > 12) {
+      return `下午 ${hour}:${minute < 10 ? '0' + minute : minute}`
+      // return `${hour}:${minute < 10 ? '0' + minute : minute}`
+    } else {
+      return `上午 ${hour}:${minute < 10 ? '0' + minute : minute}`
+    }
+  }
+  // 计算是否是昨天
+  let yesterday = new Date(currentDate - 24 * 3600 * 1000); // 昨天
+  let beforeOne = new Date(currentDate - 48 * 3600 * 1000); // 1天前
+  let beforeTwo = new Date(currentDate - 72 * 3600 * 1000); // 2天前
+  let beforeTHr = new Date(currentDate - 96 * 3600 * 1000); // 3天前
+  if (year == yesterday.getUTCFullYear() && month == yesterday.getUTCMonth() && day == yesterday.getDate()) {//昨天
+    return `昨天 ${hour}:${minute < 10 ? '0' + minute : minute}`
+  } else if (year == beforeOne.getUTCFullYear() && month == beforeOne.getUTCMonth() && day == beforeOne.getDate()) {
+    return this.timeToDay() + `${hour}:${minute < 10 ? '0' + minute : minute}`
+  } else if (year == beforeTwo.getUTCFullYear() && month == beforeTwo.getUTCMonth() && day == beforeTwo.getDate()) {
+    return this.timeToDay() + `${hour}:${minute < 10 ? '0' + minute : minute}`
+  } else if (year == beforeTHr.getUTCFullYear() && month == beforeTHr.getUTCMonth() && day == beforeTHr.getDate()) {
+    return this.timeToDay() + `${hour}:${minute < 10 ? '0' + minute : minute}`
+  } else {
+    return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
+  }
+},
+
+Date.prototype.timeToDay = function(){
+  let date = new Date(parseInt(this.valueOf() || (new Date()).valueOf())),
+      dic = {
+        0: '星期一',
+        1: '星期二',
+        2: '星期三',
+        3: '星期四',
+        4: '星期五',
+        5: '星期六',
+        6: '星期日',
+      }
+  return dic[date.getUTCDay()]
+},
 
 /**
  * 日期格式化
