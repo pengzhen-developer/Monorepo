@@ -51,6 +51,19 @@ export function patientListDescPc(params) {
 }
 
 /**
+ * 获取某个患者详情信息
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getOneHealth(params) {
+  const getOneHealth = 'client/v1/Health/getOneHealth'
+
+  return peace.http.post(getOneHealth, params)
+}
+
+/**
  * 获取某个患者详情信息（新）
  *
  * @export
@@ -221,6 +234,7 @@ export default {
   /** 获取某个患者详情信息 */
   patientListDescPc,
   getPatientHome,
+  getOneHealth,
 
   /** 获取过敏源 */
   allergens,
