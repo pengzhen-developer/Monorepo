@@ -175,8 +175,7 @@
     if (
       (explore.explore === 'IE' && parseInt(explore.version) <= 11) ||
       (explore.explore === 'CHROME' && parseInt(explore.version) < 49) ||
-      (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52) ||
-      (explore.explore === 'SAFARI' && parseInt(explore.version) < 11)
+      (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52)
     ) {
       window.location.href = './unCompatible.html'
     }
