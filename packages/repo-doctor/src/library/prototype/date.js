@@ -52,6 +52,51 @@ Date.prototype.formatTime = function(formatStr) {
   return this.formatDate(formatStr)
 }
 
+Date.prototype.formatWXDate = function() {
+  const isThisYear = (date, now) => {
+    return date.getFullYear() == now.getFullYear()
+  }
+
+  const isThisWeek = (date, now) => {
+    if (date.getFullYear() == now.getFullYear() && date.getMonth() == now.getMonth()) {
+      if (now.getDay() - date.getDay() < now.getDay() && now.getDate() - date.getDate() > 0 && now.getDate() - date.getDate() < 7) {
+        return true
+      }
+    }
+    return false
+  }
+
+  const isYesterday = (date, now) => {
+    return date.getFullYear() == now.getFullYear() && date.getMonth() == now.getMonth() && date.getDate() + 1 == now.getDate()
+  }
+
+  const isToday = (date, now) => {
+    return date.getYear() == now.getYear() && date.getMonth() == now.getMonth() && date.getDate() == now.getDate()
+  }
+
+  const date = this
+  const now = new Date()
+
+  if (isThisYear(date, now)) {
+    if (isToday(date, now)) {
+      return date.formatTime('HH:mm')
+    }
+
+    if (isYesterday(date, now)) {
+      return '昨天 ' + date.formatTime('HH:mm')
+    }
+
+    if (isThisWeek(date, now)) {
+      const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+      return weekday[date.getDay()] + ' ' + date.formatTime('HH:mm')
+    }
+
+    return date.formatTime('MM-dd HH:mm')
+  } else {
+    return date.formatTime('yyyy-MM-dd HH:mm')
+  }
+}
+
 /**
  * des:        日期操作
  * @proStr:    格式化参数
