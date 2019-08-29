@@ -63,6 +63,7 @@
                 this.activeId = data.id;
                 json = peace.util.encode({
                     id: data.id,
+                    symptomCode: data.id,
                     title: data.name,
                     date: new Date()
                 })

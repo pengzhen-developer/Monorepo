@@ -132,7 +132,8 @@
                 this.showLoadingType = true;
                 this.doctorList = [];
                 peace.service.diagnose.doctorList({
-                    diseaseCode: this.params.id,
+                    diseaseCode: this.params.symptomCode ? '' : this.params.id,
+                    symptomCode: this.params.symptomCode,
                     city: this.checkCity,
                     p: 1,
                     size: 50
