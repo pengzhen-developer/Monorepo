@@ -1,9 +1,9 @@
 <template>
   <div class="inquiry-session-receive">
     <div class="tip">
-      <span>请注意，请在</span>
+      <span>请在</span>
       <span class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
-      <span>接诊，未接诊将自动退费</span>
+      <span>内接诊，倒计时结束未接诊将自动退诊</span>
     </div>
     <div class="control">
       <div @click="refuse">
