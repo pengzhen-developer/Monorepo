@@ -60,6 +60,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px 10px;
 
   cursor: pointer;
 

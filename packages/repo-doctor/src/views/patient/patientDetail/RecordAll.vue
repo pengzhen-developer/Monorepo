@@ -57,29 +57,29 @@
       <!-- 日常检测 -->
       <template v-else-if="type === '2'">
         <div class="time-line-content">
-          <el-row :gutter="30">
-            <el-col :span="12">
+          <el-row :gutter="60">
+            <el-col :span="8">
               <!-- 血压 -->
               <div class="time-line-content-card">
                 <RecordBloodPressure :data="healthInfo.find(item => item.healthType === 'bloodPressureData')" :type="type"></RecordBloodPressure>
               </div>
             </el-col>
 
-            <el-col :span="12">
+            <el-col :span="8">
               <!-- 血糖 -->
               <div class="time-line-content-card">
                 <RecordBloodSugar :data="healthInfo.find(item => item.healthType === 'bloodSugarData')" :type="type"></RecordBloodSugar>
               </div>
             </el-col>
 
-            <el-col :span="12">
+            <el-col :span="8">
               <!-- 血氧 -->
               <div class="time-line-content-card">
                 <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'oxyGenData')" :type="type"></RecordBloodOxygen>
               </div>
             </el-col>
 
-            <el-col :span="12">
+            <el-col :span="8">
               <!-- 体脂 -->
               <div class="time-line-content-card">
                 <RecordBodyFat :data="healthInfo.find(item => item.healthType === 'bodyFat')" :type="type"></RecordBodyFat>
@@ -197,12 +197,13 @@ export default {
   }
 
   .time-line-content {
+    padding: 0 10px;
+
     .time-line-content-card {
-      height: 64px;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
       border-radius: 4px;
-      margin: 0 0 10px 0;
+      margin: 0 0 20px 0;
     }
   }
 }
