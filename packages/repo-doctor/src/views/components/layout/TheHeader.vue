@@ -41,7 +41,7 @@
             <hr>-->
             <el-dropdown-item @click.native="signOut" class="dropdown-item">
               <div class="circle logout"></div>
-              <span>登出</span>
+              <span>退出登录</span>
             </el-dropdown-item>
           </div>
         </el-dropdown-menu>
