@@ -167,7 +167,19 @@ export default {
 
       .title {
         width: 100px;
-        color: $--color-primary;
+        color: #000;
+        font-weight: 600;
+
+        &::before {
+          content: ' ';
+          display: inline-block;
+          position: relative;
+          top: 2px;
+          width: 4px;
+          height: 14px;
+          margin: 0 15px 0 0;
+          background: $--color-primary;
+        }
       }
       .content {
         flex: 1;

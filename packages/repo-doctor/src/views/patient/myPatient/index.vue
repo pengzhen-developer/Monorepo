@@ -9,9 +9,6 @@
           <el-option :key="item.key" :label="item.source" :value="item.key" v-for="item in source.group_name"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="所属分组">
-        <el-input placeholder v-model="view.model.group_name"></el-input>
-      </el-form-item>
       <el-form-item label=" ">
         <el-button @click="get" round type="primary">查询</el-button>
       </el-form-item>
