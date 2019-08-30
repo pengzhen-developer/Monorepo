@@ -267,7 +267,6 @@ export default {
       }
 
       span {
-        width: 28px;
         height: 20px;
         padding: 0;
         font-size: 14px;

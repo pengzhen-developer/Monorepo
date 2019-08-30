@@ -238,6 +238,7 @@ $--control-height: 200px;
 
 .inquiry-session {
   height: 100%;
+  overflow: auto;
 
   .header {
     height: $--header-height;
