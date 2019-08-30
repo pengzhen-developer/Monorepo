@@ -30,8 +30,8 @@
       <div class="type-daily">
         <div class="title">
           <span class="title-label">体脂率</span>
-          <span class="title-value">{{ data.bfr }}%</span>
-          <el-tag :type="getTagType(data.resultType)" class="title-result" size="large">{{ data.result }}</el-tag>
+          <span class="title-value">{{ data.bfr || '- -' }} %</span>
+          <el-tag :type="getTagType(data.resultType)" class="title-result" size="large" v-if="!data.noData">{{ data.result }}</el-tag>
         </div>
 
         <hr class="divider" />
@@ -57,7 +57,14 @@ import peace from '@src/library'
 
 export default {
   props: {
-    data: Object,
+    data: {
+      type: Object,
+      default() {
+        return {
+          noData: true
+        }
+      }
+    },
     type: String
   },
 
@@ -87,6 +94,10 @@ export default {
     },
 
     showReport() {
+      if (this.data.noData) {
+        return peace.util.info('暂无数据')
+      }
+
       const dataId = this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.无

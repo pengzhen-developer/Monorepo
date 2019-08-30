@@ -40,7 +40,6 @@
               </el-dropdown-item>
             <hr>-->
             <el-dropdown-item @click.native="signOut" class="dropdown-item">
-              <div class="circle logout"></div>
               <span>退出登录</span>
             </el-dropdown-item>
           </div>
@@ -234,7 +233,7 @@ export default {
 
   .header-right-title-dropdown-content {
     width: 100%;
-    padding: 0;
+    padding: 4px 0;
 
     text-align: center;
 

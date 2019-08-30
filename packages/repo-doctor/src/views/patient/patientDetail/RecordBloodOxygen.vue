@@ -29,7 +29,7 @@
       <div class="type-daily">
         <div class="title">
           <span class="title-label">血氧</span>
-          <span class="title-value">{{ data.bloodOxygen }}%</span>
+          <span class="title-value">{{ data.bloodOxygen || '- -' }} %</span>
           <el-tag :type="getTagType(data.resultType)" class="title-result" size="large">{{ data.result }}</el-tag>
         </div>
 
@@ -39,7 +39,7 @@
           <div class="row">
             <span class="content-label">脉率</span>
             <span class="content-divider">:</span>
-            <span class="content-value">{{ data.pulseRate && data.pulseRate + '次/分' }}</span>
+            <span class="content-value">{{ data.pulseRate || '- -' }} 次/分</span>
           </div>
           <div class="row space-between">
             <span class="content-time">{{ data.createdTime }}</span>
@@ -56,7 +56,14 @@ import peace from '@src/library'
 
 export default {
   props: {
-    data: Object,
+    data: {
+      type: Object,
+      default() {
+        return {
+          noData: true
+        }
+      }
+    },
     type: String
   },
 
@@ -86,6 +93,10 @@ export default {
     },
 
     showReport() {
+      if (this.data.noData) {
+        return peace.util.info('暂无数据')
+      }
+
       const dataId = this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.无

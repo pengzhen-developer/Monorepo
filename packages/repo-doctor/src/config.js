@@ -62,7 +62,7 @@ export const config = {
   api: {
     base: 'https://testdoctor.hp.aijiayi.com/'
   },
-
+     n
   /**
    * IM 配置项
    */
