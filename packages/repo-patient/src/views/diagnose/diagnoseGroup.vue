@@ -21,7 +21,7 @@
                 <img :class="['next', page.nextClass ? 'toggle' : '']" :src="page.icon.next" />
             </div>
         </div>
-        <div class="panel">
+        <div class="panel" style="border-bottom: 0">
             <div class="panel-head">
                 <div class="head-tit">问医生</div>
 <!--                <picker mode="selector" bindchange="bindCityChange" value="{{index}}" range="{{cityList}}" range-key="name">-->
@@ -292,6 +292,10 @@
         font-size: 11px;
         margin-right: 6px;
         margin-bottom: 6px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .box-bg .more{
@@ -299,7 +303,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 20px;
+        height: 24px;
         background: #fff;
         width: 100%;
     }

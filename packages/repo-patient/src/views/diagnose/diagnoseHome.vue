@@ -448,6 +448,9 @@
     }
     .card-label{
         margin-bottom:5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .load{
         text-align: center;
