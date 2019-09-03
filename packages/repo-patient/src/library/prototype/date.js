@@ -40,7 +40,7 @@ Date.prototype.formatDate = function(formatStr) {
 /**
  * 输入Unix时间戳，返回指定时间格式
  */
-Date.prototype.calcTimeHeader = function() {
+Date.prototype.calcTimeHeader = function(bool) {
   // 格式化传入时间
   let date = new Date(parseInt(this.valueOf())),
       year = date.getUTCFullYear(),
@@ -53,14 +53,13 @@ Date.prototype.calcTimeHeader = function() {
       currentYear = date.getUTCFullYear(),
       currentMonth = date.getUTCMonth(),
       currentDay = currentDate.getDate()
+
+  if(bool){
+    return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
+  }
   // 计算是否是同一天
   if (currentYear == year && currentMonth == month && currentDay == day) {//同一天直接返回
-    if (hour > 12) {
-      return `下午 ${hour}:${minute < 10 ? '0' + minute : minute}`
-      // return `${hour}:${minute < 10 ? '0' + minute : minute}`
-    } else {
-      return `上午 ${hour}:${minute < 10 ? '0' + minute : minute}`
-    }
+        return `${hour}:${minute < 10 ? '0' + minute : minute}`
   }
   // 计算是否是昨天
   let yesterday = new Date(currentDate - 24 * 3600 * 1000); // 昨天
@@ -79,7 +78,6 @@ Date.prototype.calcTimeHeader = function() {
     return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
   }
 },
-
 Date.prototype.timeToDay = function(){
   let date = new Date(parseInt(this.valueOf() || (new Date()).valueOf())),
       dic = {

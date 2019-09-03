@@ -132,7 +132,7 @@ export default {
     },
 
     onConfirm(value) {
-      this.check({ value: value.text })
+      value.text && this.check({ value: value.text })
       this.onCancel()
     },
 

@@ -16,9 +16,9 @@
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊"
         >
           <!-- 消息时间 -->
-          <template v-if="isShowMessageTime(message ,index)">
+          <template v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader(showTimeDic[getMessageType(message)]) }}</div>
             </div>
           </template>
 
@@ -242,7 +242,17 @@ export default {
       recipeDetail: {
         visible: false,
         data: {}
-      }
+      },
+      showTimeDic: {
+        710: true, // 接诊
+        740: true, // 结束问诊
+        // 742: true, // 转诊
+        // 743: true, // 会诊
+        750: true, // 退诊
+        760: true, // 取消问诊
+        // 900: true, // 接收随访
+        // 910: true, // 随访结束
+      },
     }
   },
 
