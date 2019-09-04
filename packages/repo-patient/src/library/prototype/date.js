@@ -40,7 +40,7 @@ Date.prototype.formatDate = function(formatStr) {
 /**
  * 输入Unix时间戳，返回指定时间格式
  */
-Date.prototype.calcTimeHeader = function(bool) {
+Date.prototype.calcTimeHeader = function() {
   // 格式化传入时间
   let date = new Date(parseInt(this.valueOf())),
       year = date.getUTCFullYear(),
@@ -54,9 +54,9 @@ Date.prototype.calcTimeHeader = function(bool) {
       currentMonth = date.getUTCMonth(),
       currentDay = currentDate.getDate()
 
-  if(bool){
-    return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
-  }
+  // if(bool){
+  //   return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
+  // }
   // 计算是否是同一天
   if (currentYear == year && currentMonth == month && currentDay == day) {//同一天直接返回
         return `${hour}:${minute < 10 ? '0' + minute : minute}`

@@ -16,7 +16,7 @@
               <span>{{ session.content.doctorInfo.doctorTitle }}</span>
             </div>
             <div class="message-item-detail-title-time">
-              <span>{{ session.updateTime.toDate().calcTimeHeader(session.updateTime) }}</span>
+              <span>{{ session.updateTime.toDate().calcTimeHeader() }}</span>
             </div>
           </div>
           <div class="message-item-detail-content">
