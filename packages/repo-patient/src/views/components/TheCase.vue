@@ -48,7 +48,7 @@
       <div
         class="form-dl"
         style="display: block;"
-        v-if="data.inspectionIndex"
+        v-if="data.inspectionIndex && data.inspectionIndex.temperature || data.inspectionIndex.weight || data.inspectionIndex.heart_rate || data.inspectionIndex.blood_pressure || data.inspectionIndex.More"
       >
         <div class="form-dt">
           检查指标

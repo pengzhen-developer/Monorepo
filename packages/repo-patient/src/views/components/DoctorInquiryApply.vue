@@ -390,10 +390,10 @@ export default {
       // 复诊必填验证
       if (this.model.isAgain) {
         if (!this.model.confirmIllness) {
-          return peace.util.alert('请确认疾病')
+          return peace.util.alert('请选择初诊诊断')
         }
         if (!this.model.confirmTime) {
-          return peace.util.alert('请确认时间')
+          return peace.util.alert('请选择初诊时间')
         }
         if (!this.model.pastDrug) {
           return peace.util.alert('请输入既往用药')
