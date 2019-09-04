@@ -126,121 +126,90 @@
     </div>
 
     <peace-dialog :visible.sync="receiveDialog.visible" class="receive-dialog" title="接单意见">
-      <el-form :model="receiveDialog.data" inline>
-        <div>
-          <el-form-item label="患者信息：">
-            <img :src="receiveDialog.data.patientPhoto" style="margin: 0 10px 0 0;" />
-            <span
-              style="margin: 0 20px 0 0; font-size: 16px;"
-            >{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
-            <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientSex }}</span>
-            <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientAge && receiveDialog.data.patientAge + '岁' }}</span>
-            <el-button
-              plain
-              round
-              style="position: absolute; left: 370px;"
-              type="primary"
-              v-if=" source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus)"
-            >{{ source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus).value }}</el-button>
-          </el-form-item>
+      <el-form :model="receiveDialog.data" inline label-width="90px">
+        <el-form-item label="患者信息：">
+          <img :src="receiveDialog.data.patientPhoto" style="margin: 0 10px 0 0;" />
+          <span
+            style="margin: 0 20px 0 0; font-size: 16px;"
+          >{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
+          <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientSex }}</span>
+          <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientAge && receiveDialog.data.patientAge + '岁' }}</span>
+          <el-tag
+            :type="receiveDialog.data.orderStatus === 3 ? 'primary' : receiveDialog.data.orderStatus === 4 ? 'danger' : 'info' "
+            size="large"
+            style="position: absolute; left: 370px; border-radius: 60px; width:68px; text-align: center;"
+            v-if="source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus)"
+          >{{ source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus).value }}</el-tag>
+        </el-form-item>
 
-          <hr class="character-dashad" />
-        </div>
+        <hr class="character-dashad" />
 
-        <div>
-          <el-form-item label="服务类型：">
-            <span>
-              {{
-              source.type.find(item=> item.key === receiveDialog.data.type) &&
-              source.type.find(item=> item.key === receiveDialog.data.type).value
-              }}
-            </span>
-          </el-form-item>
-        </div>
-        <div>
-          <el-form-item label="服务方式：">
-            <span>
-              {{
-              receiveDialog.data.mode === 1 ? '图文问诊' :
-              receiveDialog.data.mode === 2 ? '视频问诊' :
-              receiveDialog.data.mode === 3 ? '图文问诊、视频问诊' : ''
-              }}
-            </span>
-          </el-form-item>
-        </div>
-        <div>
-          <el-form-item label="服务价格：">{{ receiveDialog.data.money }}元</el-form-item>
-        </div>
-        <div>
-          <el-form-item label="服务次数：">{{ receiveDialog.data.count === 0 ? '不限' : receiveDialog.data.count }}</el-form-item>
-        </div>
-        <div>
-          <el-form-item label="购买时间：">{{ receiveDialog.data.purchaseTime }}</el-form-item>
-        </div>
-        <div>
-          <el-form-item label="咨询意向：">{{ receiveDialog.data.orderReason }}</el-form-item>
-        </div>
+        <el-form-item label="服务类型：">
+          <span>
+            {{
+            source.type.find(item=> item.key === receiveDialog.data.type) &&
+            source.type.find(item=> item.key === receiveDialog.data.type).value
+            }}
+          </span>
+        </el-form-item>
+        <el-form-item label="服务方式：">
+          <span>
+            {{
+            receiveDialog.data.mode === 1 ? '图文问诊' :
+            receiveDialog.data.mode === 2 ? '视频问诊' :
+            receiveDialog.data.mode === 3 ? '图文问诊、视频问诊' : ''
+            }}
+          </span>
+        </el-form-item>
+        <el-form-item label="服务价格：">{{ receiveDialog.data.money }}元</el-form-item>
+        <el-form-item label="服务次数：">{{ receiveDialog.data.count === 0 ? '不限' : receiveDialog.data.count }}</el-form-item>
+        <el-form-item label="购买时间：">{{ receiveDialog.data.purchaseTime }}</el-form-item>
+        <el-form-item label="咨询意向：">{{ receiveDialog.data.orderReason }}</el-form-item>
 
         <!-- 已接单 -->
         <template v-if="receiveDialog.data.orderStatus === 3">
-          <div>
-            <hr class="character-solid" />
+          <hr class="character-solid" />
 
-            <el-form-item label="接单意见：">同意接单</el-form-item>
-          </div>
-          <div>
-            <el-form-item label="操作时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
-          </div>
+          <el-form-item label="接单意见：">同意接单</el-form-item>
+          <el-form-item label="操作时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
         </template>
         <!-- 已拒绝 -->
         <template v-else-if="receiveDialog.data.orderStatus === 4">
-          <div>
-            <hr class="character-solid" />
+          <hr class="character-solid" />
 
-            <el-form-item label="接单意见：">拒绝接单</el-form-item>
-          </div>
-          <div>
-            <el-form-item label="拒绝原因：">{{ receiveDialog.data.refuseReason }}</el-form-item>
-          </div>
-          <div>
-            <el-form-item label="操作时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
-          </div>
+          <el-form-item label="接单意见：">拒绝接单</el-form-item>
+          <el-form-item label="拒绝原因：">
+            <span>{{ receiveDialog.data.refuseReason }}</span>
+          </el-form-item>
+          <el-form-item label="操作时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
         </template>
         <!-- 已退单 -->
         <template v-else-if="receiveDialog.data.orderStatus === 6">
-          <div>
-            <hr class="character-solid" />
+          <hr class="character-solid" />
 
-            <el-form-item label="退单原因：">超时未接单，系统自动退单</el-form-item>
-          </div>
-          <div>
-            <el-form-item label="退单时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
-          </div>
+          <el-form-item label="退单原因：">超时未接单，系统自动退单</el-form-item>
+          <el-form-item label="退单时间：">{{ receiveDialog.data.acceptTime }}</el-form-item>
         </template>
         <template v-else>
-          <div>
-            <hr class="character-solid" />
+          <hr class="character-solid" />
 
-            <el-form-item label="接单意见：">
-              <el-radio-group v-model="receiveDialog.model.acceptOpinion">
-                <el-radio :label="1">通过</el-radio>
-                <el-radio :label="2">拒绝</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </div>
-          <div v-if="receiveDialog.model.acceptOpinion === 2">
-            <el-form-item label="拒绝原因：">
-              <el-input
-                :rows="2"
-                maxlength="255"
-                placeholder="请输入拒绝原因（必填）"
-                show-word-limit
-                style="width: 420px;"
-                type="textarea"
-                v-model="receiveDialog.model.refuseReason"
-              ></el-input>
-            </el-form-item>
-          </div>
+          <el-form-item label="接单意见：">
+            <el-radio-group v-model="receiveDialog.model.acceptOpinion">
+              <el-radio :label="1">通过</el-radio>
+              <el-radio :label="2">拒绝</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="拒绝原因：" v-if="receiveDialog.model.acceptOpinion === 2">
+            <el-input
+              :rows="2"
+              maxlength="255"
+              placeholder="请输入拒绝原因（必填）"
+              show-word-limit
+              style="width: 420px;"
+              type="textarea"
+              v-model="receiveDialog.model.refuseReason"
+            ></el-input>
+          </el-form-item>
 
           <div style="text-align: center; margin: 20px 0 0 0;">
             <el-button @click="receiveDialog.visible = false">取消</el-button>
@@ -519,6 +488,7 @@ export default {
 
     .el-form-item--mini .el-form-item__content {
       display: flex;
+      flex: 1;
       align-items: center;
 
       font-weight: 600;
