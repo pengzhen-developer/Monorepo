@@ -327,8 +327,8 @@ export default {
     display: block;
     &__inner {
       font-size: 14px;
-      height: 46px;
       border: 0;
+      height: 100%;
       vertical-align: top;
       box-shadow: none;
     }
