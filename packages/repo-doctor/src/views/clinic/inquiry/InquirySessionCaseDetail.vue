@@ -248,7 +248,7 @@ export default {
     }
     &-content {
       font-size: 12px;
-      width: 80px !important;
+      width: 200px !important;
     }
   }
 }

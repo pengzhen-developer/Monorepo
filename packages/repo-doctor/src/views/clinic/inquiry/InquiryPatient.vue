@@ -75,7 +75,7 @@
           </el-tab-pane>
           <el-tab-pane label="就诊记录">
             <div class="record">
-              <NoData></NoData>
+              <NoData type="health"></NoData>
             </div>
           </el-tab-pane>
         </el-tabs>
