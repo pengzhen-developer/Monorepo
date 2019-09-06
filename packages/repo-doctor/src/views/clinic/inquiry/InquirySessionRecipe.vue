@@ -47,9 +47,7 @@
         </peace-table-column>
       </peace-table>
 
-      <hr />
-
-      <div style="text-align: center;">
+      <div style="text-align: center; margin: 30px 0 0 0;">
         <el-button @click="close">取消</el-button>
         <el-button @click="savePrescription" type="success" v-show="false">保存</el-button>
         <el-button @click="sendPrescription" type="primary">发送</el-button>
@@ -139,9 +137,7 @@
         </peace-table-column>
       </peace-table>
 
-      <hr />
-
-      <div style="text-align: center;">
+      <div style="text-align: center; margin: 30px 0 0 0;">
         <el-button @click="cancelDrug">取消</el-button>
         <el-button @click="saveDrugToPrescription" type="primary">保存</el-button>
       </div>

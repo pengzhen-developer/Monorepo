@@ -8,7 +8,7 @@
     <div class="body">
       <el-scrollbar class="body-scrollbar">
         <el-tabs class="content">
-          <el-tab-pane class="health" label="健康档单">
+          <el-tab-pane class="health" label="健康档案">
             <div class="health-item">
               <div class="health-item-title">
                 <img src="~@src/assets/images/inquiry/archives_icon_marry.png" />
@@ -75,7 +75,7 @@
           </el-tab-pane>
           <el-tab-pane label="就诊记录">
             <div class="record">
-              <span>暂无</span>
+              <NoData type="health"></NoData>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -86,8 +86,13 @@
 
 <script>
 import peace from '@src/library'
+import NoData from '@src/views/components/NoData'
 
 export default {
+  components: {
+    NoData
+  },
+
   data() {
     return {
       healthRecord: {}
@@ -199,7 +204,6 @@ $--header-height: 50px;
 
           .health-item-description {
             span {
-              margin: 0 0 0 30px;
               color: rgba(153, 153, 153, 1);
             }
           }

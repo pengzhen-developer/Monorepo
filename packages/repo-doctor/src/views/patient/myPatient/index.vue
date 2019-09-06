@@ -2,15 +2,12 @@
   <div>
     <el-form :model="view.model" inline>
       <el-form-item label="患者姓名">
-        <el-input placeholder v-model="view.model.patient_name"></el-input>
+        <el-input placeholder v-model="view.model.name"></el-input>
       </el-form-item>
       <el-form-item label="患者来源">
         <el-select clearable placeholder="全部" v-model="view.model.source">
           <el-option :key="item.key" :label="item.source" :value="item.key" v-for="item in source.group_name"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="所属分组">
-        <el-input placeholder v-model="view.model.group_name"></el-input>
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="get" round type="primary">查询</el-button>
@@ -20,29 +17,19 @@
     <hr />
 
     <peace-table pagination ref="table">
-      <peace-table-column label="患者姓名" prop="real_name" width="140">
+      <peace-table-column label="患者姓名" prop="name" width="140"></peace-table-column>
+      <peace-table-column label="基本信息" width="140">
         <template slot-scope="scope">
-          <span class="private-doctor" v-if="scope.row.isPrivateDoctor">私</span>
-
-          <span>{{ scope.row.patient_remarks || scope.row.real_name || scope.row.weixin_name }}</span>
+          <span>{{ `${ scope.row.sex } , ${ scope.row.age }岁` }}</span>
         </template>
       </peace-table-column>
-      <peace-table-column label="联系方式" prop="contact" width="120"></peace-table-column>
-      <peace-table-column align="left" label="最近咨询" min-width="300" show-overflow-tooltip>
+      <peace-table-column label="最先联系方式" prop="tel" width="120"></peace-table-column>
+      <peace-table-column label="疾病标签" min-width="340" show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>{{ scope.row.family_name }}</span>&nbsp;
-          <span>{{ scope.row.family_sex }}</span>&nbsp;
-          <span v-if="scope.row.family_age">{{ scope.row.family_age }}岁</span>&nbsp;
-          <span>{{ scope.row.diagnose }}</span>&nbsp;
-          <span>{{ scope.row.family_time }}</span>&nbsp;
+          <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
         </template>
       </peace-table-column>
       <peace-table-column :formatter="(r,c,v) => { return this.source.group_name.find(item => item.key === v).source }" label="患者来源" prop="source"></peace-table-column>
-      <peace-table-column align="left" label="所属分组" min-width="200" prop="group_names">
-        <template slot-scope="scope">
-          <el-tag :key="item" style="margin: 5px" type="info" v-for="item in scope.row.group_names.split(',')" v-show="item">{{ item }}</el-tag>
-        </template>
-      </peace-table-column>
       <peace-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
@@ -60,7 +47,7 @@ export default {
     return {
       view: {
         model: {
-          patient_name: undefined,
+          name: undefined,
           source: undefined,
           group_name: undefined
         }
@@ -97,9 +84,9 @@ export default {
         id: 1,
         pid: null,
         closable: true,
-        name: row.patient_remarks || row.real_name || row.weixin_name,
-        title: row.patient_remarks || row.real_name || row.weixin_name,
-        path: '/patient/patientDetail/' + row.patient_id
+        name: row.name,
+        title: row.name,
+        path: '/patient/patientDetail/' + row.familyId
       }
 
       // 将当前选中的项，添加到 tab

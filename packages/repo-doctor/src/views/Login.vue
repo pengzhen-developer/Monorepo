@@ -7,19 +7,20 @@
         <div class="tips" v-if="usernameError">{{ usernameError }}</div>
       </div>
       <div class="row" label prop="password">
-        <el-input placeholder="请输入验证码" ref="pwd" v-model="view.model.password"></el-input>
-        <div @click="reInput" class="close" v-if="passwordError">x</div>
+        <el-input placeholder="请输入验证码" ref="pwd" v-model="view.model.password">
+          <el-button :disabled="isDown" @click="getValidCode" slot="suffix" type="text">
+            <el-divider direction="vertical" style="height: 1.6em; margin: 0 12px;"></el-divider>
+            <span v-show="!isDown">获取验证码</span>
+            <span v-show="isDown">{{ `(${ down })` }}</span>
+          </el-button>
+        </el-input>
         <div class="tips" v-if="passwordError">{{ passwordError }}</div>
       </div>
       <div class="row btn">
-        <el-button :disabled="isDown" @click="getValidCode" type="primary">
-          获取验证码
-          <span v-show="isDown">{{ `(${ down })` }}</span>
-        </el-button>
         <el-button :disabled="isLoging" @click="login" type="primary">登录</el-button>
       </div>
     </el-form>
-    <div class="footer-text">Copyright @ 2018-2038 全息云通健康科技有限公司版权所有</div>
+    <div class="footer-text">Copyright @ 2018-2038 全息云通健康科技（武汉）有限公司版权所有</div>
   </div>
 </template>
  
@@ -222,7 +223,7 @@ export default {
       position: relative;
       margin-top: 30px;
       padding-left: 50px;
-      padding-right: 20px;
+      padding-right: 5px;
       height: 50px;
       border: 1px solid $--color-primary;
       border-radius: 3px;
@@ -264,6 +265,11 @@ export default {
           display: block;
         }
       }
+      .valid-code {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
       &:before {
         content: '';
         position: absolute;
@@ -288,13 +294,14 @@ export default {
         &:before {
           display: none;
         }
+
+        .el-button {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+          border-radius: 4px;
+        }
       }
-    }
-    .el-button {
-      width: 48%;
-      height: 100%;
-      font-size: 16px;
-      border-radius: 4px;
     }
   }
   .footer-text {
@@ -309,14 +316,19 @@ export default {
 }
 </style>
 <style lang="scss">
+.el-divider--vertical {
+  height: 1.6em;
+  margin: 0 12px;
+}
+
 .row {
   .el-input {
     height: 100%;
     display: block;
     &__inner {
       font-size: 14px;
-      height: 46px;
       border: 0;
+      height: 100%;
       vertical-align: top;
       box-shadow: none;
     }

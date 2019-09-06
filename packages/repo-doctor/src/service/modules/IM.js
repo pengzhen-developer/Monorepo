@@ -98,10 +98,12 @@ export function onDisConnect(disConnectObject) {
     case 417:
     case 'kicked':
       peace.util.warning(disConnectObject.message)
-      $peace.$router.replace(peace.config.system.loginPage)
+      peace.cache.clear()
+
       setTimeout(() => {
+        $peace.$router.replace(peace.config.system.loginPage)
         window.location.reload()
-      }, 0)
+      }, 2000)
       break
 
     default:

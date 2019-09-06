@@ -142,9 +142,9 @@ $--layout-body-right-tab-height: 40px;
       }
 
       .layout-body-right-content {
-        margin: 10px 0 0 10px;
+        margin: 10px 10px 0 10px;
         height: calc(100% - #{$--layout-body-right-tab-height} - 10px);
-        background: #fff;
+        background: #f9f9f9;
 
         .layout-body-right-content-scrollbar {
           height: 100%;

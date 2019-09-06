@@ -16,7 +16,7 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -29,7 +29,7 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -45,7 +45,7 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -60,7 +60,7 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -79,7 +79,7 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatDate('MM月dd日 HH:mm') }}</div>
+            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -314,7 +314,8 @@ export default {
     &.system {
       text-align: center;
       max-width: 80%;
-      margin: 10px auto;
+      margin: 5px auto;
+      font-size: 12px;
 
       .message-body {
         color: rgba(155, 155, 155, 1);

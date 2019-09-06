@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ getState() }.png`" v-if="getState()">
+      <img :src="`./static/images/transfer/${ getState() }.png`" v-if="getState()" />
     </div>
 
     <div class="record-no">
@@ -9,7 +9,7 @@
     </div>
     <div class="record-title">
       <span>{{ internalData.send_hos_name }}</span>
-      <br>
+      <br />
       <span>转诊单</span>
     </div>
 
@@ -181,7 +181,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <br>
+        <br />
         <el-row>
           <el-col :span="24" style="text-align: center;">
             <el-button :disabled="!view.model.referral_suggest" @click="receiveReferralPc" type="primary">提交</el-button>

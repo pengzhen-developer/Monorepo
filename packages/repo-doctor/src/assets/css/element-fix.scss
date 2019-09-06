@@ -5,6 +5,9 @@
 }
 
 .el-dialog {
+  max-height: 75vh;
+  overflow: hidden;
+
   .el-dialog__header {
     display: flex;
     align-items: center;
@@ -25,6 +28,8 @@
     padding: 15px 10px;
     background: #fff;
     padding: 10px;
+    max-height: calc(75vh - 40px);
+    overflow: auto;
   }
 }
 
