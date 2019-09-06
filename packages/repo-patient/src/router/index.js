@@ -264,7 +264,7 @@ const router = new Router({
           path: '/appoint/doctor/appointDoctorList/:json',
           name: '/appoint/doctor/appointDoctorList',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '选择医生',
               back: true
