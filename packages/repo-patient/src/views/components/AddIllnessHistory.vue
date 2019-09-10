@@ -1,7 +1,14 @@
 <template>
   <div class="add-illness-history">
     <div class="input">
-      <van-search @cancel="onCancel" class="search" placeholder="请输入搜索关键词" shape="round" show-action v-model="searchIllnessHistory">
+      <van-search
+        @cancel="onCancel"
+        class="search"
+        placeholder="请输入搜索关键词"
+        shape="round"
+        show-action
+        v-model="searchIllnessHistory"
+      >
         <span @click="onSearch" class="search-label" slot="action">搜索</span>
       </van-search>
 
@@ -9,7 +16,14 @@
 
       <h4>已选既往史</h4>
       <div class="checked-list">
-        <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in confirmIllness">{{ item.value }}</van-tag>
+        <van-tag
+          :key="item.value"
+          @click="check(item)"
+          class="tag checked"
+          plain
+          v-for="item in confirmIllness"
+          >{{ item.value }}</van-tag
+        >
       </div>
 
       <h4>常见既往史</h4>
@@ -21,29 +35,37 @@
           class="tag"
           plain
           v-for="item in confirmIllnessCommonly"
-        >{{ item.value }}</van-tag>
+          >{{ item.value }}</van-tag
+        >
       </div>
     </div>
 
     <div class="save">
-      <van-button @click="save" style="width: 100%;" type="primary">保存</van-button>
+      <van-button @click="save" style="width: 100%;" type="primary"
+        >保存</van-button
+      >
     </div>
 
     <van-popup position="bottom" v-model="showIllnessHistory">
-      <van-picker :columns="confirmIllnessList" @cancel="showIllnessHistory = false" @confirm="onConfirm" show-toolbar />
+      <van-picker
+        :columns="confirmIllnessList"
+        @cancel="showIllnessHistory = false"
+        @confirm="onConfirm"
+        show-toolbar
+      />
     </van-popup>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 
 export default {
   props: {
     value: {
       type: String,
       default() {
-        return ''
+        return "";
       }
     }
   },
@@ -55,7 +77,7 @@ export default {
       // 显示搜索框
       showIllnessHistory: false,
       // 搜索关键字
-      searchIllnessHistory: '',
+      searchIllnessHistory: "",
 
       // 搜索
       confirmIllnessList: [],
@@ -63,124 +85,156 @@ export default {
       confirmIllness: [],
       // 常见
       confirmIllnessCommonly: []
-    }
+    };
   },
 
   created() {
     this.getIllnessHistoryCommonly().then(() => {
-      this.parmasHandler()
-    })
+      this.parmasHandler();
+    });
   },
 
   methods: {
     getIllnessHistoryCommonly() {
-      const params = { type: '1', isCommon: '1' }
+      const params = { type: "1", isCommon: "1" };
 
       return peace.service.inquiry.searchIllInfo(params).then(res => {
         this.confirmIllnessCommonly = res.data.map(item => {
           return {
             value: item.name,
             checked: false
-          }
-        })
+          };
+        });
 
         this.confirmIllnessCommonly.unshift({
-          value: '无',
+          value: "无",
           checked: false
-        })
-      })
+        });
+      });
     },
 
     parmasHandler() {
       if (this.internalValue) {
-        if (typeof this.internalValue === 'string') {
-          this.internalValue = this.internalValue.split(',')
+        if (typeof this.internalValue === "string") {
+          this.internalValue = this.internalValue.split(",");
         }
 
         this.internalValue.forEach(allergic => {
-          this.confirmIllness.push({ value: allergic, checked: true })
+          this.confirmIllness.push({ value: allergic, checked: true });
 
-          console.log(this.confirmIllnessCommonly)
-          if (this.confirmIllnessCommonly.find(item => item.value === allergic)) {
-            this.confirmIllnessCommonly.find(item => item.value === allergic).checked = true
+          console.log(this.confirmIllnessCommonly);
+          if (
+            this.confirmIllnessCommonly.find(item => item.value === allergic)
+          ) {
+            this.confirmIllnessCommonly.find(
+              item => item.value === allergic
+            ).checked = true;
           }
-        })
+        });
       }
     },
 
     onSearch() {
       const params = {
         keyword: this.searchIllnessHistory,
-        type: '1'
-      }
+        type: "1"
+      };
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.confirmIllnessList = res.data.map(item => {
-          return {
-            text: item.name,
-            disabled: !!this.confirmIllness.find(temp => temp.value === item.name)
-          }
-        })
+        if (res.data.length === 0) {
+          this.confirmIllnessList = [
+            {
+              text: this.searchIllnessHistory,
+              disabled: !!this.confirmIllness.find(
+              temp => temp.value === this.searchIllnessHistory
+            )
+            }
+          ];
+        } else {
+          this.confirmIllnessList = res.data.map(item => {
+            return {
+              text: item.name,
+              disabled: !!this.confirmIllness.find(
+                temp => temp.value === item.name
+              )
+            };
+          });
+        }
 
-        this.showIllnessHistory = true
-        this.searchIllnessHistory = ''
-      })
+        this.showIllnessHistory = true;
+        this.searchIllnessHistory = "";
+      });
     },
 
     onCancel() {
-      this.showIllnessHistory = false
-      this.searchIllnessHistory = ''
+      this.showIllnessHistory = false;
+      this.searchIllnessHistory = "";
     },
 
     onConfirm(value) {
-      value.text && this.check({ value: value.text })
-      this.onCancel()
+      if(!value.disabled) {
+        value.text && this.check({ value: value.text });
+        this.onCancel();
+      } else {
+        this.onCancel();
+      }
     },
 
     check(currentItem) {
       // 选择'无'， 重置所有
-      if (currentItem.value === '无') {
-        this.confirmIllness = []
-        this.confirmIllnessCommonly.forEach(item => (item.checked = false))
+      if (currentItem.value === "无") {
+        this.confirmIllness = [];
+        this.confirmIllnessCommonly.forEach(item => (item.checked = false));
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.confirmIllness.findIndex(item => item.value === '无')
+        const index = this.confirmIllness.findIndex(
+          item => item.value === "无"
+        );
 
         if (index !== -1) {
-          this.confirmIllnessCommonly[0].checked = false
-          this.confirmIllness.splice(index, 1)
+          this.confirmIllnessCommonly[0].checked = false;
+          this.confirmIllness.splice(index, 1);
         }
       }
 
       if (currentItem.checked) {
-        currentItem.checked = false
-        const index = this.confirmIllness.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
+        currentItem.checked = false;
+        const index = this.confirmIllness.findIndex(
+          item => item.value === currentItem.value
+        );
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(
+          item => item.value === currentItem.value
+        );
 
         if (index !== -1) {
-          this.confirmIllness.splice(index, 1)
+          this.confirmIllness.splice(index, 1);
         }
         if (indexCommonly !== -1) {
-          this.confirmIllnessCommonly[indexCommonly].checked = false
+          this.confirmIllnessCommonly[indexCommonly].checked = false;
         }
       } else {
-        currentItem.checked = true
-        this.confirmIllness.push(currentItem)
+        currentItem.checked = true;
+        this.confirmIllness.push(currentItem);
 
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(
+          item => item.value === currentItem.value
+        );
         if (indexCommonly !== -1) {
-          this.confirmIllnessCommonly[indexCommonly].checked = true
+          this.confirmIllnessCommonly[indexCommonly].checked = true;
         }
       }
     },
 
     save() {
-      this.$emit('input', this.confirmIllness.map(item => item.value).toString())
+      this.$emit(
+        "input",
+        this.confirmIllness.map(item => item.value).toString()
+      );
 
-      this.$emit('onSave')
+      this.$emit("onSave");
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -216,7 +270,7 @@ export default {
         padding: 10px;
         text-align: center;
         min-width: 45px;
-
+        border: none;
         &::after {
           border: none;
         }
