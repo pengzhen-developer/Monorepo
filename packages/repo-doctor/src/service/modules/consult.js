@@ -154,6 +154,23 @@ export function submitSuggest(params) {
   })
 }
 
+/**
+ * 获取正在会诊中的编号
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getConsultNo(params) {
+  const getConsultNo = 'client/v1/consult/getConsultNo'
+
+  return peace.http.post(getConsultNo, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
 export default {
   getInfoByTeamId,
 
@@ -178,5 +195,8 @@ export default {
   /** 选择可邀请的会诊医生 */
   chooseInviteDoctor,
   /** 提交会诊意见 */
-  submitSuggest
+  submitSuggest,
+
+  /** 获取正在会诊中的编号 */
+  getConsultNo
 }
