@@ -156,8 +156,13 @@ export default {
       this.searchAllergicHistory = "";
     },
     onConfirm(value) {
-      this.check({ value: value.text, needAdd: value.needAdd });
-      this.onCancel();
+      if(!value.disabled) {
+        //库里面无数据时, 创建的诊断只有一个数据，设置为disabled任然可以选择，此处做校验
+        value.text && this.check({ value: value.text });
+        this.onCancel();
+      } else {
+        this.onCancel();
+      }
     },
 
     check(currentItem) {
