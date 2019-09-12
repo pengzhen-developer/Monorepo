@@ -131,6 +131,7 @@
       },
 
       check(currentItem) {
+
         if (currentItem.needAdd) {
           peace.service.inquiry.addAllergen({name: currentItem.value,type:2})
         }

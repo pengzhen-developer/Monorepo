@@ -14,7 +14,7 @@
 
       <hr />
 
-      <h4>已选既往史</h4>
+      <h4>已选诊断</h4>
       <div class="checked-list">
         <van-tag
           :key="item.value"
@@ -26,7 +26,7 @@
         >
       </div>
 
-      <h4>常见既往史</h4>
+      <h4>常见诊断</h4>
       <div class="not-checked-list">
         <van-tag
           :class="{ checked: item.checked }"
@@ -137,29 +137,21 @@ export default {
     onSearch() {
       const params = {
         keyword: this.searchIllnessHistory,
-        type: "1"
+        type: "3"
       };
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        if (res.data.length === 0) {
-          this.confirmIllnessList = [
-            {
-              text: this.searchIllnessHistory,
-              disabled: !!this.confirmIllness.find(
-              temp => temp.value === this.searchIllnessHistory
+        this.confirmIllnessList = (res.data && res.data.length
+          ? res.data
+          : [{ name: this.searchIllnessHistory, needAdd: true }]
+        ).map(item => {
+          return {
+            text: item.name,
+            needAdd: item.needAdd,
+            disabled: !!this.confirmIllness.find(
+              temp => temp.value === item.name
             )
-            }
-          ];
-        } else {
-          this.confirmIllnessList = res.data.map(item => {
-            return {
-              text: item.name,
-              disabled: !!this.confirmIllness.find(
-                temp => temp.value === item.name
-              )
-            };
-          });
-        }
-
+          };
+        });
         this.showIllnessHistory = true;
         this.searchIllnessHistory = "";
       });
@@ -171,9 +163,9 @@ export default {
     },
 
     onConfirm(value) {
-      if(!value.disabled) {
+      if (!value.disabled) {
         //库里面无数据时, 创建的诊断只有一个数据，设置为disabled任然可以选择，此处做校验
-        value.text && this.check({ value: value.text });
+        this.check({ value: value.text, needAdd: value.needAdd });
         this.onCancel();
       } else {
         this.onCancel();
@@ -181,6 +173,12 @@ export default {
     },
 
     check(currentItem) {
+      if (currentItem.needAdd) {
+        peace.service.inquiry.addAllergen({
+          name: currentItem.value,
+          type: -1
+        });
+      }
       // 选择'无'， 重置所有
       if (currentItem.value === "无") {
         this.confirmIllness = [];
