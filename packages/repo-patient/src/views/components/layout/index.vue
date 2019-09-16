@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <!-- 顶部返回 nav-bar -->
-    <template v-if="$route.meta.navbar">
+    <!-- <template v-if="$route.meta.navbar">
       <transition mode="out-in" name="van-fade">
         <van-nav-bar
           :left-arrow="$route.meta.navbar.back"
@@ -12,7 +12,7 @@
           left-text=" "
         />
       </transition>
-    </template>
+    </template> -->
 
     <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">

@@ -12,7 +12,7 @@ export const config = {
     /**
      * 系统标题
      */
-    title: '万家云医用户端',
+    title: '互联网医院',
 
     /**
      * 无权限访问页
