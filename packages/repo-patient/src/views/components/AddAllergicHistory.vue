@@ -1,14 +1,7 @@
 <template>
   <div class="add-allergic-history">
     <div class="input">
-      <van-search
-        @cancel="onCancel"
-        class="search"
-        placeholder="请输入搜索关键词"
-        shape="round"
-        show-action
-        v-model="searchAllergicHistory"
-      >
+      <van-search @cancel="onCancel" class="search" placeholder="请输入搜索关键词" shape="round" show-action v-model="searchAllergicHistory">
         <span @click="onSearch" class="search-label" slot="action">搜索</span>
       </van-search>
 
@@ -16,14 +9,7 @@
 
       <h4>已选过敏源</h4>
       <div class="checked-list">
-        <van-tag
-          :key="item.value"
-          @click="check(item)"
-          class="tag checked"
-          plain
-          v-for="item in allergicHistory"
-          >{{ item.value }}</van-tag
-        >
+        <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in allergicHistory">{{ item.value }}</van-tag>
       </div>
 
       <h4>常见过敏源</h4>
@@ -35,37 +21,29 @@
           class="tag"
           plain
           v-for="item in allergicHistoryCommonly"
-          >{{ item.value }}</van-tag
-        >
+        >{{ item.value }}</van-tag>
       </div>
     </div>
 
     <div class="save">
-      <van-button @click="save" style="width: 100%;" type="primary"
-        >保存</van-button
-      >
+      <van-button @click="save" style="width: 100%;" type="primary">保存</van-button>
     </div>
 
     <van-popup position="bottom" v-model="showAllergicHistory">
-      <van-picker
-        :columns="allergicHistoryList"
-        @cancel="showAllergicHistory = false"
-        @confirm="onConfirm"
-        show-toolbar
-      />
+      <van-picker :columns="allergicHistoryList" @cancel="showAllergicHistory = false" @confirm="onConfirm" show-toolbar />
     </van-popup>
   </div>
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 export default {
   props: {
     value: {
       type: String,
       default() {
-        return "";
+        return ''
       }
     }
   },
@@ -75,7 +53,7 @@ export default {
       internalValue: this.value,
 
       showAllergicHistory: false,
-      searchAllergicHistory: "",
+      searchAllergicHistory: '',
 
       // 搜索
       allergicHistoryList: [],
@@ -83,147 +61,122 @@ export default {
       allergicHistory: [],
       // 常见
       allergicHistoryCommonly: []
-    };
+    }
   },
 
   created() {
     this.getAllergicHistoryCommonly().then(() => {
-      this.parmasHandler();
-    });
+      this.parmasHandler()
+    })
   },
 
   methods: {
     getAllergicHistoryCommonly() {
-      const params = { type: "2", isCommon: "1" };
+      const params = { type: '2', isCommon: '1' }
 
       return peace.service.inquiry.searchIllInfo(params).then(res => {
         this.allergicHistoryCommonly = res.data.map(item => {
           return {
             value: item.name,
             checked: false
-          };
-        });
+          }
+        })
 
         // 接口已经有无了...... 不用手动添加了
-      });
+      })
     },
 
     parmasHandler() {
       if (this.internalValue) {
-        if (typeof this.internalValue === "string") {
-          this.internalValue = this.internalValue.split(",");
+        if (typeof this.internalValue === 'string') {
+          this.internalValue = this.internalValue.split(',')
         }
 
         this.internalValue.forEach(allergic => {
-          this.allergicHistory.push({ value: allergic, checked: true });
+          this.allergicHistory.push({ value: allergic, checked: true })
 
-          if (
-            this.allergicHistoryCommonly.find(item => item.value === allergic)
-          ) {
-            this.allergicHistoryCommonly.find(
-              item => item.value === allergic
-            ).checked = true;
+          if (this.allergicHistoryCommonly.find(item => item.value === allergic)) {
+            this.allergicHistoryCommonly.find(item => item.value === allergic).checked = true
           }
-        });
+        })
       }
     },
 
     onSearch() {
       const params = {
         keyword: this.searchAllergicHistory,
-        type: "2"
-      };
+        type: '2'
+      }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allergicHistoryList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchAllergicHistory, needAdd: true }]
-        ).map(item => {
+        this.allergicHistoryList = (res.data && res.data.length ? res.data : [{name: this.searchAllergicHistory,needAdd: true}]).map(item => {
           return {
             text: item.name,
             needAdd: item.needAdd,
-            disabled: !!this.allergicHistory.find(
-              temp => temp.value === item.name
-            )
-          };
-        });
+            disabled: !!this.allergicHistory.find(temp => temp.value === item.name)
+          }
+        })
 
-        this.showAllergicHistory = true;
-        this.searchAllergicHistory = "";
-      });
+        this.showAllergicHistory = true
+        this.searchAllergicHistory = ''
+      })
     },
     onCancel() {
-      this.showAllergicHistory = false;
-      this.searchAllergicHistory = "";
+      this.showAllergicHistory = false
+      this.searchAllergicHistory = ''
     },
     onConfirm(value) {
-      if(!value.disabled) {
-        //库里面无数据时, 创建的诊断只有一个数据，设置为disabled任然可以选择，此处做校验
-        value.text && this.check({ value: value.text });
-        this.onCancel();
-      } else {
-        this.onCancel();
-      }
+      this.check({ value: value.text, needAdd: value.needAdd })
+      this.onCancel()
     },
 
     check(currentItem) {
       if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 1 });
+        peace.service.inquiry.addAllergen({name: currentItem.value,type:1})
       }
       // 选择'无'， 重置所有
-      if (currentItem.value === "无") {
-        this.allergicHistory = [];
-        this.allergicHistoryCommonly.forEach(item => (item.checked = false));
+      if (currentItem.value === '无') {
+        this.allergicHistory = []
+        this.allergicHistoryCommonly.forEach(item => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allergicHistory.findIndex(
-          item => item.value === "无"
-        );
+        const index = this.allergicHistory.findIndex(item => item.value === '无')
 
         if (index !== -1) {
-          this.allergicHistoryCommonly[0].checked = false;
-          this.allergicHistory.splice(index, 1);
+          this.allergicHistoryCommonly[0].checked = false
+          this.allergicHistory.splice(index, 1)
         }
       }
 
       if (currentItem.checked) {
-        currentItem.checked = false;
-        const index = this.allergicHistory.findIndex(
-          item => item.value === currentItem.value
-        );
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(
-          item => item.value === currentItem.value
-        );
+        currentItem.checked = false
+        const index = this.allergicHistory.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
-          this.allergicHistory.splice(index, 1);
+          this.allergicHistory.splice(index, 1)
         }
         if (indexCommonly !== -1) {
-          this.allergicHistoryCommonly[indexCommonly].checked = false;
+          this.allergicHistoryCommonly[indexCommonly].checked = false
         }
       } else {
-        currentItem.checked = true;
-        this.allergicHistory.push(currentItem);
+        currentItem.checked = true
+        this.allergicHistory.push(currentItem)
 
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(
-          item => item.value === currentItem.value
-        );
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
         if (indexCommonly !== -1) {
-          this.allergicHistoryCommonly[indexCommonly].checked = true;
+          this.allergicHistoryCommonly[indexCommonly].checked = true
         }
       }
     },
 
     save() {
-      this.$emit(
-        "input",
-        this.allergicHistory.map(item => item.value).toString()
-      );
+      this.$emit('input', this.allergicHistory.map(item => item.value).toString())
 
-      this.$emit("onSave");
+      this.$emit('onSave')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -259,7 +212,7 @@ export default {
         padding: 10px;
         text-align: center;
         min-width: 45px;
-        border: none;
+
         &::after {
           border: none;
         }
