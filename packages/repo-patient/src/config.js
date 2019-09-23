@@ -44,16 +44,14 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: 'https://devpatient.hp.aijiayi.com/'
+    base: process.env.VUE_APP_BASE_API
   },
 
   /**
    * IM 配置项
    */
   NIM: {
-    //987faa06038223aa9151e8e6e974314e
-    //a5b5212d7ff034b508d6e889040ffdf7
-    key: '987faa06038223aa9151e8e6e974314e'
+    key: process.env.VUE_APP_IM_KEY
   }
 }
 
