@@ -3,12 +3,25 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field pattern="\d*" placeholder="请输入手机号" ref="tel" type="number" v-model="tel"></van-field>
-      <van-field clickable maxlength="6" pattern="\d*" placeholder="请输入验证码" type="number" v-model="smsCode">
-        <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
+      <van-field pattern="\d*"
+                 placeholder="请输入手机号"
+                 ref="tel"
+                 type="number"
+                 v-model="tel"></van-field>
+      <van-field clickable
+                 maxlength="6"
+                 pattern="\d*"
+                 placeholder="请输入验证码"
+                 type="number"
+                 v-model="smsCode">
+        <span @click="sendSms"
+              class="login-form-smsCode"
+              slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
+      <van-button @click="signIn"
+                  class="login-form-sign-in"
+                  type="primary">进入万家云医</van-button>
     </div>
 
     <!-- <div class="login-footer">
@@ -77,6 +90,9 @@ export default {
       }
 
       peace.service.login.login(params).then(res => {
+        // 跳转首页
+        this.$router.push(peace.config.system.homePage)
+
         // 提示登录成功
         peace.util.alert('登录成功，正在跳转...')
 
@@ -88,10 +104,6 @@ export default {
 
         // 初始化 IM
         peace.service.IM.initNIM()
-
-        setTimeout(() => {
-          this.$router.push(peace.config.system.homePage)
-        }, 1000)
       })
     }
   }

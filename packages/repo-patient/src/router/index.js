@@ -164,6 +164,32 @@ const router = new Router({
           },
           component: () => import('@src/views/components/DoctorInquiryApply.vue')
         },
+        // 申请图文问诊 - 订单支付
+        {
+          path: '/components/doctorInquiryPay/:json',
+          name: '/components/doctorInquiryPay/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '支付方式',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/DoctorInquiryPay.vue')
+        },
+        // 申请图文问诊 - 订单支付结果
+        {
+          path: '/components/doctorInquiryPayResult/:json',
+          name: '/components/doctorInquiryPayResult/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '支付结果',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/DoctorInquiryPayResult.vue')
+        },
 
         // 添加既往史
         {
@@ -462,7 +488,8 @@ router.beforeEach((to, from, next) => {
   //如果已经登录
   if (
     peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
-    peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo.accessToken
+    peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo
+      .accessToken
   ) {
     if (from.name == peace.config.system.noAuthPage && cacheRoute != null) {
       //通过中间变量保存到需要跳转的Route信息
@@ -487,7 +514,8 @@ router.beforeEach((to, from, next) => {
     // 验证权限
     if (
       peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
-      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo.accessToken
+      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo
+        .accessToken
     ) {
       return next()
     } else {

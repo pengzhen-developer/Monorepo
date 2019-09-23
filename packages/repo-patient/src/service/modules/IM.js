@@ -96,9 +96,12 @@ export function onDisConnect(disConnectObject) {
   console.warn('【 IM 】【 onDisConnect 】', new Date(), disConnectObject)
 
   switch (disConnectObject.code) {
+    case 302:
     case 417:
     case 'kicked':
+      peace.cache.clear()
       peace.util.warning(disConnectObject.message)
+
       $peace.$router.replace(peace.config.system.loginPage)
       break
 
@@ -117,7 +120,11 @@ export function onDisConnect(disConnectObject) {
 export function onWillReconnect(willReconnectObject) {
   console.warn('【 IM 】【 onWillReconnect 】', new Date(), willReconnectObject)
 
-  $peace.util.warning(`检测到网络异常，${parseInt(willReconnectObject.duration / 1000)} 秒后进行第 ${willReconnectObject.retryCount} 次重接。`)
+  $peace.util.warning(
+    `检测到网络异常，${parseInt(willReconnectObject.duration / 1000)} 秒后进行第 ${
+      willReconnectObject.retryCount
+    } 次重接。`
+  )
 }
 
 /**
@@ -145,7 +152,10 @@ export function onSessions(sessions) {
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
   peace.service.IM.getInquirySessionsStatus(sessions).then(inquirySessionsStatus => {
-    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(sessions, inquirySessionsStatus)
+    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(
+      sessions,
+      inquirySessionsStatus
+    )
     peace.service.IM.setInquirySessions(sessionsStatus)
   })
 }
@@ -182,7 +192,9 @@ export function onUpdateSession(session) {
       // 将新 message 更新到 sessionMessages store
       if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
         if (Store.state.inquiry.sessions && Store.state.inquiry.sessions.length > 0) {
-          peace.service.IM.setInquirySession(Store.state.inquiry.sessions.find(temp => temp.id === session.id))
+          peace.service.IM.setInquirySession(
+            Store.state.inquiry.sessions.find(temp => temp.id === session.id)
+          )
           peace.service.IM.setInquirySessionMessages(session.lastMsg)
         } else {
           peace.service.IM.resetInquirySession()
@@ -240,7 +252,10 @@ export function setInquirySessions(sessions) {
     }
   }
 
-  Store.commit('inquiry/setInquirySessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
+  Store.commit(
+    'inquiry/setInquirySessions',
+    deserializationSessions.filter(filterMethod).sort(sortMethod)
+  )
 }
 
 /**
@@ -321,7 +336,9 @@ export function getInquirySessionsStatus(sessions) {
 export function setInquirySessionsStatus(sessions, sessionsStatus) {
   sessions.forEach(session => {
     if (session.scene === 'p2p') {
-      const currentSessionStatus = sessionsStatus.find(item => item.sessionId === session.id || item.id === session.id)
+      const currentSessionStatus = sessionsStatus.find(
+        item => item.sessionId === session.id || item.id === session.id
+      )
       session.content = currentSessionStatus
     }
   })
@@ -342,13 +359,18 @@ export function setInquirySessionsStatus(sessions, sessionsStatus) {
  */
 export function setInquirySessionStatus(sessionWithStatus) {
   // 合并当前 session with status 到 store
-  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessionWithStatus)
+  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(
+    Store.state.inquiry.sessions,
+    sessionWithStatus
+  )
 
   // 反序列化当前 session with status
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.inquiry.sessions.find(session => session.id === sessionWithStatus.id)
+  const currentSession = Store.state.inquiry.sessions.find(
+    session => session.id === sessionWithStatus.id
+  )
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
