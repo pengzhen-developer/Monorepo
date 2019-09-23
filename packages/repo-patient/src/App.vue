@@ -14,7 +14,7 @@ export default {
     // todo
     // H5 暂不支持刷新后停留在当前页 (因为涉及到保存上一页的状态)
     // 因此每次刷新,都跳转首页
-    // this.$router.replace(peace.config.system.homePage)
+    this.$router.replace(peace.config.system.homePage)
 
     document.title = peace.config.system.title
 

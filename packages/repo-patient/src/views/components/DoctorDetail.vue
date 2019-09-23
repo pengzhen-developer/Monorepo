@@ -2,28 +2,20 @@
   <div class="doctor-detail" v-if="doctor">
     <div class="white" v-if="doctor.doctorInfo">
       <div class="card icon_03_01_02">
-        <img
-          :src="doctor.doctorInfo.avartor"
-          class="card-avatar avatar-circular"
-        />
+        <img :src="doctor.doctorInfo.avartor" class="card-avatar avatar-circular" />
         <div class="card-body">
           <div class="card-name">
-            {{ doctor.doctorInfo.name }}
-            <div class="card-small">{{ doctor.doctorInfo.doctorTitle }}</div>
+            {{doctor.doctorInfo.name}}
+            <div class="card-small">{{doctor.doctorInfo.doctorTitle}} {{doctor.doctorInfo.deptName}}</div>
+            <div @click="shareDoctor" class="card-share" v-if="!doctor.doctorInfo.isPrivateDoctor">{{doctor.doctorInfo.attentionStatus ? '已关注' : '+ 关注'}}</div>
           </div>
-          <div
-            @click="shareDoctor"
-            class="card-share"
-            v-if="!doctor.doctorInfo.isPrivateDoctor"
-          >
-            {{ doctor.doctorInfo.attentionStatus ? "已关注" : "+ 关注" }}
-          </div>
+          <div class="card-brief">{{doctor.doctorInfo.hospitalName}}</div>
         </div>
       </div>
-      <div class="list">
+      <div class="list" v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
         <div class="list-items list-vertical-icon">
           <div class="icon icon_hsp"></div>
-          {{ doctor.doctorInfo.hospitalName }} {{ doctor.doctorInfo.deptName }}
+          {{doctor.doctorInfo.hospitalName}}   {{doctor.doctorInfo.deptName}}
         </div>
       </div>
       <div class="outline nmgb" v-if="doctor.consultationList">
@@ -42,45 +34,33 @@
               <img :src="source[item.tag].icon" />
             </div>
             <div class="list-content">
-              <div class="content-title">{{ item.tagName }}</div>
-              <div class="content-brief">{{ source[item.tag].brief }}</div>
+              <div class="content-title">{{item.tagName}}</div>
+              <div class="content-brief">{{source[item.tag].brief}}</div>
             </div>
             <div class="list-orther">
               <div v-if="!item.status">暂未开通</div>
-              <div class="blue" v-else-if="item.status && item.money == 0">
-                免费
-              </div>
-              <div class="money" v-else-if="item.status && item.money != 0">
-                <div class="inline">{{ item.money }}</div>
-                /{{
-                  (source[item.tag].type && source[item.tag].type[item.type]) ||
-                    "次"
-                }}
+              <div class="blue" v-else-if="item.status && item.money == 0">免费</div>
+              <div class="money" v-else-if="item.status && item.money!=0">
+                <div class="inline">{{item.money}}</div>
+                /{{source[item.tag].type && source[item.tag].type[item.type] || '次'}}
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="box"
-      v-if="doctor.doctorInfo.summary || doctor.doctorInfo.specialSkill"
-    >
+    <div class="box"  v-if="doctor.doctorInfo.summary || doctor.doctorInfo.specialSkill">
       <div class="outline nmg">
         <div class="outline-header">
           <div class="outline-tit">擅长</div>
         </div>
-        <div class="outline-body mh80">
-          {{ doctor.doctorInfo.specialSkill || "暂未填写" }}
-        </div>
+        <div class="outline-body mh80">{{doctor.doctorInfo.specialSkill || '暂未填写'}}</div>
       </div>
       <div class="outline border nmg">
         <div class="outline-header icon-next">
           <div class="outline-tit">简介</div>
         </div>
-        <div class="outline-body mh80">
-          {{ doctor.doctorInfo.summary || "暂未填写" }}
-        </div>
+        <div class="outline-body mh80">{{doctor.doctorInfo.summary || '暂未填写'}}</div>
       </div>
     </div>
     <div class="time" v-if="doctor.workOnLine || doctor.workUnderLine">
@@ -102,11 +82,7 @@
             <tbody>
               <tr>
                 <td class="time-table-col border">上午</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workOnLine[0].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[0].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -114,11 +90,7 @@
               </tr>
               <tr>
                 <td class="time-table-col border">下午</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workOnLine[1].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[1].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -126,11 +98,7 @@
               </tr>
               <tr>
                 <td class="time-table-col border">晚上</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workOnLine[2].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[2].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -156,11 +124,7 @@
             <tbody>
               <tr>
                 <td class="time-table-col border">上午</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workUnderLine[0].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[0].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -168,11 +132,7 @@
               </tr>
               <tr>
                 <td class="time-table-col border">下午</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workUnderLine[1].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[1].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -180,11 +140,7 @@
               </tr>
               <tr>
                 <td class="time-table-col border">晚上</td>
-                <td
-                  :key="item.id"
-                  class="time-table-col border primary"
-                  v-for="item in doctor.workUnderLine[2].weekList"
-                >
+                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[2].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -202,7 +158,7 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 export default {
   data() {
@@ -210,81 +166,77 @@ export default {
       // 医生信息
       doctor: undefined,
 
-      activeCollapseNames: ["1", "2"],
-      activeTabs: "",
+      activeCollapseNames: ['1', '2'],
+      activeTabs: '',
 
       source: {
         image: {
-          brief: "可通过文字、图片的形式和医生沟通",
+          brief: '可通过文字、图片的形式和医生沟通',
           icon:
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8CAMAAACcwCSMAAAAOVBMVEVHcEw028YAzrQAzrUT0roAzbQw4s4AzLR86Np96NoAzbQAzbR96Nt96dx96d196Nt96NwAzLN859pfmWiYAAAAEXRSTlMAE29DKOwI0efVsJW1YUuNcuNOHyoAAAKISURBVGje7drbcqMwDAZgfLYx5/d/2LLZNF1CAEmW8czW/3WnX0xAwoqbpqampqbGTp1fEuO7yVLsPll++j3eHhe2jOh1L4xBrl14TtwLFD4trJlQeODFAwr3vLjHrZyYow99T2USfSiHHzyl99XloST+Ye139qRQEu9L4qIk3hTF/SVupTMzU4yTFoMrNvnpKziuZvYoKG4NP24sEJdzhkgg7nLgDoibHLgB4ttPTM92EWjcaZtST3SbgMfkcibJuLPpxbSl4pJhR6mo+D81UcjWGeNaKbAdlIrrnzbzunGNRH4XO3yc+jWjB+JiU3WcSMO//2kA4eKt4uH0I7zRIDy+F6vIgn9/+ae43pdKfRse93jkwAfIZXcnHYqCP5+WwUNwc9KhKHjo/iTAnnNuHFVkuC87Cue+4VA496OGq+3MRQaHM5dXZFfjbSzYltpwtlS/+DUInP4ysceHx6e3sApHfHGVsd2+O9NaKuHFLX4oi7s/6zLgOn7e8RyN7RlxdbjRy75ydbLHJPVz4u7oEB8HvWYYF07cxvNtKrnIQJZ9tavPiF9PM7LhV5c8Jy4gg5RMuAYNcfLgGjbDyYJDp5U5cA2dXWHHIoLR/sEfuwZ/ORBymuU+3+ICtl3aTotTvm9CY3m8Jtu00nLSUsP1BPJ48Qo3o6Xg89wqfP8E4GKB4OuNp94vvsLSO9x2QHy9+K183flCRcpc+vUy0Q9rprCA8b8/1LTt+/swAceMvNlS8Yr/etyXxENJfCqI7w5m3Yn3TTl8bIrhn44h3oMfHMDMi0NHZxWveMUr/t/heQ/pXCTv8aTkUWbKwayrYWbWI2mXozV+WyF+MTDl7KwHMGtqamp+Xb4A8X7MFmjiOG8AAAAASUVORK5CYII="
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8CAMAAACcwCSMAAAAOVBMVEVHcEw028YAzrQAzrUT0roAzbQw4s4AzLR86Np96NoAzbQAzbR96Nt96dx96d196Nt96NwAzLN859pfmWiYAAAAEXRSTlMAE29DKOwI0efVsJW1YUuNcuNOHyoAAAKISURBVGje7drbcqMwDAZgfLYx5/d/2LLZNF1CAEmW8czW/3WnX0xAwoqbpqampqbGTp1fEuO7yVLsPll++j3eHhe2jOh1L4xBrl14TtwLFD4trJlQeODFAwr3vLjHrZyYow99T2USfSiHHzyl99XloST+Ye139qRQEu9L4qIk3hTF/SVupTMzU4yTFoMrNvnpKziuZvYoKG4NP24sEJdzhkgg7nLgDoibHLgB4ttPTM92EWjcaZtST3SbgMfkcibJuLPpxbSl4pJhR6mo+D81UcjWGeNaKbAdlIrrnzbzunGNRH4XO3yc+jWjB+JiU3WcSMO//2kA4eKt4uH0I7zRIDy+F6vIgn9/+ae43pdKfRse93jkwAfIZXcnHYqCP5+WwUNwc9KhKHjo/iTAnnNuHFVkuC87Cue+4VA496OGq+3MRQaHM5dXZFfjbSzYltpwtlS/+DUInP4ysceHx6e3sApHfHGVsd2+O9NaKuHFLX4oi7s/6zLgOn7e8RyN7RlxdbjRy75ydbLHJPVz4u7oEB8HvWYYF07cxvNtKrnIQJZ9tavPiF9PM7LhV5c8Jy4gg5RMuAYNcfLgGjbDyYJDp5U5cA2dXWHHIoLR/sEfuwZ/ORBymuU+3+ICtl3aTotTvm9CY3m8Jtu00nLSUsP1BPJ48Qo3o6Xg89wqfP8E4GKB4OuNp94vvsLSO9x2QHy9+K183flCRcpc+vUy0Q9rprCA8b8/1LTt+/swAceMvNlS8Yr/etyXxENJfCqI7w5m3Yn3TTl8bIrhn44h3oMfHMDMi0NHZxWveMUr/t/heQ/pXCTv8aTkUWbKwayrYWbWI2mXozV+WyF+MTDl7KwHMGtqamp+Xb4A8X7MFmjiOG8AAAAASUVORK5CYII='
         },
         video: {
-          brief: "可通过视频的形式和医生沟通",
+          brief: '可通过视频的形式和医生沟通',
           icon:
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8BAMAAABZMMmNAAAAMFBMVEVHcEwAzbQA0roAzbQAz7YAzbQAzbQAzbQV0boAzbQa0bsu1cB86Nt959sAzLN859rk7f0lAAAADnRSTlMA9xLnLJW1zkJ0XXjZq8jGKygAAALKSURBVFjD7ZjPaxNREMefS2yTPUlLETwsC0XFi6C2FDwsEbGgh+IvFC/BgD9ui4iCp9AiVnqpPyroKVQE9dR/pX+CpmtS7WHOHiqxSbp2m515M7PrSfd73X765s2bnzGmUKFCsS7duH9qfObuu0zwxTrs6vB1Ney8hT15076OLtUhKa8zrzq7BkPqVBX0FUipLbf/KSA6K6UrgOqq0PQQxzdl1z8PhKZEbxZQeKua53DR8fThABF//HGAPMfXbHjkZ3vzWJcZ/Jwd32Lwhh1nrHeB0W0rPsnhW9n9zlnvLHkcDi9J+lkDeJ2movUaSPQDp8uhiIZNVY1IC62576U0GrfHxDQcQi7uyfHvaXxBTkM7HemKwxHXr4FGw2FbVtHw+I0kzaY/f6TuNLHv7dGI6bXEC+T9X3PlrR8ds2TertrL265/Sb7jW22PE2uR4o9Y/f4t/ufPmboxgn78ajh+YvB5jkuMT9bUC9m8+mCpO47Hp+UK3e5dQVY7K2TVHJEUBecV+vY7Xw6Iago26fXL3pysJJWwHvDAmKawok3idasmxMt4YoTSeopZX6XmgTTeROM+kOJrqO+8PKdvGHEvqaGzhvj0AG0Z0rtX8LCV4mgriaQPdxQvuMKoq+BGtmQx7xJXbJllAU7RO/hJHnfJgS0yoyxeblh6/UEOt01sbVPCP2z8KTOhfUZsWAcgK937q6ZtACrZR+wxarYYrHx4gd23HBDLz0MB3euyTkDND3hzSJroG7JUR/fY8b7voFHIqrG+d72s+KDDL2ekW75k8WT3kjCP7czSTadbPNo5jSz4VJZdZC8u5hXLZ1qPkt070NIdn6/jljcf2scWdfid4S40q4ndJ+lt7ERd7HT818elm2d4E8Znbil++vv35a53ddpeTeIvulr9TOJf1PivJL6uxreTeFevv4jnND6n63I+XM6wKVTov9FvrPzBsyIRPYwAAAAASUVORK5CYII="
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8BAMAAABZMMmNAAAAMFBMVEVHcEwAzbQA0roAzbQAz7YAzbQAzbQAzbQV0boAzbQa0bsu1cB86Nt959sAzLN859rk7f0lAAAADnRSTlMA9xLnLJW1zkJ0XXjZq8jGKygAAALKSURBVFjD7ZjPaxNREMefS2yTPUlLETwsC0XFi6C2FDwsEbGgh+IvFC/BgD9ui4iCp9AiVnqpPyroKVQE9dR/pX+CpmtS7WHOHiqxSbp2m515M7PrSfd73X765s2bnzGmUKFCsS7duH9qfObuu0zwxTrs6vB1Ney8hT15076OLtUhKa8zrzq7BkPqVBX0FUipLbf/KSA6K6UrgOqq0PQQxzdl1z8PhKZEbxZQeKua53DR8fThABF//HGAPMfXbHjkZ3vzWJcZ/Jwd32Lwhh1nrHeB0W0rPsnhW9n9zlnvLHkcDi9J+lkDeJ2movUaSPQDp8uhiIZNVY1IC62576U0GrfHxDQcQi7uyfHvaXxBTkM7HemKwxHXr4FGw2FbVtHw+I0kzaY/f6TuNLHv7dGI6bXEC+T9X3PlrR8ds2TertrL265/Sb7jW22PE2uR4o9Y/f4t/ufPmboxgn78ajh+YvB5jkuMT9bUC9m8+mCpO47Hp+UK3e5dQVY7K2TVHJEUBecV+vY7Xw6Iago26fXL3pysJJWwHvDAmKawok3idasmxMt4YoTSeopZX6XmgTTeROM+kOJrqO+8PKdvGHEvqaGzhvj0AG0Z0rtX8LCV4mgriaQPdxQvuMKoq+BGtmQx7xJXbJllAU7RO/hJHnfJgS0yoyxeblh6/UEOt01sbVPCP2z8KTOhfUZsWAcgK937q6ZtACrZR+wxarYYrHx4gd23HBDLz0MB3euyTkDND3hzSJroG7JUR/fY8b7voFHIqrG+d72s+KDDL2ekW75k8WT3kjCP7czSTadbPNo5jSz4VJZdZC8u5hXLZ1qPkt070NIdn6/jljcf2scWdfid4S40q4ndJ+lt7ERd7HT818elm2d4E8Znbil++vv35a53ddpeTeIvulr9TOJf1PivJL6uxreTeFevv4jnND6n63I+XM6wKVTov9FvrPzBsyIRPYwAAAAASUVORK5CYII='
         },
         prvivateDoctor: {
-          brief: "购买一定的服务期，期限内可免费提供问诊",
+          brief: '购买一定的服务期，期限内可免费提供问诊',
           icon:
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8CAMAAACcwCSMAAAAP1BMVEVHcExM49AAx68AyK8AyLAAx68Ax68Xz7gk1sAAx68Ax68Ax6996Nt96NsAx6996Nt96Nt96dx+6d1859oAxq4yfWEIAAAAE3RSTlMACnpaQvnbJhauye2Ar5Lo0VY79IcEYAAAA7xJREFUaN7tm4mOozAMQEvuA8L5/9+6tNOTQuIkDpF2xiONKrXJw0dcG9zLJV4kI05rY4QwWjtCZXM5RRR1xi5fIjRhhcnMmeVYrCayHNkuQREl+IqIPVtrbYvzpeZ7aur1LbH7BkWLQKaXJQ6++p8oHK0PHeyBr5fr8vHKE11e+IpXFeGL/A/hVF7latbbC0nOhG9TKf01cMLo+ne9BHZ75X5NwP3B/+AV4NYYw2vBQ/IHx4Vbc20V6Jpg2fp/bSCMPQW+Fudsr0JRjHxVsrhwEWhLmBOF4NZBNpNvrQUaXIBL8ebZXyDBBd3nqFs1tb2shlo8OCef28ux7bph6OeXDF3XTq9PNQ4LLt43mdruHfop3fg8CEygwHXzRj4G36V94JVGgLvny3GYIdI+LtbhdasTDL1KP2L3590cIS1ugz7MUdIh3iGa+jlSBjS6jGavuiOxm2FOECS/tynsuccw/Dj1SfC5nWQdtW+qz/OUGedzjmSavsuCZ0Zdnwcfsk5ZHnvus1J6JnzOMntNzav6vG60j3nwvLJCVXR5TnrNVnw96X2tcEutJPCqGZkY8S1OJVWzkkkLOoUETzlvWAVkUp7D61rGs2uYvJDDbJjGiopHq47bp04n59WMgEdv0Ps60RZr+KHA+AY4yRYZnOjqOPxeV3T12DB6KTaEXo4djLphuhQV332KrviIVHOk/DBeThDVVkP/4D8jr+9OQ/9Yf2y7oZ/7213+U4CQgCqSXBnRnNPg9Rn0sbjm8cCOh7Z1j2E1rLlA9jaQZgI2xx2L207h+TXSm7G4THtvn48aoOL3T2dYn4q4R8M7szo60fhyd9TTeey09yB7+0QQqPb+OAQ/3oseTITGK++O5gGOo+hoKNZGel4dTj5yAw6315qosJe+8Zejtp941riIE+ZjL+RgVdKiUK5YYEdd+kdHoH4nSSMogVUWFvM0NP9C4q1+PXGQW0SSh+C7dmehVVxnO/zQ7i68LOx2Bpg7IglWD38fe9LUh/vSrnmhCIrv2d1Blpl8j+/a3YLW+b3ecNAmIs1ggSxLYZt82d3BllkEq3+p0FjgOq/doZvYNIN5v18keMSQJRls0Qgu3+yi+LLkO52A4R+/loAvW5r8eNt4T8CXybzc+n3U4c7yZliRtI3BgduIbUxkdguetRj4UwmDBOcx+1gVG+p+uIja6DagyKIu2OdzvcTRIRUfOLnHmfAacyxuhS/JyNJwk9SbIsG9VZyyReGB0p3ZgnAduknRkJ8xfb4r6XC+d2/uHyBG+iCvclUdAAAAAElFTkSuQmCC",
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8CAMAAACcwCSMAAAAP1BMVEVHcExM49AAx68AyK8AyLAAx68Ax68Xz7gk1sAAx68Ax68Ax6996Nt96NsAx6996Nt96Nt96dx+6d1859oAxq4yfWEIAAAAE3RSTlMACnpaQvnbJhauye2Ar5Lo0VY79IcEYAAAA7xJREFUaN7tm4mOozAMQEvuA8L5/9+6tNOTQuIkDpF2xiONKrXJw0dcG9zLJV4kI05rY4QwWjtCZXM5RRR1xi5fIjRhhcnMmeVYrCayHNkuQREl+IqIPVtrbYvzpeZ7aur1LbH7BkWLQKaXJQ6++p8oHK0PHeyBr5fr8vHKE11e+IpXFeGL/A/hVF7latbbC0nOhG9TKf01cMLo+ne9BHZ75X5NwP3B/+AV4NYYw2vBQ/IHx4Vbc20V6Jpg2fp/bSCMPQW+Fudsr0JRjHxVsrhwEWhLmBOF4NZBNpNvrQUaXIBL8ebZXyDBBd3nqFs1tb2shlo8OCef28ux7bph6OeXDF3XTq9PNQ4LLt43mdruHfop3fg8CEygwHXzRj4G36V94JVGgLvny3GYIdI+LtbhdasTDL1KP2L3590cIS1ugz7MUdIh3iGa+jlSBjS6jGavuiOxm2FOECS/tynsuccw/Dj1SfC5nWQdtW+qz/OUGedzjmSavsuCZ0Zdnwcfsk5ZHnvus1J6JnzOMntNzav6vG60j3nwvLJCVXR5TnrNVnw96X2tcEutJPCqGZkY8S1OJVWzkkkLOoUETzlvWAVkUp7D61rGs2uYvJDDbJjGiopHq47bp04n59WMgEdv0Ps60RZr+KHA+AY4yRYZnOjqOPxeV3T12DB6KTaEXo4djLphuhQV332KrviIVHOk/DBeThDVVkP/4D8jr+9OQ/9Yf2y7oZ/7213+U4CQgCqSXBnRnNPg9Rn0sbjm8cCOh7Z1j2E1rLlA9jaQZgI2xx2L207h+TXSm7G4THtvn48aoOL3T2dYn4q4R8M7szo60fhyd9TTeey09yB7+0QQqPb+OAQ/3oseTITGK++O5gGOo+hoKNZGel4dTj5yAw6315qosJe+8Zejtp941riIE+ZjL+RgVdKiUK5YYEdd+kdHoH4nSSMogVUWFvM0NP9C4q1+PXGQW0SSh+C7dmehVVxnO/zQ7i68LOx2Bpg7IglWD38fe9LUh/vSrnmhCIrv2d1Blpl8j+/a3YLW+b3ecNAmIs1ggSxLYZt82d3BllkEq3+p0FjgOq/doZvYNIN5v18keMSQJRls0Qgu3+yi+LLkO52A4R+/loAvW5r8eNt4T8CXybzc+n3U4c7yZliRtI3BgduIbUxkdguetRj4UwmDBOcx+1gVG+p+uIja6DagyKIu2OdzvcTRIRUfOLnHmfAacyxuhS/JyNJwk9SbIsG9VZyyReGB0p3ZgnAduknRkJ8xfb4r6XC+d2/uHyBG+iCvclUdAAAAAElFTkSuQmCC',
           type: {
-            0: "次",
-            1: "周",
-            2: "月",
-            3: "季",
-            4: "半年",
-            5: "年"
+            0: '次',
+            1: '周',
+            2: '月',
+            3: '季',
+            4: '半年',
+            5: '年'
           }
         }
       }
-    };
+    }
   },
 
   created() {
-    const params = peace.util.decode(this.$route.params.json);
+    const params = peace.util.decode(this.$route.params.json)
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
-      this.doctor = res.data;
-    });
+      this.doctor = res.data
+    })
   },
 
   computed: {
     canShowReserve() {
-      const params = peace.util.decode(this.$route.params.json);
+      const params = peace.util.decode(this.$route.params.json)
 
-      return params.isAppoint;
+      return params.isAppoint
     }
   },
 
   methods: {
     redictToApply(doctorInfo, doctorConsultation) {
-      if (
-        doctorConsultation.tag === "video" ||
-        doctorConsultation.tag === "prvivateDoctor" ||
-        doctorConsultation.status === 0
-      ) {
-        return peace.util.alert("暂未开放，敬请期待");
+      if (doctorConsultation.tag === 'video' || doctorConsultation.tag === 'prvivateDoctor' || doctorConsultation.status === 0) {
+        return peace.util.alert('暂未开放，敬请期待')
       }
 
       const json = peace.util.encode({
         doctorId: doctorInfo.doctorId,
         consultingType: doctorConsultation.tag,
         consultingTypeId: doctorConsultation.consultingTypeId
-      });
+      })
 
-      this.$router.push(`/components/doctorInquiryApply/${json}`);
+      this.$router.push(`/components/doctorInquiryApply/${json}`)
     },
 
     shareDoctor() {
       const params = {
         doctorId: this.doctor.doctorInfo.doctorId,
         link: 3
-      };
+      }
 
       peace.service.patient.attention(params).then(res => {
-        this.doctor.doctorInfo.attentionStatus = res.msg === "关注成功";
-      });
+        this.doctor.doctorInfo.attentionStatus = res.msg === '关注成功'
+      })
     },
 
     redictToReserve() {
@@ -292,12 +244,12 @@ export default {
         doctorId: this.doctor.doctorInfo.doctorId,
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
         date: new Date()
-      });
+      })
 
-      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`);
+      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -315,7 +267,7 @@ export default {
   display: flex;
   overflow: auto;
   flex-direction: column;
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
 
   .time {
     background: #fff;
@@ -382,12 +334,10 @@ export default {
   }
   .card-body {
     color: #fff;
-    display: flex;
-    align-items: center;
   }
   .card-share {
     position: absolute;
-    /*top: 10px;*/
+    top: 10px;
     right: 0;
     box-sizing: border-box;
     width: 50px;
@@ -396,7 +346,7 @@ export default {
     font-size: 13px;
     padding: 2px 4px;
     text-align: center;
-    /*display: inline-block;*/
+    display: inline-block;
     line-height: 1;
     font-weight: normal;
   }
@@ -423,7 +373,7 @@ export default {
     padding-right: 30px;
   }
   .tab-item.active .span::before {
-    content: "";
+    content: '';
     position: absolute;
     display: block;
     width: 52.5px;
@@ -476,7 +426,7 @@ export default {
     color: #00c6ae;
   }
   .table-td.yes::before {
-    content: "";
+    content: '';
     background-size: cover;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAAjCAMAAAADt7LEAAACMVBMVEVHcEwAv68AyLAAgIAA//8Av78Axq4Axq4AqqoAxq0AyLYAxq4Axq4Axq4Axq8Axq4Ax64A/4AAxq4AzLgAwqoAxq4Axq4Ax64Axq8Axa4Axq4AxKoAxq4Axq4Ax64AxLEAu6oAzLMAqqoAxq4Axq0AxqoAuaIAxq4Axq4Axq8Axq4Axq4Ax64Axa0Axq8AxqwAxa4Axa4Axa4Axa0Ax64AyLEAx64A5swAxrEAzrEAxqoAxq0Ay7EA1b8Ax60AxrAAya0Ax64Axq4Axq8Axa4AxqsAx7AAya4Ax68AybMAxa4Axa4Ay64Axq4Axq4A0aIAxq8Axq4Ax68Axq0Ax68AyK8Axq8AyK8Axq4Ax64Axq8AybUAx68AyrAAyLEAxq4Axa8Ax64Axq4Ax7EAxq0AzL8Ax7AAxq4AxrIAybIAx7EAx68Axq4Aya4Ax64Ax60AyrEAxq8Axa4Ax64Axq4Ax64Ax68Axq4AyLIA/wAAyKwAxq4AybEAxq4AxaoAv58AzJkAxq4Axq0A27YAxa4Ax7EAxrAAxqoAxq4Ax68Ax64Axq8Axq4Ax64Axq4Axq8Av6oAyLAA1aoAx64Axa8AyK8AyK4Axa4AtrYAxa0AyK4AyK8AzLMAxq4Axq0Axq4Axa4Axq4Axq4Ax68Ax7AAx7AAx64AybAAyK8Axq4Ax68Axq0AyLAAxq4AxrAAx68Axa4Axq4AzK0Ax64Ax68Ax64AxrEAx60Ax64A0bkAxq58IX1MAAAAunRSTlMAEEoCAQT8/gP6DvjE487X9QK0GRW9P6ei/Ooe781fDQ8KBvPwEgv38W/75dlzxSi6OSyxwy6xCiQaG1ExDHpRS+fdhuI6kROJL0LDLPaUCzbcyNt/ou6w6JeTJiAdF/Iw/c9l9xRk+T9MUq3mVettSOHQ2qHQado4AS7pS/0wCAXtpQeNaGcJdP6bpslxuaUMgQxlI5l0iAfzh8IU+vT1+IvT3kR38D1mmPT9dOQtpRa8GfmDiGze6QscuNofAAABzUlEQVQ4y2NgIA1s2rpDZ9tOEjWt28i+axe3LmmaAmR3gcB2kjQZFYE17dImRZMhH0TT5i0kaGIqhmjSWr+BeE02LhBNu/oYidYjKBYM0aPer0C0Jo7cQogm7i5V4p1Xk8MO0dUtT7SeBiYpiJ55U5WI1tTcpgLRNHP6JKI1MU9uhIbeLEWiNc2Qmw/RozGR+HCY0KsO0STTwYpk/3IJHmdh3EE+DeqnXbrtSMJLlIEiTp4c2DXVa2qBtbDHt6KILwKLSiVj9ahISy3EIl45VGMXQ8wKs8OiSc0vBaKJMwstntYsgLo7CiN9yUdCZNirxTDMW6gB1SYegypjWQLVxO+A6QwuTUmoM0RRgpJLIh0i7ujFijW7yUCTZl4CC1zQ3Axqk3Y09uBlseeHOlLHWhAqZmEM1VSagTMqK6AlAjtvPsQ2aSFOiEi5KwfudGMrCrVtlwfIE/6yUF5gKt7kFhvKBlHn6xbHUhUEYbN5+xBIpSIhAtA8Hp7JAzXBxLSSYNGQpgz1nEAihKFHTGHEWhaxCwlIGlgRl2kLkpB0CekTmwXrethhmrKJLysZpsyeC0ld4u6k1ABzVq4CaupskiatiuJasXb1sqUEClgArTkVobLK9UsAAAAASUVORK5CYII=);
     margin-left: 5px;
@@ -529,7 +479,7 @@ export default {
     font-size: 18px;
   }
   .list-three .list-orther .money .inline::before {
-    content: "¥";
+    content: '¥';
     display: inline;
     color: rgba(242, 34, 59, 1);
     font-size: 16px;
@@ -628,7 +578,7 @@ export default {
     color: #00c6ae;
   }
   .alert.icon.icon-star::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 22.5px;
     width: 15px;
@@ -645,32 +595,22 @@ export default {
     display: inline;
   }
 }
-.card .card-small,
-.card .card-brief {
+.card .card-small, .card .card-brief{
   vertical-align: middle;
 }
-
-.list {
-    background-color: #fff;
-    font-size: 15px;
-    height: auto;
-    height: auto;
-    position: relative;
+.list-items.icon-next::after{
+  content:'';
+  top:17.5px;
 }
-
-.list-items.icon-next::after {
-  content: "";
-  top: 17.5px;
-}
-.list-items.list-vertical-icon {
+.list-items.list-vertical-icon{
   padding-left: 25px;
 }
-.icon.icon_hsp {
+.icon.icon_hsp{
   width: 22px;
   height: 22px;
 }
-.icon.icon_hsp::before {
-  content: "";
+.icon.icon_hsp::before{
+  content: '';
   width: 22px;
   height: 22px;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAARVBMVEVHcEw/0tEq0sgs08lR0dhc0twk08UV079H09Ix08ss0sku08lQ0dhg0N0Z0sE60s4h0sQx0stE0dNS0dhA0tFZ0dsp0sd0T3nWAAAADnRSTlMAvpx5sYbB7jgYTvLVb94/lrUAAAEmSURBVDjLxZXbksIgEESJJhi8oCDw/5/qYLhOYMhubdW2Pp7q6hzBMMaY4FLKF8RBlM8TYoyeBNvlJDfYJTrA+r6HL56VRfPGGm302oTjDJV2eLoD++bvjNj8nTFodkebq82j5nMODfsVhdWwotcM+LWEyc0QfkoZN+MHJJuTZ3XUsyp/b8LzLadsFsJ/cbNANjZ4fkOsvYsjngNsH7WNVaQUmyO81M2VjGqGreHkeXfqiObqpvTgvmeALW4GmodMfBpsHnnGm2nPyMY1Z2xjb27kuWWD9Kye9AP+2LMoD5L5N8+/sOEap67hOf8V/PV5dq/OTWl5Pn4HGyeJ9Nx4p8zL8o7wGl6C2bNCT6h1hK2dgzdkI80AVCfYsjNHgetaZd4+kMcHlqdWnqitHbkAAAAASUVORK5CYII=");
