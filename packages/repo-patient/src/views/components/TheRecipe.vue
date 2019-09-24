@@ -97,7 +97,7 @@
       <div
         :class="data.prescriptionStatus.key == '2' || data.prescriptionStatus.key == '5' || data.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
         :data-type="data.prescriptionStatus.key"
-        bindtap="goMenuPage"
+        @click="goMenuPage(data)"
         class="btn btn-blue block"
       >{{ data.prescriptionStatus.msg }}</div>
     </div>
@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import peace from '@src/library'
 export default {
   props: {
     data: {
@@ -112,6 +113,26 @@ export default {
       default() {
         return undefined
       }
+    }
+  },
+  methods: {
+    goMenuPage: function(data){
+      console.log(data);
+      let key = data.prescriptionStatus.key;
+      if(key == '2'){
+        //去配药页面
+        let claimNo = data.claimNo;
+        let familyId = data.familyId;
+        let json = peace.util.encode({claimNo, familyId});
+        this.$router.push(`/drug/list/${json}`);
+        return;
+      }
+      if(key == '5' || key == '6'){
+        // orderDetail
+       // me.goDrugOrderDetail();
+        return;
+      }
+      return;
     }
   }
 }

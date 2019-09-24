@@ -30,6 +30,33 @@ const router = new Router({
           },
           component: () => import('@src/views/home/index.vue')
         },
+        {
+          path: '/home/index1',
+          name: '/home/index1',
+          meta: {
+            auth: false,
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '新首页'
+            }
+          },
+          component: () => import('@src/views/home/indexNew.vue')
+        },
+        {
+          path: '/home/map',
+          name: '/home/map',
+          meta: {
+            auth: false,
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '地图',
+              back: true
+            }
+          },
+          component: () => import('@src/views/home/map.vue')
+        },
         // 消息
         {
           path: '/message/index',
@@ -115,7 +142,32 @@ const router = new Router({
           },
           component: () => import('@src/views/components/TheRecipeList.vue')
         },
-
+        // 用药建议
+        {
+          path: '/drug/list/:json',
+          name: 'druglist',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '配药列表',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugListPharmacy.vue')
+        },
+        // 提交订单
+        {
+          path: '/drug/drugOrderBefore/:json',
+          name: 'drugOrderBefore',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '提交订单',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugOrderBefore.vue')
+        },
         // 医生列表
         {
           path: '/components/doctorList/:json',
