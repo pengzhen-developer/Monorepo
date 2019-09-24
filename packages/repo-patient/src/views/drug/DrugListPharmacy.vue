@@ -1,7 +1,6 @@
 <template>
     <div>
-        <baidu-map class="map" ak="vVmeefdcZxiHrUvdyoHquR4S" @ready="handler">
-        </baidu-map>
+        <div id="container"></div>
         <div class="top">
             <button bindtap="goMapPage">{{userLocation}}</button>
         </div>
@@ -30,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="none-page" v-if="!phaList.length && isGet">
+        <div class="none-page" v-if="phaList.length>0 && isGet">
             <div class="icon-none-pha"></div>
             <div class="none-text">
                 <div class="h4">很抱歉</div>
@@ -80,31 +79,27 @@
             }
         },
         mounted() {
-            console.log('mounted')
+            // var script = document.createElement("script");
+            // script.type = "text/javascript";
+            // script.src = "https://map.qq.com/api/js?v=2.exp&key=S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54";
+            // document.head.appendChild(script);
+            this.$nextTick(()=> {
+                let that = this;
+                var geolocation = new qq.maps.Geolocation("S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54", "myapp");
+                var options = {timeout: 8000};
+                geolocation.getLocation(that.showPosition, that.showErr, options)
+            })
+
         },
         methods: {
-            handler({BMap, map}) {
-                let that = this;
-                var geolocation = new BMap.Geolocation();
-                geolocation.getCurrentPosition(function(r){
-                    console.log('r', r)
-                    if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                        //以指定的经度与纬度创建一个坐标点
-                        var pt = new BMap.Point(r.point.lng,r.point.lat);
-                        //创建一个地理位置解析器
-                        var geoc = new BMap.Geocoder();
-                        geoc.getLocation(pt, function(res){//解析格式：城市，区县，街道
-                            var addComp = res.addressComponents;
-                           // that.userLocation = addComp.city + ", " + addComp.district + ", " + addComp.street;
-                            that.userLocation = res.point
-                            that.getPhaList();
-                        });
-                    }
-                    else {
+            showErr() {
 
-                    }
-                },{enableHighAccuracy: true})//指示浏览器获取高精度的位置，默认false
-
+            },
+            showPosition(position) {
+                let lat = position.lat;
+                let lng = position.lng;
+                this.userLocation = {lat, lng};
+                this.getPhaList();
             },
             getPhaList () {
                 let paramsRoute = peace.util.decode(this.$route.params.json);
@@ -119,8 +114,8 @@
                 //     Longitude: 30.55473,
                 //     JZTClaimNo: '3O5NM0-201909231108290161-2019092341983315'
                 // }
-                params.Latitude = 114.21772;
-                params.Longitude = 30.55473;
+                // params.Latitude = 114.21772;
+                // params.Longitude = 30.55473;
                 peace.service.patient.getStoresList(params).then(res => {
                     if (res.data.Type == '1') {
                         this.phaList = res.data.JoinJnt;
@@ -131,6 +126,7 @@
                         this.phaList = [];
                         this.phaAddrList =  res.data.OutJnt;
                         this.isGet = true;
+                        console.log('phaAddrList', this.phaAddrList);
                     }
                     this.mapDistance();
                 })
@@ -193,6 +189,10 @@
 </script>
 
 <style scoped>
+    #container{
+        min-width:100%;
+        min-height:767px;
+    }
     .top{
         background:#FFF;
         overflow:hidden;
