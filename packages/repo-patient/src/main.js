@@ -42,4 +42,6 @@ const vueAppInstance = new Vue({
 }).$mount('#app')
 
 // 兼容 IE 9、10 低版本的 __proto__
-Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
+Object.setPrototypeOf
+  ? Object.setPrototypeOf($peace, vueAppInstance)
+  : ($peace.__proto__ = vueAppInstance)
