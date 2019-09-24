@@ -101,8 +101,6 @@
 
 <script>
     import peace from '@src/library'
-    import { Toast  } from 'vant';
-    Vue.use(Toast);
     export default {
         name: "DrugOrderBefore",
         data() {
@@ -148,11 +146,11 @@
                 //     message: '加载中...'
                 // });
                 peace.service.patient.submitOrder(params).then(res => {
-                    Toast.loading({
-                        mask: true,
-                        duration: 1000,
-                        message: '订单提交成功！'
-                    });
+                    // Toast.loading({
+                    //     mask: true,
+                    //     duration: 1000,
+                    //     message: '订单提交成功！'
+                    // });
                 })
 
             },
