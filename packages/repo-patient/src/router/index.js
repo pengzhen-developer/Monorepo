@@ -400,6 +400,19 @@ const router = new Router({
           component: () => import('@src/views/setting/userDoctorList.vue')
         },
         {
+          path: '/setting/AdressManger',
+          name: '/setting/AdressManger',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '地址管理',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/AdressManger.vue')
+          
+        },
+        {
           path: '/setting/order/userOrderList',
           name: '/setting/order/userOrderList',
           meta: {
