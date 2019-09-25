@@ -253,6 +253,17 @@ export function submitOrder(params) {
   return peace.http.post(submitOrder, params)
 }
 
+/**
+ * 获取我的地址列表
+ *
+ * @export
+ * @returns
+ */
+export function getAddressLists() {
+  const getAddressLists = 'client/v1/Address/getAddressLists';
+  return peace.http.post(getAddressLists)
+}
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -293,5 +304,7 @@ export default {
   /** 获取提交订单页面**/
   getOrderBefore,
   /** 提交订单 **/
-  submitOrder
+  submitOrder,
+  /** 获取我的地址列表 **/
+  getAddressLists
 }
