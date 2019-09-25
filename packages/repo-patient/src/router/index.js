@@ -149,11 +149,24 @@ const router = new Router({
           meta: {
             auth: true,
             navbar: {
-              title: '配药列表',
+              title: '药房列表',
               back: true
             }
           },
           component: () => import('@src/views/drug/DrugListPharmacy.vue')
+        },
+        // 地图选择
+        {
+          path: '/drug/selectMap/:json',
+          name: 'DrugMapSelect',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择地点',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugMapSelect.vue')
         },
         // 提交订单
         {
