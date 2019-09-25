@@ -140,17 +140,8 @@
                     UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
                     UserPhone: +this.page.tabIndex ? this.userAddr.mobile : ''
                 }
-                // Toast.loading({
-                //     mask: true,
-                //     duration: 1000,
-                //     message: '加载中...'
-                // });
                 peace.service.patient.submitOrder(params).then(res => {
-                    // Toast.loading({
-                    //     mask: true,
-                    //     duration: 1000,
-                    //     message: '订单提交成功！'
-                    // });
+                    peace.util.alert('订单提交成功')
                 })
 
             },
@@ -166,11 +157,11 @@
                     return;
                 }
                 if(this.page.json.ShippingMethod == '0' && index == '1'){
-                    //app.$env.fn.pop('该药店不支持配送到家。')
+                    peace.util.alert('该药店不支持配送到家。')
                     return;
                 }
                 if(this.page.json.ShippingMethod == '1' && index == '0'){
-                    //app.$env.fn.pop('该药店不支持到店配药。')
+                    peace.util.alert('该药店不支持到店配药。')
                     return;
                 }
                 this.page.tabIndex = index;
