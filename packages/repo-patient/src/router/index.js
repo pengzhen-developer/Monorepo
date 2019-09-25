@@ -413,6 +413,19 @@ const router = new Router({
           
         },
         {
+          path: '/setting/userAddressEdit/:json',
+          name: '/setting/userAddressEdit',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '添加新地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/userAddressEdit.vue')
+          
+        },
+        {
           path: '/setting/order/userOrderList',
           name: '/setting/order/userOrderList',
           meta: {

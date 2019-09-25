@@ -56,7 +56,9 @@ export default {
         this.addr = tmp;
       });
     },
-    goUserAddressEdit(address) {},
+    goUserAddressEdit(address) {
+      this.$router.push(`/setting/userAddressEdit/${address}`)
+    },
     delAddr() {},
     goWeXinAddress() {}
   }
