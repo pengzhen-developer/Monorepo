@@ -2,7 +2,9 @@
   <div class="setting">
     <div class="user-card">
       <div class="user-img">
-        <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png"/>
+        <img class="img-avatar"
+             mode="cover"
+             src="~@/assets/images/ic_head portrait.png" />
       </div>
       <div class="user-info">
         <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
@@ -15,17 +17,35 @@
     </div>
     <!--菜单-->
     <div class="block">
-      <div :key="item.id" @click="goMenuPage(item)" class="block-items block-transverse-icon" v-for="item in module">
+      <div :key="item.id"
+           @click="goMenuPage(item)"
+           class="block-items block-transverse-icon"
+           v-for="item in module">
         <div :class="['icon', item.icon]"></div>
         {{item.text}}
       </div>
     </div>
 
     <van-cell-group>
-      <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
-      <van-cell icon="manager-o" is-link title="我的医生" to="/setting/userDoctorList" value />
-      <!--      <van-cell icon="location-o" is-link title="收货地址" value />-->
-      <van-cell @click="signOut" icon="close" title="退出登录" value></van-cell>
+      <van-cell icon="friends-o"
+                is-link
+                title="我的家人"
+                to="/setting/myFamilyMembers"
+                value />
+      <van-cell icon="manager-o"
+                is-link
+                title="我的医生"
+                to="/setting/userDoctorList"
+                value />
+      <van-cell icon="location-o"
+                is-link
+                title="收货地址"
+                to="/setting/address"
+                value />
+      <van-cell @click="signOut"
+                icon="close"
+                title="退出登录"
+                value />
     </van-cell-group>
   </div>
 </template>
@@ -85,7 +105,7 @@ export default {
           this.$router.push('/setting/order/userOrderList')
           break
         case 'drug':
-          peace.util.alert('敬请期待')
+          this.$router.push('/setting/order/userDrugList')
           break
         case 'prescrip':
           // todo

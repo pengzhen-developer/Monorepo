@@ -191,7 +191,9 @@
                   @click="apply"
                   style="width: 100%;"
                   type="primary">提交</van-button>
-      <!--      <van-button @click="applyOrder" style="width: 100%;" type="primary">提交订单 - 跳转支付</van-button>-->
+      <van-button @click="applyOrder"
+                  style="width: 100%;"
+                  type="primary">提交订单 - 跳转支付</van-button>
     </div>
 
     <peace-dialog :visible.sync="showInformedConsent">

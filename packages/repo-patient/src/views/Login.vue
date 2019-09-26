@@ -39,6 +39,7 @@ export default {
     return {
       tel: '',
       smsCode: '',
+      smsCodeDate: '',
       showKeyboardForSms: false,
       countDown: -1
     }
@@ -58,6 +59,7 @@ export default {
         peace.service.login
           .sendSms(params)
           .then(res => {
+            this.smsCodeDate = new Date()
             peace.util.alert(res.msg)
           })
           .finally(() => {
@@ -67,16 +69,22 @@ export default {
     },
 
     countDownIntervalHandler() {
+      const that = this
       this.countDown = 60
 
-      const countDownInterval = setInterval(() => {
-        if (this.countDown === 0) {
-          this.countDown = -1
+      const countDownIntervalFunc = () => {
+        const down = Math.ceil((new Date().getTime() - that.smsCodeDate.getTime()) / 1000)
+
+        if (down >= 60) {
+          that.countDown = -1
           window.clearInterval(countDownInterval)
         } else {
-          this.countDown = this.countDown - 1
+          that.countDown = 60 - down
         }
-      }, 1000)
+      }
+
+      countDownIntervalFunc()
+      const countDownInterval = setInterval(countDownIntervalFunc, 1000)
     },
 
     showKeyboard() {

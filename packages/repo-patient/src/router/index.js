@@ -412,6 +412,18 @@ const router = new Router({
           component: () => import('@src/views/setting/order/userOrderList.vue')
         },
         {
+          path: '/setting/order/userDrugList',
+          name: '/setting/order/userDrugList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '购药记录',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugList.vue')
+        },
+        {
           path: '/setting/order/userOrderDetail/:json',
           name: '/setting/order/userOrderDetail',
           meta: {
@@ -513,6 +525,55 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/diagnose/diagnoseName.vue')
+        },
+
+        {
+          path: '/inter/drugInterList/:json',
+          name: '/inter/drugInterList',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '说明书',
+              back: true
+            }
+          },
+          component: () => import('@src/views/inter/DrugInterList.vue')
+        },
+        {
+          path: '/inter/drugInterDetail/:json',
+          name: '/inter/drugInterDetail',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '说明书',
+              back: true
+            }
+          },
+          component: () => import('@src/views/inter/DrugInterDetail.vue')
+        },
+        {
+          path: '/order/userDrugDetail/:json',
+          name: '/order/userDrugDetail',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '订单详情',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugDetail.vue')
+        },
+        {
+          path: '/order/userDrugLogistics/:json',
+          name: '/order/userDrugLogistics',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '订单状态',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugLogistics.vue')
         }
       ]
     },

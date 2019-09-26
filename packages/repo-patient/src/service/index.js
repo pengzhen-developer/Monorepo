@@ -15,6 +15,7 @@ import doctor from './modules/doctor'
 import hospital from './modules/hospital'
 import appoint from './modules/appoint'
 import diagnose from './modules/diagnose'
+import purchasedrug from './modules/purchasedrug'
 
 export default {
   IM,
@@ -26,4 +27,5 @@ export default {
   hospital,
   appoint,
   diagnose,
+  purchasedrug
 }

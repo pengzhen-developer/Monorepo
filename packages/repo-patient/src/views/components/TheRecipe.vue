@@ -1,6 +1,8 @@
 <template>
-  <div class="the-recipe" v-if="data">
-    <div :class="{ [`icon-status-${ data && data.prescriptionStatus && data.prescriptionStatus.key }`] : true }" class="prescript icon-status">
+  <div class="the-recipe"
+       v-if="data">
+    <div :class="{ [`icon-status-${ data && data.prescriptionStatus && data.prescriptionStatus.key }`] : true }"
+         class="prescript icon-status">
       <div class="prescript-no">No.{{data.prescriptionNo}}</div>
       <div class="prescript-head">{{data.medicalInstitutionName}}</div>
       <div class="prescript-h4">处方笺</div>
@@ -33,12 +35,11 @@
         <div class="outline-tit">临床诊断</div>
       </div>
       <div class="outline-body">
-        <div
-          :data-index="index"
-          :key="item.DiagnosisName"
-          class="inline"
-          v-for="(item,index) in data.diagnosisInfos"
-        >{{item.DiagnosisName ? item.DiagnosisName: data.diagnosisInfos.length ? '' : '暂无'}}</div>
+        <div :data-index="index"
+             :key="item.DiagnosisName"
+             class="inline"
+             v-for="(item,index) in data.diagnosisInfos">
+          {{item.DiagnosisName ? item.DiagnosisName: data.diagnosisInfos.length ? '' : '暂无'}}</div>
       </div>
     </div>
     <!--RP-->
@@ -47,14 +48,18 @@
         <div class="outline-tit">Rp</div>
       </div>
       <div class="outline-body">
-        <div :class="{ [`index-${index}`]: true }" :key="item.drugName" class="column-2" v-for="(item, index) in data.drugCode">
+        <div :class="{ [`index-${index}`]: true }"
+             :key="item.drugName"
+             class="column-2"
+             v-for="(item, index) in data.drugCode">
           <div class="column-left">
             <div class="inline">
               <div class="span l">{{item.drugName}}</div>
               <div class="span">{{item.drugSpecifications}}</div>
             </div>
 
-            <div class="small" v-if="item.drugUse">{{item.drugUse}}</div>
+            <div class="small"
+                 v-if="item.drugUse">{{item.drugUse}}</div>
           </div>
           <div class="column-right">
             <div class="inline">x{{item.drugQty}}</div>
@@ -74,13 +79,15 @@
       <div class="namelist-dl npd">
         <div class="dt">医师：</div>
         <div class="dd">
-          <img :src="data.doctorSignImage" v-if="data.doctorSignImage" />
+          <img :src="data.doctorSignImage"
+               v-if="data.doctorSignImage" />
         </div>
       </div>
       <div class="namelist-dl npd">
         <div class="dt">审核药师：</div>
         <div class="dd">
-          <img :src="data.prescriptionSign" v-if="data.prescriptionSign" />
+          <img :src="data.prescriptionSign"
+               v-if="data.prescriptionSign" />
         </div>
       </div>
       <div class="namelist-dl">
@@ -93,13 +100,12 @@
       </div>
     </div>
     <div class="bt">注意：仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，3日内处方有效。</div>
-    <div class="bottom" v-if="data.prescriptionStatus">
-      <div
-        :class="data.prescriptionStatus.key == '2' || data.prescriptionStatus.key == '5' || data.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
-        :data-type="data.prescriptionStatus.key"
-        @click="goMenuPage(data)"
-        class="btn btn-blue block"
-      >{{ data.prescriptionStatus.msg }}</div>
+    <div class="bottom"
+         v-if="data.prescriptionStatus">
+      <div :class="data.prescriptionStatus.key == '2' || data.prescriptionStatus.key == '5' || data.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
+           :data-type="data.prescriptionStatus.key"
+           @click="goMenuPage(data)"
+           class="btn btn-blue block">{{ data.prescriptionStatus.msg }}</div>
     </div>
   </div>
 </template>
@@ -116,23 +122,22 @@ export default {
     }
   },
   methods: {
-    goMenuPage: function(data){
-      console.log(data);
-      let key = data.prescriptionStatus.key;
-      if(key == '2'){
+    goMenuPage: function(data) {
+      let key = data.prescriptionStatus.key
+      if (key == '2') {
         //去配药页面
-        let claimNo = data.claimNo;
-        let familyId = data.familyId;
-        let json = peace.util.encode({claimNo, familyId});
-        this.$router.push(`/drug/list/${json}`);
-        return;
+        let claimNo = data.claimNo
+        let familyId = data.familyId
+        let json = peace.util.encode({ claimNo, familyId })
+        this.$router.push(`/drug/list/${json}`)
+        return
       }
-      if(key == '5' || key == '6'){
-        // orderDetail
-       // me.goDrugOrderDetail();
-        return;
+      if (key == '5' || key == '6') {
+        const json = peace.util.encode({ OrderId: data.orderId })
+        this.$router.push(`/order/userDrugDetail/${json}`)
+        return
       }
-      return;
+      return
     }
   }
 }

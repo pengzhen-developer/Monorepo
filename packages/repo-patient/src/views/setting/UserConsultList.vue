@@ -1,51 +1,84 @@
 <template>
   <div class="userConsultList">
     <!-- h5 v0.1 版本暂不开放 -->
-    <div class="box" v-if="false">
+    <div class="box"
+         v-if="false">
       <div class="box-tab">
-        <div bindtap="goReferrListPage" class="tab-item" data-index="0">
-          <div :class="{ red: unred_ZZ}" class="span icon-referral">转诊申请</div>
+        <div bindtap="goReferrListPage"
+             class="tab-item"
+             data-index="0">
+          <div :class="{ red: unred_ZZ}"
+               class="span icon-referral">转诊申请</div>
         </div>
-        <div bindtap="goConsultGroupPage" class="tab-item" data-index="1" style="flex:1.15">
-          <div :class="{ red: unred_HZ}" class="span icon-consultGroup">会诊申请</div>
+        <div bindtap="goConsultGroupPage"
+             class="tab-item"
+             data-index="1"
+             style="flex:1.15">
+          <div :class="{ red: unred_HZ}"
+               class="span icon-consultGroup">会诊申请</div>
         </div>
       </div>
     </div>
 
     <div class="content">
       <template v-if="consultList.length">
-        <div :data-index="index" :Key="index" class="panel" v-for="(item,index) in consultList">
+        <div :data-index="index"
+             :Key="index"
+             class="panel"
+             v-for="(item,index) in consultList">
           <div class="panel-head">
             <div class="card-strip">
               <div class="avatar">
-                <img :src="item.doctorInfo.avartor" class="avatar-cicular" />
+                <img :src="item.doctorInfo.avartor"
+                     class="avatar-cicular" />
               </div>
               <div class="strip-info">
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
                 <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
-              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }" class="strip-eye">{{item.inquiryInfo.statusTxt}}</div>
+              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }"
+                   class="strip-eye">{{item.inquiryInfo.statusTxt}}</div>
             </div>
           </div>
-          <div :data-index="index" @click="goUserConsultDetailPage(item)" class="panel-body" style="padding-top: 0">
+          <div :data-index="index"
+               @click="goUserConsultDetailPage(item)"
+               class="panel-body"
+               style="padding-top: 0">
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
               <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
-              <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">{{item.inquiryInfo.isFree ? '免费' : item.inquiryInfo.orderMoney }}</div>
+              <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
+                {{item.inquiryInfo.isFree ? '免费' : item.inquiryInfo.orderMoney }}</div>
             </div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0" v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
-            <div :data-index="index" @click="goChatingPage(item)" class="label blue" v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
-            <div :data-index="index" @click="showCancellPop(item)" class="label blue">取消订单</div>
+          <div class="panel-bottom"
+               style="padding-left: 0"
+               v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+            <div :data-index="index"
+                 @click="goChatingPage(item)"
+                 class="label blue"
+                 v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+            <div :data-index="index"
+                 @click="showCancellPop(item)"
+                 class="label blue">取消订单</div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0" v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
-            <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue" data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
-            <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue" data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
-            <div
-              :data-index="index"
-              @click="goChatingPage(item)"
-              class="label blue">咨询记录</div>
+          <div class="panel-bottom"
+               style="padding-left: 0"
+               v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
+            <div :data-index="index"
+                 @click="gouserPrescripCasePage(item)"
+                 class="label blue"
+                 data-tip="病历"
+                 v-if="item.inquiryInfo.isCase">咨询小结</div>
+            <div :data-index="index"
+                 @click="gouserPrescripListPage(item)"
+                 class="label blue"
+                 data-tip="处方"
+                 v-if="item.inquiryInfo.isPrescrip">用药建议</div>
+            <div :data-index="index"
+                 @click="goChatingPage(item)"
+                 class="label blue">咨询记录</div>
           </div>
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
@@ -59,19 +92,25 @@
       </template>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
+    <peace-dialog :visible.sync="recipeList.visible"
+                  title="用药建议">
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
-      <MessageList :data="chatingPage.data" :doctorInfo="chatingPage.doctorInfo" :navBar="false"></MessageList>
+    <peace-dialog :visible.sync="chatingPage.visible"
+                  title="咨询记录">
+      <MessageList :data="chatingPage.data"
+                   :doctorInfo="chatingPage.doctorInfo"
+                   :navBar="false"></MessageList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="consultDetail.visible" title="咨询详情">
+    <peace-dialog :visible.sync="consultDetail.visible"
+                  title="咨询详情">
       <ConsultDetail :data="consultDetail.data"></ConsultDetail>
     </peace-dialog>
   </div>
@@ -363,13 +402,10 @@ export default {
   background: #fff;
 }
 .card-strip .avatar img {
-  /*padding: 2px;*/
+  padding: 2px;
   border-radius: 50%;
-  /*width: 26px;*/
-  /*height: 26px;*/
-  /*margin-top: -1px;*/
-  /*margin-left: -1px;*/
-  border: 1px solid #f3f3f3;
+  width: 30px;
+  height: 30px;
 }
 
 .strip-info {
