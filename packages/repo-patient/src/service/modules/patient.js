@@ -261,18 +261,23 @@ export function submitOrder(params) {
  */
 export function getAddressLists() {
   const getAddressLists = 'client/v1/Address/getAddressLists';
-  return peace.http.post(getAddressLists)
+  return peace.http.post(getAddressLists);
 }
 
 /**
- * 添加地址
+ * 删除地址
  *
  * @export
  * @returns
  */
 export function addAddress(params) {
   const getAddressLists = 'client/v1/Address/addAddress';
-  return peace.http.post(getAddressLists, params)
+  return peace.http.post(getAddressLists, params);
+}
+
+export function delAddress(params) {
+  const delAddress = 'client/v1/Address/delAddress';
+  return peace.http.post(delAddress, params);
 }
 
 export default {
@@ -319,5 +324,7 @@ export default {
   /** 获取我的地址列表 **/
   getAddressLists,
   /** 添加地址 */
-  addAddress
+  addAddress,
+  /** 删除地址 */
+  delAddress
 }

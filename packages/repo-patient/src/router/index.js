@@ -431,6 +431,19 @@ const router = new Router({
           meta: {
             auth: true,
             navbar: {
+              title: '编辑地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/userAddressEdit.vue')
+          
+        },
+        {
+          path: '/setting/userAddressEdit',
+          name: '/setting/userAddressEdit',
+          meta: {
+            auth: true,
+            navbar: {
               title: '添加新地址',
               back: true
             }
