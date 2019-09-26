@@ -168,15 +168,15 @@ export function confirm(
   message = '温馨提示',
   title = '温馨提示',
   options = { type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' },
-  confirmCallBack,
+confirmCallBack,
   cancelCallBack
 ) {
   Dialog.confirm({
     title,
     message
   })
-    .then(confirmCallBack && confirmCallBack())
-    .catch(cancelCallBack && cancelCallBack())
+    .then(confirmCallBack)
+    .catch(cancelCallBack)
 }
 
 /**
