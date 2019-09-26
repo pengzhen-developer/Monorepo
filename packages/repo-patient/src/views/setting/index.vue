@@ -40,12 +40,12 @@
       <van-cell icon="location-o"
                 is-link
                 title="收货地址"
-                to="/setting/address"
+                to="/setting/AdressManger"
                 value />
       <van-cell @click="signOut"
                 icon="close"
                 title="退出登录"
-                value />
+                value></van-cell>
     </van-cell-group>
   </div>
 </template>
