@@ -8,7 +8,7 @@
         </div>
         <div class="dd">
           <div class="icon icon-edit" data-index="index" @click="goUserAddressEdit(item)"></div>
-          <div class="icon icon-del" data-index="index" @click="delAddr(item)"></div>
+          <div class="icon icon-del" data-index="index" @click="delAddr(item.addressId)"></div>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
       <div class="btn-group">
         <van-button
           class="btn btn-blue"
-          @click="goUserAddressEdit"
+          @click="addressEdit"
           type="info"
         >新增地址</van-button>
       </div>
@@ -47,16 +47,33 @@ export default {
     },
     getAddressList() {
       peace.service.patient.getAddressLists().then(res => {
-        const tmp = res.data.addressLists[0];
+        const tmp = res.data.addressLists;
+
         this.isGet = true;
-        this.addr = [tmp];
+        this.addr = tmp.map((item, index)=> item[index]);
       });
     },
     goUserAddressEdit(address) {
-      debugger
-      this.$router.push(`/setting/userAddressEdit/${address}`);
+      const temp =  peace.util.encode(address)
+      this.$router.push(`/setting/userAddressEdit/${temp}`);
     },
-    delAddr() {},
+    addressEdit() {
+       this.$router.push(`/setting/userAddressEdit/`);
+    },
+    delAddr(addressId) {
+
+      peace.util.confirm("确认删除")
+
+      const data = {
+        addressId: addressId,
+      };
+      peace.service.patient
+        .delAddress(data)
+        .then(res => {
+          console.log(res);
+          this.$router.go(-1);
+        })
+    },
     goWeXinAddress() {},
     checkAddr() {},
   }
