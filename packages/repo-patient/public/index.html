@@ -6,7 +6,10 @@
     <!-- 避免IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- 设置移动端视图 -->
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+      name="viewport"
+    />
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit" />
     <!-- 设置苹果工具栏颜色 -->
@@ -190,15 +193,17 @@
       }
     </script>
 
-    <script src="static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
-    <script src="static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
-<!--    <script type="text/javascript" src="https://map.qq.com/api/js?v=2.exp&amp;key=S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54"></script>-->
-    <script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
   </head>
 
   <body>
     <noscript>
-      <strong> We're sorry but trunk doesn't work properly without JavaScript enabled. Please enable it to continue. </strong>
+      <strong>
+        We're sorry but trunk doesn't work properly without JavaScript enabled. Please enable it to
+        continue.
+      </strong>
     </noscript>
     <div id="app">
       <div class="loading-group">

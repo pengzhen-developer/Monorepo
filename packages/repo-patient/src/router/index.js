@@ -6,6 +6,8 @@ import peace from '@src/library'
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
+  base: process.env.VUE_APP_RELEASE_FLODER_PATH,
   routes: [
     {
       path: '/',
@@ -423,7 +425,6 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/AdressManger.vue')
-          
         },
         {
           path: '/setting/userAddressEdit/:json',
@@ -436,7 +437,6 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/userAddressEdit.vue')
-          
         },
         {
           path: '/setting/userAddressEdit',
@@ -449,7 +449,6 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/userAddressEdit.vue')
-          
         },
         {
           path: '/setting/order/userOrderList',
