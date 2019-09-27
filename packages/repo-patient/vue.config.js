@@ -3,6 +3,9 @@
 const path = require('path')
 
 module.exports = {
+  devServer: {
+    disableHostCheck: true,
+  },
   // https://cli.vuejs.org/config/#vue-config-js
   publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
 
