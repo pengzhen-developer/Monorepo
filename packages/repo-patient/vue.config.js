@@ -12,10 +12,6 @@ module.exports = {
 
   // https://cli.vuejs.org/config/#devserver
   devServer: {
-    // For History Mode
-    // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-    historyApiFallback: true,
-
     // 内网穿透
     // https://webpack.js.org/configuration/dev-server/#devserverdisablehostcheck
     disableHostCheck: true
