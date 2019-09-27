@@ -50,7 +50,8 @@ export default {
        let {orderNo} = peace.util.decode(this.$route.params.json);
        let params = {code, orderNo};
         peace.service.index.GetWxLoginStatus(params).then((res) => {
-            alert(res.msg);
+            let data = res.data;
+            that.onBridgeReady(data);
         })
     }
     // if (typeof WeixinJSBridge == "undefined"){
@@ -66,17 +67,10 @@ export default {
   },
 
   methods: {
-  onBridgeReady(){
+  onBridgeReady(data){
+    console.log("enter");
       WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            'total_fee' : 100,
-            "appId":"wx2421b1c4370ec43b",     //公众号名称，由商户传入
-            "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数
-            "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串
-            "package":"prepay_id=u802345jgfjsdfgsdg888",
-            "signType":"MD5",         //微信签名方式：
-            "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
-          },
+          'getBrandWCPayRequest', data,
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ){
               // 使用以上方式判断前端返回,微信团队郑重提示：
@@ -91,11 +85,16 @@ export default {
       peace.service.index.GetWxLoginStatus(params).then((res) => {
           if(res.code === 200) {
             //没有经过授权
-            let appid = 'wx78d7ae35932558e6';
-            let redirect_uri = location.href;
-            // redirect_uri = encodeURIComponent(redirect_uri);
-            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
-            window.location.href = url;
+            let data= res.data;
+            if(data) {
+              that.onBridgeReady(data);
+            } else {
+              let appid = 'wx78d7ae35932558e6';
+              let redirect_uri = location.href;
+              // redirect_uri = encodeURIComponent(redirect_uri);
+              let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
+              window.location.href = url;
+            }
           }
       })
       return;
