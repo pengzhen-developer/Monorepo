@@ -32,7 +32,7 @@ export function getHospitalInfo(params) {
  * @returns
  */
 export function getDeptList(params) {
-    const url = 'h5/v1/Hospital/getNewDeptLists'
+    const url = 'wap/v1/Hospital/getNewDeptLists'
 
     return peace.http.post(url, params)
 }

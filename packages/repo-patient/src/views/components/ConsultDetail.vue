@@ -17,6 +17,11 @@
           class="label blue"
           v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'"
         >取消订单</div>
+        <div
+                @click="goToPay(internalData)"
+                class="label blue-full"
+                v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'"
+        >支付订单</div>
       </div>
     </div>
     <!--医生名片-->
@@ -182,7 +187,16 @@ export default {
     get() {
       this.getConsultDetail()
     },
-
+    goToPay(data) {
+      let order = data.orderInfo;
+      let money = order.orderMoney;
+      let typeName = order.inquiryType == 'image' ? '图文问诊' : '';
+      let doctorName = data.doctorInfo.name;
+      let orderNo = order.orderNo;
+      let json = {money, typeName, doctorName, orderNo};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
+    },
     getConsultDetail() {
       const params = {
         inquiryId: this.internalData.inquiryInfo.inquiryId
@@ -195,7 +209,8 @@ export default {
 
     getInquiryText(status) {
       const dic = {
-        '1': '15分钟之后未支付系统将自动关闭订单',
+        // '1': '15分钟之后未支付系统将自动关闭订单',
+        '1': '请您尽快支付',
         '2': '已通知医生尽快接诊，请等候',
         '3': '请及时与医生沟通',
         '4': '欢迎再次咨询。如有紧急问题请及时就医~',
@@ -341,6 +356,10 @@ export default {
     padding: 4px 6px;
     margin: 5px;
     border-radius: 20px;
+  }
+  .module-body .blue-full {
+    background: #00c6ae;
+    color: #fff;
   }
   .card {
     background: #fff;

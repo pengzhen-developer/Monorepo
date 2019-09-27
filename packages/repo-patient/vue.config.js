@@ -7,8 +7,8 @@ module.exports = {
     disableHostCheck: true,
   },
   // https://cli.vuejs.org/config/#vue-config-js
-  publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
-
+  publicPath: process.env.NODE_ENV === 'production' ? '/h5' : '/h5',
+  //assetsPublicPath: '/h5/',
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
 

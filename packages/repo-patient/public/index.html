@@ -9,6 +9,7 @@
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit" />
+    <meta base ="/h5/">
     <!-- 设置苹果工具栏颜色 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <!-- 删除苹果默认的工具栏和菜单栏 -->
@@ -189,10 +190,10 @@
         // window.location.href = './unCompatible.html'
       }
     </script>
-
-    <script src="/static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
-    <script src="/static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
-<!--    <script type="text/javascript" src="https://map.qq.com/api/js?v=2.exp&amp;key=S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54"></script>-->
+    <!-- history 模式下 本 -->
+    <script src="/h5/static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="/h5/static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script type="text/javascript" src="https://map.qq.com/api/js?v=2.exp&amp;key=S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54"></script>
     <script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
   </head>
 
