@@ -3,14 +3,23 @@
 const path = require('path')
 
 module.exports = {
-  devServer: {
-    disableHostCheck: true,
-  },
+  devServer: {},
   // https://cli.vuejs.org/config/#vue-config-js
-  publicPath: process.env.NODE_ENV === 'production' ? '/h5' : '/h5',
-  //assetsPublicPath: '/h5/',
+  publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/',
+
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
+
+  // https://cli.vuejs.org/config/#devserver
+  devServer: {
+    // For History Mode
+    // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+    historyApiFallback: true,
+
+    // 内网穿透
+    // https://webpack.js.org/configuration/dev-server/#devserverdisablehostcheck
+    disableHostCheck: true
+  },
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: config => {
@@ -42,7 +51,7 @@ module.exports = {
       less: {
         modifyVars: {
           green: '#00c6ae',
-          blue: '#00c6ae',
+          blue: '#00c6ae'
         }
       },
 

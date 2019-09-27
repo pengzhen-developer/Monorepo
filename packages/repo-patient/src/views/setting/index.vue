@@ -71,12 +71,12 @@ export default {
           text: '购药记录',
           id: 'drug',
           icon: 'icon_01_01_03'
-        },
-        {
-          text: '我的订单',
-          id: 'order',
-          icon: 'icon_01_01_21'
         }
+        // {
+        //   text: '我的订单',
+        //   id: 'order',
+        //   icon: 'icon_01_01_21'
+        // }
       ],
       userInfo: this.$store.state.user.userInfo || {}
     }
