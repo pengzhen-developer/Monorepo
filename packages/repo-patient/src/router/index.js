@@ -427,6 +427,19 @@ const router = new Router({
 
         },
         {
+          path: '/setting/SelectAddressManger',
+          name: '/setting/SelectAddressManger',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/SelectAddressManger.vue')
+          
+        },
+        {
           path: '/setting/userAddressEdit/:json',
           name: '/setting/userAddressEdit',
           meta: {
