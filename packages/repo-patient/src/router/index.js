@@ -643,6 +643,8 @@ const router = new Router({
 let cacheRoute = null
 
 router.beforeEach((to, from, next) => {
+  $peace.routerStack = $peace.routerStack || []
+  $peace.routerStack.push(to)
   $peace.referrer = from
 
   // 根据 route 参数修改 keepAlive
