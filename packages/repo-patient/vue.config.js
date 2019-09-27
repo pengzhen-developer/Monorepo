@@ -3,6 +3,7 @@
 const path = require('path')
 
 module.exports = {
+  devServer: {},
   // https://cli.vuejs.org/config/#vue-config-js
   publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/',
 
@@ -13,7 +14,11 @@ module.exports = {
   devServer: {
     // For History Mode
     // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-    historyApiFallback: true
+    historyApiFallback: true,
+
+    // 内网穿透
+    // https://webpack.js.org/configuration/dev-server/#devserverdisablehostcheck
+    disableHostCheck: true
   },
 
   // https://cli.vuejs.org/config/#chainwebpack

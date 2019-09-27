@@ -139,7 +139,6 @@ export default {
       peace.service.patient
         .addAddress(data)
         .then(res => {
-          console.log(res);
           peace.util.alert(this.internalAddr.addressId ? "编辑成功" : '添加成功')
           this.$router.go(-1);
         })
