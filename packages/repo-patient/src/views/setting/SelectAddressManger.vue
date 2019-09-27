@@ -76,8 +76,19 @@ export default {
       });
     },
     checkAddr(address) {
-        const temp = peace.util.encode(address);
-        this.$router.push(`/setting/userAddressEdit/${temp}`);
+      // 通过 component 组件引入调用
+      if (this.$route.name != "/setting/SelectAddressManger") {
+        this.$emit("onSelect", address);
+      } else {
+        // 上个路由
+        const prevRoute = $peace.routerStack[$peace.routerStack.length - 2];
+        this.$router.replace({
+          name: prevRoute.name,
+          params: {
+            address: address
+          }
+        });
+      }
     }
   }
 };

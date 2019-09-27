@@ -428,6 +428,19 @@ const router = new Router({
 
         },
         {
+          path: '/setting/SelectAddressManger',
+          name: '/setting/SelectAddressManger',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/SelectAddressManger.vue')
+          
+        },
+        {
           path: '/setting/userAddressEdit/:json',
           name: '/setting/userAddressEdit',
           meta: {
@@ -644,6 +657,8 @@ const router = new Router({
 let cacheRoute = null
 
 router.beforeEach((to, from, next) => {
+  $peace.routerStack = $peace.routerStack || []
+  $peace.routerStack.push(to)
   $peace.referrer = from
 
   // 根据 route 参数修改 keepAlive
