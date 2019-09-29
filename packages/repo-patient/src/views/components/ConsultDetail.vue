@@ -188,12 +188,13 @@ export default {
       this.getConsultDetail()
     },
     goToPay(data) {
+      let doctorId = data.doctorInfo.doctorId;
       let order = data.orderInfo;
       let money = order.orderMoney;
       let typeName = order.inquiryType == 'image' ? '图文问诊' : '';
       let doctorName = data.doctorInfo.name;
       let orderNo = order.orderNo;
-      let json = {money, typeName, doctorName, orderNo};
+      let json = {money, typeName, doctorName, orderNo, doctorId};
       json = peace.util.encode(json);
       this.$router.push(`/components/doctorInquiryPay/${json}`);
     },

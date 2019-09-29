@@ -1,6 +1,10 @@
 <template>
   <div class="doctor-inquiry-pay">
-    <div class="header">请在<count-down :currentTime="1481452000" :startTime="1481450110" :endTime="1481453000" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'"  minutesTxt=":" secondsTxt="" hourTxt=":"></count-down>后内完成支付，超时订单自动取消</div>
+    <div class="header">请在 <van-count-down
+            millisecond
+            :time="time"
+            format="mm:ss"
+    />后内完成支付，超时订单自动取消</div>
     <div class="content">
       <van-cell title="问诊方式"
                 :value="params.typeName" />
@@ -28,7 +32,7 @@
 
 <script>
 import peace from '@src/library'
-import CountDown from 'vue2-countdown'
+import { CountDown } from 'vant';
 export default {
   components: {
     CountDown
@@ -36,7 +40,8 @@ export default {
   data() {
     return {
       data: {},
-      params: {}
+      params: {},
+      time: 15 * 60 * 1000
     }
   },
   created() {
@@ -45,6 +50,13 @@ export default {
   mounted() {
     let that = this;
     this.params = peace.util.decode(this.$route.params.json)
+    let orderNo = this.params.orderNo;
+    peace.service.index.GetOrderTime({orderNo}).then((res) => {
+       let data = res.data;
+       if(data.expireTime > data.currentTime) {
+         that.time = (data.expireTime - data.currentTime) * 1000;
+       }
+    });
     if(this.$route.query.code) {
        let code = this.$route.query.code;
        let {orderNo} = peace.util.decode(this.$route.params.json);
@@ -68,13 +80,16 @@ export default {
 
   methods: {
   onBridgeReady(data){
-    console.log("enter");
+      let that = this;
       WeixinJSBridge.invoke(
           'getBrandWCPayRequest', data,
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ){
               // 使用以上方式判断前端返回,微信团队郑重提示：
               //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+              let {doctorId} = peace.util.decode(this.$route.params.json);
+              let json = peace.util.encode({doctorId});
+              this.$router.push(`/components/doctorInquiryPayResult/${json}`);
             }
           });
     },
@@ -97,7 +112,7 @@ export default {
             }
           }
       })
-      return;
+
       // if (typeof WeixinJSBridge == "undefined"){
       //   if( document.addEventListener ){
       //     document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false);
@@ -129,6 +144,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .van-count-down {
+    color: inherit;
+  }
 .doctor-inquiry-pay {
   height: 100%;
   display: flex;
