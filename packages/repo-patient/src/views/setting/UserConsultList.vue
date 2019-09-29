@@ -62,6 +62,9 @@
             <div :data-index="index"
                  @click="showCancellPop(item)"
                  class="label blue">取消订单</div>
+            <div :data-index="index"
+                 @click="goToPay(item)"
+                 class="label blue-full">继续支付</div>
           </div>
           <div class="panel-bottom"
                style="padding-left: 0"
@@ -180,7 +183,18 @@ export default {
     get() {
       this.getConsultList()
     },
-
+    goToPay(data) {
+      //console.log(data);
+      let doctorId = data.doctorInfo.doctorId;
+      let order = data.inquiryInfo;
+      let money = order.orderMoney;
+      let typeName = order.inquiryType == 'image' ? '图文问诊' : '';
+      let doctorName = data.doctorInfo.name;
+      let orderNo = order.orderNo;
+      let json = {money, typeName, doctorName, orderNo, doctorId};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
+    },
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
         this.consultList = res.data.list
@@ -295,7 +309,11 @@ export default {
   /*background: #f5f5f5;*/
   color: #999;
 }
-
+.blue-full {
+  background: #00c6ae;
+  color: #fff;
+  border: none;
+}
 .box {
   margin: 0;
   padding: 10px 15px;

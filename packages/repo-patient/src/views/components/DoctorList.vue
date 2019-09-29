@@ -85,7 +85,7 @@ export default {
       }
 
       const minMoney = Math.min.apply(null, moneyList)
-
+      //debugger;
       if (minMoney === 0) {
         return '免费'
       } else {

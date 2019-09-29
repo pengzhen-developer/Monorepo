@@ -77,19 +77,26 @@ export default {
     //   that.onBridgeReady();
     // }
   },
-
+  // watch: {
+  //   $route(to) {
+  //      console.log('route', to);
+  //   }
+  // },
   methods: {
   onBridgeReady(data){
       let that = this;
       WeixinJSBridge.invoke(
           'getBrandWCPayRequest', data,
           function(res){
+            //alert(res.err_msg);
             if(res.err_msg == "get_brand_wcpay_request:ok" ){
               // 使用以上方式判断前端返回,微信团队郑重提示：
               //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-              let {doctorId} = peace.util.decode(this.$route.params.json);
-              let json = peace.util.encode({doctorId});
-              this.$router.push(`/components/doctorInquiryPayResult/${json}`);
+             that.payCallback();
+            }
+            if(res.err_msg == "get_brand_wcpay_request:fail" ){
+            }
+            if(res.err_msg == "get_brand_wcpay_request:cancel" ){
             }
           });
     },
@@ -112,32 +119,17 @@ export default {
             }
           }
       })
-
-      // if (typeof WeixinJSBridge == "undefined"){
-      //   if( document.addEventListener ){
-      //     document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false);
-      //   }else if (document.attachEvent){
-      //     document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady);
-      //     document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady);
-      //   }
-      // }else{
-      //   that.onBridgeReady();
-      // }
-      // return;
-
-       let appid = 'wx3333240fc5119e0e' //测试
-       let redirect_uri = location.href;
-      // redirect_uri = encodeURIComponent(redirect_uri);
-       let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
-       window.location.href = url;
     },
-    payCallback(data) {
-      let json
-
-      data.payShow == false && (this.showPassWordKeyboard = data.payShow)
-      data.success &&
-        ((json = peace.util.encode(data.data)),
-        this.$router.push(`/components/doctorInquiryPayResult/${json}`))
+    payCallback() {
+      let {doctorId,typeName,orderNo} = peace.util.decode(this.$route.params.json);
+      if(typeName.includes("挂号")) {
+        let orderType = 'register';
+        let json = peace.util.encode({orderNo,orderType});
+        this.$router.push(`/setting/order/userOrderDetail/${json}`);
+      } else {
+        let json = peace.util.encode({doctorId});
+        this.$router.push(`/components/doctorInquiryPayResult/${json}`);
+      }
     }
   }
 }
