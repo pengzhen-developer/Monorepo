@@ -62,7 +62,7 @@
             <div :data-index="index"
                  @click="showCancellPop(item)"
                  class="label blue">取消订单</div>
-            <div :data-index="index"
+            <div :data-index="index" v-if="item.inquiryInfo.inquiryStatus === 1"
                  @click="goToPay(item)"
                  class="label blue-full">继续支付</div>
           </div>

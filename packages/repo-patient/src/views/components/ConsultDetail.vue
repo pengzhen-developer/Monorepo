@@ -20,7 +20,7 @@
         <div
                 @click="goToPay(internalData)"
                 class="label blue-full"
-                v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'"
+                v-if="internalData.inquiryInfo.inquiryStatus == '1'"
         >支付订单</div>
       </div>
     </div>
