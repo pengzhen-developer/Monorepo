@@ -533,10 +533,13 @@ export default {
             confirmButtonText: '去看看'
           }).then(() => {
             // 前往咨询订单详情页
-            const json = peace.util.encode({
-              inquiryId: res.data.inquiryId
-            })
-            this.$router.push(`/setting/userConsultDetail/${json}`)
+            //console.log(res.data.inquiryId);
+            // const json = peace.util.encode({
+            //   inquiryId: res.data.inquiryId
+            // })
+            let inquiryId = res.data.inquiryId;
+
+            this.$router.push( {path:`/setting/userConsultList`, query: {inquiryId}});
           })
         }
         if (res.data.errorState === 2) {

@@ -124,7 +124,7 @@ export default {
       let {doctorId,typeName,orderNo} = peace.util.decode(this.$route.params.json);
       if(typeName.includes("挂号")) {
         let orderType = 'register';
-        let json = peace.util.encode({orderNo,orderType});
+        let json = peace.util.encode({orderInfo:{orderNo,orderType}});
         this.$router.push(`/setting/order/userOrderDetail/${json}`);
       } else {
         let json = peace.util.encode({doctorId});
