@@ -41,7 +41,7 @@
             </div>
           </div>
           <div :data-index="index"
-               @click="goUserConsultDetailPage(item)"
+               @click="goUserConsultDetailPage(item.inquiryInfo.inquiryId)"
                class="panel-body"
                style="padding-top: 0">
             <div class="code">{{item.inquiryInfo.describe}}</div>
@@ -112,10 +112,7 @@
                    :navBar="false"></MessageList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="consultDetail.visible"
-                  title="咨询详情">
-      <ConsultDetail :data="consultDetail.data"></ConsultDetail>
-    </peace-dialog>
+
   </div>
 </template>
 
@@ -127,15 +124,12 @@ import { Dialog } from 'vant'
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
-import ConsultDetail from '@src/views/components/ConsultDetail'
 
 export default {
   components: {
     TheCase,
     TheRecipeList,
     MessageList,
-    ConsultDetail,
-
     [Dialog.Component.name]: Dialog.Component
   },
 
@@ -166,11 +160,6 @@ export default {
         visible: false,
         data: [],
         doctorInfo: {}
-      },
-
-      consultDetail: {
-        visible: false,
-        data: {}
       }
     }
   },
@@ -180,7 +169,7 @@ export default {
     // 重复订单跳转进来
     let inquiryId = this.$route.query.inquiryId;
     if(inquiryId && inquiryId!='') {
-      this.goUserConsultDetailPage(null, inquiryId);
+      this.goUserConsultDetailPage(inquiryId);
     }
   },
 
@@ -273,17 +262,17 @@ export default {
       }
     },
 
-    goUserConsultDetailPage(item, inquiryId) {
+    goUserConsultDetailPage(inquiryId) {
 
-      this.consultDetail.visible = true
+      // this.consultDetail.visible = true
 
       const params = {
-        inquiryId: (item && item.inquiryInfo.inquiryId) || inquiryId
+        inquiryId
       }
 
-      peace.service.patient.inquiryDetail(params).then(res => {
-        this.consultDetail.data = res.data
-      })
+      let json = peace.util.encode(params);
+      this.$router.push(`/setting/userConsultDetail/${json}`);
+
     },
 
     showCancellPop(item) {

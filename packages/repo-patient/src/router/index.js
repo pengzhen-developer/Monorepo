@@ -131,6 +131,20 @@ const router = new Router({
           component: () => import('@src/views/setting/UserConsultList.vue')
         },
 
+        // 咨询详情
+        {
+          path: '/setting/userConsultDetail/:json',
+          name: '/setting/userConsultDetail',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '咨询详情',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/ConsultDetail.vue')
+        },
+
         // 用药建议
         {
           path: '/components/theRecipeList/:json',

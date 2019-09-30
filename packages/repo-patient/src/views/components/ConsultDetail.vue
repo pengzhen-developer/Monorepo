@@ -182,7 +182,9 @@ export default {
       immediate: true
     }
   },
-
+  mounted() {
+    this.get();
+  },
   methods: {
     get() {
       this.getConsultDetail()
@@ -199,10 +201,7 @@ export default {
       this.$router.push(`/components/doctorInquiryPay/${json}`);
     },
     getConsultDetail() {
-      const params = {
-        inquiryId: this.internalData.inquiryInfo.inquiryId
-      }
-
+      let params = peace.util.decode(this.$route.params.json)
       peace.service.patient.inquiryDetail(params).then(res => {
         this.internalData = res.data
       })
