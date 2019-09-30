@@ -52,6 +52,13 @@ export const config = {
    */
   NIM: {
     key: process.env.VUE_APP_IM_KEY
+  },
+
+  /**
+   * MAP 配置项
+   */
+  MAP: {
+    key: process.env.VUE_APP_MAP_KEY
   }
 }
 

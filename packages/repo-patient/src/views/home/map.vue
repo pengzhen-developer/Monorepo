@@ -1,7 +1,7 @@
 <template>
-    <baidu-map class="map" ak="vVmeefdcZxiHrUvdyoHquR4S" @ready="handler">
-        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-    </baidu-map>
+    <div id="map" class="map">
+
+    </div>
 </template>
 
 <script>
@@ -12,25 +12,42 @@
 
         },
         mounted() {
+            var geo = new qq.maps.Geocoder()
+            console.log(geo)
+            geo.getLocation('武汉绿地中心')//地址
+            geo.setComplete(function(res){
+                console.log(res,res.detail.location)//得到经纬度
+                var map = new qq.maps.Map(document.getElementById('map'),{
+                    center: res.detail.location,//将经纬度加到center属性上
+                    zoom: 13,//缩放
+                    draggable: true,//是否可拖拽
+                    scrollwheel: true,//是否可滚动缩放
+                    disableDoubleClickZoom: false
+                })
+                var marker = new qq.maps.Marker({
+                    position: res.detail.location,//标记的经纬度
+                    animation: qq.maps.MarkerAnimation.BOUNCE,//标记的动画
+                    map: map//标记的地图
+                })
+
+                var citylocation = new qq.maps.CityService({
+                    //设置地图
+                    map : map,
+                    complete : function(results){
+                        console.log(9999,results)
+                    }
+                });
+            })
 
         },
         data() {
             return {
                 map: {
-                    center: {
-                        lng: 123,
-                        lat: 30,
-                    }
                 }
             }
         },
         methods: {
-            handler ({BMap, map}) {
-                var point = new BMap.Point(114.3118287971, 30.5984342798)
-                map.centerAndZoom(point, 13)
-                var marker = new BMap.Marker(point) // 创建标注
-                map.addOverlay(marker) // 将标注添加到地图中
-            }
+
         }
     }
 </script>

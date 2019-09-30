@@ -6,17 +6,19 @@
             <span @click="save">确定</span>
         </div>
         <iframe id="mapPage" width="100%" height="100%" frameborder=0 class="frame"
-                src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OKDBZ-DHDKW-CZARS-OXSUC-U2467-RQFKA&referer=hospital">
+                :src="'https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=' + key + '&referer=hospital'">
         </iframe>
     </div>
 </template>
 
 <script>
     import peace from '@src/library'
+    import config from '@src/config'
     export default {
         name: "DrugMapSelect",
         data() {
             return {
+                key: '',
                 loc: null
             }
         },
@@ -28,6 +30,7 @@
         },
         mounted() {
             let that = this;
+            this.key = config.MAP.key;
             // const params = peace.util.decode(this.$route.params.json);
             // console.log(params);
             window.addEventListener('message', function(event) {
