@@ -427,7 +427,7 @@ const router = new Router({
           component: () => import('@src/views/setting/AdressManger.vue')
         },
         {
-          path: '/setting/SelectAddressManger',
+          path: '/setting/SelectAddressManger/:json',
           name: '/setting/SelectAddressManger',
           meta: {
             auth: true,

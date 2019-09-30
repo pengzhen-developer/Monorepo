@@ -49,8 +49,9 @@ export default {
       });
     },
     goUserAddressEdit(address) {
-      const temp = peace.util.encode(address);
-      this.$router.push(`/setting/userAddressEdit/${temp}`);
+      let json = this.$route.params.json;
+      let addr = peace.util.encode(address);
+      this.$router.push({path:`/setting/userAddressEdit/${json}`, query: {addr}})
     },
     addressEdit() {
       this.$router.push(`/setting/userAddressEdit/`);
@@ -76,19 +77,9 @@ export default {
       });
     },
     checkAddr(address) {
-      // 通过 component 组件引入调用
-      if (this.$route.name != "/setting/SelectAddressManger") {
-        this.$emit("onSelect", address);
-      } else {
-        // 上个路由
-        const prevRoute = $peace.routerStack[$peace.routerStack.length - 2];
-        this.$router.replace({
-          name: prevRoute.name,
-          params: {
-            address: address
-          }
-        });
-      }
+        let json = this.$route.params.json;
+        let addr = peace.util.encode(address);
+        this.$router.push({path:`/drug/drugOrderBefore/${json}`, query: {addr}})
     }
   }
 };
