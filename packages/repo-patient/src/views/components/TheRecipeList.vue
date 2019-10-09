@@ -4,18 +4,20 @@
       todo:
       暂时屏蔽未读消息
     -->
-    <div :data-index="index" :key="index" @click="goprescripDetailPage(item)" class="word-list" v-for="(item, index) in internalData">
+    <div :data-index="index"
+         :key="index"
+         @click="goprescripDetailPage(item)"
+         class="word-list"
+         v-for="(item, index) in internalData">
       <div class="word-avatar">
         <div class="icon"></div>
       </div>
       <div class="word-body">
         <div class="word-title">
           <div class="title">{{item.patientName}}的用药建议</div>
-          <div
-            :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
-            class="label label-default"
-            v-if="item.prescriptionStatus"
-          >{{item.prescriptionStatus.prescriptionStatus}}</div>
+          <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
+               class="label label-default"
+               v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}</div>
         </div>
         <div class="word-inline">
           <div class="span l">{{item.hospitalName}}</div>
@@ -24,18 +26,21 @@
         </div>
       </div>
     </div>
-    <div class="tips-bottom" v-if="internalData && internalData.length">
+    <div class="tips-bottom"
+         v-if="internalData && internalData.length">
       <div>为确保广大患者的用药安全，请注意：</div>
       <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
       <div>2. 用药建议开具3日内有效。</div>
       <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
     </div>
-    <div class="none-page" v-else>
+    <div class="none-page"
+         v-else>
       <div class="icon icon_none_prescrip"></div>
       <div class="none-text">暂无用药建议</div>
     </div>
 
-    <peace-dialog :visible.sync="recipeDetail.visible" title="处方详情">
+    <peace-dialog :visible.sync="recipeDetail.visible"
+                  title="处方详情">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
   </div>
@@ -62,7 +67,7 @@ export default {
 
   data() {
     return {
-      internalData: [],
+      internalData: undefined,
 
       recipeDetail: {
         visible: false,
@@ -96,16 +101,11 @@ export default {
     },
 
     goprescripDetailPage(item) {
-      this.recipeDetail.visible = true
-      this.recipeDetail.data = undefined
-
-      const params = {
+      const params = peace.util.encode({
         prescribeId: item.prescribeId
-      }
-
-      peace.service.patient.getPrescripInfo(params).then(res => {
-        this.recipeDetail.data = res.data
       })
+
+      this.$router.push(`/components/theRecipe/${params}`)
     }
   }
 }
@@ -115,7 +115,7 @@ export default {
 .the-recipe-list {
   min-height: 100%;
   padding: 15px;
-  &.bg{
+  &.bg {
     background: #f5f5f5;
   }
   .word-list {

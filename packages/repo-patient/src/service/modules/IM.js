@@ -52,7 +52,7 @@ export function initNIM(
   } else {
     // 更新 IM
     $peace.NIM.disconnect()
-    $peace.NIM.setOptions(options)
+    $peace.NIM.setOptions({ appKey, account, token })
     $peace.NIM.connect()
   }
 

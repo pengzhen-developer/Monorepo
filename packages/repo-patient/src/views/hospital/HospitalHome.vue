@@ -2,26 +2,34 @@
   <div>
     <div v-if="hsp.nethospitalInfo">
       <!--医院卡片-->
-      <div :nethospitalid="hsp.nethospitalInfo.netHospitalId" class="card cards">
+      <div :nethospitalid="hsp.nethospitalInfo.netHospitalId"
+           class="card cards">
         <div class="card-avatar">
-          <img :src="hsp.nethospitalInfo.icon" class />
+          <img :src="hsp.nethospitalInfo.icon"
+               class />
         </div>
         <div class="card-body">
           <div class="card-name">{{hsp.nethospitalInfo.name}}</div>
           <div class="block">
-            <div :key="index" class="card-small" v-for="(item,index) in hsp.nethospitalInfo.deptList">
-              <template v-if="hsp.nethospitalInfo.deptList">{{ (index == 0 ? '' : ' / ' ) + item}}</template>
+            <div :key="index"
+                 class="card-small"
+                 v-for="(item,index) in hsp.nethospitalInfo.deptList">
+              <template
+                        v-if="hsp.nethospitalInfo.deptList">{{ (index == 0 ? '' : ' / ' ) + item}}</template>
             </div>
           </div>
           <div class="block">
-            <div :key="item" class="card-label" v-for="item in hsp.nethospitalInfo.tags">
+            <div :key="item"
+                 class="card-label"
+                 v-for="item in hsp.nethospitalInfo.tags">
               <template v-if="hsp.nethospitalInfo.tags">{{item}}</template>
             </div>
           </div>
         </div>
       </div>
       <!---->
-      <div class="card-brief" v-if="hsp.nethospitalInfo.phoneNumber || hsp.nethospitalInfo.address">
+      <div class="card-brief"
+           v-if="hsp.nethospitalInfo.phoneNumber || hsp.nethospitalInfo.address">
         <div class="dl npb">
           <div class="dt">电话：</div>
           <div :class="['dd', hsp.nethospitalInfo.phoneNumber ? 'blue': '']">
@@ -48,71 +56,85 @@
       <!--                    </div>-->
       <!--                </div>-->
       <!--            </div>-->
-      <van-notice-bar background="#fff" color="#999" left-icon="volume-o" v-if="hsp.notices[0]">{{hsp.notices[0].content}}</van-notice-bar>
+      <van-notice-bar background="#fff"
+                      color="#999"
+                      left-icon="volume-o"
+                      v-if="hsp.notices[0]">{{hsp.notices[0].content}}</van-notice-bar>
       <!---->
       <!--业务-->
-      <div class="panel panel-block panel-block-s" style="margin-top: 0;padding-left: 10px">
-        <div
-          :key="item.id"
-          @click="goMenuPage(item,{nethospitalInfo:hsp.nethospitalInfo})"
-          class="block-items"
-          data-hspname="hsp.nethospitalInfo.name"
-          data-id="item.id"
-          data-nethospitalid="hsp.nethospitalInfo.netHospitalId"
-          data-status="item.status"
-          data-text="item.text"
-          v-for="item in hsp.guide"
-        >
-          <div
-            :class="['block-ico',item.icon, item.status ? '' : 'disabled', item.id == 'appointment' && hsp.nethospitalInfo.isOpenRegister == 1 ? 'disabled' : ''
-]"
-          ></div>
+      <div class="panel panel-block panel-block-s"
+           style="margin-top: 0;padding-left: 10px">
+        <div :key="item.id"
+             @click="goMenuPage(item,{nethospitalInfo:hsp.nethospitalInfo})"
+             class="block-items"
+             data-hspname="hsp.nethospitalInfo.name"
+             data-id="item.id"
+             data-nethospitalid="hsp.nethospitalInfo.netHospitalId"
+             data-status="item.status"
+             data-text="item.text"
+             v-for="item in hsp.guide">
+          <div :class="['block-ico',item.icon, item.status ? '' : 'disabled', item.id == 'appointment' && hsp.nethospitalInfo.isOpenRegister == 1 ? 'disabled' : ''
+]"></div>
           <div class="block-tit">{{item.text}}</div>
         </div>
       </div>
 
       <!--科室-->
-      <div class="panel" style="padding-right:0; padding-bottom: 6px; " v-if="hsp.deptList && hsp.deptList[0]">
+      <div class="panel"
+           style="padding-right:0; padding-bottom: 6px; "
+           v-if="hsp.deptList && hsp.deptList[0]">
         <div class="panel-tit">
           <div class="tit">医院科室</div>
         </div>
         <div class="panel-body">
-          <div
-            :key="index"
-            @click="goDoctorListPage(item)"
-            class="label"
-            data-id="item.id"
-            data-name="item.netdeptName"
-            v-for="(item,index) in hsp.oneDeptList"
-            v-if="index <  7"
-          >
-            {{item.netdeptName}}
+          <div :key="index"
+               @click="goDoctorListPage(item)"
+               class="label"
+               data-id="item.id"
+               data-name="item.netdeptName"
+               v-for="(item,index) in hsp.oneDeptList">
+            <span v-if="index <  7">
+              {{item.netdeptName}}</span>
           </div>
-          <div @click="goDeptPage({id:'consult'})" class="label" v-if="hsp.deptList.length > 7">更多</div>
+          <div @click="goDeptPage({id:'consult'})"
+               class="label"
+               v-if="hsp.oneDeptList.length > 7">更多</div>
         </div>
       </div>
 
       <!--医生-->
-      <div class="panel" style="border-top:10px solid #f5f5f5" v-if="hsp.doctorList.length">
-        <div class="panel-tit" style="padding-bottom: 0">
+      <div class="panel"
+           style="border-top:10px solid #f5f5f5"
+           v-if="hsp.doctorList.length">
+        <div class="panel-tit"
+             style="padding-bottom: 0">
           <div class="tit">医院医生</div>
         </div>
         <div class="panel-body">
-          <div :key="item.id" @click="goDoctorHomeIndexPage(item)" class="card" data-doctorid="item.doctorId" data-index="index" v-for="item in hsp.doctorList">
+          <div :key="item.id"
+               @click="goDoctorHomeIndexPage(item)"
+               class="card"
+               data-doctorid="item.doctorId"
+               data-index="index"
+               v-for="item in hsp.doctorList">
             <div class="card-avatar avatar-circular">
-              <img :src="item.avartor" class />
+              <img :src="item.avartor"
+                   class />
             </div>
             <div class="card-body">
               <div class="card-name">
                 {{item.name}}
                 <div class="card-small">{{item.doctorTitle}}
-                  <div :class="['tag', 'tag-'+it]" v-for="(it, i) in item.serviceList" :key="i">
+                  <div :class="['tag', 'tag-'+it]"
+                       v-for="(it, i) in item.serviceList"
+                       :key="i">
                     {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                   </div>
                 </div>
               </div>
               <div class="card-small">{{item.nethospitalName}} {{item.deptName}}</div>
-              <div class="card-brief" v-if="item.specialSkill">
+              <div class="card-brief"
+                   v-if="item.specialSkill">
                 <div class="span s">擅长：</div>
                 <div class="span xl">{{item.specialSkill}}</div>
               </div>
@@ -150,13 +172,16 @@ export default {
     },
     goMenuPage(item) {
       console.log(item)
-      if (!item.status || (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 1)) {
+      if (
+        !item.status ||
+        (item.id == 'appointment' && this.hsp.nethospitalInfo.isOpenRegister == 1)
+      ) {
         peace.util.alert('服务暂未开通')
         return
       }
       if (item.id == 'physical') {
         let json = peace.util.encode({
-          hsp:{
+          hsp: {
             netHospitalId: this.hsp.nethospitalInfo.netHospitalId,
             hospitalName: this.hsp.nethospitalInfo.name
           },
@@ -184,7 +209,11 @@ export default {
       // this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
     },
     goDeptPage(item) {
-      let json = peace.util.encode({ netHospitalId: this.hsp.nethospitalInfo.netHospitalId, id: item.id, Date: new Date() })
+      let json = peace.util.encode({
+        netHospitalId: this.hsp.nethospitalInfo.netHospitalId,
+        id: item.id,
+        Date: new Date()
+      })
       this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
     },
     goDoctorHomeIndexPage(item) {
@@ -317,7 +346,7 @@ export default {
 .cards .card-avatar {
   width: (120px * 0.5);
   height: (120px * 0.5);
-  img{
+  img {
     width: 100%;
     height: 100%;
     background-size: cover;

@@ -112,7 +112,6 @@
                    :navBar="false"></MessageList>
     </peace-dialog>
 
-
   </div>
 </template>
 
@@ -167,9 +166,9 @@ export default {
   created() {
     this.get()
     // 重复订单跳转进来
-    let inquiryId = this.$route.query.inquiryId;
-    if(inquiryId && inquiryId!='') {
-      this.goUserConsultDetailPage(inquiryId);
+    let inquiryId = this.$route.query.inquiryId
+    if (inquiryId && inquiryId != '') {
+      this.goUserConsultDetailPage(inquiryId)
     }
   },
 
@@ -179,15 +178,15 @@ export default {
     },
     goToPay(data) {
       //console.log(data);
-      let doctorId = data.doctorInfo.doctorId;
-      let order = data.inquiryInfo;
-      let money = order.orderMoney;
-      let typeName = order.inquiryType == 'image' ? '图文问诊' : '';
-      let doctorName = data.doctorInfo.name;
-      let orderNo = order.orderNo;
-      let json = {money, typeName, doctorName, orderNo, doctorId};
-      json = peace.util.encode(json);
-      this.$router.push(`/components/doctorInquiryPay/${json}`);
+      let doctorId = data.doctorInfo.doctorId
+      let order = data.inquiryInfo
+      let money = order.orderMoney
+      let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
+      let doctorName = data.doctorInfo.name
+      let orderNo = order.orderNo
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
@@ -196,83 +195,55 @@ export default {
     },
 
     gouserPrescripCasePage(item) {
-      this.caseDetail.visible = true
-
-      const params = {
+      const params = peace.util.encode({
+        familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      }
-
-      peace.service.patient.getCaseInfo(params).then(res => {
-        this.caseDetail.data = res.data
       })
+
+      this.$router.push(`/components/theCase/${params}`)
     },
 
     gouserPrescripListPage(item) {
-      this.recipeList.visible = true
-
-      const params = {
+      const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      }
-
-      peace.service.patient.getMyPrescripList(params).then(res => {
-        this.recipeList.data = res.data
       })
+
+      this.$router.push(`/components/theRecipeList/${params}`)
     },
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
-        this.$router.push({
-          name: '/message/index',
-          params: {
-            sessionId: 'p2p-' + item.doctorInfo.doctorId
-          }
+        const params = peace.util.encode({
+          id: 'p2p-' + item.doctorInfo.doctorId,
+          scene: 'p2p',
+          beginTime: item.inquiryInfo.inquiryTime.toDate().getTime(),
+          to: item.doctorInfo.doctorId
         })
+
+        // 跳转聊天详情
+        this.$router.push(`/components/messageList/${params}`)
       }
       // 非问诊中,显示历史记录
       else {
-        this.chatingPage.visible = true
-
-        const params = {
+        const params = peace.util.encode({
           inquiryNo: item.inquiryInfo.inquiryNo
-        }
-
-        peace.service.patient.chatDetail(params).then(res => {
-          const historyMessageFormatHandler = messages => {
-            if (messages && Array.isArray(messages)) {
-              messages.forEach(message => {
-                const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
-
-                message.time = message.sendtime
-                message.flow = item.doctorInfo.doctorId === message.from ? 'in' : 'out'
-                message.type = messageTypeMap[message.type]
-                message.text = message.body.msg
-                message.content = message.body
-                message.file = message.body
-              })
-            }
-          }
-
-          historyMessageFormatHandler(res.data.msgList)
-
-          this.chatingPage.data = res.data.msgList
-          this.chatingPage.doctorInfo = res.data.doctorInfo
         })
+
+        this.$router.push(`/message/index/${params}`)
       }
     },
 
     goUserConsultDetailPage(inquiryId) {
-
       // this.consultDetail.visible = true
 
       const params = {
         inquiryId
       }
 
-      let json = peace.util.encode(params);
-      this.$router.push(`/setting/userConsultDetail/${json}`);
-
+      let json = peace.util.encode(params)
+      this.$router.push(`/setting/userConsultDetail/${json}`)
     },
 
     showCancellPop(item) {

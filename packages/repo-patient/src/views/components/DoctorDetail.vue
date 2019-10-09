@@ -1,35 +1,42 @@
 <template>
-  <div class="doctor-detail" v-if="doctor">
-    <div class="white" v-if="doctor.doctorInfo">
+  <div class="doctor-detail"
+       v-if="doctor">
+    <div class="white"
+         v-if="doctor.doctorInfo">
       <div class="card icon_03_01_02">
-        <img :src="doctor.doctorInfo.avartor" class="card-avatar avatar-circular" />
+        <img :src="doctor.doctorInfo.avartor"
+             class="card-avatar avatar-circular" />
         <div class="card-body">
           <div class="card-name">
             {{doctor.doctorInfo.name}}
-            <div class="card-small">{{doctor.doctorInfo.doctorTitle}} {{doctor.doctorInfo.deptName}}</div>
-            <div @click="shareDoctor" class="card-share" v-if="!doctor.doctorInfo.isPrivateDoctor">{{doctor.doctorInfo.attentionStatus ? '已关注' : '+ 关注'}}</div>
+            <div class="card-small">{{doctor.doctorInfo.doctorTitle}} {{doctor.doctorInfo.deptName}}
+            </div>
+            <div @click="shareDoctor"
+                 class="card-share"
+                 v-if="!doctor.doctorInfo.isPrivateDoctor">
+              {{doctor.doctorInfo.attentionStatus ? '已关注' : '+ 关注'}}</div>
           </div>
-          <div class="card-brief">{{doctor.doctorInfo.hospitalName}}</div>
+          <!-- <div class="card-brief">{{doctor.doctorInfo.hospitalName}}</div> -->
         </div>
       </div>
-      <div class="list" v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
+      <div class="list"
+           v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
         <div class="list-items list-vertical-icon">
           <div class="icon icon_hsp"></div>
-          {{doctor.doctorInfo.hospitalName}}   {{doctor.doctorInfo.deptName}}
+          {{doctor.doctorInfo.hospitalName}} {{doctor.doctorInfo.deptName}}
         </div>
       </div>
-      <div class="outline nmgb" v-if="doctor.consultationList">
+      <div class="outline nmgb"
+           v-if="doctor.consultationList">
         <div class="outline-header">
           <div class="outline-tit">问诊服务</div>
         </div>
         <div class="outline-body nmr">
-          <div
-            :key="item.tag"
-            @click.stop="redictToApply(doctor.doctorInfo, item)"
-            class="list-three"
-            data-status="item.status"
-            v-for="item in doctor.consultationList"
-          >
+          <div :key="item.tag"
+               @click.stop="redictToApply(doctor.doctorInfo, item)"
+               class="list-three"
+               data-status="item.status"
+               v-for="item in doctor.consultationList">
             <div class="list-icon">
               <img :src="source[item.tag].icon" />
             </div>
@@ -39,8 +46,10 @@
             </div>
             <div class="list-orther">
               <div v-if="!item.status">暂未开通</div>
-              <div class="blue" v-else-if="item.status && item.money == 0">免费</div>
-              <div class="money" v-else-if="item.status && item.money!=0">
+              <div class="blue"
+                   v-else-if="item.status && item.money == 0">免费</div>
+              <div class="money"
+                   v-else-if="item.status && item.money!=0">
                 <div class="inline">{{item.money}}</div>
                 /{{source[item.tag].type && source[item.tag].type[item.type] || '次'}}
               </div>
@@ -49,7 +58,8 @@
         </div>
       </div>
     </div>
-    <div class="box"  v-if="doctor.doctorInfo.summary || doctor.doctorInfo.specialSkill">
+    <div class="box"
+         v-if="doctor.doctorInfo.summary || doctor.doctorInfo.specialSkill">
       <div class="outline nmg">
         <div class="outline-header">
           <div class="outline-tit">擅长</div>
@@ -63,7 +73,8 @@
         <div class="outline-body mh80">{{doctor.doctorInfo.summary || '暂未填写'}}</div>
       </div>
     </div>
-    <div class="time" v-if="doctor.workOnLine || doctor.workUnderLine">
+    <div class="time"
+         v-if="doctor.workOnLine || doctor.workUnderLine">
       <van-tabs v-model="activeTabs">
         <van-tab title="线上咨询时间">
           <table class="time-table">
@@ -82,7 +93,9 @@
             <tbody>
               <tr>
                 <td class="time-table-col border">上午</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[0].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[0].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -90,7 +103,9 @@
               </tr>
               <tr>
                 <td class="time-table-col border">下午</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[1].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[1].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -98,7 +113,9 @@
               </tr>
               <tr>
                 <td class="time-table-col border">晚上</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workOnLine[2].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[2].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -124,7 +141,9 @@
             <tbody>
               <tr>
                 <td class="time-table-col border">上午</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[0].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[0].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -132,7 +151,9 @@
               </tr>
               <tr>
                 <td class="time-table-col border">下午</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[1].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[1].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -140,7 +161,9 @@
               </tr>
               <tr>
                 <td class="time-table-col border">晚上</td>
-                <td :key="item.id" class="time-table-col border primary" v-for="item in doctor.workUnderLine[2].weekList">
+                <td :key="item.id"
+                    class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[2].weekList">
                   <span v-if="item.status">
                     <van-icon name="success" />
                   </span>
@@ -151,8 +174,10 @@
         </van-tab>
       </van-tabs>
     </div>
-    <div class="footer" v-if="canShowReserve">
-      <van-button @click="redictToReserve" type="primary">预约挂号</van-button>
+    <div class="footer"
+         v-if="canShowReserve">
+      <van-button @click="redictToReserve"
+                  type="primary">预约挂号</van-button>
     </div>
   </div>
 </template>
@@ -215,7 +240,11 @@ export default {
 
   methods: {
     redictToApply(doctorInfo, doctorConsultation) {
-      if (doctorConsultation.tag === 'video' || doctorConsultation.tag === 'prvivateDoctor' || doctorConsultation.status === 0) {
+      if (
+        doctorConsultation.tag === 'video' ||
+        doctorConsultation.tag === 'prvivateDoctor' ||
+        doctorConsultation.status === 0
+      ) {
         return peace.util.alert('暂未开放，敬请期待')
       }
 
@@ -333,11 +362,13 @@ export default {
     // max-height: 40px;
   }
   .card-body {
+    display: flex;
+    align-items: center;
     color: #fff;
   }
   .card-share {
     position: absolute;
-    top: 10px;
+    top: 22px;
     right: 0;
     box-sizing: border-box;
     width: 50px;
@@ -595,24 +626,25 @@ export default {
     display: inline;
   }
 }
-.card .card-small, .card .card-brief{
+.card .card-small,
+.card .card-brief {
   vertical-align: middle;
 }
-.list-items.icon-next::after{
-  content:'';
-  top:17.5px;
+.list-items.icon-next::after {
+  content: '';
+  top: 17.5px;
 }
-.list-items.list-vertical-icon{
+.list-items.list-vertical-icon {
   padding-left: 25px;
 }
-.icon.icon_hsp{
+.icon.icon_hsp {
   width: 22px;
   height: 22px;
 }
-.icon.icon_hsp::before{
+.icon.icon_hsp::before {
   content: '';
   width: 22px;
   height: 22px;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAARVBMVEVHcEw/0tEq0sgs08lR0dhc0twk08UV079H09Ix08ss0sku08lQ0dhg0N0Z0sE60s4h0sQx0stE0dNS0dhA0tFZ0dsp0sd0T3nWAAAADnRSTlMAvpx5sYbB7jgYTvLVb94/lrUAAAEmSURBVDjLxZXbksIgEESJJhi8oCDw/5/qYLhOYMhubdW2Pp7q6hzBMMaY4FLKF8RBlM8TYoyeBNvlJDfYJTrA+r6HL56VRfPGGm302oTjDJV2eLoD++bvjNj8nTFodkebq82j5nMODfsVhdWwotcM+LWEyc0QfkoZN+MHJJuTZ3XUsyp/b8LzLadsFsJ/cbNANjZ4fkOsvYsjngNsH7WNVaQUmyO81M2VjGqGreHkeXfqiObqpvTgvmeALW4GmodMfBpsHnnGm2nPyMY1Z2xjb27kuWWD9Kye9AP+2LMoD5L5N8+/sOEap67hOf8V/PV5dq/OTWl5Pn4HGyeJ9Nx4p8zL8o7wGl6C2bNCT6h1hK2dgzdkI80AVCfYsjNHgetaZd4+kMcHlqdWnqitHbkAAAAASUVORK5CYII=");
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAARVBMVEVHcEw/0tEq0sgs08lR0dhc0twk08UV079H09Ix08ss0sku08lQ0dhg0N0Z0sE60s4h0sQx0stE0dNS0dhA0tFZ0dsp0sd0T3nWAAAADnRSTlMAvpx5sYbB7jgYTvLVb94/lrUAAAEmSURBVDjLxZXbksIgEESJJhi8oCDw/5/qYLhOYMhubdW2Pp7q6hzBMMaY4FLKF8RBlM8TYoyeBNvlJDfYJTrA+r6HL56VRfPGGm302oTjDJV2eLoD++bvjNj8nTFodkebq82j5nMODfsVhdWwotcM+LWEyc0QfkoZN+MHJJuTZ3XUsyp/b8LzLadsFsJ/cbNANjZ4fkOsvYsjngNsH7WNVaQUmyO81M2VjGqGreHkeXfqiObqpvTgvmeALW4GmodMfBpsHnnGm2nPyMY1Z2xjb27kuWWD9Kye9AP+2LMoD5L5N8+/sOEap67hOf8V/PV5dq/OTWl5Pn4HGyeJ9Nx4p8zL8o7wGl6C2bNCT6h1hK2dgzdkI80AVCfYsjNHgetaZd4+kMcHlqdWnqitHbkAAAAASUVORK5CYII=');
 }
 </style>

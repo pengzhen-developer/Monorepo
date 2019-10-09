@@ -10,6 +10,7 @@ import login from './modules/login'
 import inquiry from './modules/inquiry'
 import index from './modules/index'
 
+import advert from './modules/advert'
 import patient from './modules/patient'
 import doctor from './modules/doctor'
 import hospital from './modules/hospital'
@@ -22,6 +23,8 @@ export default {
   inquiry,
   login,
   index,
+
+  advert,
   patient,
   doctor,
   hospital,

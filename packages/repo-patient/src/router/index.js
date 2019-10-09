@@ -33,19 +33,6 @@ const router = new Router({
           component: () => import('@src/views/home/index.vue')
         },
         {
-          path: '/home/index1',
-          name: '/home/index1',
-          meta: {
-            auth: false,
-            keepAlive: true,
-            tabBar: true,
-            navbar: {
-              title: '新首页'
-            }
-          },
-          component: () => import('@src/views/home/indexNew.vue')
-        },
-        {
           path: '/home/map',
           name: '/home/map',
           meta: {
@@ -158,6 +145,33 @@ const router = new Router({
           },
           component: () => import('@src/views/components/TheRecipeList.vue')
         },
+        // 用药建议详情（处方详情）
+        {
+          path: '/components/theRecipe/:json',
+          name: '/components/theRecipe/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '用药建议',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/TheRecipe.vue')
+        },
+        // 咨询小结（病历详情）
+        {
+          path: '/components/theCase/:json',
+          name: '/components/theCase/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '咨询小结',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/TheCase.vue')
+        },
+
         // 用药建议
         {
           path: '/drug/list/:json',
@@ -212,7 +226,7 @@ const router = new Router({
         },
         // 消息列表
         {
-          path: '/components/messageList',
+          path: '/components/messageList/:json',
           name: '/components/messageList',
           meta: {
             auth: false
@@ -338,6 +352,34 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/hospital/HospitalList.vue')
+        },
+        // 医院通知列表
+        {
+          path: '/hospital/HospitalNoticesList/:json',
+          name: '/hospital/HospitalNoticesList',
+          meta: {
+            keepAlive: false,
+            auth: false,
+            navbar: {
+              title: '医院通知',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/notice/HospitalNoticesList.vue')
+        },
+        // 医院通知详情
+        {
+          path: '/hospital/HospitalNoticesDetail/:json',
+          name: '/hospital/HospitalNoticesDetail',
+          meta: {
+            keepAlive: false,
+            auth: false,
+            navbar: {
+              title: '医院通知',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/notice/HospitalNoticesDetail.vue')
         },
         // 医院主页
         {

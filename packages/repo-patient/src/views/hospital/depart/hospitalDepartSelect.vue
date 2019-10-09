@@ -1,27 +1,32 @@
 <template>
   <div>
-    <div class="card" ref="hsp">
+    <div class="card"
+         ref="hsp">
       <div class="card-avatar">
-        <img :src="hospitalInfo.icon" class />
+        <img :src="hospitalInfo.icon"
+             class />
       </div>
       <div class="card-body">
         <div class="card-name">{{hospitalInfo.name}}</div>
         <div class="block">
-          <div :key="index" class="card-small" v-for="(item,index) in hospitalInfo.deptList">{{ (index == 0 ? '' : ' / ' ) + item}}</div>
+          <div :key="index"
+               class="card-small"
+               v-for="(item,index) in hospitalInfo.deptList">{{ (index == 0 ? '' : ' / ' ) + item}}
+          </div>
         </div>
         <div class="block">
-          <div :key="item" class="card-label" v-for="item in hospitalInfo.tags">{{item}}</div>
+          <div :key="item"
+               class="card-label"
+               v-for="item in hospitalInfo.tags">{{item}}</div>
         </div>
       </div>
     </div>
-    <van-tree-select
-      :active-id="activeId"
-      :height="height"
-      :items="items"
-      :main-active-index="mainActiveIndex"
-      @itemclick="onItemClick"
-      @navclick="onNavClick"
-    />
+    <van-tree-select :active-id="activeId"
+                     :height="height"
+                     :items="items"
+                     :main-active-index="mainActiveIndex"
+                     @itemclick="onItemClick"
+                     @navclick="onNavClick" />
   </div>
 </template>
 
@@ -66,16 +71,29 @@ export default {
       peace.service.hospital[this.idMappingServe[this.params.id]](data).then(res => {
         this.hospitalInfo = res.data.hospitalInfo
         res.data.list.map(item => {
-          items.push({
-            text: item.netdeptName,
-            id: item.id,
-            children: item.childDept.map(it => {
-              return {
-                text: it.netdeptName,
-                id: it.id
-              }
+          if (item.childDept.length === 0) {
+            items.push({
+              text: item.netdeptName,
+              id: item.id,
+              children: [
+                {
+                  text: item.netdeptName,
+                  id: item.id
+                }
+              ]
             })
-          })
+          } else {
+            items.push({
+              text: item.netdeptName,
+              id: item.id,
+              children: item.childDept.map(it => {
+                return {
+                  text: it.netdeptName,
+                  id: it.id
+                }
+              })
+            })
+          }
           return items
         })
         this.items = items
