@@ -10,10 +10,9 @@
       <div class="name-wrap">
         <div class="w">
           <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
-          <div class="tags"
-               v-for="item in hospitalInfo.nethospitalInfo.labels"
-               :key="item">
-            <span>{{ item }}</span>
+          <div class="tags">
+            <span v-for="item in hospitalInfo.nethospitalInfo.tags"
+                  :key="item">{{ item }}</span>
           </div>
         </div>
         <div class="intro"
