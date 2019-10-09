@@ -511,6 +511,7 @@ export default {
             this.goToPay(res.data)
             return
           } else {
+            //免费问诊
             // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
             setTimeout(() => {
               this.$router.push({
@@ -520,7 +521,6 @@ export default {
                 }
               })
             }, 1000)
-
             return peace.util.alert(res.msg)
           }
         }
