@@ -82,7 +82,7 @@ export default {
 
       if (params.type === 'starDoctorList') {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
-          this.doctorList = res.data.list
+          this.doctorList = res.data
         })
       } else {
         peace.service.patient.getDoctorList(params).then(res => {
@@ -103,11 +103,12 @@ export default {
       }
 
       const minMoney = Math.min.apply(null, moneyList)
-      //debugger;
-      if (minMoney === 0) {
+      if (minMoney === Infinity) {
+        return ''
+      } else if (minMoney === 0) {
         return '免费'
       } else {
-        return `￥${minMoney}起`
+        return `￥${minMoney || 0}起`
       }
     },
 
