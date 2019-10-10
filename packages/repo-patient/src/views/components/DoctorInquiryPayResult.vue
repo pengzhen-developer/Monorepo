@@ -13,7 +13,11 @@
     <div class="content">
       <template>
         <p>支付成功</p>
-        <p>系统将在 3 秒后自动跳转医生诊室</p>
+        <p>系统将在  <van-count-down
+                :time="3000"
+                format="ss"
+                @finish="finished"
+        />秒后自动跳转医生诊室</p>
       </template>
       <!--      <template v-if="!payResult.status">-->
       <!--        <p>支付失败</p>-->
@@ -38,7 +42,9 @@
 
 <script>
 import peace from '@src/library'
-
+import Vue from 'vue';
+import { CountDown } from 'vant';
+Vue.use(CountDown);
 export default {
   data() {
     return {
@@ -49,15 +55,18 @@ export default {
   created() {
     this.params = peace.util.decode(this.$route.params.json)
     // if (this.payResult.status) {
-    this.redirectInterval = setTimeout(this.redirectMessage, 3000)
+   // this.redirectInterval = setTimeout(this.redirectMessage, 3000)
     // }
   },
 
   deactivated() {
-    window.clearInterval(this.redirectInterval)
+   // window.clearInterval(this.redirectInterval)
   },
 
   methods: {
+    finished() {
+     this.redirectMessage();
+    },
     redirectMessage() {
       // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
       setTimeout(() => {
