@@ -36,20 +36,11 @@
         <van-tabbar class="layout-tabbar"
                     v-model="active">
 
-          <template v-if="$peace.cache.get($peace.type.SYSTEM.PARAMS)">
-            <van-tabbar-item :to="'/home/index/' + $peace.cache.get($peace.type.SYSTEM.PARAMS)">
-              <i class="van-icon van-icon-like"
-                 slot="icon"></i>
-              <span>首页</span>
-            </van-tabbar-item>
-          </template>
-          <template v-else>
-            <van-tabbar-item to="/home/index">
-              <i class="van-icon van-icon-like"
-                 slot="icon"></i>
-              <span>首页</span>
-            </van-tabbar-item>
-          </template>
+          <van-tabbar-item to="/home/index">
+            <i class="van-icon van-icon-like"
+               slot="icon"></i>
+            <span>首页</span>
+          </van-tabbar-item>
 
           <template
                     v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">

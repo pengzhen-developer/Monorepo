@@ -30,7 +30,13 @@ const router = new Router({
               title: '首页'
             }
           },
-          component: () => import('@src/views/home/index.vue')
+          component: () => {
+            if ($peace.cache.get($peace.type.SYSTEM.PARAMS)) {
+              return import('@src/views/hospital/HospitalHome.vue')
+            } else {
+              import('@src/views/home/index.vue')
+            }
+          }
         },
         // 医院首页
         {
@@ -151,7 +157,7 @@ const router = new Router({
           path: '/components/theRecipeList/:json',
           name: '/components/theRecipeList/:json',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '用药建议',
               back: true
