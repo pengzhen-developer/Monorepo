@@ -103,6 +103,7 @@ export function onDisConnect(disConnectObject) {
       peace.util.warning(disConnectObject.message)
 
       $peace.$router.replace(peace.config.system.loginPage)
+      window.location.reload();
       break
 
     default:
