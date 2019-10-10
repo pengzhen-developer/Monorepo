@@ -321,6 +321,7 @@ export default {
         .tags {
           span {
             color: #00c6ae;
+            /* border: 1px solid #aaa; */
             border-radius: 2.5px;
             padding: 2.5px 7px;
             font-size: 11px;

@@ -34,7 +34,7 @@ const router = new Router({
             if ($peace.cache.get($peace.type.SYSTEM.PARAMS)) {
               return import('@src/views/hospital/HospitalHome.vue')
             } else {
-              import('@src/views/home/index.vue')
+              return import('@src/views/home/index.vue')
             }
           }
         },
