@@ -11,11 +11,14 @@ export default {
   name: 'app',
 
   beforeCreate() {
-    // 验证访问来源
-    if (peace.util.queryUrlParam('params')) {
-      peace.cache.set(peace.type.SYSTEM.PARAMS, peace.util.queryUrlParam('params'))
-    } else {
-      peace.cache.remove(peace.type.SYSTEM.PARAMS)
+    const params = peace.util.queryUrlParam('params')
+
+    if (params) {
+      if (params === 'PLATEFORM') {
+        peace.cache.remove(peace.type.SYSTEM.PARAMS)
+      } else {
+        peace.cache.set(peace.type.SYSTEM.PARAMS, peace.util.queryUrlParam('params'))
+      }
     }
   },
 

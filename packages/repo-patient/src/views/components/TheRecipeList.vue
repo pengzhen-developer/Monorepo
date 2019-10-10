@@ -1,48 +1,64 @@
 <template>
-  <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
-    <!-- 
-      todo:
-      暂时屏蔽未读消息
-    -->
-    <div :data-index="index"
-         :key="index"
-         @click="goprescripDetailPage(item)"
-         class="word-list"
-         v-for="(item, index) in internalData">
-      <div class="word-avatar">
-        <div class="icon"></div>
-      </div>
-      <div class="word-body">
-        <div class="word-title">
-          <div class="title">{{item.patientName}}的用药建议</div>
-          <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
-               class="label label-default"
-               v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}</div>
+  <div>
+    <template v-if="$peace.cache.get($peace.type.USER.INFO)">
+      <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
+        <div :data-index="index"
+             :key="index"
+             @click="goprescripDetailPage(item)"
+             class="word-list"
+             v-for="(item, index) in internalData">
+          <div class="word-avatar">
+            <div class="icon"></div>
+          </div>
+          <div class="word-body">
+            <div class="word-title">
+              <div class="title">{{item.patientName}}的用药建议</div>
+              <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
+                   class="label label-default"
+                   v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
+              </div>
+            </div>
+            <div class="word-inline">
+              <div class="span l">{{item.hospitalName}}</div>
+              <div class="span">| {{item.deptName}}</div>
+              <div class="span s">{{item.date}}</div>
+            </div>
+          </div>
         </div>
-        <div class="word-inline">
-          <div class="span l">{{item.hospitalName}}</div>
-          <div class="span">| {{item.deptName}}</div>
-          <div class="span s">{{item.date}}</div>
+        <div class="tips-bottom"
+             v-if="internalData && internalData.length">
+          <div>为确保广大患者的用药安全，请注意：</div>
+          <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
+          <div>2. 用药建议开具3日内有效。</div>
+          <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
         </div>
-      </div>
-    </div>
-    <div class="tips-bottom"
-         v-if="internalData && internalData.length">
-      <div>为确保广大患者的用药安全，请注意：</div>
-      <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
-      <div>2. 用药建议开具3日内有效。</div>
-      <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
-    </div>
-    <div class="none-page"
-         v-else>
-      <div class="icon icon_none_prescrip"></div>
-      <div class="none-text">暂无用药建议</div>
-    </div>
+        <div class="none-page"
+             v-else>
+          <div class="icon icon_none_prescrip"></div>
+          <div class="none-text">暂无用药建议</div>
+        </div>
 
-    <peace-dialog :visible.sync="recipeDetail.visible"
-                  title="处方详情">
-      <TheRecipe :data="recipeDetail.data"></TheRecipe>
-    </peace-dialog>
+        <peace-dialog :visible.sync="recipeDetail.visible"
+                      title="处方详情">
+          <TheRecipe :data="recipeDetail.data"></TheRecipe>
+        </peace-dialog>
+      </div>
+    </template>
+    <template v-else>
+      <div style="display: flex; flex-direction: column; height: 100vh; background: #F8FDFD; ">
+        <div style="flex: 1; padding: 20px 16px;">
+          <h4
+              style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0">
+            登录后即可查看医生为您开具的处方、快捷取药</h4>
+          <img src="@src/assets/images/no-login.png">
+        </div>
+        <div style="padding: 10px;">
+          <van-button style="width: 100%;"
+                      @click="toLogin()"
+                      type="primary">立即登录</van-button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -86,8 +102,10 @@ export default {
   },
 
   created() {
-    if (!this.data) {
-      this.get()
+    if ($peace.cache.get($peace.type.USER.INFO)) {
+      if (!this.data) {
+        this.get()
+      }
     }
   },
 
@@ -106,6 +124,11 @@ export default {
       })
 
       this.$router.push(`/components/theRecipe/${params}`)
+    },
+
+    toLogin() {
+      $peace.referrer = this.$route
+      this.$router.push(peace.config.system.loginPage)
     }
   }
 }
