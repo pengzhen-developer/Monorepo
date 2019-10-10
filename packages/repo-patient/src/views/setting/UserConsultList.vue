@@ -20,7 +20,8 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content"
+         style="height: 100%">
       <template v-if="consultList.length">
         <div :data-index="index"
              :Key="index"
@@ -62,7 +63,8 @@
             <div :data-index="index"
                  @click="showCancellPop(item)"
                  class="label blue">取消订单</div>
-            <div :data-index="index" v-if="item.inquiryInfo.inquiryStatus === 1"
+            <div :data-index="index"
+                 v-if="item.inquiryInfo.inquiryStatus === 1"
                  @click="goToPay(item)"
                  class="label blue-full">继续支付</div>
           </div>
@@ -271,8 +273,7 @@ export default {
 
 <style lang="scss" scoped>
 .userConsultList {
-  min-height: 100%;
-  /*background: #f5f5f5;*/
+  height: 100%;
   color: #999;
 }
 .blue-full {
