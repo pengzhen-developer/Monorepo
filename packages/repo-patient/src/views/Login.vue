@@ -98,9 +98,6 @@ export default {
       }
 
       peace.service.login.login(params).then(res => {
-        // 跳转首页
-        this.$router.push(peace.config.system.homePage)
-
         // 提示登录成功
         peace.util.alert('登录成功，正在跳转...')
 
@@ -112,6 +109,9 @@ export default {
 
         // 初始化 IM
         peace.service.IM.initNIM()
+
+        // 跳转 reffer
+        this.$router.push($peace.referrer.fullPath || peace.config.system.homePage)
       })
     }
   }

@@ -24,7 +24,7 @@
              v-if="page.tabIndex == '1'">
           <div class="addr-tit">我的地址</div>
           <div v-if="userAddr && userAddr.detailAddress"
-               bindtap="goUserAddrPage"
+               @click="goUserAddrPage"
                class="userAddr icon-next">
             <div class="addr-p">收货人：{{userAddr.consignee}}
               <div class="inline">{{userAddr.mobile}}</div>
@@ -33,7 +33,7 @@
           </div>
           <div v-else>
             <div class="block"
-                 bindtap="goUserAddrPage">
+                 @click="goUserAddrPage">
               <div class="icon icon-add"></div>
               添加收货地址
             </div>
@@ -97,9 +97,9 @@
           </div>
           <div class="bottom">
 
-            <button form-type="submit"
+            <div
                     @click="submitOrder"
-                    :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">提交订单</button>
+                    :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">提交订单</div>
 
             <div class="tips-bottom">
               {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -129,17 +129,60 @@ export default {
     }
   },
   mounted() {
+    let that = this;
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
     this.getPhaOrder()
+    //从地址页面返回
+    if(this.$route.query.addr) {
+       this.getAddr(this.$route.query.addr)
+    }
+    if(this.$route.query.code) {
+      let code = this.$route.query.code;
+      let orderNo = this.$route.query.orderId;
+      let params = {code, orderNo};
+      peace.service.index.GetWxLoginStatus(params).then((res) => {
+        let data = res.data;
+        that.onBridgeReady(data);
+      })
+    }
   },
   methods: {
+    onBridgeReady(data){
+      let that = this;
+      WeixinJSBridge.invoke(
+              'getBrandWCPayRequest', data,
+              function(res){
+                //alert(res.err_msg);
+                if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                  //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                  const json = peace.util.encode({ OrderId: data.OrderId })
+                  that.$router.push(`/order/userDrugDetail/${json}`)
+                }
+                if(res.err_msg == "get_brand_wcpay_request:fail" ){
+                  console.log('fail');
+                }
+                if(res.err_msg == "get_brand_wcpay_request:cancel" ){
+                  console.log('cancel');
+                }
+              });
+    },
+    getAddr(addr) {
+      let address = peace.util.decode(addr)
+      this.userAddr = address;
+      this.page.tabIndex = 1;
+    },
+    goUserAddrPage() {
+       let json = this.$route.params.json;
+       this.$router.push(`/setting/SelectAddressManger/${json}`)
+    },
     submitOrder() {
       if (!this.canSubmitProcesses()) {
         return
       }
-      console.log('json', this.page.json)
+
       let params = {
         formId: '',
         JZTClaimNo: this.page.json.JZTClaimNo,
@@ -151,9 +194,32 @@ export default {
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : ''
       }
+      let that = this;
       peace.service.patient.submitOrder(params).then(res => {
         peace.util.alert('订单提交成功')
-      })
+        let orderNo = res.data.OrderId;
+        let params = {orderNo};
+        peace.service.index.GetWxLoginStatus(params).then((res) => {
+          if(res.code === 200) {
+            //没有经过授权
+            let data= res.data;
+            if(data) {
+              that.onBridgeReady(data);
+            } else {
+              let appid = 'wx78d7ae35932558e6';
+              let redirect_uri = location.href + "?" +  'orderId='+orderNo;
+
+              // redirect_uri = encodeURIComponent(redirect_uri);
+              let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
+              window.location.href = url;
+            }
+          }
+        })
+        // const json = peace.util.encode({ OrderId: res.data.OrderId })
+        // this.$router.push(`/order/userDrugDetail/${json}`)
+      }).catch(res=> {
+          console.log(res);
+      });
     },
 
     canSubmitProcesses() {
@@ -239,7 +305,7 @@ page {
   content: '';
   position: absolute;
   left: 0px;
-  top: 1px;
+  top: 3px;
   width: 14px;
   height: 17px;
   background-size: 100% 100%;
@@ -346,6 +412,7 @@ page {
   height: 15px;
   background-size: cover;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAABACAYAAABC6cT1AAAKw0lEQVRoQ9WbeZBU9RHHP/1mluUQROXSeFbFAxEVXHZnRjzwiARZdt9EraQSLSMpMIlH4hUNETEewWhMxFJDjDFGK5XEMDMLCJhoQjxmZmEFxQNEjRaW8cKIoMCyO9Op3wzLvDczu3Ps26XyqvaPnde/7v7++vfr17/u/gl9+bQtGUxn52SUE0GPQeUY0NGIDEMZmhEtbEN1K8JHIBsyf6Jr8fufo65xe1+pJ54zfunJUWz/4lsgjShB0NqqZAi7QOIIS8F6jEDTh1Xx6WaQd8BbF59BuvNKVKaB+r1UEqQTYTnIAoLNT3nBu/fAV0XPJMU8VCd7oVBJHsLzYM3r7QRUD3xNy0G0pxeg+rXSysqboC8jsgHVt8HaCrp197ihoPsChwNjQcaj+uUyeEZQ/xWEGt8rSVuEoDrg8dhFiN6L6rBuhKaAFVjWIiyeor753YqUSy47GG0/C8VM6tTut45sQ/RyguFHKuKf8amVPKpCa+w20npD0WEixjvfhTXgQerP/aAS1t3SrnpiDKn2mSDXdTvRwh0E7BsQ0XJllg88Hh8EH5iZPb8I8xRiPcjgQTdxwjkflSu8Iro1y0bS3j4PZVbRFSCyCB19IaHQjnL4lgc82TIaTS9Gtb6AqchyRK4h0PxaOQJ7TZOIjEW5Ezi3CK/V+GtnlLPaSgNvW3Egu7YngMPyBKWwrCsJNN/XazDVMEhELkXl3kLryybwh0o5vZ6Bv/rqAD7buBI06NZNtoF1AaGmFdXo7NmYZPQrKI8X7H2RVkbUnsaR09q7k9Uz8Hh0IeisPNCbQKYTan7ZMwC9YbRq8ThSqaWoms9h7hF5iKD9ncqBJ6OzSOvCPNBvYVknex0+9gZ3Zmw2TH4O5Ug3eL5LMPzrYvyLW7w1EiTNSpQBewaJfIG/JsCk6a/0WlHDYEPLUI4etgOZ0ukJv2TsWNLpVmCfnM50gG8Kwabn82UUAs9+ttYXcWYXEAo/3msl31hWy+ady1GmYA4iIvcTsH/Ya76GQSISBvkrJt7Iod/EAP/Y/JNeIfBE1MTdN7kVseYTai4etFSq8apYiM602wI+RtAQ/qRSVkXpE7Fb0fScvC16CyF7rssFuAjalhxKR8cGlEGO358haE9BJO2JYsmWKaRT/3DxGuj7EhOb/uMJf1WLZOxpVE938NuJyFiC9jtdv7ktnojeh+r38margZC9yhOlDJO+Bm5ktLbUkUqtdulssZBA+NJC4FnP+I7b2hIjZNuege4v4Jn9HjV73Xly3InlO7zri5SzeDJ2M+l0bh8IaXz+46mf8er/J/BMaGtiDV/Oz8mtBO0bzf854Inov1E9wuENHyVkX+Qp6P60eNbqD6N6scvDB5sPN6e4LPBintayxvXJwaM/9ngX0tUtR9OR2uAyns86lYbmZ7PAE5F7UK5wzMxaQvZEz63d3xY38uLR1aB1Diz3EQpflgUej5hobJzj5XWEwubo5/3TnxbPGvUqlF849vl6gvaxQtuSEXR0fuSKdizfCQSa1nmPup8+Z07FzSGms9MdZlu+MUJrtJmURh0z8gmB5pGVpHEqmqD+trgJXxNRk5MfuUdPS84TErEfo+nbHPt7KSG7sSIwlRD3N/DsPo+BNjmAzzWzkefyuYtQ+NpKsFREuzeAJ6J3oHqdw7iPComIOcee7JiN2QTs31QEphLivQE8Hp0J+tvcdiYpxCPmCHqMY49PI2gv7xFL9iAwGzgLqKkEN8qIglSW8HeQnWXzUQTRN6ipuZ26xs0lx5kUVVqfdAB/w1j8XZSD9/y4+wPfI7N8h1hSch8RiKwiaDeU5F4YoL1vgG9BMSWc7OOXCdTbL/bILBm9kbT+tKTAviYQdhAMDy4pJh4bD2nn5/lzIR79FHT4nsE1volMalrbI7NEyzfR1GMlBfY1QbkWT7YcTzr1ksO5bStc6n7fadQ3PdOjzibtvHXjo6iOQ8SqCJ8yBPRQ1xiRjUD5uTdVkxRZj9+6uqy6XKLlZDT1nEOmWerR11Adm9vjvuk0ND1REZhKiPeKV2+ZCqmcwxbZaJb6M6CnODxetynZSvB1S2saCFKdT7veDxh8EHVT3/eEfzEmBalyiRvgD4Fe4gD+S4Lhq/pMiWLA/bUHllPvqlqneMQcuK7JYZRHTMj6IzQ93wF8BcHwV6sWUmpgMeCWb0yfFinikaWuIqNYcwzwxkwltOsRPiNg7+9ZVjV/IooBHzJkdJ+Vl02wlYhtBt0v58fEFtYt3Y8vdm1GyXlnqTmJYOOaUsar6n0x4AMHjmLitI+r4ldq0KroiXRq7vNsmgdq/KO6MjAvopzgsPpPCIYdJ7ZS3Ct4X9S51YwsK/SsQMwe0mTketL8zDH0FULh8buBR+9C9WrH5n+NoO3MyFQjsviYYsC9rKTkS01E16E6fs/PlvzKlKyywIsl4MuJ4KqZjv4EXhCxAZY/SGBG0plefh3VoxxWX0TQPq8abD2OKQacwQcQmvpfz2Ulon9G9YIcX3mLkJ1pJXMAz8vEGCcgTCJgv+CpQsWA7zNgf46f/qmncla3TKAz/YI7lyhzCdi3uIEb7/75rk2u+jLyN0L2OZ4qVAz4INmPCfYWT+UkostQzcUjItux9NCuqmxe0TByN0p+rfp0QuF/eaZUUa8+dDh1Z3/mnYzYKaTS7oOWsIBg+MouGW7g2Q4nc1LKdRUgbQw4JERdXYcnihWN3AbuS2BaV4tn78ToP/0ktzzvak0z3RzqP9rZCVWsMcB0EN7hki7yAEE7r3xcpX6m6bdT8zqQxwwutzGvpNRE1LSaXubW35pDsPl252+FwLNn7ZddHt6MsJhJIPy7koJLERin05HKRYUimcpGqWFlvU9EL0b14TyjvcmI2uPyW7+KN/+YMC+FWS6OtI6YnrFTe90kYBL8ydidKNOBd7CY48mXIxuLPAsMzH2S2QE1k4uF3933ubVGv0FK/+iePd7D8p9Cw4y3y7JAfxGteeIw2nc9i+ohLpGWXEjALpoi67nBL5EXyma5foyPJhrCps1z7z+JWANoC6qj3crIPYTsH3SnYM/AVX0kYk+CnpnHwLRVfJtA05/2KvJ4xHRS/8G1vI1CIisJDD+7px660k28rZEDSGESdbmiQ5a56Q2fS9C+da+ANzU/9FZ3T1tGr43U1k4udcwtDdygWhsdzg5dBJxRAFJIYnFVvy19s7RV7wYNFeoiKxlSEy4n/C0PuJHQ1lZDx7sPoDqzqIVF/oLlu77PHF/GgbXPR/l6N/J/T80hs8oNtMoH3iUtETVVx/kFSyzzXtoRvR+/byGTml73ZAu0Ro4iLbNRvl/0DpvZcsocQrYz2VBSdOXADctkpIk0pqI6qnsJksBiEeJ/ivrp68puNMjce1k8Hk2ZgmTYVcnNFyZicmmzCYYjJZHmEVQH3DCJr9gf2fFz4JLi1ndIEjF9qq+ArAdz/cpcvfKZq5WKpIeBmL8jMtcw4ThUR5QEIjyMxbXV9sBWD7xLs2zENK+bOyIl9a+YQGQZys29jSB7D9w5AZq6HJXz3KFuxdAKB5izNETw+RZQP8Pdo1ole++AdylgGvC3pM4nLY2ITnGVoCtR0uT3VVYCS7BqH/fs2LpbB++BO8FlI7+TQCZgmWvUmavUoxGG7rlAYy7pKebG4IeovJ7xA8KLBJraEDE3Fvvk+R81vEraLxLGgQAAAABJRU5ErkJggg==);
+  margin-top: -5px;
 }
 .tab-content .block {
   font-size: 15px;
@@ -354,6 +421,7 @@ page {
   margin: 10px;
 }
 .userAddr {
+  width: 100%;
   padding-right: 20px;
   position: relative;
 }
@@ -361,7 +429,7 @@ page {
   content: '';
   position: absolute;
   display: block;
-  top: 4px;
+  top: 15px;
   right: 0px;
   width: 7px;
   height: 12px;

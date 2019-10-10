@@ -14,6 +14,19 @@ export function getDoctorList(params) {
 }
 
 /**
+ * 获取所有医生（明星医生）列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getNetHospitalDoctorList(params) {
+  const getNetHospitalDoctorList = 'client/v1/Doctor/getNetHospitalDoctorList'
+
+  return peace.http.post(getNetHospitalDoctorList, params)
+}
+
+/**
  * 获取我的家人
  *
  * @export
@@ -260,8 +273,8 @@ export function submitOrder(params) {
  * @returns
  */
 export function getAddressLists() {
-  const getAddressLists = 'client/v1/Address/getAddressLists';
-  return peace.http.post(getAddressLists);
+  const getAddressLists = 'client/v1/Address/getAddressLists'
+  return peace.http.post(getAddressLists)
 }
 
 /**
@@ -271,18 +284,20 @@ export function getAddressLists() {
  * @returns
  */
 export function addAddress(params) {
-  const getAddressLists = 'client/v1/Address/addAddress';
-  return peace.http.post(getAddressLists, params);
+  const getAddressLists = 'client/v1/Address/addAddress'
+  return peace.http.post(getAddressLists, params)
 }
 
 export function delAddress(params) {
-  const delAddress = 'client/v1/Address/delAddress';
-  return peace.http.post(delAddress, params);
+  const delAddress = 'client/v1/Address/delAddress'
+  return peace.http.post(delAddress, params)
 }
 
 export default {
   /** 获取医生列表 */
   getDoctorList,
+  /** 获取所有医生（明星医生）列表 */
+  getNetHospitalDoctorList,
   /** 获取我的医生列表 */
   getUserDctList,
   /** 获取我的家人 */

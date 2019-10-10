@@ -107,7 +107,17 @@
             this.getData();
         },
         methods: {
-            goPay(){},
+            goPay(data){
+                let doctorId = data.doctorInfo.doctorId;
+                let money = data.orderMoney;
+                let typeName = '预约挂号';
+                let doctorName = data.doctorInfo.name;
+                let orderNo = data.orderNo;
+                let json = {money, typeName, doctorName, orderNo, doctorId};
+                console.log(json);
+                json = peace.util.encode(json);
+                this.$router.push(`/components/doctorInquiryPay/${json}`);
+            },
             getData(){
                 peace.service.patient.getOrderList({orderType:'register'}).then(res => {
                     this.orderList = res.data.list || [];
@@ -132,6 +142,8 @@
 
             },
             goOrderDetailPage(item){
+                // console.log(item);
+                // return;
                 let json = peace.util.encode({
                     orderInfo:item
                 })

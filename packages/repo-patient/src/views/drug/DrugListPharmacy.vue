@@ -1,7 +1,7 @@
 <template>
     <div>
         <iframe id="geoPage" width=0 height=0 frameborder=0  style="display:none;" scrolling="no"
-                src="https://apis.map.qq.com/tools/geolocation?key=S2WBZ-VHEK5-UCAIE-Q4TPB-LO7P3-DCB54&referer=myapp">
+                :src="'https://apis.map.qq.com/tools/geolocation?key=' + key + '&referer=myapp'">
         </iframe>
         <div class="top">
             <div class="button" @click.prevent="goMapPage">{{locationStr}}</div>
@@ -69,11 +69,13 @@
 
 <script>
     import peace from '@src/library'
+    import config from '@src/config'
     import { Dialog } from 'vant'
     export default {
         name: "DrugListPharmacy",
         data() {
             return {
+                key: config.MAP.key,
                 phaList: [],
                 phaAddrList: [],
                 userLocation: '',
@@ -86,6 +88,7 @@
             window.removeEventListener('message', ()=> {});
         },
         mounted() {
+           // this.key = config.MAP.key;
             let paramsRoute = peace.util.decode(this.$route.params.json);
             console.log('route',paramsRoute);
 

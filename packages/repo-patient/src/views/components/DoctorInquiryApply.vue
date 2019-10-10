@@ -425,7 +425,6 @@ export default {
     },
 
     apply() {
-
       //验证
       if (!this.model.familyName) {
         return peace.util.alert('请选择就诊人')
@@ -460,19 +459,13 @@ export default {
         this.applyHandler()
       })
     },
-    goToPay() {
-      if(this.model.consultingType === 'image') {
-          let doctor = this.doctor.consultationList[0];
-          if(doctor.money) {
-             //console.log(doctor.money);
-            let money = doctor.money;
-            let typeName = '图文问诊';
-            let doctorName = this.doctor.doctorInfo.name;
-            let json = {money, typeName, doctorName};
-            json = peace.util.encode(json);
-            this.$router.push(`/components/doctorInquiryPay/${json}`);
-          }
-      }
+    goToPay(data) {
+      let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
+      let typeName = inquiryType == 'image' ? '图文问诊' : ''
+      let money = orderMoney
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     applyOrder(data) {
       const json = peace.util.encode({
@@ -510,26 +503,25 @@ export default {
       this.sending = true
       const params = this.model
       peace.service.inquiry.apply(params).then(res => {
-        debugger;
         this.sending = false
         // 订单提交成功
         if (res.data.errorState === 0) {
           // 待支付状态
           if (res.data.inquiryStatus === 1) {
-            this.applyOrder(res.data)
+            this.goToPay(res.data)
             return
           } else {
+            //免费问诊
             // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-            // setTimeout(() => {
-            //   this.$router.push({
-            //     name: '/message/index',
-            //     params: {
-            //       sessionId: 'p2p-' + this.model.doctorId
-            //     }
-            //   })
-            // }, 1000)
-            //
-            // return peace.util.alert(res.msg)
+            setTimeout(() => {
+              this.$router.push({
+                name: '/message/index',
+                params: {
+                  sessionId: 'p2p-' + this.model.doctorId
+                }
+              })
+            }, 1000)
+            return peace.util.alert(res.msg)
           }
         }
         // 订单提交失败 [errorState:1存在未支付订单 2存在未结束订单]
@@ -540,10 +532,13 @@ export default {
             confirmButtonText: '去看看'
           }).then(() => {
             // 前往咨询订单详情页
-            const json = peace.util.encode({
-              inquiryId: res.data.inquiryId
-            })
-            this.$router.push(`/setting/userConsultDetail/${json}`)
+            //console.log(res.data.inquiryId);
+            // const json = peace.util.encode({
+            //   inquiryId: res.data.inquiryId
+            // })
+            let inquiryId = res.data.inquiryId
+
+            this.$router.push({ path: `/setting/userConsultList`, query: { inquiryId } })
           })
         }
         if (res.data.errorState === 2) {

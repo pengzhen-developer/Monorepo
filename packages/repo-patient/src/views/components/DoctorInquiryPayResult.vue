@@ -48,9 +48,6 @@ export default {
 
   created() {
     this.params = peace.util.decode(this.$route.params.json)
-
-    console.log(this.params)
-
     // if (this.payResult.status) {
     this.redirectInterval = setTimeout(this.redirectMessage, 3000)
     // }

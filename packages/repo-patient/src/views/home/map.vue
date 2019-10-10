@@ -1,43 +1,58 @@
 <template>
-    <baidu-map class="map" ak="vVmeefdcZxiHrUvdyoHquR4S" @ready="handler">
-        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-    </baidu-map>
+  <div id="map"
+       class="map">
+  </div>
 </template>
 
 <script>
+import peace from '@src/library'
 
-    export default {
-        name: "home-map",
-        components: {
+export default {
+  name: 'home-map',
 
-        },
-        mounted() {
+  components: {},
 
-        },
-        data() {
-            return {
-                map: {
-                    center: {
-                        lng: 123,
-                        lat: 30,
-                    }
-                }
-            }
-        },
-        methods: {
-            handler ({BMap, map}) {
-                var point = new BMap.Point(114.3118287971, 30.5984342798)
-                map.centerAndZoom(point, 13)
-                var marker = new BMap.Marker(point) // 创建标注
-                map.addOverlay(marker) // 将标注添加到地图中
-            }
+  mounted() {
+    const params = peace.util.decode(this.$route.params.json)
+
+    var geo = new window.qq.maps.Geocoder()
+    geo.getLocation(params.address) //地址
+    geo.setComplete(function(res) {
+      console.log(res, res.detail.location) //得到经纬度
+      var map = new window.qq.maps.Map(document.getElementById('map'), {
+        center: res.detail.location, //将经纬度加到center属性上
+        zoom: 13, //缩放
+        draggable: true, //是否可拖拽
+        scrollwheel: true, //是否可滚动缩放
+        disableDoubleClickZoom: false
+      })
+      new window.qq.maps.Marker({
+        position: res.detail.location, //标记的经纬度
+        animation: window.qq.maps.MarkerAnimation.BOUNCE, //标记的动画
+        map: map //标记的地图
+      })
+
+      new window.qq.maps.CityService({
+        //设置地图
+        map: map,
+        complete: function(results) {
+          console.log(9999, results)
         }
+      })
+    })
+  },
+  data() {
+    return {
+      map: {}
     }
+  },
+  methods: {}
+}
 </script>
 
 <style scoped>
-    .map {
-        width: 100%;
-        height: 100%;
-    }
+.map {
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -52,7 +52,7 @@ export function initNIM(
   } else {
     // 更新 IM
     $peace.NIM.disconnect()
-    $peace.NIM.setOptions(options)
+    $peace.NIM.setOptions({ appKey, account, token })
     $peace.NIM.connect()
   }
 
@@ -103,6 +103,7 @@ export function onDisConnect(disConnectObject) {
       peace.util.warning(disConnectObject.message)
 
       $peace.$router.replace(peace.config.system.loginPage)
+      window.location.reload();
       break
 
     default:

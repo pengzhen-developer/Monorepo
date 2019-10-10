@@ -79,6 +79,13 @@
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
     </div>
+    <div style="padding: 0 15px;">
+      <van-button
+                @click="goToPay(info)"
+                v-if="info.orderInfo.orderStatus == 1"
+                style="width: 100%;"
+                type="primary">继续支付</van-button>
+    </div>
   </div>
 </template>
 
@@ -90,6 +97,7 @@ export default {
   props: {},
   data() {
     return {
+      sending: false,
       page: {
         statusDic: {
           register: {
@@ -139,6 +147,18 @@ export default {
     this.getData()
   },
   methods: {
+    goToPay(data) {
+      //debugger;
+      let doctorId = data.doctorInfo.doctorId;
+      let order = data.orderInfo;
+      let money = order.orderMoney;
+      let typeName = '预约挂号';
+      let doctorName = data.doctorInfo.doctorName;
+      let orderNo = order.orderNo;
+      let json = {money, typeName, doctorName, orderNo, doctorId};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
+    },
     getData() {
       peace.service.patient
         .getOrderDetail({
@@ -174,6 +194,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-button--normal {
+  border-radius: 20px;
+}
 .dl-addr {
   font-size: 14px;
   .dd {
