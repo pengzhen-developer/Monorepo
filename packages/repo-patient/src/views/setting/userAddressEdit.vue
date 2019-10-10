@@ -113,7 +113,8 @@ export default {
     }
   },
   created() {
-    const params = peace.util.decode(this.$route.query.addr);
+    // const params = peace.util.decode(this.$route.query.addr);
+    const params = peace.util.decode(this.$route.params.json);
     if (params.hasOwnProperty('addressId')) {
       this.internalAddr = params;
     }
