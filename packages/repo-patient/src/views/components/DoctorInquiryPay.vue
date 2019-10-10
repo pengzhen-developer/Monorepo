@@ -32,10 +32,11 @@
 
 <script>
 import peace from '@src/library'
+import Vue from 'vue';
 import { CountDown } from 'vant';
+Vue.use(CountDown);
 export default {
   components: {
-    CountDown
   },
   data() {
     return {
