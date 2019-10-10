@@ -5,13 +5,18 @@
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   name: 'home-map',
+
   components: {},
+
   mounted() {
+    const params = peace.util.decode(this.$route.params.json)
+
     var geo = new window.qq.maps.Geocoder()
-    console.log(geo)
-    geo.getLocation('湖北武汉硚口区湖北省武汉市中山大道215号') //地址
+    geo.getLocation(params.address) //地址
     geo.setComplete(function(res) {
       console.log(res, res.detail.location) //得到经纬度
       var map = new window.qq.maps.Map(document.getElementById('map'), {

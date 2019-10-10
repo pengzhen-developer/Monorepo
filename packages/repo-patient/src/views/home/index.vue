@@ -1,241 +1,128 @@
 <template>
   <div class="home-layout"
-       v-if="hospitalInfo">
+       v-if="data && data.guide">
     <div class="banner">
-      <div class="banner-img">
-        <img :src="hospitalInfo.nethospitalInfo.icon">
+      <div class="banner-img"></div>
+    </div>
+    <!--导流-->
+    <div class="panel panel-block panel-block-m panel-home"
+         v-if="data.guide">
+      <div :doctortag="item.id"
+           :key="item.id"
+           @click="goMenuPage(item,{type:'guide'})"
+           class="block-items"
+           data-type="guide"
+           v-for="item in data.guide">
+        <div :class="[true ? 'block-ico' : '', item.icon]"></div>
+        <div class="block-tit">{{item.text}}</div>
+        <div class="block-small">{{item.small}}</div>
       </div>
     </div>
-    <section class="info">
-      <div class="name-wrap">
-        <div class="w">
-          <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
-          <div class="tags">
-            <span v-for="item in hospitalInfo.nethospitalInfo.tags"
-                  :key="item">{{ item }}</span>
-          </div>
-        </div>
-        <div class="intro"
-             @click="brief.visible = true">医院简介</div>
+    <!--三方-->
+    <div class="panel panel-block panel-clear">
+      <div :id="item.id"
+           :key="item.id"
+           :type="item.id"
+           @click="goMenuPage(item,{type:item.id})"
+           class="block-items"
+           v-for="item in data.card">
+        <div
+             :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">
+          {{item.text}}</div>
       </div>
-      <div class="location"
-           @click="goMap()">
-        <span class="name">{{ hospitalInfo.nethospitalInfo.address }}</span>
-        <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
-           v-if="hospitalInfo.nethospitalInfo.phoneNumber"
-           class="tel"></a>
+    </div>
+    <div class="panel flex"
+         style="padding-top: 0;padding-bottom:0">
+      <div @click="goMenuPage('',{type:'userDoctor'})"
+           class="card-simple icon_01_01_11"
+           type="userDoctor">
+        <div class="card-tit">我的医生</div>
+        <div class="card-brief">便捷查找您的医生</div>
       </div>
-
-      <div class="notice">
-        <i class="alarm"></i>
-        <div class="message-box"
-             @click="goHospitalNoticeDetail()">
-          <van-notice-bar style="height: 100%; padding: 0;"
-                          color="#999999"
-                          background="transparent">
-            {{ hospitalInfo.notices.length > 0 && hospitalInfo.notices[0].title }}
-          </van-notice-bar>
-        </div>
-        <i @click="goHospitalNoticeList()"
-           class="arrow"></i>
+      <div @click="goMenuPage('',{type:'userConsult'})"
+           class="card-simple icon_01_01_12"
+           type="userConsult">
+        <div class="card-tit">我的咨询</div>
+        <div class="card-brief">个人咨询详情管理</div>
       </div>
-    </section>
-    <section class="functions">
-      <div class="item"
-           v-for="(item, index) in hospitalInfo.guideH5"
-           :key="'index'+ index"
-           @click="goMenuList(item)">
-        <img :src="require('@src/assets/images/newIndex/'+ item.icon + '.png')" />
-        <span class="name">{{ item.text }}</span>
-      </div>
-    </section>
-    <section class="dept">
-      <div class="title">
-        <span>医院科室</span>
-        <i class="arrow"
-           @click="goAllDepartment"></i>
-      </div>
-      <div class="dept-wrap">
-        <div class="item"
-             v-for="(item, index) in hospitalInfo.oneDeptList"
-             :key="'index'+ index"
-             @click="goDepartmentDoctorList(item)">
-          <span v-if="index < 6"
-                :style="'background: '+ colorArr[index]">{{ item.netdeptName }}</span>
-        </div>
-      </div>
-    </section>
-    <section class="doctors">
-      <div class="title">
-        <span>明星医生</span>
-        <i class="arrow"
-           @click="goStarDoctor"></i>
-      </div>
-
-      <div class="doc-wrap">
-        <div class="item-wrap"
-             @click="goDoctorHomeIndexPage(item)"
-             v-for="item in hospitalInfo.doctorList"
-             :key="item.name">
-          <img class="avatar"
-               :src="item.avartor" />
-          <div class="item">
-            <span class="name">{{ item.name }}</span>
-            <span class="jd"> {{ item.netdeptName + ' ' + item.doctorTitle }}</span>
-            <div class="tags"
-                 v-for="item in item.serviceList"
-                 :key="item">
-              <span v-if="item === 'register'"
-                    class="hao">号</span>
-              <span v-if="item === 'video'"
-                    class="wen">问</span>
-              <span v-if="item === 'prvivateDoctor'"
-                    class="bao">服务包</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <van-dialog style="background: transparent;"
-                v-model="brief.visible"
-                :show-cancel-button="false"
-                :showConfirmButton="false">
-      <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px;"
-             :src="hospitalInfo.nethospitalInfo.icon">
-      </div>
-      <div style="padding: 40px 20px 20px 20px; background: #fff;">
-        <span>{{ hospitalInfo.nethospitalInfo.brief }}</span>
-      </div>
-      <div style="text-align: center; margin: 30px 0 0 0;">
-        <van-icon @click="brief.visible = false"
-                  name="close"
-                  color="#fff"
-                  size="40px" />
-      </div>
-    </van-dialog>
+    </div>
+    <DepartPage :items="data.department"
+                :max="7"
+                :moreIcon="data.moreIcon"></DepartPage>
+    <van-cell @click="goMenuPage({},{type:'crowdLists'})"
+              is-link
+              value="常见人群"
+              style="border-top:10px solid #f5f5f5" />
+    <Humens :data="data.crowdListsDisease"
+            :items="data.crowdLists"
+            :max="3"
+            style="padding-bottom:10px"></Humens>
+    <van-cell @click="goMenuPage({},{type:'recommendHsp'})"
+              is-link
+              value="推荐互联网医院"
+              style="border-top:10px solid #f5f5f5" />
+    <HspPage :items="data.recommendOrgan"
+             :max="2"></HspPage>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
+import HspPage from '@src/views/hospital/HospitalList'
+import Humens from '@src/views/diagnose/select/diagnoseSelectHumen'
+import DepartPage from '@src/views/hospital/depart/HospitalDepartList'
+
 export default {
+  components: {
+    HspPage,
+    DepartPage,
+    Humens
+  },
   data() {
     return {
-      hospitalInfo: undefined,
-
-      brief: {
-        visible: false
-      },
-
-      colorArr: ['#E6FFFB', '#E6F7FF', '#F9F0FF', '#F0F5FF', '#E6FFFB', '#FFFBE6']
+      data: {}
     }
   },
-
   created() {
-    this.getHospitalInfo()
+    peace.service.index.getMenu().then(res => {
+      this.data = res.data
+    })
   },
-
-  mounted() {
-    this.colorArr.sort(() => Math.random() - 0.5)
-  },
-
   methods: {
-    getHospitalInfo() {
-      peace.service.hospital.getHospitalInfo({ nethospitalId: 'vpnrstbnvh' }).then(res => {
-        this.hospitalInfo = res.data
-      })
-    },
-
-    goMap() {
-      this.$router.push('/home/map')
-    },
-
-    goDoctorHomeIndexPage(item) {
-      const json = peace.util.encode({ doctorId: item.doctorId })
-
-      this.$router.push(`/components/doctorDetail/${json}`)
-    },
-
-    goAllDepartment() {
-      const json = peace.util.encode({
-        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        id: 'consult',
-        Date: new Date()
-      })
-
-      this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-    },
-
-    goDepartmentDoctorList(item) {
-      const json = peace.util.encode({
-        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        deptId: item.id,
-        txt: item.netdeptName,
-        txtId: item.id
-      })
-      this.$router.push(`/components/doctorList/${json}`)
-    },
-
-    goStarDoctor() {
-      const json = peace.util.encode({
-        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        type: 'starDoctorList',
-        Date: new Date()
-      })
-
-      this.$router.push(`/components/doctorList/${json}`)
-    },
-
-    goHospitalNoticeDetail() {
-      const json = peace.util.encode({
-        id: this.hospitalInfo.notices[0].id
-      })
-
-      this.$router.push(`/hospital/HospitalNoticesDetail/${json}`)
-    },
-
-    goHospitalNoticeList() {
-      const json = peace.util.encode({
-        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId
-      })
-
-      this.$router.push(`/hospital/HospitalNoticesList/${json}`)
-    },
-
-    goMenuList(item) {
-      /* eslint-disable */
-
-      let json = undefined
-
-      switch (item.id) {
-        // 预约挂号
-        case 'appointment':
-          json = peace.util.encode({
-            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
-            Date: new Date()
-          })
-
-          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-          break
-
-        // 在线咨询
-        case 'onlineConsultant':
-        // 复诊续方
-        case 'subsequentVisit':
-          json = peace.util.encode({
-            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
-            Date: new Date()
-          })
-
+    goMenuPage(item, data) {
+      let json
+      switch (data.type) {
+        case 'guide':
+          json = peace.util.encode({ doctorTag: item.id })
           this.$router.push(`/components/doctorList/${json}`)
           break
-
+        case 'appoint':
+        case 'recommendHsp':
+          // 开通预约的医院列表
+          json = peace.util.encode({ doctorTag: item.id, type: data.type })
+          this.$router.push(`/hospital/HospitalList/${json}`)
+          break
+        case 'userDoctor':
+          this.$router.push(`/setting/userDoctorlist`)
+          break
+        case 'userConsult':
+          this.$router.push('/setting/userConsultList')
+          break
+        case 'record':
+          json = peace.util.encode({ date: new Date() })
+          this.$router.push(`/record/recordCondition/${json}`)
+          break
+        case 'default':
+          json = peace.util.encode({ date: new Date() })
+          this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
+          break
+        case 'crowdLists':
+          json = peace.util.encode({ date: new Date() })
+          this.$router.push(`/diagnose/select/diagnoseSelectHumen/${json}`)
+          break
         default:
-          peace.util.alert('暂未开放，敬请期待')
+          peace.util.alert('暂未开放')
+          // _f.goMenuPage();
           break
       }
     }
@@ -244,275 +131,206 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin arrow {
-  width: 7px;
-  height: 12px;
-  display: inline-block;
-  background: url('../../assets/images/newIndex/ic_right.png');
-  background-size: 100% 100%;
+.home-layout {
+  height: 100%;
 }
 
-.home-layout {
-  background: rgba(249, 249, 249, 1);
-  .banner {
-    width: 100%;
-    height: 175px;
-    background: #fff;
-    .banner-img {
+.banner {
+  width: 100%;
+  height: 135.5px;
+  background-color: #e5e5e5;
+}
+
+.panel {
+  position: relative;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin: 0;
+  padding: 10px 10px;
+  border-radius: 0;
+  font-size: 15px;
+  border-bottom: 0;
+
+  &.panel-home {
+    box-shadow: none;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  &.panel-clear {
+    box-shadow: none !important;
+  }
+
+  &.panel-block {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    box-shadow: 0 2px 5px #efefef;
+
+    .block-items-card {
+      color: #fff;
+      font-size: 13px;
+      min-height: 45px;
+      min-width: 75px;
+    }
+
+    .block-items-card {
       width: 100%;
       height: 100%;
-      background: url('../../assets/images/newIndex/bg_home.png');
-      background-size: 100% 100%;
-      position: relative;
-      img {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        position: absolute;
-        bottom: 0;
-        right: 30px;
-        border: 2px solid #fff;
-      }
-    }
-  }
-  .info {
-    padding: 20px 16px 0;
-    background: #fff;
-    .name-wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 50px;
-      .w {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        .name {
-          font-size: 17px;
-          font-weight: 400;
-          color: rgba(51, 51, 51, 1);
-        }
-        .tags {
-          span {
-            padding: 2px 10px;
-            background: rgba(229, 249, 246, 1);
-            border-radius: 1px;
-            font-size: 9px;
-            font-weight: 400;
-            color: rgba(0, 198, 174, 1);
-            line-height: 13px;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-    .intro {
-      width: 56px;
-      height: 21px;
-      border-radius: 2px;
-      border: 1px solid rgba(0, 204, 179, 1);
-      font-size: 11px;
-      font-weight: 400;
-      color: rgba(0, 204, 179, 1);
-      line-height: 21px;
+      background-size: cover;
       text-align: center;
-    }
-    .location {
-      display: flex;
-      justify-content: space-between;
-      height: 48px;
-      align-items: center;
-      border-bottom: 1px solid #eeeeee;
-      .name {
-        font-size: 14px;
-        color: rgba(51, 51, 51, 1);
-        &:before {
-          width: 11px;
-          height: 13px;
-          background: url('../../assets/images/newIndex/ic_location.png');
-          background-size: 100% 100%;
-          content: '';
-          display: inline-block;
-          vertical-align: middle;
-          margin: -3px 6px 0 0;
-        }
-      }
-      .tel {
-        width: 14px;
-        height: 17px;
-        background: url('../../assets/images/newIndex/ic_phone.png');
-        background-size: 100% 100%;
-      }
-    }
-    .notice {
-      display: flex;
-      height: 46px;
-      align-items: center;
-      .alarm {
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        background: url('../../assets/images/newIndex/ic_notice.png');
-        background-size: 100% 100%;
-      }
-      .message-box {
-        flex: 1;
-        font-size: 11px;
-        color: rgba(153, 153, 153, 1);
-        padding-left: 12px;
-        border-left: 1px solid #eeeeee;
-        height: 18px;
-        line-height: 18px;
-        margin-left: 12px;
-        margin-right: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .arrow {
-        @include arrow;
-      }
-    }
-  }
-  .functions {
-    display: flex;
-    flex-wrap: wrap;
-    text-align: center;
-    background: #fff;
-    margin-top: 8px;
-    padding-bottom: 18px;
-    .item {
-      width: 25%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-top: 18px;
-      img {
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-      }
-      .name {
-        font-size: 13px;
-        color: rgba(0, 0, 0, 1);
-        margin-top: 10px;
-      }
-    }
-  }
-  .title {
-    padding: 0 16px;
-    height: 46px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 600;
-    color: rgba(51, 51, 51, 1);
-    .arrow {
-      @include arrow;
-    }
-  }
-  .dept {
-    background: #fff;
-    margin-top: 10px;
-    .dept-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      width: 360px;
-      margin: 0 auto;
-      .item {
-        width: 33.3333333%;
-        margin-bottom: 15px;
-        text-align: center;
-        span {
-          width: 105px;
-          height: 45px;
-          background: rgba(230, 255, 251, 1);
-          border-radius: 2px;
-          display: inline-block;
-          font-size: 12px;
-          font-weight: 500;
-          color: rgba(51, 51, 51, 1);
-          line-height: 45px;
-        }
-      }
-    }
-  }
-  .doctors {
-    margin-top: 8px;
-    background: #fff;
-    .doc-wrap {
-      display: -webkit-box;
-      overflow-x: scroll;
-      margin: 0 16px;
-      padding-bottom: 25px;
-      .item-wrap {
+      line-height: 43px;
+      border-radius: 5px;
+
+      &.disabled {
         position: relative;
-        width: 130px;
-        height: 130px;
-        margin-right: 10px;
-        .avatar {
-          width: 51px;
-          height: 51px;
-          border: 1px solid rgba(238, 238, 238, 1);
-          border-radius: 50%;
+
+        &::before {
+          content: '';
           position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          top: 10px;
-          z-index: 10;
-        }
-        .item {
-          width: 130px;
-          height: 95px;
-          background: rgba(255, 255, 255, 1);
-          box-shadow: 0px 1px 4px 0px rgba(221, 221, 221, 0.5);
-          border-radius: 3px;
-          border: 1px solid rgba(238, 238, 238, 1);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: absolute;
-          bottom: 0;
+          display: block;
+          width: 31.5px;
+          height: 25.5px;
+          background-image: url('data:image/png;base64,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');
+          background-repeat: no-repeat;
+          background-size: cover;
+          top: 0;
           left: 0;
-          .name {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(0, 0, 0, 1);
-            margin-top: 30px;
-          }
-          .jd {
-            font-size: 11px;
-            font-weight: 400;
-            color: rgba(102, 102, 102, 1);
-          }
-          .tags {
-            font-size: 9px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 1);
-            margin-top: 3px;
-            .hao {
-              background: rgba(116, 176, 255, 1);
-              border-radius: 1px;
-              padding: 2px 3px;
-            }
-            .wen {
-              background: #00c6ae;
-              border-radius: 1px;
-              padding: 2px 3px;
-              margin: 0 3px 0 3px;
-            }
-            .bao {
-              background: #ac91ff;
-              border-radius: 1px;
-              padding: 2px 3px;
-            }
-          }
         }
       }
     }
+
+    .block-items {
+      flex: 1 1 100%;
+      font-size: inherit;
+      padding: 5px 5px;
+      justify-content: center;
+
+      .block-tit {
+        text-align: center;
+        font-size: 16px;
+        color: #000;
+      }
+
+      .block-small {
+        font-size: 11px;
+        color: #999;
+      }
+
+      .block-ico {
+        width: 28px;
+        height: 28px;
+        margin: 5px auto;
+        background-color: #fff;
+        position: relative;
+        display: block;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          background-size: cover;
+        }
+      }
+
+      .block-small {
+        text-align: center;
+      }
+    }
   }
+
+  &.panel-block-m {
+    border-radius: 15px;
+    margin: -45px 10px 5px 10px;
+  }
+
+  .panel-tit {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+    font-size: 16px;
+    position: relative;
+
+    &.tit-more::after {
+      content: '';
+      position: absolute;
+      display: inline-block;
+      top: 5px;
+      right: -5px;
+      width: 15px;
+      height: 15px;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAkCAMAAABR74GsAAAANlBMVEVHcEzPz8/Pz8/Pz8/Ozs7R0dHQ0NDNzc3Ozs7Ozs7Q0NDPz8/Pz8/Pz8/Pz8/Pz8/Ozs7Ozs6NXauoAAAAEXRSTlMAa1XefxguCvjsQai0jZzFvytu9msAAACQSURBVCjPjZJLFoAgDAMLCkXx1/tfVgu7JgtdzgtTKRGpvQh89bZlB9rNbKmRlofiejjOkB4Y3Ho0sw1w8ZFb5hgl1ydpKLk8nTSmT+rW0yU40tMNJav/dxKGjafbCjgNHCWMUsOcFuE4nn7cYt4YINkO3eTceo6QHWevqZ28vLKW0EYVLw60jzeVt/rzQlJeyzYKJQAM6ZcAAAAASUVORK5CYII=);
+      background-size: 7.5px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .panel-body {
+  }
+
+  .panel-bottom {
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 0;
+    font-size: 13px;
+    color: #999;
+  }
+}
+
+.flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  .card-simple {
+    position: relative;
+    padding: 0 10px;
+    padding-left: 45px;
+    flex: 1;
+    margin: 10px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      margin-left: -42.5px;
+      width: 35px;
+      height: 35px;
+      background-size: cover;
+    }
+
+    &:first-child {
+      margin-right: 0;
+      padding-right: 20px;
+      border-right: 1px solid #dedede;
+    }
+
+    .card-tit {
+      font-size: 13px;
+      color: #000;
+      font-weight: 600;
+      display: block;
+    }
+
+    .card-brief {
+      font-size: 11px;
+      padding-top: 2.5px;
+      color: #999;
+    }
+  }
+}
+
+.van-hairline--top-bottom::after {
+  border: none;
+}
+
+.van-cell:not(:last-child)::after {
+  content: '';
+  border: none;
 }
 </style>

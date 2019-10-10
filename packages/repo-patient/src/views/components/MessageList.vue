@@ -370,7 +370,9 @@ export default {
       }
       // 传递 session 获取聊天记录
       else {
-        this.getHistoryMsgsByIM()
+        setTimeout(() => {
+          this.getHistoryMsgsByIM()
+        }, 1000)
       }
     }
   },
@@ -386,7 +388,8 @@ export default {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
-              message.flow = $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
+              message.flow =
+                $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
               message.type = messageTypeMap[message.type]
               message.text = message.body.msg
               message.content = message.body

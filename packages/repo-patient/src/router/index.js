@@ -32,8 +32,22 @@ const router = new Router({
           },
           component: () => import('@src/views/home/index.vue')
         },
+        // 医院首页
         {
-          path: '/home/map',
+          path: '/home/index/:json',
+          name: '/home/index',
+          meta: {
+            auth: false,
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '首页'
+            }
+          },
+          component: () => import('@src/views/hospital/HospitalHome.vue')
+        },
+        {
+          path: '/home/map/:json',
           name: '/home/map',
           meta: {
             auth: false,
@@ -229,7 +243,7 @@ const router = new Router({
           path: '/components/messageList/:json',
           name: '/components/messageList',
           meta: {
-            auth: false
+            auth: true
           },
           component: () => import('@src/views/components/MessageList.vue')
         },
