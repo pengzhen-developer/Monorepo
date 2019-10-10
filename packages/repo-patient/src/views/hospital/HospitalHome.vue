@@ -158,7 +158,9 @@ export default {
 
   methods: {
     getHospitalInfo() {
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(
+        this.$route.params.json || peace.cache.get(peace.type.SYSTEM.PARAMS)
+      )
 
       peace.service.hospital.getHospitalInfo({ nethospitalId: params.netHospitalId }).then(res => {
         this.hospitalInfo = res.data

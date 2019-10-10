@@ -56,7 +56,9 @@ axios.interceptors.request.use(
       }
 
       // 配置 authorization、accesstoken
-      request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO) ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken : undefined
+      request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO)
+        ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
+        : undefined
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
@@ -174,7 +176,11 @@ axios.interceptors.response.use(
     if (error.response && error.response.status) {
       switch (error.response.status) {
         default:
-          $peace.util.alert('Uncaught (in promise) Error: Request failed with status code ', '提示', 'error')
+          $peace.util.alert(
+            'Uncaught (in promise) Error: Request failed with status code ',
+            '提示',
+            'error'
+          )
           break
       }
     } else {
