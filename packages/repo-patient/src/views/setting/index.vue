@@ -10,7 +10,7 @@
         <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
         <!--        </button>-->
         <div>
-          <div>{{userInfo.patientInfo.realName}}</div>
+          <div style="font-size: 14px">用户{{userInfo.patientInfo.realName}}</div>
           <div>{{userInfo.patientInfo.tel}}</div>
         </div>
       </div>
@@ -129,8 +129,9 @@ export default {
 
 /*user-card*/
 .user-card {
-  background-color: #00c6ae;
-  padding: (26px/2);
+  background-image: url('~@/assets/images/ic_my doctor.png');
+  background-size: 100% 100%;
+  padding: (32px/2);
   font-size: (34px/2);
   line-height: (34px/2);
   color: #fff;
@@ -148,7 +149,6 @@ export default {
   border-radius: 50%;
   /*box-shadow: (5px/2) (5px/2) #DDE1EA;*/
   flex: 0;
-  background-color: #7ce7da;
 }
 
 .user-card .user-info {
@@ -162,7 +162,7 @@ export default {
   background-color: #fff;
   display: flex;
   font-size: (30px/2);
-  border-top: (16px/2) solid #fff;
+  // border-top: (16px/2) solid #fff;
   border-bottom: (20px/2) solid #fff;
   padding: (30px/2) (40px/2) (20px/2) (40px/2);
   border-top-color: #7ce7da;

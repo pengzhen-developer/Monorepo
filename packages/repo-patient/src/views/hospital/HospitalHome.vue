@@ -94,16 +94,20 @@
           <div class="item">
             <span class="name">{{ item.name }}</span>
             <span class="jd"> {{ item.netdeptName + ' ' + item.doctorTitle }}</span>
-            <div class="tags"
-                 v-for="item in item.serviceList"
-                 :key="item">
-              <span v-if="item === 'register'"
-                    class="hao">号</span>
-              <span v-if="item === 'image' || item === 'video'"
-                    class="wen">问</span>
-              <span v-if="item === 'prvivateDoctor'"
-                    class="bao">服务包</span>
-            </div>
+            <span class="tags">
+              <template v-for="item in item.serviceList">
+                <span :key="item"
+                      v-if="item === 'register'"
+                      class="tags hao">号</span>
+                <span :key="item"
+                      v-if="item === 'image' || item === 'video'"
+                      class="tags wen">问</span>
+                <span :key="item"
+                      v-if="item === 'prvivateDoctor'"
+                      class="tags bao">服务包</span>
+              </template>
+
+            </span>
           </div>
         </div>
       </div>
@@ -303,6 +307,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       height: 50px;
+      margin: 0 0 5px 0;
       .w {
         height: 100%;
         display: flex;
@@ -341,7 +346,7 @@ export default {
     .location {
       display: flex;
       justify-content: space-between;
-      height: 48px;
+      height: 40px;
       align-items: center;
       border-bottom: 1px solid #eeeeee;
       .name {
@@ -452,9 +457,9 @@ export default {
           background: rgba(230, 255, 251, 1);
           border-radius: 2px;
           display: inline-block;
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 500;
-          color: rgba(51, 51, 51, 1);
+          color: rgba(0, 0, 0, 1);
           line-height: 45px;
         }
       }

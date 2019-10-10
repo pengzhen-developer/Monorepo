@@ -20,7 +20,8 @@
                     v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
             <div class="message time">
               <div class="message-body">
-                {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+                <span>{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</span>
+              </div>
             </div>
           </template>
 
