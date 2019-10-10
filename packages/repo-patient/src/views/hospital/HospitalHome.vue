@@ -99,7 +99,7 @@
                  :key="item">
               <span v-if="item === 'register'"
                     class="hao">号</span>
-              <span v-if="item === 'video'"
+              <span v-if="item === 'image' || item === 'video'"
                     class="wen">问</span>
               <span v-if="item === 'prvivateDoctor'"
                     class="bao">服务包</span>

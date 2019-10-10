@@ -111,7 +111,9 @@ export default {
         peace.service.IM.initNIM()
 
         // 跳转 reffer
-        this.$router.push($peace.referrer.fullPath || peace.config.system.homePage)
+        this.$router.push(
+          ($peace.referrer && $peace.referrer.fullPath) || peace.config.system.homePage
+        )
       })
     }
   }
