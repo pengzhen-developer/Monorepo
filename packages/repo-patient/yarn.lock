@@ -8586,6 +8586,11 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
+vue2-countdown@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.npm.taobao.org/vue2-countdown/download/vue2-countdown-1.0.8.tgz#e0f20b6af6badb33cf99c8cc3df51d2c77f2ef35"
+  integrity sha1-4PILava62zPPmcjMPfUdLHfy7zU=
+
 vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
