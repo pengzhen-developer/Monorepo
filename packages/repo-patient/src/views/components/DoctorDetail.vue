@@ -393,6 +393,7 @@ export default {
     margin-bottom: 0;
   }
   .outline {
+    padding-bottom: 0;
     margin: 0;
     padding: 5px 10px 10px 10px;
   }
@@ -475,6 +476,7 @@ export default {
   }
   /*list-three*/
   .list-three {
+    padding: 5px;
     justify-content: center;
   }
   .list-three .list-icon {

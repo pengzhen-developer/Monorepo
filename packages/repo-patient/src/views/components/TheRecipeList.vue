@@ -138,6 +138,7 @@ export default {
 <style lang="scss" scoped>
 .the-recipe-list {
   min-height: 100%;
+  height: 100%;
   padding: 15px;
   &.bg {
     background: #f5f5f5;
