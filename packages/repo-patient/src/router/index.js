@@ -725,7 +725,6 @@ let cacheRoute = null
 router.beforeEach((to, from, next) => {
   $peace.routerStack = $peace.routerStack || []
   $peace.routerStack.push(to)
-  $peace.referrer = from
 
   // 根据 route 参数修改 keepAlive
   if (to.params.hasOwnProperty('keepAlive')) {
@@ -761,9 +760,6 @@ router.beforeEach((to, from, next) => {
 
   // 2. 需要验证权限的情况下
   if (to.meta.auth === true) {
-    // 记录 referrer
-    peace.referrer = to
-
     // 验证权限
     if (
       peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
@@ -772,6 +768,8 @@ router.beforeEach((to, from, next) => {
     ) {
       return next()
     } else {
+      // 记录 referrer
+      $peace.referrer = to
       //当切换到登录界面时，记录登录后应该跳转的界面；
       cacheRoute = to
       return next(peace.config.system.noAuthPage)
