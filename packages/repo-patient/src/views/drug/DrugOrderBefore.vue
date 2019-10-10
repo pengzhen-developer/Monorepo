@@ -144,25 +144,29 @@ export default {
       let params = {code, orderNo};
       peace.service.index.GetWxLoginStatus(params).then((res) => {
         let data = res.data;
-        that.onBridgeReady(data);
+        that.onBridgeReady(data, orderNo);
       })
     }
   },
   methods: {
-    onBridgeReady(data){
+    onBridgeReady(data, orderId){
       let that = this;
       WeixinJSBridge.invoke(
               'getBrandWCPayRequest', data,
               function(res){
+                //alert(res.err_msg)
                 //alert(res.err_msg);
                 if(res.err_msg == "get_brand_wcpay_request:ok" ){
                   // 使用以上方式判断前端返回,微信团队郑重提示：
                   //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                  const json = peace.util.encode({ OrderId: data.OrderId })
+                  const json = peace.util.encode({ OrderId: orderId })
+                  //alert(orderId);
                   that.$router.push(`/order/userDrugDetail/${json}`)
                 }
                 if(res.err_msg == "get_brand_wcpay_request:fail" ){
-                  console.log('fail');
+                  const json = peace.util.encode({ OrderId: orderId })
+                  //alert(orderId);
+                  that.$router.push(`/order/userDrugDetail/${json}`)
                 }
                 if(res.err_msg == "get_brand_wcpay_request:cancel" ){
                   console.log('cancel');
@@ -204,7 +208,7 @@ export default {
             //没有经过授权
             let data= res.data;
             if(data) {
-              that.onBridgeReady(data);
+              that.onBridgeReady(data, orderNo);
             } else {
               let appid = 'wx78d7ae35932558e6';
               let redirect_uri = location.href + "?" +  'orderId='+orderNo;
