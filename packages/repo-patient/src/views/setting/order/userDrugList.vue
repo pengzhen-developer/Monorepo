@@ -157,7 +157,8 @@ export default {
             that.$router.push(`/order/userDrugDetail/${json}`)
           }
           if(res.err_msg == "get_brand_wcpay_request:fail" ){
-            console.log('fail');
+            const json = peace.util.encode({ OrderId: orderId })
+            that.$router.push(`/order/userDrugDetail/${json}`)
           }
           if(res.err_msg == "get_brand_wcpay_request:cancel" ){
             console.log('cancel');
