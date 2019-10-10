@@ -320,14 +320,12 @@ export default {
         }
         .tags {
           span {
-            padding: 2px 10px;
-            background: rgba(229, 249, 246, 1);
-            border-radius: 1px;
-            font-size: 9px;
-            font-weight: 400;
-            color: rgba(0, 198, 174, 1);
-            line-height: 13px;
+            color: #00c6ae;
+            border-radius: 2.5px;
+            padding: 2.5px 7px;
+            font-size: 11px;
             margin-right: 5px;
+            background: #e5f9f6;
           }
         }
       }

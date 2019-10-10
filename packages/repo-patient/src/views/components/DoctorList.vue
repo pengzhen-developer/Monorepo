@@ -178,7 +178,7 @@ export default {
   .item {
     width: 100%;
     display: flex;
-    padding: 15px;
+    padding: 15px 15px 5px 15px;
     border-bottom: 1px solid #efefef;
 
     .avatar {
@@ -213,7 +213,7 @@ export default {
       }
 
       .title-description {
-        margin: 0 0 15px 0;
+        margin: 0 0 10px 0;
         color: #999999;
 
         .title-description-label {

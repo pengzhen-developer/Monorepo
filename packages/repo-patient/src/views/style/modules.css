@@ -66,8 +66,8 @@
   border-radius: 2.5px;
   padding: 2.5px 7px;
   font-size: 11px;
-  margin-right:5px;
-  background: #E5F9F6;
+  margin-right: 5px;
+  background: #e5f9f6;
 }
 
 .cards {
@@ -155,7 +155,7 @@
 
 .none-page .icon {
   margin: 0 auto;
-  margin-top: 150px;
+  margin-top: -50px;
   width: 160px;
   height: 100px;
   display: block;
@@ -301,7 +301,7 @@ panel
 
 .outline .outline-header {
   position: relative;
-  margin: 15px 15px 0 0;
+  margin: 5px 15px 0 0;
   font-size: 16px;
 }
 
@@ -351,7 +351,6 @@ panel
 
 /*******************outline-end****************/
 
-
 /**************appoint-scroll-x**************************/
 .scroll-x {
   box-sizing: border-box;
@@ -392,14 +391,14 @@ panel
   font-size: 11px;
   font-weight: normal;
 }
-.scroll-items .item.disabled{
-  color: #C4C4C4;
+.scroll-items .item.disabled {
+  color: #c4c4c4;
 }
-.scroll-items .item.disabled .week{
-  color: #C4C4C4;
+.scroll-items .item.disabled .week {
+  color: #c4c4c4;
 }
-.scroll-items .item.disabled .time{
-  color: #C4C4C4;
+.scroll-items .item.disabled .time {
+  color: #c4c4c4;
 }
 .scroll-items .item.active {
   color: #fff;

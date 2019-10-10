@@ -27,17 +27,17 @@
     </div>
 
     <van-cell-group>
-      <van-cell icon="friends-o"
+      <van-cell icon="none ic-profile_ic_myfamily"
                 is-link
                 title="我的家人"
                 to="/setting/myFamilyMembers"
                 value />
-      <van-cell icon="manager-o"
+      <van-cell icon="none ic-profile_ic_mydoctor"
                 is-link
                 title="我的医生"
                 to="/setting/userDoctorList"
                 value />
-      <van-cell icon="location-o"
+      <van-cell icon="none ic-profile_ic_address"
                 is-link
                 title="收货地址"
                 to="/setting/AdressManger"

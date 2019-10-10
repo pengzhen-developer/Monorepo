@@ -23,7 +23,7 @@
            v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
         <div class="list-items list-vertical-icon">
           <div class="icon icon_hsp"></div>
-          {{doctor.doctorInfo.hospitalName}} {{doctor.doctorInfo.deptName}}
+          <span>{{doctor.doctorInfo.hospitalName}} {{doctor.doctorInfo.deptName}}</span>
         </div>
       </div>
       <div class="outline nmgb"
@@ -394,7 +394,7 @@ export default {
   }
   .outline {
     margin: 0;
-    padding: 10px;
+    padding: 5px 10px 10px 10px;
   }
   .outline.border {
     border-top: 1px solid #f5f5f5;

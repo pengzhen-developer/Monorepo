@@ -150,6 +150,9 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+.van-sidebar-item--select {
+  border-color: $-color--primary;
+}
 .card {
   border-bottom: 1px solid #e8e8e8;
   border-top: 1px solid #e8e8e8;
