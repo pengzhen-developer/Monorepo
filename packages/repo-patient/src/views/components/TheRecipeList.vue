@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <template v-if="$peace.cache.get($peace.type.USER.INFO)">
       <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
         <div :data-index="index"
@@ -45,15 +45,16 @@
       </div>
     </template>
     <template v-else>
-      <div style="display: flex; flex-direction: column; height: 100vh; background: #F8FDFD; ">
-        <div style="flex: 1; padding: 20px 16px;">
+      <div
+           style="display: flex; flex-direction: column; height: 100%; background: #F8FDFD; justify-content: center; align-items: center;">
+        <div style="flex: 1; padding: 30px 16px 0 16px; overflow: auto">
           <h4
-              style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0">
+              style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0; text-align: center;">
             登录后即可查看医生为您开具的处方、快捷取药</h4>
           <img src="@src/assets/images/no-login.png">
         </div>
-        <div style="padding: 10px;">
-          <van-button style="width: 100%;"
+        <div style="padding: 16px; height: 100px; width: 100%; ">
+          <van-button style="width: 100%; height: 50px; font-size: 16px;"
                       @click="toLogin()"
                       type="primary">立即登录</van-button>
         </div>
