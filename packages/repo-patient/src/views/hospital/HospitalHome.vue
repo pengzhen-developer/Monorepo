@@ -18,12 +18,11 @@
         <div class="intro"
              @click="brief.visible = true">医院简介</div>
       </div>
-      <div class="location"
-           @click="goMap()">
-        <span class="name">{{ hospitalInfo.nethospitalInfo.address }}</span>
+      <div class="location">
+        <span class="name" @click="goMap()">{{ hospitalInfo.nethospitalInfo.address }}</span>
         <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
            v-if="hospitalInfo.nethospitalInfo.phoneNumber"
-           class="tel"></a>
+           class="tel"><img src="../../assets/images/newIndex/ic_phone.png"></a>
       </div>
 
       <div class="notice">
@@ -345,9 +344,11 @@ export default {
     .location {
       display: flex;
       justify-content: space-between;
-      height: 40px;
+      min-height: 40px;
       align-items: center;
       border-bottom: 1px solid #eeeeee;
+      padding-top: 5px;
+      padding-bottom: 10px;
       .name {
         font-size: 14px;
         color: rgba(51, 51, 51, 1);
@@ -363,10 +364,15 @@ export default {
         }
       }
       .tel {
-        width: 14px;
-        height: 17px;
-        background: url('../../assets/images/newIndex/ic_phone.png');
-        background-size: 100% 100%;
+        width: 30px;
+        height: 30px;
+        display: block;
+        img {
+          width: 15px;
+          height: 17px;
+        }
+        /*background: url('../../assets/images/newIndex/ic_phone.png');*/
+        /*background-size: 100% 100%;*/
       }
     }
     .notice {
