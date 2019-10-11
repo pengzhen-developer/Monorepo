@@ -200,7 +200,8 @@ export default {
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         deptId: item.id,
         txt: item.netdeptName,
-        txtId: item.id
+        txtId: item.id,
+        type: 'departDoctorList'
       })
       this.$router.push(`/components/doctorList/${json}`)
     },

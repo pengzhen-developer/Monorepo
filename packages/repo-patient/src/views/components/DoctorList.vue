@@ -80,7 +80,7 @@ export default {
     get() {
       const params = peace.util.decode(this.$route.params.json)
 
-      if (params.type === 'starDoctorList') {
+      if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
           this.doctorList = res.data
         })
