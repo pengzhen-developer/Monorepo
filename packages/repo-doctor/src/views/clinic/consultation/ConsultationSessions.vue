@@ -96,16 +96,6 @@ export default {
       }
     },
 
-    getConsultationStatus(session) {
-      return Object.keys(peace.type.INQUIRY.INQUIRY_STATUS).find(
-        key => peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.consultInfo.consultationStatus
-      )
-    },
-
-    getConsultationType(session) {
-      return Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.consultInfo.consultationType)
-    },
-
     selectSession(session) {
       const doneHandler = (error, message) => {
         console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)

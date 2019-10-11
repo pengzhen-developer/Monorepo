@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <peace-dialog :visible.sync="drug.visible" title="新增药品">
+    <peace-dialog :visible.sync="drug.visible" @close="closeDialog" title="新增药品">
       <el-form :model="drug.model" :rules="drug.rules" label-position="right" label-width="80px" ref="form">
         <el-form-item label="药品名称" prop="drugid">
           <el-autocomplete
@@ -230,6 +230,8 @@ export default {
   },
 
   created() {
+    this.drug._model = peace.util.deepClone(this.drug.model)
+
     const params = {
       hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
     }
@@ -383,6 +385,11 @@ export default {
     // 取消药品修改
     cancelDrug() {
       this.drug.visible = false
+    },
+
+    closeDialog() {
+      this.drug.model = peace.util.deepClone(this.drug._model)
+      this.$refs.form.resetFields()
     },
 
     // 保存药品到处方

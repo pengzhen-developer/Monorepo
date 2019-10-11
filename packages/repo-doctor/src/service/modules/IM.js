@@ -95,6 +95,7 @@ export function onDisConnect(disConnectObject) {
   console.warn('【 IM 】【 onDisConnect 】', new Date(), disConnectObject)
 
   switch (disConnectObject.code) {
+    case 302:
     case 417:
     case 'kicked':
       peace.util.warning(disConnectObject.message)

@@ -2,7 +2,7 @@
   <div class="consultation-session">
     <div class="header">
       <div class="header-left">
-        <h4>{{ $store.getters['consultation/patientInfo'].familyName }}</h4>
+        <!-- <h4>{{ $store.getters['consultation/patientInfo'].familyName }}</h4> -->
       </div>
       <div class="header-right">
         <el-button type="text">{{ getConsultStatus() }}</el-button>
@@ -45,10 +45,27 @@
           </template>
 
           <template
-            v-else-if="$peace.consultationComponent.getIntervalStatus($store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束"
+            v-if="$peace.consultationComponent.getIntervalStatus($store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束"
           >
             <ConsultationSessionToEnd></ConsultationSessionToEnd>
           </template>
+
+          <div style="text-align: center" v-if="tips">
+            <div
+              class="message-body"
+              style="color: #333333;
+                     background: #f3f3f3;
+                     white-space: pre-wrap;
+                     word-wrap: break-word;
+                     padding: 2px 10px;
+                     display: inline-block;
+                     border-radius: 4px;
+                     max-width: 80%;"
+            >
+              <span>{{ tips }}</span>
+              <el-button @click="showConsultDetail" type="text" v-if="tipsSource === 'receive'">立即关闭</el-button>
+            </div>
+          </div>
 
           <ConsultationSessionMessageList></ConsultationSessionMessageList>
         </el-scrollbar>
@@ -58,6 +75,10 @@
         <ConsultationSessionMessageInput></ConsultationSessionMessageInput>
       </div>
     </div>
+
+    <peace-dialog :visible.sync="dialog.visible" title="会诊详情" width="550px">
+      <TheConsultationDetail :data="dialog.data" @close="() => dialog.visible = false"></TheConsultationDetail>
+    </peace-dialog>
   </div>
 </template>
 
@@ -69,63 +90,44 @@ import ConsultationSessionToEnd from './ConsultationSessionToEnd'
 import ConsultationSessionMessageList from './ConsultationSessionMessageList'
 import ConsultationSessionMessageInput from './ConsultationSessionMessageInput'
 
+import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+
 export default {
   components: {
     ConsultationSessionToBegin,
     ConsultationSessionToEnd,
     ConsultationSessionMessageList,
-    ConsultationSessionMessageInput
+    ConsultationSessionMessageInput,
+
+    TheConsultationDetail
   },
 
   data() {
-    return {}
-  },
+    return {
+      tips: '',
+      tipsSource: '',
+      tipsForConsult: '',
 
-  computed: {
-    consultationStatusToBegin() {
-      const session = this.$store.state.consultation.session
-
-      // 等待会诊, 并且当前时间小于期望时间
-      if (session && session.content && session.content.consultInfo) {
-        if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊) {
-          if (new Date() < dayjs(session.content.consultInfo.expectTime).toDate()) {
-            return true
-          }
-        }
+      dialog: {
+        visible: false,
+        data: {}
       }
-
-      return false
-    },
-
-    consultationStatusToEnd() {
-      const session = this.$store.state.consultation.session
-
-      // 等待会诊, 并且当前时间大于期望时间, 小于期望结束时间
-      if (session && session.content && session.content.consultInfo) {
-        if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊) {
-          if (new Date() > dayjs(session.content.consultInfo.expectTime).toDate() && new Date() < dayjs(session.content.consultInfo.expectOverTime).toDate()) {
-            return true
-          }
-        }
-      }
-
-      return false
-    },
-
-    consultationStatusToMessageList() {
-      const session = this.$store.state.consultation.session
-
-      if (session && session.content && session.content.consultInfo) {
-        if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中) {
-          return true
-        }
-      }
-
-      return false
     }
   },
 
-  created() {},
+  activated() {
+    this.checkStatus(this.$store.state.consultation.session)
+  },
+
+  watch: {
+    '$store.state.consultation.session'(val) {
+      this.checkStatus(val)
+    }
+  },
+
+  created() {
+    this.checkStatus(this.$store.state.consultation.session)
+  },
 
   methods: {
     getConsultStatus() {
@@ -136,6 +138,54 @@ export default {
 
     sendVideo() {
       $peace.consultationVideoComponent.sendVideo()
+    },
+
+    showConsultDetail() {
+      this.dialog.visible = true
+      this.dialog.data = {}
+
+      const params = {
+        consultNo: this.tipsForConsult.consultNo
+      }
+
+      peace.service.consult.getConsultInfo(params).then(res => {
+        this.dialog.data = res.data.info
+      })
+    },
+
+    checkStatus(session) {
+      this.tipsSource = ''
+      this.tips = ''
+
+      if (session && session.id) {
+        // 判断是否存在未完成的会诊编号
+        peace.service.consult.getConsultNo().then(res => {
+          // 存在正在进行中的会诊，并且选中的不是当前正在会诊中的会诊
+          if (res.data.consultNo && res.data.teamId && res.data.consultNo !== session.content.consultInfo.consultNo) {
+            peace.service.consult.getInfoByTeamId({ teamIdList: [res.data.teamId] }).then(consult => {
+              const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
+
+              consult.data.list.forEach(item => {
+                const startDoctor = item.consultInfo.startDoctor
+                const receiveDoctor = item.consultInfo.receiveDoctor
+
+                // 当前人是发起方？
+                if (startDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'start'
+                  this.tips = '您正在与' + receiveDoctor.map(item => item.doctorName).join(',') + '医生进行会诊，无法开启新的会诊'
+                  this.tipsForConsult = res.data
+                }
+                // 当前人是发起方？
+                else if (receiveDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'receive'
+                  this.tips = '您正在与' + startDoctor.map(item => item.doctorName).join(',') + '医生进行会诊，无法开启新的会诊，是否立即关闭？'
+                  this.tipsForConsult = res.data
+                }
+              })
+            })
+          }
+        })
+      }
     }
   }
 }

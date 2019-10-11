@@ -213,7 +213,7 @@
 
           <div style="text-align: center; margin: 20px 0 0 0;">
             <el-button @click="receiveDialog.visible = false">取消</el-button>
-            <el-button @click="confirmReceipt" type="primary">提交</el-button>
+            <el-button @click="confirmReceipt" type="primary">确定</el-button>
           </div>
         </template>
       </el-form>

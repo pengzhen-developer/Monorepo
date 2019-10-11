@@ -35,15 +35,21 @@
       </div>
       <div class="info-row two-cols">
         <div class="info-row-label">
+          <span>开具时间</span>
+        </div>
+        <div class="info-row-content small-text">{{ internalData.PrescriptionTime }}</div>
+        <div class="info-row-label">
+          <span>病历号</span>
+        </div>
+        <div class="info-row-content small-text">{{ internalData.caseNo }}</div>
+      </div>
+      <div class="info-row two-cols">
+        <div class="info-row-label">
           <span>处方诊断</span>
         </div>
         <div class="info-row-content">
           <span :key="d.DiagnosisName" v-for="d in internalData.DiagnosisInfos">{{ d.DiagnosisName }}</span>
         </div>
-        <div class="info-row-label">
-          <span>开具时间</span>
-        </div>
-        <div class="info-row-content small-text">{{ internalData.PrescriptionTime }}</div>
       </div>
     </div>
     <div class="rp-title">Rp</div>
