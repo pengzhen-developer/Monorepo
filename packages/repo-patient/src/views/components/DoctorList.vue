@@ -175,6 +175,8 @@ export default {
 
 <style lang="scss" scoped>
 .doctor-list {
+  height: 100%;
+
   .item {
     width: 100%;
     display: flex;

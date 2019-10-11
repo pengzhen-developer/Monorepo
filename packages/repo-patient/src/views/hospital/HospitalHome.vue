@@ -19,7 +19,8 @@
              @click="brief.visible = true">医院简介</div>
       </div>
       <div class="location">
-        <span class="name" @click="goMap()">{{ hospitalInfo.nethospitalInfo.address }}</span>
+        <span class="name"
+              @click="goMap()">{{ hospitalInfo.nethospitalInfo.address }}</span>
         <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
            v-if="hospitalInfo.nethospitalInfo.phoneNumber"
            class="tel"><img src="../../assets/images/newIndex/ic_phone.png"></a>
@@ -112,16 +113,17 @@
       </div>
     </section>
 
-    <van-dialog style="background: transparent;"
+    <van-dialog style="background: transparent; "
                 v-model="brief.visible"
                 :show-cancel-button="false"
                 :showConfirmButton="false">
       <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px;"
+        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;"
              :src="hospitalInfo.nethospitalInfo.icon">
       </div>
-      <div style="padding: 40px 20px 20px 20px; background: #fff;">
-        <span>{{ hospitalInfo.nethospitalInfo.brief }}</span>
+      <div
+           style="padding: 40px 20px 20px 20px; background: #fff; max-height: 50vh; overflow: auto; border-radius: 8px;">
+        <span style="text-align: justify;">{{ hospitalInfo.nethospitalInfo.brief }}</span>
       </div>
       <div style="text-align: center; margin: 30px 0 0 0;">
         <van-icon @click="brief.visible = false"

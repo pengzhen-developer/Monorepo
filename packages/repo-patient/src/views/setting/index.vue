@@ -83,8 +83,8 @@ export default {
   },
   methods: {
     signOut() {
-      // 清空所有缓存
-      peace.cache.clear()
+      // 清空登录缓存
+      peace.cache.remove(peace.type.USER.INFO)
 
       setTimeout(() => {
         // 重定向

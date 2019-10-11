@@ -131,8 +131,8 @@ axios.interceptors.response.use(
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
-        // 清空所有缓存
-        $peace.cache.clear()
+        // 清空登录信息
+        $peace.cache.remove($peace.type.USER.INFO)
         // 跳转提示页
         router.replace($peace.config.system.noAuthPage)
 
