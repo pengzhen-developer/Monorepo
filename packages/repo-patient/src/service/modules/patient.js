@@ -14,6 +14,19 @@ export function getDoctorList(params) {
 }
 
 /**
+ * 获取所有医生（明星医生）列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getNetHospitalDoctorList(params) {
+  const getNetHospitalDoctorList = 'client/v1/Doctor/getNetHospitalDoctorList'
+
+  return peace.http.post(getNetHospitalDoctorList, params)
+}
+
+/**
  * 获取我的家人
  *
  * @export
@@ -221,9 +234,70 @@ export function getOrderDetail(params) {
   return peace.http.post(getOrderDetail, params)
 }
 
+/**
+ * 获取用药商店列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getStoresList(params) {
+  const getStoreLists = 'client/v1/Purchasedrug/SelectDrugStoreApi'
+
+  return peace.http.post(getStoreLists, params)
+}
+
+/**
+ * 获取生成订单页面
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getOrderBefore(params) {
+  const getOrderBefore = 'client/v1/Purchasedrug/SelectDrugStoreDetApi'
+
+  return peace.http.post(getOrderBefore, params)
+}
+
+export function submitOrder(params) {
+  const submitOrder = 'client/v1/Purchasedrug/CreateOrderApi'
+
+  return peace.http.post(submitOrder, params)
+}
+
+/**
+ * 获取我的地址列表
+ *
+ * @export
+ * @returns
+ */
+export function getAddressLists() {
+  const getAddressLists = 'client/v1/Address/getAddressLists'
+  return peace.http.post(getAddressLists)
+}
+
+/**
+ * 删除地址
+ *
+ * @export
+ * @returns
+ */
+export function addAddress(params) {
+  const getAddressLists = 'client/v1/Address/addAddress'
+  return peace.http.post(getAddressLists, params)
+}
+
+export function delAddress(params) {
+  const delAddress = 'client/v1/Address/delAddress'
+  return peace.http.post(delAddress, params)
+}
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
+  /** 获取所有医生（明星医生）列表 */
+  getNetHospitalDoctorList,
   /** 获取我的医生列表 */
   getUserDctList,
   /** 获取我的家人 */
@@ -255,5 +329,17 @@ export default {
   /** 获取最后一个就诊人 */
   getLast,
   /** 关注医生 */
-  attention
+  attention,
+  /** 获取附近商店列表**/
+  getStoresList,
+  /** 获取提交订单页面**/
+  getOrderBefore,
+  /** 提交订单 **/
+  submitOrder,
+  /** 获取我的地址列表 **/
+  getAddressLists,
+  /** 添加地址 */
+  addAddress,
+  /** 删除地址 */
+  delAddress
 }

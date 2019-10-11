@@ -8,7 +8,7 @@ import peace from '@src/library'
  * @returns
  */
 export function sendSms(params) {
-  const sendSms = 'h5/v1/Account/sendSms'
+  const sendSms = 'wap/v1/Account/sendSms'
 
   return peace.http.post(sendSms, params)
 }
@@ -21,7 +21,7 @@ export function sendSms(params) {
  * @returns
  */
 export function login(params) {
-  const login = 'h5/v1/Account/login'
+  const login = 'wap/v1/Account/login'
 
   return peace.http.post(login, params)
 }

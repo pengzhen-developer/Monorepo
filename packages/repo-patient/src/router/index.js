@@ -6,12 +6,14 @@ import peace from '@src/library'
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
+  base: process.env.VUE_APP_RELEASE_FLODER_PATH,
   routes: [
     {
       path: '/',
       name: '/',
       meta: {
-        auth: true
+        auth: false
       },
       component: () => import('@src/views/components/layout/index.vue'),
 
@@ -28,7 +30,41 @@ const router = new Router({
               title: '首页'
             }
           },
-          component: () => import('@src/views/home/index.vue')
+          component: () => {
+            if ($peace.cache.get($peace.type.SYSTEM.PARAMS)) {
+              return import('@src/views/hospital/HospitalHome.vue')
+            } else {
+              return import('@src/views/home/index.vue')
+            }
+          }
+        },
+        // 医院首页
+        {
+          path: '/home/index/:json',
+          name: '/home/index',
+          meta: {
+            auth: false,
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '首页'
+            }
+          },
+          component: () => import('@src/views/hospital/HospitalHome.vue')
+        },
+        {
+          path: '/home/map/:json',
+          name: '/home/map',
+          meta: {
+            auth: false,
+            keepAlive: true,
+            tabBar: true,
+            navbar: {
+              title: '地图',
+              back: true
+            }
+          },
+          component: () => import('@src/views/home/map.vue')
         },
         // 消息
         {
@@ -102,12 +138,26 @@ const router = new Router({
           component: () => import('@src/views/setting/UserConsultList.vue')
         },
 
+        // 咨询详情
+        {
+          path: '/setting/userConsultDetail/:json',
+          name: '/setting/userConsultDetail',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '咨询详情',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/ConsultDetail.vue')
+        },
+
         // 用药建议
         {
           path: '/components/theRecipeList/:json',
           name: '/components/theRecipeList/:json',
           meta: {
-            auth: true,
+            auth: false,
             navbar: {
               title: '用药建议',
               back: true
@@ -115,7 +165,72 @@ const router = new Router({
           },
           component: () => import('@src/views/components/TheRecipeList.vue')
         },
+        // 用药建议详情（处方详情）
+        {
+          path: '/components/theRecipe/:json',
+          name: '/components/theRecipe/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '用药建议',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/TheRecipe.vue')
+        },
+        // 咨询小结（病历详情）
+        {
+          path: '/components/theCase/:json',
+          name: '/components/theCase/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '咨询小结',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/TheCase.vue')
+        },
 
+        // 用药建议
+        {
+          path: '/drug/list/:json',
+          name: 'druglist',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '药房列表',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugListPharmacy.vue')
+        },
+        // 地图选择
+        {
+          path: '/drug/selectMap/:json',
+          name: 'DrugMapSelect',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择地点',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugMapSelect.vue')
+        },
+        // 提交订单
+        {
+          path: '/drug/drugOrderBefore/:json',
+          name: 'drugOrderBefore',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '提交订单',
+              back: true
+            }
+          },
+          component: () => import('@src/views/drug/DrugOrderBefore.vue')
+        },
         // 医生列表
         {
           path: '/components/doctorList/:json',
@@ -131,10 +246,10 @@ const router = new Router({
         },
         // 消息列表
         {
-          path: '/components/messageList',
+          path: '/components/messageList/:json',
           name: '/components/messageList',
           meta: {
-            auth: false
+            auth: true
           },
           component: () => import('@src/views/components/MessageList.vue')
         },
@@ -163,6 +278,32 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/components/DoctorInquiryApply.vue')
+        },
+        // 申请图文问诊 - 订单支付
+        {
+          path: '/components/doctorInquiryPay/:json',
+          name: '/components/doctorInquiryPay/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '支付方式',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/DoctorInquiryPay.vue')
+        },
+        // 申请图文问诊 - 订单支付结果
+        {
+          path: '/components/doctorInquiryPayResult/:json',
+          name: '/components/doctorInquiryPayResult/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '支付结果',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/DoctorInquiryPayResult.vue')
         },
 
         // 添加既往史
@@ -231,6 +372,34 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/hospital/HospitalList.vue')
+        },
+        // 医院通知列表
+        {
+          path: '/hospital/HospitalNoticesList/:json',
+          name: '/hospital/HospitalNoticesList',
+          meta: {
+            keepAlive: false,
+            auth: false,
+            navbar: {
+              title: '医院通知',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/notice/HospitalNoticesList.vue')
+        },
+        // 医院通知详情
+        {
+          path: '/hospital/HospitalNoticesDetail/:json',
+          name: '/hospital/HospitalNoticesDetail',
+          meta: {
+            keepAlive: false,
+            auth: false,
+            navbar: {
+              title: '医院通知',
+              back: true
+            }
+          },
+          component: () => import('@src/views/hospital/notice/HospitalNoticesDetail.vue')
         },
         // 医院主页
         {
@@ -322,6 +491,54 @@ const router = new Router({
           component: () => import('@src/views/setting/userDoctorList.vue')
         },
         {
+          path: '/setting/AdressManger',
+          name: '/setting/AdressManger',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '地址管理',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/AdressManger.vue')
+        },
+        {
+          path: '/setting/SelectAddressManger/:json',
+          name: '/setting/SelectAddressManger',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '选择地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/SelectAddressManger.vue')
+        },
+        {
+          path: '/setting/userAddressEdit/:json',
+          name: '/setting/userAddressEdit',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '编辑地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/userAddressEdit.vue')
+        },
+        {
+          path: '/setting/userAddressEdit',
+          name: '/setting/userAddressEdit',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '添加新地址',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/userAddressEdit.vue')
+        },
+        {
           path: '/setting/order/userOrderList',
           name: '/setting/order/userOrderList',
           meta: {
@@ -332,6 +549,18 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/order/userOrderList.vue')
+        },
+        {
+          path: '/setting/order/userDrugList',
+          name: '/setting/order/userDrugList',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '购药记录',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugList.vue')
         },
         {
           path: '/setting/order/userOrderDetail/:json',
@@ -388,12 +617,12 @@ const router = new Router({
           path: '/diagnose/diagnoseHome/:json',
           name: '/diagnose/diagnoseHome',
           meta: {
-              keepAlive: true,
-              auth: false,
-              navbar: {
-                  title: '疾病',
-                  back: true
-              }
+            keepAlive: true,
+            auth: false,
+            navbar: {
+              title: '疾病',
+              back: true
+            }
           },
           component: () => import('@src/views/diagnose/diagnoseHome.vue')
         },
@@ -401,12 +630,12 @@ const router = new Router({
           path: '/diagnose/diagnoseGroup/:json',
           name: '/diagnose/diagnoseGroup',
           meta: {
-              keepAlive: true,
-              auth: false,
-              navbar: {
-                  title: '疾病人群',
-                  back: true
-              }
+            keepAlive: true,
+            auth: false,
+            navbar: {
+              title: '疾病人群',
+              back: true
+            }
           },
           component: () => import('@src/views/diagnose/diagnoseGroup.vue')
         },
@@ -414,12 +643,12 @@ const router = new Router({
           path: '/diagnose/select/diagnoseSelectHumen/:json',
           name: '/diagnose/select/diagnoseSelectHumen',
           meta: {
-              keepAlive: true,
-              auth: false,
-              navbar: {
-                  title: '常见人群',
-                  back: true
-              }
+            keepAlive: true,
+            auth: false,
+            navbar: {
+              title: '常见人群',
+              back: true
+            }
           },
           component: () => import('@src/views/diagnose/select/diagnoseSelectHumen.vue')
         },
@@ -435,6 +664,55 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/diagnose/diagnoseName.vue')
+        },
+
+        {
+          path: '/inter/drugInterList/:json',
+          name: '/inter/drugInterList',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '说明书',
+              back: true
+            }
+          },
+          component: () => import('@src/views/inter/DrugInterList.vue')
+        },
+        {
+          path: '/inter/drugInterDetail/:json',
+          name: '/inter/drugInterDetail',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '说明书',
+              back: true
+            }
+          },
+          component: () => import('@src/views/inter/DrugInterDetail.vue')
+        },
+        {
+          path: '/order/userDrugDetail/:json',
+          name: '/order/userDrugDetail',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '订单详情',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugDetail.vue')
+        },
+        {
+          path: '/order/userDrugLogistics/:json',
+          name: '/order/userDrugLogistics',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '订单状态',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/order/userDrugLogistics.vue')
         }
       ]
     },
@@ -447,8 +725,12 @@ const router = new Router({
   ]
 })
 
+// 临时记录登录后需要调整的Route信息；
+let cacheRoute = null
+
 router.beforeEach((to, from, next) => {
-  $peace.referrer = from
+  $peace.routerStack = $peace.routerStack || []
+  $peace.routerStack.push(to)
 
   // 根据 route 参数修改 keepAlive
   if (to.params.hasOwnProperty('keepAlive')) {
@@ -458,6 +740,25 @@ router.beforeEach((to, from, next) => {
     to.meta.keepAlive = to.query.keepAlive
   }
 
+  //如果已经登录
+  if (
+    peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
+    peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo
+      .accessToken
+  ) {
+    if (from.name == peace.config.system.noAuthPage && cacheRoute != null) {
+      //通过中间变量保存到需要跳转的Route信息
+      const routerPath = cacheRoute.path
+      //清空对应的Route;
+      cacheRoute = null
+      //登录后跳转到用户操作需要跳转的页面
+      return next(routerPath)
+    } else if (to.name == peace.config.system.noAuthPage) {
+      //如果回退指向登录界面，跳到首页
+      return next(peace.config.system.homePage)
+    }
+  }
+
   // 1. 是否需要验证权限
   if (!to.meta.hasOwnProperty('auth') || to.meta.auth === false) {
     return next()
@@ -465,16 +766,18 @@ router.beforeEach((to, from, next) => {
 
   // 2. 需要验证权限的情况下
   if (to.meta.auth === true) {
-    // 记录 referrer
-    peace.referrer = to
-
     // 验证权限
     if (
       peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE) &&
-      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo.accessToken
+      peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE).loginInfo
+        .accessToken
     ) {
       return next()
     } else {
+      // 记录 referrer
+      $peace.referrer = to
+      //当切换到登录界面时，记录登录后应该跳转的界面；
+      cacheRoute = to
       return next(peace.config.system.noAuthPage)
     }
   }

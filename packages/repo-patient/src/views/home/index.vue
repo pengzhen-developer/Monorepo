@@ -1,11 +1,18 @@
 <template>
-  <div class="home-layout" v-if="data && data.guide">
+  <div class="home-layout"
+       v-if="data && data.guide">
     <div class="banner">
       <div class="banner-img"></div>
     </div>
     <!--导流-->
-    <div class="panel panel-block panel-block-m panel-home" v-if="data.guide">
-      <div :doctortag="item.id" :key="item.id" @click="goMenuPage(item,{type:'guide'})" class="block-items" data-type="guide" v-for="item in data.guide">
+    <div class="panel panel-block panel-block-m panel-home"
+         v-if="data.guide">
+      <div :doctortag="item.id"
+           :key="item.id"
+           @click="goMenuPage(item,{type:'guide'})"
+           class="block-items"
+           data-type="guide"
+           v-for="item in data.guide">
         <div :class="[true ? 'block-ico' : '', item.icon]"></div>
         <div class="block-tit">{{item.text}}</div>
         <div class="block-small">{{item.small}}</div>
@@ -13,25 +20,49 @@
     </div>
     <!--三方-->
     <div class="panel panel-block panel-clear">
-      <div :id="item.id" :key="item.id" :type="item.id" @click="goMenuPage(item,{type:item.id})" class="block-items" v-for="item in data.card">
-        <div :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">{{item.text}}</div>
+      <div :id="item.id"
+           :key="item.id"
+           :type="item.id"
+           @click="goMenuPage(item,{type:item.id})"
+           class="block-items"
+           v-for="item in data.card">
+        <div
+             :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">
+          {{item.text}}</div>
       </div>
     </div>
-    <div class="panel flex" style="padding-top: 0;padding-bottom:0">
-      <div @click="goMenuPage('',{type:'userDoctor'})" class="card-simple icon_01_01_11" type="userDoctor">
+    <div class="panel flex"
+         style="padding-top: 0;padding-bottom:0">
+      <div @click="goMenuPage('',{type:'userDoctor'})"
+           class="card-simple icon_01_01_11"
+           type="userDoctor">
         <div class="card-tit">我的医生</div>
         <div class="card-brief">便捷查找您的医生</div>
       </div>
-      <div @click="goMenuPage('',{type:'userConsult'})" class="card-simple icon_01_01_12" type="userConsult">
+      <div @click="goMenuPage('',{type:'userConsult'})"
+           class="card-simple icon_01_01_12"
+           type="userConsult">
         <div class="card-tit">我的咨询</div>
         <div class="card-brief">个人咨询详情管理</div>
       </div>
     </div>
-    <DepartPage :items="data.department" :max="7" :moreIcon="data.moreIcon"></DepartPage>
-        <van-cell  @click="goMenuPage({},{type:'crowdLists'})" is-link value="常见人群"  style="border-top:10px solid #f5f5f5"/>
-        <Humens :data="data.crowdListsDisease" :items="data.crowdLists" :max="3"  style="padding-bottom:10px"></Humens>
-    <van-cell @click="goMenuPage({},{type:'recommendHsp'})" is-link value="推荐互联网医院"  style="border-top:10px solid #f5f5f5" />
-    <HspPage :items="data.recommendOrgan" :max="2"></HspPage>
+    <DepartPage :items="data.department"
+                :max="7"
+                :moreIcon="data.moreIcon"></DepartPage>
+    <van-cell @click="goMenuPage({},{type:'crowdLists'})"
+              is-link
+              value="常见人群"
+              style="border-top:10px solid #f5f5f5" />
+    <Humens :data="data.crowdListsDisease"
+            :items="data.crowdLists"
+            :max="3"
+            style="padding-bottom:10px"></Humens>
+    <van-cell @click="goMenuPage({},{type:'recommendHsp'})"
+              is-link
+              value="推荐互联网医院"
+              style="border-top:10px solid #f5f5f5" />
+    <HspPage :items="data.recommendOrgan"
+             :max="2"></HspPage>
   </div>
 </template>
 
@@ -78,17 +109,17 @@ export default {
           this.$router.push('/setting/userConsultList')
           break
         case 'record':
-          json = peace.util.encode({date: new Date()})
+          json = peace.util.encode({ date: new Date() })
           this.$router.push(`/record/recordCondition/${json}`)
           break
         case 'default':
-          json = peace.util.encode({date: new Date()})
+          json = peace.util.encode({ date: new Date() })
           this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
-          break;
+          break
         case 'crowdLists':
-          json = peace.util.encode({date: new Date()})
+          json = peace.util.encode({ date: new Date() })
           this.$router.push(`/diagnose/select/diagnoseSelectHumen/${json}`)
-          break;
+          break
         default:
           peace.util.alert('暂未开放')
           // _f.goMenuPage();

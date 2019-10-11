@@ -1,27 +1,36 @@
 <template>
-  <div>
-    <div class="content" v-if="doctorList.length">
-      <div :key="index" class v-for="(item,index) in doctorList">
-        <div
-          :class="['card-strip',item.isPrivateDoctor ?  '' : item.isPrivateDoctorOnce ? 'disabled' : '']"
-          v-if="item.isPrivateDoctor || item.isPrivateDoctorOnce"
-        >
+  <div style="height: 100%;">
+    <div class="content"
+         v-if="doctorList.length">
+      <div :key="index"
+           class
+           v-for="(item,index) in doctorList">
+        <div :class="['card-strip',item.isPrivateDoctor ?  '' : item.isPrivateDoctorOnce ? 'disabled' : '']"
+             v-if="item.isPrivateDoctor || item.isPrivateDoctorOnce">
           <div class="strip-info">
             <div class="label-jq">私人医生</div>
           </div>
-          <div class="strip-eye">{{ item.isPrivateDoctor ? item.endTime + '结束' : item.isPrivateDoctorOnce ? item.endTime + '已到期' : ''}}</div>
+          <div class="strip-eye">
+            {{ item.isPrivateDoctor ? item.endTime + '结束' : item.isPrivateDoctorOnce ? item.endTime + '已到期' : ''}}
+          </div>
         </div>
-        <div :id="item.doctorId" :index="index" @click="goHomeIndex(item)" class="card">
+        <div :id="item.doctorId"
+             :index="index"
+             @click="goHomeIndex(item)"
+             class="card">
           <div class="card-avatar avatar-circular">
-            <img :src="item.avartor" class />
+            <img :src="item.avartor"
+                 class />
           </div>
           <div class="card-body">
             <div class="card-name">
               {{item.name}}
               <div class="card-small">{{item.doctorTitle}} {{item.deptName}}</div>
             </div>
-            <div class="card-small" v-if="item.hospitalName">{{item.hospitalName}}</div>
-            <div class="card-brief" v-if="item.specialSkill">
+            <div class="card-small"
+                 v-if="item.hospitalName">{{item.hospitalName}}</div>
+            <div class="card-brief"
+                 v-if="item.specialSkill">
               <div class="span s">擅长：</div>
               <div class="span xl">{{item.specialSkill}}</div>
             </div>
@@ -30,7 +39,8 @@
       </div>
     </div>
 
-    <div class="none-page" v-else>
+    <div class="none-page"
+         v-else>
       <div class="icon icon_none_doctor"></div>
       <div class="none-text">暂无医生信息</div>
     </div>

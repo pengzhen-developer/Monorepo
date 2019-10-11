@@ -2,30 +2,50 @@
   <div class="setting">
     <div class="user-card">
       <div class="user-img">
-        <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png"/>
+        <img class="img-avatar"
+             mode="cover"
+             src="~@/assets/images/ic_head portrait.png" />
       </div>
       <div class="user-info">
         <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
         <!--        </button>-->
         <div>
-          <div>{{userInfo.patientInfo.realName}}</div>
+          <div style="font-size: 14px">用户{{userInfo.patientInfo.realName}}</div>
           <div>{{userInfo.patientInfo.tel}}</div>
         </div>
       </div>
     </div>
     <!--菜单-->
     <div class="block">
-      <div :key="item.id" @click="goMenuPage(item)" class="block-items block-transverse-icon" v-for="item in module">
+      <div :key="item.id"
+           @click="goMenuPage(item)"
+           class="block-items block-transverse-icon"
+           v-for="item in module">
         <div :class="['icon', item.icon]"></div>
         {{item.text}}
       </div>
     </div>
 
     <van-cell-group>
-      <van-cell icon="friends-o" is-link title="我的家人" to="/setting/myFamilyMembers" value />
-      <van-cell icon="manager-o" is-link title="我的医生" to="/setting/userDoctorList" value />
-      <!--      <van-cell icon="location-o" is-link title="收货地址" value />-->
-      <van-cell @click="signOut" icon="close" title="退出登录" value></van-cell>
+      <van-cell icon="none ic-profile_ic_myfamily"
+                is-link
+                title="我的家人"
+                to="/setting/myFamilyMembers"
+                value />
+      <van-cell icon="none ic-profile_ic_mydoctor"
+                is-link
+                title="我的医生"
+                to="/setting/userDoctorList"
+                value />
+      <van-cell icon="none ic-profile_ic_address"
+                is-link
+                title="收货地址"
+                to="/setting/AdressManger"
+                value />
+      <van-cell @click="signOut"
+                icon="close"
+                title="退出登录"
+                value></van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -85,7 +105,7 @@ export default {
           this.$router.push('/setting/order/userOrderList')
           break
         case 'drug':
-          peace.util.alert('敬请期待')
+          this.$router.push('/setting/order/userDrugList')
           break
         case 'prescrip':
           // todo
@@ -109,8 +129,9 @@ export default {
 
 /*user-card*/
 .user-card {
-  background-color: #00c6ae;
-  padding: (26px/2);
+  background-image: url('~@/assets/images/ic_my doctor.png');
+  background-size: 100% 100%;
+  padding: (32px/2);
   font-size: (34px/2);
   line-height: (34px/2);
   color: #fff;
@@ -128,7 +149,6 @@ export default {
   border-radius: 50%;
   /*box-shadow: (5px/2) (5px/2) #DDE1EA;*/
   flex: 0;
-  background-color: #7ce7da;
 }
 
 .user-card .user-info {
@@ -142,7 +162,7 @@ export default {
   background-color: #fff;
   display: flex;
   font-size: (30px/2);
-  border-top: (16px/2) solid #fff;
+  // border-top: (16px/2) solid #fff;
   border-bottom: (20px/2) solid #fff;
   padding: (30px/2) (40px/2) (20px/2) (40px/2);
   border-top-color: #7ce7da;

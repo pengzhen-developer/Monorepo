@@ -173,12 +173,14 @@ export default {
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
+      console.log('data', data);
       peace.service.appoint
         .orderSubmit(data)
         .then(res => {
-          this.goPage(res.data)
+          this.goToPay(res.data)
         })
         .catch(res => {
+          //debugger
           Dialog.alert({
             title: '预约失败',
             message: res.data.msg
@@ -187,13 +189,20 @@ export default {
           })
         })
     },
-    goPage(data) {
+    goToPay(data) {
       // this.showBtn = false
-
-      let json = peace.util.encode({
-        orderInfo: data.orderInfo
-      })
-      this.$router.push(`/setting/order/userOrderDetail/${json}`)
+      //debugger;
+      let {doctorName,doctorId} = data.doctorInfo;
+      let {orderNo, orderMoney} = data.orderInfo;
+      let typeName = '预约挂号';
+      let money = orderMoney;
+      let json = {money, typeName, doctorName, orderNo, doctorId};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
+      // let json = peace.util.encode({
+      //   orderInfo: data.orderInfo
+      // })
+      // this.$router.push(`/setting/order/userOrderDetail/${json}`)
     }
   }
 }

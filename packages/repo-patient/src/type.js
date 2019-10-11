@@ -20,7 +20,9 @@ export const SYSTEM = {
     LOCAL_STORAGE: 'localStorage',
     /** 存储类型 - sessionStorage */
     SESSION_STORAGE: 'sessionStorage'
-  }
+  },
+
+  PARAMS: 'params'
 }
 
 /**

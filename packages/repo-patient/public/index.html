@@ -6,13 +6,18 @@
     <!-- 避免IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- 设置移动端视图 -->
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+      name="viewport"
+    />
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit" />
     <!-- 设置苹果工具栏颜色 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <!-- 删除苹果默认的工具栏和菜单栏 -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- 启用 H5 拨打电话 -->
+    <meta name="format-detection" content="telephone=yes" />
 
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>loading...</title>
@@ -186,17 +191,22 @@
         (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52) ||
         (explore.explore === 'SAFARI' && parseInt(explore.version) < 11)
       ) {
-        window.location.href = './unCompatible.html'
+        // window.location.href = './unCompatible.html'
       }
     </script>
 
-    <script src="static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
-    <script src="static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
+    <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=<%= process.env.VUE_APP_MAP_KEY %>"></script>
   </head>
 
   <body>
     <noscript>
-      <strong> We're sorry but trunk doesn't work properly without JavaScript enabled. Please enable it to continue. </strong>
+      <strong>
+        We're sorry but trunk doesn't work properly without JavaScript enabled. Please enable it to
+        continue.
+      </strong>
     </noscript>
     <div id="app">
       <div class="loading-group">

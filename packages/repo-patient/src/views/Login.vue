@@ -3,12 +3,25 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field pattern="\d*" placeholder="请输入手机号" ref="tel" type="number" v-model="tel"></van-field>
-      <van-field clickable maxlength="6" pattern="\d*" placeholder="请输入验证码" type="number" v-model="smsCode">
-        <span @click="sendSms" class="login-form-smsCode" slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
+      <van-field pattern="\d*"
+                 placeholder="请输入手机号"
+                 ref="tel"
+                 type="number"
+                 v-model="tel"></van-field>
+      <van-field clickable
+                 maxlength="6"
+                 pattern="\d*"
+                 placeholder="请输入验证码"
+                 type="number"
+                 v-model="smsCode">
+        <span @click="sendSms"
+              class="login-form-smsCode"
+              slot="right-icon">{{ this.countDown === -1 ? '获取验证码' : this.countDown + 's' }}</span>
       </van-field>
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
+      <van-button @click="signIn"
+                  class="login-form-sign-in"
+                  type="primary">进入万家云医</van-button>
     </div>
 
     <!-- <div class="login-footer">
@@ -26,6 +39,7 @@ export default {
     return {
       tel: '',
       smsCode: '',
+      smsCodeDate: '',
       showKeyboardForSms: false,
       countDown: -1
     }
@@ -45,6 +59,7 @@ export default {
         peace.service.login
           .sendSms(params)
           .then(res => {
+            this.smsCodeDate = new Date()
             peace.util.alert(res.msg)
           })
           .finally(() => {
@@ -54,16 +69,22 @@ export default {
     },
 
     countDownIntervalHandler() {
+      const that = this
       this.countDown = 60
 
-      const countDownInterval = setInterval(() => {
-        if (this.countDown === 0) {
-          this.countDown = -1
+      const countDownIntervalFunc = () => {
+        const down = Math.ceil((new Date().getTime() - that.smsCodeDate.getTime()) / 1000)
+
+        if (down >= 60) {
+          that.countDown = -1
           window.clearInterval(countDownInterval)
         } else {
-          this.countDown = this.countDown - 1
+          that.countDown = 60 - down
         }
-      }, 1000)
+      }
+
+      countDownIntervalFunc()
+      const countDownInterval = setInterval(countDownIntervalFunc, 1000)
     },
 
     showKeyboard() {
@@ -89,9 +110,10 @@ export default {
         // 初始化 IM
         peace.service.IM.initNIM()
 
-        setTimeout(() => {
-          this.$router.push(peace.config.system.homePage)
-        }, 1000)
+        // 跳转 reffer
+        this.$router.push(
+          ($peace.referrer && $peace.referrer.fullPath) || peace.config.system.homePage
+        )
       })
     }
   }

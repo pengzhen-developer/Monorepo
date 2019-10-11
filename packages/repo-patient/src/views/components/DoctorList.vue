@@ -1,9 +1,13 @@
 <template>
   <div class="doctor-list">
     <template v-if="doctorList && doctorList.length > 0">
-      <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail(doctor.doctorInfo)" class="item" v-for="doctor in doctorList">
+      <div :key="doctor.doctorInfo.doctorId"
+           @click.prevent="redictToDetail(doctor.doctorInfo)"
+           class="item"
+           v-for="doctor in doctorList">
         <div>
-          <img :src="doctor.doctorInfo.avartor" class="avatar" />
+          <img :src="doctor.doctorInfo.avartor"
+               class="avatar" />
         </div>
         <div class="detail">
           <div class="title-doctor">
@@ -14,7 +18,8 @@
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
           </div>
-          <div class="title-description" v-if="doctor.doctorInfo.specialSkill">
+          <div class="title-description"
+               v-if="doctor.doctorInfo.specialSkill">
             <span class="title-description-label">擅长:</span>
             <span class="title-description-detail">{{doctor.doctorInfo.specialSkill}}</span>
           </div>
@@ -24,12 +29,18 @@
             </div>
 
             <div class="title-service-item">
-              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])" class="title-service-item" v-if="canShowImageInquiry(doctor)">
-                <img src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
+              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])"
+                   class="title-service-item"
+                   v-if="canShowImageInquiry(doctor)">
+                <img src="@src/assets/images/ic_tuwen.png"
+                     style="width: 20px;" />
                 <span>图文咨询</span>
               </div>
-              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])" class="title-service-item" v-if="canShowVideoInquiry(doctor)">
-                <img src="@src/assets/images/ic_video_open.png" style="width: 20px;" />
+              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])"
+                   class="title-service-item"
+                   v-if="canShowVideoInquiry(doctor)">
+                <img src="@src/assets/images/ic_video_open.png"
+                     style="width: 20px;" />
                 <span>视频咨询</span>
               </div>
             </div>
@@ -68,9 +79,16 @@ export default {
   methods: {
     get() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.patient.getDoctorList(params).then(res => {
-        this.doctorList = res.data
-      })
+
+      if (params.type === 'starDoctorList') {
+        peace.service.patient.getNetHospitalDoctorList(params).then(res => {
+          this.doctorList = res.data
+        })
+      } else {
+        peace.service.patient.getDoctorList(params).then(res => {
+          this.doctorList = res.data
+        })
+      }
     },
 
     getServiceMoney(doctor) {
@@ -85,11 +103,12 @@ export default {
       }
 
       const minMoney = Math.min.apply(null, moneyList)
-
-      if (minMoney === 0) {
+      if (minMoney === Infinity) {
+        return ''
+      } else if (minMoney === 0) {
         return '免费'
       } else {
-        return `￥${minMoney}起`
+        return `￥${minMoney || 0}起`
       }
     },
 
@@ -98,7 +117,11 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[0] && doctor.consultationList[0].status && doctor.consultationList[0].money === 0
+        return (
+          doctor.consultationList[0] &&
+          doctor.consultationList[0].status &&
+          doctor.consultationList[0].money === 0
+        )
       } else {
         return doctor.consultationList[0] && doctor.consultationList[0].status
       }
@@ -109,7 +132,11 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[1] && doctor.consultationList[1].status && doctor.consultationList[1].money === 0
+        return (
+          doctor.consultationList[1] &&
+          doctor.consultationList[1].status &&
+          doctor.consultationList[1].money === 0
+        )
       } else {
         return doctor.consultationList[1] && doctor.consultationList[1].status
       }
@@ -151,7 +178,7 @@ export default {
   .item {
     width: 100%;
     display: flex;
-    padding: 15px;
+    padding: 15px 15px 5px 15px;
     border-bottom: 1px solid #efefef;
 
     .avatar {
@@ -186,7 +213,7 @@ export default {
       }
 
       .title-description {
-        margin: 0 0 15px 0;
+        margin: 0 0 10px 0;
         color: #999999;
 
         .title-description-label {
