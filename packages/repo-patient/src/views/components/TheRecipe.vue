@@ -7,8 +7,10 @@
       <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
       <div class="prescript-h4">处方笺</div>
       <div class="prescript-line">
-        <div class="span">住院(门诊)号：</div>
-        <div class="span">开具日期：{{internalData.prescriptionTime}}</div>
+        <div class="span"
+             style="width: 40%;">住院(门诊)号：</div>
+        <div class="span"
+             style="width: 60%; text-align: right;">开具日期：{{internalData.prescriptionTime}}</div>
       </div>
       <div class="prescript-table">
         <div class="th">
@@ -56,14 +58,15 @@
           <div class="column-left">
             <div class="inline">
               <div class="span l">{{item.drugName}}</div>
+
+              <div class="inline">x{{item.drugQty}}</div>
+            </div>
+            <div class="inline">
               <div class="span">{{item.drugSpecifications}}</div>
             </div>
 
             <div class="small"
                  v-if="item.drugUse">{{item.drugUse}}</div>
-          </div>
-          <div class="column-right">
-            <div class="inline">x{{item.drugQty}}</div>
           </div>
         </div>
       </div>
@@ -210,7 +213,7 @@ export default {
   margin: 5px 0;
 }
 .prescript .prescript-table {
-  border-top: 2px dotted #000;
+  border-top: 2px dotted #eee;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -291,7 +294,7 @@ export default {
   }
   .outline .outline-body {
     margin-top: 10px;
-    padding: 15px;
+    padding: 15px 0;
     border-top: 1px solid #dedede;
     overflow: hidden;
   }
@@ -323,10 +326,10 @@ export default {
     flex: 1 1 auto;
   }
   .column-2 .column-left .inline {
-    flex: 1 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     display: flex;
+    justify-content: space-between;
   }
   .column-left .inline .span {
     flex: 0 0 auto;

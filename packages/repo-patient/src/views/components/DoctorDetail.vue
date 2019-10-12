@@ -9,7 +9,7 @@
         <div class="card-body">
           <div class="card-name">
             {{doctor.doctorInfo.name}}
-            <div class="card-small">{{doctor.doctorInfo.doctorTitle}} {{doctor.doctorInfo.deptName}}
+            <div class="card-small">{{doctor.doctorInfo.doctorTitle}}
             </div>
             <div @click="shareDoctor"
                  class="card-share"
