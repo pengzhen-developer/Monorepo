@@ -121,9 +121,13 @@
       </div>
       <div class="bottom">
         <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+        <div @click="payOrder(order)"
+             class="btn block btn-blue"
+             v-if="order.OrderStatus == '0'" style="background: #00C6AE; margin-bottom: 8px; ">
+          继续支付</div>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'">
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'" style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
         <div @click="submitOrder"
              class="btn block btn-blue"
@@ -166,8 +170,62 @@ export default {
   created() {
     this.getDrugOrderDetail()
   },
-
+  mounted() {
+    let that = this;
+    if(this.$route.query.code) {
+      let code = this.$route.query.code;
+      let orderNo = this.$route.query.orderId;
+      let params = {code, orderNo};
+      peace.service.index.GetWxLoginStatus(params).then((res) => {
+        let data = res.data;
+        that.onBridgeReady(data, orderNo);
+      })
+    }
+  },
   methods: {
+    onBridgeReady(data, orderId) {
+      let that = this;
+      WeixinJSBridge.invoke(
+              'getBrandWCPayRequest', data,
+              function(res){
+                //alert(res.err_msg);
+                if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                  //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                  const json = peace.util.encode({ OrderId: orderId })
+                  that.$router.push(`/order/userDrugDetail/${json}`)
+                }
+                if(res.err_msg == "get_brand_wcpay_request:fail" ){
+                  const json = peace.util.encode({ OrderId: orderId })
+                  that.$router.push(`/order/userDrugDetail/${json}`)
+                }
+                if(res.err_msg == "get_brand_wcpay_request:cancel" ){
+                  console.log('cancel');
+                }
+              });
+    },
+    payOrder(order) {
+      let orderNo = order.OrderId;
+      console.log(orderNo);
+      let params = {orderNo};
+      let that = this;
+      peace.service.index.GetWxLoginStatus(params).then((res) => {
+        if(res.code === 200) {
+          //没有经过授权
+          let data= res.data;
+          if(data) {
+            that.onBridgeReady(data, orderNo);
+          } else {
+            let appid = 'wx78d7ae35932558e6';
+            let redirect_uri = location.href + "?" +  'orderId='+orderNo;
+
+            // redirect_uri = encodeURIComponent(redirect_uri);
+            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
+            window.location.href = url;
+          }
+        }
+      })
+    },
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
 
