@@ -333,7 +333,6 @@ export default {
   }
   .column-left .inline .span {
     flex: 0 0 auto;
-    width: 125px;
   }
   .column-left .inline .span.l {
     flex: 1 1 auto;
