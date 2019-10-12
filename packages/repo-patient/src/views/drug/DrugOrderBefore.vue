@@ -97,9 +97,8 @@
           </div>
           <div class="bottom">
 
-            <div
-                    @click="submitOrder"
-                    :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">提交订单</div>
+            <div @click="submitOrder"
+                 :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">提交订单</div>
 
             <div class="tips-bottom">
               {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -129,58 +128,56 @@ export default {
     }
   },
   mounted() {
-    let that = this;
+    let that = this
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
     this.getPhaOrder()
     //从地址页面返回
-    if(this.$route.query.addr) {
-       this.getAddr(this.$route.query.addr)
+    if (this.$route.query.addr) {
+      this.getAddr(this.$route.query.addr)
     }
-    if(this.$route.query.code) {
-      let code = this.$route.query.code;
-      let orderNo = this.$route.query.orderId;
-      let params = {code, orderNo};
-      peace.service.index.GetWxLoginStatus(params).then((res) => {
-        let data = res.data;
-        that.onBridgeReady(data, orderNo);
+    if (this.$route.query.code) {
+      let code = this.$route.query.code
+      let orderNo = this.$route.query.orderId
+      let params = { code, orderNo }
+      peace.service.index.GetWxLoginStatus(params).then(res => {
+        let data = res.data
+        that.onBridgeReady(data, orderNo)
       })
     }
   },
   methods: {
-    onBridgeReady(data, orderId){
-      let that = this;
-      WeixinJSBridge.invoke(
-              'getBrandWCPayRequest', data,
-              function(res){
-                //alert(res.err_msg)
-                //alert(res.err_msg);
-                if(res.err_msg == "get_brand_wcpay_request:ok" ){
-                  // 使用以上方式判断前端返回,微信团队郑重提示：
-                  //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                  const json = peace.util.encode({ OrderId: orderId })
-                  //alert(orderId);
-                  that.$router.push(`/order/userDrugDetail/${json}`)
-                }
-                if(res.err_msg == "get_brand_wcpay_request:fail" ){
-                  const json = peace.util.encode({ OrderId: orderId })
-                  //alert(orderId);
-                  that.$router.push(`/order/userDrugDetail/${json}`)
-                }
-                if(res.err_msg == "get_brand_wcpay_request:cancel" ){
-                  console.log('cancel');
-                }
-              });
+    onBridgeReady(data, orderId) {
+      let that = this
+      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
+        //alert(res.err_msg)
+        //alert(res.err_msg);
+        if (res.err_msg == 'get_brand_wcpay_request:ok') {
+          // 使用以上方式判断前端返回,微信团队郑重提示：
+          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          const json = peace.util.encode({ OrderId: orderId })
+          //alert(orderId);
+          that.$router.push(`/order/userDrugDetail/${json}`)
+        }
+        if (res.err_msg == 'get_brand_wcpay_request:fail') {
+          const json = peace.util.encode({ OrderId: orderId })
+          //alert(orderId);
+          that.$router.push(`/order/userDrugDetail/${json}`)
+        }
+        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          console.log('cancel')
+        }
+      })
     },
     getAddr(addr) {
       let address = peace.util.decode(addr)
-      this.userAddr = address;
-      this.page.tabIndex = 1;
+      this.userAddr = address
+      this.page.tabIndex = 1
     },
     goUserAddrPage() {
-       let json = this.$route.params.json;
-       this.$router.push(`/setting/SelectAddressManger/${json}`)
+      let json = this.$route.params.json
+      this.$router.push(`/setting/SelectAddressManger/${json}`)
     },
     submitOrder() {
       if (!this.canSubmitProcesses()) {
@@ -198,32 +195,32 @@ export default {
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : ''
       }
-      let that = this;
-      peace.service.patient.submitOrder(params).then(res => {
-        peace.util.alert('订单提交成功')
-        let orderNo = res.data.OrderId;
-        let params = {orderNo};
-        peace.service.index.GetWxLoginStatus(params).then((res) => {
-          if(res.code === 200) {
-            //没有经过授权
-            let data= res.data;
-            if(data) {
-              that.onBridgeReady(data, orderNo);
-            } else {
-              let appid = 'wx78d7ae35932558e6';
-              let redirect_uri = location.href + "?" +  'orderId='+orderNo;
+      let that = this
+      peace.service.patient
+        .submitOrder(params)
+        .then(res => {
+          let orderNo = res.data.OrderId
+          let params = { orderNo }
+          peace.service.index.GetWxLoginStatus(params).then(res => {
+            if (res.code === 200) {
+              //没有经过授权
+              let data = res.data
+              if (data) {
+                that.onBridgeReady(data, orderNo)
+              } else {
+                let appid = 'wx78d7ae35932558e6'
+                let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
-              // redirect_uri = encodeURIComponent(redirect_uri);
-              let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
-              window.location.href = url;
+                // redirect_uri = encodeURIComponent(redirect_uri);
+                let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+                window.location.href = url
+              }
             }
-          }
+          })
+          // const json = peace.util.encode({ OrderId: res.data.OrderId })
+          // this.$router.push(`/order/userDrugDetail/${json}`)
         })
-        // const json = peace.util.encode({ OrderId: res.data.OrderId })
-        // this.$router.push(`/order/userDrugDetail/${json}`)
-      }).catch(res=> {
-          console.log(res);
-      });
+        .catch(res => {})
     },
 
     canSubmitProcesses() {
