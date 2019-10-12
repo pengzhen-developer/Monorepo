@@ -275,8 +275,8 @@ export default {
     color: #fff;
   }
   .tips-bottom {
-    margin: 10px 15px;
     line-height: 1.7;
+    text-align: justify;
   }
 }
 </style>
