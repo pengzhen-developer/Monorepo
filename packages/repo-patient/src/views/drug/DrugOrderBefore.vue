@@ -112,10 +112,12 @@
 
 <script>
 import peace from '@src/library'
+import config from '@src/config'
 export default {
   name: 'DrugOrderBefore',
   data() {
     return {
+      appid: '',
       page: {
         url: '',
         accessToken: '',
@@ -129,6 +131,7 @@ export default {
   },
   mounted() {
     let that = this
+    this.appid = config.APPID;
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -208,7 +211,7 @@ export default {
               if (data) {
                 that.onBridgeReady(data, orderNo)
               } else {
-                let appid = 'wx78d7ae35932558e6'
+                let appid = that.appid;
                 let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
                 // redirect_uri = encodeURIComponent(redirect_uri);

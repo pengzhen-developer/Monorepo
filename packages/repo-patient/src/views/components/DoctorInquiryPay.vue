@@ -43,7 +43,7 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -52,6 +52,7 @@ export default {
   components: {},
   data() {
     return {
+      appid: '',
       data: {},
       params: {},
       time: 15 * 60 * 1000
@@ -60,6 +61,7 @@ export default {
   created() {},
   mounted() {
     let that = this
+    this.appid = config.APPID;
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
@@ -120,7 +122,7 @@ export default {
           if (data) {
             that.onBridgeReady(data)
           } else {
-            let appid = 'wx78d7ae35932558e6'
+            let appid = that.appid;
             let redirect_uri = location.href
             // redirect_uri = encodeURIComponent(redirect_uri);
             let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
