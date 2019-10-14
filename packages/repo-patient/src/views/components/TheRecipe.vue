@@ -8,7 +8,7 @@
       <div class="prescript-h4">处方笺</div>
       <div class="prescript-line">
         <div class="span"
-             style="width: 40%;">住院(门诊)号：</div>
+             style="width: 40%;">病历号：{{internalData.caseNo}}</div>
         <div class="span"
              style="width: 60%; text-align: right;">开具日期：{{internalData.prescriptionTime}}</div>
       </div>
@@ -76,7 +76,7 @@
       <div class="outline-header">
         <div class="outline-tit">处方审核</div>
       </div>
-      <div class="outline-body">{{internalData.prescriptionExamMemo}}</div>
+      <div class="outline-body">{{ internalData.prescriptionExamMemo }}</div>
     </div>
     <!--医生签名-->
     <div class="outline module">
@@ -241,8 +241,9 @@ export default {
 <style lang="scss" scoped>
 .the-recipe {
   background: #f5f5f5;
-  width: 100%;
-  position: relative;
+  position: absolute;
+  overflow: auto;
+  height: 100%;
 
   .prescript {
     width: 100%;
