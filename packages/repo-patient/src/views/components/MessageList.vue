@@ -14,7 +14,8 @@
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊">
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊|| 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
           <!-- 消息时间 -->
           <template
                     v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
@@ -284,7 +285,8 @@ export default {
         // 742: true, // 转诊
         // 743: true, // 会诊
         750: true, // 退诊
-        760: true // 取消问诊
+        760: true, // 取消问诊
+        780: true // 服务提醒
         // 900: true, // 接收随访
         // 910: true, // 随访结束
       }
@@ -483,7 +485,8 @@ export default {
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
           ) {
             return 'system'
           }
