@@ -111,7 +111,7 @@
         <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
       </div>
     </div>
-    <div class="module pdtb">
+    <div class="module pdtb" v-if="internalData.inquiryInfo.inquiryStatus != '1'">
       <div class="brief right">
         实付金额：
         <div class="money">{{ internalData.orderInfo.payMoney }}</div>

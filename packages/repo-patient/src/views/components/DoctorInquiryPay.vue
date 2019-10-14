@@ -15,6 +15,14 @@
                 :value="params.doctorName" />
       <van-cell title="应付金额"
                 :value="params.money+'元'" />
+      <div class="payway">选择支付方式</div>
+      <div class="wechat">
+        <div class="left">
+          <i class="wechat"></i>
+          <span>微信支付</span>
+        </div>
+       <i class="icon-close"></i>
+    </div>
     </div>
 
     <slot name="custom"></slot>
@@ -159,6 +167,36 @@ export default {
 
   .content {
     flex: 1;
+    .payway {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
+    }
+    .wechat {
+      height: 60px;
+      padding: 0 15px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left {
+        i.wechat {
+          width: 28px;
+          height: 26px;
+          display: inline-block;
+          background: url('~@/assets/images/ic_wechat payment.png') no-repeat;
+          vertical-align: middle;
+          margin-right: 8px;
+        }
+      }
+      i.icon-close {
+        width: 21px;
+        height: 21px;
+        display: inline-block;
+        background: url('~@/assets/images/ic_choose.png') no-repeat;
+        vertical-align: middle;
+      }
+    }
   }
 
   .footer {

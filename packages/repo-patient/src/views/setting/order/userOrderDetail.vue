@@ -73,7 +73,7 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-    <div class="module pdtb">
+    <div class="module pdtb" v-if="info.orderInfo.orderStatus != '1'">
       <div class="brief right">
         实付金额：
         <div class="money">{{info.orderInfo.payMoney}}</div>
