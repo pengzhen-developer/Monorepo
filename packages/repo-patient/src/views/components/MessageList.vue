@@ -600,6 +600,7 @@ export default {
     flex: 1;
 
     .message {
+      font-size: 14px;
       margin: 0 0 10px 0;
 
       &.in {
@@ -641,8 +642,9 @@ export default {
       }
 
       &.system {
+        font-size: 12px;
         text-align: center;
-        margin: 6px auto;
+        margin: 10px auto;
 
         .message-body {
           color: rgba(155, 155, 155, 1);
@@ -651,13 +653,18 @@ export default {
       }
 
       &.time {
-        font-size: 12px;
         text-align: center;
-        margin: 0 0 5px 0;
+        margin: 0;
 
         .message-body {
+          margin: 0;
+          font-size: 12px;
           color: rgba(155, 155, 155, 1);
           background: rgb(255, 255, 255);
+
+          * {
+            font-size: 12px;
+          }
         }
       }
 
@@ -673,7 +680,7 @@ export default {
         &.recipe {
           background: #fff;
           border: 1px solid #f2f2f2;
-          padding: 5px;
+          padding: 10px;
           cursor: pointer;
           display: inline-flex;
 

@@ -19,9 +19,11 @@
               </div>
             </div>
             <div class="word-inline">
-              <div class="span l">{{item.hospitalName}}</div>
-              <div class="span">| {{item.deptName}}</div>
-              <div class="span s">{{item.date}}</div>
+              <div class="span">{{item.deptName}}</div>
+              <div class="space">
+                <span>{{item.hospitalName}} </span>
+                <span>{{item.date}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -141,15 +143,16 @@ export default {
   height: 100%;
   padding: 15px;
   &.bg {
-    background: #f5f5f5;
+    background: #f9f9f9;
   }
   .word-list {
     position: relative;
     background: #fff;
 
-    margin: 10px 0;
-    box-shadow: 0 2px 1px #dedede;
+    margin: 0 0 15px 0;
+    box-shadow: 0px 1px 8px 0px rgba(221, 221, 221, 0.5);
     display: flex;
+    border-radius: 4px;
   }
   .word-list::after {
     content: '';
@@ -157,7 +160,7 @@ export default {
     height: 20px;
     border-radius: 20px 0 0 20px;
     right: -10px;
-    top: 30px;
+    top: 35px;
     position: absolute;
     display: block;
     background: #f5f5f5;
@@ -207,13 +210,15 @@ export default {
     font-size: 16px;
     margin-bottom: 10px;
 
+    color: #000000;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .word-title .label {
     flex: initial;
-    width: 60px;
+    width: 50px;
     height: 22px;
     margin-right: 10px;
     border: 0;
@@ -221,19 +226,22 @@ export default {
     text-align: center;
   }
   .word-list .word-inline {
+    font-size: 12px;
+
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
+    flex-direction: column;
 
     border-top: 1px solid #dedede;
     padding-top: 10px;
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    .space {
+      display: flex;
+      justify-content: space-between;
+      color: #999999;
+    }
   }
   .word-inline .span {
-    font-size: 14px;
+    font-size: 12px;
     color: #999;
     flex: 1 1 auto;
     overflow: hidden;
@@ -267,8 +275,8 @@ export default {
     color: #fff;
   }
   .tips-bottom {
-    margin: 10px 15px;
     line-height: 1.7;
+    text-align: justify;
   }
 }
 </style>

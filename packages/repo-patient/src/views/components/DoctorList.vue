@@ -80,7 +80,7 @@ export default {
     get() {
       const params = peace.util.decode(this.$route.params.json)
 
-      if (params.type === 'starDoctorList') {
+      if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
           this.doctorList = res.data
         })
@@ -175,6 +175,8 @@ export default {
 
 <style lang="scss" scoped>
 .doctor-list {
+  height: 100%;
+
   .item {
     width: 100%;
     display: flex;

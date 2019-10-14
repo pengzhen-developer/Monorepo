@@ -128,14 +128,21 @@ export default {
       })
     },
     goDoctorListPage(obj) {
-      let json = peace.util.encode(obj)
-
       if (this.params.id == 'consult') {
+        obj.netHospitalId = this.params.netHospitalId
+        obj.deptChild = obj.deptChild
+        obj.deptChildId = obj.deptChildId
+        obj.type = 'departDoctorList'
+
+        let json = peace.util.encode(obj)
+
         // 咨询入口
         this.$router.push(`/components/doctorList/${json}`)
         return
       }
       if (this.params.id == 'appointment') {
+        let json = peace.util.encode(obj)
+
         // 预约入口
         this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
         return

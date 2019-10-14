@@ -139,10 +139,10 @@ export default {
 
   /deep/ .van-tabbar {
     border-top: 1px solid #eeeeee50;
-  }
 
-  /deep/ [class*='van-hairline']::after {
-    border-bottom: 0;
+    [class*='van-hairline']::after {
+      border-bottom: 0;
+    }
   }
 
   .layout-content {

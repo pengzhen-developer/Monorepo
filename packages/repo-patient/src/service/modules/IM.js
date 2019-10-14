@@ -99,11 +99,12 @@ export function onDisConnect(disConnectObject) {
     case 302:
     case 417:
     case 'kicked':
-      peace.cache.clear()
+      // 清空登录信息
+      peace.cache.remove(peace.type.USER.INFO)
       peace.util.warning(disConnectObject.message)
 
       $peace.$router.replace(peace.config.system.loginPage)
-      window.location.reload();
+      window.location.reload()
       break
 
     default:
@@ -121,11 +122,7 @@ export function onDisConnect(disConnectObject) {
 export function onWillReconnect(willReconnectObject) {
   console.warn('【 IM 】【 onWillReconnect 】', new Date(), willReconnectObject)
 
-  $peace.util.warning(
-    `检测到网络异常，${parseInt(willReconnectObject.duration / 1000)} 秒后进行第 ${
-      willReconnectObject.retryCount
-    } 次重接。`
-  )
+  $peace.util.warning(`检测到网络异常,正在重连...`)
 }
 
 /**

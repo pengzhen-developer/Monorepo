@@ -62,7 +62,7 @@ export default {
             this.smsCodeDate = new Date()
             peace.util.alert(res.msg)
           })
-          .finally(() => {
+          .then(() => {
             this.countDownIntervalHandler()
           })
       }

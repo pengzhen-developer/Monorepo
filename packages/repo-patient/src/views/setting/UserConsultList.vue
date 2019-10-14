@@ -180,10 +180,11 @@ export default {
     },
     goToPay(data) {
       //console.log(data);
+
       let doctorId = data.doctorInfo.doctorId
       let order = data.inquiryInfo
       let money = order.orderMoney
-      let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
+      let typeName = order.inquiryType;
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
       let json = { money, typeName, doctorName, orderNo, doctorId }

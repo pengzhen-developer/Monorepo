@@ -2,13 +2,26 @@
   <div class="my-family-members">
     <template v-if="members && members.length > 0">
       <div class="content">
-        <van-cell :key="item.id" @click="toViewDetails(item)" border class="info" is-link v-for="item in members">
+        <van-cell :key="item.id"
+                  @click="toViewDetails(item)"
+                  border
+                  class="info"
+                  is-link
+                  v-for="item in members">
           <template slot="title">
             <span class="custom-title">{{ item.name }}</span>
-            <van-icon class-prefix="ic" class="primary" name="ic_boys" v-if="item.sex === '男'" />
-            <van-icon class-prefix="ic" class="danger" name="ic_girls" v-else-if="item.sex === '女'" />
-            <span class="custom-age" v-if="item.age">{{ item.age }}岁</span>
-            <van-tag plain round>{{ item.relation }}</van-tag>
+            <van-icon class-prefix="ic"
+                      class="primary"
+                      name="ic_boys"
+                      v-if="item.sex === '男'" />
+            <van-icon class-prefix="ic"
+                      class="danger"
+                      name="ic_girls"
+                      v-else-if="item.sex === '女'" />
+            <span class="custom-age"
+                  v-if="item.age">{{ item.age }}岁</span>
+            <van-tag plain
+                     round>{{ item.relation }}</van-tag>
           </template>
         </van-cell>
       </div>
@@ -23,11 +36,15 @@
 
     <div class="bottom">
       <div class="tips">温馨提示：最多添加10位家人</div>
-      <van-button @click="toAdd" type="primary">新增家人</van-button>
+      <van-button @click="toAdd"
+                  type="primary">新增家人</van-button>
     </div>
 
-    <peace-dialog :title="dialog.title" :visible.sync="dialog.visible">
-      <FamilyMembersModel :canShowSelf="members && !members.find(item => item.relation === '本人')" :data="dialog.data" @onComplete="onComplete" />
+    <peace-dialog :title="dialog.title"
+                  :visible.sync="dialog.visible">
+      <FamilyMembersModel :canShowSelf="members && !members.find(item => item.relation === '本人')"
+                          :data="dialog.data"
+                          @onComplete="onComplete" />
     </peace-dialog>
   </div>
 </template>
@@ -86,18 +103,17 @@ export default {
     toViewDetails(item) {
       switch (this.$route.params.link) {
         case 'recordCondition':
-          $peace.$recordCondition.formData.family = item;
-          $peace.$recordCondition.canSubmitProcesses();
-          $peace.$recordCondition = null;
+          $peace.$recordCondition.formData.family = item
+          $peace.$recordCondition.canSubmitProcesses()
+          $peace.$recordCondition = null
           this.$router.go(-1)
-          break;
+          break
         default:
           this.dialog.title = '家人信息'
           this.dialog.visible = true
           this.dialog.data = item
           break
       }
-
     },
 
     toAdd() {
@@ -116,7 +132,7 @@ export default {
 <style lang="scss" scoped>
 .my-family-members {
   position: relative;
-  /*background-color: #f5f5f5;*/
+  background-color: #f9f9f9;
   height: 100%;
   display: flex;
   flex-direction: column;
