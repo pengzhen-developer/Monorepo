@@ -58,7 +58,7 @@
                v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
             <div class="count-down"><span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span> <van-count-down millisecond
                                                              :time="item.time"
-                                                             format="mm:ss" /></div>
+                                                             format="HH:mm:ss" /></div>
             <div class="btn-wrap">
               <div :data-index="index"
                    @click="goChatingPage(item)"

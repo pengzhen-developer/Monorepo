@@ -166,21 +166,23 @@ export default {
         return
       }
 
-      // if (!this.showBtn) {
-      //   peace.util.alert('请勿重复提交')
-      //   return;
-      // }
+      if (!this.showBtn) {
+        peace.util.alert('请勿重复提交')
+        return;
+      }
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
-      console.log('data', data);
+      this.showBtn = false;
       peace.service.appoint
         .orderSubmit(data)
         .then(res => {
-          this.goToPay(res.data)
+          this.goToPay(res.data);
+          this.showBtn = true;
         })
         .catch(res => {
           //debugger
+          this.showBtn = true;
           Dialog.alert({
             title: '预约失败',
             message: res.data.msg
@@ -190,7 +192,7 @@ export default {
         })
     },
     goToPay(data) {
-      // this.showBtn = false
+      this.showBtn = false
       //debugger;
       let {doctorName,doctorId} = data.doctorInfo;
       let {orderNo, orderMoney} = data.orderInfo;

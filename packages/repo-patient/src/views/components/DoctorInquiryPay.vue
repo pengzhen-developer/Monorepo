@@ -1,6 +1,6 @@
 <template>
   <div class="doctor-inquiry-pay">
-    <div class="header">
+    <div class="header" v-if="orderStatus==1">
       <span>请在</span>
       <van-count-down millisecond
                       :time="time"
@@ -52,10 +52,11 @@ export default {
   components: {},
   data() {
     return {
+      orderStatus: '',
       appid: '',
       data: {},
       params: {},
-      time: 15 * 60 * 1000
+      time: 0
     }
   },
   created() {},
@@ -69,6 +70,7 @@ export default {
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
+      this.orderStatus = data.orderStatus;
       if(data.orderStatus == 3) {
         that.payCallback();
       }
