@@ -69,6 +69,9 @@ export default {
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
+      if(data.orderStatus == 3) {
+        that.payCallback();
+      }
     })
     if (this.$route.query.code) {
       let code = this.$route.query.code
