@@ -206,8 +206,10 @@ export default {
         this.consultList = res.data.list
         this.consultList.map((item)=> {
             // item.time =  15 * 60 * 1000;
-          if (item.inquiryInfo.orderExpireTime > item.inquiryInfo.currentTime) {
-            item.time = (item.inquiryInfo.orderExpireTime - item.inquiryInfo.currentTime) * 1000
+          let inquiryInfo = item.inquiryInfo;
+          let expireTime = inquiryInfo.inquiryStatus == 1? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime;
+          if (expireTime > inquiryInfo.currentTime) {
+            item.time = (expireTime - inquiryInfo.currentTime) * 1000
             console.log(item.time);
           }
         });
