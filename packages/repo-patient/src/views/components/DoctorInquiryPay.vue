@@ -15,6 +15,14 @@
                 :value="params.doctorName" />
       <van-cell title="应付金额"
                 :value="params.money+'元'" />
+      <div class="payway">选择支付方式</div>
+      <div class="wechat">
+        <div class="left">
+          <i class="wechat"></i>
+          <span>微信支付</span>
+        </div>
+       <i class="icon-close"></i>
+    </div>
     </div>
 
     <slot name="custom"></slot>
@@ -35,7 +43,7 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -44,6 +52,7 @@ export default {
   components: {},
   data() {
     return {
+      appid: '',
       data: {},
       params: {},
       time: 15 * 60 * 1000
@@ -52,12 +61,16 @@ export default {
   created() {},
   mounted() {
     let that = this
+    this.appid = config.APPID;
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
+      }
+      if(data.orderStatus == 3) {
+        that.payCallback();
       }
     })
     if (this.$route.query.code) {
@@ -112,7 +125,7 @@ export default {
           if (data) {
             that.onBridgeReady(data)
           } else {
-            let appid = 'wx78d7ae35932558e6'
+            let appid = that.appid;
             let redirect_uri = location.href
             // redirect_uri = encodeURIComponent(redirect_uri);
             let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
@@ -159,6 +172,36 @@ export default {
 
   .content {
     flex: 1;
+    .payway {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
+    }
+    .wechat {
+      height: 60px;
+      padding: 0 15px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left {
+        i.wechat {
+          width: 28px;
+          height: 26px;
+          display: inline-block;
+          background: url('~@/assets/images/ic_wechat payment.png') no-repeat;
+          vertical-align: middle;
+          margin-right: 8px;
+        }
+      }
+      i.icon-close {
+        width: 21px;
+        height: 21px;
+        display: inline-block;
+        background: url('~@/assets/images/ic_choose.png') no-repeat;
+        vertical-align: middle;
+      }
+    }
   }
 
   .footer {

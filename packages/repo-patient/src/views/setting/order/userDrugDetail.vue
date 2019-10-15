@@ -150,7 +150,7 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 import TheRecipe from '@src/views/components/TheRecipe'
 
 export default {
@@ -160,6 +160,7 @@ export default {
 
   data() {
     return {
+      appid: '',
       order: {},
 
       recipeDetail: {
@@ -174,6 +175,7 @@ export default {
   },
   mounted() {
     let that = this
+    this.appid = config.APPID;
     if (this.$route.query.code) {
       let code = this.$route.query.code
       let orderNo = this.$route.query.orderId
@@ -216,7 +218,7 @@ export default {
           if (data) {
             that.onBridgeReady(data, orderNo)
           } else {
-            let appid = 'wx78d7ae35932558e6'
+            let appid = that.appid;
             let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
             // redirect_uri = encodeURIComponent(redirect_uri);
