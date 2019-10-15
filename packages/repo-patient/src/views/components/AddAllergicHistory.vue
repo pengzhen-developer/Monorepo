@@ -1,36 +1,51 @@
 <template>
   <div class="add-allergic-history">
     <div class="input">
-      <van-search @cancel="onCancel" class="search" placeholder="请输入搜索关键词" shape="round" show-action v-model="searchAllergicHistory">
-        <span @click="onSearch" class="search-label" slot="action">搜索</span>
+      <van-search @cancel="onCancel"
+                  class="search"
+                  placeholder="请输入搜索关键词"
+                  shape="round"
+                  show-action
+                  v-model="searchAllergicHistory">
+        <span @click="onSearch"
+              class="search-label"
+              slot="action">搜索</span>
       </van-search>
 
       <hr />
 
       <h4>已选过敏源</h4>
       <div class="checked-list">
-        <van-tag :key="item.value" @click="check(item)" class="tag checked" plain v-for="item in allergicHistory">{{ item.value }}</van-tag>
+        <van-tag :key="item.value"
+                 @click="check(item)"
+                 class="tag checked"
+                 plain
+                 v-for="item in allergicHistory">{{ item.value }}</van-tag>
       </div>
 
       <h4>常见过敏源</h4>
       <div class="not-checked-list">
-        <van-tag
-          :class="{ checked: item.checked }"
-          :key="item.value"
-          @click="check(item)"
-          class="tag"
-          plain
-          v-for="item in allergicHistoryCommonly"
-        >{{ item.value }}</van-tag>
+        <van-tag :class="{ checked: item.checked }"
+                 :key="item.value"
+                 @click="check(item)"
+                 class="tag"
+                 plain
+                 v-for="item in allergicHistoryCommonly">{{ item.value }}</van-tag>
       </div>
     </div>
 
     <div class="save">
-      <van-button @click="save" style="width: 100%;" type="primary">保存</van-button>
+      <van-button @click="save"
+                  style="width: 100%;"
+                  type="primary">保存</van-button>
     </div>
 
-    <van-popup position="bottom" v-model="showAllergicHistory">
-      <van-picker :columns="allergicHistoryList" @cancel="showAllergicHistory = false" @confirm="onConfirm" show-toolbar />
+    <van-popup position="bottom"
+               v-model="showAllergicHistory">
+      <van-picker :columns="allergicHistoryList"
+                  @cancel="showAllergicHistory = false"
+                  @confirm="onConfirm"
+                  show-toolbar />
     </van-popup>
   </div>
 </template>
@@ -108,7 +123,10 @@ export default {
         type: '2'
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allergicHistoryList = (res.data && res.data.length ? res.data : [{name: this.searchAllergicHistory,needAdd: true}]).map(item => {
+        this.allergicHistoryList = (res.data && res.data.length
+          ? res.data
+          : [{ name: this.searchAllergicHistory, needAdd: true }]
+        ).map(item => {
           return {
             text: item.name,
             needAdd: item.needAdd,
@@ -125,13 +143,18 @@ export default {
       this.searchAllergicHistory = ''
     },
     onConfirm(value) {
-      this.check({ value: value.text, needAdd: value.needAdd })
-      this.onCancel()
+      if (!value.disabled) {
+        //库里面无数据时, 创建的诊断只有一个数据，设置为disabled任然可以选择，此处做校验
+        value.text && this.check({ value: value.text })
+        this.onCancel()
+      } else {
+        this.onCancel()
+      }
     },
 
     check(currentItem) {
       if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({name: currentItem.value,type:1})
+        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 1 })
       }
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
@@ -151,7 +174,9 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.allergicHistory.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(
+          item => item.value === currentItem.value
+        )
 
         if (index !== -1) {
           this.allergicHistory.splice(index, 1)
@@ -163,7 +188,9 @@ export default {
         currentItem.checked = true
         this.allergicHistory.push(currentItem)
 
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.allergicHistoryCommonly.findIndex(
+          item => item.value === currentItem.value
+        )
         if (indexCommonly !== -1) {
           this.allergicHistoryCommonly[indexCommonly].checked = true
         }
@@ -212,7 +239,7 @@ export default {
         padding: 10px;
         text-align: center;
         min-width: 45px;
-
+        border: none;
         &::after {
           border: none;
         }
