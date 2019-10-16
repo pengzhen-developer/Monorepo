@@ -31,7 +31,8 @@ const router = new Router({
             }
           },
           component: () => {
-            const params = $peace.util.queryUrlParam('params')
+            const params =
+              $peace.util.queryUrlParam('params') || $peace.cache.get($peace.type.SYSTEM.PARAMS)
 
             if (params && params !== 'PLATEFORM') {
               return import('@src/views/hospital/HospitalHome.vue')
