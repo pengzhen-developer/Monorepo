@@ -223,7 +223,7 @@ export default {
 .user-drug-list {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  //height: 100%;
   background: #f5f5f5;
   color: #999;
 }
@@ -231,8 +231,14 @@ export default {
 .tab {
   margin: 0 0 10px 0;
   padding: 5px;
+  height: 40px;
+  .tab-item {
+    height: 30px;
+  }
 }
-
+.content {
+  flex: 1;
+}
 .none-page {
   flex: 1;
   background-color: #fff;
@@ -265,6 +271,7 @@ export default {
   text-align: center;
   position: relative;
   border-left: 1px solid #f5f5f5;
+  height: 30px;
 }
 .box-tab .tab-item:first-child {
   border-left: none;
