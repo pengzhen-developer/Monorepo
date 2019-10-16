@@ -20,7 +20,9 @@
                  @click="check(item)"
                  class="tag checked"
                  plain
-                 v-for="item in confirmIllness">{{ item.value }}</van-tag>
+                 v-for="item in confirmIllness">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
 
       <h4>常见诊断</h4>
@@ -30,7 +32,9 @@
                  @click="check(item)"
                  class="tag"
                  plain
-                 v-for="item in confirmIllnessCommonly">{{ item.value }}</van-tag>
+                 v-for="item in confirmIllnessCommonly">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
     </div>
 
@@ -240,8 +244,9 @@ export default {
 
     .checked-list,
     .not-checked-list {
-      padding: 0 15px;
-      margin: 0 0 20px 0;
+      padding: 0 25px;
+      margin: 0 0 30px 0;
+      font-size: 16px;
 
       .tag {
         background: #f5f5f5 !important;

@@ -345,6 +345,9 @@ export default {
       color: rgba(0, 204, 179, 1);
       line-height: 21px;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .location {
       display: flex;
@@ -369,15 +372,13 @@ export default {
         }
       }
       .tel {
-        width: 30px;
-        height: 30px;
-        display: block;
+        display: flex;
+        align-items: center;
+
         img {
           width: 15px;
           height: 17px;
         }
-        /*background: url('../../assets/images/newIndex/ic_phone.png');*/
-        /*background-size: 100% 100%;*/
       }
     }
     .notice {

@@ -192,7 +192,7 @@ export default {
     margin: 5px 0;
   }
   .prescript .prescript-table {
-    border-top: 2px dotted #000;
+    border-top: 2px dotted #eeeeee;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;

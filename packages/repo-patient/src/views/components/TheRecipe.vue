@@ -8,7 +8,8 @@
       <div class="prescript-h4">处方笺</div>
       <div class="prescript-line">
         <div class="span"
-             style="width: 40%;">病历号：{{internalData.caseNo}}</div>
+             style="width: 40%;">病历号：<span style="font-size: 10px;">{{internalData.caseNo}}</span>
+        </div>
         <div class="span"
              style="width: 60%; text-align: right;">开具日期：{{internalData.prescriptionTime}}</div>
       </div>

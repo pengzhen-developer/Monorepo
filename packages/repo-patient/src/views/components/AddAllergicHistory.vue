@@ -20,7 +20,9 @@
                  @click="check(item)"
                  class="tag checked"
                  plain
-                 v-for="item in allergicHistory">{{ item.value }}</van-tag>
+                 v-for="item in allergicHistory">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
 
       <h4>常见过敏源</h4>
@@ -30,7 +32,9 @@
                  @click="check(item)"
                  class="tag"
                  plain
-                 v-for="item in allergicHistoryCommonly">{{ item.value }}</van-tag>
+                 v-for="item in allergicHistoryCommonly">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
     </div>
 
@@ -232,6 +236,7 @@ export default {
     .not-checked-list {
       padding: 0 15px;
       margin: 0 0 20px 0;
+      font-size: 12px;
 
       .tag {
         background: #f5f5f5 !important;

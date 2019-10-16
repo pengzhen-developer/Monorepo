@@ -20,7 +20,9 @@
                  @click="check(item)"
                  class="tag checked"
                  plain
-                 v-for="item in allFoodAllergy">{{ item.value }}</van-tag>
+                 v-for="item in allFoodAllergy">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
 
       <h4>常见食物/接触物过敏源</h4>
@@ -30,7 +32,9 @@
                  @click="check(item)"
                  class="tag"
                  plain
-                 v-for="item in allFoodAllergyCommonly">{{ item.value }}</van-tag>
+                 v-for="item in allFoodAllergyCommonly">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
       </div>
     </div>
 

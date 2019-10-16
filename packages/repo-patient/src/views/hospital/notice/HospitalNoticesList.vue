@@ -76,6 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .hopital-notices-list {
+  height: 100%;
   background: #f5f5f5;
   padding: 15px;
 }
