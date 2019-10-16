@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="list"
-           v-if="doctor.doctorInfo.latitude && doctor.doctorInfo.longitude">
+           @click="goMap(doctor.doctorInfo)">
         <div class="list-items list-vertical-icon">
           <div class="icon icon_hsp"></div>
           <span>{{doctor.doctorInfo.hospitalName}} {{doctor.doctorInfo.deptName}}</span>
@@ -276,6 +276,18 @@ export default {
       })
 
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
+    },
+
+    goMap(item) {
+      if (item.address || (item.latitude && item.longitude)) {
+        const json = peace.util.encode({
+          address: item.address,
+          latitude: item.latitude,
+          longitude: item.longitude
+        })
+
+        this.$router.push(`/home/map/${json}`)
+      }
     }
   }
 }
