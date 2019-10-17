@@ -97,6 +97,11 @@ export default {
   props: {},
   data() {
     return {
+      orderStatus:[
+        {
+          code: 1
+        }
+      ],
       sending: false,
       page: {
         statusDic: {
@@ -106,8 +111,8 @@ export default {
               small: '15分钟内未付款，订单将自动取消'
             },
             2: {
-              text: '已取消',
-              small: ''
+              text: '待接诊',
+              small: '已通知医生尽快接诊，12小时未接诊将自动'
             },
             3: {
               text: '预约成功',

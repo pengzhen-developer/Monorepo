@@ -47,7 +47,8 @@ import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
-
+import { Dialog } from 'vant'
+Vue.use(Dialog)
 export default {
   components: {},
   data() {
@@ -134,7 +135,34 @@ export default {
             window.location.href = url
           }
         }
-      })
+
+      }).catch(res=> {
+        // 倒计时结束，点取消按扭
+        return Dialog.confirm({
+          title: '提示',
+          message: res.data.msg,
+          confirmButtonText: '去看看'
+        }).then(() => {
+          if(res.data.code == 202) {
+            //只有在202时才可进入catch流程
+            let inquiryId = res.data.data.inquiryId;
+            const params = {
+              inquiryId
+            }
+            if(inquiryId != '') {
+              // 去咨询界面
+              let json = peace.util.encode(params)
+              this.$router.push(`/setting/userConsultDetail/${json}`)
+            } else {
+              // 去挂号界面
+              let orderNo = res.data.data.orderNo;
+              let orderType = 'register'
+              let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
+              this.$router.push(`/setting/order/userOrderDetail/${json}`)
+            }
+          }
+        })
+      });
     },
     payCallback() {
       let { doctorId, typeName, orderNo } = peace.util.decode(this.$route.params.json)
