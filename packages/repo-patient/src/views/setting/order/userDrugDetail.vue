@@ -175,7 +175,7 @@ export default {
   },
   mounted() {
     let that = this
-    this.appid = config.APPID;
+    this.appid = config.APPID
     if (this.$route.query.code) {
       let code = this.$route.query.code
       let orderNo = this.$route.query.orderId
@@ -218,7 +218,7 @@ export default {
           if (data) {
             that.onBridgeReady(data, orderNo)
           } else {
-            let appid = that.appid;
+            let appid = that.appid
             let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
             // redirect_uri = encodeURIComponent(redirect_uri);
@@ -242,15 +242,12 @@ export default {
     },
 
     goPrescripDetailPage() {
-      this.recipeDetail.visible = true
-
-      const params = {
-        prescribeId: this.order.prescribeId
-      }
-
-      peace.service.patient.getPrescripInfo(params).then(res => {
-        this.recipeDetail.data = res.data
+      const params = peace.util.encode({
+        prescribeId: this.order.prescribeId,
+        showDetailButton: false
       })
+
+      this.$router.push(`/components/theRecipe/${params}`)
     },
 
     goDrugLogiPage() {

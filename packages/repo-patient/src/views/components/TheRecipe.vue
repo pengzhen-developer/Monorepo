@@ -111,7 +111,7 @@
     </div>
     <div class="bt">注意：仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，3日内处方有效。</div>
     <div class="bottom"
-         v-if="internalData.prescriptionStatus">
+         v-if="internalData.prescriptionStatus && ($peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false)">
       <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
            :data-type="internalData.prescriptionStatus.key"
            @click="goMenuPage(internalData)"
