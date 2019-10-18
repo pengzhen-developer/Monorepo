@@ -1,0 +1,167 @@
+<template>
+  <div class="user-drug-logistics"
+       v-if="data">
+    <div class="box">
+      <div class="card">
+        <div class="card-avatar">
+          <img :src="data.DrugStoreLogo" />
+        </div>
+        <div class="card-body">
+          <div class="card-name"> {{ data.ords[0].Notes }}</div>
+          <div class="card-small">
+            {{data.ShippingMethod == '1' ? '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone
+                    : '【自提地址】' + data.DrugStoreDetailed}}
+          </div>
+          <div class="text">
+            订单编号：{{data.OrderId}}
+          </div>
+          <div class="text"
+               v-if="data.ShippingMethod == '1'">配送编号：无</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="module">
+      <div class="time-line">
+        <div class="item"
+             v-for="item in data.ords"
+             :class="{ 'active' : item.ServiceStates === '4' }"
+             :key="item.Notes">
+          <div class="time">
+            <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
+            <div class="s">{{ item.CreateTime.toDate().formatDate('HH:mm') }}</div>
+          </div>
+          <div class="text">
+            <div class="status">{{item.Notes}}</div>
+            <div class="note"
+                 v-if="item.ServiceStates == '4'">
+              {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+export default {
+  data() {
+    return {
+      data: undefined
+    }
+  },
+
+  created() {
+    this.getLogistics()
+  },
+
+  methods: {
+    getLogistics() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
+        this.data = res.data
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.user-drug-logistics {
+  height: 100%;
+  background: #f5f5f5;
+}
+.box {
+  margin-top: 0;
+}
+.card {
+  background: #fff;
+  padding: 5px;
+  margin: 0 0 10px 0;
+}
+.module {
+  background: #fff;
+  padding: 5px;
+  margin: 0 0 10px 0;
+}
+.card .text {
+  color: #999;
+  padding-top: 5px;
+  font-size: 13px;
+}
+.time-line {
+  padding: 25px 5px;
+
+  .item {
+    &:last-child {
+      .text {
+        border-left: 2px solid transparent;
+      }
+    }
+  }
+}
+.time-line .item {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  color: #999999;
+  font-size: 16px;
+}
+.time-line .time {
+  flex: 0 0 auto;
+  width: 60px;
+  padding-right: 20px;
+  position: relative;
+  text-align: right;
+}
+.time-line .item:last-child .text {
+  min-height: 20px;
+}
+.time-line .text {
+  border-left: 2px solid #d8d8d8;
+  padding-left: 15px;
+  flex: 1;
+  min-height: 125px;
+}
+.time-line .time::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: -5px;
+  background: #d8d8d8;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.item.active .text {
+  color: #00c6ae;
+}
+.time-line .item.active .time::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  right: -9px;
+  background: #00c6ae;
+}
+.item.active .time {
+  color: #000000;
+}
+.time-line .time .y {
+  font-size: 14px;
+  margin-top: -10px;
+}
+.time-line .text .status {
+  margin-top: -10px;
+}
+.time .s,
+.text .note {
+  font-size: 12px;
+}
+</style>

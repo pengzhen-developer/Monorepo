@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <!-- 顶部返回 nav-bar -->
-    <template v-if="$route.meta.navbar">
+    <!-- <template v-if="$route.meta.navbar">
       <transition mode="out-in" name="van-fade">
         <van-nav-bar
           :left-arrow="$route.meta.navbar.back"
@@ -12,53 +12,62 @@
           left-text=" "
         />
       </transition>
-    </template>
+    </template> -->
 
     <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">
       <transition name="van-fade">
         <keep-alive>
-          <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
+          <router-view :key="$route.fullPath"
+                       v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
       </transition>
 
       <transition name="van-fade">
-        <router-view :key="$route.fullPath" v-if="!$route.meta.keepAlive"></router-view>
+        <router-view :key="$route.fullPath"
+                     v-if="!$route.meta.keepAlive"></router-view>
       </transition>
     </div>
 
     <!-- 底部导航 tabbar -->
     <template v-if="$route.meta.tabBar">
-      <transition mode="out-in" name="van-fade">
-        <van-tabbar class="layout-tabbar" v-model="active">
+      <transition mode="out-in"
+                  name="van-fade">
+        <van-tabbar class="layout-tabbar"
+                    v-model="active">
+
           <van-tabbar-item to="/home/index">
-            <i class="van-icon van-icon-like" slot="icon"></i>
+            <i class="van-icon van-icon-like"
+               slot="icon"></i>
             <span>首页</span>
           </van-tabbar-item>
 
-          <template v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
-            <van-tabbar-item
-              :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
-              to="/message/index"
-            >
-              <i class="van-icon van-icon-comment" slot="icon"></i>
+          <template
+                    v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
+            <van-tabbar-item :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
+                             to="/message/index">
+              <i class="van-icon van-icon-comment"
+                 slot="icon"></i>
               <span>消息</span>
             </van-tabbar-item>
           </template>
           <template v-else>
             <van-tabbar-item to="/message/index">
-              <i class="van-icon van-icon-comment" slot="icon"></i>
+              <i class="van-icon van-icon-comment"
+                 slot="icon"></i>
               <span>消息</span>
             </van-tabbar-item>
           </template>
 
           <van-tabbar-item to="/file/index">
-            <i class="van-icon van-icon-invition" slot="icon"></i>
+            <i class="van-icon van-icon-invition"
+               slot="icon"></i>
             <span>健康档案</span>
           </van-tabbar-item>
 
           <van-tabbar-item to="/setting/index">
-            <i class="van-icon van-icon-manager" slot="icon"></i>
+            <i class="van-icon van-icon-manager"
+               slot="icon"></i>
             <span>个人中心</span>
           </van-tabbar-item>
         </van-tabbar>
@@ -127,6 +136,14 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  /deep/ .van-tabbar {
+    border-top: 1px solid #eeeeee50;
+
+    [class*='van-hairline']::after {
+      border-bottom: 0;
+    }
+  }
 
   .layout-content {
     width: 100%;

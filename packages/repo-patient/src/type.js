@@ -20,7 +20,9 @@ export const SYSTEM = {
     LOCAL_STORAGE: 'localStorage',
     /** 存储类型 - sessionStorage */
     SESSION_STORAGE: 'sessionStorage'
-  }
+  },
+
+  PARAMS: 'params'
 }
 
 /**
@@ -85,7 +87,8 @@ export const INQUIRY = {
     私人医生服务提醒: '744',
     退诊: '750',
     取消问诊: '760',
-    视频通话: '770'
+    视频通话: '770',
+    服务提醒: '780'
   },
 
   /** 用户操作 */

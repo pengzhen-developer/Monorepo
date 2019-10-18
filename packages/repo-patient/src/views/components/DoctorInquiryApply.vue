@@ -21,34 +21,51 @@
       <div class="divider"></div>
 
       <van-cell-group>
-        <van-field :value="model.familyName" @click="checkFamily" clickable label="就诊人" placeholder="请选择就诊人" readonly required right-icon="arrow" />
-        <van-popup position="bottom" v-model.trim="showFamily">
-          <van-picker :columns="source.familyList" @cancel="showFamily = false" @confirm="selectFamily" show-toolbar value-key="name" />
+        <van-field :value="model.familyName"
+                   @click="checkFamily"
+                   clickable
+                   label="就诊人"
+                   placeholder="请选择就诊人"
+                   readonly
+                   required
+                   right-icon="arrow" />
+        <van-popup position="bottom"
+                   v-model.trim="showFamily">
+          <van-picker :columns="source.familyList"
+                      @cancel="showFamily = false"
+                      @confirm="selectFamily"
+                      show-toolbar
+                      value-key="name" />
         </van-popup>
       </van-cell-group>
 
       <van-cell-group>
-        <van-field
-          autosize
-          label="病情描述"
-          maxlength="255"
-          placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
-          required
-          rows="5"
-          type="textarea"
-          v-model.trim="model.illnessDescribe"
-        />
+        <van-field autosize
+                   label="病情描述"
+                   maxlength="255"
+                   placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
+                   required
+                   rows="5"
+                   type="textarea"
+                   v-model.trim="model.illnessDescribe" />
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="附件上传">
-          <van-uploader :after-read="afterRead" :max-count="4" multiple slot="input" v-model.trim="attachment" />
+          <van-uploader :after-read="afterRead"
+                        :max-count="4"
+                        multiple
+                        slot="input"
+                        v-model.trim="attachment" />
         </van-field>
       </van-cell-group>
 
       <van-cell-group>
         <van-field label="是否复诊">
-          <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isAgain" />
+          <van-switch active-color="#00c6ae"
+                      size="20px"
+                      slot="right-icon"
+                      v-model.trim="model.isAgain" />
         </van-field>
       </van-cell-group>
 
@@ -56,82 +73,104 @@
         <div class="divider"></div>
 
         <van-cell-group>
-          <van-field
-            :value="model.confirmIllness"
-            @click="showAddIllnessHistory = true"
-            clickable
-            label="初诊诊断"
-            placeholder="请选择诊断"
-            readonly
-            required
-            right-icon="arrow"
-          />
+          <van-field :value="model.confirmIllness"
+                     @click="showAddIllnessHistory = true"
+                     clickable
+                     label="初诊诊断"
+                     placeholder="请选择诊断"
+                     readonly
+                     required
+                     right-icon="arrow" />
 
           <peace-dialog :visible.sync="showAddIllnessHistory">
-            <AddIllnessHistory @onSave="showAddIllnessHistory = false" v-model.trim="model.confirmIllness"></AddIllnessHistory>
+            <AddIllnessHistory @onSave="showAddIllnessHistory = false"
+                               v-model.trim="model.confirmIllness"></AddIllnessHistory>
           </peace-dialog>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field
-            :value="model.confirmTime"
-            @click="showConfirmTime = true"
-            clickable
-            label="初诊时间"
-            placeholder="请选择初诊时间"
-            readonly
-            required
-            right-icon="arrow"
-          />
-          <van-popup position="bottom" v-model.trim="showConfirmTime">
-            <van-datetime-picker :max-date="new Date()" :value="new Date()" @cancel="showConfirmTime = false" @confirm="selectConfirmTime" type="date" />
+          <van-field :value="model.confirmTime"
+                     @click="showConfirmTime = true"
+                     clickable
+                     label="初诊时间"
+                     placeholder="请选择初诊时间"
+                     readonly
+                     required
+                     right-icon="arrow" />
+          <van-popup position="bottom"
+                     v-model.trim="showConfirmTime">
+            <van-datetime-picker :max-date="new Date()"
+                                 :value="new Date()"
+                                 @cancel="showConfirmTime = false"
+                                 @confirm="selectConfirmTime"
+                                 type="date" />
           </van-popup>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field autosize label="既往用药" placeholder="请输入既往用药" required rows="2" type="textarea" v-model.trim="model.pastDrug" />
+          <van-field autosize
+                     label="既往用药"
+                     placeholder="请输入既往用药"
+                     required
+                     rows="2"
+                     type="textarea"
+                     v-model.trim="model.pastDrug" />
         </van-cell-group>
 
         <van-cell-group>
-          <van-field
-            :value="model.allergicHistory"
-            @click="showAddAllergicHistory= true"
-            clickable
-            label="过敏史"
-            placeholder="请选择过敏史"
-            readonly
-            required
-            right-icon="arrow"
-          />
+          <van-field :value="model.allergicHistory"
+                     @click="showAddAllergicHistory= true"
+                     clickable
+                     label="过敏史"
+                     placeholder="请选择过敏史"
+                     readonly
+                     required
+                     right-icon="arrow" />
 
           <peace-dialog :visible.sync="showAddAllergicHistory">
-            <AddAllergicHistory @onSave="showAddAllergicHistory = false" v-model.trim="model.allergicHistory"></AddAllergicHistory>
+            <AddAllergicHistory @onSave="showAddAllergicHistory = false"
+                                v-model.trim="model.allergicHistory"></AddAllergicHistory>
           </peace-dialog>
         </van-cell-group>
 
         <van-cell-group v-show="showPregnancy">
-          <van-field label="是否怀孕" required>
-            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isPregnancy">
-              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
-              <van-radio :name="false" style="margin: 0;">否</van-radio>
+          <van-field label="是否怀孕"
+                     required>
+            <van-radio-group slot="right-icon"
+                             style="display: inline-flex;"
+                             v-model.trim="model.isPregnancy">
+              <van-radio :name="true"
+                         style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false"
+                         style="margin: 0;">否</van-radio>
             </van-radio-group>
           </van-field>
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="是否不良反应" required>
-            <van-radio-group slot="right-icon" style="display: inline-flex;" v-model.trim="model.isBadEffect">
-              <van-radio :name="true" style="margin: 0 10px 0 0;">是</van-radio>
-              <van-radio :name="false" style="margin: 0;">否</van-radio>
+          <van-field label="是否不良反应"
+                     required>
+            <van-radio-group slot="right-icon"
+                             style="display: inline-flex;"
+                             v-model.trim="model.isBadEffect">
+              <van-radio :name="true"
+                         style="margin: 0 10px 0 0;">是</van-radio>
+              <van-radio :name="false"
+                         style="margin: 0;">否</van-radio>
             </van-radio-group>
             <!-- <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" /> -->
           </van-field>
-          <van-field placeholder="请输入不良反应" required v-if="model.isBadEffect" v-model.trim="model.isBadEffectText" />
+          <van-field placeholder="请输入不良反应"
+                     required
+                     v-if="model.isBadEffect"
+                     v-model.trim="model.isBadEffectText" />
         </van-cell-group>
 
         <van-cell-group>
-          <van-field label="本次复诊情况" required>
-            <van-radio-group slot="right-icon" v-model.trim="model.againType">
+          <van-field label="本次复诊情况"
+                     required>
+            <van-radio-group slot="right-icon"
+                             v-model.trim="model.againType">
               <van-radio name="1">本院同医生复诊</van-radio>
               <van-radio name="2">本院非同医生复诊</van-radio>
               <van-radio name="3">非本院复诊</van-radio>
@@ -144,10 +183,15 @@
     <div class="footer">
       <van-checkbox v-model.trim="model.informedConsent">
         <span>我已阅读并同意</span>
-        <a @click.stop="showInformedConsent = true" class="informed-consent">《知情同意书》</a>
+        <a @click.stop="showInformedConsent = true"
+           class="informed-consent">《知情同意书》</a>
       </van-checkbox>
 
-      <van-button :disabled="!model.informedConsent || sending" @click="apply" style="width: 100%;" type="primary">提交</van-button>
+      <van-button :disabled="!model.informedConsent || sending"
+                  @click="apply"
+                  style="width: 100%;"
+                  type="primary">提交</van-button>
+      <!--      <van-button @click="applyOrder" style="width: 100%;" type="primary">提交订单 - 跳转支付</van-button>-->
     </div>
 
     <peace-dialog :visible.sync="showInformedConsent">
@@ -289,7 +333,9 @@ export default {
           }
 
           if (!family) {
-            family = this.source.familyList.find(item => item.familyId === this.source.familyList[0].id)
+            family = this.source.familyList.find(
+              item => item.familyId === this.source.familyList[0].id
+            )
           }
 
           if (family) {
@@ -379,15 +425,16 @@ export default {
     },
 
     apply() {
-      // 验证
-      if (!this.model.familyName) {
+      console.log('familyname', this.model.familyName)
+      //验证
+      if (!this.model.familyName || this.model.familyName == '添加就诊人') {
         return peace.util.alert('请选择就诊人')
       }
       if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
         return peace.util.alert('请输入不少于5个字的病情描述')
       }
 
-      // 复诊必填验证
+      //复诊必填验证
       if (this.model.isAgain) {
         if (!this.model.confirmIllness) {
           return peace.util.alert('请选择初诊诊断')
@@ -413,6 +460,26 @@ export default {
         this.applyHandler()
       })
     },
+    goToPay(data) {
+      let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
+      let typeName = inquiryType == 'image' ? '图文问诊' : ''
+      let money = orderMoney
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
+    },
+    applyOrder(data) {
+      const json = peace.util.encode({
+        inquiryId: data.inquiryId,
+        orderNo: data.orderNo,
+        money: data.orderMoney,
+        doctorName: this.doctor.doctorInfo.name,
+        type: 0, // 支付类型
+        typeName: '图文咨询'
+      })
+
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
+    },
 
     uploadHandler() {
       if (this.attachment.length > 0) {
@@ -435,31 +502,18 @@ export default {
 
     applyHandler() {
       this.sending = true
-
       const params = this.model
-      peace.service.inquiry.apply(params).then(res => {
-        this.sending = false
-
-        if (res.data.errorState === 0) {
-          // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-          setTimeout(() => {
-            this.$router.push({
-              name: '/message/index',
-              params: {
-                sessionId: 'p2p-' + this.model.doctorId
-              }
-            })
-          }, 1000)
-
-          return peace.util.alert(res.msg)
-        }
-        if (res.data.errorState === 2) {
-          return Dialog.confirm({
-            title: '提示',
-            message: res.msg,
-            confirmButtonText: '继续咨询'
-          })
-            .then(() => {
+      peace.service.inquiry
+        .apply(params)
+        .then(res => {
+          // 订单提交成功
+          if (res.data.errorState === 0) {
+            // 待支付状态
+            if (res.data.inquiryStatus === 1) {
+              this.goToPay(res.data)
+              return
+            } else {
+              //免费问诊
               // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
               setTimeout(() => {
                 this.$router.push({
@@ -469,12 +523,55 @@ export default {
                   }
                 })
               }, 1000)
+              return peace.util.alert(res.msg)
+            }
+          }
+          // 订单提交失败 [errorState:1存在未支付订单 2存在未结束订单]
+          if (res.data.errorState === 1) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '去看看'
+            }).then(() => {
+              // 前往咨询订单详情页
+              //console.log(res.data.inquiryId);
+              // const json = peace.util.encode({
+              //   inquiryId: res.data.inquiryId
+              // })
+              let inquiryId = res.data.inquiryId
+              const params = {
+                inquiryId
+              }
+              let json = peace.util.encode(params)
+              this.$router.push(`/setting/userConsultDetail/${json}`)
+              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
-            .catch(() => {
-              // on cancel
+          }
+          if (res.data.errorState === 2) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '继续咨询'
             })
-        }
-      })
+              .then(() => {
+                // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+                setTimeout(() => {
+                  this.$router.push({
+                    name: '/message/index',
+                    params: {
+                      sessionId: 'p2p-' + this.model.doctorId
+                    }
+                  })
+                }, 1000)
+              })
+              .catch(() => {
+                // on cancel
+              })
+          }
+        })
+        .finally(() => {
+          this.sending = false
+        })
     }
   }
 }

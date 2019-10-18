@@ -1,10 +1,15 @@
 <template>
   <div class="message">
     <template v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
-      <div :id="session.id" :key="session.id" @click="selectSession(session)" class="message-item" v-for="session in $store.state.inquiry.sessions">
+      <div :id="session.id"
+           :key="session.id"
+           @click="selectSession(session)"
+           class="message-item"
+           v-for="session in $store.state.inquiry.sessions">
         <div class="message-item-avatar">
           <img :src="session.content.doctorInfo.doctorAvatar" />
-          <div class="message-item-unread" v-if="session.unread !== 0">
+          <div class="message-item-unread"
+               v-if="session.unread !== 0">
             <div class="van-info van-info-message">{{ session.unread }}</div>
           </div>
         </div>
@@ -27,8 +32,10 @@
     </template>
 
     <template v-else>
-      <div class="no-data" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-        <img src="@src/assets/images/ic_no consultation copy@2x.png" style="width: 160px; height: 100px;" />
+      <div class="no-data"
+           style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+        <img src="@src/assets/images/ic_no consultation copy@2x.png"
+             style="width: 160px; height: 100px;" />
         <p style="font-size: 15px; color: #999999;">暂无消息</p>
       </div>
     </template>
@@ -72,49 +79,42 @@ export default {
             return '[处方]'
           }
           // 视频通话
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
+          else if (
+            session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话
+          ) {
             return '[视频通话]'
           }
           // 私人医生服务提醒
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒) {
+          else if (
+            session.lastMsg.content.code ===
+            peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒
+          ) {
             return '[自定义消息]'
           }
           // 其它
-          else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
+          else if (
+            session.lastMsg.content &&
+            session.lastMsg.content.data &&
+            session.lastMsg.content.data.showTextInfo
+          ) {
             return session.lastMsg.content.data.showTextInfo.patientClientText
           }
       }
     },
 
     selectSession(session) {
-      const doneHandler = (error, message) => {
-        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
-
-        if (error) {
-          throw new Error(error)
-        }
-
-        peace.service.IM.resetInquirySession()
-        peace.service.IM.resetInquirySessionMessages()
-
-        peace.service.IM.setInquirySession(session)
-        peace.service.IM.setInquirySessionMessages(message.msgs)
-      }
-
-      peace.service.IM.resetInquirySession()
-      peace.service.IM.resetInquirySessionMessages()
-      // 重置会话未读数
-      $peace.NIM.resetSessionUnread(session.id)
-      // 获取本次问诊历史消息
-      $peace.NIM.getHistoryMsgs({
+      const params = peace.util.encode({
+        id: session.id,
         beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
         scene: session.scene,
-        to: session.to,
-        done: doneHandler
+        to: session.to
       })
 
-      // 跳转详细详情
-      this.$router.push('/components/messageList')
+      // 清除聊天记录
+      peace.service.IM.resetInquirySessionMessages()
+
+      // 跳转聊天详情
+      this.$router.push(`/components/messageList/${params}`)
     }
   }
 }

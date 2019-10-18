@@ -10,12 +10,19 @@ import peace from '@src/library'
 export default {
   name: 'app',
 
-  created() {
-    // todo
-    // H5 暂不支持刷新后停留在当前页 (因为涉及到保存上一页的状态)
-    // 因此每次刷新,都跳转首页
-    this.$router.replace(peace.config.system.homePage)
+  beforeCreate() {
+    const params = peace.util.queryUrlParam('params')
 
+    if (params) {
+      if (params === 'PLATEFORM') {
+        peace.cache.remove(peace.type.SYSTEM.PARAMS)
+      } else {
+        peace.cache.set(peace.type.SYSTEM.PARAMS, peace.util.queryUrlParam('params'))
+      }
+    }
+  },
+
+  created() {
     document.title = peace.config.system.title
 
     // restore user info and user token

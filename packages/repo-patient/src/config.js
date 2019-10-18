@@ -12,7 +12,7 @@ export const config = {
     /**
      * 系统标题
      */
-    title: '万家云医用户端',
+    title: '互联网医院',
 
     /**
      * 无权限访问页
@@ -44,15 +44,28 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: 'https://patient.hp.aijiayi.com/'
+    base: process.env.VUE_APP_BASE_API
   },
 
   /**
    * IM 配置项
    */
   NIM: {
-    key: 'a5b5212d7ff034b508d6e889040ffdf7'
-  }
+    key: process.env.VUE_APP_IM_KEY
+  },
+
+  /**
+   * MAP 配置项
+   */
+  MAP: {
+    key: process.env.VUE_APP_MAP_KEY
+  },
+
+
+  /**
+   * 微信公众号 APPID
+   */
+  APPID: process.env.VUE_APP_APPID
 }
 
 export default config

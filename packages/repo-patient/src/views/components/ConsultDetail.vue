@@ -1,28 +1,35 @@
 <template>
-  <div class="consult-detatil" v-if="internalData && internalData.inquiryInfo && internalData.doctorInfo && internalData.familyInfo && internalData.illInfo">
+  <div class="consult-detatil"
+       v-if="internalData && internalData.inquiryInfo && internalData.doctorInfo && internalData.familyInfo && internalData.illInfo">
     <!--TOP-->
     <div class="module nmg">
       <div class="strong">{{ internalData.inquiryInfo.statusTxt }}</div>
       <div class="brief">{{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}</div>
       <div class="module-body">
-        <div @click="gouserPrescripCasePage(internalData)" class="label blue" v-if="internalData.inquiryInfo.isCase">咨询小结</div>
-        <div @click="gouserPrescripListPage(internalData)" class="label blue" v-if="internalData.inquiryInfo.isPrescrip">用药建议</div>
-        <div
-          @click="goChatingPage(internalData)"
-          class="label blue"
-          v-if="internalData.inquiryInfo.inquiryStatus != '1' && internalData.inquiryInfo.inquiryStatus != '6'"
-        >咨询记录</div>
-        <div
-          @click="showCancellPop(internalData)"
-          class="label blue"
-          v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'"
-        >取消订单</div>
+        <div @click="gouserPrescripCasePage(internalData)"
+             class="label blue"
+             v-if="internalData.inquiryInfo.isCase">咨询小结</div>
+        <div @click="gouserPrescripListPage(internalData)"
+             class="label blue"
+             v-if="internalData.inquiryInfo.isPrescrip">用药建议</div>
+        <div @click="goChatingPage(internalData)"
+             class="label blue"
+             v-if="internalData.inquiryInfo.inquiryStatus != '1' && internalData.inquiryInfo.inquiryStatus != '6'">
+          咨询记录</div>
+        <div @click="showCancellPop(internalData)"
+             class="label blue"
+             v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'">
+          取消订单</div>
+        <div @click="goToPay(internalData)"
+             class="label blue-full"
+             v-if="internalData.inquiryInfo.inquiryStatus == '1'">支付订单</div>
       </div>
     </div>
     <!--医生名片-->
     <div class="module card">
       <div class="card-avatar avatar-circular">
-        <img :src="internalData.doctorInfo.avartor" class />
+        <img :src="internalData.doctorInfo.avartor"
+             class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -30,7 +37,8 @@
           <div class="card-small">
             {{ internalData.doctorInfo.doctorTitle }}
             {{ internalData.doctorInfo.deptName }}
-            <div class="label label-private" v-if="internalData.doctorInfo.isPrivateDoctor">私人医生</div>
+            <div class="label label-private"
+                 v-if="internalData.doctorInfo.isPrivateDoctor">私人医生</div>
           </div>
         </div>
         <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
@@ -41,9 +49,11 @@
       <div class="form-dl">
         <div class="form-dt">就/复诊人</div>
         <div class="form-dd">
-          {{ internalData.familyInfo.familyName }}
-          {{ internalData.familyInfo.familySex }}
-          {{ internalData.familyInfo.familyAge }}
+          <span
+                style="font-size: 14px; margin:0 8px 0 0;">{{ internalData.familyInfo.familyName }}</span>
+          <span
+                style="font-size: 12px; margin:0 8px 0 0;">{{ internalData.familyInfo.familySex }}</span>
+          <span style="font-size: 12px;">{{ internalData.familyInfo.familyAge + '岁' }}</span>
         </div>
       </div>
       <!--病情描述-->
@@ -53,8 +63,13 @@
         <!--图片列表-->
         <div class="ul">
           <template v-if="internalData.inquiryInfo.inquiryImages">
-            <div :key="index" class="li" v-for="(item,index) in internalData.inquiryInfo.inquiryImages">
-              <img :internalData-index="index" :src="item.image_path" @click="viewImage(item.image_path)" bindtap="divImgs" />
+            <div :key="index"
+                 class="li"
+                 v-for="(item,index) in internalData.inquiryInfo.inquiryImages">
+              <img :internalData-index="index"
+                   :src="item.image_path"
+                   @click="viewImage(item.image_path)"
+                   bindtap="divImgs" />
             </div>
           </template>
         </div>
@@ -98,22 +113,26 @@
         <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
       </div>
     </div>
-    <div class="module pdtb">
+    <div class="module pdtb"
+         v-if="internalData.inquiryInfo.inquiryStatus != '1'">
       <div class="brief right">
         实付金额：
-        <div class="money">{{ internalData.orderInfo.payMoney }}</div>
+        <div class="money">{{ '¥' + internalData.orderInfo.payMoney }}</div>
       </div>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
+    <peace-dialog :visible.sync="recipeList.visible"
+                  title="用药建议">
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
+    <peace-dialog :visible.sync="chatingPage.visible"
+                  title="咨询记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
   </div>
@@ -177,17 +196,26 @@ export default {
       immediate: true
     }
   },
-
+  mounted() {
+    this.get()
+  },
   methods: {
     get() {
       this.getConsultDetail()
     },
-
+    goToPay(data) {
+      let doctorId = data.doctorInfo.doctorId
+      let order = data.orderInfo
+      let money = order.orderMoney
+      let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
+      let doctorName = data.doctorInfo.name
+      let orderNo = order.orderNo
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
+    },
     getConsultDetail() {
-      const params = {
-        inquiryId: this.internalData.inquiryInfo.inquiryId
-      }
-
+      let params = peace.util.decode(this.$route.params.json)
       peace.service.patient.inquiryDetail(params).then(res => {
         this.internalData = res.data
       })
@@ -195,7 +223,8 @@ export default {
 
     getInquiryText(status) {
       const dic = {
-        '1': '15分钟之后未支付系统将自动关闭订单',
+        // '1': '15分钟之后未支付系统将自动关闭订单',
+        '1': '请您尽快支付',
         '2': '已通知医生尽快接诊，请等候',
         '3': '请及时与医生沟通',
         '4': '欢迎再次咨询。如有紧急问题请及时就医~',
@@ -207,68 +236,43 @@ export default {
     },
 
     gouserPrescripCasePage(item) {
-      this.caseDetail.visible = true
-
-      const params = {
+      const params = peace.util.encode({
+        familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      }
-
-      peace.service.patient.getCaseInfo(params).then(res => {
-        this.caseDetail.data = res.data
       })
+
+      this.$router.push(`/components/theCase/${params}`)
     },
 
     gouserPrescripListPage(item) {
-      this.recipeList.visible = true
-
-      const params = {
+      const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      }
-
-      peace.service.patient.getMyPrescripList(params).then(res => {
-        this.recipeList.data = res.data
       })
+
+      this.$router.push(`/components/theRecipeList/${params}`)
     },
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
-        this.$router.push({
-          name: '/message/index',
-          params: {
-            sessionId: 'p2p-' + item.doctorInfo.doctorId
-          }
+        const params = peace.util.encode({
+          id: 'p2p-' + item.doctorInfo.doctorId,
+          scene: 'p2p',
+          beginTime: item.orderInfo.orderTime.toDate().getTime(),
+          to: item.doctorInfo.doctorId
         })
+
+        // 跳转聊天详情
+        this.$router.push(`/components/messageList/${params}`)
       }
       // 非问诊中,显示历史记录
       else {
-        this.chatingPage.visible = true
-
-        const params = {
+        const params = peace.util.encode({
           inquiryNo: item.inquiryInfo.inquiryNo
-        }
-
-        peace.service.patient.chatDetail(params).then(res => {
-          const historyMessageFormatHandler = messages => {
-            if (messages && Array.isArray(messages)) {
-              messages.forEach(message => {
-                const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
-
-                message.time = message.sendtime
-                message.flow = item.doctorInfo.doctorId === message.from ? 'in' : 'out'
-                message.type = messageTypeMap[message.type]
-                message.text = message.body.msg
-                message.content = message.body
-                message.file = message.body
-              })
-            }
-          }
-
-          historyMessageFormatHandler(res.data.msgList)
-
-          this.chatingPage.data = res.data.msgList
         })
+
+        this.$router.push(`/components/messageList/${params}`)
       }
     },
 
@@ -341,6 +345,14 @@ export default {
     padding: 4px 6px;
     margin: 5px;
     border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .module-body .blue-full {
+    background: #00c6ae;
+    color: #fff;
   }
   .card {
     background: #fff;

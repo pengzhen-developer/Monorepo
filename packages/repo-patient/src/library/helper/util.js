@@ -4,7 +4,10 @@
  * @Date: 2018-07-06
  */
 
-import { Toast as Message } from 'vant'
+import Vue from 'vue'
+import { Toast as Message, Dialog } from 'vant'
+
+Vue.use(Dialog)
 
 /**
  * $peace
@@ -162,24 +165,18 @@ export function success(message = '温馨提示', title = '温馨提示', type =
  * @param {*} [cancelCallBack=() => {}]
  */
 export function confirm(
-  msg = '温馨提示',
+  message = '温馨提示',
   title = '温馨提示',
   options = { type: 'info', confirmButtonText: '确定', cancelButtonText: '取消' },
-  confirmCallBack,
+confirmCallBack,
   cancelCallBack
 ) {
-  $peace.$confirm(msg, title, {
-    confirmButtonText: options.confirmButtonText,
-    cancelButtonText: options.cancelButtonText,
-    type: options.type,
-    callback: action => {
-      if (action === 'confirm') {
-        confirmCallBack && confirmCallBack()
-      } else {
-        cancelCallBack && cancelCallBack()
-      }
-    }
+  Dialog.confirm({
+    title,
+    message
   })
+    .then(confirmCallBack)
+    .catch(cancelCallBack)
 }
 
 /**
@@ -191,7 +188,10 @@ export function confirm(
  */
 export function formatDuration(bgTime, endTime) {
   if (bgTime > endTime) {
-    console.warn('【 peace 】【 util 】【 formatDuration 】格式化时间间隔出错，开始时间不能大于结束时间。', new Date())
+    console.warn(
+      '【 peace 】【 util 】【 formatDuration 】格式化时间间隔出错，开始时间不能大于结束时间。',
+      new Date()
+    )
 
     return ''
   }

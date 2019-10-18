@@ -56,7 +56,9 @@ axios.interceptors.request.use(
       }
 
       // 配置 authorization、accesstoken
-      request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO) ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken : undefined
+      request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO)
+        ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
+        : undefined
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
@@ -129,8 +131,8 @@ axios.interceptors.response.use(
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
-        // 清空所有缓存
-        $peace.cache.clear()
+        // 清空登录信息
+        $peace.cache.remove($peace.type.USER.INFO)
         // 跳转提示页
         router.replace($peace.config.system.noAuthPage)
 
@@ -174,11 +176,11 @@ axios.interceptors.response.use(
     if (error.response && error.response.status) {
       switch (error.response.status) {
         default:
-          $peace.util.alert('Uncaught (in promise) Error: Request failed with status code ', '提示', 'error')
+          $peace.util.alert('服务器异常，请稍后再试', '提示', 'error')
           break
       }
     } else {
-      $peace.util.alert('Uncaught (in promise) Error ' + error.message, '提示', 'error')
+      $peace.util.alert('服务器异常，请稍后再试', '提示', 'error')
     }
 
     return Promise.reject(error)

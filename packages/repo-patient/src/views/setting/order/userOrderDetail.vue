@@ -73,11 +73,18 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-    <div class="module pdtb">
+    <div class="module pdtb" v-if="info.orderInfo.orderStatus != '1'">
       <div class="brief right">
         实付金额：
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
+    </div>
+    <div style="padding: 0 15px;">
+      <van-button
+                @click="goToPay(info)"
+                v-if="info.orderInfo.orderStatus == 1"
+                style="width: 100%;"
+                type="primary">继续支付</van-button>
     </div>
   </div>
 </template>
@@ -90,6 +97,12 @@ export default {
   props: {},
   data() {
     return {
+      orderStatus:[
+        {
+          code: 1
+        }
+      ],
+      sending: false,
       page: {
         statusDic: {
           register: {
@@ -98,8 +111,8 @@ export default {
               small: '15分钟内未付款，订单将自动取消'
             },
             2: {
-              text: '已取消',
-              small: ''
+              text: '待接诊',
+              small: '已通知医生尽快接诊，12小时未接诊将自动'
             },
             3: {
               text: '预约成功',
@@ -139,6 +152,18 @@ export default {
     this.getData()
   },
   methods: {
+    goToPay(data) {
+      //debugger;
+      let doctorId = data.doctorInfo.doctorId;
+      let order = data.orderInfo;
+      let money = order.orderMoney;
+      let typeName = '预约挂号';
+      let doctorName = data.doctorInfo.doctorName;
+      let orderNo = order.orderNo;
+      let json = {money, typeName, doctorName, orderNo, doctorId};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
+    },
     getData() {
       peace.service.patient
         .getOrderDetail({
@@ -174,6 +199,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-button--normal {
+  border-radius: 20px;
+}
 .dl-addr {
   font-size: 14px;
   .dd {

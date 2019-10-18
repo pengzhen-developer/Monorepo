@@ -1,43 +1,67 @@
 <template>
-  <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
-    <!-- 
-      todo:
-      暂时屏蔽未读消息
-    -->
-    <div :data-index="index" :key="index" @click="goprescripDetailPage(item)" class="word-list" v-for="(item, index) in internalData">
-      <div class="word-avatar">
-        <div class="icon"></div>
-      </div>
-      <div class="word-body">
-        <div class="word-title">
-          <div class="title">{{item.patientName}}的用药建议</div>
-          <div
-            :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
-            class="label label-default"
-            v-if="item.prescriptionStatus"
-          >{{item.prescriptionStatus.prescriptionStatus}}</div>
+  <div style="height: 100%;">
+    <template v-if="$peace.cache.get($peace.type.USER.INFO)">
+      <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
+        <div :data-index="index"
+             :key="index"
+             @click="goprescripDetailPage(item)"
+             class="word-list"
+             v-for="(item, index) in internalData">
+          <div class="word-avatar">
+            <div class="icon"></div>
+          </div>
+          <div class="word-body">
+            <div class="word-title">
+              <div class="title">{{item.patientName}}的用药建议</div>
+              <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
+                   class="label label-default"
+                   v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
+              </div>
+            </div>
+            <div class="word-inline">
+              <div class="span">{{item.deptName}}</div>
+              <div class="space">
+                <span>{{item.hospitalName}} </span>
+                <span>{{item.date}}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="word-inline">
-          <div class="span l">{{item.hospitalName}}</div>
-          <div class="span">| {{item.deptName}}</div>
-          <div class="span s">{{item.date}}</div>
+        <div class="tips-bottom"
+             v-if="internalData && internalData.length">
+          <div>为确保广大患者的用药安全，请注意：</div>
+          <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
+          <div>2. 用药建议开具3日内有效。</div>
+          <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
         </div>
-      </div>
-    </div>
-    <div class="tips-bottom" v-if="internalData && internalData.length">
-      <div>为确保广大患者的用药安全，请注意：</div>
-      <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
-      <div>2. 用药建议开具3日内有效。</div>
-      <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
-    </div>
-    <div class="none-page" v-else>
-      <div class="icon icon_none_prescrip"></div>
-      <div class="none-text">暂无用药建议</div>
-    </div>
+        <div class="none-page"
+             v-else>
+          <div class="icon icon_none_prescrip"></div>
+          <div class="none-text">暂无用药建议</div>
+        </div>
 
-    <peace-dialog :visible.sync="recipeDetail.visible" title="处方详情">
-      <TheRecipe :data="recipeDetail.data"></TheRecipe>
-    </peace-dialog>
+        <peace-dialog :visible.sync="recipeDetail.visible"
+                      title="处方详情">
+          <TheRecipe :data="recipeDetail.data"></TheRecipe>
+        </peace-dialog>
+      </div>
+    </template>
+    <template v-else>
+      <div
+           style="display: flex; flex-direction: column; height: 100%; background: #F8FDFD; justify-content: center; align-items: center;">
+        <div style="flex: 1; padding: 30px 16px 0 16px; overflow: auto">
+          <h4
+              style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0; text-align: center;">
+            登录后即可查看医生为您开具的处方、快捷取药</h4>
+          <img src="@src/assets/images/no-login.png">
+        </div>
+        <div style="padding: 16px; height: 100px; width: 100%; ">
+          <van-button style="width: 100%; height: 50px; font-size: 16px;"
+                      @click="toLogin()"
+                      type="primary">立即登录</van-button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -62,7 +86,7 @@ export default {
 
   data() {
     return {
-      internalData: [],
+      internalData: undefined,
 
       recipeDetail: {
         visible: false,
@@ -81,8 +105,10 @@ export default {
   },
 
   created() {
-    if (!this.data) {
-      this.get()
+    if ($peace.cache.get($peace.type.USER.INFO)) {
+      if (!this.data) {
+        this.get()
+      }
     }
   },
 
@@ -96,16 +122,16 @@ export default {
     },
 
     goprescripDetailPage(item) {
-      this.recipeDetail.visible = true
-      this.recipeDetail.data = undefined
-
-      const params = {
+      const params = peace.util.encode({
         prescribeId: item.prescribeId
-      }
-
-      peace.service.patient.getPrescripInfo(params).then(res => {
-        this.recipeDetail.data = res.data
       })
+
+      this.$router.push(`/components/theRecipe/${params}`)
+    },
+
+    toLogin() {
+      $peace.referrer = this.$route
+      this.$router.push(peace.config.system.loginPage)
     }
   }
 }
@@ -114,17 +140,19 @@ export default {
 <style lang="scss" scoped>
 .the-recipe-list {
   min-height: 100%;
+  height: 100%;
   padding: 15px;
-  &.bg{
-    background: #f5f5f5;
+  &.bg {
+    background: #f9f9f9;
   }
   .word-list {
     position: relative;
     background: #fff;
 
-    margin: 10px 0;
-    box-shadow: 0 2px 1px #dedede;
+    margin: 0 0 15px 0;
+    box-shadow: 0px 1px 8px 0px rgba(221, 221, 221, 0.5);
     display: flex;
+    border-radius: 4px;
   }
   .word-list::after {
     content: '';
@@ -132,7 +160,7 @@ export default {
     height: 20px;
     border-radius: 20px 0 0 20px;
     right: -10px;
-    top: 30px;
+    top: 35px;
     position: absolute;
     display: block;
     background: #f5f5f5;
@@ -182,13 +210,15 @@ export default {
     font-size: 16px;
     margin-bottom: 10px;
 
+    color: #000000;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .word-title .label {
     flex: initial;
-    width: 60px;
+    width: 50px;
     height: 22px;
     margin-right: 10px;
     border: 0;
@@ -196,19 +226,22 @@ export default {
     text-align: center;
   }
   .word-list .word-inline {
+    font-size: 12px;
+
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
+    flex-direction: column;
 
     border-top: 1px solid #dedede;
     padding-top: 10px;
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    .space {
+      display: flex;
+      justify-content: space-between;
+      color: #999999;
+    }
   }
   .word-inline .span {
-    font-size: 14px;
+    font-size: 12px;
     color: #999;
     flex: 1 1 auto;
     overflow: hidden;
@@ -242,8 +275,8 @@ export default {
     color: #fff;
   }
   .tips-bottom {
-    margin: 10px 15px;
     line-height: 1.7;
+    text-align: justify;
   }
 }
 </style>

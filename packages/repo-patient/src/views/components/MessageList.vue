@@ -1,33 +1,37 @@
 <template>
   <div class="message-list">
-    <van-nav-bar :title="$store.getters['inquiry/doctorInfo'].doctorName" @click-left="back" class="layout-navbar" left-arrow left-text=" " v-if="navBar" />
-
-    <div @click="hideTools" class="item">
-      <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
+    <div @click="hideTools"
+         class="item">
+      <div :class="getMessageFlow(message)"
+           :key="message.time"
+           class="message"
+           v-for="(message ,index) in messageList">
         <!-- 文本消息 -->
-        <template
-          v-if="getMessageType(message) === 'text' || 
+        <template v-if="getMessageType(message) === 'text' || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊"
-        >
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊|| 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
           <!-- 消息时间 -->
-          <template v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
+          <template
+                    v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">
+                <span>{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</span>
+              </div>
             </div>
           </template>
 
-          <div
-            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-            style="display: flex; align-items: center;"
-          >
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+          <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+               style="display: flex; align-items: center;">
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'in'">
+              <img
+                   :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
@@ -35,8 +39,11 @@
               <div v-html="getMessageText(message)"></div>
             </div>
 
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar"
+                   mode="cover"
+                   src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
@@ -46,7 +53,8 @@
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
             </div>
           </template>
 
@@ -62,48 +70,57 @@
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
             </div>
           </template>
 
-          <div
-            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-            style="display: flex; align-items: center;"
-          >
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+          <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+               style="display: flex; align-items: center;">
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'in'">
+              <img
+                   :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
             <div>
-              <img :src="message.file.url" @click="viewImage(message.file.url)" style="max-width: 200px; " />
+              <img :src="message.file.url"
+                   @click="viewImage(message.file.url)"
+                   style="max-width: 200px; " />
             </div>
 
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar"
+                   mode="cover"
+                   src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
 
         <!-- 病历消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+        <template
+                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
             </div>
           </template>
 
-          <div
-            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-            style="display: flex; align-items: center;"
-          >
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+          <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+               style="display: flex; align-items: center;">
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'in'">
+              <img
+                   :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
-            <div @click="getCaseDetail(message)" class="message-body case">
+            <div @click="getCaseDetail(message)"
+                 class="message-body case">
               <img src="~@src/assets/images/pic_medication recommendations.png" />
               <div style="text-align: left;">
                 <p style="font-size: 14px;">病历</p>
@@ -111,31 +128,37 @@
               </div>
             </div>
 
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar"
+                   mode="cover"
+                   src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
 
         <!-- 处方消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+        <template
+                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
-              <div class="message-body">{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
             </div>
           </template>
 
-          <div
-            :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-            style="display: flex; align-items: center;"
-          >
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'in'">
-              <img :src="doctorInfo.doctorAvatar || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+          <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+               style="display: flex; align-items: center;">
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'in'">
+              <img
+                   :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
             </div>
 
             <!-- 消息内容 -->
-            <div @click="getRecipeDetail(message)" class="message-body recipe">
+            <div @click="getRecipeDetail(message)"
+                 class="message-body recipe">
               <img src="~@src/assets/images/pic_medication recommendations.png" />
               <div style="text-align: left;">
                 <p style="font-size: 14px;">处方</p>
@@ -143,30 +166,40 @@
               </div>
             </div>
 
-            <div class="message-avatar" v-if="getMessageFlow(message) === 'out'">
-              <img class="img-avatar" mode="cover" src="~@/assets/images/ic_head portrait.png" />
+            <div class="message-avatar"
+                 v-if="getMessageFlow(message) === 'out'">
+              <img class="img-avatar"
+                   mode="cover"
+                   src="~@/assets/images/ic_head portrait.png" />
             </div>
           </div>
         </template>
       </div>
     </div>
 
-    <div class="input" v-if="canShowInput">
-      <van-field
-        :autosize="{ maxHeight: 60, minHeight: 20 }"
-        @focus="hideTools"
-        rows="1"
-        type="textarea"
-        v-model.trim="message"
-        v-on:keyup.enter.stop="sendMessageText"
-      >
-        <van-icon @click="showTools" name="add-o" slot="right-icon" />
-        <van-button @click="sendMessageText" size="small" slot="button" type="primary">发送</van-button>
+    <div class="input"
+         v-if="canShowInput">
+      <van-field :autosize="{ maxHeight: 60, minHeight: 20 }"
+                 @focus="hideTools"
+                 rows="1"
+                 type="textarea"
+                 v-model.trim="message"
+                 v-on:keyup.enter.stop="sendMessageText">
+        <van-icon @click="showTools"
+                  name="add-o"
+                  slot="right-icon" />
+        <van-button @click="sendMessageText"
+                    size="small"
+                    slot="button"
+                    type="primary">发送</van-button>
       </van-field>
 
-      <div class="input-tools" v-show="tools.visible">
-        <van-row justify="space-between" type="flex">
-          <van-col class="flex-left" span="6">
+      <div class="input-tools"
+           v-show="tools.visible">
+        <van-row justify="space-between"
+                 type="flex">
+          <van-col class="flex-left"
+                   span="6">
             <van-uploader :after-read="sendMessageImage">
               <div class="flex-center">
                 <van-button icon="photo"></van-button>
@@ -228,6 +261,9 @@ export default {
 
   data() {
     return {
+      internalData: undefined,
+      internalDoctorInfo: undefined,
+
       message: '',
 
       tools: {
@@ -250,9 +286,10 @@ export default {
         // 743: true, // 会诊
         750: true, // 退诊
         760: true, // 取消问诊
+        780: true // 服务提醒
         // 900: true, // 接收随访
         // 910: true, // 随访结束
-      },
+      }
     }
   },
 
@@ -268,12 +305,26 @@ export default {
         })
       },
       immediate: true
+    },
+
+    data: {
+      handler() {
+        this.internalData = this.data
+      },
+      immediate: true
+    },
+
+    doctorInfo: {
+      handler() {
+        this.internalDoctorInfo = this.data
+      },
+      immediate: true
     }
   },
 
   computed: {
     messageList() {
-      let sessionMessages = this.data || this.$store.state.inquiry.sessionMessages
+      let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
 
       // 过滤无效数据
       sessionMessages = sessionMessages.filter(message => {
@@ -300,8 +351,10 @@ export default {
 
     canShowInput() {
       if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus ===
+          peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus ===
+          peace.type.INQUIRY.INQUIRY_STATUS.问诊中
       ) {
         return true
       } else {
@@ -310,7 +363,82 @@ export default {
     }
   },
 
+  created() {
+    if (!this.data) {
+      const params = peace.util.decode(this.$route.params.json)
+
+      // 传递 inquiryNo 获取聊天记录
+      if (params.inquiryNo) {
+        this.getHistoryMsgsByDB()
+      }
+      // 传递 session 获取聊天记录
+      else {
+        setTimeout(() => {
+          this.getHistoryMsgsByIM()
+        }, 1000)
+      }
+    }
+  },
+
   methods: {
+    getHistoryMsgsByDB() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      peace.service.patient.chatDetail(params).then(res => {
+        const historyMessageFormatHandler = messages => {
+          if (messages && Array.isArray(messages)) {
+            messages.forEach(message => {
+              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
+
+              message.time = message.sendtime
+              message.flow =
+                $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
+              message.type = messageTypeMap[message.type]
+              message.text = message.body.msg
+              message.content = message.body
+              message.file = message.body
+            })
+          }
+        }
+
+        historyMessageFormatHandler(res.data.msgList)
+
+        this.internalData = res.data.msgList
+        this.internalDoctorInfo = res.data.doctorInfo
+      })
+    },
+    getHistoryMsgsByIM() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      const doneHandler = (error, message) => {
+        const session = this.$store.state.inquiry.sessions.find(
+          item => item.id === message.scene + '-' + message.to
+        )
+
+        console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
+
+        if (error) {
+          throw new Error(error)
+        }
+
+        peace.service.IM.resetInquirySessionMessages()
+        peace.service.IM.setInquirySessionMessages(message.msgs)
+
+        peace.service.IM.resetInquirySession()
+        peace.service.IM.setInquirySession(session)
+      }
+
+      // 重置会话未读数
+      $peace.NIM.resetSessionUnread(params.id)
+      // 获取本次问诊历史消息
+      $peace.NIM.getHistoryMsgs({
+        beginTime: params.beginTime,
+        scene: params.scene,
+        to: params.to,
+        done: doneHandler
+      })
+    },
+
     back() {
       this.$router.go(-1)
     },
@@ -357,7 +485,8 @@ export default {
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
           ) {
             return 'system'
           }
@@ -439,28 +568,20 @@ export default {
     },
 
     getCaseDetail(message) {
-      this.caseDetail.visible = true
-
-      const params = {
+      const params = peace.util.encode({
         inquiryNo: message.content.data.inquiryInfo.inquiryNo,
         inquiryId: message.content.data.inquiryInfo.inquiryId
-      }
-
-      peace.service.patient.getCaseInfo(params).then(res => {
-        this.caseDetail.data = res.data
       })
+
+      this.$router.push(`/components/theCase/${params}`)
     },
 
     getRecipeDetail(message) {
-      this.recipeDetail.visible = true
-
-      const params = {
+      const params = peace.util.encode({
         prescribeId: message.content.data.recipeInfo.recipeId
-      }
-
-      peace.service.patient.getPrescripInfo(params).then(res => {
-        this.recipeDetail.data = res.data
       })
+
+      this.$router.push(`/components/theRecipe/${params}`)
     },
 
     viewImage(path) {
@@ -482,6 +603,7 @@ export default {
     flex: 1;
 
     .message {
+      font-size: 14px;
       margin: 0 0 10px 0;
 
       &.in {
@@ -523,8 +645,9 @@ export default {
       }
 
       &.system {
+        font-size: 12px;
         text-align: center;
-        margin: 6px auto;
+        margin: 10px auto;
 
         .message-body {
           color: rgba(155, 155, 155, 1);
@@ -533,13 +656,18 @@ export default {
       }
 
       &.time {
-        font-size: 12px;
         text-align: center;
-        margin: 0 0 5px 0;
+        margin: 0;
 
         .message-body {
+          margin: 0;
+          font-size: 12px;
           color: rgba(155, 155, 155, 1);
           background: rgb(255, 255, 255);
+
+          * {
+            font-size: 12px;
+          }
         }
       }
 
@@ -555,7 +683,7 @@ export default {
         &.recipe {
           background: #fff;
           border: 1px solid #f2f2f2;
-          padding: 5px;
+          padding: 10px;
           cursor: pointer;
           display: inline-flex;
 

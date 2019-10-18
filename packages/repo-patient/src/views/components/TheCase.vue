@@ -1,25 +1,26 @@
 <template>
-  <div class="the-case" v-if="data">
+  <div class="the-case"
+       v-if="internalData">
     <div class="prescript">
-      <div class="prescript-no">NO.{{data.case_no}}</div>
-      <div class="prescript-head">{{data.hospitalName}}</div>
+      <div class="prescript-no">NO.{{internalData.case_no}}</div>
+      <div class="prescript-head">{{internalData.hospitalName}}</div>
       <div class="prescript-h4">门(急)诊病历</div>
       <div class="prescript-table">
         <div class="th">
           姓名
-          <div class="td">{{data.patientName}}</div>
+          <div class="td">{{internalData.patientName}}</div>
         </div>
         <div class="th">
           性别
-          <div class="td">{{data.patientSex}}</div>
+          <div class="td">{{internalData.patientSex}}</div>
         </div>
         <div class="th">
           年龄
-          <div class="td">{{data.patientAge}}</div>
+          <div class="td">{{internalData.patientAge}}</div>
         </div>
         <div class="th">
           科别
-          <div class="td">{{data.deptName}}</div>
+          <div class="td">{{internalData.deptName}}</div>
         </div>
       </div>
     </div>
@@ -27,68 +28,88 @@
     <div class>
       <div class="form-dl">
         <div class="form-dt">就诊时间</div>
-        <div class="form-dd">{{data.createdTime || '无'}}</div>
+        <div class="form-dd">{{internalData.createdTime || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">主诉</div>
-        <div class="form-dd">{{data.baseIllness || '无'}}</div>
+        <div class="form-dd">{{internalData.baseIllness || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">现病史</div>
-        <div class="form-dd">{{data.presentHistory || '无'}}</div>
+        <div class="form-dd">{{internalData.presentHistory || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">过敏史</div>
-        <div class="form-dd">{{data.allergyHistory || '无'}}</div>
+        <div class="form-dd">{{internalData.allergyHistory || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">既往史</div>
-        <div class="form-dd">{{data.pastHistory || '无'}}</div>
+        <div class="form-dd">{{internalData.pastHistory || '无'}}</div>
       </div>
-      <div
-        class="form-dl"
-        style="display: block;"
-        v-if="data.inspectionIndex && data.inspectionIndex.temperature || data.inspectionIndex.weight || data.inspectionIndex.heart_rate || data.inspectionIndex.blood_pressure || data.inspectionIndex.More"
-      >
+      <div class="form-dl"
+           style="display: block;"
+           v-if="internalData.inspectionIndex && 
+                 (internalData.inspectionIndex.temperature || 
+                  internalData.inspectionIndex.weight || 
+                  internalData.inspectionIndex.heart_rate || 
+                  internalData.inspectionIndex.blood_pressure || 
+                  internalData.inspectionIndex.More)">
         <div class="form-dt">
           检查指标
           <div class="form-code">
-            <div class="namelist-dl bb" v-if="data.inspectionIndex.temperature">
+            <div class="namelist-dl bb"
+                 v-if="internalData.inspectionIndex.temperature">
               <div class="dt">体温：</div>
-              <div class="dd">{{data.inspectionIndex.temperature ? data.inspectionIndex.temperature + '度' : '--'}}</div>
+              <div class="dd">
+                {{internalData.inspectionIndex.temperature ? internalData.inspectionIndex.temperature + '度' : '--'}}
+              </div>
             </div>
-            <div class="namelist-dl bb" v-if="data.inspectionIndex.weight">
+            <div class="namelist-dl bb"
+                 v-if="internalData.inspectionIndex.weight">
               <div class="dt">体重：</div>
-              <div class="dd">{{data.inspectionIndex.weight ? data.inspectionIndex.weight + 'kg' : '--'}}</div>
+              <div class="dd">
+                {{internalData.inspectionIndex.weight ? internalData.inspectionIndex.weight + 'kg' : '--'}}
+              </div>
             </div>
-            <div class="namelist-dl bb" v-if="data.inspectionIndex.heart_rate">
+            <div class="namelist-dl bb"
+                 v-if="internalData.inspectionIndex.heart_rate">
               <div class="dt">心率：</div>
-              <div class="dd">{{data.inspectionIndex.heart_rate ? data.inspectionIndex.heart_rate + 'bpm' : '--'}}</div>
+              <div class="dd">
+                {{internalData.inspectionIndex.heart_rate ? internalData.inspectionIndex.heart_rate + 'bpm' : '--'}}
+              </div>
             </div>
-            <div class="namelist-dl bb" v-if="data.inspectionIndex.blood_pressure">
+            <div class="namelist-dl bb"
+                 v-if="internalData.inspectionIndex.blood_pressure">
               <div class="dt">血压：</div>
-              <div class="dd">{{data.inspectionIndex.blood_pressure ? data.inspectionIndex.blood_pressure + 'mmHg' : '--'}}</div>
+              <div class="dd">
+                {{internalData.inspectionIndex.blood_pressure ? internalData.inspectionIndex.blood_pressure + 'mmHg' : '--'}}
+              </div>
             </div>
-            <div class="namelist-dl" style="flex-basis: 100%" v-if="data.inspectionIndex.More">
-              <div class="dt" style="width:75px">辅助检查：</div>
-              <div class="dd">{{data.inspectionIndex.More}}</div>
+            <div class="namelist-dl"
+                 style="flex-basis: 100%"
+                 v-if="internalData.inspectionIndex.More">
+              <div class="dt"
+                   style="width:75px">辅助检查：</div>
+              <div class="dd">{{internalData.inspectionIndex.More}}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="form-dl">
         <div class="form-dt">诊断</div>
-        <div class="form-dd">{{data.diagnose || '无'}}</div>
+        <div class="form-dd">{{internalData.diagnose || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">医嘱小结</div>
-        <div class="form-dd">{{data.summary || '无'}}</div>
+        <div class="form-dd">{{internalData.summary || '无'}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+
 export default {
   props: {
     data: {
@@ -97,7 +118,37 @@ export default {
         return undefined
       }
     }
+  },
 
+  data() {
+    return {
+      internalData: undefined
+    }
+  },
+
+  watch: {
+    data: {
+      handler() {
+        this.internalData = this.data
+      },
+      immediate: true
+    }
+  },
+
+  created() {
+    if (!this.data) {
+      this.get()
+    }
+  },
+
+  methods: {
+    get() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      peace.service.patient.getCaseInfo(params).then(res => {
+        this.internalData = res.data
+      })
+    }
   }
 }
 </script>
@@ -141,7 +192,7 @@ export default {
     margin: 5px 0;
   }
   .prescript .prescript-table {
-    border-top: 2px dotted #000;
+    border-top: 2px dotted #eeeeee;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
