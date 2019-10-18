@@ -6,11 +6,11 @@
            :class="{ active: tabIndex == '0' }">
         <div class="span">全部</div>
       </div>
-      <div @click="changeTab('2')"
+      <!-- <div @click="changeTab('2')"
            class="tab-item"
            :class="{ active: tabIndex == '2' }">
         <div class="span">进行中</div>
-      </div>
+      </div> -->
       <div @click="changeTab('1')"
            class="tab-item"
            :class="{ active: tabIndex == '1' }">
