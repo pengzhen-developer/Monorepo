@@ -208,8 +208,7 @@ export default {
       peace.util.confirm('收到药品之后再确认取药哦~~~', '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
-
-          this.getDrugOrderDetail()
+          this.getDrugItems();
         })
       })
     }

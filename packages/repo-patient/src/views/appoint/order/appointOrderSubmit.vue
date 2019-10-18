@@ -177,8 +177,16 @@ export default {
       peace.service.appoint
         .orderSubmit(data)
         .then(res => {
-          this.goToPay(res.data);
-          this.showBtn = true;
+          if(res.data.orderInfo.orderMoney == '0.00' || res.data.orderInfo.orderMoney == '0') {
+            let orderType = 'register';
+            let orderNo = res.data.orderInfo.orderNo
+            let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
+            this.showBtn = true;
+            this.$router.push(`/setting/order/userOrderDetail/${json}`)
+          } else {
+            this.goToPay(res.data);
+            this.showBtn = true;
+          }
         })
         .catch(res => {
           //debugger
