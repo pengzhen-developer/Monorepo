@@ -539,8 +539,12 @@ export default {
               //   inquiryId: res.data.inquiryId
               // })
               let inquiryId = res.data.inquiryId
-
-              this.$router.push({ path: `/setting/userConsultList`, query: { inquiryId } })
+              const params = {
+                inquiryId
+              }
+              let json = peace.util.encode(params)
+              this.$router.push(`/setting/userConsultDetail/${json}`)
+              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
           }
           if (res.data.errorState === 2) {

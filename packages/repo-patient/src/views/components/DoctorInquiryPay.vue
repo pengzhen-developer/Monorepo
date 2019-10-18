@@ -73,7 +73,7 @@ export default {
       }
       this.orderStatus = data.orderStatus;
       if(data.orderStatus == 3) {
-        that.payCallback();
+        // that.payCallback();
       }
     })
     if (this.$route.query.code) {
