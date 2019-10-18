@@ -134,7 +134,7 @@ export default {
 
     getDrugItems() {
       const params = {
-        OrderType: this.tabIndex == '1' ? '4' : this.tabIndex
+        OrderType: this.tabIndex == '1' ? '6' : this.tabIndex
       }
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
