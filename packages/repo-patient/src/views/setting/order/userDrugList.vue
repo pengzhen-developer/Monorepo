@@ -236,6 +236,7 @@ export default {
 }
 .content {
   flex: 1;
+  overflow: auto;
 }
 .none-page {
   flex: 1;
