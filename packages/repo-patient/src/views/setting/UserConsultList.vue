@@ -181,10 +181,10 @@ export default {
   created() {
     this.get()
     // 重复订单跳转进来
-    let inquiryId = this.$route.query.inquiryId
-    if (inquiryId && inquiryId != '') {
-      this.goUserConsultDetailPage(inquiryId)
-    }
+    // let inquiryId = this.$route.query.inquiryId
+    // if (inquiryId && inquiryId != '') {
+    //   this.goUserConsultDetailPage(inquiryId)
+    // }
   },
 
   methods: {
