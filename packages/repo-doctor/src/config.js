@@ -33,26 +33,105 @@ export const config = {
      * 菜单 array
      */
     menuList: [
-      { id: 1, pid: null, closable: false, name: '首页', title: '首页', path: '/home', icon: 'icon_nav_icon_homecopy' },
-      { id: 2, pid: null, closable: true, name: '诊室', title: '诊室', path: '', icon: 'icon_ic_consultingroom' },
-      { id: 21, pid: 2, closable: true, name: '我的问诊', title: '我的问诊', path: '/clinic/inquiry' },
-      { id: 22, pid: 2, closable: true, name: '我的会诊', title: '我的会诊', path: '/clinic/consultation' },
+      {
+        id: 1,
+        pid: null,
+        closable: false,
+        name: '首页',
+        title: '首页',
+        path: '/home',
+        icon: 'icon_nav_icon_homecopy'
+      },
+      {
+        id: 2,
+        pid: null,
+        closable: true,
+        name: '诊室',
+        title: '诊室',
+        path: '',
+        icon: 'icon_ic_consultingroom'
+      },
+      {
+        id: 21,
+        pid: 2,
+        closable: true,
+        name: '我的问诊',
+        title: '我的问诊',
+        path: '/clinic/inquiry'
+      },
+      {
+        id: 22,
+        pid: 2,
+        closable: true,
+        name: '我的会诊',
+        title: '我的会诊',
+        path: '/clinic/consultation'
+      },
       { id: 3, pid: null, closable: true, name: '患者', path: '患者', icon: 'icon_ic_huanzhe' },
-      { id: 31, pid: 3, closable: true, name: '我的患者', title: '我的患者', path: '/patient/myPatient' },
-      { id: 32, pid: 3, closable: true, name: '私人医生', title: '私人医生', path: '/patient/privateDoctor' },
-      { id: 33, pid: 3, closable: true, name: '患者随访', title: '患者随访', path: '/patient/follow' },
+      {
+        id: 31,
+        pid: 3,
+        closable: true,
+        name: '我的患者',
+        title: '我的患者',
+        path: '/patient/myPatient'
+      },
+      // { id: 32, pid: 3, closable: true, name: '私人医生', title: '私人医生', path: '/patient/privateDoctor' },
+      // { id: 33, pid: 3, closable: true, name: '患者随访', title: '患者随访', path: '/patient/follow' },
       { id: 4, pid: null, closable: true, name: '记录', path: '记录', icon: 'icon_ic_inquiry' },
-      { id: 41, pid: 4, closable: true, name: '问诊记录', title: '问诊记录', path: '/record/inquiry' },
-      { id: 42, pid: 4, closable: true, name: '处方记录', title: '处方记录', path: '/record/prescription' },
-      { id: 43, pid: 4, closable: true, name: '转诊记录', title: '转诊记录', path: '/record/transfer' },
-      { id: 44, pid: 4, closable: true, name: '会诊记录', title: '会诊记录', path: '/record/consultation' },
+      {
+        id: 41,
+        pid: 4,
+        closable: true,
+        name: '问诊记录',
+        title: '问诊记录',
+        path: '/record/inquiry'
+      },
+      {
+        id: 42,
+        pid: 4,
+        closable: true,
+        name: '处方记录',
+        title: '处方记录',
+        path: '/record/prescription'
+      },
+      // { id: 43, pid: 4, closable: true, name: '转诊记录', title: '转诊记录', path: '/record/transfer' },
+      // { id: 44, pid: 4, closable: true, name: '会诊记录', title: '会诊记录', path: '/record/consultation' },
       { id: 5, pid: null, closable: true, name: '我的', path: '我的', icon: 'icon_ic_my' },
       { id: 51, pid: 5, closable: true, name: '信息查看', title: '信息查看', path: '/sys/myInfo' },
-      { id: 52, pid: 5, closable: true, name: '我的介绍', title: '我的介绍', path: '/sys/myIntroduce' },
-      { id: 53, pid: 5, closable: true, name: '出诊时间', title: '出诊时间', path: '/sys/myServiceTime' },
-      { id: 54, pid: 5, closable: true, name: '服务设置', title: '服务设置', path: '/sys/myServiceSetting' },
-      { id: 55, pid: 5, closable: true, name: '我的药房', title: '我的药房', path: '/sys/myPharmacy' },
-      { id: 56, pid: 5, closable: true, name: '我的随访', title: '我的随访', path: '/sys/myFollow' }
+      {
+        id: 52,
+        pid: 5,
+        closable: true,
+        name: '我的介绍',
+        title: '我的介绍',
+        path: '/sys/myIntroduce'
+      },
+      {
+        id: 53,
+        pid: 5,
+        closable: true,
+        name: '出诊时间',
+        title: '出诊时间',
+        path: '/sys/myServiceTime'
+      },
+      {
+        id: 54,
+        pid: 5,
+        closable: true,
+        name: '服务设置',
+        title: '服务设置',
+        path: '/sys/myServiceSetting'
+      },
+      {
+        id: 55,
+        pid: 5,
+        closable: true,
+        name: '我的药房',
+        title: '我的药房',
+        path: '/sys/myPharmacy'
+      }
+      // { id: 56, pid: 5, closable: true, name: '我的随访', title: '我的随访', path: '/sys/myFollow' }
     ]
   },
 
@@ -60,14 +139,14 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: 'https://doctor.hp.aijiayi.com/'
+    base: process.env.VUE_APP_BASE_API
   },
 
   /**
    * IM 配置项
    */
   NIM: {
-    key: 'a5b5212d7ff034b508d6e889040ffdf7'
+    key: process.env.VUE_APP_IM_KEY
   }
 }
 

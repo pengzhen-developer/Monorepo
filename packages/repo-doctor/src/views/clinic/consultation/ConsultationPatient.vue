@@ -48,10 +48,10 @@
 
           <div class="content doctor">
             <template v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
-              <img :src="data.toPhoto" class="doctor-img">
+              <img :src="data.toPhoto" class="doctor-img" />
             </template>
             <template v-else>
-              <img :src="data.fromPhoto" class="doctor-img">
+              <img :src="data.fromPhoto" class="doctor-img" />
             </template>
 
             <div class="doctor-info">
@@ -199,6 +199,12 @@ export default {
         visible: false,
         data: undefined
       }
+    }
+  },
+
+  watch: {
+    '$store.state.consultation.session'() {
+      this.getConsultationDetail()
     }
   },
 
