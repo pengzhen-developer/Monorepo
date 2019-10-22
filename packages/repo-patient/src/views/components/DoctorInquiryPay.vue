@@ -1,6 +1,7 @@
 <template>
   <div class="doctor-inquiry-pay">
-    <div class="header">
+    <div class="header"
+         v-if="orderStatus==1">
       <span>请在</span>
       <van-count-down millisecond
                       :time="time"
@@ -21,8 +22,8 @@
           <i class="wechat"></i>
           <span>微信支付</span>
         </div>
-       <i class="icon-close"></i>
-    </div>
+        <i class="icon-close"></i>
+      </div>
     </div>
 
     <slot name="custom"></slot>
@@ -43,29 +44,37 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
-
+import { Dialog } from 'vant'
+Vue.use(Dialog)
 export default {
   components: {},
   data() {
     return {
+      orderStatus: '',
+      appid: '',
       data: {},
       params: {},
-      time: 15 * 60 * 1000
+      time: 0
     }
   },
   created() {},
   mounted() {
     let that = this
+    this.appid = config.APPID
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
+      }
+      this.orderStatus = data.orderStatus
+      if (data.orderStatus == 3) {
+        // that.payCallback();
       }
     })
     if (this.$route.query.code) {
@@ -113,21 +122,50 @@ export default {
       let that = this
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        if (res.code === 200) {
-          //没有经过授权
-          let data = res.data
-          if (data) {
-            that.onBridgeReady(data)
-          } else {
-            let appid = 'wx78d7ae35932558e6'
-            let redirect_uri = location.href
-            // redirect_uri = encodeURIComponent(redirect_uri);
-            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-            window.location.href = url
+      peace.service.index
+        .GetWxLoginStatus(params)
+        .then(res => {
+          if (res.code === 200) {
+            //没有经过授权
+            let data = res.data
+            if (data) {
+              that.onBridgeReady(data)
+            } else {
+              let appid = that.appid
+              let redirect_uri = location.href
+              // redirect_uri = encodeURIComponent(redirect_uri);
+              let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+              window.location.href = url
+            }
           }
-        }
-      })
+        })
+        .catch(res => {
+          // 倒计时结束，点取消按扭
+          return Dialog.confirm({
+            title: '提示',
+            message: res.data.msg,
+            confirmButtonText: '去看看'
+          }).then(() => {
+            if (res.data.code == 202) {
+              //只有在202时才可进入catch流程
+              let inquiryId = res.data.data.inquiryId
+              const params = {
+                inquiryId
+              }
+              if (inquiryId != '') {
+                // 去咨询界面
+                let json = peace.util.encode(params)
+                this.$router.push(`/setting/userConsultDetail/${json}`)
+              } else {
+                // 去挂号界面
+                let orderNo = res.data.data.orderNo
+                let orderType = 'register'
+                let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
+                this.$router.push(`/setting/order/userOrderDetail/${json}`)
+              }
+            }
+          })
+        })
     },
     payCallback() {
       let { doctorId, typeName, orderNo } = peace.util.decode(this.$route.params.json)

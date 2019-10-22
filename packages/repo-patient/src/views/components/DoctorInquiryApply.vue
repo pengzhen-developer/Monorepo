@@ -427,7 +427,7 @@ export default {
     apply() {
       console.log('familyname', this.model.familyName)
       //验证
-      if (!this.model.familyName || this.model.familyName =='添加就诊人') {
+      if (!this.model.familyName || this.model.familyName == '添加就诊人') {
         return peace.util.alert('请选择就诊人')
       }
       if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
@@ -503,52 +503,17 @@ export default {
     applyHandler() {
       this.sending = true
       const params = this.model
-      peace.service.inquiry.apply(params).then(res => {
-        this.sending = false
-        // 订单提交成功
-        if (res.data.errorState === 0) {
-          // 待支付状态
-          if (res.data.inquiryStatus === 1) {
-            this.goToPay(res.data)
-            return
-          } else {
-            //免费问诊
-            // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-            setTimeout(() => {
-              this.$router.push({
-                name: '/message/index',
-                params: {
-                  sessionId: 'p2p-' + this.model.doctorId
-                }
-              })
-            }, 1000)
-            return peace.util.alert(res.msg)
-          }
-        }
-        // 订单提交失败 [errorState:1存在未支付订单 2存在未结束订单]
-        if (res.data.errorState === 1) {
-          return Dialog.confirm({
-            title: '提示',
-            message: res.msg,
-            confirmButtonText: '去看看'
-          }).then(() => {
-            // 前往咨询订单详情页
-            //console.log(res.data.inquiryId);
-            // const json = peace.util.encode({
-            //   inquiryId: res.data.inquiryId
-            // })
-            let inquiryId = res.data.inquiryId
-
-            this.$router.push({ path: `/setting/userConsultList`, query: { inquiryId } })
-          })
-        }
-        if (res.data.errorState === 2) {
-          return Dialog.confirm({
-            title: '提示',
-            message: res.msg,
-            confirmButtonText: '继续咨询'
-          })
-            .then(() => {
+      peace.service.inquiry
+        .apply(params)
+        .then(res => {
+          // 订单提交成功
+          if (res.data.errorState === 0) {
+            // 待支付状态
+            if (res.data.inquiryStatus === 1) {
+              this.goToPay(res.data)
+              return
+            } else {
+              //免费问诊
               // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
               setTimeout(() => {
                 this.$router.push({
@@ -558,12 +523,55 @@ export default {
                   }
                 })
               }, 1000)
+              return peace.util.alert(res.msg)
+            }
+          }
+          // 订单提交失败 [errorState:1存在未支付订单 2存在未结束订单]
+          if (res.data.errorState === 1) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '去看看'
+            }).then(() => {
+              // 前往咨询订单详情页
+              //console.log(res.data.inquiryId);
+              // const json = peace.util.encode({
+              //   inquiryId: res.data.inquiryId
+              // })
+              let inquiryId = res.data.inquiryId
+              const params = {
+                inquiryId
+              }
+              let json = peace.util.encode(params)
+              this.$router.push(`/setting/userConsultDetail/${json}`)
+              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
-            .catch(() => {
-              // on cancel
+          }
+          if (res.data.errorState === 2) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '继续咨询'
             })
-        }
-      })
+              .then(() => {
+                // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
+                setTimeout(() => {
+                  this.$router.push({
+                    name: '/message/index',
+                    params: {
+                      sessionId: 'p2p-' + this.model.doctorId
+                    }
+                  })
+                }, 1000)
+              })
+              .catch(() => {
+                // on cancel
+              })
+          }
+        })
+        .finally(() => {
+          this.sending = false
+        })
     }
   }
 }

@@ -96,9 +96,10 @@ export default {
 
       for (const key in doctor.consultationList) {
         if (doctor.consultationList.hasOwnProperty(key)) {
-          const element = doctor.consultationList[key]
-
-          moneyList.push(element.money)
+          if (key != 2) {
+            const element = doctor.consultationList[key]
+            moneyList.push(element.money)
+          }
         }
       }
 
@@ -106,7 +107,7 @@ export default {
       if (minMoney === Infinity) {
         return ''
       } else if (minMoney === 0) {
-        return '免费'
+        return `￥${minMoney || 0}起`
       } else {
         return `￥${minMoney || 0}起`
       }

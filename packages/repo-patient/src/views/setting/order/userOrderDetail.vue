@@ -2,20 +2,23 @@
   <div v-if="info.orderInfo">
     <!--TOP-->
     <div class="module nmg">
-      <div class="strong">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
-      <div class="brief">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}</div>
+      <div class="strong">
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
+      <div class="brief">
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}
+      </div>
       <div class="module-body">
-        <div
-          :class="['label', 'blue', info.orderInfo.cancelState ? '' : 'disabled']"
-          @click="canselOrder"
-          v-if="info.orderInfo.orderStatus == '1' || info.orderInfo.orderStatus == '3'"
-        >{{info.orderInfo.cancelState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}</div>
+        <div :class="['label', 'blue', info.orderInfo.cancelState ? '' : 'disabled']"
+             @click="canselOrder"
+             v-if="info.orderInfo.orderStatus == '1' || info.orderInfo.orderStatus == '3'">
+          {{info.orderInfo.cancelState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}</div>
       </div>
     </div>
     <!--医生名片-->
     <div class="card pd">
       <div class="card-avatar avatar-circular">
-        <img :src="info.doctorInfo.avartor || info.doctorInfo.doctorAvartor" class />
+        <img :src="info.doctorInfo.avartor || info.doctorInfo.doctorAvartor"
+             class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -73,18 +76,18 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-    <div class="module pdtb" v-if="info.orderInfo.orderStatus != '1'">
+    <div class="module pdtb"
+         v-if="info.orderInfo.orderStatus != '1'">
       <div class="brief right">
         实付金额：
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
     </div>
     <div style="padding: 0 15px;">
-      <van-button
-                @click="goToPay(info)"
-                v-if="info.orderInfo.orderStatus == 1"
-                style="width: 100%;"
-                type="primary">继续支付</van-button>
+      <van-button @click="goToPay(info)"
+                  v-if="info.orderInfo.orderStatus == 1"
+                  style="width: 100%;"
+                  type="primary">继续支付</van-button>
     </div>
   </div>
 </template>
@@ -97,6 +100,11 @@ export default {
   props: {},
   data() {
     return {
+      orderStatus: [
+        {
+          code: 1
+        }
+      ],
       sending: false,
       page: {
         statusDic: {
@@ -106,8 +114,8 @@ export default {
               small: '15分钟内未付款，订单将自动取消'
             },
             2: {
-              text: '已取消',
-              small: ''
+              text: '待接诊',
+              small: '已通知医生尽快接诊，12小时未接诊将自动'
             },
             3: {
               text: '预约成功',
@@ -149,15 +157,15 @@ export default {
   methods: {
     goToPay(data) {
       //debugger;
-      let doctorId = data.doctorInfo.doctorId;
-      let order = data.orderInfo;
-      let money = order.orderMoney;
-      let typeName = '预约挂号';
-      let doctorName = data.doctorInfo.doctorName;
-      let orderNo = order.orderNo;
-      let json = {money, typeName, doctorName, orderNo, doctorId};
-      json = peace.util.encode(json);
-      this.$router.push(`/components/doctorInquiryPay/${json}`);
+      let doctorId = data.doctorInfo.doctorId
+      let order = data.orderInfo
+      let money = order.orderMoney
+      let typeName = '预约挂号'
+      let doctorName = data.doctorInfo.doctorName
+      let orderNo = order.orderNo
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
       peace.service.patient
@@ -175,19 +183,20 @@ export default {
       }
       Dialog.confirm({
         message: '是否确认退号？'
-      }).then(() => {
-        peace.service.appoint
-                .orderCancel({
-                  orderNo: this.info.orderInfo.orderNo
-                })
-                .then(res => {
-                  peace.util.alert(res.msg || '退号成功')
-                  this.getData()
-                })
-      }).catch(() => {
-        // on cancel
-      });
-
+      })
+        .then(() => {
+          peace.service.appoint
+            .orderCancel({
+              orderNo: this.info.orderInfo.orderNo
+            })
+            .then(res => {
+              peace.util.alert(res.msg || '退号成功')
+              this.getData()
+            })
+        })
+        .catch(() => {
+          // on cancel
+        })
     }
   }
 }

@@ -49,9 +49,11 @@
       <div class="form-dl">
         <div class="form-dt">就/复诊人</div>
         <div class="form-dd">
-          {{ internalData.familyInfo.familyName }}
-          {{ internalData.familyInfo.familySex }}
-          {{ internalData.familyInfo.familyAge }}
+          <span
+                style="font-size: 14px; margin:0 8px 0 0;">{{ internalData.familyInfo.familyName }}</span>
+          <span
+                style="font-size: 12px; margin:0 8px 0 0;">{{ internalData.familyInfo.familySex }}</span>
+          <span style="font-size: 12px;">{{ internalData.familyInfo.familyAge + '岁' }}</span>
         </div>
       </div>
       <!--病情描述-->
@@ -111,10 +113,11 @@
         <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
       </div>
     </div>
-    <div class="module pdtb" v-if="internalData.inquiryInfo.inquiryStatus != '1'">
+    <div class="module pdtb"
+         v-if="internalData.inquiryInfo.inquiryStatus != '1'">
       <div class="brief right">
         实付金额：
-        <div class="money">{{ internalData.orderInfo.payMoney }}</div>
+        <div class="money">{{ '¥' + internalData.orderInfo.payMoney }}</div>
       </div>
     </div>
 
@@ -342,6 +345,14 @@ export default {
     padding: 4px 6px;
     margin: 5px;
     border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .module-body .blue-full {
+    background: #00c6ae;
+    color: #fff;
   }
   .module-body .blue-full {
     background: #00c6ae;

@@ -59,7 +59,12 @@ export const config = {
    */
   MAP: {
     key: process.env.VUE_APP_MAP_KEY
-  }
+  },
+
+  /**
+   * 微信公众号 APPID
+   */
+  APPID: process.env.VUE_APP_APPID
 }
 
 export default config

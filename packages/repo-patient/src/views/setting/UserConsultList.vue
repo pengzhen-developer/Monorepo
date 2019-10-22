@@ -50,26 +50,35 @@
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
               <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
               <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
-                {{item.inquiryInfo.isFree ? '免费' : item.inquiryInfo.orderMoney }}</div>
+                {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div>
             </div>
           </div>
           <div class="panel-bottom"
                style="padding-left: 0"
                v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
-            <div :data-index="index"
-                 @click="goChatingPage(item)"
-                 class="label blue"
-                 v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
-            <div :data-index="index"
-                 @click="showCancellPop(item)"
-                 class="label blue">取消订单</div>
-            <div :data-index="index"
-                 v-if="item.inquiryInfo.inquiryStatus === 1"
-                 @click="goToPay(item)"
-                 class="label blue-full">继续支付</div>
+            <div class="count-down">
+              <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
+              <van-count-down millisecond
+                              :time="item.time"
+                              format="HH:mm:ss" />
+            </div>
+            <div class="btn-wrap">
+              <div :data-index="index"
+                   @click="goChatingPage(item)"
+                   class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+              <div :data-index="index"
+                   @click="showCancellPop(item)"
+                   class="label blue">取消订单</div>
+              <div :data-index="index"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goToPay(item)"
+                   class="label blue-full">继续支付</div>
+            </div>
+
           </div>
           <div class="panel-bottom"
-               style="padding-left: 0"
+               style="padding-left: 0; justify-content: flex-end;"
                v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
             <div :data-index="index"
                  @click="gouserPrescripCasePage(item)"
@@ -125,6 +134,9 @@ import { Dialog } from 'vant'
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
+import Vue from 'vue'
+import { CountDown } from 'vant'
+Vue.use(CountDown)
 
 export default {
   components: {
@@ -136,6 +148,7 @@ export default {
 
   data() {
     return {
+      time: [],
       page: {
         json: {},
         tabIndex: 0
@@ -168,10 +181,10 @@ export default {
   created() {
     this.get()
     // 重复订单跳转进来
-    let inquiryId = this.$route.query.inquiryId
-    if (inquiryId && inquiryId != '') {
-      this.goUserConsultDetailPage(inquiryId)
-    }
+    // let inquiryId = this.$route.query.inquiryId
+    // if (inquiryId && inquiryId != '') {
+    //   this.goUserConsultDetailPage(inquiryId)
+    // }
   },
 
   methods: {
@@ -184,7 +197,7 @@ export default {
       let doctorId = data.doctorInfo.doctorId
       let order = data.inquiryInfo
       let money = order.orderMoney
-      let typeName = order.inquiryType;
+      let typeName = order.inquiryType
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
       let json = { money, typeName, doctorName, orderNo, doctorId }
@@ -194,6 +207,18 @@ export default {
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
         this.consultList = res.data.list
+        this.consultList.map(item => {
+          // item.time =  15 * 60 * 1000;
+          let inquiryInfo = item.inquiryInfo
+          let expireTime =
+            inquiryInfo.inquiryStatus == 1
+              ? inquiryInfo.orderExpireTime
+              : inquiryInfo.orderReceptTime
+          if (expireTime > inquiryInfo.currentTime) {
+            item.time = (expireTime - inquiryInfo.currentTime) * 1000
+            console.log(item.time)
+          }
+        })
       })
     },
 
@@ -234,7 +259,7 @@ export default {
           inquiryNo: item.inquiryInfo.inquiryNo
         })
 
-        this.$router.push(`/message/index/${params}`)
+        this.$router.push(`/components/messageList/${params}`)
       }
     },
 
@@ -276,6 +301,9 @@ export default {
 .userConsultList {
   height: 100%;
   color: #999;
+}
+.van-count-down {
+  display: inline;
 }
 .blue-full {
   background: #00c6ae;
@@ -349,7 +377,7 @@ export default {
   text-align: center;
   font-size: 13px;
   box-sizing: border-box;
-  padding-bottom: 15px;
+  padding: 15px 0;
 }
 .panel {
   padding: 0;
@@ -366,6 +394,11 @@ export default {
 .panel .panel-bottom {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  .count-down {
+    padding-left: 13px;
+    font-size: 13px;
+  }
 }
 .panel .panel-bottom .time {
   flex: 1 0 auto;

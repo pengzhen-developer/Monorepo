@@ -6,11 +6,11 @@
            :class="{ active: tabIndex == '0' }">
         <div class="span">全部</div>
       </div>
-      <div @click="changeTab('2')"
+      <!-- <div @click="changeTab('2')"
            class="tab-item"
            :class="{ active: tabIndex == '2' }">
         <div class="span">进行中</div>
-      </div>
+      </div> -->
       <div @click="changeTab('1')"
            class="tab-item"
            :class="{ active: tabIndex == '1' }">
@@ -69,7 +69,7 @@
               </div>
               <div class="label blue"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
-              @click="canselOrder(item)">取消订单
+                   @click="canselOrder(item)">取消订单
               </div>
               <div class="label"
                    v-if="item.OrderStatus == '3' || item.OrderStatus == '4' || item.OrderStatus == '7' || item.OrderStatus == '8'"
@@ -97,10 +97,11 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 export default {
   data() {
     return {
+      appid: '',
       tabIndex: '0',
 
       drugItems: undefined,
@@ -112,14 +113,15 @@ export default {
     this.getDrugItems()
   },
   mounted() {
-    let that = this;
-    if(this.$route.query.code) {
-      let code = this.$route.query.code;
-      let orderNo = this.$route.query.orderId;
-      let params = {code, orderNo};
-      peace.service.index.GetWxLoginStatus(params).then((res) => {
-        let data = res.data;
-        that.onBridgeReady(data, orderNo);
+    let that = this
+    this.appid = config.APPID
+    if (this.$route.query.code) {
+      let code = this.$route.query.code
+      let orderNo = this.$route.query.orderId
+      let params = { code, orderNo }
+      peace.service.index.GetWxLoginStatus(params).then(res => {
+        let data = res.data
+        that.onBridgeReady(data, orderNo)
       })
     }
   },
@@ -132,7 +134,7 @@ export default {
 
     getDrugItems() {
       const params = {
-        OrderType: this.tabIndex == '1' ? '4' : this.tabIndex
+        OrderType: this.tabIndex == '1' ? '6' : this.tabIndex
       }
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
@@ -145,43 +147,41 @@ export default {
       this.$router.push(`/order/userDrugDetail/${json}`)
     },
     onBridgeReady(data, orderId) {
-      let that = this;
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', data,
-        function(res){
-          //alert(res.err_msg);
-          if(res.err_msg == "get_brand_wcpay_request:ok" ){
-            // 使用以上方式判断前端返回,微信团队郑重提示：
-            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            const json = peace.util.encode({ OrderId: orderId })
-            that.$router.push(`/order/userDrugDetail/${json}`)
-          }
-          if(res.err_msg == "get_brand_wcpay_request:fail" ){
-            const json = peace.util.encode({ OrderId: orderId })
-            that.$router.push(`/order/userDrugDetail/${json}`)
-          }
-          if(res.err_msg == "get_brand_wcpay_request:cancel" ){
-            console.log('cancel');
-          }
-        });
+      let that = this
+      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
+        //alert(res.err_msg);
+        if (res.err_msg == 'get_brand_wcpay_request:ok') {
+          // 使用以上方式判断前端返回,微信团队郑重提示：
+          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          const json = peace.util.encode({ OrderId: orderId })
+          that.$router.push(`/order/userDrugDetail/${json}`)
+        }
+        if (res.err_msg == 'get_brand_wcpay_request:fail') {
+          const json = peace.util.encode({ OrderId: orderId })
+          that.$router.push(`/order/userDrugDetail/${json}`)
+        }
+        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          console.log('cancel')
+        }
+      })
     },
     payOrder(item) {
-      let orderNo = item.OrderId;
-      let params = {orderNo};
-      let that = this;
-      peace.service.index.GetWxLoginStatus(params).then((res) => {
-        if(res.code === 200) {
+      let orderNo = item.OrderId
+      let params = { orderNo }
+      let that = this
+      peace.service.index.GetWxLoginStatus(params).then(res => {
+        if (res.code === 200) {
           //没有经过授权
-          let data= res.data;
-          if(data) {
-            that.onBridgeReady(data, orderNo);
+          let data = res.data
+          if (data) {
+            that.onBridgeReady(data, orderNo)
           } else {
-            let appid = 'wx78d7ae35932558e6';
-            let redirect_uri = location.href + "?" +  'orderId='+orderNo;
+            let appid = that.appid
+            let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
             // redirect_uri = encodeURIComponent(redirect_uri);
-            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`;
-            window.location.href = url;
+            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+            window.location.href = url
           }
         }
       })
@@ -208,8 +208,7 @@ export default {
       peace.util.confirm('收到药品之后再确认取药哦~~~', '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
-
-          this.getDrugOrderDetail()
+          this.getDrugItems()
         })
       })
     }
@@ -221,18 +220,26 @@ export default {
 .user-drug-list {
   display: flex;
   flex-direction: column;
-  height: 100%;
   background: #f5f5f5;
   color: #999;
+  height: 100%;
 }
 
 .tab {
   margin: 0 0 10px 0;
   padding: 5px;
+  height: 40px;
+  .tab-item {
+    height: 30px;
+  }
 }
-
+.content {
+  flex: 1;
+  overflow: auto;
+}
 .none-page {
   flex: 1;
+  height: 100%;
   background-color: #fff;
 }
 
@@ -263,6 +270,7 @@ export default {
   text-align: center;
   position: relative;
   border-left: 1px solid #f5f5f5;
+  height: 30px;
 }
 .box-tab .tab-item:first-child {
   border-left: none;

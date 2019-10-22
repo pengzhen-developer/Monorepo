@@ -8,9 +8,15 @@
       <div class="prescript-h4">处方笺</div>
       <div class="prescript-line">
         <div class="span"
-             style="width: 40%;">住院(门诊)号：</div>
+             style="width: 50%; text-align: left;">
+          <span>病历号：</span>
+          <span>{{internalData.caseNo}}</span>
+        </div>
         <div class="span"
-             style="width: 60%; text-align: right;">开具日期：{{internalData.prescriptionTime}}</div>
+             style="width: 50%; text-align: right;">
+          <span>开具日期：</span>
+          <span>{{internalData.prescriptionTime}} </span>
+        </div>
       </div>
       <div class="prescript-table">
         <div class="th">
@@ -76,7 +82,7 @@
       <div class="outline-header">
         <div class="outline-tit">处方审核</div>
       </div>
-      <div class="outline-body">{{internalData.prescriptionExamMemo}}</div>
+      <div class="outline-body">{{ internalData.prescriptionExamMemo }}</div>
     </div>
     <!--医生签名-->
     <div class="outline module">
@@ -105,11 +111,12 @@
     </div>
     <div class="bt">注意：仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，3日内处方有效。</div>
     <div class="bottom"
-         v-if="internalData.prescriptionStatus">
+         v-if="internalData.prescriptionStatus && ($peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false)">
       <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
            :data-type="internalData.prescriptionStatus.key"
            @click="goMenuPage(internalData)"
-           class="btn btn-blue block">{{ internalData.prescriptionStatus.msg }}</div>
+           class="btn btn-blue block"
+           style="margin-bottom: 55px">{{ internalData.prescriptionStatus.msg }}</div>
     </div>
   </div>
 </template>
@@ -241,8 +248,9 @@ export default {
 <style lang="scss" scoped>
 .the-recipe {
   background: #f5f5f5;
-  width: 100%;
-  position: relative;
+  position: absolute;
+  overflow: auto;
+  height: 100%;
 
   .prescript {
     width: 100%;

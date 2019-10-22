@@ -112,10 +112,13 @@
 
 <script>
 import peace from '@src/library'
+import config from '@src/config'
 export default {
   name: 'DrugOrderBefore',
   data() {
     return {
+      appid: '',
+      showBtn: true,
       page: {
         url: '',
         accessToken: '',
@@ -129,6 +132,7 @@ export default {
   },
   mounted() {
     let that = this
+    this.appid = config.APPID
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -183,7 +187,11 @@ export default {
       if (!this.canSubmitProcesses()) {
         return
       }
-
+      if (!this.showBtn) {
+        peace.util.alert('请勿重复提交')
+        return
+      }
+      this.showBtn = false
       let params = {
         formId: '',
         JZTClaimNo: this.page.json.JZTClaimNo,
@@ -202,13 +210,14 @@ export default {
           let orderNo = res.data.OrderId
           let params = { orderNo }
           peace.service.index.GetWxLoginStatus(params).then(res => {
+            this.showBtn = true
             if (res.code === 200) {
               //没有经过授权
               let data = res.data
               if (data) {
                 that.onBridgeReady(data, orderNo)
               } else {
-                let appid = 'wx78d7ae35932558e6'
+                let appid = that.appid
                 let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
                 // redirect_uri = encodeURIComponent(redirect_uri);
@@ -220,7 +229,9 @@ export default {
           // const json = peace.util.encode({ OrderId: res.data.OrderId })
           // this.$router.push(`/order/userDrugDetail/${json}`)
         })
-        .catch(res => {})
+        .catch(res => {
+          this.showBtn = true
+        })
     },
 
     canSubmitProcesses() {

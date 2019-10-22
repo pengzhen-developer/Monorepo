@@ -100,25 +100,12 @@
         <div class="dd">{{order.OrderId}}</div>
       </div>
       <div class="dl-packet"
-           v-if="order.timeAxis.placeOrderTime">
-        <div class="dt">创建时间：</div>
-        <div class="dd">{{order.timeAxis.placeOrderTime}}</div>
+           :key="index"
+           v-for="(item,index) in order.ords">
+        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]}}：</div>
+        <div class="dd">{{item.CreateTime}}</div>
       </div>
-      <div class="dl-packet"
-           v-if="order.timeAxis.receiptOrderTime">
-        <div class="dt">接单时间：</div>
-        <div class="dd">{{order.timeAxis.receiptOrderTime}}</div>
-      </div>
-      <div class="dl-packet"
-           v-if="order.timeAxis.deliverTime">
-        <div class="dt">发货时间：</div>
-        <div class="dd">{{order.timeAxis.deliverTime}}</div>
-      </div>
-      <div class="dl-packet"
-           v-if="order.timeAxis.signTime">
-        <div class="dt">完成时间：</div>
-        <div class="dd">{{order.timeAxis.signTime}}</div>
-      </div>
+
       <div class="bottom">
         <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
         <div @click="payOrder(order)"
@@ -150,7 +137,7 @@
 
 <script>
 import peace from '@src/library'
-
+import config from '@src/config'
 import TheRecipe from '@src/views/components/TheRecipe'
 
 export default {
@@ -160,6 +147,8 @@ export default {
 
   data() {
     return {
+      timeTags: ['创建时间', '', '接单时间', '发货时间', '', '取消时间', '收货时间'],
+      appid: '',
       order: {},
 
       recipeDetail: {
@@ -174,6 +163,7 @@ export default {
   },
   mounted() {
     let that = this
+    this.appid = config.APPID
     if (this.$route.query.code) {
       let code = this.$route.query.code
       let orderNo = this.$route.query.orderId
@@ -216,7 +206,7 @@ export default {
           if (data) {
             that.onBridgeReady(data, orderNo)
           } else {
-            let appid = 'wx78d7ae35932558e6'
+            let appid = that.appid
             let redirect_uri = location.href + '?' + 'orderId=' + orderNo
 
             // redirect_uri = encodeURIComponent(redirect_uri);
@@ -240,15 +230,12 @@ export default {
     },
 
     goPrescripDetailPage() {
-      this.recipeDetail.visible = true
-
-      const params = {
-        prescribeId: this.order.prescribeId
-      }
-
-      peace.service.patient.getPrescripInfo(params).then(res => {
-        this.recipeDetail.data = res.data
+      const params = peace.util.encode({
+        prescribeId: this.order.prescribeId,
+        showDetailButton: false
       })
+
+      this.$router.push(`/components/theRecipe/${params}`)
     },
 
     goDrugLogiPage() {
