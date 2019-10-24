@@ -425,7 +425,6 @@ export default {
     },
 
     apply() {
-      console.log('familyname', this.model.familyName)
       //验证
       if (!this.model.familyName || this.model.familyName == '添加就诊人') {
         return peace.util.alert('请选择就诊人')

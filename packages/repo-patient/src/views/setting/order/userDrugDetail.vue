@@ -46,7 +46,8 @@
         </div>
         <div class="panel-body">
           <div class="list-three"
-               v-for="item in order.OrderDet">
+               v-for="(item, index) in order.OrderDet"
+               :key="index">
             <div class="list-icon"
                  :class="item.DrugImage ? '' : 'list-icon-none'">
               <img :src="item.DrugImage" />

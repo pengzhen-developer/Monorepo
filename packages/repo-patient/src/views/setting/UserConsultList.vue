@@ -216,7 +216,6 @@ export default {
               : inquiryInfo.orderReceptTime
           if (expireTime > inquiryInfo.currentTime) {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
-            console.log(item.time)
           }
         })
       })
