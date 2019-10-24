@@ -24,6 +24,9 @@ import util from './helper/util'
 import cache from './helper/cache'
 import validate from './helper/validate'
 
+//wx
+import wx from './helper/wx'
+
 // config
 import config from '@src/config'
 // type
@@ -65,6 +68,8 @@ export default {
   /** 工具类 */
   util,
 
+  /** 微信类 */
+  wx,
   /** 缓存类 */
   cache,
 
