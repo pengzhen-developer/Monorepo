@@ -37,9 +37,9 @@ export function payInvoke(data, paySuc=null, payCancel=null) {
  * @param  {funciton} orderExp 订单状态异常时候的回调处理
  * @param {funciton} paySuc 支付成功的微信回调
  * @param {function} payCancel 支付取消时候的回调
- * @returns
+ * @returns {string} urlSuffix  location.href 后面需要外加的参数
  */
-export function pay(params, orderExp=null, paySuc=null, payCancel=null) {
+export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffix='') {
     service.index
         .GetWxLoginStatus(params)
         .then(res => {
@@ -47,11 +47,13 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null) {
               console.log('订单入参', params)
               let data = res.data
               if (data) {
+                  console.log('微信支付config', data)
+                  paySuc(5);
                   payInvoke(data,paySuc, payCancel)
               } else {
                 // 进入微信授权
                 let appid =  config.APPID;
-                let redirect_uri = location.href
+                let redirect_uri = location.href + urlSuffix;
                 let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
                 window.location.href = url
               }
