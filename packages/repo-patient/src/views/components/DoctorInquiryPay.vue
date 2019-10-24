@@ -86,22 +86,7 @@ export default {
         that.onBridgeReady(data)
       })
     }
-    // if (typeof WeixinJSBridge == "undefined"){
-    //   if( document.addEventListener ){
-    //     document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false);
-    //   }else if (document.attachEvent){
-    //     document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady);
-    //     document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady);
-    //   }
-    // }else{
-    //   that.onBridgeReady();
-    // }
   },
-  // watch: {
-  //   $route(to) {
-  //      console.log('route', to);
-  //   }
-  // },
   methods: {
     onBridgeReady(data) {
       let that = this
@@ -113,8 +98,10 @@ export default {
           that.payCallback()
         }
         if (res.err_msg == 'get_brand_wcpay_request:fail') {
+          console.log('get_brand_wcpay_request:fail')
         }
         if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          console.log('get_brand_wcpay_request:cancel')
         }
       })
     },
@@ -153,29 +140,29 @@ export default {
                 inquiryId
               }
               if (inquiryId != '') {
-                // 去咨询界面
+                // 去咨询界面去咨询界面
                 let json = peace.util.encode(params)
-                this.$router.push(`/setting/userConsultDetail/${json}`)
+                this.$router.replace(`/setting/userConsultDetail/${json}`)
               } else {
                 // 去挂号界面
                 let orderNo = res.data.data.orderNo
                 let orderType = 'register'
                 let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-                this.$router.push(`/setting/order/userOrderDetail/${json}`)
+                this.$router.replace(`/setting/order/userOrderDetail/${json}`)
               }
             }
           })
         })
     },
     payCallback() {
-      let { doctorId, typeName, orderNo } = peace.util.decode(this.$route.params.json)
+      let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
       if (typeName.includes('挂号')) {
         let orderType = 'register'
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-        this.$router.push(`/setting/order/userOrderDetail/${json}`)
+        this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
-        let json = peace.util.encode({ doctorId })
-        this.$router.push(`/components/doctorInquiryPayResult/${json}`)
+        let json = peace.util.encode({ ...this.$route.params.json, startTime: new Date() })
+        this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
     }
   }

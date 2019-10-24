@@ -5,24 +5,17 @@
         <img src="@src/assets/images/default page_img_success@2x.png"
              style="width: 160px;" />
       </template>
-      <!--      <template v-if="!payResult.status">-->
-      <!--        <img src="@src/assets/images/default page_img_fail@2x.png" style="width: 160px;" />-->
-      <!--      </template>-->
     </div>
 
     <div class="content">
       <template>
         <p>支付成功</p>
-        <p>系统将在  <van-count-down
-                :time="3000"
-                format="ss"
-                @finish="finished"
-        />秒后自动跳转医生诊室</p>
+        <p>系统将在
+          <van-count-down :time="3000"
+                          format="ss"
+                          @finish="finished"
+                          style="display: inline-block" />秒后自动跳转医生诊室</p>
       </template>
-      <!--      <template v-if="!payResult.status">-->
-      <!--        <p>支付失败</p>-->
-      <!--        <p>可用通证余额不足</p>-->
-      <!--      </template>-->
     </div>
 
     <div class="footer">
@@ -33,50 +26,36 @@
              class="link">请点击</a>
         </p>
       </template>
-      <!--      <template v-if="!payResult.status">-->
-      <!--        <van-button round style="width: 160px; margin: 20px 0 0 0;" type="info">立即充值</van-button>-->
-      <!--      </template>-->
     </div>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
-import Vue from 'vue';
-import { CountDown } from 'vant';
-Vue.use(CountDown);
+import Vue from 'vue'
+import { CountDown } from 'vant'
+Vue.use(CountDown)
 export default {
   data() {
-    return {
-      params: {}
-    }
-  },
-
-  created() {
-    this.params = peace.util.decode(this.$route.params.json)
-    // if (this.payResult.status) {
-   // this.redirectInterval = setTimeout(this.redirectMessage, 3000)
-    // }
-  },
-
-  deactivated() {
-   // window.clearInterval(this.redirectInterval)
+    return {}
   },
 
   methods: {
     finished() {
-     this.redirectMessage();
+      this.redirectMessage()
     },
+
     redirectMessage() {
-      // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-      setTimeout(() => {
-        this.$router.push({
-          name: '/message/index',
-          params: {
-            sessionId: 'p2p-' + this.params.doctorId
-          }
-        })
-      }, 0)
+      const params = peace.util.decode(this.$route.params.json)
+      const paramsForMessageList = peace.util.encode({
+        id: 'p2p-' + params.doctorId,
+        scene: 'p2p',
+        beginTime: params.startTime.toDate().getTime(),
+        to: params.doctorId
+      })
+
+      // 跳转聊天详情
+      this.$router.push(`/components/messageList/${paramsForMessageList}`)
     }
   }
 }

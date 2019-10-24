@@ -162,12 +162,12 @@ export default {
           //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
           const json = peace.util.encode({ OrderId: orderId })
           //alert(orderId);
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:fail') {
           const json = peace.util.encode({ OrderId: orderId })
           //alert(orderId);
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:cancel') {
           console.log('cancel')
@@ -181,7 +181,7 @@ export default {
     },
     goUserAddrPage() {
       let json = this.$route.params.json
-      this.$router.push(`/setting/SelectAddressManger/${json}`)
+      this.$router.replace(`/setting/SelectAddressManger/${json}`)
     },
     submitOrder() {
       if (!this.canSubmitProcesses()) {
@@ -277,7 +277,7 @@ export default {
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.push(`/inter/drugInterList/${params}`)
+      this.$router.replace(`/inter/drugInterList/${params}`)
     }
   }
 }

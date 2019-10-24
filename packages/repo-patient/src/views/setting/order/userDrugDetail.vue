@@ -183,11 +183,11 @@ export default {
           // 使用以上方式判断前端返回,微信团队郑重提示：
           //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
           const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:fail') {
           const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:cancel') {
           console.log('cancel')
@@ -226,7 +226,7 @@ export default {
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.push(`/inter/drugInterList/${params}`)
+      this.$router.replace(`/inter/drugInterList/${params}`)
     },
 
     goPrescripDetailPage() {
@@ -235,13 +235,13 @@ export default {
         showDetailButton: false
       })
 
-      this.$router.push(`/components/theRecipe/${params}`)
+      this.$router.replace(`/components/theRecipe/${params}`)
     },
 
     goDrugLogiPage() {
       const params = this.$route.params.json
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.replace(`/order/userDrugLogistics/${params}`)
     },
 
     canselOrder() {

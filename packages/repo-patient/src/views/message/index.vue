@@ -110,9 +110,6 @@ export default {
         to: session.to
       })
 
-      // 清除聊天记录
-      peace.service.IM.resetInquirySessionMessages()
-
       // 跳转聊天详情
       this.$router.push(`/components/messageList/${params}`)
     }

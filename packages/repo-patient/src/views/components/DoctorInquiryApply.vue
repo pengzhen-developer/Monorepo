@@ -503,6 +503,7 @@ export default {
     applyHandler() {
       this.sending = true
       const params = this.model
+
       peace.service.inquiry
         .apply(params)
         .then(res => {
@@ -513,16 +514,15 @@ export default {
               this.goToPay(res.data)
               return
             } else {
-              //免费问诊
-              // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-              setTimeout(() => {
-                this.$router.push({
-                  name: '/message/index',
-                  params: {
-                    sessionId: 'p2p-' + this.model.doctorId
-                  }
-                })
-              }, 1000)
+              const params = peace.util.encode({
+                id: 'p2p-' + this.model.doctorId,
+                scene: 'p2p',
+                beginTime: res.data.startTime.toDate().getTime(),
+                to: this.model.doctorId
+              })
+
+              // 跳转聊天详情
+              this.$router.push(`/components/messageList/${params}`)
               return peace.util.alert(res.msg)
             }
           }
@@ -533,18 +533,11 @@ export default {
               message: res.msg,
               confirmButtonText: '去看看'
             }).then(() => {
-              // 前往咨询订单详情页
-              //console.log(res.data.inquiryId);
-              // const json = peace.util.encode({
-              //   inquiryId: res.data.inquiryId
-              // })
-              let inquiryId = res.data.inquiryId
               const params = {
-                inquiryId
+                inquiryId: res.data.inquiryId
               }
               let json = peace.util.encode(params)
               this.$router.push(`/setting/userConsultDetail/${json}`)
-              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
           }
           if (res.data.errorState === 2) {
@@ -554,15 +547,15 @@ export default {
               confirmButtonText: '继续咨询'
             })
               .then(() => {
-                // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-                setTimeout(() => {
-                  this.$router.push({
-                    name: '/message/index',
-                    params: {
-                      sessionId: 'p2p-' + this.model.doctorId
-                    }
-                  })
-                }, 1000)
+                const params = peace.util.encode({
+                  id: 'p2p-' + this.model.doctorId,
+                  scene: 'p2p',
+                  beginTime: res.data.startTime.toDate().getTime(),
+                  to: this.model.doctorId
+                })
+
+                // 跳转聊天详情
+                this.$router.push(`/components/messageList/${params}`)
               })
               .catch(() => {
                 // on cancel

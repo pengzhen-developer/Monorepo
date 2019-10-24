@@ -144,7 +144,7 @@ export default {
 
     goUserDrugDetailPage(item) {
       const json = peace.util.encode({ OrderId: item.OrderId })
-      this.$router.push(`/order/userDrugDetail/${json}`)
+      this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     onBridgeReady(data, orderId) {
       let that = this
@@ -154,11 +154,11 @@ export default {
           // 使用以上方式判断前端返回,微信团队郑重提示：
           //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
           const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:fail') {
           const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
+          that.$router.replace(`/order/userDrugDetail/${json}`)
         }
         if (res.err_msg == 'get_brand_wcpay_request:cancel') {
           console.log('cancel')
@@ -199,7 +199,7 @@ export default {
     goDrugLogiPage(item) {
       const params = peace.util.encode({ OrderId: item.OrderId })
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.replace(`/order/userDrugLogistics/${params}`)
     },
 
     submitOrder(item) {
