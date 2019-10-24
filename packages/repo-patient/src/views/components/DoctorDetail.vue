@@ -220,7 +220,8 @@
 
       <!-- 健康服务 -->
       <div class="body-card"
-           v-if="servicePrivateInfo.consultingTypeId">
+           v-if="servicePrivateInfo.consultingTypeId"
+           @click="goApply(servicePrivateInfo, 'private')">
         <div class="row flex">
           <div class="row flex">
             <van-image width="30px"
@@ -482,8 +483,12 @@ export default {
 
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
-
-      if (type === 'video') {
+      // 视频问诊
+      else if (type === 'video') {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
+      // 私人医生
+      else if (type === 'private') {
         return peace.util.alert('暂未开放，敬请期待')
       }
     },
