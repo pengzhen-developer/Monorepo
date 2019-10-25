@@ -199,12 +199,12 @@
           <div class="service-consult-content">
             <div class="row flex"
                  style="margin: 0 0 4px 0;">
-              <span class="service-consult-content-name">2019/10/08 下午</span>
+              <span class="service-consult-content-name">{{registerItem.timeSharing}} {{registerItem.AMPM == 'AM' ? '上午': '下午'}}</span>
             </div>
             <div>
               <span>
                 <span class="service-consult-content-description"
-                      style="font-size: 13px; margin: 0 10px 0 0;">专家门诊</span>
+                      style="font-size: 13px; margin: 0 10px 0 0;">{{registerItem.sourceLevelType == 1 ? '普通门诊' : '专家号'}}</span>
                 <span class="service-consult-content-fee"
                       style="font-size: 13px;">￥{{ registerItem.unitPrice }}</span>
               </span>
@@ -497,10 +497,16 @@ export default {
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${params}`)
     },
 
-    goRegisterDetail() {
+    goRegisterDetail(item) {
       const params = peace.util.encode({
-        doctorInfo: this.doctor.doctorInfo,
-        date: { date: '10-23', year: '2019', week: '周三', disabled: 0 },
+        doctorInfo: {...item,
+                     avatar: this.doctor.doctorInfo.avartor,
+                     name:this.doctor.doctorInfo.name,
+                     doctorTitle: this.doctor.doctorInfo.doctorTitle,
+                     deptName : this.doctor.doctorInfo.deptName,
+                     hospitalName : this.doctor.doctorInfo.hospitalName,
+        },
+
         source: {
           endTime: '10:00',
           isExpire: 0,

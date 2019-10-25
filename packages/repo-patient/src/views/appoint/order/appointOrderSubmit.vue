@@ -3,7 +3,7 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor"
+        <img :src="doctorInfo.avatar"
              class />
       </div>
       <div class="card-body">
@@ -24,19 +24,19 @@
       </div>
       <div class="dl-addr">
         <div class="dt">门诊时间</div>
-        <div class="dd blue">{{date.year}}-{{date.date}} {{date.week}}
-          {{source.type == 'AM' ? '上午' : source.type == 'PM' ? '下午' :''}}
-          {{source.startTime}}-{{source.endTime}}</div>
+        <div class="dd blue">{{doctorInfo.timeSharing}}
+          {{doctorInfo.AMPM == 'AM' ? '上午' : doctorInfo.doctorInfo == 'PM' ? '下午' :''}}
+          {{doctorInfo.startTime}}-{{doctorInfo.endTime}}</div>
       </div>
       <div class="dl-addr">
         <div class="dt">门诊类型</div>
         <div class="dd">
-          {{source.sourceLevelType == 1 ? '普通门诊' : source.sourceLevelType == '2' ? '专家门诊' : ''}}
+          {{doctorInfo.sourceLevelType == 1 ? '普通门诊' : doctorInfo.sourceLevelType == '2' ? '专家门诊' : ''}}
         </div>
       </div>
       <div class="dl-addr">
         <div class="dt">费 用</div>
-        <div class="dd">￥{{source.unitPrice}}(挂号费)</div>
+        <div class="dd">￥{{doctorInfo.unitPrice}}(挂号费)</div>
       </div>
     </div>
     <div class="order-check">
@@ -113,8 +113,7 @@ export default {
     this.params = peace.util.decode(this.$route.params.json)
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
-    this.date = this.params.date
-    console.log(this.params)
+    console.log(this.doctorInfo)
     this.initFml()
   },
   methods: {
@@ -159,18 +158,18 @@ export default {
     },
     submitOrder() {
       let data = {
-        sourceCode: this.source.sourceCode,
-        doctorId: this.doctorInfo.doctorId,
+        sourceCode: this.doctorInfo.sourceCode,
+        doctorId: this.doctorInfo.doctorCode,
         familyId: this.fml.familyId,
         familyName: this.fml.name,
         idcard: this.fml.idcard,
-        sourceDate: this.date.year + '-' + this.date.date,
-        week: this.date.week,
-        AMPM: this.source.type,
-        bookingStart: this.source.startTime,
-        bookingEnd: this.source.endTime,
-        unitPrice: this.source.unitPrice,
-        sourceLevelType: this.source.sourceLevelType,
+        sourceDate: this.doctorInfo.timeSharing,
+        week: this.doctorInfo.week,
+        AMPM: this.doctorInfo.AMPM,
+        bookingStart: this.doctorInfo.startTime,
+        bookingEnd: this.doctorInfo.endTime,
+        unitPrice: this.doctorInfo.unitPrice,
+        sourceLevelType: this.doctorInfo.sourceLevelType,
         diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
         departmentName: this.doctorInfo.deptName
       }
@@ -187,6 +186,7 @@ export default {
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
+      debugger
       this.showBtn = false
       peace.service.appoint
         .orderSubmit(data)
