@@ -53,7 +53,8 @@
         </div>
         <div class="panel-body">
           <div class="list-three"
-               v-for="item in order.OrderDet">
+               v-for="(item, index) in order.OrderDet"
+               :key="index">
             <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
               <img :src="item.DrugImage" />
             </div>
@@ -189,7 +190,7 @@ export default {
           let params = { orderNo }
           peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo);
         })
-        .catch(res => {
+        .catch(() => {
           this.showBtn = true
         })
     },
