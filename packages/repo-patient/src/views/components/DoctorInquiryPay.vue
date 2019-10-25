@@ -44,7 +44,6 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -58,17 +57,18 @@ export default {
       appid: '',
       data: {},
       params: {},
-      time: 0
+      time: 0,
+      createdTime: ''
     }
   },
   created() {},
   mounted() {
     let that = this
-    this.appid = config.APPID
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
+      this.createdTime = data.createdTime;
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
@@ -128,7 +128,7 @@ export default {
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
         this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
-        let json = peace.util.encode({ ...this.$route.params.json, startTime: new Date() })
+        let json = peace.util.encode({ ...peace.util.decode(this.$route.params.json), startTime: new Number(this.createdTime)*1000 })
         this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
     }

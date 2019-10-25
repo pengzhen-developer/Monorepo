@@ -98,7 +98,7 @@
         <div class="bottom">客服电话：400-902-0365</div>
       </template>
 
-      <template v-else>
+      <template v-if="loaded && consultList.length == 0">
         <div class="none-page">
           <div class="icon icon_none_consult"></div>
           <div class="none-text">暂无咨询记录</div>
@@ -153,7 +153,7 @@ export default {
         json: {},
         tabIndex: 0
       },
-
+      loaded: false,
       consultList: [],
       referralLists: [],
 
@@ -206,6 +206,7 @@ export default {
     },
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
+        this.loaded = true;
         this.consultList = res.data.list
         this.consultList.map(item => {
           // item.time =  15 * 60 * 1000;

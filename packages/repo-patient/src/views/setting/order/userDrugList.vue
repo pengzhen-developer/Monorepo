@@ -86,7 +86,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="loaded && drugItems.length==0">
       <div class="none-page">
         <div class="icon icon_none_drugOrder"></div>
         <div class="none-text">暂无订单</div>
@@ -101,6 +101,7 @@ import config from '@src/config'
 export default {
   data() {
     return {
+      loaded: false,
       appid: '',
       tabIndex: '0',
       currentOrderId: '',
@@ -138,6 +139,7 @@ export default {
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
         this.drugItems = res.data
+        this.loaded = true;
       })
     },
 

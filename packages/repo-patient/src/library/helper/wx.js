@@ -48,7 +48,6 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
               let data = res.data
               if (data) {
                   console.log('微信支付config', data)
-                  paySuc(5);
                   payInvoke(data,paySuc, payCancel)
               } else {
                 // 进入微信授权

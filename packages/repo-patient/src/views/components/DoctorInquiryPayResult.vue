@@ -55,7 +55,7 @@ export default {
       })
 
       // 跳转聊天详情
-      this.$router.push(`/components/messageList/${paramsForMessageList}`)
+      this.$router.replace(`/components/messageList/${paramsForMessageList}`)
     }
   }
 }
