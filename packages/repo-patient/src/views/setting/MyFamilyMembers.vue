@@ -27,7 +27,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="loaded && members.length==0">
       <div class="none-page">
         <div class="icon icon_none_family"></div>
         <div class="none-text">您还未添加家人</div>
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       members: [],
-
+      loaded: false,
       dialog: {
         visible: false,
         title: '',
@@ -87,6 +87,7 @@ export default {
       // 获取现有家人
       peace.service.patient.getMyFamilyList().then(res => {
         this.members = res.data
+        this.loaded = true;
       })
     },
 

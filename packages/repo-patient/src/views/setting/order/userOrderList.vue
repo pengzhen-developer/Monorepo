@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="none-page"
-           v-if="!orderList.length">
+           v-if="orderList.length==0 && loaded">
         <div class="icon icon_none_consult"></div>
         <div class="none-text">暂无订单记录</div>
       </div>
@@ -98,6 +98,7 @@ export default {
   props: {},
   data() {
     return {
+      loaded: false,
       page: {
         isGet: false,
         none: true,
@@ -146,6 +147,7 @@ export default {
     getData() {
       peace.service.patient.getOrderList({ orderType: 'register' }).then(res => {
         this.orderList = res.data.list || []
+        this.loaded = true;
       })
     },
     canselOrder(item) {
