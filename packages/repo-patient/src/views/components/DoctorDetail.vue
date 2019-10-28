@@ -503,24 +503,27 @@ export default {
     },
 
     goRegisterDetail(item) {
+      let timeSharing = item.timeSharing;
+      let timeArr = timeSharing.split("-");
       const params = peace.util.encode({
         doctorInfo: {...item,
-                     avatar: this.doctor.doctorInfo.avartor,
+                     avartor: this.doctor.doctorInfo.avartor,
                      name:this.doctor.doctorInfo.name,
                      doctorTitle: this.doctor.doctorInfo.doctorTitle,
                      deptName : this.doctor.doctorInfo.deptName,
                      hospitalName : this.doctor.doctorInfo.hospitalName,
+                     doctorId: this.doctor.doctorInfo.doctorId,
         },
-
+        date: { date: timeArr[1]+ '-' +timeArr[2], year: timeArr[0], week:item.week},
         source: {
-          endTime: '10:00',
+          endTime: item.endTime,
           isExpire: 0,
           number: 1,
-          sourceCode: 'A71DNAO6QTR0000Z',
-          sourceLevelType: 1,
-          startTime: '09:00',
-          type: 'AM',
-          unitPrice: 0.01
+          sourceCode: item.sourceCode,
+          sourceLevelType: item.sourceLevelType,
+          startTime: item.startTime,
+          type: item.AMPM,
+          unitPrice: item.unitPrice
         }
       })
 

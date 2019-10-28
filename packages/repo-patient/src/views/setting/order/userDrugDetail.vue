@@ -1,5 +1,10 @@
 <template>
   <div class="user-drug-detail">
+    <div class="count-down"  v-if="order.OrderStatus == 0">
+      订单  <van-count-down millisecond
+                          :time="time"
+                          format="HH:mm:ss" /> 后将自动关闭
+    </div>
     <div class="top"
          v-if="order.OrderStatusText">
       <!--tab^content-->
@@ -13,6 +18,7 @@
           </div>
           <div class="order-text"></div>
         </div>
+        <div class="cancelText" v-if="order.OrderStatus == '5' && order.payMoney != 0 ">订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
         <div class="tab-content"
              v-if="order.ShippingMethod == '0'">
           <div class="addr-tit">取药地址</div>
@@ -80,12 +86,11 @@
               <div class="dd">￥{{order.TotalAmount}}</div>
             </div>
           </div>
-          <div class="module str">
+          <div class="module str" v-if="order.OrderStatus != 0">
             <div class="dl-packet">
-              <div class="dt">应付金额:</div>
+              <div class="dt">实付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.TotalAmount}}</div>
-                (价格以实际到店为准)
+                <div class="strong">￥{{order.payMoney}}</div>
               </div>
             </div>
           </div>
@@ -107,16 +112,27 @@
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
-      <div class="bottom">
         <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-        <div @click="payOrder(order)"
-             class="btn block btn-blue"
-             v-if="order.OrderStatus == '0'"
-             style="background: #00C6AE; margin-bottom: 8px; ">
-          继续支付</div>
+        <div class='bottom-1'  v-if="order.OrderStatus == 0">
+          <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
+          <div class="right">
+            <div @click="canselOrder"
+                 class="pay cancel"
+                 v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+                 style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+              取消订单</div>
+            <div @click="payOrder(order)"
+                 class="pay"
+                 v-if="order.OrderStatus == '0'"
+                 style="background: #00C6AE; margin-bottom: 8px; ">
+              继续支付</div>
+          </div>
+        </div>
+
+      <div class="bottom" v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
         <div @click="submitOrder"
@@ -139,6 +155,9 @@
 <script>
 import peace from '@src/library'
 import TheRecipe from '@src/views/components/TheRecipe'
+import Vue from 'vue'
+import { CountDown } from 'vant'
+Vue.use(CountDown)
 
 export default {
   components: {
@@ -147,6 +166,7 @@ export default {
 
   data() {
     return {
+      time: 0,
       orderId: '',
       timeTags: ['创建时间', '', '接单时间', '发货时间', '', '取消时间', '收货时间'],
       appid: '',
@@ -197,6 +217,9 @@ export default {
 
       peace.service.purchasedrug.SelectOrderDetApi(params).then(res => {
         this.order = res.data
+        if (this.order.expireTime > this.order.currentTime) {
+          this.time = (this.order.expireTime - this.order.currentTime) * 1000
+        }
       })
     },
 
@@ -249,6 +272,35 @@ export default {
 .user-drug-detail {
   height: 100%;
   background: #f5f5f5;
+  .cancelText {
+    height:45px;
+    background:rgba(240,252,250,1);
+    border-radius:2px;
+    margin: 10px 15px 0 15px;
+    font-size:12px;
+    color:rgba(0,198,174,1);
+    line-height:16px;
+    padding: 6px 10px 0px 50px;
+    background:rgba(240,252,250,1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
+    background-size: 17px 17px;
+    background-position: 20px 13px ;
+  }
+  .count-down {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    background:#FEFCEB url('../../../assets/images/icons/count-down.png') no-repeat;
+    background-size: 20px 20px;
+    background-position: 10px 7px;
+    padding-left: 40px;
+    color: #F96A0E;
+    font-size:14px;
+    .van-count-down {
+      display: inline-block;
+      color: #F96A0E;
+      font-size:14px!important;
+    }
+  }
 }
 
 .icon {
@@ -429,10 +481,47 @@ export default {
   background-size: cover;
   background-image: url('../../../assets/images/icons/nocontent.jpg');
 }
+.bottom-1 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background:rgba(255,255,255,1);
+  border:1px solid rgba(238,238,238,1);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  justify-content: space-between;
+  .money {
+    font-size:20px;
+    color:rgba(255,52,77,1);
+  }
+  .right {
+    display: flex
+  }
+  .pay {
+    width: 75px;
+    height: 30px;
+    background: rgba(0,198,174,1);
+    border-radius: 2px;
+    font-size: 13px;
+    color:rgba(255,255,255,1);
+    line-height: 30px;
+    text-align: center;
+    margin-left: 10px;
+    &.cancel {
+      border:1px solid rgba(204,204,204,1);
+      background: #fff;
+      color:rgba(153,153,153,1);
+    }
+  }
+}
 .box .dl-packet,
 .bottom {
   padding: 0 10px;
 }
+
 .bottom {
   padding: 10px;
 }

@@ -3,8 +3,9 @@
        v-if="internalData && internalData.inquiryInfo && internalData.doctorInfo && internalData.familyInfo && internalData.illInfo">
     <!--TOP-->
     <div class="module nmg">
-      <div class="strong">{{ internalData.inquiryInfo.statusTxt }}</div>
+      <div class="strong">{{ internalData.inquiryInfo.statusTxt }} <span class="money" v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{internalData.orderInfo.orderMoney}}</span></div>
       <div class="brief">{{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}</div>
+      <div class="cancelText" v-if="(internalData.inquiryInfo.inquiryStatus == '6' || internalData.inquiryInfo.inquiryStatus == '4') && internalData.orderInfo.payMoney != '0.00'">订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
       <div class="module-body">
         <div @click="gouserPrescripCasePage(internalData)"
              class="label blue"
@@ -120,6 +121,13 @@
         <div class="money">{{ '¥' + internalData.orderInfo.payMoney }}</div>
       </div>
     </div>
+    <div class="module pdtb"
+         v-if="internalData.inquiryInfo.inquiryStatus == '1'">
+      <div class="brief right">
+        应付金额：
+        <div class="money">{{ '¥' + internalData.orderInfo.orderMoney }}</div>
+      </div>
+    </div>
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
@@ -224,12 +232,12 @@ export default {
     getInquiryText(status) {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
-        '1': '请您尽快支付',
+        '1': '订单创建15分钟后未支付将自动关闭',
         '2': '已通知医生尽快接诊，请等候',
         '3': '请及时与医生沟通',
-        '4': '欢迎再次咨询。如有紧急问题请及时就医~',
+        '4': '医生已退诊',
         '5': '祝您身体健康',
-        '6': '欢迎再次咨询。如有紧急问题请及时就医~'
+        '6':  this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
       }
 
       return dic[status]
@@ -311,6 +319,19 @@ export default {
   .module {
     background: #fff;
     margin-bottom: 10px;
+    .cancelText {
+      height:45px;
+      background:rgba(240,252,250,1);
+      border-radius:2px;
+      margin: 10px 15px 0 15px;
+      font-size:12px;
+      color:rgba(0,198,174,1);
+      line-height:16px;
+      padding: 6px 10px 0px 50px;
+      background:rgba(240,252,250,1) url('../../assets/images/icons/ic_notice.png') no-repeat;
+      background-size: 17px 17px;
+      background-position: 20px 13px ;
+    }
   }
 
   .nmg {

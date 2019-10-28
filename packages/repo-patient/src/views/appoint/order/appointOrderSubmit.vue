@@ -3,8 +3,7 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avatar"
-             class />
+        <img :src="doctorInfo.avartor" class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -24,43 +23,30 @@
       </div>
       <div class="dl-addr">
         <div class="dt">门诊时间</div>
-        <div class="dd blue">{{doctorInfo.timeSharing}}
-          {{doctorInfo.AMPM == 'AM' ? '上午' : doctorInfo.doctorInfo == 'PM' ? '下午' :''}}
-          {{doctorInfo.startTime}}-{{doctorInfo.endTime}}</div>
+        <div
+          class="dd blue"
+        >{{date.year}}-{{date.date}} {{date.week}} {{source.type == 'AM' ? '上午' : source.type == 'PM' ? '下午' :''}} {{source.startTime}}-{{source.endTime}}</div>
       </div>
       <div class="dl-addr">
         <div class="dt">门诊类型</div>
-        <div class="dd">
-          {{doctorInfo.sourceLevelType == 1 ? '普通门诊' : doctorInfo.sourceLevelType == '2' ? '专家门诊' : ''}}
-        </div>
+        <div class="dd">{{source.sourceLevelType == 1 ? '普通门诊' : source.sourceLevelType == '2' ? '专家门诊' : ''}}</div>
       </div>
       <div class="dl-addr">
         <div class="dt">费 用</div>
-        <div class="dd">￥{{doctorInfo.unitPrice}}(挂号费)</div>
+        <div class="dd">￥{{source.unitPrice}}(挂号费)</div>
       </div>
     </div>
     <div class="order-check">
       <div class="form-dl">
         <div class="form-dt">就诊人</div>
-        <div @click="showFmlDicFn"
-             class="form-dd icon-next">{{ fml.name || '请选择'}}</div>
-        <van-action-sheet :actions="fmlDic"
-                          @cancel="showFmlDic = false"
-                          @select="fmlConfirm"
-                          cancel-text="取消"
-                          v-model="showFmlDic" />
+        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml.name || '请选择'}}</div>
+        <van-action-sheet :actions="fmlDic" @cancel="showFmlDic = false" @select="fmlConfirm" cancel-text="取消" v-model="showFmlDic" />
       </div>
       <div class="form-dl">
         <div class="form-dt">初/复诊</div>
-        <div @click="showZdDic = true"
-             class="form-dd icon-next">{{order.zdType}}</div>
-        <van-popup position="bottom"
-                   v-model="showZdDic">
-          <van-picker :columns="zdDic"
-                      @cancel="showZdDic = false"
-                      @confirm="zdConfirm"
-                      show-toolbar
-                      title="初/复诊" />
+        <div @click="showZdDic = true" class="form-dd icon-next">{{order.zdType}}</div>
+        <van-popup position="bottom" v-model="showZdDic">
+          <van-picker :columns="zdDic" @cancel="showZdDic = false" @confirm="zdConfirm" show-toolbar title="初/复诊" />
         </van-popup>
       </div>
       <div class="form-dl">
@@ -77,8 +63,7 @@
       </ul>
     </div>
     <div class="fixed-bottom">
-      <div :class="['btn','btn-blue', 'block', showBtn ? '' : 'disabled']"
-           @click="submitOrder">提交</div>
+      <div :class="['btn','btn-blue', 'block', showBtn ? '' : 'disabled']" @click="submitOrder">提交</div>
     </div>
   </div>
 </template>
@@ -113,21 +98,22 @@ export default {
     this.params = peace.util.decode(this.$route.params.json)
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
-    console.log(this.doctorInfo)
-    this.initFml()
+    this.date = this.params.date
+    console.log(this.params)
+    this.initFml();
   },
   methods: {
-    initFml() {
+    initFml(){
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
         this.fml = this.fmlList[0] || {}
         this.fmlDic =
-          this.fmlList.map(item => {
-            return {
-              name: item.name,
-              subname: '(' + item.relation + ')'
-            }
-          }) || []
+                this.fmlList.map(item => {
+                  return {
+                    name: item.name,
+                    subname: '(' + item.relation + ')'
+                  }
+                }) || []
       })
     },
     zdConfirm(val) {
@@ -138,18 +124,19 @@ export default {
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
         this.fmlDic =
-          this.fmlList.map(item => {
-            return {
-              name: item.name,
-              subname: '(' + item.relation + ')'
-            }
-          }) || []
+                this.fmlList.map(item => {
+                  return {
+                    name: item.name,
+                    subname: '(' + item.relation + ')'
+                  }
+                }) || [];
 
         if (this.fmlList.length) {
           this.showFmlDic = true
         } else {
           peace.util.alert('请先前往个人中心添加就诊人')
         }
+
       })
     },
     fmlConfirm(item, index) {
@@ -158,18 +145,18 @@ export default {
     },
     submitOrder() {
       let data = {
-        sourceCode: this.doctorInfo.sourceCode,
-        doctorId: this.doctorInfo.doctorCode,
+        sourceCode: this.source.sourceCode,
+        doctorId: this.doctorInfo.doctorId,
         familyId: this.fml.familyId,
         familyName: this.fml.name,
         idcard: this.fml.idcard,
-        sourceDate: this.doctorInfo.timeSharing,
-        week: this.doctorInfo.week,
-        AMPM: this.doctorInfo.AMPM,
-        bookingStart: this.doctorInfo.startTime,
-        bookingEnd: this.doctorInfo.endTime,
-        unitPrice: this.doctorInfo.unitPrice,
-        sourceLevelType: this.doctorInfo.sourceLevelType,
+        sourceDate: this.date.year + '-' + this.date.date,
+        week: this.date.week,
+        AMPM: this.source.type,
+        bookingStart: this.source.startTime,
+        bookingEnd: this.source.endTime,
+        unitPrice: this.source.unitPrice,
+        sourceLevelType: this.source.sourceLevelType,
         diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
         departmentName: this.doctorInfo.deptName
       }
@@ -179,32 +166,21 @@ export default {
         return
       }
 
-      if (!this.showBtn) {
-        peace.util.alert('请勿重复提交')
-        return
-      }
+      // if (!this.showBtn) {
+      //   peace.util.alert('请勿重复提交')
+      //   return;
+      // }
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
-      debugger
-      this.showBtn = false
+      console.log('data', data);
       peace.service.appoint
         .orderSubmit(data)
         .then(res => {
-          if (res.data.orderInfo.orderMoney == '0.00' || res.data.orderInfo.orderMoney == '0') {
-            let orderType = 'register'
-            let orderNo = res.data.orderInfo.orderNo
-            let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-            this.showBtn = true
-            this.$router.push(`/setting/order/userOrderDetail/${json}`)
-          } else {
-            this.goToPay(res.data)
-            this.showBtn = true
-          }
+          this.goToPay(res.data)
         })
         .catch(res => {
           //debugger
-          this.showBtn = true
           Dialog.alert({
             title: '预约失败',
             message: res.data.msg
@@ -214,15 +190,15 @@ export default {
         })
     },
     goToPay(data) {
-      this.showBtn = false
+      // this.showBtn = false
       //debugger;
-      let { doctorName, doctorId } = data.doctorInfo
-      let { orderNo, orderMoney } = data.orderInfo
-      let typeName = '预约挂号'
-      let money = orderMoney
-      let json = { money, typeName, doctorName, orderNo, doctorId }
-      json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      let {doctorName,doctorId} = data.doctorInfo;
+      let {orderNo, orderMoney} = data.orderInfo;
+      let typeName = '预约挂号';
+      let money = orderMoney;
+      let json = {money, typeName, doctorName, orderNo, doctorId};
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
       // let json = peace.util.encode({
       //   orderInfo: data.orderInfo
       // })
