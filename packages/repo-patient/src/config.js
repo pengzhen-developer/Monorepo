@@ -64,7 +64,12 @@ export const config = {
   /**
    * 微信公众号 APPID
    */
-  APPID: process.env.VUE_APP_APPID
+  APPID: process.env.VUE_APP_APPID,
+
+  /**
+   * 渠道ID CHANNELID
+   */
+  CHANNELID: process.env.VUE_APP_CHANNELID
 }
 
 export default config

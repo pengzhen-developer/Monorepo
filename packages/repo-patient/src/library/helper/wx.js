@@ -68,7 +68,13 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
 
         })
 }
+
+export function auth(appId, redirectUrl) {
+    let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect`
+    window.location.href = url
+}
 export default {
     pay,
-    payInvoke
+    payInvoke,
+    auth
 }

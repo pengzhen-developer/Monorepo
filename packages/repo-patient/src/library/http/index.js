@@ -11,6 +11,8 @@ import router from '@src/router'
 
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+
+import config from '@src/config'
 // 记录 http 请求次数
 let httpCount = 0
 
@@ -59,6 +61,9 @@ axios.interceptors.request.use(
       request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO)
         ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
         : undefined
+
+      // 配置渠道ID
+      request.headers['channelId'] = config.CHANNELID;
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/

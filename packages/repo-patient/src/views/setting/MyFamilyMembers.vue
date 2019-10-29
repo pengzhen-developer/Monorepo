@@ -1,5 +1,6 @@
 <template>
   <div class="my-family-members">
+      <div class="card-line">点击查看电子健康卡/就诊卡信息</div>
     <template v-if="members && members.length > 0">
       <div class="content">
         <van-cell :key="item.id"
@@ -137,7 +138,15 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-
+ .card-line {
+     height:36px;
+     background:rgba(235,251,249,1);
+     font-size:14px;
+     font-weight:400;
+     color:rgba(0,198,174,1);
+     line-height:36px;
+     text-align: center;
+ }
   .content {
     flex: 1;
     overflow-y: auto;

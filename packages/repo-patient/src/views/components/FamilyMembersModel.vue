@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
+      <div class="card-title">电子健康卡</div>
+      <div claas="card-list-content">
+
+      </div>
+      <div class="card no-card"></div>
       <div class="form form-for-family">
         <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
         <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
@@ -240,6 +245,24 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  .card-title {
+    height: 53px;
+    font-size:16px;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+    line-height: 53px;
+    background: url("../../assets/images/card-icon.png") no-repeat;
+    background-size: 25px 20px;
+    background-position: 15px 15px;
+    padding-left: 55px;
+  }
+  .card {
+    width: 343px;
+    height: 195px;
+    background: url('../../assets/images/ic_empty_card.png');
+    background-size: 100% 100%;
+    margin: 0 auto;
+  }
   .form {
     flex: 1;
   }

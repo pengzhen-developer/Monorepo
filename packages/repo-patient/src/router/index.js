@@ -126,7 +126,18 @@ const router = new Router({
           },
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
         },
-
+        {
+          path: '/card/index',
+          name: '电子健康卡',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的家人',
+              back: true
+            }
+          },
+          component: () => import('@src/views/card/index.vue')
+        },
         // 我的咨询
         {
           path: '/setting/userConsultList',
