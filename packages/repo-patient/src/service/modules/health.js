@@ -91,6 +91,19 @@ export function addBloodPressure(params) {
   return peace.http.post(addBloodPressure, params)
 }
 
+/**
+ * 健康档案添加血糖数据
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function addBloodSugar(params) {
+  const addBloodSugar = 'wap/v1/health/addBloodsugardata'
+  return peace.http.post(addBloodSugar, params)
+}
+
+
 export default {
   getHealthCase,
   familyLists,
@@ -99,5 +112,7 @@ export default {
   historyLists,
   getReportList,
 
-  addBloodPressure
+  addBloodPressure,
+
+  addBloodSugar
 }

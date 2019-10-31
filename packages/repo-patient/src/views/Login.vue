@@ -115,11 +115,13 @@ export default {
         var ua = window.navigator.userAgent.toLowerCase();
         if(ua.match(/MicroMessenger/i)=="micromessenger"){
           // 微信环境进行授权
-          let prefix = location.href.split("h5")[0];
-          let appId = res.data.loginInfo.appId;
-          reffer = prefix + 'h5' + reffer;
-          // console.log(appId);
-          peace.wx.auth(appId, reffer);
+          if(res.data.loginInfo.otherOpenId == '') {
+            let prefix = location.href.split("h5")[0];
+            let appId = res.data.loginInfo.appId;
+            reffer = prefix + 'h5' + reffer;
+            // console.log(appId);
+            peace.wx.auth(appId, reffer);
+          }
         }else{
           this.$router.push(
                 reffer

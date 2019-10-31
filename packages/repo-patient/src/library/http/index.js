@@ -63,7 +63,10 @@ axios.interceptors.request.use(
         : undefined
 
       // 配置渠道ID
-      request.headers['channelId'] = config.CHANNELID;
+      request.headers['channelid'] = config.CHANNELID;
+
+      // 医院ID
+      // request.headers['nethospitalid'] = config.HOSPITALID;
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/

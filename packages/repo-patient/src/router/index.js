@@ -153,6 +153,39 @@ const router = new Router({
           },
           component: () => import('@src/views/file/FileBloodPressureAddData.vue')
         },
+        {
+          path: '/file/fileBloodSugarDetail/:json',
+          name: '/file/fileBloodSugarDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血糖'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarDetail.vue')
+        },
+        {
+          path: '/file/fileBloodSugarHistory/:json',
+          name: '/file/fileBloodSugarHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarHistory.vue')
+        },
+        {
+          path: '/file/fileBloodSugarAddData/:json',
+          name: '/file/fileBloodSugarAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血压'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarAddData.vue')
+        },
         // 我的
         {
           path: '/setting/index',
@@ -180,6 +213,19 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
+        },
+        // 电子健康卡详情
+        {
+          path: '/setting/cardDetail',
+          name: '/setting/cardDetail',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的家人',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/CardDetail.vue')
         },
         {
           path: '/card/index',
