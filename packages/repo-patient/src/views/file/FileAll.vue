@@ -16,7 +16,7 @@
             <!-- 血压 -->
             <template v-if="item.healthType === 'bloodPressuredata'">
               <div class="note card health-item"
-                   @click="uitl.goDetail('血压', item)">
+                   @click="util.goDetail('血压', item)">
                 <div class="health-item-left">
                   <van-image width="35px"
                              height="44px"
@@ -28,7 +28,7 @@
                       {{ item.systolicPressure }}/{{ item.diastolicPressure }}
                     </span>
                     <span class="card-unit">
-                      {{ uitl.getUnit('血压') }}
+                      {{ util.getUnit('血压') }}
                     </span>
                   </span>
                   <van-tag class="card-tag"
@@ -42,7 +42,7 @@
             <!-- 血糖 -->
             <template v-if="item.healthType === 'bloodSugarData'">
               <div class="note card health-item"
-                   @click="uitl.goDetail('血糖', item)">
+                   @click="util.goDetail('血糖', item)">
                 <div class="health-item-left">
                   <van-image width="35px"
                              height="44px"
@@ -51,7 +51,7 @@
                 <div class="health-item-right">
                   <span>
                     <span class="card-value">{{ item.bloodSugar }}</span>
-                    <span class="card-unit">{{ uitl.getUnit('血糖') }}</span>
+                    <span class="card-unit">{{ util.getUnit('血糖') }}</span>
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
@@ -64,7 +64,7 @@
             <!-- 血氧 -->
             <template v-if="item.healthType === 'oxyGenData'">
               <div class="note card health-item"
-                   @click="uitl.goDetail('血氧', item)">
+                   @click="util.goDetail('血氧', item)">
                 <div class="health-item-left">
                   <van-image width="35px"
                              height="44px"
@@ -73,7 +73,7 @@
                 <div class="health-item-right">
                   <span>
                     <span class="card-value">{{ item.bloodOxygen }}</span>
-                    <span class="card-unit">{{ uitl.getUnit('血氧') }}</span>
+                    <span class="card-unit">{{ util.getUnit('血氧') }}</span>
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
@@ -86,7 +86,7 @@
             <!-- 体脂 -->
             <template v-if="item.healthType === 'bodyFat'">
               <div class="note card health-item"
-                   @click="uitl.goDetail('体脂', item)">
+                   @click="util.goDetail('体脂', item)">
                 <div class="health-item-left">
                   <van-image width="35px"
                              height="44px"
@@ -95,7 +95,7 @@
                 <div class="health-item-right">
                   <span>
                     <span class="card-value">{{ item.bfr }}</span>
-                    <span class="card-unit">{{ uitl.getUnit('体脂') }}</span>
+                    <span class="card-unit">{{ util.getUnit('体脂') }}</span>
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
@@ -108,7 +108,7 @@
             <!-- 病历 -->
             <template v-if="item.healthType === 'case'">
               <div class="note card case"
-                   @click="uitl.goDetail('病历', item)">
+                   @click="util.goDetail('病历', item)">
                 <div class="case-left">
                   <van-image width="35px"
                              height="35px"
@@ -133,7 +133,7 @@
 
 <script>
 import peace from '@src/library'
-import uitl from './util'
+import util from './util'
 
 export default {
   props: {
@@ -142,7 +142,7 @@ export default {
 
   data() {
     return {
-      uitl,
+      util,
 
       data: {}
     }

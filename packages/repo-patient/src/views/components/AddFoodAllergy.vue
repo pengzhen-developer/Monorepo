@@ -239,6 +239,7 @@ export default {
         padding: 10px;
         text-align: center;
         min-width: 45px;
+        border: none;
 
         &::after {
           border: none;

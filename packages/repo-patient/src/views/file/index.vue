@@ -4,7 +4,7 @@
       <div class="no-family">
         <van-image style="height: 100%;"
                    :src="require('@src/assets/images/file/bg_img_no_family.png')"></van-image>
-        <van-button>添加家人信息</van-button>
+        <van-button @click="goFamily">添加家人信息</van-button>
       </div>
     </template>
     <template v-else>
@@ -36,7 +36,8 @@
                            height="50px"
                            :src="require('@src/assets/images/ic_head portrait.png')" />
               </div>
-              <div class="content">
+              <div class="content"
+                   @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
                   <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;"
@@ -65,10 +66,8 @@
                      :familyId="familyId"></FileDay>
           </van-tab>
           <van-tab title="就诊病历">
-            <div class="none-page">
-              <div class="icon icon_none_source"></div>
-              <div class="none-text">暂无就诊病历</div>
-            </div>
+            <FileCase :key="familyId"
+                      :familyId="familyId"></FileCase>
           </van-tab>
           <van-tab title="住院病历">
             <div class="none-page">
@@ -90,17 +89,23 @@
 
 <script>
 import peace from '@src/library'
+import util from './util'
+
 import FileAll from './FileAll'
 import FileDay from './FileDay'
+import FileCase from './FileCase'
 
 export default {
   components: {
     FileAll,
-    FileDay
+    FileDay,
+    FileCase
   },
 
   data() {
     return {
+      util,
+
       swipeWidth: document.body.clientWidth - 80,
       active: 0,
 
@@ -122,6 +127,10 @@ export default {
   },
 
   methods: {
+    goFamily() {
+      this.$router.push('/setting/myFamilyMembers')
+    },
+
     getFamilyList() {
       peace.service.health.familyLists().then(res => {
         this.myFamilyList = res.data.list
@@ -130,6 +139,10 @@ export default {
           this.changeSwipeTrack(0)
         })
       })
+    },
+
+    showDetail() {
+      this.dialog.visible = true
     },
 
     onSwipeChange(index) {

@@ -26,6 +26,14 @@ export const goDetail = (type, data) => {
   }
 }
 
+export const goHealthDetail = data => {
+  const json = peace.util.encode({
+    familyId: data.familyId
+  })
+
+  $peace.$router.push(`/file/fileHealthDetail/${json}`)
+}
+
 export const goReportList = (type, serviceType, idCard) => {
   let json = {}
 
@@ -56,6 +64,7 @@ export const getUnit = type => {
 
 export default {
   goDetail,
+  goHealthDetail,
   goReportList,
   getUnit
 }

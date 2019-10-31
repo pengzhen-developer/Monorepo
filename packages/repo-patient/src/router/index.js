@@ -89,7 +89,6 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            keepAlive: true,
             tabBar: true,
             navbar: {
               title: '健康档案'
@@ -98,6 +97,17 @@ const router = new Router({
           component: () => import('@src/views/file/index.vue')
         },
 
+        {
+          path: '/file/fileHealthDetail/:json',
+          name: '/file/fileHealthDetail',
+          meta: {
+            tabBar: true,
+            navbar: {
+              title: '健康档案-基本健康信息'
+            }
+          },
+          component: () => import('@src/views/file/FileHealthDetail.vue')
+        },
         {
           path: '/file/fileAllDetail/:json',
           name: '/file/fileAllDetail/:json',
