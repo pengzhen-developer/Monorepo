@@ -1,13 +1,172 @@
 <template>
   <div class="file-day">
-    <div class="file-day-item"></div>
-    <div class="file-day-item"></div>
-    <div class="file-day-item"></div>
+    <!-- 血压 -->
+    <div class="card card"
+         @click="util.goDetail('血压', data.bloodPressureData)">
+      <div class="card-left">
+        <van-image width="35px"
+                   height="44px"
+                   :src="require('@src/assets/images/file/ic_blood pressure.png')" />
+      </div>
+      <div class="card-center">
+        <div>
+          <span class="card-value">
+            {{ data.bloodPressureData.systolicPressure }}/{{ data.bloodPressureData.diastolicPressure }}
+          </span>
+          <span class="card-unit">{{ util.getUnit('血压') }}</span>
+          <van-tag class="card-tag"
+                   :class="{ normal: data.bloodPressureData.resultType === '2', unnormal: data.bloodPressureData.resultType !== '2' }">
+            {{ data.bloodPressureData.result }}
+          </van-tag>
+        </div>
+        <div>
+          <span class="card-time">
+            {{ data.bloodPressureData.measureTime && data.bloodPressureData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
+        </div>
+      </div>
+      <div class="card-right">
+        <van-image width="24"
+                   heihgt="24"
+                   :src="require('@src/assets/images/file/ic_arrow-right.png')">
+        </van-image>
+      </div>
+    </div>
+
+    <!-- 血糖 -->
+    <div class="card card"
+         @click="util.goDetail('血糖', data.bloodSugarData)">
+      <div class="card-left">
+        <van-image width="35px"
+                   height="44px"
+                   :src="require('@src/assets/images/file/ic_blood sugar.png')" />
+      </div>
+      <div class="card-center">
+        <div>
+          <span class="card-value">{{ data.bloodSugarData.bloodSugar }}</span>
+          <span class="card-unit">{{ util.getUnit('血糖') }}</span>
+          <van-tag class="card-tag"
+                   :class="{ normal: data.bloodSugarData.resultType === '2', unnormal: data.bloodSugarData.resultType !== '2' }">
+            {{ data.bloodSugarData.result }}
+          </van-tag>
+        </div>
+        <div>
+          <span class="card-time">
+            {{ data.bloodSugarData.measureTime && data.bloodSugarData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
+        </div>
+      </div>
+      <div class="card-right">
+        <van-image width="24"
+                   heihgt="24"
+                   :src="require('@src/assets/images/file/ic_arrow-right.png')">
+        </van-image>
+      </div>
+    </div>
+
+    <!-- 血氧 -->
+    <div class="card card"
+         @click="util.goDetail('血氧', data.bloodOxyGenData)">
+      <div class="card-left">
+        <van-image width="35px"
+                   height="44px"
+                   :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
+      </div>
+      <div class="card-center">
+        <div>
+          <span class="card-value">{{ data.bloodOxyGenData.bloodOxygen }}</span>
+          <span class="card-unit">{{ util.getUnit('血氧') }}</span>
+          <van-tag class="card-tag"
+                   :class="{ normal: data.bloodOxyGenData.resultType === '2', unnormal: data.bloodOxyGenData.resultType !== '2' }">
+            {{ data.bloodOxyGenData.result }}
+          </van-tag>
+        </div>
+        <div>
+          <span class="card-time">
+            {{ data.bloodOxyGenData.measureTime && data.bloodOxyGenData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
+        </div>
+      </div>
+      <div class="card-right">
+        <van-image width="24"
+                   heihgt="24"
+                   :src="require('@src/assets/images/file/ic_arrow-right.png')">
+        </van-image>
+      </div>
+    </div>
+
+    <!-- 体脂 -->
+    <div class="card card"
+         @click="util.goDetail('体脂', data.bodyFat)">
+      <div class="card-left">
+        <van-image width="35px"
+                   height="44px"
+                   :src="require('@src/assets/images/file/ic_body fat.png')" />
+      </div>
+      <div class="card-center">
+        <div>
+          <span class="card-value">{{ data.bodyFat.bfr }}</span>
+          <span class="card-unit">{{ util.getUnit('体脂') }}</span>
+          <van-tag class="card-tag"
+                   :class="{ normal: data.bodyFat.resultType === '2', unnormal: data.bodyFat.resultType !== '2' }">
+            {{ data.bodyFat.result }}
+          </van-tag>
+        </div>
+        <div>
+          <span class="card-time">
+            {{ data.bodyFat.measureTime && data.bodyFat.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
+        </div>
+      </div>
+      <div class="card-right">
+        <van-image width="24"
+                   heihgt="24"
+                   :src="require('@src/assets/images/file/ic_arrow-right.png')">
+        </van-image>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+import peace from '@src/library'
+import util from './util'
+
+export default {
+  props: {
+    familyId: String
+  },
+
+  data() {
+    return {
+      util,
+
+      data: {
+        bloodPressureData: {},
+        bloodSugarData: {},
+        bloodOxyGenData: {},
+        bodyFat: {}
+      }
+    }
+  },
+
+  created() {
+    this.allHealthList()
+  },
+
+  methods: {
+    allHealthList() {
+      peace.service.health.allHealthList({ familyId: this.familyId, type: '2' }).then(res => {
+        const list = res.data.list
+
+        this.data.bloodPressureData = list.find(item => item.healthType === 'bloodPressureData')
+        this.data.bloodSugarData = list.find(item => item.healthType === 'bloodSugarData')
+        this.data.bloodOxyGenData = list.find(item => item.healthType === 'oxyGenData')
+        this.data.bodyFat = list.find(item => item.healthType === 'bodyFat')
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -16,9 +175,60 @@ export default {}
   background: #f9f9f9;
 }
 
-.file-day-item {
-  min-height: 90px;
+.card {
+  padding: 12px 0;
+  min-height: 60px;
   background: #fff;
   margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+
+  .card-left {
+    display: flex;
+    justify-content: center;
+    width: 80px;
+  }
+
+  .card-center {
+    flex: 1;
+  }
+
+  .card-right {
+    display: flex;
+    justify-content: center;
+    width: 60px;
+  }
+
+  .card-value {
+    font-weight: 600;
+    font-size: 24px;
+    color: #333333;
+  }
+  .card-unit {
+    font-size: 12px;
+    color: #333333;
+    margin: 0 4px;
+  }
+  .card-time {
+    font-size: 12px;
+    color: #999999;
+    line-height: 24px;
+  }
+  .card-tag {
+    padding: 0 8px;
+    border-radius: 15px;
+    margin: 0 0 0 10px;
+
+    &.normal {
+      background-color: #f2fffd;
+      border: 1px solid $-color--primary;
+      color: $-color--primary;
+    }
+    &.unnormal {
+      background-color: #fff7e6;
+      border: 1px solid #fa8c16;
+      color: #fa8c16;
+    }
+  }
 }
 </style>

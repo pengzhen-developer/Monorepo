@@ -89,7 +89,6 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            auth: false,
             keepAlive: true,
             tabBar: true,
             navbar: {
@@ -97,6 +96,62 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/file/index.vue')
+        },
+
+        {
+          path: '/file/fileAllDetail/:json',
+          name: '/file/fileAllDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-全部'
+            }
+          },
+          component: () => import('@src/views/file/FileAllDetail.vue')
+        },
+        {
+          path: '/file/fileReportList/:json',
+          name: '/file/fileReportList/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-报表'
+            }
+          },
+          component: () => import('@src/views/file/FileReportList.vue')
+        },
+        {
+          path: '/file/fileBloodPressureHistory/:json',
+          name: '/file/fileBloodPressureHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureHistory.vue')
+        },
+        {
+          path: '/file/fileBloodPressureDetail/:json',
+          name: '/file/fileBloodPressureDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血压'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureDetail.vue')
+        },
+        {
+          path: '/file/fileBloodPressureAddData/:json',
+          name: '/file/fileBloodPressureAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血压'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureAddData.vue')
         },
         // 我的
         {

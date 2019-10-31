@@ -1,76 +1,95 @@
 <template>
   <div class="file">
-    <div class="file-bg"></div>
+    <template v-if="myFamilyList && myFamilyList.length === 0">
+      <div class="no-family">
+        <van-image style="height: 100%;"
+                   :src="require('@src/assets/images/file/bg_img_no_family.png')"></van-image>
+        <van-button>添加家人信息</van-button>
+      </div>
+    </template>
+    <template v-else>
+      <div class="file-bg"></div>
 
-    <div class="file-famliy">
-      <van-swipe :loop="false"
-                 :width="swipeWidth"
-                 @change="onSwipeChange"
-                 ref="swipe"
-                 indicator-color="white"
-                 class="file-famliy-swiper">
-        <van-swipe-item>
-          <div class="file-famliy-swiper-item">
-            <div class="header flex between">
-              <div class="flex center">
-                <span
-                      style="font-size: 20px; font-weight: 500; color: #0E302D; margin: 0 10px 0 0;">王勇了</span>
-                <span>男</span>
-                <span
-                      style="font-size: 14px; font-weight: 500; color: #999999; margin: 0 10px 0 0;">18岁</span>
-                <van-tag color="#F2F2F2"
-                         text-color="#999999">本人</van-tag>
+      <div class="file-famliy">
+        <van-swipe :loop="false"
+                   :width="swipeWidth"
+                   @change="onSwipeChange"
+                   ref="swipe"
+                   indicator-color="white"
+                   class="file-famliy-swiper">
+          <van-swipe-item v-for="item in myFamilyList"
+                          :key="item.id">
+            <div class="file-famliy-swiper-item">
+              <div class="header flex between">
+                <div class="flex center">
+                  <span style="font-size: 20px; margin: 0 10px 0 0;">{{ item.name }}</span>
+                  <van-icon v-if="item.sex === '男'"
+                            :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
+                  <van-icon v-if="item.sex === '女'"
+                            :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
+                  <span style="font-size: 14px; margin: 0 10px;">{{ item.age + '岁' }}</span>
+                  <van-tag color="#F2F2F2"
+                           text-color="#999999">{{ item.relation }}</van-tag>
+                </div>
+                <van-image round
+                           width="50px"
+                           height="50px"
+                           :src="require('@src/assets/images/ic_head portrait.png')" />
               </div>
-              <van-image round
-                         width="50px"
-                         height="50px"
-                         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-            </div>
-            <div class="content">
-              <h4>健康信息</h4>
-              <div class="flex between">
-                <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;"
-                              color="#5B9EFF"
-                              :percentage="50"
-                              :show-pivot="false"
-                              stroke-width="8" />
-                <van-tag color="rgba(244,248,255,1)"
-                         text-color="rgba(74,131,247,1)">80%</van-tag>
+              <div class="content">
+                <h4>健康信息</h4>
+                <div class="flex between">
+                  <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;"
+                                color="#5B9EFF"
+                                :percentage="item.percentage"
+                                :show-pivot="false"
+                                stroke-width="8" />
+                  <van-tag color="rgba(244,248,255,1)"
+                           text-color="rgba(74,131,247,1)"> {{ item.percentage }}%</van-tag>
+                </div>
               </div>
             </div>
-          </div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div class="file-famliy-swiper-item">2
-          </div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div class="file-famliy-swiper-item">3</div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div class="file-famliy-swiper-item">4</div>
-        </van-swipe-item>
-      </van-swipe>
-    </div>
+          </van-swipe-item>
+        </van-swipe>
+      </div>
 
-    <div class="file-famliy-detail">
-      <van-tabs v-model="active"
-                swipeable>
-        <van-tab title="全部">
-          <FileAll></FileAll>
-        </van-tab>
-        <van-tab title="日常监测">
-          <FileDay></FileDay>
-        </van-tab>
-        <van-tab title="就诊病历">内容 3</van-tab>
-        <van-tab title="住院病历">内容 4</van-tab>
-        <van-tab title="体检报告">内容 5</van-tab>
-      </van-tabs>
-    </div>
+      <div class="file-famliy-detail">
+        <van-tabs v-model="active"
+                  swipeable>
+          <van-tab title="全部">
+            <FileAll :key="familyId"
+                     :familyId="familyId"></FileAll>
+          </van-tab>
+          <van-tab title="日常监测">
+            <FileDay :key="familyId"
+                     :familyId="familyId"></FileDay>
+          </van-tab>
+          <van-tab title="就诊病历">
+            <div class="none-page">
+              <div class="icon icon_none_prescrip"></div>
+              <div class="none-text">暂无就诊病历</div>
+            </div>
+          </van-tab>
+          <van-tab title="住院病历">
+            <div class="none-page">
+              <div class="icon icon_none_prescrip"></div>
+              <div class="none-text">暂无住院病历</div>
+            </div>
+          </van-tab>
+          <van-tab title="体检报告">
+            <div class="none-page">
+              <div class="icon icon_none_prescrip"></div>
+              <div class="none-text">暂无体检报告</div>
+            </div>
+          </van-tab>
+        </van-tabs>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
 import FileAll from './FileAll'
 import FileDay from './FileDay'
 
@@ -82,26 +101,54 @@ export default {
 
   data() {
     return {
-      swipeWidth: document.body.clientWidth - 100,
-      active: 0
+      swipeWidth: document.body.clientWidth - 80,
+      active: 0,
+
+      myFamilyList: undefined,
+
+      familyId: '',
+      idCard: ''
     }
+  },
+
+  created() {
+    this.getFamilyList()
   },
 
   mounted() {
     this.$nextTick(function() {
-      const tempWidth = (document.body.clientWidth - this.swipeWidth) / 2
-      const $swipe__track = this.$refs.swipe.$el.querySelector('.van-swipe__track')
-      $swipe__track.style.transform = `translateX(${-this.swipeWidth * 0 + tempWidth}px)`
+      this.changeSwipeTrack(0)
     })
   },
 
   methods: {
+    getFamilyList() {
+      peace.service.health.familyLists().then(res => {
+        this.myFamilyList = res.data.list
+
+        this.$nextTick(function() {
+          this.changeSwipeTrack(0)
+        })
+      })
+    },
+
     onSwipeChange(index) {
       setTimeout(() => {
+        this.changeSwipeTrack(index)
+      }, 10)
+    },
+
+    changeSwipeTrack(index) {
+      if (this.$refs.swipe) {
+        if (this.myFamilyList) {
+          this.familyId = this.myFamilyList[index].familyId
+          this.idCard = this.myFamilyList[index].idCard
+        }
+
         const tempWidth = (document.body.clientWidth - this.swipeWidth) / 2
         const $swipe__track = this.$refs.swipe.$el.querySelector('.van-swipe__track')
         $swipe__track.style.transform = `translateX(${-this.swipeWidth * index + tempWidth}px)`
-      }, 10)
+      }
     }
   }
 }
@@ -128,6 +175,20 @@ export default {
   flex-direction: column;
 
   height: 100%;
+
+  .no-family {
+    height: 100%;
+
+    .van-button {
+      position: absolute;
+      bottom: 20%;
+      width: 220px;
+      left: calc(50% - 110px);
+      background: linear-gradient(90deg, rgba(15, 211, 188, 1) 0%, rgba(98, 209, 223, 1) 100%);
+      box-shadow: 0px 4px 20px 0px rgba(0, 198, 174, 0.5);
+      border-radius: 49px;
+    }
+  }
 
   .file-bg {
     min-height: 100px;
@@ -182,6 +243,12 @@ export default {
 
       height: 100%;
 
+      .van-tab {
+        flex-basis: 20% !important;
+      }
+      .van-tab--active {
+        color: $-color--primary;
+      }
       .van-tabs__wrap {
         height: 44px;
       }
@@ -192,6 +259,10 @@ export default {
         .van-tab__pane {
           height: 100%;
         }
+      }
+      .van-tabs__line {
+        width: 20px !important;
+        background-color: #00c6ae;
       }
     }
 

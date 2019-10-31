@@ -13,10 +13,14 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "better-scroll": "^1.15.2",
+    "echarts": "^4.4.0",
     "nprogress": "^0.2.0",
     "vant": "^2.2.6",
     "vue": "^2.6.10",
     "vue-baidu-map": "^0.21.22",
+    "vue-echarts": "^4.0.4",
+    "vue-plugin-touch": "^0.1.1",
     "vue-router": "^3.0.6",
     "vuex": "^3.1.1"
   },
@@ -41,7 +45,10 @@
     "env": {
       "node": true
     },
-    "extends": ["plugin:vue/essential", "eslint:recommended"],
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
     "rules": {},
     "parserOptions": {
       "parser": "babel-eslint"
@@ -52,5 +59,8 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": ["> 1%", "last 2 versions"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

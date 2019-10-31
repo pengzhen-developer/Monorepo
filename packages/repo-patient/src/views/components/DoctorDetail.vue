@@ -35,7 +35,7 @@
         <div class="row flex">
           <van-image width="30px"
                      height="30px"
-                     :src="require('@src/assets/images/ic_mechanism.png')" />
+                     :src="require('@src/assets/images/file/ic_mechanism.png')" />
           <h4 class="body-card-title">所属机构</h4>
         </div>
 
@@ -199,7 +199,8 @@
           <div class="service-consult-content">
             <div class="row flex"
                  style="margin: 0 0 4px 0;">
-              <span class="service-consult-content-name">{{registerItem.timeSharing}} {{registerItem.AMPM == 'AM' ? '上午': '下午'}}</span>
+              <span class="service-consult-content-name">{{registerItem.timeSharing}}
+                {{registerItem.AMPM == 'AM' ? '上午': '下午'}}</span>
             </div>
             <div>
               <span>
@@ -238,7 +239,7 @@
                      width="30px"
                      height="30px"
                      style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_doctor.png')"></van-image>
+                     :src="require('@src/assets/images/file/ic_doctor.png')"></van-image>
 
           <div class="service-consult-content">
             <div class="row flex between"
@@ -503,18 +504,18 @@ export default {
     },
 
     goRegisterDetail(item) {
-      let timeSharing = item.timeSharing;
-      let timeArr = timeSharing.split("-");
+      let timeSharing = item.timeSharing
+      let timeArr = timeSharing.split('-')
       const params = peace.util.encode({
-        doctorInfo: {...item,
-                     avartor: this.doctor.doctorInfo.avartor,
-                     name:this.doctor.doctorInfo.name,
-                     doctorTitle: this.doctor.doctorInfo.doctorTitle,
-                     deptName : this.doctor.doctorInfo.deptName,
-                     hospitalName : this.doctor.doctorInfo.hospitalName,
-                     doctorId: this.doctor.doctorInfo.doctorId,
+        doctorInfo: {
+          ...item,
+          avatar: this.doctor.doctorInfo.avartor,
+          name: this.doctor.doctorInfo.name,
+          doctorTitle: this.doctor.doctorInfo.doctorTitle,
+          deptName: this.doctor.doctorInfo.deptName,
+          hospitalName: this.doctor.doctorInfo.hospitalName
         },
-        date: { date: timeArr[1]+ '-' +timeArr[2], year: timeArr[0], week:item.week},
+        date: { date: timeArr[1] + '-' + timeArr[2], year: timeArr[0], week: item.week },
         source: {
           endTime: item.endTime,
           isExpire: 0,
@@ -543,7 +544,7 @@ export default {
     min-height: 105px;
     height: 105px;
 
-    background-image: url('~@/assets/images/bg1.png');
+    background-image: url('~@/assets/images/bg-1.png');
     background-repeat: no-repeat;
     background-size: auto 105px;
 

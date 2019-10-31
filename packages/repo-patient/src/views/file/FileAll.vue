@@ -1,90 +1,129 @@
 <template>
   <div class="file-all">
-    <div class="time-line">
-      <div class="item">
-        <div class="time">
-          <div class="y">02-20</div>
-          <div class="s">2019</div>
-        </div>
-        <div class="text">
-          <div class="note card case">
-            <div class="case-left">
-              <van-image width="50px"
-                         height="50px"
-                         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-            </div>
-            <div class="case-right">
-              <p style="font-size: 16px; color: #333333; line-height: 32px;">门诊病历</p>
-              <p style="font-size: 12px; color: #999999; line-height: 24px;">上医云馆 | 呼吸科</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="time">
-          <div class="y">02-20</div>
-          <div class="s">2019</div>
-        </div>
-        <div class="text">
-          <div class="note card blood">
-            <div class="blood-left">
-              <van-image width="50px"
-                         height="50px"
-                         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-            </div>
-            <div class="blood-right">
-              <span>
-                <span style="font-size: 21px; color: #333333;">120/80</span>
-                <span style="font-size: 12px; color: #333333;">mmHg</span>
-              </span>
-              <van-tag round
-                       style="margin: 0 0 0 10px;"
-                       color="#F2FFFD"
-                       text-color="#00C6AE">正常</van-tag>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="time-line"
+         v-if="data">
 
-      <div class="item">
+      <div class="item"
+           v-for="(value, key) in data"
+           :key="key">
         <div class="time">
-          <div class="y">02-20</div>
-          <div class="s">2019</div>
+          <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
+          <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
         </div>
         <div class="text">
-          <div class="note card blood">
-            <div class="blood-left">
-              <van-image width="50px"
-                         height="50px"
-                         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-            </div>
-            <div class="blood-right">
-              <span>
-                <span style="font-size: 21px; color: #333333;">3.5</span>
-                <span style="font-size: 12px; color: #333333;">mmol/L</span>
-              </span>
-              <van-tag round
-                       style="margin: 0 0 0 10px;"
-                       color="#FA8C16"
-                       text-color="#FFF7E6">偏高</van-tag>
-            </div>
-          </div>
-          <div class="note card blood">
-            <div class="blood-left">
-              <van-image width="50px"
-                         height="50px"
-                         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-            </div>
-            <div class="blood-right">
-              <span>
-                <span style="font-size: 21px; color: #333333;">3.5</span>
-                <span style="font-size: 12px; color: #333333;">mmol/L</span>
-              </span>
-              <van-tag round
-                       style="margin: 0 0 0 10px;"
-                       color="#FA8C16"
-                       text-color="#FFF7E6">偏高</van-tag>
-            </div>
+          <div v-for="item in value"
+               :key="item.healthType + item.id">
+            <!-- 血压 -->
+            <template v-if="item.healthType === 'bloodPressuredata'">
+              <div class="note card health-item"
+                   @click="uitl.goDetail('血压', item)">
+                <div class="health-item-left">
+                  <van-image width="35px"
+                             height="44px"
+                             :src="require('@src/assets/images/file/ic_blood pressure.png')" />
+                </div>
+                <div class="health-item-right">
+                  <span>
+                    <span class="card-value">
+                      {{ item.systolicPressure }}/{{ item.diastolicPressure }}
+                    </span>
+                    <span class="card-unit">
+                      {{ uitl.getUnit('血压') }}
+                    </span>
+                  </span>
+                  <van-tag class="card-tag"
+                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                    {{ item.result }}
+                  </van-tag>
+                </div>
+              </div>
+            </template>
+
+            <!-- 血糖 -->
+            <template v-if="item.healthType === 'bloodSugarData'">
+              <div class="note card health-item"
+                   @click="uitl.goDetail('血糖', item)">
+                <div class="health-item-left">
+                  <van-image width="35px"
+                             height="44px"
+                             :src="require('@src/assets/images/file/ic_blood sugar.png')" />
+                </div>
+                <div class="health-item-right">
+                  <span>
+                    <span class="card-value">{{ item.bloodSugar }}</span>
+                    <span class="card-unit">{{ uitl.getUnit('血糖') }}</span>
+                  </span>
+                  <van-tag class="card-tag"
+                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                    {{ item.result }}
+                  </van-tag>
+                </div>
+              </div>
+            </template>
+
+            <!-- 血氧 -->
+            <template v-if="item.healthType === 'oxyGenData'">
+              <div class="note card health-item"
+                   @click="uitl.goDetail('血氧', item)">
+                <div class="health-item-left">
+                  <van-image width="35px"
+                             height="44px"
+                             :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
+                </div>
+                <div class="health-item-right">
+                  <span>
+                    <span class="card-value">{{ item.bloodOxygen }}</span>
+                    <span class="card-unit">{{ uitl.getUnit('血氧') }}</span>
+                  </span>
+                  <van-tag class="card-tag"
+                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                    {{ item.result }}
+                  </van-tag>
+                </div>
+              </div>
+            </template>
+
+            <!-- 体脂 -->
+            <template v-if="item.healthType === 'bodyFat'">
+              <div class="note card health-item"
+                   @click="uitl.goDetail('体脂', item)">
+                <div class="health-item-left">
+                  <van-image width="35px"
+                             height="44px"
+                             :src="require('@src/assets/images/file/ic_body fat.png')" />
+                </div>
+                <div class="health-item-right">
+                  <span>
+                    <span class="card-value">{{ item.bfr }}</span>
+                    <span class="card-unit">{{ uitl.getUnit('体脂') }}</span>
+                  </span>
+                  <van-tag class="card-tag"
+                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                    {{ item.result }}
+                  </van-tag>
+                </div>
+              </div>
+            </template>
+
+            <!-- 病历 -->
+            <template v-if="item.healthType === 'case'">
+              <div class="note card case"
+                   @click="uitl.goDetail('病历', item)">
+                <div class="case-left">
+                  <van-image width="35px"
+                             height="35px"
+                             :src="require('@src/assets/images/file/ic_medical record.png')" />
+                </div>
+                <div class="case-right">
+                  <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    门诊病历
+                  </p>
+                  <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    {{ item.netHospitalName }} | {{ item.netdeptName }}
+                  </p>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -93,7 +132,50 @@
 </template>
 
 <script>
-export default {}
+import peace from '@src/library'
+import uitl from './util'
+
+export default {
+  props: {
+    familyId: String
+  },
+
+  data() {
+    return {
+      uitl,
+
+      data: {}
+    }
+  },
+
+  watch: {
+    familyId: {
+      handler() {
+        if (this.familyId) {
+          this.allHealthList()
+        }
+      },
+      immediate: true
+    }
+  },
+
+  methods: {
+    allHealthList() {
+      peace.service.health.allHealthList({ familyId: this.familyId, type: '1' }).then(res => {
+        const temp = {}
+
+        // 遍历时间
+        const timeList = new Set(res.data.list.map(item => item.createdTime))
+
+        timeList.forEach(time => {
+          temp[time] = res.data.list.filter(item => item.createdTime === time)
+        })
+
+        this.data = temp
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -103,7 +185,7 @@ export default {}
 }
 
 .time-line {
-  padding: 25px 5px;
+  padding: 15px 5px 0 5px;
 
   .item {
     &:last-child {
@@ -114,79 +196,75 @@ export default {}
   }
 
   .item {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
 
     color: #999999;
     font-size: 16px;
+    margin: 0 0 10px 0;
   }
+
   .time {
-    flex: 0 0 auto;
+    padding: 8px 0 0 0;
     width: 60px;
-    padding-right: 20px;
     position: relative;
     text-align: right;
-  }
-  .item:last-child .text {
-    min-height: 20px;
+
+    .y {
+      font-size: 12px;
+      color: #999999;
+    }
+    .m {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333333;
+    }
   }
   .text {
-    border-left: 2px solid #d8d8d8;
-    padding: 5px 20px;
+    padding: 0 10px 0 10px;
     flex: 1;
     min-height: 60px;
-  }
-  .time::after {
-    content: '';
-    position: absolute;
-    right: -6px;
-    top: -5px;
-    background: #d8d8d8;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-  .item.active .text {
-    color: #00c6ae;
-  }
-  .item.active .time::after {
-    content: '';
-    width: 18px;
-    height: 18px;
-    right: -10px;
-    background: #00c6ae;
-  }
-  .item.active .time {
-    color: #000000;
-  }
-  .time .y {
-    font-size: 14px;
-    margin-top: -10px;
-  }
-  .text .status {
-    margin-top: -10px;
-  }
-  .time .s,
-  .text .note {
-    font-size: 12px;
   }
 }
 
 .card {
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 16px;
+  padding: 8px 0px 8px 16px;
+  margin: 0 0 10px 0;
+
+  .card-value {
+    font-size: 20px;
+    color: #333333;
+  }
+  .card-unit {
+    font-size: 12px;
+    color: #333333;
+    margin: 0 8px 0 2px;
+  }
+  .card-tag {
+    padding: 0 8px;
+    border-radius: 15px;
+
+    &.normal {
+      background-color: #f2fffd;
+      border: 1px solid $-color--primary;
+      color: $-color--primary;
+    }
+    &.unnormal {
+      background-color: #fff7e6;
+      border: 1px solid #fa8c16;
+      color: #fa8c16;
+    }
+  }
 
   &.case {
     display: flex;
     align-items: center;
 
     .case-left {
-      width: 64px;
+      width: 50px;
+      text-align: left;
     }
     .case-right {
       display: flex;
@@ -196,14 +274,15 @@ export default {}
     }
   }
 
-  &.blood {
+  &.health-item {
     display: flex;
     align-items: center;
 
-    .blood-left {
-      width: 64px;
+    .health-item-left {
+      display: flex;
+      width: 50px;
     }
-    .blood-right {
+    .health-item-right {
       flex: 1;
     }
   }

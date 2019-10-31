@@ -11,6 +11,7 @@ import './prototype/string'
 
 // components
 import Dialog from './components/dialog'
+import Ruler from './components/ruler'
 
 // directive
 import drag from './directive/drag'
@@ -46,7 +47,7 @@ const install = function(Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = [Dialog]
+  const components = [Dialog, Ruler]
   components.map(component => {
     Vue.use(component)
   })

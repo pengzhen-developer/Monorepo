@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: PengZhen
  * @Description: 扩展 date 原型常用方法
  * @Date: 2018-07-06 11:24:10
@@ -78,16 +78,17 @@ Date.prototype.calcTimeHeader = function() {
     return `${year}/${month + 1}/${day} ${hour}:${minute < 10 ? '0' + minute : minute}`
   }
 },
+
 Date.prototype.timeToDay = function(){
   let date = new Date(parseInt(this.valueOf() || (new Date()).valueOf())),
       dic = {
-        0: '星期一',
-        1: '星期二',
-        2: '星期三',
-        3: '星期四',
-        4: '星期五',
-        5: '星期六',
-        6: '星期日',
+        0: '星期日',
+        1: '星期一',
+        2: '星期二',
+        3: '星期三',
+        4: '星期四',
+        5: '星期五',
+        6: '星期六',
       }
   return dic[date.getUTCDay()]
 },
