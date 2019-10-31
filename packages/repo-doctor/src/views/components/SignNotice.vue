@@ -1,0 +1,72 @@
+<template>
+    <div class="signNotice">
+        <div class="top">
+            互联网医院诊疗办法规定：在互联网医院开具的处方必须由医生签名后才能生效
+        </div>
+        <h1>您当前有<span>{{num}}</span>张处方未签名</h1>
+        <div class="code"></div>
+        <h3>请使用手机打开【万家云医】APP对未签名处方签名，方便患者快捷购药</h3>
+        <p>未安装【万家云医】APP的用户</p>
+        <p>使用手机扫描上面二维码可快捷安装APP</p>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "SignNotice",
+        props: {
+            num: {
+                type: String,
+                default() {
+                    return {}
+                }
+            }
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+.signNotice {
+    .top {
+        height:32px;
+        padding-left: 26px;
+        background:rgba(235,251,249,1);
+        border-radius:4px;
+        font-size: 12px;
+        color: #666;
+        line-height: 32px;
+        background: #EBFBF9 url('../../assets/images/Shape.png') no-repeat;
+        background-size: 12px 12px;
+        background-position: 10px 10px;
+    }
+    h1 {
+        font-size:24px;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        text-align: center;
+        margin-top: 15px;
+        span {
+            color: #00C6AE;
+        }
+    }
+    .code {
+        width: 120px;
+        height: 120px;
+        margin: 25px auto 15px;
+        background: red;
+    }
+    h3 {
+        margin-top: 10px;
+        text-align: center;
+        font-size:14px;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+    }
+    p {
+        font-size: 14px;
+        text-align: center;
+        color: #666;
+        line-height: 24px;
+    }
+}
+</style>
