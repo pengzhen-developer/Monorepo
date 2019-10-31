@@ -92,55 +92,15 @@ export function addBloodPressure(params) {
 }
 
 /**
- * 健康档案获取家人基础信息
+ * 健康档案添加血糖数据
  *
  * @export
  * @param {*} params 参数列表
  * @returns
  */
-export function familyInfo(params) {
-  const familyInfo = 'wap/v1/health/familyInfo'
-
-  return peace.http.post(familyInfo, params)
-}
-
-/**
- * 健康档案获取字典
- *
- * @export
- * @param {*} params 参数列表
- * @returns
- */
-export function lists(params) {
-  const lists = 'health/v1/UserDic/lists'
-
-  return peace.http.post(lists, params)
-}
-
-/**
- * 健康档案获取家人基本病情信息
- *
- * @export
- * @param {*} params 参数列表
- * @returns
- */
-export function getBaseInfo(params) {
-  const getBaseInfo = 'wap/v1/health/getBaseInfo'
-
-  return peace.http.post(getBaseInfo, params)
-}
-
-/**
- * 健康档案新增家人基本病情信息
- *
- * @export
- * @param {*} params 参数列表
- * @returns
- */
-export function addBaseInfo(params) {
-  const addBaseInfo = 'wap/v1/health/addBaseInfo'
-
-  return peace.http.post(addBaseInfo, params)
+export function addBloodSugar(params) {
+  const addBloodSugar = 'wap/v1/health/addBloodsugardata'
+  return peace.http.post(addBloodSugar, params)
 }
 
 export default {
@@ -150,9 +110,8 @@ export default {
   getOscillogram,
   historyLists,
   getReportList,
-  familyInfo,
-  getBaseInfo,
-  addBaseInfo,
+
   addBloodPressure,
-  lists
+
+  addBloodSugar
 }
