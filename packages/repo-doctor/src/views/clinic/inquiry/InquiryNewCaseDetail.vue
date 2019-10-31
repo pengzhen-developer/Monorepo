@@ -7,7 +7,7 @@
         <span class="dept">门诊</span>
       </div>
       <div class="right">
-        {{data.patientInfo.createTime}}
+        <i class="time"></i>{{data.patientInfo.createTime}}
       </div>
     </div>
       <div class="item">
@@ -19,7 +19,7 @@
       <span class="content">{{data.patientInfo.doctorName}} {{data.patientInfo.deptName}}</span>
     </div>
 
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" class="tabList">
       <el-tab-pane label="病历详情" name="first">
         <div class="item">
           <span class="title">病历号：</span>
@@ -85,7 +85,14 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="处方" name="second">
-        <div class="prescribe" v-for="(item,index) in data.prescribeInfos.list" :key="'prescribe' + index">
+        <div class="tips">
+          <span>共{{data.prescribeInfos.list.length}}张，当前第{{prescribeIndex}}张（{{prescribeIndex}}/{{data.prescribeInfos.list.length}}）</span>
+          <div @click="goToNext()">
+            <span>下一张</span>
+            <i class="arrow"></i>
+          </div>
+        </div>
+        <div class="prescribe" v-for="(item,index) in data.prescribeInfos.list" :key="'prescribe' + index" v-show="(index+1) == prescribeIndex">
           <div class="item">
             <span class="title">处方编号：</span>
             <span class="content">{{item.prescriptionNo}}</span>
@@ -135,11 +142,11 @@
             <div class="line" style="margin-top: 10px;">
               <div class="dataItem">
                 <span class="title">药师审方结果：</span>
-                <span class="content">{{item.disPharmacist =='' ? '无':item.disPharmacist}}</span>
+                <span class="content">{{getText(item.prescription)}}</span>
               </div>
               <div class="dataItem">
-                <span class="title">系统审方结果</span>
-                <span class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
+                <span class="title">系统审方结果：</span>
+                <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
               </div>
             </div>
           </div>
@@ -167,18 +174,41 @@ export default {
   },
   data() {
     return {
-      activeName: 'first'
+      activeName: 'first',
+      prescribeIndex: 1
     }
   },
   computed: {
-    internalData() {
-      const temp = $peace.util.deepClone(this.data)
 
-      if (temp.Inspection_index) {
-        temp.Inspection_index = JSON.parse(temp.Inspection_index)
+  },
+  methods: {
+    goToNext() {
+      if(this.prescribeIndex == this.data.prescribeInfos.list.length) {
+        this.prescribeIndex = 1;
+      } else {
+        this.prescribeIndex ++;
       }
-
-      return temp
+    },
+    getText(status) {
+      let text = ''
+      switch(status) {
+        case 1:
+          text = '待审核';
+          break;
+        case 2:
+          text = '质疑中';
+          break;
+        case 3:
+          text = '已拒绝';
+          break;
+        case 4:
+          text = '已作废';
+          break;
+        case 5:
+          text = '已通过';
+          break;
+      }
+      return text;
     }
   }
 }
@@ -188,9 +218,27 @@ export default {
 .newCaseDetail {
   font-size: 12px;
   padding: 0 20px;
+  .tabList {
+    margin-top: 15px;
+  }
+  .no-data {
+    min-height: 200px;
+  }
   .caption {
       display: flex;
       justify-content: space-between;
+    .right {
+      display: flex;
+      align-items: center;
+      i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url('../../../assets/images/ic_time.png');
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+    }
     .name {
       font-size:22px;
       font-weight:500;
@@ -289,7 +337,7 @@ export default {
   .staffBox {
     display: flex;
     flex-direction: column;
-    height: 110px;
+    height: 130px;
     justify-content: center;
     .line {
       display: flex;
@@ -310,6 +358,27 @@ export default {
           color:rgba(51,51,51,1);
         }
       }
+    }
+  }
+  .tips {
+    width:530px;
+    height:37px;
+    font-size:14px;
+    line-height: 37px;
+    margin: 0 auto 15px;
+    color: #333333;
+    padding: 0 40px;
+    background:rgba(249,249,249,1) url('../../../assets/images/ic_tixing.png') no-repeat;
+    background-position: 13px 11px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    i.arrow {
+      width: 4px;
+      height: 8px;
+      display: inline-block;
+      background:rgba(249,249,249,1) url('../../../assets/images/systen-Triangle.png') no-repeat;
+      margin-left: 10px;
     }
   }
 }

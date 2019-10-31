@@ -12,9 +12,9 @@
           </div>
 
           <div class="time-line-content">
-            <el-row :gutter="30">
+            <el-row :gutter="15" type="flex" style="flex-wrap: wrap;">
               <el-col :key="healthItem.id" :span="8" v-for="healthItem in health.list">
-                {{healthItem.healthType}}
+<!--                {{healthItem.healthType}}-->
                 <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.病历">
                   <div class="time-line-content-card">
                     <RecordCase :data="healthItem" :type="type"></RecordCase>
