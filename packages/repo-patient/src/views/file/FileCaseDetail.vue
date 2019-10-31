@@ -2,42 +2,42 @@
   <div class="file-case-detail">
     <van-cell-group>
       <van-cell title="病历号"
-                value="201806299905441" />
+                :value="data.caseNo" />
       <van-cell title="就诊时间"
-                value="2019-01-03 08:55:23" />
+                :value="data.visitDate || '无'" />
       <van-cell title="主诉"
-                value="湿疹膏因着凉今日晨起时自觉咽喉疼痛，2小时前疼痛家具，1小时前患者感到咽部有球状物阻塞感，同时感到乏力、畏寒。无发热，无呼吸困难。" />
+                :value="data.baseIllness || '无'" />
       <van-cell title="过敏史"
-                value="无" />
+                :value="data.allergyHistory || '无'" />
       <van-cell title="既往史"
-                value="无" />
+                :value="data.pastHistory || '无'" />
       <van-cell title="检查指标">
         <div slot="label"
              class="file-case-detail-card">
           <div class="row">
             <div>
-              <span>体温：</span><span>38度</span>
+              <span>体温：</span><span>{{ data.InspectionIndex && data.InspectionIndex.temperature && (data.InspectionIndex.temperature + '°') || '无' }}</span>
             </div>
             <div>
-              <span>体重：</span><span>50kg</span>
+              <span>体重：</span><span>{{ data.InspectionIndex && data.InspectionIndex.weight && (data.InspectionIndex.weight + 'kg') || '无'  }}</span>
             </div>
           </div>
           <div class="row">
             <div>
-              <span>心率：</span><span>38度</span>
+              <span>心率：</span><span>{{ data.InspectionIndex && data.InspectionIndex.heart_rate && (data.InspectionIndex.heart_rate + 'bpm') || '无' }}</span>
             </div>
             <div>
-              <span>血压：</span><span>50kg</span>
+              <span>血压：</span><span>{{ data.InspectionIndex && data.InspectionIndex.blood_pressure && (data.InspectionIndex.blood_pressure + 'mmHg') || '无' }}</span>
             </div>
           </div>
         </div>
       </van-cell>
       <van-cell title="辅助检查"
-                value="无" />
+                :value="data.More || '无'" />
       <van-cell title="诊断"
-                value="无" />
+                :value="data.diagnose || '无'" />
       <van-cell title="医嘱小结"
-                value="无" />
+                :value="data.summary || '无'" />
       <van-cell title="其它检查">
         <div slot="label"
              class="file-case-detail-card">
@@ -46,7 +46,7 @@
               <span>谷丙转氨酶(ALT)：</span>
             </div>
             <div>
-              <span>44IU/ml</span>
+              <span>{{ data.summary && ( data.ALT + 'ml') || '无' }}</span>
             </div>
           </div>
           <div class="row">
@@ -54,7 +54,7 @@
               <span>谷草转氨酶(AST)：</span>
             </div>
             <div>
-              <span>44IU/ml</span>
+              <span>{{ data.summary && ( data.AST + 'ml') || '无' }}</span>
             </div>
           </div>
           <div class="row">
@@ -62,7 +62,7 @@
               <span>HBV-DNA：</span>
             </div>
             <div>
-              <span>44IU/ml</span>
+              <span>{{ data.summary && ( data.HBV + 'ml') || '无' }}</span>
             </div>
           </div>
         </div>
@@ -72,7 +72,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    data: {}
+  }
+}
 </script>
 
 <style lang="scss" scoped>
