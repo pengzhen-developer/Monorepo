@@ -6,10 +6,17 @@
           <span style="font-size: 20px; color: #fff; margin: 0 8px 0 0;">
             {{ patientInfo.familyName }}
           </span>
-          <van-icon width="13"
+          <van-icon v-if="patientInfo.sex === '男'"
+                    width="13"
                     height="13"
                     :name="require('@src/assets/images/file/ic_boys_white.png')" />
-          <span style="font-size: 14px; color: #fff; margin: 0 8px;">18岁</span>
+          <van-icon v-if="patientInfo.sex === '女'"
+                    width="13"
+                    height="13"
+                    :name="require('@src/assets/images/file/ic_girls_white.png')" />
+          <span style="font-size: 14px; color: #fff; margin: 0 8px;">
+            {{ patientInfo.age + '岁' }}
+          </span>
           <van-tag color="#06B8AE"
                    text-color="#FFFFFF">门诊</van-tag>
         </div>
@@ -17,7 +24,9 @@
           <van-icon width="10"
                     height="10"
                     :name="require('@src/assets/images/file/ic_time.png')" />
-          <span style="font-size: 14px; color: #fff; margin: 0 0 0 10px;">2019/02/20</span>
+          <span style="font-size: 14px; color: #fff; margin: 0 0 0 10px;">
+            {{ patientInfo.createTime }}
+          </span>
         </div>
       </div>
       <div class="header-bottom">
@@ -26,13 +35,17 @@
             <van-image width="22px"
                        height="22px"
                        :src="require('@src/assets/images/file/ic_mechanism_1.png')" />
-            <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">湖北省妇幼保健院</span>
+            <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
+              {{ patientInfo.hospitalName }}
+            </span>
           </div>
           <div class="bg-row">
             <van-image width="22px"
                        height="22px"
                        :src="require('@src/assets/images/file/ic_doctor_1.png')" />
-            <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">胡喵喵 血液内科专业</span>
+            <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
+              {{ patientInfo.doctorName }} {{ patientInfo.deptName }}
+            </span>
           </div>
         </div>
       </div>
@@ -42,10 +55,10 @@
       <van-tabs v-model="active"
                 swipeable>
         <van-tab title="病历">
-          <FileCaseDetail></FileCaseDetail>
+          <FileCaseDetail :data="caseInfo"></FileCaseDetail>
         </van-tab>
         <van-tab title="处方">
-          <FileRecipeDetail></FileRecipeDetail>
+          <FileRecipeDetail :data="prescribeInfos"></FileRecipeDetail>
         </van-tab>
         <van-tab title="检验检查">
           <FileExaminationDetail></FileExaminationDetail>

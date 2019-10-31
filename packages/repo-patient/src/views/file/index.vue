@@ -56,7 +56,7 @@
       <div class="file-famliy-detail">
         <van-tabs v-model="active"
                   swipeable>
-          <van-tab title="全部">
+          <van-tab title="全    部">
             <FileAll :key="familyId"
                      :familyId="familyId"></FileAll>
           </van-tab>
@@ -66,19 +66,19 @@
           </van-tab>
           <van-tab title="就诊病历">
             <div class="none-page">
-              <div class="icon icon_none_prescrip"></div>
+              <div class="icon icon_none_source"></div>
               <div class="none-text">暂无就诊病历</div>
             </div>
           </van-tab>
           <van-tab title="住院病历">
             <div class="none-page">
-              <div class="icon icon_none_prescrip"></div>
+              <div class="icon icon_none_source"></div>
               <div class="none-text">暂无住院病历</div>
             </div>
           </van-tab>
           <van-tab title="体检报告">
             <div class="none-page">
-              <div class="icon icon_none_prescrip"></div>
+              <div class="icon icon_none_source"></div>
               <div class="none-text">暂无体检报告</div>
             </div>
           </van-tab>
