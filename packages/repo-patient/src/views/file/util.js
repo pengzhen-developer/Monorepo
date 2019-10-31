@@ -22,7 +22,7 @@ export const goDetail = (type, data) => {
       dataId: data.id
     })
 
-    $peace.$router.push(`/file/fileBloodPressureDetail/${json}`)
+    $peace.$router.push(`/file/fileBloodSugarDetail/${json}`)
   }
 }
 
