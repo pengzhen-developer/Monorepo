@@ -2,28 +2,33 @@
   <div class="file-day">
     <!-- 血压 -->
     <div class="card card"
-         @click="util.goDetail('血压', data.bloodPressureData)">
+         @click="util.goDetail('血压', data.bloodPressureData, familyId)">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_blood pressure.png')" />
       </div>
       <div class="card-center">
-        <div>
-          <span class="card-value">
-            {{ data.bloodPressureData.systolicPressure }}/{{ data.bloodPressureData.diastolicPressure }}
-          </span>
-          <span class="card-unit">{{ util.getUnit('血压') }}</span>
-          <van-tag class="card-tag"
-                   :class="{ normal: data.bloodPressureData.resultType === '2', unnormal: data.bloodPressureData.resultType !== '2' }">
-            {{ data.bloodPressureData.result }}
-          </van-tag>
-        </div>
-        <div>
-          <span class="card-time">
-            {{ data.bloodPressureData.measureTime && data.bloodPressureData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
-          </span>
-        </div>
+        <template v-if="data.bloodPressureData.id">
+          <div>
+            <span class="card-value">
+              {{ data.bloodPressureData.systolicPressure }}/{{ data.bloodPressureData.diastolicPressure }}
+            </span>
+            <span class="card-unit">{{ util.getUnit('血压') }}</span>
+            <van-tag class="card-tag"
+                     :class="{ normal: data.bloodPressureData.resultType === '2', unnormal: data.bloodPressureData.resultType !== '2' }">
+              {{ data.bloodPressureData.result }}
+            </van-tag>
+          </div>
+          <div>
+            <span class="card-time">
+              {{ data.bloodPressureData.measureTime && data.bloodPressureData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          暂无
+        </template>
       </div>
       <div class="card-right">
         <van-image width="24"
@@ -35,26 +40,31 @@
 
     <!-- 血糖 -->
     <div class="card card"
-         @click="util.goDetail('血糖', data.bloodSugarData)">
+         @click="util.goDetail('血糖', data.bloodSugarData, familyId)">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_blood sugar.png')" />
       </div>
       <div class="card-center">
-        <div>
-          <span class="card-value">{{ data.bloodSugarData.bloodSugar }}</span>
-          <span class="card-unit">{{ util.getUnit('血糖') }}</span>
-          <van-tag class="card-tag"
-                   :class="{ normal: data.bloodSugarData.resultType === '2', unnormal: data.bloodSugarData.resultType !== '2' }">
-            {{ data.bloodSugarData.result }}
-          </van-tag>
-        </div>
-        <div>
-          <span class="card-time">
-            {{ data.bloodSugarData.measureTime && data.bloodSugarData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
-          </span>
-        </div>
+        <template v-if="data.bloodSugarData.id">
+          <div>
+            <span class="card-value">{{ data.bloodSugarData.bloodSugar }}</span>
+            <span class="card-unit">{{ util.getUnit('血糖') }}</span>
+            <van-tag class="card-tag"
+                     :class="{ normal: data.bloodSugarData.resultType === '2', unnormal: data.bloodSugarData.resultType !== '2' }">
+              {{ data.bloodSugarData.result }}
+            </van-tag>
+          </div>
+          <div>
+            <span class="card-time">
+              {{ data.bloodSugarData.measureTime && data.bloodSugarData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          暂无
+        </template>
       </div>
       <div class="card-right">
         <van-image width="24"
@@ -66,26 +76,31 @@
 
     <!-- 血氧 -->
     <div class="card card"
-         @click="util.goDetail('血氧', data.bloodOxyGenData)">
+         @click="util.goDetail('血氧', data.bloodOxyGenData, familyId)">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
       </div>
       <div class="card-center">
-        <div>
-          <span class="card-value">{{ data.bloodOxyGenData.bloodOxygen }}</span>
-          <span class="card-unit">{{ util.getUnit('血氧') }}</span>
-          <van-tag class="card-tag"
-                   :class="{ normal: data.bloodOxyGenData.resultType === '2', unnormal: data.bloodOxyGenData.resultType !== '2' }">
-            {{ data.bloodOxyGenData.result }}
-          </van-tag>
-        </div>
-        <div>
-          <span class="card-time">
-            {{ data.bloodOxyGenData.measureTime && data.bloodOxyGenData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
-          </span>
-        </div>
+        <template v-if="data.bloodOxyGenData.id">
+          <div>
+            <span class="card-value">{{ data.bloodOxyGenData.bloodOxygen }}</span>
+            <span class="card-unit">{{ util.getUnit('血氧') }}</span>
+            <van-tag class="card-tag"
+                     :class="{ normal: data.bloodOxyGenData.resultType === '2', unnormal: data.bloodOxyGenData.resultType !== '2' }">
+              {{ data.bloodOxyGenData.result }}
+            </van-tag>
+          </div>
+          <div>
+            <span class="card-time">
+              {{ data.bloodOxyGenData.measureTime && data.bloodOxyGenData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          暂无
+        </template>
       </div>
       <div class="card-right">
         <van-image width="24"
@@ -97,26 +112,31 @@
 
     <!-- 体脂 -->
     <div class="card card"
-         @click="util.goDetail('体脂', data.bodyFat)">
+         @click="util.goDetail('体脂', data.bodyFat, familyId)">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_body fat.png')" />
       </div>
       <div class="card-center">
-        <div>
-          <span class="card-value">{{ data.bodyFat.bfr }}</span>
-          <span class="card-unit">{{ util.getUnit('体脂') }}</span>
-          <van-tag class="card-tag"
-                   :class="{ normal: data.bodyFat.resultType === '2', unnormal: data.bodyFat.resultType !== '2' }">
-            {{ data.bodyFat.result }}
-          </van-tag>
-        </div>
-        <div>
-          <span class="card-time">
-            {{ data.bodyFat.measureTime && data.bodyFat.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
-          </span>
-        </div>
+        <template v-if="data.bodyFat.id">
+          <div>
+            <span class="card-value">{{ data.bodyFat.bfr }}</span>
+            <span class="card-unit">{{ util.getUnit('体脂') }}</span>
+            <van-tag class="card-tag"
+                     :class="{ normal: data.bodyFat.resultType === '2', unnormal: data.bodyFat.resultType !== '2' }">
+              {{ data.bodyFat.result }}
+            </van-tag>
+          </div>
+          <div>
+            <span class="card-time">
+              {{ data.bodyFat.measureTime && data.bodyFat.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          暂无
+        </template>
       </div>
       <div class="card-right">
         <van-image width="24"

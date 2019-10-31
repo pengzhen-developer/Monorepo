@@ -111,8 +111,7 @@ export default {
 
       myFamilyList: undefined,
 
-      familyId: '',
-      idCard: ''
+      familyId: ''
     }
   },
 
@@ -155,7 +154,6 @@ export default {
       if (this.$refs.swipe) {
         if (this.myFamilyList) {
           this.familyId = this.myFamilyList[index].familyId
-          this.idCard = this.myFamilyList[index].idCard
         }
 
         const tempWidth = (document.body.clientWidth - this.swipeWidth) / 2

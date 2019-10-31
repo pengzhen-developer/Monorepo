@@ -11,7 +11,8 @@ module.exports = {
   globals: {
     // 尽量避免使用全局变量
     $peace: true,
-    WeixinJSBridge: true
+    WeixinJSBridge: true,
+    QRCode: true
   },
   parserOptions: {
     parser: 'babel-eslint'

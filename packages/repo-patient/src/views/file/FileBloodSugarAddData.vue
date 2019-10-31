@@ -80,11 +80,14 @@ export default {
     },
 
     save() {
-      console.log(peace.util.decode(this.$route.params.json))
-      return
+      const json = peace.util.decode(this.$route.params.json)
       const params = peace.util.deepClone(this.model)
+
       params.measureTime = params.measureTime.formatTime()
-      params.measureState = parseInt(this.radio);
+      params.measureState = parseInt(this.radio)
+      params.idCard = json.idCard
+      params.familyId = json.familyId
+
       peace.service.health.addBloodSugar(params).then(res => {
         peace.util.alert(res.msg)
 

@@ -1,6 +1,6 @@
 import peace from '@src/library'
 
-export const goDetail = (type, data) => {
+export const goDetail = (type, data, familyId) => {
   if (type === '病历') {
     const json = peace.util.encode({
       inquiryNo: data.inquiryNo
@@ -11,7 +11,8 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id
+      dataId: data.id,
+      familyId: familyId
     })
 
     $peace.$router.push(`/file/fileBloodPressureDetail/${json}`)
@@ -19,7 +20,8 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id
+      dataId: data.id,
+      familyId: familyId
     })
 
     $peace.$router.push(`/file/fileBloodSugarDetail/${json}`)

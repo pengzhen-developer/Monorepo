@@ -14,11 +14,9 @@
           <p style="font-size: 25px; font-weight:bold; line-height: 25px;">
             {{ data.bloodSugarData.bloodSugar }}
           </p>
-<!--          <p style="font-size: 12px; font-weight:400; line-height: 18px;">{{ util.getUnit('血糖') }}-->
-<!--          </p>-->
-          <p style="font-size: 14px; font-weight:400; line-height: 18px;">
-
-            mmol/L</p>
+          <p style="font-size: 12px; font-weight:400; line-height: 18px;">
+            {{ util.getUnit('血糖') }}
+          </p>
         </div>
       </div>
     </div>
@@ -49,8 +47,10 @@
     </div>
     <div class="file-tab-wrap">
       <div class="file-tab">
-        <span :class="tabIndex==1 ? 'active' : ''" @click="getOscillogram(1)">空腹</span>
-        <span :class="tabIndex==2 ? 'active' : ''" @click="getOscillogram(2)">餐后</span>
+        <span :class="tabIndex==1 ? 'active' : ''"
+              @click="getOscillogram(1)">空腹</span>
+        <span :class="tabIndex==2 ? 'active' : ''"
+              @click="getOscillogram(2)">餐后</span>
       </div>
     </div>
     <div class="file-blood-detail-charts">
@@ -136,21 +136,21 @@ export default {
   methods: {
     getOscillogram(tag) {
       // debugger
-      this.tabIndex = tag;
+      this.tabIndex = tag
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then(res => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
         let xAxisData = null,
-            seriesDataOne = null;
-        if(tag == 1) {
-           xAxisData = downData.bloodSugarDataBefore.map(item =>
-                item.measureTime.toDate().formatDate('MM-dd')
+          seriesDataOne = null
+        if (tag == 1) {
+          xAxisData = downData.bloodSugarDataBefore.map(item =>
+            item.measureTime.toDate().formatDate('MM-dd')
           )
           seriesDataOne = downData.bloodSugarDataBefore.map(item => item.bloodSugar)
         } else {
-           xAxisData = downData.bloodSugarDataAfter.map(item =>
-                item.measureTime.toDate().formatDate('MM-dd')
+          xAxisData = downData.bloodSugarDataAfter.map(item =>
+            item.measureTime.toDate().formatDate('MM-dd')
           )
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
@@ -167,9 +167,7 @@ export default {
     },
 
     goReportAddData() {
-      const json = peace.util.encode({
-        inquriryNo: ''
-      })
+      const json = this.$route.params.json
 
       this.$router.replace(`/file/fileBloodSugarAddData/${json}`)
     }
@@ -208,21 +206,21 @@ export default {
     padding-top: 15px;
     .file-tab {
       width: auto;
-      height:28px;
-      border-radius:4px;
-      border:1px solid rgba(0,198,174,1);
+      height: 28px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 198, 174, 1);
       span {
         width: 69px;
         height: 100%;
         display: inline-block;
         text-align: center;
         line-height: 28px;
-        font-size:14px;
-        font-weight:400;
-        color:#666;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666;
       }
       span.active {
-        background:rgba(0,198,174,1);
+        background: rgba(0, 198, 174, 1);
         color: #fff;
       }
     }

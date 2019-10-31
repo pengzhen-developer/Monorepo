@@ -105,8 +105,11 @@ export default {
     },
 
     save() {
+      const json = peace.util.decode(this.$route.params.json)
       const params = peace.util.deepClone(this.model)
       params.measureTime = params.measureTime.formatTime()
+      params.idCard = json.idCard
+      params.familyId = json.familyId
 
       peace.service.health.addBloodPressure(params).then(res => {
         peace.util.alert(res.msg)

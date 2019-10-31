@@ -128,6 +128,12 @@
         </div>
       </div>
     </div>
+
+    <div v-else
+         class="none-page">
+      <div class="icon icon_none_source"></div>
+      <div class="none-text">暂无</div>
+    </div>
   </div>
 </template>
 
@@ -144,7 +150,7 @@ export default {
     return {
       util,
 
-      data: {}
+      data: undefined
     }
   },
 

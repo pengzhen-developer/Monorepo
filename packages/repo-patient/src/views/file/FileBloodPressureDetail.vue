@@ -158,9 +158,7 @@ export default {
     },
 
     goReportAddData() {
-      const json = peace.util.encode({
-        inquriryNo: ''
-      })
+      const json = this.$route.params.json
 
       this.$router.replace(`/file/fileBloodPressureAddData/${json}`)
     }
