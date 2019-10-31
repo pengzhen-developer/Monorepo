@@ -103,6 +103,58 @@ export function addBloodSugar(params) {
   return peace.http.post(addBloodSugar, params)
 }
 
+/**
+ * 健康档案获取家人信息
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function familyInfo(params) {
+  const familyInfo = 'wap/v1/health/familyInfo'
+
+  return peace.http.post(familyInfo, params)
+}
+
+/**
+ * 健康档案获取家人基本病情信息
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getBaseInfo(params) {
+  const getBaseInfo = 'wap/v1/health/getBaseInfo'
+
+  return peace.http.post(getBaseInfo, params)
+}
+
+/**
+ * 健康档案新增家人基本病情信息
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function addBaseInfo(params) {
+  const addBaseInfo = 'wap/v1/health/addBaseInfo'
+
+  return peace.http.post(addBaseInfo, params)
+}
+
+/**
+ * 健康档案获取字典
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function lists(params) {
+  const lists = 'health/v1/UserDic/lists'
+
+  return peace.http.post(lists, params)
+}
+
 export default {
   getHealthCase,
   familyLists,
@@ -111,7 +163,11 @@ export default {
   historyLists,
   getReportList,
 
-  addBloodPressure,
+  familyInfo,
+  lists,
+  getBaseInfo,
+  addBaseInfo,
 
+  addBloodPressure,
   addBloodSugar
 }
