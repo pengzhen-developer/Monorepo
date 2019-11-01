@@ -16,7 +16,13 @@ const router = new Router({
         auth: false
       },
       component: () => import('@src/views/components/layout/index.vue'),
-
+      beforeEnter: (to, from,next) => {
+        let params = peace.util.decode(to.params.json);
+        if(peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
+          peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, peace.util.queryUrlParam('nethospitalid') || params.netHospitalId )
+        }
+        next();
+      },
       children: [
         // 首页
         {
@@ -295,7 +301,7 @@ const router = new Router({
         },
         // 电子健康卡详情
         {
-          path: '/setting/cardDetail',
+          path: '/setting/cardDetail/:json',
           name: '/setting/cardDetail',
           meta: {
             auth: true,

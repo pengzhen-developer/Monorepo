@@ -22,7 +22,9 @@ export const SYSTEM = {
     SESSION_STORAGE: 'sessionStorage'
   },
 
-  PARAMS: 'params'
+  PARAMS: 'params',
+
+  NETHOSPITALID: 'nethospitalid'
 }
 
 /**

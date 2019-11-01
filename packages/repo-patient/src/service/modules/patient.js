@@ -293,6 +293,37 @@ export function delAddress(params) {
   return peace.http.post(delAddress, params)
 }
 
+export function getFamilyInfo(params) {
+  const getFamilyInfo = 'client/v1/Patient/getFamilyInfo'
+  return peace.http.get(getFamilyInfo, { params })
+}
+
+export function getNationList(params) {
+  const getNationList = 'client/v1/Patient/getNationList'
+  return peace.http.post(getNationList, params)
+}
+
+export function isExistCardRelation(params) {
+  const isExistCardRelation = 'client/v1/Healthcard/isExistCardRelation'
+  return peace.http.post(isExistCardRelation, params)
+}
+export function createHealthcard(params) {
+  const createHealthcard = 'client/v1/Healthcard/createHealthcard'
+  return peace.http.post(createHealthcard, params)
+}
+export function getCardList(params) {
+  const getCardList = 'client/v1/Healthcard/getCardList'
+  return peace.http.post(getCardList, params)
+}
+export function healthcardInfo(params) {
+  const healthcardInfo = 'client/v1/Healthcard/healthcardInfo'
+  return peace.http.post(healthcardInfo, params)
+}
+export function getGuardianList(params) {
+  const getGuardianList = 'client/v1/Patient/getGuardianList'
+  return peace.http.post(getGuardianList, params)
+}
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -341,5 +372,12 @@ export default {
   /** 添加地址 */
   addAddress,
   /** 删除地址 */
-  delAddress
+  delAddress,
+  getFamilyInfo,
+  getNationList,
+  isExistCardRelation,
+  createHealthcard,
+  getCardList,
+  healthcardInfo,
+  getGuardianList
 }

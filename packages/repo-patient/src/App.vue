@@ -12,19 +12,18 @@ export default {
 
   beforeCreate() {
     const params = peace.util.queryUrlParam('params')
-
+   // console.log('params1' ,params1)
     if (params) {
       if (params === 'PLATEFORM') {
         peace.cache.remove(peace.type.SYSTEM.PARAMS)
       } else {
         peace.cache.set(peace.type.SYSTEM.PARAMS, peace.util.queryUrlParam('params'))
+       // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, peace.util.queryUrlParam('nethospitalid') )
       }
     }
   },
-
   created() {
     document.title = peace.config.system.title
-
     // restore user info and user token
     if (peace.cache.get(peace.type.USER.INFO)) {
       this.$store.commit('user/restoreUserInfo', peace.cache.get(peace.type.USER.INFO))

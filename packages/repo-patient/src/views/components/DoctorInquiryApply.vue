@@ -423,7 +423,16 @@ export default {
         })
       }
     },
-
+    checkCardExist() {
+      let familyId = this.model.familyId;
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid;
+      let params = {familyId, nethospitalid};
+       return new Promise(resolve => {
+         peace.service.patient.isExistCardRelation(params).then(res => {
+             resolve(res)
+         })
+       })
+    },
     apply() {
       //验证
       if (!this.model.familyName || this.model.familyName == '添加就诊人') {
@@ -455,9 +464,35 @@ export default {
         }
       }
 
-      this.uploadHandler().then(() => {
-        this.applyHandler()
-      })
+
+      this.checkCardExist().then((res)=> {
+          if(!res.data.result) {
+            return Dialog.confirm({
+              title: '提示',
+              message: '该就诊人还没有电子健康卡，是否现在领取？',
+              confirmButtonText: '现在领取'
+            }).then(() => {
+              let familyId = this.model.familyId;
+              let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
+              let params = {familyId, nethospitalid}
+              peace.service.patient.createHealthcard(params).then(res => {
+                    if(res.data.result) {
+                        this.uploadHandler().then(() => {
+                            this.applyHandler()
+                        })
+                    }
+              })
+                    })
+                    .catch(() => {
+                      // on cancel
+                    })
+          } else {
+            this.uploadHandler().then(() => {
+              this.applyHandler()
+            })
+          }
+      });
+
     },
     goToPay(data) {
       let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
