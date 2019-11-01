@@ -16,11 +16,15 @@
             {{ data.result }}
           </van-tag>
         </div>
-        <div slot="label">
-          {{ data.measureState == 1 ? '空腹血糖': '餐后血糖' }}
-        </div>
-        <div style="display: flex; justify-content: flex-end; align-items: flex-end; height: 100%;">
-          {{ data.measureTime && data.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+
+        <div slot="label"
+             style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%;">
+          <span>
+            {{ data.measureState == 1 ? '空腹血糖': '餐后血糖' }}
+          </span>
+          <span>
+            {{ data.measureTime && data.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
         </div>
       </van-cell>
     </van-list>

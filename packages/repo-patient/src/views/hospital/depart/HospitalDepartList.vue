@@ -1,5 +1,5 @@
 <template>
-  <!--  -->
+  <!-- eslint-disable -->
   <div>
     <div class="panel panel-block panel-block-s">
       <div :deptid="item.id"
@@ -8,7 +8,8 @@
            @click="goMenuPage(item)"
            class="block-items"
            v-bind:class="{'last':index == items.length -1}"
-           v-for="(item,index) in lists.splice(0, showNum)">
+           v-for="(item,index) in lists"
+           v-if="index < showNum">
         <img :src="item.icon"
              class="block-ico" />
         <div class="block-tit">{{item.text}}</div>

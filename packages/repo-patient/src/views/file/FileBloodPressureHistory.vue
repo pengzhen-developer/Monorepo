@@ -16,11 +16,14 @@
             {{ data.result }}
           </van-tag>
         </div>
-        <div slot="label">
-          脉率：{{ data.pulseRate }} 次/分
-        </div>
-        <div style="display: flex; justify-content: flex-end; align-items: flex-end; height: 100%;">
-          {{ data.measureTime && data.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+        <div slot="label"
+             style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%;">
+          <span>
+            脉率：{{ data.pulseRate }} 次/分
+          </span>
+          <span>
+            {{ data.measureTime && data.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+          </span>
         </div>
       </van-cell>
     </van-list>
