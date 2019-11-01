@@ -476,16 +476,16 @@ export default {
               let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
               let params = {familyId, nethospitalid}
               peace.service.patient.createHealthcard(params).then(res => {
-                    if(res.data.result) {
-                        this.uploadHandler().then(() => {
-                            this.applyHandler()
-                        })
-                    }
+                if (res.data.result) {
+                  this.uploadHandler().then(() => {
+                    this.applyHandler()
+                  })
+                }
+              }).catch((res) => {
+                this.$router.push(`/setting/myFamilyMembers`)
+                // on cancel
               })
-                    })
-                    .catch(() => {
-                      // on cancel
-                    })
+            })
           } else {
             this.uploadHandler().then(() => {
               this.applyHandler()

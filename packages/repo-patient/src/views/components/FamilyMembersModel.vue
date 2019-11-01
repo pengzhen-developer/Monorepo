@@ -27,8 +27,7 @@
 <!--        </div>-->
 <!--      </div>-->
 
-
-      <div class="form form-for-family" v-if="cardList.length == 0 && firstLoad">
+      <div class="form form-for-family" v-if="(cardList.length == 0 || !model.isExistCard)">
         <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
         <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
         <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
