@@ -1,6 +1,6 @@
 import peace from '@src/library'
 
-export const goDetail = (type, data, familyId) => {
+export const goDetail = (type, data) => {
   if (type === '病历') {
     const json = peace.util.encode({
       inquiryNo: data.inquiryNo
@@ -15,10 +15,14 @@ export const goDetail = (type, data, familyId) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.id,
-      familyId: familyId
+      familyId: data.familyId
     })
 
-    $peace.$router.push(`/file/fileBloodPressureDetail/${json}`)
+    if (data.id) {
+      $peace.$router.push(`/file/fileBloodPressureDetail/${json}`)
+    } else {
+      $peace.$router.push(`/file/fileBloodPressureAddData/${json}`)
+    }
   }
 
   // 跳转血氧详情
@@ -27,10 +31,14 @@ export const goDetail = (type, data, familyId) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.id,
-      familyId: familyId
+      familyId: data.familyId
     })
 
-    $peace.$router.push(`/file/fileBloodOxyGenDetail/${json}`)
+    if (data.id) {
+      $peace.$router.push(`/file/fileBloodOxyGenDetail/${json}`)
+    } else {
+      $peace.$router.push(`/file/fileBloodOxyGenAddData/${json}`)
+    }
   }
 
   // 跳转血糖详情
@@ -39,10 +47,14 @@ export const goDetail = (type, data, familyId) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.id,
-      familyId: familyId
+      familyId: data.familyId
     })
 
-    $peace.$router.push(`/file/fileBloodSugarDetail/${json}`)
+    if (data.id) {
+      $peace.$router.push(`/file/fileBloodSugarDetail/${json}`)
+    } else {
+      $peace.$router.push(`/file/fileBloodSugarAddData/${json}`)
+    }
   }
 
   // 跳转体脂详情
@@ -51,10 +63,14 @@ export const goDetail = (type, data, familyId) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.id,
-      familyId: familyId
+      familyId: data.familyId
     })
 
-    $peace.$router.push(`/file/fileBodyFatDetail/${json}`)
+    if (data.id) {
+      $peace.$router.push(`/file/fileBodyFatDetail/${json}`)
+    } else {
+      $peace.$router.push(`/file/fileBodyFatAddData/${json}`)
+    }
   }
 }
 

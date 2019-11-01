@@ -57,11 +57,11 @@
         <van-cell @click="show = true"
                   is-link
                   title="测量时间"
-                  :value="model.measureTime.toDate().formatDate()"></van-cell>
+                  :value="model.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm')"></van-cell>
         <van-popup v-model="show"
                    position="bottom">
           <van-datetime-picker v-model="currentDate"
-                               type="date"
+                               type="datetime"
                                @confirm="confirm"
                                @cancel="show = false" />
         </van-popup>
@@ -114,10 +114,11 @@ export default {
       peace.service.health.addBloodPressure(params).then(res => {
         peace.util.alert(res.msg)
 
-        // replace 当前页，并返回上一页
-        const prveRoute = $peace.routerStack[$peace.routerStack.length - 2]
+        const params = $peace.util.decode($peace.$route.params.json)
+        params.dataId = res.data
+        const json = $peace.util.encode(params)
 
-        this.$router.replace(prveRoute.path)
+        $peace.$router.replace(`/file/fileBloodPressureDetail/${json}`)
       })
     }
   }

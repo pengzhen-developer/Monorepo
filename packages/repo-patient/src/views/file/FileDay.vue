@@ -2,7 +2,7 @@
   <div class="file-day">
     <!-- 血压 -->
     <div class="card card"
-         @click="util.goDetail('血压', data.bloodPressureData, familyId)">
+         @click="util.goDetail('血压', { ...data.bloodPressureData, familyId , idCard})">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
@@ -27,7 +27,7 @@
           </div>
         </template>
         <template v-else>
-          暂无
+          暂无数据
         </template>
       </div>
       <div class="card-right">
@@ -40,7 +40,7 @@
 
     <!-- 血糖 -->
     <div class="card card"
-         @click="util.goDetail('血糖', data.bloodSugarData, familyId)">
+         @click="util.goDetail('血糖', { ...data.bloodSugarData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
@@ -63,7 +63,7 @@
           </div>
         </template>
         <template v-else>
-          暂无
+          暂无数据
         </template>
       </div>
       <div class="card-right">
@@ -76,7 +76,7 @@
 
     <!-- 血氧 -->
     <div class="card card"
-         @click="util.goDetail('血氧', data.bloodOxyGenData, familyId)">
+         @click="util.goDetail('血氧', { ...data.bloodSugarData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
@@ -99,7 +99,7 @@
           </div>
         </template>
         <template v-else>
-          暂无
+          暂无数据
         </template>
       </div>
       <div class="card-right">
@@ -112,7 +112,7 @@
 
     <!-- 体脂 -->
     <div class="card card"
-         @click="util.goDetail('体脂', data.bodyFat, familyId)">
+         @click="util.goDetail('体脂', { ...data.bodyFat, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"
@@ -135,7 +135,7 @@
           </div>
         </template>
         <template v-else>
-          暂无
+          暂无数据
         </template>
       </div>
       <div class="card-right">
@@ -154,7 +154,8 @@ import util from './util'
 
 export default {
   props: {
-    familyId: String
+    familyId: String,
+    idCard: String
   },
 
   data() {
@@ -179,10 +180,11 @@ export default {
       peace.service.health.allHealthList({ familyId: this.familyId, type: '2' }).then(res => {
         const list = res.data.list
 
-        this.data.bloodPressureData = list.find(item => item.healthType === 'bloodPressureData')
-        this.data.bloodSugarData = list.find(item => item.healthType === 'bloodSugarData')
-        this.data.bloodOxyGenData = list.find(item => item.healthType === 'oxyGenData')
-        this.data.bodyFat = list.find(item => item.healthType === 'bodyFat')
+        this.data.bloodPressureData =
+          list.find(item => item.healthType === 'bloodPressureData') || {}
+        this.data.bloodSugarData = list.find(item => item.healthType === 'bloodSugarData') || {}
+        this.data.bloodOxyGenData = list.find(item => item.healthType === 'oxyGenData') || {}
+        this.data.bodyFat = list.find(item => item.healthType === 'bodyFat') || {}
       })
     }
   }

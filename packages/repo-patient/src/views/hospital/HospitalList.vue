@@ -1,5 +1,5 @@
-/** eslint-disable */
 <template>
+  <!-- eslint-disable -->
   <div>
     <van-skeleton :key="item.netHospitalId"
                   :loading="loading"
@@ -9,7 +9,8 @@
                   avatar
                   title
                   type="organHome"
-                  v-for="item in data.splice(0, showNum)">
+                  v-for="(item,index) in data"
+                  v-if="index < showNum">
       <div @click="goMenuPage(item)"
            class="cards">
         <div class="card-avatar">

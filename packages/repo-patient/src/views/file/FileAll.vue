@@ -1,7 +1,7 @@
 <template>
   <div class="file-all">
     <div class="time-line"
-         v-if="data">
+         v-if="data && data.length">
 
       <div class="item"
            v-for="(value, key) in data"
@@ -132,7 +132,7 @@
     <div v-else
          class="none-page">
       <div class="icon icon_none_source"></div>
-      <div class="none-text">暂无</div>
+      <div class="none-text">暂无数据</div>
     </div>
   </div>
 </template>
