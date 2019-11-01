@@ -24,7 +24,9 @@ export const SYSTEM = {
 
   PARAMS: 'params',
 
-  NETHOSPITALID: 'nethospitalid'
+  NETHOSPITALID: 'nethospitalid',
+
+  CHANNELID: 'channelid'
 }
 
 /**

@@ -21,6 +21,7 @@ const router = new Router({
         if(peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
           peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, peace.util.queryUrlParam('nethospitalid') || params.netHospitalId )
         }
+        peace.cache.set(peace.type.SYSTEM.CHANNELID, peace.util.queryUrlParam('channelid') || params.channelid )
         next();
       },
       children: [
