@@ -65,8 +65,8 @@ axios.interceptors.request.use(
       // 配置渠道ID
       request.headers['channelid'] = config.CHANNELID;
 
-      // 医院ID
-      // request.headers['nethospitalid'] = config.HOSPITALID;
+      console.log('nethospitalid=============',  $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID))
+      request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/

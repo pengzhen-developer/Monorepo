@@ -63,12 +63,15 @@ export default {
 
   data() {
     return {
+      cardList: [],
       members: [],
       loaded: false,
       dialog: {
         visible: false,
         title: '',
-        data: undefined
+        data: {
+          familyId: ''
+        }
       }
     }
   },
@@ -103,7 +106,8 @@ export default {
 
     // 查看家人详细信息
     toViewDetails(item) {
-      switch (this.$route.params.link) {
+      let familyId, params;
+      switch (item) {
         case 'recordCondition':
           $peace.$recordCondition.formData.family = item
           $peace.$recordCondition.canSubmitProcesses()
@@ -111,9 +115,13 @@ export default {
           this.$router.go(-1)
           break
         default:
-          this.dialog.title = '家人信息'
-          this.dialog.visible = true
-          this.dialog.data = item
+          params = {'id': item.familyId, 'source': 2}
+          peace.service.patient.getFamilyInfo(params).then(res => {
+             this.dialog.data = res.data;
+             this.dialog.data.familyId = item.familyId;
+             this.dialog.title = '家人信息'
+             this.dialog.visible = true
+          })
           break
       }
     },
