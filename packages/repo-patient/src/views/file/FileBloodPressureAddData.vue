@@ -6,18 +6,18 @@
       <div class="header-input">
         <div class="custom-value">
           <van-icon :name="require('@src/assets/images/file/ic_prev.png')"
-                    @click="() => { model.systolicPressure = model.systolicPressure - 1 }">
+                    @click="() => { model.systolicPressure = model.systolicPressure <= 0 ? 0 : model.systolicPressure - 1 }">
           </van-icon>
           <span class="text">{{ model.systolicPressure }}</span>
           <van-icon :name="require('@src/assets/images/file/ic_next.png')"
-                    @click="() => { model.systolicPressure = model.systolicPressure + 1 }">
+                    @click="() => { model.systolicPressure = model.systolicPressure >= 229 ? 229 : model.systolicPressure + 1 }">
           </van-icon>
         </div>
 
         <peace-ruler key="1"
                      v-model="model.systolicPressure"
                      :min='0'
-                     :max="100"></peace-ruler>
+                     :max="229"></peace-ruler>
       </div>
     </div>
 
@@ -27,25 +27,25 @@
       <div class="header-input">
         <div class="custom-value">
           <van-icon :name="require('@src/assets/images/file/ic_prev.png')"
-                    @click="() => { model.diastolicPressure = model.diastolicPressure - 1 }">
+                    @click="() => { model.diastolicPressure = model.diastolicPressure <= 0 ? 0 : model.diastolicPressure - 1 }">
           </van-icon>
           <span class="text">{{ model.diastolicPressure }}</span>
           <van-icon :name="require('@src/assets/images/file/ic_next.png')"
-                    @click="() => { model.diastolicPressure = model.diastolicPressure + 1 }">
+                    @click="() => { model.diastolicPressure = model.diastolicPressure >= 229 ? 229 : model.diastolicPressure + 1 }">
           </van-icon>
         </div>
 
         <peace-ruler key="2"
                      v-model="model.diastolicPressure"
                      :min='0'
-                     :max="100"></peace-ruler>
+                     :max="229"></peace-ruler>
       </div>
     </div>
 
     <div class="file-blood-detail-content">
       <van-cell-group>
         <van-field :min="0"
-                   :max="100"
+                   :max="288"
                    v-model="model.pulseRate"
                    type="number"
                    label="脉率（选填）"
@@ -88,9 +88,9 @@ export default {
       show: false,
 
       model: {
-        systolicPressure: '',
-        diastolicPressure: '',
-        pulseRate: '',
+        systolicPressure: 120,
+        diastolicPressure: 60,
+        pulseRate: 60,
         measureTime: new Date()
       },
 

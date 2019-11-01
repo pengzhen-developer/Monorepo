@@ -6,18 +6,19 @@
       <div class="header-input">
         <div class="custom-value">
           <van-icon :name="require('@src/assets/images/file/ic_prev.png')"
-                    @click="() => { model.bloodSugar = model.bloodSugar - 1 }">
+                    @click="() => { model.bloodSugar = model.bloodSugar <= 1.1 ? 1.1 : model.bloodSugar - 0.1}">
           </van-icon>
           <span class="text">{{ model.bloodSugar }}</span>
           <van-icon :name="require('@src/assets/images/file/ic_next.png')"
-                    @click="() => { model.bloodSugar = model.bloodSugar + 1 }">
+                    @click="() => { model.bloodSugar = model.bloodSugar >= 33.3 ? 33.3 : model.bloodSugar + 0.1 }">
           </van-icon>
         </div>
 
         <peace-ruler key="1"
                      v-model="model.bloodSugar"
-                     :min='0'
-                     :max="100"></peace-ruler>
+                     :min='1.1'
+                     :max="33.3"
+                     :precision="0.1"></peace-ruler>
       </div>
     </div>
 
@@ -65,7 +66,7 @@ export default {
       show: false,
 
       model: {
-        bloodSugar: '',
+        bloodSugar: 5.0,
         measureTime: new Date()
       },
 

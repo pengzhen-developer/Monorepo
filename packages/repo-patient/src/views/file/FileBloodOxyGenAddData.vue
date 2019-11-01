@@ -6,17 +6,17 @@
       <div class="header-input">
         <div class="custom-value">
           <van-icon :name="require('@src/assets/images/file/ic_prev.png')"
-                    @click="() => { model.bloodOxygen = model.bloodOxygen - 1 }">
+                    @click="() => { model.bloodOxygen = model.bloodOxygen <= 70 ? 70 : model.bloodOxygen - 1 }">
           </van-icon>
           <span class="text">{{ model.bloodOxygen }}</span>
           <van-icon :name="require('@src/assets/images/file/ic_next.png')"
-                    @click="() => { model.bloodOxygen = model.bloodOxygen + 1 }">
+                    @click="() => { model.bloodOxygen = model.bloodOxygen >= 100 ? 100 : model.bloodOxygen + 1 }">
           </van-icon>
         </div>
 
         <peace-ruler key="1"
                      v-model="model.bloodOxygen"
-                     :min='0'
+                     :min='70'
                      :max="100"></peace-ruler>
       </div>
     </div>
@@ -67,8 +67,8 @@ export default {
       show: false,
 
       model: {
-        bloodOxygen: '',
-        pulseRate: '',
+        bloodOxygen: 99,
+        pulseRate: 60,
         measureTime: new Date()
       },
 

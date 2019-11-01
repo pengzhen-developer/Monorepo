@@ -6,17 +6,17 @@
       <div class="header-input">
         <div class="custom-value">
           <van-icon :name="require('@src/assets/images/file/ic_prev.png')"
-                    @click="() => { model.bfr = model.bfr - 1 }">
+                    @click="() => { model.bfr = model.bfr <= 1 ? 1 : model.bfr - 1 }">
           </van-icon>
           <span class="text">{{ model.bfr }}</span>
           <van-icon :name="require('@src/assets/images/file/ic_next.png')"
-                    @click="() => { model.bfr = model.bfr + 1 }">
+                    @click="() => { model.bfr = model.bfr >= 100 ? 100 : model.bfr + 1 }">
           </van-icon>
         </div>
 
         <peace-ruler key="1"
                      v-model="model.bfr"
-                     :min='0'
+                     :min='1'
                      :max="100"></peace-ruler>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default {
       show: false,
 
       model: {
-        bfr: '',
+        bfr: 20,
         measureTime: new Date()
       },
 

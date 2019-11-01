@@ -58,15 +58,18 @@
         <van-tabs v-model="active"
                   swipeable>
           <van-tab title="全    部">
-            <FileAll :key="familyId"
+            <FileAll v-if="active === 0"
+                     :key="familyId"
                      :familyId="familyId"></FileAll>
           </van-tab>
           <van-tab title="日常检测">
-            <FileDay :key="familyId"
+            <FileDay v-if="active === 1"
+                     :key="familyId"
                      :familyId="familyId"></FileDay>
           </van-tab>
           <van-tab title="就诊病历">
-            <FileCase :key="familyId"
+            <FileCase v-if="active === 2"
+                      :key="familyId"
                       :familyId="familyId"></FileCase>
           </van-tab>
           <van-tab title="住院病历">
