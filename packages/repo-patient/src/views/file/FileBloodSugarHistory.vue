@@ -8,7 +8,7 @@
                 :key="data.id">
         <div slot="title">
           <span style="font-size: 16px; font-weight: bold; color: #333333; margin: 0 5px 0 0;">
-            {{ data.bloodSugar }}  mmol/L
+            {{ data.bloodSugar }} {{ util.getUnit('血糖') }}
           </span>
           <van-tag class="tag"
                    :class="{ normal: data.resultType === '2', unnormal: data.resultType !== '2' }"

@@ -61,7 +61,7 @@
             <FileAll :key="familyId"
                      :familyId="familyId"></FileAll>
           </van-tab>
-          <van-tab title="日常监测">
+          <van-tab title="日常检测">
             <FileDay :key="familyId"
                      :familyId="familyId"></FileDay>
           </van-tab>

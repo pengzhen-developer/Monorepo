@@ -238,6 +238,12 @@ export default {
     padding: 0 8px;
     border-radius: 15px;
     margin: 0 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+    white-space: nowrap;
+    position: relative;
+    top: 5px;
 
     &.normal {
       background-color: #f2fffd;

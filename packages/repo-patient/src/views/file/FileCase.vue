@@ -158,6 +158,12 @@ export default {
   .card-tag {
     padding: 0 8px;
     border-radius: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+    white-space: nowrap;
+    position: relative;
+    top: 5px;
 
     &.normal {
       background-color: #f2fffd;
