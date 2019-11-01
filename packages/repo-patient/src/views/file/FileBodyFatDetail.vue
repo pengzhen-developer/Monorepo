@@ -26,21 +26,6 @@
       <div style="color: #666666; line-height: 22px; text-align: justify;"
            v-html="data.bodyFat.itemResultUnscramble">
       </div>
-
-      <van-divider style="margin: 10px 0;" />
-
-      <div class="report flex around">
-        <div class="content-left">
-          <van-button @click="util.goReportList('体脂', '周报', $peace.util.decode($peace.$route.params.json).idCard)"
-                      :icon="require('@src/assets/images/file/ic_week.png')"
-                      type="info">体脂周报</van-button>
-        </div>
-        <div class="content-right">
-          <van-button @click="util.goReportList('体脂', '月报', $peace.util.decode($peace.$route.params.json).idCard)"
-                      :icon="require('@src/assets/images/file/ic_calendar.png')"
-                      type="info">体脂月报</van-button>
-        </div>
-      </div>
     </div>
 
     <div class="file-blood-detail-charts">
