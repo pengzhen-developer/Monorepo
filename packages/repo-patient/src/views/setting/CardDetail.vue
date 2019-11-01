@@ -1,33 +1,4 @@
 <template>
-<<<<<<< Updated upstream
-  <div class="card-detail">
-    <div class="form form-for-family">
-      <div id="qrcode"
-           class="qrcode"></div>
-      <div class="divider"></div>
-      <van-field label="姓名"
-                 placeholder="请输入姓名"
-                 v-model="model.name" />
-      <van-field label="身份证号"
-                 placeholder="请输入身份证号"
-                 v-model="model.idcard" />
-      <van-field label="关系"
-                 placeholder="请选择"
-                 readonly
-                 v-model="model.relation" />
-      <van-field label="性别"
-                 placeholder="请选择"
-                 readonly
-                 v-model="model.sex" />
-      <van-field label="生日"
-                 placeholder="请输入"
-                 readonly
-                 v-model="model.birthday" />
-      <div class="tip">
-        <div class="icon"></div>
-        <span>分诊、就诊、做检查、检验、取报告均可出示本二维码办理 </span>
-      </div>
-=======
     <div class="card-detail">
         <div class="form form-for-family">
             <div id="qrcode" class="qrcode" :style="{backgroundImage:'url(data:image/png;base64,'+ model.base64 + ')'}"></div>
@@ -40,25 +11,10 @@
                 <span>分诊、就诊、做检查、检验、取报告均可出示本二维码办理 </span>
             </div>
         </div>
->>>>>>> Stashed changes
     </div>
-  </div>
 </template>
 
 <script>
-<<<<<<< Updated upstream
-export default {
-  name: 'CardDetail',
-  data() {
-    return {
-      model: {
-        name: 'leejee',
-        idcard: '420104',
-        relation: '爸爸',
-        sex: '男',
-        birthday: '111111'
-      }
-=======
     import peace from '@src/library'
     export default {
         name: "CardDetail",
@@ -73,38 +29,10 @@ export default {
                this.model = res.data.info;
             })
         }
->>>>>>> Stashed changes
     }
-  },
-  mounted() {
-    if (QRCode) {
-      new QRCode(document.getElementById('qrcode'), {
-        text: 'http://jindo.dev.naver.com/collie',
-        width: 128,
-        height: 128,
-        colorDark: '#000000',
-        colorLight: '#ffffff'
-      })
-    }
-  }
-}
 </script>
 
 <style scoped lang="scss">
-<<<<<<< Updated upstream
-.card-detail {
-  height: 100%;
-  padding: 15px;
-  background: #f9f9f9;
-  .form-for-family {
-    background: #fff;
-    height: 100%;
-    overflow: hidden;
-    .qrcode {
-      width: 172px;
-      height: 172px;
-      margin: 20px auto 20px;
-=======
     .card-detail {
         height: 100%;
         padding: 15px;
@@ -145,7 +73,6 @@ export default {
                 }
             }
         }
->>>>>>> Stashed changes
     }
     .divider {
       height: 1px;
@@ -172,8 +99,6 @@ export default {
         margin-right: 10px;
       }
     }
-  }
-}
 /deep/
   .form.form-for-family
   > .van-cell
