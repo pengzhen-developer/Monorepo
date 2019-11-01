@@ -197,6 +197,41 @@ const router = new Router({
           },
           component: () => import('@src/views/file/FileBloodOxyGenAddData.vue')
         },
+
+        {
+          path: '/file/fileBodyFatHistory/:json',
+          name: '/file/fileBodyFatHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-体脂历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatHistory.vue')
+        },
+        {
+          path: '/file/fileBodyFatDetail/:json',
+          name: '/file/fileBodyFatDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-体脂详情'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatDetail.vue')
+        },
+        {
+          path: '/file/fileBodyFatAddData/:json',
+          name: '/file/fileBodyFatAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加体脂'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatAddData.vue')
+        },
+
         {
           path: '/file/fileBloodSugarDetail/:json',
           name: '/file/fileBloodSugarDetail/:json',

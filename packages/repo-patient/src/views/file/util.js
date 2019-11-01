@@ -44,6 +44,18 @@ export const goDetail = (type, data, familyId) => {
 
     $peace.$router.push(`/file/fileBloodSugarDetail/${json}`)
   }
+
+  // 跳转体脂详情
+  else if (type === '体脂') {
+    const json = peace.util.encode({
+      type: peace.config.file.type[type],
+      idCard: data.idCard,
+      dataId: data.id,
+      familyId: familyId
+    })
+
+    $peace.$router.push(`/file/fileBodyFatDetail/${json}`)
+  }
 }
 
 export const goHealthDetail = data => {

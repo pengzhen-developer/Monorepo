@@ -116,6 +116,18 @@ export function addBloodOxygendata(params) {
 }
 
 /**
+ * 健康档案添加血氧数据
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function addBodyFatData(params) {
+  const addBodyFatData = 'wap/v1/health/addBodyFatData'
+  return peace.http.post(addBodyFatData, params)
+}
+
+/**
  * 健康档案获取家人信息
  *
  * @export
@@ -182,5 +194,6 @@ export default {
 
   addBloodPressure,
   addBloodSugar,
-  addBloodOxygendata
+  addBloodOxygendata,
+  addBodyFatData
 }
