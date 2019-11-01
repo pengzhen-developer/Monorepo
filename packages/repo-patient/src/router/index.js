@@ -136,7 +136,7 @@ const router = new Router({
           meta: {
             auth: false,
             navbar: {
-              title: '健康档案-历史数据'
+              title: '健康档案-血压历史数据'
             }
           },
           component: () => import('@src/views/file/FileBloodPressureHistory.vue')
@@ -147,7 +147,7 @@ const router = new Router({
           meta: {
             auth: false,
             navbar: {
-              title: '健康档案-血压'
+              title: '健康档案-血压详情'
             }
           },
           component: () => import('@src/views/file/FileBloodPressureDetail.vue')
@@ -162,6 +162,40 @@ const router = new Router({
             }
           },
           component: () => import('@src/views/file/FileBloodPressureAddData.vue')
+        },
+
+        {
+          path: '/file/fileBloodOxyGenHistory/:json',
+          name: '/file/fileBloodOxyGenHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血氧历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenHistory.vue')
+        },
+        {
+          path: '/file/fileBloodOxyGenDetail/:json',
+          name: '/file/fileBloodOxyGenDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血氧详情'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenDetail.vue')
+        },
+        {
+          path: '/file/fileBloodOxyGenAddData/:json',
+          name: '/file/fileBloodOxyGenAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血氧'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenAddData.vue')
         },
         {
           path: '/file/fileBloodSugarDetail/:json',

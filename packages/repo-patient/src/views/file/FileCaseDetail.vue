@@ -46,7 +46,7 @@
               <span>谷丙转氨酶(ALT)：</span>
             </div>
             <div>
-              <span>{{ data.summary && ( data.ALT + 'ml') || '无' }}</span>
+              <span>{{ data.ALT && ( data.ALT + 'ml') || '无' }}</span>
             </div>
           </div>
           <div class="row">
@@ -54,7 +54,7 @@
               <span>谷草转氨酶(AST)：</span>
             </div>
             <div>
-              <span>{{ data.summary && ( data.AST + 'ml') || '无' }}</span>
+              <span>{{ data.AST && ( data.AST + 'ml') || '无' }}</span>
             </div>
           </div>
           <div class="row">
@@ -62,7 +62,7 @@
               <span>HBV-DNA：</span>
             </div>
             <div>
-              <span>{{ data.summary && ( data.HBV + 'ml') || '无' }}</span>
+              <span>{{ data.HBV && ( data.HBV + 'ml') || '无' }}</span>
             </div>
           </div>
         </div>
