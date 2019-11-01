@@ -3,16 +3,18 @@
     <template v-if="isEdit">
       <div class="card-title">电子健康卡</div>
       <div class="card">
-        <div class="qrcode" id="qrcode"></div>
+        <div class="qrcode"
+             id="qrcode"></div>
         <div class="name">周杰杰</div>
         <div class="idcard">4115**********9321</div>
       </div>
       <div claas="card-list-content">
-          <div class="item"></div>
+        <div class="item"></div>
       </div>
       <div class="jz-card-title">就诊卡</div>
       <div class="jz-card-list">
-        <div class="item" @click="goToDetail()">
+        <div class="item"
+             @click="goToDetail()">
           <div class="icon"></div>
           <div class="right">
             <span class="jz-title">
@@ -26,60 +28,122 @@
         </div>
       </div>
 
-
       <div class="form form-for-family">
-        <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
-        <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
-        <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
-        <van-field :disabled="isEdit" label="性别" placeholder="请选择" readonly v-model="model.sex" />
-        <van-field :disabled="isEdit" label="生日" placeholder="请输入" readonly v-model="model.birthday" />
-<!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
-<!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />-->
+        <van-field :disabled="isEdit"
+                   label="姓名"
+                   placeholder="请输入姓名"
+                   v-model="model.name" />
+        <van-field :disabled="isEdit"
+                   label="身份证号"
+                   placeholder="请输入身份证号"
+                   v-model="model.idcard" />
+        <van-field :disabled="isEdit"
+                   label="关系"
+                   placeholder="请选择"
+                   readonly
+                   v-model="model.relation" />
+        <van-field :disabled="isEdit"
+                   label="性别"
+                   placeholder="请选择"
+                   readonly
+                   v-model="model.sex" />
+        <van-field :disabled="isEdit"
+                   label="生日"
+                   placeholder="请输入"
+                   readonly
+                   v-model="model.birthday" />
+        <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
+        <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />-->
         <peace-dialog :visible.sync="showAllergicHistory">
-          <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+          <AddAllergicHistory @onSave="showAllergicHistory = false"
+                              v-model="model.allergic_history"></AddAllergicHistory>
         </peace-dialog>
         <peace-dialog :visible.sync="showFoodAllergy">
-          <AddFoodAllergy @onSave="showFoodAllergy = false" v-model="model.foodAllergy"></AddFoodAllergy>
+          <AddFoodAllergy @onSave="showFoodAllergy = false"
+                          v-model="model.foodAllergy"></AddFoodAllergy>
         </peace-dialog>
       </div>
       <div class="bottom">
-        <van-button @click="deleted" plain>删除家人</van-button>
-<!--        <van-button @click="submit" type="primary">保存</van-button>-->
+        <van-button @click="deleted"
+                    plain>删除家人</van-button>
+        <!--        <van-button @click="submit" type="primary">保存</van-button>-->
       </div>
     </template>
 
     <template v-else>
       <div class="form form-for-family">
-        <van-field error label="姓名" placeholder="请输入姓名" required v-model="model.name" />
-        <van-field label="身份证号" placeholder="请输入身份证号" required v-model="model.idcard" />
-        <van-field @click="showPopupRelation" label="关系" placeholder="请选择" readonly required right-icon="arrow" v-model="model.relation" />
-        <van-field @click="showPopupSex" label="性别" placeholder="请选择" readonly required right-icon="arrow" v-model="model.sex" />
-        <van-field @click="showPopupBirthday" label="生日" placeholder="请输入" readonly required right-icon="arrow" v-model="model.birthday" />
-<!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
-<!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
+        <van-field error
+                   label="姓名"
+                   placeholder="请输入姓名"
+                   required
+                   v-model="model.name" />
+        <van-field label="身份证号"
+                   placeholder="请输入身份证号"
+                   required
+                   v-model="model.idcard" />
+        <van-field @click="showPopupRelation"
+                   label="关系"
+                   placeholder="请选择"
+                   readonly
+                   required
+                   right-icon="arrow"
+                   v-model="model.relation" />
+        <van-field @click="showPopupSex"
+                   label="性别"
+                   placeholder="请选择"
+                   readonly
+                   required
+                   right-icon="arrow"
+                   v-model="model.sex" />
+        <van-field @click="showPopupBirthday"
+                   label="生日"
+                   placeholder="请输入"
+                   readonly
+                   required
+                   right-icon="arrow"
+                   v-model="model.birthday" />
+        <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
+        <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <peace-dialog :visible.sync="showAllergicHistory">
-          <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>
+          <AddAllergicHistory @onSave="showAllergicHistory = false"
+                              v-model="model.allergic_history"></AddAllergicHistory>
         </peace-dialog>
         <peace-dialog :visible.sync="showFoodAllergy">
-          <AddFoodAllergy @onSave="showFoodAllergy = false" v-model="model.foodAllergy"></AddFoodAllergy>
+          <AddFoodAllergy @onSave="showFoodAllergy = false"
+                          v-model="model.foodAllergy"></AddFoodAllergy>
         </peace-dialog>
       </div>
       <div class="bottom">
-        <van-button @click="submit" type="primary">保存</van-button>
+        <van-button @click="submit"
+                    type="primary">保存</van-button>
       </div>
     </template>
 
     <!-- 关系 -->
-    <van-popup position="bottom" v-model="showRelation">
-      <van-picker :columns="relations" @cancel="closeAllPopup" @confirm="setRelation" show-toolbar />
+    <van-popup position="bottom"
+               v-model="showRelation">
+      <van-picker :columns="relations"
+                  @cancel="closeAllPopup"
+                  @confirm="setRelation"
+                  show-toolbar />
     </van-popup>
     <!-- 性别 -->
-    <van-popup position="bottom" v-model="showSex">
-      <van-picker :columns="sexs" @cancel="closeAllPopup" @confirm="setSex" show-toolbar />
+    <van-popup position="bottom"
+               v-model="showSex">
+      <van-picker :columns="sexs"
+                  @cancel="closeAllPopup"
+                  @confirm="setSex"
+                  show-toolbar />
     </van-popup>
     <!-- 生日 -->
-    <van-popup position="bottom" v-model="showBirthday">
-      <van-datetime-picker :max-date="maxDate" :min-date="minDate" @cancel="showBirthday = false" @confirm="selectTime" type="date" v-model="currentDate" />
+    <van-popup position="bottom"
+               v-model="showBirthday">
+      <van-datetime-picker :max-date="maxDate"
+                           :min-date="minDate"
+                           @cancel="showBirthday = false"
+                           @confirm="selectTime"
+                           type="date"
+                           v-model="currentDate" />
     </van-popup>
   </div>
 </template>
@@ -150,7 +214,8 @@ export default {
         if (val.length == 15) {
           this.model.sexKey = val.toString().charAt(14) % 2
           this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          this.model.birthday =
+            '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.model.sexKey = val.toString().charAt(16) % 2
@@ -170,12 +235,12 @@ export default {
     }
   },
   mounted() {
-    if(QRCode) {
-      var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: "http://jindo.dev.naver.com/collie",
-        colorDark : "#000000",
-        colorLight : "#ffffff"
-      });
+    if (QRCode) {
+      new QRCode(document.getElementById('qrcode'), {
+        text: 'http://jindo.dev.naver.com/collie',
+        colorDark: '#000000',
+        colorLight: '#ffffff'
+      })
     }
   },
   methods: {
@@ -273,34 +338,34 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 .container {
   display: flex;
   flex-direction: column;
-  .card-title, .jz-card-title {
+  .card-title,
+  .jz-card-title {
     height: 53px;
-    font-size:16px;
-    font-weight:bold;
-    color:rgba(51,51,51,1);
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(51, 51, 51, 1);
     line-height: 53px;
-    background: url("../../assets/images/card-icon.png") no-repeat;
+    background: url('../../assets/images/card-icon.png') no-repeat;
     background-size: 25px 20px;
     background-position: 15px 15px;
     padding-left: 55px;
   }
   .jz-card-title {
-    background: url("../../assets/images/huiyuanqia.png") no-repeat;
+    background: url('../../assets/images/huiyuanqia.png') no-repeat;
     background-size: 25px 20px;
     background-position: 15px 15px;
   }
   .jz-card-list {
     .item {
-      width:343px;
-      height:94px;
-      background:rgba(255,255,255,1);
-      box-shadow:0px 2px 5px 0px rgba(238,238,238,0.5);
-      border-radius:6px;
-      border:1px solid rgba(238,238,238,1);
+      width: 343px;
+      height: 94px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 2px 5px 0px rgba(238, 238, 238, 0.5);
+      border-radius: 6px;
+      border: 1px solid rgba(238, 238, 238, 1);
       margin: 0 auto;
       display: flex;
       flex-direction: row;
@@ -309,19 +374,19 @@ export default {
       .icon {
         width: 30px;
         height: 20px;
-        background: url("../../assets/images/tubiao_huaban.png") no-repeat;
+        background: url('../../assets/images/tubiao_huaban.png') no-repeat;
         background-size: cover;
         margin-right: 15px;
       }
       .jz-title {
-        font-size:15px;
-        font-weight:bold;
-        color:rgba(51,51,51,1);
+        font-size: 15px;
+        font-weight: bold;
+        color: rgba(51, 51, 51, 1);
       }
       .jz-content {
-        font-size:12px;
-        font-weight:bold;
-        color:rgba(102,102,102,1);
+        font-size: 12px;
+        font-weight: bold;
+        color: rgba(102, 102, 102, 1);
         margin-top: 5px;
       }
     }
@@ -337,11 +402,11 @@ export default {
       background: url('../../assets/images/ic_empty_card.png');
     }
     .qrcode {
-        position: absolute;
-        width: 80px;
-        height: 80px;
-        top: 59px;
-        right: 22px;
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      top: 59px;
+      right: 22px;
     }
     .name {
       position: absolute;
@@ -367,12 +432,17 @@ export default {
       margin-left: 10px;
     }
   }
-  /deep/ .van-cell__title{
+  /deep/ .van-cell__title {
     flex: 1;
     width: auto;
   }
 }
-/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
+/deep/
+  .form.form-for-family
+  > .van-cell
+  > .van-cell__value
+  > .van-field__body
+  > .van-field__control {
   color: #666;
   text-align: right;
   &::placeholder {

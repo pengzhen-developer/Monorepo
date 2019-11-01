@@ -1,22 +1,23 @@
 <template>
-<!--  -->
+  <!--  -->
   <div>
     <div class="panel panel-block panel-block-s">
-      <div
-        :deptid="item.id"
-        :Key="index"
-        :txt="item.text"
-        @click="goMenuPage(item)"
-        class="block-items"
-        v-bind:class="{'last':index == items.length -1}"
-        v-for="(item,index) in lists"
-        v-if="index < showNum"
-      >
-          <img :src="item.icon" class="block-ico" />
-          <div class="block-tit">{{item.text}}</div>
+      <div :deptid="item.id"
+           :Key="index"
+           :txt="item.text"
+           @click="goMenuPage(item)"
+           class="block-items"
+           v-bind:class="{'last':index == items.length -1}"
+           v-for="(item,index) in lists.splice(0, showNum)">
+        <img :src="item.icon"
+             class="block-ico" />
+        <div class="block-tit">{{item.text}}</div>
       </div>
-      <div @click="goDeptItemsPage()" class="block-items" v-if="items.length > max">
-        <img :src="moreIcon" class="block-ico" />
+      <div @click="goDeptItemsPage()"
+           class="block-items"
+           v-if="items.length > max">
+        <img :src="moreIcon"
+             class="block-ico" />
         <div class="block-tit">更多</div>
       </div>
     </div>

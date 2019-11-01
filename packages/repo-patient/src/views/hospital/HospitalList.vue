@@ -1,32 +1,34 @@
 /** eslint-disable */
 <template>
   <div>
-    <van-skeleton
-      :key="item.netHospitalId"
-      :loading="loading"
-      :name="item.hospitalName"
-      :nethospitalid="item.netHospitalId"
-      :row="3"
-      avatar
-      title
-      type="organHome"
-      v-for="(item,index) in data"
-      v-if="index < showNum"
-    >
-        <div @click="goMenuPage(item)" class="cards">
-          <div class="card-avatar">
-            <img :src="item.icon" class />
+    <van-skeleton :key="item.netHospitalId"
+                  :loading="loading"
+                  :name="item.hospitalName"
+                  :nethospitalid="item.netHospitalId"
+                  :row="3"
+                  avatar
+                  title
+                  type="organHome"
+                  v-for="item in data.splice(0, showNum)">
+      <div @click="goMenuPage(item)"
+           class="cards">
+        <div class="card-avatar">
+          <img :src="item.icon"
+               class />
+        </div>
+        <div class="card-body">
+          <div class="card-name">{{item.hospitalName}}</div>
+          <div class="block">
+            <div :key="tit"
+                 class="card-small"
+                 v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
           </div>
-          <div class="card-body">
-            <div class="card-name">{{item.hospitalName}}</div>
-            <div class="block">
-              <div :key="tit" class="card-small" v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
-            </div>
-            <div class="block">
-              <van-tag :key="it" v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
-            </div>
+          <div class="block">
+            <van-tag :key="it"
+                     v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
           </div>
         </div>
+      </div>
     </van-skeleton>
   </div>
 </template>
@@ -54,19 +56,19 @@ export default {
       loading: true,
       data: [],
       showNum: 100,
-      params:{},
+      params: {},
       type: 'recommendHsp' // 默认值
     }
   },
   created() {
     const params = peace.util.decode(this.$route.params.json)
-    this.params = params || {};
-    this.type = params.type || this.type;
-    this.data = this.items || [];
-    this.showNum = this.max;
+    this.params = params || {}
+    this.type = params.type || this.type
+    this.data = this.items || []
+    this.showNum = this.max
 
-    if (!this.data.length){
-      this.getHspList();
+    if (!this.data.length) {
+      this.getHspList()
       console.log(this.data)
     }
   },
@@ -75,38 +77,42 @@ export default {
   },
   methods: {
     goMenuPage(item) {
-      if(this.type == 'appoint'){
-        let json = peace.util.encode({ netHospitalId: item.netHospitalId, id: 'appointment', Date: new Date() })
+      if (this.type == 'appoint') {
+        let json = peace.util.encode({
+          netHospitalId: item.netHospitalId,
+          id: 'appointment',
+          Date: new Date()
+        })
 
         this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-        return;
+        return
       }
 
-      if(this.type == 'report'){
-        $peace.$recordCondition.formData.hsp = item;
-        $peace.$recordCondition.canSubmitProcesses();
-        this.$router.go(-1);
-        $peace.$recordCondition = null;
-        return;
+      if (this.type == 'report') {
+        $peace.$recordCondition.formData.hsp = item
+        $peace.$recordCondition.canSubmitProcesses()
+        this.$router.go(-1)
+        $peace.$recordCondition = null
+        return
       }
-        // 没有type值时 默认为recommendHsp
-      if(this.type == 'recommendHsp'){
-          let json = peace.util.encode({netHospitalId: item.netHospitalId})
+      // 没有type值时 默认为recommendHsp
+      if (this.type == 'recommendHsp') {
+        let json = peace.util.encode({ netHospitalId: item.netHospitalId })
 
-          this.$router.push(`/hospital/HospitalHome/${json}`)
-          return;
+        this.$router.push(`/hospital/HospitalHome/${json}`)
+        return
       }
     },
-    getHspList(){
+    getHspList() {
       // 推荐医院
-      if(this.params.type == 'recommendHsp'){
+      if (this.params.type == 'recommendHsp') {
         peace.service.index.getMenu().then(res => {
           this.data = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
         })
       }
       // 报告单医院
-      if(this.params.type == 'report'){
+      if (this.params.type == 'report') {
         peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
           this.data = res.data.netHospitals || []
           this.showNum = this.data.length
@@ -114,8 +120,8 @@ export default {
       }
 
       // 预约医院
-      if(this.params.type == 'appoint'){
-        peace.service.hospital.getHospitalByRegister({ p: 1, size:100 }).then(res => {
+      if (this.params.type == 'appoint') {
+        peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then(res => {
           this.data = res.data.list || []
           this.showNum = this.data.length
         })
@@ -191,7 +197,7 @@ export default {
 .van-tag {
   padding: 0.1em 0.5em;
   margin-right: 5px;
-  background: #E5F9F6 !important;
-  color: #00C6AE;
+  background: #e5f9f6 !important;
+  color: #00c6ae;
 }
 </style>

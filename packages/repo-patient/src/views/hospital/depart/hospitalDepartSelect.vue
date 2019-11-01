@@ -130,8 +130,6 @@ export default {
     goDoctorListPage(obj) {
       if (this.params.id == 'consult') {
         obj.netHospitalId = this.params.netHospitalId
-        obj.deptChild = obj.deptChild
-        obj.deptChildId = obj.deptChildId
         obj.type = 'departDoctorList'
 
         let json = peace.util.encode(obj)

@@ -24,7 +24,8 @@
                  }">
         <div v-if="drugItems.length">
           <div class="panel"
-               v-for="item in drugItems">
+               v-for="item in drugItems"
+               :key="item.DrugStoreName">
             <div class="panel-head">
               <div class="card-strip">
                 <div class="avatar">
@@ -44,7 +45,8 @@
               <div class="card-imgs"
                    v-if="item.OrderDet && item.OrderDet.length">
                 <div class="imgs-item"
-                     v-for="det in item.OrderDet">
+                     v-for="det in item.OrderDet"
+                     :key="det.DrugImage">
                   <div class="item-icon"
                        :class="{ 'item-icon-none': !item.DrugImage }">
                     <img :src="det.DrugImage" />
@@ -120,8 +122,8 @@ export default {
       let orderNo = this.$route.query.orderId
       let params = { code, orderNo }
       peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data;
-        peace.wx.payInvoke(data, this.payCallback);
+        let data = res.data
+        peace.wx.payInvoke(data, this.payCallback)
       })
     }
   },
@@ -139,7 +141,7 @@ export default {
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
         this.drugItems = res.data
-        this.loaded = true;
+        this.loaded = true
       })
     },
 
@@ -148,21 +150,21 @@ export default {
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     payOrder(item) {
-      let orderNo = item.OrderId;
-      this.currentOrderId = item.OrderId;
+      let orderNo = item.OrderId
+      this.currentOrderId = item.OrderId
       let params = { orderNo }
-      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo);
+      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
     },
     payCallback() {
       let orderId = ''
-      if(this.$route.query.orderId) {
+      if (this.$route.query.orderId) {
         //授权跳转后回调
-        orderId = this.$route.query.orderId;
+        orderId = this.$route.query.orderId
       } else {
         //直接回调
-        orderId = this.currentOrderId;
+        orderId = this.currentOrderId
       }
-      const json = peace.util.encode({ OrderId: orderId})
+      const json = peace.util.encode({ OrderId: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     canselOrder(item) {

@@ -132,7 +132,6 @@ export default {
     }
   },
   mounted() {
-    let that = this
     this.appid = config.APPID
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
@@ -147,8 +146,8 @@ export default {
       let orderNo = this.$route.query.orderId
       let params = { code, orderNo }
       peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data;
-        peace.wx.payInvoke(data, this.payCallback);
+        let data = res.data
+        peace.wx.payInvoke(data, this.payCallback)
       })
     }
   },
@@ -186,22 +185,22 @@ export default {
         .submitOrder(params)
         .then(res => {
           let orderNo = res.data.OrderId
-          this.orderId = res.data.OrderId;
+          this.orderId = res.data.OrderId
           let params = { orderNo }
-          peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo);
+          peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
         })
         .catch(() => {
           this.showBtn = true
         })
     },
     payCallback() {
-      let orderId = '';
-      if(this.$route.query.orderId) {
+      let orderId = ''
+      if (this.$route.query.orderId) {
         //授权跳转后回调
-        orderId = this.$route.query.orderId;
+        orderId = this.$route.query.orderId
       } else {
         //直接回调
-        orderId = this.orderId;
+        orderId = this.orderId
       }
       const json = peace.util.encode({ OrderId: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
