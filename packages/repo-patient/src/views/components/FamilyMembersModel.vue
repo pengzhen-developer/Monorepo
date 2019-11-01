@@ -62,7 +62,7 @@
 
 
           <van-cell-group>
-              <van-cell value="就诊人未满6岁，请填写监护人信息"  is-link @click="goToGardian" v-if="age!= null && age <6"/>
+              <van-cell value="就诊人未满6岁，请填写监护人信息"  is-link @click="goToGardian" v-if="age!= null && age < this.ageLimit"/>
               <van-cell title="监护人姓名" :value="gardianName" v-if="gardianSet"/>
               <van-cell title="监护人身份证号" :value="gardianId" v-if="gardianSet"/>
           </van-cell-group>
@@ -145,6 +145,7 @@ export default {
 
   data() {
     return {
+      ageLimit: 7,
       age: null,
       gardianSet: false,
       gardianId: '',
@@ -354,8 +355,8 @@ export default {
       if (!this.model.nationName) {
         return peace.util.alert('请选择民族')
       }
-      console.log('tag', this.age && this.age < 6 && this.gardianName =='' && this.gardianId == '')
-      if (this.age && this.age < 6 && this.gardianName =='' && this.gardianId == '') {
+      console.log('tag', this.age && this.age < this.ageLimit && this.gardianName =='' && this.gardianId == '')
+      if (this.age && this.age < this.ageLimit && this.gardianName =='' && this.gardianId == '') {
         return peace.util.alert('请选择监护人')
       }
       if (this.isEdit) {
@@ -373,6 +374,7 @@ export default {
       } else {
         params.type = 1;
         params.source = 2;
+        params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
         if(this.gardianId != "") {
             params.guardianName = this.gardianName
             params.guardianIdCard = this.gardianId
