@@ -377,7 +377,15 @@ export default {
                 return peace.util.alert('领取成功，请填写信息后提交问诊！')
               }
             }).catch((res) => {
-              this.$router.push(`/setting/myFamilyMembers`)
+
+              return Dialog.confirm({
+                title: '提示',
+                message: '该就诊人尚未完善资料，请前去完善！',
+                confirmButtonText: '去完善'
+              }).then(() => {
+                this.$router.push(`/setting/myFamilyMembers`)
+              });
+
               // on cancel
             })
           })
@@ -449,7 +457,6 @@ export default {
     },
 
     checkFamily() {
-      console.log("checkkkkkkkk")
       if (this.source.familyList && this.source.familyList.length > 1) {
         this.showFamily = true
       } else {
