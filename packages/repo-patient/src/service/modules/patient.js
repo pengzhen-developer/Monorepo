@@ -324,6 +324,11 @@ export function getGuardianList(params) {
   return peace.http.post(getGuardianList, params)
 }
 
+export function perfectInfo(params) {
+  const perfectInfo = 'client/v1/Patient/perfectInfo'
+  return peace.http.post(perfectInfo, params)
+}
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -379,5 +384,7 @@ export default {
   createHealthcard,
   getCardList,
   healthcardInfo,
-  getGuardianList
+  getGuardianList,
+  perfectInfo
+
 }

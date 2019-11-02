@@ -7,7 +7,7 @@
         <div class="name">{{cardItem.name}}</div>
         <div class="idcard">{{cardItem.idcard}}</div>
       </div>
-      <div class="card no-card" v-if="cardList.length == 0 && firstLoad"></div>
+      <div class="card no-card" v-if="!model.isExistCard"></div>
       <div claas="card-list-content">
           <div class="item"></div>
       </div>
@@ -27,13 +27,19 @@
 <!--        </div>-->
 <!--      </div>-->
 
-      <div class="form form-for-family" v-if="(cardList.length == 0 || !model.isExistCard)">
+      <div class="form form-for-family" v-if="!model.isExistCard">
         <van-field :disabled="isEdit" label="姓名" placeholder="请输入姓名" v-model="model.name" />
         <van-field :disabled="isEdit" label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
         <van-field :disabled="isEdit" label="关系" placeholder="请选择" readonly v-model="model.relation" />
         <van-field :disabled="isEdit" label="性别" placeholder="请选择" readonly v-model="model.sex" />
         <van-field :disabled="isEdit" label="生日" placeholder="请输入" readonly v-model="model.birthday" />
-        <van-field :disabled="isEdit" label="民族" readonly v-model="model.nationName" />
+        <template v-if="isNationExist">
+            <van-field :disabled="isEdit" label="民族" readonly v-model="model.nationName" />
+        </template>
+        <template v-else>
+            <van-field @click="showPopupNations" label="民族" placeholder="请输入" required right-icon="arrow"  v-model="model.nationName"/>
+        </template>
+
 <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
 <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />-->
 <!--        <peace-dialog :visible.sync="showAllergicHistory">-->
@@ -45,7 +51,7 @@
       </div>
       <div class="bottom" >
         <van-button @click="deleted" plain>删除家人</van-button>
-<!--        <van-button @click="submit" type="primary">保存</van-button>-->
+        <van-button @click="submit" type="primary" v-if="!isNationExist">完善资料</van-button>
       </div>
     </template>
 
@@ -144,6 +150,7 @@ export default {
 
   data() {
     return {
+      isNationExist: this.data.nationCode,
       ageLimit: 7,
       age: null,
       gardianSet: false,
@@ -359,32 +366,53 @@ export default {
         return peace.util.alert('请选择监护人')
       }
       if (this.isEdit) {
-        const params = {
-          familyId: this.model.famialyId,
-          allergic_history: this.model.allergic_history,
-          foodAllergy: this.model.foodAllergy
+        if(this.isNationExist) {
+            // 存在民族情况，此时为删除
+            const params = {
+                familyId: this.model.famialyId,
+                allergic_history: this.model.allergic_history,
+                foodAllergy: this.model.foodAllergy
+            }
+
+            peace.service.patient.upbindFamily(params).then(res => {
+                peace.util.alert(res.msg)
+
+                this.$emit('onComplete')
+            })
+        } else {
+            // 没有民族情况，则开始完善资料。
+            this.perfectInfo();
         }
 
-        peace.service.patient.upbindFamily(params).then(res => {
-          peace.util.alert(res.msg)
-
-          this.$emit('onComplete')
-        })
       } else {
+          // 添加家人情况
+          this.saveFamily();
+      }
+    },
+    saveFamily() {
+        let params = this.model;
         params.type = 1;
         params.source = 2;
-        params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
+        params.nethospitalid = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID);
         if(this.gardianId != "") {
             params.guardianName = this.gardianName
             params.guardianIdCard = this.gardianId
         }
         peace.service.patient.bindFamily(params).then(res => {
-          peace.util.alert(res.msg)
-          this.$emit('onComplete')
+            peace.util.alert(res.msg)
+            this.$emit('onComplete')
         })
-      }
     },
-
+      perfectInfo() {
+          let familyId = this.model.familyId
+          let nationCode = this.model.nationCode;
+          let nationName = this.model.nationName;
+          let params = {familyId, nationCode, nationName}
+          peace.service.patient.perfectInfo(params).then(res => {
+              peace.util.alert(res.msg)
+              this.$emit('onComplete')
+          })
+      },
     // 删除
     deleted() {
       const params = {
