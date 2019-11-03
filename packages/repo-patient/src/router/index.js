@@ -939,7 +939,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // 微信环境授权
-  if (to.query.code) {
+  if (peace.util.queryUrlParam('referrer') === 'login' && to.query.code) {
     let code = to.query.code
     let params = { code }
     peace.service.login.getOPenIdByCode(params).then(res => {

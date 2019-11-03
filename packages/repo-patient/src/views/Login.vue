@@ -111,21 +111,19 @@ export default {
         peace.service.IM.initNIM()
 
         // 跳转 reffer
-        let reffer = ($peace.referrer && $peace.referrer.fullPath) || peace.config.system.homePage;
-        var ua = window.navigator.userAgent.toLowerCase();
-        if(ua.match(/MicroMessenger/i)=="micromessenger"){
+        let reffer = ($peace.referrer && $peace.referrer.fullPath) || peace.config.system.homePage
+        var ua = window.navigator.userAgent.toLowerCase()
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
           // 微信环境进行授权
-          if(res.data.loginInfo.otherOpenId == '') {
-            let prefix = location.href.split("h5")[0];
-            let appId = res.data.loginInfo.appId;
-            reffer = prefix + 'h5' + reffer;
-            // console.log(appId);
-            peace.wx.auth(appId, reffer);
+          if (res.data.loginInfo.otherOpenId == '') {
+            let prefix = location.href.split('h5')[0]
+            let appId = res.data.loginInfo.appId
+            let character = reffer.indexOf('?') === -1 ? '?' : '&'
+            reffer = prefix + 'h5' + reffer + character + 'referrer=login'
+            peace.wx.auth(appId, reffer)
           }
-        }else{
-          this.$router.push(
-                reffer
-          )
+        } else {
+          this.$router.push(reffer)
         }
       })
     }
