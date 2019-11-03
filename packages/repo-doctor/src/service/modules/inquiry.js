@@ -140,6 +140,20 @@ export function getCase(params) {
 }
 
 /**
+ * 获取新门诊病历详情详情
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getHealthCase(params) {
+  const getHealthCase = 'client/v1/health/getHealthCase'
+
+  return peace.http.post(getHealthCase, params)
+}
+
+
+/**
  * 获取转诊医生
  *
  * @export
@@ -217,7 +231,7 @@ export default {
   addCase,
   /** 获取病历详情 */
   getCase,
-
+  getHealthCase,
   /** 获取转诊医生 */
   referralDocListPc,
   /** 提交转诊 */

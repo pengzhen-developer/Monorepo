@@ -13,14 +13,14 @@
     </div>
 
     <peace-dialog :visible.sync="caseDialog.visible" append-to-body title="病历详情">
-      <InquirySessionCaseDetail :data="caseDialog.data"></InquirySessionCaseDetail>
+      <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
     </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
-import InquirySessionCaseDetail from '@src/views/clinic/inquiry/InquirySessionCaseDetail'
+import InquiryNewCaseDetail from '@src/views/clinic/inquiry/InquiryNewCaseDetail.vue'
 
 export default {
   props: {
@@ -28,7 +28,7 @@ export default {
   },
 
   components: {
-    InquirySessionCaseDetail
+    InquiryNewCaseDetail
   },
 
   data() {
@@ -42,11 +42,12 @@ export default {
 
   methods: {
     get() {
-      const params = { inquiry_no: this.data.inquiryNo }
-
-      peace.service.inquiry.getCase(params).then(res => {
+      const params = { inquiryNo: this.data.inquiryNo }
+      // const params = { inquiryNo: 'WZ2722845337239667' }
+      peace.service.inquiry.getHealthCase(params).then(res => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
+        // console.log(this.caseDialog.data)
       })
     }
   }
