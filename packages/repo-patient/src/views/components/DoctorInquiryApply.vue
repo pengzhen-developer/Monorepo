@@ -351,7 +351,10 @@ export default {
             }
 
             // 载入就诊人后，检查健康卡
-            this.checkCard();
+            if(family.id) {
+              this.checkCard();
+            }
+
           }
         })
       }
@@ -439,7 +442,9 @@ export default {
           this.model.isPregnancy = ''
         }
 
-        this.checkCard();
+        if(this.model.familyId) {
+          this.checkCard();
+        }
       }
     },
 
