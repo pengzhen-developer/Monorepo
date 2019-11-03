@@ -49,7 +49,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="loaded && doctorList.length == 0">
       <div class="none-page">
         <i class="icon icon_none_doctor"></i>
         <div class="none-text">暂无医生信息</div>
@@ -64,7 +64,8 @@ import peace from '@src/library'
 export default {
   data() {
     return {
-      doctorList: []
+      doctorList: [],
+      loaded: false
     }
   },
 
@@ -83,10 +84,12 @@ export default {
       if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
           this.doctorList = res.data
+          this.loaded = true
         })
       } else {
         peace.service.patient.getDoctorList(params).then(res => {
           this.doctorList = res.data
+          this.loaded = true
         })
       }
     },
@@ -96,7 +99,7 @@ export default {
 
       for (const key in doctor.consultationList) {
         if (doctor.consultationList.hasOwnProperty(key)) {
-          if(key != 2) {
+          if (key != 2) {
             const element = doctor.consultationList[key]
             moneyList.push(element.money)
           }

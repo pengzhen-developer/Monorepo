@@ -88,6 +88,16 @@ export default {
       this.data = res.data
     })
   },
+  mounted() {
+    // // 微信环境授权
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code;
+    //   let params = {code};
+    //   peace.service.login.getOPenIdByCode(params).then(res => {
+    //     console.log(res);
+    //   });
+    // }
+  },
   methods: {
     goMenuPage(item, data) {
       let json

@@ -156,6 +156,13 @@ export default {
 
   mounted() {
     this.colorArr.sort(() => Math.random() - 0.5)
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code;
+    //   let params = {code};
+    //   peace.service.login.getOPenIdByCode(params).then(res => {
+    //     console.log(res);
+    //   });
+    // }
   },
 
   methods: {

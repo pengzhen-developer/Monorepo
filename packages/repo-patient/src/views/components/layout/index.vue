@@ -16,14 +16,16 @@
 
     <!-- 中部功能 keepAlive router  -->
     <div class="layout-content">
-      <transition name="van-fade">
+      <transition name="van-fade"
+                  mode="out-in">
         <keep-alive>
           <router-view :key="$route.fullPath"
                        v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
       </transition>
 
-      <transition name="van-fade">
+      <transition name="van-fade"
+                  mode="out-in">
         <router-view :key="$route.fullPath"
                      v-if="!$route.meta.keepAlive"></router-view>
       </transition>

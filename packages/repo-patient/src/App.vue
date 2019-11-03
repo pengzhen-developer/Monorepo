@@ -12,7 +12,6 @@ export default {
 
   beforeCreate() {
     const params = peace.util.queryUrlParam('params')
-
     if (params) {
       if (params === 'PLATEFORM') {
         peace.cache.remove(peace.type.SYSTEM.PARAMS)
@@ -21,10 +20,8 @@ export default {
       }
     }
   },
-
   created() {
     document.title = peace.config.system.title
-
     // restore user info and user token
     if (peace.cache.get(peace.type.USER.INFO)) {
       this.$store.commit('user/restoreUserInfo', peace.cache.get(peace.type.USER.INFO))

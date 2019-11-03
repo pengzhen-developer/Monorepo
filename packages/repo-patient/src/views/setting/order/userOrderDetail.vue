@@ -2,20 +2,32 @@
   <div v-if="info.orderInfo">
     <!--TOP-->
     <div class="module nmg">
-      <div class="strong">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}}</div>
-      <div class="brief">{{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}</div>
+      <div class="strong">
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}} <span
+              class="money"
+              v-if="info.orderInfo.orderStatus == '1'">¥{{info.orderInfo.orderMoney}}</span></div>
+
+      <div class="brief"
+           v-if="info.orderInfo.orderStatus != '2'">
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}
+      </div>
+      <div class="brief"
+           v-else>{{info.orderInfo.cancelReason}}</div>
+      <div class="cancelText"
+           v-if="(info.orderInfo.orderStatus == '6' || info.orderInfo.orderStatus == '4') && info.orderInfo.payMoney != '0.00'">
+        订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
       <div class="module-body">
-        <div
-          :class="['label', 'blue', info.orderInfo.cancelState ? '' : 'disabled']"
-          @click="canselOrder"
-          v-if="info.orderInfo.orderStatus == '1' || info.orderInfo.orderStatus == '3'"
-        >{{info.orderInfo.cancelState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}</div>
+        <div :class="['label', info.orderInfo.cancelState ? '' : 'disabled']"
+             @click="canselOrder"
+             v-if="info.orderInfo.orderStatus == '3'">
+          {{info.orderInfo.cancelState ? '申请退号' : page.cfgDic[info.orderInfo.cancelType]}}</div>
       </div>
     </div>
     <!--医生名片-->
     <div class="card pd">
       <div class="card-avatar avatar-circular">
-        <img :src="info.doctorInfo.avartor || info.doctorInfo.doctorAvartor" class />
+        <img :src="info.doctorInfo.avartor || info.doctorInfo.doctorAvartor"
+             class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -59,7 +71,8 @@
       <div class="form-dd">{{info.doctorInfo.familyName}}/{{info.doctorInfo.diagnoseType}}</div>
     </div>
     <!--订单报文-->
-    <div class="module pdtb">
+    <div class="module pdtb"
+         :style="{ paddingBottom :info.orderInfo.orderStatus == 1 ? '60px' : 0 }">
       <div class="dl-packet">
         <div class="dt">订单号码</div>
         <div class="dd">{{info.orderInfo.orderNo}}</div>
@@ -73,18 +86,26 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-    <div class="module pdtb" v-if="info.orderInfo.orderStatus != '1'">
+
+    <!-- 待支付 -->
+    <div class='bottom'
+         v-if="info.orderInfo.orderStatus == 1">
+      <div class="left">应付金额：<span class="money">¥{{info.orderInfo.orderMoney}}</span></div>
+      <div class="right">
+        <div class="pay cancel"
+             @click="canselOrder">
+          取消订单
+        </div>
+        <div class="pay"
+             @click="goToPay(info)">继续支付</div>
+      </div>
+    </div>
+    <div class="module pdtb"
+         v-else>
       <div class="brief right">
         实付金额：
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
-    </div>
-    <div style="padding: 0 15px;">
-      <van-button
-                @click="goToPay(info)"
-                v-if="info.orderInfo.orderStatus == 1"
-                style="width: 100%;"
-                type="primary">继续支付</van-button>
     </div>
   </div>
 </template>
@@ -97,7 +118,7 @@ export default {
   props: {},
   data() {
     return {
-      orderStatus:[
+      orderStatus: [
         {
           code: 1
         }
@@ -111,7 +132,7 @@ export default {
               small: '15分钟内未付款，订单将自动取消'
             },
             2: {
-              text: '待接诊',
+              text: '已取消',
               small: '已通知医生尽快接诊，12小时未接诊将自动'
             },
             3: {
@@ -124,7 +145,7 @@ export default {
             },
             5: {
               text: '已退号',
-              small: '您的挂号订单已退号，退号后费用将原路返还，请注意查收'
+              small: '退号成功，如需就诊请重新预约'
             },
             6: {
               text: '退款中',
@@ -154,15 +175,15 @@ export default {
   methods: {
     goToPay(data) {
       //debugger;
-      let doctorId = data.doctorInfo.doctorId;
-      let order = data.orderInfo;
-      let money = order.orderMoney;
-      let typeName = '预约挂号';
-      let doctorName = data.doctorInfo.doctorName;
-      let orderNo = order.orderNo;
-      let json = {money, typeName, doctorName, orderNo, doctorId};
-      json = peace.util.encode(json);
-      this.$router.push(`/components/doctorInquiryPay/${json}`);
+      let doctorId = data.doctorInfo.doctorId
+      let order = data.orderInfo
+      let money = order.orderMoney
+      let typeName = '预约挂号'
+      let doctorName = data.doctorInfo.doctorName
+      let orderNo = order.orderNo
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
       peace.service.patient
@@ -178,21 +199,31 @@ export default {
       if (!this.info.orderInfo.cancelState) {
         return
       }
+      let type, alertMsg
+      if (this.info.orderInfo.orderStatus == 1) {
+        type = 'cancel'
+        alertMsg = '是否确认取消'
+      } else {
+        type = 'quit'
+        alertMsg = '是否确认退号'
+      }
       Dialog.confirm({
-        message: '是否确认退号？'
-      }).then(() => {
-        peace.service.appoint
-                .orderCancel({
-                  orderNo: this.info.orderInfo.orderNo
-                })
-                .then(res => {
-                  peace.util.alert(res.msg || '退号成功')
-                  this.getData()
-                })
-      }).catch(() => {
-        // on cancel
-      });
-
+        message: alertMsg
+      })
+        .then(() => {
+          peace.service.appoint
+            .orderCancel({
+              orderNo: this.info.orderInfo.orderNo,
+              type
+            })
+            .then(res => {
+              peace.util.alert(res.msg || '退号成功')
+              this.getData()
+            })
+        })
+        .catch(() => {
+          // on cancel
+        })
     }
   }
 }
@@ -201,6 +232,42 @@ export default {
 <style lang="scss" scoped>
 .van-button--normal {
   border-radius: 20px;
+}
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(238, 238, 238, 1);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  justify-content: space-between;
+  .money {
+    font-size: 20px;
+    color: rgba(255, 52, 77, 1);
+  }
+  .right {
+    display: flex;
+  }
+  .pay {
+    width: 75px;
+    height: 30px;
+    background: rgba(0, 198, 174, 1);
+    border-radius: 2px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 1);
+    line-height: 30px;
+    text-align: center;
+    margin-left: 10px;
+    &.cancel {
+      border: 1px solid rgba(204, 204, 204, 1);
+      background: #fff;
+      color: rgba(153, 153, 153, 1);
+    }
+  }
 }
 .dl-addr {
   font-size: 14px;
@@ -242,6 +309,19 @@ export default {
   font-size: (36px/2);
   line-height: (36px/2);
   padding: (20px/2) (30px/2);
+}
+.module .cancelText {
+  height: 45px;
+  background: rgba(240, 252, 250, 1);
+  border-radius: 2px;
+  margin: 10px 15px 0 15px;
+  font-size: 12px;
+  color: rgba(0, 198, 174, 1);
+  line-height: 16px;
+  padding: 6px 10px 0px 50px;
+  background: rgba(240, 252, 250, 1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
+  background-size: 17px 17px;
+  background-position: 20px 13px;
 }
 .module .brief {
   font-size: (26px/2);

@@ -13,6 +13,7 @@ import index from './modules/index'
 import advert from './modules/advert'
 import patient from './modules/patient'
 import doctor from './modules/doctor'
+import health from './modules/health'
 import hospital from './modules/hospital'
 import appoint from './modules/appoint'
 import diagnose from './modules/diagnose'
@@ -27,6 +28,7 @@ export default {
   advert,
   patient,
   doctor,
+  health,
   hospital,
   appoint,
   diagnose,

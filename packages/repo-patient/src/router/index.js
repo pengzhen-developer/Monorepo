@@ -16,7 +16,6 @@ const router = new Router({
         auth: false
       },
       component: () => import('@src/views/components/layout/index.vue'),
-
       children: [
         // 首页
         {
@@ -31,10 +30,11 @@ const router = new Router({
             }
           },
           component: () => {
-            const params =
-              $peace.util.queryUrlParam('params') || $peace.cache.get($peace.type.SYSTEM.PARAMS)
-
-            if (params && params !== 'PLATEFORM') {
+            // 存在 NETHOSPITALID 和 CHANNELID，则跳转医院首页
+            if (
+              $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) &&
+              $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+            ) {
               return import('@src/views/hospital/HospitalHome.vue')
             } else {
               return import('@src/views/home/index.vue')
@@ -89,14 +89,181 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            auth: false,
-            keepAlive: true,
             tabBar: true,
             navbar: {
               title: '健康档案'
             }
           },
           component: () => import('@src/views/file/index.vue')
+        },
+
+        {
+          path: '/file/fileHealthDetail/:json',
+          name: '/file/fileHealthDetail',
+          meta: {
+            tabBar: true,
+            navbar: {
+              title: '健康档案-基本健康信息'
+            }
+          },
+          component: () => import('@src/views/file/FileHealthDetail.vue')
+        },
+        {
+          path: '/file/fileAllDetail/:json',
+          name: '/file/fileAllDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-全部'
+            }
+          },
+          component: () => import('@src/views/file/FileAllDetail.vue')
+        },
+        {
+          path: '/file/fileReportList/:json',
+          name: '/file/fileReportList/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-报表'
+            }
+          },
+          component: () => import('@src/views/file/FileReportList.vue')
+        },
+        {
+          path: '/file/fileBloodPressureHistory/:json',
+          name: '/file/fileBloodPressureHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血压历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureHistory.vue')
+        },
+        {
+          path: '/file/fileBloodPressureDetail/:json',
+          name: '/file/fileBloodPressureDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血压详情'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureDetail.vue')
+        },
+        {
+          path: '/file/fileBloodPressureAddData/:json',
+          name: '/file/fileBloodPressureAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血压'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodPressureAddData.vue')
+        },
+
+        {
+          path: '/file/fileBloodOxyGenHistory/:json',
+          name: '/file/fileBloodOxyGenHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血氧历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenHistory.vue')
+        },
+        {
+          path: '/file/fileBloodOxyGenDetail/:json',
+          name: '/file/fileBloodOxyGenDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血氧详情'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenDetail.vue')
+        },
+        {
+          path: '/file/fileBloodOxyGenAddData/:json',
+          name: '/file/fileBloodOxyGenAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血氧'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodOxyGenAddData.vue')
+        },
+
+        {
+          path: '/file/fileBodyFatHistory/:json',
+          name: '/file/fileBodyFatHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-体脂历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatHistory.vue')
+        },
+        {
+          path: '/file/fileBodyFatDetail/:json',
+          name: '/file/fileBodyFatDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-体脂详情'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatDetail.vue')
+        },
+        {
+          path: '/file/fileBodyFatAddData/:json',
+          name: '/file/fileBodyFatAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加体脂'
+            }
+          },
+          component: () => import('@src/views/file/FileBodyFatAddData.vue')
+        },
+
+        {
+          path: '/file/fileBloodSugarDetail/:json',
+          name: '/file/fileBloodSugarDetail/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-血糖'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarDetail.vue')
+        },
+        {
+          path: '/file/fileBloodSugarHistory/:json',
+          name: '/file/fileBloodSugarHistory/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-历史数据'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarHistory.vue')
+        },
+        {
+          path: '/file/fileBloodSugarAddData/:json',
+          name: '/file/fileBloodSugarAddData/:json',
+          meta: {
+            auth: false,
+            navbar: {
+              title: '健康档案-添加血压'
+            }
+          },
+          component: () => import('@src/views/file/FileBloodSugarAddData.vue')
         },
         // 我的
         {
@@ -126,7 +293,31 @@ const router = new Router({
           },
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
         },
-
+        // 电子健康卡详情
+        {
+          path: '/setting/cardDetail/:json',
+          name: '/setting/cardDetail',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的家人',
+              back: true
+            }
+          },
+          component: () => import('@src/views/setting/CardDetail.vue')
+        },
+        {
+          path: '/card/index',
+          name: '电子健康卡',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的家人',
+              back: true
+            }
+          },
+          component: () => import('@src/views/card/index.vue')
+        },
         // 我的咨询
         {
           path: '/setting/userConsultList',
@@ -732,6 +923,30 @@ const router = new Router({
 let cacheRoute = null
 
 router.beforeEach((to, from, next) => {
+  // 存储当前 url 参数
+  let params = peace.util.decode(to.params.json)
+  if (peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
+    peace.cache.set(
+      peace.type.SYSTEM.NETHOSPITALID,
+      peace.util.queryUrlParam('nethospitalid') || params.netHospitalId
+    )
+  }
+  if (peace.util.queryUrlParam('channelid') || params.channelid) {
+    peace.cache.set(
+      peace.type.SYSTEM.CHANNELID,
+      peace.util.queryUrlParam('channelid') || params.channelid
+    )
+  }
+
+  // 微信环境授权
+  if (peace.util.queryUrlParam('referrer') === 'login' && to.query.code) {
+    let code = to.query.code
+    let params = { code }
+    peace.service.login.getOPenIdByCode(params).then(res => {
+      console.log(res)
+    })
+  }
+
   $peace.routerStack = $peace.routerStack || []
   $peace.routerStack.push(to)
 

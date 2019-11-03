@@ -349,6 +349,11 @@ export default {
             } else {
               this.showPregnancy = false
             }
+
+            // 载入就诊人后，检查健康卡
+            if (family.id) {
+              this.checkCard()
+            }
           }
         })
       }
@@ -358,6 +363,46 @@ export default {
   },
 
   methods: {
+    checkCard(tag) {
+      this.checkCardExist().then(res => {
+        if (!res.data.result) {
+          return Dialog.confirm({
+            title: '提示',
+            message: '该就诊人还没有电子健康卡，是否现在领取？',
+            confirmButtonText: '现在领取'
+          }).then(() => {
+            let familyId = this.model.familyId
+            let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+            let params = { familyId, nethospitalid }
+            peace.service.patient
+              .createHealthcard(params)
+              .then(res => {
+                if (res.data.result) {
+                  return peace.util.alert('领取成功，请填写信息后提交问诊！')
+                }
+              })
+              .catch(res => {
+                if (res.data.code === 202) {
+                  return Dialog.confirm({
+                    title: '提示',
+                    message: '该就诊人尚未完善资料，请前 去完善！',
+                    confirmButtonText: '去完善'
+                  }).then(() => {
+                    this.$router.push(`/setting/myFamilyMembers`)
+                  })
+                }
+              })
+          })
+        } else {
+          if (tag) {
+            // 存在就诊卡
+            this.uploadHandler().then(() => {
+              this.applyHandler()
+            })
+          }
+        }
+      })
+    },
     redirect() {
       this.$router.push({
         name: '/components/informedConsent',
@@ -394,6 +439,10 @@ export default {
           this.showPregnancy = false
           this.model.isPregnancy = ''
         }
+
+        if (this.model.familyId) {
+          this.checkCard()
+        }
       }
     },
 
@@ -423,9 +472,17 @@ export default {
         })
       }
     },
-
+    checkCardExist() {
+      let familyId = this.model.familyId
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid
+      let params = { familyId, nethospitalid }
+      return new Promise(resolve => {
+        peace.service.patient.isExistCardRelation(params).then(res => {
+          resolve(res)
+        })
+      })
+    },
     apply() {
-      console.log('familyname', this.model.familyName)
       //验证
       if (!this.model.familyName || this.model.familyName == '添加就诊人') {
         return peace.util.alert('请选择就诊人')
@@ -456,9 +513,7 @@ export default {
         }
       }
 
-      this.uploadHandler().then(() => {
-        this.applyHandler()
-      })
+      this.checkCard(true)
     },
     goToPay(data) {
       let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
@@ -513,16 +568,15 @@ export default {
               this.goToPay(res.data)
               return
             } else {
-              //免费问诊
-              // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-              setTimeout(() => {
-                this.$router.push({
-                  name: '/message/index',
-                  params: {
-                    sessionId: 'p2p-' + this.model.doctorId
-                  }
-                })
-              }, 1000)
+              const params = peace.util.encode({
+                id: 'p2p-' + this.model.doctorId,
+                scene: 'p2p',
+                beginTime: res.data.startTime.toDate().getTime(),
+                to: this.model.doctorId
+              })
+
+              // 跳转聊天详情
+              this.$router.push(`/components/messageList/${params}`)
               return peace.util.alert(res.msg)
             }
           }
@@ -533,18 +587,11 @@ export default {
               message: res.msg,
               confirmButtonText: '去看看'
             }).then(() => {
-              // 前往咨询订单详情页
-              //console.log(res.data.inquiryId);
-              // const json = peace.util.encode({
-              //   inquiryId: res.data.inquiryId
-              // })
-              let inquiryId = res.data.inquiryId
               const params = {
-                inquiryId
+                inquiryId: res.data.inquiryId
               }
               let json = peace.util.encode(params)
               this.$router.push(`/setting/userConsultDetail/${json}`)
-              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
           }
           if (res.data.errorState === 2) {
@@ -554,15 +601,15 @@ export default {
               confirmButtonText: '继续咨询'
             })
               .then(() => {
-                // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-                setTimeout(() => {
-                  this.$router.push({
-                    name: '/message/index',
-                    params: {
-                      sessionId: 'p2p-' + this.model.doctorId
-                    }
-                  })
-                }, 1000)
+                const params = peace.util.encode({
+                  id: 'p2p-' + this.model.doctorId,
+                  scene: 'p2p',
+                  beginTime: res.data.startTime.toDate().getTime(),
+                  to: this.model.doctorId
+                })
+
+                // 跳转聊天详情
+                this.$router.push(`/components/messageList/${params}`)
               })
               .catch(() => {
                 // on cancel

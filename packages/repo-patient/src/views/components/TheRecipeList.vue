@@ -35,7 +35,7 @@
           <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
         </div>
         <div class="none-page"
-             v-else>
+             v-if="loaded && !internalData">
           <div class="icon icon_none_prescrip"></div>
           <div class="none-text">暂无用药建议</div>
         </div>
@@ -86,6 +86,7 @@ export default {
 
   data() {
     return {
+      loaded: false,
       internalData: undefined,
 
       recipeDetail: {
@@ -118,6 +119,7 @@ export default {
 
       peace.service.patient.getMyPrescripList(params).then(res => {
         this.internalData = res.data
+        this.loaded = true;
       })
     },
 

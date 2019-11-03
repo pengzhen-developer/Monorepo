@@ -1,6 +1,6 @@
 {
-  "name": "test",
-  "version": "0.8.1-014",
+  "name": "dev",
+  "version": "0.8.2-001",
   "private": true,
   "scripts": {
     "start": "npm run serve",
@@ -13,10 +13,12 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "echarts": "^4.4.0",
     "nprogress": "^0.2.0",
     "vant": "^2.2.6",
     "vue": "^2.6.10",
     "vue-baidu-map": "^0.21.22",
+    "vue-echarts": "^4.0.4",
     "vue-router": "^3.0.6",
     "vuex": "^3.1.1"
   },

@@ -10,7 +10,9 @@ module.exports = {
   },
   globals: {
     // 尽量避免使用全局变量
-    $peace: true
+    $peace: true,
+    WeixinJSBridge: true,
+    QRCode: true
   },
   parserOptions: {
     parser: 'babel-eslint'

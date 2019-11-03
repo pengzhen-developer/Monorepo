@@ -11,6 +11,7 @@ import './prototype/string'
 
 // components
 import Dialog from './components/dialog'
+import Ruler from './components/ruler'
 
 // directive
 import drag from './directive/drag'
@@ -23,6 +24,9 @@ import http from './http'
 import util from './helper/util'
 import cache from './helper/cache'
 import validate from './helper/validate'
+
+//wx
+import wx from './helper/wx'
 
 // config
 import config from '@src/config'
@@ -43,7 +47,7 @@ const install = function(Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = [Dialog]
+  const components = [Dialog, Ruler]
   components.map(component => {
     Vue.use(component)
   })
@@ -65,6 +69,8 @@ export default {
   /** 工具类 */
   util,
 
+  /** 微信类 */
+  wx,
   /** 缓存类 */
   cache,
 
