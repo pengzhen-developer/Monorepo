@@ -3,8 +3,8 @@
         <div class="form form-for-family">
             <div id="qrcode" class="qrcode" :style="{backgroundImage:'url(data:image/png;base64,'+ model.base64 + ')'}"></div>
             <div class="divider"></div>
-            <van-field  label="姓名" placeholder="请输入姓名" v-model="model.name" />
-            <van-field  label="身份证号" placeholder="请输入身份证号" v-model="model.idcard" />
+            <van-field  label="姓名" placeholder="请输入姓名" readonly v-model="model.name" />
+            <van-field  label="身份证号" placeholder="请输入身份证号" readonly v-model="model.idcard" />
             <van-field  label="电话" placeholder="请选择" readonly v-model="model.tel" />
             <div class="tip">
                 <div class="icon"></div>
