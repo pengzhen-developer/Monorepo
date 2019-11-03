@@ -76,7 +76,7 @@
 
     <!-- 血氧 -->
     <div class="card card"
-         @click="util.goDetail('血氧', { ...data.bloodSugarData, familyId , idCard })">
+         @click="util.goDetail('血氧', { ...data.bloodOxyGenData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
                    height="44px"

@@ -1,7 +1,7 @@
 <template>
   <div class="file-all">
     <div class="time-line"
-         v-if="data && data.length">
+         v-if="data">
 
       <div class="item"
            v-for="(value, key) in data"
@@ -173,11 +173,13 @@ export default {
         // 遍历时间
         const timeList = new Set(res.data.list.map(item => item.createdTime))
 
-        timeList.forEach(time => {
-          temp[time] = res.data.list.filter(item => item.createdTime === time)
-        })
+        if (timeList) {
+          timeList.forEach(time => {
+            temp[time] = res.data.list.filter(item => item.createdTime === time)
+          })
 
-        this.data = temp
+          this.data = temp
+        }
       })
     }
   }
