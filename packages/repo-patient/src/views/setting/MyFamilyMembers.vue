@@ -1,6 +1,6 @@
 <template>
   <div class="my-family-members">
-      <div class="card-line">点击查看电子健康卡/就诊卡信息</div>
+    <div class="card-line">点击查看电子健康卡/就诊卡信息</div>
     <template v-if="members && members.length > 0">
       <div class="content">
         <van-cell :key="item.id"
@@ -91,7 +91,7 @@ export default {
       // 获取现有家人
       peace.service.patient.getMyFamilyList().then(res => {
         this.members = res.data
-        this.loaded = true;
+        this.loaded = true
       })
     },
 
@@ -106,7 +106,7 @@ export default {
 
     // 查看家人详细信息
     toViewDetails(item) {
-      let familyId, params;
+      let params
       switch (item) {
         case 'recordCondition':
           $peace.$recordCondition.formData.family = item
@@ -115,12 +115,12 @@ export default {
           this.$router.go(-1)
           break
         default:
-          params = {'id': item.familyId, 'source': 2}
+          params = { id: item.familyId, source: 2 }
           peace.service.patient.getFamilyInfo(params).then(res => {
-             this.dialog.data = res.data;
-             this.dialog.data.familyId = item.familyId;
-             this.dialog.title = '家人信息'
-             this.dialog.visible = true
+            this.dialog.data = res.data
+            this.dialog.data.familyId = item.familyId
+            this.dialog.title = '家人信息'
+            this.dialog.visible = true
           })
           break
       }
@@ -146,15 +146,15 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
- .card-line {
-     height:36px;
-     background:rgba(235,251,249,1);
-     font-size:14px;
-     font-weight:400;
-     color:rgba(0,198,174,1);
-     line-height:36px;
-     text-align: center;
- }
+  .card-line {
+    height: 36px;
+    background: rgba(235, 251, 249, 1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 198, 174, 1);
+    line-height: 36px;
+    text-align: center;
+  }
   .content {
     flex: 1;
     overflow-y: auto;

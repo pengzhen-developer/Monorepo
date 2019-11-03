@@ -89,14 +89,14 @@ export default {
     })
   },
   mounted() {
-    // 微信环境授权
-    if (this.$route.query.code) {
-      let code = this.$route.query.code;
-      let params = {code};
-      peace.service.login.getOPenIdByCode(params).then(res => {
-        console.log(res);
-      });
-    }
+    // // 微信环境授权
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code;
+    //   let params = {code};
+    //   peace.service.login.getOPenIdByCode(params).then(res => {
+    //     console.log(res);
+    //   });
+    // }
   },
   methods: {
     goMenuPage(item, data) {

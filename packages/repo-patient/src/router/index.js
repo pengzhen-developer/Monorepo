@@ -16,14 +16,6 @@ const router = new Router({
         auth: false
       },
       component: () => import('@src/views/components/layout/index.vue'),
-      beforeEnter: (to, from,next) => {
-        let params = peace.util.decode(to.params.json);
-        if(peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
-          peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, peace.util.queryUrlParam('nethospitalid') || params.netHospitalId )
-        }
-        peace.cache.set(peace.type.SYSTEM.CHANNELID, (peace.util.queryUrlParam('channelid') || params.channelid) || "" )
-        next();
-      },
       children: [
         // 首页
         {
@@ -38,10 +30,11 @@ const router = new Router({
             }
           },
           component: () => {
-            const params =
-              $peace.util.queryUrlParam('params') || $peace.cache.get($peace.type.SYSTEM.PARAMS)
-
-            if (params && params !== 'PLATEFORM') {
+            // 存在 NETHOSPITALID 和 CHANNELID，则跳转医院首页
+            if (
+              $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) &&
+              $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+            ) {
               return import('@src/views/hospital/HospitalHome.vue')
             } else {
               return import('@src/views/home/index.vue')
@@ -930,6 +923,30 @@ const router = new Router({
 let cacheRoute = null
 
 router.beforeEach((to, from, next) => {
+  // 存储当前 url 参数
+  let params = peace.util.decode(to.params.json)
+  if (peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
+    peace.cache.set(
+      peace.type.SYSTEM.NETHOSPITALID,
+      peace.util.queryUrlParam('nethospitalid') || params.netHospitalId
+    )
+  }
+  if (peace.util.queryUrlParam('channelid') || params.channelid) {
+    peace.cache.set(
+      peace.type.SYSTEM.CHANNELID,
+      peace.util.queryUrlParam('channelid') || params.channelid
+    )
+  }
+
+  // 微信环境授权
+  if (to.query.code) {
+    let code = to.query.code
+    let params = { code }
+    peace.service.login.getOPenIdByCode(params).then(res => {
+      console.log(res)
+    })
+  }
+
   $peace.routerStack = $peace.routerStack || []
   $peace.routerStack.push(to)
 

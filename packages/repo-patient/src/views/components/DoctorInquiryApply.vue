@@ -351,7 +351,7 @@ export default {
             }
 
             // 载入就诊人后，检查健康卡
-            this.checkCard();
+            this.checkCard()
           }
         })
       }
@@ -362,43 +362,42 @@ export default {
 
   methods: {
     checkCard(tag) {
-      this.checkCardExist().then((res)=> {
-        if(!res.data.result) {
+      this.checkCardExist().then(res => {
+        if (!res.data.result) {
           return Dialog.confirm({
             title: '提示',
             message: '该就诊人还没有电子健康卡，是否现在领取？',
             confirmButtonText: '现在领取'
           }).then(() => {
-            let familyId = this.model.familyId;
-            let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
-            let params = {familyId, nethospitalid}
-            peace.service.patient.createHealthcard(params).then(res => {
-              if (res.data.result) {
-                return peace.util.alert('领取成功，请填写信息后提交问诊！')
-              }
-            }).catch((res) => {
-
-              return Dialog.confirm({
-                title: '提示',
-                message: '该就诊人尚未完善资料，请前去完善！',
-                confirmButtonText: '去完善'
-              }).then(() => {
-                this.$router.push(`/setting/myFamilyMembers`)
-              });
-
-              // on cancel
-            })
+            let familyId = this.model.familyId
+            let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+            let params = { familyId, nethospitalid }
+            peace.service.patient
+              .createHealthcard(params)
+              .then(res => {
+                if (res.data.result) {
+                  return peace.util.alert('领取成功，请填写信息后提交问诊！')
+                }
+              })
+              .catch(() => {
+                return Dialog.confirm({
+                  title: '提示',
+                  message: '该就诊人尚未完善资料，请前去完善！',
+                  confirmButtonText: '去完善'
+                }).then(() => {
+                  this.$router.push(`/setting/myFamilyMembers`)
+                })
+              })
           })
-        }
-        else {
-          if(tag) {
+        } else {
+          if (tag) {
             // 存在就诊卡
             this.uploadHandler().then(() => {
               this.applyHandler()
             })
           }
         }
-      });
+      })
     },
     redirect() {
       this.$router.push({
@@ -425,8 +424,6 @@ export default {
           }
         })
       } else {
-
-
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
         this.model.allergicHistory = familyObject.allergicHistory
@@ -439,7 +436,7 @@ export default {
           this.model.isPregnancy = ''
         }
 
-        this.checkCard();
+        this.checkCard()
       }
     },
 
@@ -470,14 +467,14 @@ export default {
       }
     },
     checkCardExist() {
-      let familyId = this.model.familyId;
-      let nethospitalid = this.doctor.doctorInfo.nethospitalid;
-      let params = {familyId, nethospitalid};
-       return new Promise(resolve => {
-         peace.service.patient.isExistCardRelation(params).then(res => {
-             resolve(res)
-         })
-       })
+      let familyId = this.model.familyId
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid
+      let params = { familyId, nethospitalid }
+      return new Promise(resolve => {
+        peace.service.patient.isExistCardRelation(params).then(res => {
+          resolve(res)
+        })
+      })
     },
     apply() {
       //验证
@@ -510,9 +507,7 @@ export default {
         }
       }
 
-      this.checkCard(true);
-
-
+      this.checkCard(true)
     },
     goToPay(data) {
       let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data

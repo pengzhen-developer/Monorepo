@@ -12,13 +12,11 @@ export default {
 
   beforeCreate() {
     const params = peace.util.queryUrlParam('params')
-   // console.log('params1' ,params1)
     if (params) {
       if (params === 'PLATEFORM') {
         peace.cache.remove(peace.type.SYSTEM.PARAMS)
       } else {
         peace.cache.set(peace.type.SYSTEM.PARAMS, peace.util.queryUrlParam('params'))
-       // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, peace.util.queryUrlParam('nethospitalid') )
       }
     }
   },

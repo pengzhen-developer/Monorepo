@@ -12,7 +12,6 @@ import router from '@src/router'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-import config from '@src/config'
 // 记录 http 请求次数
 let httpCount = 0
 
@@ -64,8 +63,8 @@ axios.interceptors.request.use(
 
       // 配置渠道ID
       request.headers['channelid'] = $peace.cache.get($peace.type.SYSTEM.CHANNELID)
-      console.log('nethospitalid=============',  $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID))
-      console.log('channelid=============',  $peace.cache.get($peace.type.SYSTEM.CHANNELID))
+      console.log('nethospitalid=============', $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID))
+      console.log('channelid=============', $peace.cache.get($peace.type.SYSTEM.CHANNELID))
       request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
 
       // 配置 base url
