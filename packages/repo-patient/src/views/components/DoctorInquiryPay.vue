@@ -64,12 +64,12 @@ export default {
   created() {},
   mounted() {
     let that = this
-    this.appid = config.APPID;
+    this.appid = peace.config.APPID
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
-      this.createdTime = data.createdTime;
+      this.createdTime = data.createdTime
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
@@ -84,7 +84,7 @@ export default {
       let params = { code, orderNo }
       peace.service.index.GetWxLoginStatus(params).then(res => {
         let data = res.data
-        peace.wx.payInvoke(data, this.payCallback);
+        peace.wx.payInvoke(data, this.payCallback)
       })
     }
   },
@@ -92,8 +92,8 @@ export default {
     pay() {
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
-      let orderExp = (res)=> {
-        if(res && res.data) {
+      let orderExp = res => {
+        if (res && res.data) {
           return Dialog.confirm({
             title: '提示',
             message: res.data.msg,
@@ -113,14 +113,14 @@ export default {
                 // 去挂号界面
                 let orderNo = res.data.data.orderNo
                 let orderType = 'register'
-                let json = peace.util.encode({orderInfo: {orderNo, orderType}})
+                let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
                 this.$router.replace(`/setting/order/userOrderDetail/${json}`)
               }
             }
           })
         }
       }
-      peace.wx.pay(params, orderExp, this.payCallback);
+      peace.wx.pay(params, orderExp, this.payCallback)
     },
     payCallback() {
       let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
@@ -129,7 +129,10 @@ export default {
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
         this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
-        let json = peace.util.encode({ ...peace.util.decode(this.$route.params.json), startTime: new Number(this.createdTime)*1000 })
+        let json = peace.util.encode({
+          ...peace.util.decode(this.$route.params.json),
+          startTime: new Number(this.createdTime) * 1000
+        })
         this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
     }

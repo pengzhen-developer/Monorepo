@@ -89,7 +89,7 @@ export default {
       params.idCard = json.idCard
       params.familyId = json.familyId
 
-      peace.service.health.addBloodPressure(params).then(res => {
+      peace.service.health.addBloodOxygendata(params).then(res => {
         peace.util.alert(res.msg)
 
         const params = $peace.util.decode($peace.$route.params.json)
