@@ -156,22 +156,14 @@ export default {
 
   mounted() {
     this.colorArr.sort(() => Math.random() - 0.5)
-    // if (this.$route.query.code) {
-    //   let code = this.$route.query.code;
-    //   let params = {code};
-    //   peace.service.login.getOPenIdByCode(params).then(res => {
-    //     console.log(res);
-    //   });
-    // }
   },
 
   methods: {
     getHospitalInfo() {
-      const params = peace.util.decode(
-        this.$route.params.json || peace.cache.get(peace.type.SYSTEM.PARAMS)
-      )
+      const params = peace.util.decode(this.$route.params.json)
+      const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
 
-      peace.service.hospital.getHospitalInfo({ nethospitalId: params.netHospitalId }).then(res => {
+      peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
         this.hospitalInfo = res.data
       })
     },
