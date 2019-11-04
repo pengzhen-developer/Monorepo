@@ -103,6 +103,70 @@ export default {
     this.initFml();
   },
   methods: {
+    checkCard(tag) {
+          this.checkCardExist().then(res => {
+              if (!res.data.result) {
+                  return Dialog.confirm({
+                      title: '提示',
+                      message: '该就诊人还没有电子健康卡，是否现在领取？',
+                      confirmButtonText: '现在领取'
+                  }).then(() => {
+                      let familyId = this.fml.familyId
+                      let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+                      let params = { familyId, nethospitalid }
+                      peace.service.patient
+                          .createHealthcard(params)
+                          .then(res => {
+                              if (res.data.result) {
+                                  return peace.util.alert('领取成功，请填写信息后提交挂号！')
+                              }
+                          })
+                          .catch(res => {
+                              if (res.data.code === 202) {
+                                  return Dialog.confirm({
+                                      title: '提示',
+                                      message: '该就诊人尚未完善资料，请前 去完善！',
+                                      confirmButtonText: '去完善'
+                                  }).then(() => {
+                                      this.$router.push(`/setting/myFamilyMembers`)
+                                  })
+                              }
+                          })
+                  })
+              } else {
+                  if (tag) {
+                      // 存在就诊卡
+                      let data = {
+                          sourceCode: this.source.sourceCode,
+                          doctorId: this.doctorInfo.doctorId,
+                          familyId: this.fml.familyId,
+                          familyName: this.fml.name,
+                          idcard: this.fml.idcard,
+                          sourceDate: this.date.year + '-' + this.date.date,
+                          week: this.date.week,
+                          AMPM: this.source.type,
+                          bookingStart: this.source.startTime,
+                          bookingEnd: this.source.endTime,
+                          unitPrice: this.source.unitPrice,
+                          sourceLevelType: this.source.sourceLevelType,
+                          diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
+                          departmentName: this.doctorInfo.deptName
+                      }
+                      this.getOrderSubmit(data)
+                  }
+              }
+          })
+      },
+    checkCardExist() {
+          let familyId = this.fml.familyId
+          let nethospitalid = this.doctorInfo.nethospitalId
+          let params = { familyId, nethospitalid }
+          return new Promise(resolve => {
+              peace.service.patient.isExistCardRelation(params).then(res => {
+                  resolve(res)
+              })
+          })
+    },
     initFml(){
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
@@ -114,6 +178,9 @@ export default {
                     subname: '(' + item.relation + ')'
                   }
                 }) || []
+       if(this.fml) {
+          this.checkCard();
+       }
       })
     },
     zdConfirm(val) {
@@ -142,6 +209,8 @@ export default {
     fmlConfirm(item, index) {
       this.fml = this.fmlList[index]
       this.showFmlDic = false
+
+      this.checkCard()
     },
     submitOrder() {
       let data = {
@@ -170,7 +239,8 @@ export default {
         peace.util.alert('请勿重复提交')
         return;
       }
-      this.getOrderSubmit(data)
+      this.checkCard(true);
+
     },
     getOrderSubmit(data) {
       this.showBtn = false;

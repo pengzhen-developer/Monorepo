@@ -64,7 +64,6 @@ export default {
   created() {},
   mounted() {
     let that = this
-    this.appid = peace.config.APPID
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
