@@ -27,6 +27,7 @@
       <addressPicker province="internalAddr.province"
                      city="internalAddr.city"
                      district="internalAddr.district"
+                     @onCancel="onCancel"
                      @onConfirm="onConfirm" />
     </van-popup>
     <van-field required
@@ -110,7 +111,9 @@ export default {
       this.internalAddr.district = value.district.name
       this.showPicker = false
     },
-
+    onCancel() {
+      this.showPicker = false
+    },
     submit() {
       const data = {
         addressId: this.internalAddr.addressId,
