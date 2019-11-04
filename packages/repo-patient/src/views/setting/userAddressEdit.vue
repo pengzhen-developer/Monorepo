@@ -46,7 +46,7 @@
 <script>
 import peace from '@src/library'
 import addressPicker from './SelectAddress'
-import { Dialog } from 'vant'
+
 export default {
   components: {
     addressPicker
