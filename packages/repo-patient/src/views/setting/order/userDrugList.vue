@@ -25,7 +25,7 @@
         <div v-if="drugItems.length">
           <div class="panel"
                v-for="item in drugItems"
-               :key="item.DrugStoreName">
+               :key="item.OrderId">
             <div class="panel-head">
               <div class="card-strip">
                 <div class="avatar">
