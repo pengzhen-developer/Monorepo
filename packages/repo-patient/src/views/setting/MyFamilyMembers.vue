@@ -1,6 +1,6 @@
 <template>
   <div class="my-family-members">
-    <div class="card-line">点击查看电子健康卡/就诊卡信息</div>
+    <div class="card-line">点击家人记录查看电子健康卡/就诊卡信息</div>
     <template v-if="members && members.length > 0">
       <div class="content">
         <van-cell :key="item.id"

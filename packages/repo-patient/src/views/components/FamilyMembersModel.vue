@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit && model">
+      <div class="card-name">{{cardName}}</div>
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -245,6 +246,7 @@ export default {
 
   data() {
     return {
+      cardName: '',
       from: '',
       model: {
               name: '',
@@ -341,6 +343,7 @@ export default {
         this.familyId = res.data.id;
         if(this.model) {
           this.isNationExist = (this.model.nationCode !="")
+          this.cardName = this.model.name;
           this.getNationList()
           this.getCardList()
         }
@@ -575,6 +578,13 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  .card-name {
+     height: 50px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     border-bottom: 1px solid #ebedf0
+  }
   .card-title,
   .jz-card-title {
     height: 53px;
