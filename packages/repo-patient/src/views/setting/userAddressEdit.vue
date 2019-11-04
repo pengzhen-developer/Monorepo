@@ -128,10 +128,11 @@ export default {
           this.$router.go(-1)
         })
         .catch(res => {
-          Dialog.alert({
-            title: this.internalAddr.addressId ? '编辑失败' : '添加失败',
-            message: res.data.msg
-          })
+          console.log(res)
+          // Dialog.alert({
+          //   title: this.internalAddr.addressId ? '编辑失败' : '添加失败',
+          //   message: res.data.msg
+          // })
         })
     }
   }

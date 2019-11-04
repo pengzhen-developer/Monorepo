@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <template v-if="isEdit">
+    <template v-if="isEdit && model">
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -91,7 +91,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="from == 'add'">
       <!--      <div class="card no-card"></div>-->
       <div class="form form-for-family">
         <van-field error
@@ -220,20 +220,20 @@ export default {
   },
 
   props: {
-    data: {
-      type: Object,
-      default: () => {
-        return {
-          name: '',
-          idcard: '',
-          relation: '',
-          sex: '',
-          birthday: '',
-          allergic_history: '',
-          foodAllergy: ''
-        }
-      }
-    },
+    // data: {
+    //   type: Object,
+    //   default: () => {
+    //     return {
+    //       name: '',
+    //       idcard: '',
+    //       relation: '',
+    //       sex: '',
+    //       birthday: '',
+    //       allergic_history: '',
+    //       foodAllergy: ''
+    //     }
+    //   }
+    // },
 
     canShowSelf: {
       type: Boolean,
@@ -245,7 +245,18 @@ export default {
 
   data() {
     return {
-      isNationExist: this.data.nationCode,
+      from: '',
+      model: {
+              name: '',
+              idcard: '',
+              relation: '',
+              sex: '',
+              birthday: '',
+              allergic_history: '',
+              foodAllergy: ''
+      },
+      familyId: "",
+      isNationExist: false,
       ageLimit: 7,
       age: null,
       gardianSet: false,
@@ -258,7 +269,6 @@ export default {
       },
       firstLoad: false,
       cardList: [],
-      model: Object.assign({}, this.data),
       nationName: '',
       relations: ['本人', '父母', '爱人', '孩子', '挚友'],
       sexs: ['男', '女'],
@@ -279,7 +289,7 @@ export default {
 
   computed: {
     isEdit() {
-      return !!this.data.familyId
+      return !!this.familyId
     }
   },
 
@@ -313,11 +323,33 @@ export default {
     }
   },
   mounted() {
-    this.getNationList()
-    this.getCardList()
+    let json = peace.util.decode(this.$route.params.json)
+    if(json.type != 'add') {
+      this.getFamilyInfo();
+    } else {
+      this.from = 'add';
+      // 添加页面 只需加载民族列表
+      this.getNationList()
+    }
   },
 
   methods: {
+    getFamilyInfo() {
+      let params = peace.util.decode(this.$route.params.json);
+      peace.service.patient.getFamilyInfo(params).then(res => {
+        this.model = res.data;
+        this.familyId = res.data.id;
+        if(this.model) {
+          this.isNationExist = (this.model.nationCode !="")
+          this.getNationList()
+          this.getCardList()
+        }
+        // this.dialog.data = res.data
+        // this.dialog.data.familyId = item.familyId
+        // this.dialog.title = '家人信息'
+        // this.dialog.visible = true
+      })
+    },
     setGardianInfo(item) {
       this.gardianId = item.idCard
       this.gardianName = item.name
@@ -373,7 +405,7 @@ export default {
     },
     getCardList() {
       if (this.model.isExistCard) {
-        let familyId = this.model.familyId
+        let familyId = this.model.id
         let params = { familyId }
         peace.service.patient.getCardList(params).then(res => {
           this.cardList = res.data.list
@@ -400,7 +432,7 @@ export default {
       return code
     },
     goToDetail() {
-      let familyId = this.model.familyId
+      let familyId = this.model.id
       const json = peace.util.encode({
         familyId
       })
@@ -511,7 +543,7 @@ export default {
       }
       peace.service.patient.bindFamily(params).then(res => {
         peace.util.alert(res.msg)
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     },
     perfectInfo() {
@@ -521,7 +553,7 @@ export default {
       let params = { familyId, nationCode, nationName }
       peace.service.patient.perfectInfo(params).then(res => {
         peace.util.alert(res.msg)
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     },
     // 删除
@@ -533,7 +565,7 @@ export default {
       peace.service.patient.DelFamily(params).then(res => {
         peace.util.alert(res.msg)
 
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     }
   }

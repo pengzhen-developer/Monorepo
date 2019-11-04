@@ -3,7 +3,7 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor" class />
+        <img :src="doctorInfo.avartor || doctorInfo.avatar" style="height: 100%;" />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -159,7 +159,8 @@ export default {
       },
     checkCardExist() {
           let familyId = this.fml.familyId
-          let nethospitalid = this.doctorInfo.nethospitalId
+          let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+           console.log(this.doctorInfo)
           let params = { familyId, nethospitalid }
           return new Promise(resolve => {
               peace.service.patient.isExistCardRelation(params).then(res => {
