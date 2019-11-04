@@ -34,6 +34,7 @@
                label="详细地址"
                type="textarea"
                autosize
+               maxlength="150"
                placeholder="请输入收货人详细地址"
                v-model="internalAddr.address"
                data-name="address" />
