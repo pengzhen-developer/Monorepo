@@ -293,6 +293,20 @@ const router = new Router({
           },
           component: () => import('@src/views/setting/MyFamilyMembers.vue')
         },
+        // 我的家人
+        {
+          path: '/setting/familyMember/:json',
+          name: '/setting/familyMember/:json',
+          meta: {
+            auth: true,
+            navbar: {
+              title: '我的家人',
+              back: true
+            }
+          },
+          component: () => import('@src/views/components/FamilyMembersModel.vue')
+        },
+
         // 电子健康卡详情
         {
           path: '/setting/cardDetail/:json',
