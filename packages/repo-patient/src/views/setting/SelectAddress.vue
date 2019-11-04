@@ -1,7 +1,7 @@
 <template>
   <div>
     {{ value }}
-    <van-area :area-list="areaList" :value="internalValue" @confirm="confirm" />
+    <van-area :area-list="areaList" :value="internalValue" @confirm="confirm"  @cancel="cancel"/>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     return {
       areaList, //3级地址数据
       internalValue: this.value || "",  //默认选中的code .做兼容，本项目不会传
-      internalProvince: { 
+      internalProvince: {
         code: "",
         name: ""
       },
@@ -58,6 +58,9 @@ export default {
   // },
 
   methods: {
+    cancel() {
+      this.$emit("onCancel");
+    },
     confirm(areaList) {
       // if(isPrams || comp){
       //   this.$router.replace({
