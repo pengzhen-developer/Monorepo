@@ -198,6 +198,7 @@ export default {
       this.txt = this.delHtml(this.data.info[obj.id])
     },
     getDoctList(type) {
+      /* eslint-disable */
       if (!!type) {
         this.doctorList = []
         this.finished = false

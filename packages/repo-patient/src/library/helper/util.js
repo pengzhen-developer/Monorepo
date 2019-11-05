@@ -163,7 +163,15 @@ export function success(message = '温馨提示', title = '温馨提示', type =
  * @param {*} [confirmCallBack=() => {}]
  * @param {*} [cancelCallBack=() => {}]
  */
-export function confirm(message = '温馨提示', title = '温馨提示', confirmCallBack, cancelCallBack) {
+export function confirm(
+  message = '温馨提示',
+  title = '温馨提示',
+  options = {},
+  confirmCallBack,
+  cancelCallBack
+) {
+  console.log(options)
+
   Dialog.confirm({
     title,
     message

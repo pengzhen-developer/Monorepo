@@ -958,6 +958,7 @@ router.beforeEach((to, from, next) => {
     let code = to.query.code
     let params = { code }
     peace.service.login.getOPenIdByCode(params).then(res => {
+      console.log(res)
       $peace.hasGetOpenId = true
     })
   }
