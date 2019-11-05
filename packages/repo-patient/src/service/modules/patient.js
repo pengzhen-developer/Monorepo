@@ -329,6 +329,17 @@ export function perfectInfo(params) {
   return peace.http.post(perfectInfo, params)
 }
 
+export function getDefaultAddress(params) {
+  const getDefaultAddress = 'client/v1/Address/getDefaultAddress'
+  return peace.http.post(getDefaultAddress, params)
+}
+
+export function setDefaultAddress(params) {
+  const setDefaultAddress = 'client/v1/Address/setDefaultAddress'
+  return peace.http.post(setDefaultAddress, params)
+}
+
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -385,6 +396,7 @@ export default {
   getCardList,
   healthcardInfo,
   getGuardianList,
-  perfectInfo
-
+  perfectInfo,
+  getDefaultAddress,
+  setDefaultAddress
 }

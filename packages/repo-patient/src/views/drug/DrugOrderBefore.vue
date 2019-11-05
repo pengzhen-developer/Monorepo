@@ -132,7 +132,6 @@ export default {
     }
   },
   mounted() {
-    this.appid = config.APPID
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -150,8 +149,15 @@ export default {
         peace.wx.payInvoke(data, this.payCallback)
       })
     }
+    this.getDefaultAddress();
   },
   methods: {
+    getDefaultAddress() {
+      peace.service.patient.getDefaultAddress().then(res => {
+         this.userAddr = res.data;
+         //console.log('ressssssssssssssssssssssssss',res);
+      })
+    },
     getAddr(addr) {
       let address = peace.util.decode(addr)
       this.userAddr = address

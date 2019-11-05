@@ -71,20 +71,23 @@ export default {
     },
     delAddr(addressId) {
       peace.util.confirm(
-        '确认删除',
+        '确认删除111',
         undefined,
         undefined,
         () => {
+          debugger
           this.delAddress(addressId)
         },
         () => {}
       )
     },
     delAddress(id) {
+      debugger
       const data = {
         addressId: id
       }
       peace.service.patient.delAddress(data).then(res => {
+        debugger
         this.get()
         console.log(res)
       })
@@ -92,7 +95,15 @@ export default {
     checkAddr(address) {
       let json = this.$route.params.json
       let addr = peace.util.encode(address)
-      this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
+      let {addressId} = address;
+      let data = {addressId};
+      peace.service.patient.setDefaultAddress(data).then(res => {
+          console.log("设置成功", res);
+          this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
+      })
+      // let json = this.$route.params.json
+      // let addr = peace.util.encode(address)
+      // this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
     }
   }
 }
