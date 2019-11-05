@@ -90,7 +90,7 @@ const router = new Router({
           name: '/file/index',
           meta: {
             tabBar: true,
-            auth : true,
+            auth: true,
             navbar: {
               title: '健康档案'
             }
@@ -954,11 +954,11 @@ router.beforeEach((to, from, next) => {
   }
 
   // 微信环境授权
-  if (peace.util.queryUrlParam('referrer') === 'login' && to.query.code) {
+  if (!$peace.hasGetOpenId && peace.util.queryUrlParam('referrer') === 'login' && to.query.code) {
     let code = to.query.code
     let params = { code }
     peace.service.login.getOPenIdByCode(params).then(res => {
-      console.log(res)
+      $peace.hasGetOpenId = true
     })
   }
 
