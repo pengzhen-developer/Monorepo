@@ -95,8 +95,7 @@
     <template v-if="from == 'add'">
       <!--      <div class="card no-card"></div>-->
       <div class="form form-for-family">
-        <van-field error
-                   label="姓名"
+        <van-field label="姓名"
                    placeholder="请输入姓名"
                    required
                    v-model="model.name" />
@@ -133,18 +132,17 @@
                    right-icon="arrow"
                    v-model="model.nationName" />
 
-        <van-cell-group>
-          <van-cell value="就诊人未满6岁，请填写监护人信息"
-                    is-link
-                    @click="goToGardian"
-                    v-if="age!= null && age < this.ageLimit" />
-          <van-cell title="监护人姓名"
-                    :value="gardianName"
-                    v-if="gardianSet" />
-          <van-cell title="监护人身份证号"
-                    :value="gardianId"
-                    v-if="gardianSet" />
-        </van-cell-group>
+        <van-cell value="就诊人未满6岁，请填写监护人信息"
+                  is-link
+                  @click="goToGardian"
+                  v-if="age!= null && age < this.ageLimit" />
+        <van-cell title="监护人姓名"
+                  :value="gardianName"
+                  v-if="gardianSet" />
+        <van-cell title="监护人身份证号"
+                  :value="gardianId"
+                  v-if="gardianSet" />
+
         <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <peace-dialog :visible.sync="showAllergicHistory">
@@ -249,15 +247,15 @@ export default {
       cardName: '',
       from: '',
       model: {
-              name: '',
-              idcard: '',
-              relation: '',
-              sex: '',
-              birthday: '',
-              allergic_history: '',
-              foodAllergy: ''
+        name: '',
+        idcard: '',
+        relation: '',
+        sex: '',
+        birthday: '',
+        allergic_history: '',
+        foodAllergy: ''
       },
-      familyId: "",
+      familyId: '',
       isNationExist: false,
       ageLimit: 7,
       age: null,
@@ -326,10 +324,10 @@ export default {
   },
   mounted() {
     let json = peace.util.decode(this.$route.params.json)
-    if(json.type != 'add') {
-      this.getFamilyInfo();
+    if (json.type != 'add') {
+      this.getFamilyInfo()
     } else {
-      this.from = 'add';
+      this.from = 'add'
       // 添加页面 只需加载民族列表
       this.getNationList()
     }
@@ -337,13 +335,13 @@ export default {
 
   methods: {
     getFamilyInfo() {
-      let params = peace.util.decode(this.$route.params.json);
+      let params = peace.util.decode(this.$route.params.json)
       peace.service.patient.getFamilyInfo(params).then(res => {
-        this.model = res.data;
-        this.familyId = res.data.id;
-        if(this.model) {
-          this.isNationExist = (this.model.nationCode !="")
-          this.cardName = this.model.name;
+        this.model = res.data
+        this.familyId = res.data.id
+        if (this.model) {
+          this.isNationExist = this.model.nationCode != ''
+          this.cardName = this.model.name
           this.getNationList()
           this.getCardList()
         }
@@ -579,11 +577,11 @@ export default {
   display: flex;
   flex-direction: column;
   .card-name {
-     height: 50px;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     border-bottom: 1px solid #ebedf0
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ebedf0;
   }
   .card-title,
   .jz-card-title {
