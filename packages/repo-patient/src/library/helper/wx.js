@@ -40,6 +40,8 @@ export function payInvoke(data, paySuc=null, payCancel=null) {
  * @returns {string} urlSuffix  location.href 后面需要外加的参数
  */
 export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffix='') {
+    console.log(paySuc)
+    console.log(payCancel)
     service.index
         .GetWxLoginStatus(params)
         .then(res => {
@@ -47,14 +49,19 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
               console.log('订单入参', params)
               let data = res.data
               if (data) {
-                  console.log('微信支付config', data)
-                  payInvoke(data,paySuc, payCancel)
+                  // 直接授权
+                  let appid =  config.APPID;
+                  let redirect_uri = location.href + urlSuffix;
+                  let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+                  window.location.href = url
+                  // console.log('微信支付config', data)
+                  // payInvoke(data,paySuc, payCancel)
               } else {
                 // 进入微信授权
-                let appid =  config.APPID;
-                let redirect_uri = location.href + urlSuffix;
-                let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-                window.location.href = url
+                // let appid =  config.APPID;
+                // let redirect_uri = location.href + urlSuffix;
+                // let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+                // window.location.href = url
               }
             }
         })
