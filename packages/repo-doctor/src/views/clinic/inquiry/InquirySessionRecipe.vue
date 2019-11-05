@@ -206,7 +206,8 @@
       <div style="text-align: center; margin: 30px 0 0 0;">
         <el-button @click="cancelDrug">取消</el-button>
         <el-button @click="saveDrugToPrescription"
-                   type="primary">保存</el-button>
+                   type="primary"
+                   :disabled="drug.disabled">保存</el-button>
       </div>
     </peace-dialog>
   </div>
@@ -235,7 +236,7 @@ export default {
         action: ACTION_TYPE.INSERT,
 
         visible: false,
-
+        disabled: true,
         diagnose: '',
         allergy_history: '',
 
@@ -301,6 +302,11 @@ export default {
         peace.util.warning('处方药品最多可添加 5 种药品')
 
         val.splice(5, 1)
+      }
+      if (val.length == 0) {
+        this.drug.disabled = true
+      } else {
+        this.drug.disabled = false
       }
     }
   },
