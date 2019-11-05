@@ -11,7 +11,7 @@
                 :value="data.allergyHistory || '无'" />
       <van-cell title="既往史"
                 :value="data.pastHistory || '无'" />
-      <van-cell title="检查指标">
+      <van-cell title="检查指标" v-if=" !(data.InspectionIndex.temperature=='' && data.InspectionIndex.weight=='' && data.InspectionIndex.heart_rate =='' && data.InspectionIndex.blood_pressure=='') ">
         <div slot="label"
              class="file-case-detail-card">
           <div class="row">
@@ -32,7 +32,7 @@
           </div>
         </div>
       </van-cell>
-      <van-cell title="辅助检查"
+      <van-cell title="辅助检查" v-if="data.More"
                 :value="data.More || '无'" />
       <van-cell title="诊断"
                 :value="data.diagnose || '无'" />
