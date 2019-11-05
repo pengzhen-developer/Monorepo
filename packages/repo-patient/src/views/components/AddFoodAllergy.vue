@@ -154,7 +154,12 @@ export default {
 
     check(currentItem) {
       if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 })
+        if(currentItem.value.length < 50) {
+          peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 })
+        } else {
+          peace.util.alert("您输入的字数过长！")
+        }
+
       }
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {

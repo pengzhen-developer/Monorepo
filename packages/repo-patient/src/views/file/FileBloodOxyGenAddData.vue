@@ -23,15 +23,19 @@
 
     <div class="file-blood-detail-content">
       <van-cell-group>
-        <van-field :min="0"
-                   :max="100"
-                   v-model="model.pulseRate"
-                   type="number"
-                   label="脉率（选填）"
-                   placeholder="请输入">
-
-          <span slot="button">次/分</span>
-        </van-field>
+        <van-cell @click="rateShow = true"
+                  is-link
+                  :value="model.pulseRate + '次/分'"
+                  title="脉率（选填）" />
+        <van-popup v-model="rateShow"
+                   position="bottom">
+          <van-picker :columns="rateArr"
+                      show-toolbar
+                      :default-index = "model.pulseRate"
+                      @confirm="onRateConfirm"
+                      @cancel="v => rateShow = false"
+          />
+        </van-popup>
 
         <van-cell @click="show = true"
                   is-link
@@ -58,14 +62,21 @@
 <script>
 import peace from '@src/library'
 import util from './util'
-
+import Vue from 'vue';
+import { Picker } from 'vant';
+Vue.use(Picker);
 export default {
+  mounted() {
+    for(let i=0; i<220; i++) {
+      this.rateArr.push(i)
+    }
+  },
   data() {
     return {
       util,
-
+      rateArr: [],
+      rateShow: false,
       show: false,
-
       model: {
         bloodOxygen: 99,
         pulseRate: 60,
@@ -77,6 +88,12 @@ export default {
   },
 
   methods: {
+    onRateConfirm(value) {
+      this.rateShow = false
+      // console.log('rateShowwwwwwwwwww', this.rateShow)
+      // debugger
+      this.model.pulseRate = value
+    },
     confirm() {
       this.show = false
       this.model.measureTime = this.currentDate
