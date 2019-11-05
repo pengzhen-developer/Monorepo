@@ -33,7 +33,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -55,7 +55,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -77,7 +77,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -99,7 +99,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -253,12 +253,13 @@ export default {
   .card-tag {
     padding: 0 8px;
     border-radius: 15px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80px;
-    white-space: nowrap;
-    position: relative;
-    top: 5px;
+
+    .card-tag-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+      white-space: nowrap;
+    }
 
     &.normal {
       background-color: #f2fffd;
