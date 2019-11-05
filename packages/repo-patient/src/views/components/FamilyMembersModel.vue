@@ -132,17 +132,18 @@
                    right-icon="arrow"
                    v-model="model.nationName" />
 
-        <van-cell value="就诊人未满6岁，请填写监护人信息"
-                  is-link
-                  @click="goToGardian"
-                  v-if="age!= null && age < this.ageLimit" />
-        <van-cell title="监护人姓名"
-                  :value="gardianName"
-                  v-if="gardianSet" />
-        <van-cell title="监护人身份证号"
-                  :value="gardianId"
-                  v-if="gardianSet" />
-
+        <van-cell-group v-if="gardianSet || (age!= null && age < this.ageLimit)">
+          <van-cell value="就诊人未满6岁，请填写监护人信息"
+                    is-link
+                    @click="goToGardian"
+                    v-if="age!= null && age < this.ageLimit" />
+          <van-cell title="监护人姓名"
+                    :value="gardianName"
+                    v-if="gardianSet" />
+          <van-cell title="监护人身份证号"
+                    :value="gardianId"
+                    v-if="gardianSet" />
+        </van-cell-group>
         <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <peace-dialog :visible.sync="showAllergicHistory">
@@ -406,7 +407,7 @@ export default {
     },
     getCardList() {
       if (this.model.isExistCard) {
-        let familyId = this.familyId
+        let familyId = this.model.id
         let params = { familyId }
         peace.service.patient.getCardList(params).then(res => {
           this.cardList = res.data.list
@@ -560,8 +561,9 @@ export default {
     // 删除
     deleted() {
       const params = {
-        familyId: this.model.id
+        familyId: this.model.familyId
       }
+
       peace.service.patient.DelFamily(params).then(res => {
         peace.util.alert(res.msg)
 
