@@ -65,6 +65,33 @@ export function upConsultationSet(params) {
   return peace.http.post(upConsultationSet, params)
 }
 
+/**
+ * 获取通知列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getMsgList(params) {
+  const getMsgList = 'client/v1/Notice/getMsgList'
+
+  return peace.http.post(getMsgList, params)
+}
+
+/**
+ * 获取通知详情
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getDetail(params) {
+  const getDetail = 'client/v1/Notice/getDetail'
+
+  return peace.http.post(getDetail, params)
+}
+
+
 export default {
   /** 获取医生个人信息 */
   getDoctorInfo,
@@ -79,5 +106,11 @@ export default {
   upDoctorWork,
 
   /** 更新服务设置 */
-  upConsultationSet
+  upConsultationSet,
+
+  /** 获取通知列表 */
+  getMsgList,
+
+  /** 获取通知列表 */
+  getDetail
 }
