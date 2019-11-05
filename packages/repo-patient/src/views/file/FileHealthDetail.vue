@@ -76,9 +76,9 @@
                 :value="model.drugAllergy || '无'" />
       <van-popup position="bottom"
                  v-model="popup.drugAllergy">
-        <AddFoodAllergy style="max-height: 80vh"
+        <AddAllergicHistory style="max-height: 80vh"
                         @onSave="popup.drugAllergy = false"
-                        v-model="model.drugAllergy"></AddFoodAllergy>
+                        v-model="model.drugAllergy"></AddAllergicHistory>
       </van-popup>
 
       <van-cell title="食物/接触物过敏"
@@ -87,9 +87,9 @@
                 :value="model.foodAllergy || '无'" />
       <van-popup position="bottom"
                  v-model="popup.foodAllergy">
-        <AddAllergicHistory style="max-height: 80vh"
+        <AddFoodAllergy style="max-height: 80vh"
                             @onSave="popup.foodAllergy = false"
-                            v-model="model.foodAllergy"></AddAllergicHistory>
+                            v-model="model.foodAllergy"></AddFoodAllergy>
       </van-popup>
 
       <van-cell title="个人习惯"

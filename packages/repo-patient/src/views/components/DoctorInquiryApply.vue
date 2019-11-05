@@ -121,8 +121,8 @@
           <van-field :value="model.allergicHistory"
                      @click="showAddAllergicHistory= true"
                      clickable
-                     label="过敏史"
-                     placeholder="请选择过敏史"
+                     label="药物过敏"
+                     placeholder="请选择药物过敏史"
                      readonly
                      required
                      right-icon="arrow" />
@@ -130,6 +130,22 @@
           <peace-dialog :visible.sync="showAddAllergicHistory">
             <AddAllergicHistory @onSave="showAddAllergicHistory = false"
                                 v-model.trim="model.allergicHistory"></AddAllergicHistory>
+          </peace-dialog>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field :value="model.foodAllergy"
+                     @click="showFoodAllergy= true"
+                     clickable
+                     label="食物过敏"
+                     placeholder="请选择食物过敏史"
+                     readonly
+                     required
+                     right-icon="arrow" />
+
+          <peace-dialog :visible.sync="showFoodAllergy">
+            <AddFoodAllergy @onSave="showFoodAllergy = false"
+                                v-model.trim="model.foodAllergy"></AddFoodAllergy>
           </peace-dialog>
         </van-cell-group>
 
@@ -206,6 +222,7 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
 import InformedConsent from '@src/views/components/InformedConsent'
+import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 
 import Vue from 'vue'
 import { Dialog } from 'vant'
@@ -215,13 +232,14 @@ export default {
   components: {
     AddAllergicHistory,
     AddIllnessHistory,
-    InformedConsent
+    InformedConsent,
+    AddFoodAllergy
   },
 
   data() {
     return {
       sending: false,
-
+      showFoodAllergy: false,
       // 显示确认疾病
       showAddAllergicHistory: false,
       // 显示过敏史
@@ -275,7 +293,9 @@ export default {
         // 本次复诊情况
         againType: '3',
         // 知情同意
-        informedConsent: false
+        informedConsent: false,
+        //食物过敏
+        foodAllergy: ''
       },
 
       source: {
@@ -339,10 +359,11 @@ export default {
           }
 
           if (family) {
+           // debugger
             this.model.familyName = family.name
             this.model.familyId = family.familyId
             this.model.allergicHistory = family.allergicHistory
-
+            this.model.foodAllergy = family.foodAllergy
             // 判断否能显示是否怀孕
             if (family.sex === '女' && family.age >= 14) {
               this.showPregnancy = true
@@ -503,7 +524,10 @@ export default {
           return peace.util.alert('请输入既往用药')
         }
         if (!this.model.allergicHistory) {
-          return peace.util.alert('请选择过敏史')
+          return peace.util.alert('请选择药物过敏史')
+        }
+        if (!this.model.foodAllergy) {
+          return peace.util.alert('请选择食物过敏史')
         }
         if (this.model.isBadEffect && !this.model.isBadEffectText) {
           return peace.util.alert('请输入不良反应')
