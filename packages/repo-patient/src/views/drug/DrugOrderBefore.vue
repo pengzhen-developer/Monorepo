@@ -155,6 +155,7 @@ export default {
     getDefaultAddress() {
       peace.service.patient.getDefaultAddress().then(res => {
          this.userAddr = res.data;
+         this.canSubmitProcesses()
          //console.log('ressssssssssssssssssssssssss',res);
       })
     },
@@ -248,6 +249,7 @@ export default {
       peace.service.patient.getOrderBefore(params).then(res => {
         //console.log(res);
         this.order = res.data
+
         this.canSubmitProcesses()
       })
     },
