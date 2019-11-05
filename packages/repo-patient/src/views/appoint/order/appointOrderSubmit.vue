@@ -172,6 +172,7 @@ export default {
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
         this.fml = this.fmlList[0] || {}
+        console.log("fml", this.fml)
         this.fmlDic =
                 this.fmlList.map(item => {
                   return {
@@ -179,7 +180,7 @@ export default {
                     subname: '(' + item.relation + ')'
                   }
                 }) || []
-       if(this.fml) {
+       if(this.fml.familyId) {
           this.checkCard();
        }
       })

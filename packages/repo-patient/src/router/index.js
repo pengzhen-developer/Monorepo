@@ -90,6 +90,7 @@ const router = new Router({
           name: '/file/index',
           meta: {
             tabBar: true,
+            auth : true,
             navbar: {
               title: '健康档案'
             }
