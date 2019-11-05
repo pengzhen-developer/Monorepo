@@ -406,7 +406,7 @@ export default {
     },
     getCardList() {
       if (this.model.isExistCard) {
-        let familyId = this.model.id
+        let familyId = this.familyId
         let params = { familyId }
         peace.service.patient.getCardList(params).then(res => {
           this.cardList = res.data.list
@@ -560,9 +560,8 @@ export default {
     // 删除
     deleted() {
       const params = {
-        familyId: this.model.familyId
+        familyId: this.model.id
       }
-
       peace.service.patient.DelFamily(params).then(res => {
         peace.util.alert(res.msg)
 

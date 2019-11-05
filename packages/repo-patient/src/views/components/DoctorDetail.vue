@@ -200,7 +200,7 @@
             <div class="row flex"
                  style="margin: 0 0 4px 0;">
               <span class="service-consult-content-name">{{registerItem.timeSharing}}
-                {{registerItem.AMPM == 'AM' ? '上午': '下午'}}</span>
+                {{registerItem.startTime}}</span>
             </div>
             <div>
               <span>
