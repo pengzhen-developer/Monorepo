@@ -23,7 +23,7 @@
                     @click="shareDoctor(doctor.doctorInfo)"
                     class="star"
                     round
-                    icon="star-o"
+                    :icon="require('@src/assets/images/ic_follow.png')"
                     size="small"
                     style="font-weight: bold;">关注</van-button>
       </div>
@@ -585,6 +585,8 @@ export default {
 
         i {
           font-weight: bold !important;
+          display: flex;
+          align-items: center;
         }
 
         display: flex;
