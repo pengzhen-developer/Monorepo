@@ -10,6 +10,12 @@ const router = new Router({
   base: process.env.VUE_APP_RELEASE_FLODER_PATH,
   routes: [
     {
+      path: '/redirect',
+      name: '/redirect',
+      component: () => import('@src/Redirect.vue')
+    },
+
+    {
       path: '/',
       name: '/',
       meta: {
@@ -30,7 +36,6 @@ const router = new Router({
             }
           },
           component: () => {
-            // 存在 NETHOSPITALID 和 CHANNELID，则跳转医院首页
             if (
               $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) &&
               $peace.cache.get($peace.type.SYSTEM.CHANNELID)
@@ -89,8 +94,8 @@ const router = new Router({
           path: '/file/index',
           name: '/file/index',
           meta: {
-            tabBar: true,
             auth: true,
+            tabBar: true,
             navbar: {
               title: '健康档案'
             }
@@ -938,21 +943,6 @@ const router = new Router({
 let cacheRoute = null
 
 router.beforeEach((to, from, next) => {
-  // 存储当前 url 参数
-  let params = peace.util.decode(to.params.json)
-  if (peace.util.queryUrlParam('nethospitalid') || params.netHospitalId) {
-    peace.cache.set(
-      peace.type.SYSTEM.NETHOSPITALID,
-      peace.util.queryUrlParam('nethospitalid') || params.netHospitalId
-    )
-  }
-  if (peace.util.queryUrlParam('channelid') || params.channelid) {
-    peace.cache.set(
-      peace.type.SYSTEM.CHANNELID,
-      peace.util.queryUrlParam('channelid') || params.channelid
-    )
-  }
-
   // 微信环境授权
   if (!$peace.hasGetOpenId && peace.util.queryUrlParam('referrer') === 'login' && to.query.code) {
     let code = to.query.code
