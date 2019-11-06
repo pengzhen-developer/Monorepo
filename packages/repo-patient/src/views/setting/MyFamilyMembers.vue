@@ -12,7 +12,7 @@
           <template slot="title">
             <span class="custom-title">{{ item.name }}</span>
             <van-icon class-prefix="ic"
-                      class="primary"
+                      class="blue"
                       name="ic_boys"
                       v-if="item.sex === '男'" />
             <van-icon class-prefix="ic"
@@ -41,12 +41,12 @@
                   type="primary">新增家人</van-button>
     </div>
 
-<!--    <peace-dialog :title="dialog.title"-->
-<!--                  :visible.sync="dialog.visible">-->
-<!--      <FamilyMembersModel :canShowSelf="members && !members.find(item => item.relation === '本人')"-->
-<!--                          :data="dialog.data"-->
-<!--                          @onComplete="onComplete" />-->
-<!--    </peace-dialog>-->
+    <!--    <peace-dialog :title="dialog.title"-->
+    <!--                  :visible.sync="dialog.visible">-->
+    <!--      <FamilyMembersModel :canShowSelf="members && !members.find(item => item.relation === '本人')"-->
+    <!--                          :data="dialog.data"-->
+    <!--                          @onComplete="onComplete" />-->
+    <!--    </peace-dialog>-->
   </div>
 </template>
 <script>
@@ -58,7 +58,7 @@ export default {
   name: 'MyFamilyMembers',
 
   components: {
-   // FamilyMembersModel
+    // FamilyMembersModel
   },
 
   data() {
@@ -105,7 +105,8 @@ export default {
 
     // 查看家人详细信息
     toViewDetails(item) {
-      let params, json = '';
+      let params,
+        json = ''
       switch (item) {
         case 'recordCondition':
           $peace.$recordCondition.formData.family = item
@@ -115,7 +116,7 @@ export default {
           break
         default:
           params = { id: item.familyId, source: 2 }
-          json = peace.util.encode(params);
+          json = peace.util.encode(params)
           this.$router.push(`/setting/familyMember/${json}`)
           // peace.service.patient.getFamilyInfo(params).then(res => {
           //   this.dialog.data = res.data
@@ -131,7 +132,7 @@ export default {
       if (this.members && this.members.length >= 10) {
         return peace.util.alert('您最多可添加 10 位家人')
       }
-      let json =  peace.util.encode({type: 'add'});
+      let json = peace.util.encode({ type: 'add' })
       this.$router.push(`/setting/familyMember/${json}`)
     }
   }
