@@ -1,7 +1,7 @@
 <template>
   <div class="file-day">
     <!-- 血压 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血压', { ...data.bloodPressureData, familyId , idCard})">
       <div class="card-left">
         <van-image width="35px"
@@ -39,7 +39,7 @@
     </div>
 
     <!-- 血糖 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血糖', { ...data.bloodSugarData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
@@ -76,7 +76,7 @@
     </div>
 
     <!-- 血氧 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血氧', { ...data.bloodOxyGenData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
@@ -112,10 +112,10 @@
     </div>
 
     <!-- 体脂 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('体脂', { ...data.bodyFat, familyId , idCard })">
       <div class="card-left">
-        <van-image width="35px"
+        <van-image width="44px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_body fat.png')" />
       </div>
@@ -200,7 +200,7 @@ export default {
 
 .card {
   padding: 12px 0;
-  min-height: 60px;
+  min-height: 90px;
   background: #fff;
   margin: 0 0 8px 0;
   display: flex;

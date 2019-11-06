@@ -63,8 +63,6 @@ axios.interceptors.request.use(
 
       // 配置渠道ID
       request.headers['channelid'] = $peace.cache.get($peace.type.SYSTEM.CHANNELID)
-      console.log('nethospitalid=============', $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID))
-      console.log('channelid=============', $peace.cache.get($peace.type.SYSTEM.CHANNELID))
       request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
 
       // 配置 base url
