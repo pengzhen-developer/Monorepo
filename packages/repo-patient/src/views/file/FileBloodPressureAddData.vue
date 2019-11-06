@@ -66,6 +66,7 @@
           <van-datetime-picker v-model="currentDate"
                                type="datetime"
                                @confirm="confirm"
+                               :max-date="maxDate"
                                @cancel="show = false" />
         </van-popup>
       </van-cell-group>
@@ -95,6 +96,7 @@ export default {
   data() {
     return {
       util,
+      maxDate: new Date(),
       rateArr: [],
       show: false,
       rateShow: false,

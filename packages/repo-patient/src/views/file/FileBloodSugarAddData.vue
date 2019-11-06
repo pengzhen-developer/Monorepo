@@ -40,6 +40,7 @@
                    position="bottom">
           <van-datetime-picker v-model="currentDate"
                                type="datetime"
+                               :max-date="maxDate"
                                @confirm="confirm"
                                @cancel="show = false" />
         </van-popup>
@@ -64,7 +65,7 @@ export default {
       util,
       radio: '1',
       show: false,
-
+      maxDate: new Date(),
       model: {
         bloodSugar: 5.0,
         measureTime: new Date()
