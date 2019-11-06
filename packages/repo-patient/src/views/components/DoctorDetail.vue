@@ -194,13 +194,20 @@
         </div>
 
         <div class="service row flex"
-             v-for="registerItem in doctor.registerData"
+             v-for="(registerItem, index) in doctor.registerData"
              :key="registerItem.timeSharing + registerItem.bookingStart + registerItem.bookingEnd">
           <div class="service-consult-content">
             <div class="row flex"
                  style="margin: 0 0 4px 0;">
-              <span class="service-consult-content-name">{{registerItem.timeSharing}}
-                {{registerItem.startTime}}</span>
+              <span class="service-consult-content-name">
+                {{registerItem.timeSharing}}
+                {{registerItem.AMPM == 'AM' ? '上午': '下午'}}
+              </span>
+              <van-tag style="margin: 0 12px; font-size: 12px;"
+                       color="#f1f1f1"
+                       text-color="#999999">
+                {{ index === 0 ? '号源一' : index === 1 ? '号源二' : '' }}
+              </van-tag>
             </div>
             <div>
               <span>
