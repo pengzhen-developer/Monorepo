@@ -1,3 +1,8 @@
+.van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after {
+  border: 0;
+}
+
 img {
   background-size: cover;
   width: 100%;
@@ -55,7 +60,7 @@ img {
   color: #00c6ae;
 }
 /*tag*/
-.tag{
+.tag {
   display: inline-block;
   border: 1px solid #aaa;
   vertical-align: text-bottom;
@@ -65,25 +70,25 @@ img {
   margin-right: 2.5px;
   font-size: 9px;
 }
-.tag.tag-image{
-  background: #00C6AE;
-  border-color: #00C6AE;
+.tag.tag-image {
+  background: #00c6ae;
+  border-color: #00c6ae;
 }
-.tag.tag-appoint{
-  background: #74B0FF;
-  border-color: #74B0FF;
+.tag.tag-appoint {
+  background: #74b0ff;
+  border-color: #74b0ff;
 }
-.tag.tag-prvivateDoctor{
-  background: #AC91FF;
-  border-color: #AC91FF;
+.tag.tag-prvivateDoctor {
+  background: #ac91ff;
+  border-color: #ac91ff;
 }
-.tag.tag-video{
-  background: #00C6AE;
-  border-color: #00C6AE;
+.tag.tag-video {
+  background: #00c6ae;
+  border-color: #00c6ae;
 }
-.tag.tag-register{
-  background: #74B0FF;
-  border-color: #74B0FF;
+.tag.tag-register {
+  background: #74b0ff;
+  border-color: #74b0ff;
 }
 /*btn*/
 .btn {
