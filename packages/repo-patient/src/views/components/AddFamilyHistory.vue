@@ -1,0 +1,251 @@
+<template>
+  <div class="add-habit-history">
+    <div class="input">
+      <h4>已选</h4>
+      <div class="checked-list">
+        <van-tag :key="item.value"
+                 @click="check(item)"
+                 class="tag checked"
+                 plain
+                 v-for="item in allFamilyHistory">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
+      </div>
+
+      <h4>家族病史</h4>
+      <div class="not-checked-list">
+        <van-tag :class="{ checked: item.checked }"
+                 :key="item.value"
+                 @click="check(item)"
+                 class="tag"
+                 plain
+                 v-for="item in allFamilyHistoryCommonly">
+          <span style="font-size: 12px;">{{ item.value }}</span>
+        </van-tag>
+      </div>
+    </div>
+
+    <div class="save">
+      <van-button @click="save"
+                  style="width: 100%;"
+                  type="primary">保存</van-button>
+    </div>
+
+    <van-popup position="bottom"
+               v-model="showFamilyHistory">
+      <van-picker :columns="allFamilyHistoryList"
+                  @cancel="showFamilyHistory = false"
+                  @confirm="onConfirm"
+                  show-toolbar />
+    </van-popup>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+
+export default {
+  props: {
+    value: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
+  },
+
+  data() {
+    return {
+      internalValue: this.value,
+      none: '暂无',
+
+      showFamilyHistory: false,
+      searchFamilyHistory: '',
+
+      // 搜索
+      allFamilyHistoryList: [],
+      // 已选
+      allFamilyHistory: [],
+      // 常见
+      allFamilyHistoryCommonly: []
+    }
+  },
+
+  created() {
+    this.getAllFamilyHistoryCommonly().then(() => {
+      this.parmasHandler()
+    })
+  },
+
+  methods: {
+    getAllFamilyHistoryCommonly() {
+      return peace.service.health.lists({ type: 4 }).then(res => {
+        this.allFamilyHistoryCommonly = res.data.map(item => {
+          return {
+            value: item.name,
+            checked: false
+          }
+        })
+      })
+    },
+
+    parmasHandler() {
+      if (this.internalValue) {
+        if (typeof this.internalValue === 'string') {
+          this.internalValue = this.internalValue.split(',')
+        }
+
+        this.internalValue.forEach(habit => {
+          this.allFamilyHistory.push({ value: habit, checked: true })
+
+          if (this.allFamilyHistoryCommonly.find(item => item.value === habit)) {
+            this.allFamilyHistoryCommonly.find(item => item.value === habit).checked = true
+          }
+        })
+      }
+    },
+
+    onSearch() {
+      const params = {
+        keyword: this.searchFamilyHistory,
+        type: '6'
+      }
+      peace.service.inquiry.searchIllInfo(params).then(res => {
+        this.allFamilyHistoryList = (res.data && res.data.length
+          ? res.data
+          : [{ name: this.searchFamilyHistory, needAdd: true }]
+        ).map(item => {
+          return {
+            text: item.name,
+            needAdd: item.needAdd,
+            disabled: !!this.allFamilyHistory.find(temp => temp.value === item.name)
+          }
+        })
+
+        this.showFamilyHistory = true
+        this.searchFamilyHistory = ''
+      })
+    },
+    onCancel() {
+      this.showFamilyHistory = false
+      this.searchFamilyHistory = ''
+    },
+    onConfirm(value) {
+      this.check({ value: value.text, needAdd: value.needAdd })
+      this.onCancel()
+    },
+
+    check(currentItem) {
+      if (currentItem.needAdd) {
+        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 })
+      }
+      // 选择'无'， 重置所有
+      if (currentItem.value === this.none) {
+        this.allFamilyHistory = []
+        this.allFamilyHistoryCommonly.forEach(item => (item.checked = false))
+      }
+      // 非 '无'， 删除 '无' 选中
+      else {
+        const index = this.allFamilyHistory.findIndex(item => item.value === this.none)
+
+        if (index !== -1) {
+          this.allFamilyHistoryCommonly[0].checked = false
+          this.allFamilyHistory.splice(index, 1)
+        }
+      }
+
+      if (currentItem.checked) {
+        currentItem.checked = false
+        const index = this.allFamilyHistory.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.allFamilyHistoryCommonly.findIndex(
+          item => item.value === currentItem.value
+        )
+
+        if (index !== -1) {
+          this.allFamilyHistory.splice(index, 1)
+        }
+        if (indexCommonly !== -1) {
+          this.allFamilyHistoryCommonly[indexCommonly].checked = false
+        }
+      } else {
+        currentItem.checked = true
+        this.allFamilyHistory.push(currentItem)
+
+        const indexCommonly = this.allFamilyHistoryCommonly.findIndex(
+          item => item.value === currentItem.value
+        )
+        if (indexCommonly !== -1) {
+          this.allFamilyHistoryCommonly[indexCommonly].checked = true
+        }
+      }
+    },
+
+    save() {
+      this.$emit('input', this.allFamilyHistory.map(item => item.value).toString())
+
+      this.$emit('onSave')
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.add-habit-history {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .input {
+    overflow: auto;
+    flex: 1;
+
+    .search {
+      .search-label {
+        color: $-color--primary;
+        border-radius: 10px;
+      }
+    }
+
+    h4 {
+      color: #999999;
+      margin: 10px 15px 10px 15px;
+    }
+
+    .checked-list,
+    .not-checked-list {
+      padding: 0 15px;
+      margin: 0 0 20px 0;
+
+      .tag {
+        background: #f5f5f5 !important;
+        margin: 2px 10px 2px 0;
+        padding: 10px;
+        text-align: center;
+        min-width: 45px;
+        border: none;
+
+        &::after {
+          border: none;
+        }
+
+        &.checked {
+          background-color: #d9f7f3 !important;
+          color: $-color--primary !important;
+        }
+      }
+    }
+  }
+
+  .save {
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #f2f2f2;
+    margin: 10px 0;
+    padding: 0;
+  }
+}
+</style>
