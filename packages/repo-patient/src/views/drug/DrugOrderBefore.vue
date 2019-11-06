@@ -262,7 +262,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 page {
   background: #f5f5f5;
 }
@@ -328,9 +328,14 @@ page {
 
 .panel-head .head-ico {
   flex: 0 0 auto;
-  width: 56rpx;
-  height: 56rpx;
-  border: 2rpx solid #e5e5e5;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e5e5e5;
+  margin-right: 10px;
+  img {
+      width: 100%;
+      height: 100%;
+  }
 }
 .panel-head.icon-next::before {
   content: '';

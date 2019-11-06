@@ -561,7 +561,7 @@ export default {
     // 删除
     deleted() {
       const params = {
-        familyId: this.model.familyId
+        familyId: this.model.id
       }
 
       peace.service.patient.DelFamily(params).then(res => {
