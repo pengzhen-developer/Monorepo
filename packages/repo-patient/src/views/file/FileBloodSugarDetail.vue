@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: 1,
+      tabIndex: 2,
       data: {
         bloodSugarData: {}
       },
@@ -130,7 +130,7 @@ export default {
   },
 
   created() {
-    this.getOscillogram(1)
+    this.getOscillogram(2)
   },
 
   methods: {
