@@ -28,6 +28,12 @@ const channelId = peace.util.queryUrlParam('channelId')
 
 const netHospitalId = peace.util.queryUrlParam('netHospitalId')
 
+/**
+ * 医生ID 扫码进入
+ * 例如在首页 /home/index 中判断是否存在 ID ，用于加载不同的组件
+ */
+const doctorId = peace.util.queryUrlParam('doctorId')
+
 export default {
   data() {
     return {
@@ -39,7 +45,9 @@ export default {
         /** 在线问诊 */
         inquiry: '/components/doctorList',
         /** 我的处方 */
-        prescription: '/components/theRecipeList'
+        prescription: '/components/theRecipeList',
+        // 医生主页
+        doctorDetail:  '/components/doctorDetail'
       }
     }
   },
@@ -95,6 +103,14 @@ export default {
       if (redirectKey === 'prescription') {
         const json = peace.util.encode({
           netHospitalId: netHospitalId
+        })
+
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      }
+
+      if (redirectKey === 'doctorDetail') {
+        const json = peace.util.encode({
+          doctorId
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
