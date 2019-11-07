@@ -449,10 +449,11 @@ export default {
           }
         })
       } else {
+        //debugger
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
         this.model.allergicHistory = familyObject.allergicHistory
-
+        this.model.foodAllergy = familyObject.foodAllergy
         // 判断否能显示是否怀孕
         if (familyObject.sex === '女' && familyObject.age >= 14) {
           this.showPregnancy = true
