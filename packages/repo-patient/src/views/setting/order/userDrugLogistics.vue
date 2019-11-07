@@ -4,7 +4,8 @@
     <div class="box">
       <div class="card">
         <div class="card-avatar">
-          <img :src="data.DrugStoreLogo" />
+          <img :src="data.DrugStoreLogo"
+               style="height:100%;" />
         </div>
         <div class="card-body">
           <div class="card-name"> {{ data.ords[0].Notes }}</div>

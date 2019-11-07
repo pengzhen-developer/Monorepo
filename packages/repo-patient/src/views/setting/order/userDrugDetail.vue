@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="module">
+          <div class="module intro">
             <div class="dl-packet">
               <div class="dt">配送方式:</div>
               <div class="dd">{{order.ShippingMethod == '0' ? '到店取药': '配送到家'}}</div>
@@ -357,7 +357,7 @@ export default {
 .tab-content .addr-p {
   font-size: 16px;
   color: #333;
-  margin: 10px 0;
+  margin: 5px 0;
   font-weight: 700;
   position: relative;
 }
@@ -409,6 +409,7 @@ export default {
 .panel-pha .panel-body {
   padding: 10px 15px;
 }
+.intro,
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -454,7 +455,7 @@ export default {
   margin: 10px;
 }
 .userAddr {
-  padding-right: 20px;
+  // padding-right: 20px;
   position: relative;
 }
 .userAddr.icon-next::after {
@@ -575,7 +576,7 @@ export default {
   font-weight: bold;
   font-size: 12px;
   position: absolute;
-  top: 9px;
+  top: 10px;
   color: rgb(90, 90, 90);
 }
 /*0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)*/
