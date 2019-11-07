@@ -26,7 +26,8 @@
     </div>
 
     <div class="file-blood-detail-button">
-      <van-button round>数据解读</van-button>
+      <van-button round
+                  disabled>数据解读</van-button>
     </div>
 
     <div class="file-blood-detail-content">
@@ -250,6 +251,7 @@ export default {
       background: rgb(219, 235, 233) !important;
       border-color: rgb(219, 235, 233) !important;
       color: #333333 !important;
+      opacity: 1 !important;
     }
   }
 

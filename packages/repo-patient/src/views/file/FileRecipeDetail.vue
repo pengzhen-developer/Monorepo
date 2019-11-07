@@ -12,16 +12,17 @@
       <div class="tip"
            v-if="data.total > 1">
         <div class="tip-left">
-          <van-icon name="location-o"
+          <van-icon :name="require('@src/assets/images/ic_tixing.png')"
                     style="margin: 0 5px 0 0;"></van-icon>
           <span>
-            共 {{ data.total }} 张，
-            当前为第 {{ current + 1 }} 张（{{ current + 1 }} / {{ data.total }}）</span>
+            共{{ data.total }}张，
+            当前为第{{ current + 1 }}张（{{ current + 1 }} / {{ data.total }}）</span>
         </div>
         <div class="tip-right"
              @click="next">
           <span>下一张</span>
-          <van-icon name="arrow"></van-icon>
+          <van-icon :name="require('@src/assets/images/ic_arrow.png')"
+                    style="margin: 0 0 0 5px;"></van-icon>
         </div>
       </div>
 
@@ -59,7 +60,7 @@
              style="border-bottom: 1px dashed #BFBFBF;">
           <div class="flex between"
                style="margin: 0 0 5px 0;">
-            <div>
+            <div style="flex:1;">
               <span style="font-size: 15px; color: #000; font-weight: bold; margin: 0 10px 0 0;">
                 {{ item.drugName }}
               </span>
@@ -68,7 +69,8 @@
               </span>
             </div>
             <div>
-              <span style="font-size: 15px; color: #000;">x {{ item.drugQty }}</span>
+              <span style="font-size: 15px; color: #000;margin-left:10px;">x
+                {{ item.drugQty }}</span>
             </div>
           </div>
           <div>

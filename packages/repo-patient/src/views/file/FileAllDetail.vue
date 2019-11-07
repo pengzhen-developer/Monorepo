@@ -50,9 +50,8 @@
         </div>
       </div>
     </div>
-
     <div class="file-all-detail-content">
-      <van-tabs v-model="active"
+      <!-- <van-tabs v-model="active"
                 swipeable>
         <van-tab title="病历">
           <FileCaseDetail :data="caseInfo"></FileCaseDetail>
@@ -63,8 +62,25 @@
         <van-tab title="检验检查">
           <FileExaminationDetail></FileExaminationDetail>
         </van-tab>
-      </van-tabs>
+      </van-tabs> -->
+      <van-sticky>
+        <van-tabs v-model="active"
+                  swipeable>
+          <van-tab title="病历">
+          </van-tab>
+          <van-tab title="处方">
+          </van-tab>
+          <van-tab title="检验检查">
+          </van-tab>
+        </van-tabs>
+      </van-sticky>
+      <FileCaseDetail :data="caseInfo"
+                      v-if='active==0'></FileCaseDetail>
+      <FileRecipeDetail :data="prescribeInfos"
+                        v-else-if='active==1'></FileRecipeDetail>
+      <FileExaminationDetail v-else-if='active==2'></FileExaminationDetail>
     </div>
+
   </div>
 </template>
 
@@ -112,11 +128,11 @@ export default {
 
 <style lang="scss" scoped>
 .file-all-detail {
-  height: 100%;
+  // height: 100%;
   background: #fff;
 
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
 
   .file-all-detail-header {
     min-height: 180px;
@@ -133,7 +149,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-
+      .header-top-left,
       .header-top-right {
         display: flex;
         align-items: center;
@@ -168,8 +184,8 @@ export default {
   }
 
   .file-all-detail-content {
-    flex: 1;
-    overflow: auto;
+    // flex: 1;
+    // overflow: auto;
 
     /deep/ .van-tabs {
       display: flex;
