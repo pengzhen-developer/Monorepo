@@ -1,6 +1,18 @@
 <template>
   <div class="add-habit-history">
     <div class="input">
+      <van-search @cancel="onCancel"
+                  class="search"
+                  placeholder="请输入搜索关键词"
+                  shape="round"
+                  show-action
+                  v-model="searchSurgeryTrauma">
+        <span @click="onSearch"
+              class="search-label"
+              slot="action">搜索</span>
+      </van-search>
+
+      <hr />
       <h4>已选</h4>
       <div class="checked-list">
         <van-tag :key="item.value"
@@ -79,7 +91,7 @@ export default {
 
   methods: {
     getAllSurgeryTraumaCommonly() {
-      return peace.service.health.lists({ type: 3 }).then(res => {
+      return peace.service.health.getPersonInfo({ type: 3, keyword: "" }).then(res => {
         this.allSurgeryTraumaCommonly = res.data.map(item => {
           return {
             value: item.name,
@@ -108,9 +120,9 @@ export default {
     onSearch() {
       const params = {
         keyword: this.searchSurgeryTrauma,
-        type: '6'
+        type: 3
       }
-      peace.service.inquiry.searchIllInfo(params).then(res => {
+      peace.service.health.getPersonInfo(params).then(res => {
         this.allSurgeryTraumaList = (res.data && res.data.length
           ? res.data
           : [{ name: this.searchSurgeryTrauma, needAdd: true }]
@@ -137,7 +149,7 @@ export default {
 
     check(currentItem) {
       if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 })
+        peace.service.health.addPersonInfo({ name: currentItem.value, type: 3 })
       }
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
