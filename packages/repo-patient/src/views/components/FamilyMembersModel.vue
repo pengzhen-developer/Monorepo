@@ -6,7 +6,7 @@
       <div class="card"
            v-for="(cardItem, index) in cardList"
            :key="'item' + index"
-           @click="goToDetail()">
+           @click="goToDetail(cardItem)">
         <div class="qrcode"
              id="qrcode"
              :style="{backgroundImage:'url(data:image/png;base64,'+ cardItem.base64 + ')'}"></div>
@@ -433,12 +433,13 @@ export default {
       })
       return code
     },
-    goToDetail() {
+    goToDetail(item) {
+      let {backgroundCode} = item;
       let familyId = this.model.id
       const json = peace.util.encode({
-        familyId
+        familyId,
+        backgroundCode
       })
-
       this.$router.push(`/setting/cardDetail/${json}`)
     },
     selectTime(value) {

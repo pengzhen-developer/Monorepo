@@ -1,5 +1,8 @@
 <template>
     <div class="card-detail">
+        <van-nav-bar
+                :title="backgroundCode == 1? '山东电子健康卡' : ''"
+        />
         <div class="form form-for-family">
             <div id="qrcode" class="qrcode" :style="{backgroundImage:'url(data:image/png;base64,'+ model.base64 + ')'}"></div>
             <div class="divider"></div>
@@ -16,15 +19,20 @@
 
 <script>
     import peace from '@src/library'
+    import Vue from 'vue';
+    import { NavBar } from 'vant';
+    Vue.use(NavBar);
     export default {
         name: "CardDetail",
         data() {
             return {
+                backgroundCode: "",
                 model : {}
             }
         },
         mounted() {
             const params = peace.util.decode(this.$route.params.json)
+            this.backgroundCode = params.backgroundCode;
             peace.service.patient.healthcardInfo(params).then(res => {
                this.model = res.data.info;
             })
