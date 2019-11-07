@@ -61,48 +61,37 @@
       </div>
 
       <div class="file-famliy-detail">
-        <van-sticky>
-
-          <van-tabs v-model="active"
-                    swipeable>
-            <van-tab title="全    部">
-              <FileAll v-if="active === 0"
-                       :key="familyId"
-                       :familyId="familyId"></FileAll>
-            </van-tab>
-            <van-tab title="日常检测">
-              <FileDay v-if="active === 1"
-                       :key="familyId"
-                       :familyId="familyId"
-                       :idCard="idCard"></FileDay>
-              <FileDay v-if="active === 1"
-                       :key="familyId"
-                       :familyId="familyId"
-                       :idCard="idCard"></FileDay>
-              <FileDay v-if="active === 1"
-                       :key="familyId"
-                       :familyId="familyId"
-                       :idCard="idCard"></FileDay>
-            </van-tab>
-            <van-tab title="就诊病历">
-              <FileCase v-if="active === 2"
-                        :key="familyId"
-                        :familyId="familyId"></FileCase>
-            </van-tab>
-            <van-tab title="住院病历">
-              <div class="none-page">
-                <div class="icon icon_none_source"></div>
-                <div class="none-text">暂无数据</div>
-              </div>
-            </van-tab>
-            <van-tab title="体检报告">
-              <div class="none-page">
-                <div class="icon icon_none_source"></div>
-                <div class="none-text">暂无数据</div>
-              </div>
-            </van-tab>
-          </van-tabs>
-        </van-sticky>
+        <van-tabs v-model="active"
+                  swipeable>
+          <van-tab title="全    部">
+            <FileAll v-if="active === 0"
+                     :key="familyId"
+                     :familyId="familyId"></FileAll>
+          </van-tab>
+          <van-tab title="日常检测">
+            <FileDay v-if="active === 1"
+                     :key="familyId"
+                     :familyId="familyId"
+                     :idCard="idCard"></FileDay>
+          </van-tab>
+          <van-tab title="就诊病历">
+            <FileCase v-if="active === 2"
+                      :key="familyId"
+                      :familyId="familyId"></FileCase>
+          </van-tab>
+          <van-tab title="住院病历">
+            <div class="none-page">
+              <div class="icon icon_none_source"></div>
+              <div class="none-text">暂无数据</div>
+            </div>
+          </van-tab>
+          <van-tab title="体检报告">
+            <div class="none-page">
+              <div class="icon icon_none_source"></div>
+              <div class="none-text">暂无数据</div>
+            </div>
+          </van-tab>
+        </van-tabs>
       </div>
     </template>
   </div>
