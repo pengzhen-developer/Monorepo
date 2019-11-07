@@ -252,21 +252,26 @@ export default {
 
     canselOrder() {
       const params = peace.util.decode(this.$route.params.json)
-
-      peace.service.purchasedrug.CancelOrder(params).then(res => {
-        peace.util.alert(res.msg)
-
-        this.getDrugOrderDetail()
+      let resTxt = "";
+      if(this.order.OrderStatus == 0) {
+        resTxt = "取消订单后药房将不再为您预留药品。是否取消订单？"
+      } else {
+        resTxt = "取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？"
+      }
+      peace.util.confirm( resTxt, '温馨提醒', undefined, () => {
+        peace.service.purchasedrug.CancelOrder(params).then(res => {
+          peace.util.alert(res.msg)
+          this.getDrugOrderDetail()
+        })
       })
     },
 
     submitOrder() {
       const params = peace.util.decode(this.$route.params.json)
-
-      peace.util.confirm('收到药品之后再确认取药哦~~~', '温馨提醒', undefined, () => {
+      let resTxt = this.order.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失';
+      peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
-
           this.getDrugOrderDetail()
         })
       })
