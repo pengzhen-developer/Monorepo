@@ -34,7 +34,7 @@
             <van-notice-bar style="height: 100%; padding: 0;"
                             color="#999999"
                             background="transparent">
-              {{ hospitalInfo.notices.length > 0 && hospitalInfo.notices[0].title }}
+              {{ hospitalInfo.notices.length > 0 && "【"+ hospitalInfo.notices[0].title+"】"+ hospitalInfo.notices[0].content  }}
             </van-notice-bar>
           </div>
           <i @click="goHospitalNoticeList()"
