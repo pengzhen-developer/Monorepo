@@ -179,6 +179,34 @@ export function lists(params) {
   return peace.http.post(lists, params)
 }
 
+/**
+ * 健康档案获取字典
+ *
+ * @export
+ * @param {*} 类型 3:手术或外伤 4:家族病史 7:个人习惯
+ * @returns
+ */
+export function getPersonInfo(params) {
+  const getPersonInfo = 'client/v1/inquiry/getPersonInfo'
+
+  return peace.http.post(getPersonInfo, params)
+}
+
+/**
+ * 健康档案添加
+ *
+ * @export
+ * @param {*} 类型 3:手术或外伤 4:家族病史 7:个人习惯
+ * @returns
+ */
+export function addPersonInfo(params) {
+  const addPersonInfo = 'client/v1/inquiry/addPersonInfo'
+
+  return peace.http.post(addPersonInfo, params)
+}
+
+
+
 export default {
   getHealthCase,
   familyLists,
@@ -195,5 +223,7 @@ export default {
   addBloodPressure,
   addBloodSugar,
   addBloodOxygendata,
-  addBodyFatData
+  addBodyFatData,
+  getPersonInfo,
+  addPersonInfo
 }
