@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit && model">
-      <div class="card-name">{{cardName}}</div>
+      <!-- <div class="card-name">{{cardName}}</div> -->
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -434,7 +434,7 @@ export default {
       return code
     },
     goToDetail(item) {
-      let {backgroundCode} = item;
+      let { backgroundCode } = item
       let familyId = this.model.id
       const json = peace.util.encode({
         familyId,
