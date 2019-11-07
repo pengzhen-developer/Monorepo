@@ -149,7 +149,7 @@ export default {
     onConfirm(value) {
       if (!value.disabled) {
         //库里面无数据时, 创建的诊断只有一个数据，设置为disabled任然可以选择，此处做校验
-        value.text && this.check({ value: value.text })
+        value.text && this.check({ value: value.text, needAdd: value.needAdd })
         this.onCancel()
       } else {
         this.onCancel()
@@ -157,9 +157,7 @@ export default {
     },
 
     check(currentItem) {
-      if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 1 })
-      }
+
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
@@ -189,18 +187,30 @@ export default {
           this.allergicHistoryCommonly[indexCommonly].checked = false
         }
       } else {
-        currentItem.checked = true
-        this.allergicHistory.push(currentItem)
-
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
-        if (indexCommonly !== -1) {
-          this.allergicHistoryCommonly[indexCommonly].checked = true
+        if (currentItem.needAdd) {
+          if(currentItem.value.length < 50) {
+            peace.service.inquiry.addAllergen({ name: currentItem.value, type: 1 }).then(()=> {
+              this.onAddCallback(currentItem);
+            })
+          } else {
+            peace.util.alert("您输入的字数过长！")
+          }
+        } else {
+          this.onAddCallback(currentItem);
         }
       }
     },
+    onAddCallback(currentItem) {
+      currentItem.checked = true
+      this.allergicHistory.push(currentItem)
 
+      const indexCommonly = this.allergicHistoryCommonly.findIndex(
+              item => item.value === currentItem.value
+      )
+      if (indexCommonly !== -1) {
+        this.allergicHistoryCommonly[indexCommonly].checked = true
+      }
+    },
     save() {
       this.$emit('input', this.allergicHistory.map(item => item.value).toString())
 

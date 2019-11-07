@@ -148,9 +148,7 @@ export default {
     },
 
     check(currentItem) {
-      if (currentItem.needAdd) {
-        peace.service.health.addPersonInfo({ name: currentItem.value, type: 4 })
-      }
+
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allFamilyHistory = []
@@ -180,18 +178,31 @@ export default {
           this.allFamilyHistoryCommonly[indexCommonly].checked = false
         }
       } else {
-        currentItem.checked = true
-        this.allFamilyHistory.push(currentItem)
-
-        const indexCommonly = this.allFamilyHistoryCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
-        if (indexCommonly !== -1) {
-          this.allFamilyHistoryCommonly[indexCommonly].checked = true
+        if (currentItem.needAdd) {
+          if(currentItem.value.length < 50) {
+            peace.service.health.addPersonInfo({ name: currentItem.value, type: 4 }).then(()=> {
+              this.onAddCallback(currentItem);
+            })
+          } else {
+            peace.util.alert("您输入的字数过长！")
+          }
+        } else {
+          this.onAddCallback(currentItem);
         }
+
       }
     },
+    onAddCallback(currentItem) {
+      currentItem.checked = true
+      this.allFamilyHistory.push(currentItem)
 
+      const indexCommonly = this.allFamilyHistoryCommonly.findIndex(
+              item => item.value === currentItem.value
+      )
+      if (indexCommonly !== -1) {
+        this.allFamilyHistoryCommonly[indexCommonly].checked = true
+      }
+    },
     save() {
       this.$emit('input', this.allFamilyHistory.map(item => item.value).toString())
 
