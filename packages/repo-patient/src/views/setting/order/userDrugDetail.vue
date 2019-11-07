@@ -1,9 +1,11 @@
 <template>
   <div class="user-drug-detail">
-    <div class="count-down"  v-if="order.OrderStatus == 0">
-      订单  <van-count-down millisecond
-                          :time="time"
-                          format="HH:mm:ss" /> 后将自动关闭
+    <div class="count-down"
+         v-if="order.OrderStatus == 0">
+      订单
+      <van-count-down millisecond
+                      :time="time"
+                      format="HH:mm:ss" /> 后将自动关闭
     </div>
     <div class="top"
          v-if="order.OrderStatusText">
@@ -18,7 +20,9 @@
           </div>
           <div class="order-text"></div>
         </div>
-        <div class="cancelText" v-if="order.OrderStatus == '5' && order.payMoney != 0 ">订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
+        <div class="cancelText"
+             v-if="order.OrderStatus == '5' && order.payMoney != 0 ">订单取消后退款将在1-3个工作日内原路返回，请注意查收
+        </div>
         <div class="tab-content"
              v-if="order.ShippingMethod == '0'">
           <div class="addr-tit">取药地址</div>
@@ -42,7 +46,7 @@
       <div class="panel-pha">
         <div class="panel-head icon-next">
           <div class="head-ico">
-            <img :src="order.DrugStoreLog" />
+            <img :src="order.DrugStoreLogo" />
           </div>
           <div class="head-tit">{{ order.DrugStoreName }}</div>
           <div class="head-more">
@@ -71,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="module">
+          <div class="module intro">
             <div class="dl-packet">
               <div class="dt">配送方式:</div>
               <div class="dd">{{order.ShippingMethod == '0' ? '到店取药': '配送到家'}}</div>
@@ -86,7 +90,8 @@
               <div class="dd">￥{{order.TotalAmount}}</div>
             </div>
           </div>
-          <div class="module str" v-if="order.OrderStatus != 0">
+          <div class="module str"
+               v-if="order.OrderStatus != 0">
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
@@ -112,24 +117,26 @@
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
-        <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-        <div class='bottom-1'  v-if="order.OrderStatus == 0">
-          <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
-          <div class="right">
-            <div @click="canselOrder"
-                 class="pay cancel"
-                 v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
-                 style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-              取消订单</div>
-            <div @click="payOrder(order)"
-                 class="pay"
-                 v-if="order.OrderStatus == '0'"
-                 style="background: #00C6AE; margin-bottom: 8px; ">
-              继续支付</div>
-          </div>
+      <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+      <div class='bottom-1'
+           v-if="order.OrderStatus == 0">
+        <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
+        <div class="right">
+          <div @click="canselOrder"
+               class="pay cancel"
+               v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+            取消订单</div>
+          <div @click="payOrder(order)"
+               class="pay"
+               v-if="order.OrderStatus == '0'"
+               style="background: #00C6AE; margin-bottom: 8px; ">
+            继续支付</div>
         </div>
+      </div>
 
-      <div class="bottom" v-else>
+      <div class="bottom"
+           v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
              v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
@@ -189,28 +196,28 @@ export default {
       let params = { code, orderNo }
       peace.service.index.GetWxLoginStatus(params).then(res => {
         let data = res.data
-        peace.wx.payInvoke(data, this.payCallback);
+        peace.wx.payInvoke(data, this.payCallback)
       })
     }
   },
   methods: {
     payCallback() {
-      let orderId = '';
-      if(this.$route.query.orderId) {
+      let orderId = ''
+      if (this.$route.query.orderId) {
         //授权跳转后回调
-        orderId = this.$route.query.orderId;
+        orderId = this.$route.query.orderId
       } else {
         //直接回调
-        orderId = this.orderId;
+        orderId = this.orderId
       }
       const json = peace.util.encode({ OrderId: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     payOrder(order) {
-      let orderNo = order.OrderId;
-      this.orderId = order.OrderId;
+      let orderNo = order.OrderId
+      this.orderId = order.OrderId
       let params = { orderNo }
-      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo);
+      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
     },
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
@@ -273,32 +280,32 @@ export default {
   height: 100%;
   background: #f5f5f5;
   .cancelText {
-    height:45px;
-    background:rgba(240,252,250,1);
-    border-radius:2px;
+    height: 45px;
+    background: rgba(240, 252, 250, 1);
+    border-radius: 2px;
     margin: 10px 15px 0 15px;
-    font-size:12px;
-    color:rgba(0,198,174,1);
-    line-height:16px;
+    font-size: 12px;
+    color: rgba(0, 198, 174, 1);
+    line-height: 16px;
     padding: 6px 10px 0px 50px;
-    background:rgba(240,252,250,1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
+    background: rgba(240, 252, 250, 1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
     background-size: 17px 17px;
-    background-position: 20px 13px ;
+    background-position: 20px 13px;
   }
   .count-down {
     width: 100%;
     height: 36px;
     line-height: 36px;
-    background:#FEFCEB url('../../../assets/images/icons/count-down.png') no-repeat;
+    background: #fefceb url('../../../assets/images/icons/count-down.png') no-repeat;
     background-size: 20px 20px;
     background-position: 10px 7px;
     padding-left: 40px;
-    color: #F96A0E;
-    font-size:14px;
+    color: #f96a0e;
+    font-size: 14px;
     .van-count-down {
       display: inline-block;
-      color: #F96A0E;
-      font-size:14px!important;
+      color: #f96a0e;
+      font-size: 14px !important;
     }
   }
 }
@@ -350,7 +357,7 @@ export default {
 .tab-content .addr-p {
   font-size: 16px;
   color: #333;
-  margin: 10px 0;
+  margin: 5px 0;
   font-weight: 700;
   position: relative;
 }
@@ -383,6 +390,11 @@ export default {
   width: 28px;
   height: 28px;
   border: 1px solid #e5e5e5;
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 }
 .panel-head .head-tit {
   flex: 1;
@@ -397,6 +409,7 @@ export default {
 .panel-pha .panel-body {
   padding: 10px 15px;
 }
+.intro,
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -442,7 +455,7 @@ export default {
   margin: 10px;
 }
 .userAddr {
-  padding-right: 20px;
+  // padding-right: 20px;
   position: relative;
 }
 .userAddr.icon-next::after {
@@ -487,33 +500,33 @@ export default {
   left: 0;
   width: 100%;
   height: 60px;
-  background:rgba(255,255,255,1);
-  border:1px solid rgba(238,238,238,1);
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(238, 238, 238, 1);
   display: flex;
   align-items: center;
   padding: 0 15px;
   justify-content: space-between;
   .money {
-    font-size:20px;
-    color:rgba(255,52,77,1);
+    font-size: 20px;
+    color: rgba(255, 52, 77, 1);
   }
   .right {
-    display: flex
+    display: flex;
   }
   .pay {
     width: 75px;
     height: 30px;
-    background: rgba(0,198,174,1);
+    background: rgba(0, 198, 174, 1);
     border-radius: 2px;
     font-size: 13px;
-    color:rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
     line-height: 30px;
     text-align: center;
     margin-left: 10px;
     &.cancel {
-      border:1px solid rgba(204,204,204,1);
+      border: 1px solid rgba(204, 204, 204, 1);
       background: #fff;
-      color:rgba(153,153,153,1);
+      color: rgba(153, 153, 153, 1);
     }
   }
 }
@@ -563,7 +576,7 @@ export default {
   font-weight: bold;
   font-size: 12px;
   position: absolute;
-  top: 9px;
+  top: 10px;
   color: rgb(90, 90, 90);
 }
 /*0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)*/
@@ -579,13 +592,13 @@ export default {
 }
 .icon-status-3::before {
   content: '';
-  background-image:  url('../../../assets/images/icons/icon-status-3.jpg');
+  background-image: url('../../../assets/images/icons/icon-status-3.jpg');
 }
 .icon-status-4::before,
 .icon-status-6::before,
 .icon-status-8::before,
 .icon-status-5::before {
   content: '';
-  background-image:  url('../../../assets/images/icons/icon-status-4.jpg');
+  background-image: url('../../../assets/images/icons/icon-status-4.jpg');
 }
 </style>

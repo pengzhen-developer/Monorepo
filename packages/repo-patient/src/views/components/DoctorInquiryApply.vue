@@ -145,7 +145,7 @@
 
           <peace-dialog :visible.sync="showFoodAllergy">
             <AddFoodAllergy @onSave="showFoodAllergy = false"
-                                v-model.trim="model.foodAllergy"></AddFoodAllergy>
+                            v-model.trim="model.foodAllergy"></AddFoodAllergy>
           </peace-dialog>
         </van-cell-group>
 
@@ -359,7 +359,7 @@ export default {
           }
 
           if (family) {
-           // debugger
+            // debugger
             this.model.familyName = family.name
             this.model.familyId = family.familyId
             this.model.allergicHistory = family.allergicHistory
@@ -700,7 +700,9 @@ export default {
         }
       }
     }
-
+    /deep/ .van-cell-group {
+      border-bottom: 1px solid #dedede;
+    }
     /deep/ .van-uploader__upload,
     /deep/ .van-uploader__preview-image {
       width: 50px;

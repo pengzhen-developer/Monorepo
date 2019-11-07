@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="module">
+          <div class="module intro">
             <div class="dl-packet">
               <div class="dt">配送方式:</div>
               <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
@@ -149,14 +149,14 @@ export default {
         peace.wx.payInvoke(data, this.payCallback)
       })
     }
-    this.getDefaultAddress();
+    this.getDefaultAddress()
   },
   methods: {
     getDefaultAddress() {
       peace.service.patient.getDefaultAddress().then(res => {
-         this.userAddr = res.data;
-         this.canSubmitProcesses()
-         //console.log('ressssssssssssssssssssssssss',res);
+        this.userAddr = res.data
+        this.canSubmitProcesses()
+        //console.log('ressssssssssssssssssssssssss',res);
       })
     },
     getAddr(addr) {
@@ -305,7 +305,7 @@ page {
 .tab-content .addr-p {
   font-size: 16px;
   color: #333;
-  margin: 10px 0;
+  margin: 5px 0;
   font-weight: 700;
   position: relative;
 }
@@ -333,8 +333,8 @@ page {
   border: 1px solid #e5e5e5;
   margin-right: 10px;
   img {
-      width: 100%;
-      height: 100%;
+    width: 100%;
+    height: 100%;
   }
 }
 .panel-head.icon-next::before {
@@ -360,6 +360,7 @@ page {
 .panel-pha .panel-body {
   padding: 10px 15px;
 }
+.intro,
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -425,7 +426,9 @@ page {
   content: '';
   position: absolute;
   display: block;
-  top: 15px;
+  // top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0px;
   width: 7px;
   height: 12px;
@@ -447,17 +450,19 @@ page {
   flex-direction: column;
   text-align: right;
 }
+
 .list-other .other-them::after {
   content: '?  ';
   display: inline-block;
   width: 10px;
   height: 10px;
   line-height: 1;
+  vertical-align: middle;
   background: #00c6ae;
   border-radius: 50%;
   font-size: 10px;
   color: #fff;
-  margin-top: 2px;
+  margin-bottom: 3px;
   margin-left: 2px;
   padding: 0;
   text-align: center;
