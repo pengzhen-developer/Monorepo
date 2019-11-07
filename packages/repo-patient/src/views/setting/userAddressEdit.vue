@@ -99,10 +99,13 @@ export default {
     }
   },
   created() {
-    // const params = peace.util.decode(this.$route.query.addr);
+    const addr = peace.util.decode(this.$route.query.addr)
     const params = peace.util.decode(this.$route.params.json)
     if (params.hasOwnProperty('addressId')) {
       this.internalAddr = params
+    }
+    if (addr.hasOwnProperty('addressId')) {
+      this.internalAddr = addr
     }
   },
   methods: {
