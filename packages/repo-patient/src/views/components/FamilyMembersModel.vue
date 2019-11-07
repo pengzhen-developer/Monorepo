@@ -341,7 +341,7 @@ export default {
         this.model = res.data
         this.familyId = res.data.id
         if (this.model) {
-          this.isNationExist = this.model.nationCode != ''
+          this.isNationExist = this.model.nationCode && this.model.nationName
           this.cardName = this.model.name
           this.getNationList()
           this.getCardList()
