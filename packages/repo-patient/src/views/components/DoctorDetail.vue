@@ -123,8 +123,7 @@
         <!-- 图文咨询 -->
         <div class="service row flex"
              @click="goApply(serviceImageInfo, 'image')">
-          <van-image round
-                     width="30px"
+          <van-image width="30px"
                      height="30px"
                      style="margin: 0 10px 0 0;"
                      :src="require('@src/assets/images/ic_tuwen.png')"></van-image>
