@@ -148,12 +148,13 @@ export default {
   flex-direction: column;
   .card-line {
     height: 36px;
-    background: rgba(235, 251, 249, 1);
+    // background: rgba(235, 251, 249, 1);
     font-size: 14px;
     font-weight: 400;
-    color: rgba(0, 198, 174, 1);
+    // color: rgba(0, 198, 174, 1);
     line-height: 36px;
     text-align: center;
+    color: #666;
   }
   .content {
     flex: 1;
