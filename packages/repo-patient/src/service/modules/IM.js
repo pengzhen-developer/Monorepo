@@ -224,9 +224,20 @@ export function onMsg(message) {
  * @param {*} 系统消息
  */
 export function onSysmsg(message) {
+
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+
+  let href = window.location.href;
+  if(new RegExp("setting/userConsultList").test(href) ||
+      new RegExp("setting/userConsultDetail").test(href) ||
+      new RegExp("order/userDrugDetail").test(href) ||
+      new RegExp("setting/order/userOrderList").test(href) ||
+      new RegExp("setting/order/userOrderDetail").test(href)
+  ) {
+    window.location.reload();
+  }
   //Store.dispatch('appointMent/getList');
-  window.location.reload();
+
 }
 
 
