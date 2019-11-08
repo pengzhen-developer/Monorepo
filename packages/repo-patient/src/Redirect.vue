@@ -63,9 +63,8 @@ export default {
 
   methods: {
     cacheParams() {
-      peace.cache.remove(peace.type.SYSTEM.netHospitalId)
+      peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
       peace.cache.remove(peace.type.SYSTEM.CHANNELID)
-
       peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, netHospitalId)
       peace.cache.set(peace.type.SYSTEM.CHANNELID, channelId)
     },
