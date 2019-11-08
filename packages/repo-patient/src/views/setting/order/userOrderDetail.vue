@@ -86,10 +86,9 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-
     <!-- 待支付 -->
     <div class='bottom'
-         v-if="info.orderInfo.orderStatus == 1">
+         v-if="info.orderInfo.orderStatus == '1' ">
       <div class="left">应付金额：<span class="money">¥{{info.orderInfo.orderMoney}}</span></div>
       <div class="right">
         <div class="pay cancel"
@@ -103,7 +102,7 @@
     <div class="module pdtb"
          v-else>
       <div class="brief right">
-        实付金额：
+        {{info.orderInfo.payMoney == '0.00' ? '应' : '实' }}付金额 ：
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
     </div>

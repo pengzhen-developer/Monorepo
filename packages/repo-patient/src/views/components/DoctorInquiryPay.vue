@@ -32,7 +32,7 @@
       <van-cell>
         <!-- 使用 title 插槽来自定义标题 -->
         <template slot="title">
-          <span>实际支付：</span>
+          <span>应付金额：</span>
           <span class="dc">{{params.money}}元</span>
         </template>
         <van-button @click="pay"
