@@ -228,11 +228,13 @@ export function onSysmsg(message) {
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
 
   let href = window.location.href;
-  if(new RegExp("setting/userConsultList").test(href) ||
-      new RegExp("setting/userConsultDetail").test(href) ||
-      new RegExp("order/userDrugDetail").test(href) ||
-      new RegExp("setting/order/userOrderList").test(href) ||
-      new RegExp("setting/order/userOrderDetail").test(href)
+  let tag = message.tag;
+  if( (new RegExp("setting/userConsultList").test(href) && tag == 'inquiry') ||
+      (new RegExp("setting/userConsultDetail").test(href) && tag == 'inquiry') ||
+      (new RegExp("components/theRecipeList").test(href) && tag == 'purchaseDrug') ||
+      (new RegExp("order/userDrugDetail").test(href) && tag == 'purchaseDrug') ||
+      (new RegExp("setting/order/userOrderList").test(href) && tag == 'register') ||
+      (new RegExp("setting/order/userOrderDetail").test(href) && tag =='register')
   ) {
     window.location.reload();
   }
