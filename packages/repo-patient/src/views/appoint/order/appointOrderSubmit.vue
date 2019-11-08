@@ -39,7 +39,7 @@
     <div class="order-check">
       <div class="form-dl">
         <div class="form-dt">就诊人</div>
-        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml.name || '请选择'}}</div>
+        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml && fml.name || '请选择'}}</div>
         <van-action-sheet :actions="fmlDic" @cancel="showFmlDic = false" @select="fmlConfirm" cancel-text="取消" v-model="showFmlDic" />
       </div>
       <div class="form-dl">
@@ -83,9 +83,7 @@ export default {
       order: {
         zdType: '初诊'
       },
-      fml: {
-        name: ''
-      },
+      fml: null,
       fmlDic: [],
       showFmlDic: false,
       zdDic: ['初诊', '复诊'],
@@ -160,7 +158,7 @@ export default {
     checkCardExist() {
           let familyId = this.fml.familyId
           let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
-           console.log(this.doctorInfo)
+
           let params = { familyId, nethospitalid }
           return new Promise(resolve => {
               peace.service.patient.isExistCardRelation(params).then(res => {
@@ -169,20 +167,43 @@ export default {
           })
     },
     initFml(){
+      let doctorId = this.doctorInfo.doctorId;
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
-        this.fml = this.fmlList[0] || {}
-        console.log("fml", this.fml)
-        this.fmlDic =
-                this.fmlList.map(item => {
-                  return {
-                    name: item.name,
-                    subname: '(' + item.relation + ')'
-                  }
-                }) || []
-       if(this.fml.familyId) {
-          this.checkCard();
-       }
+
+        if(this.fmlList.length > 0) {
+          peace.service.patient.getLastAppoint({ doctorId}).then(lastFamily => {
+            // 1. 优先选中最后一个就诊人
+            // 2. 其次选中关系为本人
+            // 3. 最后选中家人列表的第一个就诊人
+            if (!this.fml) {
+              this.fml = this.fmlList.find(item => item.id === lastFamily.data.familyId)
+            }
+
+            if (!this.fml) {
+              this.fml = this.fmlList.find(item => item.relation === '本人')
+            }
+
+            if (!this.fml) {
+              this.fm = this.fmlList.find(
+                      item => item.familyId === this.source.familyList[0].id
+              )
+            }
+            if(this.fml) {
+              this.fmlDic =
+                      this.fmlList.map(item => {
+                        return {
+                          name: item.name,
+                          subname: '(' + item.relation + ')'
+                        }
+                      }) || []
+              if(this.fml.familyId) {
+                this.checkCard();
+              }
+            }
+          })
+        }
+
       })
     },
     zdConfirm(val) {
