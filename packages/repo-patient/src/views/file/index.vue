@@ -238,7 +238,7 @@ export default {
 
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 1px 10px 0px rgba(187, 187, 187, 0.5);
-        border-radius: 10px;
+        border-radius: 5px;
 
         .header {
           padding: 15px 15px 0 15px;
