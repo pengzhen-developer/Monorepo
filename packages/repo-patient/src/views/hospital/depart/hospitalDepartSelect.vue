@@ -176,6 +176,9 @@ export default {
   content: '\F02F';
   color: #00c6ae;
 }
+.van-tree-select__item {
+  font-weight: 500;
+}
 .van-tree-select__item--active {
   color: #00c6ae;
 }
