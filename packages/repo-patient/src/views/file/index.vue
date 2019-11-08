@@ -46,7 +46,7 @@
                    @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
-                  <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;"
+                  <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;background: #eee;"
                                 color="#5B9EFF"
                                 :percentage="item.percentage"
                                 :show-pivot="false"
