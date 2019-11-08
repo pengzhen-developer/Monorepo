@@ -252,13 +252,14 @@ export default {
 
     canselOrder() {
       const params = peace.util.decode(this.$route.params.json)
-      let resTxt = "";
-      if(this.order.OrderStatus == 0) {
-        resTxt = "取消订单后药房将不再为您预留药品。是否取消订单？"
+      let resTxt = ''
+      if (this.order.OrderStatus == 0) {
+        resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
-        resTxt = "取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？"
+        resTxt =
+          '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
-      peace.util.confirm( resTxt, '温馨提醒', undefined, () => {
+      peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.CancelOrder(params).then(res => {
           peace.util.alert(res.msg)
           this.getDrugOrderDetail()
@@ -268,7 +269,9 @@ export default {
 
     submitOrder() {
       const params = peace.util.decode(this.$route.params.json)
-      let resTxt = this.order.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失';
+      let resTxt = this.order.ShippingMethod
+        ? '收到药品确认无误后再确认收货，以免造成损失'
+        : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
@@ -395,10 +398,15 @@ export default {
   width: 28px;
   height: 28px;
   border: 1px solid #e5e5e5;
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   img {
-    width: 100%;
-    height: 100%;
-    display: block;
+    width: 90%;
+    height: 90%;
+    border-radius: 2px;
   }
 }
 .panel-head .head-tit {

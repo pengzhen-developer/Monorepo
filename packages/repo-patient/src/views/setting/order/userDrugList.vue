@@ -173,13 +173,14 @@ export default {
     },
     canselOrder(item) {
       const params = { OrderId: item.OrderId }
-      let resTxt = "";
-      if(item.OrderStatus == 0) {
-         resTxt = "取消订单后药房将不再为您预留药品。是否取消订单？"
+      let resTxt = ''
+      if (item.OrderStatus == 0) {
+        resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
-         resTxt = "取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？"
+        resTxt =
+          '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
-      peace.util.confirm( resTxt, '温馨提醒', undefined, () => {
+      peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.CancelOrder(params).then(res => {
           peace.util.alert(res.msg)
           this.getDrugItems()
@@ -195,7 +196,9 @@ export default {
 
     submitOrder(item) {
       const params = { OrderId: item.OrderId }
-      let resTxt = item.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失';
+      let resTxt = item.ShippingMethod
+        ? '收到药品确认无误后再确认收货，以免造成损失'
+        : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
@@ -358,7 +361,7 @@ export default {
 }
 .card-strip .avatar img {
   padding: 1px;
-  border-radius: 50%;
+  // border-radius: 50%;
   width: 27px;
   height: 27px;
   margin-top: -1px;

@@ -4,8 +4,7 @@
     <div class="box">
       <div class="card">
         <div class="card-avatar">
-          <img :src="data.DrugStoreLogo"
-               style="height:100%;" />
+          <img :src="data.DrugStoreLogo" />
         </div>
         <div class="card-body">
           <div class="card-name"> {{ data.ords[0].Notes }}</div>
@@ -72,6 +71,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 90%;
+    height: 90%;
+    border-radius: 2px;
+  }
+}
 .user-drug-logistics {
   height: 100%;
   background: #f5f5f5;
