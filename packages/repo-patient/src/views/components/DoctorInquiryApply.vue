@@ -701,7 +701,7 @@ export default {
       }
     }
     /deep/ .van-cell-group {
-      border-bottom: 1px solid #dedede;
+      border-bottom: 1px solid #eee;
     }
     /deep/ .van-uploader__upload,
     /deep/ .van-uploader__preview-image {
@@ -715,7 +715,7 @@ export default {
 
     .divider {
       height: 10px;
-      background: #f5f5f5;
+      background: #f9f9f9;
     }
   }
 
