@@ -129,7 +129,7 @@ export default {
   border-left: 2px solid #d8d8d8;
   padding-left: 15px;
   flex: 1;
-  min-height: 125px;
+  min-height: 82px;
 }
 .time-line .time::after {
   content: '';

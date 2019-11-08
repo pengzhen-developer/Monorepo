@@ -237,10 +237,10 @@ export default {
 .card {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 8px 0px 8px 16px;
   margin: 0 0 10px 0;
-
+  height: 65px;
   .card-value {
     font-size: 20px;
     color: #333333;
