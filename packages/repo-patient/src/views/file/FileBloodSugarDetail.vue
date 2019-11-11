@@ -66,7 +66,13 @@
       </div>
       <div class="charts-body">
         <v-chart class="charts"
-                 :options="options" />
+                 :options="options"
+                 v-if="options.xAxis.data.length>0" />
+        <div class="none-page"
+             v-else>
+          <div class="icon icon_none_source"></div>
+          <div class="none-text">暂无数据</div>
+        </div>
       </div>
     </div>
 
@@ -92,7 +98,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: '',
+      tabIndex: '1',
       data: {
         bloodSugarData: {}
       },
@@ -137,12 +143,11 @@ export default {
   methods: {
     getOscillogram(tag) {
       // debugger
-
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then(res => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
-        this.tabIndex = upData.bloodSugarData.measureState == "1" ? 1: 2
+        // this.tabIndex = upData.bloodSugarData.measureState == '1' ? 1 : 2
         let xAxisData = null,
           seriesDataOne = null
         if (tag == 1) {
@@ -156,6 +161,9 @@ export default {
           )
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
+        this.tabIndex = tag == '1' ? 1 : 2
+
+        console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
