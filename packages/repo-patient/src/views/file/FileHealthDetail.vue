@@ -291,6 +291,6 @@ export default {
 .footer {
   background: #fff;
   height: 70px;
-  padding: 15px;
+  padding: 0  15px 110px;
 }
 </style>

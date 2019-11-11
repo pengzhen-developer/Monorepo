@@ -48,24 +48,16 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
             if (res.code === 200) {
               console.log('订单入参', params)
               let data = res.data
-              if (data) {
-                  // 直接授权
-                  let appid =  config.APPID;
-                  let redirect_uri = location.href + urlSuffix;
-                  if(/code/.test(redirect_uri)) {
-                      redirect_uri = redirect_uri.split("code")[0]
-                  }
-                  let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect`
-                  window.location.href = url
-                  // console.log('微信支付config', data)
-                  // payInvoke(data,paySuc, payCancel)
-              } else {
-                // 进入微信授权
-                // let appid =  config.APPID;
-                // let redirect_uri = location.href + urlSuffix;
-                // let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-                // window.location.href = url
-              }
+                if (data) {
+                    console.log('微信支付config', data)
+                    payInvoke(data,paySuc, payCancel)
+                } else {
+                    // 进入微信授权
+                    let appid =  config.APPID;
+                    let redirect_uri = location.href + urlSuffix;
+                    let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+                    window.location.href = url
+                }
             }
         })
         .catch(res => {
