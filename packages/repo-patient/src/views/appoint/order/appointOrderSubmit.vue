@@ -97,10 +97,14 @@ export default {
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
     this.date = this.params.date
-    console.log(this.params)
+    this.saveHospitalCache();
     this.initFml();
   },
   methods: {
+   saveHospitalCache() {
+      let nethospitalid = this.doctorInfo.nethospitalId;
+      peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalid);
+    },
     checkCard(tag) {
           this.checkCardExist().then(res => {
               if (!res.data.result) {

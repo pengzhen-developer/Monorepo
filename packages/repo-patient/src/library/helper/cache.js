@@ -53,7 +53,7 @@ export function get(key = '', type = 'localStorage') {
  * @returns {*}
  */
 export function remove(key = '', type = 'localStorage') {
-  window[type].removeItem(encode(key))
+  window[type].removeItem(key)
 }
 
 /**

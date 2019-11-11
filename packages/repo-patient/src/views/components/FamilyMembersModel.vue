@@ -245,7 +245,7 @@ export default {
 
   data() {
     return {
-
+      isFromHospital: false,
       cardName: '',
       from: '',
       model: {
@@ -325,6 +325,9 @@ export default {
     }
   },
   mounted() {
+    //alert(peace.type.SYSTEM.NETHOSPITALID)
+    this.isFromHospital = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID);
+    console.log('isFromHospital', this.isFromHospital)
     let json = peace.util.decode(this.$route.params.json)
     if (json.type != 'add') {
       this.getFamilyInfo()
