@@ -1,6 +1,19 @@
+
+/**
+ * ▼▼▼▼▼▼▼▼▼▼▼  系统中转页，如有逻辑新增和修改，务必注释清楚  ▼▼▼▼▼▼▼▼▼▼▼
+ *
+ * step 1，判断当前 url 参数是否合法
+ *      1.1，当前参数不合法，跳转提示页
+ *
+ * step 2，根据策略模式，跳转不同业务
+ *
+ * ▲▲▲▲▲▲▲▲▲▲▲  系统中转页，如有逻辑新增和修改，务必注释清楚  ▲▲▲▲▲▲▲▲▲▲▲
+ */
+
 <template>
-  <div>
-    <h4>正在为您跳转，请稍后</h4>
+  <div class="redirect">
+    <van-loading />
+    <span>加载中</span>
   </div>
 </template>
 
@@ -25,7 +38,6 @@ const channelId = peace.util.queryUrlParam('channelId')
  * 机构ID, 机构 ID 会带入页面初始化时的查询参数
  * 例如在首页 /home/index 中判断是否存在 netHospitalId ，用于加载不同的组件
  */
-
 const netHospitalId = peace.util.queryUrlParam('netHospitalId')
 
 /**
@@ -45,31 +57,46 @@ export default {
         /** 在线问诊 */
         inquiry: '/components/doctorList',
         /** 我的处方 */
-        prescription: '/components/theRecipeList',
-        // 医生主页
-        doctorDetail:  '/components/doctorDetail'
+        prescription: '/components/theRecipeList'
       }
     }
   },
 
   created() {
-    if (this.redirectMap[redirectKey]) {
+    if (this.validateParams()) {
+      this.removeCache()
       this.cacheParams()
-      this.redirect()
-    } else {
-      peace.util.alert('未找到 Redirect 对照字典')
+      this.redirectByKey()
     }
   },
 
   methods: {
-    cacheParams() {
-      peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
-      peace.cache.remove(peace.type.SYSTEM.CHANNELID)
-      peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, netHospitalId)
-      peace.cache.set(peace.type.SYSTEM.CHANNELID, channelId)
+    /**
+     * 验证跳转参数是否合法
+     * 参数 redirect 必须
+     * 参数 channelId / netHospitalId 必须同时存在或者同时不存在
+     */
+    validateParams() {
+      if (!redirectKey || !this.redirectMap[redirectKey]) {
+        peace.util.alert('参数异常，请退出后重新访问')
+
+        return false
+      }
+
+      if (!((channelId && netHospitalId) || (!channelId && !netHospitalId))) {
+        peace.util.alert('参数异常，请退出后重新访问')
+
+        return false
+      }
+
+      return true
     },
 
-    redirect() {
+    /**
+     * 判断当前 url 参数，跳转不同的业务页
+     * 通过策略模式，在 redirectMap[redirectKey] 处理中转逻辑
+     */
+    redirectByKey() {
       if (redirectKey === 'home') {
         if (netHospitalId && channelId) {
           const json = peace.util.encode({
@@ -114,10 +141,42 @@ export default {
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
       }
+    },
+
+    // 清除缓存
+    removeCache() {
+      // 当访问渠道不同（代表公众号不同），需要重新授权
+      // 因此需要清除登录信息和微信授权信息
+      if (
+        peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId ||
+        peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
+      ) {
+        peace.cache.remove(peace.type.USER.INFO)
+        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID)
+        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
+      }
+    },
+
+    // 缓存
+    cacheParams() {
+      peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, netHospitalId)
+      peace.cache.set(peace.type.SYSTEM.CHANNELID, channelId)
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.redirect {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+
+  span {
+    color: #aaaaaa;
+  }
+}
 </style>
