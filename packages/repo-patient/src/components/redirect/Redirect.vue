@@ -21,13 +21,13 @@
 import peace from '@src/library'
 
 /**
- * 跳转标识
+ * 跳转标识, 当没有参数时，默认跳转大平台首页
  * home：首页
  * registered: 预约挂号
  * inquiry: 在线问诊
  * prescription: 我的处方
  */
-const redirectKey = peace.util.queryUrlParam('redirect')
+const redirectKey = peace.util.queryUrlParam('redirect') || 'home'
 
 /**
  * 渠道ID, 渠道 ID 会在 http 请求放置于 header
