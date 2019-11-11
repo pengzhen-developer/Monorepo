@@ -3,19 +3,11 @@
 const path = require('path')
 
 module.exports = {
-  devServer: {},
   // https://cli.vuejs.org/config/#vue-config-js
   publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/',
 
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
-
-  // https://cli.vuejs.org/config/#devserver
-  devServer: {
-    // 内网穿透
-    // https://webpack.js.org/configuration/dev-server/#devserverdisablehostcheck
-    disableHostCheck: true
-  },
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: config => {
@@ -39,25 +31,23 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        // @/ is an alias to src/
+        // @src/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
         data: `@import "@src/assets/css/variable.scss";`
       },
 
       less: {
         modifyVars: {
-          green: '#00c6ae',
-          blue: '#00c6ae'
+          green: '#00C6AE',
+          blue: '#00C6AE'
         }
       },
 
       postcss: {
         plugins: [
           require('postcss-pxtorem')({
-            // 换算的基数
-            rootValue: 37.5,
-            // 忽略转换正则匹配项
-            selectorBlackList: [],
+            rootValue: 37.5, // 换算的基数
+            selectorBlackList: [], // 忽略转换正则匹配项
             propList: ['*']
           })
         ]

@@ -1,9 +1,8 @@
 {
-  "name": "test",
-  "version": "0.8.2-009",
+  "name": "demo",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build:dev": "vue-cli-service build --mode dev",
     "build:test": "vue-cli-service build --mode test",
@@ -13,46 +12,33 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "core-js": "^3.1.2",
     "echarts": "^4.4.0",
     "nprogress": "^0.2.0",
-    "vant": "^2.2.6",
+    "vant": "^2.2.11",
+    "vconsole": "^3.3.4",
     "vue": "^2.6.10",
-    "vue-baidu-map": "^0.21.22",
     "vue-echarts": "^4.0.4",
     "vue-router": "^3.0.6",
-    "vuex": "^3.1.1"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-plugin-babel": "^4.0.0",
+    "@vue/cli-plugin-eslint": "^4.0.0",
+    "@vue/cli-plugin-router": "^4.0.0",
+    "@vue/cli-plugin-vuex": "^4.0.0",
+    "@vue/cli-service": "^4.0.0",
+    "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.0.0",
-    "less": "^3.9.0",
+    "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "node-sass": "^4.12.0",
     "postcss-pxtorem": "^4.0.1",
-    "sass-loader": "^7.1.0",
+    "prettier": "^1.18.2",
+    "sass-loader": "^7.0.0",
     "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": ["plugin:vue/essential", "eslint:recommended"],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": ["> 1%", "last 2 versions"]
+  }
 }
