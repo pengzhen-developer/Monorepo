@@ -1,9 +1,11 @@
 <template>
   <div class="inquiry-session-message-list">
-    <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
+    <div :class="getMessageFlow(message)"
+         :key="message.time"
+         class="message"
+         v-for="(message ,index) in messageList">
       <!-- 文本消息 -->
-      <template
-        v-if="getMessageType(message) === 'text' || 
+      <template v-if="getMessageType(message) === 'text' || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
@@ -11,17 +13,18 @@
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒"
-      >
+              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
-        <div class="message-body" v-html="getMessageText(message)"></div>
+        <div class="message-body"
+             v-html="getMessageText(message)"></div>
       </template>
 
       <!-- 视频消息 -->
@@ -29,14 +32,16 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
         <div class="message-body">
           <span>{{ getMessageText(message) }}</span>
-          <img src="~@/assets/images/inquiry/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" />
+          <img src="~@/assets/images/inquiry/ic_video_left@2x.png"
+               style="width: 18px; margin-left: 10px;" />
         </div>
       </template>
 
@@ -45,13 +50,16 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
         <div v-viewer>
-          <img :src="message.file.url" style="max-width: 400px; " title="查看大图" />
+          <img :src="message.file.url"
+               style="max-width: 400px; "
+               title="查看大图" />
         </div>
       </template>
 
@@ -60,16 +68,19 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
-        <div @click="getCaseDetail(message)" class="message-body case">
+        <div @click="getCaseDetail(message)"
+             class="message-body case">
           <img src="~@src/assets/images/inquiry/ic_medical record.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">病历</p>
-            <p>查看详情</p>
+            <!-- <p>查看详情</p> -->
+            <p>{{formDate(message.time || message.sendtime)}}</p>
           </div>
         </div>
       </template>
@@ -79,25 +90,32 @@
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
-        <div @click="getRecipeDetail(message)" class="message-body recipe">
+        <div @click="getRecipeDetail(message)"
+             class="message-body recipe">
           <img src="~@src/assets/images/inquiry/ic_rp.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">处方</p>
-            <p>查看详情</p>
+            <p>{{formDate(message.time || message.sendtime)}}</p>
+            <!-- <p>查看详情</p> -->
           </div>
         </div>
       </template>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible" append-to-body title="病历详情">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  append-to-body
+                  title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </peace-dialog>
-    <peace-dialog :visible.sync="recipeDetail.visible" append-to-body title="处方详情">
+    <peace-dialog :visible.sync="recipeDetail.visible"
+                  append-to-body
+                  title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
     </peace-dialog>
   </div>
@@ -214,7 +232,14 @@ export default {
         return false
       }
     },
-
+    //2019年11月11日
+    formDate(time) {
+      time = new Date(time)
+      let y = time.getFullYear()
+      let m = time.getMonth() + 1
+      let d = time.getDate()
+      return y + '年' + m + '月' + d + '日'
+    },
     getMessageType(message) {
       // text
       // image
