@@ -245,6 +245,7 @@ export default {
 
   data() {
     return {
+
       cardName: '',
       from: '',
       model: {
@@ -538,8 +539,8 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.source = 2
       params.nethospitalid = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId

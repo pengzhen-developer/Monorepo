@@ -110,7 +110,8 @@ export default {
                       confirmButtonText: '现在领取'
                   }).then(() => {
                       let familyId = this.fml.familyId
-                      let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+                      console.log(this.doctorInfo);
+                      let nethospitalid = this.doctorInfo.nethospitalId;
                       let params = { familyId, nethospitalid }
                       peace.service.patient
                           .createHealthcard(params)
@@ -157,8 +158,7 @@ export default {
       },
     checkCardExist() {
           let familyId = this.fml.familyId
-          let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
-
+          let nethospitalid = this.doctorInfo.nethospitalId;
           let params = { familyId, nethospitalid }
           return new Promise(resolve => {
               peace.service.patient.isExistCardRelation(params).then(res => {
@@ -262,8 +262,8 @@ export default {
         peace.util.alert('请勿重复提交')
         return;
       }
-      this.checkCard(true);
-
+      // this.checkCard(true);
+      this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
       this.showBtn = false;

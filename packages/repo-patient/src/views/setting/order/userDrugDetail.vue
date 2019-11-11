@@ -144,7 +144,7 @@
           取消订单</div>
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '3' && order.ShippingMethod == '1'">确认签收</div>
+             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
         <div class="btn block btn-default"
              v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
           {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
