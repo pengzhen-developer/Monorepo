@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: 2,
+      tabIndex: '',
       data: {
         bloodSugarData: {}
       },
@@ -137,11 +137,12 @@ export default {
   methods: {
     getOscillogram(tag) {
       // debugger
-      this.tabIndex = tag
+
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then(res => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
+        this.tabIndex = upData.bloodSugarData.measureState == "1" ? 1: 2
         let xAxisData = null,
           seriesDataOne = null
         if (tag == 1) {

@@ -393,7 +393,7 @@ export default {
             confirmButtonText: '现在领取'
           }).then(() => {
             let familyId = this.model.familyId
-            let nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+            let nethospitalid = this.doctor.doctorInfo.nethospitalid;
             let params = { familyId, nethospitalid }
             peace.service.patient
               .createHealthcard(params)
@@ -537,8 +537,10 @@ export default {
           return peace.util.alert('请选择本次复诊情况')
         }
       }
-
-      this.checkCard(true)
+      this.uploadHandler().then(() => {
+        this.applyHandler()
+      })
+      // this.checkCard(true)
     },
     goToPay(data) {
       let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
