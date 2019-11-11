@@ -195,7 +195,7 @@ export default {
         })
     },
     canselOrder() {
-      if (!this.info.orderInfo.cancelState) {
+      if (!this.info.orderInfo.cancelState && this.info.orderInfo.orderStatus !=1) {
         return
       }
       let type, alertMsg
