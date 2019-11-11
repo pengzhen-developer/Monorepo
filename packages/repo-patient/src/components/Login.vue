@@ -58,7 +58,7 @@ export default {
         tel: '',
         smsCode: ''
       },
-
+      hasLogin: false,
       countDownTime: undefined
     }
   },
@@ -96,6 +96,10 @@ export default {
     },
 
     signIn() {
+      if (this.hasLogin) {
+        return
+      }
+      this.hasLogin = true
       const params = {
         tel: this.model.tel,
         smsCode: this.model.smsCode,
@@ -109,6 +113,9 @@ export default {
         peace.service.IM.initNIM()
 
         const UA = window.navigator.userAgent.toLowerCase()
+        setTimeout(() => {
+          this.hasLogin = false
+        }, 500)
         if (UA.match(/MicroMessenger/i) == 'micromessenger') {
           return this.$router.replace({
             path: peace.config.system.authPage,
