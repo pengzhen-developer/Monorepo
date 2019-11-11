@@ -5,7 +5,7 @@ const routers = [
     meta: {
       auth: false
     },
-    component: () => import('@src/components/layout/Index.vue')
+    component: () => import('@src/components/redirect/Redirect.vue')
   },
   {
     path: '/redirect',
