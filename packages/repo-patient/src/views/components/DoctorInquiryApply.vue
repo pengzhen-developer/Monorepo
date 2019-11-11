@@ -331,6 +331,7 @@ export default {
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
       this.doctor = res.data
+      this.saveHospitalCache();
     })
 
     peace.service.patient.getMyFamilyList().then(familyList => {
@@ -384,6 +385,10 @@ export default {
   },
 
   methods: {
+    saveHospitalCache() {
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid;
+      peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalid);
+    },
     checkCard(tag) {
       this.checkCardExist().then(res => {
         if (!res.data.result) {
