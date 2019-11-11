@@ -132,7 +132,16 @@ export default {
         .addAddress(data)
         .then(() => {
           peace.util.alert(this.internalAddr.addressId ? '编辑成功' : '添加成功')
+
           this.$router.go(-1)
+
+          //
+          // AccessCode: "GJ1FST"
+          // Detailed: "湖北省武汉市汉阳区国信新城二期3号门面房"
+          // DrugStoreId: "GJNEDR"
+          // JZTClaimNo: "3O5NM0-201910281025390581-2019102839538594"
+          // ShippingMethod: 2
+          // familyId: "cishjjjduj"
         })
         .catch(res => {
           console.log(res)

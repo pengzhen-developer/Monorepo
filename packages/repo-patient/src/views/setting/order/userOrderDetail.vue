@@ -102,7 +102,7 @@
     <div class="module pdtb"
          v-else>
       <div class="brief right">
-        {{info.orderInfo.payMoney == '0.00' ? '应' : '实' }}付金额 ：
+        {{info.orderInfo.payMoney == '0.00' && info.orderInfo.orderStatus !='3' ? '应' : '实' }}付金额 ：
         <div class="money">{{info.orderInfo.payMoney}}</div>
       </div>
     </div>

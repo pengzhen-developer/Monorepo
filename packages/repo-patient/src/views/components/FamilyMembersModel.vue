@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <template v-if="isEdit && model">
-      <!-- <div class="card-name">{{cardName}}</div> -->
-      <div class="card-title">电子健康卡</div>
-      <div class="card"
+       <div class="card-name">{{cardName}}</div>
+      <div class="card-title" v-if="isFromHospital">电子健康卡</div>
+      <template v-if="isFromHospital">
+        <div class="card"
            v-for="(cardItem, index) in cardList"
            :key="'item' + index"
            @click="goToDetail(cardItem)">
@@ -13,6 +14,7 @@
         <div class="name">{{cardItem.name}}</div>
         <div class="idcard">{{cardItem.idcard}}</div>
       </div>
+     </template>
       <div class="card no-card"
            v-if="!model.isExistCard"></div>
       <div claas="card-list-content">
@@ -35,7 +37,7 @@
       <!--      </div>-->
 
       <div class="form form-for-family"
-           v-if="!model.isExistCard">
+           v-if="!model.isExistCard || !isFromHospital">
         <van-field :disabled="isEdit"
                    label="姓名"
                    placeholder="请输入姓名"
@@ -348,7 +350,9 @@ export default {
           this.isNationExist = this.model.nationCode && this.model.nationName
           this.cardName = this.model.name
           this.getNationList()
-          this.getCardList()
+          if(this.isFromHospital) {
+            this.getCardList()
+          }
         }
         // this.dialog.data = res.data
         // this.dialog.data.familyId = item.familyId

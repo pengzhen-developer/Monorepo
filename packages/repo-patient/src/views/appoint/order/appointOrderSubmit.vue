@@ -128,7 +128,7 @@ export default {
                               if (res.data.code === 202) {
                                   return Dialog.confirm({
                                       title: '提示',
-                                      message: '该就诊人尚未完善资料，请前 去完善！',
+                                      message: '该就诊人尚未完善资料，请前去完善！',
                                       confirmButtonText: '去完善'
                                   }).then(() => {
                                       this.$router.push(`/setting/myFamilyMembers`)

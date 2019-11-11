@@ -97,12 +97,12 @@ export function onConnect(connectObject) {
  */
 export function onDisConnect(disConnectObject) {
   console.warn('【 IM 】【 onDisConnect 】', new Date(), disConnectObject)
-
   switch (disConnectObject.code) {
     case 302:
     case 417:
     case 'kicked':
       // 清空登录信息
+      console.log("kicked")
       peace.cache.remove(peace.type.USER.INFO)
       peace.util.warning(disConnectObject.message)
 
