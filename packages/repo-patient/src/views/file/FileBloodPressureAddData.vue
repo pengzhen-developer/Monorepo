@@ -44,18 +44,17 @@
     <div class="file-blood-detail-content">
       <van-cell-group>
         <van-cell @click="rateShow = true"
-                   is-link
+                  is-link
                   :value="model.pulseRate + '次/分'"
-                   title="脉率（选填）" />
+                  title="脉率（选填）" />
         <van-popup v-model="rateShow"
-                     position="bottom">
-              <van-picker :columns="rateArr"
-                          show-toolbar
-                          :default-index = "model.pulseRate"
-                          @confirm="onRateConfirm"
-                          @cancel="v => rateShow = false"
-              />
-          </van-popup>
+                   position="bottom">
+          <van-picker :columns="rateArr"
+                      show-toolbar
+                      :default-index="model.pulseRate"
+                      @confirm="onRateConfirm"
+                      @cancel="v => rateShow = false" />
+        </van-popup>
 
         <van-cell @click="show = true"
                   is-link
@@ -67,6 +66,7 @@
                                type="datetime"
                                @confirm="confirm"
                                :max-date="maxDate"
+                               :min-date="minDate"
                                @cancel="show = false" />
         </van-popup>
       </van-cell-group>
@@ -83,13 +83,14 @@
 <script>
 import peace from '@src/library'
 import util from './util'
-import Vue from 'vue';
-import { Picker } from 'vant';
-Vue.use(Picker);
+import Vue from 'vue'
+import { Picker } from 'vant'
+Vue.use(Picker)
 
 export default {
   mounted() {
-    for(let i=0; i<220; i++) {
+    this.minDate = this.getMinDay()
+    for (let i = 0; i <= 220; i++) {
       this.rateArr.push(i)
     }
   },
@@ -97,6 +98,7 @@ export default {
     return {
       util,
       maxDate: new Date(),
+      minDate: null,
       rateArr: [],
       show: false,
       rateShow: false,
@@ -112,6 +114,14 @@ export default {
   },
 
   methods: {
+    getMinDay() {
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return today
+    },
     onRateConfirm(value) {
       this.rateShow = false
       // console.log('rateShowwwwwwwwwww', this.rateShow)

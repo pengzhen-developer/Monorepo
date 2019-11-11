@@ -31,10 +31,9 @@
                    position="bottom">
           <van-picker :columns="rateArr"
                       show-toolbar
-                      :default-index = "model.pulseRate"
+                      :default-index="model.pulseRate"
                       @confirm="onRateConfirm"
-                      @cancel="v => rateShow = false"
-          />
+                      @cancel="v => rateShow = false" />
         </van-popup>
 
         <van-cell @click="show = true"
@@ -46,6 +45,7 @@
           <van-datetime-picker v-model="currentDate"
                                type="datetime"
                                :max-date="maxDate"
+                               :min-date="minDate"
                                @confirm="confirm"
                                @cancel="show = false" />
         </van-popup>
@@ -63,12 +63,13 @@
 <script>
 import peace from '@src/library'
 import util from './util'
-import Vue from 'vue';
-import { Picker } from 'vant';
-Vue.use(Picker);
+import Vue from 'vue'
+import { Picker } from 'vant'
+Vue.use(Picker)
 export default {
   mounted() {
-    for(let i=0; i<220; i++) {
+    this.minDate = this.getMinDay()
+    for (let i = 0; i <= 220; i++) {
       this.rateArr.push(i)
     }
   },
@@ -76,6 +77,7 @@ export default {
     return {
       util,
       maxDate: new Date(),
+      minDate: null,
       rateArr: [],
       rateShow: false,
       show: false,
@@ -90,6 +92,14 @@ export default {
   },
 
   methods: {
+    getMinDay() {
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return today
+    },
     onRateConfirm(value) {
       this.rateShow = false
       // console.log('rateShowwwwwwwwwww', this.rateShow)
