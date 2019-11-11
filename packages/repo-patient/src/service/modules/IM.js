@@ -224,9 +224,22 @@ export function onMsg(message) {
  * @param {*} 系统消息
  */
 export function onSysmsg(message) {
+
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+
+  let href = window.location.href;
+  let tag = message.tag;
+  if( (new RegExp("setting/userConsultList").test(href) && tag == 'inquiry') ||
+      (new RegExp("setting/userConsultDetail").test(href) && tag == 'inquiry') ||
+      (new RegExp("components/theRecipeList").test(href) && tag == 'purchaseDrug') ||
+      (new RegExp("order/userDrugDetail").test(href) && tag == 'purchaseDrug') ||
+      (new RegExp("setting/order/userOrderList").test(href) && tag == 'register') ||
+      (new RegExp("setting/order/userOrderDetail").test(href) && tag =='register')
+  ) {
+    window.location.reload();
+  }
   //Store.dispatch('appointMent/getList');
-  window.location.reload();
+
 }
 
 
