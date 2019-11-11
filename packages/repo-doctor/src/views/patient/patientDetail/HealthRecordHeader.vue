@@ -49,41 +49,41 @@
             <el-col :span="8">
               <label class="label">婚姻状态：</label>
               <span :title="internalData.personalInfo.maritalStatus"
-                    class="value">{{ internalData.personalInfo.maritalStatus||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.maritalStatus||"-" }}</span>
             </el-col>
             <el-col :span="8">
               <label class="label">生育状态：</label>
               <span :title="internalData.personalInfo.fertilityStatus"
-                    class="value">{{ internalData.personalInfo.fertilityStatus||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.fertilityStatus||"-" }}</span>
             </el-col>
             <el-col :span="8">
               <label class="label label-7">手术或外伤：</label>
               <span :title="internalData.personalInfo.surgeryTrauma"
-                    class="value">{{ internalData.personalInfo.surgeryTrauma||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.surgeryTrauma||"-" }}</span>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="8">
               <label class="label">家族病史：</label>
               <span :title="internalData.personalInfo.familyHistory"
-                    class="value">{{ internalData.personalInfo.familyHistory||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.familyHistory||"-" }}</span>
             </el-col>
             <el-col :span="8">
               <label class="label">药物过敏：</label>
               <span :title="internalData.personalInfo.drugAllergy"
-                    class="value">{{ internalData.personalInfo.drugAllergy||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.drugAllergy||"-" }}</span>
             </el-col>
             <el-col :span="8">
               <label class="label label-7">食物/接触物过敏：</label>
               <span :title="internalData.personalInfo.foodAllergy"
-                    class="value">{{ internalData.personalInfo.foodAllergy||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.foodAllergy||"-" }}</span>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="8">
               <label class="label">个人习惯：</label>
               <span :title="internalData.personalInfo.personalHabit"
-                    class="value">{{ internalData.personalInfo.personalHabit||"暂无" }}</span>
+                    class="value">{{ internalData.personalInfo.personalHabit||"-" }}</span>
             </el-col>
           </el-row>
         </div>
