@@ -18,7 +18,7 @@
 
       <h4>过敏史</h4>
       <div>
-        <span>{{ drug.allergy_history }}</span>
+        <span>{{ drug.allergy_history||'无' }}</span>
       </div>
       <hr />
 
