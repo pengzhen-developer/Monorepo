@@ -292,7 +292,7 @@ export default {
             title: '预约失败',
             message: res.data.msg
           }).then(() => {
-            this.$router.go(-1)
+            // this.$router.go(-1)
           })
         })
     },

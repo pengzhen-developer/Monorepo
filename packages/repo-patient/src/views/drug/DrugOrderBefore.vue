@@ -166,7 +166,7 @@ export default {
     },
     goUserAddrPage() {
       let json = this.$route.params.json
-      this.$router.replace(`/setting/SelectAddressManger/${json}`)
+      this.$router.push(`/setting/SelectAddressManger/${json}`)
     },
     submitOrder() {
       if (!this.canSubmitProcesses()) {
@@ -194,7 +194,7 @@ export default {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let params = { orderNo }
-          peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+          peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
         })
         .catch(() => {
           this.showBtn = true
