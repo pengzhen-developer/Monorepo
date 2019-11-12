@@ -57,7 +57,9 @@ export default {
         /** 在线问诊 */
         inquiry: '/components/doctorList',
         /** 我的处方 */
-        prescription: '/components/theRecipeList'
+        prescription: '/components/theRecipeList',
+        // 医生主页
+        doctorDetail: '/components/doctorDetail'
       }
     }
   },
@@ -154,6 +156,14 @@ export default {
         peace.cache.remove(peace.type.USER.INFO)
         peace.cache.remove(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID)
         peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
+      }
+
+      if (!channelId) {
+        peace.cache.remove(peace.type.SYSTEM.CHANNELID)
+      }
+
+      if (!netHospitalId) {
+        peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
       }
     },
 
