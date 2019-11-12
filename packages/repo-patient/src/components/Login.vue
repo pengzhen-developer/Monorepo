@@ -100,40 +100,46 @@ export default {
         return
       }
       this.hasLogin = true
+
       const params = {
         tel: this.model.tel,
-        smsCode: this.model.smsCode,
-        openId: peace.cache.get(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID),
-        otherOpenId: peace.cache.get(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
+        smsCode: this.model.smsCode
       }
 
       peace.service.login
         .login(params)
         .then(res => {
+          // 存储用户信息
           this.$store.commit('user/setUserInfo', res.data)
           peace.cache.set(peace.type.USER.INFO, res.data)
+
+          // 初始化 IM
           peace.service.IM.initNIM()
 
-          const UA = window.navigator.userAgent.toLowerCase()
-          if (UA.match(/MicroMessenger/i) == 'micromessenger') {
-            return this.$router.replace({
-              path: peace.config.system.authPage,
-              query: { referrer: this.$route.query.referrer || peace.config.system.homePage }
-            })
-          } else {
-            peace.util.alert('当前不是微信环境')
-
-            return this.$router.replace({
-              path: this.$route.query.referrer || peace.config.system.homePage
-            })
-          }
+          // 微信环境下授权
+          this.WXAuth()
         })
         .finally(() => {
           setTimeout(() => {
             this.hasLogin = false
-            console.log(this.hasLogin)
           }, 500)
         })
+    },
+
+    WXAuth() {
+      const UA = window.navigator.userAgent.toLowerCase()
+      if (UA.match(/MicroMessenger/i) == 'micromessenger') {
+        return this.$router.replace({
+          path: peace.config.system.authPage,
+          query: { referrer: this.$route.query.referrer || peace.config.system.homePage }
+        })
+      } else {
+        peace.util.alert('当前不是微信环境')
+
+        return this.$router.replace({
+          path: this.$route.query.referrer || peace.config.system.homePage
+        })
+      }
     }
   }
 }

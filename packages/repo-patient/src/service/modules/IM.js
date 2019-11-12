@@ -101,11 +101,13 @@ export function onDisConnect(disConnectObject) {
     case 302:
     case 417:
     case 'kicked':
-      // 清空登录信息
-      console.log("kicked")
-      peace.cache.remove(peace.type.USER.INFO)
+      // 提示鉴权失败消息
       peace.util.warning(disConnectObject.message)
 
+      // 清空登录缓存
+      peace.cache.remove(peace.type.USER.INFO)
+
+      // 跳转登录页
       $peace.$router.replace(peace.config.system.loginPage)
       window.location.reload()
       break
@@ -216,7 +218,6 @@ export function onMsg(message) {
   console.warn('【 IM 】【 onMsg 】', new Date(), message)
 }
 
-
 /**
  *
  *
@@ -224,24 +225,22 @@ export function onMsg(message) {
  * @param {*} 系统消息
  */
 export function onSysmsg(message) {
-
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
 
-  let href = window.location.href;
-  let tag = message.tag;
-  if( (new RegExp("setting/userConsultList").test(href) && tag == 'inquiry') ||
-      (new RegExp("setting/userConsultDetail").test(href) && tag == 'inquiry') ||
-      (new RegExp("components/theRecipeList").test(href) && tag == 'purchaseDrug') ||
-      (new RegExp("order/userDrugDetail").test(href) && tag == 'purchaseDrug') ||
-      (new RegExp("setting/order/userOrderList").test(href) && tag == 'register') ||
-      (new RegExp("setting/order/userOrderDetail").test(href) && tag =='register')
+  let href = window.location.href
+  let tag = message.tag
+  if (
+    (new RegExp('setting/userConsultList').test(href) && tag == 'inquiry') ||
+    (new RegExp('setting/userConsultDetail').test(href) && tag == 'inquiry') ||
+    (new RegExp('components/theRecipeList').test(href) && tag == 'purchaseDrug') ||
+    (new RegExp('order/userDrugDetail').test(href) && tag == 'purchaseDrug') ||
+    (new RegExp('setting/order/userOrderList').test(href) && tag == 'register') ||
+    (new RegExp('setting/order/userOrderDetail').test(href) && tag == 'register')
   ) {
-    window.location.reload();
+    window.location.reload()
   }
   //Store.dispatch('appointMent/getList');
-
 }
-
 
 /**
  * 设置 inquiry sessions

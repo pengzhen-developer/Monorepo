@@ -110,6 +110,10 @@ export default {
      * step 3，判断当前 url 参数，跳转不同的业务页
      */
     redirect() {
+      // 授权完成，清除 open id，回跳业务页
+      peace.cache.remove(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID)
+      peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
+
       this.$router.replace(this.$route.query.referrer)
     },
 

@@ -86,15 +86,9 @@ export default {
       // 清空登录缓存
       peace.cache.remove(peace.type.USER.INFO)
 
-      setTimeout(() => {
-        // 重定向
-        this.$router.replace(peace.config.system.loginPage)
-      }, 200)
-
-      setTimeout(() => {
-        // 刷新页面，确保 vuex store 被清空
-        window.location.reload()
-      }, 500)
+      // 跳转登录页
+      this.$router.replace(peace.config.system.loginPage)
+      window.location.reload()
     },
     goMenuPage(item) {
       switch (item.id) {

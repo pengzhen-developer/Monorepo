@@ -80,13 +80,13 @@ export default {
      */
     validateParams() {
       if (!redirectKey || !this.redirectMap[redirectKey]) {
-        peace.util.alert('参数异常，请退出后重新访问')
+        peace.util.alert('未匹配到 redirectKey')
 
         return false
       }
 
       if (!((channelId && netHospitalId) || (!channelId && !netHospitalId))) {
-        peace.util.alert('参数异常，请退出后重新访问')
+        peace.util.alert('参数异常')
 
         return false
       }
@@ -147,24 +147,16 @@ export default {
 
     // 清除缓存
     removeCache() {
-      // 当访问渠道不同（代表公众号不同），需要重新授权
-      // 因此需要清除登录信息和微信授权信息
+      // 渠道发生变化，清除登录信息，需要重新进行登录并授权
       if (
         peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId ||
         peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
       ) {
         peace.cache.remove(peace.type.USER.INFO)
-        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID)
-        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
       }
 
-      if (!channelId) {
-        peace.cache.remove(peace.type.SYSTEM.CHANNELID)
-      }
-
-      if (!netHospitalId) {
-        peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
-      }
+      peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
+      peace.cache.remove(peace.type.SYSTEM.CHANNELID)
     },
 
     // 缓存

@@ -63,7 +63,11 @@ axios.interceptors.request.use(
 
       // 配置渠道ID
       request.headers['channelid'] = $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+        ? $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+        : ''
       request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        ? $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        : ''
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
@@ -136,14 +140,13 @@ axios.interceptors.response.use(
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+
         // 清空登录信息
         $peace.cache.remove($peace.type.USER.INFO)
-        // 跳转提示页
-        router.replace($peace.config.system.noAuthPage)
 
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
+        window.location.reload()
 
         return Promise.reject(response)
       }
