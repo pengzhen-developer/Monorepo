@@ -89,6 +89,12 @@ Vue.use(Picker)
 
 export default {
   mounted() {
+    let lastData = this.$peace.cache.get('bloodPressureLastData') || ''
+    if (lastData) {
+      this.model.systolicPressure = lastData.systolicPressure
+      this.model.diastolicPressure = lastData.diastolicPressure
+      this.model.pulseRate = Number(lastData.pulseRate)
+    }
     this.minDate = this.getMinDay()
     for (let i = 0; i <= 220; i++) {
       this.rateArr.push(i)
