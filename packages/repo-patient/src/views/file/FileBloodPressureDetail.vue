@@ -80,6 +80,7 @@ import util from './util'
 
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
 
 export default {
   components: {
@@ -98,6 +99,9 @@ export default {
 
       options: {
         color: ['#00c6ae'],
+        tooltip: {
+          show: true
+        },
         grid: {
           top: 20,
           bottom: 20,
