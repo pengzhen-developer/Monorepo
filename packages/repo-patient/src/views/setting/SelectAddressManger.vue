@@ -67,7 +67,8 @@ export default {
       this.$router.push({ path: `/setting/userAddressEdit/${json}`, query: { addr } })
     },
     addressEdit() {
-      this.$router.push(`/setting/userAddressEdit/`)
+      let json = this.$route.params.json
+      this.$router.push(`/setting/userAddressEdit/${json}`)
     },
     delAddr(addressId) {
       peace.util.confirm(
@@ -75,19 +76,19 @@ export default {
         undefined,
         undefined,
         () => {
-          debugger
+         // debugger
           this.delAddress(addressId)
         },
         () => {}
       )
     },
     delAddress(id) {
-      debugger
+     // debugger
       const data = {
         addressId: id
       }
       peace.service.patient.delAddress(data).then(res => {
-        debugger
+        //debugger
         this.get()
         console.log(res)
       })
@@ -95,6 +96,7 @@ export default {
     checkAddr(address) {
       let json = this.$route.params.json
       let addr = peace.util.encode(address)
+      debugger
       let { addressId } = address
       let data = { addressId }
       peace.service.patient.setDefaultAddress(data).then(res => {
