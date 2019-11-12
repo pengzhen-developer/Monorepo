@@ -107,28 +107,33 @@ export default {
         otherOpenId: peace.cache.get(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)
       }
 
-      peace.service.login.login(params).then(res => {
-        this.$store.commit('user/setUserInfo', res.data)
-        peace.cache.set(peace.type.USER.INFO, res.data)
-        peace.service.IM.initNIM()
+      peace.service.login
+        .login(params)
+        .then(res => {
+          this.$store.commit('user/setUserInfo', res.data)
+          peace.cache.set(peace.type.USER.INFO, res.data)
+          peace.service.IM.initNIM()
 
-        const UA = window.navigator.userAgent.toLowerCase()
-        setTimeout(() => {
-          this.hasLogin = false
-        }, 500)
-        if (UA.match(/MicroMessenger/i) == 'micromessenger') {
-          return this.$router.replace({
-            path: peace.config.system.authPage,
-            query: { referrer: this.$route.query.referrer || peace.config.system.homePage }
-          })
-        } else {
-          peace.util.alert('当前不是微信环境')
+          const UA = window.navigator.userAgent.toLowerCase()
+          if (UA.match(/MicroMessenger/i) == 'micromessenger') {
+            return this.$router.replace({
+              path: peace.config.system.authPage,
+              query: { referrer: this.$route.query.referrer || peace.config.system.homePage }
+            })
+          } else {
+            peace.util.alert('当前不是微信环境')
 
-          return this.$router.replace({
-            path: this.$route.query.referrer || peace.config.system.homePage
-          })
-        }
-      })
+            return this.$router.replace({
+              path: this.$route.query.referrer || peace.config.system.homePage
+            })
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.hasLogin = false
+            console.log(this.hasLogin)
+          }, 500)
+        })
     }
   }
 }
