@@ -58,6 +58,7 @@ import util from './util'
 
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
 
 export default {
   components: {
@@ -82,6 +83,7 @@ export default {
           right: 20,
           left: 40
         },
+        tooltip: { show: true },
         xAxis: {
           type: 'category',
           data: []
