@@ -110,7 +110,12 @@
         </div>
          <!-- 没有支付, 显示应付金额 -->
         <div class="brief right" v-else>
-          应付金额 ：
+          <template v-if="info.orderInfo.orderMoney == 0">
+            实付金额：
+          </template>
+          <template v-else>
+            应付金额：
+          </template>
           <div class="money">{{info.orderInfo.orderMoney}}</div>
         </div>
       </template>

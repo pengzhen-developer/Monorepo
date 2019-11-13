@@ -194,7 +194,12 @@
       <!-- 取消订单的状态 -->
       <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
         <div class="brief right" v-if="internalData.orderInfo.payMoney == 0">
-          应付金额：
+          <template v-if="internalData.orderInfo.orderMoney == 0">
+            实付金额：
+          </template>
+          <template v-else>
+            应付金额：
+          </template>
         <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
         </div>
         <div class="brief right" v-else>
