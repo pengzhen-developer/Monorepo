@@ -109,7 +109,7 @@ export function onDisConnect(disConnectObject) {
       peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
 
       // 登录被 T 出，跳转错误页
-      peace.$router.replace(peace.config.system.errorPage)
+      $peace.$router.replace(peace.config.system.errorPage)
       break
 
     default:
