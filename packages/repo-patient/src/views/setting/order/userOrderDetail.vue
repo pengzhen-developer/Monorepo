@@ -9,7 +9,7 @@
 
       <div class="brief"
            v-if="info.orderInfo.orderStatus != '2'">
-        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? !info.orderInfo.cancelState ? '，' + page.cfgDic[info.orderInfo.cancelType] :'' : ''}}
       </div>
       <div class="brief"
            v-else>{{info.orderInfo.cancelReason}}</div>

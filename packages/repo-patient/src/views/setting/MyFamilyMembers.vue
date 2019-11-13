@@ -82,7 +82,7 @@ export default {
       this.dialog.visible = true
       this.dialog.data = undefined
     }
-    this.isFromHospital = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID);
+    this.isFromHospital = peace.cache.get("hospitalID");
     this.get()
   },
 

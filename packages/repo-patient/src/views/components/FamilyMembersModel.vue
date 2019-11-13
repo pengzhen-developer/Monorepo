@@ -326,7 +326,7 @@ export default {
   },
   mounted() {
     //alert(peace.type.SYSTEM.NETHOSPITALID)
-    this.isFromHospital = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID);
+    this.isFromHospital = peace.cache.get("hospitalID");
     console.log('isFromHospital', this.isFromHospital)
     let json = peace.util.decode(this.$route.params.json)
     if (json.type != 'add') {
@@ -542,7 +542,7 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.nethospitalid = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      params.nethospitalid = peace.cache.get("hospitalID")
       params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName

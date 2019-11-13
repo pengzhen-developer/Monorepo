@@ -387,7 +387,7 @@ export default {
   methods: {
     saveHospitalCache() {
       let nethospitalid = this.doctor.doctorInfo.nethospitalid;
-      peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalid);
+      peace.cache.set("hospitalID", nethospitalid);
     },
     checkCard(tag) {
       this.checkCardExist().then(res => {
