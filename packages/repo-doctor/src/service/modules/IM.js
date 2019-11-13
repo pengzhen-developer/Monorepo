@@ -25,7 +25,10 @@ export function initNIM(
     onupdatesession: peace.service.IM.onUpdateSession,
 
     // 消息
-    onmsg: peace.service.IM.onMsg
+    onmsg: peace.service.IM.onMsg,
+
+    // 系统通知
+    oncustomsysmsg: peace.service.IM.onSysmsg
   }
 ) {
   const appKey = peace.config.NIM.key
@@ -267,6 +270,18 @@ export function onUpdateSession(session) {
 export function onMsg(message) {
   console.warn('【 IM 】【 onMsg 】', new Date(), message)
 }
+
+/**
+ *
+ *
+ * @export
+ * @param {*} message
+ */
+export function onSysmsg(message) {
+  console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+  Store.dispatch('notification/getList');
+}
+
 
 /**
  * 设置 inquiry sessions
@@ -647,6 +662,9 @@ export default {
 
   /** 初始化完成后, 收到消息的回调 */
   onMsg,
+
+  /** 初始化完成后, 收到系统通知的回调 */
+  onSysmsg,
 
   /** 获取 inquiry sessions 最新状态 */
   getInquirySessionsStatus,

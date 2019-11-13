@@ -5,7 +5,7 @@ import user from './modules/user'
 import layout from './modules/layout'
 import inquiry from './modules/inquiry'
 import consultation from './modules/consultation'
-
+import notification from './modules/notification'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -13,6 +13,7 @@ export default new Vuex.Store({
     user,
     layout,
     inquiry,
-    consultation
+    consultation,
+    notification
   }
 })

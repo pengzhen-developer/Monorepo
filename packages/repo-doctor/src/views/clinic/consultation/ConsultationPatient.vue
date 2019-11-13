@@ -13,21 +13,33 @@
             <span>患者信息：</span>
           </div>
 
-          <div @click="showDetail" class="content patient">
+          <div class="content patient">
             <div class="item">
               <div
                 class="doctor-img"
                 style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;"
               >
-                <span style="color: #fff; margin: 0;">{{ data.familyName.substr(data.familyName.length - 2, data.familyName.length) }}</span>
+                <span style="color: #fff; margin: 0;">{{
+                  data.familyName.substr(
+                    data.familyName.length - 2,
+                    data.familyName.length
+                  )
+                }}</span>
               </div>
 
-              <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.familyName }}</span>
+              <span style="font-weight:600; color: rgba(51,51,51,1);">{{
+                data.familyName
+              }}</span>
               <span>{{ data.familySex }}</span>
               <span>{{ data.familyAge }}</span>
             </div>
             <div class="item">
-              <i class="el-icon-arrow-right"></i>
+              <el-button
+                @click="showDetail"
+                type="text"
+                style="font-size: 12px;"
+                >查看详情</el-button
+              >
             </div>
           </div>
         </div>
@@ -36,7 +48,13 @@
           <div class="title">
             <i class="icon_archives_icon_doctor"></i>
             <!-- 我发起的会诊 -->
-            <template v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+            <template
+              v-if="
+                $store.getters['consultation/consultInfo'].startDoctor[0]
+                  .doctorId ===
+                  $store.state.user.userInfo.list.docInfo.doctor_id
+              "
+            >
               <span>受邀医生：</span>
             </template>
 
@@ -47,7 +65,13 @@
           </div>
 
           <div class="content doctor">
-            <template v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+            <template
+              v-if="
+                $store.getters['consultation/consultInfo'].startDoctor[0]
+                  .doctorId ===
+                  $store.state.user.userInfo.list.docInfo.doctor_id
+              "
+            >
               <img :src="data.toPhoto" class="doctor-img" />
             </template>
             <template v-else>
@@ -56,31 +80,56 @@
 
             <div class="doctor-info">
               <div>
-                <!-- 我发起的会诊 -->
-                <template v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
-                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.toDoctorName }}</span>
+                <template
+                  v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  "
+                >
+                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{
+                    data.toDoctorName
+                  }}</span>
                 </template>
-
-                <!-- 我受邀的会诊 -->
                 <template v-else>
-                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{ data.fromDoctorName }}</span>
+                  <span style="font-weight:600; color: rgba(51,51,51,1);">{{
+                    data.fromDoctorName
+                  }}</span>
                 </template>
               </div>
               <div>
-                <!-- 我发起的会诊 -->
-                <template v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                <template
+                  v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  "
+                >
                   <span>{{ data.toDeptName }}</span>
                   <span>{{ data.toDoctorTitle }}</span>
                 </template>
-
-                <!-- 我受邀的会诊 -->
                 <template v-else>
                   <span>{{ data.fromDeptName }}</span>
                   <span>{{ data.fromDoctorTitle }}</span>
                 </template>
               </div>
               <div>
-                <span :title="data.fromHospitalName">{{ data.fromHospitalName }}</span>
+                <template
+                  v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  "
+                >
+                  <span :title="data.toHospitalName">{{
+                    data.toHospitalName
+                  }}</span>
+                </template>
+                <template v-else>
+                  <span :title="data.fromHospitalName">{{
+                    data.fromHospitalName
+                  }}</span>
+                </template>
               </div>
             </div>
           </div>
@@ -99,7 +148,13 @@
                 <span>初步诊断</span>
               </div>
               <div class="content">
-                <el-tag :key="item" style="margin-right: 5px; border: none; " type="info" v-for="item in data.familyDisagnose.split(',')">{{ item }}</el-tag>
+                <el-tag
+                  :key="item"
+                  style="margin-right: 5px; border: none; "
+                  type="info"
+                  v-for="item in data.familyDisagnose.split('|')"
+                  >{{ item }}</el-tag
+                >
               </div>
             </div>
             <div class="item">
@@ -140,8 +195,14 @@
 
           <div class="content time-line">
             <el-timeline>
-              <el-timeline-item :timestamp="data.outCheckTime" placement="top" type="primary">
-                <el-tag class="timestamp_extend">{{ data.outCheckStatus === 3 ? '已通过' : '' }}</el-tag>
+              <el-timeline-item
+                :timestamp="data.outCheckTime"
+                placement="top"
+                type="primary"
+              >
+                <el-tag class="timestamp_extend"
+                  >{{ data.outCheckStatus === 3 ? "已通过" : "" }}
+                </el-tag>
 
                 <div class="timestamp_remark">
                   <p>
@@ -155,8 +216,14 @@
                 </div>
               </el-timeline-item>
 
-              <el-timeline-item :timestamp="data.inCheckTime" placement="top" type="primary">
-                <el-tag class="timestamp_extend">{{ data.inCheckStatus === 3 ? '已通过' : '' }}</el-tag>
+              <el-timeline-item
+                :timestamp="data.inCheckTime"
+                placement="top"
+                type="primary"
+              >
+                <el-tag class="timestamp_extend"
+                  >{{ data.inCheckStatus === 3 ? "已通过" : "" }}
+                </el-tag>
 
                 <div class="timestamp_remark">
                   <p>
@@ -176,15 +243,17 @@
     </div>
 
     <peace-dialog :visible.sync="dialog.visible" title="图文问诊记录">
-      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
+      <InquirySessionMessageList
+        :data="dialog.data"
+      ></InquirySessionMessageList>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 
-import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from "@src/views/clinic/inquiry/InquirySessionMessageList";
 
 export default {
   components: {
@@ -199,60 +268,67 @@ export default {
         visible: false,
         data: undefined
       }
-    }
+    };
   },
 
   watch: {
-    '$store.state.consultation.session'() {
-      this.getConsultationDetail()
+    "$store.state.consultation.session"() {
+      this.getConsultationDetail();
     }
   },
 
   created() {
-    this.getConsultationDetail()
+    this.getConsultationDetail();
   },
 
   methods: {
     getConsultationDetail() {
       const params = {
-        consultNo: this.$store.getters['consultation/consultInfo'].consultNo
-      }
+        consultNo: this.$store.getters["consultation/consultInfo"].consultNo
+      };
 
       peace.service.consult.getConsultInfo(params).then(res => {
-        this.data = res.data.info
-      })
+        this.data = res.data.info;
+      });
     },
 
     showDetail() {
+      if (
+        this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成
+      ) {
+        return peace.util.alert("问诊尚未结束，无法查看记录");
+      }
+
       const params = {
         inquiryNo: this.data.inquiryNo
-      }
+      };
 
       peace.service.patient.getOneInquiry(params).then(res => {
         const historyMessageFormatHandler = messages => {
           if (messages && Array.isArray(messages)) {
             messages.forEach(message => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
+              const messageTypeMap = { 0: "text", 1: "image", 100: "custom" };
 
-              message.time = message.sendtime
-              message.flow = this.data.fromDoctorId === message.from ? 'out' : 'in'
-              message.type = messageTypeMap[message.type]
-              message.text = message.body.msg
-              message.content = message.body
-              message.file = message.body
-            })
+              message.time = message.sendtime;
+              message.flow =
+                this.data.fromDoctorId === message.from ? "out" : "in";
+              message.type = messageTypeMap[message.type];
+              message.text = message.body.msg;
+              message.content = message.body;
+              message.file = message.body;
+            });
           }
-        }
+        };
 
-        historyMessageFormatHandler(res.data.msgInfo)
+        historyMessageFormatHandler(res.data.msgInfo);
 
-        this.dialog.data = []
-        this.dialog.data = res.data.msgInfo
-        this.dialog.visible = true
-      })
+        this.dialog.data = [];
+        this.dialog.data = res.data.msgInfo;
+        this.dialog.visible = true;
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -294,7 +370,7 @@ $--header-height: 50px;
       }
 
       &::after {
-        content: ' ';
+        content: " ";
         display: block;
         width: 100%;
         height: 6px;
@@ -463,4 +539,3 @@ $--header-height: 50px;
   }
 }
 </style>
-
