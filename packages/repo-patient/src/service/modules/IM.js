@@ -229,7 +229,7 @@ export function onSysmsg(message) {
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
 
   let href = window.location.href
-  let tag = message.tag
+  let tag = JSON.parse(message.content).tag
   if (
     (new RegExp('setting/userConsultList').test(href) && tag == 'inquiry') ||
     (new RegExp('setting/userConsultDetail').test(href) && tag == 'inquiry') ||

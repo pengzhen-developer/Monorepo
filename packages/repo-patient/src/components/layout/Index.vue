@@ -172,7 +172,7 @@ export default {
     width: 100%;
     flex: 1;
     overflow: auto;
-    margin-bottom: 40px;
+    /*margin-bottom: 40px;*/
   }
 }
 </style>
