@@ -1,5 +1,5 @@
 import service from '@src/service'
-import config from '@src/config'
+// import config from '@src/config'
 
 /**
  *
