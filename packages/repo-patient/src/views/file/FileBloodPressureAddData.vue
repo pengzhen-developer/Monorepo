@@ -45,7 +45,7 @@
       <van-cell-group>
         <van-cell @click="rateShow = true"
                   is-link
-                  :value="model.pulseRate + '次/分'"
+                  :value="selectRate? (model.pulseRate + '次/分'):'请选择'"
                   title="脉率（选填）" />
         <van-popup v-model="rateShow"
                    position="bottom">
@@ -89,6 +89,12 @@ Vue.use(Picker)
 
 export default {
   mounted() {
+    let lastData = this.$peace.cache.get('bloodPressureLastData') || ''
+    if (lastData) {
+      this.model.systolicPressure = lastData.systolicPressure
+      this.model.diastolicPressure = lastData.diastolicPressure
+      this.model.pulseRate = lastData.pulseRate == '-' ? 60 : Number(lastData.pulseRate)
+    }
     this.minDate = this.getMinDay()
     for (let i = 0; i <= 220; i++) {
       this.rateArr.push(i)
@@ -102,6 +108,7 @@ export default {
       rateArr: [],
       show: false,
       rateShow: false,
+      selectRate: false,
       model: {
         systolicPressure: 120,
         diastolicPressure: 60,
@@ -124,6 +131,7 @@ export default {
     },
     onRateConfirm(value) {
       this.rateShow = false
+      this.selectRate = true
       // console.log('rateShowwwwwwwwwww', this.rateShow)
       // debugger
       this.model.pulseRate = value
@@ -139,7 +147,9 @@ export default {
       params.measureTime = params.measureTime.formatTime()
       params.idCard = json.idCard
       params.familyId = json.familyId
-
+      if (!this.selectRate) {
+        params.pulseRate = '-'
+      }
       peace.service.health.addBloodPressure(params).then(res => {
         peace.util.alert(res.msg)
 

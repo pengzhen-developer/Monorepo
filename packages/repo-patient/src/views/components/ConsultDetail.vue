@@ -1,40 +1,83 @@
 <template>
-  <div class="consult-detatil"
-       v-if="internalData && internalData.inquiryInfo && internalData.doctorInfo && internalData.familyInfo && internalData.illInfo">
+  <div
+    class="consult-detatil"
+    v-if="
+      internalData &&
+        internalData.inquiryInfo &&
+        internalData.doctorInfo &&
+        internalData.familyInfo &&
+        internalData.illInfo
+    "
+  >
     <!--TOP-->
     <div class="module nmg">
-      <div class="strong">{{ internalData.inquiryInfo.statusTxt }} <span class="money"
-              v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{internalData.orderInfo.orderMoney}}</span>
+      <div class="strong">
+        {{ internalData.inquiryInfo.statusTxt }}
+        <span class="money" v-if="internalData.inquiryInfo.inquiryStatus == '1'"
+          >¥{{ internalData.orderInfo.orderMoney }}</span
+        >
       </div>
-      <div class="brief">{{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}</div>
-      <div class="cancelText"
-           v-if="(internalData.inquiryInfo.inquiryStatus == '6' || internalData.inquiryInfo.inquiryStatus == '4') && internalData.orderInfo.payMoney != '0.00'">
-        订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
+      <div class="brief">
+        {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
+      </div>
+      <div
+        class="cancelText"
+        v-if="
+          (internalData.inquiryInfo.inquiryStatus == '6' ||
+            internalData.inquiryInfo.inquiryStatus == '4') &&
+            internalData.orderInfo.payMoney != '0.00'
+        "
+      >
+        订单取消后退款将在1-3个工作日内原路返回，请注意查收
+      </div>
       <div class="module-body">
-        <div @click="gouserPrescripCasePage(internalData)"
-             class="label blue"
-             v-if="internalData.inquiryInfo.isCase">咨询小结</div>
-        <div @click="gouserPrescripListPage(internalData)"
-             class="label blue"
-             v-if="internalData.inquiryInfo.isPrescrip">用药建议</div>
-        <div @click="goChatingPage(internalData)"
-             class="label blue"
-             v-if="internalData.inquiryInfo.inquiryStatus != '1' && internalData.inquiryInfo.inquiryStatus != '6'">
-          咨询记录</div>
-        <div @click="showCancellPop(internalData)"
-             class="label blue"
-             v-if="internalData.inquiryInfo.inquiryStatus == '1' || internalData.inquiryInfo.inquiryStatus == '2'">
-          取消订单</div>
-        <div @click="goToPay(internalData)"
-             class="label blue-full"
-             v-if="internalData.inquiryInfo.inquiryStatus == '1'">支付订单</div>
+        <div
+          @click="gouserPrescripCasePage(internalData)"
+          class="label blue"
+          v-if="internalData.inquiryInfo.isCase"
+        >
+          咨询小结
+        </div>
+        <div
+          @click="gouserPrescripListPage(internalData)"
+          class="label blue"
+          v-if="internalData.inquiryInfo.isPrescrip"
+        >
+          用药建议
+        </div>
+        <div
+          @click="goChatingPage(internalData)"
+          class="label blue"
+          v-if="
+            internalData.inquiryInfo.inquiryStatus != '1' &&
+              internalData.inquiryInfo.inquiryStatus != '6'
+          "
+        >
+          咨询记录
+        </div>
+        <div
+          @click="showCancellPop(internalData)"
+          class="label blue"
+          v-if="
+            internalData.inquiryInfo.inquiryStatus == '1' ||
+              internalData.inquiryInfo.inquiryStatus == '2'
+          "
+        >
+          取消订单
+        </div>
+        <div
+          @click="goToPay(internalData)"
+          class="label blue-full"
+          v-if="internalData.inquiryInfo.inquiryStatus == '1'"
+        >
+          支付订单
+        </div>
       </div>
     </div>
     <!--医生名片-->
     <div class="module card">
       <div class="card-avatar avatar-circular">
-        <img :src="internalData.doctorInfo.avartor"
-             class />
+        <img :src="internalData.doctorInfo.avartor" class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -42,8 +85,12 @@
           <div class="card-small">
             {{ internalData.doctorInfo.doctorTitle }}
             {{ internalData.doctorInfo.deptName }}
-            <div class="label label-private"
-                 v-if="internalData.doctorInfo.isPrivateDoctor">私人医生</div>
+            <div
+              class="label label-private"
+              v-if="internalData.doctorInfo.isPrivateDoctor"
+            >
+              私人医生
+            </div>
           </div>
         </div>
         <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
@@ -54,11 +101,15 @@
       <div class="form-dl">
         <div class="form-dt">就/复诊人</div>
         <div class="form-dd">
-          <span
-                style="font-size: 14px; margin:0 8px 0 0;">{{ internalData.familyInfo.familyName }}</span>
-          <span
-                style="font-size: 12px; margin:0 8px 0 0;">{{ internalData.familyInfo.familySex }}</span>
-          <span style="font-size: 12px;">{{ internalData.familyInfo.familyAge + '岁' }}</span>
+          <span style="font-size: 14px; margin:0 8px 0 0;">{{
+            internalData.familyInfo.familyName
+          }}</span>
+          <span style="font-size: 12px; margin:0 8px 0 0;">{{
+            internalData.familyInfo.familySex
+          }}</span>
+          <span style="font-size: 12px;">{{
+            internalData.familyInfo.familyAge + "岁"
+          }}</span>
         </div>
       </div>
       <!--病情描述-->
@@ -68,13 +119,17 @@
         <!--图片列表-->
         <div class="ul">
           <template v-if="internalData.inquiryInfo.inquiryImages">
-            <div :key="index"
-                 class="li"
-                 v-for="(item,index) in internalData.inquiryInfo.inquiryImages">
-              <img :internalData-index="index"
-                   :src="item.image_path"
-                   @click="viewImage(item.image_path)"
-                   bindtap="divImgs" />
+            <div
+              :key="index"
+              class="li"
+              v-for="(item, index) in internalData.inquiryInfo.inquiryImages"
+            >
+              <img
+                :internalData-index="index"
+                :src="item.image_path"
+                @click="viewImage(item.image_path)"
+                bindtap="divImgs"
+              />
             </div>
           </template>
         </div>
@@ -94,11 +149,15 @@
           </div>
           <div class="form-dl">
             <div class="form-dt">过敏史</div>
-            <div class="form-dd">{{ internalData.illInfo.allergicHistory }}</div>
+            <div class="form-dd">
+              {{ internalData.illInfo.allergicHistory }}
+            </div>
           </div>
           <div class="form-dl">
             <div class="form-dt">备注</div>
-            <div class="form-dd">{{ internalData.illInfo.illnessDescribe }}</div>
+            <div class="form-dd">
+              {{ internalData.illInfo.illnessDescribe }}
+            </div>
           </div>
         </div>
       </div>
@@ -118,48 +177,63 @@
         <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
       </div>
     </div>
-    <div class="module pdtb"
-         v-if="internalData.inquiryInfo.inquiryStatus != '1'">
-      <div class="brief right">
-        实付金额：
-        <div class="money">{{ '¥' + internalData.orderInfo.payMoney }}</div>
-      </div>
-    </div>
-    <div class="module pdtb"
-         v-if="internalData.inquiryInfo.inquiryStatus == '1'">
+
+    <div
+      class="module pdtb"
+      v-if="internalData.inquiryInfo.inquiryStatus == '1'"
+    >
       <div class="brief right">
         应付金额：
-        <div class="money">{{ '¥' + internalData.orderInfo.orderMoney }}</div>
+        <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
       </div>
     </div>
+    <div
+            class="module pdtb"
+            v-else
+    >
+      <!-- 取消订单的状态 -->
+      <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
+        <div class="brief right" v-if="internalData.orderInfo.payMoney == 0">
+          应付金额：
+        <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
+        </div>
+        <div class="brief right" v-else>
+          实付金额：
+          <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+        </div>
+      </template>
 
-    <peace-dialog :visible.sync="caseDetail.visible"
-                  title="咨询小结">
+      <template v-else>
+        <div class="brief right">
+          实付金额：
+          <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+        </div>
+      </template>
+    </div>
+    <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="recipeList.visible"
-                  title="用药建议">
+    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible"
-                  title="咨询记录">
+    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 
-import Vue from 'vue'
-import { Dialog, ImagePreview } from 'vant'
-Vue.use(ImagePreview)
+import Vue from "vue";
+import { Dialog, ImagePreview } from "vant";
+Vue.use(ImagePreview);
 
-import TheCase from '@src/views/components/TheCase'
-import TheRecipeList from '@src/views/components/TheRecipeList'
-import MessageList from '@src/views/components/MessageList'
+import TheCase from "@src/views/components/TheCase";
+import TheRecipeList from "@src/views/components/TheRecipeList";
+import MessageList from "@src/views/components/MessageList";
 
 export default {
   components: {
@@ -174,7 +248,7 @@ export default {
     data: {
       type: Object,
       default() {
-        return undefined
+        return undefined;
       }
     }
   },
@@ -197,125 +271,128 @@ export default {
         visible: false,
         data: []
       }
-    }
+    };
   },
 
   watch: {
     data: {
       handler() {
-        this.internalData = this.data
+        this.internalData = this.data;
       },
       immediate: true
     }
   },
   mounted() {
-    this.get()
+    this.get();
   },
   methods: {
     get() {
-      this.getConsultDetail()
+      this.getConsultDetail();
     },
     goToPay(data) {
-      let doctorId = data.doctorInfo.doctorId
-      let order = data.orderInfo
-      let money = order.orderMoney
-      let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
-      let doctorName = data.doctorInfo.name
-      let orderNo = order.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
-      json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      let doctorId = data.doctorInfo.doctorId;
+      let order = data.orderInfo;
+      let money = order.orderMoney;
+      let typeName = order.inquiryType == "image" ? "图文问诊" : "";
+      let doctorName = data.doctorInfo.name;
+      let orderNo = order.orderNo;
+      let json = { money, typeName, doctorName, orderNo, doctorId };
+      json = peace.util.encode(json);
+      this.$router.push(`/components/doctorInquiryPay/${json}`);
     },
     getConsultDetail() {
-      let params = peace.util.decode(this.$route.params.json)
+      let params = peace.util.decode(this.$route.params.json);
       peace.service.patient.inquiryDetail(params).then(res => {
-        this.internalData = res.data
-      })
+        this.internalData = res.data;
+      });
     },
 
     getInquiryText(status) {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
-        '1': '订单创建15分钟后未支付将自动关闭',
-        '2': '已通知医生尽快接诊，请等候',
-        '3': '请及时与医生沟通',
-        '4': '医生已退诊',
-        '5': '祝您身体健康',
-        '6':
-          this.internalData.orderInfo.payMoney == '0.00'
-            ? '咨询订单已取消，如遇紧急情况请及时就医'
-            : '咨询订单已取消'
-      }
+        "1": "订单创建15分钟后未支付将自动关闭",
+        "2": "已通知医生尽快接诊，请等候",
+        "3": "请及时与医生沟通",
+        "4": "医生已退诊",
+        "5": "祝您身体健康",
+        "6":
+          this.internalData.orderInfo.payMoney == "0.00"
+            ? "咨询订单已取消，如遇紧急情况请及时就医"
+            : "咨询订单已取消"
+      };
 
-      return dic[status]
+      return dic[status];
     },
 
     gouserPrescripCasePage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      })
+      });
 
-      this.$router.push(`/components/theCase/${params}`)
+      this.$router.push(`/components/theCase/${params}`);
     },
 
     gouserPrescripListPage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
         inquiryNo: item.inquiryInfo.inquiryNo
-      })
+      });
 
-      this.$router.push(`/components/theRecipeList/${params}`)
+      this.$router.push(`/components/theRecipeList/${params}`);
     },
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
-      if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
+      if (
+        item.inquiryInfo.inquiryStatus === 2 ||
+        item.inquiryInfo.inquiryStatus === 3
+      ) {
         const params = peace.util.encode({
-          id: 'p2p-' + item.doctorInfo.doctorId,
-          scene: 'p2p',
+          id: "p2p-" + item.doctorInfo.doctorId,
+          scene: "p2p",
           beginTime: item.orderInfo.orderTime.toDate().getTime(),
           to: item.doctorInfo.doctorId
-        })
+        });
 
         // 跳转聊天详情
-        this.$router.push(`/components/messageList/${params}`)
+        this.$router.push(`/components/messageList/${params}`);
       }
       // 非问诊中,显示历史记录
       else {
         const params = peace.util.encode({
           inquiryNo: item.inquiryInfo.inquiryNo
-        })
+        });
 
-        this.$router.push(`/components/messageList/${params}`)
+        this.$router.push(`/components/messageList/${params}`);
       }
     },
 
     showCancellPop(item) {
       Dialog.confirm({
-        title: '温馨提示',
-        message: '是否确认取消咨询？'
+        title: "温馨提示",
+        message: "是否确认取消咨询？"
       })
         .then(() => {
           const params = {
             orderNo: item.orderInfo.orderNo
-          }
+          };
           peace.service.patient.cancel(params).then(res => {
-            peace.util.alert(res.msg)
+            peace.util.alert(res.msg);
 
-            this.get()
-          })
+            this.get();
+          });
         })
         .catch(() => {
           // on cancel
-        })
+        });
     },
 
     viewImage(path) {
-      ImagePreview([path])
+      ImagePreview([path]);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -334,10 +411,11 @@ export default {
       font-size: 12px;
       color: rgba(0, 198, 174, 1);
       line-height: 16px;
-      padding: 6px 10px 0px 50px;
-      background: rgba(240, 252, 250, 1) url('../../assets/images/icons/ic_notice.png') no-repeat;
+      padding: 6px 22px 0px 55px;
+      background: rgba(240, 252, 250, 1)
+        url("../../assets/images/icons/ic_notice.png") no-repeat;
       background-size: 17px 17px;
-      background-position: 20px 13px;
+      background-position: 15px 14px;
     }
   }
 

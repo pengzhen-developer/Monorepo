@@ -149,6 +149,9 @@ export default {
         const seriesDataOne = downData.bloodPressureData.map(item => item.diastolicPressure)
         const seriesDataTwo = downData.bloodPressureData.map(item => item.systolicPressure)
 
+        let lastData = downData.bloodPressureData[downData.bloodPressureData.length - 1]
+        this.$peace.cache.set('bloodPressureLastData', lastData)
+
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
         this.options.series[1].data = seriesDataTwo

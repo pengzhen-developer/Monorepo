@@ -48,7 +48,7 @@
                 <div class="flex between">
                   <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;background: #eee;"
                                 color="#5B9EFF"
-                                :percentage="item.percentage"
+                                :percentage="Number(item.percentage)"
                                 :show-pivot="false"
                                 stroke-width="8" />
                   <van-tag color="rgba(244,248,255,1)"

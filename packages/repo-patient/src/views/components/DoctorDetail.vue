@@ -510,11 +510,14 @@ export default {
     },
 
     goRegisterDetail(item) {
+      console.log(this.doctor.doctorInfo)
+      // debugger
       let timeSharing = item.timeSharing
       let timeArr = timeSharing.split('-')
       const params = peace.util.encode({
         doctorInfo: {
           ...item,
+          nethospitalId : this.doctor.doctorInfo.nethospitalid,
           avatar: this.doctor.doctorInfo.avartor,
           name: this.doctor.doctorInfo.name,
           doctorTitle: this.doctor.doctorInfo.doctorTitle,
