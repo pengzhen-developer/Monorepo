@@ -53,10 +53,10 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
                     payInvoke(data,paySuc, payCancel)
                 } else {
                     // 进入微信授权
-                    let appid =  config.APPID;
-                    let redirect_uri = location.href + urlSuffix;
-                    let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-                    window.location.href = url
+                    // let appid =  config.APPID;
+                    // let redirect_uri = location.href + urlSuffix;
+                    // let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
+                    // window.location.href = url
                 }
             }
         })

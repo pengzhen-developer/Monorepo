@@ -77,15 +77,15 @@ export default {
         // that.payCallback();
       }
     })
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let { orderNo } = peace.util.decode(this.$route.params.json)
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        peace.wx.payInvoke(data, this.payCallback)
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let { orderNo } = peace.util.decode(this.$route.params.json)
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
   },
   methods: {
     pay() {

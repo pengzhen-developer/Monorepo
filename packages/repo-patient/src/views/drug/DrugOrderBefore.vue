@@ -140,15 +140,15 @@ export default {
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
     }
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let orderNo = this.$route.query.orderId
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        peace.wx.payInvoke(data, this.payCallback)
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let orderNo = this.$route.query.orderId
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
     this.getDefaultAddress()
   },
   methods: {
