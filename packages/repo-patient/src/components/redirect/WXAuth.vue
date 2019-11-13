@@ -91,7 +91,7 @@ export default {
 
       // 当前 code 已被使用
       if (code && WX_AUTH_CODE && WX_AUTH_CODE.includes(code)) {
-        peace.util.alert('当前页面已过期，为您跳转首页')
+        peace.util.alert('当前页面已过期，为您返回上一页')
 
         setTimeout(this.redirect, 1000)
 
