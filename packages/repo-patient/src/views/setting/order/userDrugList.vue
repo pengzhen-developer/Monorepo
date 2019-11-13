@@ -103,7 +103,6 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
 export default {
   data() {
     return {

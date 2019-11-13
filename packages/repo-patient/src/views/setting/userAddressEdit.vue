@@ -128,26 +128,12 @@ export default {
         district: this.internalAddr.district,
         address: this.internalAddr.address
       }
-
       peace.service.patient
         .addAddress(data)
-        .then((resAddr) => {
+        .then(() => {
           peace.util.alert(this.internalAddr.addressId ? '编辑成功' : '添加成功')
-          // let addr = peace.util.encode(address)
-          let addressId = this.internalAddr.addressId
-          if(addressId) {
-            this.$router.go(-1);
-          } else {
-            let addressId = resAddr.data.address_id;
-            peace.service.patient.setDefaultAddress({addressId}).then(res => {
-               if(res) {
-                 let addr = peace.util.encode(resAddr.data);
-                 let json = this.$route.params.json
-                 this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
-               }
-            })
-          }
 
+          this.$router.go(-1)
 
           //
           // AccessCode: "GJ1FST"

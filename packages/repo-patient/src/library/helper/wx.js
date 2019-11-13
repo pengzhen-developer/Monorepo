@@ -52,6 +52,7 @@ export function pay(params, orderExp=null, paySuc=null, payCancel=null, urlSuffi
                     console.log('微信支付config', data)
                     payInvoke(data,paySuc, payCancel)
                 } else {
+                    console.log(urlSuffix)
                     // 进入微信授权
                     // let appid =  config.APPID;
                     // let redirect_uri = location.href + urlSuffix;
