@@ -130,8 +130,6 @@ export default {
     goDoctorListPage(obj) {
       if (this.params.id == 'consult') {
         obj.netHospitalId = this.params.netHospitalId
-        obj.deptChild = obj.deptChild
-        obj.deptChildId = obj.deptChildId
         obj.type = 'departDoctorList'
 
         let json = peace.util.encode(obj)
@@ -177,6 +175,9 @@ export default {
 .van-icon-checked:before {
   content: '\F02F';
   color: #00c6ae;
+}
+.van-tree-select__item {
+  font-weight: 500;
 }
 .van-tree-select__item--active {
   color: #00c6ae;

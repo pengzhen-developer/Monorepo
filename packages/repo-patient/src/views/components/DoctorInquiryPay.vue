@@ -1,6 +1,7 @@
 <template>
   <div class="doctor-inquiry-pay">
-    <div class="header" v-if="orderStatus==1">
+    <div class="header"
+         v-if="orderStatus==1">
       <span>请在</span>
       <van-count-down millisecond
                       :time="time"
@@ -21,8 +22,8 @@
           <i class="wechat"></i>
           <span>微信支付</span>
         </div>
-       <i class="icon-close"></i>
-    </div>
+        <i class="icon-close"></i>
+      </div>
     </div>
 
     <slot name="custom"></slot>
@@ -31,7 +32,7 @@
       <van-cell>
         <!-- 使用 title 插槽来自定义标题 -->
         <template slot="title">
-          <span>实际支付：</span>
+          <span>应付金额：</span>
           <span class="dc">{{params.money}}元</span>
         </template>
         <van-button @click="pay"
@@ -43,7 +44,6 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -57,122 +57,82 @@ export default {
       appid: '',
       data: {},
       params: {},
-      time: 0
+      time: 0,
+      createdTime: ''
     }
   },
   created() {},
   mounted() {
     let that = this
-    this.appid = config.APPID;
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
+      this.createdTime = data.createdTime
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
-      this.orderStatus = data.orderStatus;
-      if(data.orderStatus == 3) {
+      this.orderStatus = data.orderStatus
+      if (data.orderStatus == 3) {
         // that.payCallback();
       }
     })
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let { orderNo } = peace.util.decode(this.$route.params.json)
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        that.onBridgeReady(data)
-      })
-    }
-    // if (typeof WeixinJSBridge == "undefined"){
-    //   if( document.addEventListener ){
-    //     document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false);
-    //   }else if (document.attachEvent){
-    //     document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady);
-    //     document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady);
-    //   }
-    // }else{
-    //   that.onBridgeReady();
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let { orderNo } = peace.util.decode(this.$route.params.json)
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
     // }
   },
-  // watch: {
-  //   $route(to) {
-  //      console.log('route', to);
-  //   }
-  // },
   methods: {
-    onBridgeReady(data) {
-      let that = this
-      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
-        //alert(res.err_msg);
-        if (res.err_msg == 'get_brand_wcpay_request:ok') {
-          // 使用以上方式判断前端返回,微信团队郑重提示：
-          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-          that.payCallback()
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:fail') {
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
-        }
-      })
-    },
     pay() {
-      let that = this
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        if (res.code === 200) {
-          //没有经过授权
-          let data = res.data
-          if (data) {
-            that.onBridgeReady(data)
-          } else {
-            let appid = that.appid;
-            let redirect_uri = location.href
-            // redirect_uri = encodeURIComponent(redirect_uri);
-            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-            window.location.href = url
-          }
+      let orderExp = res => {
+        if (res && res.data) {
+          return Dialog.confirm({
+            title: '提示',
+            message: res.data.msg,
+            confirmButtonText: '去看看'
+          }).then(() => {
+            if (res.data.code == 202) {
+              //只有在202时才可进入catch流程
+              let inquiryId = res.data.data.inquiryId
+              const params = {
+                inquiryId
+              }
+              if (inquiryId != '') {
+                // 去咨询界面去咨询界面
+                let json = peace.util.encode(params)
+                this.$router.replace(`/setting/userConsultDetail/${json}`)
+              } else {
+                // 去挂号界面
+                let orderNo = res.data.data.orderNo
+                let orderType = 'register'
+                let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
+                this.$router.replace(`/setting/order/userOrderDetail/${json}`)
+              }
+            }
+          })
         }
-
-      }).catch(res=> {
-        // 倒计时结束，点取消按扭
-        return Dialog.confirm({
-          title: '提示',
-          message: res.data.msg,
-          confirmButtonText: '去看看'
-        }).then(() => {
-          if(res.data.code == 202) {
-            //只有在202时才可进入catch流程
-            let inquiryId = res.data.data.inquiryId;
-            const params = {
-              inquiryId
-            }
-            if(inquiryId != '') {
-              // 去咨询界面
-              let json = peace.util.encode(params)
-              this.$router.push(`/setting/userConsultDetail/${json}`)
-            } else {
-              // 去挂号界面
-              let orderNo = res.data.data.orderNo;
-              let orderType = 'register'
-              let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-              this.$router.push(`/setting/order/userOrderDetail/${json}`)
-            }
-          }
-        })
-      });
+      }
+      peace.wx.pay(params, orderExp, this.payCallback)
     },
     payCallback() {
-      let { doctorId, typeName, orderNo } = peace.util.decode(this.$route.params.json)
+      let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
       if (typeName.includes('挂号')) {
         let orderType = 'register'
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-        this.$router.push(`/setting/order/userOrderDetail/${json}`)
+        this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
-        let json = peace.util.encode({ doctorId })
-        this.$router.push(`/components/doctorInquiryPayResult/${json}`)
+        let json = peace.util.encode({
+          ...peace.util.decode(this.$route.params.json),
+          startTime: new Number(this.createdTime) * 1000
+        })
+        this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
     }
   }

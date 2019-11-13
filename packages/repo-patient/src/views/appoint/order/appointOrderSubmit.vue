@@ -3,7 +3,7 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor" class />
+        <img :src="doctorInfo.avartor || doctorInfo.avatar" style="height: 100%;" />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -39,7 +39,7 @@
     <div class="order-check">
       <div class="form-dl">
         <div class="form-dt">就诊人</div>
-        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml.name || '请选择'}}</div>
+        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml && fml.name || '请选择'}}</div>
         <van-action-sheet :actions="fmlDic" @cancel="showFmlDic = false" @select="fmlConfirm" cancel-text="取消" v-model="showFmlDic" />
       </div>
       <div class="form-dl">
@@ -83,9 +83,7 @@ export default {
       order: {
         zdType: '初诊'
       },
-      fml: {
-        name: ''
-      },
+      fml: null,
       fmlDic: [],
       showFmlDic: false,
       zdDic: ['初诊', '复诊'],
@@ -99,21 +97,119 @@ export default {
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
     this.date = this.params.date
-    console.log(this.params)
+    console.log(this.doctorInfo)
+    this.saveHospitalCache();
     this.initFml();
   },
   methods: {
+   saveHospitalCache() {
+      let nethospitalid = this.doctorInfo.nethospitalId;
+      // debugger
+      peace.cache.set("hospitalID", nethospitalid);
+    },
+    checkCard(tag) {
+          this.checkCardExist().then(res => {
+              if (!res.data.result) {
+                  return Dialog.confirm({
+                      title: '提示',
+                      message: '该就诊人还没有电子健康卡，是否现在领取？',
+                      confirmButtonText: '现在领取'
+                  }).then(() => {
+                      let familyId = this.fml.familyId
+                      console.log(this.doctorInfo);
+                      let nethospitalid = this.doctorInfo.nethospitalId;
+                      let params = { familyId, nethospitalid }
+                      peace.service.patient
+                          .createHealthcard(params)
+                          .then(res => {
+                              if (res.data.result) {
+                                  return peace.util.alert('领取成功，请填写信息后提交挂号！')
+                              }
+                          })
+                          .catch(res => {
+                              if (res.data.code === 202) {
+                                  return Dialog.confirm({
+                                      title: '提示',
+                                      message: '该就诊人尚未完善资料，请前去完善！',
+                                      confirmButtonText: '去完善'
+                                  }).then(() => {
+                                      this.$router.push(`/setting/myFamilyMembers`)
+                                  })
+                              }
+                          })
+                  })
+              } else {
+                  if (tag) {
+                      // 存在就诊卡
+                      let data = {
+                          sourceCode: this.source.sourceCode,
+                          doctorId: this.doctorInfo.doctorId,
+                          familyId: this.fml.familyId,
+                          familyName: this.fml.name,
+                          idcard: this.fml.idcard,
+                          sourceDate: this.date.year + '-' + this.date.date,
+                          week: this.date.week,
+                          AMPM: this.source.type,
+                          bookingStart: this.source.startTime,
+                          bookingEnd: this.source.endTime,
+                          unitPrice: this.source.unitPrice,
+                          sourceLevelType: this.source.sourceLevelType,
+                          diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
+                          departmentName: this.doctorInfo.deptName
+                      }
+                      this.getOrderSubmit(data)
+                  }
+              }
+          })
+      },
+    checkCardExist() {
+          let familyId = this.fml.familyId
+          let nethospitalid = this.doctorInfo.nethospitalId;
+          let params = { familyId, nethospitalid }
+          return new Promise(resolve => {
+              peace.service.patient.isExistCardRelation(params).then(res => {
+                  resolve(res)
+              })
+          })
+    },
     initFml(){
+      let doctorId = this.doctorInfo.doctorId;
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
-        this.fml = this.fmlList[0] || {}
-        this.fmlDic =
-                this.fmlList.map(item => {
-                  return {
-                    name: item.name,
-                    subname: '(' + item.relation + ')'
-                  }
-                }) || []
+
+        if(this.fmlList.length > 0) {
+          peace.service.patient.getLastAppoint({ doctorId}).then(lastFamily => {
+            // 1. 优先选中最后一个就诊人
+            // 2. 其次选中关系为本人
+            // 3. 最后选中家人列表的第一个就诊人
+            if (!this.fml) {
+              this.fml = this.fmlList.find(item => item.id === lastFamily.data.familyId)
+            }
+
+            if (!this.fml) {
+              this.fml = this.fmlList.find(item => item.relation === '本人')
+            }
+
+            if (!this.fml) {
+              this.fm = this.fmlList.find(
+                      item => item.familyId === this.source.familyList[0].id
+              )
+            }
+            if(this.fml) {
+              this.fmlDic =
+                      this.fmlList.map(item => {
+                        return {
+                          name: item.name,
+                          subname: '(' + item.relation + ')'
+                        }
+                      }) || []
+              if(this.fml.familyId) {
+                this.checkCard();
+              }
+            }
+          })
+        }
+
       })
     },
     zdConfirm(val) {
@@ -142,6 +238,8 @@ export default {
     fmlConfirm(item, index) {
       this.fml = this.fmlList[index]
       this.showFmlDic = false
+
+      this.checkCard()
     },
     submitOrder() {
       let data = {
@@ -170,6 +268,7 @@ export default {
         peace.util.alert('请勿重复提交')
         return;
       }
+      // this.checkCard(true);
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
@@ -195,7 +294,7 @@ export default {
             title: '预约失败',
             message: res.data.msg
           }).then(() => {
-            this.$router.go(-1)
+            // this.$router.go(-1)
           })
         })
     },

@@ -380,6 +380,13 @@ export default {
     }
   },
 
+  destroyed() {
+    // 清除当前聊天 session
+    peace.service.IM.resetInquirySession()
+    // 清除聊天记录
+    peace.service.IM.resetInquirySessionMessages()
+  },
+
   methods: {
     getHistoryMsgsByDB() {
       const params = peace.util.decode(this.$route.params.json)
@@ -421,11 +428,10 @@ export default {
           throw new Error(error)
         }
 
-        peace.service.IM.resetInquirySessionMessages()
-        peace.service.IM.setInquirySessionMessages(message.msgs)
-
         peace.service.IM.resetInquirySession()
+        peace.service.IM.resetInquirySessionMessages()
         peace.service.IM.setInquirySession(session)
+        peace.service.IM.setInquirySessionMessages(message.msgs)
       }
 
       // 重置会话未读数
@@ -615,7 +621,7 @@ export default {
         }
 
         .message-avatar {
-          margin: 0 5px 0 0;
+          margin: 0 10px 0 0;
           align-self: flex-start;
           img {
             width: 38px;
@@ -634,7 +640,7 @@ export default {
         }
 
         .message-avatar {
-          margin: 0 0 0 5px;
+          margin: 0 0 0 10px;
           align-self: flex-start;
           img {
             width: 38px;

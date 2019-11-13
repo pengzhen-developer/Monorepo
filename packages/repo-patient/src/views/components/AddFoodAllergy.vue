@@ -153,9 +153,6 @@ export default {
     },
 
     check(currentItem) {
-      if (currentItem.needAdd) {
-        peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 })
-      }
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allFoodAllergy = []
@@ -185,18 +182,30 @@ export default {
           this.allFoodAllergyCommonly[indexCommonly].checked = false
         }
       } else {
-        currentItem.checked = true
-        this.allFoodAllergy.push(currentItem)
-
-        const indexCommonly = this.allFoodAllergyCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
-        if (indexCommonly !== -1) {
-          this.allFoodAllergyCommonly[indexCommonly].checked = true
+        if (currentItem.needAdd) {
+          if(currentItem.value.length < 50) {
+            peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 }).then(()=> {
+              this.onAddCallback(currentItem);
+            })
+          } else {
+            peace.util.alert("您输入的字数过长！")
+          }
+        } else {
+          this.onAddCallback(currentItem);
         }
       }
     },
+    onAddCallback(currentItem) {
+      currentItem.checked = true
+      this.allFoodAllergy.push(currentItem)
 
+      const indexCommonly = this.allFoodAllergyCommonly.findIndex(
+              item => item.value === currentItem.value
+      )
+      if (indexCommonly !== -1) {
+        this.allFoodAllergyCommonly[indexCommonly].checked = true
+      }
+    },
     save() {
       this.$emit('input', this.allFoodAllergy.map(item => item.value).toString())
 
@@ -239,6 +248,7 @@ export default {
         padding: 10px;
         text-align: center;
         min-width: 45px;
+        border: none;
 
         &::after {
           border: none;

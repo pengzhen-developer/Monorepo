@@ -15,9 +15,14 @@ export const config = {
     title: '互联网医院',
 
     /**
-     * 无权限访问页
+     * 微信授权
      */
-    noAuthPage: '/login',
+    authPage: '/WXAuth',
+
+    /**
+     * 错误页
+     */
+    errorPage: '/errorPage',
 
     /**
      * 登录页
@@ -41,6 +46,35 @@ export const config = {
   },
 
   /**
+   * 健康档案配置项
+   */
+  file: {
+    unit: {
+      血压: 'mmHg',
+      血糖: 'mmol/L',
+      血氧: '%',
+      体脂: '%'
+    },
+
+    type: {
+      血压: '2',
+      血糖: '1',
+      血氧: '5',
+      体脂: '8'
+    },
+
+    week: {
+      血压: '304',
+      血糖: '308'
+    },
+
+    month: {
+      血压: '301',
+      血糖: '302'
+    }
+  },
+
+  /**
    * api 配置项
    */
   api: {
@@ -61,11 +95,15 @@ export const config = {
     key: process.env.VUE_APP_MAP_KEY
   },
 
-
   /**
    * 微信公众号 APPID
    */
-  APPID: process.env.VUE_APP_APPID
+  APPID: process.env.VUE_APP_APPID,
+
+  /**
+   * 渠道ID CHANNELID
+   */
+  CHANNELID: process.env.VUE_APP_CHANNELID
 }
 
 export default config

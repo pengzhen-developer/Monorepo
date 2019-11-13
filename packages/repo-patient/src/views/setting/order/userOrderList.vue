@@ -3,9 +3,9 @@
        style="height: 100%;">
     <div class="content"
          style="height: 100%;">
-      <div v-if="orderList.length">
+      <div v-if="$store.getters['appointMent/appointList'].length">
         <div class="panel"
-             v-for="(item,index) in orderList"
+             v-for="(item,index) in $store.getters['appointMent/appointList']"
              :key="index">
           <div class="panel-head">
             <div class="card-strip">
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="none-page"
-           v-if="!orderList.length">
+           v-if="$store.getters['appointMent/appointList'] ==0 && $store.getters['appointMent/loaded']">
         <div class="icon icon_none_consult"></div>
         <div class="none-text">暂无订单记录</div>
       </div>
@@ -98,6 +98,7 @@ export default {
   props: {},
   data() {
     return {
+      loaded: false,
       page: {
         isGet: false,
         none: true,
@@ -129,7 +130,8 @@ export default {
     }
   },
   created() {
-    this.getData()
+    // this.getData()
+    this.$store.dispatch('appointMent/getList');
   },
   methods: {
     goPay(data) {
@@ -146,6 +148,7 @@ export default {
     getData() {
       peace.service.patient.getOrderList({ orderType: 'register' }).then(res => {
         this.orderList = res.data.list || []
+        this.loaded = true;
       })
     },
     canselOrder(item) {
@@ -162,7 +165,7 @@ export default {
             })
             .then(res => {
               peace.util.alert(res.msg || '退号成功')
-              this.getData()
+              this.$store.dispatch('appointMent/getList');
             })
         })
         .catch(() => {

@@ -63,6 +63,7 @@
               style="border-top:10px solid #f5f5f5" />
     <HspPage :items="data.recommendOrgan"
              :max="2"></HspPage>
+    <div style="height: 50px;"></div>
   </div>
 </template>
 
@@ -87,6 +88,16 @@ export default {
     peace.service.index.getMenu().then(res => {
       this.data = res.data
     })
+  },
+  mounted() {
+    // // 微信环境授权
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code;
+    //   let params = {code};
+    //   peace.service.login.getOPenIdByCode(params).then(res => {
+    //     console.log(res);
+    //   });
+    // }
   },
   methods: {
     goMenuPage(item, data) {

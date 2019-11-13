@@ -53,7 +53,8 @@
         </div>
         <div class="panel-body">
           <div class="list-three"
-               v-for="item in order.OrderDet">
+               v-for="(item, index) in order.OrderDet"
+               :key="index">
             <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
               <img :src="item.DrugImage" />
             </div>
@@ -70,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="module">
+          <div class="module intro">
             <div class="dl-packet">
               <div class="dt">配送方式:</div>
               <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
@@ -112,12 +113,12 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
+
 export default {
   name: 'DrugOrderBefore',
   data() {
     return {
-      appid: '',
+      orderId: '',
       showBtn: true,
       page: {
         url: '',
@@ -131,8 +132,6 @@ export default {
     }
   },
   mounted() {
-    let that = this
-    this.appid = config.APPID;
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -141,37 +140,23 @@ export default {
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
     }
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let orderNo = this.$route.query.orderId
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        that.onBridgeReady(data, orderNo)
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let orderNo = this.$route.query.orderId
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
+    this.getDefaultAddress()
   },
   methods: {
-    onBridgeReady(data, orderId) {
-      let that = this
-      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
-        //alert(res.err_msg)
-        //alert(res.err_msg);
-        if (res.err_msg == 'get_brand_wcpay_request:ok') {
-          // 使用以上方式判断前端返回,微信团队郑重提示：
-          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-          const json = peace.util.encode({ OrderId: orderId })
-          //alert(orderId);
-          that.$router.push(`/order/userDrugDetail/${json}`)
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:fail') {
-          const json = peace.util.encode({ OrderId: orderId })
-          //alert(orderId);
-          that.$router.push(`/order/userDrugDetail/${json}`)
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
-          console.log('cancel')
-        }
+    getDefaultAddress() {
+      peace.service.patient.getDefaultAddress().then(res => {
+        this.userAddr = res.data
+        this.canSubmitProcesses()
+        //console.log('ressssssssssssssssssssssssss',res);
       })
     },
     getAddr(addr) {
@@ -189,9 +174,9 @@ export default {
       }
       if (!this.showBtn) {
         peace.util.alert('请勿重复提交')
-        return;
+        return
       }
-      this.showBtn = false;
+      this.showBtn = false
       let params = {
         formId: '',
         JZTClaimNo: this.page.json.JZTClaimNo,
@@ -203,37 +188,30 @@ export default {
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : ''
       }
-      let that = this
       peace.service.patient
         .submitOrder(params)
         .then(res => {
           let orderNo = res.data.OrderId
+          this.orderId = res.data.OrderId
           let params = { orderNo }
-          peace.service.index.GetWxLoginStatus(params).then(res => {
-            this.showBtn = true;
-            if (res.code === 200) {
-              //没有经过授权
-              let data = res.data
-              if (data) {
-                that.onBridgeReady(data, orderNo)
-              } else {
-                let appid = that.appid;
-                let redirect_uri = location.href + '?' + 'orderId=' + orderNo
-
-                // redirect_uri = encodeURIComponent(redirect_uri);
-                let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-                window.location.href = url
-              }
-            }
-          })
-          // const json = peace.util.encode({ OrderId: res.data.OrderId })
-          // this.$router.push(`/order/userDrugDetail/${json}`)
+          peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
         })
-        .catch(res => {
-          this.showBtn = true;
+        .catch(() => {
+          this.showBtn = true
         })
     },
-
+    payCallback() {
+      let orderId = ''
+      if (this.$route.query.orderId) {
+        //授权跳转后回调
+        orderId = this.$route.query.orderId
+      } else {
+        //直接回调
+        orderId = this.orderId
+      }
+      const json = peace.util.encode({ OrderId: orderId })
+      this.$router.replace(`/order/userDrugDetail/${json}`)
+    },
     canSubmitProcesses() {
       let bool = false,
         userAddr = this.userAddr
@@ -271,19 +249,20 @@ export default {
       peace.service.patient.getOrderBefore(params).then(res => {
         //console.log(res);
         this.order = res.data
+
         this.canSubmitProcesses()
       })
     },
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.push(`/inter/drugInterList/${params}`)
+      this.$router.replace(`/inter/drugInterList/${params}`)
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 page {
   background: #f5f5f5;
 }
@@ -326,7 +305,7 @@ page {
 .tab-content .addr-p {
   font-size: 16px;
   color: #333;
-  margin: 10px 0;
+  margin: 5px 0;
   font-weight: 700;
   position: relative;
 }
@@ -349,9 +328,14 @@ page {
 
 .panel-head .head-ico {
   flex: 0 0 auto;
-  width: 56rpx;
-  height: 56rpx;
-  border: 2rpx solid #e5e5e5;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e5e5e5;
+  margin-right: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 .panel-head.icon-next::before {
   content: '';
@@ -376,6 +360,7 @@ page {
 .panel-pha .panel-body {
   padding: 10px 15px;
 }
+.intro,
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -441,7 +426,9 @@ page {
   content: '';
   position: absolute;
   display: block;
-  top: 15px;
+  // top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0px;
   width: 7px;
   height: 12px;
@@ -463,17 +450,19 @@ page {
   flex-direction: column;
   text-align: right;
 }
+
 .list-other .other-them::after {
   content: '?  ';
   display: inline-block;
   width: 10px;
   height: 10px;
   line-height: 1;
+  vertical-align: middle;
   background: #00c6ae;
   border-radius: 50%;
   font-size: 10px;
   color: #fff;
-  margin-top: 2px;
+  margin-bottom: 3px;
   margin-left: 2px;
   padding: 0;
   text-align: center;

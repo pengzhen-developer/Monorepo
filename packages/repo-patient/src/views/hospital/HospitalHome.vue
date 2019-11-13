@@ -34,7 +34,7 @@
             <van-notice-bar style="height: 100%; padding: 0;"
                             color="#999999"
                             background="transparent">
-              {{ hospitalInfo.notices.length > 0 && hospitalInfo.notices[0].title }}
+              {{ hospitalInfo.notices.length > 0 && "【"+ hospitalInfo.notices[0].title+"】"+ hospitalInfo.notices[0].content  }}
             </van-notice-bar>
           </div>
           <i @click="goHospitalNoticeList()"
@@ -160,11 +160,11 @@ export default {
 
   methods: {
     getHospitalInfo() {
-      const params = peace.util.decode(
-        this.$route.params.json || peace.cache.get(peace.type.SYSTEM.PARAMS)
-      )
-
-      peace.service.hospital.getHospitalInfo({ nethospitalId: params.netHospitalId }).then(res => {
+      const params = peace.util.decode(this.$route.params.json)
+      const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalId);
+      peace.cache.set("hospitalID", nethospitalId);
+      peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
         this.hospitalInfo = res.data
       })
     },

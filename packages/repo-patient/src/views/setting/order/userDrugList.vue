@@ -24,7 +24,8 @@
                  }">
         <div v-if="drugItems.length">
           <div class="panel"
-               v-for="item in drugItems">
+               v-for="item in drugItems"
+               :key="item.OrderId">
             <div class="panel-head">
               <div class="card-strip">
                 <div class="avatar">
@@ -44,7 +45,8 @@
               <div class="card-imgs"
                    v-if="item.OrderDet && item.OrderDet.length">
                 <div class="imgs-item"
-                     v-for="det in item.OrderDet">
+                     v-for="det in item.OrderDet"
+                     :key="det.DrugImage">
                   <div class="item-icon"
                        :class="{ 'item-icon-none': !item.DrugImage }">
                     <img :src="det.DrugImage" />
@@ -77,7 +79,11 @@
               </div>
               <div class="label blue"
                    v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
-                   @click="submitOrder(item)">确认签收
+                   @click="submitOrder(item)">确认收货
+              </div>
+              <div class="label blue"
+                   v-if="item.OrderStatus == '3' && item.ShippingMethod == '0'"
+                   @click="submitOrder(item)">确认取药
               </div>
             </div>
           </div>
@@ -86,7 +92,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="loaded && drugItems.length==0">
       <div class="none-page">
         <div class="icon icon_none_drugOrder"></div>
         <div class="none-text">暂无订单</div>
@@ -97,13 +103,13 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
 export default {
   data() {
     return {
+      loaded: false,
       appid: '',
       tabIndex: '0',
-
+      currentOrderId: '',
       drugItems: undefined,
       consultList: undefined
     }
@@ -113,17 +119,16 @@ export default {
     this.getDrugItems()
   },
   mounted() {
-    let that = this
-    this.appid = config.APPID
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let orderNo = this.$route.query.orderId
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        that.onBridgeReady(data, orderNo)
-      })
-    }
+    //this.appid = config.APPID
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let orderNo = this.$route.query.orderId
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
   },
   methods: {
     changeTab(item) {
@@ -139,76 +144,64 @@ export default {
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
         this.drugItems = res.data
+        this.loaded = true
       })
     },
 
     goUserDrugDetailPage(item) {
       const json = peace.util.encode({ OrderId: item.OrderId })
-      this.$router.push(`/order/userDrugDetail/${json}`)
-    },
-    onBridgeReady(data, orderId) {
-      let that = this
-      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
-        //alert(res.err_msg);
-        if (res.err_msg == 'get_brand_wcpay_request:ok') {
-          // 使用以上方式判断前端返回,微信团队郑重提示：
-          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-          const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:fail') {
-          const json = peace.util.encode({ OrderId: orderId })
-          that.$router.push(`/order/userDrugDetail/${json}`)
-        }
-        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
-          console.log('cancel')
-        }
-      })
+      this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     payOrder(item) {
       let orderNo = item.OrderId
+      this.currentOrderId = item.OrderId
       let params = { orderNo }
-      let that = this
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        if (res.code === 200) {
-          //没有经过授权
-          let data = res.data
-          if (data) {
-            that.onBridgeReady(data, orderNo)
-          } else {
-            let appid = that.appid
-            let redirect_uri = location.href + '?' + 'orderId=' + orderNo
-
-            // redirect_uri = encodeURIComponent(redirect_uri);
-            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect`
-            window.location.href = url
-          }
-        }
-      })
+      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+    },
+    payCallback() {
+      let orderId = ''
+      if (this.$route.query.orderId) {
+        //授权跳转后回调
+        orderId = this.$route.query.orderId
+      } else {
+        //直接回调
+        orderId = this.currentOrderId
+      }
+      const json = peace.util.encode({ OrderId: orderId })
+      this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     canselOrder(item) {
       const params = { OrderId: item.OrderId }
-
-      peace.service.purchasedrug.CancelOrder(params).then(res => {
-        peace.util.alert(res.msg)
-
-        this.getDrugItems()
+      let resTxt = ''
+      if (item.OrderStatus == 0) {
+        resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
+      } else {
+        resTxt =
+          '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
+      }
+      peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
+        peace.service.purchasedrug.CancelOrder(params).then(res => {
+          peace.util.alert(res.msg)
+          this.getDrugItems()
+        })
       })
     },
 
     goDrugLogiPage(item) {
       const params = peace.util.encode({ OrderId: item.OrderId })
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.replace(`/order/userDrugLogistics/${params}`)
     },
 
     submitOrder(item) {
       const params = { OrderId: item.OrderId }
-
-      peace.util.confirm('收到药品之后再确认取药哦~~~', '温馨提醒', undefined, () => {
+      let resTxt = item.ShippingMethod
+        ? '收到药品确认无误后再确认收货，以免造成损失'
+        : '收到药品确认无误后再确认取药，以免造成损失'
+      peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
           peace.util.alert(res.msg)
-          this.getDrugItems();
+          this.getDrugItems()
         })
       })
     }
@@ -367,7 +360,7 @@ export default {
 }
 .card-strip .avatar img {
   padding: 1px;
-  border-radius: 50%;
+  // border-radius: 50%;
   width: 27px;
   height: 27px;
   margin-top: -1px;

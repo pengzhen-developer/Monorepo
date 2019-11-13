@@ -121,8 +121,8 @@
           <van-field :value="model.allergicHistory"
                      @click="showAddAllergicHistory= true"
                      clickable
-                     label="过敏史"
-                     placeholder="请选择过敏史"
+                     label="药物过敏"
+                     placeholder="请选择药物过敏史"
                      readonly
                      required
                      right-icon="arrow" />
@@ -130,6 +130,22 @@
           <peace-dialog :visible.sync="showAddAllergicHistory">
             <AddAllergicHistory @onSave="showAddAllergicHistory = false"
                                 v-model.trim="model.allergicHistory"></AddAllergicHistory>
+          </peace-dialog>
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-field :value="model.foodAllergy"
+                     @click="showFoodAllergy= true"
+                     clickable
+                     label="食物过敏"
+                     placeholder="请选择食物过敏史"
+                     readonly
+                     required
+                     right-icon="arrow" />
+
+          <peace-dialog :visible.sync="showFoodAllergy">
+            <AddFoodAllergy @onSave="showFoodAllergy = false"
+                            v-model.trim="model.foodAllergy"></AddFoodAllergy>
           </peace-dialog>
         </van-cell-group>
 
@@ -206,6 +222,7 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
 import InformedConsent from '@src/views/components/InformedConsent'
+import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 
 import Vue from 'vue'
 import { Dialog } from 'vant'
@@ -215,13 +232,14 @@ export default {
   components: {
     AddAllergicHistory,
     AddIllnessHistory,
-    InformedConsent
+    InformedConsent,
+    AddFoodAllergy
   },
 
   data() {
     return {
       sending: false,
-
+      showFoodAllergy: false,
       // 显示确认疾病
       showAddAllergicHistory: false,
       // 显示过敏史
@@ -275,7 +293,9 @@ export default {
         // 本次复诊情况
         againType: '3',
         // 知情同意
-        informedConsent: false
+        informedConsent: false,
+        //食物过敏
+        foodAllergy: ''
       },
 
       source: {
@@ -311,6 +331,7 @@ export default {
 
     peace.service.doctor.getDoctorInfo(params).then(res => {
       this.doctor = res.data
+      this.saveHospitalCache();
     })
 
     peace.service.patient.getMyFamilyList().then(familyList => {
@@ -339,15 +360,21 @@ export default {
           }
 
           if (family) {
+            // debugger
             this.model.familyName = family.name
             this.model.familyId = family.familyId
             this.model.allergicHistory = family.allergicHistory
-
+            this.model.foodAllergy = family.foodAllergy
             // 判断否能显示是否怀孕
             if (family.sex === '女' && family.age >= 14) {
               this.showPregnancy = true
             } else {
               this.showPregnancy = false
+            }
+
+            // 载入就诊人后，检查健康卡
+            if (family.id) {
+              this.checkCard()
             }
           }
         })
@@ -358,6 +385,50 @@ export default {
   },
 
   methods: {
+    saveHospitalCache() {
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid;
+      peace.cache.set("hospitalID", nethospitalid);
+    },
+    checkCard(tag) {
+      this.checkCardExist().then(res => {
+        if (!res.data.result) {
+          return Dialog.confirm({
+            title: '提示',
+            message: '该就诊人还没有电子健康卡，是否现在领取？',
+            confirmButtonText: '现在领取'
+          }).then(() => {
+            let familyId = this.model.familyId
+            let nethospitalid = this.doctor.doctorInfo.nethospitalid;
+            let params = { familyId, nethospitalid }
+            peace.service.patient
+              .createHealthcard(params)
+              .then(res => {
+                if (res.data.result) {
+                  return peace.util.alert('领取成功，请填写信息后提交问诊！')
+                }
+              })
+              .catch(res => {
+                if (res.data.code === 202) {
+                  return Dialog.confirm({
+                    title: '提示',
+                    message: '该就诊人尚未完善资料，请前 去完善！',
+                    confirmButtonText: '去完善'
+                  }).then(() => {
+                    this.$router.push(`/setting/myFamilyMembers`)
+                  })
+                }
+              })
+          })
+        } else {
+          if (tag) {
+            // 存在就诊卡
+            this.uploadHandler().then(() => {
+              this.applyHandler()
+            })
+          }
+        }
+      })
+    },
     redirect() {
       this.$router.push({
         name: '/components/informedConsent',
@@ -383,16 +454,21 @@ export default {
           }
         })
       } else {
+        //debugger
         this.model.familyName = familyObject.name
         this.model.familyId = familyObject.id
         this.model.allergicHistory = familyObject.allergicHistory
-
+        this.model.foodAllergy = familyObject.foodAllergy
         // 判断否能显示是否怀孕
         if (familyObject.sex === '女' && familyObject.age >= 14) {
           this.showPregnancy = true
         } else {
           this.showPregnancy = false
           this.model.isPregnancy = ''
+        }
+
+        if (this.model.familyId) {
+          this.checkCard()
         }
       }
     },
@@ -423,9 +499,17 @@ export default {
         })
       }
     },
-
+    checkCardExist() {
+      let familyId = this.model.familyId
+      let nethospitalid = this.doctor.doctorInfo.nethospitalid
+      let params = { familyId, nethospitalid }
+      return new Promise(resolve => {
+        peace.service.patient.isExistCardRelation(params).then(res => {
+          resolve(res)
+        })
+      })
+    },
     apply() {
-      console.log('familyname', this.model.familyName)
       //验证
       if (!this.model.familyName || this.model.familyName == '添加就诊人') {
         return peace.util.alert('请选择就诊人')
@@ -446,7 +530,10 @@ export default {
           return peace.util.alert('请输入既往用药')
         }
         if (!this.model.allergicHistory) {
-          return peace.util.alert('请选择过敏史')
+          return peace.util.alert('请选择药物过敏史')
+        }
+        if (!this.model.foodAllergy) {
+          return peace.util.alert('请选择食物过敏史')
         }
         if (this.model.isBadEffect && !this.model.isBadEffectText) {
           return peace.util.alert('请输入不良反应')
@@ -455,10 +542,10 @@ export default {
           return peace.util.alert('请选择本次复诊情况')
         }
       }
-
       this.uploadHandler().then(() => {
         this.applyHandler()
       })
+      // this.checkCard(true)
     },
     goToPay(data) {
       let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
@@ -513,16 +600,15 @@ export default {
               this.goToPay(res.data)
               return
             } else {
-              //免费问诊
-              // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-              setTimeout(() => {
-                this.$router.push({
-                  name: '/message/index',
-                  params: {
-                    sessionId: 'p2p-' + this.model.doctorId
-                  }
-                })
-              }, 1000)
+              const params = peace.util.encode({
+                id: 'p2p-' + this.model.doctorId,
+                scene: 'p2p',
+                beginTime: res.data.startTime.toDate().getTime(),
+                to: this.model.doctorId
+              })
+
+              // 跳转聊天详情
+              this.$router.push(`/components/messageList/${params}`)
               return peace.util.alert(res.msg)
             }
           }
@@ -533,18 +619,11 @@ export default {
               message: res.msg,
               confirmButtonText: '去看看'
             }).then(() => {
-              // 前往咨询订单详情页
-              //console.log(res.data.inquiryId);
-              // const json = peace.util.encode({
-              //   inquiryId: res.data.inquiryId
-              // })
-              let inquiryId = res.data.inquiryId
               const params = {
-                inquiryId
+                inquiryId: res.data.inquiryId
               }
               let json = peace.util.encode(params)
               this.$router.push(`/setting/userConsultDetail/${json}`)
-              //this.$router.push({ path: `/setting/userConsultDetail`, query: { inquiryId } })
             })
           }
           if (res.data.errorState === 2) {
@@ -554,15 +633,15 @@ export default {
               confirmButtonText: '继续咨询'
             })
               .then(() => {
-                // 延迟1000ms， 跳转消息页， 最大限度确认消息通知已推送
-                setTimeout(() => {
-                  this.$router.push({
-                    name: '/message/index',
-                    params: {
-                      sessionId: 'p2p-' + this.model.doctorId
-                    }
-                  })
-                }, 1000)
+                const params = peace.util.encode({
+                  id: 'p2p-' + this.model.doctorId,
+                  scene: 'p2p',
+                  beginTime: res.data.startTime.toDate().getTime(),
+                  to: this.model.doctorId
+                })
+
+                // 跳转聊天详情
+                this.$router.push(`/components/messageList/${params}`)
               })
               .catch(() => {
                 // on cancel
@@ -628,7 +707,9 @@ export default {
         }
       }
     }
-
+    /deep/ .van-cell-group {
+      border-bottom: 1px solid #eee;
+    }
     /deep/ .van-uploader__upload,
     /deep/ .van-uploader__preview-image {
       width: 50px;
@@ -641,7 +722,7 @@ export default {
 
     .divider {
       height: 10px;
-      background: #f5f5f5;
+      background: #f9f9f9;
     }
   }
 

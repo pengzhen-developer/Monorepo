@@ -53,7 +53,7 @@
           <!--          </div>-->
         </div>
       </div>
-      <div class="none-page" v-if="!doctorList.length">
+      <div class="none-page" v-if="!doctorList.length && loaded">
         <div class="icon icon_none_source"></div>
         <div class="none-text">
           当日暂无可预约医生
@@ -71,6 +71,7 @@ export default {
   props: {},
   data() {
     return {
+      loaded: false,
       dateListLength: 7,
       data: {},
       doctorList: [],
@@ -92,6 +93,7 @@ export default {
           timeSharing
         })
         .then(res => {
+          this.loaded = true;
           !this.dateList.length && (this.dateList = res.data.weekDate),
             // this.dateList = [    //时间筛选
             //   {

@@ -199,6 +199,7 @@
     <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
     <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
     <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=<%= process.env.VUE_APP_MAP_KEY %>"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/qrcodejs-master/qrcode.min.js"></script>
   </head>
 
   <body>

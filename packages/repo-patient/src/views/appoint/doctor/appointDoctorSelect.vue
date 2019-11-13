@@ -69,7 +69,7 @@
           </div>
         </div>
       </div>
-      <div class="none-page" v-if="!AM.length && !PM.length">
+      <div class="none-page" v-if="AM.length ==0 && PM.length ==0 && loaded">
         <div class="icon icon_none_source"></div>
         <div class="none-text">
           当日暂时无号源哦
@@ -87,6 +87,7 @@ export default {
   props: {},
   data() {
     return {
+      loaded: false,
       // doctorInfo: {
       //     doctorName:'张三',
       //     doctorTitle:'教授',
@@ -133,6 +134,7 @@ export default {
           this.dateList = res.data.weekDate || []
           this.doctorInfo = res.data.list.doctorInfo || {}
           this.initSource()
+
         })
     },
     initSource() {
@@ -152,6 +154,7 @@ export default {
         .then(res => {
           this.AM = res.data.list.AM || []
           this.PM = res.data.list.PM || []
+          this.loaded = true
         })
     },
     checkTime(index) {

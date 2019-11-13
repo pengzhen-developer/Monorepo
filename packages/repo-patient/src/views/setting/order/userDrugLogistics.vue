@@ -71,6 +71,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 90%;
+    height: 90%;
+    border-radius: 2px;
+  }
+}
 .user-drug-logistics {
   height: 100%;
   background: #f5f5f5;
@@ -128,7 +138,7 @@ export default {
   border-left: 2px solid #d8d8d8;
   padding-left: 15px;
   flex: 1;
-  min-height: 125px;
+  min-height: 82px;
 }
 .time-line .time::after {
   content: '';

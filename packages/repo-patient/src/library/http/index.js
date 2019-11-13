@@ -11,6 +11,7 @@ import router from '@src/router'
 
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+
 // 记录 http 请求次数
 let httpCount = 0
 
@@ -59,6 +60,14 @@ axios.interceptors.request.use(
       request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO)
         ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
         : undefined
+
+      // 配置渠道ID
+      request.headers['channelid'] = $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+        ? $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+        : ''
+      request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        ? $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        : ''
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
@@ -118,7 +127,7 @@ axios.interceptors.response.use(
 
       // 请求正常，IM 状态异常
       else if (response.data && parseInt(response.data.code) === 2002) {
-        $peace.util.alert('通讯异常, 将于 3 秒后刷新重连')
+        $peace.util.alert('IM 通讯异常, 即将重连。')
 
         setTimeout(() => {
           window.location.reload()
@@ -131,17 +140,28 @@ axios.interceptors.response.use(
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+
         // 清空登录信息
         $peace.cache.remove($peace.type.USER.INFO)
-        // 跳转提示页
-        router.replace($peace.config.system.noAuthPage)
 
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
 
         return Promise.reject(response)
       }
+
+      // 微信支付失败（未知错误，回到登录，一了百了）
+      else if (response.data && parseInt(response.data.code) === -2002) {
+        // 清空登录信息
+        $peace.cache.remove($peace.type.USER.INFO)
+
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
+        window.location.reload()
+
+        return Promise.reject(response)
+      }
+
       // 逻辑验证失败
       else {
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)

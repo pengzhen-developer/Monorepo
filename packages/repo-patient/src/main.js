@@ -24,12 +24,6 @@ import 'vant/lib/icon/local.css'
 import 'vant/lib/index.less'
 Vue.use(Vant)
 
-//map
-import BaiduMap from 'vue-baidu-map'
-Vue.use(BaiduMap, {
-  /* Visit http://lbsyun.baidu.com/apiconsole/key for details about app key. */
-  ak: 'vVmeefdcZxiHrUvdyoHquR4S'
-})
 
 // css
 import '@src/assets/css/index.scss'
