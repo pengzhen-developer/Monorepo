@@ -244,7 +244,7 @@ export default {
     },
 
     showDetail() {
-      if (this.data.consultStatus !== peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成) {
+      if (this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成) {
         return peace.util.alert('问诊尚未结束，无法查看记录')
       }
 
