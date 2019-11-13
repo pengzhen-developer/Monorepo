@@ -190,15 +190,15 @@ export default {
     this.getDrugOrderDetail()
   },
   mounted() {
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let orderNo = this.$route.query.orderId
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        peace.wx.payInvoke(data, this.payCallback)
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let orderNo = this.$route.query.orderId
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
   },
   methods: {
     payCallback() {
