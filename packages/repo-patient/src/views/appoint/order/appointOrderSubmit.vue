@@ -97,12 +97,14 @@ export default {
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
     this.date = this.params.date
+    console.log(this.doctorInfo)
     this.saveHospitalCache();
     this.initFml();
   },
   methods: {
    saveHospitalCache() {
       let nethospitalid = this.doctorInfo.nethospitalId;
+      // debugger
       peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalid);
     },
     checkCard(tag) {

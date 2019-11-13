@@ -101,10 +101,26 @@
     </div>
     <div class="module pdtb"
          v-else>
-      <div class="brief right">
-        {{info.orderInfo.payMoney == '0.00' && info.orderInfo.orderStatus !='3' ? '应' : '实' }}付金额 ：
-        <div class="money">{{info.orderInfo.payMoney}}</div>
-      </div>
+      <!-- 订单取消的情况 -->
+      <template v-if="info.orderInfo.orderStatus == '2'">
+        <!--- 支付过 -->
+        <div class="brief right" v-if="info.orderInfo.payMoney != 0 ">
+          实付金额 ：
+          <div class="money">{{info.orderInfo.payMoney}}</div>
+        </div>
+         <!-- 没有支付, 显示应付金额 -->
+        <div class="brief right" v-else>
+          应付金额 ：
+          <div class="money">{{info.orderInfo.orderMoney}}</div>
+        </div>
+      </template>
+      <!-- 其它情况 -->
+      <template v-else>
+        <div class="brief right">
+          实付金额 ：
+          <div class="money">{{info.orderInfo.payMoney}}</div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

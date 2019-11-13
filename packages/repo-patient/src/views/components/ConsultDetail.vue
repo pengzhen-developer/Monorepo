@@ -177,15 +177,7 @@
         <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
       </div>
     </div>
-    <div
-      class="module pdtb"
-      v-if="internalData.inquiryInfo.inquiryStatus != '1'"
-    >
-      <div class="brief right">
-        实付金额：
-        <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
-      </div>
-    </div>
+
     <div
       class="module pdtb"
       v-if="internalData.inquiryInfo.inquiryStatus == '1'"
@@ -195,7 +187,29 @@
         <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
       </div>
     </div>
+    <div
+            class="module pdtb"
+            v-else
+    >
+      <!-- 取消订单的状态 -->
+      <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
+        <div class="brief right" v-if="internalData.orderInfo.payMoney == 0">
+          应付金额：
+        <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
+        </div>
+        <div class="brief right" v-else>
+          实付金额：
+          <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+        </div>
+      </template>
 
+      <template v-else>
+        <div class="brief right">
+          实付金额：
+          <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+        </div>
+      </template>
+    </div>
     <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
