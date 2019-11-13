@@ -112,7 +112,7 @@
                 <el-tag :key="item"
                         style="margin-right: 5px; border: none; "
                         type="info"
-                        v-for="item in data.familyDisagnose.split(',')">{{ item }}</el-tag>
+                        v-for="item in data.familyDisagnose.split('|')">{{ item }}</el-tag>
               </div>
             </div>
             <div class="item">
