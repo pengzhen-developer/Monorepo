@@ -26,6 +26,12 @@ import peace from '@src/library'
 
 export default {
   created() {
+    // 未登录状态下，不能进行授权，直接返回登录页
+    if (!peace.cache.get(peace.type.USER.INFO)) {
+      this.$router.replace(peace.config.system.loginPage)
+      return
+    }
+
     // 首次进入，非微信回调
     if (!peace.util.queryUrlParam('code') && !peace.util.queryUrlParam('codeType')) {
       this.init()
@@ -65,6 +71,7 @@ export default {
      *      参数 code / codeType 必须同时存在或者同时不存在
      */
     validateParams() {
+      const WX_AUTH_CODE = peace.cache.get(peace.type.SYSTEM.WX_AUTH_CODE) || []
       const CHANNELID = peace.cache.get(peace.type.SYSTEM.CHANNELID)
       const NETHOSPITALID = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       const code = peace.util.queryUrlParam('code')
@@ -80,6 +87,19 @@ export default {
         peace.util.alert('参数异常，请退出后重新访问')
 
         return false
+      }
+
+      // 当前 code 已被使用
+      if (code && WX_AUTH_CODE && WX_AUTH_CODE.includes(code)) {
+        peace.util.alert('当前页面已过期，为您跳转首页')
+
+        setTimeout(this.redirect, 1000)
+
+        return false
+      } else {
+        WX_AUTH_CODE.push(code)
+
+        peace.cache.set(peace.type.SYSTEM.WX_AUTH_CODE, WX_AUTH_CODE)
       }
 
       return true
@@ -131,15 +151,11 @@ export default {
 
     /** 是否需要渠道微信授权 */
     needWxChannelAuth() {
-      // 已经存在授权信息，并且 channelId 与缓存一致
+      // 已经存在授权信息
       if (peace.cache.get(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)) {
         return false
       }
-      // 不存在授权信息，参数不存在 channelId ,不需要进行授权
-      else if (!peace.cache.get(peace.type.SYSTEM.CHANNELID)) {
-        return false
-      }
-      // 即不存在授权信息，也不是微信授权回调，参数也存在 channelId，需要进行授权
+      // 不存在授权信息，需要进行授权
       else {
         return true
       }

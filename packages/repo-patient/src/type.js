@@ -26,6 +26,8 @@ export const SYSTEM = {
   WX_AUTH_PLATEFORM_OPEN_ID: 'WX_AUTH_PLATEFORM_OPEN_ID',
   // 是否已完成渠道微信授权，储存 channel_openId
   WX_AUTH_CHANNEL_OPEN_ID: 'WX_AUTH_CHANNEL_OPEN_ID',
+  // 当前已授权的 CODE
+  WX_AUTH_CODE: 'WX_AUTH_CODE',
 
   // 当前登录用户机构来源
   NETHOSPITALID: 'NETHOSPITALID',

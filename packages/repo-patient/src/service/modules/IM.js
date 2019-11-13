@@ -106,6 +106,7 @@ export function onDisConnect(disConnectObject) {
 
       // 清空登录缓存
       peace.cache.remove(peace.type.USER.INFO)
+      peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
 
       // 跳转登录页
       $peace.$router.replace(peace.config.system.loginPage)

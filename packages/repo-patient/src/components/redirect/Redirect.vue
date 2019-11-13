@@ -153,6 +153,7 @@ export default {
         peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
       ) {
         peace.cache.remove(peace.type.USER.INFO)
+        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
       }
 
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
