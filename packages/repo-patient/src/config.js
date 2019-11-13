@@ -20,9 +20,9 @@ export const config = {
     authPage: '/WXAuth',
 
     /**
-     * 无权限访问页
+     * 错误页
      */
-    noAuthPage: '/login',
+    errorPage: '/errorPage',
 
     /**
      * 登录页

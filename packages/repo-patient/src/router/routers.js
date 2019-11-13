@@ -24,6 +24,14 @@ const routers = [
     component: () => import('@src/components/redirect/WXAuth.vue')
   },
   {
+    path: '/errorPage',
+    name: '/errorPage',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/components/ErrorPage.vue')
+  },
+  {
     path: '/layout',
     name: '/layout',
     meta: {
@@ -945,14 +953,6 @@ const routers = [
       auth: false
     },
     component: () => import('@src/components/Login.vue')
-  },
-  {
-    path: '/noAuth',
-    name: '/noAuth',
-    meta: {
-      auth: false
-    },
-    component: () => import('@src/components/NoAuth.vue')
   }
 ]
 

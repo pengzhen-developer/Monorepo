@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <h4>错误</h4>
-
-    <div></div>
-  </div>
+  <div></div>
 </template>
 
 <script>

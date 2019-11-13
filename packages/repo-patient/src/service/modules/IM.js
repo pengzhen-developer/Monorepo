@@ -102,15 +102,14 @@ export function onDisConnect(disConnectObject) {
     case 417:
     case 'kicked':
       // 提示鉴权失败消息
-      peace.util.warning(disConnectObject.message)
+      peace.util.warning('多地登录，请注意您的账号安全')
 
       // 清空登录缓存
       peace.cache.remove(peace.type.USER.INFO)
       peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
 
-      // 跳转登录页
-      $peace.$router.replace(peace.config.system.loginPage)
-      window.location.reload()
+      // 登录被 T 出，跳转错误页
+      peace.$router.replace(peace.config.system.errorPage)
       break
 
     default:
@@ -127,8 +126,6 @@ export function onDisConnect(disConnectObject) {
  */
 export function onWillReconnect(willReconnectObject) {
   console.warn('【 IM 】【 onWillReconnect 】', new Date(), willReconnectObject)
-
-  $peace.util.warning(`检测到网络异常,正在重连...`)
 }
 
 /**

@@ -7,7 +7,6 @@
  *
  * step 2，判断当前用户是否需要微信授权信息
  *      2.1，进行平台微信授权（用于支付）
- *      2.2，如果 url 参数存在 channelId，进行渠道微信授权（用于通知） 
  *
  * step 3，判断当前 url 参数，跳转不同的业务页
  *
@@ -77,23 +76,21 @@ export default {
       const code = peace.util.queryUrlParam('code')
       const codeType = peace.util.queryUrlParam('codeType')
 
-      if (!((CHANNELID && CHANNELID) || (!CHANNELID && !NETHOSPITALID))) {
-        peace.util.alert('参数异常，请退出后重新访问')
+      if (!((CHANNELID && NETHOSPITALID) || (!CHANNELID && !NETHOSPITALID))) {
+        peace.util.alert('渠道参数异常，请退出后重新访问')
 
         return false
       }
 
       if (!((code && codeType) || (!code && !codeType))) {
-        peace.util.alert('参数异常，请退出后重新访问')
+        peace.util.alert('授权参数异常，请退出后重新访问')
 
         return false
       }
 
-      // 当前 code 已被使用
+      // 当前授权 code 已被使用
       if (code && WX_AUTH_CODE && WX_AUTH_CODE.includes(code)) {
-        peace.util.alert('当前页面已过期，为您返回上一页')
-
-        setTimeout(this.redirect, 1000)
+        setTimeout(this.redirect)
 
         return false
       } else {

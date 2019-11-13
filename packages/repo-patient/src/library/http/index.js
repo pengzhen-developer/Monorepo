@@ -127,7 +127,7 @@ axios.interceptors.response.use(
 
       // 请求正常，IM 状态异常
       else if (response.data && parseInt(response.data.code) === 2002) {
-        $peace.util.alert('通讯异常, 将于 3 秒后刷新重连')
+        $peace.util.alert('IM 通讯异常, 即将重连。')
 
         setTimeout(() => {
           window.location.reload()
@@ -146,10 +146,22 @@ axios.interceptors.response.use(
 
         // 跳转登录页
         router.replace($peace.config.system.loginPage)
+
+        return Promise.reject(response)
+      }
+
+      // 微信支付失败（未知错误，回到登录，一了百了）
+      else if (response.data && parseInt(response.data.code) === -2002) {
+        // 清空登录信息
+        $peace.cache.remove($peace.type.USER.INFO)
+
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
         window.location.reload()
 
         return Promise.reject(response)
       }
+
       // 逻辑验证失败
       else {
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
