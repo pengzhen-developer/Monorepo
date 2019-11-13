@@ -172,7 +172,10 @@ export default {
 
         // 遍历时间
         const timeList = new Set(res.data.list.map(item => item.createdTime))
-
+        //拼接familyId
+        res.data.list.map(item => {
+          item.familyId = item.familyId || this.familyId
+        })
         if (timeList.size) {
           timeList.forEach(time => {
             temp[time] = res.data.list.filter(item => item.createdTime === time)

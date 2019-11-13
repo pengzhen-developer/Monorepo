@@ -25,7 +25,7 @@
       <van-cell-group>
         <van-cell @click="rateShow = true"
                   is-link
-                  :value="model.pulseRate + '次/分'"
+                  :value="selectRate? (model.pulseRate + '次/分'):'请选择'"
                   title="脉率（选填）" />
         <van-popup v-model="rateShow"
                    position="bottom">
@@ -71,7 +71,7 @@ export default {
     let lastData = this.$peace.cache.get('bloodOxyGenLastData') || ''
     if (lastData) {
       this.model.bloodOxygen = lastData.bloodOxygen
-      this.model.pulseRate = Number(lastData.pulseRate)
+      this.model.pulseRate = lastData.pulseRate == '-' ? 60 : Number(lastData.pulseRate)
     }
     this.minDate = this.getMinDay()
     for (let i = 0; i <= 220; i++) {
@@ -85,6 +85,7 @@ export default {
       minDate: null,
       rateArr: [],
       rateShow: false,
+      selectRate: false,
       show: false,
       model: {
         bloodOxygen: 99,
@@ -107,6 +108,7 @@ export default {
     },
     onRateConfirm(value) {
       this.rateShow = false
+      this.selectRate = true
       // console.log('rateShowwwwwwwwwww', this.rateShow)
       // debugger
       this.model.pulseRate = value
@@ -122,7 +124,9 @@ export default {
       params.measureTime = params.measureTime.formatTime()
       params.idCard = json.idCard
       params.familyId = json.familyId
-
+      if (!this.selectRate) {
+        params.pulseRate = '-'
+      }
       peace.service.health.addBloodOxygendata(params).then(res => {
         peace.util.alert(res.msg)
 
