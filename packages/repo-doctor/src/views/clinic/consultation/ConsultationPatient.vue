@@ -14,8 +14,7 @@
             <span>患者信息：</span>
           </div>
 
-          <div @click="showDetail"
-               class="content patient">
+          <div class="content patient">
             <div class="item">
               <div class="doctor-img"
                    style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
@@ -28,7 +27,9 @@
               <span>{{ data.familyAge }}</span>
             </div>
             <div class="item">
-              <i class="el-icon-arrow-right"></i>
+              <el-button @click="showDetail"
+                         type="text"
+                         style="font-size: 12px;">查看详情</el-button>
             </div>
           </div>
         </div>
@@ -61,17 +62,35 @@
 
             <div class="doctor-info">
               <div>
-                <span
-                      style="font-weight:600; color: rgba(51,51,51,1);">{{ data.toDoctorName }}</span>
-                <span
-                      style="font-weight:600; color: rgba(51,51,51,1);">{{ data.toDoctorName }}</span>
+                <template
+                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                  <span
+                        style="font-weight:600; color: rgba(51,51,51,1);">{{ data.toDoctorName }}</span>
+                </template>
+                <template v-else>
+                  <span
+                        style="font-weight:600; color: rgba(51,51,51,1);">{{ data.fromDoctorName }}</span>
+                </template>
               </div>
               <div>
-                <span>{{ data.toDeptName }}</span>
-                <span>{{ data.toDoctorTitle }}</span>
+                <template
+                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                  <span>{{ data.toDeptName }}</span>
+                  <span>{{ data.toDoctorTitle }}</span>
+                </template>
+                <template v-else>
+                  <span>{{ data.fromDeptName }}</span>
+                  <span>{{ data.fromDoctorTitle }}</span>
+                </template>
               </div>
               <div>
-                <span :title="data.toHospitalName">{{ data.toHospitalName }}</span>
+                <template
+                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                  <span :title="data.toHospitalName">{{ data.toHospitalName }}</span>
+                </template>
+                <template v-else>
+                  <span :title="data.fromHospitalName">{{ data.fromHospitalName }}</span>
+                </template>
               </div>
             </div>
           </div>
@@ -225,6 +244,10 @@ export default {
     },
 
     showDetail() {
+      if (this.data.consultStatus !== peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成) {
+        return peace.util.alert('问诊尚未结束，无法查看记录')
+      }
+
       const params = {
         inquiryNo: this.data.inquiryNo
       }
