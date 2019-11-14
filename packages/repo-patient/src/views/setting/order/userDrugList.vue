@@ -1,9 +1,7 @@
 <template>
   <div class="user-drug-list">
     <div class="tab">
-      <div @click="changeTab('0')"
-           class="tab-item"
-           :class="{ active: tabIndex == '0' }">
+      <div @click="changeTab('0')" class="tab-item" :class="{ active: tabIndex == '0' }">
         <div class="span">全部</div>
       </div>
       <!-- <div @click="changeTab('2')"
@@ -11,44 +9,31 @@
            :class="{ active: tabIndex == '2' }">
         <div class="span">进行中</div>
       </div> -->
-      <div @click="changeTab('1')"
-           class="tab-item"
-           :class="{ active: tabIndex == '1' }">
+      <div @click="changeTab('1')" class="tab-item" :class="{ active: tabIndex == '1' }">
         <div class="span">已完成</div>
       </div>
     </div>
     <template v-if="drugItems && drugItems.length">
-      <div class="content"
-           :class="{ nbg :drugItems.length,
+      <div class="content" :class="{ nbg :drugItems.length,
                    h100 : !drugItems.length
                  }">
         <div v-if="drugItems.length">
-          <div class="panel"
-               v-for="item in drugItems"
-               :key="item.OrderId">
+          <div class="panel" v-for="item in drugItems" :key="item.OrderId">
             <div class="panel-head">
               <div class="card-strip">
                 <div class="avatar">
-                  <img :src="item.DrugStoreLogo"
-                       class="avatar-cicular" />
+                  <img :src="item.DrugStoreLogo" class="avatar-cicular" />
                 </div>
                 <div class="strip-info">{{item.DrugStoreName}}</div>
-                <div :class="{ [`color-a${item.OrderStatus}`] : true }"
-                     class="strip-eye">
+                <div :class="{ [`color-a${item.OrderStatus}`] : true }" class="strip-eye">
                   {{item.OrderStatusText}}
                 </div>
               </div>
             </div>
-            <div class="panel-body"
-                 @click="goUserDrugDetailPage(item)"
-                 style="padding-top: 0">
-              <div class="card-imgs"
-                   v-if="item.OrderDet && item.OrderDet.length">
-                <div class="imgs-item"
-                     v-for="det in item.OrderDet"
-                     :key="det.DrugImage">
-                  <div class="item-icon"
-                       :class="{ 'item-icon-none': !item.DrugImage }">
+            <div class="panel-body" @click="goUserDrugDetailPage(item)" style="padding-top: 0">
+              <div class="card-imgs" v-if="item.OrderDet && item.OrderDet.length">
+                <div class="imgs-item" v-for="det in item.OrderDet" :key="det.DrugImage">
+                  <div class="item-icon" :class="{ 'item-icon-none': !item.DrugImage }">
                     <img :src="det.DrugImage" />
                   </div>
                 </div>
@@ -62,28 +47,24 @@
               </div>
             </div>
             <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-            <div class="panel-bottom"
-                 v-if="item.OrderStatus != 5">
+            <div class="panel-bottom" v-if="item.OrderStatus != 5">
               <div class="time"></div>
-              <div class="label blue"
-                   v-if="item.OrderStatus == '0'"
-                   @click="payOrder(item)">继续支付
+              <div class="label gary"
+                v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
+                @click="canselOrder(item)">取消订单
               </div>
-              <div class="label blue"
-                   v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
-                   @click="canselOrder(item)">取消订单
+              <div class="label blue-full" v-if="item.OrderStatus == '0'" @click="payOrder(item)">
+                继续支付
               </div>
               <div class="label"
-                   v-if="item.OrderStatus == '3' || item.OrderStatus == '4' || item.OrderStatus == '7' || item.OrderStatus == '8'"
-                   @click="goDrugLogiPage(item)">查看物流
+                v-if="item.OrderStatus == '3' || item.OrderStatus == '4' || item.OrderStatus == '7' || item.OrderStatus == '8'"
+                @click="goDrugLogiPage(item)">查看物流
               </div>
-              <div class="label blue"
-                   v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
-                   @click="submitOrder(item)">确认收货
+              <div class="label blue" v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
+                @click="submitOrder(item)">确认收货
               </div>
-              <div class="label blue"
-                   v-if="item.OrderStatus == '3' && item.ShippingMethod == '0'"
-                   @click="submitOrder(item)">确认取药
+              <div class="label blue" v-if="item.OrderStatus == '3' && item.ShippingMethod == '0'"
+                @click="submitOrder(item)">确认取药
               </div>
             </div>
           </div>
@@ -388,6 +369,7 @@ export default {
 .strip-eye.color-2,
 .strip-eye.color-02,
 .strip-eye.color-05,
+.strip-eye.color-a0,
 .strip-eye.color-a1,
 .strip-eye.color-a2 {
   color: #fb2828;
@@ -400,7 +382,15 @@ export default {
 .strip-eye.color-a3 {
   color: #00c6ae;
 }
-/**/
+.gary {
+  color: #999;
+  border-color: #ddd;
+}
+.blue-full {
+  background: #00c6ae;
+  color: #fff;
+  border: none;
+}
 .code {
   display: block;
   font-size: 13px;
