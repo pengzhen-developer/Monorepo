@@ -61,7 +61,7 @@
         <div class="dd">{{info.doctorInfo.outpatientType}}</div>
       </div>
       <div class="dl-addr">
-        <div class="dt">费 用</div>
+        <div class="dt nbsp">费用</div>
         <div class="dd">￥{{info.doctorInfo.fee}}(挂号费)</div>
       </div>
     </div>
@@ -104,12 +104,14 @@
       <!-- 订单取消的情况 -->
       <template v-if="info.orderInfo.orderStatus == '2'">
         <!--- 支付过 -->
-        <div class="brief right" v-if="info.orderInfo.payMoney != 0 ">
+        <div class="brief right"
+             v-if="info.orderInfo.payMoney != 0 ">
           实付金额 ：
           <div class="money">{{info.orderInfo.payMoney}}</div>
         </div>
-         <!-- 没有支付, 显示应付金额 -->
-        <div class="brief right" v-else>
+        <!-- 没有支付, 显示应付金额 -->
+        <div class="brief right"
+             v-else>
           <template v-if="info.orderInfo.orderMoney == 0">
             实付金额：
           </template>
@@ -216,7 +218,7 @@ export default {
         })
     },
     canselOrder() {
-      if (!this.info.orderInfo.cancelState && this.info.orderInfo.orderStatus !=1) {
+      if (!this.info.orderInfo.cancelState && this.info.orderInfo.orderStatus != 1) {
         return
       }
       let type, alertMsg
@@ -250,6 +252,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nbsp {
+  text-align-last: justify;
+  padding-right: 4%;
+}
 .van-button--normal {
   border-radius: 20px;
 }
@@ -323,6 +329,9 @@ export default {
   margin: 0;
   padding: 5px;
   border-bottom: 1px solid #f5f5f5;
+  img {
+    height: 100%;
+  }
 }
 .module .strong {
   font-weight: 600;
@@ -338,10 +347,10 @@ export default {
   font-size: 12px;
   color: rgba(0, 198, 174, 1);
   line-height: 16px;
-  padding: 6px 10px 0px 50px;
+  padding: 6px 22px 0px 55px;
   background: rgba(240, 252, 250, 1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
   background-size: 17px 17px;
-  background-position: 20px 13px;
+  background-position: 15px 14px;
 }
 .module .brief {
   font-size: (26px/2);
