@@ -33,16 +33,14 @@
             <div class="title-service-item">
               <div @click.stop="
                   redictToApply(doctor.doctorInfo, doctor.consultationList[0])
-                " class="title-service-item">
-                <img v-if="canShowImageInquiry(doctor)" src="@src/assets/images/ic_tuwen_open.png"
-                  style="width: 20px;" />
-                <img v-else src="@src/assets/images/ic_tuwen.png" style="width: 20px;" />
+                " class="title-service-item" v-if="canShowImageInquiry(doctor)">
+                <img src="@src/assets/images/ic_tuwen_open.png" style="width: 20px;" />
                 <span>图文咨询</span>
               </div>
-              <div @click.stop="
+              <!-- <div @click.stop="
                   redictToApply(doctor.doctorInfo, doctor.consultationList[1])
                 " class="title-service-item">
-                <!-- <img
+                <img
                   v-if="canShowVideoInquiry(doctor)"
                   src="@src/assets/images/ic_video_open.png"
                   style="width: 20px;"
@@ -51,10 +49,8 @@
                   v-else
                   src="@src/assets/images/ic_video.png"
                   style="width: 20px;"
-                /> -->
-                <img src="@src/assets/images/ic_video.png" style="width: 20px;" />
-                <span>视频咨询</span>
-              </div>
+                />
+              </div> -->
             </div>
           </div>
         </div>
