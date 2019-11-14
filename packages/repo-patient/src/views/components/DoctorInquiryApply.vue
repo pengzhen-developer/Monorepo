@@ -207,7 +207,6 @@
                   @click="apply"
                   style="width: 100%;"
                   type="primary">提交</van-button>
-      <!--      <van-button @click="applyOrder" style="width: 100%;" type="primary">提交订单 - 跳转支付</van-button>-->
     </div>
 
     <peace-dialog :visible.sync="showInformedConsent">
@@ -550,19 +549,6 @@ export default {
       json = peace.util.encode(json)
       this.$router.replace(`/components/doctorInquiryPay/${json}`)
     },
-    applyOrder(data) {
-      const json = peace.util.encode({
-        inquiryId: data.inquiryId,
-        orderNo: data.orderNo,
-        money: data.orderMoney,
-        doctorName: this.doctor.doctorInfo.name,
-        type: 0, // 支付类型
-        typeName: '图文咨询'
-      })
-
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
-    },
-
     uploadHandler() {
       if (this.attachment.length > 0) {
         const params = new FormData()
