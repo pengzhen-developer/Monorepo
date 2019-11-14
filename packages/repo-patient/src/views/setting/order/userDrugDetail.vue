@@ -202,15 +202,15 @@ export default {
   },
   methods: {
     payCallback() {
-      let orderId = ''
-      if (this.$route.query.orderId) {
-        //授权跳转后回调
-        orderId = this.$route.query.orderId
-      } else {
-        //直接回调
-        orderId = this.orderId
-      }
-      const json = peace.util.encode({ OrderId: orderId })
+      // let orderId = ''
+      // if (this.$route.query.orderId) {
+      //   //授权跳转后回调
+      //   orderId = this.$route.query.orderId
+      // } else {
+      //   //直接回调
+      //   orderId = this.orderId
+      // }
+      // const json = peace.util.encode({ OrderId: orderId })
       this.getDrugOrderDetail()
       // this.$router.replace(`/order/userDrugDetail/${json}`)
     },
