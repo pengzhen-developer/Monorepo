@@ -548,7 +548,7 @@ export default {
       let money = orderMoney
       let json = { money, typeName, doctorName, orderNo, doctorId }
       json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      this.$router.replace(`/components/doctorInquiryPay/${json}`)
     },
     applyOrder(data) {
       const json = peace.util.encode({
