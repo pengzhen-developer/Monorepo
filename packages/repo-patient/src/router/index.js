@@ -17,6 +17,13 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  // 优化 cancelToken ， 暂时频闭
+  // $peace.cancelTokenList &&
+  //   $peace.cancelTokenList.forEach(e => {
+  //     e && e()
+  //   })
+  $peace.cancelTokenList = []
+
   // 1，当前路由不需要授权登录
   if (to.meta.auth === false) {
     return next()

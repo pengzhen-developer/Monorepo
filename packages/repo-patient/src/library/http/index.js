@@ -15,6 +15,12 @@ import 'nprogress/nprogress.css'
 // 记录 http 请求次数
 let httpCount = 0
 
+/** 提醒消息-需要登录 */
+const MESSAGE_USER_NEED_LOGIN = '为保障您的数据安全，请登录后使用。'
+
+/** cancel token */
+const cancelTokenList = []
+
 // 挂载实例方法
 axios.download = download
 
@@ -74,6 +80,12 @@ axios.interceptors.request.use(
       if (!isUrl.test(request.url)) {
         request.url = $peace.config.api.base + request.url
       }
+
+      // 配置 cancelToken
+      request.cancelToken = new axios.CancelToken(cancel => {
+        $peace.cancelTokenList = cancelTokenList
+        $peace.cancelTokenList.push(cancel)
+      })
 
       return request
     }
@@ -139,7 +151,7 @@ axios.interceptors.response.use(
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
-        $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+        $peace.util.alert(MESSAGE_USER_NEED_LOGIN, null, $peace.type.SYSTEM.MESSAGE.ERROR)
 
         // 清空登录信息
         $peace.cache.remove($peace.type.USER.INFO)
@@ -181,6 +193,12 @@ axios.interceptors.response.use(
     httpCount--
     if (httpCount === 0) {
       nprogress.done(false)
+    }
+
+    // 为了终结 promise 链
+    // 就是实际请求 不会走到.catch(rej=>{});这样就不会触发错误提示了。
+    if (axios.isCancel(error)) {
+      return new Promise(() => {})
     }
 
     // 超时处理
