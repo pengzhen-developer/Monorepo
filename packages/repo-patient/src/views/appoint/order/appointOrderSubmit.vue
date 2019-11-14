@@ -3,50 +3,80 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor || doctorInfo.avatar" style="height: 100%;" />
+        <img :src="doctorInfo.avartor || doctorInfo.avatar"
+             style="height: 100%;" />
       </div>
       <div class="card-body">
         <div class="card-name">
-          {{doctorInfo.name}}
-          <div class="card-small">{{doctorInfo.doctorTitle}} {{doctorInfo.deptName}}</div>
+          {{ doctorInfo.name }}
+          <div class="card-small">
+            {{ doctorInfo.doctorTitle }} {{ doctorInfo.deptName }}
+          </div>
         </div>
       </div>
     </div>
     <div class="order">
       <div class="dl-addr">
         <div class="dt">就诊医院</div>
-        <div class="dd">{{doctorInfo.hospitalName}}</div>
+        <div class="dd">{{ doctorInfo.hospitalName }}</div>
       </div>
       <div class="dl-addr">
         <div class="dt">就诊科室</div>
-        <div class="dd">{{doctorInfo.deptName}}</div>
+        <div class="dd">{{ doctorInfo.deptName }}</div>
       </div>
       <div class="dl-addr">
         <div class="dt">门诊时间</div>
-        <div
-          class="dd blue"
-        >{{date.year}}-{{date.date}} {{date.week}} {{source.type == 'AM' ? '上午' : source.type == 'PM' ? '下午' :''}} {{source.startTime}}-{{source.endTime}}</div>
+        <div class="dd blue">
+          {{ date.year }}-{{ date.date }} {{ date.week }}
+          {{
+            source.type == "AM" ? "上午" : source.type == "PM" ? "下午" : ""
+          }}
+          {{ source.startTime }}-{{ source.endTime }}
+        </div>
       </div>
       <div class="dl-addr">
         <div class="dt">门诊类型</div>
-        <div class="dd">{{source.sourceLevelType == 1 ? '普通门诊' : source.sourceLevelType == '2' ? '专家门诊' : ''}}</div>
+        <div class="dd">
+          {{
+            source.sourceLevelType == 1
+              ? "普通门诊"
+              : source.sourceLevelType == "2"
+              ? "专家门诊"
+              : ""
+          }}
+        </div>
       </div>
       <div class="dl-addr">
-        <div class="dt">费 用</div>
-        <div class="dd">￥{{source.unitPrice}}(挂号费)</div>
+        <div class="dt nbsp">费用</div>
+        <div class="dd">￥{{ source.unitPrice }}(挂号费)</div>
       </div>
     </div>
     <div class="order-check">
       <div class="form-dl">
         <div class="form-dt">就诊人</div>
-        <div @click="showFmlDicFn" class="form-dd icon-next">{{ fml && fml.name || '请选择'}}</div>
-        <van-action-sheet :actions="fmlDic" @cancel="showFmlDic = false" @select="fmlConfirm" cancel-text="取消" v-model="showFmlDic" />
+        <div @click="showFmlDicFn"
+             class="form-dd icon-next">
+          {{ (fml && fml.name) || "请选择" }}
+        </div>
+        <van-action-sheet :actions="fmlDic"
+                          @cancel="showFmlDic = false"
+                          @select="fmlConfirm"
+                          cancel-text="取消"
+                          v-model="showFmlDic" />
       </div>
       <div class="form-dl">
         <div class="form-dt">初/复诊</div>
-        <div @click="showZdDic = true" class="form-dd icon-next">{{order.zdType}}</div>
-        <van-popup position="bottom" v-model="showZdDic">
-          <van-picker :columns="zdDic" @cancel="showZdDic = false" @confirm="zdConfirm" show-toolbar title="初/复诊" />
+        <div @click="showZdDic = true"
+             class="form-dd icon-next">
+          {{ order.zdType }}
+        </div>
+        <van-popup position="bottom"
+                   v-model="showZdDic">
+          <van-picker :columns="zdDic"
+                      @cancel="showZdDic = false"
+                      @confirm="zdConfirm"
+                      show-toolbar
+                      title="初/复诊" />
         </van-popup>
       </div>
       <div class="form-dl">
@@ -63,7 +93,10 @@
       </ul>
     </div>
     <div class="fixed-bottom">
-      <div :class="['btn','btn-blue', 'block', showBtn ? '' : 'disabled']" @click="submitOrder">提交</div>
+      <div :class="['btn', 'btn-blue', 'block', showBtn ? '' : 'disabled']"
+           @click="submitOrder">
+        提交
+      </div>
     </div>
   </div>
 </template>
@@ -331,6 +364,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nbsp {
+  text-align-last: justify;
+  padding-right: 4%;
+}
 .card {
   padding: 0px 10px;
   border-bottom: 1px solid #f5f5f5;

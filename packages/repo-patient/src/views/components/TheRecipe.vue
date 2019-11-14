@@ -87,7 +87,7 @@
     <!--医生签名-->
     <div class="outline module">
       <div class="namelist-dl npd">
-        <div class="dt">医师：</div>
+        <div class="dt justify"><span>医师</span> ：</div>
         <div class="dd">
           <img :src="internalData.doctorSignImage"
                v-if="internalData.doctorSignImage" />
@@ -394,6 +394,13 @@ export default {
   }
   .npd {
     padding-bottom: 0;
+  }
+  .justify {
+    display: flex;
+    span {
+      text-align-last: justify;
+      flex: 1;
+    }
   }
 }
 </style>

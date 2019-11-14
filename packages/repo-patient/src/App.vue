@@ -14,18 +14,34 @@ export default {
   },
 
   created() {
-    this.validateWxAuth()
-
-    this.restoreUserInfo()
-    this.initNIM()
+    if (this.validateWxAuth()) {
+      this.restoreUserInfo()
+      this.initNIM()
+    }
   },
 
   methods: {
     validateWxAuth() {
-      // 当前页面是中转页，不需要验证授权（系统在中转页进行授权逻辑）
       if (this.$route.path === '/' || this.$route.path === '/redirect') {
-        return true
+        const channelId = peace.util.queryUrlParam('channelId')
+        const netHospitalId = peace.util.queryUrlParam('netHospitalId')
+
+        // 渠道发生变化（平台 < - > 渠道），清除登录信息，需要重新进行登录并授权
+        if (
+          peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId ||
+          peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
+        ) {
+          peace.cache.remove(peace.type.USER.INFO)
+          peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
+
+          peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
+          peace.cache.remove(peace.type.SYSTEM.CHANNELID)
+
+          return false
+        }
       }
+
+      return true
     },
 
     restoreUserInfo() {
