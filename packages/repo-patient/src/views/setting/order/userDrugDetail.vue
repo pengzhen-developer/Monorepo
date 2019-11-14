@@ -211,13 +211,14 @@ export default {
         orderId = this.orderId
       }
       const json = peace.util.encode({ OrderId: orderId })
-      this.$router.replace(`/order/userDrugDetail/${json}`)
+      this.getDrugOrderDetail()
+      // this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     payOrder(order) {
       let orderNo = order.OrderId
       this.orderId = order.OrderId
       let params = { orderNo }
-      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+      peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
     },
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)

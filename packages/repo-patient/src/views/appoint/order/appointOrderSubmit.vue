@@ -327,7 +327,7 @@ export default {
             let orderNo = res.data.orderInfo.orderNo
             let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
             this.showBtn = true;
-            this.$router.push(`/setting/order/userOrderDetail/${json}`)
+            this.$router.replace(`/setting/order/userOrderDetail/${json}`)
           } else {
             this.goToPay(res.data);
             this.showBtn = true;
