@@ -1,9 +1,8 @@
 <template>
-  <div class="home-layout"
-       v-if="hospitalInfo">
+  <div class="home-layout" v-if="hospitalInfo">
     <div class="banner">
       <div class="banner-img">
-        <img :src="hospitalInfo.nethospitalInfo.icon">
+        <img :src="hospitalInfo.nethospitalInfo.icon" />
       </div>
     </div>
     <section class="info">
@@ -11,41 +10,55 @@
         <div class="w">
           <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
           <div class="tags">
-            <span v-for="item in hospitalInfo.nethospitalInfo.tags"
-                  :key="item">{{ item }}</span>
+            <span
+              v-for="item in hospitalInfo.nethospitalInfo.tags"
+              :key="item"
+              >{{ item }}</span
+            >
           </div>
         </div>
-        <div class="intro"
-             @click="brief.visible = true">医院简介</div>
+        <div class="intro" @click="brief.visible = true">医院简介</div>
       </div>
       <div class="location">
-        <span class="name"
-              @click="goMap()">{{ hospitalInfo.nethospitalInfo.address }}</span>
-        <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
-           v-if="hospitalInfo.nethospitalInfo.phoneNumber"
-           class="tel"><img src="../../assets/images/newIndex/ic_phone.png"></a>
+        <span class="name" @click="goMap()">{{
+          hospitalInfo.nethospitalInfo.address
+        }}</span>
+        <a
+          :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
+          v-if="hospitalInfo.nethospitalInfo.phoneNumber"
+          class="tel"
+          ><img src="../../assets/images/newIndex/ic_phone.png"
+        /></a>
       </div>
 
       <div class="notice">
         <i class="alarm"></i>
         <template v-if="hospitalInfo.notices.length > 0">
-          <div class="message-box"
-               @click="goHospitalNoticeDetail()">
-            <van-notice-bar style="height: 100%; padding: 0;"
-                            color="#999999"
-                            background="transparent">
-              {{ hospitalInfo.notices.length > 0 && "【"+ hospitalInfo.notices[0].title+"】"+ hospitalInfo.notices[0].content  }}
+          <div class="message-box" @click="goHospitalNoticeDetail()">
+            <van-notice-bar
+              style="height: 100%; padding: 0;"
+              color="#999999"
+              background="transparent"
+            >
+              {{
+                hospitalInfo.notices.length > 0 &&
+                  "【" +
+                    hospitalInfo.notices[0].title +
+                    "】" +
+                    hospitalInfo.notices[0].content
+              }}
             </van-notice-bar>
           </div>
-          <i @click="goHospitalNoticeList()"
-             class="arrow"></i>
+          <i @click="goHospitalNoticeList()" class="arrow"></i>
         </template>
 
         <template v-else>
           <div class="message-box">
-            <van-notice-bar style="height: 100%; padding: 0;"
-                            color="#999999"
-                            background="transparent">
+            <van-notice-bar
+              style="height: 100%; padding: 0;"
+              color="#999999"
+              background="transparent"
+            >
               暂无新通知
             </van-notice-bar>
           </div>
@@ -53,90 +66,112 @@
       </div>
     </section>
     <section class="functions">
-      <div class="item"
-           v-for="(item, index) in hospitalInfo.guideH5"
-           :key="'index'+ index"
-           @click="goMenuList(item)">
-        <img :src="require('@src/assets/images/newIndex/'+ item.icon + '.png')" />
+      <div
+        class="item"
+        v-for="(item, index) in hospitalInfo.guideH5"
+        :key="'index' + index"
+        @click="goMenuList(item)"
+      >
+        <img
+          :src="require('@src/assets/images/newIndex/' + item.icon + '.png')"
+        />
         <span class="name">{{ item.text }}</span>
       </div>
     </section>
     <section class="dept">
       <div class="title">
         <span>医院科室</span>
-        <i class="arrow"
-           @click="goAllDepartment"></i>
+        <i class="arrow" @click="goAllDepartment"></i>
       </div>
       <div class="dept-wrap">
-        <div class="item"
-             v-for="(item, index) in hospitalInfo.oneDeptList"
-             :key="'index'+ index"
-             @click="goDepartmentDoctorList(item)">
-          <span v-if="index < 6"
-                :style="'background: '+ colorArr[index]">{{ item.netdeptName }}</span>
+        <div
+          class="item"
+          v-for="(item, index) in hospitalInfo.oneDeptList"
+          :key="'index' + index"
+          @click="goDepartmentDoctorList(item)"
+        >
+          <span v-if="index < 6" :style="'background: ' + colorArr[index]">{{
+            item.netdeptName
+          }}</span>
         </div>
       </div>
     </section>
     <section class="doctors">
       <div class="title">
         <span>明星医生</span>
-        <i class="arrow"
-           @click="goStarDoctor"></i>
+        <i class="arrow" @click="goStarDoctor"></i>
       </div>
 
       <div class="doc-wrap">
-        <div class="item-wrap"
-             @click="goDoctorHomeIndexPage(item)"
-             v-for="item in hospitalInfo.doctorList"
-             :key="item.name">
-          <img class="avatar"
-               :src="item.avartor" />
+        <div
+          class="item-wrap"
+          @click="goDoctorHomeIndexPage(item)"
+          v-for="item in hospitalInfo.doctorList"
+          :key="item.name"
+        >
+          <img class="avatar" :src="item.avartor" />
           <div class="item">
             <span class="name">{{ item.name }}</span>
-            <span class="jd"> {{ item.netdeptName + ' ' + item.doctorTitle }}</span>
+            <span class="jd">
+              {{ item.netdeptName + " " + item.doctorTitle }}</span
+            >
             <span class="tags">
               <template v-for="item in item.serviceList">
-                <span :key="item"
-                      v-if="item === 'register'"
-                      class="tags hao">号</span>
-                <span :key="item"
-                      v-if="item === 'image' || item === 'video'"
-                      class="tags wen">问</span>
-                <span :key="item"
-                      v-if="item === 'prvivateDoctor'"
-                      class="tags bao">服务包</span>
+                <span :key="item" v-if="item === 'register'" class="tags hao"
+                  >号</span
+                >
+                <span
+                  :key="item"
+                  v-if="item === 'image' || item === 'video'"
+                  class="tags wen"
+                  >问</span
+                >
+                <span
+                  :key="item"
+                  v-if="item === 'prvivateDoctor'"
+                  class="tags bao"
+                  >服务包</span
+                >
               </template>
-
             </span>
           </div>
         </div>
       </div>
     </section>
 
-    <van-dialog style="background: transparent; "
-                v-model="brief.visible"
-                :show-cancel-button="false"
-                :showConfirmButton="false">
+    <van-dialog
+      style="background: transparent; "
+      v-model="brief.visible"
+      :show-cancel-button="false"
+      :showConfirmButton="false"
+    >
       <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;"
-             :src="hospitalInfo.nethospitalInfo.icon">
+        <img
+          style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;"
+          :src="hospitalInfo.nethospitalInfo.icon"
+        />
       </div>
       <div
-           style="padding: 40px 20px 20px 20px; background: #fff; max-height: 50vh; overflow: auto; border-radius: 8px;">
-        <span style="text-align: justify;">{{ hospitalInfo.nethospitalInfo.brief }}</span>
+        style="padding: 40px 20px 20px 20px; background: #fff; max-height: 50vh; overflow: auto; border-radius: 8px;"
+      >
+        <span style="text-align: justify;">{{
+          hospitalInfo.nethospitalInfo.brief
+        }}</span>
       </div>
       <div style="text-align: center; margin: 30px 0 0 0;">
-        <van-icon @click="brief.visible = false"
-                  name="close"
-                  color="#fff"
-                  size="40px" />
+        <van-icon
+          @click="brief.visible = false"
+          name="close"
+          color="#fff"
+          size="40px"
+        />
       </div>
     </van-dialog>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 export default {
   data() {
     return {
@@ -146,26 +181,37 @@ export default {
         visible: false
       },
 
-      colorArr: ['#E6FFFB', '#E6F7FF', '#F9F0FF', '#F0F5FF', '#E6FFFB', '#FFFBE6']
-    }
+      colorArr: [
+        "#E6FFFB",
+        "#E6F7FF",
+        "#F9F0FF",
+        "#F0F5FF",
+        "#E6FFFB",
+        "#FFFBE6"
+      ]
+    };
   },
 
   created() {
-    this.getHospitalInfo()
+    this.getHospitalInfo();
   },
 
   mounted() {
-    this.colorArr.sort(() => Math.random() - 0.5)
+    this.colorArr.sort(() => Math.random() - 0.5);
   },
 
   methods: {
     getHospitalInfo() {
-      const params = peace.util.decode(this.$route.params.json)
-      const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      const params = peace.util.decode(this.$route.params.json);
+      const nethospitalId =
+        params.netHospitalId ||
+        peace.cache.get(peace.type.SYSTEM.NETHOSPITALID);
       // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalId);
-      peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
-        this.hospitalInfo = res.data
-      })
+      peace.service.hospital
+        .getHospitalInfo({ nethospitalId: nethospitalId })
+        .then(res => {
+          this.hospitalInfo = res.data;
+        });
     },
 
     goMap() {
@@ -173,25 +219,25 @@ export default {
         address: this.hospitalInfo.nethospitalInfo.address,
         latitude: this.hospitalInfo.nethospitalInfo.latitude,
         longitude: this.hospitalInfo.nethospitalInfo.longitude
-      })
+      });
 
-      this.$router.push(`/home/map/${json}`)
+      this.$router.push(`/home/map/${json}`);
     },
 
     goDoctorHomeIndexPage(item) {
-      const json = peace.util.encode({ doctorId: item.doctorId })
+      const json = peace.util.encode({ doctorId: item.doctorId });
 
-      this.$router.push(`/components/doctorDetail/${json}`)
+      this.$router.push(`/components/doctorDetail/${json}`);
     },
 
     goAllDepartment() {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        id: 'consult',
+        id: "consult",
         Date: new Date()
-      })
+      });
 
-      this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+      this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`);
     },
 
     goDepartmentDoctorList(item) {
@@ -200,74 +246,74 @@ export default {
         deptId: item.id,
         txt: item.netdeptName,
         txtId: item.id,
-        type: 'departDoctorList'
-      })
-      this.$router.push(`/components/doctorList/${json}`)
+        type: "departDoctorList"
+      });
+      this.$router.push(`/components/doctorList/${json}`);
     },
 
     goStarDoctor() {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        type: 'starDoctorList',
+        type: "starDoctorList",
         Date: new Date()
-      })
+      });
 
-      this.$router.push(`/components/doctorList/${json}`)
+      this.$router.push(`/components/doctorList/${json}`);
     },
 
     goHospitalNoticeDetail() {
       const json = peace.util.encode({
         id: this.hospitalInfo.notices[0].id
-      })
+      });
 
-      this.$router.push(`/hospital/HospitalNoticesDetail/${json}`)
+      this.$router.push(`/hospital/HospitalNoticesDetail/${json}`);
     },
 
     goHospitalNoticeList() {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId
-      })
+      });
 
-      this.$router.push(`/hospital/HospitalNoticesList/${json}`)
+      this.$router.push(`/hospital/HospitalNoticesList/${json}`);
     },
 
     goMenuList(item) {
       /* eslint-disable */
 
-      let json = undefined
+      let json = undefined;
 
       switch (item.id) {
         // 预约挂号
-        case 'appointment':
+        case "appointment":
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             id: item.id,
             Date: new Date()
-          })
+          });
 
-          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-          break
+          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`);
+          break;
 
         // 在线咨询
-        case 'onlineConsultant':
+        case "onlineConsultant":
         // 复诊续方
-        case 'subsequentVisit':
+        case "subsequentVisit":
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             id: item.id,
             Date: new Date()
-          })
+          });
 
-          this.$router.push(`/components/doctorList/${json}`)
-          break
+          this.$router.push(`/components/doctorList/${json}`);
+          break;
 
         default:
-          peace.util.alert('暂未开放，敬请期待')
-          break
+          peace.util.alert("暂未开放，敬请期待");
+          break;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -275,7 +321,7 @@ export default {
   width: 7px;
   height: 12px;
   display: inline-block;
-  background: url('../../assets/images/newIndex/ic_right.png');
+  background: url("../../assets/images/newIndex/ic_right.png");
   background-size: 100% 100%;
 }
 
@@ -288,7 +334,7 @@ export default {
     .banner-img {
       width: 100%;
       height: 100%;
-      background: url('../../assets/images/newIndex/bg_home.png');
+      background: url("../../assets/images/newIndex/bg_home.png");
       background-size: 100% 100%;
       position: relative;
       img {
@@ -362,9 +408,9 @@ export default {
         &:before {
           width: 11px;
           height: 13px;
-          background: url('../../assets/images/newIndex/ic_location.png');
+          background: url("../../assets/images/newIndex/ic_location.png");
           background-size: 100% 100%;
-          content: '';
+          content: "";
           display: inline-block;
           vertical-align: middle;
           margin: -3px 6px 0 0;
@@ -373,7 +419,7 @@ export default {
       .tel {
         display: flex;
         align-items: center;
-
+        margin-left: 30px;
         img {
           width: 15px;
           height: 17px;
@@ -388,7 +434,7 @@ export default {
         width: 16px;
         height: 16px;
         display: inline-block;
-        background: url('../../assets/images/newIndex/ic_notice.png');
+        background: url("../../assets/images/newIndex/ic_notice.png");
         background-size: 100% 100%;
       }
       .message-box {

@@ -9,6 +9,7 @@
     <meta
       content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
       name="viewport"
+      viewport-fit:cover
     />
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit" />
@@ -153,8 +154,8 @@
       function getExplore() {
         var sys = {},
           ua = navigator.userAgent.toLowerCase(),
-          s
-        ;(s = ua.match(/rv:([\d.]+)\) like gecko/))
+          s;
+        (s = ua.match(/rv:([\d.]+)\) like gecko/))
           ? (sys.ie = s[1])
           : (s = ua.match(/msie ([\d\.]+)/))
           ? (sys.ie = s[1])
@@ -170,26 +171,26 @@
           ? (sys.chrome = s[1])
           : (s = ua.match(/version\/([\d\.]+).*safari/))
           ? (sys.safari = s[1])
-          : 0
+          : 0;
 
         // 根据关系进行判断
-        if (sys.ie) return { explore: 'IE', version: sys.ie }
-        if (sys.edge) return { explore: 'EDGE', version: sys.edge }
-        if (sys.firefox) return { explore: 'FIREFOX', version: sys.firefox }
-        if (sys.chrome) return { explore: 'CHROME', version: sys.chrome }
-        if (sys.opera) return { explore: 'OPERA', version: sys.opera }
-        if (sys.safari) return { explore: 'SAFARI', version: sys.safari }
-        if (sys.mobile) return { explore: 'moliePhone', version: 'Unkown' }
-        return 'Unkonwn'
+        if (sys.ie) return { explore: "IE", version: sys.ie };
+        if (sys.edge) return { explore: "EDGE", version: sys.edge };
+        if (sys.firefox) return { explore: "FIREFOX", version: sys.firefox };
+        if (sys.chrome) return { explore: "CHROME", version: sys.chrome };
+        if (sys.opera) return { explore: "OPERA", version: sys.opera };
+        if (sys.safari) return { explore: "SAFARI", version: sys.safari };
+        if (sys.mobile) return { explore: "moliePhone", version: "Unkown" };
+        return "Unkonwn";
       }
 
-      var explore = getExplore()
+      var explore = getExplore();
 
       if (
-        (explore.explore === 'IE' && parseInt(explore.version) <= 11) ||
-        (explore.explore === 'CHROME' && parseInt(explore.version) < 49) ||
-        (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52) ||
-        (explore.explore === 'SAFARI' && parseInt(explore.version) < 11)
+        (explore.explore === "IE" && parseInt(explore.version) <= 11) ||
+        (explore.explore === "CHROME" && parseInt(explore.version) < 49) ||
+        (explore.explore === "FIREFOX" && parseInt(explore.version) < 52) ||
+        (explore.explore === "SAFARI" && parseInt(explore.version) < 11)
       ) {
         // window.location.href = './unCompatible.html'
       }
@@ -198,15 +199,18 @@
     <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_NIM_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
     <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v6.5.5.js?t=<%= new Date().getTime() %>"></script>
     <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
-    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=<%= process.env.VUE_APP_MAP_KEY %>"></script>
+    <script
+      charset="utf-8"
+      src="https://map.qq.com/api/js?v=2.exp&key=<%= process.env.VUE_APP_MAP_KEY %>"
+    ></script>
     <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/qrcodejs-master/qrcode.min.js"></script>
   </head>
 
   <body>
     <noscript>
       <strong>
-        We're sorry but trunk doesn't work properly without JavaScript enabled. Please enable it to
-        continue.
+        We're sorry but trunk doesn't work properly without JavaScript enabled.
+        Please enable it to continue.
       </strong>
     </noscript>
     <div id="app">

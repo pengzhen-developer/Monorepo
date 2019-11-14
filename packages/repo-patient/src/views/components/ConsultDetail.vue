@@ -187,10 +187,7 @@
         <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
       </div>
     </div>
-    <div
-            class="module pdtb"
-            v-else
-    >
+    <div class="module pdtb" v-else>
       <!-- 取消订单的状态 -->
       <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
         <div class="brief right" v-if="internalData.orderInfo.payMoney == 0">
@@ -200,7 +197,7 @@
           <template v-else>
             应付金额：
           </template>
-        <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
+          <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
         </div>
         <div class="brief right" v-else>
           实付金额：
@@ -464,11 +461,9 @@ export default {
   .module-body .blue-full {
     background: #00c6ae;
     color: #fff;
+    border-color: transparent;
   }
-  .module-body .blue-full {
-    background: #00c6ae;
-    color: #fff;
-  }
+
   .card {
     background: #fff;
     padding: 10px 15px;

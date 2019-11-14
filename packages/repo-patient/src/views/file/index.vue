@@ -7,7 +7,7 @@
           :src="require('@src/assets/images/file/bg_img_none.png')"
         >
         </van-image>
-        <van-button @click="goFamily" :class="{ isX: iphoneX }"
+        <van-button @click="goFamily" :class="{ isX: Long }"
           >添加家人信息</van-button
         >
       </div>
@@ -153,13 +153,13 @@ export default {
       familyId: "",
       idCard: "",
 
-      iphoneX: false
+      Long: false
     };
   },
 
   created() {
     this.getFamilyList();
-    this.iphoneX = this.isIphoneX();
+    this.Long = this.isLong();
   },
 
   mounted() {
@@ -208,12 +208,13 @@ export default {
           tempWidth}px)`;
       }
     },
-    isIphoneX() {
+    isLong() {
       console.log(screen.height / screen.width);
-      return (
-        /iphone/gi.test(navigator.userAgent) &&
-        (screen.height == 812 && screen.width == 375)
-      );
+      return screen.height / screen.width > 2 ? true : false;
+      // return (
+      //   /iphone/gi.test(navigator.userAgent) &&
+      //   (screen.height == 812 && screen.width == 375)
+      // );
     }
   }
 };
