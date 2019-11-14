@@ -168,6 +168,12 @@ export default {
     }
   }
 
+  /deep/ .van-tabbar--fixed {
+    position: unset;
+    bottom: 0;
+    left: 0;
+  }
+
   .layout-content {
     width: 100%;
     flex: 1;

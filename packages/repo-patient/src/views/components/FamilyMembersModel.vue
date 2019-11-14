@@ -554,7 +554,7 @@ export default {
       })
     },
     perfectInfo() {
-      let familyId = this.model.familyId
+      let familyId = this.model.id
       let nationCode = this.model.nationCode
       let nationName = this.model.nationName
       let params = { familyId, nationCode, nationName }
