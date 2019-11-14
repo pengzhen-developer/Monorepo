@@ -570,6 +570,8 @@ export default {
 
     applyHandler() {
       this.sending = true
+      this.model.isAgain = this.model.isAgain? 1: 0;
+      this.model.informedConsent = this.model.informedConsent ? 1:0;
       const params = this.model
       peace.service.inquiry
         .apply(params)
