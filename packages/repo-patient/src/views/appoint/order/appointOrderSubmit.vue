@@ -92,21 +92,17 @@ export default {
       showBtn: true
     }
   },
+  activated() {
+    this.initFml();
+  },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
     this.source = this.params.source
     this.doctorInfo = this.params.doctorInfo
     this.date = this.params.date
-    console.log(this.doctorInfo)
-    this.saveHospitalCache();
-    this.initFml();
+    //this.initFml();
   },
   methods: {
-   saveHospitalCache() {
-      let nethospitalid = this.doctorInfo.nethospitalId;
-      // debugger
-      peace.cache.set("hospitalID", nethospitalid);
-    },
     checkCard(tag) {
           this.checkCardExist().then(res => {
               if (!res.data.result) {
@@ -115,6 +111,7 @@ export default {
                       message: '该就诊人还没有电子健康卡，是否现在领取？',
                       confirmButtonText: '现在领取'
                   }).then(() => {
+                      console.log("fmllllllllll", this.fml)
                       let familyId = this.fml.familyId
                       console.log(this.doctorInfo);
                       let nethospitalid = this.doctorInfo.nethospitalId;
@@ -203,13 +200,15 @@ export default {
                           subname: '(' + item.relation + ')'
                         }
                       }) || []
+              this.fmlDic.push({ subname: 'add', name: '添加就诊人' })
+
+              console.log('familyId', this.fml.familyId)
               if(this.fml.familyId) {
                 this.checkCard();
               }
             }
           })
         }
-
       })
     },
     zdConfirm(val) {
@@ -227,19 +226,33 @@ export default {
                   }
                 }) || [];
 
-        if (this.fmlList.length) {
-          this.showFmlDic = true
-        } else {
-          peace.util.alert('请先前往个人中心添加就诊人')
-        }
+        this.fmlDic.push({ subname: null, name: '添加就诊人' })
+        this.showFmlDic = true
+        // if (this.fmlList.length) {
+        //   this.showFmlDic = true
+        // } else {
+        //   peace.util.alert('请先前往个人中心添加就诊人')
+        // }
 
       })
     },
     fmlConfirm(item, index) {
-      this.fml = this.fmlList[index]
-      this.showFmlDic = false
-
-      this.checkCard()
+      console.log(index)
+      if(item.subname) {
+        this.fml = this.fmlList[index];
+        if(this.fml) {
+          this.showFmlDic = false
+          this.checkCard()
+        }
+      } else {
+        this.$router.push({
+          name: '/setting/myFamilyMembers',
+          params: {
+            back: true,
+            addFamily: true
+          }
+        })
+      }
     },
     submitOrder() {
       let data = {
