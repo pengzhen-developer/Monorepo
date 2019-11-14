@@ -259,7 +259,7 @@ export default {
       },
       familyId: '',
       isNationExist: false,
-      ageLimit: 7,
+      ageLimit: 6,
       age: null,
       gardianSet: false,
       gardianId: '',
