@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
-       <div class="card-name">{{cardName}}</div>
+<!--       <div class="card-name">{{cardName}}</div>-->
       <div class="card-title" v-if="model.isExistCard">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -14,7 +14,7 @@
         <div class="idcard">{{cardItem.idcard}}</div>
       </div>
       <div class="card no-card"
-           v-if="!model.isExistCard && isFromHospital"></div>
+           v-if="!model.isExistCard"></div>
       <div claas="card-list-content">
         <div class="item"></div>
       </div>
@@ -245,7 +245,7 @@ export default {
 
   data() {
     return {
-      isFromHospital: false,
+      // isFromHospital: false,
       cardName: '',
       from: '',
       model: {
@@ -325,9 +325,6 @@ export default {
     }
   },
   mounted() {
-    //alert(peace.type.SYSTEM.NETHOSPITALID)
-    this.isFromHospital = peace.cache.get("hospitalID");
-    console.log('isFromHospital', this.isFromHospital)
     let json = peace.util.decode(this.$route.params.json)
     if (json.type != 'add') {
       this.getFamilyInfo()
@@ -542,7 +539,7 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.nethospitalid = peace.cache.get("hospitalID")
+      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
       params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName
@@ -650,7 +647,7 @@ export default {
     position: relative;
     background: url('../../assets/images/shangdong.png');
     background-size: 100% 100%;
-    margin: 0 auto;
+    margin: 20px auto 0;
     &.no-card {
       background: url('../../assets/images/ic_empty_card.png');
       background-size: 100% 100%;
