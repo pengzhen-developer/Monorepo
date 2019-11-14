@@ -31,6 +31,11 @@ export default {
       return
     }
 
+    // step 1
+    if (!this.validateParams()) {
+      return
+    }
+
     // 首次进入，非微信回调
     if (!peace.util.queryUrlParam('code') && !peace.util.queryUrlParam('codeType')) {
       this.init()
@@ -50,11 +55,6 @@ export default {
 
   methods: {
     init() {
-      // step 1
-      if (!this.validateParams()) {
-        return
-      }
-
       // step 2
       if (!this.wxAuth()) {
         return
@@ -66,8 +66,10 @@ export default {
 
     /**
      * step 1，验证跳转参数是否合法
+     *
      *      参数 channelId / netHospitalId 必须同时存在或者同时不存在
      *      参数 code / codeType 必须同时存在或者同时不存在
+     *      参数 code 必须未被使用过
      */
     validateParams() {
       const WX_AUTH_CODE = peace.cache.get(peace.type.SYSTEM.WX_AUTH_CODE) || []
@@ -94,7 +96,9 @@ export default {
 
         return false
       } else {
-        WX_AUTH_CODE.push(code)
+        if (code) {
+          WX_AUTH_CODE.push(code)
+        }
 
         peace.cache.set(peace.type.SYSTEM.WX_AUTH_CODE, WX_AUTH_CODE)
       }

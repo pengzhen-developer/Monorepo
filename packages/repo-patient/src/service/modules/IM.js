@@ -110,6 +110,7 @@ export function onDisConnect(disConnectObject) {
 
       // 登录被 T 出，跳转错误页
       $peace.$router.replace(peace.config.system.errorPage)
+      window.location.reload()
       break
 
     default:

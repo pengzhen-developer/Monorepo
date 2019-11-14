@@ -147,15 +147,6 @@ export default {
 
     // 清除缓存
     removeCache() {
-      // 渠道发生变化，清除登录信息，需要重新进行登录并授权
-      if (
-        peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId ||
-        peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
-      ) {
-        peace.cache.remove(peace.type.USER.INFO)
-        peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
-      }
-
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
       peace.cache.remove(peace.type.SYSTEM.CHANNELID)
     },
