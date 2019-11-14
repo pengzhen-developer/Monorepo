@@ -2,7 +2,7 @@
   <div class="container">
     <template v-if="isEdit">
 <!--       <div class="card-name">{{cardName}}</div>-->
-      <div class="card-title" v-if="model.isExistCard">电子健康卡</div>
+      <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
            :key="'item' + index"
@@ -647,7 +647,7 @@ export default {
     position: relative;
     background: url('../../assets/images/shangdong.png');
     background-size: 100% 100%;
-    margin: 20px auto 0;
+    margin: 0 auto 0;
     &.no-card {
       background: url('../../assets/images/ic_empty_card.png');
       background-size: 100% 100%;
