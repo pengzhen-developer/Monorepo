@@ -23,7 +23,8 @@
     </div>
 
     <div class="file-blood-detail-button">
-      <van-button round>数据解读</van-button>
+      <van-button round
+                  disabled>数据解读</van-button>
     </div>
 
     <div class="file-blood-detail-content">
@@ -61,6 +62,7 @@ import util from './util'
 
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
 
 export default {
   components: {
@@ -74,11 +76,11 @@ export default {
       data: {
         bloodOxygenData: {}
       },
-
       historyData: [],
 
       options: {
         color: ['#00c6ae'],
+        tooltip: { show: true },
         grid: {
           top: 20,
           bottom: 20,
@@ -119,7 +121,8 @@ export default {
           item.measureTime.toDate().formatDate('MM-dd')
         )
         const seriesDataOne = downData.bloodOxygenData.map(item => item.bloodOxygen)
-
+        let lastData = downData.bloodOxygenData[downData.bloodOxygenData.length - 1]
+        this.$peace.cache.set('bloodOxyGenLastData', lastData)
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
         this.data.bloodOxygenData = upData.bloodOxygenData
@@ -134,7 +137,6 @@ export default {
 
     goReportAddData() {
       const json = this.$route.params.json
-
       this.$router.replace(`/file/FileBloodOxyGenAddData/${json}`)
     }
   }
@@ -225,6 +227,7 @@ export default {
       background: rgb(219, 235, 233) !important;
       border-color: rgb(219, 235, 233) !important;
       color: #333333 !important;
+      opacity: 1 !important;
     }
   }
 

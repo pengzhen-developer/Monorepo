@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="module">
+          <div class="module intro">
             <div class="dl-packet">
               <div class="dt">配送方式:</div>
               <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
@@ -113,7 +113,7 @@
 
 <script>
 import peace from '@src/library'
-import config from '@src/config'
+
 export default {
   name: 'DrugOrderBefore',
   data() {
@@ -132,7 +132,6 @@ export default {
     }
   },
   mounted() {
-    this.appid = config.APPID
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -141,17 +140,25 @@ export default {
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
     }
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let orderNo = this.$route.query.orderId
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        peace.wx.payInvoke(data, this.payCallback)
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let orderNo = this.$route.query.orderId
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
+    this.getDefaultAddress()
   },
   methods: {
+    getDefaultAddress() {
+      peace.service.patient.getDefaultAddress().then(res => {
+        this.userAddr = res.data
+        this.canSubmitProcesses()
+        //console.log('ressssssssssssssssssssssssss',res);
+      })
+    },
     getAddr(addr) {
       let address = peace.util.decode(addr)
       this.userAddr = address
@@ -159,7 +166,7 @@ export default {
     },
     goUserAddrPage() {
       let json = this.$route.params.json
-      this.$router.replace(`/setting/SelectAddressManger/${json}`)
+      this.$router.push(`/setting/SelectAddressManger/${json}`)
     },
     submitOrder() {
       if (!this.canSubmitProcesses()) {
@@ -187,7 +194,7 @@ export default {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let params = { orderNo }
-          peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+          peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
         })
         .catch(() => {
           this.showBtn = true
@@ -242,6 +249,7 @@ export default {
       peace.service.patient.getOrderBefore(params).then(res => {
         //console.log(res);
         this.order = res.data
+
         this.canSubmitProcesses()
       })
     },
@@ -254,7 +262,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 page {
   background: #f5f5f5;
 }
@@ -297,7 +305,7 @@ page {
 .tab-content .addr-p {
   font-size: 16px;
   color: #333;
-  margin: 10px 0;
+  margin: 5px 0;
   font-weight: 700;
   position: relative;
 }
@@ -320,9 +328,14 @@ page {
 
 .panel-head .head-ico {
   flex: 0 0 auto;
-  width: 56rpx;
-  height: 56rpx;
-  border: 2rpx solid #e5e5e5;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e5e5e5;
+  margin-right: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 .panel-head.icon-next::before {
   content: '';
@@ -347,6 +360,7 @@ page {
 .panel-pha .panel-body {
   padding: 10px 15px;
 }
+.intro,
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -412,7 +426,9 @@ page {
   content: '';
   position: absolute;
   display: block;
-  top: 15px;
+  // top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0px;
   width: 7px;
   height: 12px;
@@ -434,17 +450,19 @@ page {
   flex-direction: column;
   text-align: right;
 }
+
 .list-other .other-them::after {
   content: '?  ';
   display: inline-block;
   width: 10px;
   height: 10px;
   line-height: 1;
+  vertical-align: middle;
   background: #00c6ae;
   border-radius: 50%;
   font-size: 10px;
   color: #fff;
-  margin-top: 2px;
+  margin-bottom: 3px;
   margin-left: 2px;
   padding: 0;
   text-align: center;

@@ -3,13 +3,19 @@
     <!--TOP-->
     <div class="module nmg">
       <div class="strong">
-        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}} <span class="money" v-if="info.orderInfo.orderStatus == '1'">¥{{info.orderInfo.orderMoney}}</span></div>
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}} <span
+              class="money"
+              v-if="info.orderInfo.orderStatus == '1'">¥{{info.orderInfo.orderMoney}}</span></div>
 
-      <div class="brief" v-if="info.orderInfo.orderStatus != '2'">
-        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? '，' + page.cfgDic[info.orderInfo.cancelType] : ''}}
+      <div class="brief"
+           v-if="info.orderInfo.orderStatus != '2'">
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].small}}{{info.orderInfo.orderStatus == '3' ? !info.orderInfo.cancelState ? '，' + page.cfgDic[info.orderInfo.cancelType] :'' : ''}}
       </div>
-      <div class="brief" v-else>{{info.orderInfo.cancelReason}}</div>
-      <div class="cancelText" v-if="(info.orderInfo.orderStatus == '6' || info.orderInfo.orderStatus == '4') && info.orderInfo.payMoney != '0.00'">订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
+      <div class="brief"
+           v-else>{{info.orderInfo.cancelReason}}</div>
+      <div class="cancelText"
+           v-if="(info.orderInfo.orderStatus == '6' || info.orderInfo.orderStatus == '4') && info.orderInfo.payMoney != '0.00'">
+        订单取消后退款将在1-3个工作日内原路返回，请注意查收</div>
       <div class="module-body">
         <div :class="['label', info.orderInfo.cancelState ? '' : 'disabled']"
              @click="canselOrder"
@@ -55,7 +61,7 @@
         <div class="dd">{{info.doctorInfo.outpatientType}}</div>
       </div>
       <div class="dl-addr">
-        <div class="dt">费 用</div>
+        <div class="dt nbsp">费用</div>
         <div class="dd">￥{{info.doctorInfo.fee}}(挂号费)</div>
       </div>
     </div>
@@ -65,7 +71,8 @@
       <div class="form-dd">{{info.doctorInfo.familyName}}/{{info.doctorInfo.diagnoseType}}</div>
     </div>
     <!--订单报文-->
-    <div class="module pdtb" :style="{ paddingBottom :info.orderInfo.orderStatus == 1 ? '60px' : 0 }">
+    <div class="module pdtb"
+         :style="{ paddingBottom :info.orderInfo.orderStatus == 1 ? '60px' : 0 }">
       <div class="dl-packet">
         <div class="dt">订单号码</div>
         <div class="dd">{{info.orderInfo.orderNo}}</div>
@@ -79,22 +86,48 @@
         <div class="dd">{{info.orderInfo.orderDate}}</div>
       </div>
     </div>
-
     <!-- 待支付 -->
-    <div class='bottom'  v-if="info.orderInfo.orderStatus == 1">
+    <div class='bottom'
+         v-if="info.orderInfo.orderStatus == '1' ">
       <div class="left">应付金额：<span class="money">¥{{info.orderInfo.orderMoney}}</span></div>
       <div class="right">
-        <div class="pay cancel" @click="canselOrder">
+        <div class="pay cancel"
+             @click="canselOrder">
           取消订单
         </div>
-        <div class="pay" @click="goToPay(info)">继续支付</div>
+        <div class="pay"
+             @click="goToPay(info)">继续支付</div>
       </div>
     </div>
-    <div class="module pdtb" v-else>
-      <div class="brief right">
-        实付金额：
-        <div class="money">{{info.orderInfo.payMoney}}</div>
-      </div>
+    <div class="module pdtb"
+         v-else>
+      <!-- 订单取消的情况 -->
+      <template v-if="info.orderInfo.orderStatus == '2'">
+        <!--- 支付过 -->
+        <div class="brief right"
+             v-if="info.orderInfo.payMoney != 0 ">
+          实付金额 ：
+          <div class="money">{{info.orderInfo.payMoney}}</div>
+        </div>
+        <!-- 没有支付, 显示应付金额 -->
+        <div class="brief right"
+             v-else>
+          <template v-if="info.orderInfo.orderMoney == 0">
+            实付金额：
+          </template>
+          <template v-else>
+            应付金额：
+          </template>
+          <div class="money">{{info.orderInfo.orderMoney}}</div>
+        </div>
+      </template>
+      <!-- 其它情况 -->
+      <template v-else>
+        <div class="brief right">
+          实付金额 ：
+          <div class="money">{{info.orderInfo.payMoney}}</div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -147,9 +180,9 @@ export default {
           }
         },
         cfgDic: {
-          1: '号源生效后不可退号',
-          2: '不可退当天号源',
-          3: '不可退3天内号源'
+          1: '已生效号源不可退',
+          2: '1天内号源不可退',
+          3: '3天内号源不可退'
         }
       },
       info: {},
@@ -185,16 +218,16 @@ export default {
         })
     },
     canselOrder() {
-      if (!this.info.orderInfo.cancelState) {
+      if (!this.info.orderInfo.cancelState && this.info.orderInfo.orderStatus != 1) {
         return
       }
-      let type, alertMsg;
-      if(this.info.orderInfo.orderStatus == 1) {
-         type = 'cancel';
-         alertMsg = '是否确认取消';
+      let type, alertMsg
+      if (this.info.orderInfo.orderStatus == 1) {
+        type = 'cancel'
+        alertMsg = '是否确认取消'
       } else {
-         type = 'quit';
-        alertMsg = '是否确认退号';
+        type = 'quit'
+        alertMsg = '是否确认退号'
       }
       Dialog.confirm({
         message: alertMsg
@@ -219,6 +252,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nbsp {
+  text-align-last: justify;
+  padding-right: 4%;
+}
 .van-button--normal {
   border-radius: 20px;
 }
@@ -228,33 +265,33 @@ export default {
   left: 0;
   width: 100%;
   height: 60px;
-  background:rgba(255,255,255,1);
-  border:1px solid rgba(238,238,238,1);
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(238, 238, 238, 1);
   display: flex;
   align-items: center;
   padding: 0 15px;
   justify-content: space-between;
   .money {
-    font-size:20px;
-    color:rgba(255,52,77,1);
+    font-size: 20px;
+    color: rgba(255, 52, 77, 1);
   }
   .right {
-     display: flex
+    display: flex;
   }
   .pay {
     width: 75px;
     height: 30px;
-    background: rgba(0,198,174,1);
+    background: rgba(0, 198, 174, 1);
     border-radius: 2px;
     font-size: 13px;
-    color:rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
     line-height: 30px;
     text-align: center;
     margin-left: 10px;
     &.cancel {
-      border:1px solid rgba(204,204,204,1);
+      border: 1px solid rgba(204, 204, 204, 1);
       background: #fff;
-      color:rgba(153,153,153,1);
+      color: rgba(153, 153, 153, 1);
     }
   }
 }
@@ -292,6 +329,9 @@ export default {
   margin: 0;
   padding: 5px;
   border-bottom: 1px solid #f5f5f5;
+  img {
+    height: 100%;
+  }
 }
 .module .strong {
   font-weight: 600;
@@ -300,17 +340,17 @@ export default {
   padding: (20px/2) (30px/2);
 }
 .module .cancelText {
-  height:45px;
-  background:rgba(240,252,250,1);
-  border-radius:2px;
+  height: 45px;
+  background: rgba(240, 252, 250, 1);
+  border-radius: 2px;
   margin: 10px 15px 0 15px;
-  font-size:12px;
-  color:rgba(0,198,174,1);
-  line-height:16px;
-  padding: 6px 10px 0px 50px;
-  background:rgba(240,252,250,1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
+  font-size: 12px;
+  color: rgba(0, 198, 174, 1);
+  line-height: 16px;
+  padding: 6px 22px 0px 55px;
+  background: rgba(240, 252, 250, 1) url('../../../assets/images/icons/ic_notice.png') no-repeat;
   background-size: 17px 17px;
-  background-position: 20px 13px ;
+  background-position: 15px 14px;
 }
 .module .brief {
   font-size: (26px/2);

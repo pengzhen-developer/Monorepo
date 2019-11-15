@@ -1,48 +1,56 @@
 <template>
   <div class="doctor-list">
     <template v-if="doctorList && doctorList.length > 0">
-      <div :key="doctor.doctorInfo.doctorId"
-           @click.prevent="redictToDetail(doctor.doctorInfo)"
-           class="item"
-           v-for="doctor in doctorList">
+      <div :key="doctor.doctorInfo.doctorId" @click.prevent="redictToDetail(doctor.doctorInfo)"
+        class="item" v-for="doctor in doctorList">
         <div>
-          <img :src="doctor.doctorInfo.avartor"
-               class="avatar" />
+          <img :src="doctor.doctorInfo.avartor" class="avatar" />
         </div>
         <div class="detail">
           <div class="title-doctor">
-            <span class="title-doctor-name">{{ doctor.doctorInfo.doctorName }}</span>
+            <span class="title-doctor-name">{{
+              doctor.doctorInfo.doctorName
+            }}</span>
             <span>{{ doctor.doctorInfo.doctorTitle }}</span>
             <span>{{ doctor.doctorInfo.deptName }}</span>
           </div>
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
           </div>
-          <div class="title-description"
-               v-if="doctor.doctorInfo.specialSkill">
+          <div class="title-description" v-if="doctor.doctorInfo.specialSkill">
             <span class="title-description-label">擅长:</span>
-            <span class="title-description-detail">{{doctor.doctorInfo.specialSkill}}</span>
+            <span class="title-description-detail">{{
+              doctor.doctorInfo.specialSkill
+            }}</span>
           </div>
           <div class="title-service">
             <div>
-              <span class="title-service-money">{{ getServiceMoney(doctor) }}</span>
+              <span class="title-service-money">{{
+                getServiceMoney(doctor)
+              }}</span>
             </div>
 
             <div class="title-service-item">
-              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[0])"
-                   class="title-service-item"
-                   v-if="canShowImageInquiry(doctor)">
-                <img src="@src/assets/images/ic_tuwen.png"
-                     style="width: 20px;" />
+              <div @click.stop="
+                  redictToApply(doctor.doctorInfo, doctor.consultationList[0])
+                " class="title-service-item" v-if="canShowImageInquiry(doctor)">
+                <img src="@src/assets/images/ic_tuwen_open.png" style="width: 20px;" />
                 <span>图文咨询</span>
               </div>
-              <div @click.stop="redictToApply(doctor.doctorInfo, doctor.consultationList[1])"
-                   class="title-service-item"
-                   v-if="canShowVideoInquiry(doctor)">
-                <img src="@src/assets/images/ic_video_open.png"
-                     style="width: 20px;" />
-                <span>视频咨询</span>
-              </div>
+              <!-- <div @click.stop="
+                  redictToApply(doctor.doctorInfo, doctor.consultationList[1])
+                " class="title-service-item">
+                <img
+                  v-if="canShowVideoInquiry(doctor)"
+                  src="@src/assets/images/ic_video_open.png"
+                  style="width: 20px;"
+                />
+                <img
+                  v-else
+                  src="@src/assets/images/ic_video.png"
+                  style="width: 20px;"
+                />
+              </div> -->
             </div>
           </div>
         </div>
@@ -59,122 +67,128 @@
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 
 export default {
   data() {
     return {
       doctorList: [],
       loaded: false
-    }
+    };
   },
 
   created() {
-    this.get()
+    this.get();
   },
 
   activated() {
-    this.get()
+    this.get();
   },
 
   methods: {
     get() {
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json);
 
-      if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
+      if (
+        params.type === "starDoctorList" ||
+        params.type === "departDoctorList"
+      ) {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
-          this.doctorList = res.data
+          this.doctorList = res.data;
           this.loaded = true;
-        })
+        });
       } else {
         peace.service.patient.getDoctorList(params).then(res => {
-          this.doctorList = res.data
+          this.doctorList = res.data;
           this.loaded = true;
-        })
+        });
       }
     },
 
     getServiceMoney(doctor) {
-      let moneyList = []
+      let moneyList = [];
 
       for (const key in doctor.consultationList) {
         if (doctor.consultationList.hasOwnProperty(key)) {
           if (key != 2) {
-            const element = doctor.consultationList[key]
-            moneyList.push(element.money)
+            const element = doctor.consultationList[key];
+            moneyList.push(element.money);
           }
         }
       }
 
-      const minMoney = Math.min.apply(null, moneyList)
+      const minMoney = Math.min.apply(null, moneyList);
       if (minMoney === Infinity) {
-        return ''
+        return "";
       } else if (minMoney === 0) {
-        return `￥${minMoney || 0}起`
+        return `￥${minMoney || 0}起`;
       } else {
-        return `￥${minMoney || 0}起`
+        return `￥${minMoney || 0}起`;
       }
     },
 
     canShowImageInquiry(doctor) {
       // doctor.consultationList[0] 固定为图文咨询
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json);
 
-      if (params.doctorTag === 'freeConsult') {
+      if (params.doctorTag === "freeConsult") {
         return (
           doctor.consultationList[0] &&
           doctor.consultationList[0].status &&
           doctor.consultationList[0].money === 0
-        )
+        );
       } else {
-        return doctor.consultationList[0] && doctor.consultationList[0].status
+        return doctor.consultationList[0] && doctor.consultationList[0].status;
       }
     },
 
     canShowVideoInquiry(doctor) {
       // doctor.consultationList[1] 固定为视频咨询
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json);
 
-      if (params.doctorTag === 'freeConsult') {
+      if (params.doctorTag === "freeConsult") {
         return (
           doctor.consultationList[1] &&
           doctor.consultationList[1].status &&
           doctor.consultationList[1].money === 0
-        )
+        );
       } else {
-        return doctor.consultationList[1] && doctor.consultationList[1].status
+        return doctor.consultationList[1] && doctor.consultationList[1].status;
       }
     },
 
     redictToDetail(doctorInfo) {
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json);
       const json = peace.util.encode(
         Object.assign(params, {
           doctorId: doctorInfo.doctorId
         })
-      )
+      );
 
-      this.$router.push(`/components/doctorDetail/${json}`)
+      this.$router.push(`/components/doctorDetail/${json}`);
     },
 
     redictToApply(doctorInfo, doctorConsultation) {
-      if (doctorConsultation.tag === 'video') {
-        return peace.util.alert('暂未开放，敬请期待')
+      if (
+        typeof doctorConsultation == "undefined" ||
+        doctorConsultation.tag === "video"
+      ) {
+        return peace.util.alert("暂未开放，敬请期待");
       }
 
-      const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json);
       const json = peace.util.encode(
         Object.assign(params, {
           doctorId: doctorInfo.doctorId,
           consultingType: doctorConsultation.tag,
           consultingTypeId: doctorConsultation.consultingTypeId
         })
-      )
+      );
 
-      this.$router.push(`/components/doctorInquiryApply/${json}`)
+      this.$router.push(`/components/doctorInquiryApply/${json}`);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -267,4 +281,3 @@ export default {
   }
 }
 </style>
-

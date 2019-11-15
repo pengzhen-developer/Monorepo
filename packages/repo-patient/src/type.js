@@ -22,11 +22,17 @@ export const SYSTEM = {
     SESSION_STORAGE: 'sessionStorage'
   },
 
-  PARAMS: 'params',
+  // 是否已完成平台微信授权，储存 plateform_openId
+  WX_AUTH_PLATEFORM_OPEN_ID: 'WX_AUTH_PLATEFORM_OPEN_ID',
+  // 是否已完成渠道微信授权，储存 channel_openId
+  WX_AUTH_CHANNEL_OPEN_ID: 'WX_AUTH_CHANNEL_OPEN_ID',
+  // 当前已授权的 CODE
+  WX_AUTH_CODE: 'WX_AUTH_CODE',
 
-  NETHOSPITALID: 'nethospitalid',
-
-  CHANNELID: 'channelid'
+  // 当前登录用户机构来源
+  NETHOSPITALID: 'NETHOSPITALID',
+  // 当前登录用户渠道来源
+  CHANNELID: 'CHANNELID'
 }
 
 /**

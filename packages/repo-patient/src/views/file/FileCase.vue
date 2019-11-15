@@ -157,27 +157,6 @@ export default {
     color: #333333;
     margin: 0 8px 0 2px;
   }
-  .card-tag {
-    padding: 0 8px;
-    border-radius: 15px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80px;
-    white-space: nowrap;
-    position: relative;
-    top: 5px;
-
-    &.normal {
-      background-color: #f2fffd;
-      border: 1px solid $-color--primary;
-      color: $-color--primary;
-    }
-    &.unnormal {
-      background-color: #fff7e6;
-      border: 1px solid #fa8c16;
-      color: #fa8c16;
-    }
-  }
 
   &.case {
     display: flex;

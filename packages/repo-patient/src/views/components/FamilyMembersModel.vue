@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
+<!--       <div class="card-name">{{cardName}}</div>-->
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
            :key="'item' + index"
-           @click="goToDetail()">
+           @click="goToDetail(cardItem)">
         <div class="qrcode"
              id="qrcode"
              :style="{backgroundImage:'url(data:image/png;base64,'+ cardItem.base64 + ')'}"></div>
@@ -91,11 +92,10 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="from == 'add'">
       <!--      <div class="card no-card"></div>-->
       <div class="form form-for-family">
-        <van-field error
-                   label="姓名"
+        <van-field label="姓名"
                    placeholder="请输入姓名"
                    required
                    v-model="model.name" />
@@ -132,7 +132,7 @@
                    right-icon="arrow"
                    v-model="model.nationName" />
 
-        <van-cell-group>
+        <van-cell-group v-if="gardianSet || (age!= null && age < this.ageLimit)">
           <van-cell value="就诊人未满6岁，请填写监护人信息"
                     is-link
                     @click="goToGardian"
@@ -220,20 +220,20 @@ export default {
   },
 
   props: {
-    data: {
-      type: Object,
-      default: () => {
-        return {
-          name: '',
-          idcard: '',
-          relation: '',
-          sex: '',
-          birthday: '',
-          allergic_history: '',
-          foodAllergy: ''
-        }
-      }
-    },
+    // data: {
+    //   type: Object,
+    //   default: () => {
+    //     return {
+    //       name: '',
+    //       idcard: '',
+    //       relation: '',
+    //       sex: '',
+    //       birthday: '',
+    //       allergic_history: '',
+    //       foodAllergy: ''
+    //     }
+    //   }
+    // },
 
     canShowSelf: {
       type: Boolean,
@@ -245,8 +245,21 @@ export default {
 
   data() {
     return {
-      isNationExist: this.data.nationCode,
-      ageLimit: 7,
+      // isFromHospital: false,
+      cardName: '',
+      from: '',
+      model: {
+        name: '',
+        idcard: '',
+        relation: '',
+        sex: '',
+        birthday: '',
+        allergic_history: '',
+        foodAllergy: ''
+      },
+      familyId: '',
+      isNationExist: false,
+      ageLimit: 6,
       age: null,
       gardianSet: false,
       gardianId: '',
@@ -258,7 +271,6 @@ export default {
       },
       firstLoad: false,
       cardList: [],
-      model: Object.assign({}, this.data),
       nationName: '',
       relations: ['本人', '父母', '爱人', '孩子', '挚友'],
       sexs: ['男', '女'],
@@ -279,7 +291,7 @@ export default {
 
   computed: {
     isEdit() {
-      return !!this.data.familyId
+      return !!this.familyId
     }
   },
 
@@ -313,11 +325,34 @@ export default {
     }
   },
   mounted() {
-    this.getNationList()
-    this.getCardList()
+    let json = peace.util.decode(this.$route.params.json)
+    if (json.type != 'add') {
+      this.getFamilyInfo()
+    } else {
+      this.from = 'add'
+      // 添加页面 只需加载民族列表
+      this.getNationList()
+    }
   },
 
   methods: {
+    getFamilyInfo() {
+      let params = peace.util.decode(this.$route.params.json)
+      peace.service.patient.getFamilyInfo(params).then(res => {
+        this.model = res.data
+        this.familyId = res.data.id
+        if (this.model) {
+          this.isNationExist = this.model.nationCode && this.model.nationName
+          this.cardName = this.model.name
+          this.getNationList()
+          this.getCardList()
+        }
+        // this.dialog.data = res.data
+        // this.dialog.data.familyId = item.familyId
+        // this.dialog.title = '家人信息'
+        // this.dialog.visible = true
+      })
+    },
     setGardianInfo(item) {
       this.gardianId = item.idCard
       this.gardianName = item.name
@@ -373,7 +408,7 @@ export default {
     },
     getCardList() {
       if (this.model.isExistCard) {
-        let familyId = this.model.familyId
+        let familyId = this.model.id
         let params = { familyId }
         peace.service.patient.getCardList(params).then(res => {
           this.cardList = res.data.list
@@ -399,12 +434,13 @@ export default {
       })
       return code
     },
-    goToDetail() {
-      let familyId = this.model.familyId
+    goToDetail(item) {
+      let { backgroundCode } = item
+      let familyId = this.model.id
       const json = peace.util.encode({
-        familyId
+        familyId,
+        backgroundCode
       })
-
       this.$router.push(`/setting/cardDetail/${json}`)
     },
     selectTime(value) {
@@ -503,37 +539,37 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.source = 2
-      params.nethospitalid = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
+      params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
       peace.service.patient.bindFamily(params).then(res => {
         peace.util.alert(res.msg)
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     },
     perfectInfo() {
-      let familyId = this.model.familyId
+      let familyId = this.model.id
       let nationCode = this.model.nationCode
       let nationName = this.model.nationName
       let params = { familyId, nationCode, nationName }
       peace.service.patient.perfectInfo(params).then(res => {
         peace.util.alert(res.msg)
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     },
     // 删除
     deleted() {
       const params = {
-        familyId: this.model.familyId
+        familyId: this.model.id
       }
 
       peace.service.patient.DelFamily(params).then(res => {
         peace.util.alert(res.msg)
 
-        this.$emit('onComplete')
+        this.$router.go(-1)
       })
     }
   }
@@ -543,6 +579,13 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  .card-name {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ebedf0;
+  }
   .card-title,
   .jz-card-title {
     height: 53px;
@@ -604,7 +647,7 @@ export default {
     position: relative;
     background: url('../../assets/images/shangdong.png');
     background-size: 100% 100%;
-    margin: 0 auto;
+    margin: 0 auto 0;
     &.no-card {
       background: url('../../assets/images/ic_empty_card.png');
       background-size: 100% 100%;

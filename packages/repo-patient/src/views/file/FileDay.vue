@@ -1,7 +1,7 @@
 <template>
   <div class="file-day">
     <!-- 血压 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血压', { ...data.bloodPressureData, familyId , idCard})">
       <div class="card-left">
         <van-image width="35px"
@@ -17,12 +17,12 @@
             <span class="card-unit">{{ util.getUnit('血压') }}</span>
             <van-tag class="card-tag"
                      :class="{ normal: data.bloodPressureData.resultType === '2', unnormal: data.bloodPressureData.resultType !== '2' }">
-              {{ data.bloodPressureData.result }}
+              <span class="card-tag-span">{{ data.bloodPressureData.result }}</span>
             </van-tag>
           </div>
           <div>
             <span class="card-time">
-              {{ data.bloodPressureData.measureTime && data.bloodPressureData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+              {{ data.bloodPressureData.createdTime && data.bloodPressureData.createdTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
             </span>
           </div>
         </template>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- 血糖 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血糖', { ...data.bloodSugarData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
@@ -53,12 +53,13 @@
             <span class="card-unit">{{ util.getUnit('血糖') }}</span>
             <van-tag class="card-tag"
                      :class="{ normal: data.bloodSugarData.resultType === '2', unnormal: data.bloodSugarData.resultType !== '2' }">
-              {{ data.bloodSugarData.result }}
+              <span class="card-tag-span">{{ data.bloodSugarData.result }}</span>
             </van-tag>
           </div>
           <div>
             <span class="card-time">
-              {{ data.bloodSugarData.measureTime && data.bloodSugarData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+              {{ data.bloodSugarData.createdTime && data.bloodSugarData.createdTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+              {{ data.bloodSugarData.measureState == 1 ? '空腹血糖': '餐后血糖' }}
             </span>
           </div>
         </template>
@@ -75,7 +76,7 @@
     </div>
 
     <!-- 血氧 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('血氧', { ...data.bloodOxyGenData, familyId , idCard })">
       <div class="card-left">
         <van-image width="35px"
@@ -89,12 +90,12 @@
             <span class="card-unit">{{ util.getUnit('血氧') }}</span>
             <van-tag class="card-tag"
                      :class="{ normal: data.bloodOxyGenData.resultType === '2', unnormal: data.bloodOxyGenData.resultType !== '2' }">
-              {{ data.bloodOxyGenData.result }}
+              <span class="card-tag-span">{{ data.bloodOxyGenData.result }}</span>
             </van-tag>
           </div>
           <div>
             <span class="card-time">
-              {{ data.bloodOxyGenData.measureTime && data.bloodOxyGenData.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+              {{ data.bloodOxyGenData.createdTime && data.bloodOxyGenData.createdTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
             </span>
           </div>
         </template>
@@ -111,10 +112,10 @@
     </div>
 
     <!-- 体脂 -->
-    <div class="card card"
+    <div class="card"
          @click="util.goDetail('体脂', { ...data.bodyFat, familyId , idCard })">
       <div class="card-left">
-        <van-image width="35px"
+        <van-image width="44px"
                    height="44px"
                    :src="require('@src/assets/images/file/ic_body fat.png')" />
       </div>
@@ -125,12 +126,12 @@
             <span class="card-unit">{{ util.getUnit('体脂') }}</span>
             <van-tag class="card-tag"
                      :class="{ normal: data.bodyFat.resultType === '2', unnormal: data.bodyFat.resultType !== '2' }">
-              {{ data.bodyFat.result }}
+              <span class="card-tag-span">{{ data.bodyFat.result }}</span>
             </van-tag>
           </div>
           <div>
             <span class="card-time">
-              {{ data.bodyFat.measureTime && data.bodyFat.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
+              {{ data.bodyFat.createdTime && data.bodyFat.createdTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
             </span>
           </div>
         </template>
@@ -199,7 +200,7 @@ export default {
 
 .card {
   padding: 12px 0;
-  min-height: 60px;
+  min-height: 90px;
   background: #fff;
   margin: 0 0 8px 0;
   display: flex;
@@ -240,12 +241,13 @@ export default {
     padding: 0 8px;
     border-radius: 15px;
     margin: 0 0 0 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80px;
-    white-space: nowrap;
-    position: relative;
-    top: 5px;
+
+    .card-tag-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+      white-space: nowrap;
+    }
 
     &.normal {
       background-color: #f2fffd;

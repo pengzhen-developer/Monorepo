@@ -48,49 +48,52 @@
       </div>
       <div class="form-dl"
            style="display: block;"
-           v-if="internalData.inspectionIndex && 
-                 (internalData.inspectionIndex.temperature || 
-                  internalData.inspectionIndex.weight || 
-                  internalData.inspectionIndex.heart_rate || 
-                  internalData.inspectionIndex.blood_pressure || 
+           v-if="internalData.inspectionIndex &&
+                 (internalData.inspectionIndex.temperature ||
+                  internalData.inspectionIndex.weight ||
+                  internalData.inspectionIndex.heart_rate ||
+                  internalData.inspectionIndex.blood_pressure ||
                   internalData.inspectionIndex.More)">
         <div class="form-dt">
           检查指标
           <div class="form-code">
-            <div class="namelist-dl bb"
+            <div class="namelist-dl bb between"
                  v-if="internalData.inspectionIndex.temperature">
               <div class="dt">体温：</div>
               <div class="dd">
                 {{internalData.inspectionIndex.temperature ? internalData.inspectionIndex.temperature + '度' : '--'}}
               </div>
             </div>
-            <div class="namelist-dl bb"
+            <div class="namelist-dl bb between"
                  v-if="internalData.inspectionIndex.weight">
               <div class="dt">体重：</div>
               <div class="dd">
                 {{internalData.inspectionIndex.weight ? internalData.inspectionIndex.weight + 'kg' : '--'}}
               </div>
             </div>
-            <div class="namelist-dl bb"
+            <div class="namelist-dl bb between"
                  v-if="internalData.inspectionIndex.heart_rate">
               <div class="dt">心率：</div>
               <div class="dd">
                 {{internalData.inspectionIndex.heart_rate ? internalData.inspectionIndex.heart_rate + 'bpm' : '--'}}
               </div>
             </div>
-            <div class="namelist-dl bb"
+            <div class="namelist-dl bb between"
                  v-if="internalData.inspectionIndex.blood_pressure">
               <div class="dt">血压：</div>
               <div class="dd">
                 {{internalData.inspectionIndex.blood_pressure ? internalData.inspectionIndex.blood_pressure + 'mmHg' : '--'}}
               </div>
             </div>
-            <div class="namelist-dl"
+            <div class="namelist-dl between"
                  style="flex-basis: 100%"
                  v-if="internalData.inspectionIndex.More">
-              <div class="dt"
-                   style="width:75px">辅助检查：</div>
-              <div class="dd">{{internalData.inspectionIndex.More}}</div>
+              <div class="dt">辅助检查：</div>
+              <div class="dd ">
+                <div class="elip">
+                  {{internalData.inspectionIndex.More}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -232,6 +235,9 @@ export default {
 .namelist-dl.bb {
   border-bottom: 1px solid #ebebeb;
 }
+.namelist-dl.between {
+  justify-content: space-between;
+}
 .namelist-dl {
   flex: 0 1 100%;
   font-size: 15px;
@@ -240,18 +246,25 @@ export default {
 }
 .namelist-dl .dt {
   flex: 0 0 auto;
-  width: 50px;
+  width: 25%;
   color: #000;
 }
 .namelist-dl .dd {
   flex: 1 1 auto;
   color: #666;
-  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  width: 0;
+}
+.namelist-dl .dd .elip {
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: right;
 }
-
 .form-dl {
   background-color: #fff;
   padding: 10px;

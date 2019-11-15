@@ -19,7 +19,8 @@
     </div>
 
     <div class="file-blood-detail-button">
-      <van-button round>数据解读</van-button>
+      <van-button round
+                  disabled>数据解读</van-button>
     </div>
 
     <div class="file-blood-detail-content">
@@ -57,6 +58,7 @@ import util from './util'
 
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
 
 export default {
   components: {
@@ -81,6 +83,7 @@ export default {
           right: 20,
           left: 40
         },
+        tooltip: { show: true },
         xAxis: {
           type: 'category',
           data: []
@@ -219,6 +222,7 @@ export default {
       background: rgb(219, 235, 233) !important;
       border-color: rgb(219, 235, 233) !important;
       color: #333333 !important;
+      opacity: 1 !important;
     }
   }
 

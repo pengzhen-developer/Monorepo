@@ -33,7 +33,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -55,7 +55,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -77,7 +77,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -99,7 +99,7 @@
                   </span>
                   <van-tag class="card-tag"
                            :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    {{ item.result }}
+                    <span class="card-tag-span">{{ item.result }}</span>
                   </van-tag>
                 </div>
               </div>
@@ -172,7 +172,10 @@ export default {
 
         // 遍历时间
         const timeList = new Set(res.data.list.map(item => item.createdTime))
-
+        //拼接familyId
+        res.data.list.map(item => {
+          item.familyId = item.familyId || this.familyId
+        })
         if (timeList.size) {
           timeList.forEach(time => {
             temp[time] = res.data.list.filter(item => item.createdTime === time)
@@ -237,10 +240,10 @@ export default {
 .card {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 8px 0px 8px 16px;
   margin: 0 0 10px 0;
-
+  height: 65px;
   .card-value {
     font-size: 20px;
     color: #333333;
@@ -253,12 +256,13 @@ export default {
   .card-tag {
     padding: 0 8px;
     border-radius: 15px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80px;
-    white-space: nowrap;
-    position: relative;
-    top: 5px;
+
+    .card-tag-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+      white-space: nowrap;
+    }
 
     &.normal {
       background-color: #f2fffd;

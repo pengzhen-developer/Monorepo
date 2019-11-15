@@ -15,6 +15,12 @@ import 'nprogress/nprogress.css'
 // 记录 http 请求次数
 let httpCount = 0
 
+/** 提醒消息-需要登录 */
+const MESSAGE_USER_NEED_LOGIN = '为保障您的数据安全，请登录后使用。'
+
+/** cancel token */
+const cancelTokenList = []
+
 // 挂载实例方法
 axios.download = download
 
@@ -63,15 +69,23 @@ axios.interceptors.request.use(
 
       // 配置渠道ID
       request.headers['channelid'] = $peace.cache.get($peace.type.SYSTEM.CHANNELID)
-      console.log('nethospitalid=============', $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID))
-      console.log('channelid=============', $peace.cache.get($peace.type.SYSTEM.CHANNELID))
+        ? $peace.cache.get($peace.type.SYSTEM.CHANNELID)
+        : ''
       request.headers['nethospitalid'] = $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        ? $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+        : ''
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
       if (!isUrl.test(request.url)) {
         request.url = $peace.config.api.base + request.url
       }
+
+      // 配置 cancelToken
+      request.cancelToken = new axios.CancelToken(cancel => {
+        $peace.cancelTokenList = cancelTokenList
+        $peace.cancelTokenList.push(cancel)
+      })
 
       return request
     }
@@ -125,7 +139,7 @@ axios.interceptors.response.use(
 
       // 请求正常，IM 状态异常
       else if (response.data && parseInt(response.data.code) === 2002) {
-        $peace.util.alert('通讯异常, 将于 3 秒后刷新重连')
+        $peace.util.alert('IM 通讯异常, 即将重连。')
 
         setTimeout(() => {
           window.location.reload()
@@ -137,18 +151,29 @@ axios.interceptors.response.use(
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === -2001) {
         // 提示鉴权失败消息
-        $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+        $peace.util.alert(MESSAGE_USER_NEED_LOGIN, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+
         // 清空登录信息
         $peace.cache.remove($peace.type.USER.INFO)
-        // 跳转提示页
-        router.replace($peace.config.system.noAuthPage)
 
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
 
         return Promise.reject(response)
       }
+
+      // 微信支付失败（未知错误，回到登录，一了百了）
+      else if (response.data && parseInt(response.data.code) === -2002) {
+        // 清空登录信息
+        $peace.cache.remove($peace.type.USER.INFO)
+
+        // 跳转登录页
+        router.replace($peace.config.system.loginPage)
+        window.location.reload()
+
+        return Promise.reject(response)
+      }
+
       // 逻辑验证失败
       else {
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
@@ -168,6 +193,12 @@ axios.interceptors.response.use(
     httpCount--
     if (httpCount === 0) {
       nprogress.done(false)
+    }
+
+    // 为了终结 promise 链
+    // 就是实际请求 不会走到.catch(rej=>{});这样就不会触发错误提示了。
+    if (axios.isCancel(error)) {
+      return new Promise(() => {})
     }
 
     // 超时处理

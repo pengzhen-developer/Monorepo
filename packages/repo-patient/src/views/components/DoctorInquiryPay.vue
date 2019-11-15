@@ -32,7 +32,7 @@
       <van-cell>
         <!-- 使用 title 插槽来自定义标题 -->
         <template slot="title">
-          <span>实际支付：</span>
+          <span>应付金额：</span>
           <span class="dc">{{params.money}}元</span>
         </template>
         <van-button @click="pay"
@@ -68,7 +68,7 @@ export default {
     let orderNo = this.params.orderNo
     peace.service.index.GetOrderTime({ orderNo }).then(res => {
       let data = res.data
-      this.createdTime = data.createdTime;
+      this.createdTime = data.createdTime
       if (data.expireTime > data.currentTime) {
         that.time = (data.expireTime - data.currentTime) * 1000
       }
@@ -77,22 +77,22 @@ export default {
         // that.payCallback();
       }
     })
-    if (this.$route.query.code) {
-      let code = this.$route.query.code
-      let { orderNo } = peace.util.decode(this.$route.params.json)
-      let params = { code, orderNo }
-      peace.service.index.GetWxLoginStatus(params).then(res => {
-        let data = res.data
-        peace.wx.payInvoke(data, this.payCallback);
-      })
-    }
+    // if (this.$route.query.code) {
+    //   let code = this.$route.query.code
+    //   let { orderNo } = peace.util.decode(this.$route.params.json)
+    //   let params = { code, orderNo }
+    //   peace.service.index.GetWxLoginStatus(params).then(res => {
+    //     let data = res.data
+    //     peace.wx.payInvoke(data, this.payCallback)
+    //   })
+    // }
   },
   methods: {
     pay() {
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
-      let orderExp = (res)=> {
-        if(res && res.data) {
+      let orderExp = res => {
+        if (res && res.data) {
           return Dialog.confirm({
             title: '提示',
             message: res.data.msg,
@@ -112,14 +112,14 @@ export default {
                 // 去挂号界面
                 let orderNo = res.data.data.orderNo
                 let orderType = 'register'
-                let json = peace.util.encode({orderInfo: {orderNo, orderType}})
+                let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
                 this.$router.replace(`/setting/order/userOrderDetail/${json}`)
               }
             }
           })
         }
       }
-      peace.wx.pay(params, orderExp, this.payCallback);
+      peace.wx.pay(params, orderExp, this.payCallback)
     },
     payCallback() {
       let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
@@ -128,7 +128,10 @@ export default {
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
         this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
-        let json = peace.util.encode({ ...peace.util.decode(this.$route.params.json), startTime: new Number(this.createdTime)*1000 })
+        let json = peace.util.encode({
+          ...peace.util.decode(this.$route.params.json),
+          startTime: new Number(this.createdTime) * 1000
+        })
         this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
     }

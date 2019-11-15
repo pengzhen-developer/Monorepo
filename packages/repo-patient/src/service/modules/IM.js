@@ -25,7 +25,10 @@ export function initNIM(
     onupdatesession: peace.service.IM.onUpdateSession,
 
     // 消息
-    onmsg: peace.service.IM.onMsg
+    onmsg: peace.service.IM.onMsg,
+
+    // 系统通知
+    oncustomsysmsg: peace.service.IM.onSysmsg
   }
 ) {
   const appKey = peace.config.NIM.key
@@ -94,16 +97,19 @@ export function onConnect(connectObject) {
  */
 export function onDisConnect(disConnectObject) {
   console.warn('【 IM 】【 onDisConnect 】', new Date(), disConnectObject)
-
   switch (disConnectObject.code) {
     case 302:
     case 417:
     case 'kicked':
-      // 清空登录信息
-      peace.cache.remove(peace.type.USER.INFO)
-      peace.util.warning(disConnectObject.message)
+      // 提示鉴权失败消息
+      peace.util.warning('多地登录，请注意您的账号安全')
 
-      $peace.$router.replace(peace.config.system.loginPage)
+      // 清空登录缓存
+      peace.cache.remove(peace.type.USER.INFO)
+      peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
+
+      // 登录被 T 出，跳转错误页
+      $peace.$router.replace(peace.config.system.errorPage)
       window.location.reload()
       break
 
@@ -121,8 +127,6 @@ export function onDisConnect(disConnectObject) {
  */
 export function onWillReconnect(willReconnectObject) {
   console.warn('【 IM 】【 onWillReconnect 】', new Date(), willReconnectObject)
-
-  $peace.util.warning(`检测到网络异常,正在重连...`)
 }
 
 /**
@@ -211,6 +215,30 @@ export function onUpdateSession(session) {
  */
 export function onMsg(message) {
   console.warn('【 IM 】【 onMsg 】', new Date(), message)
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} 系统消息
+ */
+export function onSysmsg(message) {
+  console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+
+  let href = window.location.href
+  let tag = JSON.parse(message.content).tag
+  if (
+    (new RegExp('setting/userConsultList').test(href) && tag == 'inquiry') ||
+    (new RegExp('setting/userConsultDetail').test(href) && tag == 'inquiry') ||
+    (new RegExp('components/theRecipeList').test(href) && tag == 'purchaseDrug') ||
+    (new RegExp('order/userDrugDetail').test(href) && tag == 'purchaseDrug') ||
+    (new RegExp('setting/order/userOrderList').test(href) && tag == 'register') ||
+    (new RegExp('setting/order/userOrderDetail').test(href) && tag == 'register')
+  ) {
+    window.location.reload()
+  }
+  //Store.dispatch('appointMent/getList');
 }
 
 /**
@@ -441,7 +469,7 @@ export default {
   onUpdateSession,
   /** 初始化完成后, 收到消息的回调 */
   onMsg,
-
+  onSysmsg,
   /** 获取 inquiry sessions 最新状态 */
   getInquirySessionsStatus,
   /** 设置 inquiry sessions 最新状态, 用于 onSession 初始化 */

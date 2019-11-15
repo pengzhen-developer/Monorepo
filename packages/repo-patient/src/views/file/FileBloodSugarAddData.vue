@@ -40,6 +40,8 @@
                    position="bottom">
           <van-datetime-picker v-model="currentDate"
                                type="datetime"
+                               :max-date="maxDate"
+                               :min-date="minDate"
                                @confirm="confirm"
                                @cancel="show = false" />
         </van-popup>
@@ -64,7 +66,8 @@ export default {
       util,
       radio: '1',
       show: false,
-
+      maxDate: new Date(),
+      minDate: null,
       model: {
         bloodSugar: 5.0,
         measureTime: new Date()
@@ -73,8 +76,18 @@ export default {
       currentDate: new Date()
     }
   },
-
+  mounted() {
+    this.minDate = this.getMinDay()
+  },
   methods: {
+    getMinDay() {
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return today
+    },
     confirm() {
       this.show = false
       this.model.measureTime = this.currentDate

@@ -95,8 +95,8 @@ export default {
     font-size: 13px;
   }
   .list-3tr .text {
-    color: #999999;
-    font-size: 12px;
+    color: #666;
+    font-size: 14px;
   }
 
   /*list-3tr*/

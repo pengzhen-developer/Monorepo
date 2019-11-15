@@ -15,9 +15,14 @@ export const config = {
     title: '互联网医院',
 
     /**
-     * 无权限访问页
+     * 微信授权
      */
-    noAuthPage: '/login',
+    authPage: '/WXAuth',
+
+    /**
+     * 错误页
+     */
+    errorPage: '/errorPage',
 
     /**
      * 登录页

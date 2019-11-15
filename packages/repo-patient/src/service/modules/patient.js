@@ -329,6 +329,22 @@ export function perfectInfo(params) {
   return peace.http.post(perfectInfo, params)
 }
 
+export function getDefaultAddress(params) {
+  const getDefaultAddress = 'client/v1/Address/getDefaultAddress'
+  return peace.http.post(getDefaultAddress, params)
+}
+
+export function setDefaultAddress(params) {
+  const setDefaultAddress = 'client/v1/Address/setDefaultAddress'
+  return peace.http.post(setDefaultAddress, params)
+}
+
+export function getLastAppoint(params) {
+  const getLastAppoint = 'register/v1/Register/getLast'
+  return peace.http.post(getLastAppoint, params)
+}
+
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -364,6 +380,8 @@ export default {
   getOrderDetail,
   /** 获取最后一个就诊人 */
   getLast,
+  /* 获取最后一个预约挂号就诊人 */
+  getLastAppoint,
   /** 关注医生 */
   attention,
   /** 获取附近商店列表**/
@@ -385,6 +403,7 @@ export default {
   getCardList,
   healthcardInfo,
   getGuardianList,
-  perfectInfo
-
+  perfectInfo,
+  getDefaultAddress,
+  setDefaultAddress
 }

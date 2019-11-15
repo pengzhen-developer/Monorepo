@@ -22,7 +22,8 @@
     </div>
 
     <div class="file-blood-detail-button">
-      <van-button round>数据解读</van-button>
+      <van-button round
+                  disabled>数据解读</van-button>
     </div>
 
     <div class="file-blood-detail-content">
@@ -65,7 +66,13 @@
       </div>
       <div class="charts-body">
         <v-chart class="charts"
-                 :options="options" />
+                 :options="options"
+                 v-if="options.xAxis.data.length>0" />
+        <div class="none-page"
+             v-else>
+          <div class="icon icon_none_source"></div>
+          <div class="none-text">暂无数据</div>
+        </div>
       </div>
     </div>
 
@@ -82,6 +89,7 @@ import util from './util'
 
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
 
 export default {
   components: {
@@ -91,7 +99,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: 1,
+      tabIndex: '1',
       data: {
         bloodSugarData: {}
       },
@@ -106,6 +114,7 @@ export default {
           right: 20,
           left: 40
         },
+        tooltip: { show: true },
         xAxis: {
           type: 'category',
           data: []
@@ -130,17 +139,17 @@ export default {
   },
 
   created() {
-    this.getOscillogram(1)
+    this.getOscillogram(2)
   },
 
   methods: {
     getOscillogram(tag) {
       // debugger
-      this.tabIndex = tag
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then(res => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
+        // this.tabIndex = upData.bloodSugarData.measureState == '1' ? 1 : 2
         let xAxisData = null,
           seriesDataOne = null
         if (tag == 1) {
@@ -154,6 +163,9 @@ export default {
           )
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
+        this.tabIndex = tag == '1' ? 1 : 2
+
+        console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
@@ -287,6 +299,7 @@ export default {
       background: rgb(219, 235, 233) !important;
       border-color: rgb(219, 235, 233) !important;
       color: #333333 !important;
+      opacity: 1 !important;
     }
   }
 

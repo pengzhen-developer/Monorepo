@@ -2,9 +2,15 @@
   <div class="file-health-detail">
     <div class="header flex">
       <van-image round
+                 v-if="model.sex === '男'"
                  width="50px"
                  height="50px"
                  :src="require('@src/assets/images/ic_head portrait.png')" />
+      <van-image round
+                 v-if="model.sex === '女'"
+                 width="50px"
+                 height="50px"
+                 :src="require('@src/assets/images/img_head girl.png')" />
       <span style="font-size: 20px; margin: 0 10px;">{{ model.name }}</span>
       <van-icon v-if="model.sex === '男'"
                 :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
@@ -49,11 +55,11 @@
                 v-model="model.surgeryTrauma" />
       <van-popup position="bottom"
                  v-model="popup.surgeryTrauma">
-        <van-picker :columns="dict.surgeryTrauma"
-                    :default-index="dict.surgeryTrauma.indexOf(model.surgeryTrauma)"
-                    show-toolbar
-                    @confirm="v => { model.surgeryTrauma = v; popup.surgeryTrauma = false }"
-                    @cancel="v => popup.surgeryTrauma = false" />
+        <AddSurgeryTrauma style="max-height: 80vh"
+                          @onSave="popup.surgeryTrauma = false"
+                          v-model="model.surgeryTrauma"
+                          v-if="popup.surgeryTrauma">
+        </AddSurgeryTrauma>
       </van-popup>
 
       <van-cell title="家族病史"
@@ -63,11 +69,11 @@
                 v-model="model.familyHistory" />
       <van-popup position="bottom"
                  v-model="popup.familyHistory">
-        <van-picker :columns="dict.familyHistory"
-                    :default-index="dict.familyHistory.indexOf(model.familyHistory)"
-                    show-toolbar
-                    @confirm="v => { model.familyHistory = v; popup.familyHistory = false }"
-                    @cancel="v => popup.familyHistory = false" />
+        <AddFamilyHistory style="max-height: 80vh"
+                          @onSave="popup.familyHistory = false"
+                          v-model="model.familyHistory"
+                          v-if="popup.familyHistory">
+        </AddFamilyHistory>
       </van-popup>
 
       <van-cell title="药物过敏"
@@ -76,9 +82,11 @@
                 :value="model.drugAllergy || '无'" />
       <van-popup position="bottom"
                  v-model="popup.drugAllergy">
-        <AddFoodAllergy style="max-height: 80vh"
-                        @onSave="popup.drugAllergy = false"
-                        v-model="model.drugAllergy"></AddFoodAllergy>
+        <AddAllergicHistory style="max-height: 80vh"
+                            @onSave="popup.drugAllergy = false"
+                            v-model="model.drugAllergy"
+                            v-if="popup.drugAllergy">
+        </AddAllergicHistory>
       </van-popup>
 
       <van-cell title="食物/接触物过敏"
@@ -87,9 +95,11 @@
                 :value="model.foodAllergy || '无'" />
       <van-popup position="bottom"
                  v-model="popup.foodAllergy">
-        <AddAllergicHistory style="max-height: 80vh"
-                            @onSave="popup.foodAllergy = false"
-                            v-model="model.foodAllergy"></AddAllergicHistory>
+        <AddFoodAllergy style="max-height: 80vh"
+                        @onSave="popup.foodAllergy = false"
+                        v-model="model.foodAllergy"
+                        v-if="popup.foodAllergy">
+        </AddFoodAllergy>
       </van-popup>
 
       <van-cell title="个人习惯"
@@ -98,11 +108,11 @@
                 v-model="model.personalHabit" />
       <van-popup position="bottom"
                  v-model="popup.personalHabit">
-        <van-picker :columns="dict.personalHabit"
-                    :default-index="dict.personalHabit.indexOf(model.personalHabit)"
-                    show-toolbar
-                    @confirm="v => { model.personalHabit = v; popup.personalHabit = false }"
-                    @cancel="v => popup.personalHabit = false" />
+        <AddPersonalHabit style="max-height: 80vh"
+                          @onSave="popup.personalHabit = false"
+                          v-model="model.personalHabit"
+                          v-if="popup.personalHabit">
+        </AddPersonalHabit>
       </van-popup>
     </van-cell-group>
 
@@ -119,16 +129,26 @@ import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
+import AddPersonalHabit from '@src/views/components/AddPersonalHabit'
+import AddSurgeryTrauma from '@src/views/components/AddSurgeryTrauma'
+import AddFamilyHistory from '@src/views/components/AddFamilyHistory'
 
 export default {
   components: {
     AddAllergicHistory,
-    AddFoodAllergy
+    AddFoodAllergy,
+    AddPersonalHabit,
+    AddSurgeryTrauma,
+    AddFamilyHistory
   },
 
   data() {
     return {
       model: {
+        name: '',
+        age: '',
+        relation: '',
+
         maritalStatus: '',
         fertilityStatus: '',
         surgeryTrauma: '',
@@ -168,6 +188,19 @@ export default {
   },
 
   methods: {
+    confirm(v) {
+      const personalHabit = this.model.personalHabit ? this.model.personalHabit.split(',') : []
+
+      if (personalHabit.includes(v)) {
+        personalHabit.splice(personalHabit.indexOf(v), 1)
+      } else {
+        personalHabit.push(v)
+      }
+
+      this.model.personalHabit = personalHabit.toString()
+      this.popup.personalHabit = false
+    },
+
     getDictionary() {
       peace.service.health.lists({ type: 1 }).then(res => {
         this.dict.maritalStatus = res.data.map(item => item.name)
@@ -186,9 +219,6 @@ export default {
       })
       peace.service.health.lists({ type: 6 }).then(res => {
         this.dict.foodAllergy = res.data.map(item => item.name)
-      })
-      peace.service.health.lists({ type: 7 }).then(res => {
-        this.dict.personalHabit = res.data.map(item => item.name)
       })
     },
 
@@ -261,6 +291,6 @@ export default {
 .footer {
   background: #fff;
   height: 70px;
-  padding: 15px;
+  padding: 0  15px 110px;
 }
 </style>

@@ -621,7 +621,7 @@ export default {
         }
 
         .message-avatar {
-          margin: 0 5px 0 0;
+          margin: 0 10px 0 0;
           align-self: flex-start;
           img {
             width: 38px;
@@ -640,7 +640,7 @@ export default {
         }
 
         .message-avatar {
-          margin: 0 0 0 5px;
+          margin: 0 0 0 10px;
           align-self: flex-start;
           img {
             width: 38px;

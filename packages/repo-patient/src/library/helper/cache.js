@@ -16,12 +16,10 @@ import { encode, decode } from './common'
  * @returns {*}
  */
 export function set(key = '', value, type = 'localStorage') {
-  const encodeKey = encode(key)
-
   if (value !== null) {
     const encodeValue = encode(window.unescape(window.encodeURIComponent(JSON.stringify(value))))
 
-    window[type].setItem(encodeKey, encodeValue)
+    window[type].setItem(key, encodeValue)
   }
 
   return value
@@ -37,8 +35,7 @@ export function set(key = '', value, type = 'localStorage') {
  * @returns {*}
  */
 export function get(key = '', type = 'localStorage') {
-  const encodeKey = encode(key)
-  const value = window[type].getItem(encodeKey)
+  const value = window[type].getItem(key)
 
   if (value !== null) {
     return JSON.parse(window.decodeURIComponent(window.escape(decode(value))))
@@ -56,7 +53,7 @@ export function get(key = '', type = 'localStorage') {
  * @returns {*}
  */
 export function remove(key = '', type = 'localStorage') {
-  window[type].removeItem(encode(key))
+  window[type].removeItem(key)
 }
 
 /**

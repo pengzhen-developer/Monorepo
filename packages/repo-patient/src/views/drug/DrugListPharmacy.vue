@@ -19,7 +19,7 @@
            :key="item.DrugStoreName"
            @click="goDrugOrderBeforePage(index)">
         <div class="card-avatar">
-          <img class="" />
+          <img class="" :src="item.DrugStoreLogo" style="height: 100%;"/>
         </div>
         <div class="card-body">
           <div class="card-name">{{item.DrugStoreName}}

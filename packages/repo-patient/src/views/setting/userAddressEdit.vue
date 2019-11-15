@@ -27,12 +27,14 @@
       <addressPicker province="internalAddr.province"
                      city="internalAddr.city"
                      district="internalAddr.district"
+                     @onCancel="onCancel"
                      @onConfirm="onConfirm" />
     </van-popup>
     <van-field required
                label="详细地址"
                type="textarea"
                autosize
+               maxlength="120"
                placeholder="请输入收货人详细地址"
                v-model="internalAddr.address"
                data-name="address" />
@@ -46,7 +48,7 @@
 <script>
 import peace from '@src/library'
 import addressPicker from './SelectAddress'
-import { Dialog } from 'vant'
+
 export default {
   components: {
     addressPicker
@@ -97,10 +99,13 @@ export default {
     }
   },
   created() {
-    // const params = peace.util.decode(this.$route.query.addr);
+    const addr = peace.util.decode(this.$route.query.addr)
     const params = peace.util.decode(this.$route.params.json)
     if (params.hasOwnProperty('addressId')) {
       this.internalAddr = params
+    }
+    if (addr.hasOwnProperty('addressId')) {
+      this.internalAddr = addr
     }
   },
   methods: {
@@ -110,7 +115,9 @@ export default {
       this.internalAddr.district = value.district.name
       this.showPicker = false
     },
-
+    onCancel() {
+      this.showPicker = false
+    },
     submit() {
       const data = {
         addressId: this.internalAddr.addressId,
@@ -125,13 +132,23 @@ export default {
         .addAddress(data)
         .then(() => {
           peace.util.alert(this.internalAddr.addressId ? '编辑成功' : '添加成功')
+
           this.$router.go(-1)
+
+          //
+          // AccessCode: "GJ1FST"
+          // Detailed: "湖北省武汉市汉阳区国信新城二期3号门面房"
+          // DrugStoreId: "GJNEDR"
+          // JZTClaimNo: "3O5NM0-201910281025390581-2019102839538594"
+          // ShippingMethod: 2
+          // familyId: "cishjjjduj"
         })
         .catch(res => {
-          Dialog.alert({
-            title: this.internalAddr.addressId ? '编辑失败' : '添加失败',
-            message: res.data.msg
-          })
+          console.log(res)
+          // Dialog.alert({
+          //   title: this.internalAddr.addressId ? '编辑失败' : '添加失败',
+          //   message: res.data.msg
+          // })
         })
     }
   }

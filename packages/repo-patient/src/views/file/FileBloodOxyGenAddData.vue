@@ -23,15 +23,18 @@
 
     <div class="file-blood-detail-content">
       <van-cell-group>
-        <van-field :min="0"
-                   :max="100"
-                   v-model="model.pulseRate"
-                   type="number"
-                   label="脉率（选填）"
-                   placeholder="请输入">
-
-          <span slot="button">次/分</span>
-        </van-field>
+        <van-cell @click="rateShow = true"
+                  is-link
+                  :value="selectRate? (model.pulseRate + '次/分'):'请选择'"
+                  title="脉率（选填）" />
+        <van-popup v-model="rateShow"
+                   position="bottom">
+          <van-picker :columns="rateArr"
+                      show-toolbar
+                      :default-index="model.pulseRate"
+                      @confirm="onRateConfirm"
+                      @cancel="v => rateShow = false" />
+        </van-popup>
 
         <van-cell @click="show = true"
                   is-link
@@ -41,6 +44,8 @@
                    position="bottom">
           <van-datetime-picker v-model="currentDate"
                                type="datetime"
+                               :max-date="maxDate"
+                               :min-date="minDate"
                                @confirm="confirm"
                                @cancel="show = false" />
         </van-popup>
@@ -58,14 +63,30 @@
 <script>
 import peace from '@src/library'
 import util from './util'
-
+import Vue from 'vue'
+import { Picker } from 'vant'
+Vue.use(Picker)
 export default {
+  mounted() {
+    let lastData = this.$peace.cache.get('bloodOxyGenLastData') || ''
+    if (lastData) {
+      this.model.bloodOxygen = lastData.bloodOxygen
+      this.model.pulseRate = lastData.pulseRate == '-' ? 60 : Number(lastData.pulseRate)
+    }
+    this.minDate = this.getMinDay()
+    for (let i = 0; i <= 220; i++) {
+      this.rateArr.push(i)
+    }
+  },
   data() {
     return {
       util,
-
+      maxDate: new Date(),
+      minDate: null,
+      rateArr: [],
+      rateShow: false,
+      selectRate: false,
       show: false,
-
       model: {
         bloodOxygen: 99,
         pulseRate: 60,
@@ -77,6 +98,21 @@ export default {
   },
 
   methods: {
+    getMinDay() {
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return today
+    },
+    onRateConfirm(value) {
+      this.rateShow = false
+      this.selectRate = true
+      // console.log('rateShowwwwwwwwwww', this.rateShow)
+      // debugger
+      this.model.pulseRate = value
+    },
     confirm() {
       this.show = false
       this.model.measureTime = this.currentDate
@@ -88,8 +124,10 @@ export default {
       params.measureTime = params.measureTime.formatTime()
       params.idCard = json.idCard
       params.familyId = json.familyId
-
-      peace.service.health.addBloodPressure(params).then(res => {
+      if (!this.selectRate) {
+        params.pulseRate = '-'
+      }
+      peace.service.health.addBloodOxygendata(params).then(res => {
         peace.util.alert(res.msg)
 
         const params = $peace.util.decode($peace.$route.params.json)
