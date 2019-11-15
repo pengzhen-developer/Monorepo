@@ -155,6 +155,20 @@ export const CONSULTATION = {
 }
 
 /**
+ * IM 视频常量
+ */
+export const VIDEO = {
+  /** 视频状态 */
+  BE_CALL_STATE: {
+    邀请: 1,
+    收到: 2,
+    接听: 3,
+    拒绝: 4,
+    挂断: 5
+  }
+}
+
+/**
  * 健康档案
  */
 export const HEALTH = {
@@ -207,6 +221,9 @@ export default {
 
   /** 会诊类型常量 */
   CONSULTATION,
+
+  /** 视频常量 */
+  VIDEO,
 
   /** 健康档案 */
   HEALTH

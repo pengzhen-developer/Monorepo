@@ -1,18 +1,11 @@
 <template>
   <div class="consultation-video">
-    <el-dialog
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :show-close="false"
-      :title="consultation.title"
-      :visible.sync="consultation.visible"
-      center
-      custom-class="consultation-video-dialog"
-      v-drag
-      width="520px"
-    >
+    <el-dialog :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false"
+      :title="consultation.title" :visible.sync="consultation.visible" center
+      custom-class="consultation-video-dialog" v-drag width="520px">
       <!-- 视频 -->
-      <div :id="'remoteContainer' + item.account" :key="item.account" class="videoContaier" v-for="item in consultation.remoteUserList">
+      <div :id="'remoteContainer' + item.account" :key="item.account" class="videoContaier"
+        v-for="item in consultation.remoteUserList">
         <div style="position: absolute; text-align: center;">
           <p style="font-size: 14px;">{{ item.doctorName }}</p>
           <p style="font-size: 14px;">等待加入中</p>
@@ -107,7 +100,10 @@ export default {
           setInterval(() => {
             if (this.currentSession.content.consultInfo.channelTime) {
               // 避免服务器与本地时间不一致，导致时间格式化为 "0-1:59:59"
-              this.consultation.title = peace.util.formatDuration(dayjs(this.currentSession.content.consultInfo.channelTime).toDate(), new Date())
+              this.consultation.title = peace.util.formatDuration(
+                dayjs(this.currentSession.content.consultInfo.channelTime).toDate(),
+                new Date()
+              )
             }
           }, 1000)
         } else {
@@ -157,13 +153,20 @@ export default {
       $peace.WebRTC.stopRemoteStream(leaveChannelObject.account)
 
       // 当远端用户离开频道， 更新频道人数列表
-      const index = this.consultation.remoteUserJoinedList.findIndex(item => item.account === leaveChannelObject.account)
+      const index = this.consultation.remoteUserJoinedList.findIndex(
+        item => item.account === leaveChannelObject.account
+      )
       if (index !== -1) {
         this.consultation.remoteUserJoinedList.splice(index, 1)
       }
 
-      const leaveUser = this.consultation.remoteUserList.find(item => item.account === leaveChannelObject.account)
-      if (leaveUser && leaveUser.account !== this.$store.state.user.userInfo.list.docInfo.doctor_id) {
+      const leaveUser = this.consultation.remoteUserList.find(
+        item => item.account === leaveChannelObject.account
+      )
+      if (
+        leaveUser &&
+        leaveUser.account !== this.$store.state.user.userInfo.list.docInfo.doctor_id
+      ) {
         peace.util.alert(`${leaveUser.doctorName}已退出本次会诊`)
       }
     },
@@ -173,9 +176,18 @@ export default {
       console.warn('【 WebRTC 】【 onRemoteTrack 】', new Date(), remoteTrackObject)
 
       // 区分 remoteTrack 是问诊还是会诊
-      if (!($peace.inquiryVideoComponent && $peace.inquiryVideoComponent.beCallState === peace.type.INQUIRY.BE_CALL_STATE.接听)) {
+      if (
+        !(
+          $peace.inquiryVideoComponent &&
+          $peace.inquiryVideoComponent.beCallState === peace.type.INQUIRY.BE_CALL_STATE.接听
+        )
+      ) {
         // 当远端用户进入频道， 更新频道人数列表
-        if (this.consultation.remoteUserJoinedList.findIndex(item => item.account === remoteTrackObject.account) === -1) {
+        if (
+          this.consultation.remoteUserJoinedList.findIndex(
+            item => item.account === remoteTrackObject.account
+          ) === -1
+        ) {
           this.consultation.remoteUserJoinedList.push(remoteTrackObject)
         }
 
@@ -192,7 +204,9 @@ export default {
 
         // 视频：展示对方的画面
         if (remoteTrackObject.track.kind === 'video') {
-          const joinUser = this.consultation.remoteUserList.find(item => item.account === remoteTrackObject.account)
+          const joinUser = this.consultation.remoteUserList.find(
+            item => item.account === remoteTrackObject.account
+          )
           if (joinUser) {
             // Firefox 兼容性问题, 再未找到合适方法之前, 暂时关闭
             // peace.util.alert(`${joinUser.doctorName}进入频道`)
@@ -220,13 +234,14 @@ export default {
 
       session = session || this.currentSession
 
-      const channelName = session.content.consultInfo.channel || session.id + '-' + new Date().getTime()
+      const channelName =
+        session.content.consultInfo.channel || session.id + '-' + new Date().getTime()
       const consultNo = session.content.consultInfo.consultNo
 
       const params = {
         consultNo: consultNo,
         channel: channelName,
-        action: 'join'
+        action: 'start'
       }
 
       // 发送通知
@@ -278,7 +293,11 @@ export default {
         })
         .then(joinChannel => {
           // 当本地用户进入频道， 更新频道人数列表
-          if (this.consultation.remoteUserJoinedList.findIndex(item => item.account === joinChannel.account) === -1) {
+          if (
+            this.consultation.remoteUserJoinedList.findIndex(
+              item => item.account === joinChannel.account
+            ) === -1
+          ) {
             this.consultation.remoteUserJoinedList.push(joinChannel)
           }
 
@@ -307,7 +326,9 @@ export default {
         this.consultation.visible = false
 
         // 当本地用户离开频道， 更新频道人数列表
-        const index = this.consultation.remoteUserJoinedList.findIndex(item => item.account === this.$store.state.user.userInfo.list.docInfo.doctor_id)
+        const index = this.consultation.remoteUserJoinedList.findIndex(
+          item => item.account === this.$store.state.user.userInfo.list.docInfo.doctor_id
+        )
         if (index !== -1) {
           this.consultation.remoteUserJoinedList.splice(index, 1)
         }
@@ -370,7 +391,11 @@ export default {
         })
         .then(() => {
           //预览本地画面
-          $peace.WebRTC.startLocalStream(document.getElementById('remoteContainer' + this.$store.state.user.userInfo.list.docInfo.doctor_id))
+          $peace.WebRTC.startLocalStream(
+            document.getElementById(
+              'remoteContainer' + this.$store.state.user.userInfo.list.docInfo.doctor_id
+            )
+          )
 
           // 设置本地预览画面大小
           $peace.WebRTC.setVideoViewSize({
@@ -393,7 +418,10 @@ export default {
     showNotify(session) {
       this.closeNotify()
 
-      if (session.content.consultInfo.channelFromId !== this.$store.state.user.userInfo.list.docInfo.doctor_id) {
+      if (
+        session.content.consultInfo.channelFromId !==
+        this.$store.state.user.userInfo.list.docInfo.doctor_id
+      ) {
         const messageBody = (
           <div>
             <el-button type="success" onclick={() => this.sendVideo(session)}>

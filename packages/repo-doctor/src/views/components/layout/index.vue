@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
-    <InquiryVideo></InquiryVideo>
-    <ConsultationVideo></ConsultationVideo>
+    <Video></Video>
 
     <div class="layout-header">
       <TheHeader></TheHeader>
@@ -19,7 +18,8 @@
         <div class="layout-body-right-content">
           <el-scrollbar class="layout-body-right-content-scrollbar">
             <transition mode="out-in" name="el-fade-in-linear">
-              <router-view :key="$route.fullPath" class="layout-body-right-content-app"></router-view>
+              <router-view :key="$route.fullPath" class="layout-body-right-content-app">
+              </router-view>
             </transition>
           </el-scrollbar>
         </div>
@@ -35,8 +35,7 @@ import TheHeader from './TheHeader'
 import TheNav from './TheNav'
 import TheTab from './TheTab'
 
-import InquiryVideo from '@src/views/clinic/inquiry/InquiryVideo'
-import ConsultationVideo from '@src/views/clinic/consultation/ConsultationVideo'
+import Video from '@src/views/clinic/Video'
 
 import peace from '@src/library'
 
@@ -48,8 +47,7 @@ export default {
     TheNav,
     TheTab,
 
-    InquiryVideo,
-    ConsultationVideo
+    Video
   },
 
   data() {
@@ -81,7 +79,11 @@ export default {
 
     '$store.state.layout.tabList': {
       handler() {
-        peace.cache.set(peace.type.USER.TAB_LIST, this.$store.state.layout.tabList, peace.type.SYSTEM.CACHE.SESSION_STORAGE)
+        peace.cache.set(
+          peace.type.USER.TAB_LIST,
+          this.$store.state.layout.tabList,
+          peace.type.SYSTEM.CACHE.SESSION_STORAGE
+        )
       },
 
       immediate: true
@@ -90,7 +92,9 @@ export default {
 
   methods: {
     pushTab(path) {
-      const currentMenu = this.menuList.find(item => item.path === path) || this.$store.state.layout.tabList.find(item => item.path === path)
+      const currentMenu =
+        this.menuList.find(item => item.path === path) ||
+        this.$store.state.layout.tabList.find(item => item.path === path)
 
       if (currentMenu) {
         // 将当前选中的项，添加到 tab

@@ -1,12 +1,9 @@
 <template>
   <div class="inquiry-session-message-input">
     <div class="control">
-      <el-upload :auto-upload="false"
-                 :on-change="sendImage"
-                 accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-                 action=" "
-                 ref="upload"
-                 style="display: inline-block;">
+      <el-upload :auto-upload="false" :on-change="sendImage"
+        accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF" action=" "
+        ref="upload" style="display: inline-block;">
         <el-button type="text">
           <img src="~@src/assets/images/inquiry/chat_icon_pic.png" />
           <span>图片</span>
@@ -15,69 +12,65 @@
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendVideo"
-                 type="text">
+      <el-button @click="sendVideo" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_video.png" />
         <span>视频</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendCase"
-                 type="text">
+      <el-button @click="sendCase" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
         <span>写病历</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendRecipe"
-                 type="text">
+      <el-button @click="sendRecipe" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
         <span>开处方</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <!-- <el-button @click="sendTransfer" type="text">
+      <el-button @click="sendTransfer" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
         <span>申请转诊</span>
-      </el-button> -->
+      </el-button>
+      -->
 
       <!-- <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendConsultation" type="text">
+      <el-button @click="sendConsultation"
+                 type="text">
         <img src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
         <span>申请会诊</span>
       </el-button> -->
     </div>
     <div class="input-text">
-      <el-input :rows="6"
-                @keyup.ctrl.enter.native="sendText()"
-                placeholder
-                resize="none"
-                type="textarea"
-                v-model="message"></el-input>
+      <el-input :rows="6" @keyup.ctrl.enter.native="sendText()" placeholder resize="none"
+        type="textarea" v-model="message"></el-input>
     </div>
     <div class="input-send">
       <el-dropdown placement="top">
-        <el-button round
-                   type="text">快速回复</el-button>
-        <el-dropdown-menu slot="dropdown"
-                          style="overflow: hidden;">
+        <el-button round type="text">快速回复</el-button>
+        <el-dropdown-menu slot="dropdown" style="overflow: hidden;">
           <el-dropdown-item @click.native="sendText('您好，是否做过检查、化验？如果有，请上传相关附件。')"
-                            style="padding: 5px 10px;">您好，是否做过检查、化验？如果有，请上传相关附件。</el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，病历已发送，请注意查收。')"
-                            style="padding: 5px 10px;">您好，病历已发送，请注意查收。</el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，处方已开具，请注意查收。')"
-                            style="padding: 5px 10px;">您好，处方已开具，请注意查收。</el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，还有其它问题吗?')"
-                            style="padding: 5px 10px;">您好，还有其它问题吗?</el-dropdown-item>
+            style="padding: 5px 10px;">
+            您好，是否做过检查、化验？如果有，请上传相关附件。
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="sendText('您好，病历已发送，请注意查收。')" style="padding: 5px 10px;">
+            您好，病历已发送，请注意查收。
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="sendText('您好，处方已开具，请注意查收。')" style="padding: 5px 10px;">
+            您好，处方已开具，请注意查收。
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="sendText('您好，还有其它问题吗?')" style="padding: 5px 10px;">
+            您好，还有其它问题吗?
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button @click="sendText()"
-                 round
-                 type="primary">发送</el-button>
+      <el-button @click="sendText()" round type="primary">发送</el-button>
     </div>
   </div>
 </template>
@@ -141,7 +134,7 @@ export default {
         this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
         peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
       ) {
-        $peace.inquiryVideoComponent.sendVideo(this.$store.state.inquiry.session)
+        $peace.videoComponent.sendVideo(this.$store.state.inquiry.session)
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
@@ -177,7 +170,10 @@ export default {
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
           const message = '给用户发送病历后才能【申请转诊】，是否立即填写病历？'
-          const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
+          const confirmOption = {
+            type: 'warning',
+            confirmButtonText: '去填写'
+          }
 
           peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
@@ -204,7 +200,10 @@ export default {
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
           const message = '给用户发送病历后才能【申请会诊】，是否立即填写病历？'
-          const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
+          const confirmOption = {
+            type: 'warning',
+            confirmButtonText: '去填写'
+          }
 
           peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
