@@ -348,7 +348,7 @@
         height: 16px;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAgCAMAAADQQiM0AAAAPFBMVEVHcEwAxq4Axq4Axq4Axq4Axq4Ax6wAxq4Axq0Axa0Axq4Axq4Axq4Axq0Axq4Axq4Axq4Axq4Axq4Axq6iG7DjAAAAE3RSTlMA7D3Q3X4W+E4LoY0mW7zFMGmufULRZgAAAThJREFUKM9dUluChCAMAwHLS3zk/nfdtoCD248ZNCVNUo3plY7siHwrl/lUChazXFyAywPUQtxicYw9aQKbBYV9PNTG18ZDtfAr+0E4+8nDa88ej015IiHIfwDJjavJeCqpv6osy6L0PpAI1BkOmVlBfL4IntXuoc/gl8lkPHxsY5aJwMFEhMjzb+4Fpr+Mxr8naxCUO+3UHEGKBwNswutf28BArPBGmTh86vWHEWGUifdATlUk04vKzKBNgaLsFbiElyPYPdvf6sFBFMWt+hWZ1Y/1ZEnQanDs7dbl6ZLUVoNN3ZvkJ+BYS5i+eYZLy35ip1Rz9B77kF/jjdeOGLL115f79oah9eNJDj6NcPqm36qkoch/+36KIij0u/s/pAf2zPg+dYLcqvHjA6uvpdjwJ4ulbr9YNH+y9BFFB0KjTAAAAABJRU5ErkJggg==");
+        background-image: url("../../assets/images/head-more.jpg");
     }
     .head-more::after{
         content: "";
