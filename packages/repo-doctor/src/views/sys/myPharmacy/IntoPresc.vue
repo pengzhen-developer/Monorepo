@@ -2,17 +2,18 @@
   <div class="presc">
     <div>
       <span class="label">诊断</span>
-      <el-select
-        :remote-method="getPresent"
-        @change="chooseItem"
-        filterable
-        placeholder="请输入诊断"
-        ref="diagnosis"
-        remote
-        style="width: calc(100% - 90px);"
-        v-model="dialog.chooseItem"
-      >
-        <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+      <el-select :remote-method="getPresent"
+                 @change="chooseItem"
+                 filterable
+                 placeholder="请输入诊断"
+                 ref="diagnosis"
+                 remote
+                 style="width: calc(100% - 90px);"
+                 v-model="dialog.chooseItem">
+        <el-option :key="item.id"
+                   :label="item.name"
+                   :value="item.name"
+                   v-for="item in dialog.source.present_history"></el-option>
       </el-select>
     </div>
     <div class="info-row">
@@ -21,7 +22,10 @@
       </div>
       <div class="info-row-content">
         <el-select v-model="presc.sex">
-          <el-option :key="sex" :label="sex" :value="sex" v-for="sex in sexs"></el-option>
+          <el-option :key="sex"
+                     :label="sex"
+                     :value="sex"
+                     v-for="sex in sexs"></el-option>
         </el-select>
       </div>
       <div class="info-row-label">
@@ -29,24 +33,32 @@
       </div>
       <div class="info-row-content">
         <el-select v-model="presc.age">
-          <el-option :key="age" :label="age" :value="age" v-for="age in ages"></el-option>
+          <el-option :key="age"
+                     :label="age"
+                     :value="age"
+                     v-for="age in ages"></el-option>
         </el-select>
       </div>
     </div>
     <div>
       <span class="label">RP</span>
-      <el-button @click="openDrugDialog" type="text">添加药品</el-button>
+      <el-button @click="openDrugDialog"
+                 type="text">添加药品</el-button>
     </div>
     <div class="drug-list">
-      <div :key="drug.id" class="drug-item" v-for="(drug, index) in drugList">
+      <div :key="drug.id"
+           class="drug-item"
+           v-for="(drug, index) in drugList">
         <div class="row-one">
           <span>{{ drug.drug_name }}</span>
           <span>{{ drug.drug_spec }}</span>
           <span>{{ drug.drug_factory }}</span>
           <span>&nbsp;x{{ drug.number }}</span>
           <div style="float: right;">
-            <el-button @click="openEditDrugDialog(drug, index)" type="text">修改</el-button>
-            <el-button @click="deleteDrug(index)" type="text">删除</el-button>
+            <el-button @click="openEditDrugDialog(drug, index)"
+                       type="text">修改</el-button>
+            <el-button @click="deleteDrug(index)"
+                       type="text">删除</el-button>
           </div>
         </div>
         <div class="row-two">
@@ -59,24 +71,42 @@
       </div>
     </div>
     <div class="footer">
-      <el-button @click="$emit('cancel')" plain type="primary">取消</el-button>
-      <el-button @click="submit" type="primary">确定</el-button>
+      <el-button @click="$emit('cancel')"
+                 plain
+                 type="primary">取消</el-button>
+      <el-button @click="submit"
+                 type="primary">确定</el-button>
     </div>
-    <peace-dialog :close-on-click-modal="false" :visible.sync="drugDialog.visible" append-to-body custom-class="dialog" title="添加药品" v-if="drugDialog.visible">
-      <into-presc-drug @cancel="closeDrugDialog" @nextStep="nextStep" ref="into-presc-drug" v-show="step === 1"></into-presc-drug>
+    <peace-dialog :close-on-click-modal="false"
+                  :visible.sync="drugDialog.visible"
+                  append-to-body
+                  custom-class="dialog"
+                  title="添加药品"
+                  v-if="drugDialog.visible">
+      <into-presc-drug @cancel="closeDrugDialog"
+                       @nextStep="nextStep"
+                       ref="into-presc-drug"
+                       v-show="step === 1"></into-presc-drug>
 
-      <into-presc-drug-usage :drugInfo="currentDrug" @prevStep="prevStep" @submit="saveDrug" ref="into-presc-drug" v-show="step === 2"></into-presc-drug-usage>
+      <into-presc-drug-usage :drugInfo="currentDrug"
+                             @prevStep="prevStep"
+                             @submit="saveDrug"
+                             ref="into-presc-drug"
+                             v-show="step === 2"></into-presc-drug-usage>
     </peace-dialog>
 
-    <peace-dialog
-      :close-on-click-modal="false"
-      :visible.sync="editDrugDialog.visible"
-      append-to-body
-      custom-class="dialog"
-      title="修改药品用法"
-      v-if="editDrugDialog.visible"
-    >
-      <into-presc-drug-usage :data="editDrugDialog.data" :drugInfo="currentDrug" @submit="editDrug" edit ref="into-presc-drug" v-show="step === 3"></into-presc-drug-usage>
+    <peace-dialog :close-on-click-modal="false"
+                  :visible.sync="editDrugDialog.visible"
+                  append-to-body
+                  custom-class="dialog"
+                  title="修改药品用法"
+                  v-if="editDrugDialog.visible">
+      <into-presc-drug-usage :data="editDrugDialog.data"
+                             :drugInfo="currentDrug"
+                             @submit="editDrug"
+                             edit
+                             ref="into-presc-drug"
+                             v-show="step === 3"></into-presc-drug-usage>
     </peace-dialog>
   </div>
 </template>
@@ -162,6 +192,7 @@ export default {
     // 选择诊断
     selectDiagnosis() {},
     getPresent(query) {
+      query = query.replace(/^\s*/, '') //去除头部空格
       if (query !== '' && query.length > 0) {
         this.http.post(this.config.api.getDiseaseInfo, { name: query }).then(res => {
           this.dialog.source.present_history = res.data.list
@@ -178,7 +209,9 @@ export default {
         }
       }
 
-      const index = this.dialog.chooseData.findIndex(existItem => existItem.id === item.id && existItem.name === item.name)
+      const index = this.dialog.chooseData.findIndex(
+        existItem => existItem.id === item.id && existItem.name === item.name
+      )
 
       if (index === -1) {
         this.dialog.chooseData.push(item)
@@ -243,7 +276,6 @@ export default {
     submit() {
       const drug = this.drugList
       const diagnosis = this.dialog.chooseItem
-
       // 这里为了做兼容
       drug.forEach(item => {
         if (item.drug_unit) {
@@ -279,6 +311,7 @@ export default {
         sex: this.presc.sex,
         age: this.presc.age
       }
+
       this.$emit('submit', params)
     }
   },

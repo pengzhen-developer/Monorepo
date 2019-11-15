@@ -53,7 +53,10 @@
         </div>
         <div class="info-row-content">
           <template v-if="internalData.allergy_history">
-            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.allergy_history.split(',')">{{item}}</el-tag>
+            <el-tag :key="item"
+                    style="margin: 0px 5px 0 0; "
+                    type="info"
+                    v-for="item in internalData.allergy_history.split(',')">{{item}}</el-tag>
           </template>
           <template v-else>
             <span>无</span>
@@ -66,43 +69,50 @@
         </div>
         <div class="info-row-content">
           <template v-if="internalData.past_history">
-            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.past_history.split(',')">{{item}}</el-tag>
+            <el-tag :key="item"
+                    style="margin: 0px 5px 0 0; "
+                    type="info"
+                    v-for="item in internalData.past_history.split(',')">{{item}}</el-tag>
           </template>
           <template v-else>
             <span>无</span>
           </template>
         </div>
       </div>
-      <div
-        class="info-row"
-        v-if="internalData.Inspection_index && 
+      <div class="info-row"
+           v-if="internalData.Inspection_index && 
              (internalData.Inspection_index.temperature ||
               internalData.Inspection_index.weight ||
               internalData.Inspection_index.heart_rate ||
               internalData.Inspection_index.blood_pressure ||
-              internalData.Inspection_index.More)"
-      >
+              internalData.Inspection_index.More)">
         <div class="info-row-label">
           <span>体检指标</span>
         </div>
         <div class="info-row-content spec-row">
-          <div class="info-row" v-if="internalData.Inspection_index.temperature">
+          <div class="info-row"
+               v-if="internalData.Inspection_index.temperature">
             <div class="info-row-label">体温</div>
             <div class="info-row-content">{{ internalData.Inspection_index.temperature }} 度</div>
           </div>
-          <div class="info-row" v-if="internalData.Inspection_index.weight">
+          <div class="info-row"
+               v-if="internalData.Inspection_index.weight">
             <div class="info-row-label">体重</div>
             <div class="info-row-content">{{ internalData.Inspection_index.weight }} kg</div>
           </div>
-          <div class="info-row" v-if="internalData.Inspection_index.heart_rate">
+          <div class="info-row"
+               v-if="internalData.Inspection_index.heart_rate">
             <div class="info-row-label">心率</div>
             <div class="info-row-content">{{ internalData.Inspection_index.heart_rate }} bpm</div>
           </div>
-          <div class="info-row" v-if="internalData.Inspection_index.blood_pressure">
+          <div class="info-row"
+               v-if="internalData.Inspection_index.blood_pressure">
             <div class="info-row-label">血压</div>
-            <div class="info-row-content">{{ internalData.Inspection_index.blood_pressure }} mmHg</div>
+            <div class="info-row-content">{{ internalData.Inspection_index.blood_pressure }} mmHg
+            </div>
           </div>
-          <div class="info-row" v-if="internalData.Inspection_index.More">
+          <div class="info-row"
+               v-if="internalData.Inspection_index.More">
             <div class="info-row-label">辅助检查</div>
             <div class="info-row-content">{{ internalData.Inspection_index.More }}</div>
           </div>
@@ -114,7 +124,10 @@
         </div>
         <div class="info-row-content">
           <template v-if="internalData.diagnose">
-            <el-tag :key="item" style="margin: 0px 5px 0 0; " type="info" v-for="item in internalData.diagnose.split(',')">{{item}}</el-tag>
+            <el-tag :key="item"
+                    style="margin: 0px 5px 0 0; "
+                    type="info"
+                    v-for="item in internalData.diagnose.split('|')">{{item}}</el-tag>
           </template>
           <template v-else>
             <span>无</span>
@@ -129,26 +142,27 @@
           <div v-html="data.summary  || '无' "></div>
         </div>
       </div>
-      <div
-        class="info-row"
-        v-if="internalData.otherCheck && 
+      <div class="info-row"
+           v-if="internalData.otherCheck && 
              (internalData.otherCheck.ALT ||
               internalData.otherCheck.AST ||
-              internalData.otherCheck.HBV)"
-      >
+              internalData.otherCheck.HBV)">
         <div class="info-row-label">
           <span>其他检查</span>
         </div>
         <div class="info-row-content spec-row">
-          <div class="info-row" v-if="internalData.otherCheck.ALT">
+          <div class="info-row"
+               v-if="internalData.otherCheck.ALT">
             <div class="info-row-label">谷丙转氨酶(ALT)</div>
             <div class="info-row-content">{{ internalData.otherCheck.ALT }} IU/ml</div>
           </div>
-          <div class="info-row" v-if="internalData.otherCheck.AST">
+          <div class="info-row"
+               v-if="internalData.otherCheck.AST">
             <div class="info-row-label">谷草转氨酶(AST)</div>
             <div class="info-row-content">{{ internalData.otherCheck.AST }} IU/ml</div>
           </div>
-          <div class="info-row" v-if="internalData.otherCheck.HBV">
+          <div class="info-row"
+               v-if="internalData.otherCheck.HBV">
             <div class="info-row-label">HBV-DNA</div>
             <div class="info-row-content">{{ internalData.otherCheck.HBV }} IU/ml</div>
           </div>

@@ -1,91 +1,115 @@
 <template>
   <div>
-    <el-alert :closable="false" title="开处方" type="success">
+    <el-alert :closable="false"
+              title="开处方"
+              type="success">
       <div slot="title">
         <span>写病历</span>
-        <i @click="close" class="el-alert__closebtn el-icon-close"></i>
+        <i @click="close"
+           class="el-alert__closebtn el-icon-close"></i>
       </div>
     </el-alert>
 
-    <el-form :model="medical.model" :rules="medical.rules" label-position="right" label-width="100px" ref="form">
+    <el-form :model="medical.model"
+             :rules="medical.rules"
+             label-position="right"
+             label-width="100px"
+             ref="form">
       <el-row>
         <el-form-item label="写病历">
           <span slot="label">写病历</span>
-          <el-select @change="handleChangeType" v-model="medical.type">
-            <el-option key="base" label="通用模板" value></el-option>
-            <el-option :key="type.templateName" :label="type.templateName" :value="type.templateId" v-for="type in typeOptions"></el-option>
+          <el-select @change="handleChangeType"
+                     v-model="medical.type">
+            <el-option key="base"
+                       label="通用模板"
+                       value></el-option>
+            <el-option :key="type.templateName"
+                       :label="type.templateName"
+                       :value="type.templateId"
+                       v-for="type in typeOptions"></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="就诊时间" prop="visit_date">
+        <el-form-item label="就诊时间"
+                      prop="visit_date">
           <span slot="label">就诊时间</span>
           <span>{{ medical.model.visit_date }}</span>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="科别" prop="dep_id">
+        <el-form-item label="科别"
+                      prop="dep_id">
           <span slot="label">科别</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.netdept_child }}</span>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="主诉" prop="base_illness">
+        <el-form-item label="主诉"
+                      prop="base_illness">
           <span slot="label">主诉</span>
-          <el-input :rows="3" placeholder type="textarea" v-model="medical.model.base_illness"></el-input>
+          <el-input :rows="3"
+                    placeholder
+                    type="textarea"
+                    v-model="medical.model.base_illness"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="现病史" prop="present_history">
+        <el-form-item label="现病史"
+                      prop="present_history">
           <span slot="label">现病史</span>
-          <el-select
-            :remote-method="getPresent"
-            allow-create
-            filterable
-            multiple
-            placeholder="请输入现病史"
-            remote
-            style="width: 100%;"
-            v-model="medical.model.present_history"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+          <el-select :remote-method="getPresent"
+                     allow-create
+                     filterable
+                     multiple
+                     placeholder="请输入现病史"
+                     remote
+                     style="width: 100%;"
+                     v-model="medical.model.present_history">
+            <el-option :key="item.id"
+                       :label="item.name"
+                       :value="item.name"
+                       v-for="item in dialog.source.present_history"></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="过敏史" prop="allergy_history">
+        <el-form-item label="过敏史"
+                      prop="allergy_history">
           <span slot="label">过敏史</span>
-          <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
-            <el-tag
-              :key="item.id"
-              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              type="info"
-              v-for="item in medical.model.allergy_history"
-            >{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('过敏史')" type="text">修改</el-button>
+          <template
+                    v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
+            <el-tag :key="item.id"
+                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    type="info"
+                    v-for="item in medical.model.allergy_history">{{ item.name }}</el-tag>
+            <el-button @click="changeDialog('过敏史')"
+                       type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('过敏史')" type="text">请选择</el-button>
+            <el-button @click="showDialog('过敏史')"
+                       type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="既往史" prop="past_history">
+        <el-form-item label="既往史"
+                      prop="past_history">
           <span slot="label">既往史</span>
 
           <template v-if="medical.model.past_history && medical.model.past_history.length > 0">
-            <el-tag
-              :key="item.id"
-              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              type="info"
-              v-for="item in medical.model.past_history"
-            >{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('既往史')" type="text">修改</el-button>
+            <el-tag :key="item.id"
+                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    type="info"
+                    v-for="item in medical.model.past_history">{{ item.name }}</el-tag>
+            <el-button @click="changeDialog('既往史')"
+                       type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('既往史')" type="text">请选择</el-button>
+            <el-button @click="showDialog('既往史')"
+                       type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
@@ -95,23 +119,28 @@
           <div class="inspect">
             <div class="item">
               <span>体温</span>
-              <el-input placeholder v-model="medical.model.Inspection_index.temperature"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.Inspection_index.temperature"></el-input>
               <span>度</span>
             </div>
             <div class="item">
               <span>体重</span>
-              <el-input placeholder v-model="medical.model.Inspection_index.weight"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.Inspection_index.weight"></el-input>
               <span>kg</span>
             </div>
             <div class="item">
               <span>心率</span>
-              <el-input placeholder v-model="medical.model.Inspection_index.heart_rate"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.Inspection_index.heart_rate"></el-input>
               <span>bpm</span>
             </div>
             <div class="item">
               <span>血压</span>
-              <el-input placeholder v-model="medical.model.blood_pressure_begin"></el-input>/
-              <el-input placeholder v-model="medical.model.blood_pressure_end"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.blood_pressure_begin"></el-input>/
+              <el-input placeholder
+                        v-model="medical.model.blood_pressure_end"></el-input>
               <span>mmHg</span>
             </div>
           </div>
@@ -120,50 +149,61 @@
       <el-row>
         <el-form-item label="辅助检查">
           <span slot="label">辅助检查</span>
-          <el-input :rows="3" placeholder="请输入不少于10个字的描述" type="textarea" v-model="medical.model.Inspection_index.More"></el-input>
+          <el-input :rows="3"
+                    placeholder="请输入不少于10个字的描述"
+                    type="textarea"
+                    v-model="medical.model.Inspection_index.More"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="诊断" prop="diagnose">
+        <el-form-item label="诊断"
+                      prop="diagnose">
           <span slot="label">诊断</span>
           <template v-if="medical.model.diagnose && medical.model.diagnose.length > 0">
-            <el-tag
-              :key="item.id"
-              style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              type="info"
-              v-for="item in medical.model.diagnose"
-            >{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('诊断')" type="text">修改</el-button>
+            <el-tag :key="item.id"
+                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    type="info"
+                    v-for="item in medical.model.diagnose">{{ item.name }}</el-tag>
+            <el-button @click="changeDialog('诊断')"
+                       type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('诊断')" type="text">请选择</el-button>
+            <el-button @click="showDialog('诊断')"
+                       type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="医嘱小结" prop="summary">
+        <el-form-item label="医嘱小结"
+                      prop="summary">
           <span slot="label">医嘱小结</span>
-          <el-input placeholder v-model="medical.model.summary"></el-input>
+          <el-input placeholder
+                    v-model="medical.model.summary"></el-input>
         </el-form-item>
       </el-row>
       <el-row v-if="medical.type === 'ldqonaubvy'">
-        <el-form-item label="其他检查" prop="summary">
-          <span class="primary" slot="label">其他检查</span>
+        <el-form-item label="其他检查"
+                      prop="summary">
+          <span class="primary"
+                slot="label">其他检查</span>
           <div class="inspect small-text">
             <div class="item">
               <span>谷丙转氨酶(ALT)</span>
-              <el-input placeholder v-model="medical.model.ALT"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.ALT"></el-input>
               <span>IU/ml</span>
             </div>
             <div class="item">
               <span>谷草转氨酶(AST)</span>
-              <el-input placeholder v-model="medical.model.AST"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.AST"></el-input>
               <span>IU/ml</span>
             </div>
             <div class="item">
               <span>HBV-DNA</span>
-              <el-input placeholder v-model="medical.model.HBV"></el-input>
+              <el-input placeholder
+                        v-model="medical.model.HBV"></el-input>
               <span>IU/ml</span>
             </div>
           </div>
@@ -172,70 +212,76 @@
       <el-row style="text-align: center;">
         <el-form-item label=" ">
           <el-button @click="close">取消</el-button>
-          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
-          <el-button @click="sendMedical" type="primary">发送</el-button>
+          <el-button @click="saveMedical"
+                     type="success"
+                     v-show="false">保存</el-button>
+          <el-button @click="sendMedical"
+                     type="primary">发送</el-button>
         </el-form-item>
       </el-row>
     </el-form>
 
-    <peace-dialog :title="'添加' + dialog.title" :visible.sync="dialog.visible">
+    <peace-dialog :title="'添加' + dialog.title"
+                  :visible.sync="dialog.visible">
       <div style="margin-bottom: 10px">
         <template v-if="dialog.title === '过敏史'">
-          <el-select
-            :remote-method="getAllergy"
-            @change="chooseItem"
-            allow-create
-            filterable
-            placeholder="请输入过敏史"
-            remote
-            style="width: 100%;"
-            v-model="dialog.chooseItem"
-            value-key="id"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item" v-for="item in dialog.source.allergy_history"></el-option>
+          <el-select :remote-method="getAllergy"
+                     @change="chooseItem"
+                     allow-create
+                     filterable
+                     placeholder="请输入过敏史"
+                     remote
+                     style="width: 100%;"
+                     v-model="dialog.chooseItem"
+                     value-key="id">
+            <el-option :key="item.id"
+                       :label="item.name"
+                       :value="item"
+                       v-for="item in dialog.source.allergy_history"></el-option>
           </el-select>
         </template>
         <template v-if="dialog.title === '既往史'">
-          <el-select
-            :remote-method="getPresent"
-            @change="chooseItem"
-            allow-create
-            filterable
-            placeholder="请输入既往史"
-            remote
-            style="width: 100%;"
-            v-model="dialog.chooseItem"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+          <el-select :remote-method="getPresent"
+                     @change="chooseItem"
+                     allow-create
+                     filterable
+                     placeholder="请输入既往史"
+                     remote
+                     style="width: 100%;"
+                     v-model="dialog.chooseItem">
+            <el-option :key="item.id"
+                       :label="item.name"
+                       :value="item.name"
+                       v-for="item in dialog.source.present_history"></el-option>
           </el-select>
         </template>
         <template v-if="dialog.title === '诊断'">
-          <el-select
-            :remote-method="getPresent"
-            @change="chooseItem"
-            allow-create
-            filterable
-            placeholder="请输入诊断"
-            remote
-            style="width: 100%;"
-            v-model="dialog.chooseItem"
-          >
-            <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+          <el-select :remote-method="getPresent"
+                     @change="chooseItem"
+                     allow-create
+                     filterable
+                     placeholder="请输入诊断"
+                     remote
+                     style="width: 100%;"
+                     v-model="dialog.chooseItem">
+            <el-option :key="item.id"
+                       :label="item.name"
+                       :value="item.name"
+                       v-for="item in dialog.source.present_history"></el-option>
           </el-select>
         </template>
       </div>
 
-      <div style="margin: 10px 0;" v-if="dialog.chooseData.length > 0">
+      <div style="margin: 10px 0;"
+           v-if="dialog.chooseData.length > 0">
         <p>已选{{dialog.title}}</p>
 
         <div style="margin: 10px 0;">
-          <el-tag
-            :key="item.id"
-            @close="closeItem(item)"
-            closable
-            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-            v-for="item in dialog.chooseData"
-          >{{ item.name }}</el-tag>
+          <el-tag :key="item.id"
+                  @close="closeItem(item)"
+                  closable
+                  style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
         </div>
       </div>
 
@@ -244,13 +290,11 @@
           <p>常见{{dialog.title}}</p>
 
           <div style="margin: 10px 0;">
-            <el-tag
-              :key="item.id"
-              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
-              @click="chooseItem(item)"
-              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              v-for="item in dialog.source.IllnessList"
-            >{{ item.name }}</el-tag>
+            <el-tag :key="item.id"
+                    :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+                    @click="chooseItem(item)"
+                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
           </div>
         </div>
       </template>
@@ -260,13 +304,11 @@
           <p>常见{{dialog.title}}</p>
 
           <div style="margin: 10px 0;">
-            <el-tag
-              :key="item.id"
-              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
-              @click="chooseItem(item)"
-              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              v-for="item in dialog.source.allergens"
-            >{{ item.name }}</el-tag>
+            <el-tag :key="item.id"
+                    :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+                    @click="chooseItem(item)"
+                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    v-for="item in dialog.source.allergens">{{ item.name }}</el-tag>
           </div>
         </div>
       </template>
@@ -276,20 +318,19 @@
           <p>常见{{dialog.title}}</p>
 
           <div style="margin: 10px 0;">
-            <el-tag
-              :key="item.id"
-              :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
-              @click="chooseItem(item)"
-              style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-              v-for="item in dialog.source.OldIllnessList"
-            >{{ item.name }}</el-tag>
+            <el-tag :key="item.id"
+                    :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
+                    @click="chooseItem(item)"
+                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    v-for="item in dialog.source.OldIllnessList">{{ item.name }}</el-tag>
           </div>
         </div>
       </template>
 
       <div style="margin-bottom: 10px; text-align: center;">
         <el-button @click="dialog.visible = false">取消</el-button>
-        <el-button @click="saveItem" type="primary">保存</el-button>
+        <el-button @click="saveItem"
+                   type="primary">保存</el-button>
       </div>
     </peace-dialog>
   </div>
@@ -365,10 +406,12 @@ export default {
 
   watch: {
     'medical.model.blood_pressure_begin'() {
-      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
+      this.medical.model.Inspection_index.blood_pressure =
+        this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     },
     'medical.model.blood_pressure_end'() {
-      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
+      this.medical.model.Inspection_index.blood_pressure =
+        this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     }
   },
 
@@ -441,27 +484,45 @@ export default {
     sendMedical() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (this.medical.model.Inspection_index.More && this.medical.model.Inspection_index.More.length < 10) {
+          if (
+            this.medical.model.Inspection_index.More &&
+            this.medical.model.Inspection_index.More.length < 10
+          ) {
             $peace.util.warning('请输入至少 10 个字的辅助检查')
             return
           }
-          if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
+          if (
+            this.medical.model.Inspection_index.temperature &&
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)
+          ) {
             $peace.util.warning('请输入正确的体温，最多保留一位小数')
             return
           }
-          if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
+          if (
+            this.medical.model.Inspection_index.weight &&
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)
+          ) {
             $peace.util.warning('请输入正确的体重，最多保留一位小数')
             return
           }
-          if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
+          if (
+            this.medical.model.Inspection_index.heart_rate &&
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)
+          ) {
             $peace.util.warning('请输入正确的心率，最多保留一位小数')
             return
           }
-          if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
+          if (
+            this.medical.model.blood_pressure_begin &&
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)
+          ) {
             $peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
-          if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
+          if (
+            this.medical.model.blood_pressure_end &&
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)
+          ) {
             $peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
@@ -470,11 +531,17 @@ export default {
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || (parseInt(alt) < 0 || parseInt(alt) > 1000)) {
+          if (
+            (alt && !/^\d+(\.\d{1,1})?$/.test(alt)) ||
+            (parseInt(alt) < 0 || parseInt(alt) > 1000)
+          ) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || (parseInt(ast) < 0 || parseInt(ast) > 1000)) {
+          if (
+            (ast && !/^\d+(\.\d{1,1})?$/.test(ast)) ||
+            (parseInt(ast) < 0 || parseInt(ast) > 1000)
+          ) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
@@ -498,10 +565,13 @@ export default {
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
           params.present_history = params.present_history.toString()
-          params.allergy_history = params.allergy_history && params.allergy_history.map(item => item.name).toString()
-          params.past_history = params.past_history && params.past_history.map(item => item.name).toString()
+          params.allergy_history =
+            params.allergy_history && params.allergy_history.map(item => item.name).toString()
+          params.past_history =
+            params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
-
+          params.diagnose = params.diagnose.replace(/,/g, ' | ')
+          console.log(params)
           peace.service.inquiry.addCase(params).then(res => {
             $peace.util.alert(res.msg)
 
@@ -550,7 +620,9 @@ export default {
         }
       }
 
-      const index = this.dialog.chooseData.findIndex(existItem => existItem.id === item.id && existItem.name === item.name)
+      const index = this.dialog.chooseData.findIndex(
+        existItem => existItem.id === item.id && existItem.name === item.name
+      )
 
       if (index === -1) {
         this.dialog.chooseData.push(item)
@@ -578,7 +650,7 @@ export default {
       } else if (this.dialog.title === '诊断') {
         this.medical.model.diagnose = [...this.dialog.chooseData]
       }
-
+      console.log(this.medical.model.diagnose)
       this.dialog.visible = false
     },
 
@@ -597,9 +669,14 @@ export default {
         this.medical.model.Inspection_index.More ||
         this.medical.model.summary
       ) {
-        $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
-          $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
-        })
+        $peace.util.confirm(
+          '确定要退出病历吗？当前所有数据将会被清除!',
+          undefined,
+          undefined,
+          () => {
+            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+          }
+        )
       } else {
         $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
       }

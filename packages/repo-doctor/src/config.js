@@ -67,7 +67,14 @@ export const config = {
         title: '我的会诊',
         path: '/clinic/consultation'
       },
-      { id: 3, pid: null, closable: true, name: '患者', path: '患者', icon: 'icon_ic_huanzhe' },
+      {
+        id: 3,
+        pid: null,
+        closable: true,
+        name: '患者',
+        path: '患者',
+        icon: 'icon_ic_huanzhe'
+      },
       {
         id: 31,
         pid: 3,
@@ -92,7 +99,14 @@ export const config = {
         title: '患者随访',
         path: '/patient/follow'
       },
-      { id: 4, pid: null, closable: true, name: '记录', path: '记录', icon: 'icon_ic_inquiry' },
+      {
+        id: 4,
+        pid: null,
+        closable: true,
+        name: '记录',
+        path: '记录',
+        icon: 'icon_ic_inquiry'
+      },
       {
         id: 41,
         pid: 4,
@@ -125,8 +139,22 @@ export const config = {
         title: '会诊记录',
         path: '/record/consultation'
       },
-      { id: 5, pid: null, closable: true, name: '我的', path: '我的', icon: 'icon_ic_my' },
-      { id: 51, pid: 5, closable: true, name: '信息查看', title: '信息查看', path: '/sys/myInfo' },
+      {
+        id: 5,
+        pid: null,
+        closable: true,
+        name: '我的',
+        path: '我的',
+        icon: 'icon_ic_my'
+      },
+      {
+        id: 51,
+        pid: 5,
+        closable: true,
+        name: '信息查看',
+        title: '信息查看',
+        path: '/sys/myInfo'
+      },
       {
         id: 52,
         pid: 5,
@@ -159,7 +187,14 @@ export const config = {
         title: '我的药房',
         path: '/sys/myPharmacy'
       },
-      { id: 56, pid: 5, closable: true, name: '我的随访', title: '我的随访', path: '/sys/myFollow' }
+      {
+        id: 56,
+        pid: 5,
+        closable: true,
+        name: '我的随访',
+        title: '我的随访',
+        path: '/sys/myFollow'
+      }
     ]
   },
 
