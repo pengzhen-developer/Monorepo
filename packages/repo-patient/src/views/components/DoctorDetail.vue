@@ -2,38 +2,18 @@
   <div class="doctor-detail">
     <div class="header">
       <div class="header-left">
-        <van-image
-          round
-          width="50px"
-          height="50px"
-          cover
-          :src="doctor.doctorInfo.avartor"
-        />
+        <van-image round width="50px" height="50px" cover :src="doctor.doctorInfo.avartor" />
         <span class="name">{{ doctor.doctorInfo.name }}</span>
         <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
       </div>
 
       <div class="header-right">
-        <van-button
-          v-if="doctor.doctorInfo.attentionStatus"
-          class="star"
-          round
-          size="small"
-          disabled
-          style="font-weight: bold;"
-          >已关注</van-button
-        >
+        <van-button v-if="doctor.doctorInfo.attentionStatus" class="star" round size="small"
+          disabled style="font-weight: bold;">已关注</van-button>
 
-        <van-button
-          v-else
-          @click="shareDoctor(doctor.doctorInfo)"
-          class="star"
-          round
-          :icon="require('@src/assets/images/ic_follow.png')"
-          size="small"
-          style="font-weight: bold;"
-          >关注</van-button
-        >
+        <van-button v-else @click="shareDoctor(doctor.doctorInfo)" class="star" round
+          :icon="require('@src/assets/images/ic_follow.png')" size="small"
+          style="font-weight: bold;">关注</van-button>
       </div>
     </div>
 
@@ -41,81 +21,55 @@
       <!-- 所属机构 -->
       <div class="body-card">
         <div class="row flex">
-          <van-image
-            width="30px"
-            height="30px"
-            :src="require('@src/assets/images/file/ic_mechanism.png')"
-          />
+          <van-image width="30px" height="30px"
+            :src="require('@src/assets/images/file/ic_mechanism.png')" />
           <h4 class="body-card-title">所属机构</h4>
         </div>
 
         <div class="row flex between">
-          <div>
+          <div class="flex">
             <span class="hospital">{{ doctor.doctorInfo.hospitalName }}</span>
             <span class="deparment">{{ doctor.doctorInfo.deptName }}</span>
           </div>
-          <div>
-            <van-icon name="arrow" @click="goMap(doctor.doctorInfo)" />
-          </div>
+          <van-icon name="arrow" @click="goMap(doctor.doctorInfo)" />
         </div>
 
         <van-divider />
 
         <div class="row">
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_be good at.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_be good at.png')" />
             <h4 class="body-card-title">专业擅长</h4>
           </div>
-          <div
-            class="body-card-description"
-            :class="{ fold: fold, unfold: !fold }"
-            v-html="doctor.doctorInfo.specialSkill || '暂未填写'"
-          ></div>
+          <div class="body-card-description" :class="{ fold: fold, unfold: !fold }"
+            v-html="doctor.doctorInfo.specialSkill || '暂未填写'"></div>
         </div>
 
         <div class="row" v-show="!fold">
           <van-divider />
 
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_brief introduction.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_brief introduction.png')" />
             <h4 class="body-card-title">医生简介</h4>
           </div>
 
-          <div
-            class="body-card-description"
-            :class="{ fold: fold, unfold: !fold }"
-            v-html="doctor.doctorInfo.summary || '暂未填写'"
-          ></div>
+          <div class="body-card-description" :class="{ fold: fold, unfold: !fold }"
+            v-html="doctor.doctorInfo.summary || '暂未填写'"></div>
         </div>
 
         <div class="row flex center">
           <div class="more">
             <div @click="showMore" v-if="fold" class="row flex center">
               <span style="margin: 0 4px 0 0;">查看更多</span>
-              <van-image
-                round
-                width="13px"
-                height="13px"
-                :src="require('@src/assets/images/ic_more.png')"
-              ></van-image>
+              <van-image round width="13px" height="13px"
+                :src="require('@src/assets/images/ic_more.png')"></van-image>
             </div>
             <div @click="showMore" v-if="!fold" class="row flex center">
               <span style="margin: 0 4px 0 0;">收起</span>
-              <van-image
-                round
-                width="13px"
-                height="13px"
-                style="transform: rotate(180deg)"
-                :src="require('@src/assets/images/ic_more.png')"
-              ></van-image>
+              <van-image round width="13px" height="13px" style="transform: rotate(180deg)"
+                :src="require('@src/assets/images/ic_more.png')"></van-image>
             </div>
           </div>
         </div>
@@ -125,43 +79,26 @@
       <div class="body-card">
         <div class="row flex between">
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_interrogation.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_interrogation.png')" />
             <h4 class="body-card-title">问诊服务</h4>
           </div>
           <div></div>
         </div>
 
         <!-- 图文咨询 -->
-        <div
-          class="service row flex"
-          @click="goApply(serviceImageInfo, 'image')"
-        >
-          <van-image
-            width="30px"
-            height="30px"
-            v-if="serviceImageInfo.status"
-            style="margin: 0 10px 0 0;"
-            :src="require('@src/assets/images/ic_tuwen_open.png')"
-          ></van-image>
-          <van-image
-            width="30px"
-            height="30px"
-            v-else
-            style="margin: 0 10px 0 0;"
-            :src="require('@src/assets/images/ic_tuwen.png')"
-          ></van-image>
+        <div class="service row flex" @click="goApply(serviceImageInfo, 'image')">
+          <van-image width="30px" height="30px" v-if="serviceImageInfo.status"
+            style="margin: 0 10px 0 0;" :src="require('@src/assets/images/ic_tuwen_open.png')">
+          </van-image>
+          <van-image width="30px" height="30px" v-else style="margin: 0 10px 0 0;"
+            :src="require('@src/assets/images/ic_tuwen.png')"></van-image>
 
           <div class="service-consult-content">
             <div class="row flex between" style="margin: 0;">
               <span class="service-consult-content-name">图文咨询</span>
               <span v-if="serviceImageInfo.status">
-                <span class="service-consult-content-fee"
-                  >￥{{ serviceImageInfo.money }}</span
-                >
+                <span class="service-consult-content-fee">￥{{ serviceImageInfo.money }}</span>
                 <span class="service-consult-content-unit"> / 次</span>
               </span>
               <span v-else class="service-consult-content-description">
@@ -169,18 +106,13 @@
               </span>
             </div>
             <div>
-              <span class="service-consult-content-description"
-                >可通过文字、图片的形式和医生沟通</span
-              >
+              <span class="service-consult-content-description">可通过文字、图片的形式和医生沟通</span>
             </div>
           </div>
         </div>
 
         <!-- 视频咨询 -->
-        <div
-          class="service row flex"
-          @click="goApply(serviceVideoInfo, 'video')"
-        >
+        <div class="service row flex" @click="goApply(serviceVideoInfo, 'video')">
           <!-- 视频咨询尚未开通 -->
           <!-- <van-image
             round
@@ -198,13 +130,8 @@
             style="margin: 0 10px 0 0;"
             :src="require('@src/assets/images/ic_video.png')"
           ></van-image> -->
-          <van-image
-            round
-            width="30px"
-            height="30px"
-            style="margin: 0 10px 0 0;"
-            :src="require('@src/assets/images/ic_video.png')"
-          ></van-image>
+          <van-image round width="30px" height="30px" style="margin: 0 10px 0 0;"
+            :src="require('@src/assets/images/ic_video.png')"></van-image>
 
           <div class="service-consult-content">
             <div class="row flex between" style="margin: 0;">
@@ -223,9 +150,7 @@
               </span>
             </div>
             <div>
-              <span class="service-consult-content-description"
-                >可通过视频的形式和医生沟通</span
-              >
+              <span class="service-consult-content-description">可通过视频的形式和医生沟通</span>
             </div>
           </div>
         </div>
@@ -235,11 +160,8 @@
       <div class="body-card" v-if="doctor.registerData.length > 0">
         <div class="row flex between">
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_register.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_register.png')" />
             <h4 class="body-card-title">挂号服务</h4>
           </div>
           <div>
@@ -247,54 +169,36 @@
           </div>
         </div>
 
-        <div
-          class="service row flex"
-          v-for="(registerItem, index) in doctor.registerData"
-          :key="
+        <div class="service row flex" v-for="(registerItem, index) in doctor.registerData" :key="
             registerItem.timeSharing +
               registerItem.bookingStart +
               registerItem.bookingEnd
-          "
-        >
+          ">
           <div class="service-consult-content">
             <div class="row flex" style="margin: 0 0 4px 0;">
               <span class="service-consult-content-name">
                 {{ registerItem.timeSharing }}
                 {{ registerItem.AMPM == "AM" ? "上午" : "下午" }}
               </span>
-              <van-tag
-                style="margin: 0 12px; font-size: 12px;"
-                color="#f1f1f1"
-                text-color="#999999"
-              >
+              <van-tag style="margin: 0 12px; font-size: 12px;" color="#f1f1f1"
+                text-color="#999999">
                 {{ index === 0 ? "号源一" : index === 1 ? "号源二" : "" }}
               </van-tag>
             </div>
             <div>
               <span>
-                <span
-                  class="service-consult-content-description"
-                  style="font-size: 13px; margin: 0 10px 0 0;"
-                  >{{
+                <span class="service-consult-content-description"
+                  style="font-size: 13px; margin: 0 10px 0 0;">{{
                     registerItem.sourceLevelType == 1 ? "普通门诊" : "专家号"
-                  }}</span
-                >
-                <span
-                  class="service-consult-content-fee"
-                  style="font-size: 13px;"
-                  >￥{{ registerItem.unitPrice }}</span
-                >
+                  }}</span>
+                <span class="service-consult-content-fee"
+                  style="font-size: 13px;">￥{{ registerItem.unitPrice }}</span>
               </span>
             </div>
           </div>
 
-          <van-button
-            round
-            size="small"
-            type="primary"
-            @click="goRegisterDetail(registerItem)"
-            >预约</van-button
-          >
+          <van-button round size="small" type="primary" @click="goRegisterDetail(registerItem)">预约
+          </van-button>
         </div>
       </div>
 
@@ -346,11 +250,8 @@
       <div class="body-card" v-if="doctor.workOnLine || doctor.workUnderLine">
         <div class="row flex">
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_scheduling.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_scheduling.png')" />
             <h4 class="body-card-title">医生排班</h4>
           </div>
         </div>
@@ -373,11 +274,8 @@
               <tbody>
                 <tr>
                   <td class="time-table-col border">上午</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workOnLine[0].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[0].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -385,11 +283,8 @@
                 </tr>
                 <tr>
                   <td class="time-table-col border">下午</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workOnLine[1].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[1].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -397,11 +292,8 @@
                 </tr>
                 <tr>
                   <td class="time-table-col border">晚上</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workOnLine[2].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workOnLine[2].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -427,11 +319,8 @@
               <tbody>
                 <tr>
                   <td class="time-table-col border">上午</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workUnderLine[0].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[0].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -439,11 +328,8 @@
                 </tr>
                 <tr>
                   <td class="time-table-col border">下午</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workUnderLine[1].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[1].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -451,11 +337,8 @@
                 </tr>
                 <tr>
                   <td class="time-table-col border">晚上</td>
-                  <td
-                    :key="item.id"
-                    class="time-table-col border primary"
-                    v-for="item in doctor.workUnderLine[2].weekList"
-                  >
+                  <td :key="item.id" class="time-table-col border primary"
+                    v-for="item in doctor.workUnderLine[2].weekList">
                     <span v-if="item.status">
                       <van-icon name="success" />
                     </span>
@@ -471,11 +354,8 @@
       <div class="body-card" v-if="false">
         <div class="row flex">
           <div class="row flex">
-            <van-image
-              width="30px"
-              height="30px"
-              :src="require('@src/assets/images/ic_evaluate.png')"
-            />
+            <van-image width="30px" height="30px"
+              :src="require('@src/assets/images/ic_evaluate.png')" />
             <h4 class="body-card-title">患者评价</h4>
           </div>
           <div></div>
@@ -635,6 +515,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flex {
+  display: flex;
+  align-items: center;
+}
 .doctor-detail {
   height: 100%;
   display: flex;
@@ -644,7 +528,7 @@ export default {
     min-height: 105px;
     height: 105px;
 
-    background-image: url("~@/assets/images/bg-1.png");
+    background-image: url('~@/assets/images/bg-1.png');
     background-repeat: no-repeat;
     background-size: auto 105px;
 

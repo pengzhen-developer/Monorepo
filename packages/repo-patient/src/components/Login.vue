@@ -3,30 +3,16 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field pattern="\d*"
-                 placeholder="请输入手机号"
-                 ref="tel"
-                 type="number"
-                 v-model="model.tel"></van-field>
+      <van-field pattern="\d*" placeholder="请输入手机号" ref="tel" type="number" v-model="model.tel">
+      </van-field>
 
-      <van-field clickable
-                 ref="sms"
-                 maxlength="6"
-                 pattern="\d*"
-                 placeholder="请输入验证码"
-                 type="number"
-                 v-model="model.smsCode">
-        <div @click="sendSms"
-             class="login-form-smsCode"
-             slot="right-icon">
+      <van-field clickable ref="sms" maxlength="6" pattern="\d*" placeholder="请输入验证码" type="number"
+        v-model="model.smsCode">
+        <div @click="sendSms" class="login-form-smsCode" slot="right-icon">
 
           <template v-if="countDownTime">
-            <van-row type="flex"
-                     justify="start"
-                     align="center">
-              <van-count-down :time="countDownTime"
-                              @finish="countDownFinished"
-                              format="ss" />
+            <van-row type="flex" justify="start" align="center">
+              <van-count-down :time="countDownTime" @finish="countDownFinished" format="ss" />
               <span>秒</span>
             </van-row>
           </template>
@@ -36,13 +22,11 @@
         </div>
       </van-field>
 
-      <van-button @click="signIn"
-                  class="login-form-sign-in"
-                  type="primary">进入万家云医</van-button>
+      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
     </div>
 
     <div class="login-footer">
-      <span class="gray">进入爱加医即代表你已同意</span>
+      <span class="gray">进入万家云医即代表你已同意</span>
       <span>用户协议及隐私策略</span>
     </div>
   </div>
