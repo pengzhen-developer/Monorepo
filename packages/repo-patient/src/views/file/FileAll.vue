@@ -1,136 +1,122 @@
 <template>
   <div class="file-all">
-    <div class="time-line"
-         v-if="data">
-
-      <div class="item"
-           v-for="(value, key) in data"
-           :key="key">
-        <div class="time">
-          <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
-          <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
-        </div>
-        <div class="text">
-          <div v-for="item in value"
-               :key="item.healthType + item.id">
-            <!-- 血压 -->
-            <template v-if="item.healthType === 'bloodPressuredata'">
-              <div class="note card health-item"
-                   @click="util.goDetail('血压', item)">
-                <div class="health-item-left">
-                  <van-image width="35px"
-                             height="44px"
-                             :src="require('@src/assets/images/file/ic_blood pressure.png')" />
-                </div>
-                <div class="health-item-right">
-                  <span>
-                    <span class="card-value">
-                      {{ item.systolicPressure }}/{{ item.diastolicPressure }}
+    <div class="time-line" v-if="data">
+      <van-list v-model="isLoading" :finished="finished" @load="allHealthList">
+        <div class="item" v-for="(value, key) in data" :key="key">
+          <div class="time">
+            <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
+            <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
+          </div>
+          <div class="text">
+            <div v-for="item in value" :key="item.healthType + item.id">
+              <!-- 血压 -->
+              <template v-if="item.healthType === 'bloodPressuredata'">
+                <div class="note card health-item" @click="util.goDetail('血压', item)">
+                  <div class="health-item-left">
+                    <van-image width="35px" height="44px"
+                      :src="require('@src/assets/images/file/ic_blood pressure.png')" />
+                  </div>
+                  <div class="health-item-right">
+                    <span>
+                      <span class="card-value">
+                        {{ item.systolicPressure }}/{{ item.diastolicPressure }}
+                      </span>
+                      <span class="card-unit">
+                        {{ util.getUnit('血压') }}
+                      </span>
                     </span>
-                    <span class="card-unit">
-                      {{ util.getUnit('血压') }}
+                    <van-tag class="card-tag"
+                      :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                      <span class="card-tag-span">{{ item.result }}</span>
+                    </van-tag>
+                  </div>
+                </div>
+              </template>
+
+              <!-- 血糖 -->
+              <template v-if="item.healthType === 'bloodSugarData'">
+                <div class="note card health-item" @click="util.goDetail('血糖', item)">
+                  <div class="health-item-left">
+                    <van-image width="35px" height="44px"
+                      :src="require('@src/assets/images/file/ic_blood sugar.png')" />
+                  </div>
+                  <div class="health-item-right">
+                    <span>
+                      <span class="card-value">{{ item.bloodSugar }}</span>
+                      <span class="card-unit">{{ util.getUnit('血糖') }}</span>
                     </span>
-                  </span>
-                  <van-tag class="card-tag"
-                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    <span class="card-tag-span">{{ item.result }}</span>
-                  </van-tag>
+                    <van-tag class="card-tag"
+                      :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                      <span class="card-tag-span">{{ item.result }}</span>
+                    </van-tag>
+                  </div>
                 </div>
-              </div>
-            </template>
+              </template>
 
-            <!-- 血糖 -->
-            <template v-if="item.healthType === 'bloodSugarData'">
-              <div class="note card health-item"
-                   @click="util.goDetail('血糖', item)">
-                <div class="health-item-left">
-                  <van-image width="35px"
-                             height="44px"
-                             :src="require('@src/assets/images/file/ic_blood sugar.png')" />
+              <!-- 血氧 -->
+              <template v-if="item.healthType === 'oxyGenData'">
+                <div class="note card health-item" @click="util.goDetail('血氧', item)">
+                  <div class="health-item-left">
+                    <van-image width="35px" height="44px"
+                      :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
+                  </div>
+                  <div class="health-item-right">
+                    <span>
+                      <span class="card-value">{{ item.bloodOxygen }}</span>
+                      <span class="card-unit">{{ util.getUnit('血氧') }}</span>
+                    </span>
+                    <van-tag class="card-tag"
+                      :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                      <span class="card-tag-span">{{ item.result }}</span>
+                    </van-tag>
+                  </div>
                 </div>
-                <div class="health-item-right">
-                  <span>
-                    <span class="card-value">{{ item.bloodSugar }}</span>
-                    <span class="card-unit">{{ util.getUnit('血糖') }}</span>
-                  </span>
-                  <van-tag class="card-tag"
-                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    <span class="card-tag-span">{{ item.result }}</span>
-                  </van-tag>
-                </div>
-              </div>
-            </template>
+              </template>
 
-            <!-- 血氧 -->
-            <template v-if="item.healthType === 'oxyGenData'">
-              <div class="note card health-item"
-                   @click="util.goDetail('血氧', item)">
-                <div class="health-item-left">
-                  <van-image width="35px"
-                             height="44px"
-                             :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
+              <!-- 体脂 -->
+              <template v-if="item.healthType === 'bodyFat'">
+                <div class="note card health-item" @click="util.goDetail('体脂', item)">
+                  <div class="health-item-left">
+                    <van-image width="35px" height="44px"
+                      :src="require('@src/assets/images/file/ic_body fat.png')" />
+                  </div>
+                  <div class="health-item-right">
+                    <span>
+                      <span class="card-value">{{ item.bfr }}</span>
+                      <span class="card-unit">{{ util.getUnit('体脂') }}</span>
+                    </span>
+                    <van-tag class="card-tag"
+                      :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
+                      <span class="card-tag-span">{{ item.result }}</span>
+                    </van-tag>
+                  </div>
                 </div>
-                <div class="health-item-right">
-                  <span>
-                    <span class="card-value">{{ item.bloodOxygen }}</span>
-                    <span class="card-unit">{{ util.getUnit('血氧') }}</span>
-                  </span>
-                  <van-tag class="card-tag"
-                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    <span class="card-tag-span">{{ item.result }}</span>
-                  </van-tag>
-                </div>
-              </div>
-            </template>
+              </template>
 
-            <!-- 体脂 -->
-            <template v-if="item.healthType === 'bodyFat'">
-              <div class="note card health-item"
-                   @click="util.goDetail('体脂', item)">
-                <div class="health-item-left">
-                  <van-image width="35px"
-                             height="44px"
-                             :src="require('@src/assets/images/file/ic_body fat.png')" />
+              <!-- 病历 -->
+              <template v-if="item.healthType === 'case'">
+                <div class="note card case" @click="util.goDetail('病历', item)">
+                  <div class="case-left">
+                    <van-image width="35px" height="35px"
+                      :src="require('@src/assets/images/file/ic_medical record.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      门诊病历
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netdeptName }}
+                    </p>
+                  </div>
                 </div>
-                <div class="health-item-right">
-                  <span>
-                    <span class="card-value">{{ item.bfr }}</span>
-                    <span class="card-unit">{{ util.getUnit('体脂') }}</span>
-                  </span>
-                  <van-tag class="card-tag"
-                           :class="{ normal: item.resultType === '2', unnormal: item.resultType !== '2' }">
-                    <span class="card-tag-span">{{ item.result }}</span>
-                  </van-tag>
-                </div>
-              </div>
-            </template>
-
-            <!-- 病历 -->
-            <template v-if="item.healthType === 'case'">
-              <div class="note card case"
-                   @click="util.goDetail('病历', item)">
-                <div class="case-left">
-                  <van-image width="35px"
-                             height="35px"
-                             :src="require('@src/assets/images/file/ic_medical record.png')" />
-                </div>
-                <div class="case-right">
-                  <p style="font-size: 16px; color: #333333; line-height: 32px;">
-                    门诊病历
-                  </p>
-                  <p style="font-size: 12px; color: #999999; line-height: 24px;">
-                    {{ item.netHospitalName }} | {{ item.netdeptName }}
-                  </p>
-                </div>
-              </div>
-            </template>
+              </template>
+            </div>
           </div>
         </div>
-      </div>
+      </van-list>
     </div>
 
-    <div v-else
-         class="none-page">
+    <div v-else class="none-page">
       <div class="icon icon_none_source"></div>
       <div class="none-text">暂无数据</div>
     </div>
@@ -149,8 +135,11 @@ export default {
   data() {
     return {
       util,
-
-      data: undefined
+      data: undefined,
+      p: 0,
+      size: 10,
+      finished: false,
+      isLoading: true,
     }
   },
 
@@ -167,7 +156,14 @@ export default {
 
   methods: {
     allHealthList() {
-      peace.service.health.allHealthList({ familyId: this.familyId, type: '1' }).then(res => {
+      this.p++
+      let param = {
+        familyId: this.familyId,
+        type: '1',
+        p: this.p,
+        size: this.size
+      }
+      peace.service.health.allHealthList(param).then(res => {
         const temp = {}
 
         // 遍历时间
@@ -181,7 +177,22 @@ export default {
             temp[time] = res.data.list.filter(item => item.createdTime === time)
           })
 
-          this.data = temp
+          // this.data = temp
+          if (typeof this.data == 'undefined') {
+            this.data = temp
+          } else {
+            for (let key in temp) {
+              if (this.data[key]) {
+                this.data[key] = this.data[key].concat(temp[key])
+              } else {
+                this.data[key] = temp[key]
+              }
+            }
+          }
+        }
+        this.isLoading = false
+        if (this.p * this.size >= res.data.total) {
+          this.finished = true
         }
       })
     }
