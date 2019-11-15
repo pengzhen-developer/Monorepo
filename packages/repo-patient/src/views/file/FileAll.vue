@@ -139,7 +139,7 @@ export default {
       p: 0,
       size: 10,
       finished: false,
-      isLoading: true,
+      isLoading: false,
     }
   },
 

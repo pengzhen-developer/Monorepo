@@ -54,7 +54,7 @@ export default {
       p: 0,
       size: 10,
       finished: false,
-      isLoading: true,
+      isLoading: false,
     }
   },
 
@@ -80,7 +80,6 @@ export default {
         size: this.size
       }
       peace.service.health.allHealthList(param).then(res => {
-        console.log(res.data.list.length, res.data.total)
         const temp = {}
 
         // 遍历时间
