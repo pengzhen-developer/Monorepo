@@ -2,83 +2,207 @@
   <div class="userorderList"
        style="height: 100%;">
     <div class="content"
-         style="height: 100%;">
+         style="min-height: 100%;">
       <div v-if="$store.getters['appointMent/appointList'].length">
         <div class="panel"
              v-for="(item,index) in $store.getters['appointMent/appointList']"
              :key="index">
-          <div class="panel-head">
-            <div class="card-strip">
-              <div class="strip-info"
-                   v-if="item.orderType == 'register'">
-                <div class="label-jq label-jq-register">预约挂号</div>
-              </div>
-              <div class="strip-info"
-                   v-if="item.orderType == 'privateDoctor'">
-                <div class="label-jq">私人医生</div>
-              </div>
-              <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
-                {{page.orderTypeMap[item.orderType][item.orderStatus]}}</div>
-            </div>
-          </div>
-          <div class="panel-body"
-               @click="goOrderDetailPage(item)"
-               style="padding-top: 0">
-            <div class="card">
-              <img class="card-avatar avatar-circular"
-                   :src="item.doctorInfo.avartor" />
-              <div class="card-body">
-                <div class="card-name">{{item.doctorInfo.name}}
-                  <div class="card-small">{{item.doctorInfo.doctorTitle}}
-                    {{item.doctorInfo.deptName}}</div>
+          <!-- 咨询订单 -->
+          <div v-if="item.orderType=='inquiry'">
+            <div class="panel-body"
+                 @click="goConsultDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                     :src="item.doctorInfo.avartor" />
+                <div class="card-body">
+                  <div class="card-name card-flex">{{item.doctorInfo.name}}
+                    {{item.doctorInfo.deptName}}
+                    <div class="card-gary">[文图咨询]</div>
+                  </div>
                 </div>
-                <div class="card-brief">{{item.doctorInfo.hospitalName}}</div>
+                <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
+                     v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
+                  {{page.orderTypeMap[item.orderType][item.inquiryInfo.inquiryStatus]}}
+                </div>
               </div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='privateDoctor'">
-              <div class="small-time">
-                {{item.orderStatus == 3 || item.orderStatus == 7 ? '有效期：' + item.startTime + '-' + item.endTime : ''}}
-              </div>
-              <div :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
-                {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}</div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='register'">
-              <div class="small-time">
-                就诊人：{{item.familyName}}
-              </div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='register'">
-              <div class="small-time">
-                预约就诊时间：{{item.bookDate}}
-              </div>
-              <div :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
-                {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}</div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-val"
+                       v-if="item.familyInfo">{{item.familyInfo.familyName}}
+                    {{item.familyInfo.familySex}}
+                    {{item.familyInfo.familyAge}}岁</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val"
+                       v-if="item.orderInfo"
+                       :class="['small-price',item.orderInfo.orderMoney == 0 ? 'default' : 'money']">
+                    {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
+                    <span style="color:#999;font-size:13px;"
+                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款'+item.orderInfo.payMoney+')'}}</span>
+                  </div>
 
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">下单时间:</div>
+                  <div class="small-item-val">{{item.orderInfo.orderTime}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="panel-bottom " v-if="item.inquiryInfo.inquiryStatus=='1'">
+              <div class="time">订单关闭倒计时：14:39</div>
+              <div class="label gary" @click="showCancellPop(item)">取消订单</div>
+              <div class="label blue" @click="goPay(item)">继续支付</div>
+            </div>
+            <div class="panel-bottom " v-if="item.inquiryInfo.inquiryStatus=='2'">
+              <div class="time">医生接诊倒计时：14:39</div>
+              <div class="label gary" @click="cancelOrder(item)">取消订单</div>
+            </div> -->
+            <div class="panel-bottom"
+                 style="padding-left: 0"
+                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+              <div class="count-down">
+                <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
+                <van-count-down millisecond
+                                :time="item.time"
+                                format="HH:mm:ss" />
+              </div>
+              <div class="label gary"
+                   @click="showCancellPop(item)">取消订单</div>
+              <div class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goPay(item)">继续支付</div>
             </div>
           </div>
-          <!--                    这个版本不展示私人医生-->
-          <!--                    <div class="panel-bottom " v-if="item.orderType == 'privateDoctor'">-->
-          <!--                        &lt;!&ndash;<div class="time">咨询倒计时:{{item.inquiryInfo.inquiryCancelTime}}</div>&ndash;&gt;-->
-          <!--                        <div class="time">订单编号：{{item.orderNo}}</div>-->
-          <!--                        <div class="label blue" @click="goPay(item)"  data-orderid="item.orderId" v-if="item.orderStatus == '0'">继续支付</div>-->
-          <!--                        <div class="label blue" @click="canselOrder(item)"-->
-          <!--                             data-orderid="item.orderId" v-if="item.orderStatus == '0' || item.orderStatus == '1'">取消订单</div>-->
-          <!--                    </div>-->
-          <div class="panel-bottom "
-               v-if="item.orderType == 'register'">
-            <div class="time">订单编号：{{item.orderNo}}</div>
-            <div class="label blue"
-                 @click="goPay(item)"
-                 data-orderid="item.orderId"
-                 v-if="item.orderStatus == '1'">继续支付</div>
-            <div class="label blue"
-                 @click="canselOrder(item)"
-                 data-orderid="item.orderId"
-                 v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
+          <!-- 预约挂号 -->
+          <div v-if="item.orderType=='register'">
+            <div class="panel-body"
+                 @click="goOrderDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                     :src="item.doctorInfo.avartor" />
+                <div class="card-body">
+                  <div class="card-name card-flex">{{item.doctorInfo.name}}
+                    {{item.doctorInfo.deptName}}
+                    <div class="card-gary">[预约挂号]</div>
+                  </div>
+                </div>
+                <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
+                  {{page.orderTypeMap[item.orderType][item.orderStatus]}}
+                </div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就诊人:</div>
+                  <div class="small-item-val">
+                    {{item.familyInfo&&item.familyInfo.name||item.familyName}}
+                    {{item.familyInfo&&item.familyInfo.sex||''}}
+                    {{item.familyInfo&&item.familyInfo.age+'岁'||''}}</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val"
+                       :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
+                    {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}
+                  </div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">预约就诊时间:</div>
+                  <div class="small-item-val">{{item.bookDate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-bottom ">
+              <div class="count-down"
+                   v-if="item.orderStatus == '1'">
+                <span>订单关闭倒计时:</span>
+                <van-count-down millisecond
+                                :time="item.time"
+                                format="HH:mm:ss" />
+              </div>
+              <div class="label gary"
+                   @click="showCancellPop(item)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '1'">取消订单
+              </div>
+              <div class="label blue"
+                   @click="goPay(item)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '1'">继续支付</div>
+              <div class="label blue"
+                   @click="canselOrder(item)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
+            </div>
           </div>
+          <!-- 检查单 -->
+          <!-- <div v-if="item.orderType=='insperction'">
+            <div class="panel-body" @click="goOrderDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                  src="/src/assets/images/ic_video_open.png" />
+                <div class="card-body">
+                  <div class="card-name card-flex">张豆豆 儿科
+                    <div class="card-gary">[检查单]</div>
+                  </div>
+                </div>
+                <div>待支付</div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-val">哈哈 男 25岁</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val">￥120.00 ||免费
+                  </div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">检查项目:</div>
+                  <div class="small-item-val">
+                    <div>胸部正侧位 x1</div>
+                    <div>胸部正侧位 x1</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-bottom ">
+                <div class="time">订单关闭倒计时：14:39</div>
+                <div class="label gary" @click="cancelOrder(item)">取消订单</div>
+                <div class="label blue" @click="goPay(item)">继续支付</div>
+              </div>
+            </div>
+          </div> -->
+          <!-- 私人医生 -->
+          <!-- <div v-if="item.orderType == 'privateDoctor'">
+            <div class="panel-body" @click="goOrderDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                  src="/src/assets/images/ic_video_open.png" />
+                <div class="card-body">
+                  <div class="card-name card-flex">张豆豆 儿科
+                    <div class="card-gary">[私人医生]</div>
+                  </div>
+                </div>
+                <div>待支付</div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-val">哈哈 男 25岁</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val">￥120.00 <span style="color:#999;">(已退款120.00)</span>
+                  </div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">下单时间:</div>
+                  <div class="small-item-val">2019/11/12 12:11</div>
+                </div>
+              </div>
+            </div> -->
         </div>
       </div>
       <div class="none-page"
@@ -93,7 +217,9 @@
 <script>
 import peace from '@src/library'
 import { Dialog } from 'vant'
-
+import Vue from 'vue'
+import { CountDown } from 'vant'
+Vue.use(CountDown)
 export default {
   props: {},
   data() {
@@ -113,6 +239,14 @@ export default {
             6: '退款中',
             7: '已退款'
           },
+          inquiry: {
+            1: '待支付',
+            2: '待接诊',
+            3: '已接诊',
+            4: '已退诊',
+            5: '已完成',
+            6: '已取消'
+          },
           privateDoctor: {
             0: '待支付',
             1: '待接单',
@@ -130,8 +264,8 @@ export default {
     }
   },
   created() {
-    // this.getData()
-    this.$store.dispatch('appointMent/getList');
+    this.getData()
+    this.$store.dispatch('appointMent/getList')
   },
   methods: {
     goPay(data) {
@@ -146,10 +280,29 @@ export default {
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
-      peace.service.patient.getOrderList({ orderType: 'register' }).then(res => {
+      peace.service.patient.getOrderList({}).then(res => {
         this.orderList = res.data.list || []
-        this.loaded = true;
+        this.loaded = true
       })
+    },
+    showCancellPop(item) {
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否确认取消咨询？'
+      })
+        .then(() => {
+          const params = {
+            orderNo: item.inquiryInfo.orderNo
+          }
+          peace.service.patient.cancel(params).then(res => {
+            peace.util.alert(res.msg)
+
+            this.get()
+          })
+        })
+        .catch(() => {
+          // on cancel
+        })
     },
     canselOrder(item) {
       if (!item.cancelState) {
@@ -165,12 +318,18 @@ export default {
             })
             .then(res => {
               peace.util.alert(res.msg || '退号成功')
-              this.$store.dispatch('appointMent/getList');
+              this.$store.dispatch('appointMent/getList')
             })
         })
         .catch(() => {
           // on cancel
         })
+    },
+    goConsultDetailPage(item) {
+      let json = peace.util.encode({
+        orderInfo: item
+      })
+      this.$router.push(`/setting/userConsultDetail/${json}`)
     },
     goOrderDetailPage(item) {
       // console.log(item);
@@ -185,6 +344,84 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel .panel-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .count-down {
+    padding-left: 13px;
+    font-size: 13px;
+    display: flex;
+    span {
+      margin-right: 10px;
+    }
+  }
+}
+.content {
+  padding: 10px 15px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  .panel {
+    background: #fff;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 1px 15px;
+    border-bottom: 0;
+    margin-bottom: 15px;
+    .panel-body {
+      padding-top: 0;
+    }
+    .card {
+      align-items: center;
+      .card-gary {
+        margin-left: 5px;
+      }
+    }
+    .small {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      .small-item {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        padding: 2px 0;
+        .small-price {
+          text-align: left;
+          font-size: 13px;
+        }
+        .small-item-key {
+          color: #999;
+          margin-right: 10px;
+        }
+        .small-item-val {
+          flex: 1;
+          color: #333;
+        }
+      }
+    }
+    .panel-bottom {
+      border-top: 1px solid #e8e8e8;
+    }
+  }
+}
+
+.card-gary {
+  color: #999;
+  font-size: 12px;
+  font-weight: 400;
+}
+.card-avatar.card-img {
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+}
+.card-flex {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-left: 5px;
+}
 .userConsultList {
   height: 100%;
 }
@@ -245,7 +482,7 @@ export default {
   display: block;
   left: -(40px/2);
   top: -(5px/2);
-  background-image: url("../../../assets/images/icon-referral.jpg")
+  background-image: url('../../../assets/images/icon-referral.jpg');
 }
 .icon-consultGroup::before {
   content: '';
@@ -256,7 +493,7 @@ export default {
   display: block;
   left: -(40px/2);
   top: -(5px/2);
-  background-image: url("../../../assets/images/icon-consultGroup.jpg")
+  background-image: url('../../../assets/images/icon-consultGroup.jpg');
 }
 .bottom {
   color: #999;
@@ -276,7 +513,8 @@ export default {
 .panel .panel-head,
 .panel .panel-body,
 .panel .panel-bottom {
-  padding: (20px/2) (30px/2);
+  // padding: (20px/2) (30px/2);
+  padding: (20px/2) 0;
 }
 .panel .panel-bottom {
   display: -webkit-box;
@@ -345,6 +583,7 @@ export default {
 .strip-eye.color-a2 {
   color: #fb2828;
 }
+
 /*blue*/
 .strip-eye.color-3,
 .strip-eye.color-01,
@@ -399,9 +638,18 @@ export default {
 }
 .label {
   font-size: 12px;
-  padding: 2px (24px/2);
+  padding: 5px (24px/2);
   margin-left: (20px/2);
   border-radius: (40px/2);
+}
+.label.gary {
+  color: #999;
+  border-color: #ccc;
+}
+.label.blue {
+  background: #00c6ae;
+  border-color: transparent;
+  color: #fff;
 }
 .label.label-private {
   font-size: (16px/2);
@@ -438,8 +686,20 @@ export default {
         6:'已退款',
         7:'已完成',
         }
+        *咨询订单状态
+        inquiry: {
+            1: '待支付',
+            2: '待接诊',
+            3: '已接诊',
+            4: '已退诊',
+            5: '已完成',
+            6: '已取消'
+          },
+        *检查单状态
     */
 /*red*/
+.strip-eye.color-inquiry-1,
+.strip-eye.color-inquiry-2,
 .strip-eye.color-privateDoctor-0,
 .strip-eye.color-privateDoctor-5,
 .strip-eye.color-privateDoctor-1,
@@ -449,11 +709,15 @@ export default {
   color: #f2223b;
 }
 /*blue*/
+.strip-eye.color-inquiry-3,
 .strip-eye.color-privateDoctor-3,
 .strip-eye.color-register-3 {
   color: #00c6ae;
 }
 /*default*/
+.strip-eye.color-inquiry-4,
+.strip-eye.color-inquiry-5,
+.strip-eye.color-inquiry-6,
 .strip-eye.color-privateDoctor-7,
 .strip-eye.color-privateDoctor-6,
 .strip-eye.color-privateDoctor-4,

@@ -1,66 +1,114 @@
 <template>
   <div class="userConsultList">
-    <!-- h5 v0.1 版本暂不开放 -->
-    <div class="box" v-if="false">
+    <!-- h5 v0.1 版本暂不开放   v-if="false"-->
+    <div class="box"
+         v-if="false">
       <div class="box-tab">
-        <div bindtap="goReferrListPage" class="tab-item" data-index="0">
-          <div :class="{ red: unred_ZZ}" class="span icon-referral">转诊申请</div>
+        <div @click="goReferrListPage"
+             class="tab-item"
+             data-index="0">
+          <div :class="{ red: unred_ZZ}"
+               class="span icon-referral">转诊申请</div>
         </div>
-        <div bindtap="goConsultGroupPage" class="tab-item" data-index="1" style="flex:1.15">
-          <div :class="{ red: unred_HZ}" class="span icon-consultGroup">会诊申请</div>
+        <div @click="goConsultGroupPage"
+             class="tab-item"
+             data-index="1"
+             style="flex:1.15">
+          <div :class="{ red: unred_HZ}"
+               class="span icon-consultGroup">会诊申请</div>
         </div>
       </div>
     </div>
 
-    <div class="content" style="height: 100%">
+    <div class="content"
+         style="height: 100%">
       <template v-if="consultList.length">
-        <div :data-index="index" :Key="index" class="panel" v-for="(item,index) in consultList">
+        <div :data-index="index"
+             :Key="index"
+             class="panel"
+             v-for="(item,index) in consultList">
           <div class="panel-head">
             <div class="card-strip">
               <div class="avatar">
-                <img :src="item.doctorInfo.avartor" class="avatar-cicular" />
+                <img :src="item.doctorInfo.avartor"
+                     class="avatar-cicular" />
               </div>
               <div class="strip-info">
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
                 <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
-              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }" class="strip-eye">
+              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }"
+                   class="strip-eye">
                 {{item.inquiryInfo.statusTxt}}</div>
             </div>
           </div>
-          <div :data-index="index" @click="goUserConsultDetailPage(item.inquiryInfo.inquiryId)"
-            class="panel-body" style="padding-top: 0">
+          <div :data-index="index"
+               @click="goChatingPage(item)"
+               class="panel-body"
+               style="padding-top: 0">
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
               <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
-              <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
-                {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div>
+              <!-- <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
+                {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div> -->
             </div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0"
-            v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+          <div class="panel-bottom"
+               style="padding-left: 0"
+               v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
             <div class="count-down">
               <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
-              <van-count-down millisecond :time="item.time" format="HH:mm:ss" />
+              <van-count-down millisecond
+                              :time="item.time"
+                              format="HH:mm:ss" />
             </div>
-            <div class="btn-wrap">
+            <!-- <div class="btn-wrap">
               <div :data-index="index" @click="goChatingPage(item)" class="label blue"
                 v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
               <div :data-index="index" @click="showCancellPop(item)" class="label gary">取消订单</div>
               <div :data-index="index" v-if="item.inquiryInfo.inquiryStatus === 1"
                 @click="goToPay(item)" class="label blue-full">继续支付</div>
-            </div>
-
+            </div> -->
           </div>
-          <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
+          <!-- <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
             v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
             <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue"
               data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
             <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue"
               data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
             <div :data-index="index" @click="goChatingPage(item)" class="label blue">咨询记录</div>
+          </div> -->
+          <div class="panel-bottom"
+               style="padding-left: 0; justify-content: flex-end;">
+            <div :data-index="index"
+                 @click="gouserConsultationPage(item)"
+                 class="label gary"
+                 data-tip="会诊"
+                 v-if="item.inquiryInfo.consultNo">会诊单</div>
+            <div :data-index="index"
+                 @click="gouserTranforPage(item)"
+                 class="label gary"
+                 data-tip="转诊"
+                 v-if="item.inquiryInfo.referralNo">转诊单</div>
+            <div :data-index="index"
+                 @click="gouserPrescripCasePage(item)"
+                 class="label gary"
+                 data-tip="病历"
+                 v-if="item.inquiryInfo.isCase">病历</div>
+            <div :data-index="index"
+                 @click="gouserPrescripListPage(item)"
+                 class="label gary"
+                 data-tip="处方"
+                 v-if="item.inquiryInfo.isPrescrip">处方</div>
+            <div :data-index="index"
+                 @click="gouserInspectionPage(item)"
+                 class="label gary"
+                 data-tip="检查单"
+                 v-if="item.inquiryInfo.checkOrderNo">检查单
+            </div>
           </div>
+
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
       </template>
@@ -73,16 +121,21 @@
       </template>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
+    <peace-dialog :visible.sync="recipeList.visible"
+                  title="用药建议">
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
-      <MessageList :data="chatingPage.data" :doctorInfo="chatingPage.doctorInfo" :navBar="false">
+    <peace-dialog :visible.sync="chatingPage.visible"
+                  title="咨询记录">
+      <MessageList :data="chatingPage.data"
+                   :doctorInfo="chatingPage.doctorInfo"
+                   :navBar="false">
       </MessageList>
     </peace-dialog>
 
@@ -169,6 +222,7 @@ export default {
     },
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
+        console.log(res)
         this.loaded = true
         this.consultList = res.data.list
         this.consultList.map(item => {
@@ -184,7 +238,23 @@ export default {
         })
       })
     },
+    //会诊
+    gouserConsultationPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
 
+      this.$router.push(`/components/theConsultation/${params}`)
+    },
+    //转诊
+    gouserTranforPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
+
+      this.$router.push(`/components/theTransfer/${params}`)
+    },
+    //病历
     gouserPrescripCasePage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
@@ -193,7 +263,15 @@ export default {
 
       this.$router.push(`/components/theCase/${params}`)
     },
+    //检验单
+    gouserInspectionPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
 
+      this.$router.push(`/components/theInspection/${params}`)
+    },
+    //处方
     gouserPrescripListPage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
@@ -468,9 +546,13 @@ export default {
 }
 .label {
   font-size: 13px;
-  padding: 5px 12px;
+  padding: 2px 12px;
   margin-left: 10px;
   border-radius: 20px;
+}
+.gary {
+  color: #999;
+  border-color: #ccc;
 }
 .label.label-private {
   font-size: 8px;

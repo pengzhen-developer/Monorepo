@@ -421,7 +421,58 @@ const routers = [
         },
         component: () => import('@src/views/components/TheCase.vue')
       },
-
+      // 检查单
+      {
+        path: '/components/theInspection/:json',
+        name: '/components/theInspection/:json',
+        meta: {
+          auth: true,
+          navbar: {
+            title: '检查单',
+            back: true
+          }
+        },
+        component: () => import('@src/views/components/TheInspection.vue')
+      },
+      // 转诊单
+      {
+        path: '/components/theTransfer/:json',
+        name: '/components/theTransfer/:json',
+        meta: {
+          auth: true,
+          navbar: {
+            title: '转诊详情',
+            back: true
+          }
+        },
+        component: () => import('@src/views/components/TheTransfer.vue')
+      },
+      // 会诊单
+      {
+        path: '/components/theConsultation/:json',
+        name: '/components/theConsultation/:json',
+        meta: {
+          auth: true,
+          navbar: {
+            title: '会诊详情',
+            back: true
+          }
+        },
+        component: () => import('@src/views/components/TheConsultation.vue')
+      },
+      // 问诊表单
+      {
+        path: '/components/thePreliminaryForm/:json',
+        name: '/components/thePreliminaryForm/:json',
+        meta: {
+          auth: true,
+          navbar: {
+            title: '问诊表单',
+            back: true
+          }
+        },
+        component: () => import('@src/views/components/ThePreliminaryForm.vue')
+      },
       // 用药建议
       {
         path: '/drug/list/:json',
@@ -435,6 +486,7 @@ const routers = [
         },
         component: () => import('@src/views/drug/DrugListPharmacy.vue')
       },
+
       // 地图选择
       {
         path: '/drug/selectMap/:json',

@@ -47,6 +47,54 @@
             </div>
           </div>
         </template>
+        <!-- 病历卡片 -->
+        <template>
+          <div class="message-body message-card">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_message.png')" /> <span>哈哈 | 女
+                |22岁</span>
+              <img src="../../assets/images/ic_fz.png"
+                   class="fz" />
+            </div>
+            <div class="message-content">
+              <div class="t">病情描述</div>
+              <div class="content">药吃完了,还是持续咳嗽并伴有浓痰,体温正常</div>
+            </div>
+            <div class="message-line"></div>
+            <div class="message-footer">
+              <van-image width="16px"
+                         height="18px"
+                         :src="require('@src/assets/images/ic_ck.png')" />
+              查看订单
+            </div>
+          </div>
+        </template>
+        <!-- 检查单 -->
+        <template>
+          <div class="message-body message-check">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_check.png')" /> <span>检查单</span>
+            </div>
+            <div class="message-content">
+              <div class="item">
+                <div class="left">胸部正常切</div>
+                <div class="right">X1</div>
+              </div>
+              <div class="item">
+                <div class="left">胸部正常切</div>
+                <div class="right">X1</div>
+              </div>
+              <div class="message-line-solid"></div>
+            </div>
+            <div class="message-footer">
+              查看详情
+            </div>
+          </div>
+        </template>
 
         <!-- 视频消息 -->
         <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
@@ -191,7 +239,8 @@
         <van-button @click="sendMessageText"
                     size="small"
                     slot="button"
-                    type="primary">发送</van-button>
+                    type="primary">发送
+        </van-button>
       </van-field>
 
       <div class="input-tools"
@@ -286,7 +335,8 @@ export default {
         // 743: true, // 会诊
         750: true, // 退诊
         760: true, // 取消问诊
-        780: true // 服务提醒
+        780: true, // 服务提醒
+        792: true //问诊卡片
         // 900: true, // 接收随访
         // 910: true, // 随访结束
       }
@@ -345,7 +395,6 @@ export default {
 
         return true
       })
-
       return sessionMessages
     },
 
@@ -598,11 +647,138 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.message-check {
+  .item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:first-child {
+      padding-top: 5px;
+    }
+    &:last-child {
+      padding-bottom: 5px;
+    }
+    .left {
+      width: 80%;
+      text-align: left;
+    }
+    .right {
+      color: #999;
+    }
+  }
+  .message-line-solid {
+    border-top: 1px solid #eee;
+  }
+  .message-content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .message-footer {
+    color: #999;
+    justify-content: center;
+    &::after {
+      height: 0;
+    }
+  }
+}
+.message-card,
+.message-check {
+  width: 70%;
+  background-color: #fff !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+.message-header {
+  background-image: url('../../assets/images/bg-img.png');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  width: 100%;
+  color: #fff;
+  padding-left: 10px;
+  box-sizing: border-box;
+  position: relative;
+  span {
+    margin-left: 10px;
+  }
+  .fz {
+    width: 50px;
+    height: 35px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+  }
+}
+.message-content {
+  text-align: left;
+  padding: 10px;
+  .t {
+    color: #999;
+  }
+  .content {
+    color: #333;
+  }
+}
+.message-line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #eee;
+  position: relative;
+  &::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 0 16px 16px 0;
+    left: -7px;
+    top: -7px;
+    position: absolute;
+    display: block;
+    background: #f5f5f5;
+    box-shadow: 1px 0 0 #dedede inset;
+  }
+  &::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 14px 0 0 14px;
+    right: -7px;
+    top: -7px;
+    position: absolute;
+    display: block;
+    background: #f5f5f5;
+    box-shadow: 1px 0 0 #dedede inset;
+  }
+}
+.message-footer {
+  position: relative;
+  height: 35px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #333;
+  .van-image {
+    margin: 0 10px;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 12px;
+    background-image: url('../../assets/images/icons/arrow-right.jpg');
+    background-size: cover;
+  }
+}
 .message-list {
   height: 100%;
   display: flex;
   flex-direction: column;
-
+  background-color: #f9f9f9;
   .item {
     overflow: auto;
     padding: 5px 10px;
