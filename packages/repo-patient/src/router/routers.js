@@ -553,6 +553,7 @@ const routers = [
         path: '/components/doctorInquiryApply/:json',
         name: '/components/doctorInquiryApply',
         meta: {
+          keepAlive: true,
           auth: true,
           navbar: {
             title: '图文咨询',
@@ -560,6 +561,12 @@ const routers = [
           }
         },
         component: () => import('@src/views/components/DoctorInquiryApply.vue')
+      },
+      // 附件上传
+      {
+        path: '/components/uploader/',
+        name: '/components/uploader',
+        component: () => import('@src/views/components/Uploader.vue')
       },
       // 申请图文问诊 - 订单支付
       {
@@ -595,7 +602,7 @@ const routers = [
         meta: {
           auth: true,
           navbar: {
-            title: '添加过敏史',
+            title: '添加既往史',
             back: true
           }
         },

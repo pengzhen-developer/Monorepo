@@ -77,18 +77,6 @@
         <div class="module-item">
           <div class="b">个人信息</div>
           <div class="form-dl">
-            <!-- <div class="form-dt">就/复诊人</div>
-        <div class="form-dd">
-          <span style="font-size: 14px; margin:0 8px 0 0;">{{
-            internalData.familyInfo.familyName
-          }}</span>
-          <span style="font-size: 12px; margin:0 8px 0 0;">{{
-            internalData.familyInfo.familySex
-          }}</span>
-          <span style="font-size: 12px;">{{
-            internalData.familyInfo.familyAge + "岁"
-          }}</span>
-        </div> -->
             <div class="form-dt"><span>姓名</span> :</div>
             <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
           </div>
@@ -101,71 +89,23 @@
             <div class="form-dd">{{internalData.familyInfo.familySex}}
             </div>
           </div>
-          <!-- <div class="form-dl">
-            <div class="form-dt">监 护 人 :</div>
-            <div class="form-dd">王炸 | 男 | 23岁
-            </div>
-          </div> -->
         </div>
         <!--病情描述-->
         <div class="module-item">
           <div class="b">病情现状描述</div>
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
-          <!--图片列表-->
-          <div class="ul">
-            <template v-if="internalData.inquiryInfo.inquiryImages">
-              <div :key="index"
-                   class="li"
-                   v-for="(item, index) in internalData.inquiryInfo.inquiryImages">
-                <img :internalData-index="index"
-                     :src="item.image_path"
-                     @click="viewImage(item.image_path)"
-                     bindtap="divImgs" />
-              </div>
-            </template>
-          </div>
-
-          <!-- <div v-if="internalData.inquiryInfo.isAgain">
-            <div class="b">复诊信息</div>
-            <div class="form-dl">
-              <div class="form-dt">确认疾病</div>
-              <div class="form-dd">{{ internalData.illInfo.confirmIllness }}</div>
-            </div>
-            <div class="form-dl">
-              <div class="form-dt">确认时间</div>
-              <div class="form-dd">{{ internalData.illInfo.confirmTime }}</div>
-            </div>
-            <div class="form-dl">
-              <div class="form-dt">既往用药</div>
-              <div class="form-dd">{{ internalData.illInfo.pastDrug }}</div>
-            </div>
-            <div class="form-dl">
-              <div class="form-dt">过敏史</div>
-              <div class="form-dd">
-                {{ internalData.illInfo.allergicHistory }}
-              </div>
-            </div>
-            <div class="form-dl">
-              <div class="form-dt">备注</div>
-              <div class="form-dd">
-                {{ internalData.illInfo.illnessDescribe }}
-              </div>
-            </div>
-          </div> -->
         </div>
-        <!--复诊信息 <img src="/src/assets/images/ic_video_open.png">-->
         <div class="module-item"
-             v-if="internalData.inquiryInfo&&internalData.inquiryInfo.isAgain">
+             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img">
               <div class="form-dt ">复诊诊凭 :</div>
               <div class="form-img">
-                <img src="../../assets/images/bg-img.png"
-                     v-for="(item,index) in 4"
+                <img v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
                      :key="index"
-                     @click="viewImage(item.image_path)"
-                     bindtap="divImgs" />
+                     :src="item.image_path"
+                     @click="viewImage(item.image_path)" />
               </div>
             </div>
             <div class="form-dl">
@@ -233,7 +173,11 @@
       </div>
     </div>
     <div class="footer"
-         v-if="internalData &&internalData.inquiryInfo&&internalData.inquiryInfo.inquiryStatus == '3'||internalData.inquiryInfo.inquiryStatus == '4'||internalData.inquiryInfo.inquiryStatus == '5'">
+         v-if="internalData && 
+               internalData.inquiryInfo &&
+              (internalData.inquiryInfo.inquiryStatus == '3' || 
+               internalData.inquiryInfo.inquiryStatus == '4' ||
+               internalData.inquiryInfo.inquiryStatus == '5')">
       <div class="chatBtn"
            @click="goChatingPage(internalData)"
            v-if="
@@ -244,6 +188,7 @@
            v-if="
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
     </div>
+
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
@@ -258,9 +203,7 @@
                   title="咨询记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
-
   </div>
-
 </template>
 
 <script>
@@ -321,13 +264,16 @@ export default {
       immediate: true
     }
   },
-  mounted() {
+
+  activated() {
     this.get()
   },
+
   methods: {
     get() {
       this.getConsultDetail()
     },
+
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo
@@ -339,17 +285,13 @@ export default {
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
-    getConsultDetail() {
-      let orderInfo = peace.util.decode(this.$route.params.json)
-      console.log(orderInfo)
 
-      peace.service.patient
-        .inquiryDetail({
-          inquiryId: orderInfo.orderInfo.inquiryInfo.inquiryId
-        })
-        .then(res => {
-          this.internalData = res.data
-        })
+    getConsultDetail() {
+      let params = peace.util.decode(this.$route.params.json)
+
+      peace.service.patient.inquiryDetail(params).then(res => {
+        this.internalData = res.data
+      })
     },
 
     getInquiryText(status) {
@@ -389,7 +331,7 @@ export default {
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
-      if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
+      if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         const params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
@@ -400,6 +342,7 @@ export default {
         // 跳转聊天详情
         this.$router.push(`/components/messageList/${params}`)
       }
+
       // 非问诊中,显示历史记录
       else {
         const params = peace.util.encode({

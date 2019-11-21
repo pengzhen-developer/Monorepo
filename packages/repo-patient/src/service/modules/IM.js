@@ -251,9 +251,16 @@ export function setInquirySessions(sessions) {
   const serializationSessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
-  // 过滤 [待接诊] / [问诊中] 数据
+  // 过滤 [待接诊] 与 [医生未接诊直接退诊] 与 [医生未接诊系统直接退诊] 数据
   const filterMethod = session => {
-    if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
+    if (
+      session.scene === 'p2p' &&
+      session.content &&
+      session.content.inquiryInfo &&
+      session.content.inquiryInfo.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+      session.content.inquiryInfo.quitStatus !== 1 &&
+      session.content.inquiryInfo.quitStatus !== 2
+    ) {
       return true
     }
 

@@ -36,6 +36,20 @@ export const SYSTEM = {
 }
 
 /**
+ * Vue 组件间数据通讯
+ */
+export const EMIT = {
+  /** 问诊 - 新增家人 */
+  DOCTOR_INQUIRY_APPLY_FAMLIY: 'DoctorInquiryApplyFamliy',
+
+  /** 问诊 - 新增附件 */
+  DOCTOR_INQUIRY_APPLY_UPLOAD: 'DoctorInquiryApplyUpload',
+
+  /** 问诊 - 选择初诊诊断 */
+  DOCTOR_INQUIRY_APPLY_ILLNESS: 'DoctorInquiryApplyIllness'
+}
+
+/**
  * 用户信息类型常量
  */
 export const USER = {
@@ -98,7 +112,10 @@ export const INQUIRY = {
     退诊: '750',
     取消问诊: '760',
     视频通话: '770',
-    服务提醒: '780'
+    服务提醒: '780',
+    会诊单: '792',
+    检查单: '793',
+    问诊卡片: '794'
   },
 
   /** 用户操作 */
@@ -129,6 +146,9 @@ export const INQUIRY = {
 export default {
   /** 系统消息类型常量 */
   SYSTEM,
+
+  /** Vue 组件通讯 */
+  EMIT,
 
   /** 用户信息类型常量 */
   USER,
