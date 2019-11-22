@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="consult-detatil"
          v-if="internalData &&
                internalData.inquiryInfo &&
@@ -10,8 +10,8 @@
       <div class="module nmg">
         <div class="strong">
           {{ internalData.inquiryInfo.statusTxt }}
-          <span class="money"
-                v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span>
+          <!-- <span class="money"
+                v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
         </div>
         <div class="brief">
           {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
@@ -89,6 +89,18 @@
             <div class="form-dd">{{internalData.familyInfo.familySex}}
             </div>
           </div>
+          <div class="form-dl"
+               v-if="internalData.familyInfo.guardianName">
+            <div class="form-dt">监护人:</div>
+            <div class="form-dd">{{internalData.familyInfo.guardianName}} |
+              {{internalData.familyInfo.guardianAge}} | {{internalData.familyInfo.guardianSex}}
+            </div>
+          </div>
+          <!-- <div class="form-dl">
+            <div class="form-dt"><span>姓名</span> :</div>
+            <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
+            <div class="form-dd">{{internalData.familyInfo.familySex}}</div>
+          </div> -->
         </div>
         <!--病情描述-->
         <div class="module-item">
@@ -110,7 +122,7 @@
             </div>
             <div class="form-dl">
               <div class="form-dt">初诊诊断 :</div>
-              <div class="form-dd">上呼吸道感染
+              <div class="form-dd">{{internalData.inquiryInfo.confirmIllness}}
               </div>
             </div>
           </div>
@@ -167,27 +179,49 @@
         <template v-else>
           <div class="brief right">
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+            <div class="money">
+              {{ "¥" + internalData.orderInfo.payMoney }}
+              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'">（已退款）</span>
+            </div>
           </div>
         </template>
       </div>
     </div>
-    <div class="footer"
-         v-if="internalData && 
-               internalData.inquiryInfo &&
-              (internalData.inquiryInfo.inquiryStatus == '3' || 
+    <template v-if="internalData&& 
+               internalData.inquiryInfo">
+      <div class="footer"
+           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
                internalData.inquiryInfo.inquiryStatus == '4' ||
-               internalData.inquiryInfo.inquiryStatus == '5')">
-      <div class="chatBtn"
-           @click="goChatingPage(internalData)"
-           v-if="
+               internalData.inquiryInfo.inquiryStatus == '5'">
+        <div class="chatBtn"
+             @click="goChatingPage(internalData)"
+             v-if="
             internalData.inquiryInfo.inquiryStatus == '4' ||
               internalData.inquiryInfo.inquiryStatus == '5'">咨询记录</div>
-      <div class="chatBtn"
-           @click="goChatingPage(internalData)"
-           v-if="
+        <div class="chatBtn"
+             @click="goChatingPage(internalData)"
+             v-if="
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
-    </div>
+      </div>
+      <div class="pay"
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'">
+        <div class="pay-item">
+          <div class="count-down">
+            <span>订单关闭倒计时:</span>
+            <van-count-down millisecond
+                            :time="internalData.inquiryInfo.time"
+                            format="HH:mm:ss" />
+          </div>
+          <div class="right">总金额:<span>{{internalData.orderInfo.orderMoney}}</span> </div>
+        </div>
+        <div class="pay-item">
+          <div class="pay-btn btn-cancel"
+               @click="showCancellPop(internalData)">取消订单</div>
+          <div class="pay-btn btn-pay"
+               @click="goToPay(internalData)">立即支付</div>
+        </div>
+      </div>
+    </template>
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
@@ -210,9 +244,9 @@
 import peace from '@src/library'
 
 import Vue from 'vue'
-import { Dialog, ImagePreview } from 'vant'
+import { Dialog, ImagePreview, CountDown } from 'vant'
 Vue.use(ImagePreview)
-
+Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
@@ -290,6 +324,12 @@ export default {
       let params = peace.util.decode(this.$route.params.json)
 
       peace.service.patient.inquiryDetail(params).then(res => {
+        let inquiryInfo = res.data.inquiryInfo
+        let expireTime =
+          inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
+        if (expireTime > inquiryInfo.orderCreatedTime) {
+          res.data.inquiryInfo.time = (expireTime - inquiryInfo.orderCreatedTime) * 1000
+        }
         this.internalData = res.data
       })
     },
@@ -400,10 +440,60 @@ export default {
     border: 1px solid rgba(0, 198, 174, 1);
   }
 }
+.pay {
+  background-color: #fff;
+  padding: 10px 15px;
+  width: 100%;
+  box-sizing: border-box;
+  .pay-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:first-child {
+      padding-bottom: 5px;
+    }
+    .count-down {
+      display: flex;
+      align-items: center;
+      color: #999;
+    }
+    .right {
+      color: #000;
+      font-size: 13px;
+      span {
+        color: #f2223b;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    .pay-btn {
+      height: 45px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+    }
+    .btn-cancel {
+      color: #999;
+      border: 1px solid #ccc;
+      width: 32%;
+    }
+    .btn-pay {
+      color: #fff;
+      background: #00c6ae;
+      width: 64%;
+    }
+  }
+}
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   &:last-child {
     border-bottom: 0;
+  }
+  .pt5 {
+    margin-top: 5px;
   }
 }
 .order {
@@ -412,7 +502,7 @@ export default {
     padding-left: 0 !important;
   }
   .form-dl {
-    padding: 3px 0;
+    padding: 4px 0;
     border-bottom: 0;
     &:last-child {
       padding-bottom: 10px;
@@ -439,6 +529,10 @@ export default {
 .bb {
   height: 1px;
   background: #e8e8e8;
+}
+.page {
+  min-height: 100%;
+  background-color: #f5f5f5;
 }
 .consult-detatil {
   background-color: #f5f5f5;
@@ -551,12 +645,15 @@ export default {
       margin-bottom: -2px;
     }
   }
-  .b,
-  .span,
-  .ul {
+  .b {
     padding: 10px 15px 0 15px;
   }
-
+  .span {
+    padding: 10px 15px;
+  }
+  .ul {
+    padding: 0 15px;
+  }
   .dl-packet {
     display: flex;
     justify-content: space-between;
@@ -589,8 +686,15 @@ export default {
   .money {
     color: #f2223b;
     font-size: 18px;
-    display: inline;
+    display: flex;
+    align-items: center;
     padding-left: 8px;
+    font-weight: 600;
+    span {
+      font-weight: 400;
+      color: #999;
+      font-size: 12px;
+    }
   }
   .ul {
     display: flex;

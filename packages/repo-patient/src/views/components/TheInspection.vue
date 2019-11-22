@@ -39,13 +39,13 @@
         </div>
       </div>
     </div>
-    <div class="item">
+    <div class="item start">
       <div class="mark">诊断</div>
       <div class="right">{{data[current].diagnose}}</div>
     </div>
     <div class="item col">
       <div class="title">检查项目</div>
-      <div class="cell"
+      <div class="cell pl10"
            v-for="(item,index) in data[current].checkList"
            :key="index">
         <div class="left color-666">{{item.name}}</div>
@@ -99,12 +99,12 @@ export default {
 
     getList(inquiryNo) {
       peace.service.group.getInspectList({ inquiryNo: inquiryNo }).then(res => {
-        this.data = res.data || []
+        this.data = res.data.info || []
       })
     },
     getDetail(checkOrderNo) {
       peace.service.group.getInspectDetail({ checkOrderNo: checkOrderNo }).then(res => {
-        this.data.push(res.data)
+        this.data.push(res.data.info)
       })
     },
     next() {
@@ -159,6 +159,7 @@ export default {
     .mark {
       color: #666;
       line-height: 24px;
+      min-width: 45px;
     }
     .text {
       width: 80%;
@@ -220,6 +221,7 @@ export default {
           margin-bottom: -2px;
         }
       }
+
       .cell {
         padding: 15px 0;
         width: 100%;
@@ -227,6 +229,9 @@ export default {
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #e8e8e8;
+        &.pl10 {
+          padding-left: 10px;
+        }
         &:last-child {
           border-bottom: 0;
         }

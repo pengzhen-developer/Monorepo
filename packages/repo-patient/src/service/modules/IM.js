@@ -234,6 +234,7 @@ export function onSysmsg(message) {
     (new RegExp('components/theRecipeList').test(href) && tag == 'purchaseDrug') ||
     (new RegExp('order/userDrugDetail').test(href) && tag == 'purchaseDrug') ||
     (new RegExp('setting/order/userOrderList').test(href) && tag == 'register') ||
+    (new RegExp('setting/order/userOrderList').test(href) && tag == 'inquiry') ||
     (new RegExp('setting/order/userOrderDetail').test(href) && tag == 'register')
   ) {
     window.location.reload()

@@ -28,18 +28,18 @@ const actions = {
       res.data.list.map(item => {
         //   item.time =  15 * 60 * 1000;
         if (item.orderType == 'register') {
-          //   if (item.orderExpireTime > item.orderCreatedTime) {
-          item.time = (item.orderExpireTime - item.orderCreatedTime) * 1000
-          //   }
+          if (item.orderExpireTime > item.currentTime) {
+            item.time = (item.orderExpireTime - item.currentTime) * 1000
+          }
         } else if (item.orderType == 'inquiry') {
           let inquiryInfo = item.inquiryInfo
           let expireTime =
             inquiryInfo.inquiryStatus == 1
               ? inquiryInfo.orderExpireTime
               : inquiryInfo.orderReceptTime
-          //   if (expireTime > inquiryInfo.orderCreatedTime) {
-          item.time = (expireTime - inquiryInfo.orderCreatedTime) * 1000
-          //   }
+          if (expireTime > inquiryInfo.currentTime) {
+            item.time = (expireTime - inquiryInfo.currentTime) * 1000
+          }
         }
       })
       context.commit('setList', res.data.list)

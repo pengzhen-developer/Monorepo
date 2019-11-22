@@ -37,7 +37,7 @@
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
                 <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
-              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }"
+              <div :class="{ [`color-i${item.inquiryInfo.inquiryStatus}`]: true }"
                    class="strip-eye">
                 {{item.inquiryInfo.statusTxt}}</div>
             </div>
@@ -63,13 +63,19 @@
                               :time="item.time"
                               format="HH:mm:ss" />
             </div>
-            <!-- <div class="btn-wrap">
-              <div :data-index="index" @click="goChatingPage(item)" class="label blue"
-                v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
-              <div :data-index="index" @click="showCancellPop(item)" class="label gary">取消订单</div>
-              <div :data-index="index" v-if="item.inquiryInfo.inquiryStatus === 1"
-                @click="goToPay(item)" class="label blue-full">继续支付</div>
-            </div> -->
+            <div class="btn-wrap">
+              <div :data-index="index"
+                   @click="goChatingPage(item)"
+                   class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+              <div :data-index="index"
+                   @click="showCancellPop(item)"
+                   class="label gary">取消订单</div>
+              <div :data-index="index"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goToPay(item)"
+                   class="label blue-full">继续支付</div>
+            </div>
           </div>
           <!-- <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
             v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
@@ -80,6 +86,7 @@
             <div :data-index="index" @click="goChatingPage(item)" class="label blue">咨询记录</div>
           </div> -->
           <div class="panel-bottom"
+               v-if="!(!item.inquiryInfo.consultNo&&!item.inquiryInfo.referralNo&&!item.inquiryInfo.isCase&&!item.inquiryInfo.isPrescrip&&!item.inquiryInfo.checkOrderNo)"
                style="padding-left: 0; justify-content: flex-end;">
             <div :data-index="index"
                  @click="gouserConsultationPage(item)"
@@ -207,6 +214,8 @@ export default {
     get() {
       this.getConsultList()
     },
+    goReferrListPage() {},
+    goConsultGroupPage() {},
     goToPay(data) {
       //console.log(data);
 
@@ -222,7 +231,6 @@ export default {
     },
     getConsultList() {
       peace.service.patient.inquiryList().then(res => {
-        console.log(res)
         this.loaded = true
         this.consultList = res.data.list
         this.consultList.map(item => {
@@ -283,7 +291,7 @@ export default {
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
-      if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
+      if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         const params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
@@ -482,6 +490,7 @@ export default {
   text-align: right;
 }
 /* color-x: 咨询单状态，
+ * color-iX:咨询单状态新；i5 已完成 i4 已退诊 i3咨询中
  * color-0x 转诊单状态 ↓
  *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态
@@ -497,6 +506,8 @@ export default {
   color: #fb2828;
 }
 /*blue*/
+.strip-eye.color-i3,
+.strip-eye.color-i5,
 .strip-eye.color-3,
 .strip-eye.color-01,
 .strip-eye.color-03,
@@ -546,7 +557,7 @@ export default {
 }
 .label {
   font-size: 13px;
-  padding: 2px 12px;
+  // padding: 2px 12px;
   margin-left: 10px;
   border-radius: 20px;
 }

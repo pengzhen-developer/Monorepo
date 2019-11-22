@@ -1,63 +1,52 @@
 <template>
-  <div>
+  <div class="consult-detatil">
     <div class="module order"
          v-if="internalData!=null">
       <div class="module-item">
         <div class="b">个人信息</div>
         <div class="form-dl">
           <div class="form-dt"><span>姓名</span> :</div>
-          <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
+          <div class="form-dd">{{internalData.patientInfo.familyName}}</div>
         </div>
         <div class="form-dl">
           <div class="form-dt"><span>年龄</span> :</div>
-          <div class="form-dd">{{internalData.familyInfo.familyAge + "岁"}}</div>
+          <div class="form-dd">{{internalData.patientInfo.familyAge + "岁"}}</div>
         </div>
         <div class="form-dl">
           <div class="form-dt"><span>性别</span> :</div>
-          <div class="form-dd">{{internalData.familyInfo.familySex}}
+          <div class="form-dd">{{internalData.patientInfo.familySex}}
           </div>
         </div>
-        <!-- <div class="form-dl">
-            <div class="form-dt">监 护 人 :</div>
-            <div class="form-dd">王炸 | 男 | 23岁
-            </div>
-          </div> -->
+        <div class="form-dl"
+             v-if="internalData.patientInfo.guardianName">
+          <div class="form-dt">监护人:</div>
+          <div class="form-dd">{{internalData.patientInfo.guardianName}} |
+            {{internalData.patientInfo.guardianAge}} | {{internalData.familyInfo.guardianSex}}
+          </div>
+        </div>
       </div>
       <!--病情描述-->
       <div class="module-item">
         <div class="b">病情现状描述</div>
-        <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
-        <!--图片列表-->
-        <div class="ul">
-          <template v-if="internalData.inquiryInfo.inquiryImages">
-            <div :key="index"
-                 class="li"
-                 v-for="(item, index) in internalData.inquiryInfo.inquiryImages">
-              <img :internalData-index="index"
-                   :src="item.image_path"
-                   @click="viewImage(item.image_path)"
-                   bindtap="divImgs" />
-            </div>
-          </template>
-        </div>
+        <div class="span">{{ internalData.inquiryOrderInfo.inquiryDescribe}}</div>
+
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryInfo&&internalData.inquiryInfo.isAgain">
+           v-if="internalData.inquiryOrderInfo&&internalData.inquiryOrderInfo.isAgain">
         <div>
           <div class="b">复诊信息</div>
           <div class="form-dl img">
             <div class="form-dt ">复诊诊凭 :</div>
             <div class="form-img">
-              <img src="../../assets/images/bg-img.png"
-                   v-for="(item,index) in 4"
+              <img v-for="(item,index) in internalData.inquiryOrderInfo.inquiryImages"
                    :key="index"
-                   @click="viewImage(item.image_path)"
-                   bindtap="divImgs" />
+                   :src="item.image_path"
+                   @click="viewImage(item.image_path)" />
             </div>
           </div>
           <div class="form-dl">
             <div class="form-dt">初诊诊断 :</div>
-            <div class="form-dd">上呼吸道感染
+            <div class="form-dd">{{internalData.inquiryOrderInfo.confirmIllness}}
             </div>
           </div>
         </div>
@@ -75,7 +64,8 @@ export default {
     }
   },
   mounted() {
-    this.internalData = peace.util.decode(this.$route.params.json)
+    this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
+    console.log(this.internalData)
   }
 }
 </script>
@@ -98,23 +88,23 @@ export default {
     &:last-child {
       padding-bottom: 10px;
     }
-  }
 
-  .form-dt {
-    color: #999;
-    min-width: 70px;
-    display: flex;
-    padding-right: 10px;
-    span {
-      flex: 1;
-      text-align-last: justify;
-      margin-right: 3px;
+    .form-dt {
+      color: #999;
+      min-width: 70px;
+      display: flex;
+      padding-right: 10px;
+      span {
+        flex: 1;
+        text-align-last: justify;
+        margin-right: 3px;
+      }
     }
-  }
-  .form-dd {
-    color: #333;
-    text-align: left;
-    padding-left: 2px;
+    .form-dd {
+      color: #333;
+      text-align: left;
+      padding-left: 2px;
+    }
   }
 }
 .bb {

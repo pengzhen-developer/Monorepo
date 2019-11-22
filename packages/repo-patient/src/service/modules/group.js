@@ -58,7 +58,7 @@ export function getConsultDetail(params) {
  * @returns
  */
 export function getTransferDetail(params) {
-  const getTransferDetail = 'wap/v1/checklist/getOrderList'
+  const getTransferDetail = 'wap/v1/Referral/detail'
 
   return peace.http.post(getTransferDetail, params)
 }

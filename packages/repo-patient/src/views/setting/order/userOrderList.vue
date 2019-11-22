@@ -17,7 +17,7 @@
                 <div class="card-body">
                   <div class="card-name card-flex">{{item.doctorInfo.name}}
                     {{item.doctorInfo.deptName}}
-                    <div class="card-gary">[文图咨询]</div>
+                    <div class="card-gary">[图文咨询]</div>
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
@@ -113,7 +113,8 @@
                 </div>
               </div>
             </div>
-            <div class="panel-bottom ">
+            <div class="panel-bottom "
+                 v-if="item.orderStatus == '1'||item.orderStatus == '3'">
               <div class="count-down"
                    v-if="item.orderStatus == '1'">
                 <span>订单关闭倒计时:</span>
@@ -122,7 +123,7 @@
                                 format="HH:mm:ss" />
               </div>
               <div class="label gary"
-                   @click="showCancellPop(item)"
+                   @click="canselOrder(item)"
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'">取消订单
               </div>
@@ -264,16 +265,25 @@ export default {
     }
   },
   created() {
-    this.getData()
+    // this.getData()
     this.$store.dispatch('appointMent/getList')
   },
   methods: {
     goPay(data) {
+      let typeName = '',
+        orderNo = '',
+        money = ''
       let doctorId = data.doctorInfo.doctorId
-      let money = data.orderMoney
-      let typeName = '预约挂号'
       let doctorName = data.doctorInfo.name
-      let orderNo = data.orderNo
+      if (data.orderType == 'register') {
+        orderNo = data.orderNo
+        typeName = '预约挂号'
+        money = data.orderMoney
+      } else if (data.orderType == 'inquiry') {
+        orderNo = data.orderInfo.orderNo
+        typeName = '图文问诊 '
+        money = data.orderInfo.orderMoney
+      }
       let json = { money, typeName, doctorName, orderNo, doctorId }
       console.log(json)
       json = peace.util.encode(json)
@@ -286,13 +296,19 @@ export default {
       })
     },
     showCancellPop(item) {
+      let orderNo = ''
+      if (item.orderType == 'register') {
+        orderNo = item.orderNo
+      } else if (item.orderType == 'inquiry') {
+        orderNo = item.orderInfo.orderNo
+      }
       Dialog.confirm({
         title: '温馨提示',
         message: '是否确认取消咨询？'
       })
         .then(() => {
           const params = {
-            orderNo: item.inquiryInfo.orderNo
+            orderNo: orderNo
           }
           peace.service.patient.cancel(params).then(res => {
             peace.util.alert(res.msg)
@@ -305,20 +321,29 @@ export default {
         })
     },
     canselOrder(item) {
-      if (!item.cancelState) {
+      if (!item.cancelState && item.orderStatus != 1) {
         return
       }
+      let type, alertMsg
+      if (item.orderStatus == 1) {
+        type = 'cancel'
+        alertMsg = '是否确认取消'
+      } else {
+        type = 'quit'
+        alertMsg = '是否确认退号'
+      }
       Dialog.confirm({
-        message: '是否确认退号？'
+        message: alertMsg
       })
         .then(() => {
           peace.service.appoint
             .orderCancel({
-              orderNo: item.orderNo
+              orderNo: item.orderNo,
+              type
             })
             .then(res => {
               peace.util.alert(res.msg || '退号成功')
-              this.$store.dispatch('appointMent/getList')
+              this.get()
             })
         })
         .catch(() => {
@@ -327,7 +352,7 @@ export default {
     },
     goConsultDetailPage(item) {
       let json = peace.util.encode({
-        orderInfo: item
+        inquiryId: item.inquiryInfo.inquiryId
       })
       this.$router.push(`/setting/userConsultDetail/${json}`)
     },
@@ -349,11 +374,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   .count-down {
-    padding-left: 13px;
+    // padding-left: 13px;
     font-size: 13px;
     display: flex;
     span {
-      margin-right: 10px;
+      margin-right: 5px;
     }
   }
 }
@@ -373,6 +398,9 @@ export default {
     }
     .card {
       align-items: center;
+      .card-name {
+        font-size: 15px;
+      }
       .card-gary {
         margin-left: 5px;
       }
@@ -408,7 +436,7 @@ export default {
 
 .card-gary {
   color: #999;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
 }
 .card-avatar.card-img {
@@ -638,7 +666,7 @@ export default {
 }
 .label {
   font-size: 12px;
-  padding: 5px (24px/2);
+  // padding: 5px (24px/2);
   margin-left: (20px/2);
   border-radius: (40px/2);
 }
@@ -726,7 +754,8 @@ export default {
 .strip-eye.color-register-4,
 .strip-eye.color-register-5,
 .strip-eye.color-register-7 {
-  color: #999;
+  // color: #999;
+  color: #666;
 }
 .small {
   padding-top: 0;

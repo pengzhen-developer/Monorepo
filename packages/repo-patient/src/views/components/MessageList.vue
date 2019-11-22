@@ -220,7 +220,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div @click="getTransfelDetail(message)"
+              <div @click="getConsultDetail(message)"
                    class="message-body case">
                 <img src="~@src/assets/images/pic_medication recommendations.png" />
                 <div style="text-align: left;">
@@ -775,17 +775,37 @@ export default {
         }
       }, 1)
     },
+    //问诊卡详情
+    goInquiryOrderInfo(message) {
+      let json = peace.util.encode({
+        InquiryOrder: message.content.data
+      })
 
-    goInquiryOrderInfo() {
-      peace.util.alert('需要跳转问诊卡详情')
+      this.$router.push(`/components/thePreliminaryForm/${json}`)
     },
+    //检查单
+    goInquiryCheckInfo(message) {
+      let json = peace.util.encode({
+        checkOrderNo: message.content.data.checkOrderInfo.checkOrderNo
+      })
 
-    goInquiryCheckInfo() {
-      peace.util.alert('需要跳转检查单详情')
+      this.$router.push(`/components/theInspection/${json}`)
     },
+    //会诊
+    getConsultDetail(message) {
+      let json = peace.util.encode({
+        consultNo: message.content.data.consultInfo.consultNo
+      })
 
-    getTransfelDetail() {
-      peace.util.alert('需要跳转检查单详情')
+      this.$router.push(`/components/theConsultation/${json}`)
+    },
+    //转诊
+    getTransfelDetail(message) {
+      let json = peace.util.encode({
+        referralNo: message.content.data.referralInfo.referralNo
+      })
+
+      this.$router.push(`/components/theTransfer/${json}`)
     },
 
     getCaseDetail(message) {
