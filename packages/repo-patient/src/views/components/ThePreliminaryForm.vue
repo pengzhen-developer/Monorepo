@@ -38,10 +38,10 @@
           <div class="form-dl img">
             <div class="form-dt ">复诊诊凭 :</div>
             <div class="form-img">
-              <img v-for="(item,index) in internalData.inquiryOrderInfo.inquiryImages"
+              <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                    :key="index"
-                   :src="item.image_path"
-                   @click="viewImage(item.image_path)" />
+                   :src="item"
+                   @click="viewImage(item)" />
             </div>
           </div>
           <div class="form-dl">
@@ -57,6 +57,9 @@
 
 <script>
 import peace from '@src/library'
+import Vue from 'vue'
+import { ImagePreview } from 'vant'
+Vue.use(ImagePreview)
 export default {
   data() {
     return {
@@ -66,6 +69,11 @@ export default {
   mounted() {
     this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
     console.log(this.internalData)
+  },
+  methods: {
+    viewImage(path) {
+      ImagePreview([path])
+    }
   }
 }
 </script>

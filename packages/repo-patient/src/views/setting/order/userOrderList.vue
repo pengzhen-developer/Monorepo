@@ -264,9 +264,11 @@ export default {
       orderList: []
     }
   },
+  activated() {
+    this.$store.dispatch('appointMent/getList')
+  },
   created() {
     // this.getData()
-    this.$store.dispatch('appointMent/getList')
   },
   methods: {
     goPay(data) {
@@ -290,6 +292,7 @@ export default {
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
+      this.orderList = []
       peace.service.patient.getOrderList({}).then(res => {
         this.orderList = res.data.list || []
         this.loaded = true
@@ -312,8 +315,7 @@ export default {
           }
           peace.service.patient.cancel(params).then(res => {
             peace.util.alert(res.msg)
-
-            this.get()
+            this.$store.dispatch('appointMent/getList')
           })
         })
         .catch(() => {
@@ -343,7 +345,7 @@ export default {
             })
             .then(res => {
               peace.util.alert(res.msg || '退号成功')
-              this.get()
+              this.$store.dispatch('appointMent/getList')
             })
         })
         .catch(() => {
