@@ -87,7 +87,7 @@
           </div> -->
           <div class="panel-bottom"
                v-if="!(!item.inquiryInfo.consultNo&&!item.inquiryInfo.referralNo&&!item.inquiryInfo.isCase&&!item.inquiryInfo.isPrescrip&&!item.inquiryInfo.checkOrderNo)"
-               style="padding-left: 0; justify-content: flex-end;">
+               style="justify-content: flex-end;">
             <div :data-index="index"
                  @click="gouserConsultationPage(item)"
                  class="label gary"
@@ -225,7 +225,8 @@ export default {
       let typeName = order.inquiryType
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
+      let inquiryId = order.inquiryId
+      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
@@ -558,8 +559,16 @@ export default {
 .label {
   font-size: 13px;
   // padding: 2px 12px;
-  margin-left: 10px;
+  // margin-left: 10px;
   border-radius: 20px;
+  width: 20%;
+  margin-left: 2.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:first-child {
+    margin-left: 0;
+  }
 }
 .gary {
   color: #999;

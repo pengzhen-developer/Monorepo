@@ -787,12 +787,14 @@ export default {
     },
 
     goToPay(data) {
+      console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
         typeName: data.inquiryType === 'image' ? '图文问诊' : '',
         doctorId: data.data,
         doctorName: data.doctorName,
-        orderNo: data.orderNo
+        orderNo: data.orderNo,
+        inquiryId: data.inquiryId
       })
       this.$router.replace(`/components/doctorInquiryPay/${json}`)
     },

@@ -19,20 +19,21 @@
         </div>
         <div class="form-dl"
              v-if="internalData.patientInfo.guardianName">
-          <div class="form-dt">监护人:</div>
+          <div class="form-dt">监 护 人 :</div>
           <div class="form-dd">{{internalData.patientInfo.guardianName}} |
-            {{internalData.patientInfo.guardianAge}} | {{internalData.familyInfo.guardianSex}}
+            {{internalData.familyInfo.guardianSex}} |
+            {{internalData.patientInfo.guardianAge +'岁'}}
           </div>
         </div>
       </div>
       <!--病情描述-->
       <div class="module-item">
         <div class="b">病情现状描述</div>
-        <div class="span">{{ internalData.inquiryOrderInfo.inquiryDescribe}}</div>
+        <div class="span">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo&&internalData.inquiryOrderInfo.isAgain">
+           v-if="internalData.inquiryOrderInfo&&internalData.inquiryOrderInfo.isAgain==='1'">
         <div>
           <div class="b">复诊信息</div>
           <div class="form-dl img">
@@ -159,11 +160,16 @@ export default {
       padding: 5px 0;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       img {
         width: 57px;
         height: 57px;
         display: block;
         margin-right: 10px;
+        margin-bottom: 10px;
+        &:nth-child(5n) {
+          margin-right: 0;
+        }
       }
     }
   }
@@ -235,7 +241,9 @@ export default {
   .ul {
     padding: 10px 15px 0 15px;
   }
-
+  .span {
+    padding: 10px 15px;
+  }
   .dl-packet {
     display: flex;
     justify-content: space-between;
