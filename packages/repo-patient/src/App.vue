@@ -29,8 +29,6 @@ export default {
     validateWxAuth() {
       // 当前页面是中转页，不需要验证授权（系统在中转页进行授权逻辑）
       if (this.$route.path === '/' || this.$route.path === '/redirect') {
-        this.$router.push(peace.config.system.homePage)
-
         return true
       }
     },
