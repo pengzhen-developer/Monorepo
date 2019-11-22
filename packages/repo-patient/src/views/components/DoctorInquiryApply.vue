@@ -815,7 +815,7 @@ export default {
       }
 
       let json = peace.util.encode(params)
-      this.$router.push(`/setting/userConsultDetail/${json}`)
+      this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
 
     scrollToBottom() {

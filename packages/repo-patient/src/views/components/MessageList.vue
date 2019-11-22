@@ -80,7 +80,7 @@
                     {{ message.content.data.patientInfo.familySex }} |
                     {{ message.content.data.patientInfo.familyAge }}岁
                   </span>
-                  <img v-if="message.content.data.inquiryOrderInfo.isAgain"
+                  <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
                        src="../../assets/images/ic_fz.png"
                        class="fz" />
                 </div>
