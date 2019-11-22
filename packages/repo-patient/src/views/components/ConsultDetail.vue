@@ -91,9 +91,10 @@
           </div>
           <div class="form-dl"
                v-if="internalData.familyInfo.guardianName">
-            <div class="form-dt">监护人:</div>
+            <div class="form-dt">监 护 人:</div>
             <div class="form-dd">{{internalData.familyInfo.guardianName}} |
-              {{internalData.familyInfo.guardianAge}} | {{internalData.familyInfo.guardianSex}}
+              {{internalData.familyInfo.guardianSex}} |
+              {{internalData.familyInfo.guardianAge+'岁'}}
             </div>
           </div>
           <!-- <div class="form-dl">
@@ -122,7 +123,7 @@
             </div>
             <div class="form-dl">
               <div class="form-dt">初诊诊断 :</div>
-              <div class="form-dd">{{internalData.inquiryInfo.confirmIllness}}
+              <div class="form-dd">{{internalData.illInfo.confirmIllness}}
               </div>
             </div>
           </div>
@@ -189,7 +190,11 @@
     </div>
     <template v-if="internalData&& 
                internalData.inquiryInfo">
-      <div class="footer"
+      <div class="h64"
+           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
+               internalData.inquiryInfo.inquiryStatus == '4' ||
+               internalData.inquiryInfo.inquiryStatus == '5'"></div>
+      <div class="footer fixedBottom"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
                internalData.inquiryInfo.inquiryStatus == '4' ||
                internalData.inquiryInfo.inquiryStatus == '5'">
@@ -203,7 +208,9 @@
              v-if="
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
       </div>
-      <div class="pay"
+      <div class="h115"
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'"></div>
+      <div class="pay fixedBottom"
            v-if="internalData.inquiryInfo.inquiryStatus == '1'">
         <div class="pay-item">
           <div class="count-down">
@@ -212,7 +219,7 @@
                             :time="internalData.inquiryInfo.time"
                             format="HH:mm:ss" />
           </div>
-          <div class="right">总金额:<span>{{internalData.orderInfo.orderMoney}}</span> </div>
+          <div class="right">总金额:<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
         <div class="pay-item">
           <div class="pay-btn btn-cancel"
@@ -421,6 +428,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.footer,
+.pay {
+  &.fixedBottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+}
+.h64 {
+  height: 64px;
+}
 .footer {
   width: 100%;
   background-color: #fff;
@@ -440,11 +458,18 @@ export default {
     border: 1px solid rgba(0, 198, 174, 1);
   }
 }
+.h115 {
+  height: 115px;
+}
 .pay {
+  height: 115px;
   background-color: #fff;
   padding: 10px 15px;
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   .pay-item {
     width: 100%;
     display: flex;
@@ -574,11 +599,16 @@ export default {
       padding: 5px 0;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       img {
         width: 57px;
         height: 57px;
         display: block;
         margin-right: 10px;
+        margin-bottom: 10px;
+        &:nth-child(5n) {
+          margin-right: 0 !important;
+        }
       }
     }
   }
