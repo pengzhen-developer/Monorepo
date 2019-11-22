@@ -372,7 +372,7 @@ export default {
     // 获取字典数据
     this.getFamilyList()
     // 获取当前医生详情
-    this.getDoctorInfo()
+    this.getWapDoctorInfo()
     // 设置参数
     this.setModel()
   },
@@ -450,9 +450,9 @@ export default {
       })
     },
 
-    getDoctorInfo() {
+    getWapDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.doctor.getDoctorInfo(params).then(res => {
+      peace.service.doctor.getWapDoctorInfo(params).then(res => {
         this.doctor = res.data
       })
     },
@@ -460,9 +460,7 @@ export default {
     getSerivceType() {
       const params = peace.util.decode(this.$route.params.json)
 
-      const consultInfo = this.doctor.consultationList.find(
-        item => item.tag === params.consultingType
-      )
+      const consultInfo = this.doctor.consultationList[params.consultingType]
 
       return consultInfo && consultInfo.tagName
     },
@@ -474,9 +472,7 @@ export default {
     getSerivceMoney() {
       const params = peace.util.decode(this.$route.params.json)
 
-      const consultInfo = this.doctor.consultationList.find(
-        item => item.tag === params.consultingType
-      )
+      const consultInfo = this.doctor.consultationList[params.consultingType]
 
       return consultInfo && consultInfo.money
     },
