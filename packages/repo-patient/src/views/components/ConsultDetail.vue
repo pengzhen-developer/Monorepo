@@ -109,7 +109,7 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain">
+             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain==='1'">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img">
@@ -322,14 +322,14 @@ export default {
       let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
+      let inquiryId = data.inquiryInfo.inquiryId
+      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
 
     getConsultDetail() {
       let params = peace.util.decode(this.$route.params.json)
-
       peace.service.patient.inquiryDetail(params).then(res => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime =

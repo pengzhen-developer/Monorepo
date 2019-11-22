@@ -274,20 +274,22 @@ export default {
     goPay(data) {
       let typeName = '',
         orderNo = '',
-        money = ''
+        money = '',
+        json = {}
       let doctorId = data.doctorInfo.doctorId
       let doctorName = data.doctorInfo.name
       if (data.orderType == 'register') {
         orderNo = data.orderNo
         typeName = '预约挂号'
         money = data.orderMoney
+        json = { money, typeName, doctorName, orderNo, doctorId }
       } else if (data.orderType == 'inquiry') {
         orderNo = data.orderInfo.orderNo
         typeName = '图文问诊 '
         money = data.orderInfo.orderMoney
+        let inquiryId = data.inquiryInfo.inquiryId
+        json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
       }
-      let json = { money, typeName, doctorName, orderNo, doctorId }
-      console.log(json)
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },

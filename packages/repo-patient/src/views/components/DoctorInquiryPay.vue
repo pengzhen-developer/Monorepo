@@ -114,15 +114,16 @@ export default {
     },
 
     payCallback() {
-      let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
+      let { typeName, orderNo, inquiryId } = peace.util.decode(this.$route.params.json)
       if (typeName.includes('挂号')) {
         let orderType = 'register'
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
         this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
         let json = peace.util.encode({
-          ...peace.util.decode(this.$route.params.json),
-          startTime: new Number(this.createdTime) * 1000
+          // ...peace.util.decode(this.$route.params.json),
+          // startTime: new Number(this.createdTime) * 1000
+          inquiryId: inquiryId
         })
         this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }
