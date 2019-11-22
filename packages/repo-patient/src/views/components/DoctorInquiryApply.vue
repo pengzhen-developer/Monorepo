@@ -360,6 +360,12 @@ export default {
     }
   },
 
+  activated() {
+    this.$nextTick().then(() => {
+      this.scrollToBottom()
+    })
+  },
+
   created() {
     this.onEmits()
 
@@ -724,7 +730,7 @@ export default {
     uploadHandler() {
       return new Promise(resolve => {
         // 获取
-        if (this.attachment.length > 0) {
+        if (Array.isArray(this.attachment) && this.attachment.length) {
           const params = new FormData()
 
           for (var i = 0; i < this.attachment.length; i++) {
@@ -973,6 +979,10 @@ export default {
             font-size: 16px;
             margin: 0 15px 15px 0;
           }
+        }
+
+        &.confirmIllness {
+          text-align: center;
         }
       }
     }
