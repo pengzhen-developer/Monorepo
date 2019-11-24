@@ -52,10 +52,11 @@
                  v-for="(file, fileIndex) in item.answer"
                  :key="fileIndex">
               <div class="message out">
-                <img style="max-height: 300px; max-width: 100%; width: unset;"
-                     :src="file.content">
+                <img style="max-height: 200px; max-width: 100%; width: unset;"
+                     :src="file.content"
+                     @click="viewImage(file.content)">
               </div>
-              <span v-if="canShowChange(index)"
+              <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
                     style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
                     @click="backQuestion">点击修改</span>
             </div>
@@ -130,10 +131,11 @@
               </van-row>
             </van-row>
             <van-row>
-              <van-button round
+              <van-button style="width: 90px; height: 32px; line-height: 1;"
                           @click="apply"
-                          style="width: 90px; height: 32px; line-height: 1;"
-                          type="primary">去咨询</van-button>
+                          type="primary"
+                          round="true"
+                          :disabled="sending">去咨询</van-button>
             </van-row>
           </van-row>
         </transition-group>
@@ -210,7 +212,13 @@
 
 <script>
 import peace from '@src/library'
+
+import Vue from 'vue'
 import { Dialog } from 'vant'
+import { ImagePreview } from 'vant'
+Vue.use(ImagePreview)
+
+import Compressor from 'compressorjs'
 
 const ANSWER_MODE = {
   /** 输入 */
@@ -338,7 +346,9 @@ export default {
       doctor: {
         consultationList: [],
         doctorInfo: {}
-      }
+      },
+
+      sending: false
     }
   },
 
@@ -718,26 +728,52 @@ export default {
     },
 
     apply() {
-      this.uploadHandler().then(() => {
-        this.applyHandler()
-      })
+      this.sending = true
+
+      this.uploadHandler()
+        .then(this.applyHandler)
+        .finlly(() => {
+          this.sending = false
+        })
     },
 
     uploadHandler() {
       return new Promise(resolve => {
-        // 获取
         if (Array.isArray(this.attachment) && this.attachment.length) {
-          const params = new FormData()
+          // 压缩
+          const compress = () => {
+            return new Promise(resolve => {
+              const files = []
+              for (let i = 0; i < this.attachment.length; i++) {
+                new Compressor(this.attachment[i].file, {
+                  quality: 0.6,
+                  convertSize: 50000,
+                  success: fileBlob => {
+                    files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
 
-          for (var i = 0; i < this.attachment.length; i++) {
-            params.append('file[]', this.attachment[i].file)
-            params.append('source', 'inquiryApply')
+                    if (files.length === this.attachment.length) {
+                      resolve(files)
+                    }
+                  }
+                })
+              }
+            })
           }
 
-          peace.service.inquiry.images(params).then(res => {
-            this.model.attachment = res.data
+          // 上传
+          compress().then(files => {
+            const params = new FormData()
 
-            resolve()
+            params.append('source', 'inquiryApply')
+            files.forEach(file => {
+              params.append('file[]', file)
+            })
+
+            peace.service.inquiry.images(params).then(res => {
+              this.model.attachment = res.data
+
+              resolve()
+            })
           })
         } else {
           resolve()
@@ -748,7 +784,7 @@ export default {
     applyHandler() {
       const params = this.model
 
-      peace.service.inquiry.apply(params).then(res => {
+      return peace.service.inquiry.apply(params).then(res => {
         // 订单提交成功
         if (res.data.errorState === 0) {
           // 需要支付，跳转支付
@@ -818,6 +854,10 @@ export default {
 
       let json = peace.util.encode(params)
       this.$router.replace(`/setting/userConsultDetail/${json}`)
+    },
+
+    viewImage(path) {
+      ImagePreview([path])
     },
 
     scrollToBottom() {
