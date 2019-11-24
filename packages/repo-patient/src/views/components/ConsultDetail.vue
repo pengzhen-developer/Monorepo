@@ -91,16 +91,19 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain/1===1">
+             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain.toString()==='1'">
           <div>
             <div class="b">复诊信息</div>
-            <div class="form-dl img">
+            <div class="form-dl img"
+                 v-if="internalData.inquiryInfo.inquiryImages.length>0">
               <div class="form-dt ">复诊诊凭 :</div>
               <div class="form-img">
-                <img v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
-                     :key="index"
-                     :src="item.image_path"
-                     @click="viewImage(item.image_path)" />
+                <div class="img">
+                  <img v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
+                       :key="index"
+                       :src="item.image_path"
+                       @click="viewImage(item.image_path)" />
+                </div>
               </div>
             </div>
             <div class="form-dl">
@@ -617,14 +620,19 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      img {
+      .img {
         width: 57px;
         height: 57px;
-        display: block;
+        background: #ccc;
         margin-right: 10px;
         margin-bottom: 10px;
         &:nth-child(5n) {
           margin-right: 0 !important;
+        }
+        img {
+          width: 57px;
+          height: 57px;
+          display: block;
         }
       }
     }
@@ -720,6 +728,7 @@ export default {
     white-space: nowrap;
     text-align: right;
     padding: 5px 15px;
+    color: #333;
   }
   .pdtb {
     padding: 10px 0;

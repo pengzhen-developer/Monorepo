@@ -316,7 +316,7 @@ export default {
   }
 }
 .content {
-  padding: 10px 15px;
+  padding: 10px;
   box-sizing: border-box;
   background-color: #f9f9f9;
   .panel {

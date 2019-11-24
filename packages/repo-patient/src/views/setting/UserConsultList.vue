@@ -561,7 +561,7 @@ export default {
   // padding: 2px 12px;
   // margin-left: 10px;
   border-radius: 20px;
-  width: 20%;
+  width: 18%;
   margin-left: 2.5%;
   display: flex;
   justify-content: center;

@@ -118,6 +118,7 @@
         </div>
         <div class="timeline"
              v-else-if="data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'">
+          <!-- v-if="data[current].reReferralOut.checkTime" -->
           <div class="item">
             <div class="item-time">{{data[current].reReferralOut.checkTime}}</div>
             <div class="item-text">{{data[current].reReferralOut.checkSuggest}}</div>
