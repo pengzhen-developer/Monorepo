@@ -36,10 +36,9 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
-                       v-if="item.orderInfo"
-                       :class="['small-price',item.orderInfo.orderMoney == 0 ? 'default' : 'money']">
+                       v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
-                    <span style="color:#999;font-size:13px;"
+                    <span
                           v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款'+item.orderInfo.payMoney+')'}}</span>
                   </div>
 
@@ -303,12 +302,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .label {
+    margin-left: 0;
+  }
   .count-down {
-    // padding-left: 13px;
-    font-size: 13px;
     display: flex;
+    .van-count-down {
+      color: #999;
+    }
     span {
-      margin-right: 5px;
+      font-size: 13px;
     }
   }
 }
@@ -355,6 +358,13 @@ export default {
         .small-item-val {
           flex: 1;
           color: #333;
+          display: flex;
+          align-items: center;
+          span {
+            color: #999;
+            font-size: 13px;
+            margin-left: 3px;
+          }
         }
       }
     }
@@ -597,12 +607,14 @@ export default {
 .label {
   font-size: 12px;
   // padding: 5px (24px/2);
+  padding: 3px 10px;
   margin-left: (20px/2);
   border-radius: (40px/2);
 }
 .label.gary {
   color: #999;
   border-color: #ccc;
+  margin-left: 0;
 }
 .label.blue {
   background: #00c6ae;

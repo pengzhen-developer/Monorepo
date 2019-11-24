@@ -211,7 +211,7 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import GuardianList from '../setting/GuardianList'
-
+import { Dialog } from 'vant'
 export default {
   components: {
     GuardianList,
@@ -567,14 +567,19 @@ export default {
     },
     // 删除
     deleted() {
-      const params = {
-        familyId: this.model.id
-      }
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否删除家人信息'
+      }).then(() => {
+        const params = {
+          familyId: this.model.id
+        }
 
-      peace.service.patient.DelFamily(params).then(res => {
-        peace.util.alert(res.msg)
+        peace.service.patient.DelFamily(params).then(res => {
+          peace.util.alert(res.msg)
 
-        this.$router.go(-1)
+          this.$router.go(-1)
+        })
       })
     }
   }
