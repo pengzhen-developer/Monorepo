@@ -84,11 +84,15 @@ export default {
       data: {}
     }
   },
-  created() {
+
+  activated() {
     peace.service.index.getMenu().then(res => {
       this.data = res.data
     })
   },
+
+  created() {},
+
   mounted() {
     // // 微信环境授权
     // if (this.$route.query.code) {
