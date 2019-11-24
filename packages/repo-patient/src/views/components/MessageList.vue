@@ -413,7 +413,27 @@
         <van-loading />
       </van-row>
     </template>
-
+    <template
+              v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
+      <div class="h63"></div>
+      <div class="footer">
+        <div class="footer-item"
+             v-if="infoData.consultNo"
+             @click="gouserConsultationPage(infoData)">会诊单</div>
+        <div class="footer-item"
+             v-if="infoData.referralNo"
+             @click="gouserTranforPage(infoData)">转诊单</div>
+        <div class="footer-item"
+             v-if="infoData.isCase"
+             @click="gouserPrescripCasePage(infoData)">病历</div>
+        <div class="footer-item"
+             v-if="infoData.isPrescrip"
+             @click="gouserPrescripListPage(infoData)">处方</div>
+        <div class="footer-item"
+             v-if="infoData.checkOrderNo"
+             @click="gouserInspectionPage(infoData)">检查单</div>
+      </div>
+    </template>
     <peace-dialog :visible.sync="caseDetail.visible">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
@@ -466,7 +486,7 @@ export default {
     return {
       internalData: undefined,
       internalDoctorInfo: undefined,
-
+      infoData: undefined,
       message: '',
 
       tools: {
@@ -591,10 +611,20 @@ export default {
   },
 
   methods: {
+    //获取当前问诊状态及5个按钮是否展示
+    getInfoData(inquiryId) {
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
+        res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
+        this.infoData = res.data.inquiryInfo
+      })
+    },
     getHistoryMsgsByDB() {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.patient.chatDetail(params).then(res => {
+        if (res.data.inquiryStatus == '4' || res.data.inquiryStatus == '5') {
+          this.getInfoData(res.data.inquiryId)
+        }
         const historyMessageFormatHandler = messages => {
           if (messages && Array.isArray(messages)) {
             messages.forEach(message => {
@@ -783,7 +813,7 @@ export default {
 
       this.$router.push(`/components/thePreliminaryForm/${json}`)
     },
-    //检查单
+    //检查单详情
     goInquiryCheckInfo(message) {
       let json = peace.util.encode({
         checkOrderNo: message.content.data.checkOrderInfo.checkOrderNo
@@ -791,7 +821,7 @@ export default {
 
       this.$router.push(`/components/theInspection/${json}`)
     },
-    //会诊
+    //会诊详情
     getConsultDetail(message) {
       let json = peace.util.encode({
         consultNo: message.content.data.consultInfo.consultNo
@@ -799,7 +829,7 @@ export default {
 
       this.$router.push(`/components/theConsultation/${json}`)
     },
-    //转诊
+    //转诊详情
     getTransfelDetail(message) {
       let json = peace.util.encode({
         referralNo: message.content.data.referralInfo.referralNo
@@ -807,7 +837,7 @@ export default {
 
       this.$router.push(`/components/theTransfer/${json}`)
     },
-
+    //病历详情
     getCaseDetail(message) {
       const params = peace.util.encode({
         inquiryNo: message.content.data.inquiryInfo.inquiryNo,
@@ -816,7 +846,7 @@ export default {
 
       this.$router.push(`/components/theCase/${params}`)
     },
-
+    //处方详情
     getRecipeDetail(message) {
       const params = peace.util.encode({
         prescribeId: message.content.data.recipeInfo.recipeId
@@ -824,7 +854,47 @@ export default {
 
       this.$router.push(`/components/theRecipe/${params}`)
     },
+    //会诊列表
+    gouserConsultationPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryNo
+      })
 
+      this.$router.push(`/components/theConsultation/${params}`)
+    },
+    //转诊列表
+    gouserTranforPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryNo
+      })
+
+      this.$router.push(`/components/theTransfer/${params}`)
+    },
+    //检验单列表
+    gouserInspectionPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryNo
+      })
+
+      this.$router.push(`/components/theInspection/${params}`)
+    },
+    //病历
+    gouserPrescripCasePage(item) {
+      const params = peace.util.encode({
+        familyId: item.familyId,
+        inquiryNo: item.inquiryNo
+      })
+
+      this.$router.push(`/components/theCase/${params}`)
+    },
+    //处方列表
+    gouserPrescripListPage(item) {
+      const params = peace.util.encode({
+        familyId: item.familyId,
+        inquiryNo: item.inquiryNo
+      })
+      this.$router.push(`/components/theRecipeList/${params}`)
+    },
     viewImage(path) {
       ImagePreview([path])
     }
@@ -833,6 +903,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.h63 {
+  height: 63px;
+}
+.footer {
+  width: 100%;
+  height: 63px;
+  padding: 0 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  .footer-item {
+    margin-right: 11px;
+    flex: 1;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #00c6ae;
+    background: rgba(235, 251, 249, 1);
+    border-radius: 17px;
+    border: 1px solid rgba(0, 198, 174, 1);
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
 .message-check {
   .item {
     width: 100%;
