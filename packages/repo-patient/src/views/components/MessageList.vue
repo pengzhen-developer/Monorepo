@@ -596,9 +596,13 @@ export default {
       }
       // 传递 session 获取聊天记录
       else {
-        setTimeout(() => {
-          this.getHistoryMsgsByIM()
-        }, 1000)
+        const interval = setInterval(() => {
+          if ($peace.NIM && $peace.NIM.isConnected()) {
+            window.clearInterval(interval)
+
+            this.getHistoryMsgsByIM()
+          }
+        }, 100)
       }
     }
   },

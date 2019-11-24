@@ -732,7 +732,7 @@ export default {
 
       this.uploadHandler()
         .then(this.applyHandler)
-        .finlly(() => {
+        .finally(() => {
           this.sending = false
         })
     },

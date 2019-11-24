@@ -6,9 +6,11 @@
     <div class="layout">
       <!-- 中部功能 keepAlive router  -->
       <div class="layout-content">
-        <vue-page-stack>
-          <router-view></router-view>
-        </vue-page-stack>
+        <transition name="van-fade">
+          <vue-page-stack>
+            <router-view></router-view>
+          </vue-page-stack>
+        </transition>
       </div>
 
       <!-- 底部导航 tabbar -->
@@ -123,11 +125,14 @@ export default {
 
     this.restoreUserInfo()
 
-    // 待优化项，当系统初始化时，延迟 3000ms 加载 IM
-    // 避免在渠道发生变化时，会清空用户信息，导致无 token 访问接口
+    // 待优化项
+    // 当系统初始化时，App.vue 优先于 Component.vue 执行
+    // 当访问系统入口 Redirect.vue 时
+    // 会判断渠道，如果渠道发生变化，会移除用户信息，重新登录，因此出现无 token 访问接口的问题
+    // 此处延迟 1000ms， 等待 Redirect.vue 加载完成后，判断是否需要执行 IM
     setTimeout(() => {
       this.initNIM()
-    }, 3000)
+    }, 1000)
   },
 
   methods: {
