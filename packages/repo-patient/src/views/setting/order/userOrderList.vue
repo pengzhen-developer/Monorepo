@@ -4,11 +4,11 @@
     <div class="content"
          style="min-height: 100%;">
       <div v-if="$store.getters['appointMent/appointList'].length">
-        <div class="panel"
-             v-for="(item,index) in $store.getters['appointMent/appointList']"
-             :key="index">
+        <template v-for="(item,index) in $store.getters['appointMent/appointList']">
           <!-- 咨询订单 -->
-          <div v-if="item.orderType=='inquiry'">
+          <div class="panel"
+               :key="index"
+               v-if="item.orderType=='inquiry'">
             <div class="panel-body"
                  @click="goConsultDetailPage(item)">
               <div class="card ">
@@ -50,15 +50,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="panel-bottom " v-if="item.inquiryInfo.inquiryStatus=='1'">
-              <div class="time">订单关闭倒计时：14:39</div>
-              <div class="label gary" @click="showCancellPop(item)">取消订单</div>
-              <div class="label blue" @click="goPay(item)">继续支付</div>
-            </div>
-            <div class="panel-bottom " v-if="item.inquiryInfo.inquiryStatus=='2'">
-              <div class="time">医生接诊倒计时：14:39</div>
-              <div class="label gary" @click="cancelOrder(item)">取消订单</div>
-            </div> -->
             <div class="panel-bottom"
                  style="padding-left: 0"
                  v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
@@ -76,7 +67,9 @@
             </div>
           </div>
           <!-- 预约挂号 -->
-          <div v-if="item.orderType=='register'">
+          <div class="panel"
+               :key="index"
+               v-if="item.orderType=='register'">
             <div class="panel-body"
                  @click="goOrderDetailPage(item)">
               <div class="card ">
@@ -137,74 +130,7 @@
                    v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
             </div>
           </div>
-          <!-- 检查单 -->
-          <!-- <div v-if="item.orderType=='insperction'">
-            <div class="panel-body" @click="goOrderDetailPage(item)">
-              <div class="card ">
-                <img class="card-avatar avatar-circular card-img"
-                  src="/src/assets/images/ic_video_open.png" />
-                <div class="card-body">
-                  <div class="card-name card-flex">张豆豆 儿科
-                    <div class="card-gary">[检查单]</div>
-                  </div>
-                </div>
-                <div>待支付</div>
-              </div>
-              <div class="small">
-                <div class="small-item">
-                  <div class="small-item-key">就/复诊人:</div>
-                  <div class="small-item-val">哈哈 男 25岁</div>
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">订单金额:</div>
-                  <div class="small-item-val">￥120.00 ||免费
-                  </div>
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">检查项目:</div>
-                  <div class="small-item-val">
-                    <div>胸部正侧位 x1</div>
-                    <div>胸部正侧位 x1</div>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-bottom ">
-                <div class="time">订单关闭倒计时：14:39</div>
-                <div class="label gary" @click="cancelOrder(item)">取消订单</div>
-                <div class="label blue" @click="goPay(item)">继续支付</div>
-              </div>
-            </div>
-          </div> -->
-          <!-- 私人医生 -->
-          <!-- <div v-if="item.orderType == 'privateDoctor'">
-            <div class="panel-body" @click="goOrderDetailPage(item)">
-              <div class="card ">
-                <img class="card-avatar avatar-circular card-img"
-                  src="/src/assets/images/ic_video_open.png" />
-                <div class="card-body">
-                  <div class="card-name card-flex">张豆豆 儿科
-                    <div class="card-gary">[私人医生]</div>
-                  </div>
-                </div>
-                <div>待支付</div>
-              </div>
-              <div class="small">
-                <div class="small-item">
-                  <div class="small-item-key">就/复诊人:</div>
-                  <div class="small-item-val">哈哈 男 25岁</div>
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">订单金额:</div>
-                  <div class="small-item-val">￥120.00 <span style="color:#999;">(已退款120.00)</span>
-                  </div>
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">下单时间:</div>
-                  <div class="small-item-val">2019/11/12 12:11</div>
-                </div>
-              </div>
-            </div> -->
-        </div>
+        </template>
       </div>
       <div class="none-page"
            v-if="$store.getters['appointMent/appointList'] ==0 && $store.getters['appointMent/loaded']">

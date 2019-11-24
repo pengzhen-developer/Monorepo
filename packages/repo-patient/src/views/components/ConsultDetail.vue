@@ -24,32 +24,14 @@
         ">
           订单取消后退款将在1-3个工作日内原路返回，请注意查收
         </div>
-        <!-- <div class="module-body">
-          <div @click="gouserPrescripCasePage(internalData)" class="label blue"
-            v-if="internalData.inquiryInfo.isCase">
-            咨询小结
+        <div class="waitText"
+             v-if="internalData.inquiryInfo.inquiryStatus == '2'">
+          <div class="cancelText">
+            接诊后可以在“消息”中查看回复
           </div>
-          <div @click="gouserPrescripListPage(internalData)" class="label blue"
-            v-if="internalData.inquiryInfo.isPrescrip">
-            用药建议
-          </div>
-          <div @click="goChatingPage(internalData)" class="label blue" v-if="
-            internalData.inquiryInfo.inquiryStatus != '1' &&
-              internalData.inquiryInfo.inquiryStatus != '6'
-          ">
-            咨询记录
-          </div>
-          <div @click="showCancellPop(internalData)" class="label blue" v-if="
-            internalData.inquiryInfo.inquiryStatus == '1' ||
-              internalData.inquiryInfo.inquiryStatus == '2'
-          ">
-            取消订单
-          </div>
-          <div @click="goToPay(internalData)" class="label blue-full"
-            v-if="internalData.inquiryInfo.inquiryStatus == '1'">
-            支付订单
-          </div>
-        </div> -->
+          <img class="wait-img"
+               src="~@/assets/images/ic_wait_message.png" />
+        </div>
       </div>
       <!--医生名片-->
       <div class="module card">
@@ -109,7 +91,7 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain==='1'">
+             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain/1===1">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img">
@@ -190,6 +172,11 @@
     </div>
     <template v-if="internalData&& 
                internalData.inquiryInfo">
+      <div class="footer"
+           v-if="internalData.inquiryInfo.inquiryStatus == '2'">
+        <div class="footer-btn wait-btn"
+             @click="showCancellPop(internalData)">取消订单</div>
+      </div>
       <div class="h64"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
                internalData.inquiryInfo.inquiryStatus == '4' ||
@@ -198,12 +185,12 @@
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
                internalData.inquiryInfo.inquiryStatus == '4' ||
                internalData.inquiryInfo.inquiryStatus == '5'">
-        <div class="chatBtn"
+        <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
             internalData.inquiryInfo.inquiryStatus == '4' ||
               internalData.inquiryInfo.inquiryStatus == '5'">咨询记录</div>
-        <div class="chatBtn"
+        <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
@@ -446,16 +433,22 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  .chatBtn {
+  .footer-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 343px;
     height: 45px;
-    color: #fff;
-    background: rgba(0, 202, 173, 1);
     border-radius: 40px;
-    border: 1px solid rgba(0, 198, 174, 1);
+    &.chat-btn {
+      color: #fff;
+      background: rgba(0, 202, 173, 1);
+      border: 1px solid rgba(0, 198, 174, 1);
+    }
+    &.wait-btn {
+      color: #999;
+      border: 1px solid #ccc;
+    }
   }
 }
 .h115 {
@@ -584,6 +577,30 @@ export default {
       background: rgba(240, 252, 250, 1) url('../../assets/images/icons/ic_notice.png') no-repeat;
       background-size: 17px 17px;
       background-position: 15px 14px;
+    }
+    .waitText {
+      padding: 10px 15px;
+      // width: 100%;
+      box-sizing: border-box;
+      background: rgba(240, 252, 250, 1);
+      border-radius: 2px;
+      margin: 10px 15px 0 15px;
+      .cancelText {
+        height: 27px;
+        line-height: 27px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        padding-left: 40px;
+        background-position: 0px 5px;
+      }
+      .wait-img {
+        height: 42px;
+        width: calc(100% - 2px);
+        margin-left: 1px;
+        margin-top: 6px;
+        display: block;
+      }
     }
   }
   .form-dl {
