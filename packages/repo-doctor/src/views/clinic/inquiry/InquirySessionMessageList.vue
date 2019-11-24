@@ -27,6 +27,111 @@
              v-html="getMessageText(message)"></div>
       </template>
 
+      <!-- 问诊卡片 -->
+      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+        <!-- 消息时间 -->
+        <template v-if="isShowMessageTime(message ,index)">
+          <div class="message time">
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          </div>
+        </template>
+
+        <!-- 消息内容 -->
+        <div @click="getPreliminaryDetail(message)"
+             class="message-body message-card">
+          <div class="message-header">
+            <img width="20px"
+                 height="17px"
+                 :src="require('@src/assets/images/ic_message.png')" />
+            <span v-text="message.content.data.patientInfo.familyName"></span>
+            <span>|</span>
+            <span v-text="message.content.data.patientInfo.familySex"></span>
+            <span>|</span>
+            <span v-text="message.content.data.patientInfo.familyAge"></span>
+            <span>岁</span>
+            <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
+                 :src="require('@src/assets/images/ic_fz.png')"
+                 class="fz" />
+          </div>
+          <div class="message-content">
+            <div class="t">病情描述</div>
+            <div class="content">{{ message.content.data.inquiryOrderInfo.describe }}</div>
+          </div>
+        </div>
+      </template>
+
+      <!-- 检查单 -->
+      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
+        <!-- 消息时间 -->
+        <template v-if="isShowMessageTime(message ,index)">
+          <div class="message time">
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          </div>
+        </template>
+
+        <!-- 消息内容 -->
+        <div class="message-body message-card">
+          <div class="message-header">
+            <img width="20px"
+                 height="17px"
+                 :src="require('@src/assets/images/ic_check.png')" />
+            <span>检查单</span>
+          </div>
+          <div class="message-content">
+            <div style="display:flex; justify-content: space-between; color: #333;"
+                 v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
+                 :key="item.itemId">
+              <div class="left">{{ item.name }}</div>
+              <div class="right">x 1</div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- 转诊单 -->
+      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
+        <!-- 消息时间 -->
+        <template v-if="isShowMessageTime(message ,index)">
+          <div class="message time">
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          </div>
+        </template>
+
+        <!-- 消息内容 -->
+        <div @click="getTransfelDetail(message)"
+             class="message-body case">
+          <img src="~@src/assets/images/pic_medication recommendations.png" />
+          <div style="text-align: left;">
+            <p style="font-size: 14px;">转诊单</p>
+            <p>查看详情</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- 会诊单 -->
+      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊单">
+        <!-- 消息时间 -->
+        <template v-if="isShowMessageTime(message ,index)">
+          <div class="message time">
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          </div>
+        </template>
+
+        <!-- 消息内容 -->
+        <div @click="getConsultDetail(message)"
+             class="message-body case">
+          <img src="~@src/assets/images/pic_medication recommendations.png" />
+          <div style="text-align: left;">
+            <p style="font-size: 14px;">会诊单</p>
+            <p>查看详情</p>
+          </div>
+        </div>
+      </template>
+
       <!-- 视频消息 -->
       <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
         <!-- 消息时间 -->
@@ -118,6 +223,25 @@
                   title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
     </peace-dialog>
+    <peace-dialog :visible.sync="transfer.visible"
+                  append-to-body
+                  title="转诊详情">
+      <TheTransferDetail :data="transfer.data"
+                         :type="transfer.referral_type"
+                         @close="() => transfer.visible = false"></TheTransferDetail>
+    </peace-dialog>
+    <peace-dialog :visible.sync="consultation.visible"
+                  append-to-body
+                  title="会诊详情">
+      <TheConsultationDetail :data="consultation.data"
+                             @close="() => consultation.visible = false"></TheConsultationDetail>
+    </peace-dialog>
+    <peace-dialog :visible.sync="preliminary.visible"
+                  append-to-body
+                  title="问诊单详情">
+      <InquiryPreliminary :data="preliminary.data"
+                          @close="() => preliminary.visible = false"></InquiryPreliminary>
+    </peace-dialog>
   </div>
 </template>
 
@@ -133,13 +257,19 @@ Vue.use(Viewer, {
   }
 })
 
+import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
 import InquirySessionRecipeDetail from './InquirySessionRecipeDetail'
+import InquiryPreliminary from './InquiryPreliminary'
 
 export default {
   components: {
+    TheConsultationDetail,
+    TheTransferDetail,
     InquirySessionCaseDetail,
-    InquirySessionRecipeDetail
+    InquirySessionRecipeDetail,
+    InquiryPreliminary
   },
 
   props: {
@@ -159,6 +289,22 @@ export default {
       },
 
       recipeDetail: {
+        visible: false,
+        data: {}
+      },
+
+      transfer: {
+        visible: false,
+        referral_type: '',
+        data: {}
+      },
+
+      consultation: {
+        visible: false,
+        data: {}
+      },
+
+      preliminary: {
         visible: false,
         data: {}
       }
@@ -306,6 +452,38 @@ export default {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })
+    },
+
+    getTransfelDetail(message) {
+      this.transfer.data = undefined
+      this.transfer.visible = true
+
+      const params = {
+        referral_no: message.content.data.referralInfo.referralNo,
+        referral_type: 'out'
+      }
+
+      peace.service.inquiry.referralDocPc(params).then(res => {
+        this.transfer.data = res.data
+      })
+    },
+
+    getConsultDetail(message) {
+      this.consultation.visible = true
+      this.consultation.data = {}
+
+      const params = {
+        consultNo: message.content.data.consultInfo.consultNo
+      }
+
+      peace.service.consult.getConsultInfo(params).then(res => {
+        this.consultation.data = res.data.info
+      })
+    },
+
+    getPreliminaryDetail(message) {
+      this.preliminary.visible = true
+      this.preliminary.data = message.content.data
     }
   }
 }
@@ -378,10 +556,81 @@ export default {
         p {
           margin: 0 0 2px 10px;
           font-size: 12px;
-          color: #333333;
+          color: #333;
         }
       }
     }
+  }
+}
+
+.message-card,
+.message-check {
+  width: 250px;
+  background-color: #fff !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  box-shadow: 1px 2px #f2f2f2;
+}
+.message-header {
+  background-image: url('~@/assets/images/bg-img.png');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  width: 100%;
+  color: #fff;
+  padding-left: 10px;
+  box-sizing: border-box;
+  position: relative;
+  span {
+    margin-left: 10px;
+  }
+  .fz {
+    width: 50px;
+    height: 35px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+  }
+}
+.message-content {
+  border: 1px solid #f2f2f2;
+  text-align: left;
+  padding: 10px;
+  .t {
+    color: #999;
+  }
+  .content {
+    color: #333;
+  }
+}
+.message-line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #eee;
+  position: relative;
+  &::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    left: -7px;
+    top: -7px;
+    position: absolute;
+    display: block;
+    background: #f9f9f9;
+  }
+  &::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    right: -7px;
+    top: -7px;
+    position: absolute;
+    display: block;
+    background: #f9f9f9;
   }
 }
 </style>
