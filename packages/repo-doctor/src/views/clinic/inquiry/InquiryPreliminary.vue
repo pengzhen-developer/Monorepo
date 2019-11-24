@@ -71,8 +71,6 @@ export default {
   },
   mounted() {
     this.internalData = this.data
-
-    console.log(this.internalData)
   }
 }
 </script>
