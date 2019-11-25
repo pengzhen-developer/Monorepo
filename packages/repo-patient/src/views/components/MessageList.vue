@@ -70,7 +70,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-card">
+              <div class="message-body message-card"
+                   @click="goPreliminaryForm(message)">
                 <div class="message-header">
                   <van-image width="20px"
                              height="17px"
@@ -90,7 +91,7 @@
                 </div>
                 <div class="message-line"></div>
                 <div class="message-footer"
-                     @click="goInquiryOrderInfo(message)">
+                     @click.prevent="goInquiryOrderInfo(message)">
                   <van-image width="16px"
                              height="18px"
                              :src="require('@src/assets/images/ic_ck.png')" />
@@ -811,12 +812,19 @@ export default {
       }, 1)
     },
     //问诊卡详情
-    goInquiryOrderInfo(message) {
+    goPreliminaryForm(message) {
       let json = peace.util.encode({
         InquiryOrder: message.content.data
       })
 
       this.$router.push(`/components/thePreliminaryForm/${json}`)
+    },
+    goInquiryOrderInfo(message) {
+      let json = peace.util.encode({
+        inquiryId: message.content.data.inquiryOrderInfo.inquiryId
+      })
+
+      this.$router.push(`/setting/userConsultDetail/${json}`)
     },
     //检查单详情
     goInquiryCheckInfo(message) {

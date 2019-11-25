@@ -1,10 +1,13 @@
 <template>
   <div class="userorderList"
-       style="height: 100%;">
-    <div class="content"
-         style="min-height: 100%;">
-      <div v-if="$store.getters['appointMent/appointList'].length">
-        <template v-for="(item,index) in $store.getters['appointMent/appointList']">
+       style="height:100%;">
+    <van-list :loading="loading"
+              :finished="finish"
+              @load="getData"
+              class="content">
+
+      <div v-if="orderList.length">
+        <template v-for="(item,index) in orderList">
           <!-- 咨询订单 -->
           <div class="panel"
                :key="index"
@@ -59,7 +62,7 @@
                                 format="HH:mm:ss" />
               </div>
               <div class="label gary"
-                   @click="showCancellPop(item)">取消订单</div>
+                   @click="showCancellPop(item,index)">取消订单</div>
               <div class="label blue"
                    v-if="item.inquiryInfo.inquiryStatus === 1"
                    @click="goPay(item)">继续支付</div>
@@ -114,8 +117,10 @@
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
+              <div class="count-down"
+                   v-if="item.orderStatus == '3'"></div>
               <div class="label gary"
-                   @click="canselOrder(item)"
+                   @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'">取消订单
               </div>
@@ -124,18 +129,18 @@
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'">继续支付</div>
               <div class="label blue"
-                   @click="canselOrder(item)"
+                   @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
+                   v-if="item.orderStatus == '3' && !item.cancelState">申请退号</div>
             </div>
           </div>
         </template>
       </div>
-      <div class="none-page"
-           v-if="$store.getters['appointMent/appointList'] ==0 && $store.getters['appointMent/loaded']">
-        <div class="icon icon_none_consult"></div>
-        <div class="none-text">暂无订单记录</div>
-      </div>
+    </van-list>
+    <div class="none-page"
+         v-if="orderList.length ==0 && loaded">
+      <div class="icon icon_none_consult"></div>
+      <div class="none-text">暂无订单记录</div>
     </div>
   </div>
 </template>
@@ -150,7 +155,6 @@ export default {
   props: {},
   data() {
     return {
-      loaded: false,
       page: {
         isGet: false,
         none: true,
@@ -186,11 +190,20 @@ export default {
         }
       },
       data: {},
-      orderList: []
+      orderList: [],
+      p: 0,
+      size: 10,
+      loaded: false,
+      finish: false,
+      loading: false
     }
   },
   activated() {
-    this.$store.dispatch('appointMent/getList')
+    if (this.p > 0) {
+      this.p = 0
+      this.orderList = []
+      this.getData()
+    }
   },
   created() {
     // this.getData()
@@ -219,19 +232,39 @@ export default {
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
-      this.orderList = []
-      peace.service.patient.getOrderList({}).then(res => {
-        this.orderList = res.data.list || []
+      // this.orderList = []
+      this.p++
+      peace.service.patient.getOrderList({ p: this.p, size: this.size }).then(res => {
+        if (res.data.list.length > 0) {
+          res.data.list.map(item => {
+            //   item.time =  15 * 60 * 1000;
+            if (item.orderType == 'register') {
+              if (item.orderExpireTime > item.currentTime) {
+                item.time = (item.orderExpireTime - item.currentTime) * 1000
+              }
+            } else if (item.orderType == 'inquiry') {
+              let inquiryInfo = item.inquiryInfo
+              let expireTime =
+                inquiryInfo.inquiryStatus == 1
+                  ? inquiryInfo.orderExpireTime
+                  : inquiryInfo.orderReceptTime
+              if (expireTime > inquiryInfo.currentTime) {
+                item.time = (expireTime - inquiryInfo.currentTime) * 1000
+              }
+            }
+          })
+        }
+        this.orderList = this.orderList.concat(res.data.list)
+        console.log(this.orderList.length)
         this.loaded = true
+        this.loading = false
+        if (this.p * this.size >= res.data.total) {
+          this.finish = true
+        }
       })
     },
-    showCancellPop(item) {
-      let orderNo = ''
-      if (item.orderType == 'register') {
-        orderNo = item.orderNo
-      } else if (item.orderType == 'inquiry') {
-        orderNo = item.orderInfo.orderNo
-      }
+    showCancellPop(item, index) {
+      let orderNo = item.orderInfo.orderNo
       Dialog.confirm({
         title: '温馨提示',
         message: '是否确认取消咨询？'
@@ -242,17 +275,23 @@ export default {
           }
           peace.service.patient.cancel(params).then(res => {
             peace.util.alert(res.msg)
-            this.$store.dispatch('appointMent/getList')
+            // this.$store.dispatch('appointMent/getList')
+
+            if (res.code == '200') {
+              let data = this.orderList[index]
+              data.inquiryInfo.inquiryStatus = '6'
+              this.orderList.splice(index, 1, data)
+            }
           })
         })
         .catch(() => {
           // on cancel
         })
     },
-    canselOrder(item) {
-      if (!item.cancelState && item.orderStatus != 1) {
-        return
-      }
+    canselOrder(item, index) {
+      // if (!item.cancelState && item.orderStatus != 1) {
+      //   return
+      // }
       let type, alertMsg
       if (item.orderStatus == 1) {
         type = 'cancel'
@@ -271,8 +310,19 @@ export default {
               type
             })
             .then(res => {
+              console.log(res)
               peace.util.alert(res.msg || '退号成功')
-              this.$store.dispatch('appointMent/getList')
+              // this.$store.dispatch('appointMent/getList')
+              if (res.code == '200') {
+                let data = this.orderList[index]
+                if (item.orderStatus == '1') {
+                  data.orderStatus = '2'
+                } else {
+                  data.orderStatus = '7'
+                }
+
+                this.orderList.splice(index, 1, data)
+              }
             })
         })
         .catch(() => {

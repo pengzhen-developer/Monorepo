@@ -20,8 +20,11 @@
       </div>
     </div>
 
-    <div class="content"
-         style="height: 100%">
+    <van-list :loading="loading"
+              :finished="finished"
+              @load="getConsultList"
+              class="content"
+              style="height: 100%">
       <template v-if="consultList.length">
         <div :data-index="index"
              :Key="index"
@@ -126,7 +129,7 @@
           <div class="none-text">暂无咨询记录</div>
         </div>
       </template>
-    </div>
+    </van-list>
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
@@ -197,12 +200,16 @@ export default {
         visible: false,
         data: [],
         doctorInfo: {}
-      }
+      },
+      p: 0,
+      size: 10,
+      finished: false,
+      loading: false
     }
   },
 
   created() {
-    this.get()
+    // this.get()
     // 重复订单跳转进来
     // let inquiryId = this.$route.query.inquiryId
     // if (inquiryId && inquiryId != '') {
@@ -231,10 +238,10 @@ export default {
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getConsultList() {
-      peace.service.patient.inquiryList().then(res => {
+      this.p++
+      peace.service.patient.inquiryList({ p: this.p, size: this.size }).then(res => {
         this.loaded = true
-        this.consultList = res.data.list
-        this.consultList.map(item => {
+        res.data.list.map(item => {
           // item.time =  15 * 60 * 1000;
           let inquiryInfo = item.inquiryInfo
           let expireTime =
@@ -245,6 +252,11 @@ export default {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }
         })
+        this.consultList = this.consultList.concat(res.data.list)
+        this.loading = false
+        if (this.p * this.size >= res.data.count) {
+          this.finished = true
+        }
       })
     },
     //会诊
