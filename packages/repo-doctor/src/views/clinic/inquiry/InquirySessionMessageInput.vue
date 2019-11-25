@@ -39,14 +39,14 @@
 
       <el-divider direction="vertical"></el-divider>
 
-      <!-- <el-button @click="sendTransfer" type="text">
+      <el-button @click="sendTransfer"
+                 type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
         <span>申请转诊</span>
-      </el-button> -->
-
-      <!-- <el-divider direction="vertical"></el-divider>
-
-      <el-button @click="sendConsultation" type="text">
+      </el-button>
+      <el-divider direction="vertical"></el-divider>
+      <el-button @click="sendConsultation"
+                 type="text">
         <img src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
         <span>申请会诊</span>
       </el-button> -->
@@ -66,13 +66,21 @@
         <el-dropdown-menu slot="dropdown"
                           style="overflow: hidden;">
           <el-dropdown-item @click.native="sendText('您好，是否做过检查、化验？如果有，请上传相关附件。')"
-                            style="padding: 5px 10px;">您好，是否做过检查、化验？如果有，请上传相关附件。</el-dropdown-item>
+                            style="padding: 5px 10px;">
+            您好，是否做过检查、化验？如果有，请上传相关附件。
+          </el-dropdown-item>
           <el-dropdown-item @click.native="sendText('您好，病历已发送，请注意查收。')"
-                            style="padding: 5px 10px;">您好，病历已发送，请注意查收。</el-dropdown-item>
+                            style="padding: 5px 10px;">
+            您好，病历已发送，请注意查收。
+          </el-dropdown-item>
           <el-dropdown-item @click.native="sendText('您好，处方已开具，请注意查收。')"
-                            style="padding: 5px 10px;">您好，处方已开具，请注意查收。</el-dropdown-item>
+                            style="padding: 5px 10px;">
+            您好，处方已开具，请注意查收。
+          </el-dropdown-item>
           <el-dropdown-item @click.native="sendText('您好，还有其它问题吗?')"
-                            style="padding: 5px 10px;">您好，还有其它问题吗?</el-dropdown-item>
+                            style="padding: 5px 10px;">
+            您好，还有其它问题吗?
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-button @click="sendText()"
@@ -141,7 +149,7 @@ export default {
         this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
         peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
       ) {
-        $peace.inquiryVideoComponent.sendVideo(this.$store.state.inquiry.session)
+        $peace.videoComponent.sendVideo(this.$store.state.inquiry.session)
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
@@ -177,7 +185,10 @@ export default {
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
           const message = '给用户发送病历后才能【申请转诊】，是否立即填写病历？'
-          const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
+          const confirmOption = {
+            type: 'warning',
+            confirmButtonText: '去填写'
+          }
 
           peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
@@ -204,7 +215,10 @@ export default {
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
           const message = '给用户发送病历后才能【申请会诊】，是否立即填写病历？'
-          const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
+          const confirmOption = {
+            type: 'warning',
+            confirmButtonText: '去填写'
+          }
 
           peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
