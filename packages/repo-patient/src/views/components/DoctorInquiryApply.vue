@@ -134,7 +134,7 @@
               <van-button style="width: 90px; height: 32px; line-height: 1;"
                           @click="apply"
                           type="primary"
-                          round="true"
+                          :round="true"
                           :disabled="sending">去咨询</van-button>
             </van-row>
           </van-row>

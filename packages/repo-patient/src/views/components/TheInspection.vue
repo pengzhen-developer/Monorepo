@@ -161,12 +161,19 @@ export default {
       line-height: 24px;
       min-width: 45px;
     }
+    .right {
+      width: 80%;
+      line-height: 24px;
+      word-wrap: break-word;
+      text-align: right;
+    }
     .text {
       width: 80%;
       min-height: 24px;
       line-height: 24px;
       color: #333;
       box-sizing: border-box;
+      word-wrap: break-word;
     }
 
     &.top {

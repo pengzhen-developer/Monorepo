@@ -40,10 +40,10 @@
                v-if="internalData.inquiryOrderInfo.imgs.length>0">
             <div class="form-dt ">复诊诊凭 :</div>
             <div class="form-img">
-              <div class="img">
-                <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
-                     :key="index"
-                     :src="item"
+              <div class="img"
+                   v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
+                   :key="index">
+                <img :src="item"
                      @click="viewImage(item)" />
               </div>
 
