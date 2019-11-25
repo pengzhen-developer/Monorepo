@@ -215,6 +215,15 @@ export default {
       this.$emit('input', this.confirmIllness.map(item => item.value).toString())
 
       this.$emit('onSave')
+
+      if (this.$route.params.emit) {
+        $peace.$emit(
+          this.$route.params.emit,
+          this.confirmIllness.map(item => item.value).toString()
+        )
+
+        this.$router.go(-1)
+      }
     }
   }
 }

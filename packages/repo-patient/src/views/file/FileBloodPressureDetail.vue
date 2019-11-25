@@ -100,7 +100,20 @@ export default {
       options: {
         color: ['#00c6ae'],
         tooltip: {
-          show: true
+          show: true,
+          trigger: 'axis',
+          position: ['15%', '-10%'],
+          formatter: function(param) {
+            return [
+              param[0].name + ' ',
+              param[0].marker + param[0].seriesName + ': ' + param[0].value + ' ',
+              param[1].marker + param[1].seriesName + ': ' + param[1].value + ' '
+            ].join('')
+          },
+          textStyle: {
+            color: '#fff',
+            fontSize: 12
+          }
         },
         grid: {
           top: 20,
@@ -119,12 +132,14 @@ export default {
           {
             data: [],
             type: 'line',
-            smooth: true
+            smooth: true,
+            name: '压缩值'
           },
           {
             data: [],
             type: 'line',
-            smooth: true
+            smooth: true,
+            name: '舒张值'
           }
         ]
       }

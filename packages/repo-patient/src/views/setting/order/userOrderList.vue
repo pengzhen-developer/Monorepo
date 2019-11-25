@@ -1,91 +1,146 @@
 <template>
   <div class="userorderList"
-       style="height: 100%;">
-    <div class="content"
-         style="height: 100%;">
-      <div v-if="$store.getters['appointMent/appointList'].length">
-        <div class="panel"
-             v-for="(item,index) in $store.getters['appointMent/appointList']"
-             :key="index">
-          <div class="panel-head">
-            <div class="card-strip">
-              <div class="strip-info"
-                   v-if="item.orderType == 'register'">
-                <div class="label-jq label-jq-register">预约挂号</div>
-              </div>
-              <div class="strip-info"
-                   v-if="item.orderType == 'privateDoctor'">
-                <div class="label-jq">私人医生</div>
-              </div>
-              <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
-                {{page.orderTypeMap[item.orderType][item.orderStatus]}}</div>
-            </div>
-          </div>
-          <div class="panel-body"
-               @click="goOrderDetailPage(item)"
-               style="padding-top: 0">
-            <div class="card">
-              <img class="card-avatar avatar-circular"
-                   :src="item.doctorInfo.avartor" />
-              <div class="card-body">
-                <div class="card-name">{{item.doctorInfo.name}}
-                  <div class="card-small">{{item.doctorInfo.doctorTitle}}
-                    {{item.doctorInfo.deptName}}</div>
-                </div>
-                <div class="card-brief">{{item.doctorInfo.hospitalName}}</div>
-              </div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='privateDoctor'">
-              <div class="small-time">
-                {{item.orderStatus == 3 || item.orderStatus == 7 ? '有效期：' + item.startTime + '-' + item.endTime : ''}}
-              </div>
-              <div :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
-                {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}</div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='register'">
-              <div class="small-time">
-                就诊人：{{item.familyName}}
-              </div>
-            </div>
-            <div class="small"
-                 v-if="item.orderType=='register'">
-              <div class="small-time">
-                预约就诊时间：{{item.bookDate}}
-              </div>
-              <div :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
-                {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}</div>
+       style="height:100%;">
+    <van-list :loading="loading"
+              :finished="finish"
+              @load="getData"
+              class="content">
 
+      <div v-if="orderList.length">
+        <template v-for="(item,index) in orderList">
+          <!-- 咨询订单 -->
+          <div class="panel"
+               :key="index"
+               v-if="item.orderType=='inquiry'">
+            <div class="panel-body"
+                 @click="goConsultDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                     :src="item.doctorInfo.avartor" />
+                <div class="card-body">
+                  <div class="card-name card-flex">{{item.doctorInfo.name}}
+                    {{item.doctorInfo.deptName}}
+                    <div class="card-gary">[图文咨询]</div>
+                  </div>
+                </div>
+                <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
+                     v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
+                  {{page.orderTypeMap[item.orderType][item.inquiryInfo.inquiryStatus]}}
+                </div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-val"
+                       v-if="item.familyInfo">{{item.familyInfo.familyName}}
+                    {{item.familyInfo.familySex}}
+                    {{item.familyInfo.familyAge}}岁</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val"
+                       v-if="item.orderInfo">
+                    {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
+                    <span
+                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款'+item.orderInfo.payMoney+')'}}</span>
+                  </div>
+
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">下单时间:</div>
+                  <div class="small-item-val">{{item.orderInfo.orderTime}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-bottom"
+                 style="padding-left: 0"
+                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+              <div class="count-down">
+                <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
+                <van-count-down millisecond
+                                :time="item.time"
+                                format="HH:mm:ss" />
+              </div>
+              <div class="label gary"
+                   @click="showCancellPop(item,index)">取消订单</div>
+              <div class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goPay(item)">继续支付</div>
             </div>
           </div>
-          <!--                    这个版本不展示私人医生-->
-          <!--                    <div class="panel-bottom " v-if="item.orderType == 'privateDoctor'">-->
-          <!--                        &lt;!&ndash;<div class="time">咨询倒计时:{{item.inquiryInfo.inquiryCancelTime}}</div>&ndash;&gt;-->
-          <!--                        <div class="time">订单编号：{{item.orderNo}}</div>-->
-          <!--                        <div class="label blue" @click="goPay(item)"  data-orderid="item.orderId" v-if="item.orderStatus == '0'">继续支付</div>-->
-          <!--                        <div class="label blue" @click="canselOrder(item)"-->
-          <!--                             data-orderid="item.orderId" v-if="item.orderStatus == '0' || item.orderStatus == '1'">取消订单</div>-->
-          <!--                    </div>-->
-          <div class="panel-bottom "
-               v-if="item.orderType == 'register'">
-            <div class="time">订单编号：{{item.orderNo}}</div>
-            <div class="label blue"
-                 @click="goPay(item)"
-                 data-orderid="item.orderId"
-                 v-if="item.orderStatus == '1'">继续支付</div>
-            <div class="label blue"
-                 @click="canselOrder(item)"
-                 data-orderid="item.orderId"
-                 v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
+          <!-- 预约挂号 -->
+          <div class="panel"
+               :key="index"
+               v-if="item.orderType=='register'">
+            <div class="panel-body"
+                 @click="goOrderDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                     :src="item.doctorInfo.avartor" />
+                <div class="card-body">
+                  <div class="card-name card-flex">{{item.doctorInfo.name}}
+                    {{item.doctorInfo.deptName}}
+                    <div class="card-gary">[预约挂号]</div>
+                  </div>
+                </div>
+                <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
+                  {{page.orderTypeMap[item.orderType][item.orderStatus]}}
+                </div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就诊人:</div>
+                  <div class="small-item-val">
+                    {{item.familyInfo&&item.familyInfo.name||item.familyName}}
+                    {{item.familyInfo&&item.familyInfo.sex||''}}
+                    {{item.familyInfo&&item.familyInfo.age+'岁'||''}}</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val"
+                       :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
+                    {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}
+                  </div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">预约就诊时间:</div>
+                  <div class="small-item-val">{{item.bookDate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-bottom "
+                 v-if="item.orderStatus == '1'||item.orderStatus == '3'">
+              <div class="count-down"
+                   v-if="item.orderStatus == '1'">
+                <span>订单关闭倒计时:</span>
+                <van-count-down millisecond
+                                :time="item.time"
+                                format="HH:mm:ss" />
+              </div>
+              <div class="count-down"
+                   v-if="item.orderStatus == '3'"></div>
+              <div class="label gary"
+                   @click="canselOrder(item,index)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '1'">取消订单
+              </div>
+              <div class="label blue"
+                   @click="goPay(item)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '1'">继续支付</div>
+              <div class="label blue"
+                   @click="canselOrder(item,index)"
+                   data-orderid="item.orderId"
+                   v-if="item.orderStatus == '3' && !item.cancelState">申请退号</div>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
-      <div class="none-page"
-           v-if="$store.getters['appointMent/appointList'] ==0 && $store.getters['appointMent/loaded']">
-        <div class="icon icon_none_consult"></div>
-        <div class="none-text">暂无订单记录</div>
-      </div>
+    </van-list>
+    <div class="none-page"
+         v-if="orderList.length ==0 && loaded">
+      <div class="icon icon_none_consult"></div>
+      <div class="none-text">暂无订单记录</div>
     </div>
   </div>
 </template>
@@ -93,12 +148,13 @@
 <script>
 import peace from '@src/library'
 import { Dialog } from 'vant'
-
+import Vue from 'vue'
+import { CountDown } from 'vant'
+Vue.use(CountDown)
 export default {
   props: {},
   data() {
     return {
-      loaded: false,
       page: {
         isGet: false,
         none: true,
@@ -113,6 +169,14 @@ export default {
             6: '退款中',
             7: '已退款'
           },
+          inquiry: {
+            1: '待支付',
+            2: '待接诊',
+            3: '已接诊',
+            4: '已退诊',
+            5: '已完成',
+            6: '已取消'
+          },
           privateDoctor: {
             0: '待支付',
             1: '待接单',
@@ -126,51 +190,150 @@ export default {
         }
       },
       data: {},
-      orderList: []
+      orderList: [],
+      p: 0,
+      size: 10,
+      loaded: false,
+      finish: false,
+      loading: false
+    }
+  },
+  activated() {
+    if (this.p > 0) {
+      this.p = 0
+      this.orderList = []
+      this.getData()
     }
   },
   created() {
     // this.getData()
-    this.$store.dispatch('appointMent/getList');
   },
   methods: {
     goPay(data) {
+      let typeName = '',
+        orderNo = '',
+        money = '',
+        json = {}
       let doctorId = data.doctorInfo.doctorId
-      let money = data.orderMoney
-      let typeName = '预约挂号'
       let doctorName = data.doctorInfo.name
-      let orderNo = data.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
-      console.log(json)
+      if (data.orderType == 'register') {
+        orderNo = data.orderNo
+        typeName = '预约挂号'
+        money = data.orderMoney
+        json = { money, typeName, doctorName, orderNo, doctorId }
+      } else if (data.orderType == 'inquiry') {
+        orderNo = data.orderInfo.orderNo
+        typeName = '图文问诊 '
+        money = data.orderInfo.orderMoney
+        let inquiryId = data.inquiryInfo.inquiryId
+        json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
+      }
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getData() {
-      peace.service.patient.getOrderList({ orderType: 'register' }).then(res => {
-        this.orderList = res.data.list || []
-        this.loaded = true;
+      // this.orderList = []
+      this.p++
+      peace.service.patient.getOrderList({ p: this.p, size: this.size }).then(res => {
+        if (res.data.list.length > 0) {
+          res.data.list.map(item => {
+            //   item.time =  15 * 60 * 1000;
+            if (item.orderType == 'register') {
+              if (item.orderExpireTime > item.currentTime) {
+                item.time = (item.orderExpireTime - item.currentTime) * 1000
+              }
+            } else if (item.orderType == 'inquiry') {
+              let inquiryInfo = item.inquiryInfo
+              let expireTime =
+                inquiryInfo.inquiryStatus == 1
+                  ? inquiryInfo.orderExpireTime
+                  : inquiryInfo.orderReceptTime
+              if (expireTime > inquiryInfo.currentTime) {
+                item.time = (expireTime - inquiryInfo.currentTime) * 1000
+              }
+            }
+          })
+        }
+        this.orderList = this.orderList.concat(res.data.list)
+        console.log(this.orderList.length)
+        this.loaded = true
+        this.loading = false
+        if (this.p * this.size >= res.data.total) {
+          this.finish = true
+        }
       })
     },
-    canselOrder(item) {
-      if (!item.cancelState) {
-        return
+    showCancellPop(item, index) {
+      let orderNo = item.orderInfo.orderNo
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否确认取消咨询？'
+      })
+        .then(() => {
+          const params = {
+            orderNo: orderNo
+          }
+          peace.service.patient.cancel(params).then(res => {
+            peace.util.alert(res.msg)
+            // this.$store.dispatch('appointMent/getList')
+
+            if (res.code == '200') {
+              let data = this.orderList[index]
+              data.inquiryInfo.inquiryStatus = '6'
+              this.orderList.splice(index, 1, data)
+            }
+          })
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
+    canselOrder(item, index) {
+      // if (!item.cancelState && item.orderStatus != 1) {
+      //   return
+      // }
+      let type, alertMsg
+      if (item.orderStatus == 1) {
+        type = 'cancel'
+        alertMsg = '是否确认取消'
+      } else {
+        type = 'quit'
+        alertMsg = '是否确认退号'
       }
       Dialog.confirm({
-        message: '是否确认退号？'
+        message: alertMsg
       })
         .then(() => {
           peace.service.appoint
             .orderCancel({
-              orderNo: item.orderNo
+              orderNo: item.orderNo,
+              type
             })
             .then(res => {
+              console.log(res)
               peace.util.alert(res.msg || '退号成功')
-              this.$store.dispatch('appointMent/getList');
+              // this.$store.dispatch('appointMent/getList')
+              if (res.code == '200') {
+                let data = this.orderList[index]
+                if (item.orderStatus == '1') {
+                  data.orderStatus = '2'
+                } else {
+                  data.orderStatus = '7'
+                }
+
+                this.orderList.splice(index, 1, data)
+              }
             })
         })
         .catch(() => {
           // on cancel
         })
+    },
+    goConsultDetailPage(item) {
+      let json = peace.util.encode({
+        inquiryId: item.inquiryInfo.inquiryId
+      })
+      this.$router.push(`/setting/userConsultDetail/${json}`)
     },
     goOrderDetailPage(item) {
       // console.log(item);
@@ -185,6 +348,98 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel .panel-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .label {
+    margin-left: 0;
+  }
+  .count-down {
+    display: flex;
+    .van-count-down {
+      color: #999;
+    }
+    span {
+      font-size: 13px;
+    }
+  }
+}
+.content {
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  .panel {
+    background: #fff;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 1px 15px;
+    border-bottom: 0;
+    margin-bottom: 15px;
+    .panel-body {
+      padding-top: 0;
+    }
+    .card {
+      align-items: center;
+      .card-name {
+        font-size: 15px;
+      }
+      .card-gary {
+        margin-left: 5px;
+      }
+    }
+    .small {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      .small-item {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        padding: 2px 0;
+        .small-price {
+          text-align: left;
+          font-size: 13px;
+        }
+        .small-item-key {
+          color: #999;
+          margin-right: 10px;
+        }
+        .small-item-val {
+          flex: 1;
+          color: #333;
+          display: flex;
+          align-items: center;
+          span {
+            color: #999;
+            font-size: 13px;
+            margin-left: 3px;
+          }
+        }
+      }
+    }
+    .panel-bottom {
+      border-top: 1px solid #e8e8e8;
+    }
+  }
+}
+
+.card-gary {
+  color: #999;
+  font-size: 11px;
+  font-weight: 400;
+}
+.card-avatar.card-img {
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+}
+.card-flex {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-left: 5px;
+}
 .userConsultList {
   height: 100%;
 }
@@ -245,7 +500,7 @@ export default {
   display: block;
   left: -(40px/2);
   top: -(5px/2);
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAeFBMVEVHcExnZ2dmZmZnZ2dmZmZmZmZmZmZnZ2dmZmZmZmZx2LtmZmZmZmZnZ2e18+JmZmZm6cg037Vqamoz37U04LY037Wz9OKy8+FB4blnZ2e29OK18+I04LYz37Y037W19ONmZmYz3rS08uGS7dZQ476l8Nxm5saB6s8k8yC4AAAAIHRSTlMAmeg5eKP99viBDc1rVuS0IdMatD7uO8iX/HmkVYJwYLpAgFoAAARcSURBVGjezZrtlrIgEIBNNzVc08zMj6z8vv87fFUUUDQQY887+6ezIU8zwwwDo6L8J6LZPyJia9wEcDJ0Q0x09QT4tFDNt7iYKo82mqm/90hksimeuo/xfuuqx4IczPdeMQ8sp0M9DPUoIoM3TYbz7X6Y+SO49E/wcZtjlG4JB5jVQ06fBx15BjF/5IEDYvwKQ36MboLj50HO1yGeRokD16D2QbwNEO1ovHVKYDh9lLfpaHwQ4OiReEzrjscB8ax9gW2upQ4SspPR6mIBFuT3CwnqhwVR4bg2RQnIG/5CA3yGaP0iMh1PKBQ850OCwhD4SQUSEhSGHCKOBMPMtUcGZGcW/O1ncv4OAoB0CLhmWSgZAi5ZK08pEK1zfNQ+f+0Y2UUKpMtKkekpYSYT4h2sNt0/IaNzCoiTGHwZ0os/MLKHAu55nt/FIeCZ+otfuLcR4iodI89fohC/mypdgl9Gxk1JekYeC0Ie42+lBDGyawwZopqkwzy0wa6IkYUDIwciEBBmBMQFy4ysGBhnEccDPJOvBK1vE0B/08qoSCIAcbHVMz84j56lGHVOuGQjxL9llNnvFL2VZoS4myGPyUQFYfU0m0pFumQTZDYThvhIjQv8VE5csgGCl1V4mUAe2BuXx8xar20Q7NjnsFZ7SNWUWLfrOCifuIQbghx7e4yBXVRFXZL2e47pESly35Tq0bK6tSH4KrMFufgoPSJF4i0QtKwurf5JvgC5pQDE9UyRwVp8kBQbXQFtdqUhoRskeZNNl9ZoLS4Icnm727ndLlHOtQji9t/NLG3lecANwXtEW4DATNJMMkgCd6dinlGQImzIZFkFw+OD8cu6GUMbgbGxkCJMyGRZxej5qqiqKieknicUQhEWBO3ZcFmtSVXSjNzlhaTTZbWCqLMFxou77gqRz937GqLJlhgJf3GHyqjwvIwosBZZSTDOYEMF+aT2ulGBqpilLnLEOdhU1T+W5mgWEkuzyuAIxseNskZBI+pqncGTVnyKUn9EUAyu3IWLhGGumbHqYuKtOxA6M2JKQUFmBLSHbD/O4b23ISA1kbqQGsGO029IUspZSsfeeCm7jtgpsZRXICuILSUREZZLkHMScNzcMYs7FJblHHJO4p7g7YdMK2Fc3AVg7H6w77s4amH3tlYLd2oYOvsqiqeqn9TuM4htrN4ybTyfkKeQGeSLt0QERR6ECEuZEBQwUiFjwFRSITBg6lwuRHHTEN0GSIN08voLyFB8o2pU0m3q5LJA2pWtm+TnmONeGDfOJF4+q2hqaRBwxL2C70AMixJz6HooX4N0PbTp3yDG6XuQ1YY87JlIhYw9NZkQ0xpqjC/5hH4PI9IttPN/B2LZlJAtW4nB+NeQaB+kz4K6w9NdE39HwdE5unvwbYtItLVv6zxvBgDYJY+sk4hYEUwgrH7r+AZMZAoIRJgOs11kRLu72OzGsRbtpEQ2TxfP2PV+lWlzLRHvEJmGLiKtV45MW/0DNvDTjYn1wpgAAAAASUVORK5CYII=);
+  background-image: url('../../../assets/images/icon-referral.jpg');
 }
 .icon-consultGroup::before {
   content: '';
@@ -256,7 +511,7 @@ export default {
   display: block;
   left: -(40px/2);
   top: -(5px/2);
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAh1BMVEVHcExnZ2dnZ2e08+FmZmZnZ2dnZ2dmZmZmZmZoaGi49eg037VnZ2dn2Lkz37U14La29OK09+VB07A14bc037WF5s629OMz37Ww9OM037U037Y84Li18+JmZmY04LVO4r608+G18+JnZ2e08+K18+JpaWm29OO18+JmZmYz3rS08uFg5cSG69HhhlNBAAAAKHRSTlMAzK6xf5C59vxTGLPSD5E+byAaKs8GW/YtdlfdweZo/up/bJjeL0NRsuxZXAAAA8BJREFUaN7tmut2ojAURlMQiWECCsYbYhW1ldj3f77JhUtAAnQkXbO6/H5YRHBz2ElAUgBe+YdcZ5PRM7uqBDxJoGsgtyQlBWPG3hoKTPJqUngzF+jORB0mGRzDasHuzTAkIcCREBcmbyMnucmvhinIFxw8frfAljSRAPHXdcz0PkuWICtxiRlIKFXISt5MDSSJhAiWZQry5wV5Qb4DCQ4/ANn5LyffOl1ovzAEKYfQ7RKfkFxFxoVgL4t3eSVesWq93o0K8bIsWwePq6IRIYeMp2i7iG7YpUKsivFokGgtvlGep8AXkECsWntjQXCcKRAm/owKSJYdRoKIsy8gvDkd8oLyleuIjAERQvjL8kKrHsIh/pK9vNP58xAhxMfi6yi9sONGl0UOEZ/d6cezECFkSQoI/Qy2pXgf7HiVX0f0JCTvDlgcMsucibdRAVncBWVPnoIIIaxjl5UwSOUELOi7+OD0DEQKYQuLEqKKZxCadWkZAsmFsCWbQ04SIkbhEvLVpWUIpByf5vyAlysOCQ6KeAahoqvSdi0DIIUQsBFnxVtJJ/VKqL3Ua+mHlELQpQapO6F2R2/phShCqAIhuAnp6C29EEWICmGF2fXTBYAvtXwfogqh9FxCol1DPINgnZYeSCkEMyF0H6riL81KgE5LN6Qu5LjAHeLFlb9dSzekLuQTVBActkFIu5ZOSEMIUCBs+YweIBotXZCGEKJCouBRPNBp6YCIo1KEABXCxB8XLZBWLR2QppAGpM2JRose8iCkBgkjDaRNixbyKAQ0xJ9QK6RFixbCjyeOwjAUQjahSKRUUokPea12WGbb1KKD4EyXUnx1B9mWu6JFW0ms23urisdr3WZftNKihew0u8c47yfqTXjLZry1fPS2rsj3PC++3+/vnpItBoX4OZJ33mwt2ypWt/IOZM9VoiFjV9VDlORjl3AiU29d+S+LI2+UAyCIM2zUyFwRr0Cam/Fjoat+yCfVhYtHpHYwrbH7IRvtzpuo9kPxotvuNMDJWbMvH2TICveWfMFDLr+rs/2YMzvTBCtOWM1t29lz/NzDgpp4U08kwohsiGnIDz3AIR/YPOQHnPy3z7vEY/Sp4cfockLAEANDFZKagcgZIChP1w3OTDDSYpImn62BieWMHCvJZ7IccM0n5+DoKWbOXNZ1J6anAIUJyygFTqSfCTQ3LQvLdnud3lwD5bgutNSJ7DB1rOnIsZwUg1deeWVorlPXbBIrBGw8MT0MJ8D0/2FUdyu/AAL5xcRw+CUlnBnObxrv/wKX0vRYNNKmOgAAAABJRU5ErkJggg==);
+  background-image: url('../../../assets/images/icon-consultGroup.jpg');
 }
 .bottom {
   color: #999;
@@ -276,7 +531,8 @@ export default {
 .panel .panel-head,
 .panel .panel-body,
 .panel .panel-bottom {
-  padding: (20px/2) (30px/2);
+  // padding: (20px/2) (30px/2);
+  padding: (20px/2) 0;
 }
 .panel .panel-bottom {
   display: -webkit-box;
@@ -345,6 +601,7 @@ export default {
 .strip-eye.color-a2 {
   color: #fb2828;
 }
+
 /*blue*/
 .strip-eye.color-3,
 .strip-eye.color-01,
@@ -399,9 +656,20 @@ export default {
 }
 .label {
   font-size: 12px;
-  padding: 2px (24px/2);
+  // padding: 5px (24px/2);
+  padding: 3px 10px;
   margin-left: (20px/2);
   border-radius: (40px/2);
+}
+.label.gary {
+  color: #999;
+  border-color: #ccc;
+  margin-left: 0;
+}
+.label.blue {
+  background: #00c6ae;
+  border-color: transparent;
+  color: #fff;
 }
 .label.label-private {
   font-size: (16px/2);
@@ -438,8 +706,20 @@ export default {
         6:'已退款',
         7:'已完成',
         }
+        *咨询订单状态
+        inquiry: {
+            1: '待支付',
+            2: '待接诊',
+            3: '已接诊',
+            4: '已退诊',
+            5: '已完成',
+            6: '已取消'
+          },
+        *检查单状态
     */
 /*red*/
+.strip-eye.color-inquiry-1,
+.strip-eye.color-inquiry-2,
 .strip-eye.color-privateDoctor-0,
 .strip-eye.color-privateDoctor-5,
 .strip-eye.color-privateDoctor-1,
@@ -449,11 +729,15 @@ export default {
   color: #f2223b;
 }
 /*blue*/
+.strip-eye.color-inquiry-3,
 .strip-eye.color-privateDoctor-3,
 .strip-eye.color-register-3 {
   color: #00c6ae;
 }
 /*default*/
+.strip-eye.color-inquiry-4,
+.strip-eye.color-inquiry-5,
+.strip-eye.color-inquiry-6,
 .strip-eye.color-privateDoctor-7,
 .strip-eye.color-privateDoctor-6,
 .strip-eye.color-privateDoctor-4,
@@ -462,7 +746,8 @@ export default {
 .strip-eye.color-register-4,
 .strip-eye.color-register-5,
 .strip-eye.color-register-7 {
-  color: #999;
+  // color: #999;
+  color: #666;
 }
 .small {
   padding-top: 0;

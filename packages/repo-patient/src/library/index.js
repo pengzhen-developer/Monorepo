@@ -24,6 +24,7 @@ import http from './http'
 import util from './helper/util'
 import cache from './helper/cache'
 import validate from './helper/validate'
+import file from './helper/file'
 
 //wx
 import wx from './helper/wx'
@@ -36,7 +37,7 @@ import type from '@src/type'
 import service from '@src/service'
 
 const install = function(Vue) {
-  const peace = { http, util, cache, validate, config, type, service }
+  const peace = { http, util, cache, validate, file, config, type, service }
 
   // 暴露全局实例
   Window.$peace = peace
@@ -68,6 +69,9 @@ export default {
 
   /** 工具类 */
   util,
+
+  /** 文件类 */
+  file,
 
   /** 微信类 */
   wx,

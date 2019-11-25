@@ -1,411 +1,721 @@
 <template>
-  <div class="doctor-inquiry-apply">
-    <div class="content">
-      <div class="title">
-        <div class="title-avatar">
-          <img :src="doctor.doctorInfo.avartor" />
-        </div>
+  <div class="inquriy layout">
 
-        <div class="title-info">
-          <div class="title-doctor">
-            <span class="title-doctor-name">{{ doctor.doctorInfo.name }}</span>
-            <span>{{ doctor.doctorInfo.doctorTitle }}</span>
-            <span>{{ doctor.doctorInfo.deptName }}</span>
-          </div>
-          <div class="title-hospital">
-            <span>{{ doctor.doctorInfo.hospitalName }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <van-cell-group>
-        <van-field :value="model.familyName"
-                   @click="checkFamily"
-                   clickable
-                   label="就诊人"
-                   placeholder="请选择就诊人"
-                   readonly
-                   required
-                   right-icon="arrow" />
-        <van-popup position="bottom"
-                   v-model.trim="showFamily">
-          <van-picker :columns="source.familyList"
-                      @cancel="showFamily = false"
-                      @confirm="selectFamily"
-                      show-toolbar
-                      value-key="name" />
-        </van-popup>
-      </van-cell-group>
-
-      <van-cell-group>
-        <van-field autosize
-                   label="病情描述"
-                   maxlength="255"
-                   placeholder="请输入病情描述，如发病时间、主要病症、治疗经过、目前状况等，最少输入5字。"
-                   required
-                   rows="5"
-                   type="textarea"
-                   v-model.trim="model.illnessDescribe" />
-      </van-cell-group>
-
-      <van-cell-group>
-        <van-field label="附件上传">
-          <van-uploader :after-read="afterRead"
-                        :max-count="4"
-                        multiple
-                        slot="input"
-                        v-model.trim="attachment" />
-        </van-field>
-      </van-cell-group>
-
-      <van-cell-group>
-        <van-field label="是否复诊">
-          <van-switch active-color="#00c6ae"
-                      size="20px"
-                      slot="right-icon"
-                      v-model.trim="model.isAgain" />
-        </van-field>
-      </van-cell-group>
-
-      <div v-show="model.isAgain">
-        <div class="divider"></div>
-
-        <van-cell-group>
-          <van-field :value="model.confirmIllness"
-                     @click="showAddIllnessHistory = true"
-                     clickable
-                     label="初诊诊断"
-                     placeholder="请选择诊断"
-                     readonly
-                     required
-                     right-icon="arrow" />
-
-          <peace-dialog :visible.sync="showAddIllnessHistory">
-            <AddIllnessHistory @onSave="showAddIllnessHistory = false"
-                               v-model.trim="model.confirmIllness"></AddIllnessHistory>
-          </peace-dialog>
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field :value="model.confirmTime"
-                     @click="showConfirmTime = true"
-                     clickable
-                     label="初诊时间"
-                     placeholder="请选择初诊时间"
-                     readonly
-                     required
-                     right-icon="arrow" />
-          <van-popup position="bottom"
-                     v-model.trim="showConfirmTime">
-            <van-datetime-picker :max-date="new Date()"
-                                 :value="new Date()"
-                                 @cancel="showConfirmTime = false"
-                                 @confirm="selectConfirmTime"
-                                 type="date" />
-          </van-popup>
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field autosize
-                     label="既往用药"
-                     placeholder="请输入既往用药"
-                     required
-                     rows="2"
-                     type="textarea"
-                     v-model.trim="model.pastDrug" />
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field :value="model.allergicHistory"
-                     @click="showAddAllergicHistory= true"
-                     clickable
-                     label="药物过敏"
-                     placeholder="请选择药物过敏史"
-                     readonly
-                     required
-                     right-icon="arrow" />
-
-          <peace-dialog :visible.sync="showAddAllergicHistory">
-            <AddAllergicHistory @onSave="showAddAllergicHistory = false"
-                                v-model.trim="model.allergicHistory"></AddAllergicHistory>
-          </peace-dialog>
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field :value="model.foodAllergy"
-                     @click="showFoodAllergy= true"
-                     clickable
-                     label="食物过敏"
-                     placeholder="请选择食物过敏史"
-                     readonly
-                     required
-                     right-icon="arrow" />
-
-          <peace-dialog :visible.sync="showFoodAllergy">
-            <AddFoodAllergy @onSave="showFoodAllergy = false"
-                            v-model.trim="model.foodAllergy"></AddFoodAllergy>
-          </peace-dialog>
-        </van-cell-group>
-
-        <van-cell-group v-show="showPregnancy">
-          <van-field label="是否怀孕"
-                     required>
-            <van-radio-group slot="right-icon"
-                             style="display: inline-flex;"
-                             v-model.trim="model.isPregnancy">
-              <van-radio :name="true"
-                         style="margin: 0 10px 0 0;">是</van-radio>
-              <van-radio :name="false"
-                         style="margin: 0;">否</van-radio>
-            </van-radio-group>
-          </van-field>
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field label="是否不良反应"
-                     required>
-            <van-radio-group slot="right-icon"
-                             style="display: inline-flex;"
-                             v-model.trim="model.isBadEffect">
-              <van-radio :name="true"
-                         style="margin: 0 10px 0 0;">是</van-radio>
-              <van-radio :name="false"
-                         style="margin: 0;">否</van-radio>
-            </van-radio-group>
-            <!-- <van-switch active-color="#00c6ae" size="20px" slot="right-icon" v-model.trim="model.isBadEffect" /> -->
-          </van-field>
-          <van-field placeholder="请输入不良反应"
-                     required
-                     v-if="model.isBadEffect"
-                     v-model.trim="model.isBadEffectText" />
-        </van-cell-group>
-
-        <van-cell-group>
-          <van-field label="本次复诊情况"
-                     required>
-            <van-radio-group slot="right-icon"
-                             v-model.trim="model.againType">
-              <van-radio name="1">本院同医生复诊</van-radio>
-              <van-radio name="2">本院非同医生复诊</van-radio>
-              <van-radio name="3">非本院复诊</van-radio>
-            </van-radio-group>
-          </van-field>
-        </van-cell-group>
-      </div>
+    <div class="layout-header">
+      <span class="text avtive">导诊接待</span>
+      <span class="space">------</span>
+      <span class="text">医生接诊</span>
     </div>
 
-    <div class="footer">
-      <van-checkbox v-model.trim="model.informedConsent">
-        <span>我已阅读并同意</span>
-        <a @click.stop="showInformedConsent = true"
-           class="informed-consent">《知情同意书》</a>
-      </van-checkbox>
+    <div class="layout-content">
 
-      <van-button :disabled="!model.informedConsent || sending"
-                  @click="apply"
-                  style="width: 100%;"
-                  type="primary">提交</van-button>
+      <transition-group tag="div"
+                        name="van-slide-left">
+        <div class="notify"
+             key="notify">
+          <span>请先了解</span>
+          <span @click="showInformedConsent"
+                class="link">《知情同意书》</span>
+          <span>，如继续咨询表明您已知悉相关内容。您的信息严格保密，请放心咨询！</span>
+        </div>
+      </transition-group>
+
+      <!-- 欢迎语 -->
+      <transition-group tag="div"
+                        name="van-slide-left">
+        <div class="message-layout left"
+             v-for="item in welcomeList"
+             :key="item.message">
+          <div class="robot">
+            <van-image width="36px"
+                       height="36px"
+                       :src="require('@src/assets/images/ic_robot.png')"></van-image>
+          </div>
+          <div class="message in"
+               v-html="item.message"></div>
+        </div>
+      </transition-group>
+
+      <!-- 已回答 -->
+      <transition-group tag="div"
+                        name="van-slide-left">
+        <div v-for="(item, index) in answerList"
+             :key="item.question">
+          <div class="message-layout left"
+               v-if="item.question">
+            <div class="message in"
+                 v-html="item.question"></div>
+          </div>
+
+          <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
+            <div class="message-layout right"
+                 v-for="(file, fileIndex) in item.answer"
+                 :key="fileIndex">
+              <div class="message out">
+                <img style="max-height: 200px; max-width: 100%; width: unset;"
+                     :src="file.content"
+                     @click="viewImage(file.content)">
+              </div>
+              <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
+                    style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                    @click="backQuestion">点击修改</span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="message-layout right"
+                 v-if="item.answer">
+              <div class="message out"
+                   v-html="item.answer">
+              </div>
+              <span v-if="canShowChange(index)"
+                    style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                    @click="backQuestion">点击修改</span>
+            </div>
+          </template>
+
+        </div>
+      </transition-group>
+
+      <!-- 已完成 -->
+      <template v-if="questionDone">
+        <transition-group tag="div"
+                          name="van-slide-left">
+          <div class="message-layout left"
+               v-for="item in doneList"
+               :key="item.message">
+            <div class="message in">
+              {{ item.message }}
+            </div>
+          </div>
+        </transition-group>
+
+        <transition-group tag="div"
+                          name="van-slide-left">
+          <van-row key="doctor"
+                   type="flex"
+                   align="center"
+                   justify="space-between"
+                   class="doctor">
+            <van-row type="flex"
+                     justify="space-between">
+              <div style="margin: 0 10px 0 0;">
+                <van-image width="50"
+                           height="50"
+                           round
+                           :src="doctor.doctorInfo.avartor" />
+              </div>
+              <van-row type="flex"
+                       justify="center"
+                       style="flex-direction: column;">
+                <div>
+                  <span
+                        style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                    {{ doctor.doctorInfo.name }}
+                  </span>
+                  <span style="color: #333333; font-size: 14px; ">
+                    {{ doctor.doctorInfo.doctorTitle }}
+                  </span>
+                </div>
+                <div>
+                  <span
+                        style="color: #333333; font-size: 14px; font-weight: bold;  margin: 0 8px 0 0;">
+                    {{ getSerivceType() }}
+                  </span>
+                  <span style="color: #333333; font-size: 12px; color: #F2223B;">
+                    {{ getSerivceUnit() }}
+                  </span>
+                  <span style="color: #333333; font-size: 14px; color: #F2223B;">
+                    {{ getSerivceMoney() }}
+                  </span>
+                </div>
+              </van-row>
+            </van-row>
+            <van-row>
+              <van-button style="width: 90px; height: 32px; line-height: 1;"
+                          @click="apply"
+                          type="primary"
+                          :round="true"
+                          :disabled="sending">去咨询</van-button>
+            </van-row>
+          </van-row>
+        </transition-group>
+      </template>
     </div>
 
-    <peace-dialog :visible.sync="showInformedConsent">
-      <InformedConsent></InformedConsent>
-    </peace-dialog>
+    <!-- 当前问题 -->
+    <div class="layout-footer">
+      <transition name="van-slide-up">
+        <div class="layout-footer-content"
+             v-if="current.field"
+             :key="current.question"
+             :class="current.field">
+
+          <!-- Q1: 描述 -->
+          <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
+            <van-field ref="input"
+                       v-model="current.answer"
+                       clearable
+                       placeholder="请输入您的详细症状…">
+              <van-button @click="answer"
+                          slot="button"
+                          round
+                          type="primary">发送</van-button>
+            </van-field>
+          </template>
+
+          <!-- Q2: 家人 -->
+          <template v-if="current.field === ANSWER_FIELD.FAMILY">
+            <van-button v-for="item in current.answerList"
+                        round
+                        :key="item.value"
+                        @click="answer(item)">{{ item.label }}</van-button>
+            <br>
+            <van-button round
+                        @click="answer('')">添加新的就诊人</van-button>
+          </template>
+
+          <!-- Q3: 是否复诊 -->
+          <template v-if="current.field === ANSWER_FIELD.IS_AGAIN">
+            <van-button round
+                        @click="answer('是')">是</van-button>
+            <van-button round
+                        @click="answer('否')">否</van-button>
+          </template>
+
+          <!-- Q4 & Q5: 附件与确认遗失 -->
+          <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
+            <van-button @click="answer('上传')"
+                        type="primary"
+                        round>上传凭证</van-button>
+
+            <template v-if="current.mode === ANSWER_MODE.FILE">
+              <van-button @click="answer('我已遗失')"
+                          round>我已遗失</van-button>
+            </template>
+            <template v-if="current.mode === ANSWER_MODE.FILE_CONFIRM">
+              <van-button @click="answer('确认遗失')"
+                          round>确认遗失</van-button>
+            </template>
+          </template>
+
+          <!-- Q6 初步诊断 -->
+          <template v-if="current.field === ANSWER_FIELD.ILLNESS_CONFIRM">
+            <van-button @click="answer('点击选择初诊诊断')"
+                        type="primary"
+                        round>点击选择初诊诊断</van-button>
+          </template>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 
-import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
-import AddIllnessHistory from '@src/views/components/AddIllnessHistory'
-import InformedConsent from '@src/views/components/InformedConsent'
-import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
-
 import Vue from 'vue'
 import { Dialog } from 'vant'
-Vue.use(Dialog)
+import { ImagePreview } from 'vant'
+Vue.use(ImagePreview)
+
+import Compressor from 'compressorjs'
+
+const ANSWER_MODE = {
+  /** 输入 */
+  INPUT: 'input',
+  /** 选择 */
+  CHECK: 'check',
+  /** 上传 */
+  FILE: 'file',
+  /** 上传确认 */
+  FILE_CONFIRM: 'fileConfirm',
+  /** 问诊确认 */
+  ILLNESS_CONFIRM: 'illnessConfirm'
+}
+
+const ANSWER_FIELD = {
+  /** 问诊描述 */
+  ILLNESS_DESCRIBE: 'illnessDescribe',
+  /** 就诊人 */
+  FAMILY: 'family',
+  /** 是否复诊 */
+  IS_AGAIN: 'isAgain',
+  /** 附件 */
+  ATTACHMENT: 'attachment',
+  /** 初诊诊断 */
+  ILLNESS_CONFIRM: 'confirmIllness'
+}
 
 export default {
   components: {
-    AddAllergicHistory,
-    AddIllnessHistory,
-    InformedConsent,
-    AddFoodAllergy
+    [Dialog.Component.name]: Dialog.Component
   },
 
   data() {
     return {
-      sending: false,
-      showFoodAllergy: false,
-      // 显示确认疾病
-      showAddAllergicHistory: false,
-      // 显示过敏史
-      showAddIllnessHistory: false,
-      // 显示知情同意书
-      showInformedConsent: false,
-      // 显示是否怀孕
-      showPregnancy: true,
-
-      // 显示家人弹框
-      showFamily: false,
-      // 显示确认时间弹框
-      showConfirmTime: false,
-      // 附件列表
-      attachment: [],
-
-      // 医生信息
-      doctor: {
-        doctorInfo: {}
-      },
+      ANSWER_MODE: ANSWER_MODE,
+      ANSWER_FIELD: ANSWER_FIELD,
 
       model: {
         // 医生 (医生 ID)
         doctorId: '',
+        // 病情描述
+        illnessDescribe: '',
         // 就诊人 (家人 ID)
         familyName: '',
         familyId: '',
-        // 问诊类型
-        consultingType: 'image',
-        // 问诊类型
-        consultingTypeId: '',
-        // 病情描述
-        illnessDescribe: '',
         // 附件
         attachment: [],
-        // 是否复诊
-        isAgain: true,
-        // 确认疾病(既往史)
+        // 初诊诊断
         confirmIllness: '',
-        // 确认时间
-        confirmTime: '',
-        // 既往用药
-        pastDrug: '',
-        // 过敏史
-        allergicHistory: '',
-        // 是否怀孕
-        isPregnancy: undefined,
-        // 是否不良反应
-        isBadEffect: undefined,
-        isBadEffectText: '',
-        // 本次复诊情况
-        againType: '3',
-        // 知情同意
-        informedConsent: false,
-        //食物过敏
-        foodAllergy: ''
+        // 问诊类型
+        consultingType: '',
+        // 是否复诊
+        isAgain: true
       },
 
-      source: {
-        familyList: [],
+      // 附件
+      attachment: [],
 
-        confirmIllness: [],
-        pastDrug: [],
-        allergicHistory: []
+      // 欢迎语
+      welcomeList: [],
+
+      // 问题列表
+      questionList: [
+        {
+          no: 0,
+          answerList: [],
+          field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+          question:
+            '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+          mode: ANSWER_MODE.INPUT
+        },
+        {
+          no: 1,
+          answerList: [],
+          field: ANSWER_FIELD.FAMILY,
+          question: '请问您要为哪位就诊人咨询？',
+          mode: ANSWER_MODE.CHECK
+        },
+        {
+          no: 2,
+          answerList: [],
+          field: ANSWER_FIELD.IS_AGAIN,
+          question: '就诊人是否为复诊？',
+          mode: ANSWER_MODE.CHECK
+        },
+        {
+          no: 3,
+          answerList: [],
+          field: ANSWER_FIELD.ATTACHMENT,
+          question: '请问您是否需要补充病历、处方、检查报告等图片？',
+          mode: ANSWER_MODE.FILE
+        },
+        {
+          no: 4,
+          answerList: [],
+          field: ANSWER_FIELD.ATTACHMENT,
+          question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
+          mode: ANSWER_MODE.FILE_CONFIRM
+        },
+        {
+          no: 5,
+          answerList: [],
+          field: ANSWER_FIELD.ILLNESS_CONFIRM,
+          question: '请选择您的初诊诊断(多选)',
+          mode: ANSWER_MODE.ILLNESS_CONFIRM
+        }
+      ],
+
+      // 答题路径
+      questionPath: [],
+
+      // 答题完毕
+      questionDone: false,
+
+      // 已答题列表
+      answerList: [],
+
+      // 当前答题
+      questionIndex: -1,
+
+      // 回答完毕提示语
+      doneList: [],
+
+      // 医生详情
+      doctor: {
+        consultationList: [],
+        doctorInfo: {}
+      },
+
+      sending: false
+    }
+  },
+
+  computed: {
+    current() {
+      if (this.questionIndex > -1) {
+        return this.questionList[this.questionIndex]
       }
+
+      return {}
     }
   },
 
   watch: {
-    'model.isAgain'() {
-      if (this.model.isAgain === false) {
-        // this.model.confirmIllness = ''
-        // this.model.confirmTime = ''
-        // this.model.pastDrug = ''
-        // this.model.allergicHistory = ''
-        // this.model.isPregnancy = false
-        // this.model.isBadEffect = false
-        // this.model.isBadEffectText = ''
-        // this.model.againType = '3'
-      }
+    answerList() {
+      this.$nextTick().then(() => {
+        this.scrollToBottom()
+      })
     }
   },
 
-  created() {
-    const params = peace.util.decode(this.$route.params.json)
-    this.model.doctorId = params.doctorId
-    this.model.consultingType = params.consultingType
-    this.model.consultingTypeId = params.consultingTypeId
-
-    peace.service.doctor.getDoctorInfo(params).then(res => {
-      this.doctor = res.data
-    })
-
-    peace.service.patient.getMyFamilyList().then(familyList => {
-      this.source.familyList = familyList.data
-
-      if (familyList.length !== 0) {
-        peace.service.patient.getLast({ doctorId: params.doctorId }).then(lastFamily => {
-          // 1. 优先选中最后一个就诊人
-          // 2. 其次选中关系为本人
-          // 3. 最后选中家人列表的第一个就诊人
-
-          let family = undefined
-
-          if (!family) {
-            family = this.source.familyList.find(item => item.id === lastFamily.data.familyId)
-          }
-
-          if (!family) {
-            family = this.source.familyList.find(item => item.relation === '本人')
-          }
-
-          if (!family) {
-            family = this.source.familyList.find(
-              item => item.familyId === this.source.familyList[0].id
-            )
-          }
-
-          if (family) {
-            // debugger
-            this.model.familyName = family.name
-            this.model.familyId = family.familyId
-            this.model.allergicHistory = family.allergicHistory
-            this.model.foodAllergy = family.foodAllergy
-            // 判断否能显示是否怀孕
-            if (family.sex === '女' && family.age >= 14) {
-              this.showPregnancy = true
-            } else {
-              this.showPregnancy = false
-            }
-
-            // 载入就诊人后，检查健康卡
-            if (family.id) {
-              this.checkCard()
-            }
-          }
-        })
-      }
-
-      this.source.familyList.push({ id: undefined, name: '添加就诊人' })
+  activated() {
+    this.$nextTick().then(() => {
+      this.scrollToBottom()
     })
   },
 
+  created() {
+    this.onEmits()
+
+    // 获取字典数据
+    this.getFamilyList()
+    // 获取当前医生详情
+    this.getWapDoctorInfo()
+    // 设置参数
+    this.setModel()
+  },
+
+  mounted() {
+    // 使用 setTimeout 延迟动画进入效果
+    setTimeout(() => {
+      this.beginWelcomeMessage()
+    }, 0)
+
+    setTimeout(() => {
+      this.beginQuestion(0)
+    }, 500)
+  },
+
+  destroyed() {
+    this.offEmits()
+  },
+
   methods: {
-    checkCard(tag) {
-      this.checkCardExist().then(res => {
+    onEmits() {
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY, this.addFamilyCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD, this.uploaderCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS, this.illnessCallback)
+    },
+
+    offEmits() {
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY)
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD)
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS)
+    },
+
+    addFamilyCallback(res) {
+      if (res.data.result) {
+        this.getFamilyList()
+      }
+    },
+
+    uploaderCallback(res) {
+      // 兼容 answer auguments
+      if (res && res.length) {
+        this.answer(res)
+      } else {
+        peace.util.alert('请至少选择一张图片')
+      }
+    },
+
+    illnessCallback(res) {
+      // 兼容 answer auguments
+      if (res) {
+        this.answer(res)
+      } else {
+        peace.util.alert('请至少选择一项初诊诊断')
+      }
+    },
+
+    setModel() {
+      const params = peace.util.decode(this.$route.params.json)
+      this.model.doctorId = params.doctorId
+      this.model.consultingType = params.consultingType
+    },
+
+    getFamilyList() {
+      peace.service.patient.getMyFamilyList().then(res => {
+        const famliyQuestion = this.questionList.find(
+          item => item.field === this.ANSWER_FIELD.FAMILY
+        )
+        const familyList = res.data
+        familyList.forEach(item => {
+          item.label = item.name
+          item.value = item.id
+        })
+
+        famliyQuestion.answerList = familyList
+      })
+    },
+
+    getWapDoctorInfo() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.doctor.getWapDoctorInfo(params).then(res => {
+        this.doctor = res.data
+      })
+    },
+
+    getSerivceType() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      const consultInfo = this.doctor.consultationList[params.consultingType]
+
+      return consultInfo && consultInfo.tagName
+    },
+
+    getSerivceUnit() {
+      return '￥'
+    },
+
+    getSerivceMoney() {
+      const params = peace.util.decode(this.$route.params.json)
+
+      const consultInfo = this.doctor.consultationList[params.consultingType]
+
+      return consultInfo && consultInfo.money
+    },
+
+    canShowChange(index) {
+      return this.questionDone
+        ? index === this.answerList.length - 1
+        : index === this.answerList.length - 2
+    },
+
+    showInformedConsent() {
+      this.$router.push('/components/informedConsent')
+    },
+
+    beginWelcomeMessage() {
+      this.welcomeList.push({ message: '您好我是医生助手，需要了解您的情况以辅助医生诊断。' })
+    },
+
+    beginQuestion(index) {
+      this.questionIndex = index
+      this.questionPath.push(index)
+
+      this.$nextTick().then(() => {
+        // 将当前问题添加到已答题列表
+        this.answerList.push({
+          field: this.current.field,
+          mode: this.current.mode,
+          question: this.current.question,
+          answerList: this.current.answerList
+        })
+      })
+    },
+
+    backQuestion() {
+      const length = this.questionDone ? 1 : 2
+
+      const nextQuestionIndex = this.questionPath[this.questionPath.length - length] || 0
+
+      this.questionDone = false
+      this.doneList = []
+      this.answerList.splice(this.answerList.length - length, length)
+      this.questionPath.splice(this.questionPath.length - length, length)
+      this.questionIndex = nextQuestionIndex
+
+      this.$nextTick(function() {
+        this.beginQuestion(nextQuestionIndex)
+      })
+    },
+
+    beginNextQuestion() {
+      const nextQuestionIndex = this.getNextQuestionIndex()
+
+      // 等待当前效果完成
+      // 根据策略模式，开始下一题
+      setTimeout(() => {
+        if (nextQuestionIndex === -1) {
+          this.beginDoneMessage()
+        } else {
+          this.beginQuestion(nextQuestionIndex)
+        }
+
+        this.$nextTick().then(() => {
+          this.scrollToBottom()
+        })
+      }, 500)
+    },
+
+    beginDoneMessage() {
+      this.questionDone = true
+      this.doneList.push({
+        message:
+          '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
+      })
+    },
+
+    answer() {
+      if (this.setAnswer(arguments)) {
+        this.beginNextQuestion()
+
+        this.resetCurrentQuestion()
+      }
+    },
+
+    setAnswer(params) {
+      let answer = ''
+
+      // 获取问题答案
+
+      // 问诊描述
+      if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
+        if (this.current.answer) {
+          answer = this.current.answer
+
+          this.model.illnessDescribe = answer
+        } else {
+          return false
+        }
+      }
+
+      // 选择家人
+      else if (this.current.field === this.ANSWER_FIELD.FAMILY) {
+        if (params[0].id) {
+          answer = params[0].label
+
+          this.model.familyName = params[0].label
+          this.model.familyId = params[0].value
+
+          // 检查健康卡
+          this.checkHealthCard()
+        } else {
+          // 跳转新增家人
+          const json = peace.util.encode({
+            type: 'add',
+            emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY
+          })
+          this.$router.push({ path: `/setting/familyMember/${json}` })
+
+          return false
+        }
+      }
+
+      // 是否复诊
+      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
+        answer = params[0]
+
+        this.model.isAgain = params[0] === '是' ? '1' : '0'
+      }
+
+      // 上传附件
+      else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
+        if (params[0] !== '上传') {
+          answer = params[0]
+
+          this.attachment = params[0]
+        } else {
+          this.$router.push({
+            name: `/components/uploader`,
+            params: {
+              emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD
+            }
+          })
+
+          return false
+        }
+      }
+
+      // 选择初诊诊断
+      else if (this.current.field === this.ANSWER_FIELD.ILLNESS_CONFIRM) {
+        if (params[0] !== '点击选择初诊诊断') {
+          answer = params[0]
+
+          this.model.confirmIllness = params[0]
+        } else {
+          this.$router.push({
+            name: `/components/addIllnessHistory`,
+            params: {
+              emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS
+            }
+          })
+
+          return false
+        }
+      }
+
+      // 将当前答案添加到已答题列表的最后一项
+      this.answerList[this.answerList.length - 1].answer = answer
+      this.answerList = this.answerList.concat([])
+
+      return true
+    },
+
+    getNextQuestionIndex() {
+      const currentQuestionIndex = this.questionIndex
+      let nextQuestionIndex = -1
+
+      // 是否复诊
+      if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
+        if (this.model.isAgain === '1') {
+          nextQuestionIndex = currentQuestionIndex + 1
+        } else {
+          nextQuestionIndex = -1
+        }
+      }
+      // 上传凭证
+      else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
+        if (this.attachment === '我已遗失' || this.attachment === '确认遗失') {
+          nextQuestionIndex = currentQuestionIndex + 1
+        } else {
+          nextQuestionIndex = 5
+        }
+      }
+      // 正常情况下一步
+      else {
+        nextQuestionIndex = currentQuestionIndex + 1
+      }
+
+      // 当前回答已完成
+      if (nextQuestionIndex >= this.questionList.length) {
+        nextQuestionIndex = -1
+      }
+
+      return nextQuestionIndex
+    },
+
+    resetCurrentQuestion() {
+      this.questionIndex = -1
+    },
+
+    checkHealthCard() {
+      const params = {
+        familyId: this.model.familyId,
+        nethospitalid: this.doctor.doctorInfo.nethospitalid
+      }
+
+      peace.service.patient.isExistCardRelation(params).then(res => {
         if (!res.data.result) {
-          return Dialog.confirm({
+          Dialog.confirm({
             title: '提示',
             message: '该就诊人还没有电子健康卡，是否现在领取？',
             confirmButtonText: '现在领取'
           }).then(() => {
-            let familyId = this.model.familyId
-            let nethospitalid = this.doctor.doctorInfo.nethospitalid;
-            let params = { familyId, nethospitalid }
             peace.service.patient
               .createHealthcard(params)
               .then(res => {
                 if (res.data.result) {
-                  return peace.util.alert('领取成功，请填写信息后提交问诊！')
+                  peace.util.alert('领取成功，请填写信息后提交问诊！')
                 }
               })
               .catch(res => {
                 if (res.data.code === 202) {
-                  return Dialog.confirm({
+                  Dialog.confirm({
                     title: '提示',
-                    message: '该就诊人尚未完善资料，请前 去完善！',
+                    message: '该就诊人尚未完善资料，请前去完善！',
                     confirmButtonText: '去完善'
                   }).then(() => {
                     this.$router.push(`/setting/myFamilyMembers`)
@@ -413,315 +723,306 @@ export default {
                 }
               })
           })
-        } else {
-          if (tag) {
-            // 存在就诊卡
-            this.uploadHandler().then(() => {
-              this.applyHandler()
-            })
-          }
-        }
-      })
-    },
-    redirect() {
-      this.$router.push({
-        name: '/components/informedConsent',
-        params: {
-          keepAlive: false
         }
       })
     },
 
-    afterRead(file) {
-      console.log(file)
-    },
-
-    selectFamily(familyObject) {
-      this.showFamily = false
-
-      if (familyObject.id === undefined && familyObject.name === '添加就诊人') {
-        this.$router.push({
-          name: '/setting/myFamilyMembers',
-          params: {
-            back: true,
-            addFamily: true
-          }
-        })
-      } else {
-        //debugger
-        this.model.familyName = familyObject.name
-        this.model.familyId = familyObject.id
-        this.model.allergicHistory = familyObject.allergicHistory
-        this.model.foodAllergy = familyObject.foodAllergy
-        // 判断否能显示是否怀孕
-        if (familyObject.sex === '女' && familyObject.age >= 14) {
-          this.showPregnancy = true
-        } else {
-          this.showPregnancy = false
-          this.model.isPregnancy = ''
-        }
-
-        if (this.model.familyId) {
-          this.checkCard()
-        }
-      }
-    },
-
-    selectConfirmTime(value) {
-      this.showConfirmTime = false
-      this.model.confirmTime = value.formatDate()
-    },
-
-    showIllnessHistory() {
-      this.showAddIllnessHistory = true
-    },
-
-    showAllergicHistory() {
-      this.showAddAllergicHistory = true
-    },
-
-    checkFamily() {
-      if (this.source.familyList && this.source.familyList.length > 1) {
-        this.showFamily = true
-      } else {
-        this.$router.push({
-          name: '/setting/myFamilyMembers',
-          params: {
-            back: true,
-            addFamily: true
-          }
-        })
-      }
-    },
-    checkCardExist() {
-      let familyId = this.model.familyId
-      let nethospitalid = this.doctor.doctorInfo.nethospitalid
-      let params = { familyId, nethospitalid }
-      return new Promise(resolve => {
-        peace.service.patient.isExistCardRelation(params).then(res => {
-          resolve(res)
-        })
-      })
-    },
     apply() {
-      //验证
-      if (!this.model.familyName || this.model.familyName == '添加就诊人') {
-        return peace.util.alert('请选择就诊人')
-      }
-      if (!(this.model.illnessDescribe && this.model.illnessDescribe.length >= 5)) {
-        return peace.util.alert('请输入不少于5个字的病情描述')
-      }
-
-      //复诊必填验证
-      if (this.model.isAgain) {
-        if (!this.model.confirmIllness) {
-          return peace.util.alert('请选择初诊诊断')
-        }
-        if (!this.model.confirmTime) {
-          return peace.util.alert('请选择初诊时间')
-        }
-        if (!this.model.pastDrug) {
-          return peace.util.alert('请输入既往用药')
-        }
-        if (!this.model.allergicHistory) {
-          return peace.util.alert('请选择药物过敏史')
-        }
-        if (!this.model.foodAllergy) {
-          return peace.util.alert('请选择食物过敏史')
-        }
-        if (this.model.isBadEffect && !this.model.isBadEffectText) {
-          return peace.util.alert('请输入不良反应')
-        }
-        if (this.model.againType === 0) {
-          return peace.util.alert('请选择本次复诊情况')
-        }
-      }
-      this.uploadHandler().then(() => {
-        this.applyHandler()
-      })
-      // this.checkCard(true)
-    },
-    goToPay(data) {
-      let { doctorId, orderNo, orderMoney, inquiryType, doctorName } = data
-      let typeName = inquiryType == 'image' ? '图文问诊' : ''
-      let money = orderMoney
-      let json = { money, typeName, doctorName, orderNo, doctorId }
-      json = peace.util.encode(json)
-      this.$router.replace(`/components/doctorInquiryPay/${json}`)
-    },
-    uploadHandler() {
-      if (this.attachment.length > 0) {
-        const params = new FormData()
-
-        for (var i = 0; i < this.attachment.length; i++) {
-          params.append('file[]', this.attachment[i].file)
-        }
-        params.append('source', 'inquiryApply')
-
-        return peace.service.inquiry.images(params).then(res => {
-          this.model.attachment = res.data
-        })
-      } else {
-        return new Promise(resolve => {
-          resolve()
-        })
-      }
-    },
-
-    applyHandler() {
       this.sending = true
-      this.model.isAgain = this.model.isAgain? 1: 0;
-      this.model.informedConsent = this.model.informedConsent ? 1:0;
-      const params = this.model
-      peace.service.inquiry
-        .apply(params)
-        .then(res => {
-          // 订单提交成功
-          if (res.data.errorState === 0) {
-            // 待支付状态
-            if (res.data.inquiryStatus === 1) {
-              this.goToPay(res.data)
-              return
-            } else {
-              const params = peace.util.encode({
-                id: 'p2p-' + this.model.doctorId,
-                scene: 'p2p',
-                beginTime: res.data.startTime.toDate().getTime(),
-                to: this.model.doctorId
-              })
 
-              // 跳转聊天详情
-              this.$router.push(`/components/messageList/${params}`)
-              return peace.util.alert(res.msg)
-            }
-          }
-          // 订单提交失败 [errorState:1存在未支付订单 2存在未结束订单]
-          if (res.data.errorState === 1) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '去看看'
-            }).then(() => {
-              const params = {
-                inquiryId: res.data.inquiryId
-              }
-              let json = peace.util.encode(params)
-              this.$router.push(`/setting/userConsultDetail/${json}`)
-            })
-          }
-          if (res.data.errorState === 2) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '继续咨询'
-            })
-              .then(() => {
-                const params = peace.util.encode({
-                  id: 'p2p-' + this.model.doctorId,
-                  scene: 'p2p',
-                  beginTime: res.data.startTime.toDate().getTime(),
-                  to: this.model.doctorId
-                })
-
-                // 跳转聊天详情
-                this.$router.push(`/components/messageList/${params}`)
-              })
-              .catch(() => {
-                // on cancel
-              })
-          }
-        })
+      this.uploadHandler()
+        .then(this.applyHandler)
         .finally(() => {
           this.sending = false
         })
+    },
+
+    uploadHandler() {
+      return new Promise(resolve => {
+        if (Array.isArray(this.attachment) && this.attachment.length) {
+          // 压缩
+          const compress = () => {
+            return new Promise(resolve => {
+              const files = []
+              for (let i = 0; i < this.attachment.length; i++) {
+                new Compressor(this.attachment[i].file, {
+                  quality: 0.6,
+                  convertSize: 50000,
+                  success: fileBlob => {
+                    files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
+
+                    if (files.length === this.attachment.length) {
+                      resolve(files)
+                    }
+                  }
+                })
+              }
+            })
+          }
+
+          // 上传
+          compress().then(files => {
+            const params = new FormData()
+
+            params.append('source', 'inquiryApply')
+            files.forEach(file => {
+              params.append('file[]', file)
+            })
+
+            peace.service.inquiry.images(params).then(res => {
+              this.model.attachment = res.data
+
+              resolve()
+            })
+          })
+        } else {
+          resolve()
+        }
+      })
+    },
+
+    applyHandler() {
+      const params = this.model
+
+      return peace.service.inquiry.apply(params).then(res => {
+        // 订单提交成功
+        if (res.data.errorState === 0) {
+          // 需要支付，跳转支付
+          if (res.data.inquiryStatus === 1) {
+            this.goToPay(res.data)
+          }
+          // 不需要支付，跳转订单
+          else {
+            this.goToConsultDetail(res.data)
+          }
+        }
+
+        // 订单提交失败
+        // errorState:1 存在未支付订单， 跳转订单
+        if (res.data.errorState === 1) {
+          return Dialog.confirm({
+            title: '提示',
+            message: res.msg,
+            confirmButtonText: '去看看'
+          }).then(() => {
+            this.goToConsultDetail(res.data)
+          })
+        }
+
+        // errorState:2 存在未结束订单，跳转咨询
+        if (res.data.errorState === 2) {
+          return Dialog.confirm({
+            title: '提示',
+            message: res.msg,
+            confirmButtonText: '继续咨询'
+          }).then(() => {
+            this.goToMessage(res.data)
+          })
+        }
+      })
+    },
+
+    goToPay(data) {
+      console.log(data)
+      const json = peace.util.encode({
+        money: data.orderMoney,
+        typeName: data.inquiryType === 'image' ? '图文问诊' : '',
+        doctorId: data.data,
+        doctorName: data.doctorName,
+        orderNo: data.orderNo,
+        inquiryId: data.inquiryId
+      })
+      this.$router.replace(`/components/doctorInquiryPay/${json}`)
+    },
+
+    goToMessage(data) {
+      const params = peace.util.encode({
+        id: 'p2p-' + this.model.doctorId,
+        scene: 'p2p',
+        beginTime: data.startTime.toDate().getTime(),
+        to: this.model.doctorId
+      })
+
+      // 跳转聊天详情
+      this.$router.replace(`/components/messageList/${params}`)
+    },
+
+    goToConsultDetail(data) {
+      const params = {
+        inquiryId: data.inquiryId
+      }
+
+      let json = peace.util.encode(params)
+      this.$router.replace(`/setting/userConsultDetail/${json}`)
+    },
+
+    viewImage(path) {
+      ImagePreview([path])
+    },
+
+    scrollToBottom() {
+      const $layout = this.$el.querySelector('.layout-content')
+      $layout.scrollTop = $layout.scrollHeight
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.doctor-inquiry-apply {
+.inquriy {
+  font-size: 16px;
   height: 100%;
   background: #f5f5f5;
-  display: flex;
-  flex-direction: column;
 
-  .content {
-    flex: 1;
-    overflow: auto;
+  &.layout {
+    display: flex;
+    flex-direction: column;
 
-    .title {
+    .layout-header {
       background: #fff;
-      display: flex;
-      align-items: center;
-      height: 80px;
-      padding: 0 20px;
+      padding: 10px;
+      text-align: center;
 
-      .title-avatar {
-        img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background: rgba(241, 248, 255, 1);
-          border: 1px solid rgba(221, 225, 234, 1);
+      .text {
+        color: #999999;
+        font-size: 14px;
+      }
+      .avtive {
+        color: $-color--primary;
+      }
+      .space {
+        width: 40px;
+        color: #eeeeee;
+        margin: 0 30px;
+      }
+    }
+
+    .layout-content {
+      flex: 1;
+      overflow: auto;
+      padding: 20px 15px;
+
+      .notify {
+        background: rgba(229, 232, 232, 1);
+        border-radius: 8px;
+        padding: 6px 12px;
+        display: inline-block;
+        text-align: justify;
+
+        font-size: 12px;
+        color: #969a99;
+        margin: 0 0 18px 0;
+
+        .link {
+          color: $-color--primary;
         }
       }
 
-      .title-info {
-        margin: 0 0 0 20px;
+      .message-layout {
+        margin: 16px 0;
 
-        .title-doctor {
-          color: #000000;
-          margin: 0 0 5px 0;
-
-          .title-doctor-name {
-            font-size: 18px;
-            font-weight: 600;
-          }
-
-          span {
-            margin: 0 10px 0 0;
-          }
+        &.left {
+          text-align: justify;
+        }
+        &.right {
+          text-align: justify;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: flex-end;
         }
 
-        .title-hospital {
-          margin: 0 0 5px 0;
-          color: #000000;
+        .robot {
+          margin: 0 0 -8px 4px;
+        }
+
+        .message {
+          display: inline-flex;
+          padding: 12px 16px;
+          max-width: 80%;
+
+          &.in {
+            background: #fff;
+            color: #38485c;
+            border-radius: 0px 20px 20px 20px;
+          }
+          &.out {
+            background: $_color__primary;
+            color: #fff;
+            border-radius: 20px 0px 20px 20px;
+          }
         }
       }
-    }
-    /deep/ .van-cell-group {
-      border-bottom: 1px solid #eee;
-    }
-    /deep/ .van-uploader__upload,
-    /deep/ .van-uploader__preview-image {
-      width: 50px;
-      height: 50px;
+
+      .doctor {
+        padding: 15px 10px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 4px 6px 1px rgba(229, 229, 229, 0.5);
+        border-radius: 7px;
+        margin: 8px 0 32px 0;
+      }
     }
 
-    /deep/ .van-radio {
-      margin: 0 0 10px 0;
-    }
+    .layout-footer {
+      background-color: #ffffff00;
 
-    .divider {
-      height: 10px;
-      background: #f9f9f9;
-    }
-  }
+      /deep/ .layout-footer-content {
+        padding: 16px 20px;
+        background: #fff;
+        box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.04);
 
-  .footer {
-    height: 100px;
-    text-align: center;
-    background: #f5f5f5;
-    padding: 20px 10px;
+        &.illnessDescribe {
+          .van-cell {
+            padding: 0;
+            display: flex;
+            align-items: center;
 
-    .informed-consent {
-      color: $-color--primary;
-    }
+            .van-button {
+              width: 60px;
+              height: 36px;
+              font-size: 16px;
+              line-height: 1;
+              padding: 0;
+            }
 
-    .van-checkbox {
-      margin: 0 0 10px 0;
-      justify-content: center;
+            .van-field__control {
+              font-size: 16px;
+              border-radius: 18px;
+              height: 36px;
+              padding: 2px 16px;
+              background: #f5f5f5;
+            }
+          }
+        }
+
+        &.family {
+          .van-button {
+            font-size: 16px;
+            margin: 0 15px 15px 0;
+          }
+        }
+
+        &.attachment {
+          text-align: center;
+          .van-button {
+            font-size: 16px;
+            margin: 0 15px 15px 0;
+          }
+        }
+
+        &.isAgain {
+          text-align: center;
+          .van-button {
+            min-width: 80px;
+            font-size: 16px;
+            margin: 0 15px 15px 0;
+          }
+        }
+
+        &.confirmIllness {
+          text-align: center;
+        }
+      }
     }
   }
 }

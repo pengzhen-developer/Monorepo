@@ -103,13 +103,28 @@ export default {
     },
 
     selectSession(session) {
-      const params = peace.util.encode({
-        id: session.id,
-        beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
-        scene: session.scene,
-        to: session.to
-      })
-
+      // const params = peace.util.encode({
+      //   id: session.id,
+      //   beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
+      //   scene: session.scene,
+      //   to: session.to
+      // })
+      let params = null
+      if (
+        session.content.inquiryInfo.inquiryStatus == '4' ||
+        session.content.inquiryInfo.inquiryStatus == '5'
+      ) {
+        params = peace.util.encode({
+          inquiryNo: session.content.inquiryInfo.inquiryNo
+        })
+      } else {
+        params = peace.util.encode({
+          id: 'p2p-' + session.content.doctorInfo.doctorId,
+          scene: 'p2p',
+          beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
+          to: session.content.doctorInfo.doctorId
+        })
+      }
       // 清除聊天记录
       peace.service.IM.resetInquirySessionMessages()
 

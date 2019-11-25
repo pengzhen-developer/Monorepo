@@ -1,66 +1,124 @@
 <template>
   <div class="userConsultList">
-    <!-- h5 v0.1 版本暂不开放 -->
-    <div class="box" v-if="false">
+    <!-- h5 v0.1 版本暂不开放   v-if="false"-->
+    <div class="box"
+         v-if="false">
       <div class="box-tab">
-        <div bindtap="goReferrListPage" class="tab-item" data-index="0">
-          <div :class="{ red: unred_ZZ}" class="span icon-referral">转诊申请</div>
+        <div @click="goReferrListPage"
+             class="tab-item"
+             data-index="0">
+          <div :class="{ red: unred_ZZ}"
+               class="span icon-referral">转诊申请</div>
         </div>
-        <div bindtap="goConsultGroupPage" class="tab-item" data-index="1" style="flex:1.15">
-          <div :class="{ red: unred_HZ}" class="span icon-consultGroup">会诊申请</div>
+        <div @click="goConsultGroupPage"
+             class="tab-item"
+             data-index="1"
+             style="flex:1.15">
+          <div :class="{ red: unred_HZ}"
+               class="span icon-consultGroup">会诊申请</div>
         </div>
       </div>
     </div>
 
-    <div class="content" style="height: 100%">
+    <van-list :loading="loading"
+              :finished="finished"
+              @load="getConsultList"
+              class="content"
+              style="height: 100%">
       <template v-if="consultList.length">
-        <div :data-index="index" :Key="index" class="panel" v-for="(item,index) in consultList">
+        <div :data-index="index"
+             :Key="index"
+             class="panel"
+             v-for="(item,index) in consultList">
           <div class="panel-head">
             <div class="card-strip">
               <div class="avatar">
-                <img :src="item.doctorInfo.avartor" class="avatar-cicular" />
+                <img :src="item.doctorInfo.avartor"
+                     class="avatar-cicular" />
               </div>
               <div class="strip-info">
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
                 <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
-              <div :class="{ [`color-${item.inquiryInfo.inquiryStatus}`]: true }" class="strip-eye">
+              <div :class="{ [`color-i${item.inquiryInfo.inquiryStatus}`]: true }"
+                   class="strip-eye">
                 {{item.inquiryInfo.statusTxt}}</div>
             </div>
           </div>
-          <div :data-index="index" @click="goUserConsultDetailPage(item.inquiryInfo.inquiryId)"
-            class="panel-body" style="padding-top: 0">
+          <div :data-index="index"
+               @click="goChatingPage(item)"
+               class="panel-body"
+               style="padding-top: 0">
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
               <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
-              <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
-                {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div>
+              <!-- <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
+                {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div> -->
             </div>
           </div>
-          <div class="panel-bottom" style="padding-left: 0"
-            v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+          <div class="panel-bottom"
+               style="padding-left: 0"
+               v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
             <div class="count-down">
               <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
-              <van-count-down millisecond :time="item.time" format="HH:mm:ss" />
+              <van-count-down millisecond
+                              :time="item.time"
+                              format="HH:mm:ss" />
             </div>
             <div class="btn-wrap">
-              <div :data-index="index" @click="goChatingPage(item)" class="label blue"
-                v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
-              <div :data-index="index" @click="showCancellPop(item)" class="label gary">取消订单</div>
-              <div :data-index="index" v-if="item.inquiryInfo.inquiryStatus === 1"
-                @click="goToPay(item)" class="label blue-full">继续支付</div>
+              <div :data-index="index"
+                   @click="goChatingPage(item)"
+                   class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+              <div :data-index="index"
+                   @click="showCancellPop(item)"
+                   class="label gary">取消订单</div>
+              <div :data-index="index"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goToPay(item)"
+                   class="label blue-full">继续支付</div>
             </div>
-
           </div>
-          <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
+          <!-- <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
             v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
             <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue"
               data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
             <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue"
               data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
             <div :data-index="index" @click="goChatingPage(item)" class="label blue">咨询记录</div>
+          </div> -->
+          <div class="panel-bottom"
+               v-if="!(!item.inquiryInfo.consultNo&&!item.inquiryInfo.referralNo&&!item.inquiryInfo.isCase&&!item.inquiryInfo.isPrescrip&&!item.inquiryInfo.checkOrderNo)"
+               style="justify-content: flex-end;">
+            <div :data-index="index"
+                 @click="gouserConsultationPage(item)"
+                 class="label gary"
+                 data-tip="会诊"
+                 v-if="item.inquiryInfo.consultNo">会诊单</div>
+            <div :data-index="index"
+                 @click="gouserTranforPage(item)"
+                 class="label gary"
+                 data-tip="转诊"
+                 v-if="item.inquiryInfo.referralNo">转诊单</div>
+            <div :data-index="index"
+                 @click="gouserPrescripCasePage(item)"
+                 class="label gary"
+                 data-tip="病历"
+                 v-if="item.inquiryInfo.isCase">病历</div>
+            <div :data-index="index"
+                 @click="gouserPrescripListPage(item)"
+                 class="label gary"
+                 data-tip="处方"
+                 v-if="item.inquiryInfo.isPrescrip">处方</div>
+            <div :data-index="index"
+                 @click="gouserInspectionPage(item)"
+                 class="label gary"
+                 data-tip="检查单"
+                 v-if="item.inquiryInfo.checkOrderNo">检查单
+            </div>
           </div>
+
         </div>
         <div class="bottom">客服电话：400-902-0365</div>
       </template>
@@ -71,18 +129,23 @@
           <div class="none-text">暂无咨询记录</div>
         </div>
       </template>
-    </div>
+    </van-list>
 
-    <peace-dialog :visible.sync="caseDetail.visible" title="咨询小结">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  title="咨询小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="recipeList.visible" title="用药建议">
+    <peace-dialog :visible.sync="recipeList.visible"
+                  title="用药建议">
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible" title="咨询记录">
-      <MessageList :data="chatingPage.data" :doctorInfo="chatingPage.doctorInfo" :navBar="false">
+    <peace-dialog :visible.sync="chatingPage.visible"
+                  title="咨询记录">
+      <MessageList :data="chatingPage.data"
+                   :doctorInfo="chatingPage.doctorInfo"
+                   :navBar="false">
       </MessageList>
     </peace-dialog>
 
@@ -137,12 +200,16 @@ export default {
         visible: false,
         data: [],
         doctorInfo: {}
-      }
+      },
+      p: 0,
+      size: 10,
+      finished: false,
+      loading: false
     }
   },
 
   created() {
-    this.get()
+    // this.get()
     // 重复订单跳转进来
     // let inquiryId = this.$route.query.inquiryId
     // if (inquiryId && inquiryId != '') {
@@ -154,6 +221,8 @@ export default {
     get() {
       this.getConsultList()
     },
+    goReferrListPage() {},
+    goConsultGroupPage() {},
     goToPay(data) {
       //console.log(data);
 
@@ -163,15 +232,16 @@ export default {
       let typeName = order.inquiryType
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
+      let inquiryId = order.inquiryId
+      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
     getConsultList() {
-      peace.service.patient.inquiryList().then(res => {
+      this.p++
+      peace.service.patient.inquiryList({ p: this.p, size: this.size }).then(res => {
         this.loaded = true
-        this.consultList = res.data.list
-        this.consultList.map(item => {
+        res.data.list.map(item => {
           // item.time =  15 * 60 * 1000;
           let inquiryInfo = item.inquiryInfo
           let expireTime =
@@ -182,9 +252,30 @@ export default {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }
         })
+        this.consultList = this.consultList.concat(res.data.list)
+        this.loading = false
+        if (this.p * this.size >= res.data.count) {
+          this.finished = true
+        }
       })
     },
+    //会诊
+    gouserConsultationPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
 
+      this.$router.push(`/components/theConsultation/${params}`)
+    },
+    //转诊
+    gouserTranforPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
+
+      this.$router.push(`/components/theTransfer/${params}`)
+    },
+    //病历
     gouserPrescripCasePage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
@@ -193,7 +284,15 @@ export default {
 
       this.$router.push(`/components/theCase/${params}`)
     },
+    //检验单
+    gouserInspectionPage(item) {
+      const params = peace.util.encode({
+        inquiryNo: item.inquiryInfo.inquiryNo
+      })
 
+      this.$router.push(`/components/theInspection/${params}`)
+    },
+    //处方
     gouserPrescripListPage(item) {
       const params = peace.util.encode({
         familyId: item.inquiryInfo.familyId,
@@ -205,7 +304,7 @@ export default {
 
     goChatingPage(item) {
       // 问诊中时, 咨询记录跳转聊天页
-      if (item.inquiryInfo.inquiryStatus === 2 || item.inquiryInfo.inquiryStatus === 3) {
+      if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         const params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
@@ -326,7 +425,7 @@ export default {
   display: block;
   left: -20px;
   top: -2px;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAeFBMVEVHcExnZ2dmZmZnZ2dmZmZmZmZmZmZnZ2dmZmZmZmZx2LtmZmZmZmZnZ2e18+JmZmZm6cg037Vqamoz37U04LY037Wz9OKy8+FB4blnZ2e29OK18+I04LYz37Y037W19ONmZmYz3rS08uGS7dZQ476l8Nxm5saB6s8k8yC4AAAAIHRSTlMAmeg5eKP99viBDc1rVuS0IdMatD7uO8iX/HmkVYJwYLpAgFoAAARcSURBVGjezZrtlrIgEIBNNzVc08zMj6z8vv87fFUUUDQQY887+6ezIU8zwwwDo6L8J6LZPyJia9wEcDJ0Q0x09QT4tFDNt7iYKo82mqm/90hksimeuo/xfuuqx4IczPdeMQ8sp0M9DPUoIoM3TYbz7X6Y+SO49E/wcZtjlG4JB5jVQ06fBx15BjF/5IEDYvwKQ36MboLj50HO1yGeRokD16D2QbwNEO1ovHVKYDh9lLfpaHwQ4OiReEzrjscB8ax9gW2upQ4SspPR6mIBFuT3CwnqhwVR4bg2RQnIG/5CA3yGaP0iMh1PKBQ850OCwhD4SQUSEhSGHCKOBMPMtUcGZGcW/O1ncv4OAoB0CLhmWSgZAi5ZK08pEK1zfNQ+f+0Y2UUKpMtKkekpYSYT4h2sNt0/IaNzCoiTGHwZ0os/MLKHAu55nt/FIeCZ+otfuLcR4iodI89fohC/mypdgl9Gxk1JekYeC0Ie42+lBDGyawwZopqkwzy0wa6IkYUDIwciEBBmBMQFy4ysGBhnEccDPJOvBK1vE0B/08qoSCIAcbHVMz84j56lGHVOuGQjxL9llNnvFL2VZoS4myGPyUQFYfU0m0pFumQTZDYThvhIjQv8VE5csgGCl1V4mUAe2BuXx8xar20Q7NjnsFZ7SNWUWLfrOCifuIQbghx7e4yBXVRFXZL2e47pESly35Tq0bK6tSH4KrMFufgoPSJF4i0QtKwurf5JvgC5pQDE9UyRwVp8kBQbXQFtdqUhoRskeZNNl9ZoLS4Icnm727ndLlHOtQji9t/NLG3lecANwXtEW4DATNJMMkgCd6dinlGQImzIZFkFw+OD8cu6GUMbgbGxkCJMyGRZxej5qqiqKieknicUQhEWBO3ZcFmtSVXSjNzlhaTTZbWCqLMFxou77gqRz937GqLJlhgJf3GHyqjwvIwosBZZSTDOYEMF+aT2ulGBqpilLnLEOdhU1T+W5mgWEkuzyuAIxseNskZBI+pqncGTVnyKUn9EUAyu3IWLhGGumbHqYuKtOxA6M2JKQUFmBLSHbD/O4b23ISA1kbqQGsGO029IUspZSsfeeCm7jtgpsZRXICuILSUREZZLkHMScNzcMYs7FJblHHJO4p7g7YdMK2Fc3AVg7H6w77s4amH3tlYLd2oYOvsqiqeqn9TuM4htrN4ybTyfkKeQGeSLt0QERR6ECEuZEBQwUiFjwFRSITBg6lwuRHHTEN0GSIN08voLyFB8o2pU0m3q5LJA2pWtm+TnmONeGDfOJF4+q2hqaRBwxL2C70AMixJz6HooX4N0PbTp3yDG6XuQ1YY87JlIhYw9NZkQ0xpqjC/5hH4PI9IttPN/B2LZlJAtW4nB+NeQaB+kz4K6w9NdE39HwdE5unvwbYtItLVv6zxvBgDYJY+sk4hYEUwgrH7r+AZMZAoIRJgOs11kRLu72OzGsRbtpEQ2TxfP2PV+lWlzLRHvEJmGLiKtV45MW/0DNvDTjYn1wpgAAAAASUVORK5CYII=);
+  background-image: url('../../assets/images/icon-referral.jpg');
 }
 .icon-consultGroup::before {
   content: '';
@@ -337,7 +436,7 @@ export default {
   display: block;
   left: -20px;
   top: -2px;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAh1BMVEVHcExnZ2dnZ2e08+FmZmZnZ2dnZ2dmZmZmZmZoaGi49eg037VnZ2dn2Lkz37U14La29OK09+VB07A14bc037WF5s629OMz37Ww9OM037U037Y84Li18+JmZmY04LVO4r608+G18+JnZ2e08+K18+JpaWm29OO18+JmZmYz3rS08uFg5cSG69HhhlNBAAAAKHRSTlMAzK6xf5C59vxTGLPSD5E+byAaKs8GW/YtdlfdweZo/up/bJjeL0NRsuxZXAAAA8BJREFUaN7tmut2ojAURlMQiWECCsYbYhW1ldj3f77JhUtAAnQkXbO6/H5YRHBz2ElAUgBe+YdcZ5PRM7uqBDxJoGsgtyQlBWPG3hoKTPJqUngzF+jORB0mGRzDasHuzTAkIcCREBcmbyMnucmvhinIFxw8frfAljSRAPHXdcz0PkuWICtxiRlIKFXISt5MDSSJhAiWZQry5wV5Qb4DCQ4/ANn5LyffOl1ovzAEKYfQ7RKfkFxFxoVgL4t3eSVesWq93o0K8bIsWwePq6IRIYeMp2i7iG7YpUKsivFokGgtvlGep8AXkECsWntjQXCcKRAm/owKSJYdRoKIsy8gvDkd8oLyleuIjAERQvjL8kKrHsIh/pK9vNP58xAhxMfi6yi9sONGl0UOEZ/d6cezECFkSQoI/Qy2pXgf7HiVX0f0JCTvDlgcMsucibdRAVncBWVPnoIIIaxjl5UwSOUELOi7+OD0DEQKYQuLEqKKZxCadWkZAsmFsCWbQ04SIkbhEvLVpWUIpByf5vyAlysOCQ6KeAahoqvSdi0DIIUQsBFnxVtJJ/VKqL3Ua+mHlELQpQapO6F2R2/phShCqAIhuAnp6C29EEWICmGF2fXTBYAvtXwfogqh9FxCol1DPINgnZYeSCkEMyF0H6riL81KgE5LN6Qu5LjAHeLFlb9dSzekLuQTVBActkFIu5ZOSEMIUCBs+YweIBotXZCGEKJCouBRPNBp6YCIo1KEABXCxB8XLZBWLR2QppAGpM2JRose8iCkBgkjDaRNixbyKAQ0xJ9QK6RFixbCjyeOwjAUQjahSKRUUokPea12WGbb1KKD4EyXUnx1B9mWu6JFW0ms23urisdr3WZftNKihew0u8c47yfqTXjLZry1fPS2rsj3PC++3+/vnpItBoX4OZJ33mwt2ypWt/IOZM9VoiFjV9VDlORjl3AiU29d+S+LI2+UAyCIM2zUyFwRr0Cam/Fjoat+yCfVhYtHpHYwrbH7IRvtzpuo9kPxotvuNMDJWbMvH2TICveWfMFDLr+rs/2YMzvTBCtOWM1t29lz/NzDgpp4U08kwohsiGnIDz3AIR/YPOQHnPy3z7vEY/Sp4cfockLAEANDFZKagcgZIChP1w3OTDDSYpImn62BieWMHCvJZ7IccM0n5+DoKWbOXNZ1J6anAIUJyygFTqSfCTQ3LQvLdnud3lwD5bgutNSJ7DB1rOnIsZwUg1deeWVorlPXbBIrBGw8MT0MJ8D0/2FUdyu/AAL5xcRw+CUlnBnObxrv/wKX0vRYNNKmOgAAAABJRU5ErkJggg==);
+  background-image: url('../../assets/images/icon-consultGroup.jpg');
 }
 .bottom {
   color: #999;
@@ -404,6 +503,7 @@ export default {
   text-align: right;
 }
 /* color-x: 咨询单状态，
+ * color-iX:咨询单状态新；i5 已完成 i4 已退诊 i3咨询中
  * color-0x 转诊单状态 ↓
  *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态
@@ -419,6 +519,8 @@ export default {
   color: #fb2828;
 }
 /*blue*/
+.strip-eye.color-i3,
+.strip-eye.color-i5,
 .strip-eye.color-3,
 .strip-eye.color-01,
 .strip-eye.color-03,
@@ -468,9 +570,21 @@ export default {
 }
 .label {
   font-size: 13px;
-  padding: 5px 12px;
-  margin-left: 10px;
+  // padding: 2px 12px;
+  // margin-left: 10px;
   border-radius: 20px;
+  width: 18%;
+  margin-left: 2.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:first-child {
+    margin-left: 0;
+  }
+}
+.gary {
+  color: #999;
+  border-color: #ccc;
 }
 .label.label-private {
   font-size: 8px;

@@ -62,6 +62,9 @@ axios.interceptors.request.use(
         ]
       }
 
+      // 配置设备
+      request.headers['devicetype'] = 'h5'
+
       // 配置 authorization、accesstoken
       request.headers['access-token'] = $peace.cache.get($peace.type.USER.INFO)
         ? $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken

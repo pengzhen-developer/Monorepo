@@ -14,7 +14,7 @@
           <van-count-down :time="3000"
                           format="ss"
                           @finish="finished"
-                          style="display: inline-block" />秒后自动跳转医生诊室</p>
+                          style="display: inline-block" />秒后自动跳转订单详情</p>
       </template>
     </div>
 
@@ -22,7 +22,7 @@
       <template>
         <p>
           <span>若未跳转，</span>
-          <a @click="redirectMessage"
+          <a @click="redirectOrder"
              class="link">请点击</a>
         </p>
       </template>
@@ -31,10 +31,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-import Vue from 'vue'
-import { CountDown } from 'vant'
-Vue.use(CountDown)
 export default {
   data() {
     return {}
@@ -42,20 +38,14 @@ export default {
 
   methods: {
     finished() {
-      this.redirectMessage()
+      this.redirectOrder()
     },
 
-    redirectMessage() {
-      const params = peace.util.decode(this.$route.params.json)
-      const paramsForMessageList = peace.util.encode({
-        id: 'p2p-' + params.doctorId,
-        scene: 'p2p',
-        beginTime: params.startTime.toDate().getTime(),
-        to: params.doctorId
-      })
+    redirectOrder() {
+      let json = this.$route.params.json
 
-      // 跳转聊天详情
-      this.$router.replace(`/components/messageList/${paramsForMessageList}`)
+      // 跳转订单详情
+      this.$router.replace(`/setting/userConsultDetail/${json}`)
     }
   }
 }

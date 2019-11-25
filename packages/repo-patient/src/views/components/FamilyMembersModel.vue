@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
-<!--       <div class="card-name">{{cardName}}</div>-->
+      <!--       <div class="card-name">{{cardName}}</div>-->
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -211,7 +211,7 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import GuardianList from '../setting/GuardianList'
-
+import { Dialog } from 'vant'
 export default {
   components: {
     GuardianList,
@@ -539,14 +539,19 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
-      params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
+      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+      params.source = params.nethospitalid && params.nethospitalid != '' ? 2 : 1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
       peace.service.patient.bindFamily(params).then(res => {
         peace.util.alert(res.msg)
+
+        const params = peace.util.decode(this.$route.params.json)
+        if (params.emit) {
+          $peace.$emit(params.emit, res)
+        }
         this.$router.go(-1)
       })
     },
@@ -562,14 +567,19 @@ export default {
     },
     // 删除
     deleted() {
-      const params = {
-        familyId: this.model.id
-      }
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否删除家人信息'
+      }).then(() => {
+        const params = {
+          familyId: this.model.id
+        }
 
-      peace.service.patient.DelFamily(params).then(res => {
-        peace.util.alert(res.msg)
+        peace.service.patient.DelFamily(params).then(res => {
+          peace.util.alert(res.msg)
 
-        this.$router.go(-1)
+          this.$router.go(-1)
+        })
       })
     }
   }

@@ -8,6 +8,10 @@ import Vue from 'vue'
 import store from '@src/store'
 import router from '@src/router'
 
+// Vue Page Stack
+import VuePageStack from 'vue-page-stack'
+Vue.use(VuePageStack, { router })
+
 // flexible: https://github.com/amfe/lib-flexible
 import './flexible'
 
@@ -23,7 +27,6 @@ import Vant from 'vant'
 import 'vant/lib/icon/local.css'
 import 'vant/lib/index.less'
 Vue.use(Vant)
-
 
 // css
 import '@src/assets/css/index.scss'

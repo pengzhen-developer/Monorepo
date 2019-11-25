@@ -156,6 +156,10 @@ export default {
       if (peace.cache.get(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID)) {
         return false
       }
+      // 非渠道进入
+      if (!peace.cache.get(peace.type.SYSTEM.CHANNELID)) {
+        return false
+      }
       // 不存在授权信息，需要进行授权
       else {
         return true
