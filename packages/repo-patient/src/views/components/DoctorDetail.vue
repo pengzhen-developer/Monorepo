@@ -496,6 +496,7 @@ export default {
     goMap(doctorInfo) {
       if (doctorInfo.address || (doctorInfo.latitude && doctorInfo.longitude)) {
         const json = peace.util.encode({
+          name: doctorInfo.hospitalName,
           address: doctorInfo.address,
           latitude: doctorInfo.latitude,
           longitude: doctorInfo.longitude
