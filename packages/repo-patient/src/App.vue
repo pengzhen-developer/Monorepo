@@ -6,11 +6,9 @@
     <div class="layout">
       <!-- 中部功能 keepAlive router  -->
       <div class="layout-content">
-        <transition name="van-fade">
-          <vue-page-stack>
-            <router-view></router-view>
-          </vue-page-stack>
-        </transition>
+        <vue-page-stack>
+          <router-view></router-view>
+        </vue-page-stack>
       </div>
 
       <!-- 底部导航 tabbar -->
