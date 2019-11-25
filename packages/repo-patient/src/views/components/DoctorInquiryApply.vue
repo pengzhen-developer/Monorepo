@@ -315,7 +315,7 @@ export default {
           no: 4,
           answerList: [],
           field: ANSWER_FIELD.ATTACHMENT,
-          question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉？',
+          question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
           mode: ANSWER_MODE.FILE_CONFIRM
         },
         {
