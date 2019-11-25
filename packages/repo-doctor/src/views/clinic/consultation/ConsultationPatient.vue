@@ -44,8 +44,11 @@
           <div class="title">
             <i class="icon_archives_icon_doctor"></i>
             <!-- 我发起的会诊 -->
-            <template
-                      v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+            <template v-if="
+                $store.getters['consultation/consultInfo'].startDoctor[0]
+                  .doctorId ===
+                  $store.state.user.userInfo.list.docInfo.doctor_id
+              ">
               <span>受邀医生：</span>
             </template>
 
@@ -71,8 +74,11 @@
 
             <div class="doctor-info">
               <div>
-                <template
-                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                <template v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  ">
                   <span style="font-weight:600; color: rgba(51,51,51,1);">{{
                     data.toDoctorName
                   }}</span>
@@ -84,8 +90,11 @@
                 </template>
               </div>
               <div>
-                <template
-                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                <template v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  ">
                   <span>{{ data.toDeptName }}</span>
                   <span>{{ data.toDoctorTitle }}</span>
                 </template>
@@ -95,8 +104,11 @@
                 </template>
               </div>
               <div>
-                <template
-                          v-if="$store.getters['consultation/consultInfo'].startDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id">
+                <template v-if="
+                    $store.getters['consultation/consultInfo'].startDoctor[0]
+                      .doctorId ===
+                      $store.state.user.userInfo.list.docInfo.doctor_id
+                  ">
                   <span :title="data.toHospitalName">{{
                     data.toHospitalName
                   }}</span>
@@ -234,18 +246,6 @@ export default {
         visible: false,
         data: undefined
       }
-    }
-  },
-
-  watch: {
-    '$store.state.consultation.session'() {
-      this.getConsultationDetail()
-    }
-  },
-
-  watch: {
-    '$store.state.consultation.session'() {
-      this.getConsultationDetail()
     }
   },
 

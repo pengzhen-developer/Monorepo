@@ -1,7 +1,11 @@
 <template>
   <div class="pres">
     <img :alt="getPrescriptionState(internalData.Prescription)"
-         :src="`./static/images/inquiry/${getPrescriptionState(internalData.Prescription)}.png`"
+         :src="
+        `./static/images/inquiry/${getPrescriptionState(
+          internalData.Prescription
+        )}.png`
+      "
          class="status-image"
          v-show="getPrescriptionState(internalData.Prescription)" />
     <div class="pres-no">No.{{ internalData.PrescriptionNo }}</div>

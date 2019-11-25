@@ -316,16 +316,6 @@ export default {
       } else {
         this.drug.disabled = false
       }
-      if (val.length == 0) {
-        this.drug.disabled = true
-      } else {
-        this.drug.disabled = false
-      }
-      if (val.length == 0) {
-        this.drug.disabled = true
-      } else {
-        this.drug.disabled = false
-      }
     }
   },
 
@@ -452,13 +442,6 @@ export default {
         this.drug.model.drug_name = ''
       }, 0)
     },
-    //清空药品信息
-    resetDrugInfo() {
-      setTimeout(() => {
-        this.$refs.form.resetFields()
-        this.drug.model.drug_name = ''
-      }, 0)
-    },
     // 新增药品
     addDrug() {
       this.$refs.form.validate(valid => {
@@ -506,16 +489,6 @@ export default {
     // 取消药品修改
     cancelDrug() {
       this.drug.visible = false
-    },
-
-    closeDialog() {
-      this.drug.model = peace.util.deepClone(this.drug._model)
-      this.$refs.form.resetFields()
-    },
-
-    closeDialog() {
-      this.drug.model = peace.util.deepClone(this.drug._model)
-      this.$refs.form.resetFields()
     },
 
     closeDialog() {
