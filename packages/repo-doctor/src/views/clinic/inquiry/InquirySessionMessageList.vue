@@ -103,7 +103,7 @@
         <!-- 消息内容 -->
         <div @click="getTransfelDetail(message)"
              class="message-body case">
-          <img src="~@src/assets/images/pic_medication recommendations.png" />
+          <img src="~@src/assets/images/ic_转诊.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">转诊单</p>
             <p>查看详情</p>
@@ -124,7 +124,7 @@
         <!-- 消息内容 -->
         <div @click="getConsultDetail(message)"
              class="message-body case">
-          <img src="~@src/assets/images/pic_medication recommendations.png" />
+          <img src="~@src/assets/images/ic_会诊.png" />
           <div style="text-align: left;">
             <p style="font-size: 14px;">会诊单</p>
             <p>查看详情</p>

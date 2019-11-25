@@ -37,12 +37,14 @@
            v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain === '1'">
         <div>
           <div class="b">复诊信息</div>
-          <div class="form-dl img">
+          <div class="form-dl img"
+               v-if="internalData.inquiryOrderInfo.imgs.length > 0">
             <div class="form-dt ">复诊诊凭 :</div>
             <div class="form-img">
-              <div v-viewer>
-                <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
-                     :key="index"
+              <div v-viewer
+                   v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
+                   :key="index">
+                <img class="img"
                      :src="item" />
               </div>
             </div>
@@ -124,7 +126,8 @@ export default {
   background-color: #fff;
   color: #333;
   min-height: 100%;
-  padding: 0;
+  padding: 10px;
+  border-radius: 3px;
   box-sizing: border-box;
   .module,
   .brief {
@@ -160,11 +163,21 @@ export default {
       padding: 5px 0;
       display: flex;
       align-items: center;
-      img {
+      flex-wrap: wrap;
+      .img {
         width: 57px;
         height: 57px;
-        display: block;
+        background: #ccc;
         margin-right: 10px;
+        margin-bottom: 10px;
+        &:nth-child(5n) {
+          margin-right: 0 !important;
+        }
+        img {
+          width: 57px;
+          height: 57px;
+          display: block;
+        }
       }
     }
   }
