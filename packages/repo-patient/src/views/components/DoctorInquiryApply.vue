@@ -574,6 +574,10 @@ export default {
       // 问诊描述
       if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
         if (this.current.answer) {
+          if (this.current.answer.length < 5) {
+            peace.util.alert('请输入至少5个字')
+            return false
+          }
           answer = this.current.answer
 
           this.model.illnessDescribe = answer
