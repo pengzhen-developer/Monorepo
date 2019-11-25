@@ -248,15 +248,6 @@
 <script>
 import peace from '@src/library'
 
-import Vue from 'vue'
-import Viewer from 'v-viewer'
-import 'viewerjs/dist/viewer.css'
-Vue.use(Viewer, {
-  defaultOptions: {
-    zIndex: 9999
-  }
-})
-
 import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
 import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
