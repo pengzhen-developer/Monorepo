@@ -8,8 +8,7 @@
            @click="goMenuPage(item)"
            class="block-items"
            v-bind:class="{'last':index == items.length -1}"
-           v-for="(item,index) in lists"
-           v-if="index < showNum">
+           v-for="(item,index) in lists">
         <img :src="item.icon"
              class="block-ico" />
         <div class="block-tit">{{item.text}}</div>
@@ -59,7 +58,9 @@ export default {
   created() {
     this.lists = this.items || []
     this.showNum = this.max
-
+    if (this.showNum < this.lists.length) {
+      this.lists = this.lists.slice(0, this.showNum)
+    }
     if (this.lists.length === 0) {
       peace.service.index.getMenu().then(res => {
         this.lists = res.data.department
