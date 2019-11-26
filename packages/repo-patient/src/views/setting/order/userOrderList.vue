@@ -56,7 +56,7 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2&&item.time>0">
               <div class="count-down">
                 <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
                 <van-count-down millisecond
@@ -204,6 +204,7 @@ export default {
   activated() {
     if (this.p > 0) {
       this.p = 0
+      this.loaded = false
       this.orderList = []
       this.get()
     }
