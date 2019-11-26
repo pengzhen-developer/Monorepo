@@ -16,7 +16,7 @@ import 'nprogress/nprogress.css'
 let httpCount = 0
 
 /** 提醒消息-需要登录 */
-const MESSAGE_USER_NEED_LOGIN = '为保障您的数据安全，请登录后使用。'
+const MESSAGE_USER_NEED_LOGIN = '您的登录信息已过期，请重新登录。'
 
 /** cancel token */
 const cancelTokenList = []
