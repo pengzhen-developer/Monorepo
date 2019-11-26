@@ -18,8 +18,7 @@
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊|| 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
             <!-- 消息时间 -->
-            <template
-                      v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
+            <template v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
               <div class="message time">
                 <div class="message-body">
                   <span>{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</span>
@@ -31,8 +30,7 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -50,8 +48,7 @@
           </template>
 
           <!-- 问诊卡片 -->
-          <template
-                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -65,8 +62,7 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -124,8 +120,7 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -176,8 +171,7 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -216,8 +210,7 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -242,8 +235,7 @@
           </template>
 
           <!-- 视频消息 -->
-          <template
-                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -272,8 +264,7 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -293,8 +284,7 @@
           </template>
 
           <!-- 病历消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -307,8 +297,7 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -331,8 +320,7 @@
           </template>
 
           <!-- 处方消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -345,8 +333,7 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -414,8 +401,7 @@
         <van-loading />
       </van-row>
     </template>
-    <template
-              v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
+    <template v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
       <div class="h63"></div>
       <div class="footer">
         <div class="footer-item"
@@ -450,6 +436,8 @@ import peace from '@src/library'
 import Vue from 'vue'
 import { ImagePreview } from 'vant'
 Vue.use(ImagePreview)
+
+import Compressor from 'compressorjs'
 
 import TheCase from '@src/views/components/TheCase'
 import TheRecipe from '@src/views/components/TheRecipe'
@@ -598,7 +586,8 @@ export default {
       // 传递 session 获取聊天记录
       else {
         const interval = setInterval(() => {
-          if ($peace.NIM && $peace.NIM.isConnected()) {
+          // 等待 IM 初始化完成，并且 sessions 已经获取到
+          if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
             window.clearInterval(interval)
 
             this.getHistoryMsgsByIM()
@@ -784,12 +773,21 @@ export default {
           }
         }
 
-        $peace.NIM.sendFile({
-          scene: this.$store.state.inquiry.session.scene,
-          to: this.$store.getters['inquiry/doctorInfo'].doctorId,
-          type: 'image',
-          blob: file.file,
-          done: doneHandler
+        // 压缩 & 发送
+        new Compressor(file.file, {
+          quality: 0.6,
+          convertSize: 50000,
+          success: fileBlob => {
+            const blob = new File([fileBlob], fileBlob.name, { type: fileBlob.type })
+
+            $peace.NIM.sendFile({
+              scene: this.$store.state.inquiry.session.scene,
+              to: this.$store.getters['inquiry/doctorInfo'].doctorId,
+              type: 'image',
+              blob: blob,
+              done: doneHandler
+            })
+          }
         })
       }
     },
