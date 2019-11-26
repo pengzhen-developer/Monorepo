@@ -66,7 +66,8 @@
                      v-model="model.nationName" />
         </template>
         <template v-else>
-          <van-field @click="showPopupNations"
+          <van-field :disabled="isEdit"
+                     @click="showPopupNations"
                      label="民族"
                      placeholder="请输入"
                      required

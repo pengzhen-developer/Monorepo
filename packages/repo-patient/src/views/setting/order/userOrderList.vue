@@ -2,9 +2,11 @@
   <div class="userorderList"
        style="height:100%;">
     <van-list :loading="loading"
+              v-model="loading"
               :finished="finish"
-              @load="getData"
-              class="content">
+              @load="get"
+              class="content"
+              :class="orderList.length>0&&'min'">
 
       <div v-if="orderList.length">
         <template v-for="(item,index) in orderList">
@@ -109,7 +111,7 @@
               </div>
             </div>
             <div class="panel-bottom "
-                 v-if="item.orderStatus == '1'||item.orderStatus == '3'">
+                 v-if="item.orderStatus == '1'||(item.orderStatus == '3'&& item.cancelState)">
               <div class="count-down"
                    v-if="item.orderStatus == '1'">
                 <span>订单关闭倒计时:</span>
@@ -131,7 +133,7 @@
               <div class="label blue"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '3' && !item.cancelState">申请退号</div>
+                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
             </div>
           </div>
         </template>
@@ -195,14 +197,15 @@ export default {
       size: 10,
       loaded: false,
       finish: false,
-      loading: false
+      loading: false,
+      timer: null
     }
   },
   activated() {
     if (this.p > 0) {
       this.p = 0
       this.orderList = []
-      this.getData()
+      this.get()
     }
   },
   created() {
@@ -231,6 +234,14 @@ export default {
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
+    get() {
+      if (!this.timer) {
+        this.timer = setTimeout(() => {
+          this.getData()
+          this.timer = null
+        }, 500)
+      }
+    },
     getData() {
       // this.orderList = []
       this.p++
@@ -255,7 +266,6 @@ export default {
           })
         }
         this.orderList = this.orderList.concat(res.data.list)
-        console.log(this.orderList.length)
         this.loaded = true
         this.loading = false
         if (this.p * this.size >= res.data.total) {
@@ -289,9 +299,9 @@ export default {
         })
     },
     canselOrder(item, index) {
-      // if (!item.cancelState && item.orderStatus != 1) {
-      //   return
-      // }
+      if (!item.cancelState) {
+        return
+      }
       let type, alertMsg
       if (item.orderStatus == 1) {
         type = 'cancel'
@@ -366,9 +376,13 @@ export default {
   }
 }
 .content {
-  padding: 10px;
   box-sizing: border-box;
   background-color: #f9f9f9;
+  &.min {
+    min-height: 100%;
+    padding: 10px;
+  }
+
   .panel {
     background: #fff;
     box-sizing: border-box;
@@ -376,6 +390,9 @@ export default {
     padding: 1px 15px;
     border-bottom: 0;
     margin-bottom: 15px;
+    &:last-child {
+      margin-bottom: 0;
+    }
     .panel-body {
       padding-top: 0;
     }

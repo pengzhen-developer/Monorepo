@@ -21,8 +21,9 @@
     </div>
 
     <van-list :loading="loading"
+              v-model="loading"
               :finished="finished"
-              @load="getConsultList"
+              @load="get"
               class="content"
               style="height: 100%">
       <template v-if="consultList.length">
@@ -204,7 +205,8 @@ export default {
       p: 0,
       size: 10,
       finished: false,
-      loading: false
+      loading: false,
+      timer: null
     }
   },
 
@@ -219,7 +221,12 @@ export default {
 
   methods: {
     get() {
-      this.getConsultList()
+      if (!this.timer) {
+        this.timer = setTimeout(() => {
+          this.getConsultList()
+          this.timer = null
+        }, 500)
+      }
     },
     goReferrListPage() {},
     goConsultGroupPage() {},

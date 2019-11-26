@@ -73,7 +73,7 @@
           </div>
           <div class="form-dl"
                v-if="internalData.familyInfo.guardianName">
-            <div class="form-dt">监 护 人:</div>
+            <div class="form-dt"><span>监 护 人</span> :</div>
             <div class="form-dd">{{internalData.familyInfo.guardianName}} |
               {{internalData.familyInfo.guardianSex}} |
               {{internalData.familyInfo.guardianAge+'岁'}}
@@ -335,7 +335,7 @@ export default {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
         '1': '订单创建15分钟后未支付将自动关闭',
-        '2': '已通知医生尽快接诊，请等候',
+        '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
         '3': '请及时与医生沟通',
         '4': '医生已退诊',
         '5': '祝您身体健康',
