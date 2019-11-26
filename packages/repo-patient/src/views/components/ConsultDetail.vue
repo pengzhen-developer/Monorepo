@@ -158,7 +158,9 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            </div>
           </div>
         </template>
 
@@ -208,6 +210,7 @@
           <div class="count-down">
             <span>订单关闭倒计时：</span>
             <van-count-down millisecond
+                            @finish="finish(internalData)"
                             :time="internalData.inquiryInfo.time"
                             format="HH:mm:ss" />
           </div>
@@ -306,7 +309,9 @@ export default {
     get() {
       this.getConsultDetail()
     },
-
+    finish(data) {
+      data.inquiryInfo.time = 0
+    },
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo

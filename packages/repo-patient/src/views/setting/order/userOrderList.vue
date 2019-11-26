@@ -22,7 +22,8 @@
                 <div class="card-body">
                   <div class="card-name card-flex">{{item.doctorInfo.name}}
                     {{item.doctorInfo.deptName}}
-                    <div class="card-gary">[图文咨询]</div>
+                    <div class="card-gary">{{item.orderInfo.inquiryType=='image'?'[图文咨询]':'[视频咨询]'}}
+                    </div>
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
@@ -44,7 +45,7 @@
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
-                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款'+item.orderInfo.payMoney+')'}}</span>
+                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
                   </div>
 
                 </div>
@@ -60,6 +61,7 @@
               <div class="count-down">
                 <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
                 <van-count-down millisecond
+                                @finish="finishHander(item)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -202,17 +204,18 @@ export default {
     }
   },
   activated() {
-    if (this.p > 0) {
-      this.p = 0
-      this.loaded = false
-      this.orderList = []
-      this.get()
-    }
+    this.p = 0
+    this.loaded = false
+    this.orderList = []
+    this.get()
   },
   created() {
     // this.getData()
   },
   methods: {
+    finishHander(item) {
+      item.item = 0
+    },
     goPay(data) {
       let typeName = '',
         orderNo = '',

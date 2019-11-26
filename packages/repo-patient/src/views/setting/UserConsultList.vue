@@ -209,7 +209,12 @@ export default {
       timer: null
     }
   },
-
+  activated() {
+    this.p = 0
+    this.loaded = false
+    this.consultList = []
+    this.get()
+  },
   created() {
     // this.get()
     // 重复订单跳转进来
