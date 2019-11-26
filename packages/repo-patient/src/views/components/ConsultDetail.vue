@@ -87,7 +87,7 @@
         </div>
         <!--病情描述-->
         <div class="module-item">
-          <div class="b">病情现状描述</div>
+          <div class="b">病情描述</div>
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
@@ -96,7 +96,7 @@
             <div class="b">复诊信息</div>
             <div class="form-dl img"
                  v-if="internalData.inquiryInfo.inquiryImages.length>0">
-              <div class="form-dt ">复诊诊凭 :</div>
+              <div class="form-dt ">复诊凭证 :</div>
               <div class="form-img">
                 <div class="img"
                      v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
@@ -134,15 +134,15 @@
         </div>
       </div>
 
-      <div class="module pdtb"
+      <!-- <div class="module pdtb"
            v-if="internalData.inquiryInfo.inquiryStatus == '1'">
         <div class="brief right">
           应付金额：
           <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
         </div>
-      </div>
+      </div> -->
       <div class="module pdtb"
-           v-else>
+           v-if="internalData.inquiryInfo.inquiryStatus != '1'">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
           <div class="brief right"
@@ -167,7 +167,8 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'">（已退款）</span>
+              <span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -199,17 +200,18 @@
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
       </div>
       <div class="h115"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'"></div>
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
+      </div>
       <div class="pay fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'">
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
         <div class="pay-item">
           <div class="count-down">
-            <span>订单关闭倒计时:</span>
+            <span>订单关闭倒计时：</span>
             <van-count-down millisecond
                             :time="internalData.inquiryInfo.time"
                             format="HH:mm:ss" />
           </div>
-          <div class="right">总金额:<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
+          <div class="right">应付金额 :<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
         <div class="pay-item">
           <div class="pay-btn btn-cancel"
@@ -324,8 +326,8 @@ export default {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime =
           inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
-        if (expireTime > inquiryInfo.orderCreatedTime) {
-          res.data.inquiryInfo.time = (expireTime - inquiryInfo.orderCreatedTime) * 1000
+        if (expireTime > inquiryInfo.currentTime) {
+          res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
         this.internalData = res.data
       })
@@ -478,6 +480,9 @@ export default {
       display: flex;
       align-items: center;
       color: #999;
+      span {
+        margin-right: 5px;
+      }
     }
     .right {
       color: #000;

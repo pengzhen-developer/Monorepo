@@ -28,7 +28,7 @@
       </div>
       <!--病情描述-->
       <div class="module-item">
-        <div class="b">病情现状描述</div>
+        <div class="b">病情描述</div>
         <div class="span">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
@@ -38,7 +38,7 @@
           <div class="b">复诊信息</div>
           <div class="form-dl img"
                v-if="internalData.inquiryOrderInfo.imgs.length>0">
-            <div class="form-dt ">复诊诊凭 :</div>
+            <div class="form-dt ">复诊凭证 :</div>
             <div class="form-img">
               <div class="img"
                    v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
