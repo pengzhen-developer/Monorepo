@@ -6,6 +6,7 @@
 
     <div class="layout-content">
       <van-uploader v-model="fileList"
+                    :before-read="beforeRead"
                     multiple
                     :max-count="internalMaxCount" />
     </div>
@@ -19,6 +20,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { Toast } from 'vant'
+Vue.use(Toast)
 export default {
   props: {
     maxCount: Number
@@ -32,6 +36,14 @@ export default {
   },
 
   methods: {
+    beforeRead(file) {
+      const types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+      if (types.indexOf(file.type) == -1) {
+        Toast('请上传 jpg,jpeg,png,gif 格式图片')
+        return false
+      }
+      return true
+    },
     confirm() {
       if (this.$route.params.emit) {
         $peace.$emit(this.$route.params.emit, this.fileList)
