@@ -91,7 +91,7 @@
                 </div>
                 <div class="message-line"></div>
                 <div class="message-footer"
-                     @click.prevent="goInquiryOrderInfo(message)">
+                     @click.stop="goInquiryOrderInfo(message)">
                   <van-image width="16px"
                              height="18px"
                              :src="require('@src/assets/images/ic_ck.png')" />
