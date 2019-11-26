@@ -106,6 +106,39 @@
         <div class="form-dt">医嘱小结</div>
         <div class="form-dd">{{internalData.summary || '无'}}</div>
       </div>
+      <div class="form-dl"
+           style="display: block;"
+           v-if="internalData.otherCheck &&
+                 (internalData.otherCheck.ALT ||
+                  internalData.otherCheck.AST ||
+                  internalData.otherCheck.HBV )">
+        <div class="form-dt">
+          其它检查
+          <div class="form-code">
+            <div class="namelist-dl bb between"
+                 v-if="internalData.otherCheck.ALT">
+              <div class="dt other">谷丙转氨酶(ALT)：</div>
+              <div class="dd">
+                {{internalData.otherCheck.ALT + 'IU/ml'}}
+              </div>
+            </div>
+            <div class="namelist-dl bb between"
+                 v-if="internalData.otherCheck.AST">
+              <div class="dt other">谷草转氨酶(AST)：</div>
+              <div class="dd">
+                {{internalData.otherCheck.AST + 'IU/ml'}}
+              </div>
+            </div>
+            <div class="namelist-dl bb between"
+                 v-if="internalData.otherCheck.HBV">
+              <div class="dt other">HBV-DNA：</div>
+              <div class="dd">
+                {{internalData.otherCheck.HBV + 'IU/ml'}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -248,6 +281,9 @@ export default {
   flex: 0 0 auto;
   width: 25%;
   color: #000;
+}
+.namelist-dl .dt.other {
+  width: 45%;
 }
 .namelist-dl .dd {
   flex: 1 1 auto;
