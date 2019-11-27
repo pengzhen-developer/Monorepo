@@ -51,8 +51,8 @@
             <div class="message-layout right"
                  v-for="(file, fileIndex) in item.answer"
                  :key="fileIndex">
-              <div class="message out">
-                <img style="max-height: 200px; max-width: 100%; width: unset;"
+              <div class="message out img">
+                <img style="max-height: 140px; max-width: 140px; width: 100%; height: 100%; border-radius: 8px;"
                      :src="file.content"
                      @click="viewImage(file.content)">
               </div>
@@ -942,6 +942,11 @@ export default {
           display: inline-flex;
           padding: 12px 16px;
           max-width: 80%;
+
+          &.img {
+            background: transparent !important;
+            padding: 0 !important;
+          }
 
           &.in {
             background: #fff;
