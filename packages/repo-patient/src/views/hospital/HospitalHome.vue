@@ -103,8 +103,9 @@
                :src="item.avartor" />
           <div class="item">
             <span class="name">{{ item.name }}</span>
-            <span class="jd">
-              {{ item.netdeptName + " " + item.doctorTitle }}</span>
+            <div class="jd">
+              <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
+            </div>
             <span class="tags">
               <template v-for="item in item.serviceList">
                 <span :key="item"
@@ -535,6 +536,17 @@ export default {
             font-size: 11px;
             font-weight: 400;
             color: rgba(102, 102, 102, 1);
+            width: 100%;
+            div {
+              font-size: 11px;
+              font-weight: 400;
+              color: rgba(102, 102, 102, 1);
+              text-align: center;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
           }
           .tags {
             font-size: 9px;
