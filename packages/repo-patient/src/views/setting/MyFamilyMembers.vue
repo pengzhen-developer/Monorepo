@@ -1,8 +1,9 @@
 <template>
   <div class="my-family-members"
        :class="{ 'none-family': members.length == 0 }">
-    <template v-if="members && members.length > 0">
-      <div class="card-line">点击家人记录查看电子健康卡/就诊卡信息</div>
+    <template v-if="members && members.length > 0 ">
+      <div v-if="$route.params.link !== 'recordCondition'"
+           class="card-line">点击家人记录查看电子健康卡/就诊卡信息</div>
       <div class="content">
         <van-cell :key="item.id"
                   @click="toViewDetails(item)"
@@ -112,26 +113,18 @@ export default {
 
     // 查看家人详细信息
     toViewDetails(item) {
-      let params,
-        json = ''
-      switch (item) {
-        case 'recordCondition':
-          $peace.$recordCondition.formData.family = item
-          $peace.$recordCondition.canSubmitProcesses()
-          $peace.$recordCondition = null
-          this.$router.go(-1)
-          break
-        default:
-          params = { id: item.familyId, source: 2 }
-          json = peace.util.encode(params)
-          this.$router.push(`/setting/familyMember/${json}`)
-          // peace.service.patient.getFamilyInfo(params).then(res => {
-          //   this.dialog.data = res.data
-          //   this.dialog.data.familyId = item.familyId
-          //   this.dialog.title = '家人信息'
-          //   this.dialog.visible = true
-          // })
-          break
+      // 查询报告，选择就诊人
+      if (this.$route.params.link === 'recordCondition') {
+        $peace.$recordCondition.formData.family = item
+        $peace.$recordCondition.canSubmitProcesses()
+        $peace.$recordCondition = null
+        this.$router.go(-1)
+      }
+      // 查看家人明细
+      else {
+        const params = { id: item.familyId, source: 2 }
+        const json = peace.util.encode(params)
+        this.$router.push(`/setting/familyMember/${json}`)
       }
     },
 
