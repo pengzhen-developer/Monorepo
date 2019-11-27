@@ -233,7 +233,7 @@ export default {
   }
   .b {
     display: block;
-    font-weight: 600;
+    font-weight: bold;
     color: #000;
 
     &::before {
