@@ -332,7 +332,7 @@ export default {
                 if (item.orderStatus == '1') {
                   data.orderStatus = '2'
                 } else {
-                  data.orderStatus = '7'
+                  data.orderStatus = '6'
                 }
 
                 this.orderList.splice(index, 1, data)
