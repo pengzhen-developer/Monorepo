@@ -394,8 +394,7 @@
                    type="flex">
             <van-col class="flex-left"
                      span="6">
-              <van-uploader :before-read="beforeRead"
-                            :after-read="sendMessageImage">
+              <van-uploader :after-read="sendMessageImage">
                 <div class="flex-center">
                   <van-button icon="photo"></van-button>
                   <p>图片</p>
@@ -777,14 +776,7 @@ export default {
         peace.util.alert('请输入消息内容')
       }
     },
-    beforeRead(file) {
-      const types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
-      if (types.indexOf(file.type) == -1) {
-        Toast('请上传 jpg,jpeg,png,gif 格式图片')
-        return false
-      }
-      return true
-    },
+
     sendMessageImage(file) {
       if (file) {
         const doneHandler = (error, message) => {
