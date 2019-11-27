@@ -87,6 +87,10 @@
               <div class="dd">￥0</div>
             </div>
             <div class="dl-packet">
+              <div class="dt">优惠金额:</div>
+              <div class="dd">￥0</div>
+            </div>
+            <div class="dl-packet">
               <div class="dt">订单总价:</div>
               <div class="dd">￥{{order.TotalAmount}}</div>
             </div>
