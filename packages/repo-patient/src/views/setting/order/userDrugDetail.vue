@@ -1,28 +1,36 @@
 <template>
   <div class="user-drug-detail">
-    <div class="count-down" v-if="order.OrderStatus == 0">
+    <div class="count-down"
+         v-if="order.OrderStatus == 0">
       订单
-      <van-count-down millisecond :time="time" format="HH:mm:ss" /> 后将自动关闭
+      <van-count-down millisecond
+                      :time="time"
+                      format="HH:mm:ss" /> 后将自动关闭
     </div>
-    <div class="top" v-if="order.OrderStatusText">
+    <div class="top"
+         v-if="order.OrderStatusText">
       <!--tab^content-->
       <div class="content">
-        <div class="order" @click="goDrugLogiPage">
+        <div class="order"
+             @click="goDrugLogiPage">
           <div class="order-card">
             <div class="icon icon-status"
-              :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
+                 :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
           </div>
           <div class="order-text"></div>
         </div>
-        <div class="cancelText" v-if="order.OrderStatus == '5' && order.payMoney != 0 ">
+        <div class="cancelText"
+             v-if="order.OrderStatus == '5' && order.payMoney != 0 ">
           订单取消后退款将在1-3个工作日内原路返回，请注意查收
         </div>
-        <div class="tab-content" v-if="order.ShippingMethod == '0'">
+        <div class="tab-content"
+             v-if="order.ShippingMethod == '0'">
           <div class="addr-tit">取药地址</div>
           <div class="addr-p">{{order.DrugStoreDetailed}}</div>
         </div>
-        <div class="tab-content" v-if="order.ShippingMethod == '1'">
+        <div class="tab-content"
+             v-if="order.ShippingMethod == '1'">
           <div class="addr-tit">配送到家</div>
           <div class="userAddr">
             <div class="addr-p">收货人：{{order.UserName}}
@@ -34,7 +42,8 @@
       </div>
     </div>
 
-    <div class="module" v-if="order.DrugStoreName">
+    <div class="module"
+         v-if="order.DrugStoreName">
       <div class="panel-pha">
         <div class="panel-head icon-next">
           <div class="head-ico">
@@ -42,12 +51,16 @@
           </div>
           <div class="head-tit">{{ order.DrugStoreName }}</div>
           <div class="head-more">
-            <div class="label blue" @click="goPrescripDetailPage">查看处方</div>
+            <div class="label blue"
+                 @click="goPrescripDetailPage">查看处方</div>
           </div>
         </div>
         <div class="panel-body">
-          <div class="list-three" v-for="(item, index) in order.OrderDet" :key="index">
-            <div class="list-icon" :class="item.DrugImage ? '' : 'list-icon-none'">
+          <div class="list-three"
+               v-for="(item, index) in order.OrderDet"
+               :key="index">
+            <div class="list-icon"
+                 :class="item.DrugImage ? '' : 'list-icon-none'">
               <img :src="item.DrugImage" />
             </div>
             <div class="list-content">
@@ -55,7 +68,8 @@
               <div class="content-brief">{{item.DrugSpecification}}</div>
             </div>
             <div class="list-other">
-              <div class="other-them" @click="goInterDrugPage(item)">说明书</div>
+              <div class="other-them"
+                   @click="goInterDrugPage(item)">说明书</div>
               <div class="other-price">
                 <div class="price">￥{{item.DrugPrice}}</div>
                 x{{item.DrugNumber}}
@@ -67,7 +81,8 @@
               <div class="dt">配送方式:</div>
               <div class="dd">{{order.ShippingMethod == '0' ? '到店取药': '配送到家'}}</div>
             </div>
-            <div class="dl-packet" v-if="order.ShippingMethod == '1'">
+            <div class="dl-packet"
+                 v-if="order.ShippingMethod == '1'">
               <div class="dt">配送费:</div>
               <div class="dd">￥0</div>
             </div>
@@ -76,7 +91,8 @@
               <div class="dd">￥{{order.TotalAmount}}</div>
             </div>
           </div>
-          <div class="module str" v-if="order.OrderStatus != 0">
+          <div class="module str"
+               v-if="order.OrderStatus != 0">
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
@@ -89,44 +105,53 @@
       </div>
     </div>
 
-    <div class="box" v-if="order.OrderId">
+    <div class="box"
+         v-if="order.OrderId&&order.OrderStatus != '0'">
       <div class="dl-packet">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
       </div>
-      <div class="dl-packet" :key="index" v-for="(item,index) in order.ords">
+      <div class="dl-packet"
+           :key="index"
+           v-for="(item,index) in order.ords">
         <div class="dt">{{timeTags[parseInt(item.ServiceStates)]}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
-
-      <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-      <div class='bottom-1' v-if="order.OrderStatus == 0">
-        <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
-        <div class="right">
-          <div @click="canselOrder" class="pay cancel"
-            v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
-            style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单</div>
-          <div @click="payOrder(order)" class="pay" v-if="order.OrderStatus == '0'"
-            style="background: #00C6AE; margin-bottom: 8px; ">
-            继续支付</div>
-        </div>
-      </div>
-
-      <div class="bottom" v-else>
-        <div @click="canselOrder" class="btn block btn-blue"
-          v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
-          style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+    </div>
+    <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+    <div class='bottom-1'
+         v-if="order.OrderStatus == 0">
+      <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
+      <div class="right">
+        <div @click="canselOrder"
+             class="pay cancel"
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
-        <div @click="submitOrder" class="btn block btn-blue" v-if="order.OrderStatus == '3'">
-          {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
-        <div class="btn block btn-default"
-          v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-        <div class="btn block btn-default" v-if="order.OrderStatus == '5'">已取消</div>
+        <div @click="payOrder(order)"
+             class="pay"
+             v-if="order.OrderStatus == '0'"
+             style="background: #00C6AE; margin-bottom: 8px; ">
+          继续支付</div>
       </div>
     </div>
-
+    <div class="bottom"
+         v-else>
+      <div @click="canselOrder"
+           class="btn block btn-blue"
+           v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
+           style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+        取消订单</div>
+      <div @click="submitOrder"
+           class="btn block btn-blue"
+           v-if="order.OrderStatus == '3'">
+        {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '5'">已取消</div>
+    </div>
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
