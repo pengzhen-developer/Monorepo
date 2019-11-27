@@ -653,10 +653,9 @@ export default {
   }
   .module .strong {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 18px;
     padding: 10px 15px;
-    color: #333;
   }
   .module .brief {
     font-size: 13px;
@@ -697,7 +696,7 @@ export default {
   }
   .b {
     display: block;
-    font-weight: 600;
+    font-weight: bold;
     color: #000;
 
     &::before {

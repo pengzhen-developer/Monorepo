@@ -98,10 +98,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .fixed-bottom .btn {
-//   padding: 0;
-//   text-align: center;
-// }
+.fixed-bottom .btn {
+  padding: 0;
+  text-align: center;
+}
 .dl-two {
   display: -webkit-box;
   display: -moz-box;
