@@ -124,10 +124,10 @@
           <div class="dt">订单金额</div>
           <div class="dd">{{ internalData.orderInfo.orderMoney }}元</div>
         </div>
-        <!-- <div class="dl-packet">
-        <div class="dt">优惠金额</div>
-        <div class="dd">{{ 0.00}}元</div>
-      </div> -->
+        <div class="dl-packet">
+          <div class="dt">优惠金额</div>
+          <div class="dd">0.00元</div>
+        </div>
         <div class="dl-packet">
           <div class="dt">订单时间</div>
           <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
