@@ -1,13 +1,20 @@
 <template>
   <div>
-    <el-alert :closable="false" title="申请转诊" type="success">
+    <el-alert :closable="false"
+              title="申请转诊"
+              type="success">
       <div slot="title">
         <span>申请转诊</span>
-        <i @click="close" class="el-alert__closebtn el-icon-close"></i>
+        <i @click="close"
+           class="el-alert__closebtn el-icon-close"></i>
       </div>
     </el-alert>
 
-    <el-form :model="view.model" :rules="view.rules" label-position="right" label-width="120px" ref="form">
+    <el-form :model="view.model"
+             :rules="view.rules"
+             label-position="right"
+             label-width="120px"
+             ref="form">
       <el-row>
         <el-form-item label="初步诊断">
           <span slot="label">初步诊断</span>
@@ -15,46 +22,60 @@
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="转诊医生" prop="doctorInfo">
+        <el-form-item label="转诊医生"
+                      prop="doctorInfo">
           <span slot="label">转诊医生</span>
-          <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="!view.model.doctorInfo">请选择</el-button>
+          <el-button @click="choseTransfer"
+                     style="min-width: auto;"
+                     type="text"
+                     v-show="!view.model.doctorInfo">请选择</el-button>
           <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
-              <img :src="view.model.doctorInfo.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
+              <img :src="view.model.doctorInfo.photoDoc"
+                   style="width: 40px; height: 40px; border-radius: 50%;" />
               <span style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.name }}</span>
               <span>{{view.model.doctorInfo.doctor_title }}</span>
-              <span>{{view.model.doctorInfo.netdept_name }}</span>
+              <span>{{view.model.doctorInfo.netdept_child }}</span>
               <span>{{view.model.doctorInfo.netHospital_name }}</span>
-              <el-button @click="choseTransfer" style="min-width: auto;" type="text" v-show="view.model.doctorInfo">修改</el-button>
+              <el-button @click="choseTransfer"
+                         style="min-width: auto;"
+                         type="text"
+                         v-show="view.model.doctorInfo">修改</el-button>
             </div>
           </template>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="期望转诊时间" prop="expectDate" style="display: inline-block;">
+        <el-form-item label="期望转诊时间"
+                      prop="expectDate"
+                      style="display: inline-block;">
           <span slot="label">期望转诊时间</span>
-          <el-date-picker
-            :picker-options="view.rules.pickerOptionsDate"
-            placeholder
-            style="width: 145px;"
-            v-model="view.model.expectDate"
-            value-format="yyyy-MM-dd"
-          ></el-date-picker>
+          <el-date-picker :picker-options="view.rules.pickerOptionsDate"
+                          placeholder
+                          style="width: 145px;"
+                          v-model="view.model.expectDate"
+                          value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
-        <el-form-item label label-width="0" prop="expectTime" style="display: inline-block; ">
-          <el-time-select
-            :picker-options="view.rules.pickerOptionsTime"
-            placeholder
-            style="width: 110px; margin-left: 5px;"
-            v-model="view.model.expectTime"
-            value-format="HH:mm"
-          ></el-time-select>
+        <el-form-item label
+                      label-width="0"
+                      prop="expectTime"
+                      style="display: inline-block; ">
+          <el-time-select :picker-options="view.rules.pickerOptionsTime"
+                          placeholder
+                          style="width: 110px; margin-left: 5px;"
+                          v-model="view.model.expectTime"
+                          value-format="HH:mm"></el-time-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="转诊说明" prop="referralCause">
+        <el-form-item label="转诊说明"
+                      prop="referralCause">
           <span slot="label">转诊说明</span>
-          <el-input :rows="3" maxlength="500" placeholder="请至少输入5个字" type="textarea" v-model="view.model.referralCause"></el-input>
+          <el-input :rows="3"
+                    maxlength="500"
+                    placeholder="请至少输入5个字"
+                    type="textarea"
+                    v-model="view.model.referralCause"></el-input>
           <span style="color: rgba(155, 155, 155, 1); font-size: 12px;">
             <span>最多可以输入500字，还可以输入</span>
             <span>{{ 500 - (view.model.referralCause ? view.model.referralCause.length : 0) }}</span>
@@ -64,33 +85,61 @@
       </el-row>
       <el-row style="text-align: center; margin: 20px 0 0 0;">
         <el-form-item label=" ">
-          <el-button @click="sendTransfer" type="primary">提交</el-button>
+          <el-button @click="sendTransfer"
+                     type="primary">提交</el-button>
           <el-button @click="close">取消</el-button>
         </el-form-item>
       </el-row>
     </el-form>
 
-    <peace-dialog :visible.sync="dialog.visible" title="选择转诊医生" width="700px">
+    <peace-dialog :visible.sync="dialog.visible"
+                  title="选择转诊医生"
+                  width="700px">
       <div>
-        <el-input clearable placeholder="请输入地区、医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
-        <el-button @click="get" round type="primary">查询</el-button>
+        <el-input clearable
+                  placeholder="请输入地区、医院或医生姓名"
+                  style="width: 320px; margin-right: 40px;"
+                  v-model="dialog.model.name"></el-input>
+        <el-button @click="get"
+                   round
+                   type="primary">查询</el-button>
       </div>
 
       <hr />
 
-      <peace-table pagination ref="table">
-        <peace-table-column label="医生头像" prop="name" width="100px">
+      <peace-table pagination
+                   ref="table">
+        <peace-table-column label="医生头像"
+                            prop="name"
+                            width="100px">
           <template slot-scope="scope">
-            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
+            <img :src="scope.row.photoDoc"
+                 style="width: 40px; height: 40px; border-radius: 50%;" />
           </template>
         </peace-table-column>
-        <peace-table-column align="left" header-align="left" label="医生姓名" prop="name" width="100px"></peace-table-column>
-        <peace-table-column align="left" header-align="left" label="职称" prop="doctor_title" width="100px"></peace-table-column>
-        <peace-table-column label="科室" prop="netdept_name" width="100px"></peace-table-column>
-        <peace-table-column align="left" header-align="left" label="医院" prop="netHospital_name"></peace-table-column>
-        <peace-table-column fixed="right" label="操作" width="120px">
+        <peace-table-column align="left"
+                            header-align="left"
+                            label="医生姓名"
+                            prop="name"
+                            width="100px"></peace-table-column>
+        <peace-table-column align="left"
+                            header-align="left"
+                            label="职称"
+                            prop="doctor_title"
+                            width="100px"></peace-table-column>
+        <peace-table-column label="科室"
+                            prop="netdept_child"
+                            width="100px"></peace-table-column>
+        <peace-table-column align="left"
+                            header-align="left"
+                            label="医院"
+                            prop="netHospital_name"></peace-table-column>
+        <peace-table-column fixed="right"
+                            label="操作"
+                            width="120px">
           <template slot-scope="scope">
-            <el-button @click="chose(scope.row)" type="text">选择</el-button>
+            <el-button @click="chose(scope.row)"
+                       type="text">选择</el-button>
           </template>
         </peace-table-column>
       </peace-table>
@@ -120,7 +169,10 @@ export default {
           doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
-          referralCause: [{ required: true, message: '请输入转诊说明', trigger: 'change' }, { min: 5, message: '请至少输入5个字', trigger: 'change' }],
+          referralCause: [
+            { required: true, message: '请输入转诊说明', trigger: 'change' },
+            { min: 5, message: '请至少输入5个字', trigger: 'change' }
+          ],
 
           pickerOptionsDate: {
             disabledDate(time) {
@@ -195,7 +247,10 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           // 验证转诊时间
-          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+          if (
+            dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <=
+            new Date()
+          ) {
             $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
