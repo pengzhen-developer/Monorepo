@@ -16,6 +16,8 @@
       <transition mode="out-in"
                   name="van-fade">
         <van-tabbar class="layout-tabbar"
+                    :fixed="false"
+                    :z-index="999"
                     v-model="active">
 
           <van-tabbar-item to="/home/index">
@@ -165,6 +167,7 @@ export default {
     position: unset;
     bottom: 0;
     left: 0;
+    z-index: 999 !important;
   }
 
   .layout-content {

@@ -129,7 +129,7 @@
                 :show-cancel-button="false"
                 :showConfirmButton="false">
       <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;"
+        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;z-index:99999;"
              :src="hospitalInfo.nethospitalInfo.icon" />
       </div>
       <div
