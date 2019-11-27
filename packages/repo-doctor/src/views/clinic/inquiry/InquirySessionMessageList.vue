@@ -80,11 +80,12 @@
             <span>检查单</span>
           </div>
           <div class="message-content">
-            <div style="display:flex; justify-content: space-between; align-items: center; color: #333; margin: 0 0 10px 0;"
+            <div style="display:flex; justify-content: space-between; color: #333; margin: 0 0 5px 0;"
                  v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
                  :key="item.itemId">
               <div class="left">{{ item.name }}</div>
-              <div class="right" style="min-width: 20px">x 1</div>
+              <div class="right"
+                   style="min-width: 40px; text-align: right;">x 1</div>
             </div>
           </div>
         </div>
@@ -219,11 +220,13 @@
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="recipeDetail.visible"
+                  v-if="recipeDetail.visible"
                   append-to-body
                   title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="transfer.visible"
+                  v-if="transfer.visible"
                   append-to-body
                   title="转诊详情">
       <TheTransferDetail :data="transfer.data"
@@ -231,12 +234,14 @@
                          @close="() => transfer.visible = false"></TheTransferDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="consultation.visible"
+                  v-if="consultation.visible"
                   append-to-body
                   title="会诊详情">
       <TheConsultationDetail :data="consultation.data"
                              @close="() => consultation.visible = false"></TheConsultationDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="preliminary.visible"
+                  v-if="preliminary.visible"
                   append-to-body
                   title="问诊单详情">
       <InquiryPreliminary :data="preliminary.data"
