@@ -119,13 +119,14 @@
           {{data[current].reReferralOut.checkSuggest || '转出失败，转诊被拒绝。'}}
         </div> -->
         <div class="timeline"
-             v-else-if="data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'||data[current].familyInfo.transferStatus == '2'">
-          <!-- v-if="data[current].reReferralOut.checkTime" -->
-          <div class="item">
+             v-if="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&(data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'||data[current].familyInfo.transferStatus == '2')">
+          <div class="item"
+               v-if="data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest">
             <div class="item-time">{{data[current].reReferralOut.checkTime}}</div>
             <div class="item-text">{{data[current].reReferralOut.checkSuggest}}</div>
           </div>
-          <div class="item">
+          <div class="item"
+               v-if="data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest">
             <div class="item-time"
                  v-if="data[current].reReferralIn.checkTime">
               {{data[current].reReferralIn.checkTime}}</div>
@@ -135,6 +136,7 @@
           </div>
         </div>
         <div class="txt-p"
+             :class="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&'nmp'"
              v-if="data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '7'">
           {{ data[current].reReferralIn.referralSuggest }}</div>
         <!-- <div class="txt-p"
@@ -146,11 +148,6 @@
     </div>
     <div class="btn-group"
          v-if="data[current].familyInfo.transferStatus == '4'">
-      <!-- <form bindsubmit="showConsultPop" report-submit="true" style="width: 100%">
-        <button class="btn"
-          :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'"
-          form-type="submit">咨询医生</button>
-      </form> -->
       <div @click="applyConsult"
            class="btn"
            :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">咨询医生</div>
@@ -169,8 +166,12 @@ export default {
       hasApply: false
     }
   },
-  mounted() {
+  activated() {
+    this.data = []
     this.getData()
+  },
+  mounted() {
+    // this.getData()
   },
   methods: {
     getData() {
@@ -213,12 +214,13 @@ export default {
               inquiryNo: this.data[this.current].familyInfo.inquiryNo
             })
             .then(res => {
+              debugger
               if (res.code == '200') {
                 let session = {
                   inquiryStatus: res.data.inquiryStatus,
                   inquiryNo: res.data.inquiryNo,
                   doctorId: res.data.doctorId,
-                  createdTime: res.datacreateTime
+                  createdTime: res.data.createTime
                 }
                 this.selectSession(session)
               }
@@ -551,10 +553,14 @@ export default {
   padding: 10px 0;
   font-size: 15px;
   color: #333;
+  &.nmp {
+    padding: 0;
+    margin: 0;
+  }
 }
 .timeline {
-  margin: 10px 0;
-  padding: 10px 0;
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .timeline .item {
@@ -568,6 +574,8 @@ export default {
 }
 .timeline .item:last-child {
   border-left-color: #fff;
+  padding-bottom: 0;
+  min-height: 40px;
 }
 .timeline .item-time {
   color: #757e7d;
