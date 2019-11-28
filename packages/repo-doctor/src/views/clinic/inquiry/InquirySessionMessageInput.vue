@@ -149,7 +149,7 @@ export default {
         this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
         peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
       ) {
-        $peace.videoComponent.sendVideo(this.$store.state.inquiry.session)
+        $peace.videoComponent.call(this.$store.state.inquiry.session, 'inquiry')
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
