@@ -61,36 +61,6 @@
         </div>
       </template>
 
-      <!-- 检查单 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
-          </div>
-        </template>
-
-        <!-- 消息内容 -->
-        <div class="message-body message-card">
-          <div class="message-header">
-            <img width="20px"
-                 height="17px"
-                 :src="require('@src/assets/images/ic_check.png')" />
-            <span>检查单</span>
-          </div>
-          <div class="message-content">
-            <div style="display:flex; justify-content: space-between; color: #333; margin: 0 0 5px 0;"
-                 v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
-                 :key="item.itemId">
-              <div class="left">{{ item.name }}</div>
-              <div class="right"
-                   style="min-width: 40px; text-align: right;">x 1</div>
-            </div>
-          </div>
-        </div>
-      </template>
-
       <!-- 转诊单 -->
       <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
         <!-- 消息时间 -->
