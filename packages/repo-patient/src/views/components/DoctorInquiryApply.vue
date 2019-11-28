@@ -108,7 +108,8 @@
                        justify="center"
                        style="flex-direction: column;">
                 <div>
-                  <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                  <span
+                        style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                     {{ doctor.doctorInfo.name }}
                   </span>
                   <span style="color: #333333; font-size: 14px; ">
@@ -116,7 +117,8 @@
                   </span>
                 </div>
                 <div>
-                  <span style="color: #333333; font-size: 14px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <span
+                        style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                     {{ getSerivceType() }}
                   </span>
                   <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -153,7 +155,7 @@
             <van-field ref="input"
                        v-model.trim="current.answer"
                        clearable
-                       placeholder="请输入您的详细症状…">
+                       placeholder="请输入您的详细症状，至少5个字">
               <van-button @click="answer"
                           slot="button"
                           round
@@ -913,7 +915,7 @@ export default {
 
         font-size: 12px;
         color: #969a99;
-        margin: 0 0 18px 0;
+        // margin: 0 0 18px 0;
 
         .link {
           color: $-color--primary;

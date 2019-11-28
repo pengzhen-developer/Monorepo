@@ -255,7 +255,9 @@ export default {
             color: #999;
           }
         }
-
+        .right {
+          flex: 1;
+        }
         .left {
           width: 70%;
         }

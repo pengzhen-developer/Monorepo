@@ -592,7 +592,7 @@ export default {
   created() {
     if (!this.data) {
       const params = peace.util.decode(this.$route.params.json)
-
+      console.log(params)
       // 传递 inquiryNo 获取聊天记录
       if (params.inquiryNo) {
         this.getHistoryMsgsByDB()

@@ -17,7 +17,7 @@
                     name="van-fade">
           <van-tabbar class="layout-tabbar"
                       :fixed="false"
-                      z-index=999
+                      :z-index='999'
                       v-model="active">
 
             <van-tabbar-item to="/home/index">

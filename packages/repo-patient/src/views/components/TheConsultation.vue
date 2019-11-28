@@ -57,7 +57,7 @@
               {{data[current].fromDoctorName}} {{data[current].fromDoctorTitle}}
             </div>
             <div class="card-small">
-              {{data[current].fromHospitalName}}
+              {{data[current].fromHospitalName}} {{data[current].fromDeptName}}
             </div>
           </div>
         </div>
@@ -97,7 +97,7 @@
               {{data[current].toDoctorName}} {{data[current].toDoctorTitle}}
             </div>
             <div class="card-small">
-              {{data[current].toHospitalName}}
+              {{data[current].toHospitalName}} {{data[current].toDeptName}}
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@
                  :class="data[current].outCheckTime ? '' : 'item-time' ">
               {{data[current].outCheckSuggest}}</div>
           </div>
-          <div class="item">
+          <div class="item b0">
             <div class="item-time"
                  v-if="data[current].inCheckTime">{{data[current].inCheckTime}}
             </div>
@@ -489,10 +489,10 @@ export default {
 .prescript .prescript-table {
   border-top: 1px dashed #e5e5e5;
 }
-.outline .outline-body {
-  margin: 10px 0;
-  padding: 0;
-}
+// .outline .outline-body {
+//   margin: 10px 0;
+//   padding: 0;
+// }
 .inline {
   color: #666;
 }
@@ -507,6 +507,7 @@ export default {
 }
 .timeline {
   margin: 10px 0;
+  padding: 10px 0;
 }
 
 .timeline .item {
@@ -514,11 +515,20 @@ export default {
   padding-left: 10px;
   margin-left: 5px;
   border-left: 1px solid #00c6ae;
+  padding-bottom: 10px;
+  min-height: 55px;
+  padding-top: 1px;
+}
+// .timeline .item:last-child {
+//   border-left: 1px solid transparent !important;
+// }
+.timeline .item.b0 {
+  border-left: 1px solid transparent !important;
 }
 
 .timeline .item-time {
   color: #757e7d;
-  padding-top: 5px;
+  margin-top: -10px;
   font-size: 13px;
 }
 .timeline .item-time::before {
@@ -530,7 +540,7 @@ export default {
   border-radius: 50%;
   background: #00c6ae;
   left: -4px;
-  top: 10px;
+  top: -3px;
 }
 .timeline .item-text {
   font-size: 14px;
