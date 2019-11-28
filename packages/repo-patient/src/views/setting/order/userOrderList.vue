@@ -303,7 +303,7 @@ export default {
         })
     },
     canselOrder(item, index) {
-      if (!item.cancelState) {
+      if (!item.cancelState && item.orderStatus != 1) {
         return
       }
       let type, alertMsg

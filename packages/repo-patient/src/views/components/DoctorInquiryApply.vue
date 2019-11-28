@@ -742,7 +742,7 @@ export default {
     },
 
     uploadHandler() {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         if (Array.isArray(this.attachment) && this.attachment.length) {
           // 压缩
           const compress = () => {
@@ -773,11 +773,16 @@ export default {
               params.append('file[]', file)
             })
 
-            peace.service.inquiry.images(params).then(res => {
-              this.model.attachment = res.data
+            peace.service.inquiry
+              .images(params)
+              .then(res => {
+                this.model.attachment = res.data
 
-              resolve()
-            })
+                resolve()
+              })
+              .catch(error => {
+                reject(error)
+              })
           })
         } else {
           resolve()
