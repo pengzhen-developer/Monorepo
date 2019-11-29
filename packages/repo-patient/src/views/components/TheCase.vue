@@ -119,21 +119,21 @@
                  v-if="internalData.otherCheck.ALT">
               <div class="dt other">谷丙转氨酶(ALT)：</div>
               <div class="dd">
-                {{internalData.otherCheck.ALT + 'IU/ml'}}
+                {{internalData.otherCheck.ALT + ' IU/ml'}}
               </div>
             </div>
             <div class="namelist-dl bb between"
                  v-if="internalData.otherCheck.AST">
               <div class="dt other">谷草转氨酶(AST)：</div>
               <div class="dd">
-                {{internalData.otherCheck.AST + 'IU/ml'}}
+                {{internalData.otherCheck.AST + ' IU/ml'}}
               </div>
             </div>
             <div class="namelist-dl bb between"
                  v-if="internalData.otherCheck.HBV">
               <div class="dt other">HBV-DNA：</div>
               <div class="dd">
-                {{internalData.otherCheck.HBV + 'IU/ml'}}
+                {{internalData.otherCheck.HBV + ' IU/ml'}}
               </div>
             </div>
           </div>
