@@ -49,9 +49,9 @@
     <div class="file-tab-wrap">
       <div class="file-tab">
         <span :class="tabIndex==1 ? 'active' : ''"
-              @click="getOscillogram(1)">空腹</span>
+              @click="getOscillogram(1,'click')">空腹</span>
         <span :class="tabIndex==2 ? 'active' : ''"
-              @click="getOscillogram(2)">餐后</span>
+              @click="getOscillogram(2,'click')">餐后</span>
       </div>
     </div>
     <div class="file-blood-detail-charts">
@@ -139,17 +139,25 @@ export default {
   },
 
   created() {
+    console.log($peace.util.decode($peace.$route.params.json))
+    // this.tabIndex=$peace.util.decode($peace.$route.params.json).type
     this.getOscillogram(2)
   },
 
   methods: {
-    getOscillogram(tag) {
+    getOscillogram(tag, type) {
       // debugger
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then(res => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
-        // this.tabIndex = upData.bloodSugarData.measureState == '1' ? 1 : 2
+        if (typeof type == 'undefined') {
+          this.tabIndex = upData.bloodSugarData.measureState == '1' ? 1 : 2
+          tag = this.tabIndex
+        } else {
+          this.tabIndex = tag == '1' ? 1 : 2
+        }
+
         let xAxisData = null,
           seriesDataOne = null
         if (tag == 1) {
@@ -163,7 +171,6 @@ export default {
           )
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
-        this.tabIndex = tag == '1' ? 1 : 2
 
         console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
