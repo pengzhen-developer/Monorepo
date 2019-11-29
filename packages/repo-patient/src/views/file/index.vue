@@ -136,9 +136,13 @@ export default {
       Long: false
     }
   },
-
-  created() {
+  activated() {
+    console.log('activated')
+    this.familyId = ''
     this.getFamilyList()
+  },
+  created() {
+    // this.getFamilyList()
     this.Long = this.isLong()
   },
 
