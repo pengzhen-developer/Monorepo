@@ -40,11 +40,22 @@
                v-if="internalData.inquiryOrderInfo.imgs.length>0">
             <div class="form-dt ">复诊凭证 :</div>
             <div class="form-img">
+              <van-image-preview v-model="imagePreview.visible"
+                                 :start-position="imagePreview.position"
+                                 :images="internalData.inquiryOrderInfo.imgs.map(file => file)">
+                <template v-slot:cover>
+                  <van-button icon="cross"
+                              type="primary"
+                              round
+                              @click="imagePreview.visible = false" />
+                </template>
+              </van-image-preview>
+
               <div class="img"
                    v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                    :key="index">
                 <img :src="item"
-                     @click="viewImage(item)" />
+                     @click="viewImage(item, index)" />
               </div>
 
             </div>
@@ -68,22 +79,45 @@ Vue.use(ImagePreview)
 export default {
   data() {
     return {
-      internalData: null
+      internalData: null,
+
+      imagePreview: {
+        visible: false,
+        position: 0
+      }
     }
   },
+
   mounted() {
     this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
-    console.log(this.internalData)
   },
+
   methods: {
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     }
   }
 }
 </script>
 
 <style lang="scss">
+/deep/ .van-image-preview__cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  top: unset;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  .van-button--round {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+}
+
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   &:last-child {

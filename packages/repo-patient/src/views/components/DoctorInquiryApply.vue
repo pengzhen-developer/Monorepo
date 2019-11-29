@@ -48,13 +48,25 @@
           </div>
 
           <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
+            <van-image-preview v-model="imagePreview.visible"
+                               :start-position="imagePreview.position"
+                               :images="item.answer.map(file => file.content)">
+              <template v-slot:cover>
+                <van-button icon="cross"
+                            type="primary"
+                            round
+                            @click="imagePreview.visible = false" />
+              </template>
+            </van-image-preview>
+
             <div class="message-layout right"
                  v-for="(file, fileIndex) in item.answer"
                  :key="fileIndex">
               <div class="message out img">
+
                 <img style="max-height: 140px; max-width: 140px; width: 100%; height: 100%; border-radius: 8px;"
                      :src="file.content"
-                     @click="viewImage(file.content)">
+                     @click="viewImage(file, fileIndex)">
               </div>
               <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
                     style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
@@ -108,8 +120,7 @@
                        justify="center"
                        style="flex-direction: column;">
                 <div>
-                  <span
-                        style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                  <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                     {{ doctor.doctorInfo.name }}
                   </span>
                   <span style="color: #333333; font-size: 14px; ">
@@ -117,8 +128,7 @@
                   </span>
                 </div>
                 <div>
-                  <span
-                        style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                     {{ getSerivceType() }}
                   </span>
                   <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -213,11 +223,7 @@
 <script>
 import peace from '@src/library'
 
-import Vue from 'vue'
 import { Dialog } from 'vant'
-import { ImagePreview } from 'vant'
-Vue.use(ImagePreview)
-
 import Compressor from 'compressorjs'
 
 const ANSWER_MODE = {
@@ -348,7 +354,12 @@ export default {
         doctorInfo: {}
       },
 
-      sending: false
+      sending: false,
+
+      imagePreview: {
+        visible: false,
+        position: 0
+      }
     }
   },
 
@@ -865,8 +876,9 @@ export default {
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
 
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     },
 
     scrollToBottom() {
@@ -882,6 +894,22 @@ export default {
   font-size: 16px;
   height: 100%;
   background: #f5f5f5;
+
+  /deep/ .van-image-preview__cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    top: unset;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    .van-button--round {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+  }
 
   &.layout {
     display: flex;

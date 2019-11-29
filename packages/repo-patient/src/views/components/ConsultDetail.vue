@@ -98,11 +98,22 @@
                  v-if="internalData.inquiryInfo.inquiryImages.length>0">
               <div class="form-dt ">复诊凭证 :</div>
               <div class="form-img">
+                <van-image-preview v-model="imagePreview.visible"
+                                   :start-position="imagePreview.position"
+                                   :images="internalData.inquiryInfo.inquiryImages.map(file => file.image_path)">
+                  <template v-slot:cover>
+                    <van-button icon="cross"
+                                type="primary"
+                                round
+                                @click="imagePreview.visible = false" />
+                  </template>
+                </van-image-preview>
+
                 <div class="img"
                      v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
                      :key="index">
                   <img :src="item.image_path"
-                       @click="viewImage(item.image_path)" />
+                       @click="viewImage(item, index)" />
                 </div>
               </div>
             </div>
@@ -158,8 +169,7 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -169,8 +179,7 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -246,8 +255,7 @@
 import peace from '@src/library'
 
 import Vue from 'vue'
-import { Dialog, ImagePreview, CountDown } from 'vant'
-Vue.use(ImagePreview)
+import { Dialog, CountDown } from 'vant'
 Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
@@ -288,6 +296,11 @@ export default {
       chatingPage: {
         visible: false,
         data: []
+      },
+
+      imagePreview: {
+        visible: false,
+        position: 0
       }
     }
   },
@@ -417,14 +430,31 @@ export default {
         })
     },
 
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-image-preview__cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  top: unset;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  .van-button--round {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+}
+
 .footer,
 .pay {
   &.fixedBottom {
