@@ -266,7 +266,7 @@ export default {
             item.close = true
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
-                item.time = (item.orderExpireTime - item.currentTime - 13 * 60) * 1000
+                item.time = (item.orderExpireTime - item.currentTime) * 1000
               }
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
@@ -275,7 +275,7 @@ export default {
                   ? inquiryInfo.orderExpireTime
                   : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
-                item.time = (expireTime - inquiryInfo.currentTime - 13 * 60) * 1000
+                item.time = (expireTime - inquiryInfo.currentTime) * 1000
               }
             }
           })
