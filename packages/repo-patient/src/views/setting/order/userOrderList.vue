@@ -57,11 +57,11 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2&&item.time>0">
+                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
               <div class="count-down">
                 <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
                 <van-count-down millisecond
-                                @finish="finishHander(item)"
+                                @finish="finishHander(item,index)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -113,11 +113,12 @@
               </div>
             </div>
             <div class="panel-bottom "
-                 v-if="item.orderStatus == '1'||(item.orderStatus == '3'&& item.cancelState)">
+                 v-if="(item.orderStatus == '1'&&item.close)||(item.orderStatus == '3'&& item.cancelState)">
               <div class="count-down"
-                   v-if="item.orderStatus == '1'">
+                   v-if="item.orderStatus == '1'&&item.close">
                 <span>订单关闭倒计时:</span>
                 <van-count-down millisecond
+                                @finish="finishHander(item,index)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -126,12 +127,12 @@
               <div class="label gary"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '1'">取消订单
+                   v-if="item.orderStatus == '1'&&item.close">取消订单
               </div>
               <div class="label blue"
                    @click="goPay(item)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '1'">继续支付</div>
+                   v-if="item.orderStatus == '1'&&item.close">继续支付</div>
               <div class="label blue"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
@@ -213,8 +214,17 @@ export default {
     // this.getData()
   },
   methods: {
-    finishHander(item) {
-      item.item = 0
+    finishHander(item, index) {
+      item.close = false
+      if (item.orderType == 'inquiry') {
+        item.inquiryInfo.inquiryStatus = 6
+        item.inquiryInfo.statusTxt = '已取消'
+      } else if (item.orderType == 'register') {
+        item.orderStatus = 2
+      }
+
+      let data = JSON.parse(JSON.stringify(item))
+      this.orderList.splice(index, 1, data)
     },
     goPay(data) {
       let typeName = '',
@@ -253,9 +263,10 @@ export default {
         if (res.data.list.length > 0) {
           res.data.list.map(item => {
             //   item.time =  15 * 60 * 1000;
+            item.close = true
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
-                item.time = (item.orderExpireTime - item.currentTime) * 1000
+                item.time = (item.orderExpireTime - item.currentTime - 13 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
@@ -264,7 +275,7 @@ export default {
                   ? inquiryInfo.orderExpireTime
                   : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
-                item.time = (expireTime - inquiryInfo.currentTime) * 1000
+                item.time = (expireTime - inquiryInfo.currentTime - 13 * 60) * 1000
               }
             }
           })

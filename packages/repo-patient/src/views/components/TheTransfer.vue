@@ -214,7 +214,7 @@ export default {
               inquiryNo: this.data[this.current].familyInfo.inquiryNo
             })
             .then(res => {
-              debugger
+              // debugger
               if (res.code == '200') {
                 let session = {
                   inquiryStatus: res.data.inquiryStatus,
