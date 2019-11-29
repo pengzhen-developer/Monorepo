@@ -27,7 +27,8 @@
               <span>首页</span>
             </van-tabbar-item>
 
-            <template v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
+            <template
+                      v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
               <van-tabbar-item :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
                                to="/message/index">
                 <i class="van-icon van-icon-comment"
@@ -118,8 +119,19 @@ export default {
   beforeCreate() {
     document.title = peace.config.system.title
 
-    window.addEventListener('pageshow', function() {
-      document.body.scrollTop = document.body.scrollHeight
+    // step 1, 当页面可见性发生变化
+    // step 2, 验证当前活动元素是否是 INPUT（INPUT 会触发输入框，导致微信页面变形）
+    // step 3, 让当前活动元素进行 blur focus blur 重新触发输入法的布局
+    window.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        const activeElement = document.activeElement
+
+        if (activeElement.tagName === 'INPUT') {
+          activeElement.blur()
+          activeElement.focus()
+          activeElement.blur()
+        }
+      }
     })
   },
 
