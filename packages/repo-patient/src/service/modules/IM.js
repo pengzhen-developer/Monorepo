@@ -259,6 +259,7 @@ export function setInquirySessions(sessions) {
       session.content &&
       session.content.inquiryInfo &&
       session.content.inquiryInfo.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+      session.content.inquiryInfo.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已取消 &&
       session.content.inquiryInfo.quitStatus !== 1 &&
       session.content.inquiryInfo.quitStatus !== 2
     ) {
