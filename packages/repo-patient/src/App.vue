@@ -27,8 +27,7 @@
               <span>首页</span>
             </van-tabbar-item>
 
-            <template
-                      v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
+            <template v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
               <van-tabbar-item :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
                                to="/message/index">
                 <i class="van-icon van-icon-comment"
@@ -118,6 +117,10 @@ export default {
 
   beforeCreate() {
     document.title = peace.config.system.title
+
+    window.addEventListener('pageshow', function() {
+      document.body.scrollTop = document.body.scrollHeight
+    })
   },
 
   created() {
