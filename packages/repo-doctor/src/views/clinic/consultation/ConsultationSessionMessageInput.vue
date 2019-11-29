@@ -5,13 +5,15 @@
       <el-button @click="sendInvited"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
+                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
         <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
       <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
       <el-button @click="sendVideo"
-                 type="text">
+                 type="text"
+                 v-show="$peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束 ||
+                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中 ">
         <img src="~@/assets/images/inquiry/chat_icon_video.png" />发起视频
       </el-button>
 
@@ -19,7 +21,7 @@
       <el-button @click="snedConsultSuggest"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
+                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
         <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊意见
       </el-button>
     </div>
