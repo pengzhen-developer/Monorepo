@@ -103,7 +103,7 @@ export default {
         .finally(() => {
           setTimeout(() => {
             this.hasSend = false
-          })
+          }, 500)
         })
     },
 
