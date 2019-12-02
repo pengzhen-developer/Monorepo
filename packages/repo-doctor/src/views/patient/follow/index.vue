@@ -30,7 +30,7 @@
           <el-tag :key="item" class="tag" type="info" v-for="item in scope.row.tag">{{ item }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="病程记录" prop="courseCount" width="100">
+      <el-table-column align="center" label="病程管理" prop="courseCount" width="100">
         <template slot-scope="scope">
           <template v-if="scope.row.courseCount">
             <el-button @click="view(scope.row)" type="text">{{ scope.row.courseCount }}</el-button>
@@ -42,7 +42,7 @@
       </el-table-column>
     </peace-table>
 
-    <peace-dialog :visible.sync="dialog.visible" title="病程记录">
+    <peace-dialog :visible.sync="dialog.visible" title="病程管理">
       <DiseaseCourse :id="dialog.id"></DiseaseCourse>
     </peace-dialog>
   </div>
@@ -110,7 +110,7 @@ export default {
         this.dialog.visible = true
         this.dialog.id = row.familyId
       }else{
-        peace.util.alert('暂无病程记录')
+        peace.util.alert('暂无病程管理')
       }
     },
 

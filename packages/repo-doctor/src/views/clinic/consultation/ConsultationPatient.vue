@@ -229,9 +229,9 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
-import InquirySessionMessageList from "@src/views/clinic/inquiry/InquirySessionMessageList";
+import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
 
 export default {
   components: {
@@ -246,12 +246,6 @@ export default {
         visible: false,
         data: undefined
       }
-    };
-  },
-
-  watch: {
-    "$store.state.consultation.session"() {
-      this.getConsultationDetail();
     }
   },
 
@@ -262,18 +256,18 @@ export default {
   },
 
   created() {
-    this.getConsultationDetail();
+    this.getConsultationDetail()
   },
 
   methods: {
     getConsultationDetail() {
       const params = {
-        consultNo: this.$store.getters["consultation/consultInfo"].consultNo
-      };
+        consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+      }
 
       peace.service.consult.getConsultInfo(params).then(res => {
-        this.data = res.data.info;
-      });
+        this.data = res.data.info
+      })
     },
 
     showDetail() {
@@ -283,34 +277,33 @@ export default {
 
       const params = {
         inquiryNo: this.data.inquiryNo
-      };
+      }
 
       peace.service.patient.getOneInquiry(params).then(res => {
         const historyMessageFormatHandler = messages => {
           if (messages && Array.isArray(messages)) {
             messages.forEach(message => {
-              const messageTypeMap = { 0: "text", 1: "image", 100: "custom" };
+              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
-              message.time = message.sendtime;
-              message.flow =
-                this.data.fromDoctorId === message.from ? "out" : "in";
-              message.type = messageTypeMap[message.type];
-              message.text = message.body.msg;
-              message.content = message.body;
-              message.file = message.body;
-            });
+              message.time = message.sendtime
+              message.flow = this.data.fromDoctorId === message.from ? 'out' : 'in'
+              message.type = messageTypeMap[message.type]
+              message.text = message.body.msg
+              message.content = message.body
+              message.file = message.body
+            })
           }
-        };
+        }
 
-        historyMessageFormatHandler(res.data.msgInfo);
+        historyMessageFormatHandler(res.data.msgInfo)
 
-        this.dialog.data = [];
-        this.dialog.data = res.data.msgInfo;
-        this.dialog.visible = true;
-      });
+        this.dialog.data = []
+        this.dialog.data = res.data.msgInfo
+        this.dialog.visible = true
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -352,7 +345,7 @@ $--header-height: 50px;
       }
 
       &::after {
-        content: " ";
+        content: ' ';
         display: block;
         width: 100%;
         height: 6px;

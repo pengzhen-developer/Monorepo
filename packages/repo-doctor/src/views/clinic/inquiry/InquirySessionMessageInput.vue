@@ -49,7 +49,7 @@
                  type="text">
         <img src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
         <span>申请会诊</span>
-      </el-button> -->
+      </el-button>
     </div>
     <div class="input-text">
       <el-input :rows="6"

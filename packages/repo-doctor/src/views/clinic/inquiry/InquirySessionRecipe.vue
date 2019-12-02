@@ -217,12 +217,12 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 const ACTION_TYPE = {
-  EDIT: "EDIT",
-  INSERT: "INSERT"
-};
+  EDIT: 'EDIT',
+  INSERT: 'INSERT'
+}
 
 export default {
   data() {
@@ -260,9 +260,7 @@ export default {
           dic_frequency_id: undefined
         },
         rules: {
-          drugid: [
-            { required: true, message: "请输入药品名称", trigger: "change" }
-          ],
+          drugid: [{ required: true, message: '请输入药品名称', trigger: 'change' }],
           number: [
             { required: true, message: '请输入药品数量', trigger: 'change' },
             {
@@ -290,28 +288,23 @@ export default {
           dic_frequency: []
         }
       }
-    };
+    }
   },
 
   watch: {
-    "prescription.source.list"(val) {
+    'prescription.source.list'(val) {
       if (val.length > 5) {
-        peace.util.warning("处方药品最多可添加 5 种药品");
+        peace.util.warning('处方药品最多可添加 5 种药品')
 
-        val.splice(5, 1);
+        val.splice(5, 1)
       }
     },
 
-    "drug.source.list"(val) {
+    'drug.source.list'(val) {
       if (val.length > 5) {
-        peace.util.warning("处方药品最多可添加 5 种药品");
+        peace.util.warning('处方药品最多可添加 5 种药品')
 
-        val.splice(5, 1);
-      }
-      if (val.length == 0) {
-        this.drug.disabled = true;
-      } else {
-        this.drug.disabled = false;
+        val.splice(5, 1)
       }
       if (val.length == 0) {
         this.drug.disabled = true
@@ -331,21 +324,21 @@ export default {
 
     const params = {
       hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
-    };
+    }
     peace.service.prescribePrescrip.drugUsageList(params).then(res => {
-      this.drug.source.dic_usage = res.data;
-    });
+      this.drug.source.dic_usage = res.data
+    })
     peace.service.prescribePrescrip.drugFrequencyList(params).then(res => {
-      this.drug.source.dic_frequency = res.data;
-    });
+      this.drug.source.dic_frequency = res.data
+    })
 
     const paramsForCase = {
-      inquiry_no: this.$store.getters["inquiry/inquiryInfo"].inquiryNo
-    };
+      inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
+    }
     peace.service.inquiry.getCase(paramsForCase).then(res => {
-      this.drug.diagnose = res.data.diagnose;
-      this.drug.allergy_history = res.data.allergy_history;
-    });
+      this.drug.diagnose = res.data.diagnose
+      this.drug.allergy_history = res.data.allergy_history
+    })
   },
 
   mounted() {},
@@ -353,104 +346,94 @@ export default {
   methods: {
     // 搜索药品
     querySearchAsync(queryString, cb) {
-      this.drug.action = this.drug.ACTION_TYPE.INSERT;
+      this.drug.action = this.drug.ACTION_TYPE.INSERT
 
       if (queryString) {
         const params = {
-          hospitalId: this.$store.state.user.userInfo.list.docInfo
-            .netHospital_id,
+          hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id,
           drugname: queryString
-        };
+        }
         peace.service.prescribePrescrip.drugsList(params).then(res => {
-          cb(res.data);
-        });
+          cb(res.data)
+        })
       }
     },
 
     // 给药途径选择
     dicUsageChange(val) {
-      const item = this.drug.source.dic_usage.find(item => item.id === val);
-      this.drug.model.dic_usage = item.drugway_name;
-      this.drug.model.dic_usage_id = item.id;
+      const item = this.drug.source.dic_usage.find(item => item.id === val)
+      this.drug.model.dic_usage = item.drugway_name
+      this.drug.model.dic_usage_id = item.id
     },
 
     // 用药频次选择
     dicFrequencyChange(val) {
-      const item = this.drug.source.dic_frequency.find(item => item.id === val);
-      this.drug.model.dic_frequency = item.drugtimes_name;
-      this.drug.model.dic_frequency_id = item.id;
+      const item = this.drug.source.dic_frequency.find(item => item.id === val)
+      this.drug.model.dic_frequency = item.drugtimes_name
+      this.drug.model.dic_frequency_id = item.id
     },
 
     // 药品名称选择
     handleSelectDrug(item) {
-      this.drug.model.drugid = item.id;
-      this.drug.model.drug_name = item.drug_name;
-      this.drug.model.drug_factory = item.drug_factory;
-      this.drug.model.drug_spec = item.drug_spec;
-      this.drug.model.unit = item.drug_unit;
+      this.drug.model.drugid = item.id
+      this.drug.model.drug_name = item.drug_name
+      this.drug.model.drug_factory = item.drug_factory
+      this.drug.model.drug_spec = item.drug_spec
+      this.drug.model.unit = item.drug_unit
 
       // 默认药品数量、单次剂量值
-      this.drug.model.consump = 1;
-      this.drug.model.number = 1;
+      this.drug.model.consump = 1
+      this.drug.model.number = 1
 
       // 其他值默认为空
-      this.drug.model.medication_days = "";
-      this.drug.model.dic_usage = "";
-      this.drug.model.dic_usage_id = "";
-      this.drug.model.dic_frequency = "";
-      this.drug.model.dic_frequency_id = "";
+      this.drug.model.medication_days = ''
+      this.drug.model.dic_usage = ''
+      this.drug.model.dic_usage_id = ''
+      this.drug.model.dic_frequency = ''
+      this.drug.model.dic_frequency_id = ''
 
       setTimeout(() => {
-        this.$refs.form.clearValidate();
-        this.$refs.form.validateField("drugid");
-      }, 0);
+        this.$refs.form.clearValidate()
+        this.$refs.form.validateField('drugid')
+      }, 0)
     },
 
     sendPrescription() {
       if (this.drug.source.list.length < 1) {
-        peace.util.warning("请添加处方药品");
-        return;
+        peace.util.warning('请添加处方药品')
+        return
       }
 
-      const temp = peace.util.deepClone(this.drug.source.list);
+      const temp = peace.util.deepClone(this.drug.source.list)
       temp.forEach(item => {
-        item.medication_days = item.medication_days ? item.medication_days : 0;
-      });
+        item.medication_days = item.medication_days ? item.medication_days : 0
+      })
 
       const params = {
         openId: this.$store.state.user.userInfo.list.docInfo.openid,
-        inquiry_no: this.$store.getters["inquiry/inquiryInfo"].inquiryNo,
-        family_id: this.$store.getters["inquiry/patientInfo"].familyId,
+        inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
+        family_id: this.$store.getters['inquiry/patientInfo'].familyId,
         diagnose: this.drug.diagnose,
         allergy_history: this.drug.allergy_history,
         drugsJson: JSON.stringify(temp)
-      };
+      }
 
       peace.service.prescribePrescrip.subPrescrip(params).then(res => {
-        peace.util.alert(res.msg);
+        peace.util.alert(res.msg)
 
-        $peace.inquiryComponent.$emit(
-          peace.type.INQUIRY.INQUIRY_ACTION.重置操作
-        );
-      });
+        $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+      })
     },
 
     savePrescription() {},
 
     openDrugDialog() {
-      this.drug.action = this.drug.ACTION_TYPE.INSERT;
-      this.drug.visible = true;
+      this.drug.action = this.drug.ACTION_TYPE.INSERT
+      this.drug.visible = true
 
       this.$nextTick(function() {
-        console.log(this.$refs);
-      });
-    },
-    //清空药品信息
-    resetDrugInfo() {
-      setTimeout(() => {
-        this.$refs.form.resetFields();
-        this.drug.model.drug_name = "";
-      }, 0);
+        console.log(this.$refs)
+      })
     },
     //清空药品信息
     resetDrugInfo() {
@@ -475,24 +458,24 @@ export default {
               ...this.drug.model
             })
           } else {
-            this.drug.source.list.push({ ...this.drug.model });
+            this.drug.source.list.push({ ...this.drug.model })
           }
           this.resetDrugInfo()
         }
-      });
+      })
     },
 
     // 修改药品
     changeDrug(scope) {
-      this.scope = scope;
-      this.drug.action = this.drug.ACTION_TYPE.EDIT;
+      this.scope = scope
+      this.drug.action = this.drug.ACTION_TYPE.EDIT
 
-      this.drug.model = { ...scope.row };
+      this.drug.model = { ...scope.row }
     },
 
     // 删除药品
     removeDrug(scope) {
-      this.drug.source.list.splice(scope.$index, 1);
+      this.drug.source.list.splice(scope.$index, 1)
     },
 
     // 保存药品
@@ -505,12 +488,7 @@ export default {
 
     // 取消药品修改
     cancelDrug() {
-      this.drug.visible = false;
-    },
-
-    closeDialog() {
-      this.drug.model = peace.util.deepClone(this.drug._model);
-      this.$refs.form.resetFields();
+      this.drug.visible = false
     },
 
     closeDialog() {
@@ -520,43 +498,36 @@ export default {
 
     // 保存药品到处方
     saveDrugToPrescription() {
-      this.prescription.source.list = this.drug.source.list;
+      this.prescription.source.list = this.drug.source.list
 
-      this.cancelDrug();
+      this.cancelDrug()
     },
 
     // 从处方列表改变药品
     changeDrugToPrescription(scope) {
-      this.drug.visible = true;
+      this.drug.visible = true
 
       this.$nextTick().then(() => {
-        this.scope = scope;
-        this.drug.action = this.drug.ACTION_TYPE.EDIT;
+        this.scope = scope
+        this.drug.action = this.drug.ACTION_TYPE.EDIT
 
-        this.drug.model = { ...scope.row };
-        this.drug.source.list = this.prescription.source.list;
-      });
+        this.drug.model = { ...scope.row }
+        this.drug.source.list = this.prescription.source.list
+      })
     },
 
     // 从处方列表移除药品
     removeDrugToPrescription(scope) {
-      this.prescription.source.list.splice(scope.$index, 1);
+      this.prescription.source.list.splice(scope.$index, 1)
     },
 
     close() {
-      peace.util.confirm(
-        "确定要退出处方吗？当前所有数据将会被清除!",
-        undefined,
-        undefined,
-        () => {
-          $peace.inquiryComponent.$emit(
-            peace.type.INQUIRY.INQUIRY_ACTION.重置操作
-          );
-        }
-      );
+      peace.util.confirm('确定要退出处方吗？当前所有数据将会被清除!', undefined, undefined, () => {
+        $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

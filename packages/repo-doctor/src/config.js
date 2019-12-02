@@ -12,17 +12,17 @@ export const config = {
     /**
      * 系统标题
      */
-    title: "万家云医医生工作站",
+    title: '万家云医医生工作站',
 
     /**
      * 无权限访问页
      */
-    noAuthPage: "/login",
+    noAuthPage: '/login',
 
     /**
      * 登录页
      */
-    loginPage: "/login"
+    loginPage: '/login'
   },
 
   /**
@@ -211,6 +211,6 @@ export const config = {
   NIM: {
     key: process.env.VUE_APP_IM_KEY
   }
-};
+}
 
-export default config;
+export default config

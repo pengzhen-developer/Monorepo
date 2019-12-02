@@ -134,7 +134,7 @@ export default {
     data: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     }
   },
@@ -142,20 +142,20 @@ export default {
   data() {
     return {
       prescriptionState: {
-        未审方: "1",
-        申诉中: "2",
-        已通过: "3",
-        已分配: "4",
-        已发药: "5",
-        已拒绝: "6",
-        已作废: "7"
+        未审方: '1',
+        申诉中: '2',
+        已通过: '3',
+        已分配: '4',
+        已发药: '5',
+        已拒绝: '6',
+        已作废: '7'
       }
-    };
+    }
   },
 
   computed: {
     internalData() {
-      return $peace.util.deepClone(this.data);
+      return $peace.util.deepClone(this.data)
     },
 
     drugs() {
@@ -173,7 +173,7 @@ export default {
       )
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .small-text {
@@ -205,7 +205,7 @@ export default {
       width: calc(100% - 7em);
     }
     &:after {
-      content: "：";
+      content: '：';
     }
   }
   &-content {
