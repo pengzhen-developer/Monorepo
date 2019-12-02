@@ -590,15 +590,19 @@ export default {
     min-width: 70px;
     display: flex;
     padding-right: 10px;
+    align-items: center;
     span {
       flex: 1;
       text-align: justify;
       text-align-last: justify;
       padding-right: 3px;
+      height: 16px;
+      line-height: 16px;
       &::after {
         content: ' ';
         display: inline-block;
         width: 100%;
+        height: 0px;
       }
     }
   }
@@ -677,7 +681,6 @@ export default {
       padding-bottom: 5px;
     }
     .form-img {
-      padding: 5px 0;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -685,8 +688,7 @@ export default {
         width: 57px;
         height: 57px;
         background: #ccc;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin: 5px 10px 5px 0;
         &:nth-child(5n) {
           margin-right: 0 !important;
         }
