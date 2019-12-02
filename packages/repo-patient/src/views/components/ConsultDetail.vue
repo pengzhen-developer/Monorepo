@@ -169,8 +169,7 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -180,8 +179,7 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -441,19 +439,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-image-preview__index {
+  top: 24px;
+}
+
 /deep/ .van-image-preview__cover {
   position: absolute;
-  top: 0;
-  left: 0;
-  top: unset;
-  bottom: 10px;
-  left: 50%;
-  transform: translate(-50%, 0);
+  top: 24px;
+  left: 24px;
 
   .van-button--round {
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #2a2a2a;
+    background-color: #999999;
+    border: 1px solid #999999;
+
+    .van-button__icon {
+      line-height: 1;
+    }
   }
 }
 

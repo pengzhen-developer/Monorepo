@@ -895,19 +895,32 @@ export default {
   height: 100%;
   background: #f5f5f5;
 
+  /deep/ .van-image-preview__index {
+    top: 24px;
+  }
+
   /deep/ .van-image-preview__cover {
     position: absolute;
-    top: 0;
-    left: 0;
-    top: unset;
-    bottom: 10px;
-    left: 50%;
-    transform: translate(-50%, 0);
+    top: 24px;
+    left: 24px;
 
     .van-button--round {
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #2a2a2a;
+      background-color: #999999;
+      border: 1px solid #999999;
+
+      .van-button__icon {
+        line-height: 1;
+      }
     }
   }
 
