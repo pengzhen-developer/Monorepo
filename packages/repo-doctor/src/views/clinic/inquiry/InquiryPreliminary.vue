@@ -29,7 +29,7 @@
       </div>
       <!--病情描述-->
       <div class="module-item">
-        <div class="b">病情现状</div>
+        <div class="b">病情描述</div>
         <div class="span">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
