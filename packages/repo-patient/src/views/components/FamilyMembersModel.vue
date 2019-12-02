@@ -355,9 +355,23 @@ export default {
       })
     },
     setGardianInfo(item) {
-      this.gardianId = item.idCard
-      this.gardianName = item.name
-      this.gardianSet = true
+      if (item.idCard) {
+        this.gardianId = item.idCard
+        this.gardianName = item.name
+        this.gardianSet = true
+      } else {
+        this.age = null
+        this.model = {
+          name: '',
+          idcard: '',
+          relation: '',
+          sex: '',
+          birthday: '',
+          allergic_history: '',
+          foodAllergy: ''
+        }
+      }
+
       this.gDialog.visible = false
     },
     getAgeByIdCard(identityCard) {
