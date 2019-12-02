@@ -214,6 +214,7 @@ export default {
   activated() {
     this.p = 0
     this.loaded = false
+    this.finished = false
     this.consultList = []
     this.get()
   },
