@@ -169,7 +169,8 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -179,7 +180,8 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+              <span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -194,11 +196,11 @@
       </div>
       <div class="h64"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
-               internalData.inquiryInfo.inquiryStatus == '4' ||
+               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5'"></div>
       <div class="footer fixedBottom"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
-               internalData.inquiryInfo.inquiryStatus == '4' ||
+               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5'">
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
