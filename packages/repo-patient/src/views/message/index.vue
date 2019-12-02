@@ -103,13 +103,27 @@ export default {
     },
 
     selectSession(session) {
-      const params = peace.util.encode({
-        id: session.id,
-        beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
-        scene: session.scene,
-        to: session.to
-      })
+      let params = null
+      if (
+        session.content.inquiryInfo.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已退诊 ||
+        session.content.inquiryInfo.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已完成 ||
+        session.content.inquiryInfo.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已取消
+      ) {
+        // 当前问诊【已完成】【已退诊】【已取消】
+        // 获取数据库记录，无法在 service/IM.js 重置未读数，因此手动重置为 0
+        $peace.NIM.resetSessionUnread(session.id)
 
+        params = peace.util.encode({
+          inquiryNo: session.content.inquiryInfo.inquiryNo
+        })
+      } else {
+        params = peace.util.encode({
+          id: 'p2p-' + session.content.doctorInfo.doctorId,
+          scene: 'p2p',
+          beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
+          to: session.content.doctorInfo.doctorId
+        })
+      }
       // 清除聊天记录
       peace.service.IM.resetInquirySessionMessages()
 

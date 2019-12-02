@@ -171,8 +171,9 @@
           ? (sys.chrome = s[1])
           : (s = ua.match(/version\/([\d\.]+).*safari/))
           ? (sys.safari = s[1])
+          : (s = ua.match(/MicroMessenger\/([\d\.]+)/i))
+          ? (sys.wechat = s[1])
           : 0;
-
         // 根据关系进行判断
         if (sys.ie) return { explore: "IE", version: sys.ie };
         if (sys.edge) return { explore: "EDGE", version: sys.edge };
@@ -180,19 +181,21 @@
         if (sys.chrome) return { explore: "CHROME", version: sys.chrome };
         if (sys.opera) return { explore: "OPERA", version: sys.opera };
         if (sys.safari) return { explore: "SAFARI", version: sys.safari };
+        if (sys.wechat) return { explore: "WECHAT", version: sys.wechat };
         if (sys.mobile) return { explore: "moliePhone", version: "Unkown" };
         return "Unkonwn";
       }
 
       var explore = getExplore();
-
+      // alert(explore.version)
       if (
         (explore.explore === "IE" && parseInt(explore.version) <= 11) ||
         (explore.explore === "CHROME" && parseInt(explore.version) < 49) ||
         (explore.explore === "FIREFOX" && parseInt(explore.version) < 52) ||
-        (explore.explore === "SAFARI" && parseInt(explore.version) < 11)
+        (explore.explore === "SAFARI" && parseInt(explore.version) < 11) ||
+        (explore.explore === "WECHAT" && parseInt(explore.version) < 6)
       ) {
-        // window.location.href = './unCompatible.html'
+        window.location.href = './unCompatible.html'
       }
     </script>
 

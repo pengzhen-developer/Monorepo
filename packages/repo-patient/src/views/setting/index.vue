@@ -58,7 +58,7 @@ export default {
     return {
       module: [
         {
-          text: '我的咨询',
+          text: '咨询记录',
           id: 'consult',
           icon: 'icon_01_01_01'
         },

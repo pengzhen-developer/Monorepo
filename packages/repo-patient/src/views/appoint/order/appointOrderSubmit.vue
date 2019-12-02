@@ -126,7 +126,7 @@ export default {
     }
   },
   activated() {
-    this.initFml();
+    this.initFml()
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
@@ -137,78 +137,78 @@ export default {
   },
   methods: {
     checkCard(tag) {
-          this.checkCardExist().then(res => {
-              if (!res.data.result) {
+      this.checkCardExist().then(res => {
+        if (!res.data.result) {
+          return Dialog.confirm({
+            title: '提示',
+            message: '该就诊人还没有电子健康卡，是否现在领取？',
+            confirmButtonText: '现在领取'
+          }).then(() => {
+            console.log('fmllllllllll', this.fml)
+            let familyId = this.fml.familyId
+            console.log(this.doctorInfo)
+            let nethospitalid = this.doctorInfo.nethospitalId
+            let params = { familyId, nethospitalid }
+            peace.service.patient
+              .createHealthcard(params)
+              .then(res => {
+                if (res.data.result) {
+                  return peace.util.alert('领取成功，请填写信息后提交挂号！')
+                }
+              })
+              .catch(res => {
+                if (res.data.code === 202) {
                   return Dialog.confirm({
-                      title: '提示',
-                      message: '该就诊人还没有电子健康卡，是否现在领取？',
-                      confirmButtonText: '现在领取'
+                    title: '提示',
+                    message: '该就诊人尚未完善资料，请前去完善！',
+                    confirmButtonText: '去完善'
                   }).then(() => {
-                      console.log("fmllllllllll", this.fml)
-                      let familyId = this.fml.familyId
-                      console.log(this.doctorInfo);
-                      let nethospitalid = this.doctorInfo.nethospitalId;
-                      let params = { familyId, nethospitalid }
-                      peace.service.patient
-                          .createHealthcard(params)
-                          .then(res => {
-                              if (res.data.result) {
-                                  return peace.util.alert('领取成功，请填写信息后提交挂号！')
-                              }
-                          })
-                          .catch(res => {
-                              if (res.data.code === 202) {
-                                  return Dialog.confirm({
-                                      title: '提示',
-                                      message: '该就诊人尚未完善资料，请前去完善！',
-                                      confirmButtonText: '去完善'
-                                  }).then(() => {
-                                      this.$router.push(`/setting/myFamilyMembers`)
-                                  })
-                              }
-                          })
+                    this.$router.push(`/setting/myFamilyMembers`)
                   })
-              } else {
-                  if (tag) {
-                      // 存在就诊卡
-                      let data = {
-                          sourceCode: this.source.sourceCode,
-                          doctorId: this.doctorInfo.doctorId,
-                          familyId: this.fml.familyId,
-                          familyName: this.fml.name,
-                          idcard: this.fml.idcard,
-                          sourceDate: this.date.year + '-' + this.date.date,
-                          week: this.date.week,
-                          AMPM: this.source.type,
-                          bookingStart: this.source.startTime,
-                          bookingEnd: this.source.endTime,
-                          unitPrice: this.source.unitPrice,
-                          sourceLevelType: this.source.sourceLevelType,
-                          diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
-                          departmentName: this.doctorInfo.deptName
-                      }
-                      this.getOrderSubmit(data)
-                  }
-              }
-          })
-      },
-    checkCardExist() {
-          let familyId = this.fml.familyId
-          let nethospitalid = this.doctorInfo.nethospitalId;
-          let params = { familyId, nethospitalid }
-          return new Promise(resolve => {
-              peace.service.patient.isExistCardRelation(params).then(res => {
-                  resolve(res)
+                }
               })
           })
+        } else {
+          if (tag) {
+            // 存在就诊卡
+            let data = {
+              sourceCode: this.source.sourceCode,
+              doctorId: this.doctorInfo.doctorId,
+              familyId: this.fml.familyId,
+              familyName: this.fml.name,
+              idcard: this.fml.idcard,
+              sourceDate: this.date.year + '-' + this.date.date,
+              week: this.date.week,
+              AMPM: this.source.type,
+              bookingStart: this.source.startTime,
+              bookingEnd: this.source.endTime,
+              unitPrice: this.source.unitPrice,
+              sourceLevelType: this.source.sourceLevelType,
+              diagnoseType: this.order.zdType == '初诊' ? 1 : '2',
+              departmentName: this.doctorInfo.deptName
+            }
+            this.getOrderSubmit(data)
+          }
+        }
+      })
     },
-    initFml(){
-      let doctorId = this.doctorInfo.doctorId;
+    checkCardExist() {
+      let familyId = this.fml.familyId
+      let nethospitalid = this.doctorInfo.nethospitalId
+      let params = { familyId, nethospitalid }
+      return new Promise(resolve => {
+        peace.service.patient.isExistCardRelation(params).then(res => {
+          resolve(res)
+        })
+      })
+    },
+    initFml() {
+      let doctorId = this.doctorInfo.doctorId
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
 
-        if(this.fmlList.length > 0) {
-          peace.service.patient.getLastAppoint({ doctorId}).then(lastFamily => {
+        if (this.fmlList.length > 0) {
+          peace.service.patient.getLastAppoint({ doctorId }).then(lastFamily => {
             // 1. 优先选中最后一个就诊人
             // 2. 其次选中关系为本人
             // 3. 最后选中家人列表的第一个就诊人
@@ -221,23 +221,21 @@ export default {
             }
 
             if (!this.fml) {
-              this.fm = this.fmlList.find(
-                      item => item.familyId === this.source.familyList[0].id
-              )
+              this.fm = this.fmlList.find(item => item.familyId === this.source.familyList[0].id)
             }
-            if(this.fml) {
+            if (this.fml) {
               this.fmlDic =
-                      this.fmlList.map(item => {
-                        return {
-                          name: item.name,
-                          subname: '(' + item.relation + ')'
-                        }
-                      }) || []
+                this.fmlList.map(item => {
+                  return {
+                    name: item.name,
+                    subname: '(' + item.relation + ')'
+                  }
+                }) || []
               this.fmlDic.push({ subname: 'add', name: '添加就诊人' })
 
               console.log('familyId', this.fml.familyId)
-              if(this.fml.familyId) {
-                this.checkCard();
+              if (this.fml.familyId) {
+                this.checkCard()
               }
             }
           })
@@ -252,12 +250,12 @@ export default {
       peace.service.patient.getMyFamilyList().then(res => {
         this.fmlList = res.data || []
         this.fmlDic =
-                this.fmlList.map(item => {
-                  return {
-                    name: item.name,
-                    subname: '(' + item.relation + ')'
-                  }
-                }) || [];
+          this.fmlList.map(item => {
+            return {
+              name: item.name,
+              subname: '(' + item.relation + ')'
+            }
+          }) || []
 
         this.fmlDic.push({ subname: null, name: '添加就诊人' })
         this.showFmlDic = true
@@ -266,14 +264,13 @@ export default {
         // } else {
         //   peace.util.alert('请先前往个人中心添加就诊人')
         // }
-
       })
     },
     fmlConfirm(item, index) {
       console.log(index)
-      if(item.subname) {
-        this.fml = this.fmlList[index];
-        if(this.fml) {
+      if (item.subname) {
+        this.fml = this.fmlList[index]
+        if (this.fml) {
           this.showFmlDic = false
           this.checkCard()
         }
@@ -312,48 +309,49 @@ export default {
 
       if (!this.showBtn) {
         peace.util.alert('请勿重复提交')
-        return;
+        return
       }
       // this.checkCard(true);
       this.getOrderSubmit(data)
     },
     getOrderSubmit(data) {
-      this.showBtn = false;
+      this.showBtn = false
       peace.service.appoint
         .orderSubmit(data)
         .then(res => {
-          if(res.data.orderInfo.orderMoney == '0.00' || res.data.orderInfo.orderMoney == '0') {
-            let orderType = 'register';
+          if (res.data.orderInfo.orderMoney == '0.00' || res.data.orderInfo.orderMoney == '0') {
+            let orderType = 'register'
             let orderNo = res.data.orderInfo.orderNo
             let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-            this.showBtn = true;
+            this.showBtn = true
             this.$router.replace(`/setting/order/userOrderDetail/${json}`)
           } else {
-            this.goToPay(res.data);
-            this.showBtn = true;
+            this.goToPay(res.data)
+            this.showBtn = true
           }
         })
-        .catch(res => {
+        .catch(() => {
           //debugger
-          this.showBtn = true;
-          Dialog.alert({
-            title: '预约失败',
-            message: res.data.msg
-          }).then(() => {
-            // this.$router.go(-1)
-          })
+          this.showBtn = true
+
+          // Dialog.alert({
+          //   title: '预约失败',
+          //   message: res.data.msg
+          // }).then(() => {
+          //   // this.$router.go(-1)
+          // })
         })
     },
     goToPay(data) {
       this.showBtn = false
       //debugger;
-      let {doctorName,doctorId} = data.doctorInfo;
-      let {orderNo, orderMoney} = data.orderInfo;
-      let typeName = '预约挂号';
-      let money = orderMoney;
-      let json = {money, typeName, doctorName, orderNo, doctorId};
-      json = peace.util.encode(json);
-      this.$router.replace(`/components/doctorInquiryPay/${json}`);
+      let { doctorName, doctorId } = data.doctorInfo
+      let { orderNo, orderMoney } = data.orderInfo
+      let typeName = '预约挂号'
+      let money = orderMoney
+      let json = { money, typeName, doctorName, orderNo, doctorId }
+      json = peace.util.encode(json)
+      this.$router.replace(`/components/doctorInquiryPay/${json}`)
       // let json = peace.util.encode({
       //   orderInfo: data.orderInfo
       // })

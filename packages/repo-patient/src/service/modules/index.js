@@ -8,9 +8,9 @@ import peace from '@src/library'
  * @returns
  */
 export function getMenu(params) {
-    const url = 'client/v1/index/page'
+  const url = 'client/v1/index/page'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
 
 /**
@@ -20,12 +20,11 @@ export function getMenu(params) {
  * @param {*} params 参数列表
  * @returns
  */
-export function GetWxLoginStatus(params) {
-    const GetWxLoginStatus = 'wap/v1/Wx/pay'
+export function pay(params) {
+  const pay = 'wap/v1/Wx/pay'
 
-    return peace.http.post(GetWxLoginStatus, params)
+  return peace.http.post(pay, params)
 }
-
 
 /**
  * 获取订单时间
@@ -34,19 +33,17 @@ export function GetWxLoginStatus(params) {
  * @param {*} params 参数列表
  * @returns
  */
-export function GetOrderTime(params) {
-    const GetOrderTime = '/wap/v1/Wx/getOrderInfo'
+export function getOrderInfo(params) {
+  const getOrderInfo = '/wap/v1/Wx/getOrderInfo'
 
-    return peace.http.post(GetOrderTime, params)
+  return peace.http.post(getOrderInfo, params)
 }
 
-
-
 export default {
-    /** 获取首页接口 */
-    getMenu,
-    /** 获取微信登录状态 */
-    GetWxLoginStatus,
-    /** 获取订单时间 **/
-    GetOrderTime
+  /** 获取首页接口 */
+  getMenu,
+  /** 获取支付 */
+  pay,
+  /** 获取订单时间 **/
+  getOrderInfo
 }

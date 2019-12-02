@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <template v-if="isEdit">
-<!--       <div class="card-name">{{cardName}}</div>-->
+      <!--       <div class="card-name">{{cardName}}</div>-->
       <div class="card-title">电子健康卡</div>
       <div class="card"
            v-for="(cardItem, index) in cardList"
@@ -66,7 +66,8 @@
                      v-model="model.nationName" />
         </template>
         <template v-else>
-          <van-field @click="showPopupNations"
+          <van-field :disabled="isEdit"
+                     @click="showPopupNations"
                      label="民族"
                      placeholder="请输入"
                      required
@@ -211,7 +212,7 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import GuardianList from '../setting/GuardianList'
-
+import { Dialog } from 'vant'
 export default {
   components: {
     GuardianList,
@@ -259,7 +260,7 @@ export default {
       },
       familyId: '',
       isNationExist: false,
-      ageLimit: 6,
+      ageLimit: 7, //测试为7 上线为6
       age: null,
       gardianSet: false,
       gardianId: '',
@@ -354,9 +355,23 @@ export default {
       })
     },
     setGardianInfo(item) {
-      this.gardianId = item.idCard
-      this.gardianName = item.name
-      this.gardianSet = true
+      if (item.idCard) {
+        this.gardianId = item.idCard
+        this.gardianName = item.name
+        this.gardianSet = true
+      } else {
+        this.age = null
+        this.model = {
+          name: '',
+          idcard: '',
+          relation: '',
+          sex: '',
+          birthday: '',
+          allergic_history: '',
+          foodAllergy: ''
+        }
+      }
+
       this.gDialog.visible = false
     },
     getAgeByIdCard(identityCard) {
@@ -521,10 +536,8 @@ export default {
             allergic_history: this.model.allergic_history,
             foodAllergy: this.model.foodAllergy
           }
-
           peace.service.patient.upbindFamily(params).then(res => {
             peace.util.alert(res.msg)
-
             this.$emit('onComplete')
           })
         } else {
@@ -539,14 +552,19 @@ export default {
     saveFamily() {
       let params = this.model
       params.type = 1
-      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID);
-      params.source = (params.nethospitalid && params.nethospitalid!="") ? 2 :1
+      params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+      params.source = params.nethospitalid && params.nethospitalid != '' ? 2 : 1
       if (this.gardianId != '') {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
       peace.service.patient.bindFamily(params).then(res => {
         peace.util.alert(res.msg)
+
+        const params = peace.util.decode(this.$route.params.json)
+        if (params.emit) {
+          $peace.$emit(params.emit, res)
+        }
         this.$router.go(-1)
       })
     },
@@ -562,14 +580,19 @@ export default {
     },
     // 删除
     deleted() {
-      const params = {
-        familyId: this.model.id
-      }
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否删除家人信息'
+      }).then(() => {
+        const params = {
+          familyId: this.model.id
+        }
 
-      peace.service.patient.DelFamily(params).then(res => {
-        peace.util.alert(res.msg)
+        peace.service.patient.DelFamily(params).then(res => {
+          peace.util.alert(res.msg)
 
-        this.$router.go(-1)
+          this.$router.go(-1)
+        })
       })
     }
   }

@@ -66,7 +66,7 @@ export default {
     let that = this
     this.params = peace.util.decode(this.$route.params.json)
     let orderNo = this.params.orderNo
-    peace.service.index.GetOrderTime({ orderNo }).then(res => {
+    peace.service.index.getOrderInfo({ orderNo }).then(res => {
       let data = res.data
       this.createdTime = data.createdTime
       if (data.expireTime > data.currentTime) {
@@ -77,15 +77,6 @@ export default {
         // that.payCallback();
       }
     })
-    // if (this.$route.query.code) {
-    //   let code = this.$route.query.code
-    //   let { orderNo } = peace.util.decode(this.$route.params.json)
-    //   let params = { code, orderNo }
-    //   peace.service.index.GetWxLoginStatus(params).then(res => {
-    //     let data = res.data
-    //     peace.wx.payInvoke(data, this.payCallback)
-    //   })
-    // }
   },
   methods: {
     pay() {
@@ -105,7 +96,7 @@ export default {
                 inquiryId
               }
               if (inquiryId != '') {
-                // 去咨询界面去咨询界面
+                // 去咨询界面
                 let json = peace.util.encode(params)
                 this.$router.replace(`/setting/userConsultDetail/${json}`)
               } else {
@@ -121,16 +112,18 @@ export default {
       }
       peace.wx.pay(params, orderExp, this.payCallback)
     },
+
     payCallback() {
-      let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
+      let { typeName, orderNo, inquiryId } = peace.util.decode(this.$route.params.json)
       if (typeName.includes('挂号')) {
         let orderType = 'register'
         let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
         this.$router.replace(`/setting/order/userOrderDetail/${json}`)
       } else {
         let json = peace.util.encode({
-          ...peace.util.decode(this.$route.params.json),
-          startTime: new Number(this.createdTime) * 1000
+          // ...peace.util.decode(this.$route.params.json),
+          // startTime: new Number(this.createdTime) * 1000
+          inquiryId: inquiryId
         })
         this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
       }

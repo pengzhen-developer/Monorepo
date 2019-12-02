@@ -18,6 +18,7 @@ import hospital from './modules/hospital'
 import appoint from './modules/appoint'
 import diagnose from './modules/diagnose'
 import purchasedrug from './modules/purchasedrug'
+import group from './modules/group'
 
 export default {
   IM,
@@ -32,5 +33,6 @@ export default {
   hospital,
   appoint,
   diagnose,
-  purchasedrug
+  purchasedrug,
+  group
 }

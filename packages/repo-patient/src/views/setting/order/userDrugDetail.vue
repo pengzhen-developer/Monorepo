@@ -21,7 +21,8 @@
           <div class="order-text"></div>
         </div>
         <div class="cancelText"
-             v-if="order.OrderStatus == '5' && order.payMoney != 0 ">订单取消后退款将在1-3个工作日内原路返回，请注意查收
+             v-if="order.OrderStatus == '5' && order.payMoney != 0 ">
+          订单取消后退款将在1-3个工作日内原路返回，请注意查收
         </div>
         <div class="tab-content"
              v-if="order.ShippingMethod == '0'">
@@ -86,6 +87,10 @@
               <div class="dd">￥0</div>
             </div>
             <div class="dl-packet">
+              <div class="dt">优惠金额:</div>
+              <div class="dd">￥0</div>
+            </div>
+            <div class="dl-packet">
               <div class="dt">订单总价:</div>
               <div class="dd">￥{{order.TotalAmount}}</div>
             </div>
@@ -105,7 +110,7 @@
     </div>
 
     <div class="box"
-         v-if="order.OrderId">
+         v-if="order.OrderId&&order.OrderStatus != '0'">
       <div class="dl-packet">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
@@ -116,43 +121,41 @@
         <div class="dt">{{timeTags[parseInt(item.ServiceStates)]}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
-
-      <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-      <div class='bottom-1'
-           v-if="order.OrderStatus == 0">
-        <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
-        <div class="right">
-          <div @click="canselOrder"
-               class="pay cancel"
-               v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
-               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单</div>
-          <div @click="payOrder(order)"
-               class="pay"
-               v-if="order.OrderStatus == '0'"
-               style="background: #00C6AE; margin-bottom: 8px; ">
-            继续支付</div>
-        </div>
-      </div>
-
-      <div class="bottom"
-           v-else>
+    </div>
+    <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+    <div class='bottom-1'
+         v-if="order.OrderStatus == 0">
+      <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
+      <div class="right">
         <div @click="canselOrder"
-             class="btn block btn-blue"
-             v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
+             class="pay cancel"
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
-        <div @click="submitOrder"
-             class="btn block btn-blue"
-             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '5'">已取消</div>
+        <div @click="payOrder(order)"
+             class="pay"
+             v-if="order.OrderStatus == '0'"
+             style="background: #00C6AE; margin-bottom: 8px; ">
+          继续支付</div>
       </div>
     </div>
-
+    <div class="bottom"
+         v-else>
+      <div @click="canselOrder"
+           class="btn block btn-blue"
+           v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
+           style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+        取消订单</div>
+      <div @click="submitOrder"
+           class="btn block btn-blue"
+           v-if="order.OrderStatus == '3'">
+        {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '5'">已取消</div>
+    </div>
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
@@ -356,12 +359,13 @@ export default {
 .tab-content .addr-tit::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 2px;
-  width: 15px;
+  position: absolute;
+  left: 2px;
+  top: 3px;
+  width: 14px;
   height: 17px;
-  background-size: cover;
-  background-image: url('../../../assets/images/icons/addr-tit.jpg');
+  background-size: 100% 100%;
+  background-image: url(data:image/png;base64,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);
 }
 .tab-content .addr-p {
   font-size: 16px;
@@ -487,9 +491,13 @@ export default {
 .addr-p .inline {
   float: right;
 }
+.list-other .other-them {
+  position: relative;
+  padding-right: 14px;
+}
 .list-other .other-them::after {
   content: '?  ';
-  display: inline-block;
+  position: absolute;
   width: 10px;
   height: 10px;
   line-height: 1;
@@ -497,9 +505,8 @@ export default {
   border-radius: 50%;
   font-size: 10px;
   color: #fff;
-  margin-top: 1px;
-  margin-left: 4px;
-  padding: 0;
+  top: 5px;
+  right: 0;
   text-align: center;
 }
 .list-icon.list-icon-none {
@@ -585,13 +592,15 @@ export default {
   padding: 8px;
 }
 .order-card .text::after {
-  content: '>';
-  padding-left: 8px;
-  font-weight: bold;
-  font-size: 12px;
+  content: ' ';
   position: absolute;
-  top: 10px;
+  top: 14px;
+  margin-left: 5px;
+  width: 7px;
+  height: 12px;
   color: rgb(90, 90, 90);
+  background-size: cover;
+  background-image: url('../../../assets/images/icons/ic_more.png');
 }
 /*0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)*/
 .icon-status-0::before,
