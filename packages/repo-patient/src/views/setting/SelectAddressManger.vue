@@ -47,7 +47,7 @@ export default {
       isGet: false
     }
   },
-  created() {
+  activated() {
     this.get()
   },
   methods: {
@@ -176,10 +176,8 @@ export default {
   background-image: url('../../assets/images/icon-del.jpg');
 }
 
-
 .icon_none_address::before {
   content: '';
   background-image: url('../../assets/images/icons/icon_none_address.jpg');
 }
-
 </style>
