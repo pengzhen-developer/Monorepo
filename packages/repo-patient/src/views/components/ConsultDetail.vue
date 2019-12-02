@@ -203,7 +203,7 @@
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
-            internalData.inquiryInfo.inquiryStatus == '4' ||
+            (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
               internalData.inquiryInfo.inquiryStatus == '5'">咨询记录</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"

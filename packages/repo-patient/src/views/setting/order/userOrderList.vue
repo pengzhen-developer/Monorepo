@@ -218,11 +218,23 @@ export default {
       item.close = false
       if (item.orderType == 'inquiry') {
         item.inquiryInfo.inquiryStatus = 6
+        let orderNo = item.orderInfo.orderNo
+        this.cancelInquiryOrder(orderNo, index, 'auto')
         item.inquiryInfo.statusTxt = '已取消'
       } else if (item.orderType == 'register') {
+        let orderNo = item.orderNo
+        if (!item.cancelState && item.orderStatus != 1) {
+          return
+        }
+        let type = ''
+        if (item.orderStatus == 1) {
+          type = 'cancel'
+        } else {
+          type = 'quit'
+        }
+        this.cancelRegisterOrder(orderNo, index, type, 'auto')
         item.orderStatus = 2
       }
-
       let data = JSON.parse(JSON.stringify(item))
       this.orderList.splice(index, 1, data)
     },
@@ -267,6 +279,7 @@ export default {
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
+                // item.time = (item.orderExpireTime - item.currentTime - 14 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
@@ -276,6 +289,7 @@ export default {
                   : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
+                // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
               }
             }
           })
@@ -295,23 +309,29 @@ export default {
         message: '是否确认取消咨询？'
       })
         .then(() => {
-          const params = {
-            orderNo: orderNo
-          }
-          peace.service.patient.cancel(params).then(res => {
-            peace.util.alert(res.msg)
-            // this.$store.dispatch('appointMent/getList')
-
-            if (res.code == '200') {
-              let data = this.orderList[index]
-              data.inquiryInfo.inquiryStatus = '6'
-              this.orderList.splice(index, 1, data)
-            }
-          })
+          this.cancelInquiryOrder(orderNo, index, 'hand')
         })
         .catch(() => {
           // on cancel
         })
+    },
+    cancelInquiryOrder(orderNo, index, type) {
+      let params = {
+        orderNo: orderNo
+      }
+      if (type == 'auto') {
+        params.cancelType = 2
+      }
+      peace.service.patient.cancel(params).then(res => {
+        if (type == 'hand') {
+          peace.util.alert(res.msg)
+          if (res.code == '200') {
+            let data = this.orderList[index]
+            data.inquiryInfo.inquiryStatus = '6'
+            this.orderList.splice(index, 1, data)
+          }
+        }
+      })
     },
     canselOrder(item, index) {
       if (!item.cancelState && item.orderStatus != 1) {
@@ -329,30 +349,34 @@ export default {
         message: alertMsg
       })
         .then(() => {
-          peace.service.appoint
-            .orderCancel({
-              orderNo: item.orderNo,
-              type
-            })
-            .then(res => {
-              console.log(res)
-              peace.util.alert(res.msg || '退号成功')
-              // this.$store.dispatch('appointMent/getList')
-              if (res.code == '200') {
-                let data = this.orderList[index]
-                if (item.orderStatus == '1') {
-                  data.orderStatus = '2'
-                } else {
-                  data.orderStatus = '6'
-                }
-
-                this.orderList.splice(index, 1, data)
-              }
-            })
+          this.cancelRegisterOrder(item.orderNo, index, type, 'hand')
         })
         .catch(() => {
           // on cancel
         })
+    },
+    cancelRegisterOrder(orderNo, index, type, hasAlert) {
+      let params = {
+        orderNo: orderNo,
+        type: type
+      }
+      if (hasAlert == 'auto') {
+        params.cancelType = 2
+      }
+      peace.service.appoint.orderCancel(params).then(res => {
+        if (hasAlert == 'hand') {
+          peace.util.alert(res.msg || '退号成功')
+          if (res.code == '200') {
+            let data = this.orderList[index]
+            if (data.orderStatus == '1') {
+              data.orderStatus = '2'
+            } else {
+              data.orderStatus = '6'
+            }
+            this.orderList.splice(index, 1, data)
+          }
+        }
+      })
     },
     goConsultDetailPage(item) {
       let json = peace.util.encode({
