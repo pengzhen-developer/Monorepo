@@ -64,7 +64,7 @@
                  :key="fileIndex">
               <div class="message out img">
 
-                <img style="max-height: 140px; max-width: 140px; width: 100%; height: 100%; border-radius: 8px;"
+                <img style="max-width: 140px; max-height: 140px; width: auto; height: auto; border-radius: 8px;"
                      :src="file.content"
                      @click="viewImage(file, fileIndex)">
               </div>
