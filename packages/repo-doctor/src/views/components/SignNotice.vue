@@ -1,26 +1,43 @@
 <template>
   <div class="signNotice">
     <div class="top">
-      互联网医院诊疗办法规定：在互联网医院开具的处方必须由医生签名后才能生效
+      <template v-if="$slots.title">
+        <slot name="title"></slot>
+      </template>
+      <template v-else>
+        互联网医院诊疗办法规定：在互联网医院开具的处方必须由医生签名后才能生效
+      </template>
     </div>
-    <h1>您当前有<span>{{num}}</span>张处方未签名</h1>
+
+    <template v-if="$slots.notify">
+      <slot name="notify"></slot>
+    </template>
+    <template v-else>
+      <h1>您当前有<span>{{num}}</span>张处方未签名</h1>
+    </template>
     <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0 0 0;">
       <div
            style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <span>安卓请扫码：</span>
-        <img src="https://devdoctor.hp.aijiayi.com/android.png"
+        <img :src="`http://ehospital.holoalpha.com/public/images/android_qrcode.png?t=${ new Date().getTime() }`"
              class="code" />
       </div>
       <div
            style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <span>苹果请扫码：</span>
-        <img src="https://devdoctor.hp.aijiayi.com/ios.png"
+        <img :src="`http://ehospital.holoalpha.com/public/images/ios_qrcode.png?t=${ new Date().getTime() }`"
              class="code" />
       </div>
     </div>
-    <h3>请使用手机打开【万家云医】APP对未签名处方签名，方便患者快捷购药</h3>
-    <p>未安装【万家云医】APP的用户</p>
-    <p>使用手机扫描上面二维码可快捷安装APP</p>
+
+    <template v-if="$slots.footer">
+      <slot name="footer"></slot>
+    </template>
+    <template v-else>
+      <h3>请使用手机打开【万家云医】APP对未签名处方签名，方便患者快捷购药</h3>
+      <p>未安装【万家云医】APP的用户</p>
+      <p>使用手机扫描上面二维码可快捷安装APP</p>
+    </template>
   </div>
 </template>
 

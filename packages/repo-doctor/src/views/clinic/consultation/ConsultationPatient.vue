@@ -5,7 +5,8 @@
       <span>会诊申请单</span>
     </div>
 
-    <div class="body" v-if="data">
+    <div class="body"
+         v-if="data">
       <el-scrollbar class="body-scrollbar">
         <div class="card">
           <div class="title">
@@ -15,10 +16,8 @@
 
           <div class="content patient">
             <div class="item">
-              <div
-                class="doctor-img"
-                style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;"
-              >
+              <div class="doctor-img"
+                   style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
                 <span style="color: #fff; margin: 0;">{{
                   data.familyName.substr(
                     data.familyName.length - 2,
@@ -34,12 +33,9 @@
               <span>{{ data.familyAge }}</span>
             </div>
             <div class="item">
-              <el-button
-                @click="showDetail"
-                type="text"
-                style="font-size: 12px;"
-                >查看详情</el-button
-              >
+              <el-button @click="showDetail"
+                         type="text"
+                         style="font-size: 12px;">查看详情</el-button>
             </div>
           </div>
         </div>
@@ -48,13 +44,11 @@
           <div class="title">
             <i class="icon_archives_icon_doctor"></i>
             <!-- 我发起的会诊 -->
-            <template
-              v-if="
+            <template v-if="
                 $store.getters['consultation/consultInfo'].startDoctor[0]
                   .doctorId ===
                   $store.state.user.userInfo.list.docInfo.doctor_id
-              "
-            >
+              ">
               <span>受邀医生：</span>
             </template>
 
@@ -65,28 +59,26 @@
           </div>
 
           <div class="content doctor">
-            <template
-              v-if="
+            <template v-if="
                 $store.getters['consultation/consultInfo'].startDoctor[0]
                   .doctorId ===
                   $store.state.user.userInfo.list.docInfo.doctor_id
-              "
-            >
-              <img :src="data.toPhoto" class="doctor-img" />
+              ">
+              <img :src="data.toPhoto"
+                   class="doctor-img" />
             </template>
             <template v-else>
-              <img :src="data.fromPhoto" class="doctor-img" />
+              <img :src="data.fromPhoto"
+                   class="doctor-img" />
             </template>
 
             <div class="doctor-info">
               <div>
-                <template
-                  v-if="
+                <template v-if="
                     $store.getters['consultation/consultInfo'].startDoctor[0]
                       .doctorId ===
                       $store.state.user.userInfo.list.docInfo.doctor_id
-                  "
-                >
+                  ">
                   <span style="font-weight:600; color: rgba(51,51,51,1);">{{
                     data.toDoctorName
                   }}</span>
@@ -98,13 +90,11 @@
                 </template>
               </div>
               <div>
-                <template
-                  v-if="
+                <template v-if="
                     $store.getters['consultation/consultInfo'].startDoctor[0]
                       .doctorId ===
                       $store.state.user.userInfo.list.docInfo.doctor_id
-                  "
-                >
+                  ">
                   <span>{{ data.toDeptName }}</span>
                   <span>{{ data.toDoctorTitle }}</span>
                 </template>
@@ -114,13 +104,11 @@
                 </template>
               </div>
               <div>
-                <template
-                  v-if="
+                <template v-if="
                     $store.getters['consultation/consultInfo'].startDoctor[0]
                       .doctorId ===
                       $store.state.user.userInfo.list.docInfo.doctor_id
-                  "
-                >
+                  ">
                   <span :title="data.toHospitalName">{{
                     data.toHospitalName
                   }}</span>
@@ -148,13 +136,10 @@
                 <span>初步诊断</span>
               </div>
               <div class="content">
-                <el-tag
-                  :key="item"
-                  style="margin-right: 5px; border: none; "
-                  type="info"
-                  v-for="item in data.familyDisagnose.split('|')"
-                  >{{ item }}</el-tag
-                >
+                <el-tag :key="item"
+                        style="margin-right: 5px; border: none; "
+                        type="info"
+                        v-for="item in data.familyDisagnose.split('|')">{{ item }}</el-tag>
               </div>
             </div>
             <div class="item">
@@ -195,13 +180,10 @@
 
           <div class="content time-line">
             <el-timeline>
-              <el-timeline-item
-                :timestamp="data.outCheckTime"
-                placement="top"
-                type="primary"
-              >
-                <el-tag class="timestamp_extend"
-                  >{{ data.outCheckStatus === 3 ? "已通过" : "" }}
+              <el-timeline-item :timestamp="data.outCheckTime"
+                                placement="top"
+                                type="primary">
+                <el-tag class="timestamp_extend">{{ data.outCheckStatus === 3 ? "已通过" : "" }}
                 </el-tag>
 
                 <div class="timestamp_remark">
@@ -216,13 +198,10 @@
                 </div>
               </el-timeline-item>
 
-              <el-timeline-item
-                :timestamp="data.inCheckTime"
-                placement="top"
-                type="primary"
-              >
-                <el-tag class="timestamp_extend"
-                  >{{ data.inCheckStatus === 3 ? "已通过" : "" }}
+              <el-timeline-item :timestamp="data.inCheckTime"
+                                placement="top"
+                                type="primary">
+                <el-tag class="timestamp_extend">{{ data.inCheckStatus === 3 ? "已通过" : "" }}
                 </el-tag>
 
                 <div class="timestamp_remark">
@@ -242,10 +221,9 @@
       </el-scrollbar>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible" title="图文问诊记录">
-      <InquirySessionMessageList
-        :data="dialog.data"
-      ></InquirySessionMessageList>
+    <peace-dialog :visible.sync="dialog.visible"
+                  title="图文问诊记录">
+      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
     </peace-dialog>
   </div>
 </template>
@@ -277,6 +255,12 @@ export default {
     }
   },
 
+  watch: {
+    '$store.state.consultation.session'() {
+      this.getConsultationDetail()
+    }
+  },
+
   created() {
     this.getConsultationDetail();
   },
@@ -293,10 +277,8 @@ export default {
     },
 
     showDetail() {
-      if (
-        this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成
-      ) {
-        return peace.util.alert("问诊尚未结束，无法查看记录");
+      if (this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成) {
+        return peace.util.alert('问诊尚未结束，无法查看记录')
       }
 
       const params = {

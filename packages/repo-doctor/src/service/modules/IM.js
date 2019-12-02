@@ -125,7 +125,7 @@ export function onDisConnect(disConnectObject) {
 export function onWillReconnect(willReconnectObject) {
   console.warn('【 IM 】【 onWillReconnect 】', new Date(), willReconnectObject)
 
-  $peace.util.warning(`检测到网络异常，${parseInt(willReconnectObject.duration / 1000)} 秒后进行第 ${willReconnectObject.retryCount} 次重接。`)
+  $peace.util.warning(`网络异常`)
 }
 
 /**
@@ -153,7 +153,10 @@ export function onSessions(sessions) {
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
   peace.service.IM.getInquirySessionsStatus(sessions).then(inquirySessionsStatus => {
-    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(sessions, inquirySessionsStatus)
+    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(
+      sessions,
+      inquirySessionsStatus
+    )
     peace.service.IM.setInquirySessions(sessionsStatus)
   })
 
@@ -162,7 +165,10 @@ export function onSessions(sessions) {
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
   peace.service.IM.getConsultationSessionsStatus(sessions).then(consultationSessionsStatus => {
-    const sessionsStatus = peace.service.IM.setConsultationSessionsStatus(sessions, consultationSessionsStatus)
+    const sessionsStatus = peace.service.IM.setConsultationSessionsStatus(
+      sessions,
+      consultationSessionsStatus
+    )
     peace.service.IM.setConsultationSessions(sessionsStatus)
   })
 }
@@ -202,7 +208,9 @@ export function onUpdateSession(session) {
       // 将新 message 更新到 sessionMessages store
       if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
         if (Store.state.inquiry.sessions && Store.state.inquiry.sessions.length > 0) {
-          peace.service.IM.setInquirySession(Store.state.inquiry.sessions.find(temp => temp.id === session.id))
+          peace.service.IM.setInquirySession(
+            Store.state.inquiry.sessions.find(temp => temp.id === session.id)
+          )
           peace.service.IM.setInquirySessionMessages(session.lastMsg)
         } else {
           peace.service.IM.resetInquirySession()
@@ -216,31 +224,6 @@ export function onUpdateSession(session) {
       // 因 resetSessionUnread 重置会话未读数，会触发 onUpdateSession 回调，使用 typeof session.lastMsg.content 验证是否已经更新状态
       if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
         peace.service.IM.setConsultationSessionStatus(session)
-
-        // 加入频道和拒绝加入频道，通过通知推送，并通知当前用户（不通知操作人）
-        // 强制解散频道，通过通知推送，强制关闭其它正在进行中的视频会诊，并通知当前用户（不通知操作人）
-        // 详见 ConsultationVideo.vue => onLeaveChannel
-        if (session.lastMsg.from !== Store.state.user.userInfo.list.docInfo.doctor_id) {
-          if (session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.强制解散频道) {
-            peace.util.alert(session.lastMsg.content.data.showTextInfo.doctorClientText)
-
-            // 关闭视频流， 关闭视频窗口
-            $peace.consultationVideoComponent.consultation.visible = false
-            $peace.WebRTC.leaveChannel()
-          }
-
-          if (
-            session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.同意加入频道 ||
-            session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.拒绝加入频道
-          ) {
-            peace.util.alert(session.lastMsg.content.data.showTextInfo.doctorClientText)
-          }
-        }
-
-        if (session.lastMsg.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
-          // 结束会诊时， 关闭所有的通知
-          $peace.consultationVideoComponent && $peace.consultationVideoComponent.closeNotify()
-        }
       }
 
       // 将新 sessions 更新到 sessions store
@@ -250,7 +233,9 @@ export function onUpdateSession(session) {
       // 将新 message 更新到 sessionMessages store
       if (Store.state.consultation.session && Store.state.consultation.session.id === session.id) {
         if (Store.state.consultation.sessions && Store.state.consultation.sessions.length > 0) {
-          peace.service.IM.setConsultationSession(Store.state.consultation.sessions.find(temp => temp.id === session.id))
+          peace.service.IM.setConsultationSession(
+            Store.state.consultation.sessions.find(temp => temp.id === session.id)
+          )
           peace.service.IM.setConsultationSessionMessages(session.lastMsg)
         } else {
           peace.service.IM.resetConsultationSession()
@@ -279,9 +264,8 @@ export function onMsg(message) {
  */
 export function onSysmsg(message) {
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
-  Store.dispatch('notification/getList');
+  Store.dispatch('notification/getList')
 }
-
 
 /**
  * 设置 inquiry sessions
@@ -324,7 +308,10 @@ export function setInquirySessions(sessions) {
     }
   }
 
-  Store.commit('inquiry/setInquirySessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
+  Store.commit(
+    'inquiry/setInquirySessions',
+    deserializationSessions.filter(filterMethod).sort(sortMethod)
+  )
 }
 
 /**
@@ -334,15 +321,20 @@ export function setInquirySessions(sessions) {
  * @param {*} session
  */
 export function setConsultationSessions(sessions) {
-  const serializationSessions = $peace.NIM.mergeSessions(Store.state.consultation.sessions, sessions)
+  const serializationSessions = $peace.NIM.mergeSessions(
+    Store.state.consultation.sessions,
+    sessions
+  )
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [等待会诊] / [会诊中] 数据
   const filterMethod = session => {
     if (session.scene === 'team' && session.content && session.content.consultInfo) {
       if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
+        session.content.consultInfo.consultStatus ===
+          peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
+        session.content.consultInfo.consultStatus ===
+          peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
       ) {
         return true
       }
@@ -367,7 +359,10 @@ export function setConsultationSessions(sessions) {
     }
   }
 
-  Store.commit('consultation/setConsultationSessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
+  Store.commit(
+    'consultation/setConsultationSessions',
+    deserializationSessions.filter(filterMethod).sort(sortMethod)
+  )
 }
 
 /**
@@ -430,7 +425,10 @@ export function setInquirySessionMessages(messages) {
  * @param {*} message
  */
 export function setConsultationSessionMessages(messages) {
-  const serializationMessages = $peace.NIM.mergeMsgs(Store.state.consultation.sessionMessages, messages)
+  const serializationMessages = $peace.NIM.mergeMsgs(
+    Store.state.consultation.sessionMessages,
+    messages
+  )
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
   Store.commit('consultation/setConsultationSessionMessages', deserializationMessages)
@@ -512,7 +510,9 @@ export function getConsultationSessionsStatus(sessions) {
 export function setInquirySessionsStatus(sessions, sessionsStatus) {
   sessions.forEach(session => {
     if (session.scene === 'p2p') {
-      const currentSessionStatus = sessionsStatus.find(item => item.sessionId === session.id || item.id === session.id)
+      const currentSessionStatus = sessionsStatus.find(
+        item => item.sessionId === session.id || item.id === session.id
+      )
       session.content = currentSessionStatus
     }
   })
@@ -535,7 +535,11 @@ export function setInquirySessionsStatus(sessions, sessionsStatus) {
 export function setConsultationSessionsStatus(sessions, sessionsStatus) {
   sessions.forEach(session => {
     if (session.scene === 'team') {
-      const currentSessionStatus = sessionsStatus.find(item => item.teamId === session.id.replace('team-', '') || item.id === session.id.replace('team-', ''))
+      const currentSessionStatus = sessionsStatus.find(
+        item =>
+          item.teamId === session.id.replace('team-', '') ||
+          item.id === session.id.replace('team-', '')
+      )
       session.content = currentSessionStatus
     }
   })
@@ -556,13 +560,18 @@ export function setConsultationSessionsStatus(sessions, sessionsStatus) {
  */
 export function setInquirySessionStatus(sessionWithStatus) {
   // 合并当前 session with status 到 store
-  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessionWithStatus)
+  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(
+    Store.state.inquiry.sessions,
+    sessionWithStatus
+  )
 
   // 反序列化当前 session with status
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.inquiry.sessions.find(session => session.id === sessionWithStatus.id)
+  const currentSession = Store.state.inquiry.sessions.find(
+    session => session.id === sessionWithStatus.id
+  )
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
@@ -582,17 +591,24 @@ export function setInquirySessionStatus(sessionWithStatus) {
  */
 export function setConsultationSessionStatus(sessionWithStatus) {
   // 合并当前 session with status 到 store
-  Store.state.consultation.sessions = $peace.NIM.mergeSessions(Store.state.consultation.sessions, sessionWithStatus)
+  Store.state.consultation.sessions = $peace.NIM.mergeSessions(
+    Store.state.consultation.sessions,
+    sessionWithStatus
+  )
 
   // 反序列化当前 session with status
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.consultation.sessions.find(session => session.id === sessionWithStatus.id)
+  const currentSession = Store.state.consultation.sessions.find(
+    session => session.id === sessionWithStatus.id
+  )
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.consultation.sessions = Store.state.consultation.sessions.filter(session => session.content)
+  Store.state.consultation.sessions = Store.state.consultation.sessions.filter(
+    session => session.content
+  )
 
   return Store.state.consultation.sessions
 }

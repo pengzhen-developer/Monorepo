@@ -1,15 +1,15 @@
 <template>
   <div class="consultation-session-message-list">
-    <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message ,index) in messageList">
+    <div :class="getMessageFlow(message)" :key="message.time" class="message"
+      v-for="(message ,index) in messageList">
       <!-- 文本消息 -->
-      <template
-        v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
-              getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊"
-      >
+      <template v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
+              getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊">
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
@@ -18,19 +18,23 @@
       </template>
 
       <!-- 解散频道时，推送会诊时长 -->
-      <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道">
+      <template
+        v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道">
         <!-- 消息时间 -->
         <template v-if="isShowMessageTime(message ,index)">
           <div class="message time">
-            <div class="message-body">{{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            <div class="message-body">
+              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
           </div>
         </template>
 
         <!-- 消息内容 -->
         <div class="message-body">
-          <i class="icon_ic_video_right" style="margin: 0 10px 0 0;" v-show="getMessageFlow(message) === 'in'"></i>
+          <i class="icon_ic_video_right" style="margin: 0 10px 0 0;"
+            v-show="getMessageFlow(message) === 'in'"></i>
           <span>{{ getMessageText(message) }}</span>
-          <i class="icon_ic_video_left" style="margin: 0 0 0 10px;" v-show="getMessageFlow(message) === 'out'"></i>
+          <i class="icon_ic_video_left" style="margin: 0 0 0 10px;"
+            v-show="getMessageFlow(message) === 'out'"></i>
         </div>
       </template>
     </div>
@@ -83,7 +87,8 @@ export default {
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
           if (
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
+            message.content.code !==
+              peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊
           )
