@@ -42,7 +42,7 @@
           <span class="date">{{ item.courseTime }}</span>
         </div>
         <div class="item-conytent">
-          <span>病程记录：</span>
+          <span>病程管理：</span>
           <span>{{ item.courseRecord }}</span>
         </div>
       </div>
