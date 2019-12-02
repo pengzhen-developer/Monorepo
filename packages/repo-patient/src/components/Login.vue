@@ -3,16 +3,31 @@
     <div class="login-form">
       <h4 class="login-form-title">手机快捷登录</h4>
 
-      <van-field pattern="\d*" placeholder="请输入手机号" ref="tel" type="number" v-model="model.tel">
+      <van-field pattern="\d*"
+                 placeholder="请输入手机号"
+                 ref="tel"
+                 type="number"
+                 v-model="model.tel">
       </van-field>
 
-      <van-field clickable ref="sms" maxlength="6" pattern="\d*" placeholder="请输入验证码" type="number"
-        v-model="model.smsCode">
-        <div @click="sendSms" class="login-form-smsCode" slot="right-icon">
+      <van-field clickable
+                 ref="sms"
+                 maxlength="6"
+                 pattern="\d*"
+                 placeholder="请输入验证码"
+                 type="number"
+                 v-model="model.smsCode">
+        <div @click="sendSms"
+             class="login-form-smsCode"
+             slot="right-icon">
 
           <template v-if="countDownTime">
-            <van-row type="flex" justify="start" align="center">
-              <van-count-down :time="countDownTime" @finish="countDownFinished" format="ss" />
+            <van-row type="flex"
+                     justify="start"
+                     align="center">
+              <van-count-down :time="countDownTime"
+                              @finish="countDownFinished"
+                              format="ss" />
               <span>秒</span>
             </van-row>
           </template>
@@ -22,7 +37,9 @@
         </div>
       </van-field>
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
+      <van-button @click="signIn"
+                  class="login-form-sign-in"
+                  type="primary">进入万家云医</van-button>
     </div>
 
     <div class="login-footer">
@@ -43,6 +60,7 @@ export default {
         smsCode: ''
       },
       hasLogin: false,
+      hasSend: false,
       countDownTime: undefined
     }
   },
@@ -67,16 +85,26 @@ export default {
         this.$refs.tel.focus()
         return peace.util.alert('请输入正确的手机号')
       }
-
+      if (this.hasSend) {
+        return
+      }
+      this.hasSend = true
       // 发送验证码
-      peace.service.login.sendSms(this.model).then(res => {
-        // 开启倒计时
-        this.countDownTime = 1000 * 60
-        // 获取到焦点
-        this.$refs.sms.focus()
+      peace.service.login
+        .sendSms(this.model)
+        .then(res => {
+          // 开启倒计时
+          this.countDownTime = 1000 * 60
+          // 获取到焦点
+          this.$refs.sms.focus()
 
-        peace.util.alert(res.msg)
-      })
+          peace.util.alert(res.msg)
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.hasSend = false
+          })
+        })
     },
 
     signIn() {
@@ -84,7 +112,6 @@ export default {
         return
       }
       this.hasLogin = true
-
       const params = {
         tel: this.model.tel,
         smsCode: this.model.smsCode
