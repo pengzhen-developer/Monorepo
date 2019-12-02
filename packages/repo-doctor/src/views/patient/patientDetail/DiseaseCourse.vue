@@ -8,7 +8,7 @@
 
     <hr class="dashed" />
 
-    <el-form label-width="80px">
+    <el-form>
       <el-form-item label="标签">
         <el-tag :key="item" type="info" v-for="item in data.upInfo.couseInfo.diseaseInfo.tag">{{ item }}</el-tag>
       </el-form-item>
@@ -127,7 +127,7 @@ export default {
   }
 
   /deep/ .el-form-item__label {
-    width: 4rem;
+    width: 4.5rem;
     text-align-last: justify;
     text-align: justify;
   }
