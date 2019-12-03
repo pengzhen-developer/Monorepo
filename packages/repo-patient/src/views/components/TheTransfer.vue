@@ -52,10 +52,11 @@
           <div class="card-body">
             <div class="card-name">
               {{data[current].reReferralOut.doctorInfo.name}}
-              {{data[current].reReferralOut.doctorInfo.deptName}}
+              {{data[current].reReferralOut.doctorInfo.doctorTitle}}
             </div>
             <div class="card-small">
               {{data[current].reReferralOut.doctorInfo.hospitalName}}
+              {{data[current].reReferralOut.doctorInfo.deptName}}
             </div>
           </div>
         </div>
@@ -93,10 +94,11 @@
           <div class="card-body">
             <div class="card-name">
               {{data[current].reReferralIn.doctorInfo.name}}
-              {{data[current].reReferralIn.doctorInfo.deptName}}
+              {{data[current].reReferralIn.doctorInfo.doctorTitle}}
             </div>
             <div class="card-small">
               {{data[current].reReferralIn.doctorInfo.hospitalName}}
+              {{data[current].reReferralIn.doctorInfo.deptName}}
             </div>
           </div>
         </div>
@@ -112,18 +114,19 @@
              v-if="data[current].familyInfo.transferStatus == '1'">
           {{data[current].reReferralOut.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}
         </div>
-        <div class="txt-p"
+        <!-- <div class="txt-p"
              v-else-if="data[current].familyInfo.transferStatus == '2'">
           {{data[current].reReferralOut.checkSuggest || '转出失败，转诊被拒绝。'}}
-        </div>
+        </div> -->
         <div class="timeline"
-             v-else-if="data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'">
-          <!-- v-if="data[current].reReferralOut.checkTime" -->
-          <div class="item">
+             v-if="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&(data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'||data[current].familyInfo.transferStatus == '2')">
+          <div class="item"
+               v-if="data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest">
             <div class="item-time">{{data[current].reReferralOut.checkTime}}</div>
             <div class="item-text">{{data[current].reReferralOut.checkSuggest}}</div>
           </div>
-          <div class="item">
+          <div class="item"
+               v-if="data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest">
             <div class="item-time"
                  v-if="data[current].reReferralIn.checkTime">
               {{data[current].reReferralIn.checkTime}}</div>
@@ -133,22 +136,18 @@
           </div>
         </div>
         <div class="txt-p"
+             :class="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&'nmp'"
              v-if="data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '7'">
           {{ data[current].reReferralIn.referralSuggest }}</div>
-        <div class="txt-p"
+        <!-- <div class="txt-p"
              v-else-if="data[current].familyInfo.transferStatus == '5'">
           {{data[current].reReferralIn.checkSuggest || '转入失败，转诊被拒绝。'}}
-        </div>
+        </div> -->
       </div>
 
     </div>
     <div class="btn-group"
          v-if="data[current].familyInfo.transferStatus == '4'">
-      <!-- <form bindsubmit="showConsultPop" report-submit="true" style="width: 100%">
-        <button class="btn"
-          :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'"
-          form-type="submit">咨询医生</button>
-      </form> -->
       <div @click="applyConsult"
            class="btn"
            :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">咨询医生</div>
@@ -167,8 +166,12 @@ export default {
       hasApply: false
     }
   },
-  mounted() {
+  activated() {
+    this.data = []
     this.getData()
+  },
+  mounted() {
+    // this.getData()
   },
   methods: {
     getData() {
@@ -211,7 +214,33 @@ export default {
               inquiryNo: this.data[this.current].familyInfo.inquiryNo
             })
             .then(res => {
-              console.log(res)
+              // debugger
+              if (res.code == '200') {
+                let session = {
+                  inquiryStatus: res.data.inquiryStatus,
+                  inquiryNo: res.data.inquiryNo,
+                  doctorId: res.data.doctorId,
+                  createdTime: res.data.createTime
+                }
+                this.selectSession(session)
+              }
+            })
+            .catch(res => {
+              if (res.data.code == '202') {
+                Dialog.confirm({
+                  title: '温馨提示',
+                  message: res.data.msg + '是否继续咨询？'
+                }).then(() => {
+                  let session = {
+                    inquiryStatus: res.data.data.param.inquiryStatus,
+                    inquiryNo: '',
+                    doctorId: res.data.data.param.doctorId,
+                    createdTime: res.data.data.data.createTime
+                  }
+                  this.selectSession(session)
+                })
+              }
+              //on cancel
             })
         })
         .catch(() => {
@@ -220,6 +249,34 @@ export default {
         .finally(() => {
           this.hasApply = false
         })
+    },
+    selectSession(session) {
+      let params = null
+      if (
+        session.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已退诊 ||
+        session.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已完成 ||
+        session.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已取消
+      ) {
+        // 当前问诊【已完成】【已退诊】【已取消】
+        // 获取数据库记录，无法在 service/IM.js 重置未读数，因此手动重置为 0
+        // $peace.NIM.resetSessionUnread(session.id)
+
+        params = peace.util.encode({
+          inquiryNo: session.inquiryNo
+        })
+      } else {
+        params = peace.util.encode({
+          id: 'p2p-' + session.doctorId,
+          scene: 'p2p',
+          beginTime: session.createdTime.toDate().getTime(),
+          to: session.doctorId
+        })
+      }
+      // 清除聊天记录
+      peace.service.IM.resetInquirySessionMessages()
+
+      // 跳转聊天详情
+      this.$router.push(`/components/messageList/${params}`)
     },
     next() {
       if (this.current + 1 >= this.data.length) {
@@ -496,9 +553,14 @@ export default {
   padding: 10px 0;
   font-size: 15px;
   color: #333;
+  &.nmp {
+    padding: 0;
+    margin: 0;
+  }
 }
 .timeline {
-  margin: 10px 0;
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .timeline .item {
@@ -506,12 +568,20 @@ export default {
   padding-left: 10px;
   margin-left: 5px;
   border-left: 1px solid #00c6ae;
+  padding-bottom: 10px;
+  min-height: 50px;
+  padding-top: 1px;
 }
-
+.timeline .item:last-child {
+  border-left-color: #fff;
+  padding-bottom: 0;
+  min-height: 40px;
+}
 .timeline .item-time {
   color: #757e7d;
-  padding-top: 5px;
+  margin-top: -10px;
   font-size: 13px;
+  margin-bottom: 2px;
 }
 .timeline .item-time::before {
   content: '';
@@ -522,12 +592,11 @@ export default {
   border-radius: 50%;
   background: #00c6ae;
   left: -4px;
-  top: 10px;
+  top: -3px;
 }
 .timeline .item-text {
   font-size: 14px;
   color: #333;
-  padding-top: 5px;
 }
 .prescript.icon-status::after {
   content: '';

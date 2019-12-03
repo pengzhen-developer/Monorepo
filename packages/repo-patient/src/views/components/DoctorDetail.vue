@@ -40,7 +40,7 @@
         </div>
 
         <div class="row flex between">
-          <div>
+          <div class="flex">
             <span class="hospital">{{ doctor.doctorInfo.hospitalName }}</span>
             <span class="deparment">{{ doctor.doctorInfo.deptName }}</span>
           </div>
@@ -578,6 +578,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flex {
+  display: flex;
+  align-items: center;
+}
 .doctor-detail {
   height: 100%;
   display: flex;

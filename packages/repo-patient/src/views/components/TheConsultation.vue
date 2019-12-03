@@ -50,14 +50,14 @@
         <div class="card">
           <div class="card-avatar avatar-circular">
             <img class=""
-                 :src="data[current].fromPhoto" />>
+                 :src="data[current].fromPhoto" />
           </div>
           <div class="card-body">
             <div class="card-name">
               {{data[current].fromDoctorName}} {{data[current].fromDoctorTitle}}
             </div>
             <div class="card-small">
-              {{data[current].fromHospitalName}}
+              {{data[current].fromHospitalName}} {{data[current].fromDeptName}}
             </div>
           </div>
         </div>
@@ -97,7 +97,7 @@
               {{data[current].toDoctorName}} {{data[current].toDoctorTitle}}
             </div>
             <div class="card-small">
-              {{data[current].toHospitalName}}
+              {{data[current].toHospitalName}} {{data[current].toDeptName}}
             </div>
           </div>
         </div>
@@ -108,14 +108,14 @@
       <div class="outline-header">
         <div class="outline-tit">备注</div>
       </div>
-      <div class="outline-body">
+      <div class="outline-body nmp">
         <div class="txt-p"
              v-if="data[current].outCheckStatus == '1'">
           {{data[current].outCheckSuggest || '会诊申请正在等待医院审核，请耐心等候'}}
         </div>
         <div class="timeline"
              v-else-if="data[current].outCheckStatus == '2'">
-          <div class="item">
+          <div class="item b0">
             <div class="item-time"
                  v-if="data[current].outCheckTime">{{data[current].outCheckTime}}
             </div>
@@ -134,20 +134,20 @@
                  :class="data[current].outCheckTime ? '' : 'item-time' ">
               {{data[current].outCheckSuggest}}</div>
           </div>
-          <div class="item">
-            <div class="item-time"
-                 v-if="data[current].inCheckTime">{{data[current].inCheckTime}}
+          <div class="item b0">
+            <!-- v-if="data[current].inCheckTime" -->
+            <div class="item-time">{{data[current].inCheckTime}}
             </div>
-            <div class="item-text"
-                 :class=" data[current].inCheckTime ? '' : 'item-time' ">
-              {{data[current].inCheckSuggest || '会诊订单正在等待医院审核，请耐心等候'}}</div>
+            <!-- :class=" data[current].inCheckTime ? '' : 'item-time' " -->
+            <div class="item-text">
+              {{data[current].inCheckSuggest || data[current].markedWords}}</div>
           </div>
-          <div class="txt-p"
-               v-if="data[current].markedWords">
+          <div class="txt-p nmp"
+               v-if="data[current].inCheckSuggest&&data[current].markedWords">
             {{data[current].markedWords}}
           </div>
         </div>
-        <div class="txt-p"
+        <div class="txt-p nmp"
              v-else-if="data[current].consultStatus == '8'">
           {{data[current].closeReason}}
         </div>
@@ -177,7 +177,7 @@
           <div class="dt">会诊医师签名</div>
           <div class="dd">
             <img :src="data[current].doctorSignImg"
-                 style="width:88rpx;height: 33rpx;background-size: cover" />>
+                 style="width:88rpx;height: 33rpx;background-size: cover" />
           </div>
         </div>
       </div>
@@ -383,6 +383,9 @@ export default {
   padding-left: 15px;
   border-top: 1px solid #dedede;
   overflow: hidden;
+  &.nmp {
+    padding: 0 0 0 15px;
+  }
 }
 .outline-body,
 .outline-body .inline,
@@ -489,10 +492,10 @@ export default {
 .prescript .prescript-table {
   border-top: 1px dashed #e5e5e5;
 }
-.outline .outline-body {
-  margin: 10px 0;
-  padding: 0;
-}
+// .outline .outline-body {
+//   margin: 10px 0;
+//   padding: 0;
+// }
 .inline {
   color: #666;
 }
@@ -504,9 +507,14 @@ export default {
   padding: 10px 0;
   font-size: 15px;
   color: #333;
+  &.nmp {
+    padding: 0;
+    margin: 0;
+  }
 }
 .timeline {
-  margin: 10px 0;
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .timeline .item {
@@ -514,12 +522,25 @@ export default {
   padding-left: 10px;
   margin-left: 5px;
   border-left: 1px solid #00c6ae;
+  padding-bottom: 10px;
+  min-height: 50px;
+  padding-top: 1px;
+}
+// .timeline .item:last-child {
+//   border-left: 1px solid transparent !important;
+// }
+.timeline .item.b0 {
+  border-left: 1px solid transparent !important;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  min-height: 40px;
 }
 
 .timeline .item-time {
   color: #757e7d;
-  padding-top: 5px;
+  margin-top: -10px;
   font-size: 13px;
+  margin-bottom: 2px;
 }
 .timeline .item-time::before {
   content: '';
@@ -530,12 +551,12 @@ export default {
   border-radius: 50%;
   background: #00c6ae;
   left: -4px;
-  top: 10px;
+  top: -3px;
 }
 .timeline .item-text {
   font-size: 14px;
   color: #333;
-  padding-top: 5px;
+  // padding-top: 5px;
 }
 .prescript.icon-status::after {
   content: '';

@@ -7,7 +7,8 @@
                  placeholder="请输入手机号"
                  ref="tel"
                  type="number"
-                 v-model="model.tel"></van-field>
+                 v-model="model.tel">
+      </van-field>
 
       <van-field clickable
                  ref="sms"
@@ -42,7 +43,7 @@
     </div>
 
     <div class="login-footer">
-      <span class="gray">进入爱加医即代表你已同意</span>
+      <span class="gray">进入万家云医即代表你已同意</span>
       <span>用户协议及隐私策略</span>
     </div>
   </div>
@@ -59,6 +60,7 @@ export default {
         smsCode: ''
       },
       hasLogin: false,
+      hasSend: false,
       countDownTime: undefined
     }
   },
@@ -83,16 +85,26 @@ export default {
         this.$refs.tel.focus()
         return peace.util.alert('请输入正确的手机号')
       }
-
+      if (this.hasSend) {
+        return
+      }
+      this.hasSend = true
       // 发送验证码
-      peace.service.login.sendSms(this.model).then(res => {
-        // 开启倒计时
-        this.countDownTime = 1000 * 60
-        // 获取到焦点
-        this.$refs.sms.focus()
+      peace.service.login
+        .sendSms(this.model)
+        .then(res => {
+          // 开启倒计时
+          this.countDownTime = 1000 * 60
+          // 获取到焦点
+          this.$refs.sms.focus()
 
-        peace.util.alert(res.msg)
-      })
+          peace.util.alert(res.msg)
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.hasSend = false
+          }, 500)
+        })
     },
 
     signIn() {
@@ -100,7 +112,6 @@ export default {
         return
       }
       this.hasLogin = true
-
       const params = {
         tel: this.model.tel,
         smsCode: this.model.smsCode

@@ -18,17 +18,17 @@
           </div>
         </div>
         <div class="form-dl"
-             v-if="internalData.patientInfo.guardianName">
-          <div class="form-dt">监 护 人 :</div>
-          <div class="form-dd">{{internalData.patientInfo.guardianName}} |
-            {{internalData.familyInfo.guardianSex}} |
-            {{internalData.patientInfo.guardianAge +'岁'}}
+             v-if="internalData.inquiryOrderInfo.guardianName">
+          <div class="form-dt"><span>监 护 人</span> :</div>
+          <div class="form-dd">{{internalData.inquiryOrderInfo.guardianName}} |
+            {{internalData.inquiryOrderInfo.guardianSex}} |
+            {{internalData.inquiryOrderInfo.guardianAge +'岁'}}
           </div>
         </div>
       </div>
       <!--病情描述-->
       <div class="module-item">
-        <div class="b">病情现状描述</div>
+        <div class="b">病情描述</div>
         <div class="span">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
@@ -38,13 +38,24 @@
           <div class="b">复诊信息</div>
           <div class="form-dl img"
                v-if="internalData.inquiryOrderInfo.imgs.length>0">
-            <div class="form-dt ">复诊诊凭 :</div>
+            <div class="form-dt ">复诊凭证 :</div>
             <div class="form-img">
+              <van-image-preview v-model="imagePreview.visible"
+                                 :start-position="imagePreview.position"
+                                 :images="internalData.inquiryOrderInfo.imgs.map(file => file)">
+                <template v-slot:cover>
+                  <van-button icon="cross"
+                              type="primary"
+                              round
+                              @click="imagePreview.visible = false" />
+                </template>
+              </van-image-preview>
+
               <div class="img"
                    v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                    :key="index">
                 <img :src="item"
-                     @click="viewImage(item)" />
+                     @click="viewImage(item, index)" />
               </div>
 
             </div>
@@ -68,22 +79,58 @@ Vue.use(ImagePreview)
 export default {
   data() {
     return {
-      internalData: null
+      internalData: null,
+
+      imagePreview: {
+        visible: false,
+        position: 0
+      }
     }
   },
+
   mounted() {
     this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
-    console.log(this.internalData)
   },
+
   methods: {
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     }
   }
 }
 </script>
 
 <style lang="scss">
+/deep/ .van-image-preview__index {
+  top: 24px;
+}
+
+/deep/ .van-image-preview__cover {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+
+  .van-button--round {
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #2a2a2a;
+    background-color: #999999;
+    border: 1px solid #999999;
+
+    .van-button__icon {
+      line-height: 1;
+    }
+  }
+}
+
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   &:last-child {
@@ -107,10 +154,20 @@ export default {
       min-width: 70px;
       display: flex;
       padding-right: 10px;
+      align-items: center;
       span {
         flex: 1;
+        text-align: justify;
         text-align-last: justify;
-        margin-right: 3px;
+        padding-right: 3px;
+        height: 16px;
+        line-height: 16px;
+        &::after {
+          content: ' ';
+          display: inline-block;
+          width: 100%;
+          height: 0px;
+        }
       }
     }
     .form-dd {
@@ -162,7 +219,6 @@ export default {
       padding-bottom: 5px;
     }
     .form-img {
-      padding: 5px 0;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -170,8 +226,7 @@ export default {
         width: 57px;
         height: 57px;
         background: #ccc;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin: 5px 10px 5px 0;
         &:nth-child(5n) {
           margin-right: 0 !important;
         }
@@ -233,7 +288,7 @@ export default {
   }
   .b {
     display: block;
-    font-weight: 600;
+    font-weight: bold;
     color: #000;
 
     &::before {

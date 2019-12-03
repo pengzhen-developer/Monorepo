@@ -66,7 +66,8 @@
                      v-model="model.nationName" />
         </template>
         <template v-else>
-          <van-field @click="showPopupNations"
+          <van-field :disabled="isEdit"
+                     @click="showPopupNations"
                      label="民族"
                      placeholder="请输入"
                      required
@@ -259,7 +260,7 @@ export default {
       },
       familyId: '',
       isNationExist: false,
-      ageLimit: 6,
+      ageLimit: 7, //测试为7 上线为6
       age: null,
       gardianSet: false,
       gardianId: '',
@@ -354,9 +355,23 @@ export default {
       })
     },
     setGardianInfo(item) {
-      this.gardianId = item.idCard
-      this.gardianName = item.name
-      this.gardianSet = true
+      if (item.idCard) {
+        this.gardianId = item.idCard
+        this.gardianName = item.name
+        this.gardianSet = true
+      } else {
+        this.age = null
+        this.model = {
+          name: '',
+          idcard: '',
+          relation: '',
+          sex: '',
+          birthday: '',
+          allergic_history: '',
+          foodAllergy: ''
+        }
+      }
+
       this.gDialog.visible = false
     },
     getAgeByIdCard(identityCard) {
@@ -521,10 +536,8 @@ export default {
             allergic_history: this.model.allergic_history,
             foodAllergy: this.model.foodAllergy
           }
-
           peace.service.patient.upbindFamily(params).then(res => {
             peace.util.alert(res.msg)
-
             this.$emit('onComplete')
           })
         } else {

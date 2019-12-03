@@ -171,10 +171,19 @@ export default {
       }
     }
   },
-
-  created() {
-    this.allHealthList()
+  watch: {
+    familyId: {
+      handler() {
+        if (this.familyId) {
+          this.allHealthList()
+        }
+      },
+      immediate: true
+    }
   },
+  // created() {
+  //   this.allHealthList()
+  // },
 
   methods: {
     allHealthList() {

@@ -3,7 +3,8 @@
     <!--        医生信息-->
     <div class="card">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor" class />
+        <img :src="doctorInfo.avartor"
+             class />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -13,24 +14,23 @@
         <!--                <div class="card-small">-->
         <!--                    评分：7.6  预约量：123-->
         <!--                </div>-->
-        <div class="card-brief" v-if="doctorInfo.specialSkill">
+        <div class="card-brief"
+             v-if="doctorInfo.specialSkill">
           <div class="span s">擅长：</div>
           <div class="span xl">{{doctorInfo.specialSkill}}</div>
         </div>
       </div>
     </div>
     <!--提示-->
-    <van-notice-bar :scrollable="false">周一至周五：07:30~17:30 周六至周日：07:30~12:30</van-notice-bar>
+    <!-- <van-notice-bar :scrollable="false">周一至周五：07:30~17:30 周六至周日：07:30~12:30</van-notice-bar> -->
     <!--日期-->
     <div class="scroll-x">
       <div class="box-scroll">
         <div class="scroll-items">
-          <div
-            :class="['item', index == activeIndex ? 'active' : '', item.disabled ? 'disabled' : '']"
-            :key="index"
-            @click="checkTime(index)"
-            v-for="(item,index) in dateList"
-          >
+          <div :class="['item', index == activeIndex ? 'active' : '', item.disabled ? 'disabled' : '']"
+               :key="index"
+               @click="checkTime(index)"
+               v-for="(item,index) in dateList">
             <div class="week">{{item.week}}</div>
             <div class="time">{{item.date}}</div>
           </div>
@@ -39,37 +39,50 @@
     </div>
     <!--        号源-->
     <div class="source">
-      <div class="g-two" v-if="AM.length">
+      <div class="g-two"
+           v-if="AM.length">
         <div class="left">上午</div>
         <div class="content">
-          <div :key="index" class="f-two" v-for="(item,index) in AM">
+          <div :key="index"
+               class="f-two"
+               v-for="(item,index) in AM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{item.unitPrice}}</div>
-              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
+              <div
+                   :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+                剩余{{item.number}}</div>
             </div>
             <div class="right">
-              <div @click="goAppointOrderSubmitPage(item,{type:'AM'})" class="btn btn-blue">{{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}}</div>
+              <div @click="goAppointOrderSubmitPage(item,{type:'AM'})"
+                   class="btn btn-blue">{{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}}</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="g-two" v-if="PM.length">
+      <div class="g-two"
+           v-if="PM.length">
         <div class="left">下午</div>
         <div class="content">
-          <div :key="index" class="f-two" v-for="(item,index) in PM">
+          <div :key="index"
+               class="f-two"
+               v-for="(item,index) in PM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{item.unitPrice}}</div>
-              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">剩余{{item.number}}</div>
+              <div
+                   :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+                剩余{{item.number}}</div>
             </div>
             <div class="right">
-              <div @click="goAppointOrderSubmitPage(item,{type:'PM'})" class="btn btn-blue">{{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}}</div>
+              <div @click="goAppointOrderSubmitPage(item,{type:'PM'})"
+                   class="btn btn-blue">{{item.isExpire ? '已过期' : item.number ? '预约' : '约满'}}</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="none-page" v-if="AM.length ==0 && PM.length ==0 && loaded">
+      <div class="none-page"
+           v-if="AM.length ==0 && PM.length ==0 && loaded">
         <div class="icon icon_none_source"></div>
         <div class="none-text">
           当日暂时无号源哦
@@ -109,7 +122,7 @@ export default {
       // ],
       dateList: [],
       AM: [],
-      PM: [],
+      PM: []
     }
   },
   created() {
@@ -119,7 +132,7 @@ export default {
 
     // this.getData()
   },
-  activated(){
+  activated() {
     console.log('active')
     this.getData()
   },
@@ -134,7 +147,6 @@ export default {
           this.dateList = res.data.weekDate || []
           this.doctorInfo = res.data.list.doctorInfo || {}
           this.initSource()
-
         })
     },
     initSource() {

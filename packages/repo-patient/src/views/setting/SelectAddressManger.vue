@@ -47,7 +47,7 @@ export default {
       isGet: false
     }
   },
-  created() {
+  activated() {
     this.get()
   },
   methods: {
@@ -109,6 +109,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fixed-bottom .btn {
+  padding: 0;
+  text-align: center;
+}
 .dl-two {
   display: -webkit-box;
   display: -moz-box;

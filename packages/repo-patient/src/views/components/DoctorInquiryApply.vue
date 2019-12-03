@@ -48,13 +48,25 @@
           </div>
 
           <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
+            <van-image-preview v-model="imagePreview.visible"
+                               :start-position="imagePreview.position"
+                               :images="item.answer.map(file => file.content)">
+              <template v-slot:cover>
+                <van-button icon="cross"
+                            type="primary"
+                            round
+                            @click="imagePreview.visible = false" />
+              </template>
+            </van-image-preview>
+
             <div class="message-layout right"
                  v-for="(file, fileIndex) in item.answer"
                  :key="fileIndex">
-              <div class="message out">
-                <img style="max-height: 200px; max-width: 100%; width: unset;"
+              <div class="message out img">
+
+                <img style="max-width: 140px; max-height: 140px; width: auto; height: auto; border-radius: 8px;"
                      :src="file.content"
-                     @click="viewImage(file.content)">
+                     @click="viewImage(file, fileIndex)">
               </div>
               <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
                     style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
@@ -108,8 +120,7 @@
                        justify="center"
                        style="flex-direction: column;">
                 <div>
-                  <span
-                        style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                  <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                     {{ doctor.doctorInfo.name }}
                   </span>
                   <span style="color: #333333; font-size: 14px; ">
@@ -117,8 +128,7 @@
                   </span>
                 </div>
                 <div>
-                  <span
-                        style="color: #333333; font-size: 14px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                     {{ getSerivceType() }}
                   </span>
                   <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -153,9 +163,9 @@
           <!-- Q1: 描述 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
             <van-field ref="input"
-                       v-model="current.answer"
+                       v-model.trim="current.answer"
                        clearable
-                       placeholder="请输入您的详细症状…">
+                       placeholder="请输入您的详细症状，至少5个字">
               <van-button @click="answer"
                           slot="button"
                           round
@@ -213,11 +223,7 @@
 <script>
 import peace from '@src/library'
 
-import Vue from 'vue'
 import { Dialog } from 'vant'
-import { ImagePreview } from 'vant'
-Vue.use(ImagePreview)
-
 import Compressor from 'compressorjs'
 
 const ANSWER_MODE = {
@@ -348,7 +354,14 @@ export default {
         doctorInfo: {}
       },
 
-      sending: false
+      sending: false,
+
+      imagePreview: {
+        visible: false,
+        position: 0
+      }
+
+      return {}
     }
   },
 
@@ -574,6 +587,10 @@ export default {
       // 问诊描述
       if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
         if (this.current.answer) {
+          if (this.current.answer.length < 5) {
+            peace.util.alert('请输入至少5个字')
+            return false
+          }
           answer = this.current.answer
 
           this.model.illnessDescribe = answer
@@ -738,7 +755,7 @@ export default {
     },
 
     uploadHandler() {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         if (Array.isArray(this.attachment) && this.attachment.length) {
           // 压缩
           const compress = () => {
@@ -769,11 +786,16 @@ export default {
               params.append('file[]', file)
             })
 
-            peace.service.inquiry.images(params).then(res => {
-              this.model.attachment = res.data
+            peace.service.inquiry
+              .images(params)
+              .then(res => {
+                this.model.attachment = res.data
 
-              resolve()
-            })
+                resolve()
+              })
+              .catch(error => {
+                reject(error)
+              })
           })
         } else {
           resolve()
@@ -856,8 +878,9 @@ export default {
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
 
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     },
 
     scrollToBottom() {
@@ -873,6 +896,35 @@ export default {
   font-size: 16px;
   height: 100%;
   background: #f5f5f5;
+
+  /deep/ .van-image-preview__index {
+    top: 24px;
+  }
+
+  /deep/ .van-image-preview__cover {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+
+    .van-button--round {
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #2a2a2a;
+      background-color: #999999;
+      border: 1px solid #999999;
+
+      .van-button__icon {
+        line-height: 1;
+      }
+    }
+  }
 
   &.layout {
     display: flex;
@@ -911,7 +963,7 @@ export default {
 
         font-size: 12px;
         color: #969a99;
-        margin: 0 0 18px 0;
+        // margin: 0 0 18px 0;
 
         .link {
           color: $-color--primary;
@@ -940,6 +992,11 @@ export default {
           display: inline-flex;
           padding: 12px 16px;
           max-width: 80%;
+
+          &.img {
+            background: transparent !important;
+            padding: 0 !important;
+          }
 
           &.in {
             background: #fff;

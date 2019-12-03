@@ -21,8 +21,10 @@
     </div>
 
     <van-list :loading="loading"
+              v-model="loading"
               :finished="finished"
-              @load="getConsultList"
+              finished-text="客服电话：400-902-0365"
+              @load="get"
               class="content"
               style="height: 100%">
       <template v-if="consultList.length">
@@ -120,7 +122,6 @@
           </div>
 
         </div>
-        <div class="bottom">客服电话：400-902-0365</div>
       </template>
 
       <template v-if="loaded && consultList.length == 0">
@@ -130,6 +131,9 @@
         </div>
       </template>
     </van-list>
+    <!-- <template v-if="loaded&& consultList.length > 0">
+      <div class="bottom">客服电话：400-902-0365</div>
+    </template> -->
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
@@ -204,10 +208,17 @@ export default {
       p: 0,
       size: 10,
       finished: false,
-      loading: false
+      loading: false,
+      timer: null
     }
   },
-
+  activated() {
+    this.p = 0
+    this.loaded = false
+    this.finished = false
+    this.consultList = []
+    this.get()
+  },
   created() {
     // this.get()
     // 重复订单跳转进来
@@ -219,7 +230,12 @@ export default {
 
   methods: {
     get() {
-      this.getConsultList()
+      if (!this.timer) {
+        this.timer = setTimeout(() => {
+          this.getConsultList()
+          this.timer = null
+        }, 500)
+      }
     },
     goReferrListPage() {},
     goConsultGroupPage() {},

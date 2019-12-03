@@ -256,6 +256,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@src/views/style/style.css';
+/deep/.van-cell__value {
+  display: flex;
+}
 .banner {
   position: relative;
   width: 100%;

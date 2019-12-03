@@ -16,6 +16,8 @@
         <transition mode="out-in"
                     name="van-fade">
           <van-tabbar class="layout-tabbar"
+                      :fixed="false"
+                      :z-index='999'
                       v-model="active">
 
             <van-tabbar-item to="/home/index">
@@ -116,6 +118,21 @@ export default {
 
   beforeCreate() {
     document.title = peace.config.system.title
+
+    // step 1, 当页面可见性发生变化
+    // step 2, 验证当前活动元素是否是 INPUT（INPUT 会触发输入框，导致微信页面变形）
+    // step 3, 让当前活动元素进行 blur focus blur 重新触发输入法的布局
+    window.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        const activeElement = document.activeElement
+
+        if (activeElement.tagName === 'INPUT') {
+          activeElement.blur()
+          activeElement.focus()
+          activeElement.blur()
+        }
+      }
+    })
   },
 
   created() {

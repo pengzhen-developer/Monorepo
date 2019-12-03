@@ -73,7 +73,7 @@
           </div>
           <div class="form-dl"
                v-if="internalData.familyInfo.guardianName">
-            <div class="form-dt">监 护 人:</div>
+            <div class="form-dt"><span>监 护 人</span> :</div>
             <div class="form-dd">{{internalData.familyInfo.guardianName}} |
               {{internalData.familyInfo.guardianSex}} |
               {{internalData.familyInfo.guardianAge+'岁'}}
@@ -87,7 +87,7 @@
         </div>
         <!--病情描述-->
         <div class="module-item">
-          <div class="b">病情现状描述</div>
+          <div class="b">病情描述</div>
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
@@ -96,13 +96,24 @@
             <div class="b">复诊信息</div>
             <div class="form-dl img"
                  v-if="internalData.inquiryInfo.inquiryImages.length>0">
-              <div class="form-dt ">复诊诊凭 :</div>
+              <div class="form-dt ">复诊凭证 :</div>
               <div class="form-img">
+                <van-image-preview v-model="imagePreview.visible"
+                                   :start-position="imagePreview.position"
+                                   :images="internalData.inquiryInfo.inquiryImages.map(file => file.image_path)">
+                  <template v-slot:cover>
+                    <van-button icon="cross"
+                                type="primary"
+                                round
+                                @click="imagePreview.visible = false" />
+                  </template>
+                </van-image-preview>
+
                 <div class="img"
                      v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
                      :key="index">
                   <img :src="item.image_path"
-                       @click="viewImage(item.image_path)" />
+                       @click="viewImage(item, index)" />
                 </div>
               </div>
             </div>
@@ -124,25 +135,25 @@
           <div class="dt">订单金额</div>
           <div class="dd">{{ internalData.orderInfo.orderMoney }}元</div>
         </div>
-        <!-- <div class="dl-packet">
-        <div class="dt">优惠金额</div>
-        <div class="dd">{{ 0.00}}元</div>
-      </div> -->
+        <div class="dl-packet">
+          <div class="dt">优惠金额</div>
+          <div class="dd">0.00元</div>
+        </div>
         <div class="dl-packet">
           <div class="dt">订单时间</div>
           <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
         </div>
       </div>
 
-      <div class="module pdtb"
+      <!-- <div class="module pdtb"
            v-if="internalData.inquiryInfo.inquiryStatus == '1'">
         <div class="brief right">
           应付金额：
           <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
         </div>
-      </div>
+      </div> -->
       <div class="module pdtb"
-           v-else>
+           v-if="internalData.inquiryInfo.inquiryStatus != '1'">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
           <div class="brief right"
@@ -158,7 +169,9 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}</div>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            </div>
           </div>
         </template>
 
@@ -167,7 +180,8 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span v-if="internalData.inquiryInfo.inquiryStatus == '4'">（已退款）</span>
+              <span
+                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -182,16 +196,16 @@
       </div>
       <div class="h64"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
-               internalData.inquiryInfo.inquiryStatus == '4' ||
+               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5'"></div>
       <div class="footer fixedBottom"
            v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
-               internalData.inquiryInfo.inquiryStatus == '4' ||
+               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5'">
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
-            internalData.inquiryInfo.inquiryStatus == '4' ||
+            (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
               internalData.inquiryInfo.inquiryStatus == '5'">咨询记录</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
@@ -199,17 +213,19 @@
             internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
       </div>
       <div class="h115"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'"></div>
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
+      </div>
       <div class="pay fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'">
+           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
         <div class="pay-item">
           <div class="count-down">
-            <span>订单关闭倒计时:</span>
+            <span>订单关闭倒计时：</span>
             <van-count-down millisecond
+                            @finish="finish(internalData)"
                             :time="internalData.inquiryInfo.time"
                             format="HH:mm:ss" />
           </div>
-          <div class="right">总金额:<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
+          <div class="right">应付金额 :<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
         <div class="pay-item">
           <div class="pay-btn btn-cancel"
@@ -241,8 +257,7 @@
 import peace from '@src/library'
 
 import Vue from 'vue'
-import { Dialog, ImagePreview, CountDown } from 'vant'
-Vue.use(ImagePreview)
+import { Dialog, CountDown } from 'vant'
 Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
@@ -283,6 +298,11 @@ export default {
       chatingPage: {
         visible: false,
         data: []
+      },
+
+      imagePreview: {
+        visible: false,
+        position: 0
       }
     }
   },
@@ -304,6 +324,9 @@ export default {
     get() {
       this.getConsultDetail()
     },
+    finish(data) {
+      data.inquiryInfo.time = 0
+    },
 
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
@@ -324,8 +347,8 @@ export default {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime =
           inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
-        if (expireTime > inquiryInfo.orderCreatedTime) {
-          res.data.inquiryInfo.time = (expireTime - inquiryInfo.orderCreatedTime) * 1000
+        if (expireTime > inquiryInfo.currentTime) {
+          res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
         this.internalData = res.data
       })
@@ -335,7 +358,7 @@ export default {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
         '1': '订单创建15分钟后未支付将自动关闭',
-        '2': '已通知医生尽快接诊，请等候',
+        '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
         '3': '请及时与医生沟通',
         '4': '医生已退诊',
         '5': '祝您身体健康',
@@ -410,14 +433,44 @@ export default {
         })
     },
 
-    viewImage(path) {
-      ImagePreview([path])
+    viewImage(file, fileIndex) {
+      this.imagePreview.visible = true
+      this.imagePreview.position = fileIndex
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-image-preview__index {
+  top: 24px;
+}
+
+/deep/ .van-image-preview__cover {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+
+  .van-button--round {
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #2a2a2a;
+    background-color: #999999;
+    border: 1px solid #999999;
+
+    .van-button__icon {
+      line-height: 1;
+    }
+  }
+}
+
 .footer,
 .pay {
   &.fixedBottom {
@@ -478,6 +531,9 @@ export default {
       display: flex;
       align-items: center;
       color: #999;
+      span {
+        margin-right: 5px;
+      }
     }
     .right {
       color: #000;
@@ -535,10 +591,20 @@ export default {
     min-width: 70px;
     display: flex;
     padding-right: 10px;
+    align-items: center;
     span {
       flex: 1;
+      text-align: justify;
       text-align-last: justify;
-      margin-right: 3px;
+      padding-right: 3px;
+      height: 16px;
+      line-height: 16px;
+      &::after {
+        content: ' ';
+        display: inline-block;
+        width: 100%;
+        height: 0px;
+      }
     }
   }
   .form-dd {
@@ -616,7 +682,6 @@ export default {
       padding-bottom: 5px;
     }
     .form-img {
-      padding: 5px 0;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -624,8 +689,7 @@ export default {
         width: 57px;
         height: 57px;
         background: #ccc;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin: 5px 10px 5px 0;
         &:nth-child(5n) {
           margin-right: 0 !important;
         }
@@ -643,10 +707,9 @@ export default {
   }
   .module .strong {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 18px;
     padding: 10px 15px;
-    color: #333;
   }
   .module .brief {
     font-size: 13px;
@@ -687,7 +750,7 @@ export default {
   }
   .b {
     display: block;
-    font-weight: 600;
+    font-weight: bold;
     color: #000;
 
     &::before {

@@ -1,43 +1,37 @@
 <template>
   <div class="file-all">
-    <div class="time-line"
-         v-if="data ">
-
-      <div class="item"
-           v-for="(value, key) in data"
-           :key="key">
-        <div class="time">
-          <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
-          <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
-        </div>
-        <div class="text">
-          <div v-for="item in value"
-               :key="item.healthType + item.id">
-            <!-- 病历 -->
-            <template v-if="item.healthType === 'case'">
-              <div class="note card case"
-                   @click="util.goDetail('病历', item)">
-                <div class="case-left">
-                  <van-image width="35px"
-                             height="35px"
-                             :src="require('@src/assets/images/file/ic_medical record.png')" />
+    <div class="time-line" v-if="data ">
+      <van-list v-model="isLoading" :finished="finished" @load="allHealthList">
+        <div class="item" v-for="(value, key) in data" :key="key">
+          <div class="time">
+            <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
+            <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
+          </div>
+          <div class="text">
+            <div v-for="item in value" :key="item.healthType + item.id">
+              <!-- 病历 -->
+              <template v-if="item.healthType === 'case'">
+                <div class="note card case" @click="util.goDetail('病历', item)">
+                  <div class="case-left">
+                    <van-image width="35px" height="35px"
+                      :src="require('@src/assets/images/file/ic_medical record.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      门诊病历
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netdeptName }}
+                    </p>
+                  </div>
                 </div>
-                <div class="case-right">
-                  <p style="font-size: 16px; color: #333333; line-height: 32px;">
-                    门诊病历
-                  </p>
-                  <p style="font-size: 12px; color: #999999; line-height: 24px;">
-                    {{ item.netHospitalName }} | {{ item.netdeptName }}
-                  </p>
-                </div>
-              </div>
-            </template>
+              </template>
+            </div>
           </div>
         </div>
-      </div>
+      </van-list>
     </div>
-    <div v-else
-         class="none-page">
+    <div v-else class="none-page">
       <div class="icon icon_none_source"></div>
       <div class="none-text">暂无数据</div>
     </div>
@@ -56,14 +50,18 @@ export default {
   data() {
     return {
       util,
-
-      data: undefined
+      data: undefined,
+      p: 0,
+      size: 10,
+      finished: false,
+      isLoading: false,
     }
   },
 
   watch: {
     familyId: {
       handler() {
+        console.log(this.p)
         if (this.familyId) {
           this.allHealthList()
         }
@@ -74,7 +72,14 @@ export default {
 
   methods: {
     allHealthList() {
-      peace.service.health.allHealthList({ familyId: this.familyId, type: '3' }).then(res => {
+      this.p++
+      let param = {
+        familyId: this.familyId,
+        type: '3',
+        p: this.p,
+        size: this.size
+      }
+      peace.service.health.allHealthList(param).then(res => {
         const temp = {}
 
         // 遍历时间
@@ -84,9 +89,24 @@ export default {
           timeList.forEach(time => {
             temp[time] = res.data.list.filter(item => item.createdTime === time)
           })
+          if (typeof this.data == 'undefined') {
+            this.data = temp
+          } else {
+            for (let key in temp) {
+              if (this.data[key]) {
+                this.data[key] = this.data[key].concat(temp[key])
+              } else {
+                this.data[key] = temp[key]
+              }
+            }
+          }
 
-          this.data = temp
         }
+        this.isLoading = false
+        if (this.p * this.size >= res.data.total) {
+          this.finished = true
+        }
+        console.log(this.finished, this.p)
       })
     }
   }

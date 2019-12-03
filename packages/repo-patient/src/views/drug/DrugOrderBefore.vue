@@ -256,7 +256,7 @@ export default {
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.replace(`/inter/drugInterList/${params}`)
+      this.$router.push(`/inter/drugInterList/${params}`)
     }
   }
 }

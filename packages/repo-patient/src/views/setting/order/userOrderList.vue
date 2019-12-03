@@ -2,9 +2,11 @@
   <div class="userorderList"
        style="height:100%;">
     <van-list :loading="loading"
+              v-model="loading"
               :finished="finish"
-              @load="getData"
-              class="content">
+              @load="get"
+              class="content"
+              :class="orderList.length>0&&'min'">
 
       <div v-if="orderList.length">
         <template v-for="(item,index) in orderList">
@@ -20,7 +22,8 @@
                 <div class="card-body">
                   <div class="card-name card-flex">{{item.doctorInfo.name}}
                     {{item.doctorInfo.deptName}}
-                    <div class="card-gary">[图文咨询]</div>
+                    <div class="card-gary">{{item.orderInfo.inquiryType=='image'?'[图文咨询]':'[视频咨询]'}}
+                    </div>
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
@@ -42,7 +45,7 @@
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
-                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款'+item.orderInfo.payMoney+')'}}</span>
+                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
                   </div>
 
                 </div>
@@ -54,10 +57,11 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.inquiryInfo.inquiryStatus === 1 || item.inquiryInfo.inquiryStatus === 2">
+                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
               <div class="count-down">
                 <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
                 <van-count-down millisecond
+                                @finish="finishHander(item,index)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -109,11 +113,12 @@
               </div>
             </div>
             <div class="panel-bottom "
-                 v-if="item.orderStatus == '1'||item.orderStatus == '3'">
+                 v-if="(item.orderStatus == '1'&&item.close)||(item.orderStatus == '3'&& item.cancelState)">
               <div class="count-down"
-                   v-if="item.orderStatus == '1'">
+                   v-if="item.orderStatus == '1'&&item.close">
                 <span>订单关闭倒计时:</span>
                 <van-count-down millisecond
+                                @finish="finishHander(item,index)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -122,16 +127,16 @@
               <div class="label gary"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '1'">取消订单
+                   v-if="item.orderStatus == '1'&&item.close">取消订单
               </div>
               <div class="label blue"
                    @click="goPay(item)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '1'">继续支付</div>
+                   v-if="item.orderStatus == '1'&&item.close">继续支付</div>
               <div class="label blue"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '3' && !item.cancelState">申请退号</div>
+                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
             </div>
           </div>
         </template>
@@ -195,20 +200,44 @@ export default {
       size: 10,
       loaded: false,
       finish: false,
-      loading: false
+      loading: false,
+      timer: null
     }
   },
   activated() {
-    if (this.p > 0) {
-      this.p = 0
-      this.orderList = []
-      this.getData()
-    }
+    this.p = 0
+    this.loaded = false
+    this.orderList = []
+    this.get()
   },
   created() {
     // this.getData()
   },
   methods: {
+    finishHander(item, index) {
+      item.close = false
+      if (item.orderType == 'inquiry') {
+        item.inquiryInfo.inquiryStatus = 6
+        let orderNo = item.orderInfo.orderNo
+        this.cancelInquiryOrder(orderNo, index, 'auto')
+        item.inquiryInfo.statusTxt = '已取消'
+      } else if (item.orderType == 'register') {
+        let orderNo = item.orderNo
+        if (!item.cancelState && item.orderStatus != 1) {
+          return
+        }
+        let type = ''
+        if (item.orderStatus == 1) {
+          type = 'cancel'
+        } else {
+          type = 'quit'
+        }
+        this.cancelRegisterOrder(orderNo, index, type, 'auto')
+        item.orderStatus = 2
+      }
+      let data = JSON.parse(JSON.stringify(item))
+      this.orderList.splice(index, 1, data)
+    },
     goPay(data) {
       let typeName = '',
         orderNo = '',
@@ -231,6 +260,14 @@ export default {
       json = peace.util.encode(json)
       this.$router.push(`/components/doctorInquiryPay/${json}`)
     },
+    get() {
+      if (!this.timer) {
+        this.timer = setTimeout(() => {
+          this.getData()
+          this.timer = null
+        }, 500)
+      }
+    },
     getData() {
       // this.orderList = []
       this.p++
@@ -238,9 +275,11 @@ export default {
         if (res.data.list.length > 0) {
           res.data.list.map(item => {
             //   item.time =  15 * 60 * 1000;
+            item.close = true
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
+                // item.time = (item.orderExpireTime - item.currentTime - 14 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
@@ -250,12 +289,12 @@ export default {
                   : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
+                // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
               }
             }
           })
         }
         this.orderList = this.orderList.concat(res.data.list)
-        console.log(this.orderList.length)
         this.loaded = true
         this.loading = false
         if (this.p * this.size >= res.data.total) {
@@ -270,28 +309,34 @@ export default {
         message: '是否确认取消咨询？'
       })
         .then(() => {
-          const params = {
-            orderNo: orderNo
-          }
-          peace.service.patient.cancel(params).then(res => {
-            peace.util.alert(res.msg)
-            // this.$store.dispatch('appointMent/getList')
-
-            if (res.code == '200') {
-              let data = this.orderList[index]
-              data.inquiryInfo.inquiryStatus = '6'
-              this.orderList.splice(index, 1, data)
-            }
-          })
+          this.cancelInquiryOrder(orderNo, index, 'hand')
         })
         .catch(() => {
           // on cancel
         })
     },
+    cancelInquiryOrder(orderNo, index, type) {
+      let params = {
+        orderNo: orderNo
+      }
+      if (type == 'auto') {
+        params.cancelType = 2
+      }
+      peace.service.patient.cancel(params).then(res => {
+        if (type == 'hand') {
+          peace.util.alert(res.msg)
+          if (res.code == '200') {
+            let data = this.orderList[index]
+            data.inquiryInfo.inquiryStatus = '6'
+            this.orderList.splice(index, 1, data)
+          }
+        }
+      })
+    },
     canselOrder(item, index) {
-      // if (!item.cancelState && item.orderStatus != 1) {
-      //   return
-      // }
+      if (!item.cancelState && item.orderStatus != 1) {
+        return
+      }
       let type, alertMsg
       if (item.orderStatus == 1) {
         type = 'cancel'
@@ -304,30 +349,34 @@ export default {
         message: alertMsg
       })
         .then(() => {
-          peace.service.appoint
-            .orderCancel({
-              orderNo: item.orderNo,
-              type
-            })
-            .then(res => {
-              console.log(res)
-              peace.util.alert(res.msg || '退号成功')
-              // this.$store.dispatch('appointMent/getList')
-              if (res.code == '200') {
-                let data = this.orderList[index]
-                if (item.orderStatus == '1') {
-                  data.orderStatus = '2'
-                } else {
-                  data.orderStatus = '7'
-                }
-
-                this.orderList.splice(index, 1, data)
-              }
-            })
+          this.cancelRegisterOrder(item.orderNo, index, type, 'hand')
         })
         .catch(() => {
           // on cancel
         })
+    },
+    cancelRegisterOrder(orderNo, index, type, hasAlert) {
+      let params = {
+        orderNo: orderNo,
+        type: type
+      }
+      if (hasAlert == 'auto') {
+        params.cancelType = 2
+      }
+      peace.service.appoint.orderCancel(params).then(res => {
+        if (hasAlert == 'hand') {
+          peace.util.alert(res.msg || '退号成功')
+          if (res.code == '200') {
+            let data = this.orderList[index]
+            if (data.orderStatus == '1') {
+              data.orderStatus = '2'
+            } else {
+              data.orderStatus = '6'
+            }
+            this.orderList.splice(index, 1, data)
+          }
+        }
+      })
     },
     goConsultDetailPage(item) {
       let json = peace.util.encode({
@@ -366,9 +415,13 @@ export default {
   }
 }
 .content {
-  padding: 10px;
   box-sizing: border-box;
   background-color: #f9f9f9;
+  &.min {
+    min-height: 100%;
+    padding: 10px;
+  }
+
   .panel {
     background: #fff;
     box-sizing: border-box;
@@ -376,6 +429,9 @@ export default {
     padding: 1px 15px;
     border-bottom: 0;
     margin-bottom: 15px;
+    &:last-child {
+      margin-bottom: 0;
+    }
     .panel-body {
       padding-top: 0;
     }

@@ -723,7 +723,7 @@ const routers = [
     component: () => import('@src/views/appoint/doctor/appointDoctorList.vue')
   },
   {
-    path: 'hospital/depart/HospitalDepartList',
+    path: '/hospital/depart/HospitalDepartList',
     meta: {
       auth: false,
       navbar: {
