@@ -236,7 +236,7 @@ export default {
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.replace(`/inter/drugInterList/${params}`)
+      this.$router.push(`/inter/drugInterList/${params}`)
     },
 
     goPrescripDetailPage() {
@@ -245,13 +245,13 @@ export default {
         showDetailButton: false
       })
 
-      this.$router.replace(`/components/theRecipe/${params}`)
+      this.$router.push(`/components/theRecipe/${params}`)
     },
 
     goDrugLogiPage() {
       const params = this.$route.params.json
 
-      this.$router.replace(`/order/userDrugLogistics/${params}`)
+      this.$router.push(`/order/userDrugLogistics/${params}`)
     },
 
     canselOrder() {
