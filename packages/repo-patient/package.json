@@ -1,6 +1,6 @@
 {
-  "name": "pre",
-  "version": "0.8.3-002",
+  "name": "dev",
+  "version": "0.8.4-001",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
