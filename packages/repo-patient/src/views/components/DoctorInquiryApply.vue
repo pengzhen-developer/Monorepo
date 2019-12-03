@@ -360,8 +360,6 @@ export default {
         visible: false,
         position: 0
       }
-
-      return {}
     }
   },
 
