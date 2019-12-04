@@ -44,7 +44,6 @@
         <div class="info-row-content small-text">
           {{ internalData.PrescriptionTime }}
         </div>
-        <div class="info-row-content small-text">{{ internalData.caseNo }}</div>
       </div>
       <div class="info-row two-cols">
         <div class="info-row-label">
