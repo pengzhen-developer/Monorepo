@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="showNotice !== true">
+    <template v-if="showNotice === true">
       <SignNotice>
         <div slot="title">
           互联网医院诊疗办法规定：在互联网医院必须设置签名后才能开通服务，设置签名后，请刷新页面。
