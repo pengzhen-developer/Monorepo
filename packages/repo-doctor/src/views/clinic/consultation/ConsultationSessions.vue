@@ -5,15 +5,14 @@
       <span>会诊列表</span>
     </div>
 
-    <div class="body" v-if="$store.state.consultation.sessions && $store.state.consultation.sessions.length > 0">
+    <div class="body"
+         v-if="$store.state.consultation.sessions && $store.state.consultation.sessions.length > 0">
       <el-scrollbar class="body-scrollbar">
-        <div
-          :class="{ active: $store.state.consultation.session && $store.state.consultation.session.id === session.id }"
-          :key="session.id"
-          @click="selectSession(session)"
-          class="consultation"
-          v-for="session in $store.state.consultation.sessions"
-        >
+        <div :class="{ active: $store.state.consultation.session && $store.state.consultation.session.id === session.id }"
+             :key="session.id"
+             @click="selectSession(session)"
+             class="consultation"
+             v-for="session in $store.state.consultation.sessions">
           <div class="consultation-title">
             <div class="status">
               <!-- 距开始 -->
@@ -67,7 +66,8 @@
       </el-scrollbar>
     </div>
 
-    <div class="body-no-data" v-else>
+    <div class="body-no-data"
+         v-else>
       <img src="~@src/assets/images/inquiry/ic_no one.png" />
       <span>暂无会诊</span>
     </div>
@@ -90,7 +90,11 @@ export default {
         case 'video':
           return '【视频】'
         case 'custom':
-          if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
+          if (
+            session.lastMsg.content &&
+            session.lastMsg.content.data &&
+            session.lastMsg.content.data.showTextInfo
+          ) {
             return session.lastMsg.content.data.showTextInfo.doctorClientText
           }
       }
@@ -112,7 +116,7 @@ export default {
       }
 
       // 重置会话未读数
-      $peace.NIM.resetSessionUnread(session.id)
+      // $peace.NIM.resetSessionUnread(session.id)
       // 获取本次会诊历史消息
       $peace.NIM.getHistoryMsgs({
         scene: session.scene,

@@ -61,35 +61,6 @@
         </div>
       </template>
 
-      <!-- 检查单 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
-          </div>
-        </template>
-
-        <!-- 消息内容 -->
-        <div class="message-body message-card">
-          <div class="message-header">
-            <img width="20px"
-                 height="17px"
-                 :src="require('@src/assets/images/ic_check.png')" />
-            <span>检查单</span>
-          </div>
-          <div class="message-content">
-            <div style="display:flex; justify-content: space-between; color: #333;"
-                 v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
-                 :key="item.itemId">
-              <div class="left">{{ item.name }}</div>
-              <div class="right">x 1</div>
-            </div>
-          </div>
-        </div>
-      </template>
-
       <!-- 转诊单 -->
       <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
         <!-- 消息时间 -->
@@ -219,11 +190,13 @@
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="recipeDetail.visible"
+                  v-if="recipeDetail.visible"
                   append-to-body
                   title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="transfer.visible"
+                  v-if="transfer.visible"
                   append-to-body
                   title="转诊详情">
       <TheTransferDetail :data="transfer.data"
@@ -231,12 +204,14 @@
                          @close="() => transfer.visible = false"></TheTransferDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="consultation.visible"
+                  v-if="consultation.visible"
                   append-to-body
                   title="会诊详情">
       <TheConsultationDetail :data="consultation.data"
                              @close="() => consultation.visible = false"></TheConsultationDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="preliminary.visible"
+                  v-if="preliminary.visible"
                   append-to-body
                   title="问诊单详情">
       <InquiryPreliminary :data="preliminary.data"

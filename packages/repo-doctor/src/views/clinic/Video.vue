@@ -1,14 +1,22 @@
 <template>
   <div class="video">
-    <peace-dialog :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false"
-      :title="video.title" :visible.sync="video.visible" center custom-class="video-dialog" v-drag
-      width="800px">
+    <peace-dialog :close-on-click-modal="false"
+                  :close-on-press-escape="false"
+                  :show-close="false"
+                  :title="video.title"
+                  :visible.sync="video.visible"
+                  center
+                  custom-class="video-dialog"
+                  v-drag
+                  width="800px">
       <div class="video-container">
         <div id="localContainer"></div>
         <div id="remoteContainer"></div>
       </div>
       <div class="video-control">
-        <el-button @click="hangUp" circle class="hang_up"></el-button>
+        <el-button @click="hangUp"
+                   circle
+                   class="hang_up"></el-button>
       </div>
     </peace-dialog>
   </div>
@@ -134,24 +142,33 @@ export default {
 
     /**
      * 主叫发起通话请求
+     *
+     * type: inquiry
+     * type: consult
      */
-    call(session) {
-      this.custom = { session }
+    call(session, type) {
+      this.custom = { type, session }
 
-      const toAccount =
-        session.content.consultInfo.receiveDoctor[0].doctorId ===
-        this.$store.state.user.userInfo.list.docInfo.doctor_id
-          ? session.content.consultInfo.startDoctor[0].doctorId
-          : session.content.consultInfo.receiveDoctor[0].doctorId
-      const toName =
-        session.content.consultInfo.receiveDoctor[0].doctorId ===
-        this.$store.state.user.userInfo.list.docInfo.doctor_id
-          ? session.content.consultInfo.startDoctor[0].doctorName
-          : session.content.consultInfo.receiveDoctor[0].doctorName
+      let toAccount = ''
+
+      if (type === 'inquiry') {
+        toAccount = session.content.patientInfo.patientId
+      }
+
+      if (type === 'consult') {
+        toAccount =
+          session.content.consultInfo.receiveDoctor[0].doctorId ===
+          this.$store.state.user.userInfo.list.docInfo.doctor_id
+            ? session.content.consultInfo.startDoctor[0].doctorId
+            : session.content.consultInfo.receiveDoctor[0].doctorId
+      }
 
       this.pushConfig.custom = JSON.stringify({
-        id: toAccount,
-        name: toName,
+        id: this.$store.state.user.userInfo.list.docInfo.doctor_id,
+        name: this.$store.state.user.userInfo.list.docInfo.name,
+        idcard: this.$store.state.user.userInfo.list.docInfo.id_card,
+        phone: this.$store.state.user.userInfo.list.docInfo.tel,
+        type: type,
         session: session
       })
 
@@ -175,6 +192,13 @@ export default {
         .catch(callObject => {
           // 发起呼叫失败
           console.warn('【 WebRTC 】【 call error】', new Date(), callObject)
+
+          // 被叫不在线
+          if (callObject.code === 11000) {
+            $peace.util.warning('对方已离线')
+          }
+
+          this.hangupVideo()
         })
     },
 
@@ -276,6 +300,12 @@ export default {
       // 设定呼叫状态
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.接听
       this.beCallingInfo = callAcceptedObject
+
+      // 养老端
+      // 接听后，发起接口请求
+      if (this.custom.type === 'inquiry') {
+        this.processJoin()
+      }
 
       this.startRtc()
     },
@@ -509,9 +539,13 @@ export default {
         this.closeMessageNofity()
         this.reject()
       }
+
       const messageContent = (
         <div>
           <div style="display: flex; align-items: center;">
+            <div style="margin: 0 10px 0 0;">
+              <el-avatar>{this.custom.name.substring(0, 1)}</el-avatar>
+            </div>
             <div>
               <h4>{this.custom.name}</h4>
               <p>邀请您进行视频会诊</p>
@@ -582,25 +616,54 @@ export default {
     },
 
     processJoin() {
-      const consultNo = this.custom.session.content.consultInfo.consultNo
+      // 问诊开始
+      if (this.custom.type === 'inquiry') {
+        const inquiryNo = this.custom.session.content.inquiryInfo.inquiryNo
 
-      const params = {
-        consultNo: consultNo,
-        action: 'start'
+        const params = {
+          inquiryNo: inquiryNo,
+          action: 'start'
+        }
+        peace.service.video.process(params)
       }
 
-      return peace.service.video.processConsult(params)
+      // 会诊开始
+      else if (this.custom.type === 'consult') {
+        const consultNo = this.custom.session.content.consultInfo.consultNo
+
+        const params = {
+          consultNo: consultNo,
+          action: 'start'
+        }
+
+        return peace.service.video.processConsult(params)
+      }
     },
 
     processExit() {
-      const consultNo = this.custom.session.content.consultInfo.consultNo
+      // 问诊结束
+      if (this.custom.type === 'inquiry') {
+        const inquiryNo = this.custom.session.content.inquiryInfo.inquiryNo
 
-      const params = {
-        consultNo: consultNo,
-        action: 'over'
+        const params = {
+          inquiryNo: inquiryNo,
+          action: 'over'
+        }
+
+        peace.service.video.process(params)
       }
 
-      return peace.service.video.processConsult(params)
+      // 会诊结束
+      else if (this.custom.type === 'consult') {
+        const consultNo = this.custom.session.content.consultInfo.consultNo
+
+        const params = {
+          consultNo: consultNo,
+          action: 'over'
+        }
+
+        return peace.service.video.processConsult(params)
+      }
     }
   }
 }
