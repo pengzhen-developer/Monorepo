@@ -1,6 +1,15 @@
 // 配置请参考 https://cli.vuejs.org/config/#global-cli-config
 
 const path = require('path')
+// webpack plugins
+const CompressionWebpackPlugin = require('compression-webpack-plugin') // Gzip
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
+const TerserPlugin = require('terser-webpack-plugin') // 代码压缩
+
+const IS_EXPORT_REPORT = process.env.npm_config_report || false // 打包分析: npm run build --report
+const IS_SHOW_CONSOLE = process.env.npm_config_console || false // 打包显示console 信息: npm run build --console
+
+const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 
 module.exports = {
   // https://cli.vuejs.org/config/#vue-config-js
@@ -25,6 +34,42 @@ module.exports = {
       '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
       '/public/static/IM/NIM_Web_WebRTC_v6.5.5': 'WebRTC'
     }
+
+    // 静态配置放在这里
+    const plugins = []
+    // 编译时 run build
+    if (process.env.NODE_ENV === 'production') {
+      plugins.push(
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: false, // Must be set to true if using source-maps in production
+          terserOptions: {
+            compress: {
+              drop_console: !IS_SHOW_CONSOLE,
+              drop_debugger: true,
+            },
+          },
+        }),
+        new CompressionWebpackPlugin({
+          filename: '[path].gz[query]',
+          algorithm: 'gzip',
+          test: productionGzipExtensions,
+          threshold: 10240,
+          minRatio: 0.8,
+        }),
+      )
+      if (IS_EXPORT_REPORT) {
+        plugins.push(
+          new BundleAnalyzerPlugin({
+            analyzerMode: 'static',
+            reportFilename: 'bundle-report.html',
+            openAnalyzer: false,
+          })
+        )
+      }
+    }
+    config.plugins = [...config.plugins, ...plugins]
   },
 
   //增加vue.config.js文件配置css
