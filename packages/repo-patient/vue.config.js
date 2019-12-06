@@ -2,7 +2,7 @@
 
 const path = require('path')
 // webpack plugins
-const CompressionWebpackPlugin = require('compression-webpack-plugin') // Gzip
+const ZopfliPlugin = require("zopfli-webpack-plugin"); // zopfli lib Gzip 压缩
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
 const TerserPlugin = require('terser-webpack-plugin') // 代码压缩
 
@@ -51,13 +51,13 @@ module.exports = {
             },
           },
         }),
-        new CompressionWebpackPlugin({
-          filename: '[path].gz[query]',
-          algorithm: 'gzip',
+        new ZopfliPlugin({
+          asset: "[path].gz[query]",
+          algorithm: "zopfli",
           test: productionGzipExtensions,
           threshold: 10240,
-          minRatio: 0.8,
-        }),
+          minRatio: 0.8
+        })
       )
       if (IS_EXPORT_REPORT) {
         plugins.push(
