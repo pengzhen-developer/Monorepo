@@ -4,10 +4,8 @@ const path = require('path')
 // webpack plugins
 const ZopfliPlugin = require("zopfli-webpack-plugin"); // zopfli lib Gzip 压缩
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
-const TerserPlugin = require('terser-webpack-plugin') // 代码压缩
 
 const IS_EXPORT_REPORT = process.env.npm_config_report || false // 打包分析: npm run build --report
-const IS_SHOW_CONSOLE = process.env.npm_config_console || false // 打包显示console 信息: npm run build --console
 
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 
@@ -40,17 +38,6 @@ module.exports = {
     // 编译时 run build
     if (process.env.NODE_ENV === 'production') {
       plugins.push(
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: false, // Must be set to true if using source-maps in production
-          terserOptions: {
-            compress: {
-              drop_console: !IS_SHOW_CONSOLE,
-              drop_debugger: true,
-            },
-          },
-        }),
         new ZopfliPlugin({
           asset: "[path].gz[query]",
           algorithm: "zopfli",
