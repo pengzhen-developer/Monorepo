@@ -45,7 +45,7 @@ const netHospitalId = peace.util.queryUrlParam('netHospitalId')
  * 例如在首页 /home/index 中判断是否存在 ID ，用于加载不同的组件
  */
 const doctorId = peace.util.queryUrlParam('doctorId')
-
+const isEwm = peace.util.queryUrlParam('isEwm')
 export default {
   data() {
     return {
@@ -138,7 +138,8 @@ export default {
 
       if (redirectKey === 'doctorDetail') {
         const json = peace.util.encode({
-          doctorId
+          doctorId,
+          isEwm
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)

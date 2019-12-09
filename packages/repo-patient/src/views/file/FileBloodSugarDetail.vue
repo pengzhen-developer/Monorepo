@@ -139,8 +139,6 @@ export default {
   },
 
   created() {
-    console.log($peace.util.decode($peace.$route.params.json))
-    // this.tabIndex=$peace.util.decode($peace.$route.params.json).type
     this.getOscillogram(2)
   },
 
@@ -172,7 +170,6 @@ export default {
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
 
-        console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne

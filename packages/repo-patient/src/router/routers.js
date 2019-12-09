@@ -1002,6 +1002,22 @@ const routers = [
       auth: false
     },
     component: () => import('@src/components/Login.vue')
+  },
+  {
+    path: '/components/CommentForDoctor/:json',
+    name: '/components/CommentForDoctor',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/CommentForDoctor.vue')
+  },
+  {
+    path: '/components/CommentList/:json',
+    name: '/components/CommentList',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/CommentList.vue')
   }
 ]
 
