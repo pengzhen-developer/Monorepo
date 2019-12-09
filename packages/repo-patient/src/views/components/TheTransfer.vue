@@ -315,7 +315,7 @@ export default {
   box-sizing: border-box;
   background: #fff;
   padding: 5px 15px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   position: relative;
 }
 .prescript .prescript-no,
@@ -420,7 +420,7 @@ export default {
 }
 
 .outline {
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   padding-left: 15px;
 }
 .outline .outline-header {
