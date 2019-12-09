@@ -24,6 +24,11 @@ npm run build
 npm run lint
 ```
 
+### 生成编译报告
+```
+npm run build:dev --report
+```
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
