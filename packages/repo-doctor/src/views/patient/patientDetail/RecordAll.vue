@@ -65,7 +65,8 @@
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.会诊">
                   <div class="time-line-content-card">
-                    <RecordConsult></RecordConsult>
+                    <RecordConsult :data="healthItem"
+                                   :type="type"></RecordConsult>
                   </div>
                 </template>
 

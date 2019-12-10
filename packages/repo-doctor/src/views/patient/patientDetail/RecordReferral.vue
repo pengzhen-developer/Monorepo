@@ -11,12 +11,12 @@
         <span>{{ netDeptName }}</span>
       </div>
     </div>
-    <peace-dialog :visible.sync="transfer.visible"
-                  v-if="transfer.visible"
+    <peace-dialog :visible.sync="referralVisible"
+                  v-if="referralVisible"
                   append-to-body
                   title="转诊详情">
-      <TheTransferDetail :data="transfer.data"
-                         @close="() => transfer.visible = false"></TheTransferDetail>
+      <TheTransferDetail :data="referralData"
+                         @close="() => referralVisible = false"></TheTransferDetail>
     </peace-dialog>
   </div>
 </template>
@@ -44,10 +44,8 @@
     },
     data() {
       return {
-        transfer: {
-          data: null,
-          visible: false
-        }
+        referralData: null,
+        referralVisible: false
       }
     },
     computed: {
@@ -68,19 +66,19 @@
 
           return
         }
+        this.referralData = undefined
+        this.referralVisible = true
+
         this.getReferralDetail(this.referralNo)
       },
       getReferralDetail(referralNo) {
-        this.transfer.data = undefined
-        this.transfer.visible = true
-
         const params = {
           referral_no: referralNo,
           referral_type: 'out'
         }
 
         peace.service.inquiry.referralDocPc(params).then(res => {
-          this.transfer.data = res.data
+          this.referralData = res.data
         })
       },
     }
