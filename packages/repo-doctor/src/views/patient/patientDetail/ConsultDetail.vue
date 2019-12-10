@@ -4,7 +4,7 @@
       <div class="left">
         <span class="name">{{data.patientInfo.familyName}}</span>
         <span class="sex">{{data.patientInfo.sex}}</span>
-        <span class="dept">门诊</span>
+        <span class="dept">远程会诊</span>
       </div>
       <div class="right">
         <i class="time"></i>{{data.patientInfo.createTime}}
