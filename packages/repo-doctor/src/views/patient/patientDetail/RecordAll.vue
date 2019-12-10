@@ -62,6 +62,18 @@
                                    :type="type"></RecordBodyFat>
                   </div>
                 </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.会诊">
+                  <div class="time-line-content-card">
+                    会诊
+                  </div>
+                </template>
+
+                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.转诊">
+                  <div class="time-line-content-card">
+                    转诊
+                  </div>
+                </template>
               </el-col>
             </el-row>
           </div>
@@ -107,10 +119,13 @@
         </div>
       </template>
 
+      <!-- 其它 -->
+      <template v-else-if="type === '6'">
+      </template>
+
       <!-- 住院病历 -->
       <!-- 体检报告 -->
-      <!-- 其它 -->
-      <template v-else-if="type === '4' || type === '5' || type === '6'">
+      <template v-else-if="type === '4' || type === '5'">
         <NoData type="health"></NoData>
       </template>
     </template>
@@ -164,7 +179,6 @@ export default {
   methods: {
     get() {
       const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
-
       peace.service.health.allHealthList(params).then(res => {
         if (this.type == 1) {
           console.log('res', res)

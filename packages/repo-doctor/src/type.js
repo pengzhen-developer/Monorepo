@@ -187,7 +187,9 @@ export const HEALTH = {
     血糖: 'bloodSugarData',
     体脂: 'bodyFat',
     病历: 'case',
-    处方: 'prescribe'
+    处方: 'prescribe',
+    转诊: 'referral',
+    会诊: 'consult'
   },
 
   TYPE: {
