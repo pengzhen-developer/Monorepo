@@ -5,49 +5,61 @@
       <!-- 就诊病历 -->
 
       <template v-if="type === '1' || type === '3'">
-        <div :key="health.timeLine" class="time-line" v-for="health in healthInfo">
+        <div :key="health.timeLine"
+             class="time-line"
+             v-for="health in healthInfo">
           <div class="time-line-header">
             <span class="time-line-node"></span>
             <span class="time-line-time">{{ health.timeLine }}</span>
           </div>
 
           <div class="time-line-content">
-            <el-row :gutter="15" type="flex" style="flex-wrap: wrap;">
-              <el-col :key="healthItem.id" :span="8" v-for="healthItem in health.list">
-<!--                {{healthItem.healthType}}-->
+            <el-row :gutter="15"
+                    type="flex"
+                    style="flex-wrap: wrap;">
+              <el-col :key="healthItem.id"
+                      :span="8"
+                      v-for="healthItem in health.list">
+                <!--                {{healthItem.healthType}}-->
                 <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.病历">
                   <div class="time-line-content-card">
-                    <RecordCase :data="healthItem" :type="type"></RecordCase>
+                    <RecordCase :data="healthItem"
+                                :type="type"></RecordCase>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.处方">
                   <div class="time-line-content-card">
-                    <RecordPrescribe :data="healthItem" :type="type"></RecordPrescribe>
+                    <RecordPrescribe :data="healthItem"
+                                     :type="type"></RecordPrescribe>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血压">
                   <div class="time-line-content-card">
-                    <RecordBloodPressure :data="healthItem" :type="type"></RecordBloodPressure>
+                    <RecordBloodPressure :data="healthItem"
+                                         :type="type"></RecordBloodPressure>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血糖">
                   <div class="time-line-content-card">
-                    <RecordBloodSugar :data="healthItem" :type="type"></RecordBloodSugar>
+                    <RecordBloodSugar :data="healthItem"
+                                      :type="type"></RecordBloodSugar>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血氧">
                   <div class="time-line-content-card">
-                    <RecordBloodOxygen :data="healthItem" :type="type"></RecordBloodOxygen>
+                    <RecordBloodOxygen :data="healthItem"
+                                       :type="type"></RecordBloodOxygen>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.体脂">
                   <div class="time-line-content-card">
-                    <RecordBodyFat :data="healthItem" :type="type"></RecordBodyFat>
+                    <RecordBodyFat :data="healthItem"
+                                   :type="type"></RecordBodyFat>
                   </div>
                 </template>
               </el-col>
@@ -63,28 +75,32 @@
             <el-col :span="8">
               <!-- 血压 -->
               <div class="time-line-content-card">
-                <RecordBloodPressure :data="healthInfo.find(item => item.healthType === 'bloodPressureData')" :type="type"></RecordBloodPressure>
+                <RecordBloodPressure :data="healthInfo.find(item => item.healthType === 'bloodPressureData')"
+                                     :type="type"></RecordBloodPressure>
               </div>
             </el-col>
 
             <el-col :span="8">
               <!-- 血糖 -->
               <div class="time-line-content-card">
-                <RecordBloodSugar :data="healthInfo.find(item => item.healthType === 'bloodSugarData')" :type="type"></RecordBloodSugar>
+                <RecordBloodSugar :data="healthInfo.find(item => item.healthType === 'bloodSugarData')"
+                                  :type="type"></RecordBloodSugar>
               </div>
             </el-col>
 
             <el-col :span="8">
               <!-- 血氧 -->
               <div class="time-line-content-card">
-                <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'oxyGenData')" :type="type"></RecordBloodOxygen>
+                <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'bloodOxygenData')"
+                                   :type="type"></RecordBloodOxygen>
               </div>
             </el-col>
 
             <el-col :span="8">
               <!-- 体脂 -->
               <div class="time-line-content-card">
-                <RecordBodyFat :data="healthInfo.find(item => item.healthType === 'bodyFat')" :type="type"></RecordBodyFat>
+                <RecordBodyFat :data="healthInfo.find(item => item.healthType === 'bodyFat')"
+                               :type="type"></RecordBodyFat>
               </div>
             </el-col>
           </el-row>
@@ -147,20 +163,20 @@ export default {
 
   methods: {
     get() {
-      const params = { familyId: this.id, type: this.type, p: 1, size: 9999 }
+      const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
 
       peace.service.health.allHealthList(params).then(res => {
-        if(this.type == 1) {
+        if (this.type == 1) {
           console.log('res', res)
         }
         // 格式化时间线
         if (this.type === '1' || this.type === '3') {
           const data = []
 
-          const time = Array.from(new Set(res.data.list.map(item => item.createdTime)))
+          const time = Array.from(new Set(res.data.list.map(item => item.measureTime)))
 
           time.forEach(item => {
-            const list = res.data.list.filter(temp => temp.createdTime === item)
+            const list = res.data.list.filter(temp => temp.measureTime === item)
 
             data.push({
               timeLine: item,

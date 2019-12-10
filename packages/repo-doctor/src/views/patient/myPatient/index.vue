@@ -106,7 +106,7 @@ export default {
         closable: true,
         name: row.name,
         title: row.name,
-        path: '/patient/patientDetail/' + row.familyId
+        path: '/patient/patientDetail/' + row.patientNo
       }
 
       // 将当前选中的项，添加到 tab
