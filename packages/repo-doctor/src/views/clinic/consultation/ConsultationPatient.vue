@@ -223,7 +223,8 @@
 
     <peace-dialog :visible.sync="dialog.visible"
                   title="图文问诊记录">
-      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
+      <InquirySessionMessageList :data="dialog.data"
+                                 type="consult"></InquirySessionMessageList>
     </peace-dialog>
   </div>
 </template>

@@ -43,6 +43,7 @@ export function initNIM(
       account,
       token,
       db,
+      syncSessionUnread: true,
 
       ...options,
 
@@ -102,7 +103,9 @@ export function onDisConnect(disConnectObject) {
     case 417:
     case 'kicked':
       peace.util.warning(disConnectObject.message)
-      peace.cache.clear()
+
+      // 清空用户缓存
+      peace.cache.remove(peace.type.USER.INFO)
 
       setTimeout(() => {
         $peace.$router.replace(peace.config.system.loginPage)

@@ -1,55 +1,80 @@
 <template>
   <div class="consultation-session-message-list">
-    <div :class="getMessageFlow(message)" :key="message.time" class="message"
-      v-for="(message ,index) in messageList">
-      <!-- 文本消息 -->
-      <template v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
+
+    <!-- 待接诊 -->
+    <template v-if="type === 'consult' && $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
+      <ConsultationSessionReceiveDetail></ConsultationSessionReceiveDetail>
+    </template>
+
+    <!-- 已接诊 -->
+    <template v-else>
+      <div :class="getMessageFlow(message)"
+           :key="message.time"
+           class="message"
+           v-for="(message ,index) in messageList">
+        <!-- 文本消息 -->
+        <template v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
               getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
-          </div>
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
+
+          <!-- 消息内容 -->
+          <div class="message-body"
+               v-html="getMessageText(message)"></div>
         </template>
 
-        <!-- 消息内容 -->
-        <div class="message-body" v-html="getMessageText(message)"></div>
-      </template>
+        <!-- 解散频道时，推送会诊时长 -->
+        <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 解散频道时，推送会诊时长 -->
-      <template
-        v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div class="message-body">
+            <i class="icon_ic_video_right"
+               style="margin: 0 10px 0 0;"
+               v-show="getMessageFlow(message) === 'in'"></i>
+            <span>{{ getMessageText(message) }}</span>
+            <i class="icon_ic_video_left"
+               style="margin: 0 0 0 10px;"
+               v-show="getMessageFlow(message) === 'out'"></i>
           </div>
         </template>
-
-        <!-- 消息内容 -->
-        <div class="message-body">
-          <i class="icon_ic_video_right" style="margin: 0 10px 0 0;"
-            v-show="getMessageFlow(message) === 'in'"></i>
-          <span>{{ getMessageText(message) }}</span>
-          <i class="icon_ic_video_left" style="margin: 0 0 0 10px;"
-            v-show="getMessageFlow(message) === 'out'"></i>
-        </div>
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
+import ConsultationSessionReceiveDetail from './ConsultationSessionReceiveDetail'
 
 export default {
+  components: {
+    ConsultationSessionReceiveDetail
+  },
+
   props: {
     data: {
       type: Array,
       default() {
         return undefined
+      }
+    },
+
+    type: {
+      type: String,
+      default() {
+        return 'consult'
       }
     }
   },

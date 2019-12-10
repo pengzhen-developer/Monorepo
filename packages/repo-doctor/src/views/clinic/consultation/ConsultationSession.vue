@@ -26,44 +26,27 @@
         </div>
       </el-alert>
 
-      <div class="message-list">
-        <el-scrollbar class="message-list-scrollbar">
-          <template
-                    v-if="$peace.consultationComponent.getIntervalStatus($store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
-            <ConsultationSessionToBegin></ConsultationSessionToBegin>
-          </template>
+      <!-- 写病历 -->
+      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"></ConsultationSessionCase>
 
-          <template
-                    v-if="$peace.consultationComponent.getIntervalStatus($store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
-            <ConsultationSessionToEnd></ConsultationSessionToEnd>
-          </template>
+      <!-- 写处方 -->
+      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"></ConsultationSessionRecipe>
 
-          <div style="text-align: center"
-               v-if="tips">
-            <div class="message-body"
-                 style="color: #333333;
-                     background: #f3f3f3;
-                     white-space: pre-wrap;
-                     word-wrap: break-word;
-                     padding: 2px 10px;
-                     display: inline-block;
-                     border-radius: 4px;
-                     max-width: 80%;">
-              <span>{{ tips }}</span>
-              <el-button @click="showConsultDetail"
-                         type="text"
-                         v-if="tipsSource === 'receive'">立即关闭
-              </el-button>
-            </div>
-          </div>
+      <template v-else>
+        <div class="message-list">
+          <el-scrollbar class="message-list-scrollbar">
+            <ConsultationSessionMessageList></ConsultationSessionMessageList>
+          </el-scrollbar>
+        </div>
 
-          <ConsultationSessionMessageList></ConsultationSessionMessageList>
-        </el-scrollbar>
-      </div>
+        <div class="message-input">
+          <!-- 待接诊 -->
+          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊"></ConsultationSessionReceive>
+          <!-- 问诊中 -->
+          <ConsultationSessionMessageInput v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.问诊中"></ConsultationSessionMessageInput>
 
-      <div class="message-input">
-        <ConsultationSessionMessageInput></ConsultationSessionMessageInput>
-      </div>
+        </div>
+      </template>
     </div>
 
     <peace-dialog :visible.sync="dialog.visible"
@@ -79,8 +62,10 @@
 <script>
 import peace from '@src/library'
 
-import ConsultationSessionToBegin from './ConsultationSessionToBegin'
-import ConsultationSessionToEnd from './ConsultationSessionToEnd'
+import ConsultationSessionCase from './ConsultationSessionCase'
+import ConsultationSessionRecipe from './ConsultationSessionRecipe'
+import ConsultationSessionReceive from './ConsultationSessionReceive'
+
 import ConsultationSessionMessageList from './ConsultationSessionMessageList'
 import ConsultationSessionMessageInput from './ConsultationSessionMessageInput'
 
@@ -88,8 +73,9 @@ import TheConsultationDetail from '@src/views/record/consultation/TheConsultatio
 
 export default {
   components: {
-    ConsultationSessionToBegin,
-    ConsultationSessionToEnd,
+    ConsultationSessionCase,
+    ConsultationSessionRecipe,
+    ConsultationSessionReceive,
     ConsultationSessionMessageList,
     ConsultationSessionMessageInput,
 
@@ -98,6 +84,8 @@ export default {
 
   data() {
     return {
+      consultationAction: '',
+
       tips: '',
       tipsSource: '',
       tipsForConsult: '',
@@ -121,6 +109,12 @@ export default {
 
   created() {
     this.checkStatus(this.$store.state.consultation.session)
+
+    // 在 consultation/index.vue 的组件实例上挂载所有子组件间监听方法
+    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发病历, this.sendCase)
+    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发处方, this.sendRecipe)
+
+    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.重置操作, this.resetAction)
   },
 
   methods: {
@@ -130,6 +124,18 @@ export default {
           peace.type.CONSULTATION.CONSULTATION_STATUS[key] ===
           this.$store.getters['consultation/consultInfo'].consultStatus
       )
+    },
+
+    sendCase() {
+      this.consultationAction = peace.type.INQUIRY.INQUIRY_ACTION.发病历
+    },
+
+    sendRecipe() {
+      this.consultationAction = peace.type.INQUIRY.INQUIRY_ACTION.发处方
+    },
+
+    resetAction() {
+      this.consultationAction = ''
     },
 
     sendVideo() {

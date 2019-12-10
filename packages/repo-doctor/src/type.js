@@ -34,7 +34,10 @@ export const USER = {
   TOKEN: 'pc.user.token',
 
   /** 最近操作功能列表 */
-  TAB_LIST: 'pc.user.tabList'
+  TAB_LIST: 'pc.user.tabList',
+
+  /** 用户名 */
+  PHONE: 'pc.phone.number'
 }
 
 /**
@@ -177,8 +180,8 @@ export const VIDEO = {
  */
 export const HEALTH = {
   HEALTH_TYPE: {
-    血氧: 'oxyGenData',
-    血压: 'bloodPressuredata',
+    血氧: 'bloodOxygenData',
+    血压: 'bloodPressureData',
     血糖: 'bloodSugarData',
     体脂: 'bodyFat',
     病历: 'case',

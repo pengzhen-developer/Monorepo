@@ -152,7 +152,6 @@ export function getHealthCase(params) {
   return peace.http.post(getHealthCase, params)
 }
 
-
 /**
  * 获取转诊医生
  *
@@ -205,6 +204,19 @@ export function receiveReferralPc(params) {
   return peace.http.post(receiveReferralPc, params)
 }
 
+/**
+ * 获取检查项
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getOrderDetail(params) {
+  const getOrderDetail = 'client/v1/Checklist/getOrderDetail'
+
+  return peace.http.post(getOrderDetail, params)
+}
+
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -215,6 +227,8 @@ export default {
   getRefferStatus,
   /** 获取转诊记录列表 */
   doctorReferralListPc,
+  /** 获取检查项 */
+  getOrderDetail,
 
   /** 接诊 */
   receiveInquiry,

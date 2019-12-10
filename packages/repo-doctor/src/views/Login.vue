@@ -1,23 +1,41 @@
 <template>
   <div class="container">
-    <el-form :model="view.model" @keyup.enter.native="login" class="login-card">
+    <el-form :model="view.model"
+             @keyup.enter.native="login"
+             class="login-card">
       <div class="title">医生工作站</div>
-      <div class="row" label prop="username">
-        <el-input placeholder="请输入手机号" type="text" v-model="view.model.username"></el-input>
-        <div class="tips" v-if="usernameError">{{ usernameError }}</div>
+      <div class="row"
+           label
+           prop="username">
+        <el-input placeholder="请输入手机号"
+                  type="text"
+                  v-model="view.model.username"></el-input>
+        <div class="tips"
+             v-if="usernameError">{{ usernameError }}</div>
       </div>
-      <div class="row" label prop="password">
-        <el-input placeholder="请输入验证码" ref="pwd" v-model="view.model.password">
-          <el-button :disabled="isDown" @click="getValidCode" slot="suffix" type="text">
-            <el-divider direction="vertical" style="height: 1.6em; margin: 0 12px;"></el-divider>
+      <div class="row"
+           label
+           prop="password">
+        <el-input placeholder="请输入验证码"
+                  ref="pwd"
+                  v-model="view.model.password">
+          <el-button :disabled="isDown"
+                     @click="getValidCode"
+                     slot="suffix"
+                     type="text">
+            <el-divider direction="vertical"
+                        style="height: 1.6em; margin: 0 12px;"></el-divider>
             <span v-show="!isDown">获取验证码</span>
             <span v-show="isDown">{{ `(${ down })` }}</span>
           </el-button>
         </el-input>
-        <div class="tips" v-if="passwordError">{{ passwordError }}</div>
+        <div class="tips"
+             v-if="passwordError">{{ passwordError }}</div>
       </div>
       <div class="row btn">
-        <el-button :disabled="isLoging" @click="login" type="primary">登录</el-button>
+        <el-button :disabled="isLoging"
+                   @click="login"
+                   type="primary">登录</el-button>
       </div>
     </el-form>
     <div class="footer-text">Copyright @ 2018-2038 全息云通健康科技（武汉）有限公司版权所有</div>
@@ -34,7 +52,7 @@ export default {
     return {
       view: {
         model: {
-          username: '',
+          username: peace.cache.get(peace.type.USER.PHONE) || '',
           password: ''
         }
       },
@@ -114,6 +132,9 @@ export default {
 
           // 存储到本地缓存
           peace.cache.set(peace.type.USER.INFO, res.data, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
+
+          // 储存登录手机号
+          peace.cache.set(peace.type.USER.PHONE, res.data.list.docInfo.tel)
 
           // 初始化 IM
           peace.service.IM.initNIM()
@@ -228,7 +249,13 @@ export default {
       border: 1px solid $--color-primary;
       border-radius: 3px;
       line-height: 50px;
-      background: linear-gradient(to right, $--color-primary 0, $--color-primary 50px, white 50px, white 100%);
+      background: linear-gradient(
+        to right,
+        $--color-primary 0,
+        $--color-primary 50px,
+        white 50px,
+        white 100%
+      );
       .close {
         position: absolute;
         top: 17px;

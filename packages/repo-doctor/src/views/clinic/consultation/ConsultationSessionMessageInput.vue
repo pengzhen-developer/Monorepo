@@ -17,6 +17,24 @@
         <img src="~@/assets/images/inquiry/chat_icon_video.png" />发起视频
       </el-button>
 
+      <el-button @click="sendCase"
+                 type="text"
+                 v-show="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+        <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
+        <span>写病历</span>
+      </el-button>
+
+      <el-button @click="sendRecipe"
+                 type="text"
+                 v-show="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+        <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
+        <span>开处方</span>
+      </el-button>
+
       <!-- 会诊生效后, 受邀方医生能够填写会诊意见, 用于结束会诊 -->
       <el-button @click="snedConsultSuggest"
                  type="text"
@@ -234,6 +252,18 @@ export default {
 
     sendVideo() {
       $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+    },
+
+    sendCase() {
+      $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+    },
+
+    sendRecipe() {
+      if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
+        peace.util.warning('尚未填写病历，无法开具处方')
+      } else {
+        $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发处方)
+      }
     },
 
     snedConsultSuggest() {
