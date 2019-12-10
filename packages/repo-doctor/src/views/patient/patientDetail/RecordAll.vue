@@ -65,13 +65,14 @@
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.会诊">
                   <div class="time-line-content-card">
-                    会诊
+                    <RecordConsult></RecordConsult>
                   </div>
                 </template>
 
                 <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.转诊">
                   <div class="time-line-content-card">
-                    转诊
+                    <RecordReferral :data="healthItem"
+                                    :type="type"></RecordReferral>
                   </div>
                 </template>
               </el-col>
@@ -145,6 +146,8 @@ import RecordBloodPressure from './RecordBloodPressure'
 import RecordBloodSugar from './RecordBloodSugar'
 import RecordBloodOxygen from './RecordBloodOxygen'
 import RecordBodyFat from './RecordBodyFat'
+import RecordConsult from './RecordConsult'
+import RecordReferral from './RecordReferral'
 
 import NoData from '@src/views/components/NoData'
 
@@ -161,6 +164,8 @@ export default {
     RecordBloodSugar,
     RecordBloodOxygen,
     RecordBodyFat,
+    RecordConsult,
+    RecordReferral,
 
     NoData
   },

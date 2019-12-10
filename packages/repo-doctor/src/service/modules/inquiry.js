@@ -167,7 +167,8 @@ export function getCase(params) {
  * @param {*} params
  * @returns
  */
-export function getHealthCase(params) {
+export function getHealthCase({ dataNo }) {
+  const params = { dataNo }
   const getHealthCase = 'client/v1/health/getHealthCase'
 
   return peace.http.post(getHealthCase, params)
