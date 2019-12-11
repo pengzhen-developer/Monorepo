@@ -4,6 +4,7 @@ const path = require('path')
 // webpack plugins
 const ZopfliPlugin = require("zopfli-webpack-plugin"); // zopfli lib Gzip 压缩
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
+const { GenerateSW } = require('workbox-webpack-plugin');
 
 const IS_EXPORT_REPORT = process.env.npm_config_report || false // 打包分析: npm run build --report
 
@@ -34,7 +35,12 @@ module.exports = {
     }
 
     // 静态配置放在这里
-    const plugins = []
+    const plugins = [
+      new GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true
+      })
+    ]
     // 编译时 run build
     if (process.env.NODE_ENV === 'production') {
       plugins.push(
