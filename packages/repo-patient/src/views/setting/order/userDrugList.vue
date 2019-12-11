@@ -116,7 +116,7 @@ export default {
     }
   },
 
-  created() {
+  activated() {
     this.getDrugItems()
   },
   mounted() {

@@ -27,7 +27,7 @@
                       height="10"
                       :name="require('@src/assets/images/file/ic_time.png')" />
             <span style="font-size: 14px; color: #fff; margin: 0 0 0 10px;">
-              {{ familyInfo.createdTime.split(' ')[0] }}
+              {{ familyInfo.createdTime}}
             </span>
           </div>
         </div>
@@ -38,7 +38,7 @@
                          height="22px"
                          :src="require('@src/assets/images/file/ic_mechanism_1.png')" />
               <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
-                {{ doctorInfo.fromHospitalName }}
+                {{ familyInfo.hospitalName }}
               </span>
             </div>
             <div class="bg-row">
@@ -46,7 +46,7 @@
                          height="22px"
                          :src="require('@src/assets/images/file/ic_doctor_1.png')" />
               <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
-                {{ doctorInfo.fromDoctorName }} {{ doctorInfo.fromDeptName }}
+                {{ familyInfo.doctorName }} {{ familyInfo.deptName }}
               </span>
             </div>
           </div>
@@ -68,7 +68,7 @@
                         v-if='active==0'></FileCaseDetail>
         <FileRecipeDetail :data="prescribeInfos"
                           v-else-if='active==1'></FileRecipeDetail>
-        <FileConsultantSummaryDetail :data="data"
+        <FileConsultantSummaryDetail :data="consultSummary"
                                      v-else-if='active==2'></FileConsultantSummaryDetail>
 
       </div>
@@ -98,8 +98,7 @@ export default {
       caseInfo: {},
       familyInfo: {},
       prescribeInfos: {},
-      doctorInfo: {},
-      data: {}
+      consultSummary: {}
     }
   },
 
@@ -117,7 +116,7 @@ export default {
         this.familyInfo = res.data.familyInfo
         this.prescribeInfos = res.data.prescribeInfos
         this.doctorInfo = res.data.doctorInfo
-        this.data = res.data
+        this.consultSummary = res.data.consultSummary
       })
     }
   }

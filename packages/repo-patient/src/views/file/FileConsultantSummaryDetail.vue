@@ -1,42 +1,42 @@
 <template>
   <div class="file-examination-detail">
     <div class="outline"
-         v-if="data.consultSummary.consultFind">
+         v-if="data.consultFind">
       <div class="outline-body bdstyle">
         <div class="dl-packet">
           <div class="dt">会诊医生</div>
-          <div class="dd">{{data.doctorInfo.toDoctorName}} {{data.doctorInfo.toDoctorTitle}}</div>
+          <div class="dd">{{data.toDoctorName}} {{data.toDoctorTitle}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">会诊机构</div>
-          <div class="dd">{{data.doctorInfo.toHospitalName}} {{data.doctorInfo.toDeptName}}</div>
+          <div class="dd">{{data.toHospitalName}} {{data.toDeptName}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">会诊所见</div>
-          <div class="dd">{{data.consultSummary.consultFind}}</div>
+          <div class="dd">{{data.consultFind}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">目前诊断</div>
-          <div class="dd">{{data.consultSummary.consultDiagnose}}</div>
+          <div class="dd">{{data.consultDiagnose}}</div>
         </div>
         <div class="dl-packet">
-          <div class="dt">建议</div>
-          <div class="dd suggest">{{data.consultSummary.consultSuggest}}</div>
+          <div class="dt justify">建议</div>
+          <div class="dd suggest">{{data.consultSuggest}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">会诊医师签名</div>
           <div class="dd">
-            <img :src="data.consultSummary.doctorSignImg"
+            <img :src="data.doctorSignImg"
                  style="width:44px;height: 16.5px;background-size: cover" />
           </div>
         </div>
         <div class="dl-packet">
           <div class="dt">开始时间</div>
-          <div class="dd">{{data.consultSummary.createdTime}}</div>
+          <div class="dd">{{data.createdTime}}</div>
         </div>
         <div class="dl-packet noborder">
           <div class="dt">结束时间</div>
-          <div class="dd">{{data.consultSummary.endTime}}</div>
+          <div class="dd">{{data.endTime}}</div>
         </div>
       </div>
     </div>
@@ -86,6 +86,18 @@ export default {
   padding-right: 0;
   color: #333;
   font-size: 14px;
+  &.justify {
+    width: 4em;
+    height: 14px;
+    text-align: justify;
+    text-align-last: justify;
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 100%;
+      height: 0;
+    }
+  }
 }
 .bdstyle .dd {
   color: #666;
