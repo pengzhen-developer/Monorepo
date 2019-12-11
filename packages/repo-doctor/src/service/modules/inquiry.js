@@ -120,7 +120,28 @@ export function getRecordTemplate() {
  * @param {*} params
  * @returns
  */
-export function addCase(params) {
+export function addCase({
+  inquiry_no,
+  allergy_history,
+  diagnose,
+  base_illness,
+  present_history,
+  past_history,
+  Inspection_index,
+  summary,
+  templateId
+}) {
+  const params = {
+    inquiryNo: inquiry_no,
+    allergyHistory: allergy_history,
+    diagnose,
+    baseIllness: base_illness,
+    presentHistory: present_history,
+    pastHistory: past_history,
+    inspectionIndex: Inspection_index,
+    summary,
+    aliverId: templateId
+  }
   const addCase = 'client/v1/Prescribeprescrip/addCase'
 
   return peace.http.post(addCase, params)
