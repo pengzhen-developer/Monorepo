@@ -162,6 +162,19 @@ export function addData(params) {
   return peace.http.post(addData, params)
 }
 
+/**
+ * 健康档案-会诊详情
+ *
+ * @export
+ * @param   {*consultNo:string}params 参数列表
+ * @returns
+ */
+export function consultDetail(params) {
+  const consultDetail = 'wap/v1/health/consultDetail'
+
+  return peace.http.post(consultDetail, params)
+}
+
 export default {
   /** 获取当前问诊的会诊单列表 */
   getConsultList,
@@ -201,5 +214,8 @@ export default {
   commentLists,
 
   /*新增就诊人*/
-  addData
+  addData,
+
+  //健康档案- 会诊详情
+  consultDetail
 }

@@ -279,6 +279,17 @@ const routers = [
     },
     component: () => import('@src/views/file/FileBloodSugarAddData.vue')
   },
+  {
+    path: '/file/fileConsultationDetail/:json',
+    name: '/file/fileConsultationDetail/:json',
+    meta: {
+      auth: false,
+      navbar: {
+        title: '健康档案-会诊单'
+      }
+    },
+    component: () => import('@src/views/file/FileConsultationDetail.vue')
+  },
   // 我的
   {
     path: '/setting/index',

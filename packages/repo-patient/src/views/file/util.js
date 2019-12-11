@@ -3,9 +3,8 @@ import peace from '@src/library'
 export const goDetail = (type, data) => {
   if (type === '病历') {
     const json = peace.util.encode({
-      inquiryNo: data.inquiryNo
+      dataNo: data.dataNo
     })
-
     $peace.$router.push(`/file/fileAllDetail/${json}`)
   }
 
@@ -87,8 +86,7 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       consultNo: data.consultNo
     })
-
-    $peace.$router.push(`/components/theConsultation/${json}`)
+    $peace.$router.push(`/file/fileConsultationDetail/${json}`)
   }
 }
 

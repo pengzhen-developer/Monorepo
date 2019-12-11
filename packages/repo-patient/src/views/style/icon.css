@@ -253,7 +253,15 @@
   content: '';
   background-image: url('../../assets/images/default page_img_no hospital.png');
 }
+.ic_no_rp::before {
+  content: '';
+  background-image: url('../../assets/images/icons/ic_no_rp.png');
+}
 
+.ic_no_consultation::before {
+  content: '';
+  background-image: url('../../assets/images/icons/ic_no_consultation.png');
+}
 /*.icon_none_::before {*/
 /*content: '';*/
 /*background-image: url();*/
