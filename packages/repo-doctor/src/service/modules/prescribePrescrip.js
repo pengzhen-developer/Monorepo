@@ -20,7 +20,20 @@ export function prescripList(params) {
  * @param {*} params 参数列表
  * @returns
  */
-export function subPrescrip(params) {
+export function subPrescrip({
+  allergy_history,
+  diagnose,
+  drugsJson,
+  openId,
+  inquiry_no
+}) {
+  const params = {
+    allergyHistory: allergy_history,
+    diagnose,
+    drugsJson,
+    openId,
+    inquiryNo: inquiry_no
+  }
   const subPrescrip = 'client/v1/Prescribeprescrip/subPrescrip'
 
   return peace.http.post(subPrescrip, params)
