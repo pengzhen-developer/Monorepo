@@ -247,6 +247,9 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.purchasedrug.SelectOrderDetApi(params).then(res => {
+        //防止 Freight  PromotionsCut 无此字段
+        res.data.Freight = res.data.Freight || 0
+        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
         if (this.order.expireTime > this.order.currentTime) {
           this.time = (this.order.expireTime - this.order.currentTime) * 1000

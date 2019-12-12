@@ -101,11 +101,11 @@
               <div class="none-text">暂无数据</div>
             </div>
           </van-tab>
-          <van-tab title="其    他">
+          <!-- <van-tab title="其    他">
             <FileOther v-if="active === 5"
                        :key="familyId"
                        :familyId="familyId"></FileOther>
-          </van-tab>
+          </van-tab> -->
         </van-tabs>
       </div>
     </template>
@@ -119,14 +119,14 @@ import util from './util'
 import FileAll from './FileAll'
 import FileDay from './FileDay'
 import FileCase from './FileCase'
-import FileOther from './FileOther'
+// import FileOther from './FileOther'
 
 export default {
   components: {
     FileAll,
     FileDay,
-    FileCase,
-    FileOther
+    // FileOther,
+    FileCase
   },
 
   data() {

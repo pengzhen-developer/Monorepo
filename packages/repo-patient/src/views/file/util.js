@@ -84,7 +84,7 @@ export const goDetail = (type, data) => {
   // 跳转会诊单详情
   else if (type === '会诊单') {
     const json = peace.util.encode({
-      consultNo: data.consultNo
+      dataNo: data.dataNo
     })
     $peace.$router.push(`/file/fileConsultationDetail/${json}`)
   }

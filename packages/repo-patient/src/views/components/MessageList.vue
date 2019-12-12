@@ -571,7 +571,6 @@ export default {
   computed: {
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
-
       // 过滤无效数据
       sessionMessages = sessionMessages.filter(message => {
         // 屏蔽系统消息
@@ -591,6 +590,7 @@ export default {
 
         return true
       })
+
       return sessionMessages
     },
 
@@ -607,27 +607,59 @@ export default {
       }
     }
   },
-
-  created() {
-    if (!this.data) {
-      const params = peace.util.decode(this.$route.params.json)
-      // 传递 inquiryNo 获取聊天记录
-      if (params.inquiryNo) {
-        this.getHistoryMsgsByDB()
-      }
-      // 传递 session 获取聊天记录
-      else {
-        const interval = setInterval(() => {
-          // 等待 IM 初始化完成，并且 sessions 已经获取到
-          if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
-            window.clearInterval(interval)
-
-            this.getHistoryMsgsByIM()
-          }
-        }, 100)
-      }
-    }
+  beforeRouteEnter(to, from, next) {
+    next(() => {
+      // 清除聊天记录
+      peace.service.IM.resetInquirySessionMessages()
+      peace.service.IM.resetInquirySession()
+    })
   },
+  activated() {
+    this.$nextTick().then(() => {
+      if (!this.data) {
+        const params = peace.util.decode(this.$route.params.json)
+        // 传递 inquiryNo 获取聊天记录
+        if (params.inquiryNo) {
+          this.getHistoryMsgsByDB()
+        }
+        // 传递 session 获取聊天记录
+        else {
+          const interval = setInterval(() => {
+            // 等待 IM 初始化完成，并且 sessions 已经获取到
+            if (
+              $peace.NIM &&
+              $peace.NIM.isConnected() &&
+              this.$store.state.inquiry.sessions.length
+            ) {
+              window.clearInterval(interval)
+
+              this.getHistoryMsgsByIM()
+            }
+          }, 100)
+        }
+      }
+    })
+  },
+  // created() {
+  //   if (!this.data) {
+  //     const params = peace.util.decode(this.$route.params.json)
+  //     // 传递 inquiryNo 获取聊天记录
+  //     if (params.inquiryNo) {
+  //       this.getHistoryMsgsByDB()
+  //     }
+  //     // 传递 session 获取聊天记录
+  //     else {
+  //       const interval = setInterval(() => {
+  //         // 等待 IM 初始化完成，并且 sessions 已经获取到
+  //         if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
+  //           window.clearInterval(interval)
+
+  //           this.getHistoryMsgsByIM()
+  //         }
+  //       }, 100)
+  //     }
+  //   }
+  // },
 
   destroyed() {
     // 清除当前聊天 session

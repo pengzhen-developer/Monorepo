@@ -34,6 +34,44 @@
                   </div>
                 </div>
               </template>
+              <!-- 转诊单 -->
+              <template v-if="item.healthType === 'referral'">
+                <div class="note card case"
+                     @click="util.goDetail('转诊单', item)">
+                  <div class="case-left">
+                    <van-image width="35px"
+                               height="35px"
+                               :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      转诊单
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netDeptName }}
+                    </p>
+                  </div>
+                </div>
+              </template>
+              <!-- 会诊单 -->
+              <template v-if="item.healthType === 'consult'">
+                <div class="note card case"
+                     @click="util.goDetail('会诊单', item)">
+                  <div class="case-left">
+                    <van-image width="35px"
+                               height="35px"
+                               :src="require('@src/assets/images/file/ic_huizhen.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      会诊单
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netDeptName }}
+                    </p>
+                  </div>
+                </div>
+              </template>
             </div>
           </div>
         </div>

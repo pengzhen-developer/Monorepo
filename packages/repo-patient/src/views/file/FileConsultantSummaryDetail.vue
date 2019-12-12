@@ -1,7 +1,7 @@
 <template>
   <div class="file-examination-detail">
     <div class="outline"
-         v-if="data.consultFind">
+         v-if="data.consultStatus==7">
       <div class="outline-body bdstyle">
         <div class="dl-packet">
           <div class="dt">会诊医生</div>
@@ -16,7 +16,7 @@
           <div class="dd">{{data.consultFind}}</div>
         </div>
         <div class="dl-packet">
-          <div class="dt">目前诊断</div>
+          <div class="dt ">目前诊断</div>
           <div class="dd">{{data.consultDiagnose}}</div>
         </div>
         <div class="dl-packet">
@@ -27,6 +27,7 @@
           <div class="dt">会诊医师签名</div>
           <div class="dd">
             <img :src="data.doctorSignImg"
+                 v-if="data.doctorSignImg"
                  style="width:44px;height: 16.5px;background-size: cover" />
           </div>
         </div>
@@ -88,7 +89,9 @@ export default {
   font-size: 14px;
   &.justify {
     width: 4em;
-    height: 14px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
     text-align: justify;
     text-align-last: justify;
     &::after {

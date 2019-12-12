@@ -251,7 +251,9 @@ export default {
       // }
       // 测试用例结束
       peace.service.patient.getOrderBefore(params).then(res => {
-        //console.log(res);
+        //防止 Freight  PromotionsCut 无此字段
+        res.data.Freight = res.data.Freight || 0
+        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
 
         this.canSubmitProcesses()
