@@ -188,9 +188,42 @@
           no data
         </template>
       </el-tab-pane>
-      <el-tab-pane label="检验检查"
-                   name="third">
-        <NoData type="health"></NoData>
+      <el-tab-pane
+        label="检验检查"
+        name="third">
+        <template v-if="consultSummary !== null">
+          <div class="item">
+            <span class="title">会诊医生：</span>
+            <span class="content">{{ consultSummary.toDoctorName + ' ' + consultSummary.toDoctorTitle }}</span>
+          </div>
+          <div class="item">
+            <span class="title">会诊机构：</span>
+            <span class="content">{{ consultSummary.toHospitalName + ' ' + consultSummary.toDeptName }}</span>
+          </div>
+          <div class="item">
+            <span class="title">会诊所见.：</span>
+            <span class="content">{{ consultSummary.consultFind }}</span>
+          </div>
+          <div class="item">
+            <span class="title">目前诊断：</span>
+            <span class="content">{{ consultSummary.consultDiagnose }}</span>
+          </div>
+          <div class="item">
+            <span class="title">建议：</span>
+            <span class="content">{{ consultSummary.consultSuggest }}</span>
+          </div>
+          <div class="item">
+            <span class="title">开始时间：</span>
+            <span class="content">{{ consultSummary.createdTime }}</span>
+          </div>
+          <div class="item">
+            <span class="title">结束时间：</span>
+            <span class="content">{{ consultSummary.endTime }}</span>
+          </div>
+        </template>
+        <template v-else>
+          <NoData type="health"></NoData>
+        </template>
       </el-tab-pane>
     </el-tabs>
   </div>
