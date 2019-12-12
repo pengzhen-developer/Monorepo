@@ -1,6 +1,6 @@
 <template>
   <div class="receive"
-       v-if="data">
+       v-if="injectConsultInfo.consultInfo">
     <div class="card">
       <h4>个人信息</h4>
       <el-row>
@@ -8,21 +8,21 @@
           <span class="label w4">姓名</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.familyName }}
+            {{ injectConsultInfo.patientInfo.familyName }}
           </span>
         </el-col>
         <el-col :span="8">
           <span class="label w4">年龄</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.familyAge + "岁"}}
+            {{ injectConsultInfo.patientInfo.familyAge + "岁"}}
           </span>
         </el-col>
         <el-col :span="8">
           <span class="label w4">性别</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.familySex }}
+            {{ injectConsultInfo.patientInfo.familySex }}
           </span>
         </el-col>
       </el-row>
@@ -32,11 +32,15 @@
       <h4>申请会诊医生</h4>
 
       <div style="display: flex; align-items: center;">
-        <el-avatar :src="data.fromPhoto"></el-avatar>
-        <span style="color: #333; margin: 0 10px; font-weight:600; ">{{ data.fromDoctorName }}</span>
-        <span style="color: #999; margin: 0 5px">{{ data.fromDeptName }}</span>
-        <span style="color: #999; margin: 0 5px">{{ data.fromDoctorTitle }}</span>
-        <span style="color: #999; margin: 0 5px">{{ data.fromHospitalName }}</span>
+        <el-avatar :src="injectConsultInfo.fromPhoto"></el-avatar>
+        <span
+              style="color: #333; margin: 0 10px; font-weight:600; ">{{ injectConsultInfo.inviteDoctorInfo.doctorName }}</span>
+        <span
+              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.deptName }}</span>
+        <span
+              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.doctorTitle }}</span>
+        <span
+              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.hospitalName }}</span>
       </div>
     </div>
 
@@ -50,7 +54,8 @@
             <el-tag :key="item"
                     style="margin-right: 5px; border: none; "
                     type="info"
-                    v-for="item in data.familyDisagnose.split('|')">{{ item }}</el-tag>
+                    v-for="item in injectConsultInfo.consultInfo.diagnose.split('|')">{{ item }}
+            </el-tag>
           </span>
         </el-col>
       </el-row>
@@ -59,7 +64,7 @@
           <span class="label">申请会诊说明</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.consultExplain }}
+            {{ injectConsultInfo.consultInfo.consultExplain }}
           </span>
         </el-col>
       </el-row>
@@ -68,7 +73,7 @@
           <span class="label">期望会诊时间</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.expectTime }}
+            {{ injectConsultInfo.consultInfo.expectTime }}
           </span>
         </el-col>
       </el-row>
@@ -77,7 +82,7 @@
           <span class="label">提交申请时间</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ data.createdTime }}
+            {{ injectConsultInfo.consultInfo.createdTime }}
           </span>
         </el-col>
       </el-row>
@@ -87,52 +92,80 @@
       <h4>审核意见</h4>
       <div class="content time-line">
         <el-timeline>
-          <el-timeline-item :timestamp="data.outCheckTime"
+          <el-timeline-item v-for="check in injectConsultInfo.checkList"
+                            v-bind:key="check.checkType"
+                            v-bind:timestamp="check.checkDate"
                             placement="top"
                             type="primary">
-            <el-tag class="timestamp_extend">{{ data.outCheckStatus === 3 ? "已通过" : "" }}</el-tag>
+            <el-tag v-bind:type="check.checkStatus === 3 ? 'primary' : 'info'"
+                    class="timestamp_extend">
+              {{ check.checkStatus === 3 ? '通过' : '拒绝' }}
+            </el-tag>
 
-            <div class="timestamp_remark">
-              <p>
-                <span>审核机构：</span>
-                <span>{{ data.fromHospitalName }}</span>
-              </p>
-              <p>
-                <span>审核备注：</span>
-                <span>{{ data.outCheckSuggest }}</span>
-              </p>
-            </div>
-          </el-timeline-item>
-
-          <el-timeline-item :timestamp="data.inCheckTime"
-                            placement="top"
-                            type="primary">
-            <el-tag class="timestamp_extend">{{ data.inCheckStatus === 3 ? "已通过" : "" }}</el-tag>
-
-            <div class="timestamp_remark">
-              <p>
-                <span>审核机构：</span>
-                <span>{{ data.toHospitalName }}</span>
-              </p>
-              <p>
-                <span>审核备注：</span>
-                <span>{{ data.inCheckSuggest }}</span>
-              </p>
-            </div>
+            <template v-if="check.checkType === 'doctor'">
+              <div class="timestamp_remark">
+                <template v-if="check.checkStatus === 1">
+                  <p>医生：等待审批</p>
+                </template>
+                <template v-if="check.checkStatus === 2">
+                  <p>医生：审批拒绝</p>
+                  <p>拒绝原因：{{ check.checkSuggest }}</p>
+                </template>
+                <template v-if="check.checkStatus === 3">
+                  <p>医生：审批通过</p>
+                </template>
+              </div>
+            </template>
+            <template v-else>
+              <div class="timestamp_remark">
+                <p>
+                  <span>审核机构：</span>
+                  <span>{{ check.hospitalName }}</span>
+                </p>
+                <p>
+                  <span>审核备注：</span>
+                  <span>{{ check.checkSuggest }}</span>
+                </p>
+              </div>
+            </template>
           </el-timeline-item>
         </el-timeline>
       </div>
     </div>
+
+    <div class="card"
+         v-if="injectConsultInfo.consultInfo.isCommit">
+      <el-row>
+        <h4>会诊小结</h4>
+        <span class="label w4">会诊所见</span>
+        <span class="divider">:</span>
+        <span class="value">{{ injectConsultInfo.consultInfo.consultFind }}</span>
+      </el-row>
+      <el-row>
+        <span class="label w4">目前诊断</span>
+        <span class="divider">:</span>
+        <span class="value">{{ injectConsultInfo.consultInfo.consultDiagnose }}</span>
+      </el-row>
+      <el-row>
+        <span class="label w4">建议</span>
+        <span class="divider">:</span>
+        <span class="value">{{ injectConsultInfo.consultInfo.consultSuggest }}</span>
+      </el-row>
+      <el-row>
+        <span class="label w4">医生签名</span>
+        <span class="divider">:</span>
+        <span class="value">{{ injectConsultInfo.consultInfo.doctorSignImg }}</span>
+      </el-row>
+    </div>
   </div>
 </template>
-
 <script>
 import peace from '@src/library'
 
 export default {
   data() {
     return {
-      data: null
+      injectConsultInfo: null
     }
   },
 
@@ -147,7 +180,7 @@ export default {
       }
 
       peace.service.consult.getConsultInfo(params).then(res => {
-        this.data = res.data.info
+        this.injectConsultInfo = res.data.info
       })
     }
   }
@@ -163,6 +196,10 @@ export default {
     border-radius: 4px;
     padding: 10px 20px;
     margin: 0 0 20px 0;
+
+    &:last-child {
+      margin: 0;
+    }
 
     h4 {
       font-size: 16px;
@@ -214,9 +251,9 @@ export default {
     padding: 0;
 
     /deep/.el-timeline-item__node--normal {
-      left: 3px;
-      width: 5px;
-      height: 5px;
+      left: 2px;
+      width: 6px;
+      height: 6px;
     }
   }
 
@@ -225,5 +262,11 @@ export default {
     top: 0;
     left: 200px;
   }
+}
+.建议 {
+  display: inline-block;
+  width: 4em;
+  text-align: justify;
+  text-align-last: justify;
 }
 </style>

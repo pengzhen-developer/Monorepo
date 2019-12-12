@@ -330,14 +330,16 @@ export function setConsultationSessions(sessions) {
   )
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
-  // 过滤 [等待会诊] / [会诊中] 数据
+  // 过滤 [等待会诊] / [会诊中]/[医生待审核] 数据
   const filterMethod = session => {
     if (session.scene === 'team' && session.content && session.content.consultInfo) {
       if (
         session.content.consultInfo.consultStatus ===
           peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
         session.content.consultInfo.consultStatus ===
-          peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
+          peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+        session.content.consultInfo.consultStatus ===
+          peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核
       ) {
         return true
       }
@@ -494,7 +496,7 @@ export function getConsultationSessionsStatus(sessions) {
   const params = {
     teamIdList: sessions.map(item => item.id.replace('team-', ''))
   }
-
+  console.log('111111111111111', sessions)
   return peace.service.consult.getInfoByTeamId(params).then(res => {
     return res.data.list
   })

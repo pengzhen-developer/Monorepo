@@ -1,7 +1,8 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/consultation/${ getState() }.png`" v-if="getState()" />
+      <img :src="`./static/images/consultation/${ getState() }.png`"
+           v-if="getState()" />
     </div>
 
     <div class="record-no">
@@ -121,7 +122,8 @@
       </div>
 
       <!-- 发起机构审核信息 -->
-      <div class="record-content" v-if="internalData.consultStatus >= 2 ">
+      <div class="record-content"
+           v-if="internalData.consultStatus >= 2 ">
         <el-collapse-item name="3">
           <template slot="title">
             <span class="title">发起机构审核信息</span>
@@ -154,7 +156,8 @@
       </div>
 
       <!-- 受邀机构审核信息 -->
-      <div class="record-content" v-if="internalData.consultStatus >= 4 ">
+      <div class="record-content"
+           v-if="internalData.consultStatus >= 4 ">
         <el-collapse-item name="4">
           <template slot="title">
             <span class="title">受邀机构审核信息</span>
@@ -185,16 +188,53 @@
           </el-form>
         </el-collapse-item>
       </div>
+      <!-- 受邀医生审核信息 -->
+      <div class="record-content"
+           v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
+        <el-collapse-item name="5">
+          <template slot="title">
+            <span class="title">受邀医生审核信息</span>
+          </template>
+
+          <el-form>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="审核结果">
+                  <span>{{ formatterCheckStatus(internalData.doctorExamine) }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="审核意见">
+                  <span>{{ internalData.consultSuggest }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="审核时间">
+                  <span>{{ internalData.doctorExamineTime }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-collapse-item>
+      </div>
 
       <!-- 会诊中，填写会诊小结 -->
-      <div class="record-content-no-prefix" v-if="internalData.consultStatus === 6">
-        <span class="title" style="margin: 10px 0;">会诊小结</span>
+      <div class="record-content-no-prefix"
+           v-if="internalData.consultStatus === 6">
+        <span class="title"
+              style="margin: 10px 0;">会诊小结</span>
 
-        <ConsultationSessionSuggest :consultNo="internalData.consultNo" @close="$emit('close')"></ConsultationSessionSuggest>
+        <ConsultationSessionSuggest :consultNo="internalData.consultNo"
+                                    @close="$emit('close')"></ConsultationSessionSuggest>
       </div>
 
       <!-- 会议记录 -->
-      <div class="record-content" v-if="internalData.consultStatus >= 7 ">
+      <div class="record-content"
+           v-if="internalData.consultStatus >= 7 ">
         <!-- 会诊关闭 -->
         <template v-if="internalData.consultStatus === 8">
           <el-collapse-item name="8">
@@ -254,7 +294,9 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="医生签名">
-                    <img :src="internalData.doctorSignImg" alt="医生签名" style="height: 20px" />
+                    <img :src="internalData.doctorSignImg"
+                         alt="医生签名"
+                         style="height: 20px" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -313,7 +355,11 @@ export default {
 
   data() {
     return {
-      checkStatus: [{ checkStatus: 1, checkTxt: '未审核' }, { checkStatus: 2, checkTxt: '已拒绝' }, { checkStatus: 3, checkTxt: '已通过' }],
+      checkStatus: [
+        { checkStatus: 1, checkTxt: '未审核' },
+        { checkStatus: 2, checkTxt: '已拒绝' },
+        { checkStatus: 3, checkTxt: '已通过' }
+      ],
 
       consultStatus: [
         { consultStatus: 1, consultTxt: '发起待审核' },
