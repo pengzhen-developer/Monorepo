@@ -217,12 +217,6 @@
         prescribeIndex: 1
       }
     },
-    /**
-     * caseInfo: null
-       consultSummary: (...)
-       patientInfo: Object
-       prescribeInfos: (...)
-     */
     computed: {
       caseInfo() {
         return get(this, 'data.caseInfo', null)
