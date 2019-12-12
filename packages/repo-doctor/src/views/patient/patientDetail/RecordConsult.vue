@@ -88,7 +88,7 @@
     cursor: pointer;
 
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
 
     &__left {
@@ -101,7 +101,7 @@
     &__right {
       display: flex;
       justify-content: center;
-      align-items: start;
+      align-items: flex-start;
       flex-direction: column;
 
       .title {
