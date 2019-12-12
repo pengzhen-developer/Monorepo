@@ -2,178 +2,191 @@
   <div class="newCaseDetail">
     <div class="caption">
       <div class="left">
-        <span class="name">{{data.patientInfo.familyName}}</span>
-        <span class="sex">{{data.patientInfo.sex}}</span>
+        <span class="name">{{ familyName }}</span>
+        <span class="sex">{{ sex }}</span>
         <span class="dept">远程会诊</span>
       </div>
       <div class="right">
-        <i class="time"></i>{{data.patientInfo.createTime}}
+        <i class="time"></i>{{ createTime }}
       </div>
     </div>
     <div class="item">
       <span class="title">门诊医生：</span>
-      <span class="content">{{data.patientInfo.hospitalName}}</span>
+      <span class="content">{{ outpatientDoctor }}</span>
     </div>
     <div class="item">
       <span class="title">会诊医生：</span>
-      <span class="content">{{data.patientInfo.doctorName}} {{data.patientInfo.deptName}}</span>
+      <span class="content">{{ consultant }}</span>
     </div>
 
-    <el-tabs v-model="activeName"
-             class="tabList">
-      <el-tab-pane label="病历详情"
-                   name="first">
-        <div class="item">
-          <span class="title">病历号：</span>
-          <span class="content">{{data.caseInfo.caseNo}}</span>
-        </div>
-        <div class="item">
-          <span class="title">就诊时间：</span>
-          <span class="content">{{data.caseInfo.visitDate}}</span>
-        </div>
-        <div class="item">
-          <span class="title">主诉：</span>
-          <span class="content">{{data.caseInfo.baseIllness}}</span>
-        </div>
-        <div class="item">
-          <span class="title">现病史：</span>
-          <span
-            class="content">{{data.caseInfo.presentHistory ==''? '无': data.caseInfo.presentHistory}}</span>
-        </div>
-        <div class="item">
-          <span class="title">既往史：</span>
-          <span
-            class="content">{{data.caseInfo.pastHistory =='' ? '无':data.caseInfo.pastHistory}}</span>
-        </div>
-        <div class="item">
-          <span class="title">过敏史：</span>
-          <span
-            class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
-        </div>
-        <div class="item">
-          <span class="title">检查指标：</span>
-          <div class="dataBox">
-            <div class="line">
-              <div class="dataItem">
-                <span class="title">体温：</span>
-                <span
-                  class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature}}度</span>
+    <el-tabs
+      v-model="activeName"
+      class="tabList">
+      <el-tab-pane
+        label="病历详情"
+        name="first">
+        <template v-if="caseInfo !== null">
+          <div class="item">
+            <span class="title">病历号：</span>
+            <span class="content">{{ caseInfo.caseNo}}</span>
+          </div>
+          <div class="item">
+            <span class="title">就诊时间：</span>
+            <span class="content">{{ caseInfo.visitDate}}</span>
+          </div>
+          <div class="item">
+            <span class="title">主诉：</span>
+            <span class="content">{{ caseInfo.baseIllness}}</span>
+          </div>
+          <div class="item">
+            <span class="title">现病史：</span>
+            <span
+              class="content">{{ caseInfo.presentHistory ==''? '无' : caseInfo.presentHistory}}</span>
+          </div>
+          <div class="item">
+            <span class="title">既往史：</span>
+            <span
+              class="content">{{ caseInfo.pastHistory =='' ? '无' : caseInfo.pastHistory}}</span>
+          </div>
+          <div class="item">
+            <span class="title">过敏史：</span>
+            <span
+              class="content">{{ caseInfo.allergyHistory =='' ? '无' : caseInfo.allergyHistory}}</span>
+          </div>
+          <div class="item">
+            <span class="title">检查指标：</span>
+            <div class="dataBox">
+              <div class="line">
+                <div class="dataItem">
+                  <span class="title">体温：</span>
+                  <span
+                    class="content">{{ caseInfo.InspectionIndex.temperature == '' ? '无' : caseInfo.InspectionIndex.temperature}}度</span>
+                </div>
+                <div class="dataItem">
+                  <span class="title">体重：</span>
+                  <span
+                    class="content">{{ caseInfo.InspectionIndex.weight == '' ? '无' : caseInfo.InspectionIndex.weight}}kg</span>
+                </div>
               </div>
-              <div class="dataItem">
-                <span class="title">体重：</span>
-                <span
-                  class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight}}kg</span>
-              </div>
-            </div>
-            <div class="divide"></div>
-            <div class="line">
-              <div class="dataItem">
-                <span class="title">心率：</span>
-                <span
-                  class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate}}bmp</span>
-              </div>
-              <div class="dataItem">
-                <span class="title">血压：</span>
-                <span
-                  class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure}}mmHg</span>
+              <div class="divide"></div>
+              <div class="line">
+                <div class="dataItem">
+                  <span class="title">心率：</span>
+                  <span
+                    class="content">{{ caseInfo.InspectionIndex.heart_rate =='' ? '无' : caseInfo.InspectionIndex.heart_rate}}bmp</span>
+                </div>
+                <div class="dataItem">
+                  <span class="title">血压：</span>
+                  <span
+                    class="content">{{ caseInfo.InspectionIndex.blood_pressure =='' ? '无' : caseInfo.InspectionIndex.blood_pressure}}mmHg</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="item">
-          <span class="title">辅助检查：</span>
-          <span
-            class="content">{{data.caseInfo.InspectionIndex.More =='' ? '无':data.caseInfo.InspectionIndex.More}}</span>
-        </div>
-        <div class="item">
-          <span class="title">诊 断：</span>
-          <span class="content">{{data.caseInfo.diagnose =='' ? '无':data.caseInfo.diagnose}}</span>
-        </div>
-        <div class="item">
-          <span class="title">医嘱小结：</span>
-          <span class="content">{{data.caseInfo.summary =='' ? '无':data.caseInfo.summary}}</span>
-        </div>
+          <div class="item">
+            <span class="title">辅助检查：</span>
+            <span
+              class="content">{{ caseInfo.InspectionIndex.More =='' ? '无' : caseInfo.InspectionIndex.More}}</span>
+          </div>
+          <div class="item">
+            <span class="title">诊 断：</span>
+            <span class="content">{{ caseInfo.diagnose =='' ? '无' : caseInfo.diagnose}}</span>
+          </div>
+          <div class="item">
+            <span class="title">医嘱小结：</span>
+            <span class="content">{{ caseInfo.summary =='' ? '无' : caseInfo.summary}}</span>
+          </div>
+        </template>
+        <template v-else>
+          <NoData type="health"></NoData>
+        </template>
       </el-tab-pane>
-      <el-tab-pane label="处方"
-                   name="second">
-        <div class="tips"
-             v-if="data.prescribeInfos.list.length>1">
-          <span>共{{data.prescribeInfos.list.length}}张，当前第{{prescribeIndex}}张（{{prescribeIndex}}/{{data.prescribeInfos.list.length}}）</span>
-          <div @click="goToNext()"
-               class="next">
-            <span>下一张</span>
-            <i class="arrow"></i>
-          </div>
-        </div>
-        <NoData v-else-if="data.prescribeInfos.list.length==0"
-                type="health"></NoData>
-        <div class="prescribe"
-             v-for="(item,index) in data.prescribeInfos.list"
-             :key="'prescribe' + index"
-             v-show="(index+1) == prescribeIndex">
-          <div class="item">
-            <span class="title">处方编号：</span>
-            <span class="content">{{item.prescriptionNo}}</span>
-          </div>
-          <div class="item">
-            <span class="title">临床诊断：</span>
-            <span class="content">{{item.diagnosisInfos}}</span>
-          </div>
-
-          <div class="dragList">
-            <div class="dragItem"
-                 v-for="(drug,index) in item.drugCode"
-                 :key="'drug' + index">
-              <div class="dragCode">
-                {{drug.drugCode}}
-              </div>
-              <div class="title">
-                <span>{{drug.drugName}} {{drug.drugSpecifications}}</span>
-                <span> x{{drug.drugQty}}</span>
-              </div>
-              <div class="usage">
-                用法用量：每日2次，每次50mg，口服，三天
-              </div>
+      <el-tab-pane
+        label="处方"
+        name="second">
+        <template v-if="prescribeInfos !== null">
+          <div class="tips"
+               v-if="prescribeInfos.list.length > 1">
+            <span>共{{ prescribeInfos.list.length }}张，当前第{{ prescribeIndex }}张（{{ prescribeIndex }}/{{ prescribeInfos.list.length }}）</span>
+            <div @click="goToNext()"
+                 class="next">
+              <span>下一张</span>
+              <i class="arrow"></i>
             </div>
           </div>
-          <div class="staffBox">
-            <div class="line">
-              <div class="dataItem">
-                <span class="title">医 师：</span>
-                <span class="content">{{item.psychiatric =='' ? '无':item.psychiatric}}</span>
-              </div>
-              <div class="dataItem">
-                <span class="title">审方药师：</span>
-                <span
-                  class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
-              </div>
+          <NoData v-else-if="prescribeInfos.list.length == 0"
+                  type="health"></NoData>
+          <div class="prescribe"
+               v-for="(item,index) in prescribeInfos.list"
+               :key="'prescribe' + index"
+               v-show="(index+1) == prescribeIndex">
+            <div class="item">
+              <span class="title">处方编号：</span>
+              <span class="content">{{item.prescriptionNo}}</span>
             </div>
-            <div class="divide"></div>
-            <div class="line">
-              <div class="dataItem">
-                <span class="title">调配药师：</span>
-                <span class="content">{{item.disPharmacist =='' ? '无':item.disPharmacist}}</span>
-              </div>
-              <div class="dataItem">
-                <span class="title">核对发药：</span>
-                <span class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
-              </div>
+            <div class="item">
+              <span class="title">临床诊断：</span>
+              <span class="content">{{item.diagnosisInfos}}</span>
             </div>
 
-            <div class="line"
-                 style="margin-top: 10px;">
-              <div class="dataItem">
-                <span class="title">药师审方结果：</span>
-                <span class="content">{{getText(item.prescription)}}</span>
+            <div class="dragList">
+              <div class="dragItem"
+                   v-for="(drug,index) in item.drugCode"
+                   :key="'drug' + index">
+                <div class="dragCode">
+                  {{drug.drugCode}}
+                </div>
+                <div class="title">
+                  <span>{{drug.drugName}} {{drug.drugSpecifications}}</span>
+                  <span> x{{drug.drugQty}}</span>
+                </div>
+                <div class="usage">
+                  用法用量：每日2次，每次50mg，口服，三天
+                </div>
               </div>
-              <div class="dataItem">
-                <span class="title">系统审方结果：</span>
-                <span
-                  class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+            </div>
+            <div class="staffBox">
+              <div class="line">
+                <div class="dataItem">
+                  <span class="title">医 师：</span>
+                  <span class="content">{{item.psychiatric =='' ? '无':item.psychiatric}}</span>
+                </div>
+                <div class="dataItem">
+                  <span class="title">审方药师：</span>
+                  <span
+                    class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
+                </div>
+              </div>
+              <div class="divide"></div>
+              <div class="line">
+                <div class="dataItem">
+                  <span class="title">调配药师：</span>
+                  <span class="content">{{item.disPharmacist =='' ? '无':item.disPharmacist}}</span>
+                </div>
+                <div class="dataItem">
+                  <span class="title">核对发药：</span>
+                  <span class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
+                </div>
+              </div>
+
+              <div class="line"
+                   style="margin-top: 10px;">
+                <div class="dataItem">
+                  <span class="title">药师审方结果：</span>
+                  <span class="content">{{getText(item.prescription)}}</span>
+                </div>
+                <div class="dataItem">
+                  <span class="title">系统审方结果：</span>
+                  <span
+                    class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          no data
+        </template>
       </el-tab-pane>
       <el-tab-pane label="检验检查"
                    name="third">
@@ -184,6 +197,7 @@
 </template>
 <script>
   import NoData from '@src/views/components/NoData'
+  import get from 'lodash/get'
   export default {
     name: 'ConsultDetail',
     components: {
@@ -203,7 +217,49 @@
         prescribeIndex: 1
       }
     },
-    computed: {},
+    /**
+     * caseInfo: null
+       consultSummary: (...)
+       patientInfo: Object
+       prescribeInfos: (...)
+     */
+    computed: {
+      caseInfo() {
+        return get(this, 'data.caseInfo', null)
+      },
+      consultSummary() {
+        return get(this, 'data.consultSummary', null)
+      },
+      patientInfo() {
+        return get(this, 'data.patientInfo', null)
+      },
+      prescribeInfos() {
+        return get(this, 'data.prescribeInfos', null)
+      },
+      //
+      familyName() {
+        return get(this, 'patientInfo.familyName', null)
+      },
+      sex() {
+        return get(this, 'patientInfo.sex', null)
+      },
+      createTime() {
+        return get(this, 'patientInfo.createTime', null)
+      },
+      outpatientDoctor() {
+        const doctorName = get(this, 'patientInfo.doctorName', '')
+        const hospitalName = get(this, 'patientInfo.hospitalName', '')
+        const deptName = get(this, 'patientInfo.deptName', '')
+        return `${doctorName} ${hospitalName} ${deptName}`
+      },
+      consultant() {
+        const toDoctorName = get(this, 'consultSummary.toDoctorName', '')
+        const toDoctorTitle = get(this, 'consultSummary.toDoctorTitle', '')
+        const toHospitalName = get(this, 'consultSummary.toHospitalName', '')
+        const toDeptName = get(this, 'consultSummary.toDeptName', '')
+        return `${toDoctorName} ${toDoctorTitle} ${toHospitalName} ${toDeptName}`
+      }
+    },
     methods: {
       goToNext() {
         if (this.prescribeIndex == this.data.prescribeInfos.list.length) {
