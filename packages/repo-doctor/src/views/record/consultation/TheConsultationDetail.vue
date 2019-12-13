@@ -120,105 +120,102 @@
           </el-form>
         </el-collapse-item>
       </div>
-
-      <!-- 发起机构审核信息 -->
-      <div class="record-content"
-           v-if="internalData.consultStatus >= 2 ">
-        <el-collapse-item name="3">
+      <div class="record-content">
+        <el-collapse-item name='10'>
           <template slot="title">
-            <span class="title">发起机构审核信息</span>
+            <span class="title">审核信息</span>
           </template>
+          <el-row class="gray">
+            <el-collapse v-model="active">
+              <div v-if="internalData.consultStatus >= 2 ">
+                <el-collapse-item name="11">
+                  <template slot="title">
+                    <span class="sub-title">发起机构</span>
+                  </template>
+                  <el-form>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核结果">
+                          <span>{{ formatterCheckStatus(internalData.outCheckStatus) }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核意见">
+                          <span>{{ internalData.outCheckSuggest }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核时间">
+                          <span>{{ internalData.outCheckTime }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                </el-collapse-item>
+              </div>
+              <div v-if="internalData.consultStatus >= 4 ">
+                <el-collapse-item name="12">
+                  <template slot="title">
+                    <span class="sub-title">受邀机构</span>
+                  </template>
+                  <el-form>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核结果">
+                          <span>{{ formatterCheckStatus(internalData.inCheckStatus) }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核意见">
+                          <span>{{ internalData.inCheckSuggest }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="审核时间">
+                          <span>{{ internalData.inCheckTime }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                </el-collapse-item>
+              </div>
+              <div v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
+                <el-collapse-item name="13">
+                  <template slot="title">
+                    <span class="sub-title">受邀医生</span>
+                  </template>
+                  <el-form>
+                    <el-row>
+                      <el-col :span="24"
+                              v-if="internalData.consultStatus==10">
+                        <el-form-item label="退诊">
+                          <span>{{ internalData.doctorExamineTime }}</span>
+                        </el-form-item>
+                        <el-form-item>
+                          <span>{{internalData.consultSuggest}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="24"
+                              v-else>
+                        <el-form-item label="接诊">
+                          <span>{{ internalData.doctorExamineTime }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                </el-collapse-item>
+              </div>
 
-          <el-form>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核结果">
-                  <span>{{ formatterCheckStatus(internalData.outCheckStatus) }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核意见">
-                  <span>{{ internalData.outCheckSuggest }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核时间">
-                  <span>{{ internalData.outCheckTime }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </el-collapse-item>
-      </div>
-
-      <!-- 受邀机构审核信息 -->
-      <div class="record-content"
-           v-if="internalData.consultStatus >= 4 ">
-        <el-collapse-item name="4">
-          <template slot="title">
-            <span class="title">受邀机构审核信息</span>
-          </template>
-
-          <el-form>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核结果">
-                  <span>{{ formatterCheckStatus(internalData.inCheckStatus) }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核意见">
-                  <span>{{ internalData.inCheckSuggest }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核时间">
-                  <span>{{ internalData.inCheckTime }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </el-collapse-item>
-      </div>
-      <!-- 受邀医生审核信息 -->
-      <div class="record-content"
-           v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
-        <el-collapse-item name="5">
-          <template slot="title">
-            <span class="title">受邀医生审核信息</span>
-          </template>
-
-          <el-form>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核结果">
-                  <span>{{ formatterCheckStatus(internalData.doctorExamine) }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核意见">
-                  <span>{{ internalData.consultSuggest }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核时间">
-                  <span>{{ internalData.doctorExamineTime }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+            </el-collapse>
+          </el-row>
         </el-collapse-item>
       </div>
 
@@ -234,7 +231,7 @@
 
       <!-- 会议记录 -->
       <div class="record-content"
-           v-if="internalData.consultStatus >= 7 ">
+           v-if="[7,8,9].includes(internalData.consultStatus) ">
         <!-- 会诊关闭 -->
         <template v-if="internalData.consultStatus === 8">
           <el-collapse-item name="8">
@@ -369,7 +366,9 @@ export default {
         { consultStatus: 5, consultTxt: '等待会诊' },
         { consultStatus: 6, consultTxt: '会诊中' },
         { consultStatus: 7, consultTxt: '会诊已完成' },
-        { consultStatus: 8, consultTxt: '会诊已关闭' }
+        { consultStatus: 8, consultTxt: '会诊已关闭' },
+        { consultStatus: 9, consultTxt: '医生待接诊' },
+        { consultStatus: 10, consultTxt: '医生已拒绝' }
       ],
 
       active: ['1']
@@ -403,7 +402,6 @@ export default {
   /deep/ .el-collapse-item__content {
     padding-bottom: 10px;
   }
-
   /deep/ .el-collapse-item__header {
     border: 0;
     height: 40px;
@@ -528,6 +526,49 @@ export default {
     /deep/ .el-form-item--mini .el-form-item__label,
     /deep/ .el-form-item--mini .el-form-item__content {
       line-height: 24px;
+    }
+  }
+}
+.gray {
+  padding: 0 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  .el-collapse {
+    /deep/.el-collapse-item:last-child {
+      border-bottom-style: dashed;
+    }
+    /deep/.el-collapse-item__header,
+    /deep/.el-collapse-item__wrap {
+      background-color: inherit;
+    }
+    /deep/.el-collapse-item__header {
+      height: 30px;
+      line-height: 30px;
+    }
+
+    /deep/.el-collapse-item__wrap {
+      padding-left: 16px;
+    }
+    /deep/.el-form-item-label,
+    /deep/.el-form-item-content {
+      line-height: 18px;
+    }
+    .sub-title {
+      padding-left: 16px;
+      font-size: 14px;
+      color: #333;
+      position: relative;
+      &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        left: 0;
+        top: 0;
+        transform: translateY(15px);
+        background-color: #00c6ae;
+        border-radius: 50%;
+        position: absolute;
+      }
     }
   }
 }
