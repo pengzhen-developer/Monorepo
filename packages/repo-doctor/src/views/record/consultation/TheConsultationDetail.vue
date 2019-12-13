@@ -120,101 +120,95 @@
           </el-form>
         </el-collapse-item>
       </div>
-      <div class="record-content">
+      <div class="record-content pb0">
         <el-collapse-item name='10'>
           <template slot="title">
             <span class="title">审核信息</span>
           </template>
           <el-row class="gray">
-            <el-collapse v-model="active">
-              <div v-if="internalData.consultStatus >= 2 ">
-                <el-collapse-item name="11">
-                  <template slot="title">
-                    <span class="sub-title">发起机构</span>
-                  </template>
-                  <el-form>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核结果">
-                          <span>{{ formatterCheckStatus(internalData.outCheckStatus) }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核意见">
-                          <span>{{ internalData.outCheckSuggest }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核时间">
-                          <span>{{ internalData.outCheckTime }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                </el-collapse-item>
-              </div>
-              <div v-if="internalData.consultStatus >= 4 ">
-                <el-collapse-item name="12">
-                  <template slot="title">
-                    <span class="sub-title">受邀机构</span>
-                  </template>
-                  <el-form>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核结果">
-                          <span>{{ formatterCheckStatus(internalData.inCheckStatus) }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核意见">
-                          <span>{{ internalData.inCheckSuggest }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="审核时间">
-                          <span>{{ internalData.inCheckTime }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                </el-collapse-item>
-              </div>
-              <div v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
-                <el-collapse-item name="13">
-                  <template slot="title">
-                    <span class="sub-title">受邀医生</span>
-                  </template>
-                  <el-form>
-                    <el-row>
-                      <el-col :span="24"
-                              v-if="internalData.consultStatus==10">
-                        <el-form-item label="退诊">
-                          <span>{{ internalData.doctorExamineTime }}</span>
-                        </el-form-item>
-                        <el-form-item>
-                          <span>{{internalData.consultSuggest}}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="24"
-                              v-else>
-                        <el-form-item label="接诊">
-                          <span>{{ internalData.doctorExamineTime }}</span>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                </el-collapse-item>
-              </div>
+            <div v-if="internalData.consultStatus >= 2 ">
+              <el-col>
+                <span class="sub-title">发起机构</span>
+              </el-col>
+              <el-form class="pb16">
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核结果">
+                      <span>{{ formatterCheckStatus(internalData.outCheckStatus) }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核意见">
+                      <span>{{ internalData.outCheckSuggest }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核时间">
+                      <span>{{ internalData.outCheckTime }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
+            <div v-if="internalData.consultStatus >= 4 ">
+              <el-col>
+                <span class="sub-title">受邀机构</span>
+              </el-col>
+              <el-form class="pb16">
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核结果">
+                      <span>{{ formatterCheckStatus(internalData.inCheckStatus) }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核意见">
+                      <span>{{ internalData.inCheckSuggest }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="审核时间">
+                      <span>{{ internalData.inCheckTime }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
+            <div v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
+              <el-col>
+                <span class="sub-title">受邀医生</span>
+              </el-col>
+              <el-form class="pb16">
+                <el-row>
+                  <el-col :span="24"
+                          v-if="internalData.consultStatus==10">
+                    <el-form-item label="退诊"
+                                  class="afterNone">
+                      <span>{{ internalData.doctorExamineTime }}</span>
+                    </el-form-item>
+                    <el-form-item>
+                      <span>{{internalData.consultSuggest}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24"
+                          v-else>
+                    <el-form-item label="接诊"
+                                  class="afterNone">
+                      <span>{{ internalData.doctorExamineTime }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
 
-            </el-collapse>
           </el-row>
         </el-collapse-item>
       </div>
@@ -231,7 +225,7 @@
 
       <!-- 会议记录 -->
       <div class="record-content"
-           v-if="[7,8,9].includes(internalData.consultStatus) ">
+           v-if="[7,8].includes(internalData.consultStatus) ">
         <!-- 会诊关闭 -->
         <template v-if="internalData.consultStatus === 8">
           <el-collapse-item name="8">
@@ -479,6 +473,11 @@ export default {
   }
 
   .record-content {
+    &:last-child {
+      .el-collapse-item:last-child {
+        border-bottom: 0;
+      }
+    }
     .title {
       display: inline-flex;
       justify-content: center;
@@ -527,47 +526,46 @@ export default {
     /deep/ .el-form-item--mini .el-form-item__content {
       line-height: 24px;
     }
-  }
-}
-.gray {
-  padding: 0 10px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  .el-collapse {
-    /deep/.el-collapse-item:last-child {
-      border-bottom-style: dashed;
-    }
-    /deep/.el-collapse-item__header,
-    /deep/.el-collapse-item__wrap {
-      background-color: inherit;
-    }
-    /deep/.el-collapse-item__header {
-      height: 30px;
-      line-height: 30px;
-    }
-
-    /deep/.el-collapse-item__wrap {
-      padding-left: 16px;
-    }
-    /deep/.el-form-item-label,
-    /deep/.el-form-item-content {
-      line-height: 18px;
-    }
-    .sub-title {
-      padding-left: 16px;
-      font-size: 14px;
-      color: #333;
-      position: relative;
-      &::before {
-        content: '';
-        width: 8px;
-        height: 8px;
-        left: 0;
-        top: 0;
-        transform: translateY(15px);
-        background-color: #00c6ae;
-        border-radius: 50%;
-        position: absolute;
+    .gray {
+      padding: 5px 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      .sub-title {
+        padding-left: 16px;
+        font-size: 14px;
+        line-height: 30px;
+        height: 30px;
+        color: #333;
+        position: relative;
+        &::before {
+          content: '';
+          width: 8px;
+          height: 8px;
+          left: 0;
+          top: 50%;
+          transform: translateY(-4px);
+          background-color: #00c6ae;
+          border-radius: 50%;
+          position: absolute;
+        }
+      }
+      .el-form.pb16 {
+        padding-left: 16px;
+        padding-bottom: 5px;
+        border-bottom: 1px dashed #eee;
+        &:last-child {
+          border-bottom: 0;
+        }
+        /deep/ .el-form-item--mini.afterNone .el-form-item__label {
+          margin-right: 5px;
+          &::after {
+            content: '';
+          }
+        }
+      }
+      /deep/ .el-form-item--mini .el-form-item__label,
+      /deep/ .el-form-item--mini .el-form-item__content {
+        line-height: 18px;
       }
     }
   }
