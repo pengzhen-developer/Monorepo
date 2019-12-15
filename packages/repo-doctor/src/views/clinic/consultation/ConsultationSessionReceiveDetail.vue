@@ -1,51 +1,63 @@
 <template>
   <div class="receive"
-       v-if="injectConsultInfo.consultInfo">
+       v-if="injectConsultInfo">
     <div class="card">
-      <h4>个人信息</h4>
+      <h4>患者信息</h4>
       <el-row>
         <el-col :span="8">
           <span class="label w4">姓名</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.patientInfo.familyName }}
+            {{ injectConsultInfo.familyName }}
           </span>
         </el-col>
         <el-col :span="8">
           <span class="label w4">年龄</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.patientInfo.familyAge + "岁"}}
+            {{ injectConsultInfo.familyAge + "岁"}}
           </span>
         </el-col>
         <el-col :span="8">
           <span class="label w4">性别</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.patientInfo.familySex }}
+            {{ injectConsultInfo.familySex }}
           </span>
         </el-col>
       </el-row>
     </div>
 
     <div class="card">
-      <h4>申请会诊医生</h4>
+      <!-- 发起 -->
+      <template v-if="injectConsultInfo.toDoctorId ===$store.state.user.userInfo.list.docInfo.doctor_id">
+        <h4>会诊医生</h4>
 
-      <div style="display: flex; align-items: center;">
-        <el-avatar :src="injectConsultInfo.fromPhoto"></el-avatar>
-        <span
-              style="color: #333; margin: 0 10px; font-weight:600; ">{{ injectConsultInfo.inviteDoctorInfo.doctorName }}</span>
-        <span
-              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.deptName }}</span>
-        <span
-              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.doctorTitle }}</span>
-        <span
-              style="color: #999; margin: 0 5px">{{ injectConsultInfo.inviteDoctorInfo.hospitalName }}</span>
-      </div>
+        <div style="display: flex; align-items: center;">
+          <el-avatar :src="injectConsultInfo.fromPhoto"></el-avatar>
+          <span style="color: #333; margin: 0 10px; font-weight:600; ">{{ injectConsultInfo.fromDoctorName }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.fromDeptName }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.fromDoctorTitle }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.fromHospitalName }}</span>
+        </div>
+      </template>
+
+      <!-- 受邀 -->
+      <template v-else>
+        <h4>会诊医生</h4>
+
+        <div style="display: flex; align-items: center;">
+          <el-avatar :src="injectConsultInfo.toPhoto"></el-avatar>
+          <span style="color: #333; margin: 0 10px; font-weight:600; ">{{ injectConsultInfo.toDoctorName }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.toDeptName }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.toDoctorTitle }}</span>
+          <span style="color: #999; margin: 0 5px">{{ injectConsultInfo.toHospitalName }}</span>
+        </div>
+      </template>
     </div>
 
     <div class="card">
-      <h4>申请会诊信息</h4>
+      <h4>会诊信息</h4>
       <el-row>
         <el-col :span="24">
           <span class="label">初诊诊断</span>
@@ -54,7 +66,8 @@
             <el-tag :key="item"
                     style="margin-right: 5px; border: none; "
                     type="info"
-                    v-for="item in injectConsultInfo.consultInfo.diagnose.split('|')">{{ item }}
+                    v-for="item in injectConsultInfo.familyDisagnose.split('|')">
+              {{ item }}
             </el-tag>
           </span>
         </el-col>
@@ -64,7 +77,7 @@
           <span class="label">申请会诊说明</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.consultInfo.consultExplain }}
+            {{ injectConsultInfo.consultExplain }}
           </span>
         </el-col>
       </el-row>
@@ -73,7 +86,7 @@
           <span class="label">期望会诊时间</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.consultInfo.expectTime }}
+            {{ injectConsultInfo.expectTime }}
           </span>
         </el-col>
       </el-row>
@@ -82,7 +95,7 @@
           <span class="label">提交申请时间</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.consultInfo.createdTime }}
+            {{ injectConsultInfo.createdTime }}
           </span>
         </el-col>
       </el-row>
@@ -92,69 +105,67 @@
       <h4>审核意见</h4>
       <div class="content time-line">
         <el-timeline>
-          <el-timeline-item v-for="check in injectConsultInfo.checkList"
-                            v-bind:key="check.checkType"
-                            v-bind:timestamp="check.checkDate"
+          <el-timeline-item :timestamp="injectConsultInfo.outCheckTime"
                             placement="top"
                             type="primary">
-            <el-tag v-bind:type="check.checkStatus === 3 ? 'primary' : 'info'"
-                    class="timestamp_extend">
-              {{ check.checkStatus === 3 ? '通过' : '拒绝' }}
+            <el-tag class="timestamp_extend">{{ injectConsultInfo.outCheckStatus === 3 ? "已通过" : "" }}
             </el-tag>
 
-            <template v-if="check.checkType === 'doctor'">
-              <div class="timestamp_remark">
-                <template v-if="check.checkStatus === 1">
-                  <p>医生：等待审批</p>
-                </template>
-                <template v-if="check.checkStatus === 2">
-                  <p>医生：审批拒绝</p>
-                  <p>拒绝原因：{{ check.checkSuggest }}</p>
-                </template>
-                <template v-if="check.checkStatus === 3">
-                  <p>医生：审批通过</p>
-                </template>
-              </div>
-            </template>
-            <template v-else>
-              <div class="timestamp_remark">
-                <p>
-                  <span>审核机构：</span>
-                  <span>{{ check.hospitalName }}</span>
-                </p>
-                <p>
-                  <span>审核备注：</span>
-                  <span>{{ check.checkSuggest }}</span>
-                </p>
-              </div>
-            </template>
+            <div class="timestamp_remark">
+              <p>
+                <span>审核机构：</span>
+                <span>{{ injectConsultInfo.fromHospitalName }}</span>
+              </p>
+              <p>
+                <span>审核备注：</span>
+                <span>{{ injectConsultInfo.outCheckSuggest }}</span>
+              </p>
+            </div>
+          </el-timeline-item>
+
+          <el-timeline-item :timestamp="injectConsultInfo.inCheckTime"
+                            placement="top"
+                            type="primary">
+            <el-tag class="timestamp_extend">{{ injectConsultInfo.inCheckStatus === 3 ? "已通过" : "" }}
+            </el-tag>
+
+            <div class="timestamp_remark">
+              <p>
+                <span>审核机构：</span>
+                <span>{{ injectConsultInfo.toHospitalName }}</span>
+              </p>
+              <p>
+                <span>审核备注：</span>
+                <span>{{ injectConsultInfo.inCheckSuggest }}</span>
+              </p>
+            </div>
           </el-timeline-item>
         </el-timeline>
       </div>
     </div>
 
     <div class="card"
-         v-if="injectConsultInfo.consultInfo.isCommit">
+         v-if="injectConsultInfo.isCommit">
       <el-row>
         <h4>会诊小结</h4>
         <span class="label w4">会诊所见</span>
         <span class="divider">:</span>
-        <span class="value">{{ injectConsultInfo.consultInfo.consultFind }}</span>
+        <span class="value">{{ injectConsultInfo.consultFind }}</span>
       </el-row>
       <el-row>
         <span class="label w4">目前诊断</span>
         <span class="divider">:</span>
-        <span class="value">{{ injectConsultInfo.consultInfo.consultDiagnose }}</span>
+        <span class="value">{{ injectConsultInfo.consultDiagnose }}</span>
       </el-row>
       <el-row>
         <span class="label w4">建议</span>
         <span class="divider">:</span>
-        <span class="value">{{ injectConsultInfo.consultInfo.consultSuggest }}</span>
+        <span class="value">{{ injectConsultInfo.consultSuggest }}</span>
       </el-row>
       <el-row>
         <span class="label w4">医生签名</span>
         <span class="divider">:</span>
-        <span class="value">{{ injectConsultInfo.consultInfo.doctorSignImg }}</span>
+        <span class="value">{{ injectConsultInfo.doctorSignImg }}</span>
       </el-row>
     </div>
   </div>
@@ -169,9 +180,16 @@ export default {
     }
   },
 
-  created() {
-    this.getConsultationDetail()
+  watch: {
+    '$store.state.consultation.session': {
+      handler() {
+        this.getConsultationDetail()
+      },
+      immediate: true
+    }
   },
+
+  created() {},
 
   methods: {
     getConsultationDetail() {

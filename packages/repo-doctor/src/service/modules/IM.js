@@ -338,8 +338,10 @@ export function setConsultationSessions(sessions) {
           peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
         session.content.consultInfo.consultStatus ===
           peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
-        session.content.consultInfo.consultStatus ===
-          peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核
+        (session.content.consultInfo.consultStatus ===
+          peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
+          session.content.consultInfo.receiveDoctor[0].doctorId ===
+            Store.state.user.userInfo.list.docInfo.doctor_id)
       ) {
         return true
       }

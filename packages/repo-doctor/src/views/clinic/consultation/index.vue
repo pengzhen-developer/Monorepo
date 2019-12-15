@@ -10,7 +10,7 @@
     </div>
     <div class="consultation-right"
          v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
-               $store.getters['consultation/consultInfo'].consultStatus !== $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
+               $store.getters['consultation/consultInfo'].consultStatus !== $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
       <ConsultationPatient></ConsultationPatient>
     </div>
   </div>
@@ -88,7 +88,7 @@ export default {
       // 等待会诊, 未到期望时间, 显示倒计时
       if (
         session.content.consultInfo.consultStatus ===
-          peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
+          peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
         new Date() < dayjs(session.content.consultInfo.expectTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectTime.toDate().getTime()
@@ -112,7 +112,7 @@ export default {
       // 等待接诊, 已到期望时间, 未到结束时间, 显示会诊结束倒计时
       else if (
         session.content.consultInfo.consultStatus ===
-          peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
+          peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
         new Date() > dayjs(session.content.consultInfo.expectTime).toDate() &&
         new Date() < dayjs(session.content.consultInfo.expectOverTime).toDate()
       ) {
@@ -200,11 +200,17 @@ export default {
 
   height: calc(100vh - 56px - 40px - 20px);
 
-  .consultation-left,
+  .consultation-left {
+    width: 230px;
+
+    border: 1px solid #efefef;
+  }
+
   .consultation-right {
     width: 230px;
 
     border: 1px solid #efefef;
+    border-left: none;
   }
 
   .consultation-center {
@@ -212,7 +218,6 @@ export default {
 
     border: 1px solid #efefef;
     border-left: none;
-    border-right: none;
   }
 }
 </style>

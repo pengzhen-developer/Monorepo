@@ -2,10 +2,12 @@
   <div class="consultation-session">
     <div class="header">
       <div class="header-left">
-        <!-- <h4>{{ $store.getters['consultation/patientInfo'].familyName }}</h4> -->
+        <span>{{ getConsultStatus() }}</span>
       </div>
       <div class="header-right">
-        <el-button type="text">{{ getConsultStatus() }}</el-button>
+        <el-button type="text"
+                   @click="overConsultation"
+                   v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">结束会诊</el-button>
       </div>
     </div>
 
@@ -19,9 +21,8 @@
         <div slot="title"
              style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
           <span>
-            <span>视频结束后请填写</span>
+            <span>会诊结束后请填写</span>
             <span style="font-weight: bold; ">【会诊意见】</span>
-            <span>，提交成功后本次会诊将结束。</span>
           </span>
         </div>
       </el-alert>
@@ -41,10 +42,10 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊"></ConsultationSessionReceive>
+          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核"></ConsultationSessionReceive>
           <!-- 问诊中 -->
-          <ConsultationSessionMessageInput v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.问诊中"></ConsultationSessionMessageInput>
-
+          <ConsultationSessionMessageInput v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
+                                                 $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 "></ConsultationSessionMessageInput>
         </div>
       </template>
     </div>
@@ -142,17 +143,16 @@ export default {
       $peace.videoComponent.sendVideo()
     },
 
-    showConsultDetail() {
-      this.dialog.visible = true
-      this.dialog.data = {}
+    overConsultation() {
+      if (this.$store.getters['consultation/consultInfo'].isCommit) {
+        const params = {
+          consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+        }
 
-      const params = {
-        consultNo: this.tipsForConsult.consultNo
+        peace.service.consult.overConsult(params)
+      } else {
+        peace.util.alert('请填写会诊意见')
       }
-
-      peace.service.consult.getConsultInfo(params).then(res => {
-        this.dialog.data = res.data.info
-      })
     },
 
     checkStatus(session) {

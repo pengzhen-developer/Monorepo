@@ -2,7 +2,7 @@
   <div class="consultation-session-message-list">
 
     <!-- 待接诊 -->
-    <template v-if="type === 'consult' && $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
+    <template v-if="type === 'consult' && !data && $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
       <ConsultationSessionReceiveDetail></ConsultationSessionReceiveDetail>
     </template>
 
@@ -130,7 +130,7 @@ export default {
   watch: {
     '$store.state.consultation.sessionMessages': {
       handler() {
-        this.scrollMessageToBottom()
+        // this.scrollMessageToBottom()
       },
       immediate: true
     }

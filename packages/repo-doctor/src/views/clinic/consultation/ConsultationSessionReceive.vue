@@ -23,33 +23,60 @@ import peace from '@src/library'
 
 export default {
   methods: {
-    // 接诊
+    // 接受
     receive() {
-      const params = {
-        consultationNo: this.$store.getters['consultation/consultationInfo'].consultationNo
+      const receiveHandler = () => {
+        const params = {
+          consultNo: this.$store.state.consultation.session.content.consultInfo.consultNo,
+          action: 'accept'
+        }
+
+        return peace.service.consult.doctorAudit(params)
       }
 
-      peace.service.consultation.receiveconsultation(params).then(res => {
-        peace.util.alert(res.msg)
-      })
+      const receiveMessage = () => {
+        const message = '您已接诊，是否立即开启视频。'
+        const option = {
+          type: 'warning',
+          confirmButtonText: '开始视频',
+          cancelButtonText: '暂不开始'
+        }
+
+        peace.util.confirm(message, undefined, option, () => {
+          $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+        })
+      }
+
+      receiveHandler().then(receiveMessage)
     },
 
-    // 退诊
+    // 拒绝
     refuse() {
-      peace.util.confirm(
-        '退诊后自动退还问诊费用，请再次确定是否退诊。',
-        undefined,
-        { type: 'warning', confirmButtonText: '退诊' },
-        () => {
-          const params = {
-            consultationNo: this.$store.getters['consultation/consultationInfo'].consultationNo
+      const refuseMessage = confirmCallback => {
+        this.$prompt('退诊后自动退还问诊费用，请输入退诊原因。', '提示', {
+          confirmButtonText: '确认退诊',
+          cancelButtonText: '取消退诊',
+          inputType: 'textarea',
+        }).then(({ value }) => {
+          if (value) {
+            confirmCallback(value)
+          } else {
+            peace.util.alert('请输入退诊原因')
           }
+        })
+      }
 
-          peace.service.consultation.quitconsultation(params).then(res => {
-            peace.util.alert(res.msg)
-          })
+      const refuseHandler = reason => {
+        const params = {
+          reason: reason,
+          consultNo: this.$store.state.consultation.session.content.consultInfo.consultNo,
+          action: 'reject'
         }
-      )
+
+        peace.service.consult.doctorAudit(params)
+      }
+
+      refuseMessage(refuseHandler)
     }
   }
 }
@@ -65,7 +92,7 @@ export default {
   align-items: center;
 
   .tip {
-    padding: 40px 0;
+    padding: 20px 0;
     color: #333333;
 
     .count-down {

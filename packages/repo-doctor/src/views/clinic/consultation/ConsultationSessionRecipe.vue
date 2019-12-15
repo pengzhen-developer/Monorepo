@@ -333,7 +333,7 @@ export default {
     })
 
     const paramsForCase = {
-      inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
+      consultNo: this.$store.getters['consultation/consultInfo'].consultNo
     }
     peace.service.inquiry.getCase(paramsForCase).then(res => {
       this.drug.diagnose = res.data.diagnose
@@ -411,14 +411,13 @@ export default {
 
       const params = {
         openId: this.$store.state.user.userInfo.list.docInfo.openid,
-        inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
-        family_id: this.$store.getters['inquiry/patientInfo'].familyId,
+        consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
         diagnose: this.drug.diagnose,
         allergy_history: this.drug.allergy_history,
         drugsJson: JSON.stringify(temp)
       }
 
-      peace.service.prescribePrescrip.subPrescrip(params).then(res => {
+      peace.service.prescribePrescrip.offlineSubPrescrip(params).then(res => {
         peace.util.alert(res.msg)
 
         $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)

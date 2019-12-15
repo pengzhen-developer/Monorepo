@@ -120,6 +120,42 @@ export function getRecordTemplate() {
  * @param {*} params
  * @returns
  */
+export function offlineAddCase({
+  consultNo,
+  inquiry_no,
+  allergy_history,
+  diagnose,
+  base_illness,
+  present_history,
+  past_history,
+  Inspection_index,
+  summary,
+  templateId
+}) {
+  const params = {
+    consultNo: consultNo,
+    inquiryNo: inquiry_no,
+    allergyHistory: allergy_history,
+    diagnose,
+    baseIllness: base_illness,
+    presentHistory: present_history,
+    pastHistory: past_history,
+    inspectionIndex: Inspection_index,
+    summary,
+    aliverId: templateId
+  }
+  const offlineAddCase = 'client/v1/Prescribeprescrip/offlineAddCase'
+
+  return peace.http.post(offlineAddCase, params)
+}
+
+/**
+ * 发会诊病历
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
 export function addCase({
   inquiry_no,
   allergy_history,
@@ -265,6 +301,7 @@ export default {
   getRecordTemplate,
   /** 发病历 */
   addCase,
+  offlineAddCase,
   /** 获取病历详情 */
   getCase,
   getHealthCase,

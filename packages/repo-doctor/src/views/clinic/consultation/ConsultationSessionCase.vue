@@ -570,8 +570,9 @@ export default {
             params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
-          console.log(params)
-          peace.service.inquiry.addCase(params).then(res => {
+          params.consultNo = this.$store.getters['consultation/consultInfo'].consultNo
+
+          peace.service.inquiry.offlineAddCase(params).then(res => {
             $peace.util.alert(res.msg)
 
             $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)

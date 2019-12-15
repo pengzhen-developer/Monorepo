@@ -15,7 +15,6 @@
              v-for="session in $store.state.consultation.sessions">
           <div class="consultation-title">
             <div class="status">
-              <!-- 距开始 -->
               <div v-if="$peace.consultationComponent.getIntervalStatus(session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
                 <i class="icon_ic_wait_groupconsultation"></i>
                 <span>距开始还剩</span>
@@ -23,7 +22,6 @@
                 <span style="margin: 0 5px; color: #00C6AE;">{{ $peace.consultationComponent.getIntervalValue(session) }}</span>
               </div>
 
-              <!-- 距结束 -->
               <div v-else-if="$peace.consultationComponent.getIntervalStatus(session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
                 <i class="icon_ic_wait_groupconsultation"></i>
                 <span>距关闭还剩</span>
@@ -31,9 +29,16 @@
                 <span style="margin: 0 5px; color: #FF0000;">{{ $peace.consultationComponent.getIntervalValue(session) }}</span>
               </div>
 
-              <div v-else-if="$peace.consultationComponent.getIntervalStatus(session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
+              <div v-else>
                 <i class="icon_ic_ing_groupconsultation"></i>
-                <span style="color: #00C6AE;">会诊中</span>
+                <span style="color: #00C6AE;">
+                  {{ 
+                    Object.keys($peace.type.CONSULTATION.CONSULTATION_STATUS).find(
+                      key =>
+                        $peace.type.CONSULTATION.CONSULTATION_STATUS[key] === session.content.consultInfo.consultStatus
+                    ) 
+                  }}
+                </span>
               </div>
             </div>
             <div class="time">
