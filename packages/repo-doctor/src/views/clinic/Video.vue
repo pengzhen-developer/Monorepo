@@ -25,7 +25,7 @@
 
 <script>
 import peace from '@src/library'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
   data() {

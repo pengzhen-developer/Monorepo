@@ -2,8 +2,8 @@ import peace from '@src/library'
 
 import Store from '@src/store'
 
-import NIM from '/public/static/IM/NIM_Web_NIM_v6.5.5'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+import NIM from '/public/static/IM/NIM_Web_NIM_v7.0.0'
+import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 NIM.use(WebRTC)
 
 /**
