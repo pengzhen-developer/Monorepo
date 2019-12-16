@@ -1,14 +1,14 @@
 <template>
   <div class="file-examination-detail">
     <div class="none-page">
-      <div class="icon icon_none_source t10"></div>
+      <div class="icon icon_none_source t20"></div>
       <div class="none-text">暂无检验报告</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {}
 </script>
 
 <style lang="scss" scoped>

@@ -470,8 +470,8 @@ export default {
   flex-direction: column;
   &.no-family {
     padding: 20px 16px 0;
-    height: 70%;
-    bottom: -70%;
+    height: 75%;
+    bottom: -75%;
     &.show {
       bottom: 0;
     }
@@ -479,8 +479,8 @@ export default {
   &.has-family {
     padding-top: 20px;
     min-height: 50%;
-    max-height: 70%;
-    bottom: -70%;
+    max-height: 75%;
+    bottom: -75%;
     &.show {
       bottom: 0;
     }
@@ -601,6 +601,7 @@ export default {
 }
 .form {
   flex: 1;
+  overflow: auto;
 }
 .bottom {
   padding: 10px 15px;
