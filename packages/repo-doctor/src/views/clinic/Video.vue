@@ -543,6 +543,7 @@ export default {
 
     showMeesageNotify() {
       const accept = () => {
+        console.warn('luci')
         this.closeMessageNofity()
         this.processJoin()
         this.accept()
@@ -648,7 +649,12 @@ export default {
           action: 'start'
         }
 
-        return peace.service.video.processConsult(params)
+        const response = peace.service.video.processConsult(params)
+        if (response.code === 200) {
+          return response
+        } else {
+          this.hangupVideo()
+        }
       }
     },
 
