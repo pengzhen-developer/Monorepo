@@ -1,8 +1,7 @@
 <template>
   <div class="inquiry-session-message-list">
-
     <!-- 待接诊 -->
-    <template v-if="type === 'inquiry' && $peace.$store.state.inquiry.session.content.inquiryInfo.inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
       <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
                                     :data="messageList[0].content.data"></InquiryPreliminaryForReceive>
     </template>
@@ -307,7 +306,7 @@ export default {
     type: {
       type: String,
       default() {
-        return 'inquriy'
+        return 'inquiry'
       }
     }
   },

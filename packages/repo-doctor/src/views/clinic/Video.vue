@@ -637,6 +637,7 @@ export default {
           inquiryNo: inquiryNo,
           action: 'start'
         }
+
         peace.service.video.process(params)
       }
 
@@ -649,12 +650,11 @@ export default {
           action: 'start'
         }
 
-        const response = peace.service.video.processConsult(params)
-        if (response.code === 200) {
-          return response
-        } else {
-          this.hangupVideo()
-        }
+        peace.service.video.processConsult(params).then(res => {
+          if (res.code !== 200) {
+            this.hangupVideo()
+          }
+        })
       }
     },
 

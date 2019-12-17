@@ -373,7 +373,7 @@ export function setConsultationSessions(sessions) {
 }
 
 /**
- * 设置 inquriy session
+ * 设置 inquiry session
  *
  * @export
  * @param {*} session
@@ -413,7 +413,7 @@ export function resetConsultationSession() {
 }
 
 /**
- * 设置 inquriy session messages
+ * 设置 inquiry session messages
  *
  * @export
  * @param {*} message
@@ -442,7 +442,7 @@ export function setConsultationSessionMessages(messages) {
 }
 
 /**
- * 重置 inquriy session messages
+ * 重置 inquiry session messages
  *
  * @export
  */
@@ -505,7 +505,7 @@ export function getConsultationSessionsStatus(sessions) {
 }
 
 /**
- * 设置 inquriy sessions 最新状态
+ * 设置 inquiry sessions 最新状态
  *
  * 用于 onSession 初始化
  *

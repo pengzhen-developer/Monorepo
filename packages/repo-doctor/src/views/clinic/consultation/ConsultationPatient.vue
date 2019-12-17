@@ -283,10 +283,10 @@
       <ConsultationDetail :data="consultDetail.data"></ConsultationDetail>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="inquriy.visible"
-                  v-if="inquriy.visible"
+    <peace-dialog :visible.sync="inquiry.visible"
+                  v-if="inquiry.visible"
                   title="图文问诊记录">
-      <InquirySessionMessageList :data="inquriy.data"
+      <InquirySessionMessageList :data="inquiry.data"
                                  type="consult"></InquirySessionMessageList>
     </peace-dialog>
   </div>
@@ -327,7 +327,7 @@ export default {
         data: undefined
       },
 
-      inquriy: {
+      inquiry: {
         visible: false,
         data: undefined
       }
@@ -417,9 +417,9 @@ export default {
 
         historyMessageFormatHandler(res.data.msgInfo)
 
-        this.inquriy.data = []
-        this.inquriy.data = res.data.msgInfo
-        this.inquriy.visible = true
+        this.inquiry.data = []
+        this.inquiry.data = res.data.msgInfo
+        this.inquiry.visible = true
       })
     }
   }
