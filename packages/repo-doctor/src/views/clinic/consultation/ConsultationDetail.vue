@@ -247,10 +247,15 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="医生签名">
+                  <el-form-item label="医生签名"
+                                v-if="internalData.doctorSignImg">
                     <img :src="internalData.doctorSignImg"
                          alt="医生签名"
                          style="height: 20px" />
+                  </el-form-item>
+                  <el-form-item label="医生签名"
+                                v-else>
+                    <span>{{internalData.toDoctorName}}</span>
                   </el-form-item>
                 </el-col>
               </el-row>

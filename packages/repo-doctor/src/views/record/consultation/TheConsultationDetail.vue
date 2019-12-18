@@ -215,7 +215,7 @@
 
       <!-- 会诊中，填写会诊小结 -->
       <div class="record-content-no-prefix"
-           v-if="internalData.consultStatus === 6">
+           v-if="internalData.consultStatus === 6&&internalData.type === 'to'&&!internalData.consultFind">
         <span class="title"
               style="margin: 10px 0;">会诊小结</span>
 
@@ -284,10 +284,15 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="医生签名">
+                  <el-form-item label="医生签名"
+                                v-if="internalData.doctorSignImg">
                     <img :src="internalData.doctorSignImg"
                          alt="医生签名"
                          style="height: 20px" />
+                  </el-form-item>
+                  <el-form-item label="医生签名"
+                                v-else>
+                    <span>{{internalData.toDoctorName}}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
