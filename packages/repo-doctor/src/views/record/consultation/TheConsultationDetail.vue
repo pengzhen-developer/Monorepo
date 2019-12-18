@@ -215,7 +215,9 @@
 
       <!-- 会诊中，填写会诊小结 -->
       <div class="record-content-no-prefix"
-           v-if="internalData.consultStatus === 6&&internalData.type === 'to'&&!internalData.consultFind">
+           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && 
+                 internalData.type === 'to' && 
+                 !internalData.consultFind">
         <span class="title"
               style="margin: 10px 0;">会诊小结</span>
 
@@ -225,7 +227,9 @@
 
       <!-- 会议记录 -->
       <div class="record-content"
-           v-if="[7,8].includes(internalData.consultStatus) ">
+           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                 internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ||
+                (internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && internalData.consultFind)">
         <!-- 会诊关闭 -->
         <template v-if="internalData.consultStatus === 8">
           <el-collapse-item name="8">

@@ -9,7 +9,7 @@
            prop="username">
         <el-input placeholder="请输入手机号"
                   type="text"
-                  v-model="view.model.username"></el-input>
+                  v-model.trim="view.model.username"></el-input>
         <div class="tips"
              v-if="usernameError">{{ usernameError }}</div>
       </div>
@@ -18,6 +18,7 @@
            prop="password">
         <el-input placeholder="请输入验证码"
                   ref="pwd"
+                  maxlength="6"
                   v-model="view.model.password">
           <el-button :disabled="isDown"
                      @click="getValidCode"
@@ -249,13 +250,7 @@ export default {
       border: 1px solid $--color-primary;
       border-radius: 3px;
       line-height: 50px;
-      background: linear-gradient(
-        to right,
-        $--color-primary 0,
-        $--color-primary 50px,
-        white 50px,
-        white 100%
-      );
+      background: linear-gradient(to right, $--color-primary 0, $--color-primary 50px, white 50px, white 100%);
       .close {
         position: absolute;
         top: 17px;
