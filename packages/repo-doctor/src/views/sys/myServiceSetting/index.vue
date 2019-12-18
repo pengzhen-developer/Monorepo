@@ -164,7 +164,9 @@ export default {
           res.data.doctor_consultation_setting.length > 0
         ) {
           this.view.model.inquiry = res.data.doctor_consultation_setting[0]
-          this.view.model.video = res.data.doctor_consultation_setting[1]
+          if (res.data.doctor_consultation_setting.length > 1) {
+            this.view.model.video = res.data.doctor_consultation_setting[1]
+          }
         }
       })
     },
