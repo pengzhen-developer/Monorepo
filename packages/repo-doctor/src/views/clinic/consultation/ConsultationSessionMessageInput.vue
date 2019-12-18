@@ -125,7 +125,7 @@
 
     <peace-dialog :visible.sync="consultSuggestDialog.visible"
                   title="填写会诊意见">
-      <ConsultationSessionSuggest></ConsultationSessionSuggest>
+      <ConsultationSessionSuggest  @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
     </peace-dialog>
   </div>
 </template>
