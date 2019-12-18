@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: '1',
+      tabIndex: '0',
       data: {
         bloodSugarData: {}
       },

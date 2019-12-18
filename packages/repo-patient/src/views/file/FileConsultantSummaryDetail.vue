@@ -29,6 +29,7 @@
             <img :src="data.doctorSignImg"
                  v-if="data.doctorSignImg"
                  style="width:44px;height: 16.5px;background-size: cover" />
+            <span v-else>{{data.toDoctorName}}</span>
           </div>
         </div>
         <div class="dl-packet">
