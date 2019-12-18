@@ -7,7 +7,8 @@
       <div class="header-right">
         <el-button type="text"
                    @click="overConsultation"
-                   v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">结束会诊</el-button>
+                   v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
+          结束会诊</el-button>
       </div>
     </div>
 
@@ -28,10 +29,13 @@
       </el-alert>
 
       <!-- 写病历 -->
-      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"></ConsultationSessionCase>
+      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历">
+      </ConsultationSessionCase>
 
       <!-- 写处方 -->
-      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"></ConsultationSessionRecipe>
+      <ConsultationSessionRecipe
+                                 v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方">
+      </ConsultationSessionRecipe>
 
       <template v-else>
         <div class="message-list">
@@ -42,10 +46,14 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核"></ConsultationSessionReceive>
+          <ConsultationSessionReceive
+                                      v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
+          </ConsultationSessionReceive>
           <!-- 问诊中 -->
-          <ConsultationSessionMessageInput v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
-                                                 $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 "></ConsultationSessionMessageInput>
+          <ConsultationSessionMessageInput
+                                           v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
+                                                 $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ">
+          </ConsultationSessionMessageInput>
         </div>
       </template>
     </div>
@@ -149,7 +157,9 @@ export default {
           consultNo: this.$store.getters['consultation/consultInfo'].consultNo
         }
 
-        peace.service.consult.overConsult(params)
+        peace.service.consult.overConsult(params).then(() => {
+          $peace.util.alert('会诊已完成，感谢您的辛苦付出')
+        })
       } else {
         peace.util.alert('请填写会诊意见')
       }

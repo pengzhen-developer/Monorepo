@@ -196,7 +196,7 @@ export default {
         }
 
         peace.service.consult.submitSuggest(params).then(() => {
-          $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
+          // $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.$emit('close')
           this.visible = false
