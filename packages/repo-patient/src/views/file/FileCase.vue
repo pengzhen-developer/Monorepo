@@ -163,10 +163,6 @@ export default {
         if (this.p * this.size >= res.data.total) {
           this.finished = true
         }
-        this.isLoading = false
-        if (this.p * this.size >= res.data.total) {
-          this.finished = true
-        }
         console.log(this.finished, this.p)
       })
     }

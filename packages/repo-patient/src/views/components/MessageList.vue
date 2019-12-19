@@ -872,18 +872,6 @@ export default {
         }
       }, 1)
     },
-    //问诊卡详情
-    goPreliminaryForm(message) {
-      let json = peace.util.encode({
-        InquiryOrder: message.content.data
-      })
-
-      this.$router.push(`/components/thePreliminaryForm/${json}`)
-    },
-    goInquiryOrderInfo(message) {
-      let json = peace.util.encode({
-        inquiryId: message.content.data.inquiryOrderInfo.inquiryId
-      })
 
     gotoComment(message) {
       let json = peace.util.encode({
