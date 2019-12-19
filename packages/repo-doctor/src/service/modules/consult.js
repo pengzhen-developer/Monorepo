@@ -171,6 +171,32 @@ export function getConsultNo(params) {
   })
 }
 
+/**
+ * 医生审核
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function doctorAudit(params) {
+  const doctorAudit = 'client/v1/consult/doctorAudit'
+
+  return peace.http.post(doctorAudit, params)
+}
+
+/**
+ * 结束问诊
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function overConsult(params) {
+  const overConsult = 'client/v1/consult/overConsult'
+
+  return peace.http.post(overConsult, params)
+}
+
 export default {
   getInfoByTeamId,
 
@@ -198,5 +224,10 @@ export default {
   submitSuggest,
 
   /** 获取正在会诊中的编号 */
-  getConsultNo
+  getConsultNo,
+
+  /** 医生审核 */
+  doctorAudit,
+  /** 结束问诊 */
+  overConsult
 }

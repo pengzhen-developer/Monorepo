@@ -5,20 +5,38 @@
       <el-button @click="sendInvited"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
         <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
       <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
       <el-button @click="sendVideo"
-                 type="text"
-                 v-show="$peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束 ||
-                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中 ">
+                 type="text">
         <img src="~@/assets/images/inquiry/chat_icon_video.png" />发起视频
       </el-button>
 
+      <el-button @click="sendCase"
+                 type="text"
+                 v-show="$store.getters['consultation/consultInfo'].startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+        <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
+        <span>写病历</span>
+      </el-button>
+
+      <el-button @click="sendRecipe"
+                 type="text"
+                 v-show="$store.getters['consultation/consultInfo'].startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+        <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
+        <span>开处方</span>
+      </el-button>
+
       <!-- 会诊生效后, 受邀方医生能够填写会诊意见, 用于结束会诊 -->
-      <el-button @click="snedConsultSuggest"
+      <el-button @click="sendConsultSuggest"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                          $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
@@ -107,7 +125,7 @@
 
     <peace-dialog :visible.sync="consultSuggestDialog.visible"
                   title="填写会诊意见">
-      <ConsultationSessionSuggest></ConsultationSessionSuggest>
+      <ConsultationSessionSuggest @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
     </peace-dialog>
   </div>
 </template>
@@ -236,7 +254,27 @@ export default {
       $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
     },
 
-    snedConsultSuggest() {
+    sendCase() {
+      if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
+        $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+      } else {
+        peace.util.warning('已经填写病历，无法再次修改')
+      }
+    },
+
+    sendRecipe() {
+      if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
+        peace.util.warning('尚未填写病历，无法开具处方')
+      } else {
+        $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发处方)
+      }
+    },
+
+    sendConsultSuggest() {
+      if (this.$store.getters['consultation/consultInfo'].isCommit) {
+        return peace.util.alert('您已填写会诊意见')
+      }
+
       // 验证当前频道信息
       if (this.$store.getters['consultation/consultInfo'].channelFromId) {
         const message = '您参与的视频会话其他参与者还未挂断，填写会诊意见将关闭视频会话'
@@ -302,9 +340,7 @@ export default {
 
     closeInvitedChange(doctorId) {
       const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === doctorId)
-      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(
-        item => item === doctorId
-      )
+      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(item => item === doctorId)
 
       if (index !== -1) {
         this.invitedDialog.chooseList.splice(index, 1)
@@ -341,7 +377,7 @@ export default {
         }
 
         peace.service.consult.submitSuggest(params).then(() => {
-          $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
+          // $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.consultSuggestDialog.visible = false
         })

@@ -117,7 +117,7 @@ export default {
 
   methods: {
     get() {
-      const params = { familyId: this.id }
+      const params = { patientNo: this.id }
 
       peace.service.patient.getOneHealth(params).then(res => {
         this.internalData = res.data

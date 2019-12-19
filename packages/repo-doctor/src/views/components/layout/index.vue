@@ -17,8 +17,10 @@
 
         <div class="layout-body-right-content">
           <el-scrollbar class="layout-body-right-content-scrollbar">
-            <transition mode="out-in" name="el-fade-in-linear">
-              <router-view :key="$route.fullPath" class="layout-body-right-content-app">
+            <transition mode="out-in"
+                        name="el-fade-in-linear">
+              <router-view :key="$route.fullPath"
+                           class="layout-body-right-content-app">
               </router-view>
             </transition>
           </el-scrollbar>

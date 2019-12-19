@@ -120,6 +120,8 @@
           </el-form>
         </el-collapse-item>
       </div>
+
+      <!-- 审核信息 -->
       <div class="record-content pb0">
         <el-collapse-item name='10'>
           <template slot="title">
@@ -208,128 +210,103 @@
                 </el-row>
               </el-form>
             </div>
-
           </el-row>
         </el-collapse-item>
       </div>
 
-      <!-- 会诊中，填写会诊小结 -->
-      <div class="record-content-no-prefix"
-           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && 
-                 internalData.type === 'to' && 
-                 !internalData.consultFind">
-        <span class="title"
-              style="margin: 10px 0;">会诊小结</span>
-
-        <ConsultationSessionSuggest :consultNo="internalData.consultNo"
-                                    @close="$emit('close')"></ConsultationSessionSuggest>
-      </div>
-
-      <!-- 会议记录 -->
+      <!-- 会议记录-会诊关闭 -->
       <div class="record-content"
-           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
-                 internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ||
-                (internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && internalData.consultFind)">
-        <!-- 会诊关闭 -->
-        <template v-if="internalData.consultStatus === 8">
-          <el-collapse-item name="8">
-            <template slot="title">
-              <span class="title">会诊关闭信息</span>
-            </template>
+           v-if="internalData.consultStatus === 8 ">
+        <el-collapse-item name="8">
+          <template slot="title">
+            <span class="title">会诊关闭信息</span>
+          </template>
+          <el-form>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="关闭时间">
+                  <span>{{ internalData.consultEndTime }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="关闭原因">
+                  <span>{{ internalData.closeReason || '期望会诊时间已过期' }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-collapse-item>
+      </div>
+      <!-- 会诊小结 -->
+      <div class="record-content"
+           v-if="internalData.consultFind">
+        <el-collapse-item name="8">
+          <template slot="title">
+            <span class="title">会诊小结</span>
+          </template>
 
-            <el-form>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="关闭时间">
-                    <span>{{ internalData.consultEndTime }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="关闭原因">
-                    <span>{{ internalData.closeReason || '期望会诊时间已过期' }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </el-collapse-item>
-        </template>
-
-        <!-- 会诊正常完成 -->
-        <template v-else>
-          <el-collapse-item name="8">
-            <template slot="title">
-              <span class="title">会诊小结</span>
-            </template>
-
-            <el-form>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="会诊所见">
-                    <span>{{ internalData.consultFind }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="目前诊断">
-                    <span>{{ internalData.consultDiagnose }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="建议">
-                    <span slot="label">建议</span>
-                    <span>{{ internalData.consultSuggest }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="医生签名"
-                                v-if="internalData.doctorSignImg">
-                    <img :src="internalData.doctorSignImg"
-                         alt="医生签名"
-                         style="height: 20px" />
-                  </el-form-item>
-                  <el-form-item label="医生签名"
-                                v-else>
-                    <span>{{internalData.toDoctorName}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="开始时间">
-                    <span>{{ internalData.consultStartTime }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="结束时间">
-                    <span>{{ internalData.consultEndTime }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </el-collapse-item>
-        </template>
+          <el-form>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="会诊所见">
+                  <span>{{ internalData.consultFind }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="目前诊断">
+                  <span>{{ internalData.consultDiagnose }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="建议">
+                  <span slot="label">建议</span>
+                  <span>{{ internalData.consultSuggest }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="医生签名"
+                              v-if="internalData.doctorSignImg">
+                  <img :src="internalData.doctorSignImg"
+                       alt="医生签名"
+                       style="height: 20px" />
+                </el-form-item>
+                <el-form-item label="医生签名"
+                              v-else>
+                  <span>{{internalData.toDoctorName}}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="开始时间">
+                  <span>{{ internalData.consultStartTime }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="结束时间">
+                  <span>{{ internalData.consultEndTime }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-collapse-item>
       </div>
     </el-collapse>
   </div>
 </template>
 
 <script>
-import ConsultationSessionSuggest from '@src/views/clinic/consultation/ConsultationSessionSuggest'
-
 export default {
-  components: {
-    ConsultationSessionSuggest
-  },
-
   props: {
     data: {
       type: Object,
@@ -369,9 +346,7 @@ export default {
         { consultStatus: 5, consultTxt: '等待会诊' },
         { consultStatus: 6, consultTxt: '会诊中' },
         { consultStatus: 7, consultTxt: '会诊已完成' },
-        { consultStatus: 8, consultTxt: '会诊已关闭' },
-        { consultStatus: 9, consultTxt: '医生待接诊' },
-        { consultStatus: 10, consultTxt: '医生已拒绝' }
+        { consultStatus: 8, consultTxt: '会诊已关闭' }
       ],
 
       active: ['1']
@@ -405,6 +380,7 @@ export default {
   /deep/ .el-collapse-item__content {
     padding-bottom: 10px;
   }
+
   /deep/ .el-collapse-item__header {
     border: 0;
     height: 40px;
@@ -482,11 +458,6 @@ export default {
   }
 
   .record-content {
-    &:last-child {
-      .el-collapse-item:last-child {
-        border-bottom: 0;
-      }
-    }
     .title {
       display: inline-flex;
       justify-content: center;
@@ -535,6 +506,7 @@ export default {
     /deep/ .el-form-item--mini .el-form-item__content {
       line-height: 24px;
     }
+
     .gray {
       padding: 5px 10px;
       background-color: #f9f9f9;

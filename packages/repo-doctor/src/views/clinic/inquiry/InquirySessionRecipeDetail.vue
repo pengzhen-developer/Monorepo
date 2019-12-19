@@ -44,7 +44,6 @@
         <div class="info-row-content small-text">
           {{ internalData.PrescriptionTime }}
         </div>
-        <div class="info-row-content small-text">{{ internalData.caseNo }}</div>
       </div>
       <div class="info-row two-cols">
         <div class="info-row-label">
@@ -159,18 +158,13 @@ export default {
     },
 
     drugs() {
-      return (
-        this.internalData.drugCodedrugCode &&
-        this.internalData.drugCodedrugCode.filter(drug => drug.drugName)
-      )
+      return this.internalData.drugCodedrugCode && this.internalData.drugCodedrugCode.filter(drug => drug.drugName)
     }
   },
 
   methods: {
     getPrescriptionState(prescriptionState) {
-      return Object.keys(this.prescriptionState).find(
-        key => this.prescriptionState[key] === prescriptionState
-      )
+      return Object.keys(this.prescriptionState).find(key => this.prescriptionState[key] === prescriptionState)
     }
   }
 }

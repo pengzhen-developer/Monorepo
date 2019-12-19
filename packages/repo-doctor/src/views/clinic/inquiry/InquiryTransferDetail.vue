@@ -172,40 +172,8 @@
       </el-form>
     </div>
 
-    <!-- 转诊结果 - 转给我的 - 需审核 -->
-    <div class="record-content"
-         v-if="type === 'in' &&  internalData.transfer_status === 4">
-      <span class="title">转诊结果</span>
-
-      <el-form :model="view.model"
-               inline>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="转诊意见"
-                          prop="referral_suggest">
-              <el-input :rows="4"
-                        placeholder="请输入转诊意见"
-                        style="width: 400px;"
-                        type="textarea"
-                        v-model="view.model.referral_suggest"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <br />
-        <el-row>
-          <el-col :span="24"
-                  style="text-align: center;">
-            <el-button :disabled="!view.model.referral_suggest"
-                       @click="receiveReferralPc"
-                       type="primary">提交</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
-
     <!-- 转诊结果 -->
-    <div class="record-content"
-         v-else-if="internalData.referral_time">
+    <div class="record-content">
       <span class="title">转诊结果</span>
 
       <el-form>

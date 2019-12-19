@@ -1,7 +1,7 @@
 import peace from '@src/library'
 
 /**
- * 获取病程记录列表信息接口
+ * 获取病程管理列表信息接口
  *
  * @export
  * @param {*} params 参数列表
@@ -53,7 +53,7 @@ export function getTags(params) {
 }
 
 export default {
-  /** 获取病程记录列表信息接口 */
+  /** 获取病程管理列表信息接口 */
   getDiseaseCourse,
 
   /** 获取患者随访状态字典 */

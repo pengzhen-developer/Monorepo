@@ -1,11 +1,20 @@
 <template>
   <div class="inquiry-session-message-list">
-    <div :class="getMessageFlow(message)"
-         :key="message.time"
-         class="message"
-         v-for="(message ,index) in messageList">
-      <!-- 文本消息 -->
-      <template v-if="getMessageType(message) === 'text' || 
+    <!-- 待接诊 -->
+    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+      <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
+                                    :data="messageList[0].content.data"></InquiryPreliminaryForReceive>
+    </template>
+
+    <!-- 已接诊 -->
+    <template v-else>
+
+      <div :class="getMessageFlow(message)"
+           :key="message.time"
+           class="message"
+           v-for="(message ,index) in messageList">
+        <!-- 文本消息 -->
+        <template v-if="getMessageType(message) === 'text' || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
@@ -14,175 +23,210 @@
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 || 
               getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
+
+          <!-- 消息内容 -->
+          <div class="message-body"
+               v-html="getMessageText(message)"></div>
+        </template>
+
+        <!-- 问诊卡片 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
+
+          <!-- 消息内容 -->
+          <div @click="getPreliminaryDetail(message)"
+               class="message-body message-card">
+            <div class="message-header">
+              <img width="20px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_message.png')" />
+              <span v-text="message.content.data.patientInfo.familyName"></span>
+              <span>|</span>
+              <span v-text="message.content.data.patientInfo.familySex"></span>
+              <span>|</span>
+              <span v-text="message.content.data.patientInfo.familyAge"></span>
+              <span>岁</span>
+              <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
+                   :src="require('@src/assets/images/ic_fz.png')"
+                   class="fz" />
+            </div>
+            <div class="message-line"></div>
+            <div class="message-content">
+              <div class="t">病情描述</div>
+              <div class="content">{{ message.content.data.inquiryOrderInfo.describe }}</div>
+            </div>
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div class="message-body"
-             v-html="getMessageText(message)"></div>
-      </template>
+        <!-- 转诊单 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 问诊卡片 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div @click="getTransfelDetail(message)"
+               class="message-body case">
+            <img src="~@src/assets/images/ic_转诊.png" />
+            <div style="text-align: left;">
+              <p style="font-size: 14px;">转诊单</p>
+              <p>查看详情</p>
+            </div>
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div @click="getPreliminaryDetail(message)"
-             class="message-body message-card">
-          <div class="message-header">
-            <img width="20px"
-                 height="17px"
-                 :src="require('@src/assets/images/ic_message.png')" />
-            <span v-text="message.content.data.patientInfo.familyName"></span>
-            <span>|</span>
-            <span v-text="message.content.data.patientInfo.familySex"></span>
-            <span>|</span>
-            <span v-text="message.content.data.patientInfo.familyAge"></span>
-            <span>岁</span>
-            <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
-                 :src="require('@src/assets/images/ic_fz.png')"
-                 class="fz" />
-          </div>
-          <div class="message-content">
-            <div class="t">病情描述</div>
-            <div class="content">{{ message.content.data.inquiryOrderInfo.describe }}</div>
-          </div>
-        </div>
-      </template>
+        <!-- 会诊单 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊单">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 转诊单 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div @click="getConsultDetail(message)"
+               class="message-body case">
+            <img src="~@src/assets/images/ic_会诊.png" />
+            <div style="text-align: left;">
+              <p style="font-size: 14px;">会诊单</p>
+              <p>查看详情</p>
+            </div>
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div @click="getTransfelDetail(message)"
-             class="message-body case">
-          <img src="~@src/assets/images/ic_转诊.png" />
-          <div style="text-align: left;">
-            <p style="font-size: 14px;">转诊单</p>
-            <p>查看详情</p>
-          </div>
-        </div>
-      </template>
+        <!-- 检查单 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 会诊单 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊单">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
-          </div>
-        </template>
-
-        <!-- 消息内容 -->
-        <div @click="getConsultDetail(message)"
-             class="message-body case">
-          <img src="~@src/assets/images/ic_会诊.png" />
-          <div style="text-align: left;">
-            <p style="font-size: 14px;">会诊单</p>
-            <p>查看详情</p>
-          </div>
-        </div>
-      </template>
-
-      <!-- 视频消息 -->
-      <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div class="message-body message-card">
+            <div class="message-header">
+              <img width="17px"
+                   height="20px"
+                   :src="require('@src/assets/images/ic_check.png')" />
+              <span>检查单</span>
+            </div>
+            <div class="message-content">
+              <div style="display:flex; justify-content: space-between; color: #333;"
+                   v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
+                   :key="item.itemId">
+                <div class="left">{{ item.name }}</div>
+                <div class="right">x 1</div>
+              </div>
+            </div>
+            <div class="message-line"></div>
+            <div class="message-footer"
+                 style="cursor: pointer;"
+                 @click="getCheckOrderDetail(message)">查看详情</div>
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div class="message-body">
-          <span>{{ getMessageText(message) }}</span>
-          <img src="~@/assets/images/inquiry/ic_video_left@2x.png"
-               style="width: 18px; margin-left: 10px;" />
-        </div>
-      </template>
+        <!-- 视频消息 -->
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 图片消息 -->
-      <template v-else-if="getMessageType(message) === 'image'">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div class="message-body">
+            <span>{{ getMessageText(message) }}</span>
+            <img src="~@/assets/images/inquiry/ic_video_left@2x.png"
+                 style="width: 18px; margin-left: 10px;" />
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div v-viewer>
-          <img :src="message.file.url"
-               style="max-width: 400px; "
-               title="查看大图" />
-        </div>
-      </template>
+        <!-- 图片消息 -->
+        <template v-else-if="getMessageType(message) === 'image'">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 病历消息 -->
-      <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div v-viewer>
+            <img :src="message.file.url"
+                 style="max-width: 400px; "
+                 title="查看大图" />
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div @click="getCaseDetail(message)"
-             class="message-body case">
-          <img src="~@src/assets/images/inquiry/ic_medical record.png" />
-          <div style="text-align: left;">
-            <p style="font-size: 14px;">病历</p>
-            <!-- <p>查看详情</p> -->
-            <p>{{formDate(message.time || message.sendtime)}}</p>
-          </div>
-        </div>
-      </template>
+        <!-- 病历消息 -->
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
 
-      <!-- 处方消息 -->
-      <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
-        <!-- 消息时间 -->
-        <template v-if="isShowMessageTime(message ,index)">
-          <div class="message time">
-            <div class="message-body">
-              {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+          <!-- 消息内容 -->
+          <div @click="getCaseDetail(message)"
+               class="message-body case">
+            <img src="~@src/assets/images/inquiry/ic_medical record.png" />
+            <div style="text-align: left;">
+              <p style="font-size: 14px;">病历</p>
+              <!-- <p>查看详情</p> -->
+              <p>{{formDate(message.time || message.sendtime)}}</p>
+            </div>
           </div>
         </template>
 
-        <!-- 消息内容 -->
-        <div @click="getRecipeDetail(message)"
-             class="message-body recipe">
-          <img src="~@src/assets/images/inquiry/ic_rp.png" />
-          <div style="text-align: left;">
-            <p style="font-size: 14px;">处方</p>
-            <p>{{formDate(message.time || message.sendtime)}}</p>
-            <!-- <p>查看详情</p> -->
+        <!-- 处方消息 -->
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message ,index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
+            </div>
+          </template>
+
+          <!-- 消息内容 -->
+          <div @click="getRecipeDetail(message)"
+               class="message-body recipe">
+            <img src="~@src/assets/images/inquiry/ic_rp.png" />
+            <div style="text-align: left;">
+              <p style="font-size: 14px;">处方</p>
+              <p>{{formDate(message.time || message.sendtime)}}</p>
+              <!-- <p>查看详情</p> -->
+            </div>
           </div>
-        </div>
-      </template>
-    </div>
+        </template>
+      </div>
+    </template>
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   append-to-body
@@ -199,16 +243,16 @@
                   v-if="transfer.visible"
                   append-to-body
                   title="转诊详情">
-      <TheTransferDetail :data="transfer.data"
-                         :type="transfer.referral_type"
-                         @close="() => transfer.visible = false"></TheTransferDetail>
+      <InquiryTransferDetail :data="transfer.data"
+                             :type="transfer.referral_type"
+                             @close="() => transfer.visible = false"></InquiryTransferDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="consultation.visible"
                   v-if="consultation.visible"
                   append-to-body
                   title="会诊详情">
-      <TheConsultationDetail :data="consultation.data"
-                             @close="() => consultation.visible = false"></TheConsultationDetail>
+      <InquiryConsultationDetail :data="consultation.data"
+                                 @close="() => consultation.visible = false"></InquiryConsultationDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="preliminary.visible"
                   v-if="preliminary.visible"
@@ -217,25 +261,38 @@
       <InquiryPreliminary :data="preliminary.data"
                           @close="() => preliminary.visible = false"></InquiryPreliminary>
     </peace-dialog>
+    <peace-dialog :visible.sync="checkOrder.visible"
+                  v-if="checkOrder.visible"
+                  append-to-body
+                  title="检查单详情">
+      <InquiryCheckOrderInfo :data="checkOrder.data"
+                             @close="() => checkOrder.visible = false"></InquiryCheckOrderInfo>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 
-import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
-import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
+import InquiryPreliminaryForReceive from './InquiryPreliminaryForReceive'
+
+import InquiryConsultationDetail from './InquiryConsultationDetail'
+import InquiryTransferDetail from './InquiryTransferDetail'
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
 import InquirySessionRecipeDetail from './InquirySessionRecipeDetail'
 import InquiryPreliminary from './InquiryPreliminary'
+import InquiryCheckOrderInfo from './InquiryCheckOrderInfo'
 
 export default {
   components: {
-    TheConsultationDetail,
-    TheTransferDetail,
+    InquiryPreliminaryForReceive,
+
+    InquiryConsultationDetail,
+    InquiryTransferDetail,
     InquirySessionCaseDetail,
     InquirySessionRecipeDetail,
-    InquiryPreliminary
+    InquiryPreliminary,
+    InquiryCheckOrderInfo
   },
 
   props: {
@@ -243,6 +300,13 @@ export default {
       type: Array,
       default() {
         return undefined
+      }
+    },
+
+    type: {
+      type: String,
+      default() {
+        return 'inquiry'
       }
     }
   },
@@ -271,6 +335,11 @@ export default {
       },
 
       preliminary: {
+        visible: false,
+        data: {}
+      },
+
+      checkOrder: {
         visible: false,
         data: {}
       }
@@ -450,6 +519,17 @@ export default {
     getPreliminaryDetail(message) {
       this.preliminary.visible = true
       this.preliminary.data = message.content.data
+    },
+
+    getCheckOrderDetail(message) {
+      const params = {
+        checkOrderNo: message.content.data.checkOrderInfo.checkOrderNo
+      }
+
+      peace.service.inquiry.getOrderDetail(params).then(res => {
+        this.checkOrder.visible = true
+        this.checkOrder.data = res.data.info
+      })
     }
   }
 }
@@ -535,7 +615,7 @@ export default {
   background-color: #fff !important;
   padding: 0 !important;
   box-sizing: border-box;
-  box-shadow: 1px 2px #f2f2f2;
+  box-shadow: 2px 2px 4px 0px rgba(204, 204, 204, 0.5), -1px 1px 10px 0px rgba(221, 221, 221, 0.5);
 }
 .message-header {
   background-image: url('~@/assets/images/bg-img.png');
@@ -561,7 +641,6 @@ export default {
   }
 }
 .message-content {
-  border: 1px solid #f2f2f2;
   text-align: left;
   padding: 10px;
   .t {
@@ -572,32 +651,14 @@ export default {
   }
 }
 .message-line {
-  width: 100%;
   height: 1px;
-  border-top: 1px dashed #eee;
-  position: relative;
-  &::before {
-    content: '';
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    left: -7px;
-    top: -7px;
-    position: absolute;
-    display: block;
-    background: #f9f9f9;
-  }
-  &::after {
-    content: '';
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    right: -7px;
-    top: -7px;
-    position: absolute;
-    display: block;
-    background: #f9f9f9;
-  }
+  background: #f2f2f2;
+  margin: 0 10px;
+}
+.message-footer {
+  color: #999;
+  padding: 8px;
+  text-align: center;
 }
 </style>
 

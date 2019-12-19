@@ -4,10 +4,10 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
-      :title="inquriy.title"
-      :visible.sync="inquriy.visible"
+      :title="inquiry.title"
+      :visible.sync="inquiry.visible"
       center
-      custom-class="inquriy-video-dialog"
+      custom-class="inquiry-video-dialog"
       v-drag
       width="1020px"
     >
@@ -60,7 +60,7 @@
 
 <script>
 import peace from '@src/library'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 const sessionConfig = {
   videoQuality: WebRTC.CHAT_VIDEO_QUALITY_HIGH,
@@ -88,7 +88,7 @@ export default {
 
       hangupTimeout: 0,
 
-      inquriy: {
+      inquiry: {
         visible: false,
         title: ''
       }
@@ -102,13 +102,13 @@ export default {
         this.beCallState === peace.type.INQUIRY.BE_CALL_STATE.收到 ||
         this.beCallState === peace.type.INQUIRY.BE_CALL_STATE.接听
       ) {
-        this.inquriy.visible = true
+        this.inquiry.visible = true
 
         if (this.beCallState === peace.type.INQUIRY.BE_CALL_STATE.邀请) {
-          this.inquriy.title = '视频邀请中······'
+          this.inquiry.title = '视频邀请中······'
         }
       } else {
-        this.inquriy.visible = false
+        this.inquiry.visible = false
       }
     },
 
@@ -117,7 +117,7 @@ export default {
 
       if (this.beCalledTime) {
         this.beCalledTimeInterval = setInterval(() => {
-          this.inquriy.title = peace.util.formatDuration(this.beCalledTime, new Date())
+          this.inquiry.title = peace.util.formatDuration(this.beCalledTime, new Date())
         }, 500)
       }
     }
@@ -554,7 +554,7 @@ export default {
 
 <style lang="scss" scoped>
 .inquiry-video {
-  /deep/ .inquriy-video-dialog {
+  /deep/ .inquiry-video-dialog {
     .el-dialog__header {
       background: linear-gradient(#1a1b1d, #2b2d2f);
       text-align: center;

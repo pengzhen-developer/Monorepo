@@ -5,6 +5,7 @@
                   :show-close="false"
                   :title="video.title"
                   :visible.sync="video.visible"
+                  :modal="false"
                   center
                   custom-class="video-dialog"
                   v-drag
@@ -24,7 +25,7 @@
 
 <script>
 import peace from '@src/library'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
   data() {
@@ -123,6 +124,13 @@ export default {
         this.processExit()
         this.hangupVideo()
       }
+    },
+
+    'video.visible'() {
+      // 将 dialog 放到 content 里面
+      if (this.video.visible === true) {
+        console.log(1)
+      }
     }
   },
 
@@ -147,6 +155,10 @@ export default {
      * type: consult
      */
     call(session, type) {
+      if (this.beCallState !== '') {
+        return peace.util.alert('当前正在通话中')
+      }
+
       this.custom = { type, session }
 
       let toAccount = ''
@@ -531,6 +543,7 @@ export default {
 
     showMeesageNotify() {
       const accept = () => {
+        console.warn('luci')
         this.closeMessageNofity()
         this.processJoin()
         this.accept()
@@ -636,7 +649,11 @@ export default {
           action: 'start'
         }
 
-        return peace.service.video.processConsult(params)
+        peace.service.video.processConsult(params).then(res => {
+          if (res.code !== 200) {
+            this.hangupVideo()
+          }
+        })
       }
     },
 
@@ -671,6 +688,15 @@ export default {
 
 <style lang="scss" scoped>
 .video {
+  /deep/ .el-dialog__wrapper {
+    position: unset !important;
+
+    .el-dialog {
+      position: fixed;
+      z-index: 2222;
+    }
+  }
+
   .video-container {
     display: inline-flex;
     justify-content: center;

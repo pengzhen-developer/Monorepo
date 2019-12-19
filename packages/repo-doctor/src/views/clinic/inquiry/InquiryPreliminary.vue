@@ -165,8 +165,8 @@ export default {
       align-items: center;
       flex-wrap: wrap;
       .img {
-        width: 57px;
-        height: 57px;
+        max-width: 57px;
+        max-height: 57px;
         background: #ccc;
         margin-right: 10px;
         margin-bottom: 10px;

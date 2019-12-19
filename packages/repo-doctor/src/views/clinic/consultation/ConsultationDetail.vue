@@ -213,51 +213,10 @@
         </el-collapse-item>
       </div>
 
-      <!-- 会诊中，填写会诊小结 -->
-      <div class="record-content-no-prefix"
-           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && 
-                 internalData.type === 'to' && 
-                 !internalData.consultFind">
-        <span class="title"
-              style="margin: 10px 0;">会诊小结</span>
-
-        <ConsultationSessionSuggest :consultNo="internalData.consultNo"
-                                    @close="$emit('close')"></ConsultationSessionSuggest>
-      </div>
-
       <!-- 会议记录 -->
-      <div class="record-content"
-           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
-                 internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ||
-                (internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && internalData.consultFind)">
-        <!-- 会诊关闭 -->
-        <template v-if="internalData.consultStatus === 8">
-          <el-collapse-item name="8">
-            <template slot="title">
-              <span class="title">会诊关闭信息</span>
-            </template>
+      <div class="record-content">
 
-            <el-form>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="关闭时间">
-                    <span>{{ internalData.consultEndTime }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="关闭原因">
-                    <span>{{ internalData.closeReason || '期望会诊时间已过期' }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </el-collapse-item>
-        </template>
-
-        <!-- 会诊正常完成 -->
-        <template v-else>
+        <template>
           <el-collapse-item name="8">
             <template slot="title">
               <span class="title">会诊小结</span>
@@ -323,13 +282,7 @@
 </template>
 
 <script>
-import ConsultationSessionSuggest from '@src/views/clinic/consultation/ConsultationSessionSuggest'
-
 export default {
-  components: {
-    ConsultationSessionSuggest
-  },
-
   props: {
     data: {
       type: Object,

@@ -23,8 +23,8 @@ module.exports = {
   configureWebpack: {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
     externals: {
-      '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
-      '/public/static/IM/NIM_Web_WebRTC_v6.5.5': 'WebRTC'
+      '/public/static/IM/NIM_Web_NIM_v7.0.0': 'NIM',
+      '/public/static/IM/NIM_Web_WebRTC_v7.0.0': 'WebRTC'
     },
     plugins: [
       new webpack.ProvidePlugin({
