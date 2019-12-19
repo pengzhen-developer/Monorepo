@@ -44,7 +44,8 @@
       </span>
     </div>
 
-    <div class="card">
+    <div class="card"
+         v-if="internalData.inquiryOrderInfo.isAgain === '1'">
       <h4>复诊信息</h4>
       <div>
         <span class="label">复诊凭证</span>
