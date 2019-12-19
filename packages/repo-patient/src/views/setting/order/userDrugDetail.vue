@@ -162,10 +162,16 @@
     <div class="bottom"
          v-else>
       <div @click="canselOrder"
-           class="btn block btn-blue"
-           v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
-           style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-        取消订单</div>
+             class="pay cancel"
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+          取消订单</div>
+      <div @click="payOrder(order)"
+            class="pay"
+            v-if="order.OrderStatus == '0'"
+            style="background: #00C6AE; margin-bottom: 8px; ">
+        继续支付</div>
+
       <div @click="submitOrder"
            class="btn block btn-blue"
            v-if="order.OrderStatus == '3'">

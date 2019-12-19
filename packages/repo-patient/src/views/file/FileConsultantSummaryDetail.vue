@@ -16,7 +16,7 @@
           <div class="dd">{{data.consultFind}}</div>
         </div>
         <div class="dl-packet">
-          <div class="dt ">目前诊断</div>
+          <div class="dt suggest">目前诊断</div>
           <div class="dd">{{data.consultDiagnose}}</div>
         </div>
         <div class="dl-packet">
