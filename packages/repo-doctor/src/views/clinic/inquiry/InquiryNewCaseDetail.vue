@@ -50,19 +50,20 @@
           <span
                 class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
         </div>
-        <div class="item">
+        <div class="item"
+             v-if="!(data.caseInfo.InspectionIndex.temperature ==''&&data.caseInfo.InspectionIndex.weight ==''&&data.caseInfo.InspectionIndex.heart_rate =='' &&data.caseInfo.InspectionIndex.blood_pressure =='')">
           <span class="title">检查指标：</span>
           <div class="dataBox">
             <div class="line">
               <div class="dataItem">
                 <span class="title">体温：</span>
                 <span
-                      class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature}}度</span>
+                      class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature+'度'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">体重：</span>
                 <span
-                      class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight}}kg</span>
+                      class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight+'kg'}}</span>
               </div>
             </div>
             <div class="divide"></div>
@@ -70,12 +71,12 @@
               <div class="dataItem">
                 <span class="title">心率：</span>
                 <span
-                      class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate}}bmp</span>
+                      class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">血压：</span>
                 <span
-                      class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure}}mmHg</span>
+                      class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
               </div>
             </div>
           </div>
@@ -402,8 +403,7 @@ export default {
         width: 4px;
         height: 8px;
         display: inline-block;
-        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png')
-          no-repeat;
+        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png') no-repeat;
         margin-left: 10px;
       }
     }

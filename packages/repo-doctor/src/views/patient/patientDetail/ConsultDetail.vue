@@ -19,12 +19,10 @@
       <span class="content">{{ consultant }}</span>
     </div>
 
-    <el-tabs
-      v-model="activeName"
-      class="tabList">
-      <el-tab-pane
-        label="病历详情"
-        name="first">
+    <el-tabs v-model="activeName"
+             class="tabList">
+      <el-tab-pane label="病历详情"
+                   name="first">
         <template v-if="caseInfo !== null">
           <div class="item">
             <span class="title">病历号：</span>
@@ -41,31 +39,31 @@
           <div class="item">
             <span class="title">现病史：</span>
             <span
-              class="content">{{ caseInfo.presentHistory ==''? '无' : caseInfo.presentHistory}}</span>
+                  class="content">{{ caseInfo.presentHistory ==''? '无' : caseInfo.presentHistory}}</span>
           </div>
           <div class="item">
             <span class="title">既往史：</span>
-            <span
-              class="content">{{ caseInfo.pastHistory =='' ? '无' : caseInfo.pastHistory}}</span>
+            <span class="content">{{ caseInfo.pastHistory =='' ? '无' : caseInfo.pastHistory}}</span>
           </div>
           <div class="item">
             <span class="title">过敏史：</span>
             <span
-              class="content">{{ caseInfo.allergyHistory =='' ? '无' : caseInfo.allergyHistory}}</span>
+                  class="content">{{ caseInfo.allergyHistory =='' ? '无' : caseInfo.allergyHistory}}</span>
           </div>
-          <div class="item">
+          <div class="item"
+               v-if="!(caseInfo.InspectionIndex.temperature == ''&&caseInfo.InspectionIndex.weight == '' && caseInfo.InspectionIndex.heart_rate ==''&&caseInfo.InspectionIndex.blood_pressure =='')">
             <span class="title">检查指标：</span>
             <div class="dataBox">
               <div class="line">
                 <div class="dataItem">
                   <span class="title">体温：</span>
                   <span
-                    class="content">{{ caseInfo.InspectionIndex.temperature == '' ? '无' : caseInfo.InspectionIndex.temperature}}度</span>
+                        class="content">{{ caseInfo.InspectionIndex.temperature == '' ? '无' : caseInfo.InspectionIndex.temperature+'度'}}</span>
                 </div>
                 <div class="dataItem">
                   <span class="title">体重：</span>
                   <span
-                    class="content">{{ caseInfo.InspectionIndex.weight == '' ? '无' : caseInfo.InspectionIndex.weight}}kg</span>
+                        class="content">{{ caseInfo.InspectionIndex.weight == '' ? '无' : caseInfo.InspectionIndex.weight+'kg'}}</span>
                 </div>
               </div>
               <div class="divide"></div>
@@ -73,12 +71,12 @@
                 <div class="dataItem">
                   <span class="title">心率：</span>
                   <span
-                    class="content">{{ caseInfo.InspectionIndex.heart_rate =='' ? '无' : caseInfo.InspectionIndex.heart_rate}}bmp</span>
+                        class="content">{{ caseInfo.InspectionIndex.heart_rate =='' ? '无' : caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
                 </div>
                 <div class="dataItem">
                   <span class="title">血压：</span>
                   <span
-                    class="content">{{ caseInfo.InspectionIndex.blood_pressure =='' ? '无' : caseInfo.InspectionIndex.blood_pressure}}mmHg</span>
+                        class="content">{{ caseInfo.InspectionIndex.blood_pressure =='' ? '无' : caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
                 </div>
               </div>
             </div>
@@ -86,7 +84,7 @@
           <div class="item">
             <span class="title">辅助检查：</span>
             <span
-              class="content">{{ caseInfo.InspectionIndex.More =='' ? '无' : caseInfo.InspectionIndex.More}}</span>
+                  class="content">{{ caseInfo.InspectionIndex.More =='' ? '无' : caseInfo.InspectionIndex.More}}</span>
           </div>
           <div class="item">
             <span class="title">诊 断：</span>
@@ -101,9 +99,8 @@
           <NoData type="health"></NoData>
         </template>
       </el-tab-pane>
-      <el-tab-pane
-        label="处方"
-        name="second">
+      <el-tab-pane label="处方"
+                   name="second">
         <template v-if="prescribeInfos !== null">
           <div class="tips"
                v-if="prescribeInfos.list.length > 1">
@@ -154,7 +151,7 @@
                 <div class="dataItem">
                   <span class="title">审方药师：</span>
                   <span
-                    class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
+                        class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
                 </div>
               </div>
               <div class="divide"></div>
@@ -165,7 +162,8 @@
                 </div>
                 <div class="dataItem">
                   <span class="title">核对发药：</span>
-                  <span class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
+                  <span
+                        class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
                 </div>
               </div>
 
@@ -178,7 +176,7 @@
                 <div class="dataItem">
                   <span class="title">系统审方结果：</span>
                   <span
-                    class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                        class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
                 </div>
               </div>
             </div>
@@ -188,17 +186,18 @@
           no data
         </template>
       </el-tab-pane>
-      <el-tab-pane
-        label="检验检查"
-        name="third">
+      <el-tab-pane label="检验检查"
+                   name="third">
         <template v-if="consultSummary !== null">
           <div class="item">
             <span class="title">会诊医生：</span>
-            <span class="content">{{ consultSummary.toDoctorName + ' ' + consultSummary.toDoctorTitle }}</span>
+            <span
+                  class="content">{{ consultSummary.toDoctorName + ' ' + consultSummary.toDoctorTitle }}</span>
           </div>
           <div class="item">
             <span class="title">会诊机构：</span>
-            <span class="content">{{ consultSummary.toHospitalName + ' ' + consultSummary.toDeptName }}</span>
+            <span
+                  class="content">{{ consultSummary.toHospitalName + ' ' + consultSummary.toDeptName }}</span>
           </div>
           <div class="item">
             <span class="title">会诊所见.：</span>
@@ -229,269 +228,268 @@
   </div>
 </template>
 <script>
-  import NoData from '@src/views/components/NoData'
-  import get from 'lodash/get'
-  export default {
-    name: 'ConsultDetail',
-    components: {
-      NoData
-    },
-    props: {
-      data: {
-        type: Object,
-        default() {
-          return {}
-        }
-      }
-    },
-    data() {
-      return {
-        activeName: 'first',
-        prescribeIndex: 1
-      }
-    },
-    computed: {
-      caseInfo() {
-        return get(this, 'data.caseInfo', null)
-      },
-      consultSummary() {
-        return get(this, 'data.consultSummary', null)
-      },
-      patientInfo() {
-        return get(this, 'data.patientInfo', null)
-      },
-      prescribeInfos() {
-        return get(this, 'data.prescribeInfos', null)
-      },
-      //
-      familyName() {
-        return get(this, 'patientInfo.familyName', null)
-      },
-      sex() {
-        return get(this, 'patientInfo.sex', null)
-      },
-      createTime() {
-        return get(this, 'patientInfo.createTime', null)
-      },
-      outpatientDoctor() {
-        const doctorName = get(this, 'patientInfo.doctorName', '')
-        const hospitalName = get(this, 'patientInfo.hospitalName', '')
-        const deptName = get(this, 'patientInfo.deptName', '')
-        return `${doctorName} ${hospitalName} ${deptName}`
-      },
-      consultant() {
-        const toDoctorName = get(this, 'consultSummary.toDoctorName', '')
-        const toDoctorTitle = get(this, 'consultSummary.toDoctorTitle', '')
-        const toHospitalName = get(this, 'consultSummary.toHospitalName', '')
-        const toDeptName = get(this, 'consultSummary.toDeptName', '')
-        return `${toDoctorName} ${toDoctorTitle} ${toHospitalName} ${toDeptName}`
-      }
-    },
-    methods: {
-      goToNext() {
-        if (this.prescribeIndex == this.data.prescribeInfos.list.length) {
-          this.prescribeIndex = 1
-        } else {
-          this.prescribeIndex++
-        }
-      },
-      getText(status) {
-        let text = ''
-        switch (status) {
-          case 1:
-            text = '待审核'
-            break
-          case 2:
-            text = '质疑中'
-            break
-          case 3:
-            text = '已拒绝'
-            break
-          case 4:
-            text = '已作废'
-            break
-          case 5:
-            text = '已通过'
-            break
-        }
-        return text
+import NoData from '@src/views/components/NoData'
+import get from 'lodash/get'
+export default {
+  name: 'ConsultDetail',
+  components: {
+    NoData
+  },
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {}
       }
     }
+  },
+  data() {
+    return {
+      activeName: 'first',
+      prescribeIndex: 1
+    }
+  },
+  computed: {
+    caseInfo() {
+      return get(this, 'data.caseInfo', null)
+    },
+    consultSummary() {
+      return get(this, 'data.consultSummary', null)
+    },
+    patientInfo() {
+      return get(this, 'data.patientInfo', null)
+    },
+    prescribeInfos() {
+      return get(this, 'data.prescribeInfos', null)
+    },
+    //
+    familyName() {
+      return get(this, 'patientInfo.familyName', null)
+    },
+    sex() {
+      return get(this, 'patientInfo.sex', null)
+    },
+    createTime() {
+      return get(this, 'patientInfo.createTime', null)
+    },
+    outpatientDoctor() {
+      const doctorName = get(this, 'patientInfo.doctorName', '')
+      const hospitalName = get(this, 'patientInfo.hospitalName', '')
+      const deptName = get(this, 'patientInfo.deptName', '')
+      return `${doctorName} ${hospitalName} ${deptName}`
+    },
+    consultant() {
+      const toDoctorName = get(this, 'consultSummary.toDoctorName', '')
+      const toDoctorTitle = get(this, 'consultSummary.toDoctorTitle', '')
+      const toHospitalName = get(this, 'consultSummary.toHospitalName', '')
+      const toDeptName = get(this, 'consultSummary.toDeptName', '')
+      return `${toDoctorName} ${toDoctorTitle} ${toHospitalName} ${toDeptName}`
+    }
+  },
+  methods: {
+    goToNext() {
+      if (this.prescribeIndex == this.data.prescribeInfos.list.length) {
+        this.prescribeIndex = 1
+      } else {
+        this.prescribeIndex++
+      }
+    },
+    getText(status) {
+      let text = ''
+      switch (status) {
+        case 1:
+          text = '待审核'
+          break
+        case 2:
+          text = '质疑中'
+          break
+        case 3:
+          text = '已拒绝'
+          break
+        case 4:
+          text = '已作废'
+          break
+        case 5:
+          text = '已通过'
+          break
+      }
+      return text
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .newCaseDetail {
-    font-size: 12px;
-    padding: 0 20px;
-    .tabList {
-      margin-top: 15px;
-    }
-    .no-data {
-      min-height: 200px;
-    }
-    .caption {
+.newCaseDetail {
+  font-size: 12px;
+  padding: 0 20px;
+  .tabList {
+    margin-top: 15px;
+  }
+  .no-data {
+    min-height: 200px;
+  }
+  .caption {
+    display: flex;
+    justify-content: space-between;
+    .right {
       display: flex;
-      justify-content: space-between;
-      .right {
-        display: flex;
-        align-items: center;
-        i {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          background: url('../../../assets/images/ic_time.png');
-          vertical-align: middle;
-          margin-right: 10px;
-        }
-      }
-      .name {
-        font-size: 22px;
-        font-weight: 500;
-        color: rgba(51, 51, 51, 1);
-      }
-      .sex {
-        font-size: 14px;
-        font-weight: 500;
-        color: rgba(51, 51, 51, 1);
+      align-items: center;
+      i {
         display: inline-block;
-        margin-left: 16px;
-        margin-right: 16px;
-      }
-      .dept {
-        padding: 2px 6px;
-        background: rgba(241, 241, 241, 1);
-        border-radius: 2px;
-        font-size: 12px;
-        font-weight: 400;
-        color: rgba(51, 51, 51, 1);
-        line-height: 20px;
+        width: 16px;
+        height: 16px;
+        background: url('../../../assets/images/ic_time.png');
+        vertical-align: middle;
+        margin-right: 10px;
       }
     }
-    .item {
-      margin-top: 6px;
+    .name {
+      font-size: 22px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+    }
+    .sex {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      display: inline-block;
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+    .dept {
+      padding: 2px 6px;
+      background: rgba(241, 241, 241, 1);
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 20px;
+    }
+  }
+  .item {
+    margin-top: 6px;
+    display: flex;
+    .title {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      width: 80px;
+    }
+    .content {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(51, 51, 51, 1);
+    }
+    .dataBox {
+      width: 410px;
+      height: 80px;
+      background: rgba(248, 248, 248, 1);
+      border-radius: 4px;
       display: flex;
-      .title {
-        display: inline-block;
-        font-size: 14px;
-        font-weight: 400;
-        color: rgba(102, 102, 102, 1);
-        width: 80px;
-      }
-      .content {
-        font-size: 14px;
-        font-weight: 600;
-        color: rgba(51, 51, 51, 1);
-      }
-      .dataBox {
-        width: 410px;
-        height: 80px;
-        background: rgba(248, 248, 248, 1);
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        .line {
-          display: flex;
-          width: 370px;
-          margin: 0 auto;
-          .dataItem {
-            width: 170px;
-            .title {
-              width: 50px;
-            }
-            .content {
-              width: 80px;
-            }
-          }
-        }
-        .divide {
-          width: 370px;
-          height: 1px;
-          margin: 10px auto 10px;
-          background: #e5e5e5;
-        }
-      }
-    }
-    .dragList {
-      .dragItem {
-        display: flex;
-        flex-direction: column;
-        color: #333;
-        height: 90px;
-        justify-content: center;
-        border-bottom: 1px dashed #c4c4c4;
-        .dragCode {
-          font-size: 18px;
-          font-weight: 500;
-          color: rgba(51, 51, 51, 1);
-          line-height: 25px;
-        }
-        .title {
-          display: flex;
-          font-size: 16px;
-          font-weight: 500;
-          color: rgba(51, 51, 51, 1);
-        }
-        .usage {
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(153, 153, 153, 1);
-        }
-      }
-    }
-    .staffBox {
-      display: flex;
-      flex-direction: column;
-      height: 130px;
       justify-content: center;
+      flex-direction: column;
       .line {
         display: flex;
-        margin-bottom: 5px;
-
+        width: 370px;
+        margin: 0 auto;
         .dataItem {
-          width: 250px;
+          width: 170px;
           .title {
-            font-size: 14px;
-            font-weight: 400;
-            color: rgba(102, 102, 102, 1);
             width: 50px;
           }
           .content {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(51, 51, 51, 1);
+            width: 80px;
           }
         }
       }
+      .divide {
+        width: 370px;
+        height: 1px;
+        margin: 10px auto 10px;
+        background: #e5e5e5;
+      }
     }
-    .tips {
-      width: 530px;
-      height: 37px;
-      font-size: 14px;
-      line-height: 37px;
-      margin: 0 auto 15px;
-      color: #333333;
-      // padding: 0 40px;
-      padding-left: 40px;
-      padding-right: 13px;
-      background: rgba(249, 249, 249, 1) url('../../../assets/images/ic_tixing.png') no-repeat;
-      background-position: 13px 11px;
+  }
+  .dragList {
+    .dragItem {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .next {
-        cursor: pointer;
-        i.arrow {
-          width: 4px;
-          height: 8px;
-          display: inline-block;
-          background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png')
-          no-repeat;
-          margin-left: 10px;
+      flex-direction: column;
+      color: #333;
+      height: 90px;
+      justify-content: center;
+      border-bottom: 1px dashed #c4c4c4;
+      .dragCode {
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 25px;
+      }
+      .title {
+        display: flex;
+        font-size: 16px;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+      }
+      .usage {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+      }
+    }
+  }
+  .staffBox {
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    justify-content: center;
+    .line {
+      display: flex;
+      margin-bottom: 5px;
+
+      .dataItem {
+        width: 250px;
+        .title {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(102, 102, 102, 1);
+          width: 50px;
+        }
+        .content {
+          font-size: 14px;
+          font-weight: 600;
+          color: rgba(51, 51, 51, 1);
         }
       }
     }
   }
+  .tips {
+    width: 530px;
+    height: 37px;
+    font-size: 14px;
+    line-height: 37px;
+    margin: 0 auto 15px;
+    color: #333333;
+    // padding: 0 40px;
+    padding-left: 40px;
+    padding-right: 13px;
+    background: rgba(249, 249, 249, 1) url('../../../assets/images/ic_tixing.png') no-repeat;
+    background-position: 13px 11px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .next {
+      cursor: pointer;
+      i.arrow {
+        width: 4px;
+        height: 8px;
+        display: inline-block;
+        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png') no-repeat;
+        margin-left: 10px;
+      }
+    }
+  }
+}
 </style>
 
