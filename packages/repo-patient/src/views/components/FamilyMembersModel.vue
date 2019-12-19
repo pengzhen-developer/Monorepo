@@ -312,7 +312,6 @@ export default {
           this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
         this.age = this.getAgeByIdCard(val)
-        console.log(this.age)
       }
     },
 
@@ -521,10 +520,7 @@ export default {
       if (!this.model.nationName) {
         return peace.util.alert('请选择民族')
       }
-      console.log(
-        'tag',
-        this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == ''
-      )
+
       if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
         return peace.util.alert('请选择监护人')
       }

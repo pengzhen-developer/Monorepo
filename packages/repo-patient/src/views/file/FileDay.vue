@@ -181,6 +181,11 @@ export default {
       immediate: true
     }
   },
+  activated() {
+    if (this.familyId) {
+      this.allHealthList()
+    }
+  },
   // created() {
   //   this.allHealthList()
   // },

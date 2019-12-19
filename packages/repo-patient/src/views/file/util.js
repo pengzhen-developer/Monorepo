@@ -3,9 +3,8 @@ import peace from '@src/library'
 export const goDetail = (type, data) => {
   if (type === '病历') {
     const json = peace.util.encode({
-      inquiryNo: data.inquiryNo
+      dataNo: data.dataNo
     })
-
     $peace.$router.push(`/file/fileAllDetail/${json}`)
   }
 
@@ -14,7 +13,7 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id,
+      dataId: data.dataNo,
       familyId: data.familyId
     })
 
@@ -30,11 +29,11 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id,
+      dataId: data.dataNo,
       familyId: data.familyId
     })
 
-    if (data.id) {
+    if (data.dataNo) {
       $peace.$router.push(`/file/fileBloodOxyGenDetail/${json}`)
     } else {
       $peace.$router.push(`/file/fileBloodOxyGenAddData/${json}`)
@@ -46,7 +45,7 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id,
+      dataId: data.dataNo,
       familyId: data.familyId
     })
 
@@ -62,15 +61,32 @@ export const goDetail = (type, data) => {
     const json = peace.util.encode({
       type: peace.config.file.type[type],
       idCard: data.idCard,
-      dataId: data.id,
+      dataId: data.dataNo,
       familyId: data.familyId
     })
 
-    if (data.id) {
+    if (data.dataNo) {
       $peace.$router.push(`/file/fileBodyFatDetail/${json}`)
     } else {
       $peace.$router.push(`/file/fileBodyFatAddData/${json}`)
     }
+  }
+
+  // 跳转转诊详情
+  else if (type === '转诊单') {
+    const json = peace.util.encode({
+      referralNo: data.referralNo
+    })
+
+    $peace.$router.push(`/components/theTransfer/${json}`)
+  }
+
+  // 跳转会诊单详情
+  else if (type === '会诊单') {
+    const json = peace.util.encode({
+      dataNo: data.dataNo
+    })
+    $peace.$router.push(`/file/fileConsultationDetail/${json}`)
   }
 }
 

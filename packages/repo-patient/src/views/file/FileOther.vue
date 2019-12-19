@@ -15,25 +15,6 @@
           <div class="text">
             <div v-for="item in value"
                  :key="item.healthType + item.id">
-              <!-- 病历 -->
-              <template v-if="item.healthType === 'case'">
-                <div class="note card case"
-                     @click="util.goDetail('病历', item)">
-                  <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
-                               :src="require('@src/assets/images/file/ic_medical record.png')" />
-                  </div>
-                  <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
-                      门诊病历
-                    </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
-                      {{ item.netHospitalName }} | {{ item.netDeptName }}
-                    </p>
-                  </div>
-                </div>
-              </template>
               <!-- 转诊单 -->
               <template v-if="item.healthType === 'referral'">
                 <div class="note card case"
@@ -109,9 +90,7 @@ export default {
   watch: {
     familyId: {
       handler() {
-        console.log(this.p)
         if (this.familyId) {
-          this.p = 0
           this.allHealthList()
         }
       },
@@ -132,7 +111,7 @@ export default {
       this.p++
       let param = {
         familyId: this.familyId,
-        type: '3',
+        type: '6',
         p: this.p,
         size: this.size
       }
@@ -163,11 +142,6 @@ export default {
         if (this.p * this.size >= res.data.total) {
           this.finished = true
         }
-        this.isLoading = false
-        if (this.p * this.size >= res.data.total) {
-          this.finished = true
-        }
-        console.log(this.finished, this.p)
       })
     }
   }

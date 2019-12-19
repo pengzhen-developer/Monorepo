@@ -1,252 +1,267 @@
 /*icon */
 .icon {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    vertical-align: middle;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
 }
 
 .icon::before {
-    content: '';
-    position: absolute;
-    display: block;
-    width: 15px;
-    height: 15px;
-    background-size: cover;
+  content: '';
+  position: absolute;
+  display: block;
+  width: 15px;
+  height: 15px;
+  background-size: cover;
 }
 
 .icon-next::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon-next.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon-next.jpg');
 }
 
 .icon_01_01_01::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_01.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_01.jpg');
 }
 .icon.icon_01_02_01::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_02_01.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_01.jpg');
 }
 .icon.icon_01_02_02::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_02_02.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_02.jpg');
 }
 .icon.icon_01_02_03::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_02_03.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_03.jpg');
 }
 
 .icon_01_01_02::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_02.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_02.jpg');
 }
 
 .icon_01_01_03::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_03.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_03.jpg');
 }
 
 .icon_01_01_04::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_04.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_04.jpg');
 }
 
 .icon_01_01_05::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_05.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_05.jpg');
 }
 
 .icon_01_01_06::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_06.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_06.jpg');
 }
 
 .icon_01_01_07::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_07.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_07.jpg');
 }
 
 .icon_01_01_08::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_08.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_08.jpg');
 }
 
 .icon_01_01_08.disabled::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_08_disable.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_08_disable.jpg');
 }
 
 .icon_01_01_09::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_09.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_09.jpg');
 }
 .icon_01_01_09.disabled::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_09_disabled.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_09_disabled.jpg');
 }
-.icon_01_01_10::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_10.jpg');
+.icon_01_01_10::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_10.jpg');
 }
-.icon_01_01_10.disabled::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_10_disabled.jpg');
+.icon_01_01_10.disabled::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_10_disabled.jpg');
 }
-.icon_01_01_11::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_11.jpg');
+.icon_01_01_11::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_11.jpg');
 }
-.icon_01_01_12::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_12.jpg');
+.icon_01_01_12::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_12.jpg');
 }
-.icon_01_01_13::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_13.jpg');
+.icon_01_01_13::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_13.jpg');
 }
-.icon_01_01_14::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_14.jpg');
+.icon_01_01_14::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_14.jpg');
 }
-.icon_01_01_15::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_15.jpg');
+.icon_01_01_15::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_15.jpg');
 }
-.icon_01_01_16::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_16.jpg');
+.icon_01_01_16::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_16.jpg');
 }
-.icon_01_01_17::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_17.jpg');
+.icon_01_01_17::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_17.jpg');
 }
-.icon_01_01_18::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_18.jpg');
+.icon_01_01_18::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_18.jpg');
 }
-.icon_01_01_19::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_19.jpg');
+.icon_01_01_19::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_19.jpg');
 }
-.icon_01_01_20::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_20.jpg');
+.icon_01_01_20::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_20.jpg');
 }
-.icon_01_01_21::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_01_21.jpg');
+.icon_01_01_21::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_01_21.jpg');
 }
 /**/
-.icon_01_02_05::before,.man::before {
-    content: '';
-    background-image:url('../../assets/images/icons/icon_01_02_05.jpg');
+.icon_01_02_05::before,
+.man::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_05.jpg');
 }
 
-.icon_01_02_06::before,.woman::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_02_06.jpg');
+.icon_01_02_06::before,
+.woman::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_06.jpg');
 }
 
 .icon_01_02_07::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_01_02_07.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_01_02_07.jpg');
 }
 
 .icon_03_01_02::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_03_01_02.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_03_01_02.jpg');
 }
 
 .icon_01_05_01 {
-    background-image: url('../../assets/images/icons/icon_01_05_01.jpg');
+  background-image: url('../../assets/images/icons/icon_01_05_01.jpg');
 }
 
 .icon_01_05_02 {
-    background-image: url('../../assets/images/icons/icon_01_05_02.jpg');
+  background-image: url('../../assets/images/icons/icon_01_05_02.jpg');
 }
 
 .icon_01_05_03 {
-    background-image: url('../../assets/images/icons/icon_01_05_03.jpg');
+  background-image: url('../../assets/images/icons/icon_01_05_03.jpg');
 }
 
 .icon_01_05_04 {
-    background-image: url('../../assets/images/icons/icon_01_05_04.jpg');
+  background-image: url('../../assets/images/icons/icon_01_05_04.jpg');
 }
-.icon_01_05_05{
-    background-image: url('../../assets/images/icons/icon_01_05_05.jpg');
+.icon_01_05_05 {
+  background-image: url('../../assets/images/icons/icon_01_05_05.jpg');
 }
 .icon_coding:before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_coding.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_coding.jpg');
 }
 
 .icon_none_doctor::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_doctor.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_doctor.jpg');
 }
 
 .icon_none_family::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_family.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_family.jpg');
 }
 
 .icon_none_address::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_address.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_address.jpg');
 }
 
 .icon_none_msg::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_msg.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_msg.jpg');
 }
 
 .icon_none_prescrip::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_prescrip.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_prescrip.jpg');
 }
 
 .icon_none_consult::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_consult.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_consult.jpg');
 }
-.icon_none::before{
-    content:'';
-    background-image: url('../../assets/images/icons/icon_none.jpg');
+.icon_none::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none.jpg');
 }
-.icon-horn::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon-horn.jpg');
+.icon-horn::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon-horn.jpg');
 }
 .icon_none_record::before {
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_record.jpg');
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_record.jpg');
 }
-.icon_none_pha::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_pha.jpg');
+.icon_none_pha::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_pha.jpg');
 }
-.icon_none_drugInter::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_drugInter.jpg');
+.icon_none_drugInter::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_drugInter.jpg');
 }
-.icon_none_drugOrder:before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_drugOrder.jpg');
+.icon_none_drugOrder:before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_drugOrder.jpg');
 }
-.icon_none_order_success::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_order_success.jpg');
+.icon_none_order_success::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_order_success.jpg');
 }
-.icon_none_health::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_health.jpg');
+.icon_none_health::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_health.jpg');
 }
-.icon_none_source::before{
-    content: '';
-    background-image: url('../../assets/images/icons/icon_none_source.jpg');
+.icon_none_source::before {
+  content: '';
+  background-image: url('../../assets/images/icons/icon_none_source.jpg');
 }
 
+.icon_none_hospital::before {
+  content: '';
+  background-image: url('../../assets/images/default page_img_no hospital.png');
+}
+.ic_no_rp::before {
+  content: '';
+  background-image: url('../../assets/images/icons/ic_no_rp.png');
+}
+
+.ic_no_consultation::before {
+  content: '';
+  background-image: url('../../assets/images/icons/ic_no_consultation.png');
+}
 /*.icon_none_::before {*/
 /*content: '';*/
 /*background-image: url();*/

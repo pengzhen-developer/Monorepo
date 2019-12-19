@@ -327,6 +327,7 @@ export default {
     finish(data) {
       data.inquiryInfo.time = 0
     },
+
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo

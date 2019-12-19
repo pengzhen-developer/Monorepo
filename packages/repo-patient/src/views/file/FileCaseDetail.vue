@@ -1,6 +1,6 @@
 <template>
   <div class="file-case-detail">
-    <van-cell-group>
+    <van-cell-group v-if="data!=null&&data.caseNo">
       <van-cell title="病历号"
                 :value="data.caseNo" />
       <van-cell title="就诊时间"
@@ -75,6 +75,11 @@
         </div>
       </van-cell>
     </van-cell-group>
+    <div class="none-page"
+         v-else>
+      <div class="icon ic_no_consultation t20"></div>
+      <div class="none-text">暂无病历</div>
+    </div>
   </div>
 </template>
 

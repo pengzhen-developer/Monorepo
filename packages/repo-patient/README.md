@@ -24,6 +24,16 @@ npm run build
 npm run lint
 ```
 
+### 生成编译报告
+```
+npm run build:dev --report
+```
+
+### 完整显示Webpack 设置
+```
+vue inspect > output.js
+```
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).

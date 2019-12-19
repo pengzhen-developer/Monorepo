@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: '1',
+      tabIndex: '0',
       data: {
         bloodSugarData: {}
       },
@@ -172,7 +172,6 @@ export default {
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
 
-        console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne

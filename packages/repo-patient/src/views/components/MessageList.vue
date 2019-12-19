@@ -16,9 +16,11 @@
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊|| 
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
             <!-- 消息时间 -->
-            <template v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
+            <template
+                      v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
               <div class="message time">
                 <div class="message-body">
                   <span>{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</span>
@@ -30,12 +32,14 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
               <div class="message-body">
-                <div v-html="getMessageText(message)"></div>
+                <div v-html="getMessageText(message)"
+                     @click="gotoComment(message)"></div>
               </div>
 
               <div class="message-avatar"
@@ -48,7 +52,8 @@
           </template>
 
           <!-- 问诊卡片 -->
-          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+          <template
+                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -62,7 +67,8 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -120,7 +126,8 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -171,7 +178,8 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -210,7 +218,8 @@
               <!-- 消息头像 -->
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -235,7 +244,8 @@
           </template>
 
           <!-- 视频消息 -->
-          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+          <template
+                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -264,7 +274,8 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -284,7 +295,8 @@
           </template>
 
           <!-- 病历消息 -->
-          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+          <template
+                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -297,7 +309,8 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -320,7 +333,8 @@
           </template>
 
           <!-- 处方消息 -->
-          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+          <template
+                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -333,7 +347,8 @@
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
                    v-if="getMessageFlow(message) === 'in'">
-                <img :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -401,7 +416,8 @@
         <van-loading />
       </van-row>
     </template>
-    <template v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
+    <template
+              v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
       <div class="h63"></div>
       <div class="footer">
         <div class="footer-item"
@@ -555,7 +571,6 @@ export default {
   computed: {
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
-
       // 过滤无效数据
       sessionMessages = sessionMessages.filter(message => {
         // 屏蔽系统消息
@@ -591,28 +606,59 @@ export default {
       }
     }
   },
-
-  created() {
-    if (!this.data) {
-      const params = peace.util.decode(this.$route.params.json)
-      console.log(params)
-      // 传递 inquiryNo 获取聊天记录
-      if (params.inquiryNo) {
-        this.getHistoryMsgsByDB()
-      }
-      // 传递 session 获取聊天记录
-      else {
-        const interval = setInterval(() => {
-          // 等待 IM 初始化完成，并且 sessions 已经获取到
-          if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
-            window.clearInterval(interval)
-
-            this.getHistoryMsgsByIM()
-          }
-        }, 100)
-      }
-    }
+  beforeRouteEnter(to, from, next) {
+    next(() => {
+      // 清除聊天记录
+      peace.service.IM.resetInquirySessionMessages()
+      peace.service.IM.resetInquirySession()
+    })
   },
+  activated() {
+    this.$nextTick().then(() => {
+      if (!this.data) {
+        const params = peace.util.decode(this.$route.params.json)
+        // 传递 inquiryNo 获取聊天记录
+        if (params.inquiryNo) {
+          this.getHistoryMsgsByDB()
+        }
+        // 传递 session 获取聊天记录
+        else {
+          const interval = setInterval(() => {
+            // 等待 IM 初始化完成，并且 sessions 已经获取到
+            if (
+              $peace.NIM &&
+              $peace.NIM.isConnected() &&
+              this.$store.state.inquiry.sessions.length
+            ) {
+              window.clearInterval(interval)
+
+              this.getHistoryMsgsByIM()
+            }
+          }, 100)
+        }
+      }
+    })
+  },
+  // created() {
+  //   if (!this.data) {
+  //     const params = peace.util.decode(this.$route.params.json)
+  //     // 传递 inquiryNo 获取聊天记录
+  //     if (params.inquiryNo) {
+  //       this.getHistoryMsgsByDB()
+  //     }
+  //     // 传递 session 获取聊天记录
+  //     else {
+  //       const interval = setInterval(() => {
+  //         // 等待 IM 初始化完成，并且 sessions 已经获取到
+  //         if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
+  //           window.clearInterval(interval)
+
+  //           this.getHistoryMsgsByIM()
+  //         }
+  //       }, 100)
+  //     }
+  //   }
+  // },
 
   destroyed() {
     // 清除当前聊天 session
@@ -825,6 +871,27 @@ export default {
           this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
         }
       }, 1)
+    },
+    //问诊卡详情
+    goPreliminaryForm(message) {
+      let json = peace.util.encode({
+        InquiryOrder: message.content.data
+      })
+
+      this.$router.push(`/components/thePreliminaryForm/${json}`)
+    },
+    goInquiryOrderInfo(message) {
+      let json = peace.util.encode({
+        inquiryId: message.content.data.inquiryOrderInfo.inquiryId
+      })
+
+    gotoComment(message) {
+      let json = peace.util.encode({
+        inquiryNo: message.content.data.inquiryInfo.inquiryNo
+      })
+      if (this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示) {
+        this.$router.push(`/components/CommentForDoctor/${json}`)
+      }
     },
     //问诊卡详情
     goPreliminaryForm(message) {

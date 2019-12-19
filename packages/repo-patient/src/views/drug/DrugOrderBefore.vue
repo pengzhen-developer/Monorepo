@@ -79,18 +79,22 @@
             <div class="dl-packet"
                  v-if="page.tabIndex == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥0</div>
+              <div class="dd">￥{{order.Freight}}</div>
+            </div>
+            <div class="dl-packet">
+              <div class="dt">优惠金额:</div>
+              <div class="dd">￥{{order.PromotionsCut}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount}}</div>
+              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
             </div>
           </div>
           <div class="module str">
             <div class="dl-packet">
               <div class="dt">应付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.TotalAmount}}</div>
+                <div class="strong">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
                 {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}}
 
               </div>
@@ -247,7 +251,9 @@ export default {
       // }
       // 测试用例结束
       peace.service.patient.getOrderBefore(params).then(res => {
-        //console.log(res);
+        //防止 Freight  PromotionsCut 无此字段
+        res.data.Freight = res.data.Freight || 0
+        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
 
         this.canSubmitProcesses()
@@ -256,7 +262,7 @@ export default {
 
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
-      this.$router.replace(`/inter/drugInterList/${params}`)
+      this.$router.push(`/inter/drugInterList/${params}`)
     }
   }
 }

@@ -44,10 +44,7 @@ const routers = [
       }
     },
     component: () => {
-      if (
-        $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) &&
-        $peace.cache.get($peace.type.SYSTEM.CHANNELID)
-      ) {
+      if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && $peace.cache.get($peace.type.SYSTEM.CHANNELID)) {
         return import('@src/views/hospital/HospitalHome.vue')
       } else {
         return import('@src/views/home/index.vue')
@@ -278,6 +275,17 @@ const routers = [
       }
     },
     component: () => import('@src/views/file/FileBloodSugarAddData.vue')
+  },
+  {
+    path: '/file/fileConsultationDetail/:json',
+    name: '/file/fileConsultationDetail/:json',
+    meta: {
+      auth: false,
+      navbar: {
+        title: '健康档案-会诊单'
+      }
+    },
+    component: () => import('@src/views/file/FileConsultationDetail.vue')
   },
   // 我的
   {
@@ -1002,6 +1010,22 @@ const routers = [
       auth: false
     },
     component: () => import('@src/components/Login.vue')
+  },
+  {
+    path: '/components/CommentForDoctor/:json',
+    name: '/components/CommentForDoctor',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/CommentForDoctor.vue')
+  },
+  {
+    path: '/components/CommentList/:json',
+    name: '/components/CommentList',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/CommentList.vue')
   }
 ]
 
