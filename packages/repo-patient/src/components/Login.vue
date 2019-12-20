@@ -27,8 +27,12 @@
              slot="right-icon">
 
           <template v-if="countDownTime">
-            <van-row type="flex" justify="start" align="center">
-              <van-count-down :time="countDownTime" @finish="countDownFinished" format="ss" />
+            <van-row type="flex"
+                     justify="start"
+                     align="center">
+              <van-count-down :time="countDownTime"
+                              @finish="countDownFinished"
+                              format="ss" />
               <span>秒</span>
             </van-row>
           </template>
@@ -38,7 +42,9 @@
         </div>
       </van-field>
 
-      <van-button @click="signIn" class="login-form-sign-in" type="primary">进入万家云医</van-button>
+      <van-button @click="signIn"
+                  class="login-form-sign-in"
+                  type="primary">进入万家云医</van-button>
     </div>
 
     <div class="login-footer">
@@ -76,9 +82,9 @@ export default {
     if (peace.cache.get(peace.type.USER.TEL) != null) {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
     } else {
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.$refs.tel.focus()
-      }, 500)
+      })
     }
   },
 

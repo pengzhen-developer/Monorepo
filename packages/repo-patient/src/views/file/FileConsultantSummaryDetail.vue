@@ -13,11 +13,11 @@
         </div>
         <div class="dl-packet">
           <div class="dt">会诊所见</div>
-          <div class="dd">{{data.consultFind}}</div>
+          <div class="dd suggest">{{data.consultFind}}</div>
         </div>
         <div class="dl-packet">
-          <div class="dt suggest">目前诊断</div>
-          <div class="dd">{{data.consultDiagnose}}</div>
+          <div class="dt">目前诊断</div>
+          <div class="dd suggest">{{data.consultDiagnose}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt justify">建议</div>
