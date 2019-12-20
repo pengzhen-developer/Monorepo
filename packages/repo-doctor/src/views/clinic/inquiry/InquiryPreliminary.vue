@@ -22,8 +22,8 @@
           <div class="form-dt">监护人:</div>
           <div class="form-dd">
             {{internalData.inquiryOrderInfo.guardianName}} |
-            {{internalData.inquiryOrderInfo.guardianAge}} |
-            {{internalData.inquiryOrderInfo.guardianSex}}
+            {{internalData.inquiryOrderInfo.guardianSex}}|
+            {{internalData.inquiryOrderInfo.guardianAge+'岁'}}
           </div>
         </div>
       </div>

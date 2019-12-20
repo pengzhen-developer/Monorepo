@@ -31,8 +31,8 @@
         <span class="divider">:</span>
         <div class="value">
           {{internalData.inquiryOrderInfo.guardianName}} |
-          {{internalData.inquiryOrderInfo.guardianAge}} |
-          {{internalData.inquiryOrderInfo.guardianSex}}
+          {{internalData.inquiryOrderInfo.guardianSex}}|
+          {{internalData.inquiryOrderInfo.guardianAge+'岁'}}
         </div>
       </div>
     </div>
