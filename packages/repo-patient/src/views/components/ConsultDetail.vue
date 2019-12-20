@@ -117,6 +117,12 @@
                 </div>
               </div>
             </div>
+            <div class="form-dl"
+                 v-else>
+              <div class="form-dt">复诊凭证 :</div>
+              <div class="form-dd">确认遗失
+              </div>
+            </div>
             <div class="form-dl">
               <div class="form-dt">初诊诊断 :</div>
               <div class="form-dd">{{internalData.illInfo.confirmIllness}}
@@ -345,8 +351,7 @@ export default {
       let params = peace.util.decode(this.$route.params.json)
       peace.service.patient.inquiryDetail(params).then(res => {
         let inquiryInfo = res.data.inquiryInfo
-        let expireTime =
-          inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
+        let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
@@ -363,9 +368,7 @@ export default {
         '4': '医生已退诊',
         '5': '祝您身体健康',
         '6':
-          this.internalData.orderInfo.payMoney == '0.00'
-            ? '咨询订单已取消，如遇紧急情况请及时就医'
-            : '咨询订单已取消'
+          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
       }
 
       return dic[status]

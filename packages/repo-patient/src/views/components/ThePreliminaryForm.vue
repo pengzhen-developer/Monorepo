@@ -60,6 +60,12 @@
 
             </div>
           </div>
+          <div class="form-dl"
+               v-else>
+            <div class="form-dt">复诊凭证 :</div>
+            <div class="form-dd">确认遗失
+            </div>
+          </div>
           <div class="form-dl">
             <div class="form-dt">初诊诊断 :</div>
             <div class="form-dd">{{internalData.inquiryOrderInfo.confirmIllness}}
