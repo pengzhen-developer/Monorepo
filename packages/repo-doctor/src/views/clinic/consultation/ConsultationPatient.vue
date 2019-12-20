@@ -34,6 +34,7 @@
             </div>
             <div class="item">
               <el-button @click="showDetail"
+                         v-if="data.inquiryNo"
                          type="text"
                          style="font-size: 12px;">查看详情</el-button>
             </div>
