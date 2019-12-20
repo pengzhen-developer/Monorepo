@@ -149,17 +149,19 @@ export default {
     },
 
     overConsultation() {
-      if (this.$store.getters['consultation/consultInfo'].isCommit) {
-        const params = {
-          consultNo: this.$store.getters['consultation/consultInfo'].consultNo
-        }
+      $peace.util.confirm('确定要结束会诊吗？', undefined, undefined, () => {
+        if (this.$store.getters['consultation/consultInfo'].isCommit) {
+          const params = {
+            consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+          }
 
-        peace.service.consult.overConsult(params).then(() => {
-          $peace.util.alert('会诊已完成，感谢您的辛苦付出')
-        })
-      } else {
-        peace.util.alert('请填写会诊意见')
-      }
+          peace.service.consult.overConsult(params).then(() => {
+            $peace.util.alert('会诊已完成，感谢您的辛苦付出')
+          })
+        } else {
+          peace.util.alert('请填写会诊意见')
+        }
+      })
     },
 
     checkStatus(session) {
