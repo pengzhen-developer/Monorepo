@@ -49,7 +49,12 @@
       <div>
         <span class="label">复诊凭证</span>
         <span class="divider">:</span>
+        <span class="value"
+              v-if="internalData.inquiryOrderInfo.imgs.length==0">
+          确认遗失
+        </span>
         <viewer class="value img-container"
+                v-else
                 :images="internalData.inquiryOrderInfo.imgs">
           <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                :key="index"
