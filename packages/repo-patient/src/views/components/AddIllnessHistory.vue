@@ -6,7 +6,7 @@
                   placeholder="请输入搜索关键词"
                   shape="round"
                   show-action
-                  v-model="searchIllnessHistory">
+                  v-model.trim="searchIllnessHistory">
         <span @click="onSearch"
               class="search-label"
               slot="action">搜索</span>
@@ -14,7 +14,7 @@
 
       <hr />
 
-      <h4>已选诊断</h4>
+      <h4>已选诊断(点击可删除)</h4>
       <div class="checked-list">
         <van-tag :key="item.value"
                  @click="check(item)"
@@ -36,6 +36,21 @@
           <span style="font-size: 12px;">{{ item.value }}</span>
         </van-tag>
       </div>
+      <template v-if="hasSearch">
+        <h4>搜索结果</h4>
+        <div class="not-checked-list"
+             v-if="confirmIllnessList.length>0">
+          <van-tag :class="{ checked: item.checked }"
+                   :key="item.value"
+                   @click="check(item)"
+                   class="tag"
+                   plain
+                   v-for="item in confirmIllnessList">
+            <span style="font-size: 12px;">{{ item.value }}</span>
+          </van-tag>
+        </div>
+      </template>
+
     </div>
 
     <div class="save">
@@ -44,13 +59,13 @@
                   type="primary">保存</van-button>
     </div>
 
-    <van-popup position="bottom"
+    <!-- <van-popup position="bottom"
                v-model="showIllnessHistory">
       <van-picker :columns="confirmIllnessList"
                   @cancel="showIllnessHistory = false"
                   @confirm="onConfirm"
                   show-toolbar />
-    </van-popup>
+    </van-popup> -->
   </div>
 </template>
 
@@ -81,7 +96,9 @@ export default {
       // 已选
       confirmIllness: [],
       // 常见
-      confirmIllnessCommonly: []
+      confirmIllnessCommonly: [],
+      //已搜索
+      hasSearch: false
     }
   },
 
@@ -101,11 +118,6 @@ export default {
             value: item.name,
             checked: false
           }
-        })
-
-        this.confirmIllnessCommonly.unshift({
-          value: '无',
-          checked: false
         })
       })
     },
@@ -128,6 +140,10 @@ export default {
     },
 
     onSearch() {
+      if (this.searchIllnessHistory == '') {
+        peace.util.alert('搜索内容不能为空')
+        return
+      }
       const params = {
         keyword: this.searchIllnessHistory,
         type: '3'
@@ -139,16 +155,20 @@ export default {
         ).map(item => {
           return {
             text: item.name,
+            value: item.name,
+            checked: false,
             needAdd: item.needAdd,
             disabled: !!this.confirmIllness.find(temp => temp.value === item.name)
           }
         })
+        this.hasSearch = true
         this.showIllnessHistory = true
         this.searchIllnessHistory = ''
       })
     },
 
     onCancel() {
+      this.hasSearch = false
       this.showIllnessHistory = false
       this.searchIllnessHistory = ''
     },
@@ -164,6 +184,7 @@ export default {
     },
 
     check(currentItem) {
+      console.log(currentItem)
       if (currentItem.needAdd) {
         peace.service.inquiry.addAllergen({
           name: currentItem.value,
@@ -188,9 +209,8 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.confirmIllness.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
+        const indexSearch = this.confirmIllnessList.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
           this.confirmIllness.splice(index, 1)
@@ -198,15 +218,21 @@ export default {
         if (indexCommonly !== -1) {
           this.confirmIllnessCommonly[indexCommonly].checked = false
         }
+        if (indexSearch !== -1) {
+          this.confirmIllnessList[indexSearch].checked = false
+        }
       } else {
         currentItem.checked = true
         this.confirmIllness.push(currentItem)
 
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
+        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
+        const indexSearch = this.confirmIllnessList.findIndex(item => item.value === currentItem.value)
         if (indexCommonly !== -1) {
           this.confirmIllnessCommonly[indexCommonly].checked = true
+        }
+        if (indexSearch !== -1) {
+          this.confirmIllnessList[indexSearch].checked = true
+          this.confirmIllnessList[indexSearch].needAdd = false //needAdd 新增诊断标签后修改
         }
       }
     },
@@ -217,10 +243,7 @@ export default {
       this.$emit('onSave')
 
       if (this.$route.params.emit) {
-        $peace.$emit(
-          this.$route.params.emit,
-          this.confirmIllness.map(item => item.value).toString()
-        )
+        $peace.$emit(this.$route.params.emit, this.confirmIllness.map(item => item.value).toString())
 
         this.$router.go(-1)
       }
