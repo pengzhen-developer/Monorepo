@@ -198,8 +198,7 @@ export default {
         if (val.length == 15) {
           this.model.sexKey = val.toString().charAt(14) % 2
           this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday =
-            '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.model.sexKey = val.toString().charAt(16) % 2
@@ -286,21 +285,11 @@ export default {
       var strBirthday = ''
       if (len == 18) {
         //处理18位的身份证号码从号码中得到生日和性别代码
-        strBirthday =
-          identityCard.substr(6, 4) +
-          '/' +
-          identityCard.substr(10, 2) +
-          '/' +
-          identityCard.substr(12, 2)
+        strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
       }
       if (len == 15) {
         strBirthday =
-          '19' +
-          identityCard.substr(6, 2) +
-          '/' +
-          identityCard.substr(8, 2) +
-          '/' +
-          identityCard.substr(10, 2)
+          '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
       }
       //时间字符串里，必须是“/”
       var birthDate = new Date(strBirthday)
@@ -309,8 +298,7 @@ export default {
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
       if (
         nowDateTime.getMonth() < birthDate.getMonth() ||
-        (nowDateTime.getMonth() == birthDate.getMonth() &&
-          nowDateTime.getDate() < birthDate.getDate())
+        (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())
       ) {
         age--
       }
@@ -391,7 +379,6 @@ export default {
     },
     submit() {
       let params = {}
-
       if (this.hasFamily == 2) {
         if (!this.familyId) {
           return peace.util.alert('请选择一位就诊人')
@@ -439,6 +426,7 @@ export default {
         .finally(() => {
           setTimeout(() => {
             this.hasSend = false
+            peace.cache.remove('isEwm')
           }, 0)
         })
     }
@@ -652,12 +640,7 @@ export default {
   height: 50px;
   align-items: center;
 }
-/deep/
-  .form.form-for-family
-  > .van-cell
-  > .van-cell__value
-  > .van-field__body
-  > .van-field__control {
+/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   font-size: 15px;
   text-align: right;

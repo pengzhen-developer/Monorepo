@@ -515,7 +515,14 @@ export default {
     }
   },
   activated() {
-    this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
+    //登录之后返回医生主页，从缓存取分享标识isEWm
+    if (peace.cache.get('isEwm')) {
+      this.isEwm = peace.cache.get('isEwm')
+    } else {
+      //通过分享进入医生首页 获取分享标识isEwm字段并存在缓存中
+      this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
+      peace.cache.set('isEwm', this.isEwm)
+    }
     this.getWapDoctorInfo()
     this.goLogin()
   },
@@ -525,7 +532,7 @@ export default {
   },
   methods: {
     hasLogin() {
-      return peace.cache.get(peace.type.USER.INFO)
+      return peace.cache.get(peace.type.USER.INFO) == null ? false : true
     },
     goLogin() {
       //!this.hasLogin()&&this.isEwm 未登录且通过分享进入医生主页
