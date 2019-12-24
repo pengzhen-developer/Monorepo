@@ -37,9 +37,14 @@
            v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain === '1'">
         <div>
           <div class="b">复诊信息</div>
-          <div class="form-dl img"
-               v-if="internalData.inquiryOrderInfo.imgs.length > 0">
-            <div class="form-dt ">复诊诊凭 :</div>
+          <div v-if="internalData.inquiryOrderInfo.imgs.length === 0"
+               class="form-dl">
+            <div class="form-dt">复诊凭诊 :</div>
+            <div class="form-dd">确认遗失</div>
+          </div>
+          <div v-else
+               class="form-dl img">
+            <div class="form-dt ">复诊凭诊 :</div>
             <div class="form-img">
               <viewer :images="internalData.inquiryOrderInfo.imgs">
                 <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
