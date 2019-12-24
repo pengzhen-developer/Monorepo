@@ -65,9 +65,9 @@
 
       <template v-for="(item, index) in internalData.checkList">
         <div :key="item.itemId + 'content'"
-             style="display: flex; justify-content: space-between; margin: 12px 0;">
+             style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
           <span style="font-size: 14px; color: #333333; font-weight: bold;">{{ item.name }}</span>
-          <span style="font-size: 14px; color: #333333; font-weight: bold;">x1</span>
+          <span style="font-size: 14px; color: #333333; font-weight: bold; width: 40px; text-align: right;">x1</span>
         </div>
 
         <div :key="item.itemId + 'line'"
