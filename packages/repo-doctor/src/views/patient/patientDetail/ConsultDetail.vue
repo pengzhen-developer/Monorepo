@@ -4,6 +4,7 @@
       <div class="left">
         <span class="name">{{ familyName }}</span>
         <span class="sex">{{ sex }}</span>
+        <span class="age">{{ age+'岁' }}</span>
         <span class="dept">远程会诊</span>
       </div>
       <div class="right">
@@ -186,7 +187,7 @@
           no data
         </template>
       </el-tab-pane>
-      <el-tab-pane label="检验检查"
+      <el-tab-pane label="会诊小结"
                    name="third">
         <template v-if="consultSummary !== null">
           <div class="item">
@@ -269,6 +270,9 @@ export default {
     sex() {
       return get(this, 'patientInfo.sex', null)
     },
+    age() {
+      return get(this, 'patientInfo.age', null)
+    },
     createTime() {
       return get(this, 'patientInfo.createTime', null)
     },
@@ -349,12 +353,18 @@ export default {
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
     }
-    .sex {
+    .sex,
+    .age {
       font-size: 14px;
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
       display: inline-block;
+    }
+    .sex {
       margin-left: 16px;
+      margin-right: 16px;
+    }
+    .age {
       margin-right: 16px;
     }
     .dept {
