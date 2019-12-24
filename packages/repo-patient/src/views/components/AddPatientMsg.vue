@@ -253,6 +253,7 @@ export default {
     },
     changeFlag(flag) {
       this.$emit('changeFlag', flag)
+      peace.cache.remove('isEwm')
     },
     getFamilyList() {
       peace.service.patient.getMyFamilyList().then(res => {
@@ -426,7 +427,6 @@ export default {
         .finally(() => {
           setTimeout(() => {
             this.hasSend = false
-            peace.cache.remove('isEwm')
           }, 0)
         })
     }
