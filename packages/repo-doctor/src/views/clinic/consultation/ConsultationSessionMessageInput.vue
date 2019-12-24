@@ -127,6 +127,12 @@
                   title="填写会诊意见">
       <ConsultationSessionSuggest @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
     </peace-dialog>
+
+    <peace-dialog :visible.sync="caseDialog.visible"
+                  v-if="caseDialog.visible"
+                  title="病历详情">
+      <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
+    </peace-dialog>
   </div>
 </template>
 
@@ -134,10 +140,12 @@
 import peace from '@src/library'
 
 import ConsultationSessionSuggest from './ConsultationSessionSuggest'
+import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 
 export default {
   components: {
-    ConsultationSessionSuggest
+    ConsultationSessionSuggest,
+    ConsultationSessionCaseDetail
   },
 
   data() {
@@ -170,6 +178,11 @@ export default {
           present_history: [],
           IllnessList: []
         }
+      },
+
+      caseDialog: {
+        visible: false,
+        data: undefined
       }
     }
   },
@@ -258,7 +271,7 @@ export default {
       if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
         $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
       } else {
-        peace.util.warning('已经填写病历，无法再次修改')
+        this.getCaseDetail(this.$store.getters['consultation/consultInfo'].consultNo)
       }
     },
 
@@ -384,6 +397,17 @@ export default {
       } else {
         $peace.util.alert('请完整填写会诊所见、目前诊断、建议')
       }
+    },
+
+    getCaseDetail(consultNo) {
+      const params = {
+        consultNo: consultNo
+      }
+
+      peace.service.inquiry.getCase(params).then(res => {
+        this.caseDialog.visible = true
+        this.caseDialog.data = res.data
+      })
     }
   },
   created() {

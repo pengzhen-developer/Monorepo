@@ -87,16 +87,33 @@
                  round
                  type="primary">发送</el-button>
     </div>
+
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  append-to-body
+                  title="病历详情">
+      <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 
+import InquirySessionCaseDetail from './InquirySessionCaseDetail'
+
 export default {
+  components: {
+    InquirySessionCaseDetail
+  },
+
   data() {
     return {
-      message: ''
+      message: '',
+
+      caseDetail: {
+        visible: false,
+        data: {}
+      }
     }
   },
 
@@ -145,10 +162,7 @@ export default {
     },
 
     sendVideo() {
-      if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-        peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-      ) {
+      if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
         $peace.videoComponent.call(this.$store.state.inquiry.session, 'inquiry')
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
@@ -159,7 +173,7 @@ export default {
       if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
         $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
       } else {
-        peace.util.warning('已经填写病历，无法再次修改')
+        this.getCaseDetail(this.$store.getters['inquiry/inquiryInfo'].inquiryNo)
       }
     },
 
@@ -228,6 +242,16 @@ export default {
         else if (res.data.caseStatus === 2 && res.data.status === 2) {
           $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发会诊)
         }
+      })
+    },
+
+    getCaseDetail(inquiryNo) {
+      const params = {
+        inquiry_no: inquiryNo
+      }
+      peace.service.inquiry.getCase(params).then(res => {
+        this.caseDetail.visible = true
+        this.caseDetail.data = res.data
       })
     }
   }
