@@ -4,6 +4,7 @@
       <div class="left">
         <span class="name">{{ familyName }}</span>
         <span class="sex">{{ sex }}</span>
+        <span class="age">{{ age+'岁' }}</span>
         <span class="dept">远程会诊</span>
       </div>
       <div class="right">
@@ -125,20 +126,17 @@
               <span class="title">临床诊断：</span>
               <span class="content">{{item.diagnosisInfos}}</span>
             </div>
-
+            <div class="rp-title">Rp</div>
             <div class="dragList">
               <div class="dragItem"
                    v-for="(drug,index) in item.drugCode"
                    :key="'drug' + index">
-                <div class="dragCode">
-                  {{drug.drugCode}}
-                </div>
                 <div class="title">
                   <span>{{drug.drugName}} {{drug.drugSpecifications}}</span>
                   <span> x{{drug.drugQty}}</span>
                 </div>
                 <div class="usage">
-                  用法用量：每日2次，每次50mg，口服，三天
+                  {{drug.drugUse}}
                 </div>
               </div>
             </div>
@@ -168,7 +166,7 @@
               </div>
 
               <div class="line"
-                   style="margin-top: 10px;">
+                   style="margin-top: 5px;border-top: 1px solid #f3f3f3;padding: 5px 0;">
                 <div class="dataItem">
                   <span class="title">药师审方结果：</span>
                   <span class="content">{{getText(item.prescription)}}</span>
@@ -186,7 +184,7 @@
           no data
         </template>
       </el-tab-pane>
-      <el-tab-pane label="检验检查"
+      <el-tab-pane label="会诊小结"
                    name="third">
         <template v-if="consultSummary !== null">
           <div class="item">
@@ -269,6 +267,9 @@ export default {
     sex() {
       return get(this, 'patientInfo.sex', null)
     },
+    age() {
+      return get(this, 'patientInfo.age', null)
+    },
     createTime() {
       return get(this, 'patientInfo.createTime', null)
     },
@@ -349,12 +350,18 @@ export default {
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
     }
-    .sex {
+    .sex,
+    .age {
       font-size: 14px;
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
       display: inline-block;
+    }
+    .sex {
       margin-left: 16px;
+      margin-right: 16px;
+    }
+    .age {
       margin-right: 16px;
     }
     .dept {
@@ -394,6 +401,7 @@ export default {
         display: flex;
         width: 370px;
         margin: 0 auto;
+
         .dataItem {
           width: 170px;
           .title {
@@ -412,12 +420,19 @@ export default {
       }
     }
   }
+  .rp-title {
+    margin-top: 8px;
+    padding-bottom: 4px;
+    font-size: 18px;
+    line-height: 25px;
+    border-bottom: 1px solid #f3f3f3;
+  }
   .dragList {
     .dragItem {
       display: flex;
       flex-direction: column;
       color: #333;
-      height: 90px;
+      height: 60px;
       justify-content: center;
       border-bottom: 1px dashed #c4c4c4;
       .dragCode {
@@ -447,7 +462,6 @@ export default {
     .line {
       display: flex;
       margin-bottom: 5px;
-
       .dataItem {
         width: 250px;
         .title {

@@ -85,8 +85,13 @@ export default {
       internalData: null
     }
   },
-  mounted() {
-    this.internalData = this.data
+  watch: {
+    data: {
+      handler() {
+        this.internalData = this.data
+      },
+      immediate: true
+    }
   }
 }
 </script>
