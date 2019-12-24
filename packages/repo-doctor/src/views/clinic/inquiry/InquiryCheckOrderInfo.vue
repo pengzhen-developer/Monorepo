@@ -81,7 +81,8 @@
       </template>
     </div>
 
-    <div class="record-content">
+    <div class="record-content"
+         v-if="internalData.remark">
       <el-form style="margin: 20px 0 10 0;">
         <el-row>
           <el-col :span="24">
