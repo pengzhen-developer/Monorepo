@@ -580,7 +580,7 @@ export default {
 
       // 问诊描述
       if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
-        if (typeof this.current.answer == 'undefined') {
+        if (typeof this.current.answer == 'undefined' || this.current.answer == '') {
           peace.util.alert('请输入您的详细症状')
           return false
         }
