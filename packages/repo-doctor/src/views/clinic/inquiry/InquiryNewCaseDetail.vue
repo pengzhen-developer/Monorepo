@@ -38,18 +38,15 @@
         </div>
         <div class="item">
           <span class="title">现病史：</span>
-          <span
-                class="content">{{data.caseInfo.presentHistory ==''? '无': data.caseInfo.presentHistory}}</span>
+          <span class="content">{{data.caseInfo.presentHistory ==''? '无': data.caseInfo.presentHistory}}</span>
         </div>
         <div class="item">
           <span class="title">既往史：</span>
-          <span
-                class="content">{{data.caseInfo.pastHistory =='' ? '无':data.caseInfo.pastHistory}}</span>
+          <span class="content">{{data.caseInfo.pastHistory =='' ? '无':data.caseInfo.pastHistory}}</span>
         </div>
         <div class="item">
           <span class="title">过敏史：</span>
-          <span
-                class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
+          <span class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
         </div>
         <div class="item"
              v-if="!(data.caseInfo.InspectionIndex.temperature ==''&&data.caseInfo.InspectionIndex.weight ==''&&data.caseInfo.InspectionIndex.heart_rate =='' &&data.caseInfo.InspectionIndex.blood_pressure =='')">
@@ -58,34 +55,29 @@
             <div class="line">
               <div class="dataItem">
                 <span class="title">体温：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature+'度'}}</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature+'度'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">体重：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight+'kg'}}</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight+'kg'}}</span>
               </div>
             </div>
             <div class="divide"></div>
             <div class="line">
               <div class="dataItem">
                 <span class="title">心率：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">血压：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="item">
           <span class="title">辅助检查：</span>
-          <span
-                class="content">{{data.caseInfo.InspectionIndex.More =='' ? '无':data.caseInfo.InspectionIndex.More}}</span>
+          <span class="content">{{data.caseInfo.InspectionIndex.More =='' ? '无':data.caseInfo.InspectionIndex.More}}</span>
         </div>
         <div class="item">
           <span class="title">诊 断：</span>
@@ -144,8 +136,7 @@
               </div>
               <div class="dataItem">
                 <span class="title">审方药师：</span>
-                <span
-                      class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
+                <span class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
               </div>
             </div>
             <div class="divide"></div>
@@ -168,8 +159,7 @@
               </div>
               <div class="dataItem">
                 <span class="title">系统审方结果：</span>
-                <span
-                      class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
               </div>
             </div>
           </div>
@@ -361,6 +351,7 @@ export default {
         font-size: 16px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
+        justify-content: space-between;
       }
       .usage {
         font-size: 14px;
