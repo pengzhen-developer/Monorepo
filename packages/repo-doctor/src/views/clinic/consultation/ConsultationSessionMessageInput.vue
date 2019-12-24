@@ -264,7 +264,29 @@ export default {
     },
 
     sendVideo() {
-      $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+      // 判断当前会诊的发起方与受邀方，是否存在正在【会诊中】数据，
+      // 存在，提示结束会诊后，才能发起新会诊
+      // 不存在，发起视频邀请
+
+      const session = this.$store.state.consultation.session
+
+      const params = {
+        toDoctorId:
+          session.content.consultInfo.receiveDoctor[0].doctorId ===
+          this.$store.state.user.userInfo.list.docInfo.doctor_id
+            ? session.content.consultInfo.startDoctor[0].doctorId
+            : session.content.consultInfo.receiveDoctor[0].doctorId
+      }
+
+      peace.service.consult.doctorStatus(params).then(res => {
+        if (res.data.fromDoctorConsultStatus === 1) {
+          return peace.util.warning('您正在会诊中，不可开始新的会诊')
+        } else if (res.data.toDoctorConsultStatus === 1) {
+          return peace.util.warning('医生正在会诊中，无法接听您的视频')
+        } else {
+          $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+        }
+      })
     },
 
     sendCase() {

@@ -197,6 +197,19 @@ export function overConsult(params) {
   return peace.http.post(overConsult, params)
 }
 
+/**
+ * 会诊双方状态
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function doctorStatus(params) {
+  const doctorStatus = 'client/v1/consult/doctorStatus'
+
+  return peace.http.post(doctorStatus, params)
+}
+
 export default {
   getInfoByTeamId,
 
@@ -229,5 +242,7 @@ export default {
   /** 医生审核 */
   doctorAudit,
   /** 结束问诊 */
-  overConsult
+  overConsult,
+  /** 会诊双方状态 */
+  doctorStatus
 }
