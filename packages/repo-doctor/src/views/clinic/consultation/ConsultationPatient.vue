@@ -268,7 +268,7 @@
 
     <peace-dialog :visible.sync="caseDialog.visible"
                   v-if="caseDialog.visible"
-                  title="病例详情">
+                  title="病历详情">
       <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
     </peace-dialog>
 
