@@ -4,48 +4,64 @@
          v-if="internalData!=null">
       <div class="module-item">
         <div class="b">个人信息</div>
-        <div class="form-dl">
-          <div class="form-dt"><span>姓名</span> :</div>
-          <div class="form-dd">{{internalData.inquiryOrderInfo.patientsName}}</div>
-        </div>
-        <div class="form-dl">
-          <div class="form-dt"><span>年龄</span> :</div>
-          <div class="form-dd">{{internalData.inquiryOrderInfo.age + "岁"}}</div>
-        </div>
-        <div class="form-dl">
-          <div class="form-dt"><span>性别</span> :</div>
-          <div class="form-dd">{{internalData.inquiryOrderInfo.sex}}
-          </div>
-        </div>
-        <div class="form-dl"
-             v-if="internalData.inquiryOrderInfo.guardianName">
-          <div class="form-dt"><span>监护人</span> :</div>
-          <div class="form-dd">
-            {{internalData.inquiryOrderInfo.guardianName}} |
-            {{internalData.inquiryOrderInfo.guardianSex}}|
-            {{internalData.inquiryOrderInfo.guardianAge+'岁'}}
-          </div>
-        </div>
+        <el-row>
+          <el-col :span="12"
+                  class="form-dl">
+            <div class="form-dt"><span>姓名</span></div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.patientsName}}</div>
+          </el-col>
+          <el-col :span="12"
+                  class="form-dl">
+            <div class="form-dt"><span>年龄</span></div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.age + "岁"}}</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12"
+                  class="form-dl">
+            <div class="form-dt"><span>性别</span></div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.sex}}
+            </div>
+          </el-col>
+          <el-col :span="12"
+                  class="form-dl"
+                  v-if="internalData.inquiryOrderInfo.guardianName">
+            <div class="form-dt"><span>监护人</span></div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">
+              {{internalData.inquiryOrderInfo.guardianName}} |
+              {{internalData.inquiryOrderInfo.guardianAge}} |
+              {{internalData.inquiryOrderInfo.guardianSex}}
+            </div>
+          </el-col>
+        </el-row>
       </div>
       <!--病情描述-->
       <div class="module-item">
         <div class="b">病情描述</div>
-        <div class="span">{{ internalData.inquiryOrderInfo.describe}}</div>
+        <div class="span"
+             style="padding: 0">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
       <div class="module-item"
            v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain === '1'">
         <div>
           <div class="b">复诊信息</div>
-          <div v-if="internalData.inquiryOrderInfo.imgs.length === 0"
-               class="form-dl">
-            <div class="form-dt">复诊凭诊 :</div>
-            <div class="form-dd">确认遗失</div>
-          </div>
-          <div v-else
-               class="form-dl img">
-            <div class="form-dt ">复诊凭诊 :</div>
-            <div class="form-img">
+          <div class="form-dl img"
+               style="display: flex; align-items: flex-start;"
+               v-if="internalData.inquiryOrderInfo.imgs.length > 0">
+            <div class="form-dt">复诊凭证</div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-img"
+                 style="display: inline-block; ">
               <viewer :images="internalData.inquiryOrderInfo.imgs">
                 <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                      :key="index"
@@ -55,7 +71,9 @@
             </div>
           </div>
           <div class="form-dl">
-            <div class="form-dt">疾病诊断 :</div>
+            <div class="form-dt">初诊诊断</div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-dd">{{internalData.inquiryOrderInfo.confirmIllness}}
             </div>
           </div>
@@ -107,9 +125,9 @@ export default {
 
     .form-dt {
       color: #999;
-      min-width: 70px;
+      min-width: 60px;
       display: flex;
-      padding-right: 10px;
+      padding-right: 0px;
       span {
         flex: 1;
         text-align-last: justify;
@@ -175,9 +193,6 @@ export default {
         background: #ccc;
         margin-right: 10px;
         margin-bottom: 10px;
-        &:nth-child(5n) {
-          margin-right: 0 !important;
-        }
         img {
           width: 57px;
           height: 57px;
