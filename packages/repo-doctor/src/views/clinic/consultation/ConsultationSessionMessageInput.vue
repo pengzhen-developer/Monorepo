@@ -174,7 +174,7 @@ export default {
         chooseData: [],
         chooseItem: [],
         source: {
-          // 诊断
+          // 疾病诊断
           present_history: [],
           IllnessList: []
         }
@@ -417,7 +417,7 @@ export default {
           this.consultSuggestDialog.visible = false
         })
       } else {
-        $peace.util.alert('请完整填写会诊所见、目前诊断、建议')
+        $peace.util.alert('请完整填写会诊所见、疾病诊断、建议')
       }
     },
 

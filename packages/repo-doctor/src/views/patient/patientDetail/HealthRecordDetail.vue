@@ -26,9 +26,11 @@
                    :key="5"
                    type="5"></RecordAll>
       </el-tab-pane>
-      <!--      <el-tab-pane label="其它">-->
-      <!--        <RecordAll :id="id" :key="6" type="6"></RecordAll>-->
-      <!--      </el-tab-pane>-->
+      <el-tab-pane label="其它">
+        <RecordAll :id="id"
+                   :key="6"
+                   type="6"></RecordAll>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>

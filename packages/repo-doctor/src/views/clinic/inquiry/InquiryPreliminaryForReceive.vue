@@ -64,7 +64,7 @@
         </viewer>
       </div>
       <div>
-        <span class="label">初诊诊断</span>
+        <span class="label">疾病诊断</span>
         <span class="divider">:</span>
         <span class="value">
           {{internalData.inquiryOrderInfo.confirmIllness}}

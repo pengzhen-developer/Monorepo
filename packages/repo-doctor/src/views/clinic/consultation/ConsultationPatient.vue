@@ -134,7 +134,7 @@
             <div class="item">
               <div class="title">
                 <el-divider direction="vertical"></el-divider>
-                <span>初步诊断</span>
+                <span>疾病诊断</span>
               </div>
               <div class="content">
                 <el-tag :key="item"

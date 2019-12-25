@@ -120,7 +120,7 @@
       </div>
       <div class="info-row">
         <div class="info-row-label">
-          <span>诊断</span>
+          <span>疾病诊断</span>
         </div>
         <div class="info-row-content">
           <template v-if="internalData.diagnose">

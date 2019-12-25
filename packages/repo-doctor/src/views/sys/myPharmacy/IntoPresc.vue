@@ -284,7 +284,7 @@ export default {
       })
 
       if (!diagnosis) {
-        this.$confirm('临床诊断尚未选择，选择后才能保存', '', {
+        this.$confirm('诊断尚未选择，选择后才能保存', '', {
           confirmButtonText: '前往选择',
           cancelButtonText: '取消',
           type: 'warning',

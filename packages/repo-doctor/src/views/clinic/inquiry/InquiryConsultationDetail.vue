@@ -59,7 +59,7 @@
             </el-row>
             <el-row>
               <el-col :span="24">
-                <el-form-item label="初步诊断">
+                <el-form-item label="疾病诊断">
                   <span>{{ internalData.familyDisagnose }}</span>
                 </el-form-item>
               </el-col>
@@ -257,7 +257,7 @@
             </el-row>
             <el-row>
               <el-col :span="24">
-                <el-form-item label="目前诊断">
+                <el-form-item label="疾病诊断">
                   <span>{{ internalData.consultDiagnose }}</span>
                 </el-form-item>
               </el-col>

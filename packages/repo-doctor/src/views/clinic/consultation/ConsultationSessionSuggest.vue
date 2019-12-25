@@ -11,10 +11,10 @@
                   type="textarea"
                   v-model="model.consultFind"></el-input>
       </el-form-item>
-      <el-form-item label="目前诊断"
+      <el-form-item label="疾病诊断"
                     prop="diagnose"
                     required>
-        <span slot="label">目前诊断</span>
+        <span slot="label">疾病诊断</span>
         <template v-if="model.consultDiagnose && model.consultDiagnose.length > 0">
           <el-tag :key="item.id"
                   style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
@@ -46,13 +46,13 @@
 
     <peace-dialog :visible.sync="diagnoseDialog.visible"
                   append-to-body
-                  title="选择诊断">
+                  title="疾病诊断">
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
                    allow-create
                    filterable
-                   placeholder="请输入诊断"
+                   placeholder="请输入疾病诊断"
                    remote
                    style="width: 100%;"
                    v-model="diagnoseDialog.chooseItem">
@@ -65,7 +65,7 @@
 
       <div style="margin: 10px 0;"
            v-if="diagnoseDialog.chooseData.length > 0">
-        <p>已选诊断</p>
+        <p>疾病诊断</p>
 
         <div style="margin: 10px 0;">
           <el-tag :key="item.id"
@@ -77,7 +77,7 @@
       </div>
 
       <div style="margin: 10px 0;">
-        <p>常见诊断</p>
+        <p>疾病诊断</p>
 
         <div style="margin: 10px 0;">
           <el-tag :key="item.id"
@@ -117,7 +117,7 @@ export default {
         chooseData: [],
         chooseItem: [],
         source: {
-          // 诊断
+          // 疾病诊断
           present_history: [],
           IllnessList: []
         }
@@ -202,7 +202,7 @@ export default {
           this.visible = false
         })
       } else {
-        $peace.util.alert('请完整填写会诊所见、目前诊断、建议')
+        $peace.util.alert('请完整填写会诊所见、目前疾病诊断、建议')
       }
     }
   }

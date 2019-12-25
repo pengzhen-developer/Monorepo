@@ -16,8 +16,8 @@
              label-width="120px"
              ref="form">
       <el-row>
-        <el-form-item label="初步诊断">
-          <span slot="label">初步诊断</span>
+        <el-form-item label="疾病诊断">
+          <span slot="label">疾病诊断</span>
           <span>{{ view.model.diagnose }}</span>
         </el-form-item>
       </el-row>
@@ -165,7 +165,7 @@ export default {
         },
 
         rules: {
-          diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
+          diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'change' }],
           doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
@@ -247,10 +247,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           // 验证转诊时间
-          if (
-            dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <=
-            new Date()
-          ) {
+          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
             $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊

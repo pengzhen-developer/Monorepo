@@ -19,7 +19,7 @@
         </div>
         <div class="form-dl"
              v-if="internalData.inquiryOrderInfo.guardianName">
-          <div class="form-dt">监护人:</div>
+          <div class="form-dt"><span>监护人</span> :</div>
           <div class="form-dd">
             {{internalData.inquiryOrderInfo.guardianName}} |
             {{internalData.inquiryOrderInfo.guardianSex}}|
@@ -55,7 +55,7 @@
             </div>
           </div>
           <div class="form-dl">
-            <div class="form-dt">初诊诊断 :</div>
+            <div class="form-dt">疾病诊断 :</div>
             <div class="form-dd">{{internalData.inquiryOrderInfo.confirmIllness}}
             </div>
           </div>

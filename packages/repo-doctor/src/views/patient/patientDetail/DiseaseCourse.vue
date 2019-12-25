@@ -1,19 +1,25 @@
 <template>
-  <div class="disease-course" v-if="data">
+  <div class="disease-course"
+       v-if="data">
     <div class="info-row-first">
       <span class="name">{{ data.upInfo.familyInfo.name }}</span>
       <span class="sex">{{ data.upInfo.familyInfo.sex }}</span>
-      <span class="age" v-if="data.upInfo.familyInfo.age">{{ data.upInfo.familyInfo.age }}岁</span>
+      <span class="age"
+            v-if="data.upInfo.familyInfo.age">{{ data.upInfo.familyInfo.age }}岁</span>
     </div>
 
     <hr class="dashed" />
 
     <el-form>
       <el-form-item label="标签">
-        <el-tag :key="item" type="info" v-for="item in data.upInfo.couseInfo.diseaseInfo.tag">{{ item }}</el-tag>
+        <el-tag :key="item"
+                type="info"
+                v-for="item in data.upInfo.couseInfo.diseaseInfo.tag">{{ item }}</el-tag>
       </el-form-item>
-      <el-form-item label="诊断">
-        <el-tag :key="item" type="info" v-for="item in data.upInfo.couseInfo.diagnoseInfo.tag">{{ item }}</el-tag>
+      <el-form-item label="疾病诊断">
+        <el-tag :key="item"
+                type="info"
+                v-for="item in data.upInfo.couseInfo.diagnoseInfo.tag">{{ item }}</el-tag>
       </el-form-item>
       <el-form-item label="基本病情">
         <span>{{ data.upInfo.couseInfo.illnessInfo && data.upInfo.couseInfo.illnessInfo.illness }}</span>
@@ -29,13 +35,17 @@
           <span>患者病程</span>
         </div>
         <div class="title-tabs">
-          <span :class="{ active: titleTabsCctive === '最早病程置顶'}" @click="changeSort('最早病程置顶')">最早病程置顶</span>
+          <span :class="{ active: titleTabsCctive === '最早病程置顶'}"
+                @click="changeSort('最早病程置顶')">最早病程置顶</span>
           <span style="margin: 0 5px;">/</span>
-          <span :class="{ active: titleTabsCctive === '最新病程置顶'}" @click="changeSort('最新病程置顶')">最新病程置顶</span>
+          <span :class="{ active: titleTabsCctive === '最新病程置顶'}"
+                @click="changeSort('最新病程置顶')">最新病程置顶</span>
         </div>
       </div>
 
-      <div :key="item.id" class="info-detail-item" v-for="item in data.downInfo.list">
+      <div :key="item.id"
+           class="info-detail-item"
+           v-for="item in data.downInfo.list">
         <div class="item-title">
           <span class="circle-block"></span>
           <span class="text">{{ item.courseType }}</span>

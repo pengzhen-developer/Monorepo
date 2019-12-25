@@ -53,7 +53,7 @@
       </div>
       <div class="info-row two-cols">
         <div class="info-row-label">
-          <span>处方诊断</span>
+          <span>疾病诊断</span>
         </div>
         <div class="info-row-content info-zd">
           <span :key="d.DiagnosisName"
