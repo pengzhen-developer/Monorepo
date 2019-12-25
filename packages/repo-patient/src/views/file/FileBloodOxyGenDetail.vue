@@ -117,9 +117,7 @@ export default {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
 
-        const xAxisData = downData.bloodOxygenData.map(item =>
-          item.measureTime.toDate().formatDate('MM-dd')
-        )
+        const xAxisData = downData.bloodOxygenData.map(item => item.measureTime.toDate().formatDate('MM-dd'))
         const seriesDataOne = downData.bloodOxygenData.map(item => item.bloodOxygen)
         let lastData = downData.bloodOxygenData[downData.bloodOxygenData.length - 1]
         this.$peace.cache.set('bloodOxyGenLastData', lastData)
@@ -174,7 +172,7 @@ export default {
       background: linear-gradient(56deg, rgba(2, 211, 183, 1) 0%, rgba(104, 208, 225, 1) 100%);
     }
     &.unnormal {
-      background: linear-gradient(90deg, rgba(254, 114, 162, 1) 0%, rgba(251, 125, 116, 1) 100%);
+      background: linear-gradient(90deg, rgba(255, 187, 96, 1) 0%, rgba(252, 161, 56, 1) 100%);
     }
 
     .header-text {
@@ -267,8 +265,8 @@ export default {
     background: #fff;
     padding: 12px 14px;
 
-    .charts-header {
-    }
+    // .charts-header {
+    // }
 
     .charts {
       width: 100%;

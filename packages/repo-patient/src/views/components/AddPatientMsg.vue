@@ -9,7 +9,7 @@
              :class="hasFamily==1&&showFamily&&'show'">
           <div class="navWrap">
             <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}</div>
-            <div class="subTitle">请选择您的就诊人</div>
+            <div class="subTitle">请选择您的就诊信息</div>
           </div>
           <div class="form form-for-family">
             <van-field label="姓名"
@@ -639,7 +639,21 @@ export default {
 /deep/ .form.form-for-family > .van-cell {
   height: 50px;
   align-items: center;
+  &:last-child {
+    &::after {
+      position: absolute;
+      box-sizing: border-box;
+      content: ' ';
+      pointer-events: none;
+      right: 0;
+      bottom: 0;
+      left: 0.42667rem;
+      border-bottom: 0.02667rem solid #ebedf0;
+      transform: scaleY(0.5);
+    }
+  }
 }
+
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   font-size: 15px;

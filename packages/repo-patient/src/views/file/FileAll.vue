@@ -326,12 +326,18 @@ export default {
   .card-unit {
     font-size: 12px;
     color: #333333;
-    margin: 0 8px 0 2px;
+    margin: 0 5px 0 2px;
   }
   .card-tag {
     padding: 0 8px;
     border-radius: 15px;
-
+    max-width: 38%;
+    .card-tag-span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+    }
     .card-tag-value {
       overflow: hidden;
       text-overflow: ellipsis;

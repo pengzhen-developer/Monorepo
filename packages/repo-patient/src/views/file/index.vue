@@ -101,11 +101,15 @@
               <div class="none-text">暂无数据</div>
             </div>
           </van-tab>
-          <!-- <van-tab title="其    他">
-            <FileOther v-if="active === 5"
+          <van-tab title="其    他">
+            <div class="none-page">
+              <div class="icon icon_none_source"></div>
+              <div class="none-text">暂无数据</div>
+            </div>
+            <!-- <FileOther v-if="active === 5"
                        :key="familyId"
-                       :familyId="familyId"></FileOther>
-          </van-tab> -->
+                       :familyId="familyId"></FileOther> -->
+          </van-tab>
         </van-tabs>
       </div>
     </template>
@@ -197,10 +201,6 @@ export default {
           this.familyId = this.myFamilyList[index].familyId
           this.idCard = this.myFamilyList[index].idCard
         }
-
-        const tempWidth = (document.body.clientWidth - this.swipeWidth) / 2
-        const $swipe__track = this.$refs.swipe.$el.querySelector('.van-swipe__track')
-        $swipe__track.style.transform = `translateX(${-this.swipeWidth * index + tempWidth}px)`
       }
     },
     isLong() {
@@ -267,10 +267,9 @@ export default {
     margin-top: -70px;
     margin-bottom: 10px;
 
-    .van-swipe__track {
-      transform: translateX(40px);
+    .van-swipe {
+      padding: 0 40px;
     }
-
     .van-swipe-item {
       padding: 10px;
 

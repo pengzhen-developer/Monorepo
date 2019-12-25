@@ -195,8 +195,7 @@ export default {
       peace.service.health.allHealthList({ familyId: this.familyId, type: '2' }).then(res => {
         const list = res.data.list
 
-        this.data.bloodPressureData =
-          list.find(item => item.healthType === 'bloodPressureData') || {}
+        this.data.bloodPressureData = list.find(item => item.healthType === 'bloodPressureData') || {}
         this.data.bloodSugarData = list.find(item => item.healthType === 'bloodSugarData') || {}
         this.data.bloodOxyGenData = list.find(item => item.healthType === 'oxyGenData') || {}
         this.data.bodyFat = list.find(item => item.healthType === 'bodyFat') || {}
@@ -254,8 +253,14 @@ export default {
   .card-tag {
     padding: 0 8px;
     border-radius: 15px;
-    margin: 0 0 0 10px;
-
+    margin: 0 0 0 5px;
+    max-width: 36%;
+    .card-tag-span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+    }
     .card-tag-value {
       overflow: hidden;
       text-overflow: ellipsis;

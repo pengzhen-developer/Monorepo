@@ -131,14 +131,29 @@
         <div class="none-text">本院暂时无法提供互联网医院服务</div>
       </div>
     </template>
-    <van-dialog style="background: transparent; "
+    <div class="intro-shadow" v-if="brief.visible" @click="brief.visible = false"></div>
+    <div class="intro-box" v-if="brief.visible">
+      <img class="intro-img" :src="hospitalInfo.nethospitalInfo.icon" />
+      
+      <div class="intro-content">
+        <div style="height:20px;"></div>
+        <span style="text-align: justify;">{{
+          hospitalInfo.nethospitalInfo.brief
+        }}</span>
+      </div>
+      <div style="text-align: center; margin: 30px 0 0 0;">
+        <van-icon @click="brief.visible = false"
+                  name="close"
+                  color="#fff"
+                  size="40px" />
+      </div>
+    </div>
+    <!-- <van-dialog style="background: transparent; "
                 v-model="brief.visible"
                 :show-cancel-button="false"
                 :showConfirmButton="false">
-      <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;z-index:99999;"
+      <img style="width: 60px; height: 60px; position:absolute; top: -30px;left:50%; border-radius: 50%;z-index:99999;transform: translateX(-30px);"
              :src="hospitalInfo.nethospitalInfo.icon" />
-      </div>
       <div
            style="padding: 40px 20px 20px 20px; background: #fff; max-height: 50vh; overflow: auto; border-radius: 8px;">
         <span style="text-align: justify;">{{
@@ -151,7 +166,7 @@
                   color="#fff"
                   size="40px" />
       </div>
-    </van-dialog>
+    </van-dialog> -->
   </div>
 </template>
 
@@ -292,6 +307,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.intro-shadow{
+  position:fixed;
+  background:rgba(0,0,0,.5);
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  z-index:2000;
+}
+.intro-box{
+  position:fixed;
+  width:80%;
+  left:10%;
+  max-height:calc( 50vh + 30px );
+  transform:translateY(-50%);
+  top:50%;
+  z-index:2001;
+  padding-top:30px;
+}
+.intro-img{
+  border:2px solid #fff;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  position:absolute;
+  top:0px;
+  left:50%;
+  transform:translateX(-50%);
+}
+.intro-content{
+  border-radius:8px;
+  max-height:50vh;
+  padding: 20px;
+  background:#fff;
+  overflow:auto;
+}
 @mixin arrow {
   width: 7px;
   height: 12px;
