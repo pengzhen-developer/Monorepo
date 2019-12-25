@@ -1,11 +1,7 @@
 <template>
   <div class="pres">
     <img :alt="getPrescriptionState(internalData.Prescription)"
-         :src="
-        `./static/images/inquiry/${getPrescriptionState(
-          internalData.Prescription
-        )}.png`
-      "
+         :src="`./static/images/inquiry/${internalData.Prescription}.png`"
          class="status-image"
          v-show="getPrescriptionState(internalData.Prescription)" />
     <div class="pres-no">No.{{ internalData.PrescriptionNo }}</div>
@@ -142,7 +138,7 @@ export default {
     return {
       prescriptionState: {
         未审方: '1',
-        申诉中: '2',
+        质疑中: '2',
         已通过: '3',
         已分配: '4',
         已发药: '5',
