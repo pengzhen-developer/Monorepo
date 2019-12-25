@@ -371,7 +371,7 @@ export default {
         { consultStatus: 7, consultTxt: '会诊已完成' },
         { consultStatus: 8, consultTxt: '会诊已关闭' },
         { consultStatus: 9, consultTxt: '医生待接诊' },
-        { consultStatus: 10, consultTxt: '医生已拒绝' }
+        { consultStatus: 10, consultTxt: '医生已退诊' }
       ],
 
       active: ['1']
