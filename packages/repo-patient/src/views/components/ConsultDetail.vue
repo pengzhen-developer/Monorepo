@@ -79,11 +79,6 @@
               {{internalData.familyInfo.guardianAge+'岁'}}
             </div>
           </div>
-          <!-- <div class="form-dl">
-            <div class="form-dt"><span>姓名</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
-            <div class="form-dd">{{internalData.familyInfo.familySex}}</div>
-          </div> -->
         </div>
         <!--病情描述-->
         <div class="module-item">
@@ -201,13 +196,13 @@
              @click="showCancellPop(internalData)">取消订单</div>
       </div>
       <div class="h64"
-           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5'"></div>
+               internalData.inquiryInfo.inquiryStatus == '5')"></div>
       <div class="footer fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5'">
+               internalData.inquiryInfo.inquiryStatus == '5')">
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
@@ -309,10 +304,19 @@ export default {
       imagePreview: {
         visible: false,
         position: 0
-      }
+      },
+      fromChatRoom: false
     }
   },
-
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from.fullPath.indexOf('components/messageList') != -1) {
+        vm.fromChatRoom = true
+      } else {
+        vm.fromChatRoom = false
+      }
+    })
+  },
   watch: {
     data: {
       handler() {
