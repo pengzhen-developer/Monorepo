@@ -75,9 +75,9 @@ export default {
           var endTop = e.changedTouches[0].pageY
 
           if (endLeft > document.documentElement.clientWidth / 2) {
-            block.style.left = document.documentElement.clientWidth - block.offsetWidth + 5 + 'px'
+            block.style.left = document.documentElement.clientWidth - block.offsetWidth + 8 + 'px'
           } else if (endLeft < document.documentElement.clientWidth / 2) {
-            block.style.left = -5 + 'px'
+            block.style.left = -8 + 'px'
           }
 
           if (endTop < block.clientHeight / 2) {
@@ -96,12 +96,12 @@ export default {
 
 <style lang="scss" scoped>
 .assistive-wrap {
-  width: 88px;
+  width: 92px;
   height: 25px;
   position: fixed;
   top: 50%;
   margin-top: -12.5px;
-  right: -5px;
+  right: -8px;
   z-index: 5000;
   background: #ebfbf9;
   border-radius: 100px;
