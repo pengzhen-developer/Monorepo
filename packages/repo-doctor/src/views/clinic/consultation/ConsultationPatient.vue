@@ -220,7 +220,7 @@
               <el-timeline-item :timestamp="data.doctorExamineTime"
                                 placement="top"
                                 type="primary">
-                <el-tag class="timestamp_extend">已通过</el-tag>
+                <el-tag class="timestamp_extend">接&emsp;诊</el-tag>
 
                 <div class="timestamp_remark">
                   <p>
