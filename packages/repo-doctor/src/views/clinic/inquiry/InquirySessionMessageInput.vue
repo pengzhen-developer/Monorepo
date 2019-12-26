@@ -65,22 +65,14 @@
                    type="text">快速回复</el-button>
         <el-dropdown-menu slot="dropdown"
                           style="overflow: hidden;">
-          <el-dropdown-item @click.native="sendText('您好，是否做过检查、化验？如果有，请上传相关附件。')"
-                            style="padding: 5px 10px;">
-            您好，是否做过检查、化验？如果有，请上传相关附件。
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，病历已发送，请注意查收。')"
-                            style="padding: 5px 10px;">
-            您好，病历已发送，请注意查收。
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，处方已开具，请注意查收。')"
-                            style="padding: 5px 10px;">
-            您好，处方已开具，请注意查收。
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="sendText('您好，还有其它问题吗?')"
-                            style="padding: 5px 10px;">
-            您好，还有其它问题吗?
-          </el-dropdown-item>
+          <div style="height: 150px; overflow: auto;">
+            <el-dropdown-item v-for="item in quickReplys"
+                              :key="item"
+                              @click.native="sendText(item)"
+                              style="padding: 5px 10px;">
+              {{ item }}
+            </el-dropdown-item>
+          </div>
         </el-dropdown-menu>
       </el-dropdown>
       <el-button @click="sendText()"
@@ -113,7 +105,19 @@ export default {
       caseDetail: {
         visible: false,
         data: {}
-      }
+      },
+
+      quickReplys: [
+        '请问您这种情况持续多长时间了？',
+        '请补充您的患处图片',
+        '请详细描述一下您的病症和感受',
+        '您是否有过敏史',
+        '您是否处于备孕期、怀孕期、哺乳期、月经期等特殊时期？',
+        '您之前服用过何种药品？',
+        '是否有不良反应',
+        '您这种情况建议去医院找医生面诊',
+        '希望您早日康复'
+      ]
     }
   },
 
