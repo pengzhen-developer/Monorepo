@@ -72,8 +72,10 @@
                    v-for="(item,index) in familyList"
                    :key="index">
                 <div class="item-top"
-                     :class="checkId==index&&'checked'">{{item.name}} <span
-                        :class="checkId==index&&'checked'">{{item.relation}}</span> </div>
+                     :class="checkId==index&&'checked'">
+                  {{item.name}}
+                  <span :class="checkId==index&&'checked'">{{item.relation}}</span>
+                </div>
                 <div class="item-bottom"
                      :class="checkId==index&&'checked'">{{item.sex}} {{item.age+'岁'}}</div>
               </div>
@@ -540,7 +542,7 @@ export default {
         padding: 2px 6px;
         line-height: 1.2;
         margin-left: 10px;
-        border: 1px solid #979797;
+        border: 1px solid #ddd;
         border-radius: 20px;
         &.checked {
           color: #00c6ae;

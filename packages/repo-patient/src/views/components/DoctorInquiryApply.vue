@@ -167,6 +167,7 @@
             <van-field ref="input"
                        v-model.trim="current.answer"
                        clearable
+                       class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
               <van-button @click="answer"
                           slot="button"
@@ -890,6 +891,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/.van-field__body {
+  input::-webkit-input-placeholder {
+    /*WebKit browsers*/
+    font-size: 15px;
+  }
+
+  input::-moz-input-placeholder {
+    /*Mozilla Firefox*/
+    font-size: 15px;
+  }
+
+  input::-ms-input-placeholder {
+    /*Internet Explorer*/
+    font-size: 15px;
+  }
+}
 .inquriy {
   font-size: 16px;
   height: 100%;

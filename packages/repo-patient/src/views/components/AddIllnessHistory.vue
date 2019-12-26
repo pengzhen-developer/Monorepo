@@ -282,7 +282,7 @@ export default {
 
       .tag {
         background: #f5f5f5 !important;
-        margin: 2px 10px 2px 0;
+        margin: 7px 10px 0 0;
         padding: 10px;
         text-align: center;
         min-width: 45px;

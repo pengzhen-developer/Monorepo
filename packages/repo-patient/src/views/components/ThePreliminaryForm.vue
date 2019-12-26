@@ -313,7 +313,7 @@ export default {
     padding: 10px 15px 0 15px;
   }
   .span {
-    padding: 10px 15px;
+    padding: 10px 15px 10px 0;
   }
   .dl-packet {
     display: flex;

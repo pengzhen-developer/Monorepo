@@ -308,15 +308,6 @@ export default {
       fromChatRoom: false
     }
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (from.fullPath.indexOf('components/messageList') != -1) {
-        vm.fromChatRoom = true
-      } else {
-        vm.fromChatRoom = false
-      }
-    })
-  },
   watch: {
     data: {
       handler() {
@@ -327,6 +318,7 @@ export default {
   },
 
   activated() {
+    this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
   },
 
@@ -352,8 +344,8 @@ export default {
     },
 
     getConsultDetail() {
-      let params = peace.util.decode(this.$route.params.json)
-      peace.service.patient.inquiryDetail(params).then(res => {
+      let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {
@@ -774,7 +766,7 @@ export default {
     padding: 10px 15px 0 15px;
   }
   .span {
-    padding: 10px 15px;
+    padding: 10px 15px 10px 0;
   }
   .ul {
     padding: 0 15px;
