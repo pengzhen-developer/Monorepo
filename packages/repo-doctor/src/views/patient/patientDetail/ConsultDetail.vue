@@ -137,11 +137,19 @@
               <div class="line">
                 <div class="dataItem">
                   <span class="title">医 师：</span>
-                  <span class="content">{{item.psychiatric =='' ? '无':item.psychiatric}}</span>
+                  <img :src="item.doctorSignImage"
+                       class="content"
+                       alt="医师签名"
+                       style="height: 20px;"
+                       v-if="item.doctorSignImage" />
                 </div>
                 <div class="dataItem">
                   <span class="title">审方药师：</span>
-                  <span class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
+                  <img :src="item.prescriptionSign"
+                       class="content"
+                       alt="医师签名"
+                       style="height: 20px;"
+                       v-if="item.prescriptionSign" />
                 </div>
               </div>
               <div class="divide"></div>
