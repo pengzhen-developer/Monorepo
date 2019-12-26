@@ -12,11 +12,11 @@
       </div>
     </div>
     <div class="item">
-      <span class="title">门诊医生：</span>
+      <span class="title">医疗机构：</span>
       <span class="content">{{ outpatientDoctor }}</span>
     </div>
     <div class="item">
-      <span class="title">会诊医生：</span>
+      <span class="title">医生/科室：</span>
       <span class="content">{{ consultant }}</span>
     </div>
 
@@ -262,17 +262,13 @@ export default {
       return get(this, 'patientInfo.createTime', null)
     },
     outpatientDoctor() {
-      const doctorName = get(this, 'patientInfo.doctorName', '')
       const hospitalName = get(this, 'patientInfo.hospitalName', '')
-      const deptName = get(this, 'patientInfo.deptName', '')
-      return `${doctorName} ${hospitalName} ${deptName}`
+      return `${hospitalName}`
     },
     consultant() {
-      const toDoctorName = get(this, 'consultSummary.toDoctorName', '')
-      const toDoctorTitle = get(this, 'consultSummary.toDoctorTitle', '')
-      const toHospitalName = get(this, 'consultSummary.toHospitalName', '')
-      const toDeptName = get(this, 'consultSummary.toDeptName', '')
-      return `${toDoctorName} ${toDoctorTitle} ${toHospitalName} ${toDeptName}`
+      const doctorName = get(this, 'patientInfo.doctorName', '')
+      const deptName = get(this, 'patientInfo.deptName', '')
+      return `${doctorName} ${deptName}`
     }
   },
   methods: {
@@ -312,8 +308,16 @@ export default {
 .newCaseDetail {
   font-size: 12px;
   padding: 0 20px;
-  .tabList {
+  /deep/ .tabList {
     margin-top: 15px;
+
+    /deep/ .el-tabs__item.is-active {
+      color: #000;
+      font-weight: bold;
+    }
+    /deep/ .el-tabs__active-bar {
+      background-color: #000;
+    }
   }
   .no-data {
     min-height: 200px;
