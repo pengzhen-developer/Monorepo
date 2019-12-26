@@ -271,6 +271,7 @@ export default {
       const session = this.$store.state.consultation.session
 
       const params = {
+        consultNo: session.content.consultInfo.consultNo,
         toDoctorId:
           session.content.consultInfo.receiveDoctor[0].doctorId ===
           this.$store.state.user.userInfo.list.docInfo.doctor_id
