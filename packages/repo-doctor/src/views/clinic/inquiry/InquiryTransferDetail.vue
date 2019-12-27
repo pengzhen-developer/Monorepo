@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ internalData.referral_status }.png`"
+      <img :src="`./static/images/transfer/${ internalData.transfer_status }.png`"
            v-if="getState()" />
     </div>
 
