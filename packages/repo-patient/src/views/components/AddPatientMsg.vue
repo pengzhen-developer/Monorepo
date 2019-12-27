@@ -9,7 +9,7 @@
              :class="hasFamily==1&&showFamily&&'show'">
           <div class="navWrap">
             <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}</div>
-            <div class="subTitle">请选择您的就诊信息</div>
+            <div class="subTitle">请填写您的就诊信息</div>
           </div>
           <div class="form form-for-family">
             <van-field label="姓名"

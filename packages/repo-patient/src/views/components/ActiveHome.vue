@@ -3,8 +3,8 @@
        class="assistive-wrap"
        @click="home">
     <div class="assistive-touch">
-      <van-icon class="assistive-touch-icon"
-                :name="require('@src/assets/images/activeHome.png')"></van-icon>
+      <van-image class="assistive-touch-icon"
+                 :src="require('@src/assets/images/activeHome.png')"></van-image>
       <span>万家云医</span>
     </div>
   </div>
@@ -168,6 +168,8 @@ export default {
 // }
 
 .assistive-touch-icon {
+  width: 12px;
+  height: 12px;
   font-size: 12px;
   font-weight: bold;
   color: $-color--primary;
