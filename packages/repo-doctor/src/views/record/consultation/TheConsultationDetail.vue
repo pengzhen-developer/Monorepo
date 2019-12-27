@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/consultation/${ getState() }.png`"
+      <img :src="`./static/images/consultation/${ internalData.consultStatus }.png`"
            v-if="getState()" />
     </div>
 
