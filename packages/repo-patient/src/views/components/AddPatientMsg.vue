@@ -43,6 +43,18 @@
                        readonly
                        right-icon="arrow"
                        v-model="model.nationName" />
+            <div class="group"
+                 v-if="age!= null && age < this.ageLimit">
+              <van-cell value="就诊人未满6岁，请填写监护人信息" />
+              <van-field label="监护人姓名"
+                         placeholder="请输入姓名"
+                         v-model="model.guardianName">
+              </van-field>
+              <van-field label="监护人身份证号"
+                         placeholder="请输入身份证号"
+                         v-model="model.guardianIdCard" />
+            </div>
+
             <peace-dialog :visible.sync="showAllergicHistory">
               <AddAllergicHistory @onSave="showAllergicHistory = false"
                                   v-model="model.allergic_history"></AddAllergicHistory>
@@ -168,6 +180,7 @@ export default {
       familyId: '',
       isNationExist: false,
       age: null,
+      ageLimit: 7, //测试为7 上线为6
       gDialog: {
         data: null,
         title: '选择监护人',
@@ -184,6 +197,7 @@ export default {
       currentDate: new Date(),
       maxDate: new Date(),
       nationsMap: [],
+      canShowSelf: true,
       showAllergicHistory: false,
       showFoodAllergy: false,
       showRelation: false,
@@ -406,6 +420,14 @@ export default {
         if (!this.model.nationName) {
           return peace.util.alert('请选择民族')
         }
+        if (this.age < this.ageLimit) {
+          if (!this.model.guardianName) {
+            return peace.util.alert('请输入监护人姓名')
+          }
+          if (!this.model.guardianIdCard) {
+            return peace.util.alert('请输入监护人身份证号')
+          }
+        }
         params.name = this.model.name
         params.idCard = this.model.idcard
         params.birthday = this.model.birthday
@@ -413,6 +435,8 @@ export default {
         params.nationCode = this.model.nationCode
         params.relation = this.model.relation
         params.sex = this.model.sexKey
+        params.guardianName = this.model.guardianName
+        params.guardianIdCard = this.model.guardianIdCard
       }
       params.source = 2
       params.doctorId = this.doctor.doctorId
@@ -603,7 +627,18 @@ export default {
     margin-left: 10px;
   }
 }
+.group {
+  /deep/.van-cell__title {
+    width: 8.6em;
+    span {
+      width: 8em;
+    }
 
+    .van-field__control {
+      text-align: right;
+    }
+  }
+}
 /deep/ .van-cell__title {
   width: 4.7em;
   height: 18px;
@@ -638,6 +673,7 @@ export default {
     content: '*';
   }
 }
+/deep/ .form.form-for-family > .group > .van-cell,
 /deep/ .form.form-for-family > .van-cell {
   height: 50px;
   align-items: center;
@@ -655,7 +691,7 @@ export default {
     }
   }
 }
-
+/deep/ .form.form-for-family > .group > .van-cell > .van-cell__value > .van-field__body > .van-field__control,
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   font-size: 15px;
