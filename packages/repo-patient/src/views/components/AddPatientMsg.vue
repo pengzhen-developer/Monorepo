@@ -46,11 +46,13 @@
             <div class="group"
                  v-if="age!= null && age < this.ageLimit">
               <van-cell value="就诊人未满6岁，请填写监护人信息" />
-              <van-field label="监护人姓名"
+              <van-field class="w6"
+                         label="监护人姓名"
                          placeholder="请输入姓名"
                          v-model="model.guardianName">
               </van-field>
-              <van-field label="监护人身份证号"
+              <van-field class="w8"
+                         label="监护人身份证号"
                          placeholder="请输入身份证号"
                          v-model="model.guardianIdCard" />
             </div>
@@ -628,11 +630,27 @@ export default {
   }
 }
 .group {
-  /deep/.van-cell__title {
-    width: 8.6em;
-    span {
-      width: 8em;
+  .w6 {
+    /deep/.van-cell__title {
+      width: 6em;
+      span {
+        width: 5.6em;
+      }
     }
+  }
+  .w8 {
+    /deep/.van-cell__title {
+      width: 8em;
+      span {
+        width: 7.6em;
+      }
+    }
+  }
+  /deep/.van-cell__title {
+    // width: 8.6em;
+    // span {
+    //   width: 8em;
+    // }
 
     .van-field__control {
       text-align: right;
