@@ -6,17 +6,23 @@
     <div class="header-right">
       <el-dropdown @command="handleNotice">
         <div class="header-right-message">
-          <el-badge class="mark" :value="$store.getters['notification/unread']" :hidden="$store.getters['notification/unread']==0">
-            <img src="~@src/assets/images/layout/top_icon_message.png"/>
+          <el-badge class="mark"
+                    :value="$store.getters['notification/unread']"
+                    :hidden="$store.getters['notification/unread']==0">
+            <img src="~@src/assets/images/layout/top_icon_message.png" />
           </el-badge>
           <span>消息</span>
         </div>
 
-        <el-dropdown-menu class="header-right-message-dropdown" slot="dropdown">
+        <el-dropdown-menu class="header-right-message-dropdown"
+                          slot="dropdown">
           <div class="header-right-message-dropdown-content">
             <h4 v-if="$store.getters['notification/messageList'].length == 0">暂无消息</h4>
-            <el-dropdown-item class="dropdown-item message" :command="item" v-for="(item,index) in $store.getters['notification/messageList']"  :key="'item'+index">
-              <el-badge :is-dot="item.isRead == 0" >
+            <el-dropdown-item class="dropdown-item message"
+                              :command="item"
+                              v-for="(item,index) in $store.getters['notification/messageList']"
+                              :key="'item'+index">
+              <el-badge :is-dot="item.isRead == 0">
                 <div :class="'icon icon-' + item.tag"></div>
               </el-badge>
               <div class="right">
@@ -42,7 +48,8 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
 
-        <el-dropdown-menu class="header-right-title-dropdown" slot="dropdown">
+        <el-dropdown-menu class="header-right-title-dropdown"
+                          slot="dropdown">
           <div class="header-right-title-dropdown-content">
             <!-- <h4>出诊状态</h4>
               <el-dropdown-item class="dropdown-item" disabled readonly>
@@ -54,7 +61,8 @@
                 <span>离线</span>
               </el-dropdown-item>
             <hr>-->
-            <el-dropdown-item @click.native="signOut" class="dropdown-item">
+            <el-dropdown-item @click.native="signOut"
+                              class="dropdown-item">
               <span>退出登录</span>
             </el-dropdown-item>
           </div>
@@ -62,16 +70,22 @@
       </el-dropdown>
     </div>
 
-    <peace-dialog :visible.sync="dialogHZ.visible" title="会诊详情">
-      <TheConsultationDetail :data="dialogHZ.data" @close="() => dialogHZ.visible = false"></TheConsultationDetail>
+    <peace-dialog :visible.sync="dialogHZ.visible"
+                  title="会诊详情">
+      <TheConsultationDetail :data="dialogHZ.data"
+                             @close="() => dialogHZ.visible = false"></TheConsultationDetail>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="dialogNotice.visible" title="签名提醒">
-      <SignNotice :num="dialogNotice.num" @close="() => dialogNotice.visible = false"></SignNotice>
+    <peace-dialog :visible.sync="dialogNotice.visible"
+                  title="签名提醒">
+      <SignNotice :num="dialogNotice.num"
+                  @close="() => dialogNotice.visible = false"></SignNotice>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="dialogOrg.visible" title="详情">
-      <OrgNotice :data="dialogOrg.data" @close="() => dialogOrg.visible = false"></OrgNotice>
+    <peace-dialog :visible.sync="dialogOrg.visible"
+                  title="详情">
+      <OrgNotice :data="dialogOrg.data"
+                 @close="() => dialogOrg.visible = false"></OrgNotice>
     </peace-dialog>
   </div>
 </template>
@@ -96,76 +110,74 @@ export default {
     // ])
   },
   data() {
-     return {
-       messageList: [],
-       unread: 0,
-       interval: null,
-       dialogHZ: {
-         visible: false,
-         data: null
-       },
-       dialogNotice: {
-         visible: false,
-         num: '0'
-       },
-       dialogOrg: {
-         visible: false,
-         data: {
-           title: '',
-           content: ''
-         }
-       }
-     }
+    return {
+      messageList: [],
+      unread: 0,
+      interval: null,
+      dialogHZ: {
+        visible: false,
+        data: null
+      },
+      dialogNotice: {
+        visible: false,
+        num: '0'
+      },
+      dialogOrg: {
+        visible: false,
+        data: {
+          title: '',
+          content: ''
+        }
+      }
+    }
   },
   mounted() {
-
     // this.getMsgList();
     // this.getRoundMsg();store.dispatch('increment')
-    this.$store.dispatch('notification/getList');
+    this.$store.dispatch('notification/getList')
   },
-  beforeDestroy() {
-  },
+  beforeDestroy() {},
   methods: {
     getMsgList() {
-      let p = 1;
-      let size = 100;
-      let params = {p, size}
-      this.get(params);
+      let p = 1
+      let size = 100
+      let params = { p, size }
+      this.get(params)
     },
     get(params) {
       peace.service.personalCenter.getMsgList(params).then(res => {
-        this.messageList = res.data.list;
-        this.unread = res.data.unRead;
+        this.messageList = res.data.list
+        this.unread = res.data.unRead
       })
     },
     handleNotice(item) {
-        let tag = item.tag;
-        let sysId = item.sysId;
-        let params = {tag, sysId};
-        // this.interval && this.clearInterval();
-        peace.service.personalCenter.getDetail(params).then(res => {
-          this.$store.dispatch('notification/getList');
-          // this.getRoundMsg();
-          switch (item.tag) {
-            case 'orgNotice':
-              this.dialogOrg.visible = true;
-              this.dialogOrg.data.title =  res.data.title;
-              this.dialogOrg.data.content =  res.data.content;
-              break;
-            case 'DoctorSignNotice':
-              this.dialogNotice.visible = true;
-              this.dialogNotice.num = res.data.prescriptionNum;
-              break;
-            case 'consultCooperation':
-              this.dialogHZ.visible = true;
-              this.dialogHZ.data = res.data.info;
-              break;
-          }
-        })
+      let tag = item.tag
+      let sysId = item.sysId
+      let params = { tag, sysId }
+      // this.interval && this.clearInterval();
+      peace.service.personalCenter.getDetail(params).then(res => {
+        this.$store.dispatch('notification/getList')
+        // this.getRoundMsg();
+        switch (item.tag) {
+          case 'orgNotice':
+            this.dialogOrg.visible = true
+            this.dialogOrg.data.title = res.data.title
+            this.dialogOrg.data.content = res.data.content
+            break
+          case 'DoctorSignNotice':
+            this.dialogNotice.visible = true
+            this.dialogNotice.num = res.data.prescriptionNum
+            break
+          case 'consultCooperation':
+            this.dialogHZ.visible = true
+            this.dialogHZ.data = res.data.info
+            break
+        }
+      })
     },
     signOut() {
-      // 清空所有缓存
-      peace.cache.clear()
+      // 清空用户缓存
+      peace.cache.remove(peace.type.USER.INFO)
 
       // 重定向
       this.$router.replace(peace.config.system.loginPage)
@@ -333,14 +345,14 @@ export default {
       text-align: left;
       padding: 8px 15px 8px;
       .icon {
-          width: 20px;
-          height: 20px;
-          background: url("../../../assets/images/icon-hz.png") no-repeat;
+        width: 20px;
+        height: 20px;
+        background: url('../../../assets/images/icon-hz.png') no-repeat;
         &.icon-DoctorSignNotice {
-          background: url("../../../assets/images/icon-msg.png") no-repeat;
+          background: url('../../../assets/images/icon-msg.png') no-repeat;
         }
         &.icon-orgNotice {
-          background: url("../../../assets/images/icon-notice.png") no-repeat;
+          background: url('../../../assets/images/icon-notice.png') no-repeat;
         }
       }
       display: flex;

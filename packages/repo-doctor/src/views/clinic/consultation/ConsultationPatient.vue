@@ -34,6 +34,7 @@
             </div>
             <div class="item">
               <el-button @click="showDetail"
+                         v-if="data.inquiryNo"
                          type="text"
                          style="font-size: 12px;">查看详情</el-button>
             </div>
@@ -133,7 +134,7 @@
             <div class="item">
               <div class="title">
                 <el-divider direction="vertical"></el-divider>
-                <span>初步诊断</span>
+                <span>疾病诊断</span>
               </div>
               <div class="content">
                 <el-tag :key="item"
@@ -215,15 +216,79 @@
                   </p>
                 </div>
               </el-timeline-item>
+
+              <el-timeline-item :timestamp="data.doctorExamineTime"
+                                placement="top"
+                                type="primary">
+                <el-tag class="timestamp_extend">接&emsp;诊</el-tag>
+
+                <div class="timestamp_remark">
+                  <p>
+                    <span>会诊医生接诊</span>
+                  </p>
+                </div>
+              </el-timeline-item>
             </el-timeline>
           </div>
+        </div>
+
+        <div class="card">
+          <el-row>
+            <el-col :span="8"
+                    v-if="$store.getters['consultation/consultInfo'].isSendCase">
+              <div @click="getCaseDetail"
+                   style="text-align: center;">
+                <img style="width: 26px; height: 26px;"
+                     src="~@src/assets/images/inquiry/ic_medical record.png" />
+                <p style="font-size: 14px;">病历</p>
+              </div>
+            </el-col>
+            <el-col :span="8"
+                    v-if="$store.getters['consultation/consultInfo'].isSendRecipe">
+              <div @click="getRecipeDetail"
+                   style="text-align: center;">
+                <img style="width: 26px; height: 26px;"
+                     src="~@src/assets/images/inquiry/ic_rp.png" />
+                <p style="font-size: 14px;">处方</p>
+              </div>
+            </el-col>
+            <el-col :span="8"
+                    v-if="$store.getters['consultation/consultInfo'].isCommit">
+              <div @click="getConsultDetail"
+                   style="text-align: center;">
+                <img style="width: 26px; height: 26px;"
+                     src="~@src/assets/images/inquiry/ic_huizhen@2x.png" />
+                <p style="font-size: 14px;">会诊意见</p>
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </el-scrollbar>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible"
+    <peace-dialog :visible.sync="caseDialog.visible"
+                  v-if="caseDialog.visible"
+                  title="病历详情">
+      <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="recipeDialog.visible"
+                  v-if="recipeDialog.visible"
+                  title="处方详情">
+      <ConsultationSessionRecipeDetail :data="recipeDialog.data"></ConsultationSessionRecipeDetail>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="consultDetail.visible"
+                  v-if="consultDetail.visible"
+                  title="会诊单详情">
+      <ConsultationDetail :data="consultDetail.data"></ConsultationDetail>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="inquiry.visible"
+                  v-if="inquiry.visible"
                   title="图文问诊记录">
-      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
+      <InquirySessionMessageList :data="inquiry.data"
+                                 type="consult"></InquirySessionMessageList>
     </peace-dialog>
   </div>
 </template>
@@ -232,17 +297,38 @@
 import peace from '@src/library'
 
 import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
+import ConsultationSessionRecipeDetail from './ConsultationSessionRecipeDetail'
+import ConsultationDetail from './ConsultationDetail'
 
 export default {
   components: {
-    InquirySessionMessageList
+    InquirySessionMessageList,
+    ConsultationSessionCaseDetail,
+    ConsultationSessionRecipeDetail,
+    ConsultationDetail
   },
 
   data() {
     return {
       data: undefined,
 
-      dialog: {
+      caseDialog: {
+        visible: false,
+        data: undefined
+      },
+
+      recipeDialog: {
+        visible: false,
+        data: undefined
+      },
+
+      consultDetail: {
+        visible: false,
+        data: undefined
+      },
+
+      inquiry: {
         visible: false,
         data: undefined
       }
@@ -260,6 +346,41 @@ export default {
   },
 
   methods: {
+    getCaseDetail() {
+      const params = {
+        consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+      }
+
+      peace.service.inquiry.getCase(params).then(res => {
+        this.caseDialog.visible = true
+        this.caseDialog.data = res.data
+      })
+    },
+
+    getRecipeDetail() {
+      const params = {
+        consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
+        p: 1,
+        size: 999
+      }
+
+      peace.service.prescribePrescrip.getConsultPrescripList(params).then(res => {
+        this.recipeDialog.visible = true
+        this.recipeDialog.data = res.data
+      })
+    },
+
+    getConsultDetail() {
+      const params = {
+        consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+      }
+
+      peace.service.consult.getConsultInfo(params).then(res => {
+        this.consultDetail.visible = true
+        this.consultDetail.data = res.data.info
+      })
+    },
+
     getConsultationDetail() {
       const params = {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
@@ -297,9 +418,9 @@ export default {
 
         historyMessageFormatHandler(res.data.msgInfo)
 
-        this.dialog.data = []
-        this.dialog.data = res.data.msgInfo
-        this.dialog.visible = true
+        this.inquiry.data = []
+        this.inquiry.data = res.data.msgInfo
+        this.inquiry.visible = true
       })
     }
   }

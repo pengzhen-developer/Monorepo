@@ -23,19 +23,22 @@
             </el-col>
             <el-col :span="8">
               <label class="label">联系电话：</label>
-              <span :title="internalData.familyInfo.tel"
-                    class="value">{{ internalData.familyInfo.tel }}</span>
+              <span :title="internalData.familyInfo.tels"
+                    class="value">{{ internalData.familyInfo.tels }}</span>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <label class="label">标签：</label>
-              <span>
+              <span v-if="internalData.familyInfo.diagnoseInfo && internalData.familyInfo.diagnoseInfo.length">
                 <el-tag :key="item"
                         size="medium"
                         style="margin: 0 5px 10px 0; border: 0;"
                         type="info"
                         v-for="item in internalData.familyInfo.diagnoseInfo">{{ item }}</el-tag>
+              </span>
+              <span v-else>
+                -
               </span>
             </el-col>
           </el-row>
@@ -117,7 +120,7 @@ export default {
 
   methods: {
     get() {
-      const params = { familyId: this.id }
+      const params = { patientNo: this.id }
 
       peace.service.patient.getOneHealth(params).then(res => {
         this.internalData = res.data

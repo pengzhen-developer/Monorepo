@@ -4,6 +4,7 @@
       <div class="left">
         <span class="name">{{data.patientInfo.familyName}}</span>
         <span class="sex">{{data.patientInfo.sex}}</span>
+        <span class="age">{{data.patientInfo.age+'岁'}}</span>
         <span class="dept">门诊</span>
       </div>
       <div class="right">
@@ -37,53 +38,46 @@
         </div>
         <div class="item">
           <span class="title">现病史：</span>
-          <span
-                class="content">{{data.caseInfo.presentHistory ==''? '无': data.caseInfo.presentHistory}}</span>
+          <span class="content">{{data.caseInfo.presentHistory ==''? '无': data.caseInfo.presentHistory}}</span>
         </div>
         <div class="item">
           <span class="title">既往史：</span>
-          <span
-                class="content">{{data.caseInfo.pastHistory =='' ? '无':data.caseInfo.pastHistory}}</span>
+          <span class="content">{{data.caseInfo.pastHistory =='' ? '无':data.caseInfo.pastHistory}}</span>
         </div>
         <div class="item">
           <span class="title">过敏史：</span>
-          <span
-                class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
+          <span class="content">{{data.caseInfo.allergyHistory =='' ? '无':data.caseInfo.allergyHistory}}</span>
         </div>
-        <div class="item">
+        <div class="item"
+             v-if="!(data.caseInfo.InspectionIndex.temperature ==''&&data.caseInfo.InspectionIndex.weight ==''&&data.caseInfo.InspectionIndex.heart_rate =='' &&data.caseInfo.InspectionIndex.blood_pressure =='')">
           <span class="title">检查指标：</span>
           <div class="dataBox">
             <div class="line">
               <div class="dataItem">
                 <span class="title">体温：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature}}度</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.temperature =='' ? '无':data.caseInfo.InspectionIndex.temperature+'度'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">体重：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight}}kg</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.weight =='' ? '无':data.caseInfo.InspectionIndex.weight+'kg'}}</span>
               </div>
             </div>
             <div class="divide"></div>
             <div class="line">
               <div class="dataItem">
                 <span class="title">心率：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate}}bmp</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.heart_rate =='' ? '无':data.caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">血压：</span>
-                <span
-                      class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure}}mmHg</span>
+                <span class="content">{{data.caseInfo.InspectionIndex.blood_pressure =='' ? '无':data.caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="item">
           <span class="title">辅助检查：</span>
-          <span
-                class="content">{{data.caseInfo.InspectionIndex.More =='' ? '无':data.caseInfo.InspectionIndex.More}}</span>
+          <span class="content">{{data.caseInfo.InspectionIndex.More =='' ? '无':data.caseInfo.InspectionIndex.More}}</span>
         </div>
         <div class="item">
           <span class="title">诊 断：</span>
@@ -120,19 +114,17 @@
             <span class="content">{{item.diagnosisInfos}}</span>
           </div>
 
+          <div class="rp-title">Rp</div>
           <div class="dragList">
             <div class="dragItem"
                  v-for="(drug,index) in item.drugCode"
                  :key="'drug' + index">
-              <div class="dragCode">
-                {{drug.drugCode}}
-              </div>
               <div class="title">
                 <span>{{drug.drugName}} {{drug.drugSpecifications}}</span>
                 <span> x{{drug.drugQty}}</span>
               </div>
               <div class="usage">
-                用法用量：每日2次，每次50mg，口服，三天
+                {{drug.drugUse}}
               </div>
             </div>
           </div>
@@ -140,12 +132,19 @@
             <div class="line">
               <div class="dataItem">
                 <span class="title">医 师：</span>
-                <span class="content">{{item.psychiatric =='' ? '无':item.psychiatric}}</span>
+                <img :src="item.doctorSignImage"
+                     class="content"
+                     alt="医师签名"
+                     style="height: 20px;"
+                     v-if="item.doctorSignImage" />
               </div>
               <div class="dataItem">
                 <span class="title">审方药师：</span>
-                <span
-                      class="content">{{item.prescriptionPharmacistName =='' ? '无':item.prescriptionPharmacistName}}</span>
+                <img :src="item.prescriptionSign"
+                     class="content"
+                     alt="医师签名"
+                     style="height: 20px;"
+                     v-if="item.prescriptionSign" />
               </div>
             </div>
             <div class="divide"></div>
@@ -161,15 +160,14 @@
             </div>
 
             <div class="line"
-                 style="margin-top: 10px;">
+                 style="margin-top: 5px; border-top: 1px solid #f3f3f3;padding: 5px 0;">
               <div class="dataItem">
                 <span class="title">药师审方结果：</span>
                 <span class="content">{{getText(item.prescription)}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">系统审方结果：</span>
-                <span
-                      class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
               </div>
             </div>
           </div>
@@ -266,12 +264,18 @@ export default {
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
     }
-    .sex {
+    .sex,
+    .age {
       font-size: 14px;
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
       display: inline-block;
+    }
+    .sex {
       margin-left: 16px;
+      margin-right: 16px;
+    }
+    .age {
       margin-right: 16px;
     }
     .dept {
@@ -329,12 +333,19 @@ export default {
       }
     }
   }
+  .rp-title {
+    margin-top: 8px;
+    padding-bottom: 4px;
+    font-size: 18px;
+    line-height: 25px;
+    border-bottom: 1px solid #f3f3f3;
+  }
   .dragList {
     .dragItem {
       display: flex;
       flex-direction: column;
       color: #333;
-      height: 90px;
+      height: 60px;
       justify-content: center;
       border-bottom: 1px dashed #c4c4c4;
       .dragCode {
@@ -348,6 +359,7 @@ export default {
         font-size: 16px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
+        justify-content: space-between;
       }
       .usage {
         font-size: 14px;
@@ -402,8 +414,7 @@ export default {
         width: 4px;
         height: 8px;
         display: inline-block;
-        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png')
-          no-repeat;
+        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png') no-repeat;
         margin-left: 10px;
       }
     }

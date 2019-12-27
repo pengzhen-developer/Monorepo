@@ -3,16 +3,19 @@
 */
 
 <template>
-  <div @click="get" class="record-case">
+  <div @click="get"
+       class="record-case">
     <div class="record-case-left">
       <img src="~@src/assets/images/inquiry/ic_medical record.png" />
     </div>
     <div class="record-case-right">
       <p class="record-case-right-title">病历</p>
-      <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netdeptName }}</p>
+      <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
 
-    <peace-dialog :visible.sync="caseDialog.visible" append-to-body title="病历详情">
+    <peace-dialog :visible.sync="caseDialog.visible"
+                  append-to-body
+                  title="病历详情">
       <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
     </peace-dialog>
   </div>
@@ -42,7 +45,7 @@ export default {
 
   methods: {
     get() {
-      const params = { inquiryNo: this.data.inquiryNo }
+      const params = { dataNo: this.data.dataNo }
       // const params = { inquiryNo: 'WZ2722845337239667' }
       peace.service.inquiry.getHealthCase(params).then(res => {
         this.caseDialog.visible = true

@@ -63,7 +63,7 @@
          v-if="view.action === source.action.PRESC">
       <el-form :model="view.prescModel"
                inline>
-        <el-form-item label="临床诊断">
+        <el-form-item label="疾病诊断">
           <el-input placeholder
                     v-model="view.prescModel.name"></el-input>
         </el-form-item>
@@ -84,7 +84,7 @@
 
       <peace-table pagination
                    ref="table">
-        <peace-table-column label="临床诊断"
+        <peace-table-column label="疾病诊断"
                             prop="diagnosis"></peace-table-column>
         <peace-table-column label="性别"
                             prop="sex"></peace-table-column>
@@ -340,9 +340,7 @@ export default {
         : {
             id: row.id
           }
-      const msg = isDrugList
-        ? `从常用药品列表中删除 <br><strong>${row.drug_name}</strong>`
-        : `删除此常用处方？`
+      const msg = isDrugList ? `从常用药品列表中删除 <br><strong>${row.drug_name}</strong>` : `删除此常用处方？`
 
       this.$confirm(msg, '提示', {
         dangerouslyUseHTMLString: true,

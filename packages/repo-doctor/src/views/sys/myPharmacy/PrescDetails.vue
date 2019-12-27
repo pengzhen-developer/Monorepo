@@ -24,7 +24,9 @@
       <span>RP</span>
     </span>
     <div class="drug-list">
-      <div :key="drug.id" class="drug-item" v-for="(drug) in drugList">
+      <div :key="drug.id"
+           class="drug-item"
+           v-for="(drug) in drugList">
         <div class="row-one">
           <span>{{ drug.drug_name }}</span>
           <span>{{ drug.drug_spec }}</span>

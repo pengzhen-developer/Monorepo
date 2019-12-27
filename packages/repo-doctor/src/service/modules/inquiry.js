@@ -120,7 +120,64 @@ export function getRecordTemplate() {
  * @param {*} params
  * @returns
  */
-export function addCase(params) {
+export function offlineAddCase({
+  consultNo,
+  inquiry_no,
+  allergy_history,
+  diagnose,
+  base_illness,
+  present_history,
+  past_history,
+  Inspection_index,
+  summary,
+  templateId
+}) {
+  const params = {
+    consultNo: consultNo,
+    inquiryNo: inquiry_no,
+    allergyHistory: allergy_history,
+    diagnose,
+    baseIllness: base_illness,
+    presentHistory: present_history,
+    pastHistory: past_history,
+    inspectionIndex: Inspection_index,
+    summary,
+    aliverId: templateId
+  }
+  const offlineAddCase = 'client/v1/Prescribeprescrip/offlineAddCase'
+
+  return peace.http.post(offlineAddCase, params)
+}
+
+/**
+ * 发会诊病历
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function addCase({
+  inquiry_no,
+  allergy_history,
+  diagnose,
+  base_illness,
+  present_history,
+  past_history,
+  Inspection_index,
+  summary,
+  templateId
+}) {
+  const params = {
+    inquiryNo: inquiry_no,
+    allergyHistory: allergy_history,
+    diagnose,
+    baseIllness: base_illness,
+    presentHistory: present_history,
+    pastHistory: past_history,
+    inspectionIndex: Inspection_index,
+    summary,
+    aliverId: templateId
+  }
   const addCase = 'client/v1/Prescribeprescrip/addCase'
 
   return peace.http.post(addCase, params)
@@ -146,12 +203,12 @@ export function getCase(params) {
  * @param {*} params
  * @returns
  */
-export function getHealthCase(params) {
+export function getHealthCase({ dataNo }) {
+  const params = { dataNo }
   const getHealthCase = 'client/v1/health/getHealthCase'
 
   return peace.http.post(getHealthCase, params)
 }
-
 
 /**
  * 获取转诊医生
@@ -205,6 +262,19 @@ export function receiveReferralPc(params) {
   return peace.http.post(receiveReferralPc, params)
 }
 
+/**
+ * 获取检查项
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getOrderDetail(params) {
+  const getOrderDetail = 'client/v1/Checklist/getOrderDetail'
+
+  return peace.http.post(getOrderDetail, params)
+}
+
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -215,6 +285,8 @@ export default {
   getRefferStatus,
   /** 获取转诊记录列表 */
   doctorReferralListPc,
+  /** 获取检查项 */
+  getOrderDetail,
 
   /** 接诊 */
   receiveInquiry,
@@ -229,6 +301,7 @@ export default {
   getRecordTemplate,
   /** 发病历 */
   addCase,
+  offlineAddCase,
   /** 获取病历详情 */
   getCase,
   getHealthCase,

@@ -1,7 +1,8 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ getState() }.png`" v-if="getState()" />
+      <img :src="`./static/images/transfer/${ getState() }.png`"
+           v-if="getState()" />
     </div>
 
     <div class="record-no">
@@ -54,7 +55,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="初步诊断">
+            <el-form-item label="疾病诊断">
               <span>{{ internalData.diagnose }}</span>
             </el-form-item>
           </el-col>
@@ -112,7 +113,8 @@
     </div>
 
     <!-- 转出机构审核信息 -->
-    <div class="record-content" v-if="internalData.send_check_time">
+    <div class="record-content"
+         v-if="internalData.send_check_time">
       <span class="title">转出机构审核信息</span>
 
       <el-form>
@@ -141,7 +143,8 @@
     </div>
 
     <!-- 转入机构审核信息 -->
-    <div class="record-content" v-if="internalData.receive_check_time">
+    <div class="record-content"
+         v-if="internalData.receive_check_time">
       <span class="title">转入机构审核信息</span>
 
       <el-form>
@@ -170,28 +173,39 @@
     </div>
 
     <!-- 转诊结果 - 转给我的 - 需审核 -->
-    <div class="record-content" v-if="type === 'in' &&  internalData.transfer_status === 4">
+    <div class="record-content"
+         v-if="type === 'in' &&  internalData.transfer_status === 4">
       <span class="title">转诊结果</span>
 
-      <el-form :model="view.model" inline>
+      <el-form :model="view.model"
+               inline>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="转诊意见" prop="referral_suggest">
-              <el-input :rows="4" placeholder="请输入转诊意见" style="width: 400px;" type="textarea" v-model="view.model.referral_suggest"></el-input>
+            <el-form-item label="转诊意见"
+                          prop="referral_suggest">
+              <el-input :rows="4"
+                        placeholder="请输入转诊意见"
+                        style="width: 400px;"
+                        type="textarea"
+                        v-model="view.model.referral_suggest"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <br />
         <el-row>
-          <el-col :span="24" style="text-align: center;">
-            <el-button :disabled="!view.model.referral_suggest" @click="receiveReferralPc" type="primary">提交</el-button>
+          <el-col :span="24"
+                  style="text-align: center;">
+            <el-button :disabled="!view.model.referral_suggest"
+                       @click="receiveReferralPc"
+                       type="primary">提交</el-button>
           </el-col>
         </el-row>
       </el-form>
     </div>
 
     <!-- 转诊结果 -->
-    <div class="record-content" v-else-if="internalData.referral_time">
+    <div class="record-content"
+         v-else-if="internalData.referral_time">
       <span class="title">转诊结果</span>
 
       <el-form>

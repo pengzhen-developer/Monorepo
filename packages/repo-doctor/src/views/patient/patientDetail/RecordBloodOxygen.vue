@@ -1,7 +1,8 @@
 <template>
   <div class="record-blood-oxygen">
     <template v-if="type === '1'">
-      <div @click="showReport" class="type-all">
+      <div @click="showReport"
+           class="type-all">
         <div class="left">
           <i class="icon icon_ic_bloodoxygen"></i>
           <span class="text">血氧</span>
@@ -12,13 +13,18 @@
             <p class="center-title">
               {{ data.bloodOxygen }}
               <span class="center-title-unit">%</span>
-              <el-tag :title="data.result" :type="getTagType(data.resultType)" class="center-title-tag">{{ data.result }}</el-tag>
+              <el-tag :title="data.result"
+                      :type="getTagType(data.resultType)"
+                      class="center-title-tag">{{ data.result }}</el-tag>
             </p>
-            <p class="center-text" v-if="this.type === '2'">{{ data.createdTime }}</p>
+            <p class="center-text"
+               v-if="this.type === '2'">{{ data.createdTime }}</p>
           </div>
 
-          <div class="right" v-if="this.type === '2'">
-            <el-button @click="showReport" type="text">查看详情</el-button>
+          <div class="right"
+               v-if="this.type === '2'">
+            <el-button @click="showReport"
+                       type="text">查看详情</el-button>
           </div>
         </template>
         <template v-else>暂无数据</template>
@@ -30,7 +36,9 @@
         <div class="title">
           <span class="title-label">血氧</span>
           <span class="title-value">{{ data.bloodOxygen || '- -' }} %</span>
-          <el-tag :type="getTagType(data.resultType)" class="title-result" size="large">{{ data.result }}</el-tag>
+          <el-tag :type="getTagType(data.resultType)"
+                  class="title-result"
+                  size="large">{{ data.result }}</el-tag>
         </div>
 
         <hr class="divider" />
@@ -43,7 +51,9 @@
           </div>
           <div class="row space-between">
             <span class="content-time">{{ data.createdTime }}</span>
-            <el-button @click="showReport" class="content-link" type="text">历史数据>></el-button>
+            <el-button @click="showReport"
+                       class="content-link"
+                       type="text">历史数据>></el-button>
           </div>
         </div>
       </div>
@@ -97,7 +107,7 @@ export default {
         return peace.util.info('暂无数据')
       }
 
-      const dataId = this.data.id
+      const dataId = this.data.dataNo
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.无
       const type = peace.type.HEALTH.TYPE.血氧

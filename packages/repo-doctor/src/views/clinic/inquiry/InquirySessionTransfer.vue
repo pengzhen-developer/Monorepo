@@ -16,8 +16,8 @@
              label-width="120px"
              ref="form">
       <el-row>
-        <el-form-item label="初步诊断">
-          <span slot="label">初步诊断</span>
+        <el-form-item label="疾病诊断">
+          <span slot="label">疾病诊断</span>
           <span>{{ view.model.diagnose }}</span>
         </el-form-item>
       </el-row>
@@ -165,7 +165,7 @@ export default {
         },
 
         rules: {
-          diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
+          diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'change' }],
           doctorInfo: [{ required: true, message: '请选择转诊医生', trigger: 'change' }],
           expectDate: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],
           expectTime: [{ required: true, message: '请选择期望转诊时间', trigger: 'change' }],

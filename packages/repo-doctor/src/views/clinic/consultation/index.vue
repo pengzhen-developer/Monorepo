@@ -4,10 +4,13 @@
     <div class="consultation-left">
       <ConsultationSessions></ConsultationSessions>
     </div>
-    <div class="consultation-center" v-if="$store.state.consultation.session && $store.state.consultation.session.id">
+    <div class="consultation-center"
+         v-if="$store.state.consultation.session && $store.state.consultation.session.id">
       <ConsultationSession></ConsultationSession>
     </div>
-    <div class="consultation-right" v-if="$store.state.consultation.session && $store.state.consultation.session.id">
+    <div class="consultation-right"
+         v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
+               $store.getters['consultation/consultInfo'].consultStatus !== $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
       <ConsultationPatient></ConsultationPatient>
     </div>
   </div>
@@ -79,7 +82,7 @@ export default {
     intervalHandler(intervalObject, session) {
       // 等待会诊, 未到期望时间, 显示倒计时
       if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
+        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
         new Date() < dayjs(session.content.consultInfo.expectTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectTime.toDate().getTime()
@@ -102,7 +105,7 @@ export default {
 
       // 等待接诊, 已到期望时间, 未到结束时间, 显示会诊结束倒计时
       else if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
+        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
         new Date() > dayjs(session.content.consultInfo.expectTime).toDate() &&
         new Date() < dayjs(session.content.consultInfo.expectOverTime).toDate()
       ) {
@@ -124,26 +127,6 @@ export default {
         intervalObject.status = peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束
       }
 
-      // 等待接诊, 已到结束时间, 等待服务端同步
-      else if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 &&
-        new Date() > dayjs(session.content.consultInfo.expectOverTime).toDate()
-      ) {
-        this.loading = $peace.$loading({
-          lock: true,
-          text: '正在同步数据，请稍后······',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.05)'
-        })
-
-        // 给 30s 时间用来做缓冲
-        setTimeout(() => {
-          if (this.loading && this.loading.visible) {
-            window.location.reload()
-          }
-        }, 1000 * 30)
-      }
-
       // 会诊中, 显示正记时
       else if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中) {
         const overEndTime = session.content.consultInfo.startTime.toDate().getTime()
@@ -151,6 +134,14 @@ export default {
         intervalObject.value = peace.util.getDuration(overEndTime, new Date())
         intervalObject.status = peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中
       }
+    },
+
+    getConsultStatus() {
+      return Object.keys(peace.type.CONSULTATION.CONSULTATION_STATUS).find(
+        key =>
+          peace.type.CONSULTATION.CONSULTATION_STATUS[key] ===
+          this.$store.getters['consultation/consultInfo'].consultStatus
+      )
     },
 
     // 定时器 - 获取会诊时间
@@ -174,11 +165,17 @@ export default {
 
   height: calc(100vh - 56px - 40px - 20px);
 
-  .consultation-left,
+  .consultation-left {
+    width: 230px;
+
+    border: 1px solid #efefef;
+  }
+
   .consultation-right {
     width: 230px;
 
     border: 1px solid #efefef;
+    border-left: none;
   }
 
   .consultation-center {
@@ -186,7 +183,6 @@ export default {
 
     border: 1px solid #efefef;
     border-left: none;
-    border-right: none;
   }
 }
 </style>

@@ -20,10 +20,37 @@ export function prescripList(params) {
  * @param {*} params 参数列表
  * @returns
  */
-export function subPrescrip(params) {
+export function subPrescrip({ allergy_history, diagnose, drugsJson, openId, inquiry_no }) {
+  const params = {
+    allergyHistory: allergy_history,
+    diagnose,
+    drugsJson,
+    openId,
+    inquiryNo: inquiry_no
+  }
   const subPrescrip = 'client/v1/Prescribeprescrip/subPrescrip'
 
   return peace.http.post(subPrescrip, params)
+}
+
+/**
+ * 发会诊处方
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function offlineSubPrescrip({ allergy_history, diagnose, drugsJson, openId, consultNo }) {
+  const params = {
+    allergyHistory: allergy_history,
+    diagnose,
+    drugsJson,
+    openId,
+    consultNo: consultNo
+  }
+  const offlineSubPrescrip = 'client/v1/Prescribeprescrip/offlineSubPrescrip'
+
+  return peace.http.post(offlineSubPrescrip, params)
 }
 
 /**
@@ -78,6 +105,19 @@ export function getPrescripInfo(params) {
   return peace.http.get(getPrescripInfo, { params })
 }
 
+/**
+ * 获取处方列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getConsultPrescripList(params) {
+  const getConsultPrescripList = 'client/v1/Consult/getConsultPrescripList'
+
+  return peace.http.post(getConsultPrescripList, params)
+}
+
 export default {
   /** 获取处方列表 */
   prescripList,
@@ -88,8 +128,12 @@ export default {
   drugFrequencyList,
   /** 发处方 */
   subPrescrip,
+  /** 发会诊处方 */
+  offlineSubPrescrip,
   /** 获取处方详情 */
   getPrescripInfo,
+  /** 获取处方列表 */
+  getConsultPrescripList,
 
   /** 自动完成 - 获取药品列表 */
   drugsList

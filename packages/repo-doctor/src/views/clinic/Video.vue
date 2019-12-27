@@ -5,6 +5,7 @@
                   :show-close="false"
                   :title="video.title"
                   :visible.sync="video.visible"
+                  :modal="false"
                   center
                   custom-class="video-dialog"
                   v-drag
@@ -24,7 +25,7 @@
 
 <script>
 import peace from '@src/library'
-import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
+import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
   data() {
@@ -123,6 +124,13 @@ export default {
         this.processExit()
         this.hangupVideo()
       }
+    },
+
+    'video.visible'() {
+      // 将 dialog 放到 content 里面
+      if (this.video.visible === true) {
+        console.log(1)
+      }
     }
   },
 
@@ -147,6 +155,10 @@ export default {
      * type: consult
      */
     call(session, type) {
+      if (this.beCallState !== '') {
+        return peace.util.alert('当前正在通话中')
+      }
+
       this.custom = { type, session }
 
       let toAccount = ''
@@ -371,60 +383,28 @@ export default {
 
       switch (controlObject.type) {
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_REJECT:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_AGREE:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_VIDEO_TO_AUDIO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
           console.warn('【 WebRTC 】【 onControl 】【 对方占线 】', new Date(), controlObject)
@@ -434,11 +414,7 @@ export default {
           this.hangupVideo()
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方摄像头不可用 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方摄像头不可用 】', new Date(), controlObject)
           break
 
         default:
@@ -531,6 +507,7 @@ export default {
 
     showMeesageNotify() {
       const accept = () => {
+        console.warn('luci')
         this.closeMessageNofity()
         this.processJoin()
         this.accept()
@@ -636,7 +613,11 @@ export default {
           action: 'start'
         }
 
-        return peace.service.video.processConsult(params)
+        peace.service.video.processConsult(params).then(res => {
+          if (res.code !== 200) {
+            this.hangupVideo()
+          }
+        })
       }
     },
 
@@ -671,6 +652,15 @@ export default {
 
 <style lang="scss" scoped>
 .video {
+  /deep/ .el-dialog__wrapper {
+    position: unset !important;
+
+    .el-dialog {
+      position: fixed;
+      z-index: 2222;
+    }
+  }
+
   .video-container {
     display: inline-flex;
     justify-content: center;
