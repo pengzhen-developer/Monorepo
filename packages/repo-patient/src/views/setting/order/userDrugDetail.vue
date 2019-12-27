@@ -110,7 +110,7 @@
     </div>
 
     <div class="box"
-         v-if="order.OrderId&&order.OrderStatus != '0'">
+         v-if="order.OrderId">
       <div class="dl-packet">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
