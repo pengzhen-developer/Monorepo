@@ -137,7 +137,7 @@
                    :key="item.itemId">
                 <div class="left">{{ item.name }}</div>
                 <div class="right"
-                     style="width: 40px; text-align: right;">x 1</div>
+                     style="width: 40px; text-align: right;"></div>
               </div>
             </div>
             <div class="message-line"></div>
