@@ -7,7 +7,8 @@
       <div class="header-right">
         <el-button type="text"
                    @click="overConsultation"
-                   v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
+                   v-if="$store.getters['consultation/consultInfo'].receiveDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id && 
+                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
           结束会诊</el-button>
       </div>
     </div>
