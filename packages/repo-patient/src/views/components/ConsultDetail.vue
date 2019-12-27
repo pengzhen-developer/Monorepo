@@ -79,11 +79,6 @@
               {{internalData.familyInfo.guardianAge+'岁'}}
             </div>
           </div>
-          <!-- <div class="form-dl">
-            <div class="form-dt"><span>姓名</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
-            <div class="form-dd">{{internalData.familyInfo.familySex}}</div>
-          </div> -->
         </div>
         <!--病情描述-->
         <div class="module-item">
@@ -115,6 +110,12 @@
                   <img :src="item.image_path"
                        @click="viewImage(item, index)" />
                 </div>
+              </div>
+            </div>
+            <div class="form-dl"
+                 v-else>
+              <div class="form-dt">复诊凭证 :</div>
+              <div class="form-dd">确认遗失
               </div>
             </div>
             <div class="form-dl">
@@ -195,13 +196,13 @@
              @click="showCancellPop(internalData)">取消订单</div>
       </div>
       <div class="h64"
-           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5'"></div>
+               internalData.inquiryInfo.inquiryStatus == '5')"></div>
       <div class="footer fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5'">
+               internalData.inquiryInfo.inquiryStatus == '5')">
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
@@ -303,10 +304,10 @@ export default {
       imagePreview: {
         visible: false,
         position: 0
-      }
+      },
+      fromChatRoom: false
     }
   },
-
   watch: {
     data: {
       handler() {
@@ -317,6 +318,7 @@ export default {
   },
 
   activated() {
+    this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
   },
 
@@ -327,6 +329,7 @@ export default {
     finish(data) {
       data.inquiryInfo.time = 0
     },
+
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo
@@ -341,11 +344,10 @@ export default {
     },
 
     getConsultDetail() {
-      let params = peace.util.decode(this.$route.params.json)
-      peace.service.patient.inquiryDetail(params).then(res => {
+      let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
         let inquiryInfo = res.data.inquiryInfo
-        let expireTime =
-          inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
+        let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
@@ -362,9 +364,7 @@ export default {
         '4': '医生已退诊',
         '5': '祝您身体健康',
         '6':
-          this.internalData.orderInfo.payMoney == '0.00'
-            ? '咨询订单已取消，如遇紧急情况请及时就医'
-            : '咨询订单已取消'
+          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
       }
 
       return dic[status]
@@ -766,7 +766,7 @@ export default {
     padding: 10px 15px 0 15px;
   }
   .span {
-    padding: 10px 15px;
+    padding: 10px 15px 10px 0;
   }
   .ul {
     padding: 0 15px;

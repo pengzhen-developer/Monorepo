@@ -29,7 +29,8 @@
           </div>
           <div class="title-service">
             <div>
-              <span class="title-service-money">{{
+              <span class="title-service-money"
+                    :class="isFree&&'free'">{{
                 getServiceMoney(doctor)
               }}</span>
             </div>
@@ -80,11 +81,13 @@ export default {
   data() {
     return {
       doctorList: [],
-      loaded: false
+      loaded: false,
+      isFree: false
     }
   },
 
   activated() {
+    this.isFree = peace.util.decode(this.$route.params.json).doctorTag === 'freeConsult' ? true : false
     this.get()
   },
 
@@ -118,6 +121,11 @@ export default {
       }
 
       const minMoney = Math.min.apply(null, moneyList)
+      //免费咨询列表收费应该显示为免费，而不是0起
+      const params = peace.util.decode(this.$route.params.json)
+      if (params.doctorTag === 'freeConsult') {
+        return '免费'
+      }
       if (minMoney === Infinity) {
         return ''
       } else if (minMoney === 0) {
@@ -132,11 +140,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return (
-          doctor.consultationList[0] &&
-          doctor.consultationList[0].status &&
-          doctor.consultationList[0].money === 0
-        )
+        return doctor.consultationList[0] && doctor.consultationList[0].status && doctor.consultationList[0].money === 0
       } else {
         return doctor.consultationList[0] && doctor.consultationList[0].status
       }
@@ -147,11 +151,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       if (params.doctorTag === 'freeConsult') {
-        return (
-          doctor.consultationList[1] &&
-          doctor.consultationList[1].status &&
-          doctor.consultationList[1].money === 0
-        )
+        return doctor.consultationList[1] && doctor.consultationList[1].status && doctor.consultationList[1].money === 0
       } else {
         return doctor.consultationList[1] && doctor.consultationList[1].status
       }
@@ -257,6 +257,9 @@ export default {
         .title-service-money {
           color: #fb2828;
           font-size: 16px;
+          &.free {
+            color: #f96a0e;
+          }
         }
         .title-service-money-extend {
           color: #fb2828;

@@ -152,7 +152,7 @@ export default {
     }
     &.start {
       align-items: flex-start;
-      padding: 5px 10px;
+      padding: 5px 15px;
       box-sizing: border-box;
       justify-content: space-between;
     }

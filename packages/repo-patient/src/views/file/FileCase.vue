@@ -1,27 +1,73 @@
 <template>
   <div class="file-all">
-    <div class="time-line" v-if="data ">
-      <van-list v-model="isLoading" :finished="finished" @load="allHealthList">
-        <div class="item" v-for="(value, key) in data" :key="key">
+    <div class="time-line"
+         v-if="data ">
+      <van-list v-model="isLoading"
+                :finished="finished"
+                @load="allHealthList">
+        <div class="item"
+             v-for="(value, key) in data"
+             :key="key">
           <div class="time">
             <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
             <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
           </div>
           <div class="text">
-            <div v-for="item in value" :key="item.healthType + item.id">
+            <div v-for="item in value"
+                 :key="item.healthType + item.id">
               <!-- 病历 -->
               <template v-if="item.healthType === 'case'">
-                <div class="note card case" @click="util.goDetail('病历', item)">
+                <div class="note card case"
+                     @click="util.goDetail('病历', item)">
                   <div class="case-left">
-                    <van-image width="35px" height="35px"
-                      :src="require('@src/assets/images/file/ic_medical record.png')" />
+                    <van-image width="35px"
+                               height="35px"
+                               :src="require('@src/assets/images/file/ic_medical record.png')" />
                   </div>
                   <div class="case-right">
                     <p style="font-size: 16px; color: #333333; line-height: 32px;">
                       门诊病历
                     </p>
                     <p style="font-size: 12px; color: #999999; line-height: 24px;">
-                      {{ item.netHospitalName }} | {{ item.netdeptName }}
+                      {{ item.netHospitalName }} | {{ item.netDeptName }}
+                    </p>
+                  </div>
+                </div>
+              </template>
+              <!-- 转诊单 -->
+              <template v-if="item.healthType === 'referral'">
+                <div class="note card case"
+                     @click="util.goDetail('转诊单', item)">
+                  <div class="case-left">
+                    <van-image width="35px"
+                               height="35px"
+                               :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      转诊单
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netDeptName }}
+                    </p>
+                  </div>
+                </div>
+              </template>
+              <!-- 会诊单 -->
+              <template v-if="item.healthType === 'consult'">
+                <div class="note card case"
+                     @click="util.goDetail('会诊单', item)">
+                  <div class="case-left">
+                    <van-image width="35px"
+                               height="35px"
+                               :src="require('@src/assets/images/file/ic_huizhen.png')" />
+                  </div>
+                  <div class="case-right">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      会诊单
+                    </p>
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
                 </div>
@@ -31,7 +77,8 @@
         </div>
       </van-list>
     </div>
-    <div v-else class="none-page">
+    <div v-if="loaded&&!data"
+         class="none-page">
       <div class="icon icon_none_source"></div>
       <div class="none-text">暂无数据</div>
     </div>
@@ -55,6 +102,7 @@ export default {
       size: 10,
       finished: false,
       isLoading: false,
+      loaded: false
     }
   },
 
@@ -63,13 +111,22 @@ export default {
       handler() {
         console.log(this.p)
         if (this.familyId) {
+          this.p = 0
           this.allHealthList()
         }
       },
       immediate: true
     }
   },
-
+  activated() {
+    this.p = 0
+    this.data = undefined
+    this.loaded = false
+    this.finished = false
+    if (this.familyId) {
+      this.allHealthList()
+    }
+  },
   methods: {
     allHealthList() {
       this.p++
@@ -83,11 +140,11 @@ export default {
         const temp = {}
 
         // 遍历时间
-        const timeList = new Set(res.data.list.map(item => item.createdTime))
+        const timeList = new Set(res.data.list.map(item => item.measureTime))
 
         if (timeList.size) {
           timeList.forEach(time => {
-            temp[time] = res.data.list.filter(item => item.createdTime === time)
+            temp[time] = res.data.list.filter(item => item.measureTime === time)
           })
           if (typeof this.data == 'undefined') {
             this.data = temp
@@ -100,7 +157,11 @@ export default {
               }
             }
           }
-
+        }
+        this.isLoading = false
+        this.loaded = true
+        if (this.p * this.size >= res.data.total) {
+          this.finished = true
         }
         this.isLoading = false
         if (this.p * this.size >= res.data.total) {

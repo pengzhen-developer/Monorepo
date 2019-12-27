@@ -120,7 +120,8 @@
                        justify="center"
                        style="flex-direction: column;">
                 <div>
-                  <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                  <span
+                        style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                     {{ doctor.doctorInfo.name }}
                   </span>
                   <span style="color: #333333; font-size: 14px; ">
@@ -128,7 +129,8 @@
                   </span>
                 </div>
                 <div>
-                  <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <span
+                        style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                     {{ getSerivceType() }}
                   </span>
                   <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -165,6 +167,7 @@
             <van-field ref="input"
                        v-model.trim="current.answer"
                        clearable
+                       class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
               <van-button @click="answer"
                           slot="button"
@@ -292,8 +295,7 @@ export default {
           no: 0,
           answerList: [],
           field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-          question:
-            '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+          question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
           mode: ANSWER_MODE.INPUT
         },
         {
@@ -458,9 +460,7 @@ export default {
 
     getFamilyList() {
       peace.service.patient.getMyFamilyList().then(res => {
-        const famliyQuestion = this.questionList.find(
-          item => item.field === this.ANSWER_FIELD.FAMILY
-        )
+        const famliyQuestion = this.questionList.find(item => item.field === this.ANSWER_FIELD.FAMILY)
         const familyList = res.data
         familyList.forEach(item => {
           item.label = item.name
@@ -499,9 +499,7 @@ export default {
     },
 
     canShowChange(index) {
-      return this.questionDone
-        ? index === this.answerList.length - 1
-        : index === this.answerList.length - 2
+      return this.questionDone ? index === this.answerList.length - 1 : index === this.answerList.length - 2
     },
 
     showInformedConsent() {
@@ -564,8 +562,7 @@ export default {
     beginDoneMessage() {
       this.questionDone = true
       this.doneList.push({
-        message:
-          '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
+        message: '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
       })
     },
 
@@ -584,6 +581,10 @@ export default {
 
       // 问诊描述
       if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
+        if (typeof this.current.answer == 'undefined' || this.current.answer == '') {
+          peace.util.alert('请输入您的详细症状')
+          return false
+        }
         if (this.current.answer) {
           if (this.current.answer.length < 5) {
             peace.util.alert('请输入至少5个字')
@@ -890,6 +891,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/.van-field__body {
+  input::-webkit-input-placeholder {
+    /*WebKit browsers*/
+    font-size: 15px;
+  }
+
+  input::-moz-input-placeholder {
+    /*Mozilla Firefox*/
+    font-size: 15px;
+  }
+
+  input::-ms-input-placeholder {
+    /*Internet Explorer*/
+    font-size: 15px;
+  }
+}
 .inquriy {
   font-size: 16px;
   height: 100%;

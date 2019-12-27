@@ -12,7 +12,7 @@
           <template slot="title">
             <span class="custom-title">{{ item.name }}</span>
             <van-icon class-prefix="ic"
-                      class="primary"
+                      class="blue"
                       name="ic_boys"
                       v-if="item.sex === '男'" />
             <van-icon class-prefix="ic"

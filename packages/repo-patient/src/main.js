@@ -31,6 +31,17 @@ Vue.use(Vant)
 // css
 import '@src/assets/css/index.scss'
 
+// Service Worker 缓存
+if ('serviceWorker' in navigator) {
+   window.addEventListener('load', () => {
+       navigator.serviceWorker.register('/service-worker.js').then(registration => {
+           console.log('SW registered: ', registration);
+         }).catch(registrationError => {
+           console.log('SW registration failed: ', registrationError);
+         });
+     });
+ }
+
 // initial
 const vueAppInstance = new Vue({
   render: h => h(App),

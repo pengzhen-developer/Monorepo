@@ -1,8 +1,13 @@
 <template>
   <div class="login">
     <div class="login-form">
-      <h4 class="login-form-title">手机快捷登录</h4>
-
+      <h4 class="login-form-title"
+          v-if="!fromPath">手机快捷登录</h4>
+      <h4 class="login-form-title "
+          v-else>
+        <div class="other">为保证您的信息安全</div>
+        <div class="other">请绑定手机号</div>
+      </h4>
       <van-field pattern="\d*"
                  placeholder="请输入手机号"
                  ref="tel"
@@ -61,12 +66,26 @@ export default {
       },
       hasLogin: false,
       hasSend: false,
-      countDownTime: undefined
+      countDownTime: undefined,
+      fromPath: ''
     }
   },
-
+  beforeRouteEnter(to, from, next) {
+    let isEwm = peace.util.decode(from.params.json).isEwm ? 1 : 0
+    next(vm => {
+      if (isEwm && from.fullPath.indexOf('components/doctorDetai') != -1) {
+        vm.fromPath = from.fullPath
+      }
+    })
+  },
   mounted() {
-    this.$refs.tel.focus()
+    if (peace.cache.get(peace.type.USER.TEL) != null) {
+      this.model.tel = peace.cache.get(peace.type.USER.TEL)
+    } else {
+      this.$nextTick(() => {
+        this.$refs.tel.focus()
+      })
+    }
   },
 
   methods: {
@@ -123,6 +142,8 @@ export default {
           // 存储用户信息
           this.$store.commit('user/setUserInfo', res.data)
           peace.cache.set(peace.type.USER.INFO, res.data)
+          //缓存登录手机号
+          peace.cache.set(peace.type.USER.TEL, this.model.tel)
 
           // 初始化 IM
           peace.service.IM.initNIM()
@@ -142,13 +163,15 @@ export default {
       if (UA.match(/MicroMessenger/i) == 'micromessenger') {
         return this.$router.replace({
           path: peace.config.system.authPage,
-          query: { referrer: this.$route.query.referrer || peace.config.system.homePage }
+          query: {
+            referrer: this.fromPath || this.$route.query.referrer || peace.config.system.homePage
+          }
         })
       } else {
         peace.util.alert('当前不是微信环境')
 
         return this.$router.replace({
-          path: this.$route.query.referrer || peace.config.system.homePage
+          path: this.fromPath || this.$route.query.referrer || peace.config.system.homePage
         })
       }
     }
@@ -175,6 +198,9 @@ export default {
     .login-form-title {
       margin: 0 15px 25px 15px;
       font-size: 22px;
+      .other {
+        text-align: center;
+      }
     }
 
     .login-form-smsCode {

@@ -413,29 +413,82 @@
 
       <!-- 患者评价 -->
       <div class="body-card"
-           v-if="false">
-        <div class="row flex">
-          <div class="row flex">
+           v-if="common&&common.count>0">
+        <div class=" flex between">
+          <div class=" flex">
             <van-image width="30px"
                        height="30px"
                        :src="require('@src/assets/images/ic_evaluate.png')" />
-            <h4 class="body-card-title">患者评价</h4>
+            <h4 class="body-card-title">{{'患者评价('+common.count+')'}}</h4>
           </div>
-          <div></div>
+          <!-- <div class=" flex"
+               @click="common.count>0&&seeMoreComment()">
+            <span class="see-more">查看详情</span>
+            <van-image width="10.5px"
+                       height="10.5px"
+                       :src="require('@src/assets/images/ic_more_right.png')" />
+          </div> -->
         </div>
+        <div class="flex impress">
+          <span class="primary">患者对我的主要印象：{{common.tags.join(' 、')}}</span>
+        </div>
+        <div class="flex commen"
+             v-for="(item,index) in common.lists"
+             :key="index">
+          <van-image width="30px"
+                     height="30px"
+                     :src="item.iconHead" />
+          <div class="main">
+            <div class="flex between main-top">
+              <div class="name">{{item.familyInfo.name}}</div>
+              <van-rate v-model="item.starLevel"
+                        readonly
+                        size="10"
+                        :icon="require('@src/assets/images/ic_star_active.png')"
+                        :void-icon="require('@src/assets/images/ic_star.png')" />
+            </div>
+            <div class="main-middle color-666">
+              {{item.content}}
+            </div>
+            <div class="main-time color-999">{{item.createdTime}}</div>
+          </div>
+        </div>
+
       </div>
     </div>
+
+    <!-- 就诊人信息 -->
+    <template>
+      <AddPatientMsg :doctor="doctor.doctorInfo"
+                     :showFamily.sync="showFamily"
+                     @changeFlag="changeFlag"></AddPatientMsg>
+    </template>
+
+    <div class="none-page-doctor"
+         v-if="!doctorStatus">
+      <van-image width="75px"
+                 height="75px"
+                 class="none-image"
+                 :src="require('@src/assets/images/ic_cry.png')"></van-image>
+      <div class="none-text">医生暂时将不能为您提供服务</div>
+    </div>
   </div>
+
 </template>
 
 <script>
+import AddPatientMsg from '@src/views/components/AddPatientMsg'
 import peace from '@src/library'
+import Vue from 'vue'
+import { Rate } from 'vant'
 
+Vue.use(Rate)
 export default {
+  components: { AddPatientMsg },
   data() {
     return {
       fold: true,
-
+      doctorStatus: 1,
       activeTab: '',
 
       doctor: {
@@ -455,26 +508,63 @@ export default {
         3: '季',
         4: '半年',
         5: '年'
-      }
+      },
+      common: {},
+      showFamily: false, //判断是否弹出弹框
+      isEwm: 0
     }
   },
-
-  mounted() {
+  activated() {
+    //登录之后返回医生主页，从缓存取分享标识isEWm
+    if (peace.cache.get('isEwm')) {
+      this.isEwm = peace.cache.get('isEwm')
+    } else {
+      //通过分享进入医生首页 获取分享标识isEwm字段并存在缓存中
+      this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
+      peace.cache.set('isEwm', this.isEwm)
+    }
     this.getWapDoctorInfo()
+    this.goLogin()
   },
-
+  mounted() {
+    // this.getWapDoctorInfo()
+    // this.goLogin()
+  },
   methods: {
+    hasLogin() {
+      return peace.cache.get(peace.type.USER.INFO) == null ? false : true
+    },
+    goLogin() {
+      //!this.hasLogin()&&this.isEwm 未登录且通过分享进入医生主页
+      if (!this.hasLogin() && this.isEwm) {
+        this.$router.push(`/login`)
+      }
+    },
+    changeFlag(flag) {
+      this.showFamily = !this.showFamily
+      if (flag) {
+        this.getWapDoctorInfo()
+      }
+    },
     getWapDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.doctor.getWapDoctorInfo(params).then(res => {
         this.doctor = res.data
-
+        this.doctorStatus = res.data.doctorInfo.doctorStatus
         if (res.data.consultationList) {
           this.serviceImageInfo = res.data.consultationList.image || {}
           this.serviceVideoInfo = res.data.consultationList.video || {}
           this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
         }
+        let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
+
+        if (this.hasLogin() && this.isEwm && !isAddPatient) {
+          setTimeout(() => {
+            this.showFamily = true
+          }, 500)
+        }
+        this.getCommentList()
       })
     },
 
@@ -540,8 +630,6 @@ export default {
     },
 
     goRegisterDetail(item) {
-      console.log(this.doctor.doctorInfo)
-      // debugger
       let timeSharing = item.timeSharing
       let timeArr = timeSharing.split('-')
       const params = peace.util.encode({
@@ -572,16 +660,149 @@ export default {
       })
 
       this.$router.push(`/appoint/order/appointOrderSubmit/${params}`)
+    },
+
+    getCommentList() {
+      // , p: 1, size: 3
+      peace.service.group.commentLists({ doctorId: this.doctor.doctorInfo.doctorId }).then(res => {
+        this.common = res.data
+      })
+    },
+    seeMoreComment() {
+      let json = peace.util.encode({
+        doctorId: this.doctor.doctorInfo.doctorId
+      })
+      this.$router.push(`/components/CommentList/${json}`)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.none-page-doctor {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  z-index: 666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .none-image {
+    margin-top: 150px;
+    margin-bottom: 20px;
+  }
+  .none-text {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+.shadow {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 999;
+}
+.family {
+  position: fixed;
+  background-color: #fff;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  z-index: 1000;
+  left: 0;
+  transition: bottom 0.5s ease;
+  &.no-family {
+    height: 84.5%;
+    bottom: -84.5%;
+    &.show {
+      bottom: 0;
+    }
+  }
+  &.has-family {
+    min-height: 60%;
+    max-height: 84.5%;
+    bottom: -84.5%;
+    &.show {
+      bottom: 0;
+    }
+  }
+}
+
 .flex {
   display: flex;
   align-items: center;
+  &.between {
+    justify-content: space-between;
+  }
+  &.commen {
+    align-items: flex-start;
+  }
+  .see-more {
+    margin-right: 5px;
+    color: #999;
+    font-size: 12px;
+  }
 }
+.impress {
+  height: 35px;
+  background: rgba(240, 252, 250, 1);
+  border-radius: 8px;
+  padding: 8px 15px 8px 45px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  position: relative;
+  span {
+    font-size: 12px;
+  }
+  &::before {
+    position: absolute;
+    content: ' ';
+    background-image: url('~@/assets/images/xingji.png');
+    background-size: cover;
+    width: 15px;
+    height: 14px;
+    left: 15px;
+    top: 10px;
+  }
+}
+.commen {
+  border-bottom: 1px solid #eee;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  &:last-child {
+    border-bottom: 0;
+    padding-bottom: 5px;
+  }
+  .van-image {
+    margin-right: 8px;
+  }
+  .main {
+    flex: 1;
+    .main-top {
+      height: 30px;
+      .name {
+        color: #000;
+      }
+    }
+    .color-666 {
+      color: #666;
+      font-size: 12px;
+    }
+    .color-999 {
+      color: #999;
+      font-size: 12px;
+    }
+  }
+}
+
 .doctor-detail {
   height: 100%;
   display: flex;

@@ -148,7 +148,7 @@
     </div>
     <div class="btn-group"
          v-if="data[current].familyInfo.transferStatus == '4'">
-      <div @click="applyConsult"
+      <div @click="applyConsult(data[current].familyInfo.isConsultation)"
            class="btn"
            :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">咨询医生</div>
     </div>
@@ -198,7 +198,10 @@ export default {
       })
     },
 
-    applyConsult() {
+    applyConsult(isConsultation) {
+      if (isConsultation) {
+        return
+      }
       if (this.hasApply) {
         return
       }
@@ -315,7 +318,7 @@ export default {
   box-sizing: border-box;
   background: #fff;
   padding: 5px 15px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   position: relative;
 }
 .prescript .prescript-no,
@@ -420,7 +423,7 @@ export default {
 }
 
 .outline {
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   padding-left: 15px;
 }
 .outline .outline-header {
@@ -651,7 +654,7 @@ export default {
   margin-top: -10px;
   background-color: #fff;
   .btn {
-    margin: 0 20px 10px;
+    // margin: 0 20px 10px;
   }
 }
 .btn-blue {

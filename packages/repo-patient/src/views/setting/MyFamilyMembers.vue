@@ -97,6 +97,15 @@ export default {
     get() {
       // 获取现有家人
       peace.service.patient.getMyFamilyList().then(res => {
+        if (res.data.length > 0) {
+          res.data.map(item => {
+            if (item.sex === '1') {
+              item.sex = '男'
+            } else if (item.sex === '0') {
+              item.sex = '女'
+            }
+          })
+        }
         this.members = res.data
         this.loaded = true
       })

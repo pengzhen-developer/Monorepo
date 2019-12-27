@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       util,
-      tabIndex: '1',
+      tabIndex: '0',
       data: {
         bloodSugarData: {}
       },
@@ -172,7 +172,6 @@ export default {
           seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
         }
 
-        console.log(this.tabIndex)
         this.data.bloodSugarData = upData.bloodSugarData
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
@@ -253,7 +252,7 @@ export default {
       background: linear-gradient(56deg, rgba(2, 211, 183, 1) 0%, rgba(104, 208, 225, 1) 100%);
     }
     &.unnormal {
-      background: linear-gradient(90deg, rgba(254, 114, 162, 1) 0%, rgba(251, 125, 116, 1) 100%);
+      background: linear-gradient(90deg,rgba(255,187,96,1) 0%,rgba(252,161,56,1) 100%);
     }
 
     .header-text {

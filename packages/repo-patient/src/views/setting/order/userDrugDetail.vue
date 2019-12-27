@@ -84,7 +84,11 @@
             <div class="dl-packet"
                  v-if="order.ShippingMethod == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥0</div>
+              <div class="dd">￥{{order.Freight}}</div>
+            </div>
+            <div class="dl-packet">
+              <div class="dt">优惠金额:</div>
+              <div class="dd">￥{{order.PromotionsCut}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">优惠金额:</div>
@@ -92,7 +96,7 @@
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount}}</div>
+              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
             </div>
           </div>
           <div class="module str"
@@ -118,34 +122,60 @@
       <div class="dl-packet"
            :key="index"
            v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]}}：</div>
+        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]||'支付时间'}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
-    </div>
-    <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-    <div class='bottom-1'
-         v-if="order.OrderStatus == 0">
-      <div class="left">应付金额：<span class="money">¥{{order.TotalAmount}}</span></div>
-      <div class="right">
+
+      <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+      <div class='bottom-1'
+           v-if="order.OrderStatus == 0">
+        <div class="left">应付金额：<span
+                class="money">¥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</span></div>
+        <div class="right">
+          <div @click="canselOrder"
+               class="pay cancel"
+               v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+            取消订单</div>
+          <div @click="payOrder(order)"
+               class="pay"
+               v-if="order.OrderStatus == '0'"
+               style="background: #00C6AE; ">
+            继续支付</div>
+        </div>
+      </div>
+
+      <div class="bottom"
+           v-else>
         <div @click="canselOrder"
-             class="pay cancel"
+             class="btn block btn-blue"
              v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
-        <div @click="payOrder(order)"
-             class="pay"
-             v-if="order.OrderStatus == '0'"
-             style="background: #00C6AE; margin-bottom: 8px; ">
-          继续支付</div>
+        <div @click="submitOrder"
+             class="btn block btn-blue"
+             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
+        </div>
+        <div class="btn block btn-default"
+             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+        <div class="btn block btn-default"
+             v-if="order.OrderStatus == '5'">已取消</div>
       </div>
     </div>
     <div class="bottom"
          v-else>
       <div @click="canselOrder"
-           class="btn block btn-blue"
-           v-if="order.OrderStatus == '1' || order.OrderStatus == '2'"
+           class="pay cancel"
+           v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
            style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
         取消订单</div>
+      <div @click="payOrder(order)"
+           class="pay"
+           v-if="order.OrderStatus == '0'"
+           style="background: #00C6AE; margin-bottom: 8px; ">
+        继续支付</div>
+
       <div @click="submitOrder"
            class="btn block btn-blue"
            v-if="order.OrderStatus == '3'">
@@ -178,7 +208,8 @@ export default {
     return {
       time: 0,
       orderId: '',
-      timeTags: ['创建时间', '', '接单时间', '发货时间', '', '取消时间', '收货时间'],
+      // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
+      timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
       appid: '',
       order: {},
 
@@ -227,6 +258,9 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.purchasedrug.SelectOrderDetApi(params).then(res => {
+        //防止 Freight  PromotionsCut 无此字段
+        res.data.Freight = res.data.Freight || 0
+        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
         if (this.order.expireTime > this.order.currentTime) {
           this.time = (this.order.expireTime - this.order.currentTime) * 1000
@@ -260,8 +294,7 @@ export default {
       if (this.order.OrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
-        resTxt =
-          '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
+        resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.CancelOrder(params).then(res => {
@@ -533,6 +566,8 @@ export default {
   }
   .right {
     display: flex;
+    height: 100%;
+    align-items: center;
   }
   .pay {
     width: 75px;

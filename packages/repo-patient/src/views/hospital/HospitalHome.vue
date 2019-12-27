@@ -1,139 +1,147 @@
 <template>
   <div class="home-layout"
        v-if="hospitalInfo">
-    <div class="banner">
-      <div class="banner-img">
-        <img :src="hospitalInfo.nethospitalInfo.icon" />
-      </div>
-    </div>
-    <section class="info">
-      <div class="name-wrap">
-        <div class="w">
-          <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
-          <div class="tags">
-            <span v-for="item in hospitalInfo.nethospitalInfo.tags"
-                  :key="item">{{ item }}</span>
-          </div>
+    <template v-if="hospitalInfo.nethospitalStatus">
+      <div class="banner">
+        <div class="banner-img">
+          <img :src="hospitalInfo.nethospitalInfo.icon" />
         </div>
-        <div class="intro"
-             @click="brief.visible = true">医院简介</div>
       </div>
-      <div class="location">
-        <span class="name"
-              @click="goMap()">{{
+      <section class="info">
+        <div class="name-wrap">
+          <div class="w">
+            <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
+            <div class="tags">
+              <span v-for="item in hospitalInfo.nethospitalInfo.tags"
+                    :key="item">{{ item }}</span>
+            </div>
+          </div>
+          <div class="intro"
+               @click="brief.visible = true">医院简介</div>
+        </div>
+        <div class="location">
+          <span class="name"
+                @click="goMap()">{{
           hospitalInfo.nethospitalInfo.address
         }}</span>
-        <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
-           v-if="hospitalInfo.nethospitalInfo.phoneNumber"
-           class="tel"><img src="../../assets/images/newIndex/ic_phone.png" /></a>
-      </div>
+          <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
+             v-if="hospitalInfo.nethospitalInfo.phoneNumber"
+             class="tel"><img src="../../assets/images/newIndex/ic_phone.png" /></a>
+        </div>
 
-      <div class="notice">
-        <i class="alarm"></i>
-        <template v-if="hospitalInfo.notices.length > 0">
-          <div class="message-box"
-               @click="goHospitalNoticeDetail()">
-            <van-notice-bar style="height: 100%; padding: 0;"
-                            color="#999999"
-                            background="transparent">
-              {{
+        <div class="notice">
+          <i class="alarm"></i>
+          <template v-if="hospitalInfo.notices.length > 0">
+            <div class="message-box"
+                 @click="goHospitalNoticeDetail()">
+              <van-notice-bar style="height: 100%; padding: 0;"
+                              color="#999999"
+                              background="transparent">
+                {{
                 hospitalInfo.notices.length > 0 &&
                   "【" +
                     hospitalInfo.notices[0].title +
                     "】" +
                     hospitalInfo.notices[0].content
               }}
-            </van-notice-bar>
-          </div>
-          <i @click="goHospitalNoticeList()"
-             class="arrow"></i>
-        </template>
+              </van-notice-bar>
+            </div>
+            <i @click="goHospitalNoticeList()"
+               class="arrow"></i>
+          </template>
 
-        <template v-else>
-          <div class="message-box">
-            <van-notice-bar style="height: 100%; padding: 0;"
-                            color="#999999"
-                            background="transparent">
-              暂无新通知
-            </van-notice-bar>
-          </div>
-        </template>
-      </div>
-    </section>
-    <section class="functions">
-      <div class="item"
-           v-for="(item, index) in hospitalInfo.guideH5"
-           :key="'index' + index"
-           @click="goMenuList(item)">
-        <img :src="require('@src/assets/images/newIndex/' + item.icon + '.png')" />
-        <span class="name">{{ item.text }}</span>
-      </div>
-    </section>
-    <section class="dept">
-      <div class="title">
-        <span>医院科室</span>
-        <i class="arrow"
-           @click="goAllDepartment"></i>
-      </div>
-      <div class="dept-wrap">
+          <template v-else>
+            <div class="message-box">
+              <van-notice-bar style="height: 100%; padding: 0;"
+                              color="#999999"
+                              background="transparent">
+                暂无新通知
+              </van-notice-bar>
+            </div>
+          </template>
+        </div>
+      </section>
+      <section class="functions">
         <div class="item"
-             v-for="(item, index) in hospitalInfo.oneDeptList"
+             v-for="(item, index) in hospitalInfo.guideH5"
              :key="'index' + index"
-             @click="goDepartmentDoctorList(item)">
-          <span v-if="index < 6"
-                :style="'background: ' + colorArr[index]">{{
+             @click="goMenuList(item)">
+          <img :src="require('@src/assets/images/newIndex/' + item.icon + '.png')" />
+          <span class="name">{{ item.text }}</span>
+        </div>
+      </section>
+      <section class="dept">
+        <div class="title">
+          <span>医院科室</span>
+          <i class="arrow"
+             @click="goAllDepartment"></i>
+        </div>
+        <div class="dept-wrap">
+          <div class="item"
+               v-for="(item, index) in hospitalInfo.oneDeptList"
+               :key="'index' + index"
+               @click="goDepartmentDoctorList(item)">
+            <span v-if="index < 6"
+                  :style="'background: ' + colorArr[index]">{{
             item.netdeptName
           }}</span>
-        </div>
-      </div>
-    </section>
-    <section class="doctors">
-      <div class="title">
-        <span>明星医生</span>
-        <i class="arrow"
-           @click="goStarDoctor"></i>
-      </div>
-
-      <div class="doc-wrap">
-        <div class="item-wrap"
-             @click="goDoctorHomeIndexPage(item)"
-             v-for="item in hospitalInfo.doctorList"
-             :key="item.name">
-          <img class="avatar"
-               :src="item.avartor" />
-          <div class="item">
-            <span class="name">{{ item.name }}</span>
-            <div class="jd">
-              <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
-            </div>
-            <span class="tags">
-              <template v-for="item in item.serviceList">
-                <span :key="item"
-                      v-if="item === 'register'"
-                      class="tags hao">号</span>
-                <span :key="item"
-                      v-if="item === 'image' || item === 'video'"
-                      class="tags wen">问</span>
-                <span :key="item"
-                      v-if="item === 'prvivateDoctor'"
-                      class="tags bao">服务包</span>
-              </template>
-            </span>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <section class="doctors">
+        <div class="title">
+          <span>明星医生</span>
+          <i class="arrow"
+             @click="goStarDoctor"></i>
+        </div>
 
-    <van-dialog style="background: transparent; "
-                v-model="brief.visible"
-                :show-cancel-button="false"
-                :showConfirmButton="false">
-      <div style="text-align: center; ">
-        <img style="width: 60px; height: 60px; position: relative; top: 30px; border-radius: 50%;z-index:99999;"
-             :src="hospitalInfo.nethospitalInfo.icon" />
+        <div class="doc-wrap">
+          <div class="item-wrap"
+               @click="goDoctorHomeIndexPage(item)"
+               v-for="item in hospitalInfo.doctorList"
+               :key="item.name">
+            <img class="avatar"
+                 :src="item.avartor" />
+            <div class="item">
+              <span class="name">{{ item.name }}</span>
+              <div class="jd">
+                <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
+              </div>
+              <span class="tags">
+                <template v-for="item in item.serviceList">
+                  <span :key="item"
+                        v-if="item === 'register'"
+                        class="tags hao">号</span>
+                  <span :key="item"
+                        v-if="item === 'image' || item === 'video'"
+                        class="tags wen">问</span>
+                  <span :key="item"
+                        v-if="item === 'prvivateDoctor'"
+                        class="tags bao">服务包</span>
+                </template>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+    <template v-else>
+      <div class="none-page">
+        <div class="icon icon_none_hospital"></div>
+        <div class="none-text">本院暂时无法提供互联网医院服务</div>
       </div>
-      <div
-           style="padding: 40px 20px 20px 20px; background: #fff; max-height: 50vh; overflow: auto; border-radius: 8px;">
+    </template>
+    <div class="intro-shadow"
+         v-if="brief.visible"
+         @click="brief.visible = false"></div>
+    <div class="intro-box"
+         v-if="brief.visible">
+      <div class="intro-imgbox">
+        <img :src="hospitalInfo.nethospitalInfo.icon" />
+      </div>
+
+      <div class="intro-content">
+        <div style="height:20px;"></div>
         <span style="text-align: justify;">{{
           hospitalInfo.nethospitalInfo.brief
         }}</span>
@@ -144,7 +152,7 @@
                   color="#fff"
                   size="40px" />
       </div>
-    </van-dialog>
+    </div>
   </div>
 </template>
 
@@ -285,6 +293,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.intro-shadow {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2000;
+}
+.intro-box {
+  position: fixed;
+  width: 80%;
+  left: 10%;
+  max-height: calc(50vh + 30px);
+  transform: translateY(-50%);
+  top: 50%;
+  z-index: 2001;
+  padding-top: 30px;
+}
+.intro-imgbox {
+  border: 2px solid #fff;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.intro-imgbox img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.intro-content {
+  border-radius: 8px;
+  max-height: 50vh;
+  padding: 20px;
+  background: #fff;
+  overflow: auto;
+}
 @mixin arrow {
   width: 7px;
   height: 12px;
@@ -295,6 +345,10 @@ export default {
 
 .home-layout {
   background: rgba(249, 249, 249, 1);
+  .none-page {
+    background: #fff;
+    padding-top: 37%;
+  }
   .banner {
     width: 100%;
     height: 175px;

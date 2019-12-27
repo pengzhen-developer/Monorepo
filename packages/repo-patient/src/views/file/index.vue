@@ -16,6 +16,7 @@
         <van-swipe :loop="false"
                    :width="swipeWidth"
                    @change="onSwipeChange"
+                   :initial-swipe="index"
                    ref="swipe"
                    indicator-color="white"
                    class="file-famliy-swiper">
@@ -100,6 +101,15 @@
               <div class="none-text">暂无数据</div>
             </div>
           </van-tab>
+          <van-tab title="其    他">
+            <div class="none-page">
+              <div class="icon icon_none_source"></div>
+              <div class="none-text">暂无数据</div>
+            </div>
+            <!-- <FileOther v-if="active === 5"
+                       :key="familyId"
+                       :familyId="familyId"></FileOther> -->
+          </van-tab>
         </van-tabs>
       </div>
     </template>
@@ -113,11 +123,13 @@ import util from './util'
 import FileAll from './FileAll'
 import FileDay from './FileDay'
 import FileCase from './FileCase'
+// import FileOther from './FileOther'
 
 export default {
   components: {
     FileAll,
     FileDay,
+    // FileOther,
     FileCase
   },
 
@@ -127,7 +139,7 @@ export default {
 
       swipeWidth: document.body.clientWidth - 80,
       active: 0,
-
+      index: 0,
       myFamilyList: undefined,
 
       familyId: '',
@@ -137,7 +149,6 @@ export default {
     }
   },
   activated() {
-    console.log('activated')
     this.familyId = ''
     this.getFamilyList()
   },
@@ -160,9 +171,15 @@ export default {
     getFamilyList() {
       peace.service.health.familyLists().then(res => {
         this.myFamilyList = res.data.list
-
+        res.data.list.map(item => {
+          if (item.sex === '1') {
+            item.sex = '男'
+          } else if (item.sex === '0') {
+            item.sex = '女'
+          }
+        })
         this.$nextTick(function() {
-          this.changeSwipeTrack(0)
+          this.changeSwipeTrack(this.index)
         })
       })
     },
@@ -178,15 +195,12 @@ export default {
     },
 
     changeSwipeTrack(index) {
+      this.index = index
       if (this.$refs.swipe) {
         if (this.myFamilyList) {
           this.familyId = this.myFamilyList[index].familyId
           this.idCard = this.myFamilyList[index].idCard
         }
-
-        const tempWidth = (document.body.clientWidth - this.swipeWidth) / 2
-        const $swipe__track = this.$refs.swipe.$el.querySelector('.van-swipe__track')
-        $swipe__track.style.transform = `translateX(${-this.swipeWidth * index + tempWidth}px)`
       }
     },
     isLong() {
@@ -253,10 +267,9 @@ export default {
     margin-top: -70px;
     margin-bottom: 10px;
 
-    .van-swipe__track {
-      transform: translateX(40px);
+    .van-swipe {
+      padding: 0 40px;
     }
-
     .van-swipe-item {
       padding: 10px;
 
