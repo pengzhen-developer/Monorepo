@@ -107,34 +107,34 @@
         <div class="form-dd">{{internalData.summary || '无'}}</div>
       </div>
       <div class="form-dl"
-           style="display: block;"
+           style="display:block;"
            v-if="internalData.otherCheck &&
                  (internalData.otherCheck.ALT ||
                   internalData.otherCheck.AST ||
                   internalData.otherCheck.HBV )">
         <div class="form-dt">
           其它检查
-          <div class="form-code">
-            <div class="namelist-dl bb between"
-                 v-if="internalData.otherCheck.ALT">
-              <div class="dt other">谷丙转氨酶(ALT)：</div>
-              <div class="dd">
-                {{internalData.otherCheck.ALT + ' IU/ml'}}
-              </div>
+        </div>
+        <div class="form-code">
+          <div class="bb between"
+               v-if="internalData.otherCheck.ALT">
+            <div class="dt other">谷丙转氨酶(ALT)：</div>
+            <div class="dd">
+              {{internalData.otherCheck.ALT + ' IU/ml'}}
             </div>
-            <div class="namelist-dl bb between"
-                 v-if="internalData.otherCheck.AST">
-              <div class="dt other">谷草转氨酶(AST)：</div>
-              <div class="dd">
-                {{internalData.otherCheck.AST + ' IU/ml'}}
-              </div>
+          </div>
+          <div class="bb between"
+               v-if="internalData.otherCheck.AST">
+            <div class="dt other">谷草转氨酶(AST)：</div>
+            <div class="dd">
+              {{internalData.otherCheck.AST + ' IU/ml'}}
             </div>
-            <div class="namelist-dl bb between"
-                 v-if="internalData.otherCheck.HBV">
-              <div class="dt other">HBV-DNA：</div>
-              <div class="dd">
-                {{internalData.otherCheck.HBV + ' IU/ml'}}
-              </div>
+          </div>
+          <div class="bb between"
+               v-if="internalData.otherCheck.HBV">
+            <div class="dt other">HBV-DNA：</div>
+            <div class="dd">
+              {{internalData.otherCheck.HBV + ' IU/ml'}}
             </div>
           </div>
         </div>
@@ -261,16 +261,22 @@ export default {
   margin-top: 10px;
   border-radius: 5px;
   box-sizing: border-box;
-
   display: flex;
   flex-wrap: wrap;
+  .bb {
+    display: flex;
+    width: 100%;
+    padding: 7px 0;
+    border-bottom: 1px solid #ebebeb;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+  .between {
+    justify-content: space-between;
+  }
 }
-.namelist-dl.bb {
-  border-bottom: 1px solid #ebebeb;
-}
-.namelist-dl.between {
-  justify-content: space-between;
-}
+
 .namelist-dl {
   flex: 0 1 100%;
   font-size: 15px;
@@ -308,6 +314,9 @@ export default {
   color: #000;
   font-size: 15px;
   border-bottom: 1px solid #f5f5f5;
+  &:last-child {
+    border-bottom: 0;
+  }
 }
 
 .form-dl .form-dt {

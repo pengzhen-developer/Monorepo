@@ -109,6 +109,7 @@ export default {
   watch: {
     familyId: {
       handler() {
+        console.log(this.p)
         if (this.familyId) {
           this.p = 0
           this.allHealthList()
@@ -162,6 +163,7 @@ export default {
         if (this.p * this.size >= res.data.total) {
           this.finished = true
         }
+        console.log(this.finished, this.p)
       })
     }
   }

@@ -82,9 +82,9 @@ export default {
     if (peace.cache.get(peace.type.USER.TEL) != null) {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
     } else {
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.$refs.tel.focus()
-      }, 500)
+      })
     }
   },
 

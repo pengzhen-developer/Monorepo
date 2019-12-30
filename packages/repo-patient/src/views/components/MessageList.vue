@@ -374,15 +374,17 @@
 
       <div class="input"
            v-if="canShowInput">
-        <van-field :autosize="{ maxHeight: 60, minHeight: 20 }"
+        <van-field :autosize="{ maxHeight: 78, minHeight: 38 }"
                    @focus="hideTools"
                    rows="1"
                    type="textarea"
                    v-model.trim="message"
                    v-on:keyup.enter.stop="sendMessageText">
           <van-icon @click="showTools"
-                    name="add-o"
-                    slot="right-icon" />
+                    size='26px'
+                    style="margin-top:6px;"
+                    :name="require('@src/assets/images/ic_more_functions.png')"
+                    slot="left-icon" />
           <van-button @click="sendMessageText"
                       size="small"
                       slot="button"
@@ -590,16 +592,13 @@ export default {
 
         return true
       })
-
       return sessionMessages
     },
 
     canShowInput() {
       if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus ===
-          peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus ===
-          peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
       ) {
         return true
       } else {
@@ -626,11 +625,7 @@ export default {
         else {
           const interval = setInterval(() => {
             // 等待 IM 初始化完成，并且 sessions 已经获取到
-            if (
-              $peace.NIM &&
-              $peace.NIM.isConnected() &&
-              this.$store.state.inquiry.sessions.length
-            ) {
+            if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
               window.clearInterval(interval)
 
               this.getHistoryMsgsByIM()
@@ -689,8 +684,7 @@ export default {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
-              message.flow =
-                $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
+              message.flow = $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
               message.type = messageTypeMap[message.type]
               message.text = message.body.msg
               message.content = message.body
@@ -709,9 +703,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       const doneHandler = (error, message) => {
-        const session = this.$store.state.inquiry.sessions.find(
-          item => item.id === message.scene + '-' + message.to
-        )
+        const session = this.$store.state.inquiry.sessions.find(item => item.id === message.scene + '-' + message.to)
 
         console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
@@ -873,7 +865,6 @@ export default {
         }
       }, 1)
     },
-
     gotoComment(message) {
       let json = peace.util.encode({
         inquiryNo: message.content.data.inquiryInfo.inquiryNo
@@ -892,7 +883,8 @@ export default {
     },
     goInquiryOrderInfo(message) {
       let json = peace.util.encode({
-        inquiryId: message.content.data.inquiryOrderInfo.inquiryId
+        inquiryId: message.content.data.inquiryOrderInfo.inquiryId,
+        fromChatRoom: true
       })
 
       this.$router.push(`/setting/userConsultDetail/${json}`)
@@ -910,7 +902,7 @@ export default {
       let json = peace.util.encode({
         consultNo: message.content.data.consultInfo.consultNo
       })
-
+      
       this.$router.push(`/components/theConsultation/${json}`)
     },
     //转诊详情
@@ -1139,7 +1131,7 @@ export default {
     top: -7px;
     position: absolute;
     display: block;
-    background: #f9f9f9;
+    background: #f2f2f2;
   }
   &::after {
     content: '';
@@ -1150,7 +1142,7 @@ export default {
     top: -7px;
     position: absolute;
     display: block;
-    background: #f9f9f9;
+    background: #f2f2f2;
   }
 }
 .message-footer {
@@ -1179,7 +1171,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f9;
+  background-color: #f2f2f2;
   .item {
     overflow: auto;
     padding: 5px 10px;
@@ -1194,7 +1186,7 @@ export default {
 
         .message-body {
           color: rgba(51, 51, 51, 1);
-          background: rgba(243, 243, 243, 1);
+          background: rgba(255, 255, 255, 1);
         }
 
         .message-avatar {
@@ -1285,12 +1277,37 @@ export default {
   }
 
   .input {
-    min-height: 50px;
+    min-height: 68px;
     position: relative;
     bottom: 0;
     left: 0;
     z-index: 1;
     border-top: 1px solid #f5f5f5;
+    .van-field {
+      background-color: #f7f7f7;
+      padding: 16px;
+    }
+    /deep/.van-field__button {
+      padding-left: 10px;
+      .van-button {
+        height: 38px;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+    }
+    /deep/.van-field__left-icon {
+      display: flex;
+      justify-content: center;
+      margin-right: 10px;
+    }
+    /deep/.van-field__control {
+      line-height: 20px;
+      padding: 7px 8px;
+      border-radius: 3px;
+      border: 1px solid #d2d2d2;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
 
     .input-tools {
       padding: 20px;

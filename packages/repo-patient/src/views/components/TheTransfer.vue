@@ -148,7 +148,7 @@
     </div>
     <div class="btn-group"
          v-if="data[current].familyInfo.transferStatus == '4'">
-      <div @click="applyConsult"
+      <div @click="applyConsult(data[current].familyInfo.isConsultation)"
            class="btn"
            :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">咨询医生</div>
     </div>
@@ -198,7 +198,10 @@ export default {
       })
     },
 
-    applyConsult() {
+    applyConsult(isConsultation) {
+      if (isConsultation) {
+        return
+      }
       if (this.hasApply) {
         return
       }
@@ -651,7 +654,7 @@ export default {
   margin-top: -10px;
   background-color: #fff;
   .btn {
-    margin: 0 20px 10px;
+    // margin: 0 20px 10px;
   }
 }
 .btn-blue {

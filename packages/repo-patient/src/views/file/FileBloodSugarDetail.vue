@@ -139,6 +139,8 @@ export default {
   },
 
   created() {
+    console.log($peace.util.decode($peace.$route.params.json))
+    // this.tabIndex=$peace.util.decode($peace.$route.params.json).type
     this.getOscillogram(2)
   },
 
@@ -250,7 +252,7 @@ export default {
       background: linear-gradient(56deg, rgba(2, 211, 183, 1) 0%, rgba(104, 208, 225, 1) 100%);
     }
     &.unnormal {
-      background: linear-gradient(90deg, rgba(254, 114, 162, 1) 0%, rgba(251, 125, 116, 1) 100%);
+      background: linear-gradient(90deg,rgba(255,187,96,1) 0%,rgba(252,161,56,1) 100%);
     }
 
     .header-text {

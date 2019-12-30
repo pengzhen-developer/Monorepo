@@ -9,7 +9,7 @@
              :class="hasFamily==1&&showFamily&&'show'">
           <div class="navWrap">
             <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}</div>
-            <div class="subTitle">请选择您的就诊人</div>
+            <div class="subTitle">请填写您的就诊信息</div>
           </div>
           <div class="form form-for-family">
             <van-field label="姓名"
@@ -43,6 +43,20 @@
                        readonly
                        right-icon="arrow"
                        v-model="model.nationName" />
+            <div class="group"
+                 v-if="age!= null && age < this.ageLimit">
+              <van-cell value="就诊人未满6岁，请填写监护人信息" />
+              <van-field class="w6"
+                         label="监护人姓名"
+                         placeholder="请输入姓名"
+                         v-model="model.guardianName">
+              </van-field>
+              <van-field class="w8"
+                         label="监护人身份证号"
+                         placeholder="请输入身份证号"
+                         v-model="model.guardianIdCard" />
+            </div>
+
             <peace-dialog :visible.sync="showAllergicHistory">
               <AddAllergicHistory @onSave="showAllergicHistory = false"
                                   v-model="model.allergic_history"></AddAllergicHistory>
@@ -72,8 +86,10 @@
                    v-for="(item,index) in familyList"
                    :key="index">
                 <div class="item-top"
-                     :class="checkId==index&&'checked'">{{item.name}} <span
-                        :class="checkId==index&&'checked'">{{item.relation}}</span> </div>
+                     :class="checkId==index&&'checked'">
+                  {{item.name}}
+                  <span :class="checkId==index&&'checked'">{{item.relation}}</span>
+                </div>
                 <div class="item-bottom"
                      :class="checkId==index&&'checked'">{{item.sex}} {{item.age+'岁'}}</div>
               </div>
@@ -166,6 +182,7 @@ export default {
       familyId: '',
       isNationExist: false,
       age: null,
+      ageLimit: 7, //测试为7 上线为6
       gDialog: {
         data: null,
         title: '选择监护人',
@@ -182,6 +199,7 @@ export default {
       currentDate: new Date(),
       maxDate: new Date(),
       nationsMap: [],
+      canShowSelf: true,
       showAllergicHistory: false,
       showFoodAllergy: false,
       showRelation: false,
@@ -198,8 +216,7 @@ export default {
         if (val.length == 15) {
           this.model.sexKey = val.toString().charAt(14) % 2
           this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday =
-            '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.model.sexKey = val.toString().charAt(16) % 2
@@ -254,6 +271,7 @@ export default {
     },
     changeFlag(flag) {
       this.$emit('changeFlag', flag)
+      peace.cache.remove('isEwm')
     },
     getFamilyList() {
       peace.service.patient.getMyFamilyList().then(res => {
@@ -286,21 +304,11 @@ export default {
       var strBirthday = ''
       if (len == 18) {
         //处理18位的身份证号码从号码中得到生日和性别代码
-        strBirthday =
-          identityCard.substr(6, 4) +
-          '/' +
-          identityCard.substr(10, 2) +
-          '/' +
-          identityCard.substr(12, 2)
+        strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
       }
       if (len == 15) {
         strBirthday =
-          '19' +
-          identityCard.substr(6, 2) +
-          '/' +
-          identityCard.substr(8, 2) +
-          '/' +
-          identityCard.substr(10, 2)
+          '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
       }
       //时间字符串里，必须是“/”
       var birthDate = new Date(strBirthday)
@@ -309,8 +317,7 @@ export default {
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
       if (
         nowDateTime.getMonth() < birthDate.getMonth() ||
-        (nowDateTime.getMonth() == birthDate.getMonth() &&
-          nowDateTime.getDate() < birthDate.getDate())
+        (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())
       ) {
         age--
       }
@@ -391,7 +398,6 @@ export default {
     },
     submit() {
       let params = {}
-
       if (this.hasFamily == 2) {
         if (!this.familyId) {
           return peace.util.alert('请选择一位就诊人')
@@ -416,6 +422,14 @@ export default {
         if (!this.model.nationName) {
           return peace.util.alert('请选择民族')
         }
+        if (this.age < this.ageLimit) {
+          if (!this.model.guardianName) {
+            return peace.util.alert('请输入监护人姓名')
+          }
+          if (!this.model.guardianIdCard) {
+            return peace.util.alert('请输入监护人身份证号')
+          }
+        }
         params.name = this.model.name
         params.idCard = this.model.idcard
         params.birthday = this.model.birthday
@@ -423,6 +437,8 @@ export default {
         params.nationCode = this.model.nationCode
         params.relation = this.model.relation
         params.sex = this.model.sexKey
+        params.guardianName = this.model.guardianName
+        params.guardianIdCard = this.model.guardianIdCard
       }
       params.source = 2
       params.doctorId = this.doctor.doctorId
@@ -552,7 +568,7 @@ export default {
         padding: 2px 6px;
         line-height: 1.2;
         margin-left: 10px;
-        border: 1px solid #979797;
+        border: 1px solid #ddd;
         border-radius: 20px;
         &.checked {
           color: #00c6ae;
@@ -613,7 +629,34 @@ export default {
     margin-left: 10px;
   }
 }
+.group {
+  .w6 {
+    /deep/.van-cell__title {
+      width: 6em;
+      span {
+        width: 5.6em;
+      }
+    }
+  }
+  .w8 {
+    /deep/.van-cell__title {
+      width: 8em;
+      span {
+        width: 7.6em;
+      }
+    }
+  }
+  /deep/.van-cell__title {
+    // width: 8.6em;
+    // span {
+    //   width: 8em;
+    // }
 
+    .van-field__control {
+      text-align: right;
+    }
+  }
+}
 /deep/ .van-cell__title {
   width: 4.7em;
   height: 18px;
@@ -648,16 +691,26 @@ export default {
     content: '*';
   }
 }
+/deep/ .form.form-for-family > .group > .van-cell,
 /deep/ .form.form-for-family > .van-cell {
   height: 50px;
   align-items: center;
+  &:last-child {
+    &::after {
+      position: absolute;
+      box-sizing: border-box;
+      content: ' ';
+      pointer-events: none;
+      right: 0;
+      bottom: 0;
+      left: 0.42667rem;
+      border-bottom: 0.02667rem solid #ebedf0;
+      transform: scaleY(0.5);
+    }
+  }
 }
-/deep/
-  .form.form-for-family
-  > .van-cell
-  > .van-cell__value
-  > .van-field__body
-  > .van-field__control {
+/deep/ .form.form-for-family > .group > .van-cell > .van-cell__value > .van-field__body > .van-field__control,
+/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   font-size: 15px;
   text-align: right;

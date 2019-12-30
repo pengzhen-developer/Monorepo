@@ -60,6 +60,12 @@
 
             </div>
           </div>
+          <div class="form-dl"
+               v-else>
+            <div class="form-dt">复诊凭证 :</div>
+            <div class="form-dd">确认遗失
+            </div>
+          </div>
           <div class="form-dl">
             <div class="form-dt">初诊诊断 :</div>
             <div class="form-dd">{{internalData.inquiryOrderInfo.confirmIllness}}
@@ -307,7 +313,7 @@ export default {
     padding: 10px 15px 0 15px;
   }
   .span {
-    padding: 10px 15px;
+    padding: 10px 15px 10px 0;
   }
   .dl-packet {
     display: flex;
