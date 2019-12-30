@@ -31,8 +31,8 @@
         <span class="divider">:</span>
         <div class="value">
           {{internalData.inquiryOrderInfo.guardianName}} |
-          {{internalData.inquiryOrderInfo.guardianAge}} |
-          {{internalData.inquiryOrderInfo.guardianSex}}
+          {{internalData.inquiryOrderInfo.guardianSex}}|
+          {{internalData.inquiryOrderInfo.guardianAge+'岁'}}
         </div>
       </div>
     </div>
@@ -45,12 +45,17 @@
     </div>
 
     <div class="card"
-         v-if="internalData.inquiryOrderInfo.isAgain === '1'">
+         v-if="internalData.inquiryOrderInfo.isAgain==='1'">
       <h4>复诊信息</h4>
       <div>
         <span class="label">复诊凭证</span>
         <span class="divider">:</span>
+        <span class="value"
+              v-if="internalData.inquiryOrderInfo.imgs.length==0">
+          确认遗失
+        </span>
         <viewer class="value img-container"
+                v-else
                 :images="internalData.inquiryOrderInfo.imgs">
           <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
                :key="index"
@@ -59,7 +64,7 @@
         </viewer>
       </div>
       <div>
-        <span class="label">初诊诊断</span>
+        <span class="label">疾病诊断</span>
         <span class="divider">:</span>
         <span class="value">
           {{internalData.inquiryOrderInfo.confirmIllness}}
@@ -80,8 +85,13 @@ export default {
       internalData: null
     }
   },
-  mounted() {
-    this.internalData = this.data
+  watch: {
+    data: {
+      handler() {
+        this.internalData = this.data
+      },
+      immediate: true
+    }
   }
 }
 </script>

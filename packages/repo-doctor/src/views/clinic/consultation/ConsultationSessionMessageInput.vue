@@ -125,7 +125,13 @@
 
     <peace-dialog :visible.sync="consultSuggestDialog.visible"
                   title="填写会诊意见">
-      <ConsultationSessionSuggest  @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
+      <ConsultationSessionSuggest @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
+    </peace-dialog>
+
+    <peace-dialog :visible.sync="caseDialog.visible"
+                  v-if="caseDialog.visible"
+                  title="病历详情">
+      <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
     </peace-dialog>
   </div>
 </template>
@@ -134,10 +140,12 @@
 import peace from '@src/library'
 
 import ConsultationSessionSuggest from './ConsultationSessionSuggest'
+import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 
 export default {
   components: {
-    ConsultationSessionSuggest
+    ConsultationSessionSuggest,
+    ConsultationSessionCaseDetail
   },
 
   data() {
@@ -166,10 +174,15 @@ export default {
         chooseData: [],
         chooseItem: [],
         source: {
-          // 诊断
+          // 疾病诊断
           present_history: [],
           IllnessList: []
         }
+      },
+
+      caseDialog: {
+        visible: false,
+        data: undefined
       }
     }
   },
@@ -251,14 +264,37 @@ export default {
     },
 
     sendVideo() {
-      $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+      // 判断当前会诊的发起方与受邀方，是否存在正在【会诊中】数据，
+      // 存在，提示结束会诊后，才能发起新会诊
+      // 不存在，发起视频邀请
+
+      const session = this.$store.state.consultation.session
+
+      const params = {
+        consultNo: session.content.consultInfo.consultNo,
+        toDoctorId:
+          session.content.consultInfo.receiveDoctor[0].doctorId ===
+          this.$store.state.user.userInfo.list.docInfo.doctor_id
+            ? session.content.consultInfo.startDoctor[0].doctorId
+            : session.content.consultInfo.receiveDoctor[0].doctorId
+      }
+
+      peace.service.consult.doctorStatus(params).then(res => {
+        if (res.data.fromDoctorConsultStatus === 1) {
+          return peace.util.warning('您正在会诊中，不可开始新的会诊')
+        } else if (res.data.toDoctorConsultStatus === 1) {
+          return peace.util.warning('医生正在会诊中，无法接听您的视频')
+        } else {
+          $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+        }
+      })
     },
 
     sendCase() {
       if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
         $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
       } else {
-        peace.util.warning('已经填写病历，无法再次修改')
+        this.getCaseDetail(this.$store.getters['consultation/consultInfo'].consultNo)
       }
     },
 
@@ -340,9 +376,7 @@ export default {
 
     closeInvitedChange(doctorId) {
       const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === doctorId)
-      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(
-        item => item === doctorId
-      )
+      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(item => item === doctorId)
 
       if (index !== -1) {
         this.invitedDialog.chooseList.splice(index, 1)
@@ -384,8 +418,19 @@ export default {
           this.consultSuggestDialog.visible = false
         })
       } else {
-        $peace.util.alert('请完整填写会诊所见、目前诊断、建议')
+        $peace.util.alert('请完整填写会诊所见、疾病诊断、建议')
       }
+    },
+
+    getCaseDetail(consultNo) {
+      const params = {
+        consultNo: consultNo
+      }
+
+      peace.service.inquiry.getCase(params).then(res => {
+        this.caseDialog.visible = true
+        this.caseDialog.data = res.data
+      })
     }
   },
   created() {

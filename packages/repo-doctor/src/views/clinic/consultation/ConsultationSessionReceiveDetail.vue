@@ -60,7 +60,7 @@
       <h4>会诊信息</h4>
       <el-row>
         <el-col :span="24">
-          <span class="label">初诊诊断</span>
+          <span class="label">疾病诊断</span>
           <span class="divider">:</span>
           <span class="value">
             <el-tag :key="item"
@@ -153,7 +153,7 @@
         <span class="value">{{ injectConsultInfo.consultFind }}</span>
       </el-row>
       <el-row>
-        <span class="label w4">目前诊断</span>
+        <span class="label w4">疾病诊断</span>
         <span class="divider">:</span>
         <span class="value">{{ injectConsultInfo.consultDiagnose }}</span>
       </el-row>

@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ getState() }.png`"
+      <img :src="`./static/images/transfer/${ internalData.transfer_status }.png`"
            v-if="getState()" />
     </div>
 
@@ -55,7 +55,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="初步诊断">
+            <el-form-item label="疾病诊断">
               <span>{{ internalData.diagnose }}</span>
             </el-form-item>
           </el-col>

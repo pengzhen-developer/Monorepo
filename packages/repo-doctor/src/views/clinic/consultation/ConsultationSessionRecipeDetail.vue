@@ -12,10 +12,7 @@
 
     <div v-if="internalData">
       <img :alt="getPrescriptionState(internalData.Prescription)"
-           :src="`./static/images/inquiry/${getPrescriptionState(
-                    internalData.Prescription
-                  )}.png`
-                "
+           :src="`./static/images/inquiry/${ internalData.Prescription}.png`"
            class="status-image"
            v-show="getPrescriptionState(internalData.Prescription)" />
       <div class="pres-no">No.{{ internalData.PrescriptionNo }}</div>
@@ -63,7 +60,7 @@
         </div>
         <div class="info-row two-cols">
           <div class="info-row-label">
-            <span>处方诊断</span>
+            <span>疾病诊断</span>
           </div>
           <div class="info-row-content info-zd">
             <span :key="d.DiagnosisName"
@@ -187,18 +184,13 @@ export default {
 
   computed: {
     drugs() {
-      return (
-        this.internalData.drugCodedrugCode &&
-        this.internalData.drugCodedrugCode.filter(drug => drug.drugName)
-      )
+      return this.internalData.drugCodedrugCode && this.internalData.drugCodedrugCode.filter(drug => drug.drugName)
     }
   },
 
   methods: {
     getPrescriptionState(prescriptionState) {
-      return Object.keys(this.prescriptionState).find(
-        key => this.prescriptionState[key] === prescriptionState
-      )
+      return Object.keys(this.prescriptionState).find(key => this.prescriptionState[key] === prescriptionState)
     },
 
     goToNext() {
@@ -349,8 +341,7 @@ export default {
         width: 4px;
         height: 8px;
         display: inline-block;
-        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png')
-          no-repeat;
+        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png') no-repeat;
         margin-left: 10px;
       }
     }

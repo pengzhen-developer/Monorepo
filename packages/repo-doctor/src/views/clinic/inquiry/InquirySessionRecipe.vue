@@ -11,7 +11,7 @@
     </el-alert>
 
     <div class="perscription">
-      <h4>初步诊断</h4>
+      <h4>疾病诊断</h4>
       <div>
         <span>{{ drug.diagnose }}</span>
       </div>

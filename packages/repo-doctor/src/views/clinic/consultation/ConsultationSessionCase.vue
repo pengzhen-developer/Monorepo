@@ -163,12 +163,12 @@
                     style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     type="info"
                     v-for="item in medical.model.diagnose">{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('诊断')"
+            <el-button @click="changeDialog('疾病诊断')"
                        type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('诊断')"
+            <el-button @click="showDialog('疾病诊断')"
                        type="text">请选择</el-button>
           </template>
         </el-form-item>
@@ -254,12 +254,12 @@
                        v-for="item in dialog.source.present_history"></el-option>
           </el-select>
         </template>
-        <template v-if="dialog.title === '诊断'">
+        <template v-if="dialog.title === '疾病诊断'">
           <el-select :remote-method="getPresent"
                      @change="chooseItem"
                      allow-create
                      filterable
-                     placeholder="请输入诊断"
+                     placeholder="请输入疾病诊断"
                      remote
                      style="width: 100%;"
                      v-model="dialog.chooseItem">
@@ -284,7 +284,7 @@
         </div>
       </div>
 
-      <template v-if="dialog.title === '诊断'">
+      <template v-if="dialog.title === '疾病诊断'">
         <div style="margin: 10px 0;">
           <p>常见{{dialog.title}}</p>
 
@@ -372,7 +372,7 @@ export default {
           visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
           dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
           base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
-          diagnose: [{ required: true, message: '请输入诊断', trigger: 'blur' }]
+          diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'blur' }]
         }
       },
       typeOptions: [{ value: 1, label: '通用病历模板' }, { value: 2, label: '肝病病历模板' }],
@@ -396,7 +396,7 @@ export default {
           allergens: [],
           // 既往史
           OldIllnessList: [],
-          // 诊断
+          // 疾病诊断
           IllnessList: []
         }
       }
@@ -483,10 +483,7 @@ export default {
     sendMedical() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (
-            this.medical.model.Inspection_index.More &&
-            this.medical.model.Inspection_index.More.length < 10
-          ) {
+          if (this.medical.model.Inspection_index.More && this.medical.model.Inspection_index.More.length < 10) {
             $peace.util.warning('请输入至少 10 个字的辅助检查')
             return
           }
@@ -530,17 +527,11 @@ export default {
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if (
-            (alt && !/^\d+(\.\d{1,1})?$/.test(alt)) ||
-            (parseInt(alt) < 0 || parseInt(alt) > 1000)
-          ) {
+          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || (parseInt(alt) < 0 || parseInt(alt) > 1000)) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if (
-            (ast && !/^\d+(\.\d{1,1})?$/.test(ast)) ||
-            (parseInt(ast) < 0 || parseInt(ast) > 1000)
-          ) {
+          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || (parseInt(ast) < 0 || parseInt(ast) > 1000)) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
@@ -564,10 +555,8 @@ export default {
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
           params.present_history = params.present_history.toString()
-          params.allergy_history =
-            params.allergy_history && params.allergy_history.map(item => item.name).toString()
-          params.past_history =
-            params.past_history && params.past_history.map(item => item.name).toString()
+          params.allergy_history = params.allergy_history && params.allergy_history.map(item => item.name).toString()
+          params.past_history = params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
           params.consultNo = this.$store.getters['consultation/consultInfo'].consultNo
@@ -596,7 +585,7 @@ export default {
           this.dialog.chooseData = [...this.medical.model.allergy_history]
         } else if (title === '既往史') {
           this.dialog.chooseData = [...this.medical.model.past_history]
-        } else if (title === '诊断') {
+        } else if (title === '疾病诊断') {
           this.dialog.chooseData = [...this.medical.model.diagnose]
         }
       })
@@ -647,7 +636,7 @@ export default {
         this.medical.model.allergy_history = [...this.dialog.chooseData]
       } else if (this.dialog.title === '既往史') {
         this.medical.model.past_history = [...this.dialog.chooseData]
-      } else if (this.dialog.title === '诊断') {
+      } else if (this.dialog.title === '疾病诊断') {
         this.medical.model.diagnose = [...this.dialog.chooseData]
       }
       console.log(this.medical.model.diagnose)
@@ -669,14 +658,9 @@ export default {
         this.medical.model.Inspection_index.More ||
         this.medical.model.summary
       ) {
-        $peace.util.confirm(
-          '确定要退出病历吗？当前所有数据将会被清除!',
-          undefined,
-          undefined,
-          () => {
-            $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
-          }
-        )
+        $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
+          $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+        })
       } else {
         $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
       }

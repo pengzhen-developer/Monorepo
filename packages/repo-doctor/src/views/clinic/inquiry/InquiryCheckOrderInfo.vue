@@ -51,7 +51,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="初步诊断">
+            <el-form-item label="疾病诊断">
               <span>{{ internalData.diagnose }}</span>
             </el-form-item>
           </el-col>
@@ -65,9 +65,9 @@
 
       <template v-for="(item, index) in internalData.checkList">
         <div :key="item.itemId + 'content'"
-             style="display: flex; justify-content: space-between; margin: 12px 0;">
+             style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
           <span style="font-size: 14px; color: #333333; font-weight: bold;">{{ item.name }}</span>
-          <span style="font-size: 14px; color: #333333; font-weight: bold;">x1</span>
+          <span style="font-size: 14px; color: #333333; font-weight: bold; width: 40px; text-align: right;">x1</span>
         </div>
 
         <div :key="item.itemId + 'line'"
@@ -81,7 +81,8 @@
       </template>
     </div>
 
-    <div class="record-content">
+    <div class="record-content"
+         v-if="internalData.remark">
       <el-form style="margin: 20px 0 10 0;">
         <el-row>
           <el-col :span="24">

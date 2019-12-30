@@ -132,11 +132,12 @@
               <span>检查单</span>
             </div>
             <div class="message-content">
-              <div style="display:flex; justify-content: space-between; color: #333;"
+              <div style="display:flex; justify-content: space-between; align-items: center; color: #333;"
                    v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
                    :key="item.itemId">
                 <div class="left">{{ item.name }}</div>
-                <div class="right">x 1</div>
+                <div class="right"
+                     style="width: 40px; text-align: right;"></div>
               </div>
             </div>
             <div class="message-line"></div>

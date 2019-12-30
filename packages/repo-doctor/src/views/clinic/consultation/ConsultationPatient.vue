@@ -34,6 +34,7 @@
             </div>
             <div class="item">
               <el-button @click="showDetail"
+                         v-if="data.inquiryNo"
                          type="text"
                          style="font-size: 12px;">查看详情</el-button>
             </div>
@@ -133,7 +134,7 @@
             <div class="item">
               <div class="title">
                 <el-divider direction="vertical"></el-divider>
-                <span>初步诊断</span>
+                <span>疾病诊断</span>
               </div>
               <div class="content">
                 <el-tag :key="item"
@@ -219,7 +220,7 @@
               <el-timeline-item :timestamp="data.doctorExamineTime"
                                 placement="top"
                                 type="primary">
-                <el-tag class="timestamp_extend">已通过</el-tag>
+                <el-tag class="timestamp_extend">接&emsp;诊</el-tag>
 
                 <div class="timestamp_remark">
                   <p>
@@ -267,7 +268,7 @@
 
     <peace-dialog :visible.sync="caseDialog.visible"
                   v-if="caseDialog.visible"
-                  title="病例详情">
+                  title="病历详情">
       <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
     </peace-dialog>
 

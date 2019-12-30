@@ -383,60 +383,28 @@ export default {
 
       switch (controlObject.type) {
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_REJECT:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_AGREE:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_VIDEO_TO_AUDIO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
           console.warn('【 WebRTC 】【 onControl 】【 对方占线 】', new Date(), controlObject)
@@ -446,11 +414,7 @@ export default {
           this.hangupVideo()
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方摄像头不可用 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方摄像头不可用 】', new Date(), controlObject)
           break
 
         default:
@@ -637,7 +601,6 @@ export default {
           inquiryNo: inquiryNo,
           action: 'start'
         }
-
         peace.service.video.process(params)
       }
 
