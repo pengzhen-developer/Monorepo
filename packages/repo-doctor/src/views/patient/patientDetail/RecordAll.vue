@@ -121,10 +121,6 @@
         </div>
       </template>
 
-      <!-- 其它 -->
-      <!--      <template v-else-if="type === '6'">-->
-      <!--      </template>-->
-
       <!-- 住院病历 -->
       <!-- 体检报告 -->
       <template v-else-if="type === '4' || type === '5'">

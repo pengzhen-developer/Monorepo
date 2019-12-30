@@ -23,7 +23,7 @@
         <div slot="title"
              style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
           <span>
-            <span>会诊结束后请填写</span>
+            <span>视频结束后请填写</span>
             <span style="font-weight: bold; ">【会诊意见】</span>
           </span>
         </div>
@@ -198,6 +198,7 @@ export default {
                   this.tipsForConsult = res.data
                 }
               })
+            })
           }
         })
       }

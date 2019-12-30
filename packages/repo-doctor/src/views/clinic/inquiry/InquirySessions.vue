@@ -95,9 +95,7 @@ export default {
             return '【处方】'
           }
           // 视频通话
-          else if (
-            session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话
-          ) {
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '【视频通话】'
           }
           // 其它

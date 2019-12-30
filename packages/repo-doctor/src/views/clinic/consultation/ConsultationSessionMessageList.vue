@@ -112,8 +112,7 @@ export default {
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
           if (
-            message.content.code !==
-              peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
+            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊
           )
