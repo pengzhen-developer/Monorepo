@@ -2,7 +2,8 @@
   <div class="inquiry-session-receive">
     <div class="tip">
       <span>请在</span>
-      <span class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
+      <span
+            class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
       <span>内接诊，倒计时结束未接诊将自动退诊</span>
     </div>
     <div class="control">
@@ -15,13 +16,70 @@
         <span>接诊</span>
       </div>
     </div>
+    <peace-dialog :visible.sync="over.visible"
+                  class="over-dialog"
+                  title
+                  top="25vh"
+                  width="348px">
+      <p style="margin: 0 0 16px 0; font-size: 16px; font-weight:400; color:rgba(51,51,51,1);">
+        请选择您的退诊原因</p>
+
+      <el-radio-group v-model="over.description">
+        <el-radio label="不对症"
+                  style="margin: 0 0 10px 0;">已解决</el-radio>
+        <br />
+        <el-radio label="需面诊"
+                  style="margin: 0 0 10px 0;">需面诊</el-radio>
+        <br />
+
+        <el-radio label="其他"
+                  style="margin: 0 0 10px 0;">其他</el-radio>
+        <br />
+      </el-radio-group>
+
+      <el-input :rows="3"
+                placeholder="请输入您的退诊原因"
+                type="textarea"
+                v-model="over.otherDescription"></el-input>
+
+      <div style="text-align: center; margin: 10px 0 0 0;">
+        <el-button @click="over.visible = false"
+                   class="el-button-style"
+                   type>取消</el-button>
+        <el-button :disabled="canSubmit"
+                   @click="overConfirmAgain"
+                   class="el-button-style"
+                   type="primary">确认</el-button>
+      </div>
+    </peace-dialog>
   </div>
+
 </template>
 
 <script>
 import peace from '@src/library'
 
 export default {
+  data() {
+    return {
+      over: {
+        visible: false,
+        description: '',
+        otherDescription: ''
+      }
+    }
+  },
+
+  computed: {
+    canSubmit() {
+      if (this.over.description == '其他') {
+        return peace.validate.isEmpty(this.over.otherDescription)
+      } else {
+        return !this.over.description
+      }
+    }
+  },
+
   methods: {
     // 接诊
     receive() {
@@ -36,14 +94,21 @@ export default {
 
     // 退诊
     refuse() {
-      peace.util.confirm('退诊后自动退还问诊费用，请再次确定是否退诊。', undefined, { type: 'warning', confirmButtonText: '退诊' }, () => {
-        const params = {
-          inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
-        }
+      this.over.visible = true
 
-        peace.service.inquiry.quitInquiry(params).then(res => {
-          peace.util.alert(res.msg)
-        })
+      this.over.state = ''
+      this.over.description = ''
+      this.over.otherDescription = ''
+    },
+
+    overConfirmAgain() {
+      const params = {
+        inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
+        overCause:
+          this.over.description == '其他' ? this.over.otherDescription : this.over.description
+      }
+      peace.service.inquiry.quitInquiry(params).then(res => {
+        peace.util.alert(res.msg)
       })
     }
   }
@@ -84,5 +149,20 @@ export default {
       cursor: pointer;
     }
   }
+}
+
+.over-dialog {
+  /deep/ .el-dialog__header {
+    display: none;
+  }
+
+  /deep/ .el-dialog__body {
+    padding: 20px;
+  }
+}
+
+.el-button-style {
+  width: 89px;
+  height: 28px;
 }
 </style>
