@@ -79,6 +79,44 @@
           </div>
         </div>
       </div>
+      <div class="module-item"
+           v-if="internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText">
+        <div>
+          <div class="b">补充信息</div>
+          <div class="form-dl img"
+               style="display: flex; align-items: flex-start;"
+               v-if="internalData.inquiryOrderInfo.aImages.length > 0">
+            <div class="form-dt">患者图片</div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-img"
+                 style="display: inline-block; ">
+              <viewer :images="internalData.inquiryOrderInfo.aImages">
+                <img v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
+                     :key="index"
+                     class="img"
+                     :src="item">
+              </viewer>
+            </div>
+          </div>
+          <div class="form-dl"
+               v-if="internalData.inquiryOrderInfo.pregnancyText">
+            <div class="form-dt">特殊时期</div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.pregnancyText}}
+            </div>
+          </div>
+          <div class="form-dl"
+               v-if="internalData.inquiryOrderInfo.allergicHistory">
+            <div class="form-dt"><span>过敏史</span></div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.allergicHistory}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

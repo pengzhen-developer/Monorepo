@@ -71,6 +71,36 @@
         </span>
       </div>
     </div>
+
+    <div class="card"
+         v-if="internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText">
+      <h4>补充信息</h4>
+      <div v-if="internalData.inquiryOrderInfo.aImages.length>0">
+        <span class="label">患者图片</span>
+        <span class="divider">:</span>
+        <viewer class="value img-container"
+                :images="internalData.inquiryOrderInfo.aImages">
+          <img v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
+               :key="index"
+               :src="item"
+               class="img">
+        </viewer>
+      </div>
+      <div v-if="internalData.inquiryOrderInfo.pregnancyText">
+        <span class="label">特殊时期</span>
+        <span class="divider">:</span>
+        <span class="value">
+          {{internalData.inquiryOrderInfo.pregnancyText}}
+        </span>
+      </div>
+      <div v-if="internalData.inquiryOrderInfo.allergicHistory">
+        <span class="label">过敏史</span>
+        <span class="divider">:</span>
+        <span class="value">
+          {{internalData.inquiryOrderInfo.allergicHistory}}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
