@@ -480,7 +480,7 @@
 import AddPatientMsg from '@src/views/components/AddPatientMsg'
 import peace from '@src/library'
 import Vue from 'vue'
-import { Rate } from 'vant'
+import { Rate, Dialog } from 'vant'
 
 Vue.use(Rate)
 export default {
@@ -600,24 +600,64 @@ export default {
       if (!serviceInfo.status) {
         return peace.util.alert('暂未开放，敬请期待')
       }
+      peace.service.patient
+        .inquiryStatus(this.doctor.doctorInfo.doctorId, type)
+        .then(() => {
+          //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
 
-      if (type === 'image') {
-        const json = peace.util.encode({
-          doctorId: this.doctor.doctorInfo.doctorId,
-          consultingType: serviceInfo.tag,
-          consultingTypeId: serviceInfo.consultingTypeId
+          if (type === 'image') {
+            const json = peace.util.encode({
+              doctorId: this.doctor.doctorInfo.doctorId,
+              consultingType: serviceInfo.tag,
+              consultingTypeId: serviceInfo.consultingTypeId
+            })
+            this.$router.push(`/components/doctorInquiryApply/${json}`)
+          }
+          // 视频问诊
+          else if (type === 'video') {
+            return peace.util.alert('暂未开放，敬请期待')
+          }
+          // 私人医生
+          else if (type === 'private') {
+            return peace.util.alert('暂未开放，敬请期待')
+          }
         })
+        .catch(res => {
+          let param = {}
+          switch (res.data.data.inquiryStatus) {
+            case 1:
+            case 2:
+              Dialog.confirm({
+                title: '温馨提示',
+                message: res.data.msg,
+                confirmButtonText: '去看看'
+              }).then(() => {
+                const params = {
+                  inquiryId: res.data.data.inquiryId
+                }
+                let json = peace.util.encode(params)
+                //跳转订单详情
+                this.$router.push(`/setting/userConsultDetail/${json}`)
+              })
 
-        this.$router.push(`/components/doctorInquiryApply/${json}`)
-      }
-      // 视频问诊
-      else if (type === 'video') {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
-      // 私人医生
-      else if (type === 'private') {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
+              break
+            case 3:
+            case 7:
+              param = peace.util.encode({
+                id: 'p2p-' + this.doctor.doctorInfo.doctorId,
+                scene: 'p2p',
+                beginTime: res.data.data.createTime.toDate().getTime(),
+                to: this.doctor.doctorInfo.doctorId
+              })
+              // 清除聊天记录
+              peace.service.IM.resetInquirySessionMessages()
+              // 跳转聊天详情
+              this.$router.push(`/components/messageList/${param}`)
+              break
+            default:
+              peace.util.alert(res.data.msg)
+          }
+        })
     },
 
     goRegisterList() {

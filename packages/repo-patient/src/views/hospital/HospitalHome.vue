@@ -62,12 +62,27 @@
         </div>
       </section>
       <section class="functions">
-        <div class="item"
+        <!-- <div class="item"
              v-for="(item, index) in hospitalInfo.guideH5"
              :key="'index' + index"
              @click="goMenuList(item)">
           <img :src="require('@src/assets/images/newIndex/' + item.icon + '.png')" />
           <span class="name">{{ item.text }}</span>
+        </div> -->
+        <div class="item"
+             v-for="(item, index) in hospitalInfo.hospitalServiceList"
+             :key="'index' + index"
+             @click="goMenuList(item)">
+
+          <div class="img">
+            <img
+                 :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
+            <img class="wait"
+                 v-if="item.isOpen!=1"
+                 src="@src/assets/images/ic_wait open.png" />
+          </div>
+          <span class="name">{{ item.serviceName }}</span>
+
         </div>
       </section>
       <section class="dept">
@@ -257,36 +272,88 @@ export default {
       /* eslint-disable */
 
       let json = undefined
+      console.log(item)
+      if (item.isOpen !== 1) {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
 
-      switch (item.id) {
+      switch (item.serviceName) {
         // 预约挂号
-        case 'appointment':
+        case '预约挂号':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
+            id: 'appointment',
             Date: new Date()
           })
+          if (item.isExist !== 1) {
+            peace.util.alert('暂未开放，敬请期待')
+          } else {
+            this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+          }
 
-          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
           break
 
         // 在线咨询
-        case 'onlineConsultant':
-        // 复诊续方
-        case 'subsequentVisit':
+        case '在线咨询':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
+            id: 'onlineConsultant',
             Date: new Date()
           })
-
-          this.$router.push(`/components/doctorList/${json}`)
+          if (item.isExist !== 1) {
+            peace.util.alert('暂未开放，敬请期待')
+          } else {
+            this.$router.push(`/components/doctorList/${json}`)
+          }
+          break
+        // 复诊续方
+        case '复诊续方':
+          json = peace.util.encode({
+            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+            id: 'subsequentVisit',
+            Date: new Date()
+          })
+          if (item.isExist !== 1) {
+            peace.util.alert('暂未开放，敬请期待')
+          } else {
+            this.$router.push(`/components/doctorList/${json}`)
+          }
           break
 
         default:
           peace.util.alert('暂未开放，敬请期待')
           break
       }
+
+      // switch (item.id) {
+      //   // 预约挂号
+      //   case 'appointment':
+      //     json = peace.util.encode({
+      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+      //       id: item.id,
+      //       Date: new Date()
+      //     })
+
+      //     this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+      //     break
+
+      //   // 在线咨询
+      //   case 'onlineConsultant':
+      //   // 复诊续方
+      //   case 'subsequentVisit':
+      //     json = peace.util.encode({
+      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+      //       id: item.id,
+      //       Date: new Date()
+      //     })
+
+      //     this.$router.push(`/components/doctorList/${json}`)
+      //     break
+
+      //   default:
+      //     peace.util.alert('暂未开放，敬请期待')
+      //     break
+      // }
     }
   }
 }
@@ -492,10 +559,24 @@ export default {
       justify-content: center;
       align-items: center;
       margin-top: 18px;
-      img {
+      .img {
         width: 30px;
         height: 30px;
         display: inline-block;
+        position: relative;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .wait {
+          position: absolute;
+          right: -7px;
+          top: -9px;
+          width: 34px;
+          height: 28px;
+          display: block;
+        }
       }
       .name {
         font-size: 13px;
