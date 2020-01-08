@@ -1,7 +1,8 @@
 <template>
   <div class="inquriy layout">
 
-    <div class="layout-header">
+    <div class="layout-header"
+         ref="layoutHeader">
       <span class="text avtive">导诊接待</span>
       <span class="space">------</span>
       <span class="text">医生接诊</span>
@@ -103,76 +104,107 @@
 
         <transition-group tag="div"
                           name="van-slide-left">
-          <van-row key="doctor"
-                   type="flex"
-                   align="center"
-                   justify="space-between"
-                   class="doctor">
+          <van-sticky key="doctor"
+                      :offset-top="offsetTop"
+                      @scroll="hasFixed">
             <van-row type="flex"
-                     justify="space-between">
-              <div style="margin: 0 10px 0 0;">
-                <van-image width="50"
-                           height="50"
-                           round
-                           :src="doctor.doctorInfo.avartor" />
-              </div>
+                     align="center"
+                     justify="space-between"
+                     class="doctor"
+                     :class="isFixed&&'nmp'">
               <van-row type="flex"
-                       justify="center"
-                       style="flex-direction: column;">
-                <div>
-                  <span
-                        style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
-                    {{ doctor.doctorInfo.name }}
-                  </span>
-                  <span style="color: #333333; font-size: 14px; ">
-                    {{ doctor.doctorInfo.doctorTitle }}
-                  </span>
+                       justify="space-between">
+                <div style="margin:0 10px 0 0;">
+                  <van-image width="50"
+                             height="50"
+                             round
+                             :src="doctor.doctorInfo.avartor"
+                             v-if="!isFixed" />
+                  <van-image width="35"
+                             height="35"
+                             round
+                             :src="doctor.doctorInfo.avartor"
+                             v-else />
                 </div>
-                <div>
-                  <span
-                        style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
-                    {{ getSerivceType() }}
-                  </span>
-                  <span style="color: #333333; font-size: 12px; color: #F2223B;">
-                    {{ getSerivceUnit() }}
-                  </span>
-                  <span style="color: #333333; font-size: 14px; color: #F2223B;">
-                    {{ getSerivceMoney() }}
-                  </span>
-                </div>
+                <van-row type="flex"
+                         justify="center"
+                         style="flex-direction: column;"
+                         v-if="!isFixed">
+                  <div>
+                    <span
+                          style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                      {{ doctor.doctorInfo.name }}
+                    </span>
+                    <span style="color: #333333; font-size: 14px; ">
+                      {{ doctor.doctorInfo.doctorTitle }}
+                    </span>
+                  </div>
+                  <div>
+                    <span
+                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                      {{ getSerivceType() }}
+                    </span>
+                    <span style="color: #333333; font-size: 12px; color: #F2223B;">
+                      {{ getSerivceUnit() }}
+                    </span>
+                    <span style="color: #333333; font-size: 14px; color: #F2223B;">
+                      {{ getSerivceMoney() }}
+                    </span>
+                  </div>
+                </van-row>
+                <van-row type="flex"
+                         justify="center"
+                         align="center"
+                         v-else>
+                  <div>
+                    <span
+                          style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                      {{ doctor.doctorInfo.name }}
+                    </span>
+                  </div>
+                  <div>
+                    <span style="color: #333333; font-size: 12px;  margin: 0 8px 0 0;">
+                      {{ getSerivceType() }}
+                    </span>
+                    <span style="color: #333333; font-size: 12px; color: #F2223B;">
+                      {{ getSerivceUnit() }}
+                    </span>
+                    <span style="color: #333333; font-size: 14px; color: #F2223B;">
+                      {{ getSerivceMoney() }}
+                    </span>
+                  </div>
+                </van-row>
+              </van-row>
+              <van-row>
+                <van-button style="width: 90px; height: 32px; line-height: 1;"
+                            @click="apply"
+                            type="primary"
+                            :round="true"
+                            :disabled="sending">去咨询</van-button>
               </van-row>
             </van-row>
-            <van-row>
-              <van-button style="width: 90px; height: 32px; line-height: 1;"
-                          @click="apply"
-                          type="primary"
-                          :round="true"
-                          :disabled="sending">去咨询</van-button>
-            </van-row>
-          </van-row>
+          </van-sticky>
         </transition-group>
 
         <transition-group tag="div"
                           name="van-slide-left">
-          <div class="message-layout left" key="supplementary">
+          <div class="message-layout left"
+               key="supplementary">
             <div class="supplementary">
               <span class="supplementary__title">补充信息</span>
               <span class="supplementary__info">可选择补充如下信息，让医生全面了解您的病情。</span>
-              <span
-                v-for="child in supplementaryList"
-                :key="child.mode"
-                class="supplementary__content"
-                :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
-                @click="onMutationSupplementaryMode(child)">
+              <span v-for="child in supplementaryList"
+                    :key="child.mode"
+                    class="supplementary__content"
+                    :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
+                    @click="onMutationSupplementaryMode(child)">
                 {{ child.msg }}</span>
             </div>
           </div>
         </transition-group>
-        <jzt-chat
-          :list="chatList"
-          @after-refresh="onAfterRefresh"
-          @click-update-btn="onClickUpdateBtn"
-        ></jzt-chat>
+        <jzt-chat :list="chatList"
+                  @after-refresh="onAfterRefresh"
+                  @click-update-btn="onClickUpdateBtn"></jzt-chat>
       </template>
     </div>
     <!-- 当前问题 -->
@@ -240,61 +272,52 @@
           </template>
         </div>
       </transition>
-      <transition name="van-slide-up" mode="out-in">
+      <transition name="van-slide-up"
+                  mode="out-in">
         <div class="supplementary-button-wrapper"
              :key="supplementaryMode"
              v-if="questionDone && (supplementaryMode !== null)"
              :class="current.field">
 
-            <div
-              class="allergies-button-area"
-              v-if="supplementaryMode === SUPPLEMENTARY_MODE.ALLERGIES">
-              <van-button
-                @click="onClickSupplementaryAnswerButton('allergies', true)"
-                slot="button"
-                round
-                type="primary">选择过敏史</van-button>
-              <div class="button-space"></div>
-              <van-button
-                @click="onClickSupplementaryAnswerButton('allergies', false)"
-                slot="button"
-                round
-                type="default">暂无过敏史</van-button>
-            </div>
-
-          <div
-            class=""
-            v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
-            <van-button
-              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
-              slot="button"
-              round
-              type="default">备孕期</van-button>
-            <van-button
-              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PREGNANCY)"
-              slot="button"
-              round
-              type="default">怀孕期</van-button>
-            <van-button
-              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.LACTATION)"
-              slot="button"
-              round
-              type="default">哺乳期</van-button>
-            <van-button
-              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)"
-              slot="button"
-              round
-              type="default">不在特殊时期</van-button>
+          <div class="allergies-button-area"
+               v-if="supplementaryMode === SUPPLEMENTARY_MODE.ALLERGIES">
+            <van-button @click="onClickSupplementaryAnswerButton('allergies', true)"
+                        slot="button"
+                        round
+                        type="primary">选择过敏史</van-button>
+            <div class="button-space"></div>
+            <van-button @click="onClickSupplementaryAnswerButton('allergies', false)"
+                        slot="button"
+                        round
+                        type="default">暂无过敏史</van-button>
           </div>
 
-          <div
-            class="images-button-area"
-            v-if="supplementaryMode === SUPPLEMENTARY_MODE.IMAGES">
-            <van-button
-              @click="onClickSupplementaryAnswerButton('images')"
-              slot="button"
-              round
-              type="primary">上传患处图片</van-button>
+          <div class=""
+               v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
+            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
+                        slot="button"
+                        round
+                        type="default">备孕期</van-button>
+            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PREGNANCY)"
+                        slot="button"
+                        round
+                        type="default">怀孕期</van-button>
+            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.LACTATION)"
+                        slot="button"
+                        round
+                        type="default">哺乳期</van-button>
+            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)"
+                        slot="button"
+                        round
+                        type="default">不在特殊时期</van-button>
+          </div>
+
+          <div class="images-button-area"
+               v-if="supplementaryMode === SUPPLEMENTARY_MODE.IMAGES">
+            <van-button @click="onClickSupplementaryAnswerButton('images')"
+                        slot="button"
+                        round
+                        type="primary">上传患处图片</van-button>
           </div>
         </div>
       </transition>
@@ -303,6 +326,10 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { Sticky } from 'vant'
+
+Vue.use(Sticky)
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
@@ -372,7 +399,7 @@ const IMAGES_UPLOAD_TYPE = {
 
 export default {
   components: {
-    [Dialog.Component.name]: Dialog.Component,
+    [Dialog.Component.name]: Dialog.Component
   },
 
   data() {
@@ -485,17 +512,17 @@ export default {
         {
           mode: SUPPLEMENTARY_MODE.ALLERGIES,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.ALLERGIES],
-          hasAnswer: false,
+          hasAnswer: false
         },
         {
           mode: SUPPLEMENTARY_MODE.WOMAN,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.WOMAN],
-          hasAnswer: false,
+          hasAnswer: false
         },
         {
           mode: SUPPLEMENTARY_MODE.IMAGES,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.IMAGES],
-          hasAnswer: false,
+          hasAnswer: false
         }
       ],
 
@@ -516,7 +543,10 @@ export default {
       imagePreview: {
         visible: false,
         position: 0
-      }
+      },
+
+      offsetTop: 0,
+      isFixed: false
     }
   },
 
@@ -564,6 +594,8 @@ export default {
     setTimeout(() => {
       this.beginQuestion(0)
     }, 500)
+
+    this.offsetTop = this.$refs.layoutHeader.offsetHeight - 2
   },
 
   destroyed() {
@@ -571,6 +603,9 @@ export default {
   },
 
   methods: {
+    hasFixed(e) {
+      this.isFixed = e.isFixed
+    },
     deleteQA(id) {
       const index = this.chatList.findIndex(chat => {
         return chat.id === id
@@ -606,9 +641,9 @@ export default {
 
     onClickSupplementaryAnswerButton(mode, value = null) {
       const typeActionMap = {
-        'allergies': this.typeActionAllergies,
-        'woman': this.typeActionWoman,
-        'images': this.typeActionImages,
+        allergies: this.typeActionAllergies,
+        woman: this.typeActionWoman,
+        images: this.typeActionImages
       }
       const typeSet = new Set(Object.keys(typeActionMap))
       if (typeSet.has(mode)) {
@@ -627,7 +662,7 @@ export default {
 
     onMutationSupplementaryMode({ mode, hasAnswer }) {
       // 如果已经回答 无反应
-      if (hasAnswer) return;
+      if (hasAnswer) return
       const prev = this.chatList[this.chatList.length - 1]
       // 上一条没有回答的话 撤销
       if (prev !== undefined && prev.position === 'left') this.chatList.pop()
@@ -642,8 +677,14 @@ export default {
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY, this.addFamilyCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD, this.uploaderCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS, this.illnessCallback)
-      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE, this.supplementaryAllergiesSaveCallback)
-      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD, this.doctorInquiryApplySupplementaryUploadCallback)
+      $peace.$on(
+        peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE,
+        this.supplementaryAllergiesSaveCallback
+      )
+      $peace.$on(
+        peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD,
+        this.doctorInquiryApplySupplementaryUploadCallback
+      )
     },
 
     offEmits() {
@@ -657,7 +698,7 @@ export default {
       let index = this.chatList.length - 1
       while (index >= 0) {
         const chat = this.chatList[index]
-        if (chat.position === 'left') break;
+        if (chat.position === 'left') break
         index--
       }
 
@@ -751,7 +792,10 @@ export default {
     supplementaryAllergiesSaveCallback({ foodAllergy, drugAllergy }) {
       this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
       this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
-      this.model.allergicHistory = drugAllergy.concat(foodAllergy).map(item => item.value).toString()
+      this.model.allergicHistory = drugAllergy
+        .concat(foodAllergy)
+        .map(item => item.value)
+        .toString()
 
       const context = this.model.allergicHistory
       const mode = SUPPLEMENTARY_MODE.ALLERGIES
@@ -762,12 +806,7 @@ export default {
     },
 
     pushToChatList(params, others = {}) {
-      const {
-        chatMode = 'a',
-        type = 'text',
-        context,
-        images,
-      } = params
+      const { chatMode = 'a', type = 'text', context, images } = params
 
       if (chatMode === 'q') {
         const chat = Object.assign(others, {
@@ -776,11 +815,10 @@ export default {
           type,
           context,
           images,
-          ifShowUpdateBtn: false,
+          ifShowUpdateBtn: false
         })
         this.chatList.push(chat)
-
-      } else  {
+      } else {
         const question = this.getLatestQuestion()
 
         const chat = Object.assign(others, {
@@ -955,10 +993,12 @@ export default {
       else if (this.current.field === this.ANSWER_FIELD.FAMILY) {
         if (params[0].id) {
           answer = params[0].label
-
           this.model.familyName = params[0].label
           this.model.familyId = params[0].value
-
+          //家人男性过滤女性特殊时期问题
+          if (params[0].sex == '男') {
+            this.supplementaryList.splice(1, 1)
+          }
           // 检查健康卡
           this.checkHealthCard()
         } else {
@@ -1399,6 +1439,12 @@ export default {
         box-shadow: 0px 4px 6px 1px rgba(229, 229, 229, 0.5);
         border-radius: 7px;
         margin: 8px 0 8px 0;
+        &.nmp {
+          margin: 0;
+          padding: 7.5px 10px;
+          border-radius: 0 0 7px 7px;
+          border-top: 1px solid #eee;
+        }
       }
 
       .supplementary {
@@ -1519,12 +1565,12 @@ export default {
     }
   }
 }
-  @keyframes jzt-slide-left-enter {
-    from {
-      transform: translate3d(-100%, 0, 0);
-    }
+@keyframes jzt-slide-left-enter {
+  from {
+    transform: translate3d(-100%, 0, 0);
   }
-  .jzt-slide-left {
-    animation: jzt-slide-left-enter .3s ease both;
-  }
+}
+.jzt-slide-left {
+  animation: jzt-slide-left-enter 0.3s ease both;
+}
 </style>
