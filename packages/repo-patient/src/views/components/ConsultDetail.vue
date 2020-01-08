@@ -93,22 +93,11 @@
                  v-if="internalData.inquiryInfo.inquiryImages.length>0">
               <div class="form-dt ">复诊凭证 :</div>
               <div class="form-img">
-                <van-image-preview v-model="imagePreview.visible"
-                                   :start-position="imagePreview.position"
-                                   :images="internalData.inquiryInfo.inquiryImages.map(file => file.image_path)">
-                  <template v-slot:cover>
-                    <van-button icon="cross"
-                                type="primary"
-                                round
-                                @click="imagePreview.visible = false" />
-                  </template>
-                </van-image-preview>
-
                 <div class="img"
                      v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
                      :key="index">
                   <img :src="item.image_path"
-                       @click="viewImage(item, index)" />
+                       @click="viewImage(item, index,internalData.inquiryInfo.inquiryImages)" />
                 </div>
               </div>
             </div>
@@ -121,6 +110,35 @@
             <div class="form-dl">
               <div class="form-dt">初诊诊断 :</div>
               <div class="form-dd">{{internalData.illInfo.confirmIllness}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="module-item"
+             v-if="internalData.supplementaryInfo && (internalData.supplementaryInfo.affectedImages.length>0||internalData.supplementaryInfo.pregnancyText||internalData.supplementaryInfo.allergicHistory)">
+          <div>
+            <div class="b">补充信息</div>
+            <div class="form-dl img"
+                 v-if="internalData.supplementaryInfo.affectedImages.length>0">
+              <div class="form-dt ">患处图片 :</div>
+              <div class="form-img">
+                <div class="img"
+                     v-for="(item,index) in internalData.supplementaryInfo.affectedImages"
+                     :key="index">
+                  <img :src="item.image_path"
+                       @click="viewImage(item, index,internalData.supplementaryInfo.affectedImages)" />
+                </div>
+              </div>
+            </div>
+            <div class="form-dl"
+                 v-if="internalData.supplementaryInfo.pregnancyText">
+              <div class="form-dt">特殊时期 :</div>
+              <div class="form-dd">{{internalData.supplementaryInfo.pregnancyText}}</div>
+            </div>
+            <div class="form-dl"
+                 v-if="internalData.supplementaryInfo.allergicHistory">
+              <div class="form-dt"><span>过敏史</span> :</div>
+              <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
           </div>
@@ -251,6 +269,17 @@
                   title="咨询记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
+
+    <van-image-preview v-model="imagePreview.visible"
+                       :start-position="imagePreview.position"
+                       :images="imagePreview.images">
+      <template v-slot:cover>
+        <van-button icon="cross"
+                    type="primary"
+                    round
+                    @click="imagePreview.visible = false" />
+      </template>
+    </van-image-preview>
   </div>
 </template>
 
@@ -303,8 +332,10 @@ export default {
 
       imagePreview: {
         visible: false,
-        position: 0
+        position: 0,
+        images: []
       },
+
       fromChatRoom: false
     }
   },
@@ -432,9 +463,10 @@ export default {
         })
     },
 
-    viewImage(file, fileIndex) {
+    viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
+      this.imagePreview.images = files.map(item => item.image_path)
     }
   }
 }
