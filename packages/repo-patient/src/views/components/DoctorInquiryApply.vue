@@ -151,9 +151,30 @@
             </van-row>
           </van-row>
         </transition-group>
+
+        <transition-group tag="div"
+                          name="van-slide-left">
+          <div class="message-layout left" key="supplementary">
+            <div class="supplementary">
+              <span class="supplementary__title">补充信息</span>
+              <span class="supplementary__info">可选择补充如下信息，让医生全面了解您的病情。</span>
+              <span
+                v-for="child in supplementaryList"
+                :key="child.mode"
+                class="supplementary__content"
+                :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
+                @click="onMutationSupplementaryMode(child)">
+                {{ child.msg }}</span>
+            </div>
+          </div>
+        </transition-group>
+        <jzt-chat
+          :list="chatList"
+          @after-refresh="onAfterRefresh"
+          @click-update-btn="onClickUpdateBtn"
+        ></jzt-chat>
       </template>
     </div>
-
     <!-- 当前问题 -->
     <div class="layout-footer">
       <transition name="van-slide-up">
@@ -219,6 +240,64 @@
           </template>
         </div>
       </transition>
+      <transition name="van-slide-up" mode="out-in">
+        <div class="supplementary-button-wrapper"
+             :key="supplementaryMode"
+             v-if="questionDone && (supplementaryMode !== null)"
+             :class="current.field">
+
+            <div
+              class="allergies-button-area"
+              v-if="supplementaryMode === SUPPLEMENTARY_MODE.ALLERGIES">
+              <van-button
+                @click="onClickSupplementaryAnswerButton('allergies', true)"
+                slot="button"
+                round
+                type="primary">选择过敏史</van-button>
+              <div class="button-space"></div>
+              <van-button
+                @click="onClickSupplementaryAnswerButton('allergies', false)"
+                slot="button"
+                round
+                type="default">暂无过敏史</van-button>
+            </div>
+
+          <div
+            class=""
+            v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
+            <van-button
+              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
+              slot="button"
+              round
+              type="default">备孕期</van-button>
+            <van-button
+              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PREGNANCY)"
+              slot="button"
+              round
+              type="default">怀孕期</van-button>
+            <van-button
+              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.LACTATION)"
+              slot="button"
+              round
+              type="default">哺乳期</van-button>
+            <van-button
+              @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)"
+              slot="button"
+              round
+              type="default">不在特殊时期</van-button>
+          </div>
+
+          <div
+            class="images-button-area"
+            v-if="supplementaryMode === SUPPLEMENTARY_MODE.IMAGES">
+            <van-button
+              @click="onClickSupplementaryAnswerButton('images')"
+              slot="button"
+              round
+              type="primary">上传患处图片</van-button>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -242,6 +321,35 @@ const ANSWER_MODE = {
   ILLNESS_CONFIRM: 'illnessConfirm'
 }
 
+const WOMAN_TYPE = {
+  NORMAL: 1,
+  // 备孕
+  PRE_PREGNANCY: 2,
+  // 怀孕
+  PREGNANCY: 3,
+  // 哺乳期
+  LACTATION: 4
+}
+
+const WOMAN_TYPE_TEXT_MAP = {
+  [WOMAN_TYPE.NORMAL]: '不在特殊时期',
+  [WOMAN_TYPE.PRE_PREGNANCY]: '备孕期',
+  [WOMAN_TYPE.PREGNANCY]: '怀孕期',
+  [WOMAN_TYPE.LACTATION]: '哺乳期'
+}
+
+const SUPPLEMENTARY_MODE = {
+  ALLERGIES: 'allergies',
+  WOMAN: 'woman',
+  IMAGES: 'images'
+}
+
+const SUPPLEMENTARY_MODE_MSG_MAP = {
+  [SUPPLEMENTARY_MODE.ALLERGIES]: '请选择您的过敏史?',
+  [SUPPLEMENTARY_MODE.WOMAN]: '您是否属于女性特殊时期?',
+  [SUPPLEMENTARY_MODE.IMAGES]: '请补充患处图片'
+}
+
 const ANSWER_FIELD = {
   /** 问诊描述 */
   ILLNESS_DESCRIBE: 'illnessDescribe',
@@ -255,15 +363,27 @@ const ANSWER_FIELD = {
   ILLNESS_CONFIRM: 'confirmIllness'
 }
 
+const IMAGES_UPLOAD_TYPE = {
+  // 凭证上传
+  ATTACHMENT: 1,
+  // 患处
+  AFFECTED_IMAGES: 2
+}
+
 export default {
   components: {
-    [Dialog.Component.name]: Dialog.Component
+    [Dialog.Component.name]: Dialog.Component,
   },
 
   data() {
     return {
       ANSWER_MODE: ANSWER_MODE,
       ANSWER_FIELD: ANSWER_FIELD,
+      SUPPLEMENTARY_MODE,
+      SUPPLEMENTARY_MODE_MSG_MAP,
+      WOMAN_TYPE,
+      WOMAN_TYPE_TEXT_MAP,
+      IMAGES_UPLOAD_TYPE,
 
       model: {
         // 医生 (医生 ID)
@@ -280,7 +400,17 @@ export default {
         // 问诊类型
         consultingType: '',
         // 是否复诊
-        isAgain: true
+        isAgain: true,
+        // 特殊时期
+        isPregnancy: null,
+        // 过敏史
+        allergicHistory: '',
+        // 食物过敏
+        foodAllergy: '',
+        // 食物过敏
+        drugAllergy: '',
+        // 患处图片
+        affectedImages: []
       },
 
       // 附件
@@ -350,6 +480,31 @@ export default {
       // 回答完毕提示语
       doneList: [],
 
+      // 回答完毕后点击补充的提示语
+      supplementaryList: [
+        {
+          mode: SUPPLEMENTARY_MODE.ALLERGIES,
+          msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.ALLERGIES],
+          hasAnswer: false,
+        },
+        {
+          mode: SUPPLEMENTARY_MODE.WOMAN,
+          msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.WOMAN],
+          hasAnswer: false,
+        },
+        {
+          mode: SUPPLEMENTARY_MODE.IMAGES,
+          msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.IMAGES],
+          hasAnswer: false,
+        }
+      ],
+
+      supplementaryMode: null,
+
+      chatList: [],
+
+      uniqKey: 0,
+
       // 医生详情
       doctor: {
         consultationList: [],
@@ -416,16 +571,157 @@ export default {
   },
 
   methods: {
+    deleteQA(id) {
+      const index = this.chatList.findIndex(chat => {
+        return chat.id === id
+      })
+      // ChatList中需要删除的回答
+      const Answer = this.chatList[index]
+      const qIndex = this.chatList.findIndex(chat => {
+        return chat.id === Answer.qid
+      })
+      // ChatList中需要删除的问题
+      const question = this.chatList[qIndex]
+      if (question === undefined) throw new Error('Question could not be found')
+      // 需要将该问题设置为 未回答
+      const sup = this.supplementaryList.find(sup => {
+        return sup.mode === question.mode
+      })
+      if (sup === undefined) throw new Error('Supplementary could not be found')
+      sup.hasAnswer = false
+      // 具体删除
+      this.chatList.splice(index, 1)
+      this.chatList.splice(qIndex, 1)
+    },
+    // jzt-chat 中点击「点击修改」的回调
+    onClickUpdateBtn(id) {
+      this.deleteQA(id)
+    },
+
+    onAfterRefresh() {
+      this.$nextTick(() => {
+        this.scrollToBottom()
+      })
+    },
+
+    onClickSupplementaryAnswerButton(mode, value = null) {
+      const typeActionMap = {
+        'allergies': this.typeActionAllergies,
+        'woman': this.typeActionWoman,
+        'images': this.typeActionImages,
+      }
+      const typeSet = new Set(Object.keys(typeActionMap))
+      if (typeSet.has(mode)) {
+        const fn = typeActionMap[mode]
+        fn(value)
+        this.onAfterSupplementaryAnswer(mode)
+      } else {
+        throw new Error('Type error!')
+      }
+    },
+
+    onAfterSupplementaryAnswer(mode) {
+      this.setHasAnswer(mode)
+      this.supplementaryMode = null
+    },
+
+    onMutationSupplementaryMode({ mode, hasAnswer }) {
+      // 如果已经回答 无反应
+      if (hasAnswer) return;
+      const prev = this.chatList[this.chatList.length - 1]
+      // 上一条没有回答的话 撤销
+      if (prev !== undefined && prev.position === 'left') this.chatList.pop()
+      const context = SUPPLEMENTARY_MODE_MSG_MAP[mode]
+
+      this.pushToChatList({ context, chatMode: 'q' }, { mode })
+
+      this.supplementaryMode = mode
+    },
+
     onEmits() {
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY, this.addFamilyCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD, this.uploaderCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS, this.illnessCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE, this.supplementaryAllergiesSaveCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD, this.doctorInquiryApplySupplementaryUploadCallback)
     },
 
     offEmits() {
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS)
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE)
+    },
+
+    getLatestQuestionIndex() {
+      let index = this.chatList.length - 1
+      while (index >= 0) {
+        const chat = this.chatList[index]
+        if (chat.position === 'left') break;
+        index--
+      }
+
+      return index
+    },
+
+    getLatestQuestion() {
+      const questionIndex = this.getLatestQuestionIndex()
+      if (questionIndex === -1) {
+        throw new Error('Latest question error!')
+      }
+      const question = this.chatList[questionIndex]
+
+      return question
+    },
+
+    setHasAnswer(mode) {
+      const index = this.supplementaryList.findIndex(el => {
+        return el.mode === mode
+      })
+      if (index === -1) throw new Error('Period error!')
+      this.supplementaryList[index].hasAnswer = true
+    },
+
+    typeActionAllergies(hasAllergies) {
+      if (hasAllergies) {
+        this.goSupplementaryAllergies()
+      } else {
+        // 暂无过敏史
+        const context = '暂无过敏史'
+        this.pushToChatList({ context })
+
+        this.model.allergicHistory = '暂无'
+        this.model.foodAllergy = '暂无'
+      }
+    },
+
+    typeActionWoman(period) {
+      console.log(period)
+      this.model.isPregnancy = period
+      const context = this.WOMAN_TYPE_TEXT_MAP[period]
+      this.pushToChatList({ context })
+    },
+
+    typeActionImages() {
+      this.$router.push({
+        name: `/components/uploader`,
+        params: {
+          emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD
+        }
+      })
+    },
+
+    goSupplementaryAllergies() {
+      const json = peace.util.encode({
+        type: 'add',
+        emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE
+      })
+      this.$router.push({
+        name: `/components/supplementaryAllergies`,
+        params: {
+          json
+        }
+      })
     },
 
     addFamilyCallback(res) {
@@ -450,6 +746,63 @@ export default {
       } else {
         peace.util.alert('请至少选择一项初诊诊断')
       }
+    },
+
+    supplementaryAllergiesSaveCallback({ foodAllergy, drugAllergy }) {
+      this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
+      this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
+      this.model.allergicHistory = drugAllergy.concat(foodAllergy).map(item => item.value).toString()
+
+      const context = this.model.allergicHistory
+      const mode = SUPPLEMENTARY_MODE.ALLERGIES
+
+      this.pushToChatList({ context })
+
+      this.onAfterSupplementaryAnswer(mode)
+    },
+
+    pushToChatList(params, others = {}) {
+      const {
+        chatMode = 'a',
+        type = 'text',
+        context,
+        images,
+      } = params
+
+      if (chatMode === 'q') {
+        const chat = Object.assign(others, {
+          id: this.uniqKey++,
+          position: 'left',
+          type,
+          context,
+          images,
+          ifShowUpdateBtn: false,
+        })
+        this.chatList.push(chat)
+
+      } else  {
+        const question = this.getLatestQuestion()
+
+        const chat = Object.assign(others, {
+          id: this.uniqKey++,
+          position: 'right',
+          type,
+          context,
+          images,
+          ifShowUpdateBtn: true,
+          qid: question.id
+        })
+
+        this.chatList.push(chat)
+      }
+    },
+
+    doctorInquiryApplySupplementaryUploadCallback(result) {
+      this.affectedImages = result
+      this.pushToChatList({
+        type: 'images',
+        images: result
+      })
     },
 
     setModel() {
@@ -746,28 +1099,29 @@ export default {
     apply() {
       this.sending = true
 
-      this.uploadHandler()
+      this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT)
+        .then(this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES))
         .then(this.applyHandler)
         .finally(() => {
           this.sending = false
         })
     },
 
-    uploadHandler() {
+    uploadHandler(dataArray, type) {
       return new Promise((resolve, reject) => {
-        if (Array.isArray(this.attachment) && this.attachment.length) {
+        if (Array.isArray(dataArray) && dataArray.length) {
           // 压缩
           const compress = () => {
             return new Promise(resolve => {
               const files = []
-              for (let i = 0; i < this.attachment.length; i++) {
-                new Compressor(this.attachment[i].file, {
+              for (let i = 0; i < dataArray.length; i++) {
+                new Compressor(dataArray[i].file, {
                   quality: 0.6,
                   convertSize: 50000,
                   success: fileBlob => {
                     files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
 
-                    if (files.length === this.attachment.length) {
+                    if (files.length === dataArray.length) {
                       resolve(files)
                     }
                   }
@@ -781,6 +1135,7 @@ export default {
             const params = new FormData()
 
             params.append('source', 'inquiryApply')
+            params.append('type', type)
             files.forEach(file => {
               params.append('file[]', file)
             })
@@ -788,7 +1143,11 @@ export default {
             peace.service.inquiry
               .images(params)
               .then(res => {
-                this.model.attachment = res.data
+                if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
+                  this.model.attachment = res.data
+                } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
+                  this.model.affectedImages = res.data
+                }
 
                 resolve()
               })
@@ -966,7 +1325,15 @@ export default {
 
     .layout-content {
       flex: 1;
-      overflow: auto;
+      /*
+       * [!!Luci Modify] 2020/01/02
+       * 在撤回对话，对话框从左右撤出时，使用之前的 「overflow: auto」，会出现动画BUG
+       * 待确定修改后会不会出现新的BUG
+       */
+      /*overflow: auto;*/
+      overflow-x: hidden;
+      overflow-y: scroll;
+
       padding: 20px 15px;
 
       .notify {
@@ -1031,12 +1398,66 @@ export default {
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 4px 6px 1px rgba(229, 229, 229, 0.5);
         border-radius: 7px;
-        margin: 8px 0 32px 0;
+        margin: 8px 0 8px 0;
+      }
+
+      .supplementary {
+        display: inline-flex;
+        flex-direction: column;
+        padding: 12px 16px;
+        width: 86%;
+        background: #fff;
+        color: #38485c;
+        border-radius: 0px 20px 20px 20px;
+
+        &__title {
+          padding-bottom: 0.18rem;
+          border-bottom: 1px solid #eee;
+          margin-bottom: 8px;
+          font-weight: bold;
+        }
+
+        &__info {
+          font-size: 12px;
+          color: #aaa;
+        }
+
+        &__content {
+          margin-top: 8px;
+          color: #00c6ae;
+          cursor: pointer;
+
+          &--focus {
+            color: #aaa;
+          }
+        }
       }
     }
 
     .layout-footer {
       background-color: #ffffff00;
+
+      .supplementary-button-wrapper {
+        padding: 16px 0 0 20px;
+        background: #fff;
+        box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.04);
+
+        .van-button {
+          margin-right: 20px;
+          margin-bottom: 16px;
+        }
+
+        .allergies-button-area {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .images-button-area {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
 
       /deep/ .layout-footer-content {
         padding: 16px 20px;
@@ -1098,4 +1519,12 @@ export default {
     }
   }
 }
+  @keyframes jzt-slide-left-enter {
+    from {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+  .jzt-slide-left {
+    animation: jzt-slide-left-enter .3s ease both;
+  }
 </style>
