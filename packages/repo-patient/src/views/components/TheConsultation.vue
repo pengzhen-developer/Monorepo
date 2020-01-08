@@ -104,7 +104,7 @@
       </div>
     </div>
     <!--备注-->
-    <div class="outline">
+    <div class="outline pb10">
       <div class="outline-header">
         <div class="outline-tit">备注</div>
       </div>
@@ -115,48 +115,102 @@
         </div>
         <div class="timeline"
              v-else-if="data[current].outCheckStatus == '2'">
-          <div class="item">
-            <div class="item-time"
-                 v-if="data[current].outCheckTime">{{data[current].outCheckTime}}
+          <div class="time-item">
+            <div class="time-time">
+              <div>
+                {{data[current].outCheckTime&&data[current].outCheckTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].outCheckTime&&data[current].outCheckTime.split(' ')[1].substring(0,5)}}
+              </div>
             </div>
-            <div class="item-text "
-                 :class="data[current].outCheckTime ? '' : 'item-time' ">
-              {{data[current].outCheckSuggest ||  '转出失败，会诊被拒绝。'}}</div>
+            <div class="item b0 ">
+              <div class="item-time">{{data[current].fromHospitalName}}
+              </div>
+              <div class="item-text">不同意会诊</div>
+              <div class="item-text "
+                   :class="data[current].outCheckTime ? '' : 'item-time' ">拒接原因：
+                {{data[current].outCheckSuggest ||  '转出失败，会诊被拒绝。'}}</div>
+            </div>
           </div>
         </div>
         <div class="timeline"
              v-if="data[current].outCheckStatus == '3'">
-          <div class="item">
-            <div class="item-time"
-                 v-if="data[current].outCheckTime">{{data[current].outCheckTime}}
+          <div class="time-item">
+            <div class="time-time">
+              <div>
+                {{data[current].outCheckTime&&data[current].outCheckTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].outCheckTime&&data[current].outCheckTime.split(' ')[1].substring(0,5)}}
+              </div>
             </div>
-            <div class="item-text"
-                 :class="data[current].outCheckTime ? '' : 'item-time' ">
-              {{data[current].outCheckSuggest}}</div>
-          </div>
-          <div class="item">
-            <div class="item-time">{{data[current].inCheckTime}}
+            <div class="item">
+              <div class="item-time">{{data[current].fromHospitalName}}
+              </div>
+              <div class="item-text"
+                   :class="data[current].outCheckTime ? '' : 'item-time' ">
+                {{data[current].outCheckSuggest}}</div>
             </div>
-            <div class="item-text">
-              {{data[current].inCheckSuggest || data[current].markedWords}}</div>
           </div>
-          <div class="item"
+          <div class="time-item">
+            <div class="time-time">
+              <div>
+                {{data[current].inCheckTime&&data[current].inCheckTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].inCheckTime&&data[current].inCheckTime.split(' ')[1].substring(0,5)}}
+              </div>
+            </div>
+            <div class="item"
+                 :class="(!data[current].consultStatus==4||!data[current].doctorExamineTime)&&'b0'">
+              <div class="item-time"
+                   v-if="data[current].inCheckTime">{{data[current].toHospitalName}}
+              </div>
+              <div :class="data[current].inCheckTime?'item-text':'item-time'">
+                {{data[current].inCheckSuggest || data[current].markedWords}}</div>
+            </div>
+          </div>
+          <div class="time-item"
                v-if="[5,6, 7].includes(data[current].consultStatus)">
-            <div class="item-time">{{data[current].doctorExamineTime}}
+            <div class="time-time">
+              <div>
+                {{data[current].doctorExamineTime&&data[current].doctorExamineTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].doctorExamineTime&&data[current].doctorExamineTime.split(' ')[1].substring(0,5)}}
+              </div>
             </div>
-            <div class="item-text">
-              {{data[current].consultSuggest || '医生已接诊'}}</div>
+            <div class="item b0">
+              <div class="item-time">{{data[current].toDoctorName}}医生
+              </div>
+              <div class="item-text">
+                {{data[current].consultSuggest || '会诊医生已接诊'}}</div>
+            </div>
           </div>
-          <div class="item"
+          <div class="time-item"
                v-if="data[current].consultStatus=='9'">
-            <div class="item-time color-333">会诊申请正在等待医生审核，请耐心等候</div>
-          </div>
-          <div class="item"
-               v-if="data[current].consultStatus=='10'">
-            <div class="item-time">{{data[current].doctorExamineTime}}
+            <div class="time-time"></div>
+            <div class="item  b0">
+              <div class="item-time color-333">会诊申请正在等待医生审核，请耐心等候</div>
             </div>
-            <div class="item-text">会诊医生拒绝接诊</div>
-            <div class="item-text">拒绝原因: {{data[current].consultSuggest}}</div>
+          </div>
+          <div class="time-item"
+               v-if="data[current].consultStatus=='10'">
+            <div class="time-time">
+              <div>
+                {{data[current].doctorExamineTime&&data[current].doctorExamineTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].doctorExamineTime&&data[current].doctorExamineTime.split(' ')[1].substring(0,5)}}
+              </div>
+            </div>
+            <div class="item b0">
+              <div class="item-time">{{data[current].toDoctorName}}医生
+              </div>
+              <div class="item-text">会诊医生退诊</div>
+              <div class="item-text">退诊原因: {{data[current].consultSuggest}}</div>
+            </div>
           </div>
         </div>
         <div class="txt-p nmp"
@@ -195,7 +249,6 @@
         </div>
       </div>
     </div>
-    <!-- <div v-if="page.json.home" class="home" @click="backHome"></div> -->
   </div>
 </template>
 
@@ -386,8 +439,11 @@ export default {
 .outline {
   margin: 10px 0 0 0;
   padding-left: 15px;
+  &.pb10 {
+    padding-bottom: 10px;
+  }
 }
-.outline .outline-header {
+.page .outline .outline-header {
   margin: 10px 0;
 }
 .outline .outline-body {
@@ -396,7 +452,7 @@ export default {
   border-top: 1px solid #dedede;
   overflow: hidden;
   &.nmp {
-    padding: 0 0 0 15px;
+    padding: 0;
   }
 }
 .outline-body,
@@ -538,24 +594,27 @@ export default {
   min-height: 50px;
   padding-top: 1px;
 }
-.timeline .item:last-child {
-  border-left: 1px solid transparent !important;
-  // padding-bottom: 0;
-  margin-bottom: 0;
-  min-height: 24px;
-}
-// .timeline .item.b0 {
+// .timeline .item:last-child {
 //   border-left: 1px solid transparent !important;
-//   padding-bottom: 0;
 //   margin-bottom: 0;
-//   min-height: 40px;
+//   min-height: 24px;
 // }
 
+.timeline .item.b0 {
+  border-left: 1px solid transparent !important;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  min-height: 40px;
+}
+
 .timeline .item-time {
-  color: #757e7d;
+  color: #333;
   margin-top: -10px;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 2px;
+}
+.timeline .item-text.item-time {
+  font-size: 14px;
 }
 .timeline .item-time.color-333 {
   color: #333;
@@ -571,8 +630,20 @@ export default {
   left: -4px;
   top: -3px;
 }
+.time-item {
+  width: 100%;
+  display: flex;
+}
+.time-time {
+  display: flex;
+  width: 10%;
+  flex-direction: column;
+  font-size: 12px;
+  margin-top: -10px;
+  color: #999;
+}
 .timeline .item-text {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
   // padding-top: 5px;
 }
