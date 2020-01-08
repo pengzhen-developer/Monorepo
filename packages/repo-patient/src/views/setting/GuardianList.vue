@@ -26,6 +26,10 @@
           </template>
         </van-cell>
       </div>
+      <div class="bottom">
+        <van-button @click="setGardianInfo({})"
+                    type="primary">新增监护人</van-button>
+      </div>
     </template>
     <template v-if="loaded&&guardianList.length == 0">
       <div class="none-page">

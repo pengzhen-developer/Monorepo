@@ -74,7 +74,16 @@
                      right-icon="arrow"
                      v-model="model.nationName" />
         </template>
-
+        <template v-if="model.isGuardian">
+          <van-field :disabled="isEdit"
+                     label="监护人姓名"
+                     placeholder="请输入姓名"
+                     v-model="model.guardianName" />
+          <van-field :disabled="isEdit"
+                     label="监护人身份证号"
+                     placeholder="请输入身份证号"
+                     v-model="model.guardianIdCard" />
+        </template>
         <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <peace-dialog :visible.sync="showAllergicHistory">-->
@@ -256,7 +265,9 @@ export default {
         sex: '',
         birthday: '',
         allergic_history: '',
-        foodAllergy: ''
+        foodAllergy: '',
+        nationCode: '',
+        nationName: ''
       },
       familyId: '',
       isNationExist: false,
@@ -286,7 +297,9 @@ export default {
       showRelation: false,
       showSex: false,
       showBirthday: false,
-      showNations: false
+      showNations: false,
+      addGardian: false,
+      childInfo: {}
     }
   },
 
@@ -303,8 +316,7 @@ export default {
         if (val.length == 15) {
           this.model.sexKey = val.toString().charAt(14) % 2
           this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday =
-            '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.model.sexKey = val.toString().charAt(16) % 2
@@ -322,6 +334,18 @@ export default {
         }
       },
       immediate: true
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.addGardian) {
+      for (let i in this.childInfo) {
+        this.model[i] = this.childInfo[i]
+      }
+      this.gDialog.visible = true
+      this.addGardian = false
+      next(false)
+    } else {
+      next(true)
     }
   },
   mounted() {
@@ -359,6 +383,8 @@ export default {
         this.gardianName = item.name
         this.gardianSet = true
       } else {
+        //新增监护人信息
+        this.addGardian = true
         this.age = null
         this.model = {
           name: '',
@@ -367,7 +393,9 @@ export default {
           sex: '',
           birthday: '',
           allergic_history: '',
-          foodAllergy: ''
+          foodAllergy: '',
+          nationCode: '',
+          nationName: ''
         }
       }
 
@@ -387,21 +415,11 @@ export default {
       var strBirthday = ''
       if (len == 18) {
         //处理18位的身份证号码从号码中得到生日和性别代码
-        strBirthday =
-          identityCard.substr(6, 4) +
-          '/' +
-          identityCard.substr(10, 2) +
-          '/' +
-          identityCard.substr(12, 2)
+        strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
       }
       if (len == 15) {
         strBirthday =
-          '19' +
-          identityCard.substr(6, 2) +
-          '/' +
-          identityCard.substr(8, 2) +
-          '/' +
-          identityCard.substr(10, 2)
+          '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
       }
       //时间字符串里，必须是“/”
       var birthDate = new Date(strBirthday)
@@ -410,14 +428,16 @@ export default {
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
       if (
         nowDateTime.getMonth() < birthDate.getMonth() ||
-        (nowDateTime.getMonth() == birthDate.getMonth() &&
-          nowDateTime.getDate() < birthDate.getDate())
+        (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())
       ) {
         age--
       }
       return age
     },
     goToGardian() {
+      if (!this.addGardian) {
+        this.childInfo = Object.assign({}, this.model)
+      }
       this.gDialog.visible = true
     },
     getCardList() {
@@ -524,6 +544,13 @@ export default {
       if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
         return peace.util.alert('请选择监护人')
       }
+      if (this.addGardian && this.guardianIdCard) {
+        let gardianAge = this.getAgeByIdCard(this.guardianIdCard)
+        if (gardianAge < 18) {
+          return peace.util.alert('监护人年龄不得小于18岁')
+        }
+      }
+
       if (this.isEdit) {
         if (this.isNationExist) {
           // 存在民族情况，此时为删除
@@ -561,7 +588,16 @@ export default {
         if (params.emit) {
           $peace.$emit(params.emit, res)
         }
-        this.$router.go(-1)
+
+        if (this.addGardian) {
+          for (let i in this.childInfo) {
+            this.model[i] = this.childInfo[i]
+          }
+          this.gDialog.visible = true
+          this.addGardian = false
+        } else {
+          this.$router.go(-1)
+        }
       })
     },
     perfectInfo() {
@@ -708,12 +744,7 @@ export default {
     width: auto;
   }
 }
-/deep/
-  .form.form-for-family
-  > .van-cell
-  > .van-cell__value
-  > .van-field__body
-  > .van-field__control {
+/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   text-align: right;
   &::placeholder {
