@@ -1,81 +1,130 @@
 <template>
   <div class="file-health-detail">
     <div class="header flex">
-      <van-image round v-if="model.sex === '男'" width="50px" height="50px"
-        :src="require('@src/assets/images/ic_head portrait.png')" />
-      <van-image round v-if="model.sex === '女'" width="50px" height="50px"
-        :src="require('@src/assets/images/img_head girl.png')" />
+      <van-image round
+                 v-if="model.sex === '男'"
+                 width="50px"
+                 height="50px"
+                 :src="require('@src/assets/images/ic_head portrait.png')" />
+      <van-image round
+                 v-if="model.sex === '女'"
+                 width="50px"
+                 height="50px"
+                 :src="require('@src/assets/images/img_head girl.png')" />
       <span style="font-size: 20px; margin: 0 10px;">{{ model.name }}</span>
-      <van-icon v-if="model.sex === '男'" :name="require('@src/assets/images/file/ic_boys.png')">
+      <van-icon v-if="model.sex === '男'"
+                :name="require('@src/assets/images/file/ic_boys.png')">
       </van-icon>
-      <van-icon v-if="model.sex === '女'" :name="require('@src/assets/images/file/ic_girls.png')">
+      <van-icon v-if="model.sex === '女'"
+                :name="require('@src/assets/images/file/ic_girls.png')">
       </van-icon>
       <span style="font-size: 14px; margin: 0 10px;">{{ model.age + '岁' }}</span>
-      <van-tag color="#F2F2F2" text-color="#999999">{{ model.relation }}</van-tag>
+      <van-tag color="#F2F2F2"
+               text-color="#999999">{{ model.relation }}</van-tag>
     </div>
 
     <van-cell-group class="content">
-      <van-cell title="婚姻状况" is-link @click="popup.maritalStatus = true"
-        :value="model.maritalStatus" />
-      <van-popup position="bottom" v-model="popup.maritalStatus">
+      <van-cell title="婚姻状况"
+                is-link
+                @click="popup.maritalStatus = true"
+                :value="model.maritalStatus" />
+      <van-popup position="bottom"
+                 v-model="popup.maritalStatus">
         <van-picker :columns="dict.maritalStatus"
-          :default-index="dict.maritalStatus.indexOf(model.maritalStatus)" show-toolbar
-          @confirm="v => { model.maritalStatus = v; popup.maritalStatus = false }"
-          @cancel="v => popup.maritalStatus = false" />
+                    :default-index="dict.maritalStatus.indexOf(model.maritalStatus)"
+                    show-toolbar
+                    @confirm="v => { model.maritalStatus = v; popup.maritalStatus = false }"
+                    @cancel="v => popup.maritalStatus = false" />
       </van-popup>
 
-      <van-cell title="生育状况" is-link @click="popup.fertilityStatus = true"
-        :value="model.fertilityStatus" />
-      <van-popup position="bottom" v-model="popup.fertilityStatus">
+      <van-cell title="生育状况"
+                is-link
+                @click="popup.fertilityStatus = true"
+                :value="model.fertilityStatus" />
+      <van-popup position="bottom"
+                 v-model="popup.fertilityStatus">
         <van-picker :columns="dict.fertilityStatus"
-          :default-index="dict.fertilityStatus.indexOf(model.fertilityStatus)" show-toolbar
-          @confirm="v => { model.fertilityStatus = v; popup.fertilityStatus = false }"
-          @cancel="v => popup.fertilityStatus = false" />
+                    :default-index="dict.fertilityStatus.indexOf(model.fertilityStatus)"
+                    show-toolbar
+                    @confirm="v => { model.fertilityStatus = v; popup.fertilityStatus = false }"
+                    @cancel="v => popup.fertilityStatus = false" />
       </van-popup>
 
-      <van-cell title="手术或外伤" is-link placeholder="请输入" @click="popup.surgeryTrauma = true"
-        v-model="model.surgeryTrauma" />
-      <van-popup position="bottom" v-model="popup.surgeryTrauma">
-        <AddSurgeryTrauma style="max-height: 80vh" @onSave="popup.surgeryTrauma = false"
-          v-model="model.surgeryTrauma" v-if="popup.surgeryTrauma">
+      <van-cell title="手术或外伤"
+                is-link
+                placeholder="请输入"
+                @click="popup.surgeryTrauma = true"
+                v-model="model.surgeryTrauma" />
+      <van-popup position="bottom"
+                 v-model="popup.surgeryTrauma">
+        <AddSurgeryTrauma style="max-height: 80vh"
+                          @onSave="popup.surgeryTrauma = false"
+                          v-model="model.surgeryTrauma"
+                          v-if="popup.surgeryTrauma">
         </AddSurgeryTrauma>
       </van-popup>
 
-      <van-cell title="家族病史" is-link placeholder="请输入" @click="popup.familyHistory = true"
-        v-model="model.familyHistory" />
-      <van-popup position="bottom" v-model="popup.familyHistory">
-        <AddFamilyHistory style="max-height: 80vh" @onSave="popup.familyHistory = false"
-          v-model="model.familyHistory" v-if="popup.familyHistory">
+      <van-cell title="家族病史"
+                is-link
+                placeholder="请输入"
+                @click="popup.familyHistory = true"
+                v-model="model.familyHistory" />
+      <van-popup position="bottom"
+                 v-model="popup.familyHistory">
+        <AddFamilyHistory style="max-height: 80vh"
+                          @onSave="popup.familyHistory = false"
+                          v-model="model.familyHistory"
+                          v-if="popup.familyHistory">
         </AddFamilyHistory>
       </van-popup>
 
-      <van-cell title="药物过敏" is-link @click="popup.drugAllergy = true"
+      <van-cell title="过敏史"
+                is-link
+                @click="popup.drugAllergy = true"
+                :value="model.allergicHistory || '无'" />
+      <van-popup position="bottom"
+                 v-model="popup.drugAllergy">
+        <AddAllergicHistory style="max-height: 80vh"
+                            @onSave="updateAllergy"
+                            v-model="model.allergicHistory"
+                            v-if="popup.drugAllergy">
+        </AddAllergicHistory>
+      </van-popup>
+
+      <!-- <van-cell title="药物过敏" is-link @click="popup.drugAllergy = true"
         :value="model.drugAllergy || '无'" />
       <van-popup position="bottom" v-model="popup.drugAllergy">
         <AddAllergicHistory style="max-height: 80vh" @onSave="popup.drugAllergy = false"
           v-model="model.drugAllergy" v-if="popup.drugAllergy">
         </AddAllergicHistory>
-      </van-popup>
+      </van-popup> -->
 
-      <van-cell title="食物/接触物过敏" is-link @click="popup.foodAllergy = true"
+      <!-- <van-cell title="食物/接触物过敏" is-link @click="popup.foodAllergy = true"
         :value="model.foodAllergy || '无'" />
       <van-popup position="bottom" v-model="popup.foodAllergy">
         <AddFoodAllergy style="max-height: 80vh" @onSave="popup.foodAllergy = false"
           v-model="model.foodAllergy" v-if="popup.foodAllergy">
         </AddFoodAllergy>
-      </van-popup>
+      </van-popup> -->
 
-      <van-cell title="个人习惯" is-link @click="popup.personalHabit = true"
-        v-model="model.personalHabit" />
-      <van-popup position="bottom" v-model="popup.personalHabit">
-        <AddPersonalHabit style="max-height: 80vh" @onSave="popup.personalHabit = false"
-          v-model="model.personalHabit" v-if="popup.personalHabit">
+      <van-cell title="个人习惯"
+                is-link
+                @click="popup.personalHabit = true"
+                v-model="model.personalHabit" />
+      <van-popup position="bottom"
+                 v-model="popup.personalHabit">
+        <AddPersonalHabit style="max-height: 80vh"
+                          @onSave="popup.personalHabit = false"
+                          v-model="model.personalHabit"
+                          v-if="popup.personalHabit">
         </AddPersonalHabit>
       </van-popup>
     </van-cell-group>
 
     <div class="footer">
-      <van-button @click="save" style="width: 100%;" type="primary">保存</van-button>
+      <van-button @click="save"
+                  style="width: 100%;"
+                  type="primary">保存</van-button>
     </div>
   </div>
 </template>
@@ -84,7 +133,7 @@
 import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
-import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
+// import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import AddPersonalHabit from '@src/views/components/AddPersonalHabit'
 import AddSurgeryTrauma from '@src/views/components/AddSurgeryTrauma'
 import AddFamilyHistory from '@src/views/components/AddFamilyHistory'
@@ -92,7 +141,7 @@ import AddFamilyHistory from '@src/views/components/AddFamilyHistory'
 export default {
   components: {
     AddAllergicHistory,
-    AddFoodAllergy,
+    // AddFoodAllergy,
     AddPersonalHabit,
     AddSurgeryTrauma,
     AddFamilyHistory
@@ -109,6 +158,7 @@ export default {
         fertilityStatus: '',
         surgeryTrauma: '',
         familyHistory: '',
+        allergicHistory: '',
         drugAllergy: '',
         foodAllergy: '',
         personalHabit: ''
@@ -144,6 +194,17 @@ export default {
   },
 
   methods: {
+    updateAllergy({ foodAllergy, drugAllergy }) {
+      this.popup.drugAllergy = false
+      this.model.foodAllergy =
+        this.model.foodAllergy.length > 0
+          ? this.model.foodAllergy + ',' + foodAllergy.map(item => item.value).toString()
+          : foodAllergy.map(item => item.value).toString()
+      this.model.drugAllergy =
+        this.model.drugAllergy.length > 0
+          ? this.model.drugAllergy + ',' + drugAllergy.map(item => item.value).toString()
+          : drugAllergy.map(item => item.value).toString()
+    },
     confirm(v) {
       const personalHabit = this.model.personalHabit ? this.model.personalHabit.split(',') : []
 
@@ -171,11 +232,12 @@ export default {
         this.dict.familyHistory = res.data.map(item => item.name)
       })
       peace.service.health.lists({ type: 5 }).then(res => {
-        this.dict.drugAllergy = res.data.map(item => item.name)
+        // this.dict.drugAllergy = res.data.map(item => item.name)
+        this.dict.allergicHistory = res.data.map(item => item.name)
       })
-      peace.service.health.lists({ type: 6 }).then(res => {
-        this.dict.foodAllergy = res.data.map(item => item.name)
-      })
+      // peace.service.health.lists({ type: 6 }).then(res => {
+      //   this.dict.foodAllergy = res.data.map(item => item.name)
+      // })
     },
 
     familyInfo() {
@@ -190,6 +252,8 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.health.getBaseInfo(params).then(res => {
+        this.model.allergicHistory =
+          res.data.foodAllergy.length > 0 ? res.data.foodAllergy + ',' + res.data.drugAllergy : res.data.drugAllergy
         this.model = Object.assign({}, this.model, res.data)
       })
     },

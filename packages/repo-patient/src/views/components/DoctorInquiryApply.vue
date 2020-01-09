@@ -1202,8 +1202,11 @@ export default {
     },
 
     applyHandler() {
-      const params = this.model
-
+      // const params = this.model
+      let params = {}
+      for (let key in this.model) {
+        params[key] = this.model[key]
+      }
       return peace.service.inquiry.apply(params).then(res => {
         // 订单提交成功
         if (res.data.errorState === 0) {

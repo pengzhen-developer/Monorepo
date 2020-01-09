@@ -3,9 +3,13 @@
        v-if="hospitalInfo">
     <template v-if="hospitalInfo.nethospitalStatus">
       <div class="banner">
-        <div class="banner-img">
+        <img class="bgImg"
+             src="@src/assets/images/newIndex/bg_home.png" />
+        <img class="banner-icon"
+             :src="hospitalInfo.nethospitalInfo.icon" />>
+        <!-- <div class="banner-img">
           <img :src="hospitalInfo.nethospitalInfo.icon" />
-        </div>
+        </div> -->
       </div>
       <section class="info">
         <div class="name-wrap">
@@ -420,22 +424,41 @@ export default {
     width: 100%;
     height: 175px;
     background: #fff;
-    .banner-img {
+    position: relative;
+    .bgImg {
+      position: absolute;
       width: 100%;
       height: 100%;
-      background: url('../../assets/images/newIndex/bg_home.png');
-      background-size: 100% 100%;
-      position: relative;
-      img {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        position: absolute;
-        bottom: 0;
-        right: 30px;
-        border: 2px solid #fff;
-      }
+      display: block;
+      z-index: 3;
     }
+    .banner-icon {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 30px;
+      border: 2px solid #fff;
+      z-index: 5;
+    }
+    // .banner-img {
+    //   width: 100%;
+    //   height: 100%;
+    //   background: url('../../assets/images/newIndex/bg_home.png');
+    //   background-size: 100% 100%;
+    //   position: relative;
+    //   img {
+    //     width: 130px;
+    //     height: 130px;
+    //     border-radius: 50%;
+    //     position: absolute;
+    //     bottom: 0;
+    //     right: 30px;
+    //     border: 2px solid #fff;
+    //     z-index: 5;
+    //   }
+    // }
   }
   .info {
     padding: 20px 16px 0;
@@ -604,8 +627,9 @@ export default {
     .dept-wrap {
       display: flex;
       flex-wrap: wrap;
-      width: 360px;
-      margin: 0 auto;
+      // width: 360px;
+      width: calc(100% - 15px);
+      margin: 0 7.5px;
       .item {
         width: 33.3333333%;
         margin-bottom: 15px;
