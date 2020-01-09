@@ -17,12 +17,15 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
-            <div class="btn-wrapper">
+            <div
+              v-if="showQRCodeBtn"
+              class="btn-wrapper"
+            >
               <div
                 @click.stop
                 class="btn--code"
                 @click="onClickSeeQRCode"
-              >查看取货码</div>
+              >查看取药码</div>
             </div>
           </div>
           <div class="order-text"></div>
@@ -201,16 +204,24 @@
           @click.stop
           class="qr-code-wrapper">
           <div class="qr-code-area">
+            <!--有二维码-->
             <div
-              v-if="hasQRCode"
+              v-if="QRCodeURL"
               class="qr-code"
-            ></div>
+            >
+              <div class="title">取药码</div>
+            </div>
+            <!--没有二维码-->
             <div
-              v-if="!hasQRCode"
+              v-if="!QRCodeURL"
               class="qr-code qr-code--empty"
             >
               <div class="title">取药码</div>
-              <img :src="require('@src/assets/images/qrcode-empty.png')" alt="">
+              <img
+                class="img-qr-code-empty"
+                :src="require('@src/assets/images/qrcode-empty.png')"
+                alt=""
+              >
               <div class="context">暂无二维码</div>
               <div class="info">请使用取药码进行取药</div>
             </div>
@@ -234,6 +245,25 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    SELF: 6,
+    PACKAGE: 7,
+    COMPLETE: 8
+  }
+}
+
 export default {
   components: {
     TheRecipe
@@ -241,6 +271,8 @@ export default {
 
   data() {
     return {
+      ENUM,
+
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
@@ -248,7 +280,8 @@ export default {
       appid: '',
       order: {},
       showQRCode: false,
-      pickUpCode: 'sss1111',
+      pickUpCode: null,
+      QRCodeURL: null,
 
       recipeDetail: {
         visible: false,
@@ -258,8 +291,12 @@ export default {
   },
 
   computed: {
-    hasQRCode() {
-      return false
+    showQRCodeBtn() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
+        && OrderStatus >= ENUM.ORDER_STATUS.PACKAGE
     }
   },
 
@@ -330,9 +367,12 @@ export default {
     },
 
     goDrugLogiPage() {
-      const params = this.$route.params.json
+      const shippingMethod = this.order.ShippingMethod
+      const json = peace.util.decode(this.$route.params.json)
+      json.shippingMethod = shippingMethod
+      const afterJson = peace.util.encode(json)
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.push(`/order/userDrugLogistics/${afterJson}`)
     },
 
     canselOrder() {
@@ -379,7 +419,6 @@ export default {
 
     .qr-code-wrapper {
       width: 250px;
-      height: 270px;
       background-color: #fff;
       border-radius: 5px;
 
@@ -415,9 +454,8 @@ export default {
        }
 
       .qr-code-area {
-        height: 220px;
         width: 100%;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #eee;
 
         display: flex;
         align-items: center;
@@ -432,6 +470,10 @@ export default {
           justify-content: flex-start;
           align-items: center;
           flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
         }
 
         .qr-code--empty {
@@ -442,7 +484,7 @@ export default {
             margin: .42rem 0;
           }
 
-          img {
+          .img-qr-code-empty {
             width: 118px;
             height: 100px;
             margin-bottom: .26rem;
@@ -453,7 +495,7 @@ export default {
           }
 
           .info {
-            margin-bottom: .1rem;
+            margin-bottom: .42rem;
             font-size: 12px;
             color: #ccc;
           }

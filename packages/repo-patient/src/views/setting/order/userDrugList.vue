@@ -65,6 +65,11 @@
             <div class="panel-bottom"
                  v-if="item.OrderStatus != 5">
               <div class="time"></div>
+              <div class="label blue"
+                   @click="onClickSeeQRCode(item)"
+                   v-if="checkQRCodeBtn(item)">
+                取药码
+              </div>
               <div class="label gary"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
                    @click="canselOrder(item)">取消订单
@@ -90,6 +95,47 @@
           </div>
           <div class="bottom">客服电话：4009020365</div>
         </div>
+        <!--二维码弹窗-->
+        <van-overlay
+          :show="showQRCode"
+          @click="showQRCode = false"
+        >
+          <div class="overlay-wrapper">
+            <div
+              @click.stop
+              class="qr-code-wrapper">
+              <div class="qr-code-area">
+                <!--有二维码-->
+                <div
+                  v-if="QRCodeURL"
+                  class="qr-code"
+                >
+                  <div class="title">取药码</div>
+                </div>
+                <!--没有二维码-->
+                <div
+                  v-if="!QRCodeURL"
+                  class="qr-code qr-code--empty"
+                >
+                  <div class="title">取药码</div>
+                  <img
+                    class="img-qr-code-empty"
+                    :src="require('@src/assets/images/qrcode-empty.png')"
+                    alt=""
+                  >
+                  <div class="context">暂无二维码</div>
+                  <div class="info">请使用取药码进行取药</div>
+                </div>
+              </div>
+              <!--          <div class="message-line"></div>-->
+              <div
+                class="text-area"
+              >
+                取药码：{{ pickUpCode }}
+              </div>
+            </div>
+          </div>
+        </van-overlay>
       </div>
     </template>
 
@@ -104,6 +150,26 @@
 
 <script>
 import peace from '@src/library'
+
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0, // >= 7
+    HOME: 1 // >= 3
+  },
+  // 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    SELF: 6,
+    PACKAGE: 7,
+    COMPLETE: 8
+  }
+}
+
 export default {
   data() {
     return {
@@ -112,8 +178,17 @@ export default {
       tabIndex: '0',
       currentOrderId: '',
       drugItems: undefined,
-      consultList: undefined
+      consultList: undefined,
+      // 控制二维码弹窗显示
+      showQRCode: false,
+      pickUpCode: null,
+      QRCodeURL: null,
+
+      ENUM,
     }
+  },
+
+  computed: {
   },
 
   activated() {
@@ -132,6 +207,19 @@ export default {
     // }
   },
   methods: {
+    checkQRCodeBtn(order) {
+      const ShippingMethod = order.ShippingMethod
+      const OrderStatus = order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
+        && OrderStatus >= ENUM.ORDER_STATUS.PACKAGE
+    },
+
+    onClickSeeQRCode(order) {
+      this.pickUpCode = order.pickUpCode
+      this.showQRCode = true
+    },
+
     changeTab(item) {
       this.tabIndex = item
 
@@ -211,6 +299,109 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+  .overlay-wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      background-color: #fff;
+      border-radius: 5px;
+
+      .message-line {
+        width: 100%;
+        height: 1px;
+        border-top: 1px dashed #eee;
+        position: relative;
+
+        &::before {
+          content: '';
+          width: 0.37333rem;
+          height: 0.37333rem;
+          border-radius: 50%;
+          left: -0.18667rem;
+          top: -0.18667rem;
+          position: absolute;
+          display: block;
+          background: #f2f2f2;
+        }
+
+        &::after {
+          content: '';
+          width: 0.37333rem;
+          height: 0.37333rem;
+          border-radius: 50%;
+          right: -0.18667rem;
+          top: -0.18667rem;
+          position: absolute;
+          display: block;
+          background: #f2f2f2;
+        }
+      }
+
+      .qr-code-area {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+      .text-area {
+        height: 50px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
 .user-drug-list {
   display: flex;
   flex-direction: column;

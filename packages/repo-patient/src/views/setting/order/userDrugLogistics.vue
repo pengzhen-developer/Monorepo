@@ -37,10 +37,62 @@
                  v-if="item.ServiceStates == '4'">
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
+            <div
+              v-if="item.ServiceStates === '3' && shippingMethod === 0"
+              class="note"
+            >
+              <div
+                class="qr-btn"
+                @click="onClickSeeQRCode(item)"
+              >
+                查看取药码
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <!--二维码弹窗-->
+    <van-overlay
+      :show="showQRCode"
+      @click="showQRCode = false"
+    >
+      <div class="overlay-wrapper">
+        <div
+          @click.stop
+          class="qr-code-wrapper">
+          <div class="qr-code-area">
+            <!--有二维码-->
+            <div
+              v-if="QRCodeURL"
+              class="qr-code"
+            >
+              <div class="title">取药码</div>
+            </div>
+            <!--没有二维码-->
+            <div
+              v-if="!QRCodeURL"
+              class="qr-code qr-code--empty"
+            >
+              <div class="title">取药码</div>
+              <img
+                class="img-qr-code-empty"
+                :src="require('@src/assets/images/qrcode-empty.png')"
+                alt=""
+              >
+              <div class="context">暂无二维码</div>
+              <div class="info">请使用取药码进行取药</div>
+            </div>
+          </div>
+          <!--          <div class="message-line"></div>-->
+          <div
+            class="text-area"
+          >
+            取药码：{{ pickUpCode }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -50,7 +102,10 @@ import peace from '@src/library'
 export default {
   data() {
     return {
-      data: undefined
+      data: undefined,
+      shippingMethod: null,
+      showQRCode: null,
+      QRCodeURL: null,
     }
   },
 
@@ -59,8 +114,14 @@ export default {
   },
 
   methods: {
+    onClickSeeQRCode(order) {
+      this.pickUpCode = order.pickUpCode
+      this.showQRCode = true
+    },
+
     getLogistics() {
       const params = peace.util.decode(this.$route.params.json)
+      this.shippingMethod = params.shippingMethod
 
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
@@ -71,6 +132,122 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .qr-btn {
+    margin-top: 3px;
+    border: 1px solid #00c6ae;
+    border-radius: 5px;
+    color: #00c6ae;
+    width: 78px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay-wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      background-color: #fff;
+      border-radius: 5px;
+
+      .message-line {
+        width: 100%;
+        height: 1px;
+        border-top: 1px dashed #eee;
+        position: relative;
+
+        &::before {
+          content: '';
+          width: 0.37333rem;
+          height: 0.37333rem;
+          border-radius: 50%;
+          left: -0.18667rem;
+          top: -0.18667rem;
+          position: absolute;
+          display: block;
+          background: #f2f2f2;
+        }
+
+        &::after {
+          content: '';
+          width: 0.37333rem;
+          height: 0.37333rem;
+          border-radius: 50%;
+          right: -0.18667rem;
+          top: -0.18667rem;
+          position: absolute;
+          display: block;
+          background: #f2f2f2;
+        }
+      }
+
+      .qr-code-area {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+      .text-area {
+        height: 50px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+
 .card-avatar {
   display: flex;
   align-items: center;
