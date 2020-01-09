@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo&&(internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText)">
+           v-if="internalData.inquiryOrderInfo&&((internalData.inquiryOrderInfo.aImages&&internalData.inquiryOrderInfo.aImages.length>0)||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText)">
         <div>
           <div class="b">补充信息</div>
           <div class="form-dl img"

@@ -73,7 +73,7 @@
     </div>
 
     <div class="card"
-         v-if="internalData.inquiryOrderInfo&&(internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText)">
+         v-if="internalData.inquiryOrderInfo&&((internalData.inquiryOrderInfo.aImages&&internalData.inquiryOrderInfo.aImages.length>0)||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText)">
       <h4>补充信息</h4>
       <div v-if="internalData.inquiryOrderInfo.aImages.length>0">
         <span class="label">患处图片</span>
