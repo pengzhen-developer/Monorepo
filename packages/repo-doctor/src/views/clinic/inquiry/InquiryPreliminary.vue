@@ -80,13 +80,13 @@
         </div>
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText">
+           v-if="internalData.inquiryOrderInfo&&(internalData.inquiryOrderInfo.aImages.length>0||internalData.inquiryOrderInfo.allergicHistory||internalData.inquiryOrderInfo.pregnancyText)">
         <div>
           <div class="b">补充信息</div>
           <div class="form-dl img"
                style="display: flex; align-items: flex-start;"
                v-if="internalData.inquiryOrderInfo.aImages.length > 0">
-            <div class="form-dt">患者图片</div>
+            <div class="form-dt">患处图片</div>
             <span class="form-dt"
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-img"
