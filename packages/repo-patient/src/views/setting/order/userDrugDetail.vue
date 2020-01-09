@@ -27,6 +27,12 @@
                 @click="onClickSeeQRCode"
               >查看取药码</div>
             </div>
+            <div
+              v-if="showTrackingNumber"
+              class="tracking-number"
+            >
+              运单编号：{{ order.pickUpCode }}
+            </div>
           </div>
           <div class="order-text"></div>
         </div>
@@ -297,7 +303,14 @@ export default {
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
         && OrderStatus >= ENUM.ORDER_STATUS.PACKAGE
-    }
+    },
+    showTrackingNumber() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
+        && OrderStatus >= ENUM.ORDER_STATUS.SEND
+    },
   },
 
   created() {
@@ -368,8 +381,10 @@ export default {
 
     goDrugLogiPage() {
       const shippingMethod = this.order.ShippingMethod
+      const orderStatus = this.order.OrderStatus
       const json = peace.util.decode(this.$route.params.json)
       json.shippingMethod = shippingMethod
+      json.orderStatus = orderStatus
       const afterJson = peace.util.encode(json)
 
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
@@ -801,6 +816,11 @@ export default {
 }
 .order-card {
   text-align: center;
+
+  .tracking-number {
+    font-size: 12px;
+    color: #aaa;
+  }
 
   .btn-wrapper {
     width: 100%;

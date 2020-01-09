@@ -15,6 +15,12 @@
           <div class="text">
             订单编号：{{data.OrderId}}
           </div>
+          <div
+            v-if="showTrackingNumber"
+            class="text"
+          >
+            运单编号：{{ pickUpCode }}
+          </div>
           <div class="text"
                v-if="data.ShippingMethod == '1'">配送编号：无</div>
         </div>
@@ -99,14 +105,46 @@
 <script>
 import peace from '@src/library'
 
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    SELF: 6,
+    PACKAGE: 7,
+    COMPLETE: 8
+  }
+}
+
 export default {
   data() {
     return {
+      ENUM,
+
       data: undefined,
       shippingMethod: null,
+      orderStatus: null,
       showQRCode: null,
       QRCodeURL: null,
     }
+  },
+
+  computed: {
+    showTrackingNumber() {
+      const ShippingMethod = this.shippingMethod
+      const OrderStatus = this.orderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
+        && OrderStatus >= ENUM.ORDER_STATUS.SEND
+    },
   },
 
   created() {
@@ -122,6 +160,7 @@ export default {
     getLogistics() {
       const params = peace.util.decode(this.$route.params.json)
       this.shippingMethod = params.shippingMethod
+      this.orderStatus = params.orderStatus
 
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
