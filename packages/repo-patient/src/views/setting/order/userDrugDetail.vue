@@ -17,6 +17,13 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
+            <div class="btn-wrapper">
+              <div
+                @click.stop
+                class="btn--code"
+                @click="onClickSeeQRCode"
+              >查看取货码</div>
+            </div>
           </div>
           <div class="order-text"></div>
         </div>
@@ -185,6 +192,38 @@
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
+    <van-overlay
+      :show="showQRCode"
+      @click="showQRCode = false"
+    >
+      <div class="wrapper">
+        <div
+          @click.stop
+          class="qr-code-wrapper">
+          <div class="qr-code-area">
+            <div
+              v-if="hasQRCode"
+              class="qr-code"
+            ></div>
+            <div
+              v-if="!hasQRCode"
+              class="qr-code qr-code--empty"
+            >
+              <div class="title">取药码</div>
+              <img :src="require('@src/assets/images/qrcode-empty.png')" alt="">
+              <div class="context">暂无二维码</div>
+              <div class="info">请使用取药码进行取药</div>
+            </div>
+          </div>
+<!--          <div class="message-line"></div>-->
+          <div
+            class="text-area"
+          >
+            取药码：{{ pickUpCode }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -208,11 +247,19 @@ export default {
       timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
       appid: '',
       order: {},
+      showQRCode: false,
+      pickUpCode: 'sss1111',
 
       recipeDetail: {
         visible: false,
         data: {}
-      }
+      },
+    }
+  },
+
+  computed: {
+    hasQRCode() {
+      return false
     }
   },
 
@@ -231,6 +278,10 @@ export default {
     // }
   },
   methods: {
+    onClickSeeQRCode() {
+      this.showQRCode = true
+    },
+
     payCallback() {
       // let orderId = ''
       // if (this.$route.query.orderId) {
@@ -317,6 +368,108 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+  .wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      height: 270px;
+      background-color: #fff;
+      border-radius: 5px;
+
+      .message-line {
+         width: 100%;
+         height: 1px;
+         border-top: 1px dashed #eee;
+         position: relative;
+
+         &::before {
+           content: '';
+           width: 0.37333rem;
+           height: 0.37333rem;
+           border-radius: 50%;
+           left: -0.18667rem;
+           top: -0.18667rem;
+           position: absolute;
+           display: block;
+           background: #f2f2f2;
+         }
+
+         &::after {
+           content: '';
+           width: 0.37333rem;
+           height: 0.37333rem;
+           border-radius: 50%;
+           right: -0.18667rem;
+           top: -0.18667rem;
+           position: absolute;
+           display: block;
+           background: #f2f2f2;
+         }
+       }
+
+      .qr-code-area {
+        height: 220px;
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          img {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .1rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+      .text-area {
+        height: 50px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
 .user-drug-detail {
   height: 100%;
   background: #f5f5f5;
@@ -606,6 +759,20 @@ export default {
 }
 .order-card {
   text-align: center;
+
+  .btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn--code {
+      color: #00c6ae;
+      padding: .16rem .38rem;
+      border: 1px solid #00c6ae;
+      border-radius: 5px;
+    }
+  }
 }
 .order-card .icon {
   width: 38px;
