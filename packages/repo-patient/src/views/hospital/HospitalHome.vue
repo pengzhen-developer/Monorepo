@@ -657,8 +657,9 @@ export default {
     .doc-wrap {
       display: -webkit-box;
       overflow-x: scroll;
-      margin: 0 16px;
-      padding-bottom: 25px;
+      margin: 0 14px;
+      padding: 0 2px 25px 2px;
+      // padding-bottom: 25px;
       .item-wrap {
         position: relative;
         width: 130px;
