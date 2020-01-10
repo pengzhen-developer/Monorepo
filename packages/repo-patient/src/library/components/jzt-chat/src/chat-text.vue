@@ -112,6 +112,8 @@
 
     &--right {
       border-radius: 20px 0px 20px 20px;
+      background: #00c6ae;
+      color: #fff;
     }
   }
 
