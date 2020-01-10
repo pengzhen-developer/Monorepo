@@ -116,13 +116,13 @@ const ALLERGY_TYPE = {
 }
 
 export default {
-  name: 'supplementaryAllergies',
+  name: 'AddAllergicHistory',
 
   props: {
     value: {
-      type: String,
+      type: Array,
       default() {
-        return ''
+        return []
       }
     }
   },
@@ -209,16 +209,17 @@ export default {
     },
 
     paramsHandler() {
-      if (this.internalValue) {
-        if (typeof this.internalValue === 'string') {
-          this.internalValue = this.internalValue.split(',')
-        }
+      console.log(this.internalValue)
+      if (this.internalValue.length > 0) {
+        // if (typeof this.internalValue === 'string') {
+        //   this.internalValue = this.internalValue.split(',')
+        // }
 
         this.internalValue.forEach(allergic => {
-          this.allergicHistory.push({ value: allergic, checked: true })
+          this.allergicHistory.push({ value: allergic.value, checked: true, type: allergic.type })
 
-          if (this.allergicHistoryCommonly.find(item => item.value === allergic)) {
-            this.allergicHistoryCommonly.find(item => item.value === allergic).checked = true
+          if (this.allergicHistoryCommonly.find(item => item.value === allergic.value)) {
+            this.allergicHistoryCommonly.find(item => item.value === allergic.value).checked = true
           }
         })
       }
@@ -325,7 +326,6 @@ export default {
     save() {
       const foodAllergy = []
       const drugAllergy = []
-
       this.allergicHistory.forEach(allergy => {
         const type = allergy.type
         if (ALLERGY_TYPE.DRUG === type) {
@@ -335,7 +335,7 @@ export default {
         }
       })
 
-      this.$emit('input', this.allergicHistory.map(item => item.value).toString())
+      this.$emit('input', this.allergicHistory)
       this.$emit('onSave', { foodAllergy, drugAllergy })
     }
   },

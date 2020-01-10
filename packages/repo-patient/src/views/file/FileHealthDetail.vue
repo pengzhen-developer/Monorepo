@@ -86,7 +86,7 @@
                  v-model="popup.drugAllergy">
         <AddAllergicHistory style="max-height: 80vh"
                             @onSave="updateAllergy"
-                            v-model="model.allergicHistory"
+                            v-model="allergicHistorys"
                             v-if="popup.drugAllergy">
         </AddAllergicHistory>
       </van-popup>
@@ -182,7 +182,8 @@ export default {
         drugAllergy: [],
         foodAllergy: [],
         personalHabit: []
-      }
+      },
+      allergicHistorys: []
     }
   },
 
@@ -195,15 +196,12 @@ export default {
 
   methods: {
     updateAllergy({ foodAllergy, drugAllergy }) {
+      console.log(this.allergicHistorys)
+      console.log(foodAllergy, drugAllergy)
       this.popup.drugAllergy = false
-      this.model.foodAllergy =
-        this.model.foodAllergy.length > 0
-          ? this.model.foodAllergy + ',' + foodAllergy.map(item => item.value).toString()
-          : foodAllergy.map(item => item.value).toString()
-      this.model.drugAllergy =
-        this.model.drugAllergy.length > 0
-          ? this.model.drugAllergy + ',' + drugAllergy.map(item => item.value).toString()
-          : drugAllergy.map(item => item.value).toString()
+      this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
+      this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
+      this.model.allergicHistory = this.allergicHistorys.map(item => item.value).toString()
     },
     confirm(v) {
       const personalHabit = this.model.personalHabit ? this.model.personalHabit.split(',') : []
@@ -252,9 +250,33 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.health.getBaseInfo(params).then(res => {
-        this.model.allergicHistory =
-          res.data.foodAllergy.length > 0 ? res.data.foodAllergy + ',' + res.data.drugAllergy : res.data.drugAllergy
+        if (res.data.drugAllergy[res.data.drugAllergy.length - 1] == ',') {
+          res.data.drugAllergy = res.data.drugAllergy.substring(0, res.data.drugAllergy.length - 1)
+        }
+
+        // this.model.allergicHistory =
+        //   res.data.foodAllergy.length > 0 ? res.data.foodAllergy + ',' + res.data.drugAllergy : res.data.drugAllergy
+
         this.model = Object.assign({}, this.model, res.data)
+        let foodAllergy = this.model.foodAllergy ? this.model.foodAllergy.split(',') : []
+        let drugAllergy = this.model.drugAllergy ? this.model.drugAllergy.split(',') : []
+        this.model.allergicHistory = foodAllergy.concat(drugAllergy).join(',')
+        let foodAllergys = []
+        for (let i = 0; i < foodAllergy.length; i++) {
+          drugAllergys.push({
+            value: foodAllergy[i],
+            type: 6
+          })
+        }
+        let drugAllergys = []
+        for (let j = 0; j < drugAllergy.length; j++) {
+          drugAllergys.push({
+            value: drugAllergy[j],
+            type: 2
+          })
+        }
+
+        this.allergicHistorys = foodAllergys.concat(drugAllergys)
       })
     },
 
