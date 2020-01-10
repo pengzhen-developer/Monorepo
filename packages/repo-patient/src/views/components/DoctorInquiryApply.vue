@@ -731,8 +731,8 @@ export default {
         const context = '暂无过敏史'
         this.pushToChatList({ context })
 
-        this.model.allergicHistory = '暂无'
-        this.model.foodAllergy = '暂无'
+        this.model.allergicHistory = '无'
+        this.model.foodAllergy = '无'
 
         const mode = SUPPLEMENTARY_MODE.ALLERGIES
         this.onAfterSupplementaryAnswer(mode)
