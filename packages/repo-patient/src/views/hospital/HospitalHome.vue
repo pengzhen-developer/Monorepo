@@ -122,6 +122,8 @@
             <img class="avatar"
                  :src="item.avartor" />
             <div class="item">
+              <img src="@src/assets/images/ic_tag.png"
+                   v-if="item.isAttention==0" />>
               <span class="name">{{ item.name }}</span>
               <div class="jd">
                 <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
@@ -582,6 +584,7 @@ export default {
       justify-content: center;
       align-items: center;
       margin-top: 18px;
+      position: relative;
       .img {
         width: 30px;
         height: 30px;
@@ -685,11 +688,18 @@ export default {
           position: absolute;
           bottom: 0;
           left: 0;
+          img {
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            height: 14px;
+            width: 33px;
+          }
           .name {
             font-size: 14px;
             font-weight: 600;
             color: rgba(0, 0, 0, 1);
-            margin-top: 30px;
+            margin-top: 10px;
           }
           .jd {
             font-size: 11px;
