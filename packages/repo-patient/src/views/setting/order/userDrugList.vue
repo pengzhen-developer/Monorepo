@@ -65,6 +65,11 @@
             <div class="panel-bottom"
                  v-if="item.OrderStatus != 5">
               <div class="time"></div>
+              <div class="label blue"
+                   @click="onClickSeeQRCode(item)"
+                   v-if="checkQRCodeBtn(item)">
+                取药码
+              </div>
               <div class="label gary"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
                    @click="canselOrder(item)">取消订单
@@ -90,6 +95,47 @@
           </div>
           <div class="bottom">客服电话：4009020365</div>
         </div>
+        <!--二维码弹窗-->
+        <van-overlay
+          :show="showQRCode"
+          @click="showQRCode = false"
+        >
+          <div class="overlay-wrapper">
+            <div
+              @click.stop
+              class="qr-code-wrapper">
+              <div class="qr-code-area">
+                <!--有二维码-->
+                <div
+                  v-if="QRCodeURL"
+                  class="qr-code"
+                >
+                  <div class="title">取药码</div>
+                </div>
+                <!--没有二维码-->
+                <div
+                  v-if="!QRCodeURL"
+                  class="qr-code qr-code--empty"
+                >
+                  <div class="title">取药码</div>
+                  <img
+                    class="img-qr-code-empty"
+                    :src="require('@src/assets/images/qrcode-empty.png')"
+                    alt=""
+                  >
+                  <div class="context">暂无二维码</div>
+                  <div class="info">请使用取药码进行取药</div>
+                </div>
+              </div>
+              <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+              <div
+                class="text-area"
+              >
+                取药码：{{ pickUpCode }}
+              </div>
+            </div>
+          </div>
+        </van-overlay>
       </div>
     </template>
 
@@ -104,6 +150,24 @@
 
 <script>
 import peace from '@src/library'
+
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    COMPLETE: 6
+  }
+}
+
 export default {
   data() {
     return {
@@ -112,8 +176,17 @@ export default {
       tabIndex: '0',
       currentOrderId: '',
       drugItems: undefined,
-      consultList: undefined
+      consultList: undefined,
+      // 控制二维码弹窗显示
+      showQRCode: false,
+      pickUpCode: null,
+      QRCodeURL: null,
+
+      ENUM,
     }
+  },
+
+  computed: {
   },
 
   activated() {
@@ -132,6 +205,19 @@ export default {
     // }
   },
   methods: {
+    checkQRCodeBtn(order) {
+      const ShippingMethod = order.ShippingMethod
+      const OrderStatus = order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
+        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+    },
+
+    onClickSeeQRCode(order) {
+      this.pickUpCode = order.pickUpCode
+      this.showQRCode = true
+    },
+
     changeTab(item) {
       this.tabIndex = item
 
@@ -211,6 +297,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+  .overlay-wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      border-radius: 5px;
+
+      .qr-code-area {
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+      .text-area {
+        height: 50px;
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
 .user-drug-list {
   display: flex;
   flex-direction: column;

@@ -13,8 +13,13 @@
           <!-- <span class="money"
                 v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
         </div>
-        <div class="brief">
+        <div class="brief"
+             v-if="internalData.inquiryInfo.inquiryStatus!=4">
           {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
+        </div>
+        <div class="brief"
+             v-else>
+          {{internalData.inquiryInfo.overCause}}
         </div>
         <div class="cancelText"
              v-if="
@@ -93,22 +98,11 @@
                  v-if="internalData.inquiryInfo.inquiryImages.length>0">
               <div class="form-dt ">复诊凭证 :</div>
               <div class="form-img">
-                <van-image-preview v-model="imagePreview.visible"
-                                   :start-position="imagePreview.position"
-                                   :images="internalData.inquiryInfo.inquiryImages.map(file => file.image_path)">
-                  <template v-slot:cover>
-                    <van-button icon="cross"
-                                type="primary"
-                                round
-                                @click="imagePreview.visible = false" />
-                  </template>
-                </van-image-preview>
-
                 <div class="img"
                      v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
                      :key="index">
                   <img :src="item.image_path"
-                       @click="viewImage(item, index)" />
+                       @click="viewImage(item, index,internalData.inquiryInfo.inquiryImages)" />
                 </div>
               </div>
             </div>
@@ -121,6 +115,35 @@
             <div class="form-dl">
               <div class="form-dt">初诊诊断 :</div>
               <div class="form-dd">{{internalData.illInfo.confirmIllness}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="module-item"
+             v-if="internalData.supplementaryInfo && (internalData.supplementaryInfo.affectedImages.length>0||internalData.supplementaryInfo.pregnancyText||internalData.supplementaryInfo.allergicHistory)">
+          <div>
+            <div class="b">补充信息</div>
+            <div class="form-dl img"
+                 v-if="internalData.supplementaryInfo.affectedImages.length>0">
+              <div class="form-dt ">患处图片 :</div>
+              <div class="form-img">
+                <div class="img"
+                     v-for="(item,index) in internalData.supplementaryInfo.affectedImages"
+                     :key="index">
+                  <img :src="item.image_path"
+                       @click="viewImage(item, index,internalData.supplementaryInfo.affectedImages)" />
+                </div>
+              </div>
+            </div>
+            <div class="form-dl"
+                 v-if="internalData.supplementaryInfo.pregnancyText">
+              <div class="form-dt">特殊时期 :</div>
+              <div class="form-dd">{{internalData.supplementaryInfo.pregnancyText}}</div>
+            </div>
+            <div class="form-dl"
+                 v-if="internalData.supplementaryInfo.allergicHistory">
+              <div class="form-dt"><span>过敏史</span> :</div>
+              <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
           </div>
@@ -188,7 +211,7 @@
         </template>
       </div>
     </div>
-    <template v-if="internalData&& 
+    <template v-if="internalData&&
                internalData.inquiryInfo">
       <div class="footer"
            v-if="internalData.inquiryInfo.inquiryStatus == '2'">
@@ -196,11 +219,11 @@
              @click="showCancellPop(internalData)">取消订单</div>
       </div>
       <div class="h64"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5')"></div>
       <div class="footer fixedBottom"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5')">
         <div class="footer-btn chat-btn"
@@ -251,6 +274,17 @@
                   title="咨询记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
+
+    <van-image-preview v-model="imagePreview.visible"
+                       :start-position="imagePreview.position"
+                       :images="imagePreview.images">
+      <template v-slot:cover>
+        <van-button icon="cross"
+                    type="primary"
+                    round
+                    @click="imagePreview.visible = false" />
+      </template>
+    </van-image-preview>
   </div>
 </template>
 
@@ -300,10 +334,10 @@ export default {
         visible: false,
         data: []
       },
-
       imagePreview: {
         visible: false,
-        position: 0
+        position: 0,
+        images: []
       },
       fromChatRoom: false
     }
@@ -361,7 +395,8 @@ export default {
         '1': '订单创建15分钟后未支付将自动关闭',
         '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
         '3': '请及时与医生沟通',
-        '4': '医生已退诊',
+        // '4': '医生已退诊',
+        '4': '',
         '5': '祝您身体健康',
         '6':
           this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
@@ -431,10 +466,10 @@ export default {
           // on cancel
         })
     },
-
-    viewImage(file, fileIndex) {
+    viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
+      this.imagePreview.images = files.map(item => item.image_path)
     }
   }
 }

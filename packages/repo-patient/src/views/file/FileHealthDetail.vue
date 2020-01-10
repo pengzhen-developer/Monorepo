@@ -6,9 +6,11 @@
       <van-image round v-if="model.sex === '女'" width="50px" height="50px"
         :src="require('@src/assets/images/img_head girl.png')" />
       <span style="font-size: 20px; margin: 0 10px;">{{ model.name }}</span>
-      <van-icon v-if="model.sex === '男'" :name="require('@src/assets/images/file/ic_boys.png')">
+      <van-icon v-if="model.sex === '男'"
+                :name="require('@src/assets/images/file/ic_boys.png')">
       </van-icon>
-      <van-icon v-if="model.sex === '女'" :name="require('@src/assets/images/file/ic_girls.png')">
+      <van-icon v-if="model.sex === '女'"
+                :name="require('@src/assets/images/file/ic_girls.png')">
       </van-icon>
       <span style="font-size: 14px; margin: 0 10px;">{{ model.age + '岁' }}</span>
       <van-tag color="#F2F2F2" text-color="#999999">{{ model.relation }}</van-tag>
@@ -49,21 +51,34 @@
         </AddFamilyHistory>
       </van-popup>
 
-      <van-cell title="药物过敏" is-link @click="popup.drugAllergy = true"
+      <van-cell title="过敏史"
+                is-link
+                @click="popup.drugAllergy = true"
+                :value="model.allergicHistory || '无'" />
+      <van-popup position="bottom"
+                 v-model="popup.drugAllergy">
+        <AddAllergicHistory style="max-height: 80vh"
+                            @onSave="updateAllergy"
+                            v-model="allergicHistorys"
+                            v-if="popup.drugAllergy">
+        </AddAllergicHistory>
+      </van-popup>
+
+      <!-- <van-cell title="药物过敏" is-link @click="popup.drugAllergy = true"
         :value="model.drugAllergy || '无'" />
       <van-popup position="bottom" v-model="popup.drugAllergy">
         <AddAllergicHistory style="max-height: 80vh" @onSave="popup.drugAllergy = false"
           v-model="model.drugAllergy" v-if="popup.drugAllergy">
         </AddAllergicHistory>
-      </van-popup>
+      </van-popup> -->
 
-      <van-cell title="食物/接触物过敏" is-link @click="popup.foodAllergy = true"
+      <!-- <van-cell title="食物/接触物过敏" is-link @click="popup.foodAllergy = true"
         :value="model.foodAllergy || '无'" />
       <van-popup position="bottom" v-model="popup.foodAllergy">
         <AddFoodAllergy style="max-height: 80vh" @onSave="popup.foodAllergy = false"
           v-model="model.foodAllergy" v-if="popup.foodAllergy">
         </AddFoodAllergy>
-      </van-popup>
+      </van-popup> -->
 
       <van-cell title="个人习惯" is-link @click="popup.personalHabit = true"
         v-model="model.personalHabit" />
@@ -84,7 +99,7 @@
 import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
-import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
+// import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import AddPersonalHabit from '@src/views/components/AddPersonalHabit'
 import AddSurgeryTrauma from '@src/views/components/AddSurgeryTrauma'
 import AddFamilyHistory from '@src/views/components/AddFamilyHistory'
@@ -92,7 +107,7 @@ import AddFamilyHistory from '@src/views/components/AddFamilyHistory'
 export default {
   components: {
     AddAllergicHistory,
-    AddFoodAllergy,
+    // AddFoodAllergy,
     AddPersonalHabit,
     AddSurgeryTrauma,
     AddFamilyHistory
@@ -109,6 +124,7 @@ export default {
         fertilityStatus: '',
         surgeryTrauma: '',
         familyHistory: '',
+        allergicHistory: '',
         drugAllergy: '',
         foodAllergy: '',
         personalHabit: ''
@@ -132,7 +148,8 @@ export default {
         drugAllergy: [],
         foodAllergy: [],
         personalHabit: []
-      }
+      },
+      allergicHistorys: []
     }
   },
 
@@ -144,6 +161,14 @@ export default {
   },
 
   methods: {
+    updateAllergy({ foodAllergy, drugAllergy }) {
+      console.log(this.allergicHistorys)
+      console.log(foodAllergy, drugAllergy)
+      this.popup.drugAllergy = false
+      this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
+      this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
+      this.model.allergicHistory = this.allergicHistorys.map(item => item.value).toString()
+    },
     confirm(v) {
       const personalHabit = this.model.personalHabit ? this.model.personalHabit.split(',') : []
 
@@ -171,11 +196,12 @@ export default {
         this.dict.familyHistory = res.data.map(item => item.name)
       })
       peace.service.health.lists({ type: 5 }).then(res => {
-        this.dict.drugAllergy = res.data.map(item => item.name)
+        // this.dict.drugAllergy = res.data.map(item => item.name)
+        this.dict.allergicHistory = res.data.map(item => item.name)
       })
-      peace.service.health.lists({ type: 6 }).then(res => {
-        this.dict.foodAllergy = res.data.map(item => item.name)
-      })
+      // peace.service.health.lists({ type: 6 }).then(res => {
+      //   this.dict.foodAllergy = res.data.map(item => item.name)
+      // })
     },
 
     familyInfo() {
@@ -190,7 +216,33 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.health.getBaseInfo(params).then(res => {
+        if (res.data.drugAllergy[res.data.drugAllergy.length - 1] == ',') {
+          res.data.drugAllergy = res.data.drugAllergy.substring(0, res.data.drugAllergy.length - 1)
+        }
+
+        // this.model.allergicHistory =
+        //   res.data.foodAllergy.length > 0 ? res.data.foodAllergy + ',' + res.data.drugAllergy : res.data.drugAllergy
+
         this.model = Object.assign({}, this.model, res.data)
+        let foodAllergy = this.model.foodAllergy ? this.model.foodAllergy.split(',') : []
+        let drugAllergy = this.model.drugAllergy ? this.model.drugAllergy.split(',') : []
+        this.model.allergicHistory = foodAllergy.concat(drugAllergy).join(',')
+        let foodAllergys = []
+        for (let i = 0; i < foodAllergy.length; i++) {
+          foodAllergys.push({
+            value: foodAllergy[i],
+            type: 6
+          })
+        }
+        let drugAllergys = []
+        for (let j = 0; j < drugAllergy.length; j++) {
+          drugAllergys.push({
+            value: drugAllergy[j],
+            type: 2
+          })
+        }
+
+        this.allergicHistorys = foodAllergys.concat(drugAllergys)
       })
     },
 

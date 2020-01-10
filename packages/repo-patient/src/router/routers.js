@@ -44,10 +44,7 @@ const routers = [
       }
     },
     component: () => {
-      if (
-        $peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) &&
-        $peace.cache.get($peace.type.SYSTEM.CHANNELID)
-      ) {
+      if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && $peace.cache.get($peace.type.SYSTEM.CHANNELID)) {
         return import('@src/views/hospital/HospitalHome.vue')
       } else {
         return import('@src/views/home/index.vue')
@@ -564,6 +561,34 @@ const routers = [
       }
     },
     component: () => import('@src/views/components/DoctorInquiryApply.vue')
+  },
+  // 补充过敏史
+  {
+    path: '/components/supplementaryAllergies/:json',
+    name: '/components/supplementaryAllergies',
+    meta: {
+      keepAlive: true,
+      auth: true,
+      navbar: {
+        title: '添加过敏史',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/SupplementaryAllergies.vue')
+  },
+  // 新增过敏史
+  {
+    path: '/components/addAllergiesInfo/:json',
+    name: '/components/addAllergiesInfo',
+    meta: {
+      keepAlive: true,
+      auth: true,
+      navbar: {
+        title: '新增过敏史',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/AddAllergiesInfo.vue')
   },
   // 附件上传
   {

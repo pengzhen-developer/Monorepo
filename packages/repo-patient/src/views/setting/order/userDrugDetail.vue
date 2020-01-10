@@ -17,6 +17,22 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
+            <div
+              v-if="showQRCodeBtn"
+              class="btn-wrapper"
+            >
+              <div
+                @click.stop
+                class="btn--code"
+                @click="onClickSeeQRCode"
+              >查看取药码</div>
+            </div>
+            <div
+              v-if="showTrackingNumber"
+              class="tracking-number"
+            >
+              运单编号：{{ order.pickUpCode }}
+            </div>
           </div>
           <div class="order-text"></div>
         </div>
@@ -185,6 +201,45 @@
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
+    <van-overlay
+      :show="showQRCode"
+      @click="showQRCode = false"
+    >
+      <div class="wrapper">
+        <div
+          @click.stop
+          class="qr-code-wrapper">
+          <div class="qr-code-area">
+            <!--有二维码-->
+            <div
+              v-if="QRCodeURL"
+              class="qr-code"
+            >
+              <div class="title">取药码</div>
+            </div>
+            <!--没有二维码-->
+            <div
+              v-if="!QRCodeURL"
+              class="qr-code qr-code--empty"
+            >
+              <div class="title">取药码</div>
+              <img
+                class="img-qr-code-empty"
+                :src="require('@src/assets/images/qrcode-empty.png')"
+                alt=""
+              /><div class="context">暂无二维码</div>
+              <div class="info">请使用取药码进行取药</div>
+            </div>
+          </div>
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+          <div
+            class="text-area"
+          >
+            取药码：{{ pickUpCode }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -195,6 +250,23 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    COMPLETE: 6
+  }
+}
+
 export default {
   components: {
     TheRecipe
@@ -202,18 +274,40 @@ export default {
 
   data() {
     return {
+      ENUM,
+
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
       timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
       appid: '',
       order: {},
+      showQRCode: false,
+      pickUpCode: null,
+      QRCodeURL: null,
 
       recipeDetail: {
         visible: false,
         data: {}
-      }
+      },
     }
+  },
+
+  computed: {
+    showQRCodeBtn() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
+        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+    },
+    showTrackingNumber() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
+        && OrderStatus >= ENUM.ORDER_STATUS.SEND
+    },
   },
 
   created() {
@@ -231,6 +325,10 @@ export default {
     // }
   },
   methods: {
+    onClickSeeQRCode() {
+      this.showQRCode = true
+    },
+
     payCallback() {
       // let orderId = ''
       // if (this.$route.query.orderId) {
@@ -279,9 +377,14 @@ export default {
     },
 
     goDrugLogiPage() {
-      const params = this.$route.params.json
+      const shippingMethod = this.order.ShippingMethod
+      const orderStatus = this.order.OrderStatus
+      const json = peace.util.decode(this.$route.params.json)
+      json.shippingMethod = shippingMethod
+      json.orderStatus = orderStatus
+      const afterJson = peace.util.encode(json)
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.push(`/order/userDrugLogistics/${afterJson}`)
     },
 
     canselOrder() {
@@ -317,6 +420,85 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+  .wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      border-radius: 5px;
+
+      .qr-code-area {
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        img {
+          display: block;
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+            display: block;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+
+      .text-area {
+        height: 50px;
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
 .user-drug-detail {
   height: 100%;
   background: #f5f5f5;
@@ -606,6 +788,25 @@ export default {
 }
 .order-card {
   text-align: center;
+
+  .tracking-number {
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn--code {
+      color: #00c6ae;
+      padding: .16rem .38rem;
+      border: 1px solid #00c6ae;
+      border-radius: 5px;
+    }
+  }
 }
 .order-card .icon {
   width: 38px;

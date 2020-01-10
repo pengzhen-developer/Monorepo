@@ -11,6 +11,7 @@ import './prototype/string'
 
 // components
 import Dialog from './components/dialog'
+import JztChat from './components/jzt-chat'
 import Ruler from './components/ruler'
 
 // directive
@@ -48,7 +49,7 @@ const install = function(Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = [Dialog, Ruler]
+  const components = [Dialog, Ruler, JztChat]
   components.map(component => {
     Vue.use(component)
   })

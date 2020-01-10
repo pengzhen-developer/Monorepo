@@ -1,109 +1,72 @@
 <template>
   <div class="supplementary-allergies-container">
-    <template name="search"
-              v-if="!mode">
-      <div class="input">
-        <van-search @search="onSearch"
-                    class="search"
-                    placeholder="请输入搜索关键词"
-                    shape="round"
-                    show-action
-                    v-model="searchAllergicHistory">
-          <span v-show="!showCancel"
-                @click="onSearch"
-                class="search-label"
-                slot="action">搜索
-          </span>
-          <span v-show="showCancel"
-                @click="onCancel"
-                class="search-label"
-                slot="action">取消
-          </span>
-        </van-search>
-        <template v-if="showAllergicSearchList">
-          <div class="cell-wrapper">
-            <van-cell-group>
-              <van-cell v-for="child in allergicHistoryList"
-                        :key="child.text"
-                        :title="child.text"
-                        @click="onClickSearched(child)">
-                <van-icon v-if="child.needAdd"
-                          slot="right-icon"
-                          name="add"
-                          style="line-height: inherit;"
-                          color="#00C6AE" />
-              </van-cell>
-            </van-cell-group>
-          </div>
-        </template>
-        <template v-else>
-          <hr />
-          <h4>已选过敏源</h4>
-          <div class="checked-list">
-            <van-tag :key="item.value"
-                     @click="check(item)"
-                     class="tag checked"
-                     plain
-                     v-for="item in allergicHistory">
-              <span style="font-size: 12px;">{{ item.value }}</span>
-            </van-tag>
-          </div>
-
-          <h4>常见过敏源</h4>
-          <div class="not-checked-list">
-            <van-tag :class="{ checked: item.checked }"
-                     :key="item.value"
-                     @click="check(item)"
-                     class="tag"
-                     plain
-                     v-for="item in allergicHistoryCommonly">
-              <span style="font-size: 12px;">{{ item.value }}</span>
-            </van-tag>
-          </div>
-        </template>
-      </div>
-
-      <div v-if="!showAllergicSearchList"
-           class="save">
-        <van-button @click="save"
-                    style="width: 100%;"
-                    type="primary">保存</van-button>
-      </div>
-    </template>
-    <template name="add"
-              v-else>
-      <div class="add-allergies-info">
-        <div class="title">
-          过敏源
+    <div class="input">
+      <van-search @search="onSearch"
+                  class="search"
+                  placeholder="请输入搜索关键词"
+                  shape="round"
+                  show-action
+                  v-model="searchAllergicHistory">
+        <span v-show="!showCancel"
+              @click="onSearch"
+              class="search-label"
+              slot="action">搜索
+        </span>
+        <span v-show="showCancel"
+              @click="onCancel"
+              class="search-label"
+              slot="action">取消
+        </span>
+      </van-search>
+      <template v-if="showAllergicSearchList">
+        <div class="cell-wrapper">
+          <van-cell-group>
+            <van-cell v-for="child in allergicHistoryList"
+                      :key="child.text"
+                      :title="child.text"
+                      @click="onClickSearched(child)">
+              <van-icon v-if="child.needAdd"
+                        slot="right-icon"
+                        name="add"
+                        style="line-height: inherit;"
+                        color="#00C6AE" />
+            </van-cell>
+          </van-cell-group>
         </div>
-        <van-cell-group>
-          <van-cell :title="name"
-                    value="" />
-        </van-cell-group>
-        <div class="title">
-          过敏类型
+      </template>
+      <template v-else>
+        <hr />
+        <h4>已选过敏源</h4>
+        <div class="checked-list">
+          <van-tag :key="item.value"
+                   @click="check(item)"
+                   class="tag checked"
+                   plain
+                   v-for="item in allergicHistory">
+            <span style="font-size: 12px;">{{ item.value }}</span>
+          </van-tag>
         </div>
-        <van-cell-group>
-          <van-cell value=""
-                    :title="type||'请选择过敏类型'"
-                    is-link
-                    @click="showAllergicTypePicker = true">
-          </van-cell>
-        </van-cell-group>
-        <van-button @click="saveAllergic"
-                    style="width: 100%;position: fixed;bottom: 0;left: 0;"
-                    type="primary">保存</van-button>
 
-        <van-popup position="bottom"
-                   round
-                   v-model="showAllergicTypePicker">
-          <van-picker :columns="allergicTypeColumns"
-                      @cancel="showAllergicTypePicker = false"
-                      @confirm="onConfirmAllergic"
-                      show-toolbar />
-        </van-popup>
-      </div>
-    </template>
+        <h4>常见过敏源</h4>
+        <div class="not-checked-list">
+          <van-tag :class="{ checked: item.checked }"
+                   :key="item.value"
+                   @click="check(item)"
+                   class="tag"
+                   plain
+                   v-for="item in allergicHistoryCommonly">
+            <span style="font-size: 12px;">{{ item.value }}</span>
+          </van-tag>
+        </div>
+      </template>
+    </div>
+
+    <div v-if="!showAllergicSearchList"
+         class="save">
+      <van-button @click="save"
+                  style="width: 100%;"
+                  type="primary">保存</van-button>
+    </div>
   </div>
 </template>
 
@@ -116,13 +79,13 @@ const ALLERGY_TYPE = {
 }
 
 export default {
-  name: 'AddAllergicHistory',
+  name: 'supplementaryAllergies',
 
   props: {
     value: {
-      type: Array,
+      type: String,
       default() {
-        return []
+        return ''
       }
     }
   },
@@ -141,47 +104,48 @@ export default {
       // 已选
       allergicHistory: [],
       // 常见
-      allergicHistoryCommonly: [],
-
-      mode: false,
-      name: '',
-      type: null,
-      typeValue: null,
-      showAllergicTypePicker: false,
-      allergicTypeColumns: [{ text: '药物', value: 2 }, { text: '食物/接触物', value: 6 }]
+      allergicHistoryCommonly: []
     }
   },
 
   methods: {
-    onConfirmAllergic(el) {
-      this.showAllergicTypePicker = false
-      this.type = el.text
-      this.typeValue = el.value
+    onEmits() {
+      $peace.$on(peace.type.EMIT.SUPPLEMENTARY_ALLERGIES, this.addAllergiesInfoCallback)
     },
-    saveAllergic() {
-      if (!this.typeValue) {
-        return peace.util.alert('请选择过敏类型')
+
+    offEmits() {
+      $peace.$off(peace.type.EMIT.SUPPLEMENTARY_ALLERGIES)
+    },
+
+    checkUniq(name) {
+      const allergyNames = this.allergicHistory.map(el => {
+        return el.value
+      })
+      const seen = new Set(allergyNames)
+      return !seen.has(name)
+    },
+
+    addAllergiesInfoCallback(allergy) {
+      console.log('addAllergiesInfoCallback', allergy)
+      if (this.checkUniq(allergy.value)) {
+        this.allergicHistory.push({ ...allergy, ...{ checked: true } })
       }
-      peace.service.inquiry
-        .addAllergen({
-          name: this.name,
-          type: this.typeValue
-        })
-        .then(() => {
-          this.mode = false
-          this.allergicHistory.push({
-            value: this.name,
-            type: this.typeValue,
-            checked: true
-          })
-          this.showAllergicSearchList = false
-          this.showCancel = false
-        })
+      this.showAllergicSearchList = false
     },
 
     goAddAllergyInfo(allergy) {
-      this.name = allergy.text
-      this.mode = true
+      const sourceJson = peace.util.decode(this.$route.params.json)
+      console.log(sourceJson, allergy)
+      sourceJson.emit = peace.type.EMIT.SUPPLEMENTARY_ALLERGIES
+      sourceJson.allergy = allergy
+      const json = peace.util.encode(sourceJson)
+
+      this.$router.push({
+        name: `/components/addAllergiesInfo`,
+        params: {
+          json
+        }
+      })
     },
 
     onClickSearched(el) {
@@ -194,14 +158,6 @@ export default {
         }
         this.onConfirm(el)
       }
-    },
-
-    checkUniq(name) {
-      const allergyNames = this.allergicHistory.map(el => {
-        return el.value
-      })
-      const seen = new Set(allergyNames)
-      return !seen.has(name)
     },
 
     getAllergicHistoryCommonly() {
@@ -221,17 +177,16 @@ export default {
     },
 
     paramsHandler() {
-      console.log(this.internalValue)
-      if (this.internalValue.length > 0) {
-        // if (typeof this.internalValue === 'string') {
-        //   this.internalValue = this.internalValue.split(',')
-        // }
+      if (this.internalValue) {
+        if (typeof this.internalValue === 'string') {
+          this.internalValue = this.internalValue.split(',')
+        }
 
         this.internalValue.forEach(allergic => {
-          this.allergicHistory.push({ value: allergic.value, checked: true, type: allergic.type })
+          this.allergicHistory.push({ value: allergic, checked: true })
 
-          if (this.allergicHistoryCommonly.find(item => item.value === allergic.value)) {
-            this.allergicHistoryCommonly.find(item => item.value === allergic.value).checked = true
+          if (this.allergicHistoryCommonly.find(item => item.value === allergic)) {
+            this.allergicHistoryCommonly.find(item => item.value === allergic).checked = true
           }
         })
       }
@@ -244,6 +199,18 @@ export default {
       }
       this.showCancel = true
       peace.service.inquiry.searchIllInfo(params).then(res => {
+        // this.allergicHistoryList = (res.data && res.data.length
+        //     ? res.data.push({ name: this.searchAllergicHistory, needAdd: true })
+        //     : [{ name: this.searchAllergicHistory, needAdd: true }]
+        // ).map(item => {
+        //   return {
+        //     text: item.name,
+        //     needAdd: item.needAdd,
+        //     type: item.type,
+        //     disabled: !!this.allergicHistory.find(temp => temp.value === item.name)
+        //   }
+        // })
+
         const include = res.data.find(allergy => {
           return allergy.name === this.searchAllergicHistory
         })
@@ -338,24 +305,36 @@ export default {
     save() {
       const foodAllergy = []
       const drugAllergy = []
+
       this.allergicHistory.forEach(allergy => {
         const type = allergy.type
         if (ALLERGY_TYPE.DRUG === type) {
           drugAllergy.push(allergy)
         } else if (ALLERGY_TYPE.FOOD === type) {
           foodAllergy.push(allergy)
+        } else {
+          throw new Error('Allergy type error')
         }
       })
 
-      this.$emit('input', this.allergicHistory)
-      this.$emit('onSave', { foodAllergy, drugAllergy })
+      const params = peace.util.decode(this.$route.params.json)
+      if (params.emit) {
+        $peace.$emit(params.emit, { foodAllergy, drugAllergy })
+      }
+      this.$router.go(-1)
     }
   },
 
   created() {
+    this.onEmits()
+
     this.getAllergicHistoryCommonly().then(() => {
       this.paramsHandler()
     })
+  },
+
+  destroyed() {
+    this.offEmits()
   }
 }
 </script>
@@ -363,7 +342,6 @@ export default {
 <style lang="scss" scoped>
 .supplementary-allergies-container {
   height: 100%;
-  height: 80vh;
   display: flex;
   flex-direction: column;
 
@@ -423,24 +401,6 @@ export default {
     border-top: 1px solid #f2f2f2;
     margin: 10px 0;
     padding: 0;
-  }
-}
-.add-allergies-info {
-  width: 100%;
-  height: 100%;
-
-  .title {
-    background-color: #fafafa;
-    height: 1.2rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 16px;
-    color: rgba(69, 90, 100, 0.6);
-  }
-
-  .custom-title {
-    color: #999;
   }
 }
 </style>

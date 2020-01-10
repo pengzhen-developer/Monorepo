@@ -119,20 +119,54 @@
           {{data[current].reReferralOut.checkSuggest || '转出失败，转诊被拒绝。'}}
         </div> -->
         <div class="timeline"
-             v-if="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&(data[current].familyInfo.transferStatus == '6' || data[current].familyInfo.transferStatus == '4' || data[current].familyInfo.transferStatus == '5' || data[current].familyInfo.transferStatus == '3' || data[current].familyInfo.transferStatus == '7'||data[current].familyInfo.transferStatus == '2')">
-          <div class="item"
-               v-if="data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest">
-            <div class="item-time">{{data[current].reReferralOut.checkTime}}</div>
-            <div class="item-text">{{data[current].reReferralOut.checkSuggest}}</div>
+             v-if="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&(data[current].familyInfo.transferStatus > '1')">
+          <div class="time-item">
+
+            <div class="time"
+                 v-if="data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest">
+              <div>
+                {{data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkTime.split(' ')[1].substring(0,5)}}
+              </div>
+            </div>
+            <div class="item"
+                 :class="data[current].familyInfo.transferStatus==2&&'noline'">
+              <div class="item-time">{{data[current].reReferralOut.doctorInfo.hospitalName}}</div>
+              <div class="item-text"
+                   v-if="data[current].familyInfo.transferStatus==2">
+                不同意转诊。</div>
+
+              <div class="item-text">
+                <span v-if="data[current].familyInfo.transferStatus==2">拒接原因：</span>
+                {{data[current].reReferralOut.checkSuggest}}
+              </div>
+            </div>
           </div>
-          <div class="item"
-               v-if="data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest">
-            <div class="item-time"
-                 v-if="data[current].reReferralIn.checkTime">
-              {{data[current].reReferralIn.checkTime}}</div>
-            <div class="item-text"
-                 :class=" data[current].reReferralIn.checkTime ? '' : 'item-time' ">
-              {{data[current].reReferralIn.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}</div>
+          <!--  -->
+          <div class="time-item"
+               v-if="data[current].familyInfo.transferStatus>2">
+            <div class="time">
+              <div>
+                {{data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkTime.split(' ')[1].substring(0,5)}}
+              </div>
+            </div>
+            <div class="item noline">
+              <div class="item-time"
+                   v-if="data[current].reReferralIn.checkSuggest">
+                {{data[current].reReferralIn.doctorInfo.hospitalName}}</div>
+              <div class="item-text"
+                   v-if="data[current].familyInfo.transferStatus==5">
+                不同意转诊。</div>
+              <div class="item-text"
+                   :class=" data[current].reReferralIn.checkTime ? '' : 'item-time' ">
+                <span v-if="data[current].familyInfo.transferStatus==5">拒接原因：</span>
+                {{data[current].reReferralIn.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}</div>
+            </div>
           </div>
         </div>
         <div class="txt-p"
@@ -565,7 +599,19 @@ export default {
   margin-top: 10px;
   padding-top: 10px;
 }
-
+.time-item {
+  width: 100%;
+  display: flex;
+}
+.time-item .time {
+  display: flex;
+  width: 10%;
+  flex-direction: column;
+  font-size: 12px;
+  margin-top: -10px;
+  color: #999;
+  // padding-right: 5px;
+}
 .timeline .item {
   position: relative;
   padding-left: 10px;
@@ -575,15 +621,15 @@ export default {
   min-height: 50px;
   padding-top: 1px;
 }
-.timeline .item:last-child {
+.timeline .item.noline {
   border-left-color: #fff;
   padding-bottom: 0;
   min-height: 40px;
 }
 .timeline .item-time {
-  color: #757e7d;
+  color: #333;
   margin-top: -10px;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 2px;
 }
 .timeline .item-time::before {
@@ -598,8 +644,11 @@ export default {
   top: -3px;
 }
 .timeline .item-text {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
+}
+.timeline .item-text.item-time {
+  font-size: 14px;
 }
 .prescript.icon-status::after {
   content: '';

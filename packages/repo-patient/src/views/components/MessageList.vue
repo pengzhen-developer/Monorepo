@@ -8,14 +8,14 @@
              class="message"
              v-for="(message ,index) in messageList">
           <!-- 文本消息 -->
-          <template v-if="getMessageType(message) === 'text' || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊|| 
+          <template v-if="getMessageType(message) === 'text' ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊||
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
             <!-- 消息时间 -->
@@ -635,6 +635,26 @@ export default {
       }
     })
   },
+  // created() {
+  //   if (!this.data) {
+  //     const params = peace.util.decode(this.$route.params.json)
+  //     // 传递 inquiryNo 获取聊天记录
+  //     if (params.inquiryNo) {
+  //       this.getHistoryMsgsByDB()
+  //     }
+  //     // 传递 session 获取聊天记录
+  //     else {
+  //       const interval = setInterval(() => {
+  //         // 等待 IM 初始化完成，并且 sessions 已经获取到
+  //         if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
+  //           window.clearInterval(interval)
+
+  //           this.getHistoryMsgsByIM()
+  //         }
+  //       }, 100)
+  //     }
+  //   }
+  // },
 
   destroyed() {
     // 清除当前聊天 session
@@ -845,7 +865,6 @@ export default {
         }
       }, 1)
     },
-
     gotoComment(message) {
       let json = peace.util.encode({
         inquiryNo: message.content.data.inquiryInfo.inquiryNo
@@ -1167,7 +1186,7 @@ export default {
 
         .message-body {
           color: rgba(51, 51, 51, 1);
-          background: rgba(243, 243, 243, 1);
+          background: rgba(255, 255, 255, 1);
         }
 
         .message-avatar {

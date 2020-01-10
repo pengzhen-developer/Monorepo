@@ -46,7 +46,16 @@ export const EMIT = {
   DOCTOR_INQUIRY_APPLY_UPLOAD: 'DoctorInquiryApplyUpload',
 
   /** 问诊 - 选择初诊诊断 */
-  DOCTOR_INQUIRY_APPLY_ILLNESS: 'DoctorInquiryApplyIllness'
+  DOCTOR_INQUIRY_APPLY_ILLNESS: 'DoctorInquiryApplyIllness',
+
+  /** 问诊 - 补充过敏史 */
+  DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE: 'DoctorInquiryApplySupplementaryAllergiesSave',
+
+  /** 问诊 - 补充上传 */
+  DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD: 'DoctorInquiryApplySupplementaryUpload',
+
+  /** 补充过敏 新增过敏史 */
+  SUPPLEMENTARY_ALLERGIES: 'SUPPLEMENTARY_ALLERGIES'
 }
 
 /**
