@@ -175,6 +175,7 @@ export default {
             checked: true
           })
           this.showAllergicSearchList = false
+          this.showCancel = false
         })
     },
 

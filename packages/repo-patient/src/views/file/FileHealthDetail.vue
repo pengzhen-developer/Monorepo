@@ -263,7 +263,7 @@ export default {
         this.model.allergicHistory = foodAllergy.concat(drugAllergy).join(',')
         let foodAllergys = []
         for (let i = 0; i < foodAllergy.length; i++) {
-          drugAllergys.push({
+          foodAllergys.push({
             value: foodAllergy[i],
             type: 6
           })
