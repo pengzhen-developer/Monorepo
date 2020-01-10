@@ -649,7 +649,6 @@ export default {
       if (typeSet.has(mode)) {
         const fn = typeActionMap[mode]
         fn(value)
-        this.onAfterSupplementaryAnswer(mode)
       } else {
         throw new Error('Type error!')
       }
@@ -692,6 +691,7 @@ export default {
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE)
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD)
     },
 
     getLatestQuestionIndex() {
@@ -733,6 +733,9 @@ export default {
 
         this.model.allergicHistory = '暂无'
         this.model.foodAllergy = '暂无'
+
+        const mode = SUPPLEMENTARY_MODE.ALLERGIES
+        this.onAfterSupplementaryAnswer(mode)
       }
     },
 
@@ -741,6 +744,9 @@ export default {
       this.model.isPregnancy = period
       const context = this.WOMAN_TYPE_TEXT_MAP[period]
       this.pushToChatList({ context })
+
+      const mode = SUPPLEMENTARY_MODE.WOMAN
+      this.onAfterSupplementaryAnswer(mode)
     },
 
     typeActionImages() {
@@ -841,6 +847,9 @@ export default {
         type: 'images',
         images: result
       })
+      const mode = SUPPLEMENTARY_MODE.IMAGES
+
+      this.onAfterSupplementaryAnswer(mode)
     },
 
     setModel() {
