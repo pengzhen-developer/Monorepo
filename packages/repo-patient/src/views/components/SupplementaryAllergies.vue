@@ -117,9 +117,19 @@ export default {
       $peace.$off(peace.type.EMIT.SUPPLEMENTARY_ALLERGIES)
     },
 
+    checkUniq(name) {
+      const allergyNames = this.allergicHistory.map(el => {
+        return el.value
+      })
+      const seen = new Set(allergyNames)
+      return !seen.has(name)
+    },
+
     addAllergiesInfoCallback(allergy) {
       console.log('addAllergiesInfoCallback', allergy)
-      this.allergicHistory.push({ ...allergy, ...{ checked: true } })
+      if (this.checkUniq(allergy.value)) {
+        this.allergicHistory.push({ ...allergy, ...{ checked: true } })
+      }
       this.showAllergicSearchList = false
     },
 
@@ -143,6 +153,9 @@ export default {
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {
+        if (!this.checkUniq(el.text)) {
+          el.disabled = true
+        }
         this.onConfirm(el)
       }
     },
