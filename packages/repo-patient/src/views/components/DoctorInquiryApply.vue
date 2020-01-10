@@ -1145,15 +1145,16 @@ export default {
       })
     },
 
-    apply() {
+    async apply() {
       this.sending = true
 
-      this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT)
-        .then(this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES))
-        .then(this.applyHandler)
-        .finally(() => {
-          this.sending = false
-        })
+      await Promise.all([
+        this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT),
+        this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES)
+      ])
+      await this.applyHandler()
+
+      this.sending = false
     },
 
     uploadHandler(dataArray, type) {
