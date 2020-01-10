@@ -109,7 +109,6 @@ export function onDisConnect(disConnectObject) {
 
       setTimeout(() => {
         $peace.$router.replace(peace.config.system.loginPage)
-        window.location.reload()
       }, 2000)
       break
 

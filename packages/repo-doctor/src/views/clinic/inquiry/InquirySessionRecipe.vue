@@ -449,7 +449,9 @@ export default {
           // 验证当前药品列表是否已存在
           // 存在则叠加
           // 不存在则新增
-          const currentDrugIndex = this.drug.source.list.findIndex(item => item.drugid === this.drug.model.drugid)
+          const currentDrugIndex = this.drug.source.list.findIndex(
+            item => item.drugid === this.drug.model.drugid
+          )
 
           if (currentDrugIndex !== -1) {
             this.drug.source.list.splice(currentDrugIndex, 1, {
