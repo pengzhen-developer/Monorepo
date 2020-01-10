@@ -178,7 +178,7 @@
           <!-- 消息内容 -->
           <div v-viewer>
             <img :src="message.file.url"
-                 style="max-width: 400px; "
+                 style="max-width: 400px; max-height: 600px; "
                  title="查看大图" />
           </div>
         </template>
