@@ -13,8 +13,12 @@
           <!-- <span class="money"
                 v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
         </div>
-        <div class="brief">
-          <!-- {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }} -->
+        <div class="brief"
+             v-if="internalData.inquiryInfo.inquiryStatus!=4">
+          {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
+        </div>
+        <div class="brief"
+             v-else>
           {{internalData.inquiryInfo.overCause}}
         </div>
         <div class="cancelText"
@@ -393,7 +397,8 @@ export default {
         '1': '订单创建15分钟后未支付将自动关闭',
         '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
         '3': '请及时与医生沟通',
-        '4': '医生已退诊',
+        // '4': '医生已退诊',
+        '4': '',
         '5': '祝您身体健康',
         '6':
           this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
