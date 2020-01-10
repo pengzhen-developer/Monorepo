@@ -90,7 +90,12 @@
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <!--          <div class="message-line"></div>-->
+          <img
+            class="img-qr-code-empty"
+            :src="require('@src/assets/images/qrcode-empty.png')"
+            alt=""
+            style="display: block"
+          >
           <div
             class="text-area"
           >
@@ -193,43 +198,11 @@ export default {
 
     .qr-code-wrapper {
       width: 250px;
-      background-color: #fff;
       border-radius: 5px;
-
-      .message-line {
-        width: 100%;
-        height: 1px;
-        border-top: 1px dashed #eee;
-        position: relative;
-
-        &::before {
-          content: '';
-          width: 0.37333rem;
-          height: 0.37333rem;
-          border-radius: 50%;
-          left: -0.18667rem;
-          top: -0.18667rem;
-          position: absolute;
-          display: block;
-          background: #f2f2f2;
-        }
-
-        &::after {
-          content: '';
-          width: 0.37333rem;
-          height: 0.37333rem;
-          border-radius: 50%;
-          right: -0.18667rem;
-          top: -0.18667rem;
-          position: absolute;
-          display: block;
-          background: #f2f2f2;
-        }
-      }
 
       .qr-code-area {
         width: 100%;
-        border-bottom: 1px solid #eee;
+        background-color: #fff;
 
         display: flex;
         align-items: center;
@@ -278,6 +251,7 @@ export default {
       .text-area {
         height: 50px;
         width: 100%;
+        background-color: #fff;
 
         display: flex;
         align-items: center;
