@@ -227,12 +227,11 @@
                 class="img-qr-code-empty"
                 :src="require('@src/assets/images/qrcode-empty.png')"
                 alt=""
-                style="display: block"
-              ><div class="context">暂无二维码</div>
+              /><div class="context">暂无二维码</div>
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="">
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
           <div
             class="text-area"
           >
@@ -256,7 +255,7 @@ const ENUM = {
     SELF: 0,
     HOME: 1
   },
-  // 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)
+  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
   ORDER_STATUS: {
     NOT_PAY: 0,
     PAID: 1,
@@ -264,9 +263,7 @@ const ENUM = {
     SEND: 3,
     SIGNED: 4,
     CANCEL: 5,
-    SELF: 6,
-    PACKAGE: 7,
-    COMPLETE: 8
+    COMPLETE: 6
   }
 }
 
@@ -302,7 +299,7 @@ export default {
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
-        && OrderStatus >= ENUM.ORDER_STATUS.PACKAGE
+        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
     },
     showTrackingNumber() {
       const ShippingMethod = this.order.ShippingMethod
@@ -459,6 +456,10 @@ export default {
           }
         }
 
+        img {
+          display: block;
+        }
+
         .qr-code--empty {
           font-size: 15px;
           color: #000;
@@ -471,6 +472,7 @@ export default {
             width: 118px;
             height: 100px;
             margin-bottom: .26rem;
+            display: block;
           }
 
           .context {
