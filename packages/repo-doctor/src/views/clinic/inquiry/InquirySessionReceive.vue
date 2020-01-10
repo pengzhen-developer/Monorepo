@@ -38,8 +38,10 @@
       </el-radio-group>
 
       <el-input :rows="3"
-                placeholder="请输入您的退诊原因"
+                placeholder="请填写15字内原因"
                 type="textarea"
+                maxlength="15"
+                ref="quitInput"
                 v-model="over.otherDescription"></el-input>
 
       <div style="text-align: center; margin: 10px 0 0 0;">
@@ -76,6 +78,17 @@ export default {
         return peace.validate.isEmpty(this.over.otherDescription)
       } else {
         return !this.over.description
+      }
+    },
+    getfocus() {
+      return this.over.description == '其他'
+    }
+  },
+
+  watch: {
+    'over.description'(value) {
+      if (value === '其他') {
+        this.$refs.quitInput.focus()
       }
     }
   },
