@@ -14,7 +14,8 @@
                 v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
         </div>
         <div class="brief">
-          {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
+          <!-- {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }} -->
+          {{internalData.inquiryInfo.overCause}}
         </div>
         <div class="cancelText"
              v-if="
