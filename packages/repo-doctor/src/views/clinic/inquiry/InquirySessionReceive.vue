@@ -26,7 +26,7 @@
 
       <el-radio-group v-model="over.description">
         <el-radio label="不对症"
-                  style="margin: 0 0 10px 0;">已解决</el-radio>
+                  style="margin: 0 0 10px 0;">不对症</el-radio>
         <br />
         <el-radio label="需面诊"
                   style="margin: 0 0 10px 0;">需面诊</el-radio>
