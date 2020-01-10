@@ -109,7 +109,7 @@
       </section>
       <section class="doctors">
         <div class="title">
-          <span>明星医生</span>
+          <span>医院医生</span>
           <i class="arrow"
              @click="goStarDoctor"></i>
         </div>
