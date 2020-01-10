@@ -189,8 +189,19 @@ export default {
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {
+        if (!this.checkUniq(el.text)) {
+          el.disabled = true
+        }
         this.onConfirm(el)
       }
+    },
+
+    checkUniq(name) {
+      const allergyNames = this.allergicHistory.map(el => {
+        return el.value
+      })
+      const seen = new Set(allergyNames)
+      return !seen.has(name)
     },
 
     getAllergicHistoryCommonly() {
