@@ -142,17 +142,15 @@
                    right-icon="arrow"
                    v-model="model.nationName" />
 
-        <van-cell-group v-if="gardianSet || (age!= null && age < this.ageLimit)">
+        <van-cell-group v-if="!addGardian&&(gardianSet || (age!= null && age < this.ageLimit))">
           <van-cell value="就诊人未满6岁，请填写监护人信息"
                     is-link
                     @click="goToGardian"
                     v-if="age!= null && age < this.ageLimit" />
           <van-cell title="监护人姓名"
-                    :value="gardianName"
-                    v-if="gardianSet" />
+                    :value="gardianName" v-if="gardianName"/>
           <van-cell title="监护人身份证号"
-                    :value="gardianId"
-                    v-if="gardianSet" />
+                    :value="gardianId" v-if="gardianId" />
         </van-cell-group>
         <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
@@ -334,7 +332,8 @@ export default {
         }
       },
       immediate: true
-    }
+    },
+    
   },
   beforeRouteLeave(to, from, next) {
     if (this.addGardian) {
@@ -540,16 +539,20 @@ export default {
       if (!this.model.nationName) {
         return peace.util.alert('请选择民族')
       }
+      if(this.addGardian){
 
-      if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
-        return peace.util.alert('请选择监护人')
-      }
-      if (this.addGardian && this.guardianIdCard) {
-        let gardianAge = this.getAgeByIdCard(this.guardianIdCard)
+        let gardianAge = this.getAgeByIdCard(this.model.idcard)
         if (gardianAge < 18) {
           return peace.util.alert('监护人年龄不得小于18岁')
         }
+        
+      }else{
+        if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
+          return peace.util.alert('请选择监护人')
+        }
       }
+      
+      
 
       if (this.isEdit) {
         if (this.isNationExist) {
@@ -582,20 +585,24 @@ export default {
         params.guardianIdCard = this.gardianId
       }
       peace.service.patient.bindFamily(params).then(res => {
-        peace.util.alert(res.msg)
-
         const params = peace.util.decode(this.$route.params.json)
         if (params.emit) {
           $peace.$emit(params.emit, res)
         }
 
         if (this.addGardian) {
+          this.gardianName=this.model.name
+          this.gardianId=this.model.idcard
           for (let i in this.childInfo) {
             this.model[i] = this.childInfo[i]
           }
-          this.gDialog.visible = true
+          // this.gDialog.visible = true
+          this.gDialog.visible= false
           this.addGardian = false
+          this.gardianSet=true
+          this.submit()
         } else {
+          peace.util.alert(res.msg)
           this.$router.go(-1)
         }
       })
