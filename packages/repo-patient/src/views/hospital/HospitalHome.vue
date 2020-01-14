@@ -78,7 +78,7 @@
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
-
+          <!-- "serviceLogoId": 3,//图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:中药寄送 -->
           <div class="img">
             <img
                  :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
@@ -282,8 +282,7 @@ export default {
       /* eslint-disable */
 
       let json = undefined
-
-      console.log(item)
+      
       if (item.isOpen !== 1) {
         return peace.util.alert('暂未开放，敬请期待')
       }
@@ -441,7 +440,6 @@ export default {
 
       display: block;
       z-index: 3;
-
     }
     .banner-icon {
       width: 130px;
