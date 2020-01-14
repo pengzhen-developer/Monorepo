@@ -282,11 +282,14 @@ export default {
       /* eslint-disable */
 
       let json = undefined
-      
-      if (item.isOpen !== 1) {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
 
+      if (item.isOpen !== 1) {
+        // peace.util.alert('暂未开放，敬请期待')
+        return 
+      }
+      if (item.isExist !== 1) {
+       return peace.util.alert('该功能正在建设中，敬请期待')
+      }
       switch (item.serviceName) {
         // 预约挂号
         case '预约挂号':
@@ -295,12 +298,7 @@ export default {
             id: 'appointment',
             Date: new Date()
           })
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-          }
-
+          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
           break
 
         // 在线咨询
@@ -310,11 +308,7 @@ export default {
             id: 'onlineConsultant',
             Date: new Date()
           })
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/components/doctorList/${json}`)
-          }
+          this.$router.push(`/components/doctorList/${json}`)
           break
         // 复诊续方
         case '复诊续方':
@@ -323,17 +317,11 @@ export default {
             id: 'subsequentVisit',
             Date: new Date()
           })
-
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/components/doctorList/${json}`)
-          }
-
+          this.$router.push(`/components/doctorList/${json}`)
           break
 
         default:
-          peace.util.alert('暂未开放，敬请期待')
+          peace.util.alert('该功能正在建设中，敬请期待')
           break
       }
 
