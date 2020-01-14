@@ -495,7 +495,7 @@ export default {
 }
 .panel .panel-bottom .time {
   flex: 1 0 auto;
-  width: 140px;
+  /*width: 140px;*/
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
