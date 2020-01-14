@@ -235,7 +235,6 @@ export default {
     },
 
     paramsHandler() {
-      console.log(this.internalValue)
       if (this.internalValue.length > 0) {
         // if (typeof this.internalValue === 'string') {
         //   this.internalValue = this.internalValue.split(',')
@@ -300,7 +299,6 @@ export default {
     },
 
     check(currentItem) {
-      console.info(currentItem)
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
@@ -360,7 +358,10 @@ export default {
           foodAllergy.push(allergy)
         }
       })
-
+     let len= this.allergicHistory.map(item=>item.value).join(',').length
+     if(len>100){
+       return peace.util.alert('过敏史信息不得超过100字')
+     }
       this.$emit('input', this.allergicHistory)
       this.$emit('onSave', { foodAllergy, drugAllergy })
     }

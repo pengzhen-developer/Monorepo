@@ -327,7 +327,10 @@ export default {
           throw new Error('Allergy type error')
         }
       })
-
+      let len= this.allergicHistory.map(item=>item.value).join(',').length
+     if(len>100){
+       return peace.util.alert('过敏史信息不得超过100字')
+     }
       const params = peace.util.decode(this.$route.params.json)
       if (params.emit) {
         $peace.$emit(params.emit, { foodAllergy, drugAllergy })

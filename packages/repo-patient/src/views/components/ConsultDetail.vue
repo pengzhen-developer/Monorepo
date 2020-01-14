@@ -142,7 +142,7 @@
             </div>
             <div class="form-dl"
                  v-if="internalData.supplementaryInfo.allergicHistory">
-              <div class="form-dt"><span>过敏史</span> :</div>
+              <div class="form-dt" style="height:fit-content;"><span>过敏史</span> :</div>
               <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
