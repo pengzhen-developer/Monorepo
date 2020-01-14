@@ -107,6 +107,11 @@ export default {
   .content {
     flex: 1;
     overflow-y: auto;
+    /deep/ .van-cell__title > span::after {
+      content: '';
+      width: 0;
+      border: 0;
+    }
   }
 
   .bottom {
