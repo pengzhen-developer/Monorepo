@@ -124,10 +124,21 @@ export default {
       const seen = new Set(allergyNames)
       return !seen.has(name)
     },
+    // 删除 「无」
+    deleteNone() {
+      const index = this.allergicHistory.findIndex(item => item.value === '无')
+
+      if (index !== -1) {
+        this.allergicHistoryCommonly[0].checked = false
+        this.allergicHistory.splice(index, 1)
+      }
+    },
 
     addAllergiesInfoCallback(allergy) {
-      console.log('addAllergiesInfoCallback', allergy)
+      // console.log('addAllergiesInfoCallback', allergy)
       if (this.checkUniq(allergy.value)) {
+        this.deleteNone()
+        this.showCancel = false
         this.allergicHistory.push({ ...allergy, ...{ checked: true } })
       }
       this.showAllergicSearchList = false
@@ -253,7 +264,7 @@ export default {
     },
 
     check(currentItem) {
-      console.info(currentItem)
+      // console.info(currentItem)
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []

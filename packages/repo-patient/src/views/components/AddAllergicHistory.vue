@@ -158,10 +158,24 @@ export default {
       this.type = el.text
       this.typeValue = el.value
     },
+
+    // 删除 「无」
+    deleteNone() {
+      const index = this.allergicHistory.findIndex(item => item.value === '无')
+
+      if (index !== -1) {
+        this.allergicHistoryCommonly[0].checked = false
+        this.allergicHistory.splice(index, 1)
+      }
+    },
+
     saveAllergic() {
       if (!this.typeValue) {
         return peace.util.alert('请选择过敏类型')
       }
+
+      this.deleteNone()
+
       peace.service.inquiry
         .addAllergen({
           name: this.name,
