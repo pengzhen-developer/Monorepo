@@ -34,7 +34,7 @@ import type from '@src/type'
 // service
 import service from '@src/service'
 
-const install = function(Vue) {
+const install = function (Vue) {
   const peace = { http, util, cache, validate, config, type, service }
 
   // 暴露全局实例

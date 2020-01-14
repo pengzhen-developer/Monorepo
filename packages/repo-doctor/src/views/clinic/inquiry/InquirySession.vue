@@ -74,8 +74,8 @@
           <el-radio label="不对症"
                     style="margin: 0 0 20px 0;">不对症</el-radio>
           <br />
-          <el-radio label="缺少诊疗依据"
-                    style="margin: 0 0 20px 0;">缺少诊疗依据</el-radio>
+          <el-radio label="需面诊"
+                    style="margin: 0 0 20px 0;">需面诊</el-radio>
           <br />
           <el-radio label="其他">其他</el-radio>
           <el-input placeholder
