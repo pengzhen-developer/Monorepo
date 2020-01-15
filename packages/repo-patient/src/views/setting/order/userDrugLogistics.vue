@@ -19,7 +19,7 @@
             v-if="showTrackingNumber"
             class="text"
           >
-            运单编号：{{ pickUpCode }}
+            运单编号：{{ PickUpCode }}
           </div>
           <div class="text"
                v-if="data.ShippingMethod == '1'">配送编号：无</div>
@@ -94,7 +94,7 @@
           <div
             class="text-area"
           >
-            取药码：{{ pickUpCode }}
+            取药码：{{ PickUpCode }}
           </div>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default {
 
   methods: {
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.pickUpCode
+      this.PickUpCode = order.PickUpCode
       this.showQRCode = true
     },
 

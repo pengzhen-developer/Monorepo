@@ -31,7 +31,7 @@
               v-if="showTrackingNumber"
               class="tracking-number"
             >
-              运单编号：{{ order.pickUpCode }}
+              运单编号：{{ order ? order.PickUpCode : '' }}
             </div>
           </div>
           <div class="order-text"></div>
@@ -235,7 +235,7 @@
           <div
             class="text-area"
           >
-            取药码：{{ pickUpCode }}
+            取药码：{{ order ? order.PickUpCode : '' }}
           </div>
         </div>
       </div>
@@ -283,7 +283,6 @@ export default {
       appid: '',
       order: {},
       showQRCode: false,
-      pickUpCode: null,
       QRCodeURL: null,
 
       recipeDetail: {

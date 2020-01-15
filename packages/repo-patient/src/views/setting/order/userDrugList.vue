@@ -131,7 +131,7 @@
               <div
                 class="text-area"
               >
-                取药码：{{ pickUpCode }}
+                取药码：{{ PickUpCode }}
               </div>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default {
       consultList: undefined,
       // 控制二维码弹窗显示
       showQRCode: false,
-      pickUpCode: null,
+      PickUpCode: null,
       QRCodeURL: null,
 
       ENUM,
@@ -214,7 +214,7 @@ export default {
     },
 
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.pickUpCode
+      this.PickUpCode = order.PickUpCode
       this.showQRCode = true
     },
 
