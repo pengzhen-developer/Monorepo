@@ -221,7 +221,7 @@ export default {
         userAddr = this.userAddr
       bool = !!(this.page.tabIndex == '0' ? true : !!(userAddr && userAddr.detailAddress))
       this.page.canSubmit = bool
-      console.log('can', bool)
+      // console.log('can', bool)
       return bool
     },
 

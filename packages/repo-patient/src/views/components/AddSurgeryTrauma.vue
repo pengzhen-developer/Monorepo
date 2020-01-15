@@ -91,7 +91,7 @@ export default {
 
   methods: {
     getAllSurgeryTraumaCommonly() {
-      return peace.service.health.getPersonInfo({ type: 3, keyword: "" }).then(res => {
+      return peace.service.health.getPersonInfo({ type: 3, keyword: '' }).then(res => {
         this.allSurgeryTraumaCommonly = res.data.map(item => {
           return {
             value: item.name,
@@ -148,7 +148,7 @@ export default {
     },
 
     check(currentItem) {
-      console.log("needAdd" , currentItem.needAdd)
+      // console.log("needAdd" , currentItem.needAdd)
 
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
@@ -168,9 +168,7 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.allSurgeryTrauma.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
+        const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allSurgeryTrauma.splice(index, 1)
@@ -180,17 +178,16 @@ export default {
         }
       } else {
         if (currentItem.needAdd) {
-          if(currentItem.value.length < 50) {
-            peace.service.health.addPersonInfo({ name: currentItem.value, type: 3 }).then(()=> {
-              this.onAddCallback(currentItem);
+          if (currentItem.value.length < 50) {
+            peace.service.health.addPersonInfo({ name: currentItem.value, type: 3 }).then(() => {
+              this.onAddCallback(currentItem)
             })
           } else {
-            peace.util.alert("您输入的字数过长！")
+            peace.util.alert('您输入的字数过长！')
           }
         } else {
-          this.onAddCallback(currentItem);
+          this.onAddCallback(currentItem)
         }
-
       }
     },
 
@@ -198,9 +195,7 @@ export default {
       currentItem.checked = true
       this.allSurgeryTrauma.push(currentItem)
 
-      const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(
-              item => item.value === currentItem.value
-      )
+      const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(item => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allSurgeryTraumaCommonly[indexCommonly].checked = true
       }

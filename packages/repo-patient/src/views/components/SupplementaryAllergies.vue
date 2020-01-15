@@ -146,7 +146,7 @@ export default {
 
     goAddAllergyInfo(allergy) {
       const sourceJson = peace.util.decode(this.$route.params.json)
-      console.log(sourceJson, allergy)
+      // console.log(sourceJson, allergy)
       sourceJson.emit = peace.type.EMIT.SUPPLEMENTARY_ALLERGIES
       sourceJson.allergy = allergy
       const json = peace.util.encode(sourceJson)
@@ -160,7 +160,7 @@ export default {
     },
 
     onClickSearched(el) {
-      console.log(el)
+      // console.log(el)
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {
@@ -327,10 +327,10 @@ export default {
           throw new Error('Allergy type error')
         }
       })
-      let len= this.allergicHistory.map(item=>item.value).join(',').length
-     if(len>100){
-       return peace.util.alert('过敏史信息不得超过100字')
-     }
+      let len = this.allergicHistory.map(item => item.value).join(',').length
+      if (len > 100) {
+        return peace.util.alert('过敏史信息不得超过100字')
+      }
       const params = peace.util.decode(this.$route.params.json)
       if (params.emit) {
         $peace.$emit(params.emit, { foodAllergy, drugAllergy })

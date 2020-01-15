@@ -131,7 +131,7 @@ export default {
         this.internalValue.forEach(allergic => {
           this.confirmIllness.push({ value: allergic, checked: true })
 
-          console.log(this.confirmIllnessCommonly)
+          // console.log(this.confirmIllnessCommonly)
           if (this.confirmIllnessCommonly.find(item => item.value === allergic)) {
             this.confirmIllnessCommonly.find(item => item.value === allergic).checked = true
           }
@@ -184,7 +184,7 @@ export default {
     },
 
     check(currentItem) {
-      console.log(currentItem)
+      // console.log(currentItem)
       if (currentItem.needAdd) {
         peace.service.inquiry.addAllergen({
           name: currentItem.value,

@@ -199,7 +199,7 @@ export default {
     },
 
     onClickSearched(el) {
-      console.log(el)
+      // console.log(el)
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {

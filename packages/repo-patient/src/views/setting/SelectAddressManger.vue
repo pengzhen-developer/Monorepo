@@ -86,9 +86,9 @@ export default {
       const data = {
         addressId: id
       }
-      peace.service.patient.delAddress(data).then(res => {
+      peace.service.patient.delAddress(data).then(() => {
         this.get()
-        console.log(res)
+        // console.log(res)
       })
     },
     checkAddr(address) {
@@ -96,8 +96,8 @@ export default {
       let addr = peace.util.encode(address)
       let { addressId } = address
       let data = { addressId }
-      peace.service.patient.setDefaultAddress(data).then(res => {
-        console.log('设置成功', res)
+      peace.service.patient.setDefaultAddress(data).then(() => {
+        // console.log('设置成功', res)
         this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
       })
       // let json = this.$route.params.json
@@ -180,10 +180,8 @@ export default {
   background-image: url('../../assets/images/icon-del.jpg');
 }
 
-
 .icon_none_address::before {
   content: '';
   background-image: url('../../assets/images/icons/icon_none_address.jpg');
 }
-
 </style>

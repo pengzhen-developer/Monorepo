@@ -737,7 +737,7 @@ export default {
     },
 
     typeActionWoman(period) {
-      console.log(period)
+      // console.log(period)
       this.model.isPregnancy = period
       const context = this.WOMAN_TYPE_TEXT_MAP[period]
       this.pushToChatList({ context })
@@ -1253,7 +1253,7 @@ export default {
     },
 
     goToPay(data) {
-      console.log(data)
+      // console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
         typeName: data.inquiryType === 'image' ? '图文问诊' : '',

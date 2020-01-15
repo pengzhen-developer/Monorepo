@@ -162,8 +162,6 @@ export default {
 
   methods: {
     updateAllergy({ foodAllergy, drugAllergy }) {
-      console.log(this.allergicHistorys)
-      console.log(foodAllergy, drugAllergy)
       this.popup.drugAllergy = false
       this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
       this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
