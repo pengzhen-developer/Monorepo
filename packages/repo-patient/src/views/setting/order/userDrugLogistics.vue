@@ -21,8 +21,8 @@
           >
             运单编号：{{ PickUpCode }}
           </div>
-          <div class="text"
-               v-if="data.ShippingMethod == '1'">配送编号：无</div>
+<!--          <div class="text"-->
+<!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
         </div>
       </div>
 
