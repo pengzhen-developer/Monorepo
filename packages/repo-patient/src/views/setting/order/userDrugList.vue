@@ -80,7 +80,7 @@
                 继续支付
               </div>
               <div class="label"
-                   v-if="item.OrderStatus == '3' || item.OrderStatus == '4' || item.OrderStatus == '7' || item.OrderStatus == '8'"
+                   v-if="ifShowLogistics(item)"
                    @click="goDrugLogiPage(item)">查看物流
               </div>
               <div class="label blue"
@@ -205,6 +205,13 @@ export default {
     // }
   },
   methods: {
+    ifShowLogistics(item) {
+      return item.ShippingMethod === this.SHIPPING_METHOD.HOME
+      && (item.PickUpCode !== null
+          || item.OrderStatus !== undefined
+          || item.OrderStatus !== '')
+    },
+
     checkQRCodeBtn(order) {
       const ShippingMethod = order.ShippingMethod
       const OrderStatus = order.OrderStatus
