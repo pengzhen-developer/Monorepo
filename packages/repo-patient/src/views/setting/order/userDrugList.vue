@@ -65,15 +65,15 @@
             <div class="panel-bottom"
                  v-if="item.OrderStatus != 5">
               <div class="time"></div>
-              <!-- <div class="label blue"
+              <div class="label blue"
                    @click="onClickSeeQRCode(item)"
                    v-if="checkQRCodeBtn(item)">
                 取药码
-              </div> -->
-              <div class="label gary"
+              </div>
+              <!-- <div class="label gary"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
                    @click="canselOrder(item)">取消订单
-              </div>
+              </div> -->
               <div class="label blue-full"
                    v-if="item.OrderStatus == '0'"
                    @click="payOrder(item)">
@@ -92,11 +92,6 @@
                    @click="submitOrder(item)">确认取药
               </div>
 
-              <div class="label blue"
-                   @click="onClickSeeQRCode(item)"
-                   v-if="checkQRCodeBtn(item)">
-                取药码
-              </div>
             </div>
           </div>
           <div class="bottom">客服电话：4009020365</div>

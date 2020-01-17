@@ -631,6 +631,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .container {
   display: flex;
   flex-direction: column;
@@ -730,6 +731,9 @@ export default {
     flex: 1;
   }
   .bottom {
+        position: fixed;
+    bottom: 0;
+    width: 100%;
     padding: 10px 15px;
     display: flex;
     .van-button {
