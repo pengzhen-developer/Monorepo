@@ -299,6 +299,7 @@ export default {
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
         && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
     showTrackingNumber() {
       const ShippingMethod = this.order.ShippingMethod
