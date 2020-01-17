@@ -160,7 +160,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       this.shippingMethod = params.shippingMethod
       this.orderStatus = params.orderStatus
-
+      this.PickUpCode=params.PickUpCode
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
       })

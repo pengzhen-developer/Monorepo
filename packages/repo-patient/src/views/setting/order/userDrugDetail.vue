@@ -383,6 +383,7 @@ export default {
       const json = peace.util.decode(this.$route.params.json)
       json.shippingMethod = shippingMethod
       json.orderStatus = orderStatus
+      json.PickUpCode=this.order.PickUpCode
       const afterJson = peace.util.encode(json)
 
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
