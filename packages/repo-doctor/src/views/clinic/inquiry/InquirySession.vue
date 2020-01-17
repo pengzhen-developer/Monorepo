@@ -6,17 +6,14 @@
       </div>
       <div class="header-control">
         <!-- <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span> -->
-        <el-button
-          @click="overConfirm"
-          plain
-          type="primary"
-          v-if="
+        <el-button @click="overConfirm"
+                   plain
+                   type="primary"
+                   v-if="
             $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
               $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
-          "
-        >
-          结束问诊</el-button
-        >
+          ">
+          结束问诊</el-button>
       </div>
     </div>
 
@@ -30,15 +27,12 @@
       </InquirySessionRecipe>
 
       <!-- 转诊 -->
-      <InquirySessionTransfer
-        v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发转诊"
-      >
+      <InquirySessionTransfer v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发转诊">
       </InquirySessionTransfer>
 
       <!-- 会诊 -->
       <InquirySessionConsultation
-        v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊"
-      >
+                                  v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
       </InquirySessionConsultation>
 
       <!-- 待接诊 / 问诊中 -->
@@ -51,58 +45,61 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <InquirySessionReceive
-            v-if="
+          <InquirySessionReceive v-if="
               $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
                 $peace.type.INQUIRY.INQUIRY_STATUS.待接诊
-            "
-          >
+            ">
           </InquirySessionReceive>
           <!-- 问诊中 -->
-          <InquirySessionMessageInput
-            v-if="
+          <InquirySessionMessageInput v-if="
               $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
                 $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
-            "
-          >
+            ">
           </InquirySessionMessageInput>
         </div>
       </template>
     </div>
 
-    <peace-dialog :visible.sync="over.visible" class="over-dialog" title top="25vh" width="348px">
+    <peace-dialog :visible.sync="over.visible"
+                  class="over-dialog"
+                  title
+                  top="25vh"
+                  width="348px">
       <h4 style="margin: 0 0 30px 0; font-size: 18px;">您是否已经解决了患者的问题？</h4>
 
       <el-radio-group v-model="over.state">
-        <el-radio label="已解决" style="margin: 0 0 20px 0;">已解决</el-radio>
+        <el-radio label="已解决"
+                  style="margin: 0 0 20px 0;">已解决</el-radio>
         <br />
-        <el-radio label="未解决" style="margin: 0 0 20px 0;">未解决</el-radio>
+        <el-radio label="未解决"
+                  style="margin: 0 0 20px 0;">未解决</el-radio>
         <br />
 
-        <el-radio-group
-          style="margin: 0 0 5px 20px;"
-          v-if="over.state === '未解决'"
-          v-model="over.description"
-        >
-          <el-radio label="不对症" style="margin: 0 0 20px 0;">不对症</el-radio>
+        <el-radio-group style="margin: 0 0 5px 20px;"
+                        v-if="over.state === '未解决'"
+                        v-model="over.description">
+          <el-radio label="不对症"
+                    style="margin: 0 0 20px 0;">不对症</el-radio>
           <br />
-          <el-radio label="需面诊" style="margin: 0 0 20px 0;">需面诊</el-radio>
+          <el-radio label="需面诊"
+                    style="margin: 0 0 20px 0;">需面诊</el-radio>
           <br />
           <el-radio label="其他">其他</el-radio>
-          <el-input
-            placeholder
-            style="display: inline-block; width: 150px"
-            v-if="over.description === '其他'"
-            v-model="over.otherDescription"
-          ></el-input>
+          <el-input placeholder
+                    style="display: inline-block; width: 150px"
+                    v-if="over.description === '其他'"
+                    v-model="over.otherDescription"></el-input>
         </el-radio-group>
       </el-radio-group>
 
       <hr />
 
       <div style="text-align: center;">
-        <el-button @click="over.visible = false" type>取消</el-button>
-        <el-button :disabled="!over.state" @click="overConfirmAgain" type="primary">确认</el-button>
+        <el-button @click="over.visible = false"
+                   type>取消</el-button>
+        <el-button :disabled="!over.state"
+                   @click="overConfirmAgain"
+                   type="primary">确认</el-button>
       </div>
     </peace-dialog>
   </div>
@@ -238,7 +235,9 @@ export default {
         })
       } else if (this.over.state === '未解决') {
         const description =
-          this.over.description === '其他' ? this.over.otherDescription : this.over.description
+          this.over.description === '其他'
+            ? this.over.otherDescription.trim()
+            : this.over.description
 
         if (!description) {
           return peace.util.warning('请选择未解决原因。')

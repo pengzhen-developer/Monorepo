@@ -42,6 +42,7 @@
                 type="textarea"
                 maxlength="15"
                 ref="quitInput"
+                @focus="getfocus"
                 v-model="over.otherDescription"></el-input>
 
       <div style="text-align: center; margin: 10px 0 0 0;">
@@ -75,13 +76,10 @@ export default {
   computed: {
     canSubmit() {
       if (this.over.description == '其他') {
-        return peace.validate.isEmpty(this.over.otherDescription)
+        return peace.validate.isEmpty(this.over.otherDescription.trim())
       } else {
         return !this.over.description
       }
-    },
-    getfocus() {
-      return this.over.description == '其他'
     }
   },
 
@@ -103,6 +101,10 @@ export default {
       peace.service.inquiry.receiveInquiry(params).then(res => {
         peace.util.alert(res.msg)
       })
+    },
+
+    getfocus() {
+      this.over.description = '其他'
     },
 
     // 退诊
