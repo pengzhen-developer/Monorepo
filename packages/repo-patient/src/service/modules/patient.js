@@ -356,6 +356,18 @@ export function inquiryStatus(doctorId, consultingType) {
 
   return peace.http.post(inquiryStatus, { doctorId, consultingType })
 }
+/**
+ * 获取药店信息
+ *
+ * @export
+ * @param {*DrugStoreId} params
+ * @returns
+ */
+export function getDrugStoreApi(AccessCode, DrugStoreId) {
+  const getDrugStoreApi = 'client/v1/Purchasedrug/GetDrugStoreApi'
+
+  return peace.http.post(getDrugStoreApi, { AccessCode, DrugStoreId })
+}
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -418,5 +430,7 @@ export default {
   getDefaultAddress,
   setDefaultAddress,
 
-  inquiryStatus
+  inquiryStatus,
+  /** 获取药店信息 **/
+  getDrugStoreApi
 }

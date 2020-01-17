@@ -30,8 +30,8 @@
     <div class="module">
       <div class="time-line">
         <div class="item"
-             v-for="item in data.ords"
-             :class="{ 'active' : item.ServiceStates === '4' }"
+             v-for="(item,index) in data.ords"
+             :class="{ 'active' : index == 0 }"
              :key="item.Notes">
           <div class="time">
             <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
@@ -119,14 +119,15 @@ const ENUM = {
     SIGNED: 4,
     CANCEL: 5,
     COMPLETE: 6
-  }
+  },
+  
 }
 
 export default {
   data() {
     return {
       ENUM,
-
+      PickUpCode:'',
       data: undefined,
       shippingMethod: null,
       orderStatus: null,

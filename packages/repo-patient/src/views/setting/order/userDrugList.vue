@@ -65,11 +65,11 @@
             <div class="panel-bottom"
                  v-if="item.OrderStatus != 5">
               <div class="time"></div>
-              <div class="label blue"
+              <!-- <div class="label blue"
                    @click="onClickSeeQRCode(item)"
                    v-if="checkQRCodeBtn(item)">
                 取药码
-              </div>
+              </div> -->
               <div class="label gary"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
                    @click="canselOrder(item)">取消订单
@@ -90,6 +90,12 @@
               <div class="label blue"
                    v-if="item.OrderStatus == '3' && item.ShippingMethod == '0'"
                    @click="submitOrder(item)">确认取药
+              </div>
+
+              <div class="label blue"
+                   @click="onClickSeeQRCode(item)"
+                   v-if="checkQRCodeBtn(item)">
+                取药码
               </div>
             </div>
           </div>

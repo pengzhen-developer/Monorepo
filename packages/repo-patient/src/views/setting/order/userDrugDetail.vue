@@ -1,5 +1,5 @@
 <template>
-  <div class="user-drug-detail">
+  <div class="user-drug-detail" v-if="order!=null">
     <div class="count-down"
          v-if="order.OrderStatus == 0">
       订单
@@ -100,15 +100,15 @@
             <div class="dl-packet"
                  v-if="order.ShippingMethod == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight}}</div>
+              <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut}}</div>
+              <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
+              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
             </div>
           </div>
           <div class="module str"
@@ -116,7 +116,7 @@
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.payMoney}}</div>
+                <div class="strong">￥{{order.payMoney.toFixed(2)}}</div>
               </div>
             </div>
           </div>
@@ -127,9 +127,10 @@
 
     <div class="box"
          v-if="order.OrderId">
-      <div class="dl-packet">
+      <div class="dl-packet" style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
+        <div class="cancel-btn" @click="canselOrder" v-if="order.OrderStatus == '3'&&order.ShippingMethod == '0'">取消订单</div> 
       </div>
       <div class="dl-packet"
            :key="index"
@@ -281,7 +282,7 @@ export default {
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
       timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
       appid: '',
-      order: {},
+      order: null,
       showQRCode: false,
       QRCodeURL: null,
 
@@ -645,6 +646,19 @@ export default {
 
 .dl-packet .dd {
   color: #4e4e4e;
+}
+.dl-packet{
+  position:relative;
+}
+.dl-packet .cancel-btn{
+  color:#999;
+  font-size:12px;
+  border:1px solid #ccc;
+  border-radius:2px;
+  line-height:25px;
+  height:27px;
+  text-align:center;
+  width:70px;
 }
 .str {
   border-top: 1px solid #e5e5e5;

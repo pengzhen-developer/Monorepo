@@ -513,6 +513,19 @@ const routers = [
     },
     component: () => import('@src/views/drug/DrugOrderBefore.vue')
   },
+  // 药店信息
+  {
+    path: '/drug/drugPhaHome/:json',
+    name: 'drugPhaHome',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '药店',
+        back: true
+      }
+    },
+    component: () => import('@src/views/drug/drugPhaHome.vue')
+  },
   // 医生列表
   {
     path: '/components/doctorList/:json',

@@ -1,6 +1,6 @@
 <template>
   <form bindsubmit="submitOrder"
-        report-submit="true">
+        report-submit="true" v-if="order!=null">
     <div class="top">
       <!--tab-->
       <div class="tab">
@@ -42,14 +42,14 @@
         </div>
       </div>
     </div>
-    <div class="module">
+    <div class="module"> 
       <div class="panel-pha">
         <div class="panel-head icon-next"
-             bindtap="goDrugPhaHomePage">
+             @click="goDrugPhaHomePage">
           <div class="head-ico">
             <img :src="order.DrugStoreLogo" />
           </div>
-          <div class="head-tit">{{order.DrugStoreName}}</div>
+          <div class="head-tit" >{{order.DrugStoreName}}</div>
         </div>
         <div class="panel-body">
           <div class="list-three"
@@ -79,22 +79,22 @@
             <div class="dl-packet"
                  v-if="page.tabIndex == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight}}</div>
+              <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut}}</div>
+              <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
+              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
             </div>
           </div>
           <div class="module str">
             <div class="dl-packet">
               <div class="dt">应付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
+                <div class="strong">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
                 {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}}
 
               </div>
@@ -132,7 +132,7 @@ export default {
         canSubmit: false
       },
       userAddr: {},
-      order: {}
+      order: null
     }
   },
   mounted() {
@@ -156,6 +156,10 @@ export default {
     this.getDefaultAddress()
   },
   methods: {
+    goDrugPhaHomePage(){
+      let json = this.$route.params.json
+      this.$router.push(`/drug/drugPhaHome/${json}`)
+    },
     getDefaultAddress() {
       peace.service.patient.getDefaultAddress().then(res => {
         this.userAddr = res.data
