@@ -285,10 +285,10 @@ export default {
 
       if (item.isOpen !== 1) {
         // peace.util.alert('暂未开放，敬请期待')
-        return 
+        return
       }
       if (item.isExist !== 1) {
-       return peace.util.alert('该功能正在建设中，敬请期待')
+        return peace.util.alert('该功能正在建设中，敬请期待')
       }
       switch (item.serviceName) {
         // 预约挂号
@@ -319,6 +319,21 @@ export default {
           })
           this.$router.push(`/components/doctorList/${json}`)
           break
+
+        // 查询报告
+        // case '查询报告':
+        //   json = peace.util.encode({
+        //     hsp:{
+        //       hospitalName:this.hospitalInfo.nethospitalInfo.name,
+        //       netHospitalId:this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     },
+        //     netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     banHsp:true,
+        //     id: 'queryReport',
+        //     Date: new Date()
+        //   })
+        //   this.$router.push(`/record/recordCondition/${json}`)
+        //   break
 
         default:
           peace.util.alert('该功能正在建设中，敬请期待')

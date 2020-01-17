@@ -51,7 +51,7 @@
     <div class="panel"
          style="border-color: #fff">
       <div class="panel-head">
-        <div class="head-tit">问医生</div>
+        <div class="head-tit">推荐医生</div>
         <!--                <picker mode="selector" bindchange="bindCityChange" value="{{index}}" range="{{cityList}}" range-key="name">-->
         <div class="head-more"
              @click="showCityDicFn">{{checkCity || '选择城市'}}</div>
@@ -181,9 +181,7 @@ export default {
   },
   methods: {
     getBodySymptomDetail() {
-      peace.service.diagnose[
-        this.params.link == 'diagnoseGroup' ? 'diseaseInfo' : 'getBodySymptomDetail'
-      ]({
+      peace.service.diagnose[this.params.link == 'diagnoseGroup' ? 'diseaseInfo' : 'getBodySymptomDetail']({
         code: this.params.id
       }).then(res => {
         this.data = res.data
@@ -215,10 +213,7 @@ export default {
           size: this.size
         })
         .then(res => {
-          !this.cityDic[1] &&
-            res.data.citys &&
-            res.data.citys[1] &&
-            (this.cityDic = res.data.citys || [])
+          !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (this.p * this.size >= res.data.total) {
