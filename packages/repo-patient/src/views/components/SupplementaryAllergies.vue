@@ -6,7 +6,7 @@
                   placeholder="请输入搜索关键词"
                   shape="round"
                   show-action
-                  v-model="searchAllergicHistory">
+                  v-model.trim="searchAllergicHistory">
         <span v-show="!showCancel"
               @click="onSearch"
               class="search-label"
@@ -225,7 +225,7 @@ export default {
         const include = res.data.find(allergy => {
           return allergy.name === this.searchAllergicHistory
         })
-        if (!include) {
+        if (!include && this.searchAllergicHistory !== '') {
           res.data.push({ name: this.searchAllergicHistory, needAdd: true })
         }
 
