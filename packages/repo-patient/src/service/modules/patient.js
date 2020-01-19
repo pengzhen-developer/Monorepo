@@ -344,7 +344,30 @@ export function getLastAppoint(params) {
   return peace.http.post(getLastAppoint, params)
 }
 
+/**
+ * 判断问诊状态
+ *
+ * @export
+ * @param {*doctorId,*consultingType} params
+ * @returns
+ */
+export function inquiryStatus(doctorId, consultingType) {
+  const inquiryStatus = 'client/v1/inquiry/inquiryStatus'
 
+  return peace.http.post(inquiryStatus, { doctorId, consultingType })
+}
+/**
+ * 获取药店信息
+ *
+ * @export
+ * @param {*DrugStoreId} params
+ * @returns
+ */
+export function getDrugStoreApi(AccessCode, DrugStoreId) {
+  const getDrugStoreApi = 'client/v1/Purchasedrug/GetDrugStoreApi'
+
+  return peace.http.post(getDrugStoreApi, { AccessCode, DrugStoreId })
+}
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -405,5 +428,9 @@ export default {
   getGuardianList,
   perfectInfo,
   getDefaultAddress,
-  setDefaultAddress
+  setDefaultAddress,
+
+  inquiryStatus,
+  /** 获取药店信息 **/
+  getDrugStoreApi
 }

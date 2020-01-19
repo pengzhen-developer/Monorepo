@@ -270,7 +270,7 @@ export default {
   },
   watch: {
     password(val) {
-      console.log(this.params, this.payType)
+      // console.log(this.params, this.payType)
       if (val && val.length == 6) {
         this.loading = true
         this.goPay()

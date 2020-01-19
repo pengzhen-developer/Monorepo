@@ -15,8 +15,14 @@
           <div class="text">
             订单编号：{{data.OrderId}}
           </div>
-          <div class="text"
-               v-if="data.ShippingMethod == '1'">配送编号：无</div>
+          <div
+            v-if="showTrackingNumber"
+            class="text"
+          >
+            运单编号：{{ PickUpCode }}
+          </div>
+<!--          <div class="text"-->
+<!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
         </div>
       </div>
 
@@ -24,8 +30,8 @@
     <div class="module">
       <div class="time-line">
         <div class="item"
-             v-for="item in data.ords"
-             :class="{ 'active' : item.ServiceStates === '4' }"
+             v-for="(item,index) in data.ords"
+             :class="{ 'active' : index == 0 }"
              :key="item.Notes">
           <div class="time">
             <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
@@ -37,21 +43,107 @@
                  v-if="item.ServiceStates == '4'">
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
+            <div
+              v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
+              class="note"
+            >
+              <div
+                class="qr-btn"
+                @click="onClickSeeQRCode"
+              >
+                查看取药码
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <!--二维码弹窗-->
+    <van-overlay
+      :show="showQRCode"
+      @click="showQRCode = false"
+    >
+      <div class="overlay-wrapper">
+        <div
+          @click.stop
+          class="qr-code-wrapper">
+          <div class="qr-code-area">
+            <!--有二维码-->
+            <div
+              v-if="QRCodeURL"
+              class="qr-code"
+            >
+              <div class="title">取药码</div>
+            </div>
+            <!--没有二维码-->
+            <div
+              v-if="!QRCodeURL"
+              class="qr-code qr-code--empty"
+            >
+              <div class="title">取药码</div>
+              <img
+                class="img-qr-code-empty"
+                :src="require('@src/assets/images/qrcode-empty.png')"
+                alt=""
+              >
+              <div class="context">暂无二维码</div>
+              <div class="info">请使用取药码进行取药</div>
+            </div>
+          </div>
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0">
+          <div
+            class="text-area"
+          >
+            取药码：{{ PickUpCode }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    COMPLETE: 6
+  },
+
+}
+
 export default {
   data() {
     return {
-      data: undefined
+      ENUM,
+      PickUpCode:'',
+      data: undefined,
+      shippingMethod: null,
+      orderStatus: null,
+      showQRCode: null,
+      QRCodeURL: null,
     }
+  },
+
+  computed: {
+    showTrackingNumber() {
+      const ShippingMethod = this.shippingMethod
+      const OrderStatus = this.orderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
+        && OrderStatus >= ENUM.ORDER_STATUS.SEND
+    },
   },
 
   created() {
@@ -59,9 +151,16 @@ export default {
   },
 
   methods: {
+    onClickSeeQRCode() {
+      this.showQRCode = true
+    },
+
     getLogistics() {
       const params = peace.util.decode(this.$route.params.json)
-
+      console.log(params)
+      this.shippingMethod = params.shippingMethod
+      this.orderStatus = params.orderStatus
+      this.PickUpCode = params.PickUpCode
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
       })
@@ -71,6 +170,91 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .qr-btn {
+    margin-top: 3px;
+    border: 1px solid #00c6ae;
+    border-radius: 5px;
+    color: #00c6ae;
+    width: 78px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay-wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      border-radius: 5px;
+
+      .qr-code-area {
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+      .text-area {
+        height: 50px;
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+
 .card-avatar {
   display: flex;
   align-items: center;

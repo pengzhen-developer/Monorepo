@@ -26,6 +26,12 @@
           </template>
         </van-cell>
       </div>
+
+      <div class="bottom">
+        <van-button @click="setGardianInfo({})"
+                    type="primary">新增监护人</van-button>
+      </div>
+
     </template>
     <template v-if="loaded&&guardianList.length == 0">
       <div class="none-page">
@@ -101,6 +107,11 @@ export default {
   .content {
     flex: 1;
     overflow-y: auto;
+    /deep/ .van-cell__title > span::after {
+      content: '';
+      width: 0;
+      border: 0;
+    }
   }
 
   .bottom {

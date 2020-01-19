@@ -1,5 +1,5 @@
 <template>
-  <div class="user-drug-detail">
+  <div class="user-drug-detail" v-if="order!=null">
     <div class="count-down"
          v-if="order.OrderStatus == 0">
       订单
@@ -17,6 +17,22 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
+            <div
+              v-if="showQRCodeBtn"
+              class="btn-wrapper"
+            >
+              <div
+                @click.stop
+                class="btn--code"
+                @click="onClickSeeQRCode"
+              >查看取药码</div>
+            </div>
+            <div
+              v-if="showTrackingNumber"
+              class="tracking-number"
+            >
+              运单编号：{{ order ? order.PickUpCode : '' }}
+            </div>
           </div>
           <div class="order-text"></div>
         </div>
@@ -84,15 +100,15 @@
             <div class="dl-packet"
                  v-if="order.ShippingMethod == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight}}</div>
+              <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut}}</div>
+              <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
+              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
             </div>
           </div>
           <div class="module str"
@@ -100,7 +116,7 @@
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.payMoney}}</div>
+                <div class="strong">￥{{order.payMoney.toFixed(2)}}</div>
               </div>
             </div>
           </div>
@@ -111,14 +127,15 @@
 
     <div class="box"
          v-if="order.OrderId">
-      <div class="dl-packet">
+      <div class="dl-packet" style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
+        <div class="cancel-btn" @click="canselOrder" v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
            v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]||'支付时间'}}：</div>
+        <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
@@ -126,7 +143,7 @@
       <div class='bottom-1'
            v-if="order.OrderStatus == 0">
         <div class="left">应付金额：<span
-                class="money">¥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</span></div>
+                class="money">¥{{ curPayMoney }}</span></div>
         <div class="right">
           <div @click="canselOrder"
                class="pay cancel"
@@ -145,18 +162,18 @@
            v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
+             v-if="order.OrderStatus == '2' || order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
         </div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '5'">已取消</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '5'">已取消</div>
       </div>
     </div>
     <div class="bottom"
@@ -185,6 +202,45 @@
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
+    <van-overlay
+      :show="showQRCode"
+      @click="showQRCode = false"
+    >
+      <div class="wrapper">
+        <div
+          @click.stop
+          class="qr-code-wrapper">
+          <div class="qr-code-area">
+            <!--有二维码-->
+            <div
+              v-if="QRCodeURL"
+              class="qr-code"
+            >
+              <div class="title">取药码</div>
+            </div>
+            <!--没有二维码-->
+            <div
+              v-if="!QRCodeURL"
+              class="qr-code qr-code--empty"
+            >
+              <div class="title">取药码</div>
+              <img
+                class="img-qr-code-empty"
+                :src="require('@src/assets/images/qrcode-empty.png')"
+                alt=""
+              /><div class="context">暂无二维码</div>
+              <div class="info">请使用取药码进行取药</div>
+            </div>
+          </div>
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0;">
+          <div
+            class="text-area"
+          >
+            取药码：{{ order ? order.PickUpCode : '' }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -195,6 +251,23 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 
+const ENUM = {
+  SHIPPING_METHOD: {
+    SELF: 0,
+    HOME: 1
+  },
+  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
+  ORDER_STATUS: {
+    NOT_PAY: 0,
+    PAID: 1,
+    ACCEPT: 2,
+    SEND: 3,
+    SIGNED: 4,
+    CANCEL: 5,
+    COMPLETE: 6
+  }
+}
+
 export default {
   components: {
     TheRecipe
@@ -202,18 +275,50 @@ export default {
 
   data() {
     return {
+      ENUM,
+
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
-      timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+      timeTags: {
+        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+      },
       appid: '',
-      order: {},
+      order: null,
+      showQRCode: false,
+      QRCodeURL: null,
 
       recipeDetail: {
         visible: false,
         data: {}
-      }
+      },
     }
+  },
+
+  computed: {
+    curPayMoney() {
+      const order = this.order
+      const payMoney = order.TotalAmount + order.Freight - order.PromotionsCut
+      return payMoney.toFixed(2)
+    },
+
+    showQRCodeBtn() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
+        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+    },
+    showTrackingNumber() {
+      const ShippingMethod = this.order.ShippingMethod
+      const OrderStatus = this.order.OrderStatus
+      if (ShippingMethod === undefined || OrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
+        && OrderStatus >= ENUM.ORDER_STATUS.SEND
+        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+    },
   },
 
   created() {
@@ -231,6 +336,10 @@ export default {
     // }
   },
   methods: {
+    onClickSeeQRCode() {
+      this.showQRCode = true
+    },
+
     payCallback() {
       // let orderId = ''
       // if (this.$route.query.orderId) {
@@ -279,9 +388,15 @@ export default {
     },
 
     goDrugLogiPage() {
-      const params = this.$route.params.json
+      const shippingMethod = this.order.ShippingMethod
+      const orderStatus = this.order.OrderStatus
+      const json = peace.util.decode(this.$route.params.json)
+      json.shippingMethod = shippingMethod
+      json.orderStatus = orderStatus
+      json.PickUpCode=this.order.PickUpCode
+      const afterJson = peace.util.encode(json)
 
-      this.$router.push(`/order/userDrugLogistics/${params}`)
+      this.$router.push(`/order/userDrugLogistics/${afterJson}`)
     },
 
     canselOrder() {
@@ -317,6 +432,85 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+  .wrapper {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-code-wrapper {
+      width: 250px;
+      border-radius: 5px;
+
+      .qr-code-area {
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .qr-code {
+          width: 100%;
+          height: 100%;
+          font-size: 16px;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+
+          .title {
+            margin: .42rem 0;
+          }
+        }
+
+        img {
+          display: block;
+        }
+
+        .qr-code--empty {
+          font-size: 15px;
+          color: #000;
+
+          .title {
+            margin: .42rem 0;
+          }
+
+          .img-qr-code-empty {
+            width: 118px;
+            height: 100px;
+            margin-bottom: .26rem;
+            display: block;
+          }
+
+          .context {
+            margin-bottom: .1rem;
+          }
+
+          .info {
+            margin-bottom: .42rem;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+      }
+
+      .text-area {
+        height: 50px;
+        width: 100%;
+        background-color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
 .user-drug-detail {
   height: 100%;
   background: #f5f5f5;
@@ -465,6 +659,19 @@ export default {
 .dl-packet .dd {
   color: #4e4e4e;
 }
+.dl-packet{
+  position:relative;
+}
+.dl-packet .cancel-btn{
+  color:#999;
+  font-size:12px;
+  border:1px solid #ccc;
+  border-radius:2px;
+  line-height:25px;
+  height:27px;
+  text-align:center;
+  width:70px;
+}
 .str {
   border-top: 1px solid #e5e5e5;
   padding-top: 10px;
@@ -606,6 +813,25 @@ export default {
 }
 .order-card {
   text-align: center;
+
+  .tracking-number {
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn--code {
+      color: #00c6ae;
+      padding: .16rem .38rem;
+      border: 1px solid #00c6ae;
+      border-radius: 5px;
+    }
+  }
 }
 .order-card .icon {
   width: 38px;

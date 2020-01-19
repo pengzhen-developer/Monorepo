@@ -513,6 +513,19 @@ const routers = [
     },
     component: () => import('@src/views/drug/DrugOrderBefore.vue')
   },
+  // 药店信息
+  {
+    path: '/drug/drugPhaHome/:json',
+    name: 'drugPhaHome',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '药店',
+        back: true
+      }
+    },
+    component: () => import('@src/views/drug/drugPhaHome.vue')
+  },
   // 医生列表
   {
     path: '/components/doctorList/:json',
@@ -561,6 +574,34 @@ const routers = [
       }
     },
     component: () => import('@src/views/components/DoctorInquiryApply.vue')
+  },
+  // 补充过敏史
+  {
+    path: '/components/supplementaryAllergies/:json',
+    name: '/components/supplementaryAllergies',
+    meta: {
+      keepAlive: true,
+      auth: true,
+      navbar: {
+        title: '添加过敏史',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/SupplementaryAllergies.vue')
+  },
+  // 新增过敏史
+  {
+    path: '/components/addAllergiesInfo/:json',
+    name: '/components/addAllergiesInfo',
+    meta: {
+      keepAlive: true,
+      auth: true,
+      navbar: {
+        title: '新增过敏史',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/AddAllergiesInfo.vue')
   },
   // 附件上传
   {

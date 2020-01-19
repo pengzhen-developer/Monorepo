@@ -19,7 +19,9 @@
            :key="item.DrugStoreName"
            @click="goDrugOrderBeforePage(index)">
         <div class="card-avatar">
-          <img class="" :src="item.DrugStoreLogo" style="height: 100%;"/>
+          <img class=""
+               :src="item.DrugStoreLogo"
+               style="height: 100%;" />
         </div>
         <div class="card-body">
           <div class="card-name">{{item.DrugStoreName}}
@@ -113,7 +115,7 @@ export default {
 
     // this.key = config.MAP.key;
     let paramsRoute = peace.util.decode(this.$route.params.json)
-    console.log('route', paramsRoute)
+    // console.log('route', paramsRoute)
 
     if (paramsRoute.addr) {
       //从地图页面返回
@@ -131,7 +133,7 @@ export default {
           if (!this.messageOn) {
             if (event.data && event.data != 'isAxure') {
               var loc = event.data
-              console.log(loc)
+              // console.log(loc)
               let lat = loc.lat
               let lng = loc.lng
               this.userLocation = { lat, lng }
@@ -217,16 +219,12 @@ export default {
         s = '未知距离'
         return ''
       } else {
-        ;(radLat1 = me.bds(lat1)),
-          (radLat2 = me.bds(lat2)),
-          (a = radLat1 - radLat2),
-          (b = me.bds(lng1) - me.bds(lng2))
+        ;(radLat1 = me.bds(lat1)), (radLat2 = me.bds(lat2)), (a = radLat1 - radLat2), (b = me.bds(lng1) - me.bds(lng2))
         s =
           2 *
           Math.asin(
             Math.sqrt(
-              Math.pow(Math.sin(a / 2), 2) +
-                Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)
+              Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)
             )
           )
         s = s * 6378.137 // EARTH_RADIUS;

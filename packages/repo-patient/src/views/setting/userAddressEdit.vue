@@ -87,13 +87,7 @@ export default {
     },
     ssq() {
       if (this.internalAddr.province && this.internalAddr.city && this.internalAddr.district) {
-        return (
-          this.internalAddr.province +
-          ' ' +
-          this.internalAddr.city +
-          ' ' +
-          this.internalAddr.district
-        )
+        return this.internalAddr.province + ' ' + this.internalAddr.city + ' ' + this.internalAddr.district
       }
       return ''
     }
@@ -143,8 +137,8 @@ export default {
           // ShippingMethod: 2
           // familyId: "cishjjjduj"
         })
-        .catch(res => {
-          console.log(res)
+        .catch(() => {
+          // console.log(res)
           // Dialog.alert({
           //   title: this.internalAddr.addressId ? '编辑失败' : '添加失败',
           //   message: res.data.msg

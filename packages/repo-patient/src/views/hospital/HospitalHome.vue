@@ -3,9 +3,13 @@
        v-if="hospitalInfo">
     <template v-if="hospitalInfo.nethospitalStatus">
       <div class="banner">
-        <div class="banner-img">
+        <img class="bgImg"
+             src="@src/assets/images/newIndex/bg_home.png" />
+        <img class="banner-icon"
+             :src="hospitalInfo.nethospitalInfo.icon" />>
+        <!-- <div class="banner-img">
           <img :src="hospitalInfo.nethospitalInfo.icon" />
-        </div>
+        </div> -->
       </div>
       <section class="info">
         <div class="name-wrap">
@@ -62,12 +66,28 @@
         </div>
       </section>
       <section class="functions">
-        <div class="item"
+
+        <!-- <div class="item"
              v-for="(item, index) in hospitalInfo.guideH5"
              :key="'index' + index"
              @click="goMenuList(item)">
           <img :src="require('@src/assets/images/newIndex/' + item.icon + '.png')" />
           <span class="name">{{ item.text }}</span>
+        </div> -->
+        <div class="item"
+             v-for="(item, index) in hospitalInfo.hospitalServiceList"
+             :key="'index' + index"
+             @click="goMenuList(item)">
+          <!-- "serviceLogoId": 3,//图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:中药寄送 -->
+          <div class="img">
+            <img
+                 :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
+            <img class="wait"
+                 v-if="item.isOpen!=1"
+                 src="@src/assets/images/ic_wait open.png" />
+          </div>
+          <span class="name">{{ item.serviceName }}</span>
+
         </div>
       </section>
       <section class="dept">
@@ -90,7 +110,8 @@
       </section>
       <section class="doctors">
         <div class="title">
-          <span>明星医生</span>
+
+          <span>医院医生</span>
           <i class="arrow"
              @click="goStarDoctor"></i>
         </div>
@@ -103,6 +124,10 @@
             <img class="avatar"
                  :src="item.avartor" />
             <div class="item">
+
+              <img src="@src/assets/images/ic_tag.png"
+                   v-if="item.isAttention==0" />>
+
               <span class="name">{{ item.name }}</span>
               <div class="jd">
                 <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
@@ -258,35 +283,92 @@ export default {
 
       let json = undefined
 
-      switch (item.id) {
+      if (item.isOpen !== 1) {
+        // peace.util.alert('暂未开放，敬请期待')
+        return
+      }
+      if (item.isExist !== 1) {
+        return peace.util.alert('该功能正在建设中，敬请期待')
+      }
+      switch (item.serviceName) {
         // 预约挂号
-        case 'appointment':
+        case '预约挂号':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
+            id: 'appointment',
             Date: new Date()
           })
-
           this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
           break
 
         // 在线咨询
-        case 'onlineConsultant':
-        // 复诊续方
-        case 'subsequentVisit':
+        case '在线咨询':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: item.id,
+            id: 'onlineConsultant',
             Date: new Date()
           })
-
+          this.$router.push(`/components/doctorList/${json}`)
+          break
+        // 复诊续方
+        case '复诊续方':
+          json = peace.util.encode({
+            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+            id: 'subsequentVisit',
+            Date: new Date()
+          })
           this.$router.push(`/components/doctorList/${json}`)
           break
 
+        // 查询报告
+        // case '查询报告':
+        //   json = peace.util.encode({
+        //     hsp:{
+        //       hospitalName:this.hospitalInfo.nethospitalInfo.name,
+        //       netHospitalId:this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     },
+        //     netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     banHsp:true,
+        //     id: 'queryReport',
+        //     Date: new Date()
+        //   })
+        //   this.$router.push(`/record/recordCondition/${json}`)
+        //   break
+
         default:
-          peace.util.alert('暂未开放，敬请期待')
+          peace.util.alert('该功能正在建设中，敬请期待')
           break
       }
+
+      // switch (item.id) {
+      //   // 预约挂号
+      //   case 'appointment':
+      //     json = peace.util.encode({
+      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+      //       id: item.id,
+      //       Date: new Date()
+      //     })
+
+      //     this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+      //     break
+
+      //   // 在线咨询
+      //   case 'onlineConsultant':
+      //   // 复诊续方
+      //   case 'subsequentVisit':
+      //     json = peace.util.encode({
+      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+      //       id: item.id,
+      //       Date: new Date()
+      //     })
+
+      //     this.$router.push(`/components/doctorList/${json}`)
+      //     break
+
+      //   default:
+      //     peace.util.alert('暂未开放，敬请期待')
+      //     break
+      // }
     }
   }
 }
@@ -353,22 +435,42 @@ export default {
     width: 100%;
     height: 175px;
     background: #fff;
-    .banner-img {
+    position: relative;
+    .bgImg {
+      position: absolute;
       width: 100%;
       height: 100%;
-      background: url('../../assets/images/newIndex/bg_home.png');
-      background-size: 100% 100%;
-      position: relative;
-      img {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        position: absolute;
-        bottom: 0;
-        right: 30px;
-        border: 2px solid #fff;
-      }
+
+      display: block;
+      z-index: 3;
     }
+    .banner-icon {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 30px;
+      border: 2px solid #fff;
+      z-index: 5;
+    }
+    // .banner-img {
+    //   width: 100%;
+    //   height: 100%;
+    //   background: url('../../assets/images/newIndex/bg_home.png');
+    //   background-size: 100% 100%;
+    //   position: relative;
+    //   img {
+    //     width: 130px;
+    //     height: 130px;
+    //     border-radius: 50%;
+    //     position: absolute;
+    //     bottom: 0;
+    //     right: 30px;
+    //     border: 2px solid #fff;
+    //     z-index: 5;
+    //   }
+    // }
   }
   .info {
     padding: 20px 16px 0;
@@ -492,10 +594,25 @@ export default {
       justify-content: center;
       align-items: center;
       margin-top: 18px;
-      img {
+      position: relative;
+      .img {
         width: 30px;
         height: 30px;
         display: inline-block;
+        position: relative;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .wait {
+          position: absolute;
+          right: -7px;
+          top: -9px;
+          width: 34px;
+          height: 28px;
+          display: block;
+        }
       }
       .name {
         font-size: 13px;
@@ -523,8 +640,9 @@ export default {
     .dept-wrap {
       display: flex;
       flex-wrap: wrap;
-      width: 360px;
-      margin: 0 auto;
+      // width: 360px;
+      width: calc(100% - 15px);
+      margin: 0 7.5px;
       .item {
         width: 33.3333333%;
         margin-bottom: 15px;
@@ -549,8 +667,9 @@ export default {
     .doc-wrap {
       display: -webkit-box;
       overflow-x: scroll;
-      margin: 0 16px;
-      padding-bottom: 25px;
+      margin: 0 14px;
+      padding: 0 2px 25px 2px;
+      // padding-bottom: 25px;
       .item-wrap {
         position: relative;
         width: 130px;
@@ -580,11 +699,18 @@ export default {
           position: absolute;
           bottom: 0;
           left: 0;
+          img {
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            height: 14px;
+            width: 33px;
+          }
           .name {
             font-size: 14px;
             font-weight: 600;
             color: rgba(0, 0, 0, 1);
-            margin-top: 30px;
+            margin-top: 10px;
           }
           .jd {
             font-size: 11px;

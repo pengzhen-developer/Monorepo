@@ -144,9 +144,9 @@ export default {
             message: '该就诊人还没有电子健康卡，是否现在领取？',
             confirmButtonText: '现在领取'
           }).then(() => {
-            console.log('fmllllllllll', this.fml)
+            // console.log('fmllllllllll', this.fml)
             let familyId = this.fml.familyId
-            console.log(this.doctorInfo)
+            // console.log(this.doctorInfo)
             let nethospitalid = this.doctorInfo.nethospitalId
             let params = { familyId, nethospitalid }
             peace.service.patient
@@ -233,7 +233,7 @@ export default {
                 }) || []
               this.fmlDic.push({ subname: 'add', name: '添加就诊人' })
 
-              console.log('familyId', this.fml.familyId)
+              // console.log('familyId', this.fml.familyId)
               if (this.fml.familyId) {
                 this.checkCard()
               }
@@ -267,7 +267,7 @@ export default {
       })
     },
     fmlConfirm(item, index) {
-      console.log(index)
+      // console.log(index)
       if (item.subname) {
         this.fml = this.fmlList[index]
         if (this.fml) {

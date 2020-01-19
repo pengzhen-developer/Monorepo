@@ -84,9 +84,9 @@ export default {
       const data = {
         addressId: id
       }
-      peace.service.patient.delAddress(data).then(res => {
+      peace.service.patient.delAddress(data).then(() => {
         this.get()
-        console.log(res)
+        // console.log(res)
       })
     },
     checkAddr(address) {
