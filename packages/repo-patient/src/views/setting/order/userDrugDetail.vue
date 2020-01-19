@@ -135,7 +135,7 @@
       <div class="dl-packet"
            :key="index"
            v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]||'支付时间'}}：</div>
+        <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
@@ -232,7 +232,7 @@
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0;">
           <div
             class="text-area"
           >
@@ -280,7 +280,10 @@ export default {
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
-      timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+      timeTags: {
+        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备货时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+      },
       appid: '',
       order: null,
       showQRCode: false,
