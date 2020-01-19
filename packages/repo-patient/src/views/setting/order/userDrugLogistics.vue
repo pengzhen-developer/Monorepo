@@ -44,12 +44,12 @@
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
             <div
-              v-if="item.ServiceStates === '3' && shippingMethod === 0"
+              v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
               class="note"
             >
               <div
                 class="qr-btn"
-                @click="onClickSeeQRCode(item)"
+                @click="onClickSeeQRCode"
               >
                 查看取药码
               </div>
@@ -151,16 +151,16 @@ export default {
   },
 
   methods: {
-    onClickSeeQRCode(order) {
-      this.PickUpCode = order.PickUpCode
+    onClickSeeQRCode() {
       this.showQRCode = true
     },
 
     getLogistics() {
       const params = peace.util.decode(this.$route.params.json)
+      console.log(params)
       this.shippingMethod = params.shippingMethod
       this.orderStatus = params.orderStatus
-      this.PickUpCode=params.PickUpCode
+      this.PickUpCode = params.PickUpCode
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
       })

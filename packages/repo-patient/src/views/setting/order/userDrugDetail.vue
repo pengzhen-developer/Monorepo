@@ -130,7 +130,7 @@
       <div class="dl-packet" style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
-        <div class="cancel-btn" @click="canselOrder" v-if="order.OrderStatus == '3'&&order.ShippingMethod == '0'">取消订单</div>
+        <div class="cancel-btn" @click="canselOrder" v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
@@ -162,18 +162,18 @@
            v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             v-if="order.OrderStatus == '0' || order.OrderStatus == '1'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单</div>
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
+             v-if="order.OrderStatus == '2' || order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
         </div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-        <div class="btn block btn-default"
-             v-if="order.OrderStatus == '5'">已取消</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+      <div class="btn block btn-default"
+           v-if="order.OrderStatus == '5'">已取消</div>
       </div>
     </div>
     <div class="bottom"
