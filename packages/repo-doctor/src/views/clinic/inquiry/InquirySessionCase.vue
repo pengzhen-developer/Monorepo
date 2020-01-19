@@ -149,7 +149,7 @@
         <el-form-item label="辅助检查">
           <span slot="label">辅助检查</span>
           <el-input :rows="3"
-                    placeholder="请输入不少于10个字的描述"
+                    placeholder="请输入辅助检查"
                     type="textarea"
                     v-model="medical.model.Inspection_index.More"></el-input>
         </el-form-item>
@@ -375,7 +375,10 @@ export default {
           diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'blur' }]
         }
       },
-      typeOptions: [{ value: 1, label: '通用病历模板' }, { value: 2, label: '肝病病历模板' }],
+      typeOptions: [
+        { value: 1, label: '通用病历模板' },
+        { value: 2, label: '肝病病历模板' }
+      ],
 
       dialog: {
         visible: false,
@@ -483,10 +486,19 @@ export default {
     sendMedical() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (this.medical.model.Inspection_index.More && this.medical.model.Inspection_index.More.length < 10) {
-            $peace.util.warning('请输入至少 10 个字的辅助检查')
-            return
-          }
+          //
+          //
+          // fix bug 【病历中的辅助检查取消最少10字的限制】
+          // bug 地址：https://www.tapd.cn/56564185/bugtrace/bugs/view/1156564185001003085
+          //
+          //
+          // if (
+          //   this.medical.model.Inspection_index.More &&
+          //   this.medical.model.Inspection_index.More.length < 10
+          // ) {
+          //   $peace.util.warning('请输入至少 10 个字的辅助检查')
+          //   return
+          // }
           if (
             this.medical.model.Inspection_index.temperature &&
             !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)
@@ -527,11 +539,11 @@ export default {
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || (parseInt(alt) < 0 || parseInt(alt) > 1000)) {
+          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || (parseInt(ast) < 0 || parseInt(ast) > 1000)) {
+          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
