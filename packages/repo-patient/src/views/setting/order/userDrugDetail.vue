@@ -130,7 +130,7 @@
       <div class="dl-packet" style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
-        <div class="cancel-btn" @click="canselOrder" v-if="order.OrderStatus == '3'&&order.ShippingMethod == '0'">取消订单</div> 
+        <div class="cancel-btn" @click="canselOrder" v-if="order.OrderStatus == '3'&&order.ShippingMethod == '0'">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
@@ -143,7 +143,7 @@
       <div class='bottom-1'
            v-if="order.OrderStatus == 0">
         <div class="left">应付金额：<span
-                class="money">¥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</span></div>
+                class="money">¥{{ curPayMoney }}</span></div>
         <div class="right">
           <div @click="canselOrder"
                class="pay cancel"
@@ -294,6 +294,12 @@ export default {
   },
 
   computed: {
+    curPayMoney() {
+      const order = this.order
+      const payMoney = order.TotalAmount + order.Freight - order.PromotionsCut
+      return payMoney.toFixed(2)
+    },
+
     showQRCodeBtn() {
       const ShippingMethod = this.order.ShippingMethod
       const OrderStatus = this.order.OrderStatus
