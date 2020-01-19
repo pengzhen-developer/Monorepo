@@ -281,7 +281,7 @@ export default {
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
       timeTags: {
-        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备货时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
         [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
       },
       appid: '',

@@ -90,7 +90,7 @@
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0">
           <div
             class="text-area"
           >
@@ -120,7 +120,7 @@ const ENUM = {
     CANCEL: 5,
     COMPLETE: 6
   },
-  
+
 }
 
 export default {
