@@ -314,6 +314,7 @@ export default {
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
         && OrderStatus >= ENUM.ORDER_STATUS.SEND
+        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
   },
 
