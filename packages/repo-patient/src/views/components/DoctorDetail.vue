@@ -453,27 +453,6 @@
             <div class="main-time color-999">{{item.createdTime}}</div>
           </div>
         </div>
-        <div class="flex commen"
-             v-for="(item,index) in common.lists"
-             :key="index">
-          <van-image width="30px"
-                     height="30px"
-                     :src="item.iconHead" />
-          <div class="main">
-            <div class="flex between main-top">
-              <div class="name">{{item.familyInfo.name}}</div>
-              <van-rate v-model="item.starLevel"
-                        readonly
-                        size="10"
-                        :icon="require('@src/assets/images/ic_star_active.png')"
-                        :void-icon="require('@src/assets/images/ic_star.png')" />
-            </div>
-            <div class="main-middle color-666">
-              {{item.content}}
-            </div>
-            <div class="main-time color-999">{{item.createdTime}}</div>
-          </div>
-        </div>
 
       </div>
     </div>
