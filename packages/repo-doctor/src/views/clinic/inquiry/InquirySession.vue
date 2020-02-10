@@ -9,7 +9,10 @@
         <el-button @click="overConfirm"
                    plain
                    type="primary"
-                   v-if="$store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.问诊中">
+                   v-if="
+            $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
+              $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+          ">
           结束问诊</el-button>
       </div>
     </div>
@@ -28,8 +31,7 @@
       </InquirySessionTransfer>
 
       <!-- 会诊 -->
-      <InquirySessionConsultation
-                                  v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
+      <InquirySessionConsultation v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
       </InquirySessionConsultation>
 
       <!-- 待接诊 / 问诊中 -->
@@ -42,12 +44,16 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <InquirySessionReceive
-                                 v-if="$store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+          <InquirySessionReceive v-if="
+              $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
+                $peace.type.INQUIRY.INQUIRY_STATUS.待接诊
+            ">
           </InquirySessionReceive>
           <!-- 问诊中 -->
-          <InquirySessionMessageInput
-                                      v-if="$store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.问诊中">
+          <InquirySessionMessageInput v-if="
+              $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
+                $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+            ">
           </InquirySessionMessageInput>
         </div>
       </template>
@@ -69,7 +75,7 @@
         <br />
 
         <el-radio-group style="margin: 0 0 5px 20px;"
-                        v-if="over.state === '未解决' "
+                        v-if="over.state === '未解决'"
                         v-model="over.description">
           <el-radio label="不对症"
                     style="margin: 0 0 20px 0;">不对症</el-radio>
@@ -227,8 +233,7 @@ export default {
           }
         })
       } else if (this.over.state === '未解决') {
-        const description =
-          this.over.description === '其他' ? this.over.otherDescription : this.over.description
+        const description = this.over.description === '其他' ? this.over.otherDescription.trim() : this.over.description
 
         if (!description) {
           return peace.util.warning('请选择未解决原因。')
@@ -323,4 +328,3 @@ $--control-height: 200px;
   }
 }
 </style>
-

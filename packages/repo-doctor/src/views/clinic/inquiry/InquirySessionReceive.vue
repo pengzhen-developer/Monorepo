@@ -2,8 +2,7 @@
   <div class="inquiry-session-receive">
     <div class="tip">
       <span>请在</span>
-      <span
-            class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
+      <span class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
       <span>内接诊，倒计时结束未接诊将自动退诊</span>
     </div>
     <div class="control">
@@ -42,6 +41,7 @@
                 type="textarea"
                 maxlength="15"
                 ref="quitInput"
+                @focus="getfocus"
                 v-model="over.otherDescription"></el-input>
 
       <div style="text-align: center; margin: 10px 0 0 0;">
@@ -75,13 +75,10 @@ export default {
   computed: {
     canSubmit() {
       if (this.over.description == '其他') {
-        return peace.validate.isEmpty(this.over.otherDescription)
+        return peace.validate.isEmpty(this.over.otherDescription.trim())
       } else {
         return !this.over.description
       }
-    },
-    getfocus() {
-      return this.over.description == '其他'
     }
   },
 
@@ -105,6 +102,10 @@ export default {
       })
     },
 
+    getfocus() {
+      this.over.description = '其他'
+    },
+
     // 退诊
     refuse() {
       this.over.visible = true
@@ -117,8 +118,7 @@ export default {
     overConfirmAgain() {
       const params = {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
-        overCause:
-          this.over.description == '其他' ? this.over.otherDescription : this.over.description
+        overCause: this.over.description == '其他' ? this.over.otherDescription : this.over.description
       }
       peace.service.inquiry.quitInquiry(params).then(res => {
         peace.util.alert(res.msg)
