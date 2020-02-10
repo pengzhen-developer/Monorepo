@@ -1,16 +1,10 @@
 <template>
   <div class="file-health-detail">
     <div class="header flex">
-      <van-image round
-                 v-if="model.sex === '男'"
-                 width="50px"
-                 height="50px"
-                 :src="require('@src/assets/images/ic_head portrait.png')" />
-      <van-image round
-                 v-if="model.sex === '女'"
-                 width="50px"
-                 height="50px"
-                 :src="require('@src/assets/images/img_head girl.png')" />
+      <van-image round v-if="model.sex === '男'" width="50px" height="50px"
+        :src="require('@src/assets/images/ic_head portrait.png')" />
+      <van-image round v-if="model.sex === '女'" width="50px" height="50px"
+        :src="require('@src/assets/images/img_head girl.png')" />
       <span style="font-size: 20px; margin: 0 10px;">{{ model.name }}</span>
       <van-icon v-if="model.sex === '男'"
                 :name="require('@src/assets/images/file/ic_boys.png')">
@@ -19,62 +13,41 @@
                 :name="require('@src/assets/images/file/ic_girls.png')">
       </van-icon>
       <span style="font-size: 14px; margin: 0 10px;">{{ model.age + '岁' }}</span>
-      <van-tag color="#F2F2F2"
-               text-color="#999999">{{ model.relation }}</van-tag>
+      <van-tag color="#F2F2F2" text-color="#999999">{{ model.relation }}</van-tag>
     </div>
 
     <van-cell-group class="content">
-      <van-cell title="婚姻状况"
-                is-link
-                @click="popup.maritalStatus = true"
-                :value="model.maritalStatus" />
-      <van-popup position="bottom"
-                 v-model="popup.maritalStatus">
+      <van-cell title="婚姻状况" is-link @click="popup.maritalStatus = true"
+        :value="model.maritalStatus" />
+      <van-popup position="bottom" v-model="popup.maritalStatus">
         <van-picker :columns="dict.maritalStatus"
-                    :default-index="dict.maritalStatus.indexOf(model.maritalStatus)"
-                    show-toolbar
-                    @confirm="v => { model.maritalStatus = v; popup.maritalStatus = false }"
-                    @cancel="v => popup.maritalStatus = false" />
+          :default-index="dict.maritalStatus.indexOf(model.maritalStatus)" show-toolbar
+          @confirm="v => { model.maritalStatus = v; popup.maritalStatus = false }"
+          @cancel="v => popup.maritalStatus = false" />
       </van-popup>
 
-      <van-cell title="生育状况"
-                is-link
-                @click="popup.fertilityStatus = true"
-                :value="model.fertilityStatus" />
-      <van-popup position="bottom"
-                 v-model="popup.fertilityStatus">
+      <van-cell title="生育状况" is-link @click="popup.fertilityStatus = true"
+        :value="model.fertilityStatus" />
+      <van-popup position="bottom" v-model="popup.fertilityStatus">
         <van-picker :columns="dict.fertilityStatus"
-                    :default-index="dict.fertilityStatus.indexOf(model.fertilityStatus)"
-                    show-toolbar
-                    @confirm="v => { model.fertilityStatus = v; popup.fertilityStatus = false }"
-                    @cancel="v => popup.fertilityStatus = false" />
+          :default-index="dict.fertilityStatus.indexOf(model.fertilityStatus)" show-toolbar
+          @confirm="v => { model.fertilityStatus = v; popup.fertilityStatus = false }"
+          @cancel="v => popup.fertilityStatus = false" />
       </van-popup>
 
-      <van-cell title="手术或外伤"
-                is-link
-                placeholder="请输入"
-                @click="popup.surgeryTrauma = true"
-                v-model="model.surgeryTrauma" />
-      <van-popup position="bottom"
-                 v-model="popup.surgeryTrauma">
-        <AddSurgeryTrauma style="max-height: 80vh"
-                          @onSave="popup.surgeryTrauma = false"
-                          v-model="model.surgeryTrauma"
-                          v-if="popup.surgeryTrauma">
+      <van-cell title="手术或外伤" is-link placeholder="请输入" @click="popup.surgeryTrauma = true"
+        v-model="model.surgeryTrauma" />
+      <van-popup position="bottom" v-model="popup.surgeryTrauma">
+        <AddSurgeryTrauma style="max-height: 80vh" @onSave="popup.surgeryTrauma = false"
+          v-model="model.surgeryTrauma" v-if="popup.surgeryTrauma">
         </AddSurgeryTrauma>
       </van-popup>
 
-      <van-cell title="家族病史"
-                is-link
-                placeholder="请输入"
-                @click="popup.familyHistory = true"
-                v-model="model.familyHistory" />
-      <van-popup position="bottom"
-                 v-model="popup.familyHistory">
-        <AddFamilyHistory style="max-height: 80vh"
-                          @onSave="popup.familyHistory = false"
-                          v-model="model.familyHistory"
-                          v-if="popup.familyHistory">
+      <van-cell title="家族病史" is-link placeholder="请输入" @click="popup.familyHistory = true"
+        v-model="model.familyHistory" />
+      <van-popup position="bottom" v-model="popup.familyHistory">
+        <AddFamilyHistory style="max-height: 80vh" @onSave="popup.familyHistory = false"
+          v-model="model.familyHistory" v-if="popup.familyHistory">
         </AddFamilyHistory>
       </van-popup>
 
@@ -107,24 +80,17 @@
         </AddFoodAllergy>
       </van-popup> -->
 
-      <van-cell title="个人习惯"
-                is-link
-                @click="popup.personalHabit = true"
-                v-model="model.personalHabit" />
-      <van-popup position="bottom"
-                 v-model="popup.personalHabit">
-        <AddPersonalHabit style="max-height: 80vh"
-                          @onSave="popup.personalHabit = false"
-                          v-model="model.personalHabit"
-                          v-if="popup.personalHabit">
+      <van-cell title="个人习惯" is-link @click="popup.personalHabit = true"
+        v-model="model.personalHabit" />
+      <van-popup position="bottom" v-model="popup.personalHabit">
+        <AddPersonalHabit style="max-height: 80vh" @onSave="popup.personalHabit = false"
+          v-model="model.personalHabit" v-if="popup.personalHabit">
         </AddPersonalHabit>
       </van-popup>
     </van-cell-group>
 
     <div class="footer">
-      <van-button @click="save"
-                  style="width: 100%;"
-                  type="primary">保存</van-button>
+      <van-button @click="save" style="width: 100%;" type="primary">保存</van-button>
     </div>
   </div>
 </template>
@@ -196,8 +162,6 @@ export default {
 
   methods: {
     updateAllergy({ foodAllergy, drugAllergy }) {
-      console.log(this.allergicHistorys)
-      console.log(foodAllergy, drugAllergy)
       this.popup.drugAllergy = false
       this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
       this.model.drugAllergy = drugAllergy.map(item => item.value).toString()

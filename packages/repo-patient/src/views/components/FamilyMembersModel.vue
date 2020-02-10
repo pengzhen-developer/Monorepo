@@ -41,7 +41,7 @@
                    placeholder="请输入姓名"
                    v-model="model.name" />
         <van-field :disabled="isEdit"
-                   label="身份证号"
+                   label="身份证"
                    placeholder="请输入身份证号"
                    v-model="model.idcard" />
         <van-field :disabled="isEdit"
@@ -107,52 +107,48 @@
       <div class="form form-for-family">
         <van-field label="姓名"
                    placeholder="请输入姓名"
-                   required
                    v-model="model.name" />
-        <van-field label="身份证号"
+        <van-field label="身份证"
                    placeholder="请输入身份证号"
-                   required
                    v-model="model.idcard" />
         <van-field @click="showPopupRelation"
                    label="关系"
                    placeholder="请选择"
                    readonly
-                   required
                    right-icon="arrow"
                    v-model="model.relation" />
         <van-field @click="showPopupSex"
                    label="性别"
                    placeholder="请选择"
                    readonly
-                   required
                    right-icon="arrow"
                    v-model="model.sex" />
         <van-field @click="showPopupBirthday"
                    label="生日"
                    placeholder="请输入"
                    readonly
-                   required
                    right-icon="arrow"
                    v-model="model.birthday" />
         <van-field @click="showPopupNations"
                    label="民族"
                    placeholder="请输入"
                    readonly
-                   required
                    right-icon="arrow"
                    v-model="model.nationName" />
 
-        <van-cell-group v-if="gardianSet || (age!= null && age < this.ageLimit)">
+        <van-cell-group v-if="!addGardian&&(gardianSet || (age!= null && age < this.ageLimit))">
+          <van-row style="height:10px;background:#f9f9f9;width:calc(100% + 30px );margin:0 -15px;">
+          </van-row>
           <van-cell value="就诊人未满6岁，请填写监护人信息"
                     is-link
                     @click="goToGardian"
                     v-if="age!= null && age < this.ageLimit" />
           <van-cell title="监护人姓名"
                     :value="gardianName"
-                    v-if="gardianSet" />
+                    v-if="gardianName" />
           <van-cell title="监护人身份证号"
                     :value="gardianId"
-                    v-if="gardianSet" />
+                    v-if="gardianId" />
         </van-cell-group>
         <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
@@ -540,14 +536,14 @@ export default {
       if (!this.model.nationName) {
         return peace.util.alert('请选择民族')
       }
-
-      if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
-        return peace.util.alert('请选择监护人')
-      }
-      if (this.addGardian && this.guardianIdCard) {
-        let gardianAge = this.getAgeByIdCard(this.guardianIdCard)
+      if (this.addGardian) {
+        let gardianAge = this.getAgeByIdCard(this.model.idcard)
         if (gardianAge < 18) {
           return peace.util.alert('监护人年龄不得小于18岁')
+        }
+      } else {
+        if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
+          return peace.util.alert('请选择监护人')
         }
       }
 
@@ -582,20 +578,24 @@ export default {
         params.guardianIdCard = this.gardianId
       }
       peace.service.patient.bindFamily(params).then(res => {
-        peace.util.alert(res.msg)
-
         const params = peace.util.decode(this.$route.params.json)
         if (params.emit) {
           $peace.$emit(params.emit, res)
         }
 
         if (this.addGardian) {
+          this.gardianName = this.model.name
+          this.gardianId = this.model.idcard
           for (let i in this.childInfo) {
             this.model[i] = this.childInfo[i]
           }
-          this.gDialog.visible = true
+          // this.gDialog.visible = true
+          this.gDialog.visible = false
           this.addGardian = false
+          this.gardianSet = true
+          this.submit()
         } else {
+          peace.util.alert(res.msg)
           this.$router.go(-1)
         }
       })
@@ -631,6 +631,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .container {
   display: flex;
   flex-direction: column;
@@ -730,6 +731,9 @@ export default {
     flex: 1;
   }
   .bottom {
+        position: fixed;
+    bottom: 0;
+    width: 100%;
     padding: 10px 15px;
     display: flex;
     .van-button {
@@ -750,5 +754,12 @@ export default {
   &::placeholder {
     color: #ccc;
   }
+}
+/deep/.form-for-family .van-cell__title > span::after {
+  content: '*';
+  width: 5px;
+  color: #f00;
+  font-size: 14px;
+  margin-left: 3px;
 }
 </style>

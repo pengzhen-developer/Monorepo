@@ -70,17 +70,17 @@
                    v-if="checkQRCodeBtn(item)">
                 取药码
               </div>
-              <div class="label gary"
+              <!-- <div class="label gary"
                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
                    @click="canselOrder(item)">取消订单
-              </div>
+              </div> -->
               <div class="label blue-full"
                    v-if="item.OrderStatus == '0'"
                    @click="payOrder(item)">
                 继续支付
               </div>
               <div class="label"
-                   v-if="item.OrderStatus == '3' || item.OrderStatus == '4' || item.OrderStatus == '7' || item.OrderStatus == '8'"
+                   v-if="ifShowLogistics(item)"
                    @click="goDrugLogiPage(item)">查看物流
               </div>
               <div class="label blue"
@@ -88,9 +88,10 @@
                    @click="submitOrder(item)">确认收货
               </div>
               <div class="label blue"
-                   v-if="item.OrderStatus == '3' && item.ShippingMethod == '0'"
+                   v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
                    @click="submitOrder(item)">确认取药
               </div>
+
             </div>
           </div>
           <div class="bottom">客服电话：4009020365</div>
@@ -127,11 +128,11 @@
                   <div class="info">请使用取药码进行取药</div>
                 </div>
               </div>
-              <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+              <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0;">
               <div
                 class="text-area"
               >
-                取药码：{{ pickUpCode }}
+                取药码：{{ PickUpCode }}
               </div>
             </div>
           </div>
@@ -179,7 +180,7 @@ export default {
       consultList: undefined,
       // 控制二维码弹窗显示
       showQRCode: false,
-      pickUpCode: null,
+      PickUpCode: null,
       QRCodeURL: null,
 
       ENUM,
@@ -205,16 +206,24 @@ export default {
     // }
   },
   methods: {
+    ifShowLogistics(item) {
+      return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME
+      && (item.PickUpCode !== null
+          || item.OrderStatus !== undefined
+          || item.OrderStatus !== '')
+    },
+
     checkQRCodeBtn(order) {
       const ShippingMethod = order.ShippingMethod
       const OrderStatus = order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
         && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
 
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.pickUpCode
+      this.PickUpCode = order.PickUpCode
       this.showQRCode = true
     },
 
@@ -495,7 +504,7 @@ export default {
 }
 .panel .panel-bottom .time {
   flex: 1 0 auto;
-  width: 140px;
+  /*width: 140px;*/
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

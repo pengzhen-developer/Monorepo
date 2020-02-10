@@ -142,7 +142,7 @@
             </div>
             <div class="form-dl"
                  v-if="internalData.supplementaryInfo.allergicHistory">
-              <div class="form-dt"><span>过敏史</span> :</div>
+              <div class="form-dt" style="height:fit-content;"><span>过敏史</span> :</div>
               <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
@@ -211,7 +211,7 @@
         </template>
       </div>
     </div>
-    <template v-if="internalData&& 
+    <template v-if="internalData&&
                internalData.inquiryInfo">
       <div class="footer"
            v-if="internalData.inquiryInfo.inquiryStatus == '2'">
@@ -219,11 +219,11 @@
              @click="showCancellPop(internalData)">取消订单</div>
       </div>
       <div class="h64"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5')"></div>
       <div class="footer fixedBottom"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' || 
+           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
                (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
                internalData.inquiryInfo.inquiryStatus == '5')">
         <div class="footer-btn chat-btn"
@@ -334,13 +334,11 @@ export default {
         visible: false,
         data: []
       },
-
       imagePreview: {
         visible: false,
         position: 0,
         images: []
       },
-
       fromChatRoom: false
     }
   },
@@ -468,7 +466,6 @@ export default {
           // on cancel
         })
     },
-
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex

@@ -1,6 +1,5 @@
 <template>
   <div class="inquriy layout">
-
     <div class="layout-header"
          ref="layoutHeader">
       <span class="text avtive">导诊接待</span>
@@ -9,7 +8,6 @@
     </div>
 
     <div class="layout-content">
-
       <transition-group tag="div"
                         name="van-slide-left">
         <div class="notify"
@@ -291,7 +289,6 @@
                         round
                         type="default">暂无过敏史</van-button>
           </div>
-
           <div class=""
                v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
             <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
@@ -740,7 +737,7 @@ export default {
     },
 
     typeActionWoman(period) {
-      console.log(period)
+      // console.log(period)
       this.model.isPregnancy = period
       const context = this.WOMAN_TYPE_TEXT_MAP[period]
       this.pushToChatList({ context })
@@ -1256,7 +1253,7 @@ export default {
     },
 
     goToPay(data) {
-      console.log(data)
+      // console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
         typeName: data.inquiryType === 'image' ? '图文问诊' : '',
@@ -1578,6 +1575,7 @@ export default {
     }
   }
 }
+
 @keyframes jzt-slide-left-enter {
   from {
     transform: translate3d(-100%, 0, 0);

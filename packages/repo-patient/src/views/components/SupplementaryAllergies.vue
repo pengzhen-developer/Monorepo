@@ -6,7 +6,7 @@
                   placeholder="请输入搜索关键词"
                   shape="round"
                   show-action
-                  v-model="searchAllergicHistory">
+                  v-model.trim="searchAllergicHistory">
         <span v-show="!showCancel"
               @click="onSearch"
               class="search-label"
@@ -124,10 +124,21 @@ export default {
       const seen = new Set(allergyNames)
       return !seen.has(name)
     },
+    // 删除 「无」
+    deleteNone() {
+      const index = this.allergicHistory.findIndex(item => item.value === '无')
+
+      if (index !== -1) {
+        this.allergicHistoryCommonly[0].checked = false
+        this.allergicHistory.splice(index, 1)
+      }
+    },
 
     addAllergiesInfoCallback(allergy) {
-      console.log('addAllergiesInfoCallback', allergy)
+      // console.log('addAllergiesInfoCallback', allergy)
       if (this.checkUniq(allergy.value)) {
+        this.deleteNone()
+        this.showCancel = false
         this.allergicHistory.push({ ...allergy, ...{ checked: true } })
       }
       this.showAllergicSearchList = false
@@ -135,7 +146,7 @@ export default {
 
     goAddAllergyInfo(allergy) {
       const sourceJson = peace.util.decode(this.$route.params.json)
-      console.log(sourceJson, allergy)
+      // console.log(sourceJson, allergy)
       sourceJson.emit = peace.type.EMIT.SUPPLEMENTARY_ALLERGIES
       sourceJson.allergy = allergy
       const json = peace.util.encode(sourceJson)
@@ -149,7 +160,7 @@ export default {
     },
 
     onClickSearched(el) {
-      console.log(el)
+      // console.log(el)
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {
@@ -214,7 +225,7 @@ export default {
         const include = res.data.find(allergy => {
           return allergy.name === this.searchAllergicHistory
         })
-        if (!include) {
+        if (!include && this.searchAllergicHistory !== '') {
           res.data.push({ name: this.searchAllergicHistory, needAdd: true })
         }
 
@@ -253,7 +264,7 @@ export default {
     },
 
     check(currentItem) {
-      console.info(currentItem)
+      // console.info(currentItem)
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
@@ -316,7 +327,10 @@ export default {
           throw new Error('Allergy type error')
         }
       })
-
+      let len = this.allergicHistory.map(item => item.value).join(',').length
+      if (len > 100) {
+        return peace.util.alert('过敏史信息不得超过100字')
+      }
       const params = peace.util.decode(this.$route.params.json)
       if (params.emit) {
         $peace.$emit(params.emit, { foodAllergy, drugAllergy })

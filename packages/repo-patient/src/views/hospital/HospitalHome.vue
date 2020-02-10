@@ -66,6 +66,7 @@
         </div>
       </section>
       <section class="functions">
+
         <!-- <div class="item"
              v-for="(item, index) in hospitalInfo.guideH5"
              :key="'index' + index"
@@ -77,7 +78,7 @@
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
-
+          <!-- "serviceLogoId": 3,//图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:中药寄送 -->
           <div class="img">
             <img
                  :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
@@ -109,6 +110,7 @@
       </section>
       <section class="doctors">
         <div class="title">
+
           <span>医院医生</span>
           <i class="arrow"
              @click="goStarDoctor"></i>
@@ -122,8 +124,10 @@
             <img class="avatar"
                  :src="item.avartor" />
             <div class="item">
+
               <img src="@src/assets/images/ic_tag.png"
                    v-if="item.isAttention==0" />>
+
               <span class="name">{{ item.name }}</span>
               <div class="jd">
                 <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
@@ -278,11 +282,14 @@ export default {
       /* eslint-disable */
 
       let json = undefined
-      console.log(item)
-      if (item.isOpen !== 1) {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
 
+      if (item.isOpen !== 1) {
+        // peace.util.alert('暂未开放，敬请期待')
+        return
+      }
+      if (item.isExist !== 1) {
+        return peace.util.alert('该功能正在建设中，敬请期待')
+      }
       switch (item.serviceName) {
         // 预约挂号
         case '预约挂号':
@@ -291,12 +298,7 @@ export default {
             id: 'appointment',
             Date: new Date()
           })
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-          }
-
+          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
           break
 
         // 在线咨询
@@ -306,11 +308,7 @@ export default {
             id: 'onlineConsultant',
             Date: new Date()
           })
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/components/doctorList/${json}`)
-          }
+          this.$router.push(`/components/doctorList/${json}`)
           break
         // 复诊续方
         case '复诊续方':
@@ -319,15 +317,26 @@ export default {
             id: 'subsequentVisit',
             Date: new Date()
           })
-          if (item.isExist !== 1) {
-            peace.util.alert('暂未开放，敬请期待')
-          } else {
-            this.$router.push(`/components/doctorList/${json}`)
-          }
+          this.$router.push(`/components/doctorList/${json}`)
           break
 
+        // 查询报告
+        // case '查询报告':
+        //   json = peace.util.encode({
+        //     hsp:{
+        //       hospitalName:this.hospitalInfo.nethospitalInfo.name,
+        //       netHospitalId:this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     },
+        //     netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+        //     banHsp:true,
+        //     id: 'queryReport',
+        //     Date: new Date()
+        //   })
+        //   this.$router.push(`/record/recordCondition/${json}`)
+        //   break
+
         default:
-          peace.util.alert('暂未开放，敬请期待')
+          peace.util.alert('该功能正在建设中，敬请期待')
           break
       }
 
@@ -431,6 +440,7 @@ export default {
       position: absolute;
       width: 100%;
       height: 100%;
+
       display: block;
       z-index: 3;
     }

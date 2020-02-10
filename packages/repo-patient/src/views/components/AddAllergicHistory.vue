@@ -8,7 +8,7 @@
                     placeholder="请输入搜索关键词"
                     shape="round"
                     show-action
-                    v-model="searchAllergicHistory">
+                    v-model.trim="searchAllergicHistory">
           <span v-show="!showCancel"
                 @click="onSearch"
                 class="search-label"
@@ -158,10 +158,24 @@ export default {
       this.type = el.text
       this.typeValue = el.value
     },
+
+    // 删除 「无」
+    deleteNone() {
+      const index = this.allergicHistory.findIndex(item => item.value === '无')
+
+      if (index !== -1) {
+        this.allergicHistoryCommonly[0].checked = false
+        this.allergicHistory.splice(index, 1)
+      }
+    },
+
     saveAllergic() {
       if (!this.typeValue) {
         return peace.util.alert('请选择过敏类型')
       }
+
+      this.deleteNone()
+
       peace.service.inquiry
         .addAllergen({
           name: this.name,
@@ -185,7 +199,7 @@ export default {
     },
 
     onClickSearched(el) {
-      console.log(el)
+      // console.log(el)
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {
@@ -221,7 +235,6 @@ export default {
     },
 
     paramsHandler() {
-      console.log(this.internalValue)
       if (this.internalValue.length > 0) {
         // if (typeof this.internalValue === 'string') {
         //   this.internalValue = this.internalValue.split(',')
@@ -247,7 +260,7 @@ export default {
         const include = res.data.find(allergy => {
           return allergy.name === this.searchAllergicHistory
         })
-        if (!include) {
+        if (!include && this.searchAllergicHistory !== '') {
           res.data.push({ name: this.searchAllergicHistory, needAdd: true })
         }
 
@@ -286,7 +299,6 @@ export default {
     },
 
     check(currentItem) {
-      console.info(currentItem)
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
@@ -346,7 +358,10 @@ export default {
           foodAllergy.push(allergy)
         }
       })
-
+     let len= this.allergicHistory.map(item=>item.value).join(',').length
+     if(len>100){
+       return peace.util.alert('过敏史信息不得超过100字')
+     }
       this.$emit('input', this.allergicHistory)
       this.$emit('onSave', { foodAllergy, drugAllergy })
     }

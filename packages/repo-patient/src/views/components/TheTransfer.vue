@@ -168,7 +168,6 @@
                 {{data[current].reReferralIn.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}</div>
             </div>
           </div>
-
         </div>
         <div class="txt-p"
              :class="(data[current].reReferralOut.checkTime&&data[current].reReferralOut.checkSuggest||data[current].reReferralIn.checkTime&&data[current].reReferralIn.checkSuggest)&&'nmp'"
@@ -267,8 +266,17 @@ export default {
               if (res.data.code == '202') {
                 Dialog.confirm({
                   title: '温馨提示',
-                  message: res.data.msg + '是否继续咨询？'
+                  message: res.data.msg + '是否继续咨询？',
+                  confirmButtonText: '查看详情'
                 }).then(() => {
+                  const inquiryId = res.data.data.data.inquiryId
+                  const inquiryStatus = res.data.data.data.inquiryStatus
+
+                  if (inquiryStatus === 1 || inquiryStatus === 2) {
+                    this.goUserConsultDetail(inquiryId)
+                    return;
+                  }
+
                   let session = {
                     inquiryStatus: res.data.data.param.inquiryStatus,
                     inquiryNo: '',
@@ -288,6 +296,16 @@ export default {
           this.hasApply = false
         })
     },
+
+    goUserConsultDetail(inquiryId) {
+      const params = {
+        inquiryId
+      }
+      let json = peace.util.encode(params)
+      //跳转订单详情
+      this.$router.push(`/setting/userConsultDetail/${json}`)
+    },
+
     selectSession(session) {
       let params = null
       if (

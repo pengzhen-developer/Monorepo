@@ -439,6 +439,7 @@ export default {
 .outline {
   margin: 10px 0 0 0;
   padding-left: 15px;
+
   &.pb10 {
     padding-bottom: 10px;
   }
@@ -594,6 +595,7 @@ export default {
   min-height: 50px;
   padding-top: 1px;
 }
+
 // .timeline .item:last-child {
 //   border-left: 1px solid transparent !important;
 //   margin-bottom: 0;
@@ -630,6 +632,7 @@ export default {
   left: -4px;
   top: -3px;
 }
+
 .time-item {
   width: 100%;
   display: flex;

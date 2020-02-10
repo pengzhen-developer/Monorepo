@@ -133,7 +133,7 @@ export default {
     // this.getData()
   },
   activated() {
-    console.log('active')
+    // console.log('active')
     this.getData()
   },
   methods: {

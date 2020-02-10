@@ -19,10 +19,10 @@
             v-if="showTrackingNumber"
             class="text"
           >
-            运单编号：{{ pickUpCode }}
+            运单编号：{{ PickUpCode }}
           </div>
-          <div class="text"
-               v-if="data.ShippingMethod == '1'">配送编号：无</div>
+<!--          <div class="text"-->
+<!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
         </div>
       </div>
 
@@ -30,8 +30,8 @@
     <div class="module">
       <div class="time-line">
         <div class="item"
-             v-for="item in data.ords"
-             :class="{ 'active' : item.ServiceStates === '4' }"
+             v-for="(item,index) in data.ords"
+             :class="{ 'active' : index == 0 }"
              :key="item.Notes">
           <div class="time">
             <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
@@ -44,12 +44,12 @@
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
             <div
-              v-if="item.ServiceStates === '3' && shippingMethod === 0"
+              v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
               class="note"
             >
               <div
                 class="qr-btn"
-                @click="onClickSeeQRCode(item)"
+                @click="onClickSeeQRCode"
               >
                 查看取药码
               </div>
@@ -90,11 +90,11 @@
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block;">
+          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0">
           <div
             class="text-area"
           >
-            取药码：{{ pickUpCode }}
+            取药码：{{ PickUpCode }}
           </div>
         </div>
       </div>
@@ -119,14 +119,15 @@ const ENUM = {
     SIGNED: 4,
     CANCEL: 5,
     COMPLETE: 6
-  }
+  },
+
 }
 
 export default {
   data() {
     return {
       ENUM,
-
+      PickUpCode:'',
       data: undefined,
       shippingMethod: null,
       orderStatus: null,
@@ -150,16 +151,16 @@ export default {
   },
 
   methods: {
-    onClickSeeQRCode(order) {
-      this.pickUpCode = order.pickUpCode
+    onClickSeeQRCode() {
       this.showQRCode = true
     },
 
     getLogistics() {
       const params = peace.util.decode(this.$route.params.json)
+      console.log(params)
       this.shippingMethod = params.shippingMethod
       this.orderStatus = params.orderStatus
-
+      this.PickUpCode = params.PickUpCode
       peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
         this.data = res.data
       })

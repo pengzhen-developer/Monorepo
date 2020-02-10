@@ -172,6 +172,7 @@ export default {
       if (typeof doctorConsultation == 'undefined' || doctorConsultation.tag === 'video') {
         return peace.util.alert('暂未开放，敬请期待')
       }
+
       peace.service.patient
         .inquiryStatus(doctorInfo.doctorId, doctorConsultation.tag)
         .then(() => {
