@@ -44,11 +44,11 @@
 
       <van-button @click="signIn"
                   class="login-form-sign-in"
-                  type="primary">进入万家云医</van-button>
+                  type="primary">登录</van-button>
     </div>
 
     <div class="login-footer">
-      <span class="gray">进入万家云医即代表你已同意</span>
+      <span class="gray">进入国家远程医疗中心互联网诊疗服务平台即代表你已同意</span>
       <span>用户协议及隐私策略</span>
     </div>
   </div>
