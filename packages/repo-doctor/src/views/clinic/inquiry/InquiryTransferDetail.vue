@@ -173,7 +173,8 @@
     </div>
 
     <!-- 转诊结果 -->
-    <div class="record-content">
+    <div class="record-content"
+         v-else-if="internalData.referral_time">
       <span class="title">转诊结果</span>
 
       <el-form>
