@@ -190,7 +190,13 @@ export default {
         // 验证是否有效会话
         peace.service.inquiry.checkOverInquiry(params).then(res => {
           if (res.data.status === 1) {
-            const message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
+            let message = ''
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+              message = '您与患者尚未进行视频通话，此时结束咨询将做退诊处理'
+            } else {
+              message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
+            }
+
             const confirmOption = { type: 'warning', confirmButtonText: '退诊' }
 
             peace.util.confirm(message, undefined, confirmOption, () => {

@@ -197,7 +197,13 @@ export default {
       // 验证是否有效会话
       peace.service.inquiry.checkOverInquiry(params).then(res => {
         if (res.data.status === 1) {
-          const message = '系统检测到当前为无效会话，无法进行转诊。'
+          let message = ''
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            message = '系统检测到您与患者尚未进行视频通话，暂时无法进行转诊。'
+          } else {
+            message = '系统检测到当前为无效会话，无法进行转诊。'
+          }
+
           $peace.util.warning(message)
         }
         // 未填写病历，提示填写病历
@@ -227,7 +233,13 @@ export default {
       // 验证是否有效会话
       peace.service.inquiry.checkOverInquiry(params).then(res => {
         if (res.data.status === 1) {
-          const message = '系统检测到当前为无效会话，无法进行会诊。'
+          let message = ''
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            message = '系统检测到您与患者尚未进行视频通话，暂时无法进行会诊。'
+          } else {
+            message = '系统检测到当前为无效会话，无法进行会诊。'
+          }
+
           $peace.util.warning(message)
         }
         // 未填写病历，提示填写病历
