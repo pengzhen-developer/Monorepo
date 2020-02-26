@@ -48,9 +48,9 @@
     </div>
 
     <div class="login-footer">
-      <!-- <span class="gray">进入国家远程医疗中心互联网诊疗服务平台即代表你已同意</span>
+      <!-- <span class="gray">进入互联网诊疗服务平台即代表你已同意</span>
       <span>用户协议及隐私策略</span> -->
-      <span class="gray">登录国家远程医疗中心互联网诊疗服务平台</span>
+      <span class="gray">登录互联网诊疗服务平台</span>
       <span>即代表你已同意用户协议及隐私策略</span>
     </div>
   </div>
