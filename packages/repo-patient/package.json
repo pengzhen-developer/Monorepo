@@ -1,6 +1,6 @@
 {
-  "name": "pre",
-  "version": "0.10.0-001",
+  "name": "patient",
+  "version": "0.10.0-002",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
