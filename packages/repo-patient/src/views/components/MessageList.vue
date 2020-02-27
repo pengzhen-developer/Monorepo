@@ -537,7 +537,9 @@ export default {
         images: [],
         visible: false,
         position: 0
-      }
+      },
+
+      hasSend:false
     }
   },
 
@@ -797,7 +799,12 @@ export default {
     },
 
     sendMessageText() {
+      
       if (this.message) {
+        if (this.hasSend) {
+          return
+        }
+        this.hasSend = true
         const doneHandler = (error, message) => {
           console.warn('【 IM 】【 sendText 】', new Date(), message)
 
@@ -806,8 +813,12 @@ export default {
           if (error) {
             throw new Error(error)
           }
-        }
 
+          setTimeout(() => {
+            this.hasSend = false
+          }, 0) 
+        }
+        
         $peace.NIM.sendText({
           scene: this.$store.state.inquiry.session.scene,
           to: this.$store.getters['inquiry/doctorInfo'].doctorId,

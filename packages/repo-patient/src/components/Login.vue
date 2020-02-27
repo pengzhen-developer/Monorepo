@@ -44,12 +44,14 @@
 
       <van-button @click="signIn"
                   class="login-form-sign-in"
-                  type="primary">进入万家云医</van-button>
+                  type="primary">登录</van-button>
     </div>
 
     <div class="login-footer">
-      <span class="gray">进入万家云医即代表你已同意</span>
-      <span>用户协议及隐私策略</span>
+      <!-- <span class="gray">进入互联网诊疗服务平台即代表你已同意</span>
+      <span>用户协议及隐私策略</span> -->
+      <span class="gray">登录互联网诊疗服务平台</span>
+      <span>即代表你已同意用户协议及隐私策略</span>
     </div>
   </div>
 </template>
@@ -215,6 +217,10 @@ export default {
   .login-footer {
     margin: 0 0 10px 0;
     text-align: center;
+    span {
+      width: 100%;
+      display: block;
+    }
   }
 }
 </style>

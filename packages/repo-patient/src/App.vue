@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <ActiveHome v-show="$route.path !== $peace.config.system.homePage &&
-                        $route.path !== $peace.config.system.authPage"></ActiveHome>
+    <!-- <ActiveHome v-show="$route.path !== $peace.config.system.homePage &&
+                        $route.path !== $peace.config.system.authPage"></ActiveHome> -->
 
     <div class="layout">
       <!-- 中部功能 keepAlive router  -->
@@ -69,14 +69,14 @@ import peace from '@src/library'
 import Vconsole from 'vconsole'
 
 // Active home
-import ActiveHome from '@src/views/components/ActiveHome'
+// import ActiveHome from '@src/views/components/ActiveHome'
 
 export default {
   name: 'app',
 
-  components: {
-    ActiveHome
-  },
+  // components: {
+  //   ActiveHome
+  // },
 
   data() {
     return {
