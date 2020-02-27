@@ -104,7 +104,7 @@ export default {
           const json = peace.util.encode({
             netHospitalId: netHospitalId
           })
-
+          
           this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
         } else {
           this.$router.replace(`${this.redirectMap[redirectKey]}`)

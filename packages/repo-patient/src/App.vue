@@ -71,6 +71,8 @@ import Vconsole from 'vconsole'
 // Active home
 // import ActiveHome from '@src/views/components/ActiveHome'
 
+//微信sdk
+import wx from 'weixin-js-sdk'
 export default {
   name: 'app',
 
@@ -84,7 +86,23 @@ export default {
 
       nowClickTime: 0,
       lastClickTime: 0,
-      clickCount: 0
+      clickCount: 0,
+      config:{
+        debug: true, 
+        appId: '', 
+        timestamp:'' , 
+        nonceStr: '',
+        signature: '',
+        jsApiList: [
+          'updateAppMessageShareData',
+          'updateTimelineShareData',
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'onMenuShareQQ',
+          'onMenuShareWeibo',
+          'onMenuShareQZone'
+] 
+      }
     }
   },
 
@@ -149,7 +167,24 @@ export default {
       this.initNIM()
     }, 1000)
   },
-
+  mounted(){
+    peace.service.index.getWXSign().then(res => {
+      for(let i in res.data){
+        this.config[i]=res.data[i]
+      }
+      wx.config(this.config)
+      wx.checkJsApi({
+        jsApiList: this.config.jsApiList, 
+        success: function(res) {
+        // 以键值对的形式返回，可用的api值true，不可用为false
+        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+        console.log(res)
+        alert('当前url:', location.href.split('#')[0])
+        console.log('111111111111', location.href.split('#')[0])
+        }
+      });
+    })
+  },
   methods: {
     validateWxAuth() {
       // 当前页面是中转页，不需要验证授权（系统在中转页进行授权逻辑）

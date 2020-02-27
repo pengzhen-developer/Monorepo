@@ -29,7 +29,8 @@ import file from './helper/file'
 
 //wx
 import wx from './helper/wx'
-
+//share
+import share from './helper/share'
 // config
 import config from '@src/config'
 // type
@@ -37,8 +38,8 @@ import type from '@src/type'
 // service
 import service from '@src/service'
 
-const install = function(Vue) {
-  const peace = { http, util, cache, validate, file, config, type, service }
+const install = function (Vue) {
+  const peace = { http, util, cache, validate, file, config, type, service, share }
 
   // 暴露全局实例
   Window.$peace = peace

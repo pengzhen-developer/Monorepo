@@ -39,11 +39,26 @@ export function getOrderInfo(params) {
   return peace.http.post(getOrderInfo, params)
 }
 
+/**
+ * 获取微信sdk参数
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getWXSign(params) {
+  const getWXSign = 'client/v1/Test/getSign'
+
+  return peace.http.post(getWXSign, params)
+}
+
 export default {
   /** 获取首页接口 */
   getMenu,
   /** 获取支付 */
   pay,
   /** 获取订单时间 **/
-  getOrderInfo
+  getOrderInfo,
+  /*获取微信sdk参数*/
+  getWXSign
 }

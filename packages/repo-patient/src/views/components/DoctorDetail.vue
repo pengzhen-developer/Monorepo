@@ -529,6 +529,16 @@ export default {
   mounted() {
     // this.getWapDoctorInfo()
     // this.goLogin()
+    if(this.doctor&&this.doctor.doctorInfo){
+      let obj={
+        url:'',
+        title: this.doctor.doctorInfo.name+' '+this.doctor.doctorInfo.doctorTitle,
+        desc: this.doctor.doctorInfo.specialSkill,
+        imgUrl: this.doctor.doctorInfo.avartor
+      }
+      peace.config.share(obj)
+    }
+    
   },
   methods: {
     hasLogin() {

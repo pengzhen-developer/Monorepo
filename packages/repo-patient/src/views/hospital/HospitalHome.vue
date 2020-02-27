@@ -202,6 +202,17 @@ export default {
 
   mounted() {
     this.colorArr.sort(() => Math.random() - 0.5)
+      if(this.hospitalInfo&&this.hospitalInfo.nethospitalInfo&&peace.config.CHANNELID){
+        let url=peace.config.api.base+'h5/redirect?redirect=home&netHospitalId='+this.hospitalInfo.nethospitalInfo.netHospitalId+'&channelId='+peace.config.CHANNELID
+        
+        let obj={
+          url:url,
+          title: this.hospitalInfo.nethospitalInfo.name,
+          desc: this.hospitalInfo.nethospitalInfo.brief,
+          imgUrl: this.hospitalInfo.nethospitalInfo.icon
+        }
+        peace.config.share(obj)
+      }
   },
 
   methods: {
