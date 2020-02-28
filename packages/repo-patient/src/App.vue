@@ -88,7 +88,7 @@ export default {
       lastClickTime: 0,
       clickCount: 0,
       config:{
-        debug: true, 
+        debug: false, 
         appId: '', 
         timestamp:'' , 
         nonceStr: '',
@@ -101,7 +101,7 @@ export default {
           'onMenuShareQQ',
           'onMenuShareWeibo',
           'onMenuShareQZone'
-] 
+        ] 
       }
     }
   },
@@ -165,27 +165,31 @@ export default {
     // 此处延迟 1000ms， 等待 Redirect.vue 加载完成后，判断是否需要执行 IM
     setTimeout(() => {
       this.initNIM()
+      this.initShareConfig()
     }, 1000)
+
+    
   },
-  mounted(){
-    peace.service.index.getWXSign().then(res => {
-      for(let i in res.data){
-        this.config[i]=res.data[i]
-      }
-      wx.config(this.config)
-      wx.checkJsApi({
-        jsApiList: this.config.jsApiList, 
-        success: function(res) {
-        // 以键值对的形式返回，可用的api值true，不可用为false
-        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-        console.log(res)
-        alert('当前url:', location.href.split('#')[0])
-        console.log('111111111111', location.href.split('#')[0])
-        }
-      });
-    })
-  },
+  
   methods: {
+    initShareConfig(){
+      let url= location.href.split('#')[0]
+      peace.service.index.getWXSign({url:url}).then(res => {
+        for(let i in res.data){
+          if(i!=='url'){
+            this.config[i]=res.data[i]
+          }
+        }
+        wx.config(this.config)
+        wx.checkJsApi({
+          jsApiList: this.config.jsApiList, 
+          success: function() {
+          // 以键值对的形式返回，可用的api值true，不可用为false
+          // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+          }
+        });
+      })
+    },
     validateWxAuth() {
       // 当前页面是中转页，不需要验证授权（系统在中转页进行授权逻辑）
       if (this.$route.path === '/' || this.$route.path === '/redirect') {

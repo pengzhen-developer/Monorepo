@@ -529,16 +529,6 @@ export default {
   mounted() {
     // this.getWapDoctorInfo()
     // this.goLogin()
-    if(this.doctor&&this.doctor.doctorInfo){
-      let obj={
-        url:'',
-        title: this.doctor.doctorInfo.name+' '+this.doctor.doctorInfo.doctorTitle,
-        desc: this.doctor.doctorInfo.specialSkill,
-        imgUrl: this.doctor.doctorInfo.avartor
-      }
-      peace.config.share(obj)
-    }
-    
   },
   methods: {
     hasLogin() {
@@ -562,6 +552,14 @@ export default {
       peace.service.doctor.getWapDoctorInfo(params).then(res => {
         this.doctor = res.data
         this.doctorStatus = res.data.doctorInfo.doctorStatus
+        let obj={
+          url:'',
+          title: this.doctor.doctorInfo.name+' '+this.doctor.doctorInfo.doctorTitle,
+          desc: this.doctor.doctorInfo.specialSkill,
+          imgUrl: this.doctor.doctorInfo.avartor
+        }
+        console.log(obj)
+        peace.wx.share.share(obj)
         if (res.data.consultationList) {
           this.serviceImageInfo = res.data.consultationList.image || {}
           this.serviceVideoInfo = res.data.consultationList.video || {}

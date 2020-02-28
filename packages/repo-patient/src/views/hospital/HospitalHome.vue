@@ -202,17 +202,6 @@ export default {
 
   mounted() {
     this.colorArr.sort(() => Math.random() - 0.5)
-      if(this.hospitalInfo&&this.hospitalInfo.nethospitalInfo&&peace.config.CHANNELID){
-        let url=peace.config.api.base+'h5/redirect?redirect=home&netHospitalId='+this.hospitalInfo.nethospitalInfo.netHospitalId+'&channelId='+peace.config.CHANNELID
-        
-        let obj={
-          url:url,
-          title: this.hospitalInfo.nethospitalInfo.name,
-          desc: this.hospitalInfo.nethospitalInfo.brief,
-          imgUrl: this.hospitalInfo.nethospitalInfo.icon
-        }
-        peace.config.share(obj)
-      }
   },
 
   methods: {
@@ -220,8 +209,21 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalId);
+      const channelId=peace.cache.get(peace.type.SYSTEM.CHANNELID)
       peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
         this.hospitalInfo = res.data
+        let obj={
+          url:'',
+          title: this.hospitalInfo.nethospitalInfo.name,
+          desc: this.hospitalInfo.nethospitalInfo.brief,
+          imgUrl: this.hospitalInfo.nethospitalInfo.icon
+        }
+        console.log('channelId',peace.cache.get(peace.type.SYSTEM.CHANNELID))
+        if(channelId){
+          obj.url=peace.config.api.base+'h5/redirect?redirect=home&netHospitalId='+nethospitalId+'&channelId='+channelId
+        }
+        console.log('url',obj.url)
+        peace.wx.share.share(obj)
       })
     },
 
