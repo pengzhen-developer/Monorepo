@@ -1,6 +1,13 @@
+/** 
+ * 医保类型：paymentType
+ */
+
+
+
 <template>
   <form bindsubmit="submitOrder"
-        report-submit="true" v-if="order!=null">
+        report-submit="true"
+        v-if="order!=null">
     <div class="top">
       <!--tab-->
       <div class="tab">
@@ -42,14 +49,14 @@
         </div>
       </div>
     </div>
-    <div class="module"> 
+    <div class="module">
       <div class="panel-pha">
         <div class="panel-head icon-next"
              @click="goDrugPhaHomePage">
           <div class="head-ico">
             <img :src="order.DrugStoreLogo" />
           </div>
-          <div class="head-tit" >{{order.DrugStoreName}}</div>
+          <div class="head-tit">{{order.DrugStoreName}}</div>
         </div>
         <div class="panel-body">
           <div class="list-three"
@@ -102,8 +109,13 @@
           </div>
           <div class="bottom">
 
-            <div @click="submitOrder"
-                 :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">提交订单</div>
+            <div style="display: flex; justify-content: center; align-items: space-between;">
+              <div @click="submitOrder('yibaopay')"
+                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">医保支付</div>
+
+              <div @click="submitOrder('wxpay')"
+                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">在线支付</div>
+            </div>
 
             <div class="tips-bottom">
               {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -156,7 +168,7 @@ export default {
     this.getDefaultAddress()
   },
   methods: {
-    goDrugPhaHomePage(){
+    goDrugPhaHomePage() {
       let json = this.$route.params.json
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
@@ -176,7 +188,14 @@ export default {
       let json = this.$route.params.json
       this.$router.push(`/setting/SelectAddressManger/${json}`)
     },
-    submitOrder() {
+
+    /**
+     * 创建购药订单，并根据支付类型调起支付
+     * @param {string} [paymentType='wxpay'] 支付类型
+     *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
+     *                                       默认：wxpay（微信）
+     */
+    submitOrder(paymentType = 'wxpay') {
       if (!this.canSubmitProcesses()) {
         return
       }
@@ -187,6 +206,7 @@ export default {
       this.showBtn = false
       let params = {
         formId: '',
+        paymentType,
         JZTClaimNo: this.page.json.JZTClaimNo,
         DrugStoreId: this.page.json.DrugStoreId,
         AccessCode: this.page.json.AccessCode,
@@ -202,7 +222,12 @@ export default {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let params = { orderNo }
-          peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
+
+          if (paymentType === 'yibaopay') {
+            this.payCallback()
+          } else {
+            peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
+          }
         })
         .catch(() => {
           this.showBtn = true
@@ -399,7 +424,7 @@ page {
 }
 .bottom .btn {
   width: 100%;
-  margin: 5px 0;
+  margin: 5px;
   border-color: #00c6ae;
   background-color: #00c6ae;
   color: #fff;

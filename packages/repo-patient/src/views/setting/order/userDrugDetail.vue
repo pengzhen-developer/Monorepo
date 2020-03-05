@@ -1,7 +1,15 @@
+/**
+ * 订单详情
+ * @param {string} [paymentType='wxpay'] 支付类型
+ *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
+ * 支付类型为yibaopay（医保支付）不显示倒计时和继续支付
+ */
+
 <template>
-  <div class="user-drug-detail" v-if="order!=null">
+  <div class="user-drug-detail"
+       v-if="order!=null">
     <div class="count-down"
-         v-if="order.OrderStatus == 0">
+         v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == 0">
       订单
       <van-count-down millisecond
                       :time="time"
@@ -17,20 +25,14 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
             <div class="text">{{order.OrderStatusText + '  '}}</div>
-            <div
-              v-if="showQRCodeBtn"
-              class="btn-wrapper"
-            >
-              <div
-                @click.stop
-                class="btn--code"
-                @click="onClickSeeQRCode"
-              >查看取药码</div>
+            <div v-if="showQRCodeBtn"
+                 class="btn-wrapper">
+              <div @click.stop
+                   class="btn--code"
+                   @click="onClickSeeQRCode">查看取药码</div>
             </div>
-            <div
-              v-if="showTrackingNumber"
-              class="tracking-number"
-            >
+            <div v-if="showTrackingNumber"
+                 class="tracking-number">
               运单编号：{{ order ? order.PickUpCode : '' }}
             </div>
           </div>
@@ -127,10 +129,13 @@
 
     <div class="box"
          v-if="order.OrderId">
-      <div class="dl-packet" style="padding-top:3px;">
+      <div class="dl-packet"
+           style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
-        <div class="cancel-btn" @click="canselOrder" v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
+        <div class="cancel-btn"
+             @click="canselOrder"
+             v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
@@ -141,9 +146,8 @@
 
       <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
       <div class='bottom-1'
-           v-if="order.OrderStatus == 0">
-        <div class="left">应付金额：<span
-                class="money">¥{{ curPayMoney }}</span></div>
+           v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == 0">
+        <div class="left">应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
         <div class="right">
           <div @click="canselOrder"
                class="pay cancel"
@@ -169,11 +173,11 @@
              class="btn block btn-blue"
              v-if="order.OrderStatus == '2' || order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
         </div>
-      <div class="btn block btn-default"
-           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-      <div class="btn block btn-default"
-           v-if="order.OrderStatus == '5'">已取消</div>
+        <div class="btn block btn-default"
+             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
+          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+        <div class="btn block btn-default"
+             v-if="order.OrderStatus == '5'">已取消</div>
       </div>
     </div>
     <div class="bottom"
@@ -202,40 +206,32 @@
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
-    <van-overlay
-      :show="showQRCode"
-      @click="showQRCode = false"
-    >
+    <van-overlay :show="showQRCode"
+                 @click="showQRCode = false">
       <div class="wrapper">
-        <div
-          @click.stop
-          class="qr-code-wrapper">
+        <div @click.stop
+             class="qr-code-wrapper">
           <div class="qr-code-area">
             <!--有二维码-->
-            <div
-              v-if="QRCodeURL"
-              class="qr-code"
-            >
+            <div v-if="QRCodeURL"
+                 class="qr-code">
               <div class="title">取药码</div>
             </div>
             <!--没有二维码-->
-            <div
-              v-if="!QRCodeURL"
-              class="qr-code qr-code--empty"
-            >
+            <div v-if="!QRCodeURL"
+                 class="qr-code qr-code--empty">
               <div class="title">取药码</div>
-              <img
-                class="img-qr-code-empty"
-                :src="require('@src/assets/images/qrcode-empty.png')"
-                alt=""
-              /><div class="context">暂无二维码</div>
+              <img class="img-qr-code-empty"
+                   :src="require('@src/assets/images/qrcode-empty.png')"
+                   alt="" />
+              <div class="context">暂无二维码</div>
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0;">
-          <div
-            class="text-area"
-          >
+          <img :src="require('@src/assets/images/message-line.png')"
+               alt=""
+               style="display: block; margin: -1px 0;">
+          <div class="text-area">
             取药码：{{ order ? order.PickUpCode : '' }}
           </div>
         </div>
@@ -282,7 +278,7 @@ export default {
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
       timeTags: {
         [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
-        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间']
       },
       appid: '',
       order: null,
@@ -292,7 +288,7 @@ export default {
       recipeDetail: {
         visible: false,
         data: {}
-      },
+      }
     }
   },
 
@@ -307,18 +303,22 @@ export default {
       const ShippingMethod = this.order.ShippingMethod
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
-        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
-        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.SELF &&
+        OrderStatus >= ENUM.ORDER_STATUS.ACCEPT &&
+        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      )
     },
     showTrackingNumber() {
       const ShippingMethod = this.order.ShippingMethod
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
-        && OrderStatus >= ENUM.ORDER_STATUS.SEND
-        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
-    },
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.HOME &&
+        OrderStatus >= ENUM.ORDER_STATUS.SEND &&
+        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      )
+    }
   },
 
   created() {
@@ -393,7 +393,7 @@ export default {
       const json = peace.util.decode(this.$route.params.json)
       json.shippingMethod = shippingMethod
       json.orderStatus = orderStatus
-      json.PickUpCode=this.order.PickUpCode
+      json.PickUpCode = this.order.PickUpCode
       const afterJson = peace.util.encode(json)
 
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
@@ -432,84 +432,82 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  height: 100%;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .wrapper {
-    height: 100%;
+  .qr-code-wrapper {
+    width: 250px;
+    border-radius: 5px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .qr-code-area {
+      width: 100%;
+      background-color: #fff;
 
-    .qr-code-wrapper {
-      width: 250px;
-      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      .qr-code-area {
+      .qr-code {
         width: 100%;
-        background-color: #fff;
+        height: 100%;
+        font-size: 16px;
 
         display: flex;
+        justify-content: flex-start;
         align-items: center;
-        justify-content: center;
+        flex-direction: column;
 
-        .qr-code {
-          width: 100%;
-          height: 100%;
-          font-size: 16px;
+        .title {
+          margin: 0.42rem 0;
+        }
+      }
 
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          flex-direction: column;
+      img {
+        display: block;
+      }
 
-          .title {
-            margin: .42rem 0;
-          }
+      .qr-code--empty {
+        font-size: 15px;
+        color: #000;
+
+        .title {
+          margin: 0.42rem 0;
         }
 
-        img {
+        .img-qr-code-empty {
+          width: 118px;
+          height: 100px;
+          margin-bottom: 0.26rem;
           display: block;
         }
 
-        .qr-code--empty {
-          font-size: 15px;
-          color: #000;
+        .context {
+          margin-bottom: 0.1rem;
+        }
 
-          .title {
-            margin: .42rem 0;
-          }
-
-          .img-qr-code-empty {
-            width: 118px;
-            height: 100px;
-            margin-bottom: .26rem;
-            display: block;
-          }
-
-          .context {
-            margin-bottom: .1rem;
-          }
-
-          .info {
-            margin-bottom: .42rem;
-            font-size: 12px;
-            color: #ccc;
-          }
+        .info {
+          margin-bottom: 0.42rem;
+          font-size: 12px;
+          color: #ccc;
         }
       }
+    }
 
-      .text-area {
-        height: 50px;
-        width: 100%;
-        background-color: #fff;
+    .text-area {
+      height: 50px;
+      width: 100%;
+      background-color: #fff;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
+}
 
 .user-drug-detail {
   height: 100%;
@@ -659,18 +657,18 @@ export default {
 .dl-packet .dd {
   color: #4e4e4e;
 }
-.dl-packet{
-  position:relative;
+.dl-packet {
+  position: relative;
 }
-.dl-packet .cancel-btn{
-  color:#999;
-  font-size:12px;
-  border:1px solid #ccc;
-  border-radius:2px;
-  line-height:25px;
-  height:27px;
-  text-align:center;
-  width:70px;
+.dl-packet .cancel-btn {
+  color: #999;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  line-height: 25px;
+  height: 27px;
+  text-align: center;
+  width: 70px;
 }
 .str {
   border-top: 1px solid #e5e5e5;
@@ -827,7 +825,7 @@ export default {
 
     .btn--code {
       color: #00c6ae;
-      padding: .16rem .38rem;
+      padding: 0.16rem 0.38rem;
       border: 1px solid #00c6ae;
       border-radius: 5px;
     }

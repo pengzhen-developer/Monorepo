@@ -1,3 +1,10 @@
+/**
+ * 订单列表
+ * @param {string} [paymentType='wxpay'] 支付类型
+ *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
+ * 支付类型为yibaopay（医保支付）不显示倒计时和继续支付
+ */
+
 <template>
   <div class="user-drug-list">
     <div class="tab">
@@ -75,7 +82,7 @@
                    @click="canselOrder(item)">取消订单
               </div> -->
               <div class="label blue-full"
-                   v-if="item.OrderStatus == '0'"
+                   v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
                    @click="payOrder(item)">
                 继续支付
               </div>
@@ -97,41 +104,32 @@
           <div class="bottom">客服电话：4009020365</div>
         </div>
         <!--二维码弹窗-->
-        <van-overlay
-          :show="showQRCode"
-          @click="showQRCode = false"
-        >
+        <van-overlay :show="showQRCode"
+                     @click="showQRCode = false">
           <div class="overlay-wrapper">
-            <div
-              @click.stop
-              class="qr-code-wrapper">
+            <div @click.stop
+                 class="qr-code-wrapper">
               <div class="qr-code-area">
                 <!--有二维码-->
-                <div
-                  v-if="QRCodeURL"
-                  class="qr-code"
-                >
+                <div v-if="QRCodeURL"
+                     class="qr-code">
                   <div class="title">取药码</div>
                 </div>
                 <!--没有二维码-->
-                <div
-                  v-if="!QRCodeURL"
-                  class="qr-code qr-code--empty"
-                >
+                <div v-if="!QRCodeURL"
+                     class="qr-code qr-code--empty">
                   <div class="title">取药码</div>
-                  <img
-                    class="img-qr-code-empty"
-                    :src="require('@src/assets/images/qrcode-empty.png')"
-                    alt=""
-                  >
+                  <img class="img-qr-code-empty"
+                       :src="require('@src/assets/images/qrcode-empty.png')"
+                       alt="">
                   <div class="context">暂无二维码</div>
                   <div class="info">请使用取药码进行取药</div>
                 </div>
               </div>
-              <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0;">
-              <div
-                class="text-area"
-              >
+              <img :src="require('@src/assets/images/message-line.png')"
+                   alt=""
+                   style="display: block; margin: -1px 0;">
+              <div class="text-area">
                 取药码：{{ PickUpCode }}
               </div>
             </div>
@@ -183,12 +181,11 @@ export default {
       PickUpCode: null,
       QRCodeURL: null,
 
-      ENUM,
+      ENUM
     }
   },
 
-  computed: {
-  },
+  computed: {},
 
   activated() {
     this.getDrugItems()
@@ -207,19 +204,21 @@ export default {
   },
   methods: {
     ifShowLogistics(item) {
-      return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME
-      && (item.PickUpCode !== null
-          || item.OrderStatus !== undefined
-          || item.OrderStatus !== '')
+      return (
+        item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME &&
+        (item.PickUpCode !== null || item.OrderStatus !== undefined || item.OrderStatus !== '')
+      )
     },
 
     checkQRCodeBtn(order) {
       const ShippingMethod = order.ShippingMethod
       const OrderStatus = order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF
-        && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
-        && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.SELF &&
+        OrderStatus >= ENUM.ORDER_STATUS.ACCEPT &&
+        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      )
     },
 
     onClickSeeQRCode(order) {
@@ -272,8 +271,7 @@ export default {
       if (item.OrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
-        resTxt =
-          '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
+        resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.CancelOrder(params).then(res => {
@@ -306,77 +304,76 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlay-wrapper {
+  height: 100%;
 
-  .overlay-wrapper {
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .qr-code-wrapper {
+    width: 250px;
+    border-radius: 5px;
 
-    .qr-code-wrapper {
-      width: 250px;
-      border-radius: 5px;
+    .qr-code-area {
+      width: 100%;
+      background-color: #fff;
 
-      .qr-code-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .qr-code {
         width: 100%;
-        background-color: #fff;
+        height: 100%;
+        font-size: 16px;
 
         display: flex;
+        justify-content: flex-start;
         align-items: center;
-        justify-content: center;
+        flex-direction: column;
 
-        .qr-code {
-          width: 100%;
-          height: 100%;
-          font-size: 16px;
-
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          flex-direction: column;
-
-          .title {
-            margin: .42rem 0;
-          }
-        }
-
-        .qr-code--empty {
-          font-size: 15px;
-          color: #000;
-
-          .title {
-            margin: .42rem 0;
-          }
-
-          .img-qr-code-empty {
-            width: 118px;
-            height: 100px;
-            margin-bottom: .26rem;
-          }
-
-          .context {
-            margin-bottom: .1rem;
-          }
-
-          .info {
-            margin-bottom: .42rem;
-            font-size: 12px;
-            color: #ccc;
-          }
+        .title {
+          margin: 0.42rem 0;
         }
       }
-      .text-area {
-        height: 50px;
-        width: 100%;
-        background-color: #fff;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .qr-code--empty {
+        font-size: 15px;
+        color: #000;
+
+        .title {
+          margin: 0.42rem 0;
+        }
+
+        .img-qr-code-empty {
+          width: 118px;
+          height: 100px;
+          margin-bottom: 0.26rem;
+        }
+
+        .context {
+          margin-bottom: 0.1rem;
+        }
+
+        .info {
+          margin-bottom: 0.42rem;
+          font-size: 12px;
+          color: #ccc;
+        }
       }
     }
+    .text-area {
+      height: 50px;
+      width: 100%;
+      background-color: #fff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
+}
 
 .user-drug-list {
   display: flex;
