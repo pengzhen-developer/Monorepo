@@ -173,14 +173,14 @@
            v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2')"
+             v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1')"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单
         </div>
 
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '3'">
+             v-if="order.OrderStatus == '2' || order.OrderStatus == '3'">
           {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
         </div>
 
