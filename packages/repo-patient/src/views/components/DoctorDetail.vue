@@ -40,7 +40,7 @@
         </div>
 
         <div class="row flex between">
-          <div class="flex">
+          <div>
             <span class="hospital">{{ doctor.doctorInfo.hospitalName }}</span>
             <span class="deparment">{{ doctor.doctorInfo.deptName }}</span>
           </div>

@@ -9,20 +9,20 @@
         <div class="card-body">
           <div class="card-name"> {{ data.ords[0].Notes }}</div>
           <div class="card-small">
-            {{data.ShippingMethod == '1' ? '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone
-                    : '【自提地址】' + data.DrugStoreDetailed}}
+            {{ data.ShippingMethod == '1' ? 
+                 '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone : 
+                 '【自提地址】' + data.DrugStoreDetailed
+            }}
           </div>
           <div class="text">
             订单编号：{{data.OrderId}}
           </div>
-          <div
-            v-if="showTrackingNumber"
-            class="text"
-          >
+          <div v-if="showTrackingNumber"
+               class="text">
             运单编号：{{ PickUpCode }}
           </div>
-<!--          <div class="text"-->
-<!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
+          <!--          <div class="text"-->
+          <!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
         </div>
       </div>
 
@@ -43,14 +43,10 @@
                  v-if="item.ServiceStates == '4'">
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
-            <div
-              v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
-              class="note"
-            >
-              <div
-                class="qr-btn"
-                @click="onClickSeeQRCode"
-              >
+            <div v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
+                 class="note">
+              <div class="qr-btn"
+                   @click="onClickSeeQRCode">
                 查看取药码
               </div>
             </div>
@@ -59,41 +55,32 @@
       </div>
     </div>
     <!--二维码弹窗-->
-    <van-overlay
-      :show="showQRCode"
-      @click="showQRCode = false"
-    >
+    <van-overlay :show="showQRCode"
+                 @click="showQRCode = false">
       <div class="overlay-wrapper">
-        <div
-          @click.stop
-          class="qr-code-wrapper">
+        <div @click.stop
+             class="qr-code-wrapper">
           <div class="qr-code-area">
             <!--有二维码-->
-            <div
-              v-if="QRCodeURL"
-              class="qr-code"
-            >
+            <div v-if="QRCodeURL"
+                 class="qr-code">
               <div class="title">取药码</div>
             </div>
             <!--没有二维码-->
-            <div
-              v-if="!QRCodeURL"
-              class="qr-code qr-code--empty"
-            >
+            <div v-if="!QRCodeURL"
+                 class="qr-code qr-code--empty">
               <div class="title">取药码</div>
-              <img
-                class="img-qr-code-empty"
-                :src="require('@src/assets/images/qrcode-empty.png')"
-                alt=""
-              >
+              <img class="img-qr-code-empty"
+                   :src="require('@src/assets/images/qrcode-empty.png')"
+                   alt="">
               <div class="context">暂无二维码</div>
               <div class="info">请使用取药码进行取药</div>
             </div>
           </div>
-          <img :src="require('@src/assets/images/message-line.png')" alt="" style="display: block; margin: -1px 0">
-          <div
-            class="text-area"
-          >
+          <img :src="require('@src/assets/images/message-line.png')"
+               alt=""
+               style="display: block; margin: -1px 0">
+          <div class="text-area">
             取药码：{{ PickUpCode }}
           </div>
         </div>
@@ -119,20 +106,19 @@ const ENUM = {
     SIGNED: 4,
     CANCEL: 5,
     COMPLETE: 6
-  },
-
+  }
 }
 
 export default {
   data() {
     return {
       ENUM,
-      PickUpCode:'',
+      PickUpCode: '',
       data: undefined,
       shippingMethod: null,
       orderStatus: null,
       showQRCode: null,
-      QRCodeURL: null,
+      QRCodeURL: null
     }
   },
 
@@ -141,9 +127,8 @@ export default {
       const ShippingMethod = this.shippingMethod
       const OrderStatus = this.orderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME
-        && OrderStatus >= ENUM.ORDER_STATUS.SEND
-    },
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.PickUpCode
+    }
   },
 
   created() {
@@ -170,90 +155,89 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .qr-btn {
-    margin-top: 3px;
-    border: 1px solid #00c6ae;
+.qr-btn {
+  margin-top: 3px;
+  border: 1px solid #00c6ae;
+  border-radius: 5px;
+  color: #00c6ae;
+  width: 78px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-wrapper {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .qr-code-wrapper {
+    width: 250px;
     border-radius: 5px;
-    color: #00c6ae;
-    width: 78px;
-    height: 26px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .qr-code-area {
+      width: 100%;
+      background-color: #fff;
 
-  .overlay-wrapper {
-    height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .qr-code-wrapper {
-      width: 250px;
-      border-radius: 5px;
-
-      .qr-code-area {
+      .qr-code {
         width: 100%;
-        background-color: #fff;
+        height: 100%;
+        font-size: 16px;
 
         display: flex;
+        justify-content: flex-start;
         align-items: center;
-        justify-content: center;
+        flex-direction: column;
 
-        .qr-code {
-          width: 100%;
-          height: 100%;
-          font-size: 16px;
-
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          flex-direction: column;
-
-          .title {
-            margin: .42rem 0;
-          }
-        }
-
-        .qr-code--empty {
-          font-size: 15px;
-          color: #000;
-
-          .title {
-            margin: .42rem 0;
-          }
-
-          .img-qr-code-empty {
-            width: 118px;
-            height: 100px;
-            margin-bottom: .26rem;
-          }
-
-          .context {
-            margin-bottom: .1rem;
-          }
-
-          .info {
-            margin-bottom: .42rem;
-            font-size: 12px;
-            color: #ccc;
-          }
+        .title {
+          margin: 0.42rem 0;
         }
       }
-      .text-area {
-        height: 50px;
-        width: 100%;
-        background-color: #fff;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .qr-code--empty {
+        font-size: 15px;
+        color: #000;
+
+        .title {
+          margin: 0.42rem 0;
+        }
+
+        .img-qr-code-empty {
+          width: 118px;
+          height: 100px;
+          margin-bottom: 0.26rem;
+        }
+
+        .context {
+          margin-bottom: 0.1rem;
+        }
+
+        .info {
+          margin-bottom: 0.42rem;
+          font-size: 12px;
+          color: #ccc;
+        }
       }
     }
-  }
+    .text-area {
+      height: 50px;
+      width: 100%;
+      background-color: #fff;
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
 
 .card-avatar {
   display: flex;
