@@ -1,5 +1,13 @@
+/**
+ * 订单详情
+ * @param {string} [paymentType='wxpay'] 支付类型
+ *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
+ * 支付类型为yibaopay（医保支付）不显示倒计时和继续支付
+ */
+
 <template>
-  <div class="user-drug-detail">
+  <div class="user-drug-detail"
+       v-if="order!=null">
     <div class="count-down"
          v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == 0">
       订单
@@ -25,7 +33,7 @@
             </div>
             <div v-if="showTrackingNumber"
                  class="tracking-number">
-              运单编号：{{ order.pickUpCode }}
+              运单编号：{{ order ? order.PickUpCode : '' }}
             </div>
           </div>
           <div class="order-text"></div>
@@ -94,15 +102,15 @@
             <div class="dl-packet"
                  v-if="order.ShippingMethod == '1'">
               <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight}}</div>
+              <div class="dd">￥{{order.Freight.toString().toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut}}</div>
+              <div class="dd">￥{{order.PromotionsCut.toString().toFixed(2)}}</div>
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</div>
+              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}</div>
             </div>
           </div>
           <div class="module str"
@@ -110,7 +118,7 @@
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{order.payMoney}}</div>
+                <div class="strong">￥{{order.payMoney.toString().toFixed(2)}}</div>
               </div>
             </div>
           </div>
@@ -121,32 +129,43 @@
 
     <div class="box"
          v-if="order.OrderId">
-      <div class="dl-packet">
+      <div class="dl-packet"
+           style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
+        <div class="cancel-btn"
+             @click="canselOrder"
+             v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
            v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[parseInt(item.ServiceStates)]||'支付时间'}}：</div>
+        <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：</div>
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
       <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
       <div class='bottom-1'
            v-if="order.OrderStatus == 0">
-        <div class="left">应付金额：<span class="money">¥{{order.TotalAmount+order.Freight-order.PromotionsCut}}</span></div>
+        <div class="left">应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
         <div class="right">
+          <div v-if="order.paymentType === 'yibaopay'">
+            待药店联系您进行医保支付
+          </div>
+
           <div @click="canselOrder"
                class="pay cancel"
-               v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2')"
+               v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0'"
                style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单</div>
+            取消订单
+          </div>
+
           <div @click="payOrder(order)"
                class="pay"
                v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0'"
                style="background: #00C6AE; ">
-            继续支付</div>
+            继续支付
+          </div>
         </div>
       </div>
 
@@ -154,43 +173,29 @@
            v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2')"
+             v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-          取消订单</div>
+          取消订单
+        </div>
+
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '3'"> {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
+             v-if="order.OrderStatus == '3'">
+          {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
         </div>
+
         <div class="btn block btn-default"
              v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
+          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}
+        </div>
+
         <div class="btn block btn-default"
-             v-if="order.OrderStatus == '5'">已取消</div>
+             v-if="order.OrderStatus == '5'">
+          已取消
+        </div>
       </div>
     </div>
-    <div class="bottom"
-         v-else>
-      <div @click="canselOrder"
-           class="pay cancel"
-           v-if="order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
-           style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-        取消订单</div>
-      <div @click="payOrder(order)"
-           class="pay"
-           v-if="order.OrderStatus == '0'"
-           style="background: #00C6AE; margin-bottom: 8px; ">
-        继续支付</div>
 
-      <div @click="submitOrder"
-           class="btn block btn-blue"
-           v-if="order.OrderStatus == '3'">
-        {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}</div>
-      <div class="btn block btn-default"
-           v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-        {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}</div>
-      <div class="btn block btn-default"
-           v-if="order.OrderStatus == '5'">已取消</div>
-    </div>
     <peace-dialog :visible.sync="recipeDetail.visible">
       <TheRecipe :data="recipeDetail.data"></TheRecipe>
     </peace-dialog>
@@ -218,9 +223,9 @@
           </div>
           <img :src="require('@src/assets/images/message-line.png')"
                alt=""
-               style="display: block;">
+               style="display: block; margin: -1px 0;">
           <div class="text-area">
-            取药码：{{ pickUpCode }}
+            取药码：{{ order ? order.PickUpCode : '' }}
           </div>
         </div>
       </div>
@@ -264,11 +269,13 @@ export default {
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
-      timeTags: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间'],
+      timeTags: {
+        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间']
+      },
       appid: '',
-      order: {},
+      order: null,
       showQRCode: false,
-      pickUpCode: null,
       QRCodeURL: null,
 
       recipeDetail: {
@@ -279,17 +286,31 @@ export default {
   },
 
   computed: {
+    curPayMoney() {
+      const order = this.order
+      const payMoney = order.TotalAmount + order.Freight - order.PromotionsCut
+      return payMoney.toFixed(2)
+    },
+
     showQRCodeBtn() {
       const ShippingMethod = this.order.ShippingMethod
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.SELF &&
+        OrderStatus >= ENUM.ORDER_STATUS.ACCEPT &&
+        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      )
     },
     showTrackingNumber() {
       const ShippingMethod = this.order.ShippingMethod
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.HOME &&
+        OrderStatus >= ENUM.ORDER_STATUS.SEND &&
+        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      )
     }
   },
 
@@ -365,6 +386,7 @@ export default {
       const json = peace.util.decode(this.$route.params.json)
       json.shippingMethod = shippingMethod
       json.orderStatus = orderStatus
+      json.PickUpCode = this.order.PickUpCode
       const afterJson = peace.util.encode(json)
 
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
@@ -627,6 +649,19 @@ export default {
 
 .dl-packet .dd {
   color: #4e4e4e;
+}
+.dl-packet {
+  position: relative;
+}
+.dl-packet .cancel-btn {
+  color: #999;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  line-height: 25px;
+  height: 27px;
+  text-align: center;
+  width: 70px;
 }
 .str {
   border-top: 1px solid #e5e5e5;
