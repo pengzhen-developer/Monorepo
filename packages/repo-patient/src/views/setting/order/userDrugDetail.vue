@@ -135,7 +135,7 @@
         <div class="dd">{{order.OrderId}}</div>
         <div class="cancel-btn"
              @click="canselOrder"
-             v-if="(order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0'">取消订单</div>
+             v-if="order.paymentType !== 'yibaopay' && ((order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0')">取消订单</div>
       </div>
       <div class="dl-packet"
            :key="index"
@@ -173,7 +173,7 @@
            v-else>
         <div @click="canselOrder"
              class="btn block btn-blue"
-             v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2'"
+             v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1' || order.OrderStatus == '2')"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单
         </div>
