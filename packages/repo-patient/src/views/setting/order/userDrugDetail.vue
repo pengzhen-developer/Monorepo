@@ -1,16 +1,9 @@
-/**
- * 订单详情
- * @param {string} [paymentType='wxpay'] 支付类型
- *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
- * 支付类型为yibaopay（医保支付）不显示倒计时和继续支付
- */
-
 <template>
   <div class="user-drug-detail"
-       v-if="order!=null">
+       v-if="order != null">
     <div class="count-down"
-         v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == 0">
-      订单
+         v-if="canShowCountDown">
+      <span>订单</span>
       <van-count-down millisecond
                       :time="time"
                       format="HH:mm:ss" /> 后将自动关闭
@@ -112,9 +105,14 @@
               <div class="dt">订单总价:</div>
               <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}</div>
             </div>
+            <div class="dl-packet">
+              <div class="dt">支付方式:</div>
+              <div class="dd">
+                {{ paymentTypeText }}</div>
+            </div>
           </div>
           <div class="module str"
-               v-if="order.OrderStatus != 0">
+               v-if="canShowPayMoney">
             <div class="dl-packet">
               <div class="dt">实付金额:</div>
               <div class="dd">
@@ -133,10 +131,8 @@
            style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
-        <div class="cancel-btn"
-             @click="canselOrder"
-             v-if="order.paymentType !== 'yibaopay' && ((order.OrderStatus == '3' || order.OrderStatus == '2') && order.ShippingMethod == '0')">取消订单</div>
       </div>
+
       <div class="dl-packet"
            :key="index"
            v-for="(item,index) in order.ords">
@@ -144,53 +140,57 @@
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
-      <!-- 0未付款  1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
       <div class='bottom-1'
-           v-if="order.OrderStatus == 0">
+           v-if="order.OrderStatus === 0">
         <div class="left">应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
         <div class="right">
-          <div v-if="order.paymentType === 'yibaopay'">
+          <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
             待药店联系您进行医保支付
-          </div>
-
-          <div @click="canselOrder"
-               class="pay cancel"
-               v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0'"
-               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单
           </div>
 
           <div @click="payOrder(order)"
                class="pay"
-               v-if="order.paymentType !== 'yibaopay' && order.OrderStatus == '0'"
-               style="background: #00C6AE; ">
+               v-if="canShowPay"
+               style="background: #00C6AE; margin-bottom: 8px; ">
             继续支付
+          </div>
+
+          <div @click="canselOrder"
+               class="pay cancel"
+               v-if="canShowCancel"
+               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+            取消订单
           </div>
         </div>
       </div>
 
-      <div class="bottom"
-           v-else>
-        <div @click="canselOrder"
+      <div v-else
+           class="bottom">
+        <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.paymentType !== 'yibaopay' && (order.OrderStatus == '0' || order.OrderStatus == '1')"
-             style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-          取消订单
+             v-if="canShowReceive">
+          确认取药
         </div>
 
         <div @click="submitOrder"
              class="btn block btn-blue"
-             v-if="order.OrderStatus == '2' || order.OrderStatus == '3'">
-          {{order.ShippingMethod == '1' ? '确认签收' : '确认取药' }}
+             v-if="canShowSign">
+          确认签收
         </div>
 
         <div class="btn block btn-default"
-             v-if="order.OrderStatus == '4' || order.OrderStatus == '6'">
-          {{order.ShippingMethod == '1' ? '已签收' : '已自提'}}
+             v-if="order.OrderStatus === ENUM.ORDER_STATUS.已自提_已签收 || 
+                   order.OrderStatus === ENUM.ORDER_STATUS.已完成">
+          <span v-if="order.ShippingMethod === ENUM.SHIPPING_METHOD.到店取药">
+            已自提
+          </span>
+          <span v-if="order.ShippingMethod === ENUM.SHIPPING_METHOD.配送到家">
+            已签收
+          </span>
         </div>
 
         <div class="btn block btn-default"
-             v-if="order.OrderStatus == '5'">
+             v-if="order.OrderStatus === ENUM.ORDER_STATUS.已取消">
           已取消
         </div>
       </div>
@@ -242,18 +242,36 @@ Vue.use(CountDown)
 
 const ENUM = {
   SHIPPING_METHOD: {
-    SELF: 0,
-    HOME: 1
+    到店取药: 0,
+    配送到家: 1
   },
-  // 0待支付  1已下单 2已接单 3 已备药/已发货 4已自提/已签收 5已取消 6已完成
+
+  // 支付类型
+  // wxpay（微信）
+  // alipay（支付宝）
+  // yibaopay（医保支付）
+  PAYMENT_TYPE: {
+    微信: 'wxpay',
+    支付宝: 'alipay',
+    医保支付: 'yibaopay'
+  },
+
+  // 处方共享平台 - 订单状态
+  // 0 待下单
+  // 1 已下单
+  // 2 已接单
+  // 3 已备药/已发货
+  // 4 已自提/已签收
+  // 5 已取消
+  // 6 已完成
   ORDER_STATUS: {
-    NOT_PAY: 0,
-    PAID: 1,
-    ACCEPT: 2,
-    SEND: 3,
-    SIGNED: 4,
-    CANCEL: 5,
-    COMPLETE: 6
+    待下单: 0,
+    已下单: 1,
+    已接单: 2,
+    已备药_已发货: 3,
+    已自提_已签收: 4,
+    已取消: 5,
+    已完成: 6
   }
 }
 
@@ -270,8 +288,8 @@ export default {
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
       timeTags: {
-        [ENUM.SHIPPING_METHOD.SELF]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
-        [ENUM.SHIPPING_METHOD.HOME]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间']
+        [ENUM.SHIPPING_METHOD.到店取药]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
+        [ENUM.SHIPPING_METHOD.配送到家]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间']
       },
       appid: '',
       order: null,
@@ -286,6 +304,63 @@ export default {
   },
 
   computed: {
+    // 是否显示取消订单
+    canShowCancel() {
+      return (
+        this.order &&
+        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
+          this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
+          this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)
+      )
+    },
+
+    // 是否显示继续支付
+    canShowPay() {
+      return (
+        this.order &&
+        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
+      )
+    },
+
+    // 是否显示倒计时
+    canShowCountDown() {
+      return (
+        this.order &&
+        this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 &&
+        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
+      )
+    },
+
+    // 是否显示应付金额
+    canShowPayMoney() {
+      return this.order && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
+    },
+
+    // 是否显示确认取药
+    canShowReceive() {
+      return (
+        this.order &&
+        this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
+        (this.order.OrderStatus == ENUM.ORDER_STATUS.已接单 ||
+          this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货)
+      )
+    },
+
+    // 是否显示确认签收
+    canShowSign() {
+      return (
+        this.order &&
+        this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 &&
+        this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货
+      )
+    },
+
+    paymentTypeText() {
+      return Object.keys(ENUM.PAYMENT_TYPE).find(key => ENUM.PAYMENT_TYPE[key] === this.order.paymentType)
+    },
+
     curPayMoney() {
       const order = this.order
       const payMoney = order.TotalAmount + order.Freight - order.PromotionsCut
@@ -297,9 +372,9 @@ export default {
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return (
-        ShippingMethod === ENUM.SHIPPING_METHOD.SELF &&
-        OrderStatus >= ENUM.ORDER_STATUS.ACCEPT &&
-        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+        ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 &&
+        OrderStatus >= ENUM.ORDER_STATUS.已接单 &&
+        OrderStatus !== ENUM.ORDER_STATUS.已取消
       )
     },
     showTrackingNumber() {
@@ -307,9 +382,9 @@ export default {
       const OrderStatus = this.order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return (
-        ShippingMethod === ENUM.SHIPPING_METHOD.HOME &&
-        OrderStatus >= ENUM.ORDER_STATUS.SEND &&
-        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+        ShippingMethod === ENUM.SHIPPING_METHOD.配送到家 &&
+        OrderStatus >= ENUM.ORDER_STATUS.已备药_已发货 &&
+        OrderStatus !== ENUM.ORDER_STATUS.已取消
       )
     }
   },

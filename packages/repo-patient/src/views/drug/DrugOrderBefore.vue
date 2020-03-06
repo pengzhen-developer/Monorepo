@@ -113,8 +113,8 @@
               <div @click="submitOrder('yibaopay')"
                    :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">医保支付</div>
 
-              <div @click="submitOrder('wxpay')"
-                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">在线支付</div>
+              <!-- <div @click="submitOrder('wxpay')"
+                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">在线支付</div> -->
             </div>
 
             <div class="tips-bottom">
