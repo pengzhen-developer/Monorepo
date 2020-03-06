@@ -204,10 +204,7 @@ export default {
   },
   methods: {
     ifShowLogistics(item) {
-      return (
-        item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME &&
-        (item.PickUpCode !== null || item.OrderStatus !== undefined || item.OrderStatus !== '')
-      )
+      return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.PickUpCode
     },
 
     checkQRCodeBtn(order) {
