@@ -279,7 +279,12 @@ export default {
     },
 
     goDrugLogiPage(item) {
-      const params = peace.util.encode({ OrderId: item.OrderId })
+      const json={}
+      json.OrderId=item.OrderId
+      json.shippingMethod=item.ShippingMethod
+      json.orderStatus=item.OrderStatus
+      json.PickUpCode=item.PickUpCode
+      const params = peace.util.encode(json)
 
       this.$router.replace(`/order/userDrugLogistics/${params}`)
     },
