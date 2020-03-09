@@ -140,6 +140,13 @@ export default {
   },
 
   watch: {
+    $route() {
+      // 页面回退，需要刷新
+      if (this.$route.name === '/components/theRecipe/:json' && this.$route.params['stack-key-dir'] === 'back') {
+        this.get()
+      }
+    },
+
     data: {
       handler() {
         this.internalData = this.data

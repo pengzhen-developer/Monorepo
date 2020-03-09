@@ -110,8 +110,10 @@
           <div class="bottom">
 
             <div style="display: flex; justify-content: center; align-items: space-between;">
-              <div @click="submitOrder('yibaopay')"
-                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">医保支付</div>
+              <van-button v-on:click="submitOrder('yibaopay')"
+                          v-bind:disabled="hasSubmitOrder"
+                          size="large"
+                          type="primary">医保支付</van-button>
 
               <!-- <div @click="submitOrder('wxpay')"
                    :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">在线支付</div> -->
@@ -134,6 +136,8 @@ export default {
   name: 'DrugOrderBefore',
   data() {
     return {
+      hasSubmitOrder: false,
+
       orderId: '',
       showBtn: true,
       page: {
@@ -196,6 +200,8 @@ export default {
      *                                       默认：wxpay（微信）
      */
     submitOrder(paymentType = 'wxpay') {
+      this.hasSubmitOrder = true
+
       if (!this.canSubmitProcesses()) {
         return
       }
