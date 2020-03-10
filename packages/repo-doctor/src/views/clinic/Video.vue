@@ -315,7 +315,7 @@ export default {
 
       // 养老端
       // 接听后，发起接口请求
-      if (this.custom.type === 'inquiry') {
+      if (this.custom.type === 'inquiry' && !(this.custom.session && this.custom.session.id)) {
         this.processJoin()
       }
 
