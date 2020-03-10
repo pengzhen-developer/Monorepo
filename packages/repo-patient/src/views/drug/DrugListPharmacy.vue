@@ -176,17 +176,20 @@ export default {
       // params.Latitude = 114.21772;
       // params.Longitude = 30.55473;
       peace.service.patient.getStoresList(params).then(res => {
-        console.log(params)
         if (res.data.Type == '1') {
           this.phaList = res.data.JoinJnt
           this.phaAddrList = []
           this.isGet = true
+
+          // 仅存在一个药房符合条件时，直接跳转订单确认页面
+          // if (this.phaList.length === 1) {
+          //   this.goDrugOrderBeforePage(0)
+          // }
         }
         if (res.data.Type == '2') {
           this.phaList = []
           this.phaAddrList = res.data.OutJnt
           this.isGet = true
-          console.log('phaAddrList', this.phaAddrList)
         }
         this.messageOn = true
         this.mapDistance()
@@ -248,7 +251,7 @@ export default {
         familyId
       }
       json = peace.util.encode(json)
-      this.$router.push(`/drug/drugOrderBefore/${json}`)
+      this.$router.replace(`/drug/drugOrderBefore/${json}`)
       // app.$env.fn.goMenuPage('/drug/order/drugOrderBefore', json)
     }
   }
