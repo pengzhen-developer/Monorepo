@@ -43,6 +43,7 @@
                  v-if="item.ServiceStates == '4'">
               {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
             </div>
+
             <div v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
                  class="note">
               <div class="qr-btn"
@@ -152,10 +153,10 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.purchasedrug.SelectOrderDetApi(params).then(res => {
         this.PickUpCode = res.data.PickUpCode
-        this.orderStatus = res.data.orderStatus
-        this.shippingMethod = res.data.shippingMethod
+        this.orderStatus = res.data.OrderStatus
+        this.shippingMethod = res.data.ShippingMethod
       })
-    },
+    }
   }
 }
 </script>
