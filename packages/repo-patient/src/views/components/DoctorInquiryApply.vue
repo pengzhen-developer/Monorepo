@@ -1046,6 +1046,7 @@ export default {
       else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
         answer = params[0]
 
+        this.model.isAgain = params[0] === '我要复诊' ? '1' : '0'
         this.model.isAgainConfrim = params[0] === '继续咨询' ? '1' : '0'
       }
 
