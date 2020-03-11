@@ -182,7 +182,9 @@ export default {
     },
 
     sendRecipe() {
-      if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
+      if (this.$store.getters['inquiry/inquiryInfo'].isAgain === 0) {
+        peace.util.warning('该患者未提供线下复诊材料，不可开具线上处方')
+      } else if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
         peace.util.warning('尚未填写病历，无法开具处方')
       } else {
         $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发处方)
