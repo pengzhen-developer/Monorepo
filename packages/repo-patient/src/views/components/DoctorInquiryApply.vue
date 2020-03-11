@@ -129,8 +129,7 @@
                          style="flex-direction: column;"
                          v-if="!isFixed">
                   <div>
-                    <span
-                          style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                     <span style="color: #333333; font-size: 14px; ">
@@ -138,8 +137,7 @@
                     </span>
                   </div>
                   <div>
-                    <span
-                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                       {{ getSerivceType() }}
                     </span>
                     <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -155,8 +153,7 @@
                          align="center"
                          v-else>
                   <div>
-                    <span
-                          style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                   </div>
@@ -246,7 +243,15 @@
                         @click="answer('否')">否</van-button>
           </template>
 
-          <!-- Q4 & Q5: 附件与确认遗失 -->
+          <!-- Q4: 是否确认非复诊 -->
+          <template v-if="current.field === ANSWER_FIELD.IS_AGAIN_CONFIRM">
+            <van-button round
+                        @click="answer('继续咨询')">继续咨询</van-button>
+            <van-button round
+                        @click="answer('我要复诊')">我要复诊</van-button>
+          </template>
+
+          <!-- Q5 & Q6: 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
             <van-button @click="answer('上传')"
                         type="primary"
@@ -262,7 +267,7 @@
             </template>
           </template>
 
-          <!-- Q6 初步诊断 -->
+          <!-- Q7 初步诊断 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_CONFIRM">
             <van-button @click="answer('点击选择初诊诊断')"
                         type="primary"
@@ -381,6 +386,8 @@ const ANSWER_FIELD = {
   FAMILY: 'family',
   /** 是否复诊 */
   IS_AGAIN: 'isAgain',
+  /** 确认是否继续 */
+  IS_AGAIN_CONFIRM: 'isAgainConfirm',
   /** 附件 */
   ATTACHMENT: 'attachment',
   /** 初诊诊断 */
@@ -425,6 +432,8 @@ export default {
         consultingType: '',
         // 是否复诊
         isAgain: true,
+        // 非复诊确认
+        isAgainConfrim: true,
         // 特殊时期
         isPregnancy: null,
         // 过敏史
@@ -469,19 +478,26 @@ export default {
         {
           no: 3,
           answerList: [],
+          field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
+          question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
+          mode: ANSWER_MODE.CHECK
+        },
+        {
+          no: 4,
+          answerList: [],
           field: ANSWER_FIELD.ATTACHMENT,
           question: '请问您是否需要补充病历、处方、检查报告等图片？',
           mode: ANSWER_MODE.FILE
         },
         {
-          no: 4,
+          no: 5,
           answerList: [],
           field: ANSWER_FIELD.ATTACHMENT,
           question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
           mode: ANSWER_MODE.FILE_CONFIRM
         },
         {
-          no: 5,
+          no: 6,
           answerList: [],
           field: ANSWER_FIELD.ILLNESS_CONFIRM,
           question: '请选择您的初诊诊断(多选)',
@@ -1026,6 +1042,14 @@ export default {
         this.model.isAgain = params[0] === '是' ? '1' : '0'
       }
 
+      // 是否复诊确认
+      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
+        answer = params[0]
+
+        this.model.isAgain = params[0] === '我要复诊' ? '1' : '0'
+        this.model.isAgainConfrim = params[0] === '继续咨询' ? '1' : '0'
+      }
+
       // 上传附件
       else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
         if (params[0] !== '上传') {
@@ -1076,17 +1100,27 @@ export default {
       // 是否复诊
       if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
         if (this.model.isAgain === '1') {
-          nextQuestionIndex = currentQuestionIndex + 1
+          nextQuestionIndex = currentQuestionIndex + 2
         } else {
-          nextQuestionIndex = -1
+          nextQuestionIndex = currentQuestionIndex + 1
         }
       }
+
+      // 非复诊确认
+      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
+        if (this.model.isAgainConfrim === '1') {
+          nextQuestionIndex = -1
+        } else {
+          nextQuestionIndex = currentQuestionIndex + 1
+        }
+      }
+
       // 上传凭证
       else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
         if (this.attachment === '我已遗失' || this.attachment === '确认遗失') {
           nextQuestionIndex = currentQuestionIndex + 1
         } else {
-          nextQuestionIndex = 5
+          nextQuestionIndex = 6
         }
       }
       // 正常情况下一步
@@ -1560,6 +1594,15 @@ export default {
         }
 
         &.isAgain {
+          text-align: center;
+          .van-button {
+            min-width: 80px;
+            font-size: 16px;
+            margin: 0 15px 15px 0;
+          }
+        }
+
+        &.isAgainConfirm {
           text-align: center;
           .van-button {
             min-width: 80px;
