@@ -1,6 +1,6 @@
 {
   "name": "doctor-web",
-  "version": "1.0.1-001",
+  "version": "1.0.1-002",
   "private": true,
   "scripts": {
     "start": "npm run serve",
