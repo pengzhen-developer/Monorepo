@@ -246,6 +246,7 @@
           <!-- Q4: 是否确认非复诊 -->
           <template v-if="current.field === ANSWER_FIELD.IS_AGAIN_CONFIRM">
             <van-button round
+                        type="primary"
                         @click="answer('继续咨询')">继续咨询</van-button>
             <van-button round
                         @click="answer('我要复诊')">我要复诊</van-button>
