@@ -175,33 +175,32 @@
                             @click="apply"
                             type="primary"
                             :round="true"
-                            :disabled="sending">去咨询
-      </template>
-      </van-row>
-      </van-row>
-      </van-sticky>
-      </transition-group>
+                            :disabled="sending">去咨询</van-button>
+              </van-row>
+            </van-row>
+          </van-sticky>
+        </transition-group>
 
-      <transition-group tag="div"
-                        name="van-slide-left">
-        <div class="message-layout left"
-             key="supplementary">
-          <div class="supplementary">
-            <span class="supplementary__title">补充信息</span>
-            <span class="supplementary__info">可选择补充如下信息，让医生全面了解您的病情。</span>
-            <span v-for="child in supplementaryList"
-                  :key="child.mode"
-                  class="supplementary__content"
-                  :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
-                  @click="onMutationSupplementaryMode(child)">
-              {{ child.msg }}</span>
+        <transition-group tag="div"
+                          name="van-slide-left">
+          <div class="message-layout left"
+               key="supplementary">
+            <div class="supplementary">
+              <span class="supplementary__title">补充信息</span>
+              <span class="supplementary__info">可选择补充如下信息，让医生全面了解您的病情。</span>
+              <span v-for="child in supplementaryList"
+                    :key="child.mode"
+                    class="supplementary__content"
+                    :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
+                    @click="onMutationSupplementaryMode(child)">
+                {{ child.msg }}</span>
+            </div>
           </div>
-        </div>
-      </transition-group>
-      <jzt-chat :list="chatList"
-                @after-refresh="onAfterRefresh"
-                @click-update-btn="onClickUpdateBtn"></jzt-chat>
-</template>
+        </transition-group>
+        <jzt-chat :list="chatList"
+                  @after-refresh="onAfterRefresh"
+                  @click-update-btn="onClickUpdateBtn"></jzt-chat>
+      </template>
     </div>
     <!-- 当前问题 -->
     <div class="layout-footer">
@@ -213,73 +212,68 @@
 
           <!-- Q1: 描述 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
-  <van-field ref="input"
-             v-model.trim="current.answer"
-             clearable
-             class="inp"
-             placeholder="请输入您的详细症状，至少5个字">
-    <van-button @click="answer"
-                slot="button"
-                round
-                type="primary">发送
-</template>
+            <van-field ref="input"
+                       v-model.trim="current.answer"
+                       clearable
+                       class="inp"
+                       placeholder="请输入您的详细症状，至少5个字">
+              <van-button @click="answer"
+                          slot="button"
+                          round
+                          type="primary">发送</van-button>
             </van-field>
           </template>
 
           <!-- Q2: 家人 -->
           <template v-if="current.field === ANSWER_FIELD.FAMILY">
-  <van-button v-for="item in current.answerList"
-              round
-              :key="item.value"
-              @click="answer(item)">{{ item.label }}
-</template>
+            <van-button v-for="item in current.answerList"
+                        round
+                        :key="item.value"
+                        @click="answer(item)">{{ item.label }}</van-button>
             <br>
             <van-button round
-                        @click="answer('')">添加新的就诊人</template>
+                        @click="answer('')">添加新的就诊人</van-button>
           </template>
 
           <!-- Q3: 是否复诊 -->
           <template v-if="current.field === ANSWER_FIELD.IS_AGAIN">
-  <van-button round
-              @click="answer('是')">是
-</template>
             <van-button round
-                        @click="answer('否')">否</template>
+                        @click="answer('是')">是</van-button>
+            <van-button round
+                        @click="answer('否')">否</van-button>
           </template>
 
           <!-- Q4: 是否确认非复诊 -->
           <template v-if="current.field === ANSWER_FIELD.IS_AGAIN_CONFIRM">
-  <van-button round
-              type="primary"
-              @click="answer('继续咨询')">继续咨询
-</template>
             <van-button round
-                        @click="answer('我要复诊')">我要复诊</template>
+                        type="primary"
+                        @click="answer('继续咨询')">继续咨询</van-button>
+            <van-button round
+                        @click="answer('我要复诊')">我要复诊</van-button>
           </template>
 
           <!-- Q5 & Q6: 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
-  <van-button @click="answer('上传')"
-              type="primary"
-              round>上传凭证
-</template>
+            <van-button @click="answer('上传')"
+                        type="primary"
+                        round>上传凭证</van-button>
 
             <template v-if="current.mode === ANSWER_MODE.FILE">
-  <van-button @click="answer('我已遗失')"
-              round>我已遗失</van-button>
-</template>
+              <van-button @click="answer('我已遗失')"
+                          round>我已遗失</van-button>
+            </template>
             <template v-if="current.mode === ANSWER_MODE.FILE_CONFIRM">
-  <van-button @click="answer('确认遗失')"
-              round>确认遗失</van-button>
-</template>
+              <van-button @click="answer('确认遗失')"
+                          round>确认遗失</van-button>
+            </template>
           </template>
 
           <!-- Q7 初步诊断 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_CONFIRM">
-  <van-button @click="answer('点击选择初诊诊断')"
-              type="primary"
-              round>点击选择初诊诊断</van-button>
-</template>
+            <van-button @click="answer('点击选择初诊诊断')"
+                        type="primary"
+                        round>点击选择初诊诊断</van-button>
+          </template>
         </div>
       </transition>
       <transition name="van-slide-up"
