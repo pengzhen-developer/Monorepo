@@ -42,6 +42,7 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
+                       :class="item.orderInfo.orderMoney==0?'price-free':'price'"
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
@@ -284,9 +285,7 @@ export default {
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
               let expireTime =
-                inquiryInfo.inquiryStatus == 1
-                  ? inquiryInfo.orderExpireTime
-                  : inquiryInfo.orderReceptTime
+                inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
                 // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
@@ -466,6 +465,12 @@ export default {
           color: #333;
           display: flex;
           align-items: center;
+          &.price-free {
+            color: #00c6ae;
+          }
+          &.price {
+            color: #f2223b;
+          }
           span {
             color: #999;
             font-size: 13px;

@@ -103,12 +103,9 @@
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">支付方式:</div>
               <div class="dd">
-                {{ paymentTypeText }}</div>
+                ￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}
+              </div>
             </div>
           </div>
           <div class="module str"
@@ -136,13 +133,32 @@
              @click="canselOrder"
              v-if="canShowCancel">取消订单</div>
       </div>
-
-      <div class="dl-packet"
-           :key="index"
-           v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：</div>
-        <div class="dd">{{item.CreateTime}}</div>
+      <div class="dl-packet">
+        <div class="dt">创建时间:</div>
+        <div class="dd">
+          {{ order.CreateTime }}</div>
       </div>
+      <template v-if="order.payStatus>2">
+        <div class="dl-packet">
+          <div class="dt">支付方式:</div>
+          <div class="dd">
+            {{ order.paymentType }}</div>
+        </div>
+        <div class="dl-packet">
+          <div class="dt">支付时间:</div>
+          <div class="dd">
+            {{ order.payTime }}</div>
+        </div>
+      </template>
+      <template v-for="(item,index) in order.ords">
+        <div class="dl-packet"
+             :key="index"
+             v-if="index>0">
+          <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：
+          </div>
+          <div class="dd">{{item.CreateTime}}</div>
+        </div>
+      </template>
 
       <div v-if="order.OrderStatus !== 0"
            class="bottom">
@@ -573,7 +589,6 @@ export default {
       height: 50px;
       width: 100%;
       background-color: #fff;
-
       display: flex;
       align-items: center;
       justify-content: center;
