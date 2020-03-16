@@ -126,11 +126,17 @@
     </div>
 
     <div class="box"
+         v-bind:style="{ 'margin-bottom': order.OrderStatus === 0 ? '80px' : 0 }"
          v-if="order.OrderId">
       <div class="dl-packet"
            style="padding-top:3px;">
         <div class="dt">订单编号：</div>
         <div class="dd">{{order.OrderId}}</div>
+
+        <!-- 待下单状态的取消订单在底部 -->
+        <div class="cancel-btn"
+             @click="canselOrder"
+             v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单">取消订单</div>
       </div>
 
       <div class="dl-packet"
@@ -140,31 +146,7 @@
         <div class="dd">{{item.CreateTime}}</div>
       </div>
 
-      <div class='bottom-1'
-           v-if="order.OrderStatus === 0">
-        <div class="left">应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
-        <div class="right">
-          <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
-            待药店联系您进行医保支付
-          </div>
-
-          <div @click="payOrder(order)"
-               class="pay"
-               v-if="canShowPay"
-               style="background: #00C6AE; margin-bottom: 8px; ">
-            继续支付
-          </div>
-
-          <div @click="canselOrder"
-               class="pay cancel"
-               v-if="canShowCancel"
-               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单
-          </div>
-        </div>
-      </div>
-
-      <div v-else
+      <div v-if="order.OrderStatus !== 0"
            class="bottom">
         <div @click="submitOrder"
              class="btn block btn-blue"
@@ -182,16 +164,40 @@
              v-if="order.OrderStatus === ENUM.ORDER_STATUS.已自提_已签收 || 
                    order.OrderStatus === ENUM.ORDER_STATUS.已完成">
           <span v-if="order.ShippingMethod === ENUM.SHIPPING_METHOD.到店取药">
-            已自提
+            {{ order.OrderStatusText }}
           </span>
           <span v-if="order.ShippingMethod === ENUM.SHIPPING_METHOD.配送到家">
-            已签收
+            {{ order.OrderStatusText }}
           </span>
         </div>
 
         <div class="btn block btn-default"
              v-if="order.OrderStatus === ENUM.ORDER_STATUS.已取消">
-          已取消
+          {{ order.OrderStatusText }}
+        </div>
+      </div>
+    </div>
+
+    <div class='bottom-1'
+         v-if="order.OrderStatus === 0">
+      <div class="left">应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
+      <div class="right">
+        <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
+          待药店联系您进行医保支付
+        </div>
+
+        <div @click="payOrder(order)"
+             class="pay"
+             v-if="canShowPay"
+             style="background: #00C6AE; ">
+          继续支付
+        </div>
+
+        <div @click="canselOrder"
+             class="pay cancel"
+             v-if="canShowCancel"
+             style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+          取消订单
         </div>
       </div>
     </div>
@@ -268,8 +274,7 @@ const ENUM = {
     待下单: 0,
     已下单: 1,
     已接单: 2,
-    已备药_已发货: 3,
-    已自提_已签收: 4,
+
     已取消: 5,
     已完成: 6
   }
@@ -343,8 +348,7 @@ export default {
       return (
         this.order &&
         this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-        (this.order.OrderStatus == ENUM.ORDER_STATUS.已接单 ||
-          this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货)
+        this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货
       )
     },
 
