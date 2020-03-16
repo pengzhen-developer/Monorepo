@@ -2,6 +2,15 @@
   <div class="consult-detatil">
     <div class="module order"
          v-if="internalData!=null">
+      <div class="card"
+           style="display: flex; align-items: center; background:rgba(255,251,230,1); margin: 0 0 10px 0;"
+           v-if="internalData.inquiryInfo.isAgain === 0">
+        <img style="width: 20px; height: 20px; margin: 0 14px 0 0;"
+             v-bind:src="require('@src/assets/images/warning@2x.png')">
+        <span>患者选择在线咨询，未提供线下复诊凭证，</span>
+        <span style="color: #FA8C16;">不可开具处方</span>
+      </div>
+
       <div class="module-item">
         <div class="b">个人信息</div>
         <el-row>

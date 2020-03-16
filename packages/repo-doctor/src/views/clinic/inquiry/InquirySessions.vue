@@ -116,9 +116,17 @@ export default {
     },
 
     getInquiryType(session) {
-      return Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(
+      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(
         key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType
       )
+
+      const isAgain = session.content.inquiryInfo.isAgain
+
+      if (text === '图文问诊') {
+        return isAgain ? '图文复诊' : '图文咨询'
+      } else if (text === '视频问诊') {
+        return isAgain ? '视频复诊' : '视频咨询'
+      }
     },
 
     selectSession(session) {

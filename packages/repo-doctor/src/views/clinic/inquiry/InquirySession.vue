@@ -3,6 +3,12 @@
     <div class="header">
       <div class="header-description">
         <span class="name">{{ $store.getters['inquiry/patientInfo'].familyName }}</span>
+
+        <el-tag effect="dark"
+                style="margin: 0 0 0 10px;"
+                v-bind:type="getTagType($store.state.inquiry.session)">
+          {{ getInquiryType($store.state.inquiry.session) }}
+        </el-tag>
       </div>
       <div class="header-control">
         <!-- <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span> -->
@@ -153,6 +159,30 @@ export default {
   },
 
   methods: {
+    getInquiryType(session) {
+      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(
+        key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType
+      )
+
+      const isAgain = session.content.inquiryInfo.isAgain
+
+      if (text === '图文问诊') {
+        return isAgain ? '图文复诊' : '图文咨询'
+      } else if (text === '视频问诊') {
+        return isAgain ? '视频复诊' : '视频咨询'
+      }
+    },
+
+    getTagType(session) {
+      const text = this.getInquiryType(session)
+
+      if (text === '图文复诊' || text === '视频复诊') {
+        return 'warning'
+      } else {
+        return 'primary'
+      }
+    },
+
     sendCase() {
       this.inquiryAction = peace.type.INQUIRY.INQUIRY_ACTION.发病历
     },
