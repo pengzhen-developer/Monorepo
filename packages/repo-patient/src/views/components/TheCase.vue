@@ -252,9 +252,7 @@ export default {
     padding: 3px;
   }
 }
-</style>
 
-<style lang="scss" scoped>
 .form-code {
   background: #f8f8f8;
   padding: 0 15px;
@@ -266,25 +264,27 @@ export default {
   .bb {
     display: flex;
     width: 100%;
-    padding: 7px 0;
+    // padding: 7px 0;
     border-bottom: 1px solid #ebebeb;
     &:last-child {
       border-bottom: 0;
     }
   }
   .between {
+    line-height: 36px;
+    height: 36px;
     justify-content: space-between;
   }
 }
 
 .namelist-dl {
-  flex: 0 1 100%;
+  // flex: 0 1 100%;
   font-size: 15px;
-  padding: 10px 0;
+  // padding: 10px 0;
   display: flex;
 }
 .namelist-dl .dt {
-  flex: 0 0 auto;
+  // flex: 0 0 auto;
   width: 25%;
   color: #000;
 }

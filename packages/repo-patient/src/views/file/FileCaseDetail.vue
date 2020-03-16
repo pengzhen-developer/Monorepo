@@ -38,8 +38,8 @@
         </div>
       </van-cell>
       <van-cell title="辅助检查"
-                v-if="data.More"
-                :value="data.More || '无'" />
+                v-if="data.InspectionIndex &&data.InspectionIndex.More "
+                :value="data.InspectionIndex.More  || '无'" />
       <van-cell title="诊断"
                 :value="data.diagnose || '无'" />
       <van-cell title="医嘱小结"
