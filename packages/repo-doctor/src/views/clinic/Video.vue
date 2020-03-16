@@ -30,12 +30,18 @@ import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 export default {
   data() {
     return {
+      /** 挂断方 */
+      hangUpBy: undefined,
+      /** 是否主叫 */
+      isCalling: undefined,
       /** 是否静音 */
       isMute: false,
       /** 是否正忙 */
       busy: false,
       /** 是否正在被呼叫中 */
       beCalling: false,
+      /** 当前呼叫状态操作者 */
+      sponsor: '',
       /** 当前呼叫状态 */
       beCallState: '',
       /** 当前呼叫时长 */
@@ -114,6 +120,33 @@ export default {
         this.video.title = ''
         this.video.visible = false
 
+        if (this.hangUpBy === 'Doctor') {
+          // 未接通前 => 医生主叫 && 医生拒绝 => 【医生端调用】
+          if (this.isCalling === true) {
+            const params = {
+              inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
+              action: 'doctorHangup',
+              sponsor: 'doctor'
+            }
+
+            this.processHangup(params)
+          }
+          // 未接通前 => 医生主叫 && 患者拒绝 => 【患者端调用】
+          // No Code
+          // 未接通前 => 患者主叫 && 医生拒绝 => 【医生端调用】
+          else if (this.isCalling === false) {
+            const params = {
+              inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
+              action: 'doctorHangup',
+              sponsor: 'patient'
+            }
+
+            this.processHangup(params)
+          }
+          // 未接通前 => 患者主叫 && 患者拒绝 => 【患者端调用】
+          // No Code
+        }
+
         this.hangupVideo()
       }
       // 挂断视频
@@ -124,12 +157,24 @@ export default {
         this.processExit()
         this.hangupVideo()
       }
-    },
+      // 呼叫超时
+      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.超时) {
+        this.video.title = ''
+        this.video.visible = false
 
-    'video.visible'() {
-      // 将 dialog 放到 content 里面
-      if (this.video.visible === true) {
-        console.log(1)
+        // 未接通前 => 医生主叫 && 系统超时 => 【医生端调用】
+        if (this.isCalling === true) {
+          const params = {
+            inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
+            action: 'systemHangup',
+            sponsor: 'doctor'
+          }
+
+          this.processHangup(params)
+        }
+        // 未接通前 => 患者主叫 && 系统超时 => 【患者端调用】
+
+        this.hangupVideo()
       }
     }
   },
@@ -146,6 +191,7 @@ export default {
       $peace.WebRTC.on('control', this.onControl)
       $peace.WebRTC.on('hangup', this.onHangup)
       $peace.WebRTC.on('callerAckSync', this.onCallerAckSync)
+      $peace.WebRTC.on('error', this.onError)
     },
 
     /**
@@ -158,6 +204,9 @@ export default {
       if (this.beCallState !== '') {
         return peace.util.alert('当前正在通话中')
       }
+
+      // 当前为主叫
+      this.isCalling = true
 
       this.custom = { type, session }
 
@@ -231,6 +280,7 @@ export default {
      * 拒绝呼叫请求
      */
     reject() {
+      this.hangUpBy = 'Doctor'
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
 
       if (this.beCalledInfo) {
@@ -252,7 +302,13 @@ export default {
      * 中断视频
      */
     hangUp() {
-      this.beCallState = peace.type.VIDEO.BE_CALL_STATE.挂断
+      if (this.beCalledInfo === undefined) {
+        this.hangUpBy = 'Doctor'
+        this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+      } else {
+        this.hangUpBy = 'Doctor'
+        this.beCallState = peace.type.VIDEO.BE_CALL_STATE.挂断
+      }
     },
 
     /**
@@ -260,6 +316,9 @@ export default {
      */
     onBeCalling(beCallingObject) {
       console.warn('【 WebRTC 】【 onBeCalling 】', new Date(), beCallingObject)
+
+      // 当前为被叫
+      this.isCalling = false
 
       this.custom = JSON.parse(beCallingObject.pushConfig.custom)
       const channelId = beCallingObject.channelId
@@ -328,9 +387,8 @@ export default {
     onCallRejected(callRejectedObject) {
       console.warn('【 WebRTC 】【 onCallRejected 】', new Date(), callRejectedObject)
 
+      this.hangUpBy = 'Patient'
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
-
-      $peace.util.warning('对方已拒绝')
     },
 
     /**
@@ -445,6 +503,15 @@ export default {
       if (this.beCalledInfo && callerAckObject.channelId === this.beCalledInfo.channelId) {
         $peace.util.warning('当前通话已经其它终端处理')
       }
+    },
+
+    /**
+     * sdk内部出现错误或者服务器反馈一些通知（无法继续进行通话）时，会触发该回调通知事件，这时开发者可以根据需要调用方法获取信息
+     */
+    onError(errorObject) {
+      console.warn('【 WebRTC 】【 onCallerAckSync 】', new Date(), errorObject)
+
+      this.hangupVideo()
     },
 
     /**
@@ -566,9 +633,7 @@ export default {
     setHangupTimeout() {
       this.hangupTimeout = setTimeout(() => {
         if (!$peace.WebRTC.callAccepted) {
-          $peace.util.warning('呼叫超时')
-
-          this.hangupVideo()
+          this.beCallState = peace.type.VIDEO.BE_CALL_STATE.超时
         }
       }, 1000 * 30)
     },
@@ -578,6 +643,8 @@ export default {
     },
 
     clearState() {
+      this.hangUpBy = undefined
+      this.isCalling = undefined
       this.isMute = false
 
       this.beCalling = false
@@ -592,6 +659,7 @@ export default {
       this.closeMessageNofity()
     },
 
+    /** 视频正常开始 */
     processJoin() {
       // 问诊开始
       if (this.custom.type === 'inquiry') {
@@ -621,6 +689,7 @@ export default {
       }
     },
 
+    /** 视频正常结束 */
     processExit() {
       // 问诊结束
       if (this.custom.type === 'inquiry') {
@@ -645,6 +714,11 @@ export default {
 
         return peace.service.video.processConsult(params)
       }
+    },
+
+    /** 视频未接通 */
+    processHangup(params) {
+      return peace.service.video.process(params)
     }
   }
 }

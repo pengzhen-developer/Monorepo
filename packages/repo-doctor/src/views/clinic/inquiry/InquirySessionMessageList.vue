@@ -59,6 +59,9 @@
               <span>|</span>
               <span v-text="message.content.data.patientInfo.familyAge"></span>
               <span>岁</span>
+              <img v-if="message.content.data.inquiryOrderInfo.isAgain === '0'"
+                   :src="require('@src/assets/images/ic_zx.png')"
+                   class="fz" />
               <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
                    :src="require('@src/assets/images/ic_fz.png')"
                    class="fz" />
@@ -148,7 +151,8 @@
         </template>
 
         <!-- 视频消息 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话 || 
+                        getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频记录">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -159,8 +163,12 @@
 
           <!-- 消息内容 -->
           <div class="message-body">
+            <img v-if="getMessageFlow(message) === 'in'"
+                 src="~@/assets/images/inquiry/ic_video_right@2x.png"
+                 style="width: 18px; margin-right: 10px;" />
             <span>{{ getMessageText(message) }}</span>
-            <img src="~@/assets/images/inquiry/ic_video_left@2x.png"
+            <img v-if="getMessageFlow(message) === 'out'"
+                 src="~@/assets/images/inquiry/ic_video_left@2x.png"
                  style="width: 18px; margin-left: 10px;" />
           </div>
         </template>
