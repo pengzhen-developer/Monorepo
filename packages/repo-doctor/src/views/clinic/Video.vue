@@ -502,6 +502,9 @@ export default {
 
       if (this.beCalledInfo && callerAckObject.channelId === this.beCalledInfo.channelId) {
         $peace.util.warning('当前通话已经其它终端处理')
+
+        this.closeMessageNofity()
+        this.hangupVideo()
       }
     },
 
