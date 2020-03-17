@@ -115,8 +115,7 @@
       <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
            :data-type="internalData.prescriptionStatus.key"
            @click="goMenuPage(internalData)"
-           class="btn btn-blue block"
-           style="margin-bottom: 55px">{{ internalData.prescriptionStatus.msg }}</div>
+           class="btn btn-blue block">{{ internalData.prescriptionStatus.msg }}</div>
     </div>
   </div>
 </template>

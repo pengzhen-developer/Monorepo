@@ -66,6 +66,9 @@
         </div>
       </section>
       <section class="functions">
+        <div @click="goMenuPage" style="line-height:30px;text-align:center;">智能导诊</div>
+      </section>
+      <section class="functions">
 
         <!-- <div class="item"
              v-for="(item, index) in hospitalInfo.guideH5"
@@ -209,20 +212,25 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalId);
-      const channelId=peace.cache.get(peace.type.SYSTEM.CHANNELID)
+      const channelId = peace.cache.get(peace.type.SYSTEM.CHANNELID)
       peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
         this.hospitalInfo = res.data
-        let obj={
-          url:'',
+        let obj = {
+          url: '',
           title: this.hospitalInfo.nethospitalInfo.name,
           desc: this.hospitalInfo.nethospitalInfo.brief,
           imgUrl: this.hospitalInfo.nethospitalInfo.icon
         }
-        console.log('channelId',peace.cache.get(peace.type.SYSTEM.CHANNELID))
-        if(channelId){
-          obj.url=peace.config.api.base+'h5/redirect?redirect=home&netHospitalId='+nethospitalId+'&channelId='+channelId
+        console.log('channelId', peace.cache.get(peace.type.SYSTEM.CHANNELID))
+        if (channelId) {
+          obj.url =
+            peace.config.api.base +
+            'h5/redirect?redirect=home&netHospitalId=' +
+            nethospitalId +
+            '&channelId=' +
+            channelId
         }
-        console.log('url',obj.url)
+        console.log('url', obj.url)
         peace.wx.share.share(obj)
       })
     },
@@ -290,7 +298,10 @@ export default {
 
       this.$router.push(`/hospital/HospitalNoticesList/${json}`)
     },
-
+    goMenuPage() {
+      let json = peace.util.encode({ date: new Date() })
+      this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
+    },
     goMenuList(item) {
       /* eslint-disable */
 
