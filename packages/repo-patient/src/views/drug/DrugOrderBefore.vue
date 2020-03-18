@@ -150,7 +150,7 @@ export default {
       order: null
     }
   },
-  mounted() {
+  activated() {
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params

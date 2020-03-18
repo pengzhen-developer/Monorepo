@@ -3,10 +3,11 @@
        v-if="order != null">
     <div class="count-down"
          v-if="canShowCountDown">
-      <span>订单</span>
+      <span>订单 </span>
       <van-count-down millisecond
+                      @finish="getDrugOrderDetail()"
                       :time="time"
-                      format="HH:mm:ss" /> 后将自动关闭
+                      format="mm:ss" /> 后将自动关闭
     </div>
     <div class="top"
          v-if="order.OrderStatusText">
@@ -103,25 +104,23 @@
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">支付方式:</div>
               <div class="dd">
-                {{ paymentTypeText }}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">支付时间:</div>
-              <div class="dd">
-                {{ order.payTime }}</div>
+                ￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}
+              </div>
             </div>
           </div>
           <div class="module str"
                v-if="canShowPayMoney">
             <div class="dl-packet">
-              <div class="dt">实付金额:</div>
+              <div class="dt">
+                {{canShowPayway?'应付金额:':'实付金额:'}}
+              </div>
               <div class="dd">
-                <div class="strong">￥{{order.payMoney.toString().toFixed(2)}}</div>
+                <div class="strong">
+                 ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
+                  <span class="refunded"
+                        v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == 5">(已退款)</span>
+                </div>
               </div>
             </div>
           </div>
@@ -143,13 +142,32 @@
              @click="canselOrder"
              v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单">取消订单</div>
       </div>
-
-      <div class="dl-packet"
-           :key="index"
-           v-for="(item,index) in order.ords">
-        <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：</div>
-        <div class="dd">{{item.CreateTime}}</div>
+      <div class="dl-packet">
+        <div class="dt">创建时间：
+        </div>
+        <div class="dd">{{order.ords[0].CreateTime}}</div>
       </div>
+      <template v-if="order.payStatus>2">
+              <div class="dl-packet">
+                <div class="dt">支付方式:</div>
+                <div class="dd">
+                  {{ paymentTypeText }}</div>
+              </div>
+              <div class="dl-packet">
+                <div class="dt">支付时间:</div>
+                <div class="dd">
+                  {{ order.payTime }}</div>
+              </div>
+            </template>
+      <template v-for="(item,index) in order.ords">
+        <div class="dl-packet"
+           :key="index" 
+           v-if="index>0">
+          <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：
+          </div>
+          <div class="dd">{{item.CreateTime}}</div>
+        </div>
+      </template>
 
       <div v-if="order.OrderStatus !== 0"
            class="bottom">
@@ -176,10 +194,10 @@
           </span>
         </div>
 
-        <div class="btn block btn-default"
+        <!-- <div class="btn block btn-default"
              v-if="order.OrderStatus === ENUM.ORDER_STATUS.已取消">
           {{ order.OrderStatusText }}
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -315,6 +333,15 @@ export default {
   },
 
   computed: {
+    //是否显示应付金额
+    canShowPayway() {
+      return (
+        (this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家) ||
+        (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
+          this.order.OrderStatus === ENUM.ORDER_STATUS.已取消&&this.order.payStatus==2)
+      )
+    },
+
     // 是否显示取消订单
     canShowCancel() {
       return (
@@ -399,7 +426,7 @@ export default {
     }
   },
 
-  created() {
+  activated() {
     this.getDrugOrderDetail()
   },
   mounted() {
@@ -510,6 +537,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.refunded {
+  font-size: 13px;
+  color: #999;
+  font-weight: 400；;
+}
 .wrapper {
   height: 100%;
 
@@ -852,7 +884,7 @@ export default {
     width: 75px;
     height: 30px;
     background: rgba(0, 198, 174, 1);
-    border-radius: 2px;
+    border-radius: 15px;
     font-size: 13px;
     color: rgba(255, 255, 255, 1);
     line-height: 30px;

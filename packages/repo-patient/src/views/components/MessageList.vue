@@ -84,7 +84,10 @@
                     {{ message.content.data.patientInfo.familyAge }}岁
                   </span>
                   <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
-                       src="../../assets/images/ic_fz.png"
+                       src="~@/assets/images/ic_fz.png"
+                       class="fz" />
+                  <img v-else
+                       src="~@/assets/images/ic_cz.png"
                        class="fz" />
                 </div>
                 <div class="message-content">

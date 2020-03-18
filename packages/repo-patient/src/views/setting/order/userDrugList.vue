@@ -69,37 +69,45 @@
               </div>
             </div>
             <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-            <div class="panel-bottom"
-                 v-if="item.OrderStatus != 5">
-              <div class="time"></div>
-              <div class="label blue"
-                   @click="onClickSeeQRCode(item)"
-                   v-if="checkQRCodeBtn(item)">
-                取药码
+            <template v-if="!(item.paymentType === 'yibaopay' && item.OrderStatus == '0')">
+              <div class="panel-bottom" v-if="item.OrderStatus != 5">
+                <!-- <div class="time"></div> -->
+                <div class="count-down" v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
+                  <span>订单关闭倒计时：</span>
+                  <van-count-down millisecond
+                                  @finish="getDrugItems()"
+                                  :time="item.time"
+                                  format="mm:ss" />
+                </div>
+                <div class="label blue"
+                    @click="onClickSeeQRCode(item)"
+                    v-if="checkQRCodeBtn(item)">
+                  取药码
+                </div>
+                <!-- <div class="label gary"
+                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
+                    @click="canselOrder(item)">取消订单
+                </div> -->
+                <div class="label blue-full"
+                    v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
+                    @click="payOrder(item)">
+                  继续支付
+                </div>
+                <div class="label"
+                    v-if="ifShowLogistics(item)"
+                    @click="goDrugLogiPage(item)">查看物流
+                </div>
+                <div class="label blue"
+                    v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
+                    @click="submitOrder(item)">确认收货
+                </div>
+                <div class="label blue"
+                    v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
+                    @click="submitOrder(item)">确认取药
+                </div>
               </div>
-              <!-- <div class="label gary"
-                   v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
-                   @click="canselOrder(item)">取消订单
-              </div> -->
-              <div class="label blue-full"
-                   v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
-                   @click="payOrder(item)">
-                继续支付
-              </div>
-              <div class="label"
-                   v-if="ifShowLogistics(item)"
-                   @click="goDrugLogiPage(item)">查看物流
-              </div>
-              <div class="label blue"
-                   v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
-                   @click="submitOrder(item)">确认收货
-              </div>
-              <div class="label blue"
-                   v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
-                   @click="submitOrder(item)">确认取药
-              </div>
-
-            </div>
+            </template>
+            
           </div>
           <div class="bottom">客服电话：4009020365</div>
         </div>
@@ -235,6 +243,11 @@ export default {
       }
 
       peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
+        res.data.map(item => {
+          if (item.expireTime > item.currentTime) {
+            item.time = (item.expireTime - item.currentTime) * 1000
+          }
+        })
         this.drugItems = res.data
         this.loaded = true
       })
@@ -306,6 +319,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .count-down {
+    display: flex;
+    flex:1;
+    color:#333;
+    .van-count-down {
+      color: #333;
+    }
+    span {
+      font-size: 13px;
+    }
+  }
 .overlay-wrapper {
   height: 100%;
 
@@ -500,6 +524,7 @@ export default {
   display: -webkit-flex;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 .panel .panel-bottom .time {
   flex: 1 0 auto;
