@@ -177,7 +177,7 @@ export default {
       const text = this.getInquiryType(session)
 
       if (text === '图文复诊' || text === '视频复诊') {
-        return 'warning'
+        return 'primary'
       } else {
         return 'primary'
       }
