@@ -182,7 +182,7 @@
         <template v-if="internalData.orderInfo.paymentType">
           <div class="dl-packet">
             <div class="dt">支付方式</div>
-            <div class="dd">{{internalData.orderInfo.paymentType}}</div>
+            <div class="dd">{{paymentTypeText}}</div>
           </div>
           <div class="dl-packet">
             <div class="dt">支付时间</div>
@@ -269,7 +269,7 @@
             <van-count-down millisecond
                             @finish="finish(internalData)"
                             :time="internalData.inquiryInfo.time"
-                            format="HH:mm:ss" />
+                            format="mm:ss" />
           </div>
           <div class="right">应付金额 :<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
@@ -319,7 +319,17 @@ Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
-
+const ENUM={
+    // 支付类型
+  // wxpay（微信）
+  // alipay（支付宝）
+  // yibaopay（医保支付）
+  PAYMENT_TYPE: {
+    微信: 'wxpay',
+    支付宝: 'alipay',
+    医保支付: 'yibaopay'
+  },
+}
 export default {
   components: {
     TheCase,
@@ -372,7 +382,11 @@ export default {
       immediate: true
     }
   },
-
+  computed:{
+    paymentTypeText() {
+      return Object.keys(ENUM.PAYMENT_TYPE).find(key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
+    },
+  },
   activated() {
     this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
