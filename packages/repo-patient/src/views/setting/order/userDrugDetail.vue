@@ -63,7 +63,7 @@
           </div>
           <div class="head-tit">{{ order.DrugStoreName }}</div>
           <div class="head-more">
-            <div class="label blue"
+            <div class="label blue " 
                  @click="goPrescripDetailPage">查看处方</div>
           </div>
         </div>
@@ -117,7 +117,7 @@
               </div>
               <div class="dd">
                 <div class="strong">
-                 ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
+                  ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
                   <span class="refunded"
                         v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == 5">(已退款)</span>
                 </div>
@@ -132,41 +132,44 @@
     <div class="box"
          v-bind:style="{ 'margin-bottom': order.OrderStatus === 0 ? '80px' : 0 }"
          v-if="order.OrderId">
-      <div class="dl-packet"
-           style="padding-top:3px;">
-        <div class="dt">订单编号：</div>
-        <div class="dd">{{order.OrderId}}</div>
-
-        <!-- 待下单状态的取消订单在底部 -->
-        <div class="cancel-btn"
-             @click="canselOrder"
-             v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单">取消订单</div>
-      </div>
-      <div class="dl-packet">
-        <div class="dt">创建时间：
-        </div>
-        <div class="dd">{{order.ords[0].CreateTime}}</div>
-      </div>
-      <template v-if="order.payStatus>2">
-              <div class="dl-packet">
-                <div class="dt">支付方式:</div>
-                <div class="dd">
-                  {{ paymentTypeText }}</div>
-              </div>
-              <div class="dl-packet">
-                <div class="dt">支付时间:</div>
-                <div class="dd">
-                  {{ order.payTime }}</div>
-              </div>
-            </template>
-      <template v-for="(item,index) in order.ords">
+      <!-- 待支付不显示 - 时间轴-->
+      <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
         <div class="dl-packet"
-           :key="index" 
-           v-if="index>0">
-          <div class="dt">{{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：
-          </div>
-          <div class="dd">{{item.CreateTime}}</div>
+             style="padding-top:3px;">
+          <div class="dt">订单编号：</div>
+          <div class="dd">{{order.OrderId}}</div>
+
+          <!-- 待下单状态的取消订单在底部 -->
+          <div class="cancel-btn"
+               @click="canselOrder"
+               v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单">取消订单</div>
         </div>
+        <div class="dl-packet">
+          <div class="dt">创建时间：</div>
+          <div class="dd">{{order.ords[0].CreateTime}}</div>
+        </div>
+        <template v-if="order.payStatus>2">
+          <div class="dl-packet">
+            <div class="dt">支付方式:</div>
+            <div class="dd">
+              {{ paymentTypeText }}</div>
+          </div>
+          <div class="dl-packet">
+            <div class="dt">支付时间:</div>
+            <div class="dd">
+              {{ order.payTime }}</div>
+          </div>
+        </template>
+        <template v-for="(item,index) in order.ords">
+          <div class="dl-packet"
+               :key="index"
+               v-if="index>0">
+            <div class="dt">
+              {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：
+            </div>
+            <div class="dd">{{item.CreateTime}}</div>
+          </div>
+        </template>
       </template>
 
       <div v-if="order.OrderStatus !== 0"
@@ -209,18 +212,18 @@
           待药店联系您进行医保支付
         </div>
 
-        <div @click="payOrder(order)"
-             class="pay"
-             v-if="canShowPay"
-             style="background: #00C6AE; ">
-          继续支付
-        </div>
-
         <div @click="canselOrder"
              class="pay cancel"
              v-if="canShowCancel"
              style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
           取消订单
+        </div>
+
+        <div @click="payOrder(order)"
+             class="pay"
+             v-if="canShowPay"
+             style="background: #00C6AE; ">
+          立即支付
         </div>
       </div>
     </div>
@@ -338,7 +341,8 @@ export default {
       return (
         (this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家) ||
         (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已取消&&this.order.payStatus==2)
+          this.order.OrderStatus === ENUM.ORDER_STATUS.已取消 &&
+          this.order.payStatus == 2)
       )
     },
 
@@ -373,7 +377,11 @@ export default {
 
     // 是否显示应付金额
     canShowPayMoney() {
-      return this.order && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
+      return (
+        this.order &&
+        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
+      )
     },
 
     // 是否显示确认取药
@@ -537,6 +545,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.head-more{
+  .label{
+    border-radius:4px;
+  }
+}
 .refunded {
   font-size: 13px;
   color: #999;
