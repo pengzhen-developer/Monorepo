@@ -373,7 +373,7 @@ export default {
 
     // 是否显示应付金额
     canShowPayMoney() {
-      return this.order && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
+      return this.order && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
     },
 
     // 是否显示确认取药
