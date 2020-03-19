@@ -150,15 +150,20 @@ export default {
       order: null
     }
   },
+  
   activated() {
-    const params = peace.util.decode(this.$route.params.json)
-    this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
-    this.page.json = params
     this.getPhaOrder()
     //从地址页面返回
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
     }
+    this.getDefaultAddress()
+  },
+  created(){
+    const params = peace.util.decode(this.$route.params.json)
+    this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
+    this.page.json = params
+
     // if (this.$route.query.code) {
     //   let code = this.$route.query.code
     //   let orderNo = this.$route.query.orderId
@@ -168,7 +173,6 @@ export default {
     //     peace.wx.payInvoke(data, this.payCallback)
     //   })
     // }
-    this.getDefaultAddress()
   },
   methods: {
     goDrugPhaHomePage() {
