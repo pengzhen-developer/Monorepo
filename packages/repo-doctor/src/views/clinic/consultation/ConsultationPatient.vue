@@ -286,7 +286,7 @@
 
     <peace-dialog :visible.sync="inquiry.visible"
                   v-if="inquiry.visible"
-                  title="图文问诊记录">
+                  title="问诊记录">
       <InquirySessionMessageList :data="inquiry.data"
                                  type="consult"></InquirySessionMessageList>
     </peace-dialog>
