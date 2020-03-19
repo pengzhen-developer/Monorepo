@@ -54,7 +54,7 @@
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
-              <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
+              <div class="small-type">{{item.inquiryType}}</div>
               <!-- <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
                 {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div> -->
             </div>
@@ -260,13 +260,12 @@ export default {
         res.data.list.map(item => {
           // item.time =  15 * 60 * 1000;
           let inquiryInfo = item.inquiryInfo
-          let expireTime =
-            inquiryInfo.inquiryStatus == 1
-              ? inquiryInfo.orderExpireTime
-              : inquiryInfo.orderReceptTime
+          let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
           if (expireTime > inquiryInfo.currentTime) {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }
+          item.inquiryType =
+            (inquiryInfo.inquiryType == '图文咨询' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '咨询')
         })
         this.consultList = this.consultList.concat(res.data.list)
         this.loading = false
