@@ -370,7 +370,7 @@ export default {
 
       // 设定呼叫状态
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.接听
-      this.beCallingInfo = callAcceptedObject
+      this.beCalledInfo = callAcceptedObject
 
       // 养老端
       // 接听后，发起接口请求
