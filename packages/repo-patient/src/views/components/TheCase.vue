@@ -28,7 +28,7 @@
     <div class>
       <div class="form-dl">
         <div class="form-dt">就诊时间</div>
-        <div class="form-dd">{{internalData.createdTime || '无'}}</div>
+        <div class="form-dd">{{internalData.visitDate || '无'}}</div>
       </div>
       <div class="form-dl">
         <div class="form-dt">主诉</div>
