@@ -86,6 +86,7 @@
       <el-row style="text-align: center; margin: 20px 0 0 0;">
         <el-form-item label=" ">
           <el-button @click="sendConsultaltion"
+                     :disabled="isSending"
                      type="primary">提交</el-button>
           <el-button @click="close">取消</el-button>
         </el-form-item>
@@ -153,6 +154,8 @@ import peace from '@src/library'
 export default {
   data() {
     return {
+      isSending: false,
+
       view: {
         visible: false,
 
@@ -262,32 +265,38 @@ export default {
               diagnose: this.view.model.diagnose
             }
 
-            peace.service.consult.doApply(params).then(() => {
-              const redirect = () => {
-                this.$msgbox.close()
-                this.$router.push('/record/consultation')
-              }
+            this.isSending = true
+            peace.service.consult
+              .doApply(params)
+              .then(() => {
+                const redirect = () => {
+                  this.$msgbox.close()
+                  this.$router.push('/record/consultation')
+                }
 
-              const msg = (
-                <span style="text-align: left; font-size: 14px;">
-                  你的会诊已提交，可前往 【
-                  <el-button type="text" onclick={redirect}>
-                    会诊记录/我发起的
-                  </el-button>
-                  】 查看会诊进度
-                </span>
-              )
+                const msg = (
+                  <span style="text-align: left; font-size: 14px;">
+                    你的会诊已提交，可前往 【
+                    <el-button type="text" onclick={redirect}>
+                      会诊记录/我发起的
+                    </el-button>
+                    】 查看会诊进度
+                  </span>
+                )
 
-              this.$msgbox({
-                title: '提交成功',
-                message: msg,
-                showConfirmButton: false,
-                type: 'success',
-                center: true
+                this.$msgbox({
+                  title: '提交成功',
+                  message: msg,
+                  showConfirmButton: false,
+                  type: 'success',
+                  center: true
+                })
+
+                $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
               })
-
-              $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
-            })
+              .finally(() => {
+                this.isSending = false
+              })
           }
         }
       })
