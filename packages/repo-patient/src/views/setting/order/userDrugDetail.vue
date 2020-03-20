@@ -139,10 +139,10 @@
           <div class="dt">订单编号：</div>
           <div class="dd">{{order.OrderId}}</div>
 
-          <!-- 待下单状态的取消订单在底部 -->
+          <!-- 待下单状态的取消订单在底部 已接单-->
           <div class="cancel-btn"
                @click="canselOrder"
-               v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单">取消订单</div>
+               v-if="canShowCancel && order.OrderStatus !== ENUM.ORDER_STATUS.待下单&&(order.OrderStatus !== ENUM.ORDER_STATUS.已接单&&order.ShippingMethod === ENUM.SHIPPING_METHOD.到店取药)">取消订单</div>
         </div>
         <div class="dl-packet">
           <div class="dt">创建时间：</div>
@@ -351,7 +351,8 @@ export default {
         this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
           this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)
+          (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
+          this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
       )
       // 
     },
