@@ -325,8 +325,8 @@ const ENUM={
   // alipay（支付宝）
   // yibaopay（医保支付）
   PAYMENT_TYPE: {
-    微信: 'wxpay',
-    支付宝: 'alipay',
+    微信支付: 'wxpay',
+    支付宝支付: 'alipay',
     医保支付: 'yibaopay'
   },
 }
