@@ -12,6 +12,11 @@
           {{ internalData.inquiryInfo.statusTxt }}
           <!-- <span class="money"
                 v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
+          <div class='typeTag fz'
+               v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain.toString()==='1'">
+            复诊</div>
+          <div class='typeTag zx'
+               v-else>咨询</div>
         </div>
         <div class="brief"
              v-if="internalData.inquiryInfo.inquiryStatus!=4">
@@ -54,6 +59,12 @@
                    v-if="internalData.doctorInfo.isPrivateDoctor">
                 私人医生
               </div>
+              <van-image width=13
+                         v-if="internalData.orderInfo.inquiryType=='image'"
+                         :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
+              <van-image width=13
+                         v-if="internalData.orderInfo.inquiryType=='video'"
+                         :src="require('@src/assets/images/ic_video_open.png')"></van-image>
             </div>
           </div>
           <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
@@ -142,7 +153,8 @@
             </div>
             <div class="form-dl"
                  v-if="internalData.supplementaryInfo.allergicHistory">
-              <div class="form-dt" style="height:fit-content;"><span>过敏史</span> :</div>
+              <div class="form-dt"
+                   style="height:fit-content;"><span>过敏史</span> :</div>
               <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
@@ -167,6 +179,16 @@
           <div class="dt">订单时间</div>
           <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
         </div>
+        <template v-if="internalData.orderInfo.paymentType">
+          <div class="dl-packet">
+            <div class="dt">支付方式</div>
+            <div class="dd">{{paymentTypeText}}</div>
+          </div>
+          <div class="dl-packet">
+            <div class="dt">支付时间</div>
+            <div class="dd">{{ internalData.orderInfo.payTime }}</div>
+          </div>
+        </template>
       </div>
 
       <!-- <div class="module pdtb"
@@ -247,7 +269,7 @@
             <van-count-down millisecond
                             @finish="finish(internalData)"
                             :time="internalData.inquiryInfo.time"
-                            format="HH:mm:ss" />
+                            format="mm:ss" />
           </div>
           <div class="right">应付金额 :<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
@@ -297,7 +319,17 @@ Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
-
+const ENUM={
+    // 支付类型
+  // wxpay（微信）
+  // alipay（支付宝）
+  // yibaopay（医保支付）
+  PAYMENT_TYPE: {
+    微信支付: 'wxpay',
+    支付宝支付: 'alipay',
+    医保支付: 'yibaopay'
+  },
+}
 export default {
   components: {
     TheCase,
@@ -350,7 +382,11 @@ export default {
       immediate: true
     }
   },
-
+  computed:{
+    paymentTypeText() {
+      return Object.keys(ENUM.PAYMENT_TYPE).find(key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
+    },
+  },
   activated() {
     this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
@@ -735,6 +771,23 @@ export default {
       }
     }
   }
+  .typeTag {
+    width: 36px;
+    height: 21px;
+    border-radius: 10px 10px 10px 0;
+    line-height: 21px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 5px;
+  }
+  .typeTag.zx {
+    background-color: #00c6ae;
+  }
+  .typeTag.fz {
+    background-color: #fa8c16;
+  }
   .nmg {
     margin-top: 0;
     padding-bottom: 10px;
@@ -742,8 +795,10 @@ export default {
   .module .strong {
     font-weight: 600;
     font-size: 18px;
-    line-height: 18px;
+    line-height: 21px;
     padding: 10px 15px;
+    display: flex;
+    align-items: center;
   }
   .module .brief {
     font-size: 13px;

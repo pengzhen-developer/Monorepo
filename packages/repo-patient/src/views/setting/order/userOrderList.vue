@@ -22,7 +22,7 @@
                 <div class="card-body">
                   <div class="card-name card-flex">{{item.doctorInfo.name}}
                     {{item.doctorInfo.deptName}}
-                    <div class="card-gary">{{item.orderInfo.inquiryType=='image'?'[图文咨询]':'[视频咨询]'}}
+                    <div class="card-gary">[{{item.inquiryType}}]
                     </div>
                   </div>
                 </div>
@@ -42,6 +42,7 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
+                       :class="item.orderInfo.orderMoney==0?'price-free':'price'"
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
@@ -61,6 +62,12 @@
               <div class="count-down">
                 <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
                 <van-count-down millisecond
+                                v-if="item.inquiryInfo.inquiryStatus ==1"
+                                @finish="finishHander(item,index)"
+                                :time="item.time"
+                                format="mm:ss" />
+                <van-count-down millisecond
+                                v-else
                                 @finish="finishHander(item,index)"
                                 :time="item.time"
                                 format="HH:mm:ss" />
@@ -156,6 +163,27 @@ import { Dialog } from 'vant'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
+const ENUM={
+  // 咨询类型 inquiryType
+  // 图文 0 图文咨询 1图文复诊
+  // 视频 0 视频咨询 1视频复诊
+  INQUIRY_TYPE: [
+    {
+      type:'image',
+      value:[
+        "图文咨询",
+        "图文复诊"
+      ]
+    },
+    {
+      type:'video',
+      value:[
+        "视频咨询",
+        "视频复诊"
+  ]
+    }
+  ],
+}
 export default {
   props: {},
   data() {
@@ -214,6 +242,9 @@ export default {
     // this.getData()
   },
   methods: {
+    getInquiryType(type,isAgin){
+      return ENUM.INQUIRY_TYPE.find(item => item.type === type).value.find((item,index)=>index==isAgin)
+    },
     finishHander(item, index) {
       item.close = false
       if (item.orderType == 'inquiry') {
@@ -276,21 +307,22 @@ export default {
           res.data.list.map(item => {
             //   item.time =  15 * 60 * 1000;
             item.close = true
+            
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
                 // item.time = (item.orderExpireTime - item.currentTime - 14 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
+              
               let inquiryInfo = item.inquiryInfo
               let expireTime =
-                inquiryInfo.inquiryStatus == 1
-                  ? inquiryInfo.orderExpireTime
-                  : inquiryInfo.orderReceptTime
+                inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
                 // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
               }
+              item.inquiryType = this.getInquiryType(item.orderInfo.inquiryType,inquiryInfo.isAgain)
             }
           })
         }
@@ -406,6 +438,7 @@ export default {
   }
   .count-down {
     display: flex;
+    margin-right: 5%;
     .van-count-down {
       color: #999;
     }
@@ -466,6 +499,12 @@ export default {
           color: #333;
           display: flex;
           align-items: center;
+          &.price-free {
+            color: #00c6ae;
+          }
+          &.price {
+            color: #f2223b;
+          }
           span {
             color: #999;
             font-size: 13px;

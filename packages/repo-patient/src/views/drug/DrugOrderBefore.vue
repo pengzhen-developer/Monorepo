@@ -44,7 +44,6 @@
               <div class="icon icon-add"></div>
               添加收货地址
             </div>
-
           </div>
         </div>
       </div>
@@ -108,17 +107,17 @@
             </div>
           </div>
           <div class="bottom">
-
             <div style="display: flex; justify-content: center; align-items: space-between;">
+              <van-button v-on:click="submitOrder('wxpay')"
+                          v-bind:disabled="!page.canSubmit || hasSubmitOrder"
+                          style="margin: 0 10px 0 0"
+                          size="large"
+                          type="primary">在线支付</van-button>
               <van-button v-on:click="submitOrder('yibaopay')"
-                          v-bind:disabled="hasSubmitOrder"
+                          v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                           size="large"
                           type="primary">医保支付</van-button>
-
-              <!-- <div @click="submitOrder('wxpay')"
-                   :class="page.canSubmit ? 'btn block btn-blue' : 'btn block btn-default'">在线支付</div> -->
             </div>
-
             <div class="tips-bottom">
               {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
             </div>
@@ -151,15 +150,20 @@ export default {
       order: null
     }
   },
-  mounted() {
-    const params = peace.util.decode(this.$route.params.json)
-    this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
-    this.page.json = params
+  
+  activated() {
     this.getPhaOrder()
     //从地址页面返回
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
     }
+    this.getDefaultAddress()
+  },
+  created(){
+    const params = peace.util.decode(this.$route.params.json)
+    this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
+    this.page.json = params
+
     // if (this.$route.query.code) {
     //   let code = this.$route.query.code
     //   let orderNo = this.$route.query.orderId
@@ -169,7 +173,6 @@ export default {
     //     peace.wx.payInvoke(data, this.payCallback)
     //   })
     // }
-    this.getDefaultAddress()
   },
   methods: {
     goDrugPhaHomePage() {
