@@ -79,7 +79,7 @@
 
     <peace-dialog :visible.sync="dialog.visible"
                   append-to-body
-                  title="图文问诊记录">
+                  title="问诊记录">
       <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
     </peace-dialog>
   </div>
@@ -109,10 +109,7 @@ export default {
           pickerOptionsStart: {
             disabledDate: time => {
               if (this.view.model.time_end) {
-                return (
-                  time.getTime() > this.view.model.time_end.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() > this.view.model.time_end.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -122,10 +119,7 @@ export default {
           pickerOptionsEnd: {
             disabledDate: time => {
               if (this.view.model.time_start) {
-                return (
-                  time.getTime() < this.view.model.time_start.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() < this.view.model.time_start.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
