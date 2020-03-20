@@ -283,8 +283,8 @@ const ENUM = {
   // alipay（支付宝）
   // yibaopay（医保支付）
   PAYMENT_TYPE: {
-    微信: 'wxpay',
-    支付宝: 'alipay',
+    微信支付: 'wxpay',
+    支付宝支付: 'alipay',
     医保支付: 'yibaopay'
   },
 
@@ -336,13 +336,11 @@ export default {
   },
 
   computed: {
-    //是否显示应付金额
+    //是否显示应付金额  微信支付 ： 待支付为应付 其他的为实付
+    //payStatus 1：待支付 2：已取消 3：已付款  4：退款中  5：已退款
     canShowPayway() {
       return (
-        (this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家) ||
-        (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已取消 &&
-          this.order.payStatus == 2)
+        (this.order &&  this.order.payStatus < 3 )
       )
     },
 
@@ -355,6 +353,7 @@ export default {
           this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)
       )
+      // 
     },
 
     // 是否显示继续支付
@@ -389,7 +388,9 @@ export default {
       return (
         this.order &&
         this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-        this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货
+        (this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货 ||
+        this.order.OrderStatus == ENUM.ORDER_STATUS.已接单)
+        
       )
     },
 
