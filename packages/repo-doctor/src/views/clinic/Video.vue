@@ -122,7 +122,7 @@ export default {
 
         if (this.hangUpBy === 'Doctor') {
           // 未接通前 => 医生主叫 && 医生拒绝 => 【医生端调用】
-          if (this.isCalling === true) {
+          if (this.isCalling === true && this.custom.type === 'inquiry') {
             const params = {
               inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
               action: 'doctorHangup',
@@ -134,7 +134,7 @@ export default {
           // 未接通前 => 医生主叫 && 患者拒绝 => 【患者端调用】
           // No Code
           // 未接通前 => 患者主叫 && 医生拒绝 => 【医生端调用】
-          else if (this.isCalling === false) {
+          else if (this.isCalling === false && this.custom.type === 'inquiry') {
             const params = {
               inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
               action: 'doctorHangup',
@@ -163,7 +163,7 @@ export default {
         this.video.visible = false
 
         // 未接通前 => 医生主叫 && 系统超时 => 【医生端调用】
-        if (this.isCalling === true) {
+        if (this.isCalling === true && this.custom.type === 'inquiry') {
           const params = {
             inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
             action: 'systemHangup',
