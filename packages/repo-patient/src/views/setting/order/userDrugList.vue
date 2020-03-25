@@ -70,9 +70,11 @@
             </div>
             <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
             <template v-if="!(item.paymentType === 'yibaopay' && item.OrderStatus == '0')">
-              <div class="panel-bottom" v-if="item.OrderStatus != 5">
+              <div class="panel-bottom"
+                   v-if="item.OrderStatus != 5">
                 <!-- <div class="time"></div> -->
-                <div class="count-down" v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
+                <div class="count-down"
+                     v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
                   <span>订单关闭倒计时：</span>
                   <van-count-down millisecond
                                   @finish="getDrugItems()"
@@ -80,8 +82,8 @@
                                   format="mm:ss" />
                 </div>
                 <div class="label blue"
-                    @click="onClickSeeQRCode(item)"
-                    v-if="checkQRCodeBtn(item)">
+                     @click="onClickSeeQRCode(item)"
+                     v-if="checkQRCodeBtn(item)">
                   取药码
                 </div>
                 <!-- <div class="label gary"
@@ -89,25 +91,25 @@
                     @click="canselOrder(item)">取消订单
                 </div> -->
                 <div class="label blue-full"
-                    v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
-                    @click="payOrder(item)">
+                     v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
+                     @click="payOrder(item)">
                   继续支付
                 </div>
                 <div class="label"
-                    v-if="ifShowLogistics(item)"
-                    @click="goDrugLogiPage(item)">查看物流
+                     v-if="ifShowLogistics(item)"
+                     @click="goDrugLogiPage(item)">查看物流
                 </div>
                 <div class="label blue"
-                    v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
-                    @click="submitOrder(item)">确认收货
+                     v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
+                     @click="submitOrder(item)">确认收货
                 </div>
                 <div class="label blue"
-                    v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
-                    @click="submitOrder(item)">确认取药
+                     v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
+                     @click="submitOrder(item)">确认取药
                 </div>
               </div>
             </template>
-            
+
           </div>
           <div class="bottom">客服电话：4009020365</div>
         </div>
@@ -292,11 +294,11 @@ export default {
     },
 
     goDrugLogiPage(item) {
-      const json={}
-      json.OrderId=item.OrderId
-      json.shippingMethod=item.ShippingMethod
-      json.orderStatus=item.OrderStatus
-      json.PickUpCode=item.PickUpCode
+      const json = {}
+      json.OrderId = item.OrderId
+      json.shippingMethod = item.ShippingMethod
+      json.orderStatus = item.OrderStatus
+      json.PickUpCode = item.PickUpCode
       const params = peace.util.encode(json)
 
       this.$router.replace(`/order/userDrugLogistics/${params}`)
@@ -319,17 +321,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .count-down {
-    display: flex;
-    flex:1;
-    color:#333;
-    .van-count-down {
-      color: #333;
-    }
-    span {
-      font-size: 13px;
-    }
+.count-down {
+  display: flex;
+  flex: 1;
+  color: #333;
+  .van-count-down {
+    color: #333;
   }
+  span {
+    font-size: 13px;
+  }
+}
 .overlay-wrapper {
   height: 100%;
 
@@ -625,7 +627,7 @@ export default {
 }
 .small .small-time {
   flex: 0 0 auto;
-  width: 120px;
+  width: 125px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
