@@ -107,7 +107,7 @@ export default {
         return peace.util.info('暂无数据')
       }
 
-      const dataId = this.data.id
+      const dataId = this.type == 1 ? this.data.dataNo : this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.无
       const type = peace.type.HEALTH.TYPE.血氧

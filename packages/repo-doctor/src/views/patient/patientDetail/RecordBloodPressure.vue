@@ -109,8 +109,7 @@ export default {
       if (this.data.noData) {
         return peace.util.info('暂无数据')
       }
-
-      const dataId = this.data.id
+      const dataId = this.type == 1 ? this.data.dataNo : this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.血压监测周报
       const type = peace.type.HEALTH.TYPE.血压
