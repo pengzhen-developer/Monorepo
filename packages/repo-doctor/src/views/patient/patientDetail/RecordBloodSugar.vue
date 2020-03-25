@@ -49,7 +49,8 @@
           <div class="row">
             <span class="content-label">测量状态</span>
             <span class="content-divider">:</span>
-            <span class="content-value">{{ data.measureState === '1' ? '空腹' : data.measureState === '2' ? '餐后' : '- -' }}</span>
+            <span
+                  class="content-value">{{ data.measureState === '1' ? '空腹' : data.measureState === '2' ? '餐后' : '- -' }}</span>
           </div>
           <div class="row space-between">
             <span class="content-time">{{ data.createdTime }}</span>
@@ -109,7 +110,7 @@ export default {
         return peace.util.info('暂无数据')
       }
 
-      const dataId = this.data.dataNo
+      const dataId = this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.血糖监测周报
       const type = peace.type.HEALTH.TYPE.血糖

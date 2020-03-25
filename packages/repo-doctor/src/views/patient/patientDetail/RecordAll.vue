@@ -105,7 +105,7 @@
             <el-col :span="8">
               <!-- 血氧 -->
               <div class="time-line-content-card">
-                <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'bloodOxygenData')"
+                <RecordBloodOxygen :data="healthInfo.find(item => item.healthType === 'oxyGenData')"
                                    :type="type"></RecordBloodOxygen>
               </div>
             </el-col>

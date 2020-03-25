@@ -36,7 +36,8 @@
       <div class="type-daily">
         <div class="title">
           <span class="title-label">血压</span>
-          <span class="title-value">{{ data.systolicPressure || '- -' }} / {{ data.diastolicPressure || '- -' }} mmHg</span>
+          <span class="title-value">{{ data.systolicPressure || '- -' }} /
+            {{ data.diastolicPressure || '- -' }} mmHg</span>
           <el-tag :type="getTagType(data.resultType)"
                   class="title-result"
                   size="large"
@@ -109,7 +110,7 @@ export default {
         return peace.util.info('暂无数据')
       }
 
-      const dataId = this.data.dataNo
+      const dataId = this.data.id
       const idCard = this.data.idCard
       const serviceId = peace.type.HEALTH.SERVICE_ID.血压监测周报
       const type = peace.type.HEALTH.TYPE.血压
