@@ -856,14 +856,16 @@ export default {
     },
 
     doctorInquiryApplySupplementaryUploadCallback(result) {
-      this.affectedImages = result
-      this.pushToChatList({
-        type: 'images',
-        images: result
-      })
-      const mode = SUPPLEMENTARY_MODE.IMAGES
+      if (result.length) {
+        this.affectedImages = result
+        this.pushToChatList({
+          type: 'images',
+          images: result
+        })
+        const mode = SUPPLEMENTARY_MODE.IMAGES
 
-      this.onAfterSupplementaryAnswer(mode)
+        this.onAfterSupplementaryAnswer(mode)
+      }
     },
 
     setModel() {
@@ -1213,30 +1215,36 @@ export default {
           }
 
           // 上传
-          compress().then(files => {
-            const params = new FormData()
+          compress()
+            .then(files => {
+              const params = new FormData()
 
-            params.append('source', 'inquiryApply')
-            params.append('type', type)
-            files.forEach(file => {
-              params.append('file[]', file)
+              params.append('source', 'inquiryApply')
+              params.append('type', type)
+              files.forEach(file => {
+                params.append('file[]', file)
+              })
+
+              peace.service.inquiry
+                .images(params)
+                .then(res => {
+                  if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
+                    this.model.attachment = res.data
+                  } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
+                    this.model.affectedImages = res.data
+                  }
+
+                  resolve()
+                })
+                .catch(error => {
+                  this.sending = false
+
+                  reject(error)
+                })
             })
-
-            peace.service.inquiry
-              .images(params)
-              .then(res => {
-                if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
-                  this.model.attachment = res.data
-                } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
-                  this.model.affectedImages = res.data
-                }
-
-                resolve()
-              })
-              .catch(error => {
-                reject(error)
-              })
-          })
+            .catch(() => {
+              this.sending = false
+            })
         } else {
           resolve()
         }
@@ -1249,42 +1257,47 @@ export default {
       for (let key in this.model) {
         params[key] = this.model[key]
       }
-      return peace.service.inquiry.apply(params).then(res => {
-        // 订单提交成功
-        if (res.data.errorState === 0) {
-          // 需要支付，跳转支付
-          if (res.data.inquiryStatus === 1) {
-            this.goToPay(res.data)
+      return peace.service.inquiry
+        .apply(params)
+        .then(res => {
+          // 订单提交成功
+          if (res.data.errorState === 0) {
+            // 需要支付，跳转支付
+            if (res.data.inquiryStatus === 1) {
+              this.goToPay(res.data)
+            }
+            // 不需要支付，跳转订单
+            else {
+              this.goToConsultDetail(res.data)
+            }
           }
-          // 不需要支付，跳转订单
-          else {
-            this.goToConsultDetail(res.data)
+
+          // 订单提交失败
+          // errorState:1 存在未支付订单， 跳转订单
+          if (res.data.errorState === 1) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '去看看'
+            }).then(() => {
+              this.goToConsultDetail(res.data)
+            })
           }
-        }
 
-        // 订单提交失败
-        // errorState:1 存在未支付订单， 跳转订单
-        if (res.data.errorState === 1) {
-          return Dialog.confirm({
-            title: '提示',
-            message: res.msg,
-            confirmButtonText: '去看看'
-          }).then(() => {
-            this.goToConsultDetail(res.data)
-          })
-        }
-
-        // errorState:2 存在未结束订单，跳转咨询
-        if (res.data.errorState === 2) {
-          return Dialog.confirm({
-            title: '提示',
-            message: res.msg,
-            confirmButtonText: '继续咨询'
-          }).then(() => {
-            this.goToMessage(res.data)
-          })
-        }
-      })
+          // errorState:2 存在未结束订单，跳转咨询
+          if (res.data.errorState === 2) {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.msg,
+              confirmButtonText: '继续咨询'
+            }).then(() => {
+              this.goToMessage(res.data)
+            })
+          }
+        })
+        .catch(() => {
+          this.sending = false
+        })
     },
 
     goToPay(data) {

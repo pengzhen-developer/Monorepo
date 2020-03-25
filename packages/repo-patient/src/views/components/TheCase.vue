@@ -49,11 +49,11 @@
       <div class="form-dl"
            style="display: block;"
            v-if="internalData.inspectionIndex &&
-                 (internalData.inspectionIndex.temperature ||
-                  internalData.inspectionIndex.weight ||
-                  internalData.inspectionIndex.heart_rate ||
-                  internalData.inspectionIndex.blood_pressure ||
-                  internalData.inspectionIndex.More)">
+                (internalData.inspectionIndex.temperature ||
+                 internalData.inspectionIndex.weight ||
+                 internalData.inspectionIndex.heart_rate ||
+                 internalData.inspectionIndex.blood_pressure ||
+                 internalData.inspectionIndex.More)">
         <div class="form-dt">
           检查指标
           <div class="form-code">
@@ -262,7 +262,8 @@ export default {
   border-radius: 5px;
   box-sizing: border-box;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+
   .bb {
     display: flex;
     width: 100%;
@@ -278,27 +279,18 @@ export default {
 }
 
 .namelist-dl {
-  flex: 0 1 100%;
   font-size: 15px;
   padding: 10px 0;
   display: flex;
+  justify-content: space-between;
 }
 .namelist-dl .dt {
-  flex: 0 0 auto;
-  width: 25%;
   color: #000;
 }
 .namelist-dl .dt.other {
-  width: 45%;
 }
 .namelist-dl .dd {
-  flex: 1 1 auto;
   color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow: hidden;
-  width: 0;
 }
 .namelist-dl .dd .elip {
   width: 100%;

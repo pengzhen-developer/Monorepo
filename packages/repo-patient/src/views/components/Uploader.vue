@@ -7,7 +7,8 @@
     <div class="layout-content">
       <van-uploader v-model="fileList"
                     multiple
-                    :max-count="internalMaxCount" />
+                    :max-count="internalMaxCount"
+                    :before-read="beforeRead" />
     </div>
 
     <div class="layout-footer">
@@ -35,6 +36,14 @@ export default {
   },
 
   methods: {
+    beforeRead(file) {
+      if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
+        $peace.util.alert('请上传 jpeg、jpg、png 格式图片')
+        return false
+      }
+      return true
+    },
+
     confirm() {
       if (this.$route.params.emit) {
         $peace.$emit(this.$route.params.emit, this.fileList)
