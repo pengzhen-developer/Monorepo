@@ -56,7 +56,7 @@
         <van-sticky>
           <van-tabs v-model="active"
                     swipeable>
-            <van-tab title="病历">
+            <van-tab title="病历详情">
             </van-tab>
             <van-tab title="处方">
             </van-tab>

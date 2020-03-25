@@ -7,39 +7,53 @@
                 :value="data.visitDate || '无'" />
       <van-cell title="主诉"
                 :value="data.baseIllness || '无'" />
+      <van-cell title="现病史"
+                :value="data.presentHistory || '无'" />
       <van-cell title="过敏史"
                 :value="data.allergyHistory || '无'" />
       <van-cell title="既往史"
                 :value="data.pastHistory || '无'" />
       <van-cell title="检查指标"
-                v-if=" data.InspectionIndex&&!(data.InspectionIndex.temperature=='' && data.InspectionIndex.weight=='' && data.InspectionIndex.heart_rate =='' && data.InspectionIndex.blood_pressure=='') ">
+                v-if="data.InspectionIndex && 
+                     (data.InspectionIndex.temperature || 
+                      data.InspectionIndex.weight || 
+                      data.InspectionIndex.heart_rate ||
+                      data.InspectionIndex.blood_pressure ||
+                      data.InspectionIndex.More) ">
         <div slot="label"
              class="file-case-detail-card">
-          <div class="row">
+          <div class="row"
+               v-if="data.InspectionIndex.temperature">
             <div class="row-item">
-              <span
-                    class="color-000">体温：</span><span>{{ data.InspectionIndex && data.InspectionIndex.temperature && (data.InspectionIndex.temperature + '°') || '无' }}</span>
-            </div>
-            <div class="row-item">
-              <span
-                    class="color-000">体重：</span><span>{{ data.InspectionIndex && data.InspectionIndex.weight && (data.InspectionIndex.weight + 'kg') || '无'  }}</span>
+              <span class="color-000">体温：</span><span>{{ data.InspectionIndex && data.InspectionIndex.temperature && (data.InspectionIndex.temperature + '度') || '无' }}</span>
             </div>
           </div>
-          <div class="row">
+          <div class="row"
+               v-if="data.InspectionIndex.weight">
             <div class="row-item">
-              <span
-                    class="color-000">心率：</span><span>{{ data.InspectionIndex && data.InspectionIndex.heart_rate && (data.InspectionIndex.heart_rate + 'bpm') || '无' }}</span>
+              <span class="color-000">体重：</span><span>{{ data.InspectionIndex && data.InspectionIndex.weight && (data.InspectionIndex.weight + 'kg') || '无'  }}</span>
             </div>
+          </div>
+          <div class="row"
+               v-if="data.InspectionIndex.heart_rate">
             <div class="row-item">
-              <span
-                    class="color-000">血压：</span><span>{{ data.InspectionIndex && data.InspectionIndex.blood_pressure && (data.InspectionIndex.blood_pressure + 'mmHg') || '无' }}</span>
+              <span class="color-000">心率：</span><span>{{ data.InspectionIndex && data.InspectionIndex.heart_rate && (data.InspectionIndex.heart_rate + 'bpm') || '无' }}</span>
+            </div>
+          </div>
+          <div class="row"
+               v-if="data.InspectionIndex.blood_pressure">
+            <div class="row-item">
+              <span class="color-000">血压：</span><span>{{ data.InspectionIndex && data.InspectionIndex.blood_pressure && (data.InspectionIndex.blood_pressure + 'mmHg') || '无' }}</span>
+            </div>
+          </div>
+          <div class="row"
+               v-if="data.InspectionIndex.More">
+            <div class="row-item">
+              <span class="color-000">辅助检查：</span><span>{{ data.InspectionIndex.More || '无' }}</span>
             </div>
           </div>
         </div>
       </van-cell>
-      <van-cell title="辅助检查"
-                v-if="data.InspectionIndex.More"
-                :value="data.InspectionIndex.More || '无'" />
       <van-cell title="诊断"
                 :value="data.diagnose || '无'" />
       <van-cell title="医嘱小结"
@@ -111,15 +125,18 @@ export default {
   .file-case-detail-card {
     background: rgba(248, 248, 248, 1);
     border-radius: 8px;
-    padding: 16px;
+    padding: 8px 16px;
 
     .row {
-      display: flex;
-      justify-content: space-between;
       line-height: 30px;
-      width: 100%;
+      padding: 0 0 5px 0;
+
       .row-item {
-        width: 48%;
+        width: 100%;
+
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #f2f2f2;
       }
     }
   }
