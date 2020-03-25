@@ -1,5 +1,14 @@
 <template>
   <div class="video">
+    <audio id="senderMusic">
+      <source :src="require('@public/static/mp3/video_chat_tip_sender.mp3')"
+              type="audio/mp3">
+    </audio>
+    <audio id="receiverMusic">
+      <source :src="require('@public/static/mp3/video_chat_tip_receiver.mp3')"
+              type="audio/mp3">
+    </audio>
+
     <peace-dialog :close-on-click-modal="false"
                   :close-on-press-escape="false"
                   :show-close="false"
@@ -96,6 +105,7 @@ export default {
         this.video.visible = true
 
         this.startRtc()
+        this.playSenderAudio()
       }
       // 收到视频邀请
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.收到) {
@@ -104,6 +114,7 @@ export default {
 
         this.setHangupTimeout()
         this.showMeesageNotify()
+        this.playReceiverAudio()
       }
       // 同意视频邀请
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.接听) {
@@ -114,6 +125,7 @@ export default {
         }
 
         this.video.visible = true
+        this.pauseAudio()
       }
       // 拒绝视频邀请
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.拒绝) {
@@ -148,6 +160,7 @@ export default {
         }
 
         this.hangupVideo()
+        this.pauseAudio()
       }
       // 挂断视频
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.挂断) {
@@ -156,6 +169,7 @@ export default {
 
         this.processExit()
         this.hangupVideo()
+        this.pauseAudio()
       }
       // 呼叫超时
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.超时) {
@@ -175,6 +189,7 @@ export default {
         // 未接通前 => 患者主叫 && 系统超时 => 【患者端调用】
 
         this.hangupVideo()
+        this.pauseAudio()
       }
     }
   },
@@ -192,6 +207,28 @@ export default {
       $peace.WebRTC.on('hangup', this.onHangup)
       $peace.WebRTC.on('callerAckSync', this.onCallerAckSync)
       $peace.WebRTC.on('error', this.onError)
+    },
+
+    playSenderAudio() {
+      var audio = this.$el.querySelector('#senderMusic')
+
+      audio.play()
+    },
+
+    playReceiverAudio() {
+      var audio = this.$el.querySelector('#receiverMusic')
+
+      audio.play()
+    },
+
+    pauseAudio() {
+      var senderAudio = this.$el.querySelector('#senderMusic')
+      var receiverAudio = this.$el.querySelector('#receiverMusic')
+
+      senderAudio.pause()
+      senderAudio.currentTime = 0
+      receiverAudio.pause()
+      receiverAudio.currentTime = 0
     },
 
     /**
