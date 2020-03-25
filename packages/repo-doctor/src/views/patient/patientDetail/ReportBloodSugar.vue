@@ -5,17 +5,23 @@
 <template>
   <div class="report">
     <div class="report-header">
-      <el-button @click="back" class="back" type="primary">
+      <el-button @click="back"
+                 class="back"
+                 type="primary">
         <i class="el-icon-arrow-left"></i> 返回
       </el-button>
       <el-button-group>
-        <el-button :type="view.active === source.active['血糖数据'] ? 'primary' : '' " @click="changeActive('血糖数据')">血糖数据</el-button>
-        <el-button :type="view.active === source.active['分析报告'] ? 'primary' : '' " @click="changeActive('分析报告')">分析报告</el-button>
-        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' " @click="changeActive('历史数据')">历史数据</el-button>
+        <el-button :type="view.active === source.active['血糖数据'] ? 'primary' : '' "
+                   @click="changeActive('血糖数据')">血糖数据</el-button>
+        <el-button :type="view.active === source.active['分析报告'] ? 'primary' : '' "
+                   @click="changeActive('分析报告')">分析报告</el-button>
+        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' "
+                   @click="changeActive('历史数据')">历史数据</el-button>
       </el-button-group>
     </div>
 
-    <div class="report-recent" v-show="view.active === source.active['血糖数据']">
+    <div class="report-recent"
+         v-show="view.active === source.active['血糖数据']">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-card shadow="never">
@@ -59,57 +65,72 @@
       <el-row>
         <el-col :span="24">
           <el-card shadow="never">
-            <div class="card-header" slot="header">
+            <div class="card-header"
+                 slot="header">
               <h4>
                 <i class="icon_ic_datatrends"></i> 数据趋势
               </h4>
 
               <div class="report-filter">
-                <el-button
-                  :class="{ 'active': this.view.activeForFilter === source.activeForFilter['空腹'] }"
-                  @click="changeActiveForFilter('空腹')"
-                  class="chart-button"
-                  type="text"
-                >空腹</el-button>
+                <el-button :class="{ 'active': this.view.activeForFilter === source.activeForFilter['空腹'] }"
+                           @click="changeActiveForFilter('空腹')"
+                           class="chart-button"
+                           type="text">空腹</el-button>
                 <el-divider direction="vertical"></el-divider>
-                <el-button
-                  :class="{ 'active': this.view.activeForFilter === source.activeForFilter['餐后'] }"
-                  @click="changeActiveForFilter('餐后')"
-                  class="chart-button"
-                  type="text"
-                >餐后</el-button>
+                <el-button :class="{ 'active': this.view.activeForFilter === source.activeForFilter['餐后'] }"
+                           @click="changeActiveForFilter('餐后')"
+                           class="chart-button"
+                           type="text">餐后</el-button>
               </div>
             </div>
 
-            <v-chart :options="options" autoresize style="width: 100%;" v-if="this.view.activeForFilter === source.activeForFilter['空腹']" />
-            <v-chart :options="options" autoresize style="width: 100%;" v-if="this.view.activeForFilter === source.activeForFilter['餐后']" />
+            <v-chart :options="options"
+                     autoresize
+                     style="width: 100%;"
+                     v-if="this.view.activeForFilter === source.activeForFilter['空腹']" />
+            <v-chart :options="options"
+                     autoresize
+                     style="width: 100%;"
+                     v-if="this.view.activeForFilter === source.activeForFilter['餐后']" />
           </el-card>
         </el-col>
       </el-row>
     </div>
 
-    <div class="report-report" v-show="view.active === source.active['分析报告']">
-      <peace-table pagination ref="tableReport">
-        <peace-table-column label="报告名称" prop="title"></peace-table-column>
+    <div class="report-report"
+         v-show="view.active === source.active['分析报告']">
+      <peace-table pagination
+                   ref="tableReport">
+        <peace-table-column label="报告名称"
+                            prop="title"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="openReport(scope.row)" type="text">查看详情</el-button>
+            <el-button @click="openReport(scope.row)"
+                       type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <div class="report-history" v-show="view.active === source.active['历史数据']">
-      <peace-table pagination ref="tableHistory" v-show="this.$route.params.type === $peace.type.HEALTH.TYPE.血糖">
-        <peace-table-column label="血糖值（mmol/L）" prop="bloodSugar"></peace-table-column>
-        <peace-table-column label="测量状态" prop="measureState">
+    <div class="report-history"
+         v-show="view.active === source.active['历史数据']">
+      <peace-table pagination
+                   ref="tableHistory"
+                   v-show="this.$route.params.type === $peace.type.HEALTH.TYPE.血糖">
+        <peace-table-column label="血糖值（mmol/L）"
+                            prop="bloodSugar"></peace-table-column>
+        <peace-table-column label="测量状态"
+                            prop="measureState">
           <template slot-scope="scope">
             <span>{{ scope.row.measureState === '1' ? '空腹' : '餐后' }}</span>
           </template>
         </peace-table-column>
-        <peace-table-column label="分析结果" prop="result"></peace-table-column>
-        <peace-table-column label="检测时间" prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源" prop="measureMethod"></peace-table-column>
+        <peace-table-column label="分析结果"
+                            prop="result"></peace-table-column>
+        <peace-table-column label="检测时间"
+                            prop="measureTime"></peace-table-column>
+        <peace-table-column label="来源"
+                            prop="measureMethod"></peace-table-column>
       </peace-table>
     </div>
   </div>
@@ -282,6 +303,7 @@ export default {
   }
 
   .report-header {
+    position: relative;
     text-align: center;
     background: #f9f9f9;
     margin: -20px -20px 0;

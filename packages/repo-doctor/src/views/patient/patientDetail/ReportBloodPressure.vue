@@ -5,17 +5,23 @@
 <template>
   <div class="report">
     <div class="report-header">
-      <el-button @click="back" class="back" type="primary">
+      <el-button @click="back"
+                 class="back"
+                 type="primary">
         <i class="el-icon-arrow-left"></i> 返回
       </el-button>
       <el-button-group>
-        <el-button :type="view.active === source.active['血压数据'] ? 'primary' : '' " @click="changeActive('血压数据')">血压数据</el-button>
-        <el-button :type="view.active === source.active['分析报告'] ? 'primary' : '' " @click="changeActive('分析报告')">分析报告</el-button>
-        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' " @click="changeActive('历史数据')">历史数据</el-button>
+        <el-button :type="view.active === source.active['血压数据'] ? 'primary' : '' "
+                   @click="changeActive('血压数据')">血压数据</el-button>
+        <el-button :type="view.active === source.active['分析报告'] ? 'primary' : '' "
+                   @click="changeActive('分析报告')">分析报告</el-button>
+        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' "
+                   @click="changeActive('历史数据')">历史数据</el-button>
       </el-button-group>
     </div>
 
-    <div class="report-recent" v-show="view.active === source.active['血压数据']">
+    <div class="report-recent"
+         v-show="view.active === source.active['血压数据']">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-card shadow="never">
@@ -62,32 +68,51 @@
             <h4>
               <i class="icon_ic_datatrends"></i> 数据趋势
             </h4>
-            <v-chart :options="options" autoresize style="width: 100%;" />
+            <v-chart :options="options"
+                     autoresize
+                     style="width: 100%;" />
           </el-card>
         </el-col>
       </el-row>
     </div>
 
-    <div class="report-report" v-show="view.active === source.active['分析报告']">
-      <peace-table pagination ref="tableReport">
-        <peace-table-column label="报告名称" prop="title"></peace-table-column>
+    <div class="report-report"
+         v-show="view.active === source.active['分析报告']">
+      <peace-table pagination
+                   ref="tableReport">
+        <peace-table-column label="报告名称"
+                            prop="title"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="openReport(scope.row)" type="text">查看详情</el-button>
+            <el-button @click="openReport(scope.row)"
+                       type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <div :key="$route.fullpath + '历史数据'" class="report-history" v-show="view.active === source.active['历史数据']">
-      <peace-table pagination ref="tableHistory">
-        <peace-table-column label="收缩压（mmHg）" prop="systolicPressure" width="150"></peace-table-column>
-        <peace-table-column label="舒张压（mmHg）" prop="diastolicPressure" width="150"></peace-table-column>
-        <peace-table-column label="平均动脉压（mmHg）" prop="meanArterialPressure"></peace-table-column>
-        <peace-table-column label="脉率" prop="pulseRate" width="120"></peace-table-column>
-        <peace-table-column label="分析结果" prop="result"></peace-table-column>
-        <peace-table-column label="检测时间" prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源" prop="measureMethod"></peace-table-column>
+    <div :key="$route.fullpath + '历史数据'"
+         class="report-history"
+         v-show="view.active === source.active['历史数据']">
+      <peace-table pagination
+                   ref="tableHistory">
+        <peace-table-column label="收缩压（mmHg）"
+                            prop="systolicPressure"
+                            width="150"></peace-table-column>
+        <peace-table-column label="舒张压（mmHg）"
+                            prop="diastolicPressure"
+                            width="150"></peace-table-column>
+        <peace-table-column label="平均动脉压（mmHg）"
+                            prop="meanArterialPressure"></peace-table-column>
+        <peace-table-column label="脉率"
+                            prop="pulseRate"
+                            width="120"></peace-table-column>
+        <peace-table-column label="分析结果"
+                            prop="result"></peace-table-column>
+        <peace-table-column label="检测时间"
+                            prop="measureTime"></peace-table-column>
+        <peace-table-column label="来源"
+                            prop="measureMethod"></peace-table-column>
       </peace-table>
     </div>
   </div>
@@ -238,6 +263,7 @@ export default {
   }
 
   .report-header {
+    position: relative;
     text-align: center;
     background: #f9f9f9;
     margin: -20px -20px 0;

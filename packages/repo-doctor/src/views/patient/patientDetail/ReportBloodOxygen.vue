@@ -5,16 +5,21 @@
 <template>
   <div class="report">
     <div class="report-header">
-      <el-button @click="back" class="back" type="primary">
+      <el-button @click="back"
+                 class="back"
+                 type="primary">
         <i class="el-icon-arrow-left"></i> 返回
       </el-button>
       <el-button-group>
-        <el-button :type="view.active === source.active['血氧数据'] ? 'primary' : '' " @click="changeActive('血氧数据')">血氧数据</el-button>
-        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' " @click="changeActive('历史数据')">历史数据</el-button>
+        <el-button :type="view.active === source.active['血氧数据'] ? 'primary' : '' "
+                   @click="changeActive('血氧数据')">血氧数据</el-button>
+        <el-button :type="view.active === source.active['历史数据'] ? 'primary' : '' "
+                   @click="changeActive('历史数据')">历史数据</el-button>
       </el-button-group>
     </div>
 
-    <div class="report-recent" v-show="view.active === source.active['血氧数据']">
+    <div class="report-recent"
+         v-show="view.active === source.active['血氧数据']">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-card shadow="never">
@@ -61,18 +66,27 @@
             <h4>
               <i class="icon_ic_datatrends"></i> 数据趋势
             </h4>
-            <v-chart :options="options" autoresize style="width: 100%;" />
+            <v-chart :options="options"
+                     autoresize
+                     style="width: 100%;" />
           </el-card>
         </el-col>
       </el-row>
     </div>
 
-    <div class="report-history" v-show="view.active === source.active['历史数据']">
-      <peace-table pagination ref="tableHistory" v-show="this.$route.params.type === $peace.type.HEALTH.TYPE.血氧">
-        <peace-table-column label="血氧浓度（%）" prop="bloodOxygen"></peace-table-column>
-        <peace-table-column label="分析结果" prop="result"></peace-table-column>
-        <peace-table-column label="检测时间" prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源" prop="measureMethod"></peace-table-column>
+    <div class="report-history"
+         v-show="view.active === source.active['历史数据']">
+      <peace-table pagination
+                   ref="tableHistory"
+                   v-show="this.$route.params.type === $peace.type.HEALTH.TYPE.血氧">
+        <peace-table-column label="血氧浓度（%）"
+                            prop="bloodOxygen"></peace-table-column>
+        <peace-table-column label="分析结果"
+                            prop="result"></peace-table-column>
+        <peace-table-column label="检测时间"
+                            prop="measureTime"></peace-table-column>
+        <peace-table-column label="来源"
+                            prop="measureMethod"></peace-table-column>
       </peace-table>
     </div>
   </div>
@@ -222,6 +236,7 @@ export default {
   }
 
   .report-header {
+    position: relative;
     text-align: center;
     background: #f9f9f9;
     margin: -20px -20px 0;
