@@ -65,9 +65,9 @@
           </template>
         </div>
       </section>
-      <section class="functions">
+      <!-- <section class="functions">
         <div @click="goMenuPage" style="line-height:30px;text-align:center;">智能导诊</div>
-      </section>
+      </section> -->
       <section class="functions">
 
         <!-- <div class="item"
