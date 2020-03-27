@@ -38,7 +38,7 @@
         </template>
         <template v-else>
           <hr />
-          <h4>已选过敏源</h4>
+          <h4 v-if="allergicHistory.length>0">已选过敏源(点击删除)</h4>
           <div class="checked-list">
             <van-tag :key="item.value"
                      @click="check(item)"
@@ -148,7 +148,10 @@ export default {
       type: null,
       typeValue: null,
       showAllergicTypePicker: false,
-      allergicTypeColumns: [{ text: '药物', value: 2 }, { text: '食物/接触物', value: 6 }]
+      allergicTypeColumns: [
+        { text: '药物', value: 2 },
+        { text: '食物/接触物', value: 6 }
+      ]
     }
   },
 
@@ -299,6 +302,7 @@ export default {
     },
 
     check(currentItem) {
+      // let currentItem=JSON.parse(JSON.stringify(data))
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
@@ -358,10 +362,10 @@ export default {
           foodAllergy.push(allergy)
         }
       })
-     let len= this.allergicHistory.map(item=>item.value).join(',').length
-     if(len>100){
-       return peace.util.alert('过敏史信息不得超过100字')
-     }
+      let len = this.allergicHistory.map(item => item.value).join(',').length
+      if (len > 100) {
+        return peace.util.alert('过敏史信息不得超过100字')
+      }
       this.$emit('input', this.allergicHistory)
       this.$emit('onSave', { foodAllergy, drugAllergy })
     }

@@ -1265,8 +1265,8 @@ export default {
         display: inline-block;
         padding: 5px 5px;
         border-radius: 6px;
-        max-width: 80%;
-
+        max-width: 73%;
+        // max-width: 80%;
         &.case,
         &.recipe {
           background: #fff;

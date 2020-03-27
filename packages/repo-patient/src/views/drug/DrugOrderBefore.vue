@@ -101,7 +101,7 @@
               <div class="dt">应付金额:</div>
               <div class="dd">
                 <div class="strong">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
-                {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}}
+                <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
               </div>
             </div>

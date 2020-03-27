@@ -63,13 +63,16 @@
              v-for="(item, index) in internalData.drugCode">
           <div class="column-left">
             <div class="inline">
-              <div class="span l">{{item.drugName}}</div>
+              <div class="inline-flex">
+                <span>{{item.drugName}}</span>  
+                {{item.drugSpecifications}}
+              </div>
 
               <div class="inline">x{{item.drugQty}}</div>
             </div>
-            <div class="inline">
+            <!-- <div class="inline">
               <div class="span">{{item.drugSpecifications}}</div>
-            </div>
+            </div> -->
 
             <div class="small"
                  v-if="item.drugUse">{{item.drugUse}}</div>
@@ -317,6 +320,16 @@ export default {
   .inline {
     display: block;
     word-wrap: break-word;
+  }
+  .inline-flex{
+    display:flex;
+    flex:1;
+    flex-wrap:wrap;
+    word-break: break-all;
+    padding-right: 5px;
+    span{
+      margin-right:40px;
+    }
   }
   .bt {
     padding: 0 15px;

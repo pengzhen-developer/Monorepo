@@ -14,7 +14,7 @@
 
       <hr />
 
-      <h4>已选诊断(点击可删除)</h4>
+      <h4>已选诊断(点击删除)</h4>
       <div class="checked-list">
         <van-tag :key="item.value"
                  @click="check(item)"
@@ -184,7 +184,7 @@ export default {
     },
 
     check(currentItem) {
-      // console.log(currentItem)
+      // let currentItem=JSON.parse(JSON.stringify(data))
       if (currentItem.needAdd) {
         peace.service.inquiry.addAllergen({
           name: currentItem.value,

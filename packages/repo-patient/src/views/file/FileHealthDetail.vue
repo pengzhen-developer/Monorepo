@@ -54,7 +54,7 @@
       <van-cell title="过敏史"
                 is-link
                 @click="popup.drugAllergy = true"
-                :value="model.allergicHistory || '无'" />
+                :value="model.allergicHistory" />
       <van-popup position="bottom"
                  v-model="popup.drugAllergy">
         <AddAllergicHistory style="max-height: 80vh"

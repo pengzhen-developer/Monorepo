@@ -141,7 +141,8 @@ export default {
       if (this.members && this.members.length >= 10) {
         return peace.util.alert('您最多可添加 10 位家人')
       }
-      let json = peace.util.encode({ type: 'add' })
+      let canShowSelf=this.members && !this.members.find(item => item.relation === '本人')
+      let json = peace.util.encode({ type: 'add',canShowSelf:canShowSelf })
       this.$router.push(`/setting/familyMember/${json}`)
     }
   }

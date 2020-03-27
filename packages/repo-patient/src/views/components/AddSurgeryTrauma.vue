@@ -13,7 +13,7 @@
       </van-search>
 
       <hr />
-      <h4>已选</h4>
+      <h4 v-if="allSurgeryTrauma.length>0">已选(点击删除)</h4>
       <div class="checked-list">
         <van-tag :key="item.value"
                  @click="check(item)"
@@ -148,8 +148,7 @@ export default {
     },
 
     check(currentItem) {
-      // console.log("needAdd" , currentItem.needAdd)
-
+      // let currentItem=JSON.parse(JSON.stringify(data))
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allSurgeryTrauma = []

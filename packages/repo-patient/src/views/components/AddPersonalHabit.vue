@@ -13,7 +13,7 @@
       </van-search>
 
       <hr />
-      <h4>已选</h4>
+      <h4 v-if="allPersonalHabit.length>0">已选(点击删除)</h4>
       <div class="checked-list">
         <van-tag :key="item.value"
                  @click="check(item)"
@@ -148,7 +148,7 @@ export default {
     },
 
     check(currentItem) {
-
+      // let currentItem=JSON.parse(JSON.stringify(data))
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allPersonalHabit = []
@@ -167,9 +167,7 @@ export default {
       if (currentItem.checked) {
         currentItem.checked = false
         const index = this.allPersonalHabit.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allPersonalHabitCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
+        const indexCommonly = this.allPersonalHabitCommonly.findIndex(item => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allPersonalHabit.splice(index, 1)
@@ -179,15 +177,15 @@ export default {
         }
       } else {
         if (currentItem.needAdd) {
-          if(currentItem.value.length < 50) {
-            peace.service.health.addPersonInfo({ name: currentItem.value, type: 7 }).then(()=> {
-              this.onAddCallback(currentItem);
+          if (currentItem.value.length < 50) {
+            peace.service.health.addPersonInfo({ name: currentItem.value, type: 7 }).then(() => {
+              this.onAddCallback(currentItem)
             })
           } else {
-            peace.util.alert("您输入的字数过长！")
+            peace.util.alert('您输入的字数过长！')
           }
         } else {
-          this.onAddCallback(currentItem);
+          this.onAddCallback(currentItem)
         }
       }
     },
@@ -195,9 +193,7 @@ export default {
       currentItem.checked = true
       this.allPersonalHabit.push(currentItem)
 
-      const indexCommonly = this.allPersonalHabitCommonly.findIndex(
-              item => item.value === currentItem.value
-      )
+      const indexCommonly = this.allPersonalHabitCommonly.findIndex(item => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allPersonalHabitCommonly[indexCommonly].checked = true
       }

@@ -36,7 +36,7 @@
       </template>
       <template v-else>
         <hr />
-        <h4>已选过敏源</h4>
+        <h4 v-if="allergicHistory.length>0">已选过敏源(点击删除)</h4>
         <div class="checked-list">
           <van-tag :key="item.value"
                    @click="check(item)"
@@ -264,7 +264,7 @@ export default {
     },
 
     check(currentItem) {
-      // console.info(currentItem)
+      // let currentItem=JSON.parse(JSON.stringify(data)) 
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []

@@ -241,12 +241,12 @@ export default {
     //   }
     // },
 
-    canShowSelf: {
-      type: Boolean,
-      default() {
-        return true
-      }
-    }
+    // canShowSelf: {
+    //   type: Boolean,
+    //   default() {
+    //     return true
+    //   }
+    // }
   },
 
   data() {
@@ -295,7 +295,8 @@ export default {
       showBirthday: false,
       showNations: false,
       addGardian: false,
-      childInfo: {}
+      childInfo: {},
+      canShowSelf:true
     }
   },
 
@@ -353,6 +354,7 @@ export default {
       // 添加页面 只需加载民族列表
       this.getNationList()
     }
+    this.canShowSelf=json.canShowSelf
   },
 
   methods: {
@@ -380,6 +382,12 @@ export default {
         this.gardianSet = true
       } else {
         //新增监护人信息
+
+        //如果被监护人选择‘本人’则新增监护人不显示‘本人’
+        if(this.model.relation=='本人'){
+          this.canShowSelf=false
+        }
+        
         this.addGardian = true
         this.age = null
         this.model = {

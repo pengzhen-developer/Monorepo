@@ -65,9 +65,10 @@
           </template>
         </div>
       </section>
-      <section class="functions">
+      <!-- 智能导诊 功能实现 暂时屏蔽 -->
+      <!-- <section class="functions">
         <div @click="goMenuPage" style="line-height:30px;text-align:center;">智能导诊</div>
-      </section>
+      </section> -->
       <section class="functions">
 
         <!-- <div class="item"

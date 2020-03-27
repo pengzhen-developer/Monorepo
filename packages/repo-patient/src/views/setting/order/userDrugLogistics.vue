@@ -47,6 +47,7 @@
             <div v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
                  class="note">
               <div class="qr-btn"
+                   :class="{ 'active' : index == 0 }"
                    @click="onClickSeeQRCode">
                 查看取药码
               </div>
@@ -164,15 +165,18 @@ export default {
 <style lang="scss" scoped>
 .qr-btn {
   margin-top: 3px;
-  border: 1px solid #00c6ae;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  color: #00c6ae;
+  color: #999;
   width: 78px;
   height: 26px;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  &.active {
+    border-color: #00c6ae;
+    color: #00c6ae;
+  }
 }
 
 .overlay-wrapper {
@@ -279,7 +283,7 @@ export default {
   font-size: 13px;
 }
 .time-line {
-  padding: 25px 5px;
+  padding: 25px 0;
 
   .item {
     &:last-child {
@@ -301,8 +305,9 @@ export default {
 }
 .time-line .time {
   flex: 0 0 auto;
-  width: 60px;
-  padding-right: 20px;
+  // width: 60px;
+  width: 20%;
+  padding-right: 5.5%;
   position: relative;
   text-align: right;
 }
