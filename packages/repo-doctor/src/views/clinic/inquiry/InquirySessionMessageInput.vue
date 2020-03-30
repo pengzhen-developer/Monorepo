@@ -174,8 +174,25 @@ export default {
     },
 
     sendCase() {
+      const params = {
+        inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
+      }
+
       if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
-        $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+        peace.service.inquiry.checkOverInquiry(params).then(res => {
+          if (res.data.status === 1) {
+            let message = ''
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+              message = '您与患者尚未进行视频通话，暂时无法发送病历。'
+            } else {
+              message = '当前为无效会话，暂时无法发送病历。'
+            }
+
+            $peace.util.warning(message)
+          } else if (res.data.caseStatus === 1) {
+            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+          }
+        })
       } else {
         this.getCaseDetail(this.$store.getters['inquiry/inquiryInfo'].inquiryNo)
       }
@@ -201,9 +218,9 @@ export default {
         if (res.data.status === 1) {
           let message = ''
           if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
-            message = '系统检测到您与患者尚未进行视频通话，暂时无法进行转诊。'
+            message = '您与患者尚未进行视频通话，暂时无法进行转诊。'
           } else {
-            message = '系统检测到当前为无效会话，无法进行转诊。'
+            message = '当前为无效会话，暂时无法进行转诊。'
           }
 
           $peace.util.warning(message)
@@ -237,9 +254,9 @@ export default {
         if (res.data.status === 1) {
           let message = ''
           if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
-            message = '系统检测到您与患者尚未进行视频通话，暂时无法进行会诊。'
+            message = '您与患者尚未进行视频通话，暂时无法进行会诊。'
           } else {
-            message = '系统检测到当前为无效会话，无法进行会诊。'
+            message = '当前为无效会话，暂时无法进行会诊。'
           }
 
           $peace.util.warning(message)
