@@ -595,6 +595,7 @@ export default {
     .message-body {
       white-space: pre-wrap;
       word-wrap: break-word;
+      word-break: break-all;
       display: inline-block;
       padding: 5px 10px;
       border-radius: 4px;
