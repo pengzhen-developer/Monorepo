@@ -33,7 +33,7 @@
         <div class="info-row-label">
           <span>就诊时间</span>
         </div>
-        <div class="info-row-content">{{ internalData.created_time }}</div>
+        <div class="info-row-content">{{ internalData.visit_date }}</div>
       </div>
       <div class="info-row">
         <div class="info-row-label">
