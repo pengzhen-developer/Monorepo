@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div>
+  <div style="height:100%;">
     <van-skeleton :key="item.netHospitalId"
                   :loading="loading"
                   :name="item.hospitalName"
@@ -31,6 +31,12 @@
         </div>
       </div>
     </van-skeleton>
+    <div class="none" v-if="data.length==0">
+      <div class="none-page">
+        <div class="icon icon_none_source"></div>
+        <div class="none-text">暂无可预约号源</div>
+      </div> 
+    </div> 
   </div>
 </template>
 
@@ -133,6 +139,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.none{
+  height:100%;
+  width:100%;
+}
 .cards {
   display: -webkit-box;
   display: -moz-box;
