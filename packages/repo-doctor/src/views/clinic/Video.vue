@@ -1,10 +1,12 @@
 <template>
   <div class="video">
-    <audio id="senderMusic">
+    <audio id="senderMusic"
+           loop="loop">
       <source :src="require('@public/static/mp3/video_chat_tip_sender.mp3')"
               type="audio/mp3">
     </audio>
-    <audio id="receiverMusic">
+    <audio id="receiverMusic"
+           loop="loop">
       <source :src="require('@public/static/mp3/video_chat_tip_receiver.mp3')"
               type="audio/mp3">
     </audio>
@@ -132,31 +134,13 @@ export default {
         this.video.title = ''
         this.video.visible = false
 
-        if (this.hangUpBy === 'Doctor') {
-          // 未接通前 => 医生主叫 && 医生拒绝 => 【医生端调用】
-          if (this.isCalling === true && this.custom.type === 'inquiry') {
-            const params = {
-              inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
-              action: 'doctorHangup',
-              sponsor: 'doctor'
-            }
-
-            this.processHangup(params)
-          }
-          // 未接通前 => 医生主叫 && 患者拒绝 => 【患者端调用】
-          // No Code
-          // 未接通前 => 患者主叫 && 医生拒绝 => 【医生端调用】
-          else if (this.isCalling === false && this.custom.type === 'inquiry') {
-            const params = {
-              inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
-              action: 'doctorHangup',
-              sponsor: 'patient'
-            }
-
-            this.processHangup(params)
-          }
-          // 未接通前 => 患者主叫 && 患者拒绝 => 【患者端调用】
-          // No Code
+        // 问诊
+        if (this.custom.type === 'inquiry') {
+          this.processHangup()
+        }
+        // 会诊
+        else if (this.custom.type === 'consult') {
+          this.processConsultHangup()
         }
 
         this.hangupVideo()
@@ -176,17 +160,14 @@ export default {
         this.video.title = ''
         this.video.visible = false
 
-        // 未接通前 => 医生主叫 && 系统超时 => 【医生端调用】
-        if (this.isCalling === true && this.custom.type === 'inquiry') {
-          const params = {
-            inquiryNo: this.custom.session.content.inquiryInfo.inquiryNo,
-            action: 'systemHangup',
-            sponsor: 'doctor'
-          }
-
-          this.processHangup(params)
+        // 问诊
+        if (this.custom.type === 'inquiry') {
+          this.processHangup()
         }
-        // 未接通前 => 患者主叫 && 系统超时 => 【患者端调用】
+        // 会诊
+        else if (this.custom.type === 'consult') {
+          this.processConsultHangup()
+        }
 
         this.hangupVideo()
         this.pauseAudio()
@@ -318,6 +299,7 @@ export default {
      */
     reject() {
       this.hangUpBy = 'Doctor'
+      this.hangUpConsultBy = 'Own'
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
 
       if (this.beCalledInfo) {
@@ -341,9 +323,11 @@ export default {
     hangUp() {
       if (this.beCalledInfo === undefined) {
         this.hangUpBy = 'Doctor'
+        this.hangUpConsultBy = 'Own'
         this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
       } else {
         this.hangUpBy = 'Doctor'
+        this.hangUpConsultBy = 'Own'
         this.beCallState = peace.type.VIDEO.BE_CALL_STATE.挂断
       }
     },
@@ -425,6 +409,7 @@ export default {
       console.warn('【 WebRTC 】【 onCallRejected 】', new Date(), callRejectedObject)
 
       this.hangUpBy = 'Patient'
+      this.hangUpConsultBy = 'Other'
       this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
     },
 
@@ -674,6 +659,9 @@ export default {
       this.hangupTimeout = setTimeout(() => {
         if (!$peace.WebRTC.callAccepted) {
           this.beCallState = peace.type.VIDEO.BE_CALL_STATE.超时
+
+          this.hangUpBy = 'System'
+          this.hangUpConsultBy = 'System'
         }
       }, 1000 * 30)
     },
@@ -684,6 +672,7 @@ export default {
 
     clearState() {
       this.hangUpBy = undefined
+      this.hangUpConsultBy = undefined
       this.isCalling = undefined
       this.isMute = false
 
@@ -756,9 +745,114 @@ export default {
       }
     },
 
-    /** 视频未接通 */
-    processHangup(params) {
-      return peace.service.video.process(params)
+    /**
+     * 问诊
+     * 视频未接通
+     *
+     * state 1，未接通前 => 医生主叫 && 医生拒绝 => 【医生端调用】
+     * state 2，未接通前 => 患者主叫 && 医生拒绝 => 【医生端调用】
+     * state 3，未接通前 => 医生主叫 && 系统超时 => 【医生端调用】
+     * state 4，未接通前 => 医生主叫 && 患者拒绝 => 【患者端调用】 No Code
+     * state 5，未接通前 => 患者主叫 && 患者拒绝 => 【患者端调用】 No Code
+     * state 6，未接通前 => 患者主叫 && 系统超时 => 【患者端调用】 No Code
+     */
+    processHangup() {
+      const params = {}
+      params.inquiryNo = this.custom.session.content.inquiryInfo.inquiryNo
+
+      // state 1
+      if (this.isCalling === true && this.hangUpBy === 'Doctor') {
+        params.action = 'doctorHangup'
+        params.sponsor = 'doctor'
+      }
+      // state 2
+      else if (this.isCalling === false && this.hangUpBy === 'Doctor') {
+        params.action = 'doctorHangup'
+        params.sponsor = 'patient'
+      }
+      // state 3
+      else if (this.isCalling === true && this.hangUpBy === 'System') {
+        params.action = 'systemHangup'
+        params.sponsor = 'doctor'
+      }
+
+      if (params.action && params.sponsor) {
+        return peace.service.video.process(params)
+      }
+    },
+
+    /**
+     * 会诊
+     * 视频未接通
+     *
+     * state 1，未接通前 => 会诊医生主叫 && 会诊医生拒绝 => 【会诊医生调用】
+     * state 2，未接通前 => 会诊医生主叫 && 被会诊医生拒绝 => 【被会诊医生调用】
+     * state 3，未接通前 => 被会诊医生主叫 && 会诊医生拒绝 => 【会诊医生调用】
+     * state 4，未接通前 => 被会诊医生主叫 && 被会诊医生拒绝 => 【被会诊医生调用】
+     * state 5，未接通前 => 会诊医生主叫 && 系统超时拒绝 => 【会诊医生调用】
+     * state 6，未接通前 => 被会诊医生主叫 && 系统超时拒绝 => 【被会诊医生调用】
+     */
+    processConsultHangup() {
+      const params = {}
+      params.consultNo = this.custom.session.content.consultInfo.consultNo
+      params.action = 'hangup'
+
+      // 会诊医生调用情况
+      if (this.getHangupConsultRole() === 'from') {
+        // state 1
+        if (this.isCalling === true && this.hangUpConsultBy === 'Own') {
+          params.sonAction = 'fromHangup'
+          params.role = 'from'
+        }
+        // state 3
+        else if (this.isCalling === false && this.hangUpConsultBy === 'Own') {
+          params.sonAction = 'fromHangup'
+          params.role = 'to'
+        }
+        // state 5
+        else if (this.isCalling === true && this.hangUpConsultBy === 'System') {
+          params.sonAction = 'systemHangup'
+          params.role = 'from'
+        }
+      }
+      // 被会诊医生调用情况
+      else if (this.getHangupConsultRole() === 'to') {
+        // state 2
+        if (this.isCalling === false && this.hangUpConsultBy === 'Own') {
+          params.sonAction = 'toHangup'
+          params.role = 'from'
+        }
+        // state 4
+        else if (this.isCalling === true && this.hangUpConsultBy === 'Own') {
+          params.sonAction = 'toHangup'
+          params.role = 'to'
+        }
+        // state 6
+        else if (this.isCalling === true && this.hangUpConsultBy === 'System') {
+          params.sonAction = 'systemHangup'
+          params.role = 'to'
+        }
+      }
+
+      if (params.sonAction && params.role) {
+        return peace.service.video.processConsult(params)
+      }
+    },
+
+    getHangupConsultRole() {
+      const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
+      const startDoctorList = this.custom.session.content.consultInfo.startDoctor
+      const receiveDoctorList = this.custom.session.content.consultInfo.receiveDoctor
+
+      if (startDoctorList.find(item => item.doctorId === doctorId)) {
+        return 'from'
+      }
+
+      if (receiveDoctorList.find(item => item.doctorId === doctorId)) {
+        return 'to'
+      }
+
+      return new Error('当前医生未找到角色')
     }
   }
 }

@@ -29,7 +29,8 @@
         </template>
 
         <!-- 解散频道时，推送会诊时长 -->
-        <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道">
+        <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 || 
+                             getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -114,7 +115,8 @@ export default {
           if (
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
             message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊
+            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊 &&
+            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录
           )
             return false
         }
@@ -196,12 +198,38 @@ export default {
 
     getMessageText(message) {
       if (message.content && message.content.data && message.content.data.showTextInfo) {
+        // 视频记录需要区分发起与受邀
+
+        if (this.getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录) {
+          if (this.getHangupConsultRole(message) === 'from') {
+            return message.content.data.showTextInfo.doctorClientText
+          } else {
+            return message.content.data.showTextInfo.patientClientText
+          }
+        }
+
         return message.content.data.showTextInfo.doctorClientText
       }
 
       if (message.text) {
         return message.text
       }
+    },
+
+    getHangupConsultRole(message) {
+      const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
+      const startDoctorList = message.content.data.consultInfo.startDoctor
+      const receiveDoctorList = message.content.data.consultInfo.receiveDoctor
+
+      if (startDoctorList.find(item => item.doctorId === doctorId)) {
+        return 'from'
+      }
+
+      if (receiveDoctorList.find(item => item.doctorId === doctorId)) {
+        return 'to'
+      }
+
+      return new Error('当前医生未找到角色')
     }
   }
 }
