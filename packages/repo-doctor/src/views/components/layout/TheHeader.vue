@@ -41,8 +41,12 @@
 
       <el-dropdown>
         <div class="header-right-title">
-          <img :src="$store.state.user.userInfo.list.docInfo.avartor" />
-          <!-- <div class="circle online"></div> -->
+          <el-badge is-dot
+                    type="primary"
+                    :class="workStatus">
+            <el-avatar :size="30"
+                       :src="$store.state.user.userInfo.list.docInfo.avartor"></el-avatar>
+          </el-badge>
           <span>欢迎您，</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.name }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -51,17 +55,20 @@
         <el-dropdown-menu class="header-right-title-dropdown"
                           slot="dropdown">
           <div class="header-right-title-dropdown-content">
-            <!-- <h4>出诊状态</h4>
-              <el-dropdown-item class="dropdown-item" disabled readonly>
-                <div class="circle online"></div>
-                <span>上线</span>
-              </el-dropdown-item>
-              <el-dropdown-item class="dropdown-item" disabled readonly>
-                <div class="circle offline"></div>
-                <span>离线</span>
-              </el-dropdown-item>
-            <hr>-->
+            <h4>工作状态</h4>
+            <el-dropdown-item @click.native="setWorkstatus(1)"
+                              class="dropdown-item">
+              <div class="icon circle online"></div>
+              <span>接诊中</span>
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="setWorkstatus(2)"
+                              class="dropdown-item">
+              <div class="icon circle offline"></div>
+              <span>休息中</span>
+            </el-dropdown-item>
+            <hr>
             <el-dropdown-item @click.native="signOut"
+                              style="justify-content: center;"
                               class="dropdown-item">
               <span>退出登录</span>
             </el-dropdown-item>
@@ -101,14 +108,6 @@ export default {
     SignNotice,
     OrgNotice
   },
-  computed: {
-    // 使用对象展开运算符将 getter 混入 computed 对象中
-    // ...mapGetters([
-    //   'notification/messageList',
-    //   'notification/unread',
-    //   // ...
-    // ])
-  },
   data() {
     return {
       messageList: [],
@@ -131,6 +130,21 @@ export default {
       }
     }
   },
+  computed: {
+    workStatus() {
+      const workStatus = this.$store.state.user.userInfo.list.docInfo.workStatus
+
+      if (workStatus === 1) {
+        return { online: true }
+      }
+
+      if (workStatus === 2) {
+        return { offline: true }
+      }
+
+      return ''
+    }
+  },
   mounted() {
     // this.getMsgList();
     // this.getRoundMsg();store.dispatch('increment')
@@ -148,6 +162,15 @@ export default {
       peace.service.personalCenter.getMsgList(params).then(res => {
         this.messageList = res.data.list
         this.unread = res.data.unRead
+      })
+    },
+    setWorkstatus(status) {
+      peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
+        const userInfo = peace.cache.get(peace.type.USER.INFO)
+        userInfo.list.docInfo.workStatus = status
+
+        this.$store.commit('user/setUserInfo', userInfo)
+        peace.cache.set(peace.type.USER.INFO, userInfo, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
       })
     },
     handleNotice(item) {
@@ -231,8 +254,33 @@ export default {
     }
   }
 
-  .header-right {
+  /deep/ .header-right {
     display: flex;
+
+    .el-badge {
+      &.offline {
+        .el-badge__content {
+          background-color: #666;
+        }
+      }
+
+      &.online {
+        .el-badge__content {
+          background-color: #00c6ae;
+        }
+      }
+
+      .el-badge__content.is-fixed.is-dot {
+        top: 4px;
+        right: 4px;
+        border: 1px solid #ebebebb4;
+      }
+
+      .el-badge__content.is-dot {
+        width: 12px;
+        height: 12px;
+      }
+    }
 
     .header-right-message {
       display: flex;
@@ -291,10 +339,10 @@ export default {
       font-weight: 400;
       color: rgba(255, 255, 255, 1);
 
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+      .el-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin: 0 12px 0 0;
       }
     }
@@ -309,7 +357,6 @@ export default {
   height: 12px;
   background: red;
   border-radius: 50%;
-  margin: 0 12px 0 0;
 
   &.online {
     background: #00e9cd;
@@ -392,16 +439,13 @@ export default {
 
   .header-right-title-dropdown-content {
     width: 100%;
-    padding: 4px 0;
-
-    text-align: center;
+    padding: 8px;
 
     h4 {
       font-size: 14px;
       font-weight: 400;
       color: rgba(102, 102, 102, 1);
-      margin: 0 0 10px 0;
-      padding: 0;
+      padding: 5px 0;
     }
 
     hr {
@@ -409,19 +453,26 @@ export default {
       height: 1px;
       border: 0;
       border-top: 1px solid #efefef;
-      margin: 10px 0;
+      margin: 5px 0;
       padding: 0;
     }
 
     .dropdown-item {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       height: 28px;
       line-height: 28px;
+      padding: 0 5px;
+      border-radius: 5px;
 
       &.active {
         background: #abb9b8;
+      }
+
+      h4 {
+        line-height: 0;
+        margin: 0;
       }
 
       span {
@@ -431,6 +482,10 @@ export default {
         font-weight: 400;
         color: rgba(102, 102, 102, 1);
         line-height: 20px;
+      }
+
+      .icon {
+        margin: 0 10px 0 0;
       }
     }
   }

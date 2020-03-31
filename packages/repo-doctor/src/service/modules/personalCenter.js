@@ -91,6 +91,18 @@ export function getDetail(params) {
   return peace.http.post(getDetail, params)
 }
 
+/**
+ * 更新医生工作状态
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function updateWorkStatus(params) {
+  const updateWorkStatus = 'client/v1/Personalcenter/updateWorkStatus'
+
+  return peace.http.post(updateWorkStatus, params)
+}
 
 export default {
   /** 获取医生个人信息 */
@@ -112,5 +124,8 @@ export default {
   getMsgList,
 
   /** 获取通知列表 */
-  getDetail
+  getDetail,
+
+  /** 更新医生工作状态 */
+  updateWorkStatus
 }
