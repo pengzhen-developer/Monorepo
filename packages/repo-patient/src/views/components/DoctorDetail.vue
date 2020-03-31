@@ -526,6 +526,13 @@ export default {
     this.getWapDoctorInfo()
     this.goLogin()
   },
+  beforeRouteEnter(to, from, next) {
+    next(() => {
+      if (peace.cache.get('isEwm') && from.fullPath.indexOf('login') != -1) {
+        peace.cache.remove('isEwm')
+      }
+    })
+  },
   mounted() {
     // this.getWapDoctorInfo()
     // this.goLogin()
