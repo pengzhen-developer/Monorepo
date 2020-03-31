@@ -34,6 +34,7 @@ export default {
   updated() {
     console.log('updated')
   },
+  
   mounted() {
     let that = this
     this.key = config.MAP.key
@@ -60,18 +61,31 @@ export default {
     },
     save() {
       // console.log(this.loc);
+      
+      // if (this.loc) {
+      //   let routeParam = peace.util.decode(this.$route.params.json)
+      //   let addr = this.loc.poiname
+      //   let Latitude = this.loc.latlng.lat
+      //   let Longitude = this.loc.latlng.lng
+      //   let params = { addr, Latitude, Longitude, ...routeParam }
+      //   params = peace.util.encode(params)
+      //   this.$router.push(`/drug/list/${params}`)
+      // } else {
+      //   this.$router.go(-1)
+      // }
+      let params=null
       if (this.loc) {
         let routeParam = peace.util.decode(this.$route.params.json)
         let addr = this.loc.poiname
         let Latitude = this.loc.latlng.lat
         let Longitude = this.loc.latlng.lng
-        let params = { addr, Latitude, Longitude, ...routeParam }
+        params = { addr, Latitude, Longitude, ...routeParam }
         params = peace.util.encode(params)
-        //console.log(params);
-        this.$router.push(`/drug/list/${params}`)
-      } else {
-        this.$router.go(-1)
+      }else{
+        params=null
       }
+      peace.cache.set('location',params)
+      this.$router.go(-1)
     }
   }
 }

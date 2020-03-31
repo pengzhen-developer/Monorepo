@@ -109,6 +109,22 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('message', () => {})
+    peace.cache.remove('location')
+  },
+  created(){
+    peace.cache.set('location',null)
+  },
+  activated(){
+    let location=peace.cache.get('location')
+    if(location!=null){
+      location=peace.util.decode(location)
+      //从地图页面返回
+      let { Latitude, Longitude, addr, JZTClaimNo } = location
+      this.userLocation = { lat: Latitude, lng: Longitude }
+      this.locationStr = addr
+      this.messageOn = true
+      this.getPhaList(JZTClaimNo)
+    }
   },
   mounted() {
     /* eslint-disable */
@@ -116,7 +132,7 @@ export default {
     // this.key = config.MAP.key;
     let paramsRoute = peace.util.decode(this.$route.params.json)
     // console.log('route', paramsRoute)
-
+    
     if (paramsRoute.addr) {
       //从地图页面返回
       let { Latitude, Longitude, addr, JZTClaimNo } = paramsRoute
