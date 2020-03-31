@@ -125,7 +125,9 @@ export default {
           // startTime: new Number(this.createdTime) * 1000
           inquiryId: inquiryId
         })
-        this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
+        //支付成功去掉支付中转页 直接跳转详情
+        // this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
+         this.$router.replace(`/setting/userConsultDetail/${json}`)
       }
     }
   }
