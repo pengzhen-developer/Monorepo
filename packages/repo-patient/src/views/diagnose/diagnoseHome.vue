@@ -206,6 +206,7 @@ export default {
       this.p++
       peace.service.diagnose
         .doctorList({
+          nethospitalid:this.params.nethospitalid,
           diseaseCode: this.params.symptomCode ? '' : this.params.id,
           symptomCode: this.params.symptomCode,
           city: this.checkCity,

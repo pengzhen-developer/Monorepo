@@ -60,6 +60,7 @@ export default {
 
       this.activeId = data.id
       json = peace.util.encode({
+        nethospitalid:peace.util.decode(this.$route.params.json).nethospitalid,
         id: data.id,
         symptomCode: data.id,
         title: data.name,

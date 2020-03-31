@@ -65,7 +65,6 @@
           </template>
         </div>
       </section>
-      <!-- 智能导诊 功能实现 暂时屏蔽 -->
       <!-- <section class="functions">
         <div @click="goMenuPage" style="line-height:30px;text-align:center;">智能导诊</div>
       </section> -->
@@ -82,7 +81,7 @@
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
-          <!-- "serviceLogoId": 3,//图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:中药寄送 -->
+          <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:智能导诊 8:中药寄送 -->
           <div class="img">
             <img
                  :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
@@ -344,7 +343,14 @@ export default {
           })
           this.$router.push(`/components/doctorList/${json}`)
           break
-
+        //智能导诊
+        case '智能导诊':
+          json = peace.util.encode({
+            nethospitalid: this.hospitalInfo.nethospitalInfo.netHospitalId,
+            Date: new Date()
+          })
+          this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
+          break
         // 查询报告
         // case '查询报告':
         //   json = peace.util.encode({
