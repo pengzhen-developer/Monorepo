@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div style="height:100%;">
+  <div :style="data.length==0&& 'height:100%;'">
     <van-skeleton :key="item.netHospitalId"
                   :loading="loading"
                   :name="item.hospitalName"
@@ -31,7 +31,7 @@
         </div>
       </div>
     </van-skeleton>
-    <div class="none" v-if="data.length==0">
+    <div class="none" v-if="loading&&data.length==0">
       <div class="none-page">
         <div class="icon icon_none_source"></div>
         <div class="none-text">暂无可预约号源</div>
@@ -116,6 +116,7 @@ export default {
         peace.service.index.getMenu().then(res => {
           this.data = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
+          // this.loading = true
         })
       }
       // 报告单医院
@@ -123,6 +124,7 @@ export default {
         peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
           this.data = res.data.netHospitals || []
           this.showNum = this.data.length
+          // this.loading = true
         })
       }
 
@@ -131,6 +133,7 @@ export default {
         peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then(res => {
           this.data = res.data.list || []
           this.showNum = this.data.length
+          this.loading = true
         })
       }
     }
