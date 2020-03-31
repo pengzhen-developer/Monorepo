@@ -57,8 +57,8 @@
             :items="data.crowdLists"
             :max="3"
             style="padding-bottom:10px"></Humens>
-    <van-cell @click="goMenuPage({},{type:'recommendHsp'})"
-              is-link
+    <van-cell @click="goMenuPage(data.recommendOrgan,{type:'recommendHsp'})"
+              :is-link="data.recommendOrgan.length>2"
               value="推荐互联网医院"
               style="border-top:10px solid #f5f5f5" />
     <HspPage :items="data.recommendOrgan"
@@ -105,6 +105,10 @@ export default {
   },
   methods: {
     goMenuPage(item, data) {
+      //可预约的医院小于3则不跳转
+      if(data.type=='recommendHsp'&&item.length<3){
+        return
+      }
       let json
       switch (data.type) {
         case 'guide':
@@ -113,6 +117,7 @@ export default {
           break
         case 'appoint':
         case 'recommendHsp':
+          
           // 开通预约的医院列表
           json = peace.util.encode({ doctorTag: item.id, type: data.type })
           this.$router.push(`/hospital/HospitalList/${json}`)
