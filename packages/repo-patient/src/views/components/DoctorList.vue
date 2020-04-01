@@ -15,10 +15,23 @@
               doctor.doctorInfo.doctorName
             }}</span>
             <span>{{ doctor.doctorInfo.doctorTitle }}</span>
-            <span>{{ doctor.doctorInfo.deptName }}</span>
+            <!-- 服务部标签 -->
+            <!-- <template v-if="!!doctor.doctorInfo.serviceList">
+              <div :class="['label', 'label-'+it]"
+                   v-for="(it, i) in doctor.doctorInfo.serviceList"
+                   :key="i">
+                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+              </div>
+            </template> -->
+
+            <span class="tag online"
+                  v-if="doctor.workStatus==1">接诊中</span>
+            <span class="tag outline"
+                  v-else-if="doctor.workStatus==2">休息中</span>
           </div>
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
+            <span>{{ doctor.doctorInfo.deptName }}</span>
           </div>
           <div class="title-description"
                v-if="doctor.doctorInfo.specialSkill">
@@ -61,6 +74,13 @@
               </div> -->
             </div>
           </div>
+          <!-- 候诊排队人数 -->
+          <!-- <div class="title-wait">
+            <van-image width="14px"
+                       height="13px"
+                       :src="require('@src/assets/images/ic_wenzhen.png')"></van-image>
+            <span>23人正在候诊...</span>
+          </div> -->
         </div>
       </div>
     </template>
@@ -247,6 +267,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tag {
+  height: 15px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  &.online {
+    color: $primary;
+    border-color: $primary;
+    background-color: rgba(0, 198, 174, 0.1);
+  }
+  &.outline {
+    color: $gary;
+    border-color: $gary;
+  }
+}
 .doctor-list {
   height: 100%;
 
@@ -271,7 +315,7 @@ export default {
       .title-doctor {
         color: #000000;
         margin: 0 0 5px 0;
-
+        position: relative;
         .title-doctor-name {
           font-size: 18px;
           font-weight: 600;
@@ -280,11 +324,42 @@ export default {
         span {
           margin: 0 10px 0 0;
         }
+        /*{{it.tag == 'image' ? '问' : it.tag =='prvivateDoctor' ? '服务包' : it.tag == 'appoint' ? '号' : '视频'}}*/
+        .label {
+          border-radius: 2px;
+          color: #fff;
+          padding: 0px 2px;
+          margin-right: 2.5px;
+          font-size: 9px;
+          &.label-image {
+            background: #00c6ae;
+            border-color: #00c6ae;
+          }
+          &.label-appoint {
+            background: #74b0ff;
+            border-color: #74b0ff;
+          }
+          &.label-prvivateDoctor {
+            background: #ac91ff;
+            border-color: #ac91ff;
+          }
+          &.label-video {
+            background: #888;
+            border-color: #888;
+          }
+          &.label-register {
+            background: #74b0ff;
+            border-color: #74b0ff;
+          }
+        }
       }
 
       .title-hospital {
         margin: 0 0 5px 0;
         color: #000000;
+        span {
+          margin-right: 10px;
+        }
       }
 
       .title-description {
@@ -333,6 +408,19 @@ export default {
           span {
             margin: 0 0 0 5px;
           }
+        }
+      }
+
+      .title-wait {
+        padding: 6px 15px;
+        background: rgba(235, 251, 249, 1);
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+        span {
+          font-size: 12px;
+          margin-left: 10px;
         }
       }
     }

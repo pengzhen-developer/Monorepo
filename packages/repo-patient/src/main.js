@@ -23,9 +23,10 @@ import library from '@src/library'
 Vue.use(library.install)
 
 // UI
-import Vant from 'vant'
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/icon/local.css'
 import 'vant/lib/index.less'
+Vue.use(Lazyload)
 Vue.use(Vant)
 
 // css
@@ -33,14 +34,17 @@ import '@src/assets/css/index.scss'
 
 // Service Worker 缓存
 if ('serviceWorker' in navigator) {
-   window.addEventListener('load', () => {
-       navigator.serviceWorker.register('/service-worker.js').then(registration => {
-           console.log('SW registered: ', registration);
-         }).catch(registrationError => {
-           console.log('SW registration failed: ', registrationError);
-         });
-     });
- }
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        console.log('SW registered: ', registration)
+      })
+      .catch(registrationError => {
+        console.log('SW registration failed: ', registrationError)
+      })
+  })
+}
 
 // initial
 const vueAppInstance = new Vue({
@@ -50,6 +54,4 @@ const vueAppInstance = new Vue({
 }).$mount('#app')
 
 // 兼容 IE 9、10 低版本的 __proto__
-Object.setPrototypeOf
-  ? Object.setPrototypeOf($peace, vueAppInstance)
-  : ($peace.__proto__ = vueAppInstance)
+Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)

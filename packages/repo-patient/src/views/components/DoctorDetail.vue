@@ -9,6 +9,10 @@
                    :src="doctor.doctorInfo.avartor" />
         <span class="name">{{ doctor.doctorInfo.name }}</span>
         <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
+        <span class="tag tag-online"
+              v-if="doctor.doctorInfo.workStatus==1">接诊中</span>
+        <span class="tag tag-outline"
+              v-else-if="doctor.doctorInfo.workStatus==2">休息中</span>
       </div>
 
       <div class="header-right">
@@ -559,9 +563,9 @@ export default {
       peace.service.doctor.getWapDoctorInfo(params).then(res => {
         this.doctor = res.data
         this.doctorStatus = res.data.doctorInfo.doctorStatus
-        let obj={
-          url:'',
-          title: this.doctor.doctorInfo.name+' '+this.doctor.doctorInfo.doctorTitle,
+        let obj = {
+          url: '',
+          title: this.doctor.doctorInfo.name + ' ' + this.doctor.doctorInfo.doctorTitle,
           desc: this.doctor.doctorInfo.specialSkill,
           imgUrl: this.doctor.doctorInfo.avartor
         }
@@ -891,7 +895,25 @@ export default {
         font-size: 14px;
       }
     }
-
+    .tag {
+      height: 15px;
+      width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      margin-left: 10px;
+      &.tag-online {
+        color: $primary;
+        border-color: $primary;
+        background-color: #fff;
+      }
+      &.tag-outline {
+        color: #fff;
+      }
+    }
     .header-right {
       margin-top: -10px;
 

@@ -7,24 +7,35 @@
              @click="goprescripDetailPage(item)"
              class="word-list"
              v-for="(item, index) in internalData">
-          <div class="word-avatar">
-            <div class="icon"></div>
+          <div class="tag-new"
+               v-if="item.isRead=='off'"><span>新</span></div>
+          <div style="display:flex;">
+            <div class="word-avatar">
+              <div class="icon"></div>
+            </div>
+            <div class="word-body">
+              <div class="word-title">
+                <div class="title">{{item.patientName}}的用药建议</div>
+                <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
+                     class="label label-default"
+                     v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
+                </div>
+              </div>
+              <div class="word-inline">
+                <div class="span">{{item.deptName}}</div>
+                <div class="space">
+                  <span>{{item.hospitalName}} </span>
+                  <span>{{item.date}}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="word-body">
-            <div class="word-title">
-              <div class="title">{{item.patientName}}的用药建议</div>
-              <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
-                   class="label label-default"
-                   v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
-              </div>
-            </div>
-            <div class="word-inline">
-              <div class="span">{{item.deptName}}</div>
-              <div class="space">
-                <span>{{item.hospitalName}} </span>
-                <span>{{item.date}}</span>
-              </div>
-            </div>
+          <div class="word-bottom"
+               v-if="item.prescriptionStatus.reminderTxt">
+            <van-image width="14px"
+                       height="14px"
+                       :src="require('@src/assets/images/warn.png')"></van-image>
+            <span>{{item.prescriptionStatus.reminderTxt}}</span>
           </div>
         </div>
         <div class="tips-bottom"
@@ -119,7 +130,7 @@ export default {
 
       peace.service.patient.getMyPrescripList(params).then(res => {
         this.internalData = res.data
-        this.loaded = true;
+        this.loaded = true
       })
     },
 
@@ -150,10 +161,10 @@ export default {
   .word-list {
     position: relative;
     background: #fff;
-
+    overflow: hidden;
     margin: 0 0 15px 0;
     box-shadow: 0px 1px 8px 0px rgba(221, 221, 221, 0.5);
-    display: flex;
+    // display: flex;
     border-radius: 4px;
   }
   .word-list::after {
@@ -222,10 +233,38 @@ export default {
     flex: initial;
     width: 50px;
     height: 22px;
-    margin-right: 10px;
+    margin-right: 35px;
     border: 0;
     border-radius: 2px;
     text-align: center;
+  }
+  .tag-new {
+    width: 39px;
+    height: 27px;
+    color: #fff;
+    // padding:3.5px;
+    display: flex;
+    justify-content: flex-end;
+    line-height: 1;
+    font-size: 11px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    justify-content: flex-end;
+    background: linear-gradient(
+      212deg,
+      rgba(242, 34, 59, 1) 0,
+      rgba(242, 34, 59, 1) 50%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    span {
+      height: 18px;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
   .word-list .word-inline {
     font-size: 12px;
@@ -249,6 +288,18 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .word-bottom {
+    padding: 5px 15px;
+    background: #fffbe6;
+    border-radius: 0px 0px 2px 2px;
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 12px;
+      color: #fa8c16;
+      margin-left: 12px;
+    }
   }
   .span.s {
     max-width: 125px;

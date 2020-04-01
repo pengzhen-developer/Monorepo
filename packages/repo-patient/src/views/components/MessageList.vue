@@ -17,7 +17,8 @@
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊||
                 getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
+                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过">
             <!-- 消息时间 -->
             <template
                       v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
@@ -39,7 +40,7 @@
               <!-- 消息内容 -->
               <div class="message-body">
                 <div v-html="getMessageText(message)"
-                     @click="gotoComment(message)"></div>
+                     @click="gotoOtherPage(message)"></div>
               </div>
 
               <div class="message-avatar"
@@ -281,11 +282,17 @@
                      :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
-              <!-- 消息内容 -->
+              <!-- 消息内容 :style="message.file.style"-->
               <div>
-                <img :src="message.file.url"
+                <!-- <img :src="message.file.url"
                      @click="viewImage(message.file.url)"
-                     style="max-width: 200px; " />
+                     style="max-width: 200px;" :style="message.file.style"/> -->
+                <van-image @click="viewImage(message.file.url)" :width="message.file.width" :height="message.file.height" lazy-load :src="message.file.url">
+                    <template v-slot:loading>
+                      <van-loading type="spinner" size="20" />
+                    </template>
+                    <template v-slot:error>加载失败</template>
+                </van-image>
               </div>
 
               <div class="message-avatar"
@@ -466,8 +473,10 @@
 import peace from '@src/library'
 
 import Vue from 'vue'
-import { ImagePreview, Toast } from 'vant'
-Vue.use(ImagePreview, Toast)
+import { ImagePreview, Toast,Lazyload   } from 'vant'
+
+Vue.use(ImagePreview, Toast,Lazyload  )
+
 
 import Compressor from 'compressorjs'
 
@@ -525,6 +534,7 @@ export default {
       },
       showTimeDic: {
         710: true, // 接诊
+        731: true,// 审核处方通过 
         740: true, // 结束问诊
         // 742: true, // 转诊
         // 743: true, // 会诊
@@ -594,7 +604,18 @@ export default {
           // )
           //   return false
         }
-
+        //计算图片高度 -- 最大宽度200px
+        if(message.type === "image"){
+          if(message.file.w>200){
+            message.file.style="height:"+message.file.h/(message.file.w/200)+"px;"
+            message.file.width='200'
+            message.file.height=parseFloat(message.file.h/(message.file.w/200)).toFixed(2)
+          }else{
+            message.file.style="height:"+message.file.h+"px;"
+            message.file.width=message.file.w
+            message.file.height=message.file.h
+          }
+        }
         return true
       })
       return sessionMessages
@@ -781,7 +802,8 @@ export default {
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
             message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
+            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过
           ) {
             return 'system'
           }
@@ -879,12 +901,22 @@ export default {
         }
       }, 1)
     },
-    gotoComment(message) {
-      let json = peace.util.encode({
-        inquiryNo: message.content.data.inquiryInfo.inquiryNo
-      })
+    gotoOtherPage(message) {
+      //去评价
       if (this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示) {
+        const json = peace.util.encode({
+          inquiryNo: message.content.data.inquiryInfo.inquiryNo
+        })
+
         this.$router.push(`/components/CommentForDoctor/${json}`)
+      }
+      //去购药
+      if(this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过){
+        const params = peace.util.encode({
+          prescribeId: message.content.data.recipeInfo.recipeId
+        })
+
+        this.$router.push(`/components/theRecipe/${params}`)
       }
     },
     //问诊卡详情

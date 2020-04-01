@@ -46,7 +46,50 @@
         <div class="form-dt">既往史</div>
         <div class="form-dd">{{internalData.pastHistory || '无'}}</div>
       </div>
-      <div class="form-dl"
+      <div class="table"
+           v-if="internalData.inspectionIndex &&
+                (internalData.inspectionIndex.temperature ||
+                 internalData.inspectionIndex.weight ||
+                 internalData.inspectionIndex.heart_rate ||
+                 internalData.inspectionIndex.blood_pressure ||
+                 internalData.inspectionIndex.More)">
+        <div class='table-th'>检查指标</div>
+        <table border='1'
+               cellspacing='0'>
+          <tr>
+            <td v-if="internalData.inspectionIndex.temperature">体温：</td>
+            <td>
+              {{internalData.inspectionIndex.temperature ? internalData.inspectionIndex.temperature + '度' : '--'}}
+            </td>
+          </tr>
+          <tr v-if="internalData.inspectionIndex.weight">
+            <td>体重：</td>
+            <td>
+              {{internalData.inspectionIndex.weight ? internalData.inspectionIndex.weight + 'kg' : '--'}}
+            </td>
+          </tr>
+          <tr v-if="internalData.inspectionIndex.heart_rate">
+            <td>心率：</td>
+            <td>
+              {{internalData.inspectionIndex.heart_rate ? internalData.inspectionIndex.heart_rate + 'bpm' : '--'}}
+            </td>
+          </tr>
+          <tr v-if="internalData.inspectionIndex.blood_pressure">
+            <td>血压：</td>
+            <td>
+              {{internalData.inspectionIndex.blood_pressure ? internalData.inspectionIndex.blood_pressure + 'mmHg' : '--'}}
+            </td>
+          </tr>
+          <tr v-if="internalData.inspectionIndex.More">
+            <td>辅助检查：</td>
+            <td>
+              {{internalData.inspectionIndex.More}}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- <div class="form-dl"
            style="display: block;"
            v-if="internalData.inspectionIndex &&
                 (internalData.inspectionIndex.temperature ||
@@ -97,7 +140,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="form-dl">
         <div class="form-dt">诊断</div>
         <div class="form-dd">{{internalData.diagnose || '无'}}</div>
@@ -190,6 +233,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table {
+  padding: 0 10px;
+  background-color: #fff;
+}
+.table-th {
+  padding: 10px 0;
+  color: #000;
+  font-size: 15px;
+}
+table {
+  background: #f8f8f8;
+  padding: 0px 10px;
+  border-color: transparent;
+  border-radius: 5px;
+  tr {
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-color: transparent;
+    &:last-child {
+      td {
+        border-bottom-color: transparent;
+        padding-top: 5px;
+        vertical-align: top;
+      }
+    }
+    td {
+      border-bottom-color: #ebebeb;
+    }
+  }
+  td {
+    border-color: transparent;
+    height: 37px;
+    font-size: 15px;
+    &:nth-child(1) {
+      width: 28%;
+      padding-left: 10px;
+      color: #000;
+      // text-align-last: justify;
+    }
+    &:nth-child(2) {
+      width: 72%;
+      padding-right: 10px;
+      text-align: right;
+      color: #666;
+    }
+  }
+}
 .the-case {
   background-color: #f5f5f5;
 
