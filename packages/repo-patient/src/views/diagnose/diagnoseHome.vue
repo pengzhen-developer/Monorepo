@@ -99,7 +99,7 @@
     </div> -->
     <van-list v-model="showLoadingType"
               :finished="finished"
-              finished-text="没有更多了"
+              :finished-text="!nodata&&'没有更多了'"
               @load="getDoctList">
       <van-cell class="card"
                 v-for="(item, index) in doctorList"
@@ -174,7 +174,8 @@ export default {
       checkedData: 'intro',
       p: 0,
       size: 10,
-      finished: false
+      finished: false,
+      nodata:false
     }
   },
   created() {
@@ -207,6 +208,10 @@ export default {
         this.p = 0
       }
       this.showLoadingType = true
+      if(this.p==1&&this.doctorList.length==0){
+        this.showLoadingType=false
+        return
+      }
       this.p++
       peace.service.diagnose
         .doctorList({
@@ -221,9 +226,13 @@ export default {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
+          if(!this.showLoadingType&&this.doctorList.length==0){
+              this.nodata=true
+          }
           if (this.p * this.size >= res.data.total) {
             this.finished = true
           }
+
         })
     },
     showCityDicFn() {
@@ -269,6 +278,8 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  line-height: 15px;
+  box-sizing: content-box;
   border-width: 1px;
   border-style: solid;
   border-radius: 3px;

@@ -37,7 +37,7 @@
             <!--        </div>-->
         </div>
         <van-loading size="24px" v-if="showLoadingType" class="load">加载中...</van-loading>
-        <div class="card" v-for="(item, index) in doctorList" @click="goHomeIndex(item)" data-id="item.doctorId" :key="index">
+        <!-- <div class="card" v-for="(item, index) in doctorList" @click="goHomeIndex(item)" data-id="item.doctorId" :key="index">
             <div class="card-avatar avatar-circular">
                 <img class="" :src="item.avartor" />
             </div>
@@ -49,6 +49,10 @@
                                 {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                             </div>
                     </div>
+                    <span class="tag tag-online"
+                        v-if="item.workStatus==1">接诊中</span>
+                    <span class="tag tag-outline"
+                        v-else-if="item.workStatus==2">休息中</span>
                 </div>
                 <div class="card-small">
                     {{item.netHospitalName}} {{item.deptName}}
@@ -59,7 +63,47 @@
                         {{item.specialSkill}}</div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <van-list v-model="showLoadingType"
+              :finished="finished"
+              :finished-text="!nodata&&'没有更多了'"
+              @load="getDoctList">
+            <van-cell class="card"
+                        v-for="(item, index) in doctorList"
+                        @click="goHomeIndex(item)"
+                        data-id="item.doctorId"
+                        :key="index">
+                <div class="card-avatar avatar-circular">
+                <img class=""
+                    :src="item.avartor" />
+                </div>
+                <div class="card-body">
+                <div class="card-name">{{item.name}}
+                    <div class="card-small">
+                    {{item.doctorTitle}}
+                    <div :class="['label', 'label-'+it]"
+                        v-for="(it, i) in item.serviceList"
+                        :key="i">
+                        {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                    </div>
+                    </div>
+                    <span class="tag tag-online"
+                        v-if="item.workStatus==1">接诊中</span>
+                    <span class="tag tag-outline"
+                        v-else-if="item.workStatus==2">休息中</span>
+                </div>
+                <div class="card-small">
+                    {{item.netHospitalName}} {{item.deptName}}
+                </div>
+                <div class="card-brief"
+                    v-if="item.specialSkill">
+                    <div class="span s">擅长：</div>
+                    <div class="span xl">
+                    {{item.specialSkill}}</div>
+                </div>
+                </div>
+            </van-cell>
+        </van-list>
         <div class="none-page" v-if="!doctorList.length && !showLoadingType">
             <div class="icon icon_none_doctor"></div>
             <div class="none-text">暂无医生信息</div>
@@ -95,7 +139,11 @@
                 checkCity: '武汉',
                 showCityDic: false,
                 showLoadingType: true,
-                cityDic:[{name:'武汉'}]
+                cityDic:[{name:'武汉'}],
+                p: 0,
+                size: 10,
+                finished: false,
+                nodata:false
             }
         },
         created() {
@@ -131,20 +179,35 @@
             toggleNext(){
               this.page.nextClass = !this.page.nextClass
             },
-            getDoctList(){
-                this.showLoadingType = true;
-                this.doctorList = [];
+            getDoctList(type){
+                if (type) {
+                    this.doctorList = []
+                    this.finished = false
+                    this.p = 0
+                }
+                this.showLoadingType = true
+                if(this.p==1&&this.doctorList.length==0){
+                    this.showLoadingType=false
+                    return
+                }
+                this.p++
                 peace.service.diagnose.doctorList({
                     crowdCode: this.params.serviceCode,
                     city: this.checkCity,
-                    p: 1,
-                    size: 50
+                    p: this.p,
+                    size: this.size
                 }).then(res => {
                     !this.cityDic[1] && res.data.citys && res.data.citys[1] && (
                         this.cityDic = res.data.citys || []
                     );
-                    this.doctorList = res.data.list || []
-                    this.showLoadingType = false;
+                    this.doctorList = this.doctorList.concat(res.data.list)
+                    this.showLoadingType = false
+                    if(!this.showLoadingType&&this.doctorList.length==0){
+                        this.nodata=true
+                    }
+                    if (this.p * this.size >= res.data.total) {
+                        this.finished = true
+                    }
                 })
             },
             showCityDicFn(){
@@ -153,7 +216,7 @@
             checkCityDic(item){
                 this.checkCity = item.name;
                 this.showCityDic = false;
-                this.getDoctList();
+                this.getDoctList(item.name);
             },
             goHomeIndex(item){
                 let json = peace.util.encode({
@@ -170,6 +233,9 @@
 
 <style lang="scss" scoped>
     @import "~@src/views/style/style.css";
+    /deep/.van-cell__value {
+        display: flex;
+    }
     .banner{
         position: relative;
         width: 100%;
@@ -201,6 +267,35 @@
         padding: 10px;
         margin: 0;
         border-bottom: 1px solid #f5f5f5;
+    }
+    .card-name {
+        position: relative;
+        }
+        .tag {
+        height: 15px;
+        width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        line-height: 15px;
+        box-sizing: content-box;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 3px;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        &.tag-online {
+            color: $primary;
+            border-color: $primary;
+            background-color: rgba(0, 198, 174, 0.1);
+        }
+        &.tag-outline {
+            color: $gary;
+            border-color: $gary;
+        }
     }
     .card-brief{
         color: #999;

@@ -902,6 +902,8 @@ export default {
       align-items: center;
       justify-content: center;
       font-size: 11px;
+      line-height: 15px;
+      box-sizing: content-box;
       border: 1px solid #fff;
       border-radius: 3px;
       margin-left: 10px;

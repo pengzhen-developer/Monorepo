@@ -31,7 +31,7 @@
         </div>
       </div>
     </van-skeleton>
-    <div class="none" v-if="loading&&data.length==0">
+    <div class="none" v-if="!loading&&data.length==0">
       <div class="none-page">
         <div class="icon icon_none_source"></div>
         <div class="none-text">暂无可预约号源</div>
@@ -67,20 +67,22 @@ export default {
       type: 'recommendHsp' // 默认值
     }
   },
+  
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params || {}
     this.type = params.type || this.type
     this.data = this.items || []
     this.showNum = this.max
-
+    
     if (!this.data.length) {
       this.getHspList()
-      console.log(this.data)
+    }else{
+      this.loading = false
     }
   },
   mounted() {
-    this.loading = false
+    // this.loading = true
   },
   methods: {
     goMenuPage(item) {
@@ -116,7 +118,7 @@ export default {
         peace.service.index.getMenu().then(res => {
           this.data = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
-          // this.loading = true
+          this.loading = false
         })
       }
       // 报告单医院
@@ -124,7 +126,7 @@ export default {
         peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
           this.data = res.data.netHospitals || []
           this.showNum = this.data.length
-          // this.loading = true
+          this.loading = false
         })
       }
 
@@ -133,7 +135,7 @@ export default {
         peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then(res => {
           this.data = res.data.list || []
           this.showNum = this.data.length
-          this.loading = true
+          this.loading = false
         })
       }
     }

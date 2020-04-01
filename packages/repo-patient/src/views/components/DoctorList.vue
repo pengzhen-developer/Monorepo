@@ -274,6 +274,8 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  line-height: 15px;
+  box-sizing: content-box;
   border-width: 1px;
   border-style: solid;
   border-radius: 3px;
