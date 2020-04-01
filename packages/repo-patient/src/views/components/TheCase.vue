@@ -247,6 +247,7 @@ table {
   padding: 0px 10px;
   border-color: transparent;
   border-radius: 5px;
+  width: 100%;
   tr {
     padding: 0 10px;
     box-sizing: border-box;
@@ -417,6 +418,7 @@ table {
   flex: 1;
   color: #999;
   text-align: right;
+  word-break: break-all;
 }
 .form-dl .form-dd.blue {
   color: #00c6ae;

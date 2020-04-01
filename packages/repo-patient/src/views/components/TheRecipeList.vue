@@ -116,7 +116,7 @@ export default {
     }
   },
 
-  created() {
+  activated() {
     if ($peace.cache.get($peace.type.USER.INFO)) {
       if (!this.data) {
         this.get()
