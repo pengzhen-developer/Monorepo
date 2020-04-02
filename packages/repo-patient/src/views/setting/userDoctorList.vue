@@ -34,10 +34,10 @@
                   {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                 </div>
               </template> -->
-              <span class="tag online"
-                    v-if="item.workStatus==1">接诊中</span>
-              <span class="tag outline"
-                    v-else-if="item.workStatus==2">休息中</span>
+              <div class="tag-work tag-online"
+                   v-if="item.workStatus==1">接诊中</div>
+              <div class="tag-work tag-outline"
+                   v-else-if="item.workStatus==2">休息中</div>
             </div>
             <div class="card-small">
               <span v-if="item.hospitalName">{{item.hospitalName}}</span>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="none-page"
-         v-else>
+         v-if="loaded&&this.doctorList.length==0">
       <div class="icon icon_none_doctor"></div>
       <div class="none-text">暂无医生信息</div>
     </div>
@@ -76,13 +76,15 @@ export default {
 
   data() {
     return {
-      doctorList: []
+      doctorList: [],
+      loaded: false
     }
   },
 
   created() {
     peace.service.patient.getUserDctList().then(res => {
       this.doctorList = res.data
+      this.loaded = true
     })
   },
 
@@ -142,14 +144,14 @@ export default {
     }
   }
 }
-.tag {
+.tag-work {
   height: 15px;
   width: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  line-height: 15px;
+  line-height: normal;
   box-sizing: content-box;
   border-width: 1px;
   border-style: solid;
@@ -158,12 +160,12 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  &.online {
+  &.tag-online {
     color: $primary;
     border-color: $primary;
     background-color: rgba(0, 198, 174, 0.1);
   }
-  &.outline {
+  &.tag-outline {
     color: $gary;
     border-color: $gary;
   }

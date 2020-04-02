@@ -155,7 +155,7 @@ export default {
   // left: 12px;
   // top: 12px;
   font-size: 12px;
-  line-height: 1;
+  line-height: normal;
   margin-left: 4px;
 }
 

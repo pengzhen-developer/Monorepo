@@ -24,10 +24,10 @@
               </div>
             </template> -->
 
-            <span class="tag online"
-                  v-if="doctor.workStatus==1">接诊中</span>
-            <span class="tag outline"
-                  v-else-if="doctor.workStatus==2">休息中</span>
+            <div class="tag-work online"
+                 v-if="doctor.workStatus==1">接诊中</div>
+            <div class="tag-work outline"
+                 v-else-if="doctor.workStatus==2">休息中</div>
           </div>
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
@@ -267,14 +267,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tag {
+.tag-work {
   height: 15px;
   width: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  line-height: 15px;
+  line-height: normal;
+  margin: 0;
   box-sizing: content-box;
   border-width: 1px;
   border-style: solid;

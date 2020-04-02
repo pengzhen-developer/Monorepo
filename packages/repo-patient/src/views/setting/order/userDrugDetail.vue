@@ -63,7 +63,7 @@
           </div>
           <div class="head-tit">{{ order.DrugStoreName }}</div>
           <div class="head-more">
-            <div class="label blue " 
+            <div class="label blue "
                  @click="goPrescripDetailPage">查看处方</div>
           </div>
         </div>
@@ -81,7 +81,9 @@
             </div>
             <div class="list-other">
               <div class="other-them"
-                   @click="goInterDrugPage(item)">说明书</div>
+                   @click="goInterDrugPage(item)">
+                <div>说明书</div>
+              </div>
               <div class="other-price">
                 <div class="price">￥{{item.DrugPrice}}</div>
                 x{{item.DrugNumber}}
@@ -340,9 +342,7 @@ export default {
     //是否显示应付金额  微信支付 ： 待支付为应付 其他的为实付
     //payStatus 1：待支付 2：已取消 3：已付款  4：退款中  5：已退款
     canShowPayway() {
-      return (
-        (this.order &&  this.order.payStatus < 3 )
-      )
+      return this.order && this.order.payStatus < 3
     },
 
     // 是否显示取消订单
@@ -353,17 +353,19 @@ export default {
         (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
           this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
-          this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
+            this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
       )
     },
     //是否显示取消订单 - top
-      canShowCancelTop(){
-       return this.order &&
-        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
-          this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家
-      },
+    canShowCancelTop() {
+      return (
+        (this.order &&
+          this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+          this.order.OrderStatus === ENUM.ORDER_STATUS.已下单) ||
+        (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
+          this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家)
+      )
+    },
     // 是否显示继续支付
     canShowPay() {
       return (
@@ -397,8 +399,7 @@ export default {
         this.order &&
         this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
         (this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货 ||
-        this.order.OrderStatus == ENUM.ORDER_STATUS.已接单)
-        
+          this.order.OrderStatus == ENUM.ORDER_STATUS.已接单)
       )
     },
 
@@ -554,9 +555,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.head-more{
-  .label{
-    border-radius:4px;
+.head-more {
+  .label {
+    border-radius: 4px;
   }
 }
 .refunded {
@@ -857,23 +858,29 @@ export default {
 .addr-p .inline {
   float: right;
 }
-.list-other .other-them {
+
+.list-other .other-them div {
   position: relative;
   padding-right: 14px;
+  line-height: 20px;
+  height: 20px;
 }
-.list-other .other-them::after {
+.list-other .other-them div::after {
   content: '?  ';
   position: absolute;
-  width: 10px;
-  height: 10px;
-  line-height: 1;
+  top: 0px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  transform: scale(0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #00c6ae;
-  border-radius: 50%;
-  font-size: 10px;
+  font-size: 20px;
+  line-height: normal;
   color: #fff;
-  top: 5px;
-  right: 0;
-  text-align: center;
 }
 .list-icon.list-icon-none {
   padding: 0;
@@ -956,6 +963,7 @@ export default {
     align-items: center;
 
     .btn--code {
+      line-height: normal;
       color: #00c6ae;
       padding: 0.16rem 0.38rem;
       border: 1px solid #00c6ae;

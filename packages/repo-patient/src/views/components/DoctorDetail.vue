@@ -9,10 +9,10 @@
                    :src="doctor.doctorInfo.avartor" />
         <span class="name">{{ doctor.doctorInfo.name }}</span>
         <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
-        <span class="tag tag-online"
-              v-if="doctor.doctorInfo.workStatus==1">接诊中</span>
-        <span class="tag tag-outline"
-              v-else-if="doctor.doctorInfo.workStatus==2">休息中</span>
+        <div class="tag-work tag-online"
+             v-if="doctor.doctorInfo.workStatus==1">接诊中</div>
+        <div class="tag-work tag-outline"
+             v-else-if="doctor.doctorInfo.workStatus==2">休息中</div>
       </div>
 
       <div class="header-right">
@@ -895,14 +895,14 @@ export default {
         font-size: 14px;
       }
     }
-    .tag {
+    .tag-work {
       height: 15px;
       width: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      line-height: 15px;
+      line-height: normal;
       box-sizing: content-box;
       border: 1px solid #fff;
       border-radius: 3px;
@@ -934,7 +934,7 @@ export default {
         align-items: center;
 
         height: none;
-        line-height: none;
+        line-height: normal;
       }
     }
   }

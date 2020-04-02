@@ -120,10 +120,10 @@
                 {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
               </div>
             </div>
-            <span class="tag tag-online"
-                  v-if="item.workStatus==1">接诊中</span>
-            <span class="tag tag-outline"
-                  v-else-if="item.workStatus==2">休息中</span>
+            <div class="tag-work tag-online"
+                 v-if="item.workStatus==1">接诊中</div>
+            <div class="tag-work tag-outline"
+                 v-else-if="item.workStatus==2">休息中</div>
           </div>
           <div class="card-small">
             {{item.netHospitalName}} {{item.deptName}}
@@ -175,7 +175,7 @@ export default {
       p: 0,
       size: 10,
       finished: false,
-      nodata:false
+      nodata: false
     }
   },
   created() {
@@ -208,8 +208,8 @@ export default {
         this.p = 0
       }
       this.showLoadingType = true
-      if(this.p==1&&this.doctorList.length==0){
-        this.showLoadingType=false
+      if (this.p == 1 && this.doctorList.length == 0) {
+        this.showLoadingType = false
         return
       }
       this.p++
@@ -226,13 +226,12 @@ export default {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
-          if(!this.showLoadingType&&this.doctorList.length==0){
-              this.nodata=true
+          if (!this.showLoadingType && this.doctorList.length == 0) {
+            this.nodata = true
           }
           if (this.p * this.size >= res.data.total) {
             this.finished = true
           }
-
         })
     },
     showCityDicFn() {
@@ -278,7 +277,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  line-height: 15px;
+  line-height: normal;
   box-sizing: content-box;
   border-width: 1px;
   border-style: solid;

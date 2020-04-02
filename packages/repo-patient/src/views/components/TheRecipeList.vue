@@ -237,6 +237,7 @@ export default {
     border: 0;
     border-radius: 2px;
     text-align: center;
+    line-height: normal;
   }
   .tag-new {
     width: 39px;

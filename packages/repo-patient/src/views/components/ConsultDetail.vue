@@ -319,8 +319,8 @@ Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
-const ENUM={
-    // 支付类型
+const ENUM = {
+  // 支付类型
   // wxpay（微信）
   // alipay（支付宝）
   // yibaopay（医保支付）
@@ -328,7 +328,7 @@ const ENUM={
     微信支付: 'wxpay',
     支付宝支付: 'alipay',
     医保支付: 'yibaopay'
-  },
+  }
 }
 export default {
   components: {
@@ -382,10 +382,12 @@ export default {
       immediate: true
     }
   },
-  computed:{
+  computed: {
     paymentTypeText() {
-      return Object.keys(ENUM.PAYMENT_TYPE).find(key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
-    },
+      return Object.keys(ENUM.PAYMENT_TYPE).find(
+        key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType
+      )
+    }
   },
   activated() {
     this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
@@ -773,10 +775,12 @@ export default {
   }
   .typeTag {
     width: 36px;
-    height: 21px;
+    height: 22px;
     border-radius: 10px 10px 10px 0;
-    line-height: 21px;
-    text-align: center;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #fff;
     font-size: 12px;
     font-weight: 400;
