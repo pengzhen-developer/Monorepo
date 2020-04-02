@@ -22,9 +22,9 @@
                 </div>
               </div>
               <div class="word-inline">
-                <div class="span">{{item.deptName}}</div>
+                <div class="span">{{item.hospitalName}}</div>
                 <div class="space">
-                  <span>{{item.hospitalName}} </span>
+                  <span>{{item.deptName}} </span>
                   <span>{{item.date}}</span>
                 </div>
               </div>
