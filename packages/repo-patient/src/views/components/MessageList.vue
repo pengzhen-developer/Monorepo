@@ -728,7 +728,7 @@ export default {
         res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
         this.infoData = res.data.inquiryInfo
         this.patientInfo=res.data.familyInfo
-        this.internalDoctorInfo=res.data.doctorInfo
+        // this.internalDoctorInfo=res.data.doctorInfo
       })
     },
     //进行中会话获取医生信息、患者信息
@@ -758,7 +758,7 @@ export default {
           this.getInfoData(res.data.inquiryId)
         }
         this.internalData = res.data.msgList
-        // this.internalDoctorInfo = res.data.doctorInfo
+        this.internalDoctorInfo = res.data.doctorInfo
       })
     },
     //获取进行中会话数据
