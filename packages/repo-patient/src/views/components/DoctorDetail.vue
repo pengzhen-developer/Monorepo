@@ -592,10 +592,8 @@ export default {
             this.showFamily = true
           }, 500)
         }
-        this.getCommentList()
-        
-
         this.doctor = res.data
+        this.getCommentList()
       })
     },
 
