@@ -199,7 +199,7 @@ export default {
     }
   },
 
-  created() {
+  activateds() {
     this.getHospitalInfo()
   },
 
