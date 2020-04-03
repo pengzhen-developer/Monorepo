@@ -593,6 +593,7 @@ export default {
     }
 
     .message-body {
+      text-align: justify;
       white-space: pre-wrap;
       word-wrap: break-word;
       word-break: break-all;
