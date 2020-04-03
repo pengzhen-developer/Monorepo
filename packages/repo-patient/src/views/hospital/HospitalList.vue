@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div :style="data.length==0&& 'height:100%;'">
+  <div :style="items.length!=0&&data.length==0&& 'height:100%;'">
     <van-skeleton :key="item.netHospitalId"
                   :loading="loading"
                   :name="item.hospitalName"

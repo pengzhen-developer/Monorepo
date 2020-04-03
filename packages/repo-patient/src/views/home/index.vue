@@ -62,7 +62,7 @@
               value="推荐互联网医院"
               style="border-top:10px solid #f5f5f5" />
     <HspPage :items="data.recommendOrgan"
-             :max="2"></HspPage>
+             :max="2" v-if="data.recommendOrgan.length>0"></HspPage>
     <!--    <div style="height: 50px;"></div>-->
   </div>
 </template>
