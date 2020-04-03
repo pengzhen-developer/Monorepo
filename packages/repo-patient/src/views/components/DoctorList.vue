@@ -25,9 +25,9 @@
             </template> -->
 
             <div class="tag-work online"
-                 v-if="doctor.workStatus==1">接诊中</div>
+                 v-if="getSericeStatus(doctor)==1">接诊中</div>
             <div class="tag-work outline"
-                 v-else-if="doctor.workStatus==2">休息中</div>
+                 v-else-if="getSericeStatus(doctor)==2">休息中</div>
           </div>
           <div class="title-hospital">
             <span>{{ doctor.doctorInfo.hospitalName }}</span>
@@ -127,7 +127,7 @@ export default {
         })
       }
     },
-
+    
     getServiceMoney(doctor) {
       let moneyList = []
 
@@ -154,7 +154,19 @@ export default {
         return `￥${minMoney || 0}起`
       }
     },
-
+    //临时处理标签问题
+    getSericeStatus(doctor){
+      // if(doctor.workStatus!=1){
+        return doctor.workStatus
+      // }else{
+      //   if(this.canShowImageInquiry(doctor)==1||this.canShowVideoInquiry(doctor)==1){
+      //     return 1
+      //   }else{
+      //     return 3
+      //   }
+      // }
+      
+    },
     canShowImageInquiry(doctor) {
       // doctor.consultationList[0] 固定为图文咨询
       const params = peace.util.decode(this.$route.params.json)

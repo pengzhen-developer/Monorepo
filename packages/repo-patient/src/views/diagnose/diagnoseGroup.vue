@@ -45,9 +45,7 @@
       <!--        <div class="panel-body">-->
       <!--        </div>-->
     </div>
-    <van-loading size="24px"
-                 v-if="showLoadingType"
-                 class="load">加载中...</van-loading>
+    
     <!-- <div class="card" v-for="(item, index) in doctorList" @click="goHomeIndex(item)" data-id="item.doctorId" :key="index">
             <div class="card-avatar avatar-circular">
                 <img class="" :src="item.avartor" />
@@ -216,6 +214,13 @@ export default {
         })
         .then(res => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
+
+          // res.data.list.map(item=>{
+          //   if(item.workStatus==1&&item.serviceList==0){
+          //     item.workStatus=3
+          //   } 
+          // })
+
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (!this.showLoadingType && this.doctorList.length == 0) {

@@ -97,6 +97,7 @@ export default {
             session.lastMsg.content.data &&
             session.lastMsg.content.data.showTextInfo
           ) {
+
             return session.lastMsg.content.data.showTextInfo.patientClientText
           }
       }
@@ -201,6 +202,9 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
         display: block;
+        /deep/.blue{
+          color: #999999;
+        }
       }
     }
   }

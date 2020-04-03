@@ -561,7 +561,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.doctor.getWapDoctorInfo(params).then(res => {
-        this.doctor = res.data
+        
         this.doctorStatus = res.data.doctorInfo.doctorStatus
         let obj = {
           url: '',
@@ -575,7 +575,16 @@ export default {
           this.serviceImageInfo = res.data.consultationList.image || {}
           this.serviceVideoInfo = res.data.consultationList.video || {}
           this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
+          // //临时处理标签问题
+          // if(res.data.doctorInfo.workStatus==1){
+          //     if(this.serviceImageInfo&&this.serviceVideoInfo&&this.serviceImageInfo.status==0&&this.serviceVideoInfo.status==0){
+          //       res.data.doctorInfo.workStatus=3
+          //     }
+          // }
         }
+        // else{
+        //   res.data.doctorInfo.workStatus=3
+        // }
         let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
 
         if (this.hasLogin() && this.isEwm && !isAddPatient) {
@@ -584,6 +593,9 @@ export default {
           }, 500)
         }
         this.getCommentList()
+        
+
+        this.doctor = res.data
       })
     },
 

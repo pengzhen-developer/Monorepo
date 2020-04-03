@@ -224,6 +224,13 @@ export default {
         })
         .then(res => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
+          
+          // res.data.list.map(item=>{
+          //   if(item.workStatus==1&&item.serviceList==0){
+          //     item.workStatus=3
+          //   } 
+          // })
+          
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (!this.showLoadingType && this.doctorList.length == 0) {
@@ -270,7 +277,7 @@ export default {
 .card-name {
   position: relative;
 }
-.tag {
+.tag-work {
   height: 15px;
   width: 42px;
   display: flex;

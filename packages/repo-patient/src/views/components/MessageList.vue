@@ -8,17 +8,7 @@
              class="message"
              v-for="(message ,index) in messageList">
           <!-- 文本消息 -->
-          <template v-if="getMessageType(message) === 'text' ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-                getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过">
+          <template v-if="textMessage(message)">
             <!-- 消息时间 -->
             <template
                       v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
@@ -31,7 +21,7 @@
 
             <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
                  style="display: flex; align-items: center;">
-              <div class="message-avatar"
+              <div class="message-avatar" 
                    v-if="getMessageFlow(message) === 'in'">
                 <img
                      :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
@@ -287,11 +277,16 @@
                 <!-- <img :src="message.file.url"
                      @click="viewImage(message.file.url)"
                      style="max-width: 200px;" :style="message.file.style"/> -->
-                <van-image @click="viewImage(message.file.url)" :width="message.file.width" :height="message.file.height" lazy-load :src="message.file.url">
-                    <template v-slot:loading>
-                      <van-loading type="spinner" size="20" />
-                    </template>
-                    <template v-slot:error>加载失败</template>
+                <van-image @click="viewImage(message.file.url)"
+                           :width="message.file.width"
+                           :height="message.file.height"
+                           lazy-load
+                           :src="message.file.url">
+                  <template v-slot:loading>
+                    <van-loading type="spinner"
+                                 size="20" />
+                  </template>
+                  <template v-slot:error>加载失败</template>
                 </van-image>
               </div>
 
@@ -380,6 +375,9 @@
             </div>
           </template>
         </div>
+
+        <div class="h63"
+             v-if="canShowFooter"></div>
       </div>
 
       <div class="input"
@@ -428,9 +426,7 @@
         <van-loading />
       </van-row>
     </template>
-    <template
-              v-if="infoData&&(infoData.inquiryStatus=='4'||infoData.inquiryStatus=='5')&&!(!infoData.consultNo&&!infoData.referralNo&&!infoData.isCase&&!infoData.isPrescrip&&!infoData.checkOrderNo)">
-      <div class="h63"></div>
+    <template v-if="canShowFooter">
       <div class="footer">
         <div class="footer-item"
              v-if="infoData.consultNo"
@@ -448,6 +444,13 @@
              v-if="infoData.checkOrderNo"
              @click="gouserInspectionPage(infoData)">检查单</div>
       </div>
+    </template>
+    <template v-if="loading">
+      <!-- <van-loading></van-loading> -->
+      <div class="loading">
+        <van-loading />
+      </div>
+        
     </template>
     <peace-dialog :visible.sync="caseDetail.visible">
       <TheCase :data="caseDetail.data"></TheCase>
@@ -473,10 +476,9 @@
 import peace from '@src/library'
 
 import Vue from 'vue'
-import { ImagePreview, Toast,Lazyload   } from 'vant'
+import { ImagePreview, Toast, Lazyload } from 'vant'
 
-Vue.use(ImagePreview, Toast,Lazyload  )
-
+Vue.use(ImagePreview, Toast, Lazyload)
 
 import Compressor from 'compressorjs'
 
@@ -516,9 +518,10 @@ export default {
     return {
       internalData: undefined,
       internalDoctorInfo: undefined,
+      patientInfo:undefined,
       infoData: undefined,
       message: '',
-
+      loading: false,
       tools: {
         visible: false
       },
@@ -534,7 +537,7 @@ export default {
       },
       showTimeDic: {
         710: true, // 接诊
-        731: true,// 审核处方通过 
+        731: true, // 审核处方通过
         740: true, // 结束问诊
         // 742: true, // 转诊
         // 743: true, // 会诊
@@ -552,14 +555,15 @@ export default {
         position: 0
       },
 
-      hasSend:false
+      hasSend: false
     }
   },
 
   watch: {
-    '$store.state.inquiry.sessionMessages': {
+    
+    messageList: {
       handler() {
-        this.$nextTick(function() {
+        this.$nextTick(() => {
           const element = document.querySelector('.message-list .item')
 
           if (element) {
@@ -570,6 +574,20 @@ export default {
       immediate: true
     },
 
+    
+    infoData: {
+      handler() {
+        this.$nextTick(() => {
+          const element = document.querySelector('.message-list .item')
+
+          if (element) {
+            element.scrollTop = element.scrollHeight
+          }
+        })
+      },
+      immediate: true
+    },
+    
     data: {
       handler() {
         this.internalData = this.data
@@ -586,6 +604,7 @@ export default {
   },
 
   computed: {
+    
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
       // 过滤无效数据
@@ -605,15 +624,15 @@ export default {
           //   return false
         }
         //计算图片高度 -- 最大宽度200px
-        if(message.type === "image"){
-          if(message.file.w>200){
-            message.file.style="height:"+message.file.h/(message.file.w/200)+"px;"
-            message.file.width='200'
-            message.file.height=parseFloat(message.file.h/(message.file.w/200)).toFixed(2)
-          }else{
-            message.file.style="height:"+message.file.h+"px;"
-            message.file.width=message.file.w
-            message.file.height=message.file.h
+        if (message.type === 'image') {
+          if (message.file.w > 200) {
+            message.file.style = 'height:' + message.file.h / (message.file.w / 200) + 'px;'
+            message.file.width = '200'
+            message.file.height = parseFloat(message.file.h / (message.file.w / 200)).toFixed(2)
+          } else {
+            message.file.style = 'height:' + message.file.h + 'px;'
+            message.file.width = message.file.w
+            message.file.height = message.file.h
           }
         }
         return true
@@ -630,6 +649,18 @@ export default {
       } else {
         return false
       }
+    },
+
+    canShowFooter() {
+      return (
+        this.infoData &&
+        (this.infoData.inquiryStatus == '4' || this.infoData.inquiryStatus == '5') &&
+        (this.infoData.consultNo ||
+          this.infoData.referralNo ||
+          this.infoData.isCase ||
+          this.infoData.isPrescrip ||
+          this.infoData.checkOrderNo)
+      )
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -683,6 +714,7 @@ export default {
   // },
 
   destroyed() {
+    console.log('destroyed')
     // 清除当前聊天 session
     peace.service.IM.resetInquirySession()
     // 清除聊天记录
@@ -690,20 +722,22 @@ export default {
   },
 
   methods: {
-    //获取当前问诊状态及5个按钮是否展示
+    //获取历史会话问诊状态、医生信息、患者信息及5个按钮是否展示
     getInfoData(inquiryId) {
       peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
         res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
         this.infoData = res.data.inquiryInfo
+        this.patientInfo=res.data.familyInfo
+        this.internalDoctorInfo=res.data.doctorInfo
       })
     },
+    //进行中会话获取医生信息、患者信息
+    
+    //获取历史会话数据
     getHistoryMsgsByDB() {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.patient.chatDetail(params).then(res => {
-        if (res.data.inquiryStatus == '4' || res.data.inquiryStatus == '5') {
-          this.getInfoData(res.data.inquiryId)
-        }
         const historyMessageFormatHandler = messages => {
           if (messages && Array.isArray(messages)) {
             messages.forEach(message => {
@@ -720,11 +754,14 @@ export default {
         }
 
         historyMessageFormatHandler(res.data.msgList)
-
+        if (res.data.inquiryStatus == '4' || res.data.inquiryStatus == '5') {
+          this.getInfoData(res.data.inquiryId)
+        }
         this.internalData = res.data.msgList
-        this.internalDoctorInfo = res.data.doctorInfo
+        // this.internalDoctorInfo = res.data.doctorInfo
       })
     },
+    //获取进行中会话数据
     getHistoryMsgsByIM() {
       const params = peace.util.decode(this.$route.params.json)
 
@@ -773,7 +810,20 @@ export default {
         return false
       }
     },
-
+    // 文本消息、系统消息
+    textMessage(message){
+      return  this.getMessageType(message) === 'text' ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
+              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过
+    },
     getMessageType(message) {
       // text
       // image
@@ -824,7 +874,6 @@ export default {
     },
 
     sendMessageText() {
-      
       if (this.message) {
         if (this.hasSend) {
           return
@@ -841,9 +890,9 @@ export default {
 
           setTimeout(() => {
             this.hasSend = false
-          }, 0) 
+          }, 0)
         }
-        
+
         $peace.NIM.sendText({
           scene: this.$store.state.inquiry.session.scene,
           to: this.$store.getters['inquiry/doctorInfo'].doctorId,
@@ -857,9 +906,10 @@ export default {
 
     sendMessageImage(file) {
       if (file) {
+        this.loading = true
         const doneHandler = (error, message) => {
           console.warn('【 IM 】【 sendFile 】', new Date(), message)
-
+          this.loading = false
           if (error) {
             throw new Error(error)
           }
@@ -901,6 +951,14 @@ export default {
         }
       }, 1)
     },
+    gotoDoctorDetail(){
+      let  doctorId=this.internalDoctorInfo.doctorId||this.$store.getters['inquiry/doctorInfo'].doctorId
+      const json = peace.util.encode({
+        doctorId:doctorId
+      })
+
+      this.$router.push(`/components/DoctorDetail/${json}`)
+    },
     gotoOtherPage(message) {
       //去评价
       if (this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示) {
@@ -911,7 +969,7 @@ export default {
         this.$router.push(`/components/CommentForDoctor/${json}`)
       }
       //去购药
-      if(this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过){
+      if (this.getMessageType(message) === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过) {
         const params = peace.util.encode({
           prescribeId: message.content.data.recipeInfo.recipeId
         })
@@ -1370,6 +1428,16 @@ export default {
       }
     }
   }
+}
+.loading{
+  position:fixed;
+  top:50%;
+  width:100%;
+  margin:auto;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 </style>
 

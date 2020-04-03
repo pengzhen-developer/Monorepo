@@ -29,11 +29,10 @@
                  v-if="item.distance">{{item.distance}}</div>
           </div>
           <div class="block">
-            <!--                    <div class="card-small" v-if="">配送到家</div>-->
             <div class="card-small"
-                 v-if="item.ShippingMethod!='0'">货到付款</div>
+                 v-if="item.ShippingMethod!='1'">到店取药</div>
             <div class="card-small"
-                 v-if="item.ShippingMethod!='1'">支持自提</div>
+                 v-if="item.ShippingMethod!='0'">配送到家</div>
           </div>
           <div class="card-imgs"
                v-if="item.drugmain && item.drugmain.length">

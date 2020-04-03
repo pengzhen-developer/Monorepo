@@ -318,26 +318,27 @@ export default {
     },
 
     goChatingPage(item) {
+      
+      let params=''
       // 问诊中时, 咨询记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
-        const params = peace.util.encode({
+        params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
           beginTime: item.inquiryInfo.inquiryTime.toDate().getTime(),
           to: item.doctorInfo.doctorId
         })
-
-        // 跳转聊天详情
-        this.$router.push(`/components/messageList/${params}`)
       }
       // 非问诊中,显示历史记录
       else {
-        const params = peace.util.encode({
+        params = peace.util.encode({
           inquiryNo: item.inquiryInfo.inquiryNo
         })
-
-        this.$router.push(`/components/messageList/${params}`)
+        
       }
+      // 清除聊天记录
+      peace.service.IM.resetInquirySessionMessages()
+      this.$router.push(`/components/messageList/${params}`)
     },
 
     goUserConsultDetailPage(inquiryId) {
