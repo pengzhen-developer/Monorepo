@@ -1,65 +1,77 @@
 <template>
   <div class="about">
-    <el-form :model="view.model" label-suffix label-width="120px">
+    <el-form :model="view.model"
+             label-suffix
+             label-width="120px">
       <el-form-item label="个人头像：">
-        <img :src="view.model.avartor" class="avartor" />
-        <el-upload
-          :action="api.uploadAvatar"
-          :auto-upload="true"
-          :data="extraUploadData"
-          :headers="extraHeaders"
-          :on-success="uploadAvatarSuccess"
-          accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-          class="upload"
-          name="image"
-          ref="uploadAvatar"
-        >
-          <img class="modify" slot="trigger" src="~@src/assets/images/sys/ic_modify.png" />
+        <img :src="view.model.avartor"
+             class="avartor" />
+        <el-upload :action="api.uploadAvatar"
+                   :auto-upload="true"
+                   :data="extraUploadData"
+                   :headers="extraHeaders"
+                   :on-success="uploadAvatarSuccess"
+                   accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+                   class="upload"
+                   name="image"
+                   ref="uploadAvatar">
+          <img class="modify"
+               slot="trigger"
+               src="~@src/assets/images/sys/ic_modify.png" />
         </el-upload>
       </el-form-item>
-      <el-form-item label="帐号：">{{ view.model.id }}</el-form-item>
+      <el-form-item label="帐号：">{{ view.model.tel }}</el-form-item>
       <el-form-item label="姓名：">{{ view.model.name }}</el-form-item>
       <el-form-item label="医院：">{{ view.model.netHospital_name }}</el-form-item>
       <el-form-item label="科室：">{{ view.model.netdept_child }}</el-form-item>
       <el-form-item label="职称：">
-        <el-select placeholder v-model="view.model.doctor_title">
-          <el-option label="医师" value="医师"></el-option>
-          <el-option label="主治医师" value="主治医师"></el-option>
-          <el-option label="副主任医师" value="副主任医师"></el-option>
-          <el-option label="主任医师" value="主任医师"></el-option>
+        <el-select placeholder
+                   v-model="view.model.doctor_title">
+          <el-option label="医师"
+                     value="医师"></el-option>
+          <el-option label="主治医师"
+                     value="主治医师"></el-option>
+          <el-option label="副主任医师"
+                     value="副主任医师"></el-option>
+          <el-option label="主任医师"
+                     value="主任医师"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="身份证号：">{{ view.model.id_card }}</el-form-item>
       <el-form-item label="证书编号：">{{ view.model.cert_no }}</el-form-item>
       <el-form-item label="医师资格证书：">
-        <el-upload
-          :action="api.uploadCertFile"
-          :auto-upload="true"
-          :class="{hideUploadIcon : view.model.cert_file && view.model.cert_file.length === 2}"
-          :data="extraUploadData"
-          :file-list="view.model.cert_file"
-          :headers="extraHeaders"
-          :limit="2"
-          :on-preview="handlePictureCardPreview"
-          :on-remove="uploadCertRemove"
-          :on-success="uploadCertSuccess"
-          class="upload-list"
-          list-type="picture-card"
-          name="image"
-        >
-          <div class="el-upload__tip" slot="tip">请上传正反面</div>
-          <i class="el-icon-plus" v-show="view.model.cert_file && view.model.cert_file.length !== 2"></i>
+        <el-upload :action="api.uploadCertFile"
+                   :auto-upload="true"
+                   :class="{hideUploadIcon : view.model.cert_file && view.model.cert_file.length === 2}"
+                   :data="extraUploadData"
+                   :file-list="view.model.cert_file"
+                   :headers="extraHeaders"
+                   :limit="2"
+                   :on-preview="handlePictureCardPreview"
+                   :on-remove="uploadCertRemove"
+                   :on-success="uploadCertSuccess"
+                   class="upload-list"
+                   list-type="picture-card"
+                   name="image">
+          <div class="el-upload__tip"
+               slot="tip">请上传正反面</div>
+          <i class="el-icon-plus"
+             v-show="view.model.cert_file && view.model.cert_file.length !== 2"></i>
         </el-upload>
       </el-form-item>
       <el-form-item label="图片要求：">支持jpg 、jpeg 、bmp 、gif 、png格式图片，大小不超过2M</el-form-item>
 
       <el-form-item label=" ">
-        <el-button @click="save" type="primary">保存</el-button>
+        <el-button @click="save"
+                   type="primary">保存</el-button>
       </el-form-item>
     </el-form>
 
-    <peace-dialog :visible.sync="dialog.visible" title="图片预览">
-      <img :src="dialog.imageUrl" alt width="100%" />
+    <peace-dialog :visible.sync="dialog.visible"
+                  title="图片预览">
+      <img :src="dialog.imageUrl"
+           alt
+           width="100%" />
     </peace-dialog>
   </div>
 </template>
