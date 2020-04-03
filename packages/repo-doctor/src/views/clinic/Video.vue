@@ -144,7 +144,6 @@ export default {
         }
 
         this.hangupVideo()
-        this.pauseAudio()
       }
       // 挂断视频
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.挂断) {
@@ -153,7 +152,6 @@ export default {
 
         this.processExit()
         this.hangupVideo()
-        this.pauseAudio()
       }
       // 呼叫超时
       else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.超时) {
@@ -170,7 +168,6 @@ export default {
         }
 
         this.hangupVideo()
-        this.pauseAudio()
       }
     }
   },
@@ -363,6 +360,8 @@ export default {
         }
 
         if (this.busy) {
+          this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+
           // 通知对方正忙
           $peace.WebRTC.control({
             channelId: channelId,
@@ -645,6 +644,9 @@ export default {
     },
 
     hangupVideo() {
+      // 停止声音播放
+      this.pauseAudio()
+
       // 清空定时器
       this.clearHangupTimeout()
 

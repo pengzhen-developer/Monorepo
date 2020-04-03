@@ -131,7 +131,7 @@ export default {
   watch: {
     '$store.state.consultation.sessionMessages': {
       handler() {
-        // this.scrollMessageToBottom()
+        this.scrollMessageToBottom()
       },
       immediate: true
     }
