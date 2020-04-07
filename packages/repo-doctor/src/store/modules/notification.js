@@ -3,7 +3,7 @@ const state = {
     unread: 0
 }
 
-const getters =  {
+const getters = {
     messageList: state => {
         return state.messageList;
     },
@@ -14,20 +14,20 @@ const getters =  {
 const mutations = {
     setList(state, params) {
         state.messageList = params;
-        console.log('setList',state.messageList )
+        console.log('setList', state.messageList)
     },
     setUnread(state, params) {
         state.unread = params;
     }
 }
-const actions= {
-    getList (context) {
+const actions = {
+    getList(context) {
         let p = 1;
         let size = 100;
-        let params = {p, size}
+        let params = { p, size }
         $peace.service.personalCenter.getMsgList(params).then(res => {
-            context.commit('setList',res.data.list);
-            context.commit('setUnread',res.data.unRead);
+            context.commit('setList', res.data.list);
+            context.commit('setUnread', res.data.unRead);
 
         })
     }
