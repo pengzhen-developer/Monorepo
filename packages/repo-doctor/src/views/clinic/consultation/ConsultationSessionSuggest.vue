@@ -9,6 +9,7 @@
                   placeholder="请填写会诊所见情况"
                   resize="none"
                   type="textarea"
+                  show-word-limit
                   v-model="model.consultFind"></el-input>
       </el-form-item>
       <el-form-item label="疾病诊断"
@@ -36,6 +37,7 @@
                   placeholder="请填写会诊意见，包括治疗方案、患者与家属关注问题等内容的分析等，提交成功后本次会诊将结束。"
                   resize="none"
                   type="textarea"
+                  show-word-limit
                   v-model="model.consultSuggest"></el-input>
       </el-form-item>
       <div style="text-align: center;">
