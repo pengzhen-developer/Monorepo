@@ -594,6 +594,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  line-height:normal;
   &:first-child {
     margin-left: 0;
   }

@@ -1087,7 +1087,7 @@ export default {
       }
     },
     gotoDoctorDetail() {
-      let doctorId = this.internalDoctorInfo.doctorId || this.$store.getters['inquiry/doctorInfo'].doctorId
+      let doctorId = (this.internalDoctorInfo&&this.internalDoctorInfo.doctorId) || this.$store.getters['inquiry/doctorInfo'].doctorId
       const json = peace.util.encode({
         doctorId: doctorId
       })
