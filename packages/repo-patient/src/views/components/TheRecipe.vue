@@ -322,9 +322,6 @@ export default {
     word-wrap: break-word;
   }
   .inline-flex{
-    display:flex;
-    flex:1;
-    flex-wrap:wrap;
     word-break: break-all;
     padding-right: 5px;
     span{

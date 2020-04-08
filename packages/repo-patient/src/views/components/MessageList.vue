@@ -1299,7 +1299,6 @@ export default {
       display: flex;
       justify-content: space-between;
       box-sizing: content-box;
-      height: 20px;
       padding: 5px 0 0 0;
       font-size: 13px;
       overflow: visible;
