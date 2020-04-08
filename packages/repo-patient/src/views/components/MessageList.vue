@@ -90,8 +90,8 @@
                 <div class="message-content">
                   <div class="content top">
                     {{ message.content.data.inquiryOrderInfo.confirmIllness }}</div>
-                  <div class="content"><span
-                          class="t">病情描述</span>{{ message.content.data.inquiryOrderInfo.describe }}
+                  <div class="content"><span class="t">病情描述
+                      :</span>{{ message.content.data.inquiryOrderInfo.describe }}
                   </div>
                 </div>
                 <div class="message-line"></div>
@@ -247,14 +247,6 @@
                   查看详情
                 </div>
               </div>
-              <!-- <div @click="getConsultDetail(message)"
-                   class="message-body case">
-                <img src="~@src/assets/images/pic_medication recommendations.png" />
-                <div style="text-align: left;">
-                  <p style="font-size: 14px;">会诊单</p>
-                  <p>查看详情</p>
-                </div>
-              </div> -->
 
               <!-- 消息头像 -->
               <div class="message-avatar"
@@ -299,11 +291,11 @@
                 <div class="message-content">
                   <div class="item">
                     <div class="left other justify">诊断</div>
-                    <div class="right other">{{message.diagnosis}}</div>
+                    <div class="right other">{{message.content.data.caseInfo.diagnosis}}</div>
                   </div>
                   <div class="item">
-                    <div class="left other justify"><span>就诊时间</span></div>
-                    <div class="right other">{{message.visitingTime}}</div>
+                    <div class="left other justify">就诊时间</div>
+                    <div class="right other">{{message.content.data.caseInfo.visitingTime}}</div>
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
@@ -312,14 +304,6 @@
                   查看详情
                 </div>
               </div>
-              <!-- <div @click="getCaseDetail(message)"
-                   class="message-body case">
-                <img src="~@src/assets/images/pic_medication recommendations.png" />
-                <div style="text-align: left;">
-                  <p style="font-size: 14px;">病历</p>
-                  <p>查看详情</p>
-                </div>
-              </div> -->
 
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
@@ -362,15 +346,15 @@
                 <div class="message-content">
                   <div class="item">
                     <div class="left other justify">诊断</div>
-                    <div class="right other">{{message.diagnosis}}</div>
+                    <div class="right other">{{message.content.data.recipeInfo.diagnosis}}</div>
                   </div>
                   <div class="item">
                     <div class="left other">Rp</div>
-                    <div class="right other">{{message.drugInfo}}</div>
+                    <div class="right other">{{message.content.data.recipeInfo.drugInfo}}</div>
                   </div>
                   <div class="item">
                     <div class="left other justify">就诊时间</div>
-                    <div class="right other">{{message.visitingTime}}</div>
+                    <div class="right other">{{message.content.data.recipeInfo.visitingTime}}</div>
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
@@ -379,14 +363,6 @@
                   查看详情
                 </div>
               </div>
-              <!-- <div @click="getRecipeDetail(message)"
-                   class="message-body recipe">
-                <img src="~@src/assets/images/pic_medication recommendations.png" />
-                <div style="text-align: left;">
-                  <p style="font-size: 14px;">处方</p>
-                  <p>查看详情</p>
-                </div>
-              </div> -->
 
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
@@ -1322,8 +1298,11 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
+      box-sizing: content-box;
+      height: 20px;
       padding: 5px 0 0 0;
       font-size: 13px;
+      overflow: visible;
       &:first-child {
         padding-top: 10px;
       }
@@ -1341,6 +1320,7 @@ export default {
             text-align: justify;
             text-align-last: justify;
             display: inline-block;
+            white-space: normal;
             &:after {
               content: '';
               display: inline-block;
