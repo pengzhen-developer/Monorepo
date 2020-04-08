@@ -1,9 +1,11 @@
 <template>
   <div class="inquiry-session-message-list">
     <!-- 待接诊 -->
-    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+    <template
+              v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
       <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
-                                    :data="messageList[0].content.data"></InquiryPreliminaryForReceive>
+                                    :data="messageList[0].content.data">
+      </InquiryPreliminaryForReceive>
     </template>
 
     <!-- 已接诊 -->
@@ -68,8 +70,11 @@
             </div>
             <div class="message-line"></div>
             <div class="message-content">
-              <div class="t">病情描述</div>
-              <div class="content">{{ message.content.data.inquiryOrderInfo.describe }}</div>
+              <div class="content top">
+                {{ message.content.data.inquiryOrderInfo.confirmIllness }}</div>
+              <div class="content"><span
+                      class="t">病情描述</span>{{ message.content.data.inquiryOrderInfo.describe }}
+              </div>
             </div>
           </div>
         </template>
@@ -85,14 +90,46 @@
           </template>
 
           <!-- 消息内容 -->
-          <div @click="getTransfelDetail(message)"
+          <div class="message-body message-check">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span>
+            </div>
+            <div class="message-content">
+              <div class="item">
+                <div class="left other justify">就诊人</div>
+                <div class="right other">
+                  {{ message.content.data.patientInfo.familyName }}
+                  {{ message.content.data.patientInfo.familySex }}
+                  {{ message.content.data.patientInfo.familyAge }}岁
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left other justify">转诊医生</div>
+                <div class="right other"
+                     v-if="message.content.data.referralInfo.toDoctorInfo">
+                  <div>{{message.content.data.referralInfo.toDoctorInfo.name}}
+                    {{message.content.data.referralInfo.toDoctorInfo.deptName}}</div>
+                  <div>{{message.content.data.referralInfo.toDoctorInfo.hospitalName}}</div>
+                </div>
+              </div>
+              <div class="message-line-solid"></div>
+            </div>
+            <div class="message-footer"
+                 @click="getTransfelDetail(message)">
+              查看详情
+            </div>
+          </div>
+          <!-- <div @click="getTransfelDetail(message)"
                class="message-body case">
             <img src="~@src/assets/images/ic_转诊.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">转诊单</p>
               <p>查看详情</p>
             </div>
-          </div>
+          </div> -->
         </template>
 
         <!-- 会诊单 -->
@@ -106,14 +143,49 @@
           </template>
 
           <!-- 消息内容 -->
-          <div @click="getConsultDetail(message)"
+          <div class="message-body message-check">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span>
+            </div>
+            <div class="message-content">
+              <div class="item">
+                <div class="left other justify">就诊人</div>
+                <div class="right other">
+                  {{ message.content.data.patientInfo.familyName }}
+                  {{ message.content.data.patientInfo.familySex }}
+                  {{ message.content.data.patientInfo.familyAge }}岁
+                </div>
+              </div>
+              <div class="item">
+                <div class="left other justify">诊断</div>
+                <div class="right other">{{message.content.data.consultInfo.diagnose}}</div>
+              </div>
+              <div class="item">
+                <div class="left other justify">会诊医生</div>
+                <div class="right other"
+                     v-if="message.content.data.consultInfo.toDoctorInfo">
+                  <div>{{message.content.data.consultInfo.toDoctorInfo.name}}
+                    {{message.content.data.consultInfo.toDoctorInfo.deptName}}</div>
+                  <div>{{message.content.data.consultInfo.toDoctorInfo.hospitalName}}</div>
+                </div>
+              </div>
+              <div class="message-line-solid"></div>
+            </div>
+            <div class="message-footer"
+                 @click="getConsultDetail(message)">
+              查看详情
+            </div>
+          </div>
+          <!-- <div @click="getConsultDetail(message)"
                class="message-body case">
             <img src="~@src/assets/images/ic_会诊.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">会诊单</p>
               <p>查看详情</p>
             </div>
-          </div>
+          </div> -->
         </template>
 
         <!-- 检查单 -->
@@ -192,7 +264,8 @@
         </template>
 
         <!-- 病历消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+        <template
+                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -202,19 +275,41 @@
           </template>
 
           <!-- 消息内容 -->
-          <div @click="getCaseDetail(message)"
+          <div class="message-body message-check">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span>
+            </div>
+            <div class="message-content">
+              <div class="item">
+                <div class="left other justify">诊断</div>
+                <div class="right other">{{message.diagnosis}}</div>
+              </div>
+              <div class="item">
+                <div class="left other justify"><span>就诊时间</span></div>
+                <div class="right other">{{message.visitingTime}}</div>
+              </div>
+              <div class="message-line-solid"></div>
+            </div>
+            <div class="message-footer"
+                 @click="getCaseDetail(message)">
+              查看详情
+            </div>
+          </div>
+          <!-- <div @click="getCaseDetail(message)"
                class="message-body case">
             <img src="~@src/assets/images/inquiry/ic_medical record.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">病历</p>
-              <!-- <p>查看详情</p> -->
               <p>{{formDate(message.time || message.sendtime)}}</p>
             </div>
-          </div>
+          </div> -->
         </template>
 
         <!-- 处方消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+        <template
+                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -224,15 +319,40 @@
           </template>
 
           <!-- 消息内容 -->
-          <div @click="getRecipeDetail(message)"
+          <div class="message-body message-check">
+            <div class="message-header">
+              <van-image width="17px"
+                         height="17px"
+                         :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span>
+            </div>
+            <div class="message-content">
+              <div class="item">
+                <div class="left other justify">诊断</div>
+                <div class="right other">{{message.diagnosis}}</div>
+              </div>
+              <div class="item">
+                <div class="left other">Rp</div>
+                <div class="right other">{{message.drugInfo}}</div>
+              </div>
+              <div class="item">
+                <div class="left other justify">就诊时间</div>
+                <div class="right other">{{message.visitingTime}}</div>
+              </div>
+              <div class="message-line-solid"></div>
+            </div>
+            <div class="message-footer"
+                 @click="getRecipeDetail(message)">
+              查看详情
+            </div>
+          </div>
+          <!-- <div @click="getRecipeDetail(message)"
                class="message-body recipe">
             <img src="~@src/assets/images/inquiry/ic_rp.png" />
             <div style="text-align: left;">
               <p style="font-size: 14px;">处方</p>
               <p>{{formDate(message.time || message.sendtime)}}</p>
-              <!-- <p>查看详情</p> -->
             </div>
-          </div>
+          </div> -->
         </template>
       </div>
     </template>
@@ -261,7 +381,8 @@
                   append-to-body
                   title="会诊详情">
       <InquiryConsultationDetail :data="consultation.data"
-                                 @close="() => consultation.visible = false"></InquiryConsultationDetail>
+                                 @close="() => consultation.visible = false">
+      </InquiryConsultationDetail>
     </peace-dialog>
     <peace-dialog :visible.sync="preliminary.visible"
                   v-if="preliminary.visible"
@@ -619,7 +740,81 @@ export default {
     }
   }
 }
+.message-check {
+  .message-line-solid {
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+  }
+  .message-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    .item {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0 0 0;
+      font-size: 13px;
+      &:first-child {
+        padding-top: 10px;
+      }
 
+      .left {
+        width: 80%;
+        text-align: left;
+        &.other {
+          color: #999;
+          width: 5em;
+          padding-right: 0.8em;
+          height: 20px;
+          line-height: 20px;
+          &.justify {
+            text-align: justify;
+            text-align-last: justify;
+            display: inline-block;
+            &:after {
+              content: '';
+              display: inline-block;
+              width: 100%;
+              height: 0px;
+            }
+          }
+        }
+
+        &.elps {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+      .right {
+        color: #999;
+        flex: 1;
+        line-height: 20px;
+        text-align: right;
+        &.other {
+          text-align: left;
+          color: #333;
+          width: calc(100% - 5em);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+  .message-footer {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #999;
+    justify-content: center;
+    font-size: 12px;
+    &::after {
+      height: 0;
+    }
+  }
+}
 .message-card,
 .message-check {
   width: 250px;
@@ -654,11 +849,17 @@ export default {
 .message-content {
   text-align: left;
   padding: 10px;
-  .t {
-    color: #999;
-  }
   .content {
     color: #333;
+    font-size: 13px;
+    .t {
+      color: #999;
+      margin-right: 10px;
+    }
+    &.top {
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 600;
+    }
   }
 }
 .message-line {
