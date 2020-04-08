@@ -1,7 +1,8 @@
 <template>
   <div class="header-container">
     <div class="header-left">
-      <span class="header-left-title">{{ $store.state.user.userInfo.list.docInfo.netHospital_name }}</span>
+      <span
+            class="header-left-title">{{ $store.state.user.userInfo.list.docInfo.netHospital_name }}</span>
     </div>
     <div class="header-right">
       <el-dropdown @command="handleNotice">
@@ -338,6 +339,11 @@ export default {
       font-size: 14px;
       font-weight: 400;
       color: rgba(255, 255, 255, 1);
+
+      .el-avatar > img {
+        height: 100%;
+        width: 100%;
+      }
 
       .el-badge {
         display: flex;

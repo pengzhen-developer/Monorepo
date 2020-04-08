@@ -211,6 +211,7 @@ export default {
     line-height: 20px;
     display: inline-block;
     vertical-align: middle;
+    text-align: justify;
   }
   &-label {
     & > span {
@@ -262,7 +263,7 @@ export default {
     }
     &-content {
       font-size: 12px;
-      width: 200px !important;
+      width: 320px !important;
     }
   }
 }

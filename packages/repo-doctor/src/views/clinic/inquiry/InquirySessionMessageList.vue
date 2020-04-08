@@ -73,7 +73,7 @@
               <div class="content top">
                 {{ message.content.data.inquiryOrderInfo.confirmIllness }}</div>
               <div class="content"><span
-                      class="t">病情描述</span>{{ message.content.data.inquiryOrderInfo.describe }}
+                      class="t">病情描述:</span>{{ message.content.data.inquiryOrderInfo.describe }}
               </div>
             </div>
           </div>
@@ -92,9 +92,9 @@
           <!-- 消息内容 -->
           <div class="message-body message-check">
             <div class="message-header">
-              <van-image width="17px"
-                         height="17px"
-                         :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span>
+              <img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span>
             </div>
             <div class="message-content">
               <div class="item">
@@ -119,7 +119,7 @@
             </div>
             <div class="message-footer"
                  @click="getTransfelDetail(message)">
-              查看详情
+              <span>查看详情</span>
             </div>
           </div>
           <!-- <div @click="getTransfelDetail(message)"
@@ -145,29 +145,32 @@
           <!-- 消息内容 -->
           <div class="message-body message-check">
             <div class="message-header">
-              <van-image width="17px"
-                         height="17px"
-                         :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span>
+              <img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span>
             </div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">就诊人</div>
                 <div class="right other">
-                  {{ message.content.data.patientInfo.familyName }}
-                  {{ message.content.data.patientInfo.familySex }}
-                  {{ message.content.data.patientInfo.familyAge }}岁
+                  <span>{{ message.content.data.patientInfo.familyName }} </span>
+                  <span>{{ message.content.data.patientInfo.familySex }} </span>
+                  <span>{{ message.content.data.patientInfo.familyAge }}岁</span>
                 </div>
               </div>
               <div class="item">
                 <div class="left other justify">诊断</div>
-                <div class="right other">{{message.content.data.consultInfo.diagnose}}</div>
+                <div class="right other"><span>{{message.content.data.consultInfo.diagnose}}</span>
+                </div>
               </div>
               <div class="item">
                 <div class="left other justify">会诊医生</div>
                 <div class="right other"
                      v-if="message.content.data.consultInfo.toDoctorInfo">
-                  <div>{{message.content.data.consultInfo.toDoctorInfo.name}}
-                    {{message.content.data.consultInfo.toDoctorInfo.deptName}}</div>
+                  <div>
+                    <span>{{message.content.data.consultInfo.toDoctorInfo.name}} </span>
+                    <span>{{message.content.data.consultInfo.toDoctorInfo.deptName}}</span>
+                  </div>
                   <div>{{message.content.data.consultInfo.toDoctorInfo.hospitalName}}</div>
                 </div>
               </div>
@@ -175,7 +178,7 @@
             </div>
             <div class="message-footer"
                  @click="getConsultDetail(message)">
-              查看详情
+              <span>查看详情</span>
             </div>
           </div>
           <!-- <div @click="getConsultDetail(message)"
@@ -277,34 +280,26 @@
           <!-- 消息内容 -->
           <div class="message-body message-check">
             <div class="message-header">
-              <van-image width="17px"
-                         height="17px"
-                         :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span>
+              <img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span>
             </div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">诊断</div>
-                <div class="right other">{{message.diagnosis}}</div>
+                <div class="right other">{{message.content.data.caseInfo.diagnosis}}</div>
               </div>
               <div class="item">
                 <div class="left other justify"><span>就诊时间</span></div>
-                <div class="right other">{{message.visitingTime}}</div>
+                <div class="right other">{{message.content.data.caseInfo.visitingTime}}</div>
               </div>
               <div class="message-line-solid"></div>
             </div>
             <div class="message-footer"
                  @click="getCaseDetail(message)">
-              查看详情
+              <span>查看详情</span>
             </div>
           </div>
-          <!-- <div @click="getCaseDetail(message)"
-               class="message-body case">
-            <img src="~@src/assets/images/inquiry/ic_medical record.png" />
-            <div style="text-align: left;">
-              <p style="font-size: 14px;">病历</p>
-              <p>{{formDate(message.time || message.sendtime)}}</p>
-            </div>
-          </div> -->
         </template>
 
         <!-- 处方消息 -->
@@ -317,42 +312,33 @@
                 {{ (message.time || message.sendtime).toDate().formatWXDate() }}</div>
             </div>
           </template>
-
           <!-- 消息内容 -->
           <div class="message-body message-check">
             <div class="message-header">
-              <van-image width="17px"
-                         height="17px"
-                         :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span>
+              <img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span>
             </div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">诊断</div>
-                <div class="right other">{{message.diagnosis}}</div>
+                <div class="right other">{{message.content.data.recipeInfo.diagnosis}}</div>
               </div>
               <div class="item">
                 <div class="left other">Rp</div>
-                <div class="right other">{{message.drugInfo}}</div>
+                <div class="right other">{{message.content.data.recipeInfo.drugInfo}}</div>
               </div>
               <div class="item">
                 <div class="left other justify">就诊时间</div>
-                <div class="right other">{{message.visitingTime}}</div>
+                <div class="right other">{{message.content.data.recipeInfo.visitingTime}}</div>
               </div>
               <div class="message-line-solid"></div>
             </div>
             <div class="message-footer"
                  @click="getRecipeDetail(message)">
-              查看详情
+              <span>查看详情</span>
             </div>
           </div>
-          <!-- <div @click="getRecipeDetail(message)"
-               class="message-body recipe">
-            <img src="~@src/assets/images/inquiry/ic_rp.png" />
-            <div style="text-align: left;">
-              <p style="font-size: 14px;">处方</p>
-              <p>{{formDate(message.time || message.sendtime)}}</p>
-            </div>
-          </div> -->
         </template>
       </div>
     </template>
@@ -715,7 +701,7 @@ export default {
 
     .message-body {
       text-align: justify;
-      white-space: pre-wrap;
+      /* white-space: pre-wrap; */
       word-wrap: break-word;
       word-break: break-all;
       display: inline-block;
@@ -768,6 +754,7 @@ export default {
           height: 20px;
           line-height: 20px;
           &.justify {
+            /* white-space: normal; */
             text-align: justify;
             text-align-last: justify;
             display: inline-block;
@@ -796,7 +783,9 @@ export default {
           color: #333;
           width: calc(100% - 5em);
           text-overflow: ellipsis;
-          white-space: nowrap;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
           overflow: hidden;
         }
       }
@@ -859,6 +848,7 @@ export default {
     &.top {
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
+      white-space: nowrap;
     }
   }
 }
