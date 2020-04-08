@@ -27,13 +27,20 @@
               {{item.name}}
               <div class="card-small title">{{item.doctorTitle}} </div>
               <!-- 服务部标签 -->
-              <!-- <template v-if="!!doctor.doctorInfo.serviceList">
+              <template v-if="item.serviceList">
                 <div :class="['label', 'label-'+it]"
-                    v-for="(it, i) in doctor.doctorInfo.serviceList"
-                    :key="i">
+                     v-for="(it, i) in item.serviceList"
+                     :key="i">
                   {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                 </div>
-              </template> -->
+              </template>
+              <template v-if="item.tags">
+                <div :class="['label', 'label-'+it]"
+                     v-for="(it, i) in item.tags"
+                     :key="i">
+                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                </div>
+              </template>
               <div class="tag-work tag-online"
                    v-if="item.workStatus==1">接诊中</div>
               <div class="tag-work tag-outline"

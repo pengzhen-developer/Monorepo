@@ -122,8 +122,8 @@
         <div class="doc-wrap">
           <div class="item-wrap"
                @click="goDoctorHomeIndexPage(item)"
-               v-for="item in hospitalInfo.doctorList"
-               :key="item.name">
+               v-for="(item,index) in hospitalInfo.doctorList"
+               :key="'doctorList'+index">
             <img class="avatar"
                  :src="item.avartor" />
             <div class="item">
