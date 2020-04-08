@@ -16,14 +16,20 @@
             }}</span>
             <span>{{ doctor.doctorInfo.doctorTitle }}</span>
             <!-- 服务部标签 -->
-            <!-- <template v-if="!!doctor.doctorInfo.serviceList">
+            <template v-if="doctor.doctorInfo.serviceList">
               <div :class="['label', 'label-'+it]"
                    v-for="(it, i) in doctor.doctorInfo.serviceList"
                    :key="i">
                 {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
               </div>
-            </template> -->
-
+            </template>
+            <template v-if="doctor.doctorInfo.tags">
+              <div :class="['label', 'label-'+it]"
+                   v-for="(it, i) in doctor.doctorInfo.tags"
+                   :key="i">
+                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+              </div>
+            </template>
             <div class="tag-work online"
                  v-if="getSericeStatus(doctor)==1">接诊中</div>
             <div class="tag-work outline"
@@ -127,7 +133,7 @@ export default {
         })
       }
     },
-    
+
     getServiceMoney(doctor) {
       let moneyList = []
 
@@ -155,9 +161,9 @@ export default {
       }
     },
     //临时处理标签问题
-    getSericeStatus(doctor){
+    getSericeStatus(doctor) {
       // if(doctor.workStatus!=1){
-        return doctor.workStatus
+      return doctor.workStatus
       // }else{
       //   if(this.canShowImageInquiry(doctor)==1||this.canShowVideoInquiry(doctor)==1){
       //     return 1
@@ -165,7 +171,6 @@ export default {
       //     return 3
       //   }
       // }
-      
     },
     canShowImageInquiry(doctor) {
       // doctor.consultationList[0] 固定为图文咨询

@@ -354,7 +354,9 @@ export default {
       // 添加页面 只需加载民族列表
       this.getNationList()
     }
-    this.canShowSelf=json.canShowSelf
+    if(json.canShowSelf){
+      this.canShowSelf=json.canShowSelf
+    }
   },
 
   methods: {

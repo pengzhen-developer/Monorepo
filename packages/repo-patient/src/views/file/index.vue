@@ -149,7 +149,6 @@ export default {
     }
   },
   activated() {
-    this.familyId = ''
     this.getFamilyList()
   },
   created() {
@@ -162,20 +161,29 @@ export default {
       this.changeSwipeTrack(0)
     })
   },
-
+  
   methods: {
     goFamily() {
       this.$router.push('/setting/myFamilyMembers')
     },
 
     getFamilyList() {
+      if(peace.cache.get('familyId')){
+        this.familyId=peace.cache.get('familyId')
+      }else{
+        this.familyId = ''
+      }
       peace.service.health.familyLists().then(res => {
         this.myFamilyList = res.data.list
-        res.data.list.map(item => {
+        res.data.list.map((item,index) => {
           if (item.sex === '1') {
             item.sex = '男'
           } else if (item.sex === '0') {
             item.sex = '女'
+          }
+
+          if(item.id==this.familyId){
+            this.index=index
           }
         })
         this.$nextTick(function() {

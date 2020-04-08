@@ -21,23 +21,28 @@
 
             <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
                  style="display: flex; align-items: center;">
-              <div class="message-avatar" 
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
                 <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
               <div class="message-body">
-                <div v-html="getMessageText(message)"
+                <div :class="textMessage(message)=='text'&&'body-size'"
+                     v-html="getMessageText(message)"
                      @click="gotoOtherPage(message)"></div>
               </div>
 
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
+                <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
+
               </div>
             </div>
           </template>
@@ -57,9 +62,10 @@
                  style="display: flex; align-items: center;">
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
                 <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -70,9 +76,9 @@
                              height="17px"
                              :src="require('@src/assets/images/ic_message.png')" />
                   <span>
-                    {{ message.content.data.patientInfo.familyName }} |
-                    {{ message.content.data.patientInfo.familySex }} |
-                    {{ message.content.data.patientInfo.familyAge }}岁
+                    {{ patientInfo.familyName }} |
+                    {{ patientInfo.familySex }} |
+                    {{ patientInfo.familyAge }}岁
                   </span>
                   <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
                        src="~@/assets/images/ic_fz.png"
@@ -82,8 +88,11 @@
                        class="fz" />
                 </div>
                 <div class="message-content">
-                  <div class="t">病情描述</div>
-                  <div class="content">{{ message.content.data.inquiryOrderInfo.describe }}</div>
+                  <div class="content top">
+                    {{ message.content.data.inquiryOrderInfo.confirmIllness }}</div>
+                  <div class="content"><span
+                          class="t">病情描述</span>{{ message.content.data.inquiryOrderInfo.describe }}
+                  </div>
                 </div>
                 <div class="message-line"></div>
                 <div class="message-footer"
@@ -97,63 +106,13 @@
 
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
+                <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
-            </div>
-          </template>
-
-          <!-- 检查单 -->
-          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
-            <!-- 消息时间 -->
-            <template v-if="isShowMessageTime(message ,index)">
-              <div class="message time">
-                <div class="message-body">
-                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
-              </div>
-            </template>
-
-            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-                 style="display: flex; align-items: center;">
-              <!-- 消息头像 -->
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
-              </div>
-
-              <!-- 消息内容 -->
-              <div class="message-body message-check">
-                <div class="message-header">
-                  <van-image width="17px"
-                             height="17px"
-                             :src="require('@src/assets/images/ic_check.png')" /> <span>检查单</span>
-                </div>
-                <div class="message-content">
-                  <div class="item"
-                       v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
-                       :key="item.itemId">
-                    <div class="left">{{ item.name }}</div>
-                    <div class="right">x 1</div>
-                  </div>
-                  <div class="message-line-solid"></div>
-                </div>
-                <div class="message-footer"
-                     @click="goInquiryCheckInfo(message)">
-                  查看详情
-                </div>
-              </div>
-
-              <!-- 消息头像 -->
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
-                     mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
-              </div>
-
             </div>
           </template>
 
@@ -171,27 +130,62 @@
                  style="display: flex; align-items: center;">
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
                 <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
-              <div @click="getTransfelDetail(message)"
+              <div class="message-body message-check">
+                <div class="message-header">
+                  <van-image width="17px"
+                             height="17px"
+                             :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span>
+                </div>
+                <div class="message-content">
+                  <div class="item">
+                    <div class="left other justify">就诊人</div>
+                    <div class="right other">
+                      {{ patientInfo.familyName }}
+                      {{ patientInfo.familySex }}
+                      {{ patientInfo.familyAge }}岁
+                    </div>
+                  </div>
+
+                  <div class="item">
+                    <div class="left other justify">转诊医生</div>
+                    <div class="right other"
+                         v-if="message.content.data.referralInfo.toDoctorInfo">
+                      <div>{{message.content.data.referralInfo.toDoctorInfo.name}}
+                        {{message.content.data.referralInfo.toDoctorInfo.deptName}}</div>
+                      <div>{{message.content.data.referralInfo.toDoctorInfo.hospitalName}}</div>
+                    </div>
+                  </div>
+                  <div class="message-line-solid"></div>
+                </div>
+                <div class="message-footer"
+                     @click="getTransfelDetail(message)">
+                  查看详情
+                </div>
+              </div>
+              <!-- <div @click="getTransfelDetail(message)"
                    class="message-body case">
                 <img src="~@src/assets/images/pic_medication recommendations.png" />
                 <div style="text-align: left;">
                   <p style="font-size: 14px;">转诊单</p>
                   <p>查看详情</p>
                 </div>
-              </div>
+              </div> -->
 
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
+                <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
 
             </div>
@@ -211,27 +205,250 @@
                  style="display: flex; align-items: center;">
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
                 <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
-              <div @click="getConsultDetail(message)"
+              <div class="message-body message-check">
+                <div class="message-header">
+                  <van-image width="17px"
+                             height="17px"
+                             :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span>
+                </div>
+                <div class="message-content">
+                  <div class="item">
+                    <div class="left other justify">就诊人</div>
+                    <div class="right other">
+                      {{ patientInfo.familyName }}
+                      {{ patientInfo.familySex }}
+                      {{ patientInfo.familyAge }}岁
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="left other justify">诊断</div>
+                    <div class="right other">{{message.content.data.consultInfo.diagnose}}</div>
+                  </div>
+                  <div class="item">
+                    <div class="left other justify">会诊医生</div>
+                    <div class="right other"
+                         v-if="message.content.data.consultInfo.toDoctorInfo">
+                      <div>{{message.content.data.consultInfo.toDoctorInfo.name}}
+                        {{message.content.data.consultInfo.toDoctorInfo.deptName}}</div>
+                      <div>{{message.content.data.consultInfo.toDoctorInfo.hospitalName}}</div>
+                    </div>
+                  </div>
+                  <div class="message-line-solid"></div>
+                </div>
+                <div class="message-footer"
+                     @click="getConsultDetail(message)">
+                  查看详情
+                </div>
+              </div>
+              <!-- <div @click="getConsultDetail(message)"
                    class="message-body case">
                 <img src="~@src/assets/images/pic_medication recommendations.png" />
                 <div style="text-align: left;">
                   <p style="font-size: 14px;">会诊单</p>
                   <p>查看详情</p>
                 </div>
+              </div> -->
+
+              <!-- 消息头像 -->
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'out'">
+                <!-- <img class="img-avatar"
+                     mode="cover"
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
+              </div>
+
+            </div>
+          </template>
+
+          <!-- 病历消息 -->
+          <template
+                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+            <!-- 消息时间 -->
+            <template v-if="isShowMessageTime(message ,index)">
+              <div class="message time">
+                <div class="message-body">
+                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              </div>
+            </template>
+
+            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+                 style="display: flex; align-items: center;">
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'in'">
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              </div>
+
+              <!-- 消息内容 -->
+              <div class="message-body message-check">
+                <div class="message-header">
+                  <van-image width="17px"
+                             height="17px"
+                             :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span>
+                </div>
+                <div class="message-content">
+                  <div class="item">
+                    <div class="left other justify">诊断</div>
+                    <div class="right other">{{message.diagnosis}}</div>
+                  </div>
+                  <div class="item">
+                    <div class="left other justify"><span>就诊时间</span></div>
+                    <div class="right other">{{message.visitingTime}}</div>
+                  </div>
+                  <div class="message-line-solid"></div>
+                </div>
+                <div class="message-footer"
+                     @click="getCaseDetail(message)">
+                  查看详情
+                </div>
+              </div>
+              <!-- <div @click="getCaseDetail(message)"
+                   class="message-body case">
+                <img src="~@src/assets/images/pic_medication recommendations.png" />
+                <div style="text-align: left;">
+                  <p style="font-size: 14px;">病历</p>
+                  <p>查看详情</p>
+                </div>
+              </div> -->
+
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'out'">
+                <!-- <img class="img-avatar"
+                     mode="cover"
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
+              </div>
+            </div>
+          </template>
+
+          <!-- 处方消息 -->
+          <template
+                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+            <!-- 消息时间 -->
+            <template v-if="isShowMessageTime(message ,index)">
+              <div class="message time">
+                <div class="message-body">
+                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              </div>
+            </template>
+
+            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+                 style="display: flex; align-items: center;">
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'in'">
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              </div>
+
+              <!-- 消息内容 -->
+              <div class="message-body message-check">
+                <div class="message-header">
+                  <van-image width="17px"
+                             height="17px"
+                             :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span>
+                </div>
+                <div class="message-content">
+                  <div class="item">
+                    <div class="left other justify">诊断</div>
+                    <div class="right other">{{message.diagnosis}}</div>
+                  </div>
+                  <div class="item">
+                    <div class="left other">Rp</div>
+                    <div class="right other">{{message.drugInfo}}</div>
+                  </div>
+                  <div class="item">
+                    <div class="left other justify">就诊时间</div>
+                    <div class="right other">{{message.visitingTime}}</div>
+                  </div>
+                  <div class="message-line-solid"></div>
+                </div>
+                <div class="message-footer"
+                     @click="getRecipeDetail(message)">
+                  查看详情
+                </div>
+              </div>
+              <!-- <div @click="getRecipeDetail(message)"
+                   class="message-body recipe">
+                <img src="~@src/assets/images/pic_medication recommendations.png" />
+                <div style="text-align: left;">
+                  <p style="font-size: 14px;">处方</p>
+                  <p>查看详情</p>
+                </div>
+              </div> -->
+
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'out'">
+                <!-- <img class="img-avatar"
+                     mode="cover"
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
+              </div>
+            </div>
+          </template>
+
+          <!-- 检查单 -->
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
+            <!-- 消息时间 -->
+            <template v-if="isShowMessageTime(message ,index)">
+              <div class="message time">
+                <div class="message-body">
+                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
+              </div>
+            </template>
+
+            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
+                 style="display: flex; align-items: center;">
+              <!-- 消息头像 -->
+              <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
+                   v-if="getMessageFlow(message) === 'in'">
+                <img
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+              </div>
+
+              <!-- 消息内容 -->
+              <div class="message-body message-check">
+                <div class="message-header">
+                  <van-image width="17px"
+                             height="17px"
+                             :src="require('@src/assets/images/ic_check.png')" /> <span>检查单</span>
+                </div>
+                <div class="message-content">
+                  <div class="item"
+                       v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
+                       :key="item.itemId">
+                    <div class="left elps">{{ item.name }}</div>
+                    <div class="right">x 1</div>
+                  </div>
+                  <div class="message-line-solid"></div>
+                </div>
+                <div class="message-footer"
+                     @click="goInquiryCheckInfo(message)">
+                  查看详情
+                </div>
               </div>
 
               <!-- 消息头像 -->
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
+                <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
 
             </div>
@@ -267,16 +484,14 @@
             <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
                  style="display: flex; align-items: center;">
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
                 <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
+                     :src="(internalDoctorInfo && internalDoctorInfo.avartor) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
               </div>
 
-              <!-- 消息内容 :style="message.file.style"-->
+              <!-- 消息内容 -->
               <div>
-                <!-- <img :src="message.file.url"
-                     @click="viewImage(message.file.url)"
-                     style="max-width: 200px;" :style="message.file.style"/> -->
                 <van-image @click="viewImage(message.file.url)"
                            :width="message.file.width"
                            :height="message.file.height"
@@ -291,86 +506,12 @@
               </div>
 
               <div class="message-avatar"
+                   @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
+                <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
-              </div>
-            </div>
-          </template>
-
-          <!-- 病历消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
-            <!-- 消息时间 -->
-            <template v-if="isShowMessageTime(message ,index)">
-              <div class="message time">
-                <div class="message-body">
-                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
-              </div>
-            </template>
-
-            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-                 style="display: flex; align-items: center;">
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
-              </div>
-
-              <!-- 消息内容 -->
-              <div @click="getCaseDetail(message)"
-                   class="message-body case">
-                <img src="~@src/assets/images/pic_medication recommendations.png" />
-                <div style="text-align: left;">
-                  <p style="font-size: 14px;">病历</p>
-                  <p>查看详情</p>
-                </div>
-              </div>
-
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
-                     mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
-              </div>
-            </div>
-          </template>
-
-          <!-- 处方消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
-            <!-- 消息时间 -->
-            <template v-if="isShowMessageTime(message ,index)">
-              <div class="message time">
-                <div class="message-body">
-                  {{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</div>
-              </div>
-            </template>
-
-            <div :style="{ 'justify-content' : getMessageFlow(message) === 'in' ? 'flex-start' : getMessageFlow(message) === 'out' ? 'flex-end' : 'center' }"
-                 style="display: flex; align-items: center;">
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="(internalDoctorInfo && internalDoctorInfo.doctorAvatar) || $store.getters['inquiry/doctorInfo'].doctorAvatar" />
-              </div>
-
-              <!-- 消息内容 -->
-              <div @click="getRecipeDetail(message)"
-                   class="message-body recipe">
-                <img src="~@src/assets/images/pic_medication recommendations.png" />
-                <div style="text-align: left;">
-                  <p style="font-size: 14px;">处方</p>
-                  <p>查看详情</p>
-                </div>
-              </div>
-
-              <div class="message-avatar"
-                   v-if="getMessageFlow(message) === 'out'">
-                <img class="img-avatar"
-                     mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" />
+                     src="~@/assets/images/ic_head portrait.png" /> -->
+                <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
             </div>
           </template>
@@ -450,7 +591,7 @@
       <div class="loading">
         <van-loading />
       </div>
-        
+
     </template>
     <peace-dialog :visible.sync="caseDetail.visible">
       <TheCase :data="caseDetail.data"></TheCase>
@@ -518,7 +659,7 @@ export default {
     return {
       internalData: undefined,
       internalDoctorInfo: undefined,
-      patientInfo:undefined,
+      internalPatientInfo: undefined,
       infoData: undefined,
       message: '',
       loading: false,
@@ -560,7 +701,6 @@ export default {
   },
 
   watch: {
-    
     messageList: {
       handler() {
         this.$nextTick(() => {
@@ -574,7 +714,6 @@ export default {
       immediate: true
     },
 
-    
     infoData: {
       handler() {
         this.$nextTick(() => {
@@ -587,7 +726,7 @@ export default {
       },
       immediate: true
     },
-    
+
     data: {
       handler() {
         this.internalData = this.data
@@ -604,7 +743,10 @@ export default {
   },
 
   computed: {
-    
+    patientInfo() {
+      return this.internalPatientInfo || this.$store.getters['inquiry/patientInfo']
+    },
+
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
       // 过滤无效数据
@@ -668,6 +810,7 @@ export default {
       // 清除聊天记录
       peace.service.IM.resetInquirySessionMessages()
       peace.service.IM.resetInquirySession()
+      peace.cache.remove('familyId')
     })
   },
   activated() {
@@ -714,7 +857,7 @@ export default {
   // },
 
   destroyed() {
-    console.log('destroyed')
+    // console.log('destroyed')
     // 清除当前聊天 session
     peace.service.IM.resetInquirySession()
     // 清除聊天记录
@@ -727,12 +870,12 @@ export default {
       peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
         res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
         this.infoData = res.data.inquiryInfo
-        this.patientInfo=res.data.familyInfo
-        // this.internalDoctorInfo=res.data.doctorInfo
+        this.internalPatientInfo = res.data.familyInfo
+        this.internalDoctorInfo = res.data.doctorInfo
       })
     },
     //进行中会话获取医生信息、患者信息
-    
+
     //获取历史会话数据
     getHistoryMsgsByDB() {
       const params = peace.util.decode(this.$route.params.json)
@@ -758,7 +901,7 @@ export default {
           this.getInfoData(res.data.inquiryId)
         }
         this.internalData = res.data.msgList
-        this.internalDoctorInfo = res.data.doctorInfo
+        // this.internalDoctorInfo = res.data.doctorInfo
       })
     },
     //获取进行中会话数据
@@ -810,19 +953,22 @@ export default {
         return false
       }
     },
+
     // 文本消息、系统消息
-    textMessage(message){
-      return  this.getMessageType(message) === 'text' ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-              this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过
+    textMessage(message) {
+      return (
+        this.getMessageType(message) === 'text' ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
+        this.getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过
+      )
     },
     getMessageType(message) {
       // text
@@ -951,13 +1097,32 @@ export default {
         }
       }, 1)
     },
-    gotoDoctorDetail(){
-      let  doctorId=this.internalDoctorInfo.doctorId||this.$store.getters['inquiry/doctorInfo'].doctorId
+    getFamilyName(name) {
+      if (typeof name !== 'undefined') {
+        return name.substring(name.length - 2)
+      }
+    },
+    //跳转医生主页
+    gotoPersonsPage(type) {
+      if (type == 'out') {
+        this.gotoFamilyPage()
+      } else {
+        this.gotoDoctorDetail()
+      }
+    },
+    gotoDoctorDetail() {
+      let doctorId = this.internalDoctorInfo.doctorId || this.$store.getters['inquiry/doctorInfo'].doctorId
       const json = peace.util.encode({
-        doctorId:doctorId
+        doctorId: doctorId
       })
 
       this.$router.push(`/components/DoctorDetail/${json}`)
+    },
+    //跳转家人健康档案
+    gotoFamilyPage() {
+      let familyId = this.patientInfo.familyId
+      peace.cache.set('familyId', familyId)
+      this.$router.push(`/file/index/`)
     },
     gotoOtherPage(message) {
       //去评价
@@ -1146,35 +1311,71 @@ export default {
   }
 }
 .message-check {
-  .item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &:first-child {
-      padding-top: 5px;
-    }
-    &:last-child {
-      padding-bottom: 5px;
-    }
-    .left {
-      width: 80%;
-      text-align: left;
-    }
-    .right {
-      color: #999;
-    }
-  }
   .message-line-solid {
-    border-top: 1px solid #eee;
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
   }
   .message-content {
     padding-top: 0;
     padding-bottom: 0;
+    .item {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0 0 0;
+      font-size: 13px;
+      &:first-child {
+        padding-top: 10px;
+      }
+
+      .left {
+        width: 80%;
+        text-align: left;
+        &.other {
+          color: #999;
+          width: 5em;
+          padding-right: 0.8em;
+          height: 20px;
+          line-height: 20px;
+          &.justify {
+            text-align: justify;
+            text-align-last: justify;
+            display: inline-block;
+            &:after {
+              content: '';
+              display: inline-block;
+              width: 100%;
+              height: 0px;
+            }
+          }
+        }
+
+        &.elps {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+      .right {
+        color: #999;
+        flex: 1;
+        line-height: 20px;
+        text-align: right;
+        &.other {
+          text-align: left;
+          color: #333;
+          width: calc(100% - 5em);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
   }
   .message-footer {
     color: #999;
     justify-content: center;
+    font-size: 12px;
     &::after {
       height: 0;
     }
@@ -1182,7 +1383,7 @@ export default {
 }
 .message-card,
 .message-check {
-  width: 70%;
+  width: 73%;
   background-color: #fff !important;
   padding: 0 !important;
   box-sizing: border-box;
@@ -1213,11 +1414,18 @@ export default {
 .message-content {
   text-align: left;
   padding: 10px;
-  .t {
-    color: #999;
-  }
+  word-break: break-all;
   .content {
     color: #333;
+    font-size: 13px;
+    .t {
+      color: #999;
+      margin-right: 10px;
+    }
+    &.top {
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 600;
+    }
   }
 }
 .message-line {
@@ -1255,6 +1463,7 @@ export default {
   display: flex;
   align-items: center;
   color: #333;
+  font-size: 12px;
   .van-image {
     margin: 0 10px;
   }
@@ -1279,7 +1488,9 @@ export default {
     overflow: auto;
     padding: 5px 10px;
     flex: 1;
-
+    .body-size {
+      font-size: 16px;
+    }
     .message {
       font-size: 14px;
       margin: 0 0 10px 0;
@@ -1296,8 +1507,8 @@ export default {
           margin: 0 10px 0 0;
           align-self: flex-start;
           img {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
           }
         }
@@ -1315,9 +1526,20 @@ export default {
           margin: 0 0 0 10px;
           align-self: flex-start;
           img {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+          }
+          .img-name {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: $primary;
+            color: #fff;
+            font-size: 15px;
           }
         }
       }
@@ -1353,7 +1575,7 @@ export default {
         white-space: pre-wrap;
         word-wrap: break-word;
         display: inline-block;
-        padding: 5px 5px;
+        padding: 10px;
         border-radius: 6px;
         max-width: 73%;
         // max-width: 80%;
@@ -1429,15 +1651,15 @@ export default {
     }
   }
 }
-.loading{
-  position:fixed;
-  top:50%;
-  width:100%;
-  margin:auto;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.loading {
+  position: fixed;
+  top: 50%;
+  width: 100%;
+  margin: auto;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
 
