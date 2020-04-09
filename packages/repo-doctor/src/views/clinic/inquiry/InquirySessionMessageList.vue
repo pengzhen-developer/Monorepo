@@ -769,7 +769,7 @@ export default {
 
         &.elps {
           text-overflow: ellipsis;
-          white-space: nowrap;
+          ƒwhite-space: nowrap;
           overflow: hidden;
         }
       }
@@ -848,7 +848,7 @@ export default {
     &.top {
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
-      white-space: nowrap;
+      /* white-space: nowrap; */
     }
   }
 }
