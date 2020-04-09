@@ -1418,6 +1418,7 @@ export default {
   .content {
     color: #333;
     font-size: 13px;
+    white-space:nowrap;
     .t {
       color: #999;
       margin-right: 10px;
