@@ -219,7 +219,7 @@
         <template>
           <el-collapse-item name="8">
             <template slot="title">
-              <span class="title">会诊小结</span>
+              <span class="title">会诊所见</span>
             </template>
 
             <el-form>
@@ -232,15 +232,15 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="疾病诊断">
+                  <el-form-item label="目前诊断">
                     <span>{{ internalData.consultDiagnose }}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="建议">
-                    <span slot="label">建议</span>
+                  <el-form-item label="会诊意见">
+                    <span slot="label">会诊意见</span>
                     <span>{{ internalData.consultSuggest }}</span>
                   </el-form-item>
                 </el-col>

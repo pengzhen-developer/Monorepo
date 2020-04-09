@@ -77,7 +77,8 @@
         <el-form-item label="过敏史"
                       prop="allergy_history">
           <span slot="label">过敏史</span>
-          <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
+          <template
+                    v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
             <el-tag :key="item.id"
                     style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     type="info"
@@ -149,7 +150,7 @@
         <el-form-item label="辅助检查">
           <span slot="label">辅助检查</span>
           <el-input :rows="3"
-                    placeholder="请输入不少于10个字的描述"
+                    placeholder="请输入辅助检查"
                     type="textarea"
                     v-model="medical.model.Inspection_index.More"></el-input>
         </el-form-item>
@@ -375,7 +376,10 @@ export default {
           diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'blur' }]
         }
       },
-      typeOptions: [{ value: 1, label: '通用病历模板' }, { value: 2, label: '肝病病历模板' }],
+      typeOptions: [
+        { value: 1, label: '通用病历模板' },
+        { value: 2, label: '肝病病历模板' }
+      ],
 
       dialog: {
         visible: false,
@@ -483,10 +487,13 @@ export default {
     sendMedical() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (this.medical.model.Inspection_index.More && this.medical.model.Inspection_index.More.length < 10) {
-            $peace.util.warning('请输入至少 10 个字的辅助检查')
-            return
-          }
+          // if (
+          //   this.medical.model.Inspection_index.More &&
+          //   this.medical.model.Inspection_index.More.length < 10
+          // ) {
+          //   $peace.util.warning('请输入至少 10 个字的辅助检查')
+          //   return
+          // }
           if (
             this.medical.model.Inspection_index.temperature &&
             !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)
@@ -527,11 +534,19 @@ export default {
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || (parseInt(alt) < 0 || parseInt(alt) > 1000)) {
+          if (
+            (alt && !/^\d+(\.\d{1,1})?$/.test(alt)) ||
+            parseInt(alt) < 0 ||
+            parseInt(alt) > 1000
+          ) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || (parseInt(ast) < 0 || parseInt(ast) > 1000)) {
+          if (
+            (ast && !/^\d+(\.\d{1,1})?$/.test(ast)) ||
+            parseInt(ast) < 0 ||
+            parseInt(ast) > 1000
+          ) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
@@ -555,8 +570,10 @@ export default {
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
           params.present_history = params.present_history.toString()
-          params.allergy_history = params.allergy_history && params.allergy_history.map(item => item.name).toString()
-          params.past_history = params.past_history && params.past_history.map(item => item.name).toString()
+          params.allergy_history =
+            params.allergy_history && params.allergy_history.map(item => item.name).toString()
+          params.past_history =
+            params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
           params.consultNo = this.$store.getters['consultation/consultInfo'].consultNo
@@ -658,9 +675,14 @@ export default {
         this.medical.model.Inspection_index.More ||
         this.medical.model.summary
       ) {
-        $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
-          $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
-        })
+        $peace.util.confirm(
+          '确定要退出病历吗？当前所有数据将会被清除!',
+          undefined,
+          undefined,
+          () => {
+            $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+          }
+        )
       } else {
         $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
       }
