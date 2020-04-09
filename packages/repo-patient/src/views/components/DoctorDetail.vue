@@ -364,7 +364,7 @@
               </tbody>
             </table>
           </van-tab>
-          <van-tab title="线下咨询时间">
+          <van-tab title="线下门诊时间">
             <table class="time-table">
               <thead>
                 <tr>
