@@ -24,8 +24,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -64,8 +63,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -132,8 +130,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -207,8 +204,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -277,8 +273,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -332,8 +327,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -391,8 +385,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -462,8 +455,7 @@
               <div class="message-avatar"
                    @click="gotoPersonsPage(getMessageFlow(message))"
                    v-if="getMessageFlow(message) === 'in'">
-                <img
-                     :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
+                <img :src="doctorInfo.avartor || doctorInfo.doctorAvatar" />
               </div>
 
               <!-- 消息内容 -->
@@ -673,7 +665,7 @@ export default {
       },
 
       hasSend: false,
-      IsInFlamilyList:false
+      IsInFlamilyList: false
     }
   },
 
@@ -709,7 +701,7 @@ export default {
         this.internalData = this.data
       },
       immediate: true
-    },
+    }
 
     // doctorInfo: {
     //   handler() {
@@ -723,7 +715,7 @@ export default {
     patientInfo() {
       return this.internalPatientInfo || this.$store.getters['inquiry/patientInfo']
     },
-    doctorInfo(){
+    doctorInfo() {
       return this.internalDoctorInfo || this.$store.getters['inquiry/doctorInfo']
     },
     messageList() {
@@ -806,7 +798,7 @@ export default {
             // 等待 IM 初始化完成，并且 sessions 已经获取到
             if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
               window.clearInterval(interval)
-
+              this.getInquiryInfo()
               this.getHistoryMsgsByIM()
             }
           }, 100)
@@ -844,6 +836,17 @@ export default {
   },
 
   methods: {
+    getInquiryInfo() {
+      let params = {
+        sessionIdList: [peace.util.decode(this.$route.params.json).id],
+        patientId: this.$store.state.user.userInfo.patientInfo.id
+      }
+      peace.service.inquiry.getList(params).then(res => {
+        this.internalDoctorInfo=res.data.list[0].doctorInfo
+        this.internalPatientInfo=res.data.list[0].patientInfo
+        this.checkFamilyIsInFlamilyList()
+      })
+    },
     //获取历史会话问诊状态、医生信息、患者信息及5个按钮是否展示
     getInfoData(inquiryId) {
       peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
@@ -882,7 +885,7 @@ export default {
         }
         this.internalData = res.data.msgList
         // this.internalDoctorInfo = res.data.doctorInfo
-        this.checkFamilyIsInFlamilyList()
+        
       })
     },
     //获取进行中会话数据
@@ -897,7 +900,6 @@ export default {
         if (error) {
           throw new Error(error)
         }
-
         peace.service.IM.resetInquirySession()
         peace.service.IM.resetInquirySessionMessages()
         peace.service.IM.setInquirySession(session)
@@ -1099,27 +1101,25 @@ export default {
 
       this.$router.push(`/components/DoctorDetail/${json}`)
     },
-    checkFamilyIsInFlamilyList(){
+    checkFamilyIsInFlamilyList() {
       peace.service.health.familyLists().then(res => {
-        for(let i=0;i<res.data.list.length;i++){
-          if(res.data.list[i].id==this.patientInfo.familyId){
-            this.IsInFlamilyList=true
+        for (let i = 0; i < res.data.list.length; i++) {
+          if (res.data.list[i].id == this.patientInfo.familyId) {
+            this.IsInFlamilyList = true
             break
           }
         }
-
       })
     },
     //跳转家人健康档案
     gotoFamilyPage() {
       let familyId = this.patientInfo.familyId
-      if(this.IsInFlamilyList){
+      if (this.IsInFlamilyList) {
         peace.cache.set('familyId', familyId)
         this.$router.push(`/file/index/`)
-      }else{
+      } else {
         peace.util.alert('该就诊人已从您的家人列表移除，不可查看其健康档案')
       }
-      
     },
     gotoOtherPage(message) {
       //去评价

@@ -355,7 +355,7 @@ export default {
       this.getNationList()
     }
     if(json.canShowSelf){
-      this.canShowSelf=json.canShowSelf
+      this.canShowSelf=json.canShowSelf==1?true:false
     }
   },
 

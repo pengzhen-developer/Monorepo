@@ -16,7 +16,7 @@
       </div>
 
       <div class="header-right">
-        <van-button v-if="doctor.doctorInfo.attentionStatus"
+        <van-button v-if="doctor.doctorInfo.attentionStatus==1"
                     class="star"
                     round
                     size="small"

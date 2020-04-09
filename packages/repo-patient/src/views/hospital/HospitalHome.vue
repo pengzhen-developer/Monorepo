@@ -129,7 +129,7 @@
             <div class="item">
 
               <img src="@src/assets/images/ic_tag.png"
-                   v-if="item.isAttention==0" />>
+                   v-if="item.isAttention==1" />>
 
               <span class="name">{{ item.name }}</span>
               <div class="jd">
@@ -143,9 +143,9 @@
                   <span :key="item"
                         v-if="item === 'image' || item === 'video'"
                         class="tags wen">问</span>
-                  <span :key="item"
+                  <!-- <span :key="item"
                         v-if="item === 'prvivateDoctor'"
-                        class="tags bao">服务包</span>
+                        class="tags bao">服务包</span> -->
                 </template>
               </span>
             </div>
@@ -759,6 +759,7 @@ export default {
               white-space: nowrap;
             }
           }
+
           .tags {
             font-size: 9px;
             font-weight: 400;

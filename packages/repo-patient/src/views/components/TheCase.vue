@@ -56,8 +56,8 @@
         <div class='table-th'>检查指标</div>
         <table border='1'
                cellspacing='0'>
-          <tr>
-            <td v-if="internalData.inspectionIndex.temperature">体温：</td>
+          <tr v-if="internalData.inspectionIndex.temperature">
+            <td>体温：</td>
             <td>
               {{internalData.inspectionIndex.temperature ? internalData.inspectionIndex.temperature + '度' : '--'}}
             </td>

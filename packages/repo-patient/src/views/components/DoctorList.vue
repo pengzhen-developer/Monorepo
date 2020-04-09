@@ -15,20 +15,24 @@
               doctor.doctorInfo.doctorName
             }}</span>
             <span>{{ doctor.doctorInfo.doctorTitle }}</span>
-            <!-- 服务部标签 -->
+            <!-- 服务部标签 服务部未开通故屏蔽-->
             <template v-if="doctor.doctorInfo.serviceList">
-              <div :class="['label', 'label-'+it]"
-                   v-for="(it, i) in doctor.doctorInfo.serviceList"
-                   :key="i">
-                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-              </div>
+              <template v-for="(it, i) in doctor.doctorInfo.serviceList">
+                <div :class="['label', 'label-'+it]"
+                    :key="i" 
+                    v-if="it!=='prvivateDoctor'">
+                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                </div>
+              </template>
             </template>
             <template v-if="doctor.doctorInfo.tags">
-              <div :class="['label', 'label-'+it]"
-                   v-for="(it, i) in doctor.doctorInfo.tags"
-                   :key="i">
-                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-              </div>
+              <template v-for="(it, i) in doctor.doctorInfo.tags">
+                <div :class="['label', 'label-'+it]"
+                    :key="i"
+                    v-if="it!=='prvivateDoctor'">
+                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                </div>
+              </template>
             </template>
             <div class="tag-work online"
                  v-if="getSericeStatus(doctor)==1">接诊中</div>

@@ -114,11 +114,25 @@
           <div class="card-name">{{item.name}}
             <div class="card-small">
               {{item.doctorTitle}}
-              <div :class="['label', 'label-'+it]"
-                   v-for="(it, i) in item.serviceList"
-                   :key="i">
-                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-              </div>
+              <!-- 服务部标签 服务部未开通故屏蔽-->
+              <template v-if="item.serviceList">
+                <template v-for="(it, i) in item.serviceList">
+                  <div :class="['label', 'label-'+it]"
+                       :key="i"
+                       v-if="it!=='prvivateDoctor'">
+                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                  </div>
+                </template>
+              </template>
+              <template v-if="item.tags">
+                <template v-for="(it, i) in item.tags">
+                  <div :class="['label', 'label-'+it]"
+                       :key="i"
+                       v-if="it!=='prvivateDoctor'">
+                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                  </div>
+                </template>
+              </template>
             </div>
             <div class="tag-work tag-online"
                  v-if="item.workStatus==1">接诊中</div>
@@ -224,13 +238,13 @@ export default {
         })
         .then(res => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
-          
+
           // res.data.list.map(item=>{
           //   if(item.workStatus==1&&item.serviceList==0){
           //     item.workStatus=3
-          //   } 
+          //   }
           // })
-          
+
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (!this.showLoadingType && this.doctorList.length == 0) {

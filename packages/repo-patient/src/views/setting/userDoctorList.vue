@@ -26,20 +26,24 @@
             <div class="card-name">
               {{item.name}}
               <div class="card-small title">{{item.doctorTitle}} </div>
-              <!-- 服务部标签 -->
+              <!-- 服务部标签 服务部未开通故屏蔽-->
               <template v-if="item.serviceList">
-                <div :class="['label', 'label-'+it]"
-                     v-for="(it, i) in item.serviceList"
-                     :key="i">
-                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                </div>
+                <template v-for="(it, i) in item.serviceList">
+                  <div :class="['label', 'label-'+it]"
+                       :key="i"
+                       v-if="it!=='prvivateDoctor'">
+                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                  </div>
+                </template>
               </template>
               <template v-if="item.tags">
-                <div :class="['label', 'label-'+it]"
-                     v-for="(it, i) in item.tags"
-                     :key="i">
-                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                </div>
+                <template v-for="(it, i) in item.tags">
+                  <div :class="['label', 'label-'+it]"
+                       :key="i"
+                       v-if="it!=='prvivateDoctor'">
+                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
+                  </div>
+                </template>
               </template>
               <div class="tag-work tag-online"
                    v-if="item.workStatus==1">接诊中</div>
