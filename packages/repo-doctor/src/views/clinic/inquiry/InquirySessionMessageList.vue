@@ -769,7 +769,7 @@ export default {
 
         &.elps {
           text-overflow: ellipsis;
-          ƒwhite-space: nowrap;
+          white-space: nowrap;
           overflow: hidden;
         }
       }

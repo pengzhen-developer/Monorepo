@@ -77,7 +77,8 @@
         <el-form-item label="过敏史"
                       prop="allergy_history">
           <span slot="label">过敏史</span>
-          <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
+          <template
+                    v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
             <el-tag :key="item.id"
                     style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     type="info"
@@ -535,15 +536,30 @@ export default {
             return
           }
 
+          if (
+            peace.validate.isEmpty(this.medical.model.blood_pressure_end) ||
+            peace.validate.isEmpty(this.medical.model.blood_pressure_begin)
+          ) {
+            this.medical.model.Inspection_index.blood_pressure = ''
+          }
+
           const alt = this.medical.model.ALT
           const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
-          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
+          if (
+            (alt && !/^\d+(\.\d{1,1})?$/.test(alt)) ||
+            parseInt(alt) < 0 ||
+            parseInt(alt) > 1000
+          ) {
             $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
-          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
+          if (
+            (ast && !/^\d+(\.\d{1,1})?$/.test(ast)) ||
+            parseInt(ast) < 0 ||
+            parseInt(ast) > 1000
+          ) {
             $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
@@ -567,8 +583,10 @@ export default {
 
           params.Inspection_index = JSON.stringify(params.Inspection_index)
           params.present_history = params.present_history.toString()
-          params.allergy_history = params.allergy_history && params.allergy_history.map(item => item.name).toString()
-          params.past_history = params.past_history && params.past_history.map(item => item.name).toString()
+          params.allergy_history =
+            params.allergy_history && params.allergy_history.map(item => item.name).toString()
+          params.past_history =
+            params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
           console.log(params)
@@ -669,9 +687,14 @@ export default {
         this.medical.model.Inspection_index.More ||
         this.medical.model.summary
       ) {
-        $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
-          $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
-        })
+        $peace.util.confirm(
+          '确定要退出病历吗？当前所有数据将会被清除!',
+          undefined,
+          undefined,
+          () => {
+            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+          }
+        )
       } else {
         $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
       }
