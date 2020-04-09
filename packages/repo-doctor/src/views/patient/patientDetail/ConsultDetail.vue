@@ -39,8 +39,7 @@
           </div>
           <div class="item">
             <span class="title">现病史：</span>
-            <span
-                  class="content">{{ caseInfo.presentHistory ==''? '无' : caseInfo.presentHistory}}</span>
+            <span class="content">{{ caseInfo.presentHistory ==''? '无' : caseInfo.presentHistory}}</span>
           </div>
           <div class="item">
             <span class="title">既往史：</span>
@@ -48,8 +47,7 @@
           </div>
           <div class="item">
             <span class="title">过敏史：</span>
-            <span
-                  class="content">{{ caseInfo.allergyHistory =='' ? '无' : caseInfo.allergyHistory}}</span>
+            <span class="content">{{ caseInfo.allergyHistory =='' ? '无' : caseInfo.allergyHistory}}</span>
           </div>
           <div class="item"
                v-if="!(caseInfo.InspectionIndex.temperature == ''&&caseInfo.InspectionIndex.weight == '' && caseInfo.InspectionIndex.heart_rate ==''&&caseInfo.InspectionIndex.blood_pressure =='')">
@@ -58,34 +56,29 @@
               <div class="line">
                 <div class="dataItem">
                   <span class="title">体温：</span>
-                  <span
-                        class="content">{{ caseInfo.InspectionIndex.temperature == '' ? '无' : caseInfo.InspectionIndex.temperature+'度'}}</span>
+                  <span class="content">{{ caseInfo.InspectionIndex.temperature == '' ? '无' : caseInfo.InspectionIndex.temperature+'度'}}</span>
                 </div>
                 <div class="dataItem">
                   <span class="title">体重：</span>
-                  <span
-                        class="content">{{ caseInfo.InspectionIndex.weight == '' ? '无' : caseInfo.InspectionIndex.weight+'kg'}}</span>
+                  <span class="content">{{ caseInfo.InspectionIndex.weight == '' ? '无' : caseInfo.InspectionIndex.weight+'kg'}}</span>
                 </div>
               </div>
               <div class="divide"></div>
               <div class="line">
                 <div class="dataItem">
                   <span class="title">心率：</span>
-                  <span
-                        class="content">{{ caseInfo.InspectionIndex.heart_rate =='' ? '无' : caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
+                  <span class="content">{{ caseInfo.InspectionIndex.heart_rate =='' ? '无' : caseInfo.InspectionIndex.heart_rate+'bmp'}}</span>
                 </div>
                 <div class="dataItem">
                   <span class="title">血压：</span>
-                  <span
-                        class="content">{{ caseInfo.InspectionIndex.blood_pressure =='' ? '无' : caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
+                  <span class="content">{{ caseInfo.InspectionIndex.blood_pressure =='' ? '无' : caseInfo.InspectionIndex.blood_pressure+'mmHg'}}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="item">
             <span class="title">辅助检查：</span>
-            <span
-                  class="content">{{ caseInfo.InspectionIndex.More =='' ? '无' : caseInfo.InspectionIndex.More}}</span>
+            <span class="content">{{ caseInfo.InspectionIndex.More =='' ? '无' : caseInfo.InspectionIndex.More}}</span>
           </div>
           <div class="item">
             <span class="title">诊 断：</span>
@@ -167,8 +160,7 @@
                 </div>
                 <div class="dataItem">
                   <span class="title">核对发药：</span>
-                  <span
-                        class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
+                  <span class="content">{{item.sendPharmacist =='' ? '无':item.sendPharmacist}}</span>
                 </div>
               </div>
 
@@ -180,8 +172,7 @@
                 </div>
                 <div class="dataItem">
                   <span class="title">系统审方结果：</span>
-                  <span
-                        class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                  <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
                 </div>
               </div>
             </div>
@@ -196,13 +187,11 @@
         <template v-if="consultSummary !== null">
           <div class="item">
             <span class="title">会诊医生：</span>
-            <span
-                  class="content">{{ consultSummary.toDoctorName + ' ' + consultSummary.toDoctorTitle }}</span>
+            <span class="content">{{ consultSummary.toDoctorName + ' ' + consultSummary.toDoctorTitle }}</span>
           </div>
           <div class="item">
             <span class="title">会诊机构：</span>
-            <span
-                  class="content">{{ consultSummary.toHospitalName + ' ' + consultSummary.toDeptName }}</span>
+            <span class="content">{{ consultSummary.toHospitalName + ' ' + consultSummary.toDeptName }}</span>
           </div>
           <div class="item">
             <span class="title">会诊所见.：</span>
@@ -399,6 +388,7 @@ export default {
       font-size: 14px;
       font-weight: 600;
       color: rgba(51, 51, 51, 1);
+      flex: 1;
     }
     .dataBox {
       width: 410px;
@@ -511,8 +501,7 @@ export default {
         width: 4px;
         height: 8px;
         display: inline-block;
-        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png')
-          no-repeat;
+        background: rgba(249, 249, 249, 1) url('../../../assets/images/systen-Triangle.png') no-repeat;
         margin-left: 10px;
       }
     }

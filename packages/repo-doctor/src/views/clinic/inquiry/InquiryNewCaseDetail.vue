@@ -302,6 +302,7 @@ export default {
       font-size: 14px;
       font-weight: 600;
       color: rgba(51, 51, 51, 1);
+      flex: 1;
     }
     .dataBox {
       width: 410px;
