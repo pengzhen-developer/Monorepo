@@ -34,8 +34,7 @@
       </ConsultationSessionCase>
 
       <!-- 写处方 -->
-      <ConsultationSessionRecipe
-                                 v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方">
+      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方">
       </ConsultationSessionRecipe>
 
       <template v-else>
@@ -47,11 +46,10 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <ConsultationSessionReceive
-                                      v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
+          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
           </ConsultationSessionReceive>
           <!-- 问诊中 -->
-          <ConsultationSessionMessageInput
+          <ConsultationSessionMessageInput ref="ConsultationSessionMessageInput"
                                            v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
                                                  $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ">
           </ConsultationSessionMessageInput>
@@ -153,8 +151,12 @@ export default {
     },
 
     overConsultation() {
-      $peace.util.confirm('确定要结束会诊吗？', undefined, undefined, () => {
-        if (this.$store.getters['consultation/consultInfo'].isCommit) {
+      if (!this.$store.getters['consultation/consultInfo'].isCommit) {
+        $peace.util.confirm('尚未填写会诊小结，去填写？', undefined, undefined, () => {
+          this.$refs.ConsultationSessionMessageInput.sendConsultSuggest()
+        })
+      } else {
+        $peace.util.confirm('确定要结束会诊吗？', undefined, undefined, () => {
           const params = {
             consultNo: this.$store.getters['consultation/consultInfo'].consultNo
           }
@@ -162,10 +164,8 @@ export default {
           peace.service.consult.overConsult(params).then(() => {
             $peace.util.alert('会诊已完成，感谢您的辛苦付出')
           })
-        } else {
-          peace.util.alert('请填写会诊意见')
-        }
-      })
+        })
+      }
     },
 
     checkStatus(session) {
@@ -176,40 +176,32 @@ export default {
         // 判断是否存在未完成的会诊编号
         peace.service.consult.getConsultNo().then(res => {
           // 存在正在进行中的会诊，并且选中的不是当前正在会诊中的会诊
-          if (
-            res.data.consultNo &&
-            res.data.teamId &&
-            res.data.consultNo !== session.content.consultInfo.consultNo
-          ) {
-            peace.service.consult
-              .getInfoByTeamId({ teamIdList: [res.data.teamId] })
-              .then(consult => {
-                const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
+          if (res.data.consultNo && res.data.teamId && res.data.consultNo !== session.content.consultInfo.consultNo) {
+            peace.service.consult.getInfoByTeamId({ teamIdList: [res.data.teamId] }).then(consult => {
+              const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
 
-                consult.data.list.forEach(item => {
-                  const startDoctor = item.consultInfo.startDoctor
-                  const receiveDoctor = item.consultInfo.receiveDoctor
+              consult.data.list.forEach(item => {
+                const startDoctor = item.consultInfo.startDoctor
+                const receiveDoctor = item.consultInfo.receiveDoctor
 
-                  // 当前人是发起方？
-                  if (startDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
-                    this.tipsSource = 'start'
-                    this.tips =
-                      '您正在与' +
-                      receiveDoctor.map(item => item.doctorName).join(',') +
-                      '医生进行会诊，无法开启新的会诊'
-                    this.tipsForConsult = res.data
-                  }
-                  // 当前人是发起方？
-                  else if (receiveDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
-                    this.tipsSource = 'receive'
-                    this.tips =
-                      '您正在与' +
-                      startDoctor.map(item => item.doctorName).join(',') +
-                      '医生进行会诊，无法开启新的会诊，是否立即关闭？'
-                    this.tipsForConsult = res.data
-                  }
-                })
+                // 当前人是发起方？
+                if (startDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'start'
+                  this.tips =
+                    '您正在与' + receiveDoctor.map(item => item.doctorName).join(',') + '医生进行会诊，无法开启新的会诊'
+                  this.tipsForConsult = res.data
+                }
+                // 当前人是发起方？
+                else if (receiveDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'receive'
+                  this.tips =
+                    '您正在与' +
+                    startDoctor.map(item => item.doctorName).join(',') +
+                    '医生进行会诊，无法开启新的会诊，是否立即关闭？'
+                  this.tipsForConsult = res.data
+                }
               })
+            })
           }
         })
       }
@@ -275,7 +267,7 @@ $--control-height: 150px;
     }
 
     .message-list {
-      height: calc(100% - #{$--control-height});
+      height: calc(100% - #{$--control-height} - 30px);
 
       .message-list-scrollbar {
         height: 100%;

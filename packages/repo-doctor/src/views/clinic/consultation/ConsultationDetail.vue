@@ -219,7 +219,7 @@
         <template>
           <el-collapse-item name="8">
             <template slot="title">
-              <span class="title">会诊所见</span>
+              <span class="title">会诊小结</span>
             </template>
 
             <el-form>

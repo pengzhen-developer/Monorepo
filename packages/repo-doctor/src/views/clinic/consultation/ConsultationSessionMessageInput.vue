@@ -35,12 +35,12 @@
         <span>开处方</span>
       </el-button>
 
-      <!-- 会诊生效后, 受邀方医生能够填写会诊意见, 用于结束会诊 -->
+      <!-- 会诊生效后, 受邀方医生能够填写会诊小结, 用于结束会诊 -->
       <el-button @click="sendConsultSuggest"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                          $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
-        <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊意见
+        <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊小结
       </el-button>
     </div>
 
@@ -124,7 +124,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="consultSuggestDialog.visible"
-                  title="填写会诊意见">
+                  title="填写会诊小结">
       <ConsultationSessionSuggest @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
     </peace-dialog>
 
