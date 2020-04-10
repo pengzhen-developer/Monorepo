@@ -134,7 +134,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check">
+              <div class="message-body message-check" @click="getTransfelDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -161,8 +161,7 @@
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
-                <div class="message-footer"
-                     @click="getTransfelDetail(message)">
+                <div class="message-footer">
                   查看详情
                 </div>
               </div>
@@ -208,7 +207,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check">
+              <div class="message-body message-check" @click="getConsultDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -238,8 +237,7 @@
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
-                <div class="message-footer"
-                     @click="getConsultDetail(message)">
+                <div class="message-footer">
                   查看详情
                 </div>
               </div>
@@ -277,7 +275,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check">
+              <div class="message-body message-check" @click="getCaseDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -294,8 +292,7 @@
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
-                <div class="message-footer"
-                     @click="getCaseDetail(message)">
+                <div class="message-footer">
                   查看详情
                 </div>
               </div>
@@ -331,7 +328,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check">
+              <div class="message-body message-check"  @click="getRecipeDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -352,8 +349,7 @@
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
-                <div class="message-footer"
-                     @click="getRecipeDetail(message)">
+                <div class="message-footer">
                   查看详情
                 </div>
               </div>
@@ -389,7 +385,7 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check">
+              <div class="message-body message-check" @click="goInquiryCheckInfo(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -404,8 +400,7 @@
                   </div>
                   <div class="message-line-solid"></div>
                 </div>
-                <div class="message-footer"
-                     @click="goInquiryCheckInfo(message)">
+                <div class="message-footer">
                   查看详情
                 </div>
               </div>
