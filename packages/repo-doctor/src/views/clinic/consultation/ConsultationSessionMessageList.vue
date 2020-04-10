@@ -336,9 +336,9 @@ export default {
       })
     },
 
-    getConsultDetail() {
+    getConsultDetail(message) {
       const params = {
-        consultNo: this.$store.getters['consultation/consultInfo'].consultNo
+        consultNo: message.content.data.consultInfo.consultNo
       }
 
       peace.service.consult.getConsultInfo(params).then(res => {
