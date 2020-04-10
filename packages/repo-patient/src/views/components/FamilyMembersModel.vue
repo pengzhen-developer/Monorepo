@@ -357,6 +357,7 @@ export default {
     if(json.canShowSelf){
       this.canShowSelf=json.canShowSelf==1?true:false
     }
+
   },
 
   methods: {

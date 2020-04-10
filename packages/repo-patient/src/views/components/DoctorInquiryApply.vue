@@ -1028,9 +1028,11 @@ export default {
           this.checkHealthCard()
         } else {
           // 跳转新增家人
+          let canShowSelf=!this.current.answerList.find(item => item.relation === '本人')?1:2
           const json = peace.util.encode({
             type: 'add',
-            emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY
+            emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
+            canShowSelf:canShowSelf
           })
           this.$router.push({ path: `/setting/familyMember/${json}` })
 
