@@ -19,11 +19,10 @@
         </div>
       </div>
     </div>
-
+    <!-- :finished-text="consultList.length>0?'客服电话：400-902-0365':''" -->
     <van-list :loading="loading"
               v-model="loading"
               :finished="finished"
-              :finished-text="consultList.length>0?'客服电话：400-902-0365':''"
               @load="get"
               class="content"
               style="height: 100%">

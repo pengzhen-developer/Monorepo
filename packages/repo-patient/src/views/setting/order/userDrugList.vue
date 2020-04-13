@@ -67,6 +67,9 @@
                   <span class="b">￥{{item.TotalAmount }}</span>
                 </div>
               </div>
+              <div class="small" v-if="item.orderStatusHandle">
+                <div class="small-price refund">{{item.orderStatusHandle + '：￥' + item.TotalAmount}}</div>
+              </div>
             </div>
             <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
             <template v-if="!(item.paymentType === 'yibaopay' && item.OrderStatus == '0')">
@@ -111,7 +114,7 @@
             </template>
 
           </div>
-          <div class="bottom">客服电话：4009020365</div>
+          <!-- <div class="bottom">客服电话：4009020365</div> -->
         </div>
         <!--二维码弹窗-->
         <van-overlay :show="showQRCode"
@@ -647,7 +650,9 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: rgba(0, 0, 0, 1);
-
+  &.refund{
+    color:#999;
+  }
   .b {
     font-size: 16px;
     font-weight: 400;
