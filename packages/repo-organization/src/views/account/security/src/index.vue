@@ -1,13 +1,10 @@
 <template>
-  <div></div>
+  <div>security</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
 <style>
-
 </style>

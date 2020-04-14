@@ -19,10 +19,10 @@ export default {
    * 插件使用请参考： https://github.com/hezhongfeng/vue-page-stack
    * 热更新白屏问题请参考： https://github.com/hezhongfeng/vue-page-stack/issues/44
    */
-  USE_VUE_PAGE_STACK: true,
+  USE_VUE_PAGE_STACK: false,
 
   /**
    * 默认系统标题
    */
-  DEFAULT_TITLE: '互联网医院',
+  DEFAULT_TITLE: '智药云'
 }

@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <template v-if="useVuePageStack">
-      <vue-page-stack>
-        <router-view v-bind:key="$route.fullPath" />
-      </vue-page-stack>
-    </template>
-    <template v-else>
-      <router-view v-bind:key="$route.fullPath" />
-    </template>
+    <router-view></router-view>
   </div>
 </template>
 

@@ -9,11 +9,6 @@ import store from './store'
 import Library from '@src/library'
 Vue.use(Library)
 
-// Import Vue Page Stack
-// https://github.com/hezhongfeng/vue-page-stack
-import VuePageStack from 'vue-page-stack'
-Vue.use(VuePageStack, { router: router.router, keyName: 'stack' })
-
 // Import CSS
 import '@src/assets/css/index.scss'
 
@@ -31,7 +26,7 @@ Vue.config.productionTip = false
 const vueAppInstance = new Vue({
   router: router.router,
   store: store,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount('#app')
 
 // Set Prototype

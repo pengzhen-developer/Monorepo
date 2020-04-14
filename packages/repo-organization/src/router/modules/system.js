@@ -3,10 +3,10 @@ export const path = {
   REDIRECT: '/',
 
   /** 首页 */
-  HOME: '/system/home',
+  HOME: '/home',
 
   /** 登录 */
-  LOGIN: '/system/login'
+  LOGIN: '/login'
 }
 
 export default [
