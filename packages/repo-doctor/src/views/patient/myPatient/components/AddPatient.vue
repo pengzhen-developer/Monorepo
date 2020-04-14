@@ -18,9 +18,9 @@
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
-                    prop="gender">
+                    prop="sex">
         <span slot="label">性别</span>
-        <el-select v-model="ruleForm.gender"
+        <el-select v-model="ruleForm.sex"
                    style="width: 100%;"
                    placeholder="请选择">
           <el-option v-for="item in sexs"
@@ -48,7 +48,7 @@
                    label="民族"
                    style="width: 100%;"
                    placeholder="请选择"
-                   v-model="ruleForm.national">
+                   v-model="ruleForm.nation">
 
           <el-option :key="item.code"
                      :label="item.name"
@@ -60,52 +60,49 @@
       <el-form-item label="联系方式"
                     prop="phoneNumber">
         <span slot="label">联系方式</span>
-        <el-input v-model="ruleForm.phoneNumber"
+        <el-input v-model="ruleForm.tel"
                   placeholder="请输入患者联系方式"></el-input>
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="dialog.visible = false"
+        <el-button @click="close"
                    type="info">取消</el-button>
         <el-button @click="submitForm('ruleForm')"
                    type="primary">保存</el-button>
       </el-form-item>
     </el-form>
-
-    <div style="margin-bottom: 10px; text-align: center;">
-      <el-button @click="dialog.visible = false"
-                 type="info">取消</el-button>
-      <el-button @click="saveItem"
-                 type="primary">保存</el-button>
-    </div>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 export default {
+  created() {
+    this.getNational()
+  },
   data() {
     return {
       ruleForm: {
         name: '',
         idCard: '',
-        phoneNumber: '',
-        gender: '',
+        tel: '',
+        sex: '',
         birthday: '',
-        national: ''
+        nation: '',
+        source: '3'
       },
       sexs: ['男', '女'],
       nationals: [],
       rules: {
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
-        national: [{ required: true, message: '请选择民族', trigger: 'blur' }],
-        gender: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
+        nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
+        sex: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
         birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
-        phoneNumber: [{ required: true, message: '请输入患者联系方式', trigger: 'blur' }]
+        tel: [{ required: true, message: '请输入患者联系方式', trigger: 'blur' }]
       }
     }
   },
@@ -115,13 +112,13 @@ export default {
       if (peace.validate.idCard(val)) {
         if (val.length == 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
-          this.ruleForm.gender = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday =
             '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.ruleForm.sexKey = val.toString().charAt(16) % 2
-          this.ruleForm.gender = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday =
             val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
@@ -139,14 +136,27 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //提交
+          if (this.ruleForm.sex == '男') {
+            this.ruleForm.sex = 1
+          } else {
+            this.ruleForm.sex = 2
+          }
+          peace.service.patient.addPatient(this.ruleForm).then(res => {
+            $peace.util.alert(res.msg)
+            debugger
+            if (res.success) {
+              this.close()
+              this.$emit('updateList')
+            }
+          })
         } else {
           return false
         }
       })
+    },
+    close() {
+      this.$emit('close')
     }
-  },
-  created() {
-    this.getNational()
   }
 }
 </script>

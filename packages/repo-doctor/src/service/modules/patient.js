@@ -233,6 +233,19 @@ export function getNationList() {
   return peace.http.post(nationList)
 }
 
+/**
+ * 添加患者
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function addPatient(params) {
+  const addPatient = 'client/v1/patient/addData'
+
+  return peace.http.post(addPatient, params)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -274,5 +287,7 @@ export default {
   /** 修改我的患教 - 上传图片 */
   uploadImage,
   /** 获取名族 */
-  getNationList
+  getNationList,
+  /** 添加患者 */
+  addPatient
 }

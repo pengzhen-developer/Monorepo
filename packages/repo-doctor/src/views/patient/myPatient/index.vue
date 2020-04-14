@@ -62,7 +62,8 @@
     <peace-dialog :visible.sync="addPatientDialog.visible"
                   width="387px"
                   title="添加患者">
-      <AddPatient @close="addPatientDialog.visible = false">
+      <AddPatient @close="addPatientDialog.visible = false"
+                  v-on:updateList="updateList">
       </AddPatient>
     </peace-dialog>
   </div>
@@ -134,6 +135,9 @@ export default {
 
       // 跳转当前路由
       this.$router.push(currentMenu.path)
+    },
+    updateList() {
+      this.get()
     }
   }
 }
