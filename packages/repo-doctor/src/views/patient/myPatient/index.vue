@@ -22,7 +22,9 @@
                    type="primary">查询</el-button>
       </el-form-item>
     </el-form>
-
+    <el-button @click="addPatient"
+               type="primary"
+               icon="el-icon-circle-plus-outline">添加患者</el-button>
     <hr />
 
     <peace-table pagination
@@ -56,13 +58,23 @@
         </template>
       </peace-table-column>
     </peace-table>
+
+    <peace-dialog :visible.sync="addPatientDialog.visible"
+                  width="387px"
+                  title="添加患者">
+      <AddPatient @close="addPatientDialog.visible = false">
+      </AddPatient>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
-
+import AddPatient from './components/AddPatient'
 export default {
+  components: {
+    AddPatient
+  },
   data() {
     return {
       view: {
@@ -72,7 +84,9 @@ export default {
           group_name: undefined
         }
       },
-
+      addPatientDialog: {
+        visible: false
+      },
       source: {
         group_name: []
       }
@@ -92,6 +106,9 @@ export default {
   },
 
   methods: {
+    addPatient() {
+      this.addPatientDialog.visible = true
+    },
     get() {
       const fetch = peace.service.patient.patientListPc
       const params = this.view.model

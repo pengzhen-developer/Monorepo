@@ -223,6 +223,16 @@ export function uploadImage(image) {
   return peace.http.post(uploadImage, image)
 }
 
+/**
+ * 民族
+ * 
+ */
+export function getNationList() {
+  const nationList = '/client/v1/Patient/getNationList'
+
+  return peace.http.post(nationList)
+}
+
 export default {
   /** 获取待办事项 */
   waitList,
@@ -262,5 +272,7 @@ export default {
   /** 删除我的患教 */
   delInstruction,
   /** 修改我的患教 - 上传图片 */
-  uploadImage
+  uploadImage,
+  /** 获取名族 */
+  getNationList
 }
