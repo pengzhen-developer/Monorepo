@@ -135,6 +135,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     data: {
@@ -161,6 +162,10 @@ export default {
       } else {
         this.current = this.current + 1
       }
+      this.getCurrent()
+    },
+    getCurrent(){
+      this.$emit('getCurrent',this.current)
     }
   }
 }

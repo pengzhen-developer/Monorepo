@@ -60,7 +60,9 @@
                   <div class="case-left">
                     <van-image width="35px"
                                height="35px"
+                               class="van-image"
                                :src="require('@src/assets/images/file/ic_huizhen.png')" />
+                    <div class="small-dot" v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
                     <p style="font-size: 16px; color: #333333; line-height: 32px;">
@@ -242,7 +244,18 @@ export default {
     .case-left {
       width: 50px;
       text-align: left;
-    }
+      position:relative;
+      .small-dot{
+        width:8px;
+        height:8px;
+        display:block;
+        border-radius:50%;
+        background:#F2223B;
+        position:absolute;
+        top:-2px;
+        left:31px;
+      }
+  }
     .case-right {
       display: flex;
       flex-direction: column;

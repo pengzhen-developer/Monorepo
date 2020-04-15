@@ -174,7 +174,18 @@ export function consultDetail(params) {
 
   return peace.http.post(consultDetail, params)
 }
+/**
+ * 健康档案-更新是否已阅状态
+ *
+ * @export
+ * @param   {*dataNo:string}params 参数列表
+ * @returns
+ */
+export function updateCounsultRedDot(params) {
+  const updateCounsultRedDot = 'wap/v1/health/updateCounsultRedDot'
 
+  return peace.http.post(updateCounsultRedDot, params)
+}
 export default {
   /** 获取当前问诊的会诊单列表 */
   getConsultList,
@@ -217,5 +228,8 @@ export default {
   addData,
 
   //健康档案- 会诊详情
-  consultDetail
+  consultDetail,
+
+  //健康档案-更新是否已阅状态
+  updateCounsultRedDot
 }
