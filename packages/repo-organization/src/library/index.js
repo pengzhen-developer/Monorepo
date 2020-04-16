@@ -9,6 +9,9 @@ import './prototype/date'
 import './prototype/number'
 import './prototype/string'
 
+// components
+import Countdown from './components/countdown'
+
 // http
 import http from './http'
 // util
@@ -24,6 +27,13 @@ const install = function(Vue) {
   // 暴露全局实例
   Window.$peace = peace
   global.$peace = peace
+
+  // 注册 component
+  const components = [Countdown]
+
+  components.map(component => {
+    Vue.use(component)
+  })
 
   // 挂载到 Vue
   Vue.prototype.$peace = peace
@@ -49,5 +59,5 @@ export default {
   validate,
 
   /** vue plugin */
-  install,
+  install
 }

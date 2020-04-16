@@ -17,6 +17,8 @@ import 'nprogress/nprogress.css'
 axios.download = download
 axios.mock = mock
 
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+
 // request count
 let requestCount = 0
 
@@ -55,7 +57,7 @@ axios.interceptors.request.use(
 
     // Authority
     const userInfo = user.getUserInfo()
-    config.headers.accesstoken = userInfo?.loginInfo?.accesstoken
+    config.headers.Token = userInfo?.token
 
     return config
   },

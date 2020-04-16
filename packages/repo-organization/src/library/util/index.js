@@ -41,7 +41,7 @@ export function type(object) {
     isNumber: Object.prototype.toString.call(object) === isNumber,
     isString: Object.prototype.toString.call(object) === isString,
     isBoolean: Object.prototype.toString.call(object) === isBoolean,
-    isUndefined: Object.prototype.toString.call(object) === isUndefined,
+    isUndefined: Object.prototype.toString.call(object) === isUndefined
   }
 }
 
@@ -187,6 +187,14 @@ export function alert(options) {
 
   return false
 }
+export function success(message) {
+  // 参数为字符串，表现为 toast
+  if (type(message).isString) {
+    Toast({ message, type: 'success' })
+
+    return true
+  }
+}
 export function warning(message) {
   // 参数为字符串，表现为 toast
   if (type(message).isString) {
@@ -216,6 +224,7 @@ export default {
   deepClone,
 
   alert,
+  success,
   warning,
-  error,
+  error
 }
