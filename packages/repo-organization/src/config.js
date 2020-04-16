@@ -24,5 +24,11 @@ export default {
   /**
    * 默认系统标题
    */
-  DEFAULT_TITLE: '智药云'
+  DEFAULT_TITLE: '智药云',
+
+  /**
+   * 主站地址
+   * 当用户授权失败，且无 referrer 时，跳转此地址
+   */
+  DEFAULT_MAIN_SITE: 'https://www.baidu.com/',
 }

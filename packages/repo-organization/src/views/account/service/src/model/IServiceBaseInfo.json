@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "serviceList": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "checkStatus": {
+                  "type": "integer"
+                },
+                "checkStatusText": {
+                  "type": "string"
+                },
+                "isPass": {
+                  "type": "integer"
+                },
+                "isPassText": {
+                  "type": "string"
+                },
+                "item": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "serviceName": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["id", "serviceName"]
+                    }
+                  ]
+                }
+              },
+              "required": ["id", "serviceName", "checkStatus", "checkStatusText", "isPass", "isPassText", "item"]
+            }
+          ]
+        },
+        "useService": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "serviceName", "serviceId", "accountId", "img", "url", "createdTime"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "serviceName", "serviceId", "accountId", "img", "url", "createdTime"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "serviceName", "serviceId", "accountId", "img", "url", "createdTime"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "serviceName", "serviceId", "accountId", "img", "url", "createdTime"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "serviceName", "serviceId", "accountId", "img", "url", "createdTime"]
+            }
+          ]
+        }
+      },
+      "required": ["serviceList", "useService"]
+    }
+  },
+  "required": ["code", "success", "msg", "data"]
+}

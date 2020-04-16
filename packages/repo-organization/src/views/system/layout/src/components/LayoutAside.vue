@@ -37,9 +37,9 @@ export default {
     return {
       defaultActive: this.$route.path,
 
-      servicePath: routerPath.account.LAYOUT + '/' + routerPath.account.SERVICE_INFO,
-      basePath: routerPath.account.LAYOUT + '/' + routerPath.account.BASE_INFO,
-      securityPath: routerPath.account.LAYOUT + '/' + routerPath.account.SECURITY_INFO
+      servicePath: routerPath.account.LAYOUT_SERVICE_INFO,
+      basePath: routerPath.account.LAYOUT_BASE_INFO,
+      securityPath: routerPath.account.LAYOUT_SECURITY_INFO
     }
   },
 

@@ -1,10 +1,10 @@
 <template>
   <div class="product-item">
     <div class="header">
-      <el-image v-bind:src="icon"></el-image>
+      <el-image v-bind:src="img"></el-image>
     </div>
     <div class="footer">
-      <span>{{ title }}</span>
+      <span>{{ serviceName }}</span>
     </div>
   </div>
 </template>
@@ -12,12 +12,12 @@
 <script>
 export default {
   props: {
-    title: {
+    serviceName: {
       type: String,
       required: true
     },
 
-    icon: {
+    img: {
       type: String,
       required: true
     }
@@ -43,8 +43,14 @@ export default {
     justify-content: center;
     align-items: center;
 
-    padding: 48px 100px;
+    padding: 48px 0;
     background: $--color-primary;
+
+    .el-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 5px;
+    }
   }
 
   .footer {

@@ -2,18 +2,22 @@
   <div>
     <h4>平台基础服务</h4>
     <div>
-      <el-row v-bind:gutter="16">
+      <el-row class="flex warp"
+              v-bind:gutter="16">
         <el-col v-for="service in serviceList"
                 v-bind:key="service.id"
-                v-bind:span="12"
+                v-bind:xs="24"
+                v-bind:sm="12"
+                v-bind:md="8"
                 v-bind:lg="6"
                 v-bind:xl="4">
-          <ServiceItem v-bind:title="service.title"
-                       v-bind:state="service.state"
-                       v-bind:stateType="service.stateType"
-                       v-bind:controlState="service.controlState"
-                       v-bind:controlStateType="service.controlStateType"
-                       v-bind:features="service.features">
+          <ServiceItem v-bind:serviceName="service.serviceName"
+                       v-bind:isPass="service.isPass"
+                       v-bind:isPassText="service.isPassText"
+                       v-bind:checkStatus="service.checkStatus"
+                       v-bind:checkStatusText="service.checkStatusText"
+                       v-bind:features="service.item"
+                       v-on:openService="onOpenService(service)">
           </ServiceItem>
         </el-col>
       </el-row>
@@ -24,11 +28,15 @@
       <el-row v-bind:gutter="16">
         <el-col v-for="product in productList"
                 v-bind:key="product.id"
-                v-bind:span="12"
+                v-bind:xs="24"
+                v-bind:sm="12"
+                v-bind:md="8"
                 v-bind:lg="6"
                 v-bind:xl="4">
-          <ProductItem v-bind:title="product.title"
-                       v-bind:icon="product.icon">
+          <ProductItem v-bind:serviceName="product.serviceName"
+                       v-bind:img="product.img"
+                       v-bind:url="product.url"
+                       v-on:click.native="redirectSerivceSite(product)">
           </ProductItem>
         </el-col>
       </el-row>
@@ -37,6 +45,9 @@
 </template>
 
 <script>
+import Peace from '@src/library'
+import Service from './service'
+
 import ServiceItem from './components/ServiceItem'
 import ProductItem from './components/ProductItem'
 
@@ -48,43 +59,61 @@ export default {
 
   data() {
     return {
-      serviceList: [
-        {
-          id: 1,
-          title: '互联网云医院',
-          state: '未开通',
-          controlState: '待审核',
-          features: ['健康咨询', '复诊续方', '预约挂号', '查询报告']
-        },
-        {
-          id: 2,
-          title: '处方管理事务',
-          state: '未开通',
-          controlState: '申请开通',
-          features: ['智能审方', '药师审方', '处方流转', '处方点评']
-        },
-        {
-          id: 3,
-          title: '诊后病程管理',
-          state: '已开通',
-          controlState: '',
-          features: ['药事服务', '诊后随访']
-        },
-        { id: 4, title: '多点云仓配送', state: '待开通', controlState: '申请开通' }
-      ],
+      /** 服务列表 */
+      serviceList: [],
+      /** 使用中的产品列表 */
+      productList: []
+    }
+  },
 
-      productList: [
-        {
-          id: 1,
-          title: '互联网医院管理端',
-          icon: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-        },
-        {
-          id: 2,
-          title: '处方管理医院端',
-          icon: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-        }
-      ]
+  created() {
+    this.getServiceBaseInfo()
+  },
+
+  methods: {
+    getServiceBaseInfo() {
+      Service.getBaseInfo().then(res => {
+        this.serviceList = res.data.serviceList
+        this.productList = res.data.useService
+      })
+    },
+
+    onOpenService(service) {
+      if (service.checkStatusText !== '申请开通') {
+        Peace.util.warning('您的服务申请正在审核中，请勿重复申请')
+
+        return
+      } else {
+        this.$emit('openService')
+      }
+
+      this.$confirm('申请开通后，需等待平台审核，确认开通？', '确认开通', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        customClass: 'service-item-confirm',
+        cancelButtonClass: 'service-item-confirm-cancel',
+        confirmButtonClass: 'service-item-confirm-confirm',
+        center: true
+      })
+        .then(() => {
+          this.doApply(service)
+        })
+        .catch(() => {
+          console.log('取消申请服务')
+        })
+    },
+
+    doApply(service) {
+      const params = { serviceId: service.id }
+      Service.doApply(params).then(res => {
+        Peace.util.success(res.msg)
+
+        this.getServiceBaseInfo()
+      })
+    },
+
+    redirectSerivceSite(product) {
+      window.open(product.url)
     }
   }
 }
@@ -96,5 +125,13 @@ h4 {
   font-weight: 500;
   color: rgba(0, 0, 0, 0.85);
   margin: 0 0 24px 0;
+}
+
+.flex {
+  display: flex;
+
+  &.warp {
+    flex-wrap: wrap;
+  }
 }
 </style>

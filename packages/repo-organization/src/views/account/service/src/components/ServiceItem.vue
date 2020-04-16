@@ -2,18 +2,17 @@
   <div class="service-item">
     <div class="header">
       <div class="header-title">
-        <span>{{ title }}</span>
+        <span>{{ serviceName }}</span>
       </div>
-      <div class="header-state">
+      <div class="header-isPass">
         <el-tag size="mini"
-                v-bind:type="stateType">{{ state }}</el-tag>
+                v-bind:type="isPassType">{{ isPassText }}</el-tag>
       </div>
       <div class="header-control"
-           v-if="controlState"
-           v-bind:class="controlStateType"
-           v-on:click="openSerivce">
+           v-bind:class="checkStatusType"
+           v-on:click="openService">
         <div class="dash"></div>
-        <div class="text">{{ controlState }}</div>
+        <div class="text">{{ checkStatusText }}</div>
       </div>
     </div>
     <div class="content">
@@ -23,7 +22,7 @@
            v-bind:key="feature + index"
            v-show="feature !== 'dispaly-none'">
         <div class="dash"></div>
-        <div class="text">{{ feature }}</div>
+        <div class="text">{{ feature.serviceName }}</div>
       </div>
     </div>
   </div>
@@ -32,15 +31,23 @@
 <script>
 export default {
   props: {
-    title: {
+    serviceName: {
       type: String,
       required: true
     },
-    state: {
+    isPass: {
+      type: Number,
+      required: true
+    },
+    isPassText: {
       type: String,
       required: true
     },
-    controlState: {
+    checkStatus: {
+      type: Number,
+      required: true
+    },
+    checkStatusText: {
       type: String,
       required: true
     },
@@ -69,20 +76,20 @@ export default {
       return dispalyFeatures
     },
 
-    stateType() {
-      if (this.state === '未开通') {
+    isPassType() {
+      if (this.isPassText === '未开通') {
         return 'info'
-      } else if (this.state === '已开通') {
+      } else if (this.isPassText === '已开通') {
         return 'primary'
       }
 
       return 'info'
     },
 
-    controlStateType() {
-      if (this.controlState === '待审核') {
+    checkStatusType() {
+      if (this.checkStatusText === '待审核') {
         return 'danger'
-      } else if (this.controlState === '申请开通') {
+      } else if (this.checkStatusText === '未申请') {
         return 'warning'
       }
 
@@ -91,19 +98,8 @@ export default {
   },
 
   methods: {
-    openSerivce() {
-      this.$confirm('申请开通后，需等待平台审核，确认开通？', '确认开通', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      })
-        .then(() => {
-          console.log(true)
-        })
-        .catch(() => {
-          console.log(false)
-        })
+    openService() {
+      this.$emit('openService')
     }
   }
 }
@@ -135,7 +131,7 @@ export default {
       margin: 0 16px 0 0;
     }
 
-    .header-state {
+    .header-isPass {
       display: flex;
       align-items: center;
       margin: 0 8px 0 0;
@@ -205,6 +201,58 @@ export default {
       .text {
         font-size: 12px;
       }
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.service-item-confirm {
+  padding-bottom: 0;
+  width: auto;
+
+  .el-message-box__title {
+    font-size: 16px;
+  }
+
+  .el-message-box__content {
+    padding: 10px 40px 40px 40px;
+  }
+
+  .el-message-box__btns {
+    display: flex;
+    padding: 0;
+
+    font-size: 14px;
+  }
+
+  .service-item-confirm-cancel {
+    width: 50%;
+    margin: 0 !important;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    padding: 16px 0;
+
+    &:active {
+      border-color: #dcdfe6;
+    }
+  }
+
+  .service-item-confirm-confirm {
+    width: 50%;
+    margin: 0 !important;
+    background: #fff;
+    color: $--color-primary;
+    border-color: #dcdfe6;
+    border-radius: 0;
+    border-right: 0;
+    border-bottom: 0;
+    padding: 16px 0;
+
+    &:hover {
+      background: $--color-primary-light-9;
     }
   }
 }

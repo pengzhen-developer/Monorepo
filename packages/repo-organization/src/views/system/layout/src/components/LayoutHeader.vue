@@ -12,7 +12,7 @@
       </div>
 
       <div class="user-name">
-        <span>admin</span>
+        <span>{{ userName }}</span>
       </div>
 
       <el-dropdown>
@@ -24,7 +24,7 @@
 
         <el-dropdown-menu class="el-dropdown-menu"
                           slot="dropdown">
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item v-on:click.native="signOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </span>
@@ -32,7 +32,28 @@
 </template>
 
 <script>
-export default {}
+import Util from '@src/util'
+
+export default {
+  data() {
+    return {
+      user: Util.user.getUserInfo()
+    }
+  },
+
+  computed: {
+    userName() {
+      return this.user?.username
+    }
+  },
+
+  methods: {
+    signOut() {
+      Util.user.removeUserInfo()
+      Util.referrer.replaceToReferrer()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
