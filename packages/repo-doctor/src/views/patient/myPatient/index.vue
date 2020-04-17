@@ -59,10 +59,12 @@
       </peace-table-column>
     </peace-table>
 
-    <peace-dialog :visible.sync="addPatientDialog.visible"
+    <peace-dialog :before-close="handleClose"
+                  :visible.sync="addPatientDialog.visible"
                   width="387px"
                   title="添加患者">
-      <AddPatient @close="addPatientDialog.visible = false"
+      <AddPatient ref="checkInput"
+                  @close="handleClose"
                   v-on:updateList="updateList">
       </AddPatient>
     </peace-dialog>
@@ -138,6 +140,20 @@ export default {
     },
     updateList() {
       this.get()
+    },
+    handleClose() {
+      const tmp = this.$refs.checkInput.isShouldSave()
+      if (tmp) {
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
+          .then(() => {
+            this.$refs.checkInput.$refs.ruleForm.resetFields()
+            this.addPatientDialog.visible = false
+          })
+          .catch(() => {})
+      } else {
+        this.$refs.checkInput.$refs.ruleForm.resetFields()
+        this.addPatientDialog.visible = false
+      }
     }
   }
 }

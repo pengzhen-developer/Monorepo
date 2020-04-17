@@ -65,7 +65,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="close"
+        <el-button @click="closeMenu"
                    type="info">取消</el-button>
         <el-button @click="submitForm('ruleForm')"
                    type="primary">保存</el-button>
@@ -145,7 +145,7 @@ export default {
             $peace.util.alert(res.msg)
             debugger
             if (res.success) {
-              this.close()
+              this.closeMenu()
               this.$emit('updateList')
             }
           })
@@ -154,8 +154,18 @@ export default {
         }
       })
     },
-    close() {
-      this.$emit('close')
+    isShouldSave() {
+      return !(
+        peace.validate.isEmpty(this.ruleForm.name) &&
+        peace.validate.isEmpty(this.ruleForm.idCard) &&
+        peace.validate.isEmpty(this.ruleForm.tel) &&
+        peace.validate.isEmpty(this.ruleForm.sex) &&
+        peace.validate.isEmpty(this.ruleForm.birthday) &&
+        peace.validate.isEmpty(this.ruleForm.nation)
+      )
+    },
+    closeMenu() {
+      this.$emit('handleClose')
     }
   }
 }

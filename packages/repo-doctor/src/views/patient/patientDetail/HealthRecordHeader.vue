@@ -147,7 +147,7 @@ export default {
       margin: 0 0 0 5px;
       color: rgba(96, 98, 102, 1);
       display: inline-block;
-      width: 140px;
+      width: 120px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
