@@ -30,7 +30,8 @@
           <el-row>
             <el-col :span="24">
               <label class="label">标签：</label>
-              <span v-if="internalData.familyInfo.diagnoseInfo && internalData.familyInfo.diagnoseInfo.length">
+              <span
+                    v-if="internalData.familyInfo.diagnoseInfo && internalData.familyInfo.diagnoseInfo.length">
                 <el-tag :key="item"
                         size="medium"
                         style="margin: 0 5px 10px 0; border: 0;"
@@ -96,35 +97,13 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   props: {
-    id: String
+    internalData: undefined
   },
-
   data() {
     return {
-      collspace: true,
-
-      internalData: {
-        familyInfo: {},
-        personalInfo: {}
-      }
-    }
-  },
-
-  created() {
-    this.get()
-  },
-
-  methods: {
-    get() {
-      const params = { patientNo: this.id }
-
-      peace.service.patient.getOneHealth(params).then(res => {
-        this.internalData = res.data
-      })
+      collspace: true
     }
   }
 }

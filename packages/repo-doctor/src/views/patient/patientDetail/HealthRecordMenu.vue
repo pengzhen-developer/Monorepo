@@ -1,59 +1,61 @@
 <template>
-  <el-menu :collapse="true"
-           class="nav-menu">
-    <template v-for="menu in menuList">
-      <el-menu-item :index="menu.index"
-                    :key="menu.index">
-        <div class="nav-submenu">
-          <img v-bind:src="menu.icon">
-          <label>{{ menu.name }}</label>
+  <div>
+    <el-menu :collapse="true"
+             class="nav-menu">
+      <template v-for="menu in menuList">
+        <div class="menuItem"
+             :key="menu.index"
+             @click="menuSelect(menu.index)">
+          <div class="nav-submenu"
+               :class="{ active: isActive }">
+            <img v-bind:src="menu.icon">
+            <label>{{ menu.name }}</label>
+            <div class="line"></div>
+          </div>
         </div>
-      </el-menu-item>
-    </template>
-  </el-menu>
+      </template>
+    </el-menu>
+  </div>
 </template>
 
 <script>
+import peace from '@src/library'
 export default {
   data() {
     return {
       menuList: [
         {
           name: '咨询',
-          title: '咨询',
-          path: '/home',
-          index: '1',
+          index: peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
           icon: require('@src/assets/images/health-record/health_records_talk.png')
         },
         {
           name: '病程',
-          title: '病程',
-          path: '/home',
-          index: '2',
+          index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
           icon: require('@src/assets/images/health-record/health_records_course.png')
         },
         {
           name: '随访',
-          title: '随访',
-          path: '/home',
-          index: '3',
+          index: peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
           icon: require('@src/assets/images/health-record/health_records_follow.png')
         },
         {
           name: '转诊',
-          title: '转诊',
-          path: '/home',
-          index: '4',
+          index: peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
           icon: require('@src/assets/images/health-record/health_records_referral.png')
         },
         {
           name: '会诊',
-          title: '会诊',
-          path: '/home',
-          index: '5',
+          index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
           icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
         }
-      ]
+      ],
+      isActive: true
+    }
+  },
+  methods: {
+    menuSelect(index) {
+      $peace.$emit('showDrawer', index)
     }
   }
 }
@@ -64,22 +66,27 @@ export default {
   width: 100%;
   height: 100%;
   border: none;
+  border-radius: 4px;
 }
 
-/deep/ .el-menu-item {
-  margin: 15px 0 20px 0;
-
+/deep/ .menuItem {
+  margin: 0;
+  padding-top: 15px;
+  height: 81px;
   &:hover {
-    background: transparent;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.06);
   }
 
   &:focus {
-    background: transparent;
+    background: rgba(0, 0, 0, 0.06);
   }
 }
 
 .nav-submenu {
-  height: 72px;
   line-height: 1;
 
   height: 100%;
@@ -94,14 +101,20 @@ export default {
     width: 22px;
     height: 22px;
     /* font-size: 24px; */
-    margin-bottom: 4px;
-
+    margin-bottom: 8px;
     color: #cecece;
   }
   label {
-    line-height: 24px;
-
-    color: #333333;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    margin-bottom: 15px;
+  }
+  .line {
+    width: 40px;
+    height: 1px;
+    background-color: #dddddd;
   }
 }
 </style>

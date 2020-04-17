@@ -168,7 +168,6 @@ export default {
     RecordBodyFat,
     RecordConsult,
     RecordReferral,
-
     NoData
   },
 

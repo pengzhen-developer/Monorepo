@@ -8,9 +8,9 @@ import peace from '@src/library'
  * @returns
  */
 export function getFamilyList(params) {
-  const getFamilyList = 'client/v1/health/getFamilyList'
+    const getFamilyList = 'client/v1/health/getFamilyList'
 
-  return peace.http.post(getFamilyList, params)
+    return peace.http.post(getFamilyList, params)
 }
 
 /**
@@ -21,9 +21,9 @@ export function getFamilyList(params) {
  * @returns
  */
 export function getOneHealth(params) {
-  const getOneHealth = 'client/v1/health/getOneHealth'
+    const getOneHealth = 'client/v1/health/getOneHealth'
 
-  return peace.http.post(getOneHealth, params)
+    return peace.http.post(getOneHealth, params)
 }
 
 /**
@@ -34,9 +34,9 @@ export function getOneHealth(params) {
  * @returns
  */
 export function allHealthList(params) {
-  const allHealthList = 'client/v1/health/allHealthList'
+    const allHealthList = 'client/v1/health/allHealthList'
 
-  return peace.http.post(allHealthList, params)
+    return peace.http.post(allHealthList, params)
 }
 
 /**
@@ -47,9 +47,9 @@ export function allHealthList(params) {
  * @returns
  */
 export function getOscillogram(params) {
-  const getOscillogram = 'client/v1/health/getOscillogram'
+    const getOscillogram = 'client/v1/health/getOscillogram'
 
-  return peace.http.post(getOscillogram, params)
+    return peace.http.post(getOscillogram, params)
 }
 
 /**
@@ -60,9 +60,9 @@ export function getOscillogram(params) {
  * @returns
  */
 export function getWeekList(params) {
-  const getWeekList = 'client/v1/health/getWeekList'
+    const getWeekList = 'client/v1/health/getWeekList'
 
-  return peace.http.post(getWeekList, params)
+    return peace.http.post(getWeekList, params)
 }
 
 /**
@@ -73,9 +73,9 @@ export function getWeekList(params) {
  * @returns
  */
 export function getWeekDetail(params) {
-  const getWeekDetail = 'client/v1/health/getWeekDetail'
+    const getWeekDetail = 'client/v1/health/getWeekDetail'
 
-  return peace.http.post(getWeekDetail, params)
+    return peace.http.post(getWeekDetail, params)
 }
 
 /**
@@ -86,9 +86,9 @@ export function getWeekDetail(params) {
  * @returns
  */
 export function getOneRecord(params) {
-  const getOneRecord = 'client/v1/health/getOneRecord'
+    const getOneRecord = 'client/v1/health/getOneRecord'
 
-  return peace.http.post(getOneRecord, params)
+    return peace.http.post(getOneRecord, params)
 }
 
 /**
@@ -289,31 +289,101 @@ export function getOneRecord(params) {
 }
  */
 export function consultDetail({ dataNo }) {
-  const params = {
-    dataNo
-  }
-  const path = 'client/v1/health/consultDetail'
+    const params = {
+        dataNo
+    }
+    const path = 'client/v1/health/consultDetail'
 
-  return peace.http.post(path, params)
+    return peace.http.post(path, params)
 }
 
+
+/**
+ * 获取 【转诊记录列表接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getReferralRecordList(params) {
+    const getReferralRecordList = 'client/v1/patient/DoctorReferralList'
+
+    return peace.http.post(getReferralRecordList, params)
+}
+
+
+/**
+ * 【线下转诊提交接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function offlineAddReferral(params) {
+    const offlineAddReferral = 'client/v1/inquiry/offlineAddReferral'
+
+    return peace.http.post(offlineAddReferral, params)
+}
+
+/**
+ * 获取 【会诊记录列表接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getConsultRecordList(params) {
+    const getConsultRecordList = 'client/v1/consult/getConsultListByPc'
+
+    return peace.http.post(getConsultRecordList, params)
+}
+
+
+/**
+ * 【会诊提交接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function offlineAddConsult(params) {
+    const offlineAddConsult = 'client/v1/consult/offlineDoApply'
+
+    return peace.http.post(offlineAddConsult, params)
+}
+
+
+
+
+
+
+
 export default {
-  /** 获取患者家人列表 */
-  getFamilyList,
-  /** 获取家人基本健康信息 */
-  getOneHealth,
+    /** 获取患者家人列表 */
+    getFamilyList,
+    /** 获取家人基本健康信息 */
+    getOneHealth,
 
-  /** 获取健康档案全部数据统计 */
-  allHealthList,
+    /** 获取健康档案全部数据统计 */
+    allHealthList,
 
-  /** 获取 【血糖】，【血压】 最近数据 */
-  getOscillogram,
-  /** 获取 【血糖】，【血压】 周报列表 */
-  getWeekList,
-  /** 获取 【血糖】，【血压】 周报详情 */
-  getWeekDetail,
-  /** 获取 【血糖】，【血压】 历史数据 */
-  getOneRecord,
-  /** 获取 会诊详情 */
-  consultDetail
+    /** 获取 【血糖】，【血压】 最近数据 */
+    getOscillogram,
+    /** 获取 【血糖】，【血压】 周报列表 */
+    getWeekList,
+    /** 获取 【血糖】，【血压】 周报详情 */
+    getWeekDetail,
+    /** 获取 【血糖】，【血压】 历史数据 */
+    getOneRecord,
+    /** 获取 会诊详情 */
+    consultDetail,
+    /** 转诊列表 */
+    getReferralRecordList,
+    /** 发起转诊 */
+    offlineAddReferral,
+    /** 会诊列表 */
+    getConsultRecordList,
+    /** 发起会诊 */
+    offlineAddConsult
+
 }

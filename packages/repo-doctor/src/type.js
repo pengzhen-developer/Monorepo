@@ -226,6 +226,18 @@ export const HEALTH = {
   }
 }
 
+export const HEALTH_RECORD = {
+  ACTION_TYPE: {
+    咨询: '1',
+    病程: '2',
+    随访: '3',
+    转诊: '4',
+    会诊: '5',
+    发起转诊: '6',
+    发起会诊: '7'
+  }
+}
+
 export default {
   /** 系统消息类型常量 */
   SYSTEM,
@@ -243,5 +255,7 @@ export default {
   VIDEO,
 
   /** 健康档案 */
-  HEALTH
+  HEALTH,
+
+  HEALTH_RECORD,
 }
