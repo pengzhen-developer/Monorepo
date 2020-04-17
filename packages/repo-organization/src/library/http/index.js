@@ -9,7 +9,7 @@ import mock from './mock'
 import retry from './retry'
 
 import { user } from '@src/util'
-import { alert } from './../util'
+import { warning } from './../util'
 
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -51,7 +51,7 @@ axios.interceptors.request.use(
           }
 
           return formData
-        }
+        },
       ]
     }
 
@@ -83,7 +83,7 @@ axios.interceptors.response.use(
     if (response?.config?.params?.isMock) {
       const delay = response.config.params.mockDelay
       const delayTime = new Date() - response.config.params.mockDate
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(function() {
           resolve(response.data)
 
@@ -109,7 +109,7 @@ axios.interceptors.response.use(
 
       // Auth fail
       else if (response?.data?.code === 601) {
-        alert(response.data.msg)
+        warning(response.data.msg)
 
         user.removeUserInfo()
         user.replaceToLogin()
@@ -119,7 +119,7 @@ axios.interceptors.response.use(
 
       // Unknown
       else {
-        alert(response?.data?.msg)
+        warning(response?.data?.msg)
 
         return Promise.reject(response.data)
       }
