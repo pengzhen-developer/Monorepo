@@ -55,9 +55,11 @@ axios.interceptors.request.use(
       ]
     }
 
-    // Authority
+    // Set Authority
     const userInfo = user.getUserInfo()
-    config.headers.Token = userInfo?.token
+    if (userInfo?.token) {
+      config.headers.Token = userInfo?.token
+    }
 
     return config
   },
