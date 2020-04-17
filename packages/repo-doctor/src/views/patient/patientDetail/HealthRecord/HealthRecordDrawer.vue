@@ -1,12 +1,14 @@
 <template>
   <el-drawer :visible.sync="drawer"
              :modal="false"
+             :before-close="handleClose"
              size="400px"
              class="ssss"
              style="margin-right: 90px;">
     <span class="title"
           slot="title">{{titleStr}}</span>
-    <Component :params="params"
+    <Component ref="checkInput"
+               :params="params"
                v-bind:is="ComponentInstance" />
   </el-drawer>
 </template>
@@ -26,11 +28,13 @@ export default {
       drawer: false,
       innerDrawer: false,
       titleStr: '',
-      ComponentInstance: undefined
+      ComponentInstance: undefined,
+      currentIndex: undefined
     }
   },
   methods: {
     show(index) {
+      this.currentIndex = index
       switch (index) {
         case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
@@ -66,12 +70,53 @@ export default {
 
       this.$nextTick(function() {
         setTimeout(() => {
-          const focusElements = this.$el.querySelectorAll(':focus')
-          focusElements.forEach(element => {
-            element.blur()
-          })
+          this.clearFocus()
         }, 60)
       })
+    },
+    clearFocus() {
+      const focusElements = this.$el.querySelectorAll(':focus')
+      focusElements.forEach(element => {
+        element.blur()
+      })
+    },
+    isAllEmpty(params) {
+      for (var key in params) {
+        if (!peace.validate.isEmpty(params[key])) {
+          return false // 终止程序
+        }
+      }
+      return true
+    },
+    handleClose(done) {
+      if (
+        this.ComponentInstance === ApplyReferral &&
+        !this.isAllEmpty(this.$refs.checkInput.view.model)
+      ) {
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
+          .then(() => {
+            $peace.$emit('hideDrawer', this.currentIndex)
+            done()
+          })
+          .catch(() => {
+            this.clearFocus()
+          })
+      } else if (
+        this.ComponentInstance === ApplyConsult &&
+        !this.isAllEmpty(this.$refs.checkInput.view.model)
+      ) {
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
+          .then(() => {
+            $peace.$emit('hideDrawer', this.currentIndex)
+            done()
+          })
+          .catch(() => {
+            this.clearFocus()
+          })
+      } else {
+        $peace.$emit('hideDrawer', this.currentIndex)
+        done()
+      }
     }
   }
 }

@@ -243,6 +243,8 @@ export default {
           consultExplain: undefined
         },
 
+        shouldSave: false,
+
         rules: {
           diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
           doctorInfo: [{ required: true, message: '请选择会诊医生', trigger: 'change' }],
