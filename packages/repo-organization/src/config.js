@@ -24,7 +24,7 @@ export default {
   /**
    * 默认系统标题
    */
-  DEFAULT_TITLE: '智药云',
+  DEFAULT_TITLE: '智药云-控制台',
 
   /**
    * 主站地址

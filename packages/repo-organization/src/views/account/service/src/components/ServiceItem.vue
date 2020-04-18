@@ -9,10 +9,11 @@
                 v-bind:type="isPassType">{{ isPassText }}</el-tag>
       </div>
       <div class="header-control"
+           v-if="showCheckStatusText"
            v-bind:class="checkStatusType"
            v-on:click="openService">
         <div class="dash"></div>
-        <div class="text">{{ checkStatusText }}</div>
+        <div class="text">{{ checkStatusTextVisible }}</div>
       </div>
     </div>
     <div class="content">
@@ -61,6 +62,22 @@ export default {
   },
 
   computed: {
+    checkStatusTextVisible() {
+      if (this.checkStatusText === '未申请') {
+        return '申请开通'
+      }
+
+      return this.checkStatusText
+    },
+
+    showCheckStatusText() {
+      if (this.checkStatusText === '已通过') {
+        return false
+      }
+
+      return true
+    },
+
     // flex  平均分布， 且支持换行
     dispalyFeatures() {
       // 定义每行最大 item
@@ -77,9 +94,9 @@ export default {
     },
 
     isPassType() {
-      if (this.isPassText === '未开通') {
+      if (this.isPassText === '未申请') {
         return 'info'
-      } else if (this.isPassText === '已开通') {
+      } else if (this.isPassText === '已通过') {
         return 'primary'
       }
 
@@ -91,8 +108,9 @@ export default {
         return 'danger'
       } else if (this.checkStatusText === '未申请') {
         return 'warning'
+      } else if (this.checkStatusText === '未通过') {
+        return 'danger'
       }
-
       return ''
     }
   },

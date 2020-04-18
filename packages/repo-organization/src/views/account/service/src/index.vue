@@ -79,7 +79,7 @@ export default {
     },
 
     onOpenService(service) {
-      if (service.checkStatusText !== '申请开通') {
+      if (service.checkStatusText !== '未申请') {
         Peace.util.warning('您的服务申请正在审核中，请勿重复申请')
 
         return
