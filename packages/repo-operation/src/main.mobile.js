@@ -7,6 +7,11 @@ import 'vant/lib/icon/local.css'
 import 'vant/lib/index.less'
 Vue.use(Vant)
 
+// Import Vue Page Stack
+// https://github.com/hezhongfeng/vue-page-stack
+import VuePageStack from 'vue-page-stack'
+Vue.use(VuePageStack, { router: router.router, keyName: 'stack' })
+
 const setFlexible = () => {
   // Set Flexible
   // https://github.com/amfe/lib-flexible

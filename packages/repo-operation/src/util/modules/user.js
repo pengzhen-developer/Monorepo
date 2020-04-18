@@ -1,7 +1,9 @@
-import peace from '@src/library'
-import constants from '@src/constants'
-import router from '@src/router'
-import routerPath from '@src/router/routerPath'
+import Peace from '@src/library'
+import RouterPath from '@src/router/routerPath'
+import Router from '@src/router'
+
+/** 用户信息常量 */
+const USER_INFO = 'user_info'
 
 /**
  * 缓存用户信息
@@ -9,8 +11,8 @@ import routerPath from '@src/router/routerPath'
  * @param {*} userInfo 用户信息
  * @returns
  */
-export const setUserInfo = userInfo => {
-  return peace.cache.localStorage.set(constants.USER.USER_INFO, userInfo)
+export const setUserInfo = (userInfo) => {
+  return Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
 
 /**
@@ -19,7 +21,7 @@ export const setUserInfo = userInfo => {
  * @returns
  */
 export const getUserInfo = () => {
-  return peace.cache.localStorage.get(constants.USER.USER_INFO)
+  return Peace.cache.localStorage.get(USER_INFO)
 }
 
 /**
@@ -27,7 +29,7 @@ export const getUserInfo = () => {
  *
  */
 export const removeUserInfo = () => {
-  return peace.cache.localStorage.remove(constants.USER.USER_INFO)
+  return Peace.cache.localStorage.remove(USER_INFO)
 }
 
 /**
@@ -39,11 +41,11 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  return router.router.push({
-    name: routerPath.system.LOGIN,
+  return Router.router.push({
+    name: RouterPath.system.LOGIN,
     query: {
-      referrer: referrer || router.router.history.current.fullPath
-    }
+      referrer: referrer || Router.router.history.current.fullPath,
+    },
   })
 }
 
@@ -52,7 +54,7 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const isSignIn = () => {
-  return !!peace.cache.localStorage.get(constants.USER.USER_INFO)
+  return !!Peace.cache.localStorage.get(USER_INFO)
 }
 
 export default {
@@ -61,5 +63,5 @@ export default {
   removeUserInfo,
   isSignIn,
 
-  replaceToLogin
+  replaceToLogin,
 }

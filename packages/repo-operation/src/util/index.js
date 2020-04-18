@@ -5,10 +5,12 @@ export {
   /** 用户工具类 */
   user,
   /** 开发者工具类 */
-  hacker
+  hacker,
 }
 
 export default {
+  /** 用户工具类 */
   user,
-  hacker
+  /** 开发者工具类 */
+  hacker,
 }

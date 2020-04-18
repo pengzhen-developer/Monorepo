@@ -1,9 +1,23 @@
 <template>
-  <div>Redirect</div>
+  <div></div>
 </template>
 
 <script>
-export default {}
+import RouterPath from '@src/router/routerPath'
+import Util from '@src/util'
+
+export default {
+  created() {
+    // 验证是否已经登录
+    const isSignIn = Util.user.isSignIn()
+
+    if (isSignIn) {
+      this.$router.push(RouterPath.account.LAYOUT_MANAGER)
+    } else {
+      this.$router.push(RouterPath.system.LOGIN)
+    }
+  }
+}
 </script>
 
 <style>

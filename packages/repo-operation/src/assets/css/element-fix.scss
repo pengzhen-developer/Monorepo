@@ -1,0 +1,67 @@
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import '~element-ui/packages/theme-chalk/src/index';
+
+.el-table--mini,
+.el-button--mini,
+.el-input--mini {
+  font-size: 12px;
+
+  th {
+    background-color: #fafafa;
+  }
+}
+
+.el-dialog {
+  max-height: 75vh;
+  overflow: hidden;
+
+  .el-dialog__header {
+    display: flex;
+    align-items: center;
+    background: #e9edf1;
+    padding: 6px 10px;
+
+    .el-dialog__title {
+      font-size: 16px;
+    }
+
+    .el-dialog__headerbtn {
+      top: 10px;
+      right: 10px;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px;
+    background: #fff;
+    max-height: calc(75vh - 40px);
+    overflow: auto;
+  }
+}
+
+.el-form {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 20px;
+  }
+
+  &.el-form--inline {
+    .el-form-item__content > .el-input.el-input--mini,
+    .el-form-item__content > .el-select.el-select--mini {
+      width: 150px;
+    }
+
+    .el-input {
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
+      border-radius: 3px;
+    }
+  }
+}
+//table fixed:right 高度不够覆盖内容
+.el-table__fixed-right {
+  height: calc(100% - 1px) !important; //设置高优先，以覆盖内联样式 -1 不影响table自身的border
+  &::before {
+    height: 0;
+  }
+}

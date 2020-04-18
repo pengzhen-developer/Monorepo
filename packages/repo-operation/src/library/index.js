@@ -9,6 +9,13 @@ import './prototype/date'
 import './prototype/number'
 import './prototype/string'
 
+// filter
+import './filter'
+
+// components
+import Countdown from './components/countdown'
+import Table from './components/table'
+
 // http
 import http from './http'
 // util
@@ -18,12 +25,18 @@ import cache from './cache'
 // cache
 import validate from './validate'
 
-const install = function(Vue) {
+const install = function (Vue) {
   const peace = { http, util, cache, validate }
 
   // 暴露全局实例
   Window.$peace = peace
   global.$peace = peace
+
+  // 注册 component
+  const components = [Countdown, Table]
+  components.map((component) => {
+    Vue.use(component)
+  })
 
   // 挂载到 Vue
   Vue.prototype.$peace = peace

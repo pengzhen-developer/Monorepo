@@ -16,10 +16,10 @@ Vue.use(VueRouter)
 import routes from './routes'
 
 // Import library
-import peace from '@src/library'
+import Peace from '@src/library'
 
 // Import util
-import { user } from '@src/util'
+import Util from '@src/util'
 
 const router = new VueRouter({
   mode: 'history',
@@ -31,7 +31,7 @@ const router = new VueRouter({
     } else {
       return { x: 0, y: 0 }
     }
-  }
+  },
 })
 
 router.beforeEach((to, from, next) => {
@@ -39,15 +39,19 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title || config.DEFAULT_TITLE
 
   // 验证是否能够无权限访问
-  if (to.meta.requireAuth === true && !user.isSignIn()) {
-    peace.util.alert('为保障你的数据安全，请登录后使用')
+  if (to.meta.requireAuth === true && !Util.user.isSignIn()) {
+    Peace.util.warning('为保障你的数据安全，请登录后使用')
 
-    return user.replaceToLogin(to.fullPath)
+    setTimeout(() => {
+      Util.referrer.replaceToReferrer()
+    }, 3000)
+
+    return
   }
 
   next()
 })
 
 export default {
-  router
+  router,
 }
