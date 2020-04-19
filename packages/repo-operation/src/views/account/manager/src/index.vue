@@ -61,7 +61,7 @@
       <el-table-column min-width="140px"
                        label="申请时间"
                        prop="applyTime"></el-table-column>
-      <el-table-column min-width="120px"
+      <el-table-column width="120px"
                        label="申请状态"
                        prop="checkStatus">
         <template slot-scope="scope">
@@ -70,7 +70,8 @@
           <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="120px"
+      <el-table-column width="80px"
+                       align="center"
                        fixed="right"
                        label="账号状态"
                        prop="isOpen">

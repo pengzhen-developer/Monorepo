@@ -61,7 +61,7 @@
       <el-table-column width="140px"
                        label="审核时间"
                        prop="checkTime"></el-table-column>
-      <el-table-column width="140px"
+      <el-table-column width="180px"
                        header-align="center"
                        fixed="right"
                        label="操作">

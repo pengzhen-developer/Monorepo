@@ -3,13 +3,13 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 @import '~element-ui/packages/theme-chalk/src/index';
 
-.el-table--mini,
-.el-button--mini,
-.el-input--mini {
-  font-size: 12px;
-
+.el-table {
   th {
     background-color: #fafafa;
+  }
+
+  .el-button {
+    padding: 4px 8px;
   }
 }
 
