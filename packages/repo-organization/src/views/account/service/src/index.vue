@@ -10,7 +10,7 @@
                 v-bind:sm="12"
                 v-bind:md="8"
                 v-bind:lg="6"
-                v-bind:xl="4">
+                v-bind:xl="6">
           <ServiceItem v-bind:serviceName="service.serviceName"
                        v-bind:isPass="service.isPass"
                        v-bind:isPassText="service.isPassText"
@@ -32,7 +32,7 @@
                 v-bind:sm="12"
                 v-bind:md="8"
                 v-bind:lg="6"
-                v-bind:xl="4">
+                v-bind:xl="6">
           <ProductItem v-bind:serviceName="product.serviceName"
                        v-bind:img="product.img"
                        v-bind:url="product.url"
@@ -46,6 +46,7 @@
 
 <script>
 import Peace from '@src/library'
+import Util from '@src/util'
 import Service from './service'
 
 import ServiceItem from './components/ServiceItem'
@@ -113,7 +114,9 @@ export default {
     },
 
     redirectSerivceSite(product) {
-      window.open(product.url)
+      const cdKey = Util.user.getUserCDKey()
+
+      window.open(product.url + '?cdkey=' + cdKey)
     }
   }
 }

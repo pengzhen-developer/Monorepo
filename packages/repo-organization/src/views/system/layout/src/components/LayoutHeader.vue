@@ -7,9 +7,6 @@
 
       <el-divider class="vertical"
                   direction="vertical"></el-divider>
-      <div class="logo">
-        <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
-      </div>
 
       <div class="user-name">
         <span>{{ userName }}</span>

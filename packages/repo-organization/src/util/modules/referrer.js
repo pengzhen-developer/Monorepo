@@ -1,5 +1,4 @@
 import Peace from '@src/library'
-import Config from '@src/config'
 
 /** 站点常量 */
 const REFERRER_SITE = 'referrer_site'
@@ -41,7 +40,7 @@ export const replaceToReferrer = (referrer = getReferrer()) => {
   if (Peace.validate.isUrl(referrer)) {
     window.location.href = referrer
   } else {
-    window.location.href = Config.DEFAULT_MAIN_SITE
+    window.location.href = process.env.VUE_APP_WEB_SITE
   }
 }
 

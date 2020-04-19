@@ -43,6 +43,7 @@ export default {
 
       Service.auth(param)
         .then(res => {
+          Util.user.setUserCDKey(cdKey)
           Util.user.setUserInfo(res.data)
 
           this.$router.push(RouterPath.account.LAYOUT_SERVICE_INFO)
@@ -58,7 +59,7 @@ export default {
       this.tips = reason
 
       setTimeout(() => {
-        // Util.referrer.replaceToReferrer()
+        Util.referrer.replaceToReferrer()
       }, 3000)
     }
   }

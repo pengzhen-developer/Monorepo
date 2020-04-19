@@ -1,8 +1,9 @@
 <template>
   <div class="aside">
     <div class="aside-description">
-      <div class="logo">
-        <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+      <div class="logo"
+           v-on:click="goWebSite">
+        <el-image v-bind:src="require('@src/assets/img/logo.png')"></el-image>
       </div>
       <span class="title-1">九州通智药云平台</span>
       <span class="title-2">控制台</span>
@@ -56,6 +57,12 @@ export default {
       if (key !== this.$route.path) {
         this.$router.push(key)
       }
+    },
+
+    goWebSite() {
+      const url = process.env.VUE_APP_WEB_SITE
+
+      window.open(url)
     }
   }
 }
@@ -76,7 +83,7 @@ export default {
 
     .logo {
       width: 120px;
-      height: 82px;
+      height: 62px;
       overflow: hidden;
       margin: 0 0 10px 0;
 

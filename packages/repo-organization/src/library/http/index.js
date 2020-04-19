@@ -8,7 +8,7 @@ import download from './download'
 import mock from './mock'
 import retry from './retry'
 
-import { user } from '@src/util'
+import Util from '@src/util'
 import { warning } from './../util'
 
 import nprogress from 'nprogress'
@@ -56,7 +56,7 @@ axios.interceptors.request.use(
     }
 
     // Set Authority
-    const userInfo = user.getUserInfo()
+    const userInfo = Util.user.getUserInfo()
     if (userInfo?.token) {
       config.headers.Token = userInfo?.token
     }
@@ -110,11 +110,11 @@ axios.interceptors.response.use(
       }
 
       // Auth fail
-      else if (response?.data?.code === 601) {
+      else if (response?.data?.code === 403) {
         warning(response.data.msg)
 
-        user.removeUserInfo()
-        user.replaceToLogin()
+        Util.user.removeUserInfo()
+        Util.referrer.replaceToReferrer()
 
         return Promise.reject(response)
       }
