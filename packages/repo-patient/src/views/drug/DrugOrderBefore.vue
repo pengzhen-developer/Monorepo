@@ -93,14 +93,16 @@
             </div>
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
-              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
+              <div class="dd">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}
+              </div>
             </div>
           </div>
           <div class="module str">
             <div class="dl-packet">
               <div class="dt">应付金额:</div>
               <div class="dd">
-                <div class="strong">￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
+                <div class="strong">
+                  ￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toFixed(2)}}</div>
                 <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
               </div>
@@ -150,7 +152,7 @@ export default {
       order: null
     }
   },
-  
+
   activated() {
     this.getPhaOrder()
     //从地址页面返回
@@ -159,7 +161,7 @@ export default {
     }
     this.getDefaultAddress()
   },
-  created(){
+  created() {
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
@@ -220,6 +222,8 @@ export default {
         DrugStoreId: this.page.json.DrugStoreId,
         AccessCode: this.page.json.AccessCode,
         familyId: this.page.json.familyId,
+        IsMergeStore: this.page.json.IsMergeStore,
+        MergeStoreInfo: this.page.json.MergeStoreInfo,
         ShippingMethod: +this.page.tabIndex, // 0 自提 1配送
         Detailed: +this.page.tabIndex ? this.userAddr.detailAddress : this.order.Detailed,
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
