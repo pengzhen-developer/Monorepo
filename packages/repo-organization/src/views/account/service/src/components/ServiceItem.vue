@@ -6,7 +6,7 @@
       </div>
       <div class="header-isPass">
         <el-tag size="mini"
-                v-bind:type="isPassType">{{ isPassText }}</el-tag>
+                v-bind:type="isPassType">{{ isPassTextVisible }}</el-tag>
       </div>
       <div class="header-control"
            v-if="showCheckStatusText"
@@ -70,12 +70,41 @@ export default {
       return this.checkStatusText
     },
 
+    checkStatusType() {
+      if (this.checkStatusText === '待审核') {
+        return 'danger'
+      } else if (this.checkStatusText === '未申请') {
+        return 'warning'
+      } else if (this.checkStatusText === '未通过') {
+        return 'danger'
+      }
+      return ''
+    },
+
     showCheckStatusText() {
       if (this.checkStatusText === '已通过') {
         return false
       }
 
       return true
+    },
+
+    isPassType() {
+      if (this.isPassText === '未申请') {
+        return 'info'
+      } else if (this.isPassText === '已通过') {
+        return 'primary'
+      }
+
+      return 'info'
+    },
+
+    isPassTextVisible() {
+      if (this.isPassText === '已通过') {
+        return '已开通'
+      }
+
+      return this.isPassText
     },
 
     // flex  平均分布， 且支持换行
@@ -91,27 +120,6 @@ export default {
       const dispalyFeatures = this.features.concat(remainingArray)
 
       return dispalyFeatures
-    },
-
-    isPassType() {
-      if (this.isPassText === '未申请') {
-        return 'info'
-      } else if (this.isPassText === '已通过') {
-        return 'primary'
-      }
-
-      return 'info'
-    },
-
-    checkStatusType() {
-      if (this.checkStatusText === '待审核') {
-        return 'danger'
-      } else if (this.checkStatusText === '未申请') {
-        return 'warning'
-      } else if (this.checkStatusText === '未通过') {
-        return 'danger'
-      }
-      return ''
     }
   },
 
