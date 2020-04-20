@@ -107,7 +107,7 @@
             <div class="dl-packet">
               <div class="dt">订单总价:</div>
               <div class="dd">
-                ￥{{(order.TotalAmount+order.Freight-order.PromotionsCut).toString().toFixed(2)}}
+                ￥{{order.TotalAmount}}
               </div>
             </div>
           </div>
@@ -418,7 +418,7 @@ export default {
 
     curPayMoney() {
       const order = this.order
-      const payMoney = order.TotalAmount + order.Freight - order.PromotionsCut
+      const payMoney = order.OrderMoney
       return payMoney.toFixed(2)
     },
 

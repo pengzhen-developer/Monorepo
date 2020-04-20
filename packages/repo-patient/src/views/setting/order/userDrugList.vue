@@ -64,11 +64,13 @@
                 <div class="small-time">{{item.CreateTime}}</div>
                 <div class="small-price default">
                   共{{item.TotalNumber}}件药品 合计：
-                  <span class="b">￥{{item.TotalAmount }}</span>
+                  <span class="b">￥{{item.OrderMoney }}</span>
                 </div>
               </div>
-              <div class="small" v-if="item.orderStatusHandle">
-                <div class="small-price refund">{{item.orderStatusHandle + '：￥' + item.TotalAmount}}</div>
+              <div class="small"
+                   v-if="item.orderStatusHandle">
+                <div class="small-price refund">{{item.orderStatusHandle + '：￥' + item.OrderMoney}}
+                </div>
               </div>
             </div>
             <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
@@ -650,8 +652,8 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: rgba(0, 0, 0, 1);
-  &.refund{
-    color:#999;
+  &.refund {
+    color: #999;
   }
   .b {
     font-size: 16px;
