@@ -94,7 +94,7 @@ export default {
 
   .health-record-menu {
     width: 70px;
-    /* height: auto; */
+    border-radius: 4px;
     background: #fff;
     position: absolute;
     top: 0;

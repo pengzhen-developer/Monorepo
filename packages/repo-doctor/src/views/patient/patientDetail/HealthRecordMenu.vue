@@ -8,8 +8,9 @@
              :key="menu.index"
              @click="menuSelect(menu.index)">
           <div class="nav-submenu">
-            <img v-bind:src="menu.icon">
-            <label>{{ menu.name }}</label>
+            <img :class="{ isDisable:  menu.disable }"
+                 v-bind:src="menu.icon">
+            <label :class="{ isDisable:  menu.disable }">{{ menu.name }}</label>
             <div class="line"></div>
           </div>
         </div>
@@ -42,26 +43,31 @@ export default {
         {
           name: '咨询',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
+          disable: true,
           icon: require('@src/assets/images/health-record/health_records_talk.png')
         },
         {
           name: '病程',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
+          disable: true,
           icon: require('@src/assets/images/health-record/health_records_course.png')
         },
         {
           name: '随访',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
+          disable: true,
           icon: require('@src/assets/images/health-record/health_records_follow.png')
         },
         {
           name: '转诊',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
+          disable: false,
           icon: require('@src/assets/images/health-record/health_records_referral.png')
         },
         {
           name: '会诊',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
+          disable: false,
           icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
         }
       ],
@@ -70,6 +76,11 @@ export default {
   },
   methods: {
     menuSelect(index) {
+      const tmp = this.menuList[index - 1]
+      if (tmp.disable) {
+        $peace.util.alert('暂未开放')
+        return
+      }
       this.selectIndex = index
       $peace.$emit('showDrawer', index)
     }
@@ -116,10 +127,9 @@ export default {
   img {
     width: 22px;
     height: 22px;
-    /* font-size: 24px; */
     margin-bottom: 8px;
-    color: #cecece;
   }
+
   label {
     line-height: 20px;
     font-size: 14px;
@@ -127,6 +137,12 @@ export default {
     color: rgba(51, 51, 51, 1);
     margin-bottom: 15px;
   }
+
+  .isDisable {
+    filter: grayscale(90%);
+    color: #cecece;
+  }
+
   .line {
     width: 40px;
     height: 1px;
