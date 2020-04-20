@@ -29,13 +29,13 @@
 
         <!-- 待审核 -->
         <template v-if="data.checkStatus === 2">
-          <el-radio label="审核结果："
-                    prop="checkStatus">
+          <el-form-item label="审核结果："
+                        prop="checkStatus">
             <el-radio-group v-model="model.checkStatus">
               <el-radio label="3">已通过</el-radio>
               <el-radio label="4">未通过</el-radio>
             </el-radio-group>
-          </el-radio>
+          </el-form-item>
           <el-form-item label="未通过原因："
                         prop="reasonsFailure"
                         v-if="showReasonsFailure">
@@ -65,7 +65,7 @@
         <!-- 未通过 -->
         <template v-if="data.checkStatus === 4">
           <el-form-item label="审核结果：">
-            <span>{{ data.checkStatus }}</span>
+            <span>{{ data.checkStatus | getEnumLabel(Constant.ENUM_CHECK_STATUS) }}</span>
           </el-form-item>
           <el-form-item label="未通过原因：">
             <span>{{ data.reasonsFailure }}</span>

@@ -64,7 +64,7 @@
       <el-table-column width="140px"
                        label="审核时间"
                        prop="checkTime"></el-table-column>
-      <el-table-column width="180px"
+      <el-table-column width="120px"
                        header-align="center"
                        fixed="right"
                        label="操作">
@@ -72,9 +72,6 @@
           <el-button type="text"
                      v-if="canShowAudit(scope.row)"
                      v-on:click="auditApproved(scope.row)">审核通过</el-button>
-          <el-button type="text"
-                     v-if="canShowAudit(scope.row)"
-                     v-on:click="auditUnApproved(scope.row)">审核拒绝</el-button>
         </template>
       </el-table-column>
     </PeaceTable>
