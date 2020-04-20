@@ -15,7 +15,7 @@
           <span>{{ data.tel }}</span>
         </el-form-item>
         <el-form-item label="注册时间：">
-          <span>{{ data.applyTime }}</span>
+          <span>{{ data.createdTime }}</span>
         </el-form-item>
         <el-form-item label="所属医院：">
           <span>{{ data.hospitalName }}</span>
@@ -24,7 +24,7 @@
           <span>{{ data.socialCreditCode }}</span>
         </el-form-item>
         <el-form-item label="申请时间：">
-          <span>{{ data.createdTime }}</span>
+          <span>{{ data.applyTime }}</span>
         </el-form-item>
 
         <!-- 待审核 -->
