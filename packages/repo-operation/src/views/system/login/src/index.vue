@@ -44,6 +44,8 @@
                             prop="password">
                 <el-input v-model="model.password"
                           show-password
+                          v-bind:minlength="6"
+                          v-bind:maxlength="20"
                           placeholder="请输入密码">
                 </el-input>
               </el-form-item>
