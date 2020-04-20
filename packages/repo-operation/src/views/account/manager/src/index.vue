@@ -99,6 +99,7 @@
     </PeaceTable>
 
     <AduitDetail v-model="aduitDialog.visible"
+                 v-bind:title="aduitDialog.title"
                  v-bind:data="aduitDialog.data"
                  v-on:refresh="get"></AduitDetail>
   </div>
@@ -127,6 +128,7 @@ export default {
 
       aduitDialog: {
         visible: false,
+        title: '',
         data: {}
       },
 
@@ -161,11 +163,13 @@ export default {
     },
 
     aduit(row) {
+      this.aduitDialog.title = '医院信息审核'
       this.aduitDialog.visible = true
       this.aduitDialog.data = row
     },
 
     detail(row) {
+      this.aduitDialog.title = '医院信息审核详情'
       this.aduitDialog.visible = true
       this.aduitDialog.data = row
     },

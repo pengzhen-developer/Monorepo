@@ -2,7 +2,7 @@
   <div>
     <el-dialog width="500px"
                v-bind:visible.sync="visible"
-               title="医院信息审核">
+               v-bind:title="title">
       <el-form ref="form"
                label-width="150px"
                label-suffix=""
@@ -29,14 +29,13 @@
 
         <!-- 待审核 -->
         <template v-if="data.checkStatus === 2">
-          <el-form-item label="审核结果："
-                        prop="checkStatus">
+          <el-radio label="审核结果："
+                    prop="checkStatus">
             <el-radio-group v-model="model.checkStatus">
               <el-radio label="3">已通过</el-radio>
               <el-radio label="4">未通过</el-radio>
             </el-radio-group>
-
-          </el-form-item>
+          </el-radio>
           <el-form-item label="未通过原因："
                         prop="reasonsFailure"
                         v-if="showReasonsFailure">
@@ -91,6 +90,8 @@ export default {
       required: true,
       type: Boolean
     },
+
+    title: String,
 
     data: Object
   },
