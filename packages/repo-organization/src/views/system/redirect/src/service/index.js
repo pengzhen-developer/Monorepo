@@ -1,7 +1,5 @@
 import peace from '@src/library'
 
-import IAuthData from './../model/IAuthData'
-
 export default {
   /**
    * 认证授权
@@ -19,8 +17,6 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return peace.http.post(requestApi, params).then((res) => {
-      peace.validate.jsonSchema(res, IAuthData)
-
       return res
     })
   },

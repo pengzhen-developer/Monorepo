@@ -1,7 +1,5 @@
 import Peace from '@src/library'
 
-import IServiceBaseInfo from './../model/IServiceBaseInfo'
-
 export default {
   /**
    * 获取基础服务
@@ -18,8 +16,6 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
-      Peace.validate.jsonSchema(res, IServiceBaseInfo)
-
       return res
     })
   },
