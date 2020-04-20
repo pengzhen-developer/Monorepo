@@ -72,6 +72,7 @@
           <el-button type="text"
                      v-if="canShowAudit(scope.row)"
                      v-on:click="auditApproved(scope.row)">审核通过</el-button>
+          <span v-else>——</span>
         </template>
       </el-table-column>
     </PeaceTable>
@@ -122,7 +123,12 @@ export default {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
 
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.loadData({ fetch, params }).then(res => {
+        res?.data?.list?.forEach(row => {
+          row.checkTime = Peace.validate.isEmpty(row.checkTime) ? '——' : row.checkTime
+        })
+        return res
+      })
     },
 
     auditApproved(row) {

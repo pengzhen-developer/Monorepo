@@ -98,6 +98,7 @@
           <el-button type="text"
                      v-if="canShowDetail(scope.row)"
                      v-on:click="detail(scope.row)">详情</el-button>
+          <span v-if="!canShowAduit(scope.row) && !canShowDetail(scope.row)">——</span>
         </template>
       </el-table-column>
     </PeaceTable>
