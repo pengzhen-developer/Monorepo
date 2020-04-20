@@ -7,11 +7,13 @@
              label-suffix=""
              size="mini">
       <el-form-item label="所属医院：">
-        <el-input v-model="model.hospitalName"></el-input>
+        <el-input v-model="model.hospitalName"
+                  placeholder="请输入所属医院"></el-input>
       </el-form-item>
       <el-form-item label="开通服务：">
         <el-select v-model="model.serviceId"
-                   clearable>
+                   clearable
+                   placeholder="请选择开通服务">
           <el-option v-for="service in source.SERVICE_LIST"
                      v-bind:key="service.serviceId"
                      v-bind:label="service.serviceName"
@@ -20,7 +22,8 @@
       </el-form-item>
       <el-form-item label="申请状态：">
         <el-select v-model="model.checkStatus"
-                   clearable>
+                   clearable
+                   placeholder="请选择申请状态">
           <el-option v-for="(value, label) in source.ENUM_CHECK_STATUS"
                      v-bind:key="value"
                      v-bind:label="label"

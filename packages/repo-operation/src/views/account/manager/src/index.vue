@@ -7,16 +7,20 @@
              label-suffix=""
              size="mini">
       <el-form-item label="联系人：">
-        <el-input v-model="model.linkman"></el-input>
+        <el-input v-model="model.linkman"
+                  placeholder="请输入联系人"></el-input>
       </el-form-item>
       <el-form-item label="手机号码：">
-        <el-input v-model="model.tel"></el-input>
+        <el-input v-model="model.tel"
+                  placeholder="请输入手机号码"></el-input>
       </el-form-item>
       <el-form-item label="所属医院：">
-        <el-input v-model="model.hospitalName"></el-input>
+        <el-input v-model="model.hospitalName"
+                  placeholder="请输入所属医院"></el-input>
       </el-form-item>
       <el-form-item label="申请状态：">
         <el-select v-model="model.checkStatus"
+                   placeholder="请选择申请状态"
                    clearable>
           <el-option v-for="(value, label) in source.ENUM_CHECK_STATUS"
                      v-bind:key="value"
@@ -46,7 +50,7 @@
       <el-table-column min-width="120px"
                        label="用户名"
                        prop="username"></el-table-column>
-      <el-table-column min-width="140px"
+      <el-table-column min-width="160px"
                        label="邮箱"
                        prop="email"></el-table-column>
       <el-table-column min-width="140px"
