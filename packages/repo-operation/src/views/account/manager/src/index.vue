@@ -153,7 +153,14 @@ export default {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
 
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.loadData({ fetch, params }).then(res => {
+        res?.data?.list?.forEach(row => {
+          row.hospitalName = Peace.validate.isEmpty(row.hospitalName) ? '——' : row.hospitalName
+          row.socialCreditCode = Peace.validate.isEmpty(row.socialCreditCode) ? '——' : row.socialCreditCode
+          row.applyTime = Peace.validate.isEmpty(row.applyTime) ? '——' : row.applyTime
+        })
+        return res
+      })
     },
 
     canShowAduit(row) {
