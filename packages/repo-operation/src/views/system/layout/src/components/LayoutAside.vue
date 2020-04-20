@@ -2,7 +2,7 @@
   <div class="aside">
     <div class="aside-description">
       <div class="logo">
-        <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+        <el-image v-bind:src="logoImage"></el-image>
       </div>
       <span class="title-1">九州通智药云平台</span>
       <span class="title-2">运营端</span>
@@ -44,16 +44,10 @@ export default {
       defaultActive: this.$route.path,
 
       managerPath: routerPath.account.LAYOUT_MANAGER,
-      servicePath: routerPath.service.LAYOUT_MANAGER
+      servicePath: routerPath.service.LAYOUT_MANAGER,
+
+      logoImage: require('@src/assets/img/logo.png')
     }
-  },
-
-  beforeRouteUpdate(to, from, next) {
-    // react to route changes...
-    // don't forget to call next()
-
-    console.log(to, from)
-    next()
   },
 
   methods: {
@@ -81,7 +75,7 @@ export default {
 
     .logo {
       width: 120px;
-      height: 82px;
+      height: 60px;
       overflow: hidden;
       margin: 0 0 10px 0;
 

@@ -1,7 +1,5 @@
 import Peace from '@src/library'
 
-import IUserData from './../model/IUserData'
-
 export default {
   /**
    * 账号密码登录
@@ -18,8 +16,6 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
-      Peace.validate.jsonSchema(res, IUserData)
-
       return res
     })
   },

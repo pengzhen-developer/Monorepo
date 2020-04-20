@@ -17,8 +17,7 @@
 
         <div class="center">
           <div class="logo">
-            <el-image style="width: 80px; height: 80px;"
-                      src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+            <el-image v-bind:src="logoImage"></el-image>
           </div>
           <div class="title">
             <span>九州通智药云平台</span>
@@ -86,7 +85,9 @@ export default {
       rules: {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      },
+
+      logoImage: require('@src/assets/img/logo.png')
     }
   },
 
@@ -167,9 +168,8 @@ export default {
         margin: 0 0 65px 0;
 
         .logo {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
+          width: 120px;
+          height: 60px;
           margin: 0 0 22px 0;
           overflow: hidden;
         }

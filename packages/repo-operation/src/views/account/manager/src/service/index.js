@@ -1,7 +1,5 @@
 import Peace from '@src/library'
 
-import IAccountUserData from './../model/IAccountUserData'
-
 export default {
   /**
    * 获取账号管理列表
@@ -18,8 +16,6 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
-      Peace.validate.jsonSchema(res, IAccountUserData)
-
       return res
     })
   },
