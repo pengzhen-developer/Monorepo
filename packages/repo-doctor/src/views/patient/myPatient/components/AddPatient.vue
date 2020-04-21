@@ -18,9 +18,12 @@
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
-                    prop="sex">
+                    prop="sexStr">
         <span slot="label">性别</span>
-        <el-select v-model="ruleForm.sexStr"
+        <el-input v-model="ruleForm.sexStr"
+                  :disabled="true"></el-input>
+        <!-- 禁用选择 -->
+        <!-- <el-select v-model="ruleForm.sexStr"
                    style="width: 100%;"
                    placeholder="请选择">
           <el-option v-for="item in sexs"
@@ -28,20 +31,23 @@
                      :label="item"
                      :value="item">
           </el-option>
-        </el-select>
+        </el-select> -->
       </el-form-item>
 
       <el-form-item label="生日"
                     prop="birthday">
         <span slot="label">生日</span>
-        <el-date-picker v-model="ruleForm.birthday"
+        <!-- <el-date-picker v-model="ruleForm.birthday"
                         type="date"
                         style="width: 100%;"
                         placeholder="选择日期">
-        </el-date-picker>
+        </el-date-picker> -->
+        <el-input prefix-icon="el-icon-date"
+                  v-model="ruleForm.birthday"
+                  :disabled="true"></el-input>
       </el-form-item>
 
-      <el-form-item label="生日"
+      <el-form-item label="民族"
                     prop="nation">
         <span slot="label">民族</span>
         <el-select filterable
@@ -102,8 +108,8 @@ export default {
         ],
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
         nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
-        sexStr: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
-        birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
+        // sexStr: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
+        // birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
         tel: [{ required: true, message: '请输入患者联系方式', trigger: 'blur' }]
       }
     }
@@ -144,7 +150,7 @@ export default {
             this.ruleForm.sex = 2
           }
           peace.service.patient.addPatient(this.ruleForm).then(res => {
-            $peace.util.alert(res.msg)
+            $peace.util.alert('添加成功')
             if (res.success) {
               this.isSave = true
               this.closeMenu()

@@ -18,7 +18,8 @@
           <el-button @click="choseDiagnose"
                      style="min-width: 30px; text-decoration-line: underline;"
                      type="text"
-                     v-show="!view.model.diagnose">请选择</el-button>
+                     v-show="!view.model.diagnose || view.model.diagnose.length == 0">请选择
+          </el-button>
 
           <div class="diagnoseStyle"
                v-if="view.model.diagnose && view.model.diagnose.length > 0">
@@ -118,7 +119,7 @@
                   width="700px">
       <div>
         <el-input clearable
-                  placeholder="请输入地区、医院或医生姓名"
+                  placeholder="请输入医院或医生姓名"
                   style="width: 320px; margin-right: 40px;"
                   v-model="dialog.model.name"></el-input>
         <el-button @click="get"
@@ -296,7 +297,8 @@ export default {
     get() {
       const fetch = peace.service.inquiry.referralDocListPc
       const params = {
-        sourceAction: 'offline'
+        sourceAction: 'offline',
+        name: this.dialog.model.name
       }
 
       this.$refs.table.loadData({
@@ -357,6 +359,10 @@ export default {
       const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
       if (index !== -1) {
         this.dialog.chooseData.splice(index, 1)
+        if (this.dialog.chooseData.length == 0) {
+          this.view.model.diagnose = undefined
+          this.dialog.chooseItem = ''
+        }
       }
     },
     saveItem() {
@@ -390,7 +396,7 @@ export default {
             peace.service.health.offlineAddConsult(params).then(() => {
               $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.会诊)
 
-              peace.util.alert('发起转诊成功')
+              peace.util.alert('发起会诊成功')
             })
           }
         }
