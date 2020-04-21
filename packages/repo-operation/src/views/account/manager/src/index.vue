@@ -3,7 +3,7 @@
     <el-form v-bind:model="model"
              inline="inline"
              label-width="85px"
-             label-position="left"
+             label-position="right"
              label-suffix=""
              size="mini">
       <el-form-item label="联系人：">
@@ -65,7 +65,7 @@
       <el-table-column min-width="140px"
                        label="申请时间"
                        prop="applyTime"></el-table-column>
-      <el-table-column width="120px"
+      <el-table-column min-width="80px"
                        label="申请状态"
                        prop="checkStatus">
         <template slot-scope="scope">
@@ -74,20 +74,25 @@
           <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="80px"
+      <el-table-column min-width="120px"
                        align="center"
                        fixed="right"
                        label="账号状态"
                        prop="isOpen">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.isOpen"
-                     v-bind:active-value="1"
-                     v-bind:inactive-value="2"
-                     v-on:change="changeOpenState(scope.row)">
-          </el-switch>
+          <div style="display: flex">
+
+            <el-switch v-model="scope.row.isOpen"
+                       v-bind:active-value="1"
+                       v-bind:inactive-value="2"
+                       v-on:change="changeOpenState(scope.row)">
+            </el-switch>
+
+            <span style="margin-left: 5px;">{{ getIsOpenText(scope.row) }}</span>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column width="80px"
+      <el-table-column min-width="80px"
                        align="center"
                        fixed="right"
                        label="操作">
@@ -169,9 +174,15 @@ export default {
     },
 
     canShowDetail(row) {
-      return (
-        row.checkStatus === Constant.ENUM_CHECK_STATUS.已通过 || row.checkStatus === Constant.ENUM_CHECK_STATUS.未通过
-      )
+      return row.checkStatus === Constant.ENUM_CHECK_STATUS.已通过 || row.checkStatus === Constant.ENUM_CHECK_STATUS.未通过
+    },
+
+    getIsOpenText(row) {
+      if (row.isOpen === 1) {
+        return '已启用'
+      } else {
+        return '已禁用'
+      }
     },
 
     aduit(row) {
