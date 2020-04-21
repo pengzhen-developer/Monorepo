@@ -206,7 +206,7 @@
 
       <!-- 挂号服务 -->
       <div class="body-card"
-           v-if="doctor.registerData.length > 0">
+           v-if="doctor.registerData&&doctor.registerData.length > 0">
         <div class="row flex between">
           <div class="row flex">
             <van-image width="30px"
@@ -561,7 +561,6 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.doctor.getWapDoctorInfo(params).then(res => {
-        
         this.doctorStatus = res.data.doctorInfo.doctorStatus
         let obj = {
           url: '',
