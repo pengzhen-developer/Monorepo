@@ -3,7 +3,7 @@
     <el-form v-bind:model="model"
              inline="inline"
              label-width="85px"
-             label-position="left"
+             label-position="right"
              label-suffix=""
              size="mini">
       <el-form-item label="所属医院：">
@@ -49,10 +49,10 @@
       <el-table-column min-width="120px"
                        label="开通服务"
                        prop="serviceName"></el-table-column>
-      <el-table-column width="140px"
+      <el-table-column min-width="140px"
                        label="申请时间"
                        prop="applyTime"></el-table-column>
-      <el-table-column width="100px"
+      <el-table-column min-width="100px"
                        label="申请状态"
                        prop="checkStatus">
         <template slot-scope="scope">
@@ -61,7 +61,7 @@
           <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="140px"
+      <el-table-column min-width="140px"
                        label="审核时间"
                        prop="checkTime"></el-table-column>
       <el-table-column width="120px"
