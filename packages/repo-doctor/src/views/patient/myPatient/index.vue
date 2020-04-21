@@ -64,7 +64,7 @@
                   width="387px"
                   title="添加患者">
       <AddPatient ref="checkInput"
-                  @close="handleClose"
+                  @handleClose="handleClose"
                   v-on:updateList="updateList">
       </AddPatient>
     </peace-dialog>

@@ -20,7 +20,7 @@
       <el-form-item label="性别"
                     prop="sex">
         <span slot="label">性别</span>
-        <el-select v-model="ruleForm.sex"
+        <el-select v-model="ruleForm.sexStr"
                    style="width: 100%;"
                    placeholder="请选择">
           <el-option v-for="item in sexs"
@@ -42,7 +42,7 @@
       </el-form-item>
 
       <el-form-item label="生日"
-                    prop="national">
+                    prop="nation">
         <span slot="label">民族</span>
         <el-select filterable
                    label="民族"
@@ -87,10 +87,12 @@ export default {
         idCard: '',
         tel: '',
         sex: '',
+        sexStr: '',
         birthday: '',
         nation: '',
         source: '3'
       },
+      isSave: false, //是否保存
       sexs: ['男', '女'],
       nationals: [],
       rules: {
@@ -100,7 +102,7 @@ export default {
         ],
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
         nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
-        sex: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
+        sexStr: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
         birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
         tel: [{ required: true, message: '请输入患者联系方式', trigger: 'blur' }]
       }
@@ -112,13 +114,13 @@ export default {
       if (peace.validate.idCard(val)) {
         if (val.length == 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
-          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday =
             '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.ruleForm.sexKey = val.toString().charAt(16) % 2
-          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday =
             val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
@@ -136,15 +138,15 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //提交
-          if (this.ruleForm.sex == '男') {
+          if (this.ruleForm.sexStr == '男') {
             this.ruleForm.sex = 1
           } else {
             this.ruleForm.sex = 2
           }
           peace.service.patient.addPatient(this.ruleForm).then(res => {
             $peace.util.alert(res.msg)
-            debugger
             if (res.success) {
+              this.isSave = true
               this.closeMenu()
               this.$emit('updateList')
             }
@@ -155,14 +157,18 @@ export default {
       })
     },
     isShouldSave() {
-      return !(
-        peace.validate.isEmpty(this.ruleForm.name) &&
-        peace.validate.isEmpty(this.ruleForm.idCard) &&
-        peace.validate.isEmpty(this.ruleForm.tel) &&
-        peace.validate.isEmpty(this.ruleForm.sex) &&
-        peace.validate.isEmpty(this.ruleForm.birthday) &&
-        peace.validate.isEmpty(this.ruleForm.nation)
-      )
+      if (this.isSave) {
+        return false
+      } else {
+        return !(
+          peace.validate.isEmpty(this.ruleForm.name) &&
+          peace.validate.isEmpty(this.ruleForm.idCard) &&
+          peace.validate.isEmpty(this.ruleForm.tel) &&
+          peace.validate.isEmpty(this.ruleForm.sexStr) &&
+          peace.validate.isEmpty(this.ruleForm.birthday) &&
+          peace.validate.isEmpty(this.ruleForm.nation)
+        )
+      }
     },
     closeMenu() {
       this.$emit('handleClose')
