@@ -10,8 +10,7 @@
 
     <div class="aside-nav">
 
-      <el-menu v-bind:unique-opened="true"
-               v-bind:default-active="defaultActive"
+      <el-menu v-bind:default-active="defaultActive"
                v-on:select="menuSelect">
         <el-submenu index="1">
           <template slot="title">
@@ -21,7 +20,7 @@
 
           <el-menu-item v-bind:index="managerPath">账号管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="1">
+        <el-submenu index="2">
           <template slot="title">
             <i class="icon el-icon-menu"></i>
             <span>服务中心</span>
