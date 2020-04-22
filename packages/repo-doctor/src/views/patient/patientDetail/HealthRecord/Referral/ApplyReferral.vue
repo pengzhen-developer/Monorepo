@@ -13,7 +13,8 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="初步诊断">
+        <el-form-item label="初步诊断"
+                      prop="diagnose">
           <span slot="label">初步诊断</span>
           <el-button @click="choseDiagnose"
                      style="min-width: 30px; text-decoration-line: underline;"

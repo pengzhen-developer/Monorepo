@@ -67,7 +67,7 @@ const ConsultStatusBgColor = [
   { value: 7, label: '#FFFFFF' },
   { value: 8, label: '#FFFFFF' },
   { value: 9, label: '#FEFCEB' },
-  { value: 10, label: '#999999' },
+  { value: 10, label: '#FFFFFF' },
 ]
 
 export {
