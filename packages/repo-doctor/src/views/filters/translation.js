@@ -39,7 +39,7 @@ const ConsultationStatus = [
   { value: 6, label: '会诊中' },
   { value: 7, label: '会诊已完成' },
   { value: 8, label: '会诊已关闭' },
-  { value: 9, label: '医生待审核' },
+  { value: 9, label: '医生待接诊' },
   { value: 10, label: '医生已退诊' }
 ]
 

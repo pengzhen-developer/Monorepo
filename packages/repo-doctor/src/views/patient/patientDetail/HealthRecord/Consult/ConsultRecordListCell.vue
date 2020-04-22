@@ -9,7 +9,7 @@
       </div>
       <div class="item-content">
         <div class="info-row">
-          <div class="info-row-label">{{ (type === 'out') ? "转诊医生" : "申请医生" }}</div>
+          <div class="info-row-label">{{ (type === 'out') ? "会诊医生" : "申请医生" }}</div>
           <div class="info-row-content">
             <b>{{item.doctorName + ' ' + item.doctorTitle}}</b> <br />
             {{item.hospitalName + ' ' + item.deptName}}
@@ -32,7 +32,7 @@
     <peace-dialog :modal-append-to-body="false"
                   :visible.sync="dialog.visible"
                   custom-class="dialog"
-                  title="转诊详情">
+                  title="会诊详情">
       <TheConsultationDetail :data="dialog.data"
                              :type="type"
                              @close="() => dialog.visible = false"></TheConsultationDetail>
