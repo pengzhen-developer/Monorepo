@@ -46,7 +46,7 @@
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
-                          v-if="item.inquiryInfo.inquiryStatus=='4'&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
+                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
                   </div>
 
                 </div>
@@ -163,26 +163,20 @@ import { Dialog } from 'vant'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
-const ENUM={
+const ENUM = {
   // 咨询类型 inquiryType
   // 图文 0 图文咨询 1图文复诊
   // 视频 0 视频咨询 1视频复诊
   INQUIRY_TYPE: [
     {
-      type:'image',
-      value:[
-        "图文咨询",
-        "图文复诊"
-      ]
+      type: 'image',
+      value: ['图文咨询', '图文复诊']
     },
     {
-      type:'video',
-      value:[
-        "视频咨询",
-        "视频复诊"
-  ]
+      type: 'video',
+      value: ['视频咨询', '视频复诊']
     }
-  ],
+  ]
 }
 export default {
   props: {},
@@ -242,8 +236,8 @@ export default {
     // this.getData()
   },
   methods: {
-    getInquiryType(type,isAgin){
-      return ENUM.INQUIRY_TYPE.find(item => item.type === type).value.find((item,index)=>index==isAgin)
+    getInquiryType(type, isAgin) {
+      return ENUM.INQUIRY_TYPE.find(item => item.type === type).value.find((item, index) => index == isAgin)
     },
     finishHander(item, index) {
       item.close = false
@@ -307,14 +301,13 @@ export default {
           res.data.list.map(item => {
             //   item.time =  15 * 60 * 1000;
             item.close = true
-            
+
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
                 // item.time = (item.orderExpireTime - item.currentTime - 14 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
-              
               let inquiryInfo = item.inquiryInfo
               let expireTime =
                 inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
@@ -322,7 +315,7 @@ export default {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
                 // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
               }
-              item.inquiryType = this.getInquiryType(item.orderInfo.inquiryType,inquiryInfo.isAgain)
+              item.inquiryType = this.getInquiryType(item.orderInfo.inquiryType, inquiryInfo.isAgain)
             }
           })
         }
