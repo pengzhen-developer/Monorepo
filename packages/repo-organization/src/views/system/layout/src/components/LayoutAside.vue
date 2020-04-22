@@ -21,8 +21,10 @@
           </template>
 
           <el-menu-item v-bind:index="servicePath">服务信息</el-menu-item>
-          <el-menu-item v-bind:index="basePath">基本信息</el-menu-item>
-          <el-menu-item v-bind:index="securityPath">安全信息</el-menu-item>
+          <el-menu-item disabled
+                        v-bind:index="basePath">基本信息</el-menu-item>
+          <el-menu-item disabled
+                        v-bind:index="securityPath">安全信息</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
