@@ -17,7 +17,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button @click="get"
+        <el-button @click="updateList"
                    round
                    type="primary">查询</el-button>
       </el-form-item>
@@ -115,10 +115,8 @@ export default {
     get() {
       const fetch = peace.service.patient.patientListPc
       const params = this.view.model
-
       this.$refs.table.loadData({ fetch, params })
     },
-
     showDetail(row) {
       const currentMenu = {
         id: 1,
@@ -139,7 +137,9 @@ export default {
       this.$router.push(currentMenu.path)
     },
     updateList() {
-      this.get()
+      const fetch = peace.service.patient.patientListPc
+      const params = this.view.model
+      this.$refs.table.reloadData({ fetch, params })
     },
     handleClose() {
       const tmp = this.$refs.checkInput.isShouldSave()
