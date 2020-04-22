@@ -7,7 +7,7 @@
           <img :src="data.DrugStoreLogo" />
         </div>
         <div class="card-body">
-          <div class="card-name"> {{ data.ords[0].Notes }}</div>
+          <div class="card-name"> {{ data.ords.length>0&&data.ords[0].Notes }}</div>
           <div class="card-small">
             {{ data.ShippingMethod == '1' ? 
                  '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone : 

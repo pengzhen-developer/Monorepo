@@ -134,7 +134,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check" @click="getTransfelDetail(message)">
+              <div class="message-body message-check"
+                   @click="getTransfelDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -207,7 +208,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check" @click="getConsultDetail(message)">
+              <div class="message-body message-check"
+                   @click="getConsultDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -275,7 +277,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check" @click="getCaseDetail(message)">
+              <div class="message-body message-check"
+                   @click="getCaseDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -328,7 +331,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check"  @click="getRecipeDetail(message)">
+              <div class="message-body message-check"
+                   @click="getRecipeDetail(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -385,7 +389,8 @@
               </div>
 
               <!-- 消息内容 -->
-              <div class="message-body message-check" @click="goInquiryCheckInfo(message)">
+              <div class="message-body message-check"
+                   @click="goInquiryCheckInfo(message)">
                 <div class="message-header">
                   <van-image width="17px"
                              height="17px"
@@ -837,8 +842,8 @@ export default {
         patientId: this.$store.state.user.userInfo.patientInfo.id
       }
       peace.service.inquiry.getList(params).then(res => {
-        this.internalDoctorInfo=res.data.list[0].doctorInfo
-        this.internalPatientInfo=res.data.list[0].patientInfo
+        this.internalDoctorInfo = res.data.list[0].doctorInfo
+        this.internalPatientInfo = res.data.list[0].patientInfo
         this.checkFamilyIsInFlamilyList()
       })
     },
@@ -880,7 +885,6 @@ export default {
         }
         this.internalData = res.data.msgList
         // this.internalDoctorInfo = res.data.doctorInfo
-        
       })
     },
     //获取进行中会话数据
@@ -1413,7 +1417,7 @@ export default {
   .content {
     color: #333;
     font-size: 13px;
-    white-space:nowrap;
+    white-space: normal;
     .t {
       color: #999;
       margin-right: 10px;

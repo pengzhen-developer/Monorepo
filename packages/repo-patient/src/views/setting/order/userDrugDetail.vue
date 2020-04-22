@@ -149,7 +149,7 @@
         </div>
         <div class="dl-packet">
           <div class="dt">创建时间：</div>
-          <div class="dd">{{order.ords[0].CreateTime}}</div>
+          <div class="dd">{{order.ords.legnth>0?order.ords[0].CreateTime:order.CreateTime}}</div>
         </div>
         <template v-if="order.payStatus>2">
           <div class="dl-packet">
