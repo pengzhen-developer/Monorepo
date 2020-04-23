@@ -19,8 +19,8 @@
             <template v-if="doctor.doctorInfo.serviceList">
               <template v-for="(it, i) in doctor.doctorInfo.serviceList">
                 <div :class="['label', 'label-'+it]"
-                    :key="i" 
-                    v-if="it!=='prvivateDoctor'">
+                     :key="i"
+                     v-if="it!=='prvivateDoctor'">
                   {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                 </div>
               </template>
@@ -28,8 +28,8 @@
             <template v-if="doctor.doctorInfo.tags">
               <template v-for="(it, i) in doctor.doctorInfo.tags">
                 <div :class="['label', 'label-'+it]"
-                    :key="i"
-                    v-if="it!=='prvivateDoctor'">
+                     :key="i"
+                     v-if="it!=='prvivateDoctor'">
                   {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
                 </div>
               </template>
@@ -63,25 +63,20 @@
                   redictToApply(doctor.doctorInfo, doctor.consultationList[0])
                 "
                    class="title-service-item"
-                   v-if="canShowImageInquiry(doctor)">
+                   v-if="canShowInquiry(doctor,'image')">
                 <img src="@src/assets/images/ic_tuwen_open.png"
                      style="width: 20px;" />
                 <span>图文咨询</span>
               </div>
-              <!-- <div @click.stop="
+              <div @click.stop="
                   redictToApply(doctor.doctorInfo, doctor.consultationList[1])
-                " class="title-service-item">
-                <img
-                  v-if="canShowVideoInquiry(doctor)"
-                  src="@src/assets/images/ic_video_open.png"
-                  style="width: 20px;"
-                />
-                <img
-                  v-else
-                  src="@src/assets/images/ic_video.png"
-                  style="width: 20px;"
-                />
-              </div> -->
+                "
+                   class="title-service-item"
+                   v-if="canShowInquiry(doctor,'video')">
+                <img src="@src/assets/images/ic_video_open.png"
+                     style="width: 20px;" />
+                <span>视频咨询</span>
+              </div>
             </div>
           </div>
           <!-- 候诊排队人数 -->
@@ -166,35 +161,15 @@ export default {
     },
     //临时处理标签问题
     getSericeStatus(doctor) {
-      // if(doctor.workStatus!=1){
       return doctor.workStatus
-      // }else{
-      //   if(this.canShowImageInquiry(doctor)==1||this.canShowVideoInquiry(doctor)==1){
-      //     return 1
-      //   }else{
-      //     return 3
-      //   }
-      // }
     },
-    canShowImageInquiry(doctor) {
-      // doctor.consultationList[0] 固定为图文咨询
+    canShowInquiry(doctor,type){
       const params = peace.util.decode(this.$route.params.json)
-
-      if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[0] && doctor.consultationList[0].status && doctor.consultationList[0].money === 0
-      } else {
-        return doctor.consultationList[0] && doctor.consultationList[0].status
-      }
-    },
-
-    canShowVideoInquiry(doctor) {
-      // doctor.consultationList[1] 固定为视频咨询
-      const params = peace.util.decode(this.$route.params.json)
-
-      if (params.doctorTag === 'freeConsult') {
-        return doctor.consultationList[1] && doctor.consultationList[1].status && doctor.consultationList[1].money === 0
-      } else {
-        return doctor.consultationList[1] && doctor.consultationList[1].status
+      const consultation= doctor.consultationList.filter(item=>item.tag==type)[0]
+      if(params.doctorTag === 'freeConsult'){
+        return consultation&&consultation.status&&consultation.money===0
+      }else{
+        return consultation&&consultation.status
       }
     },
 
@@ -210,8 +185,10 @@ export default {
     },
 
     redictToApply(doctorInfo, doctorConsultation) {
-      if (typeof doctorConsultation == 'undefined' || doctorConsultation.tag === 'video') {
+      if (typeof doctorConsultation == 'undefined') {
         return peace.util.alert('暂未开放，敬请期待')
+      }else if(doctorConsultation.tag === 'video'){
+        return peace.util.alert('H5版本暂不支持视频问诊')
       }
 
       peace.service.patient
@@ -229,7 +206,7 @@ export default {
           }
           // 视频问诊
           else if (doctorConsultation.tag === 'video') {
-            return peace.util.alert('暂未开放，敬请期待')
+            return peace.util.alert('H5版本暂不支持视频问诊')
           }
           // 私人医生
           else if (doctorConsultation.tag === 'private') {

@@ -158,7 +158,7 @@
         <div class="service row flex"
              @click="goApply(serviceVideoInfo, 'video')">
           <!-- 视频咨询尚未开通 -->
-          <!-- <van-image
+          <van-image
             round
             width="30px"
             height="30px"
@@ -173,27 +173,19 @@
             v-else
             style="margin: 0 10px 0 0;"
             :src="require('@src/assets/images/ic_video.png')"
-          ></van-image> -->
-          <van-image round
-                     width="30px"
-                     height="30px"
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_video.png')"></van-image>
+          ></van-image>
 
           <div class="service-consult-content">
             <div class="row flex between"
                  style="margin: 0;">
               <span class="service-consult-content-name">视频咨询</span>
-              <!-- <span v-if="serviceVideoInfo.status">
+              <span v-if="serviceVideoInfo.status">
                 <span class="service-consult-content-fee"
                   >￥{{ serviceVideoInfo.money }}</span
                 >
                 <span class="service-consult-content-unit"> / 次</span>
               </span>
               <span v-else class="service-consult-content-description">
-                暂未开通
-              </span> -->
-              <span class="service-consult-content-description">
                 暂未开通
               </span>
             </div>
@@ -568,22 +560,14 @@ export default {
           desc: this.doctor.doctorInfo.specialSkill,
           imgUrl: this.doctor.doctorInfo.avartor
         }
-        console.log(obj)
+
         peace.wx.share.share(obj)
         if (res.data.consultationList) {
           this.serviceImageInfo = res.data.consultationList.image || {}
           this.serviceVideoInfo = res.data.consultationList.video || {}
           this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
-          // //临时处理标签问题
-          // if(res.data.doctorInfo.workStatus==1){
-          //     if(this.serviceImageInfo&&this.serviceVideoInfo&&this.serviceImageInfo.status==0&&this.serviceVideoInfo.status==0){
-          //       res.data.doctorInfo.workStatus=3
-          //     }
-          // }
         }
-        // else{
-        //   res.data.doctorInfo.workStatus=3
-        // }
+        
         let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
 
         if (this.hasLogin() && this.isEwm && !isAddPatient) {
@@ -626,7 +610,10 @@ export default {
 
     goApply(serviceInfo, type) {
       if (!serviceInfo.status) {
-        return peace.util.alert('暂未开放，敬请期待')
+        return peace.util.alert('暂未开通')
+      }
+      if (type === 'video') {
+        return peace.util.alert('H5版本暂不支持视频问诊')
       }
       peace.service.patient
         .inquiryStatus(this.doctor.doctorInfo.doctorId, type)
@@ -643,7 +630,7 @@ export default {
           }
           // 视频问诊
           else if (type === 'video') {
-            return peace.util.alert('暂未开放，敬请期待')
+            return peace.util.alert('H5版本暂不支持视频问诊')
           }
           // 私人医生
           else if (type === 'private') {
