@@ -38,7 +38,7 @@
           <span>{{ `${ scope.row.sex } , ${ scope.row.age }岁` }}</span>
         </template>
       </peace-table-column>
-      <peace-table-column label="联系方式"
+      <peace-table-column label="手机号码"
                           prop="tel"
                           width="120"></peace-table-column>
       <peace-table-column label="疾病标签"

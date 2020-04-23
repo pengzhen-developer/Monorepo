@@ -64,10 +64,10 @@
       </el-form-item>
 
       <el-form-item label="联系方式"
-                    prop="phoneNumber">
-        <span slot="label">联系方式</span>
+                    prop="tel">
+        <span slot="label">手机号码</span>
         <el-input v-model="ruleForm.tel"
-                  placeholder="请输入患者联系方式"></el-input>
+                  placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -110,7 +110,7 @@ export default {
         nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
         // sexStr: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
         // birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
-        tel: [{ required: true, message: '请输入患者联系方式', trigger: 'blur' }]
+        tel: [{ required: true, message: '请输入手机号码', trigger: 'blur' }]
       }
     }
   },

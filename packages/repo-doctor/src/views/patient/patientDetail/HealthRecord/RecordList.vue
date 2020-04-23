@@ -5,7 +5,7 @@
            v-infinite-scroll="load"
            infinite-scroll-disabled="disabled">
         <div v-for="item in list"
-             :key="item.expectTime">
+             :key="item.createdTime">
           <template v-if="listType === tempType.referralList">
             <ReferralRecordCell :type="type"
                                 :item="item" />
@@ -89,20 +89,20 @@ export default {
         this.loading = true
         const params = { referral_type: this.type, patientNo: this.id, p: this.p, size: 10 }
         peace.service.health.getReferralRecordList(params).then(res => {
-          if (res.data && res.data.list) {
-            this.list = res.data.list
+          if (res.data && res.data.list && Array.isArray(res.data.list)) {
+            this.list = this.list.concat(res.data.list)
             this.count = res.data.count
             this.p = this.p + 1
           }
           this.loading = false
         })
       } else if (this.listType === peace.type.HEALTH_RECORD.ACTION_TYPE.会诊) {
-        //转诊
+        //会诊
         this.loading = true
         const params = { action: this.type, patientNo: this.id, p: this.p, size: 10 }
         peace.service.health.getConsultRecordList(params).then(res => {
-          if (res.data && res.data.list) {
-            this.list = res.data.list
+          if (res.data && res.data.list && Array.isArray(res.data.list)) {
+            this.list = this.list.concat(res.data.list)
             this.count = res.data.count
             this.p = this.p + 1
           }

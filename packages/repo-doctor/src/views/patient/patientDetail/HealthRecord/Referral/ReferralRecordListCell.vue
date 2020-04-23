@@ -34,8 +34,7 @@
                   custom-class="dialog"
                   title="转诊详情">
       <TheTransferDetail :data="dialog.data"
-                         :type="type"
-                         @close="close"></TheTransferDetail>
+                         :type="type"></TheTransferDetail>
     </peace-dialog>
   </div>
 </template>
@@ -153,6 +152,7 @@ export default {
       }
       &-content {
         flex: 1;
+        word-break: break-all;
         color: #333333;
       }
     }
