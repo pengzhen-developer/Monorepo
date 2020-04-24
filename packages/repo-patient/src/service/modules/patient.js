@@ -267,7 +267,11 @@ export function getOrderBefore(params) {
 export function submitOrder(params) {
   const submitOrder = 'client/v1/Purchasedrug/CreateOrderApi'
 
-  return peace.http.post(submitOrder, params)
+  return peace.http.post(submitOrder, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' },
+    },
+  })
 }
 
 /**
