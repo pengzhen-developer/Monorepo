@@ -1,7 +1,7 @@
 <template>
   <div class="drug-inter-list">
 
-    <template v-if="list.length > 0">
+    <template v-if="loading&&list.length > 0">
       <div class="no-data">
         <i class="icon icon_none_drugInter">
           <span class="no-data-text">暂无该药品说明书</span>
@@ -23,8 +23,8 @@
       </div>
     </template>
 
-    <template v-else>
-      <div class="no-data"
+    <template v-if="loading&&list.length == 0">
+      <div class="no-data h100"
            style="text-align: center;">
         <i class="icon icon_none_drugInter">
           <span class="no-data-text">
@@ -44,7 +44,8 @@ import peace from '@src/library'
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      loading: false
     }
   },
 
@@ -57,6 +58,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.purchasedrug.getDrugBookList(params).then(res => {
+        this.loading = true
         if (res.data.length === 1) {
           const params = peace.util.encode({ pzwh: res.data.list[0].pzwh })
           this.$router.replace('/inter/drugInterDetail/' + params)
@@ -85,7 +87,12 @@ export default {
   .no-data {
     height: 30%;
     min-height: 30%;
-
+    &.h100 {
+      height: 100%;
+      .icon {
+        margin-top: -50px;
+      }
+    }
     .icon {
       width: 100%;
       height: 100%;
