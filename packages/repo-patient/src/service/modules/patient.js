@@ -257,7 +257,11 @@ export function getStoresList(params) {
 export function getOrderBefore(params) {
   const getOrderBefore = 'client/v1/Purchasedrug/SelectDrugStoreDetApi'
 
-  return peace.http.post(getOrderBefore, params)
+  return peace.http.post(getOrderBefore, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' },
+    },
+  })
 }
 
 export function submitOrder(params) {
@@ -432,5 +436,5 @@ export default {
 
   inquiryStatus,
   /** 获取药店信息 **/
-  getDrugStoreApi
+  getDrugStoreApi,
 }
