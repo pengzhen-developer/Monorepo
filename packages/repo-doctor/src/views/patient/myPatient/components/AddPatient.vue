@@ -14,7 +14,7 @@
       <el-form-item label="身份证"
                     prop="idCard">
         <span slot="label">身份证</span>
-        <el-input v-model="ruleForm.idCard"
+        <el-input v-model.trim="ruleForm.idCard"
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
