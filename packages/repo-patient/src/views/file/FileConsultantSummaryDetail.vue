@@ -89,10 +89,9 @@ export default {
   color: #333;
   font-size: 14px;
   &.justify {
-    width: 4em;
     height: 24px;
     line-height: 24px;
-    padding: 0;
+    padding-right: 2em;
     text-align: justify;
     text-align-last: justify;
     &::after {

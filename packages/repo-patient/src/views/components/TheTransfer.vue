@@ -274,7 +274,7 @@ export default {
 
                   if (inquiryStatus === 1 || inquiryStatus === 2) {
                     this.goUserConsultDetail(inquiryId)
-                    return;
+                    return
                   }
 
                   let session = {
@@ -484,8 +484,7 @@ export default {
 }
 .outline .outline-body {
   margin-top: 10px;
-  padding: 15px 0;
-  padding-left: 15px;
+  padding: 10px 0 15px 0;
   border-top: 1px solid #dedede;
   overflow: hidden;
 }
@@ -594,10 +593,10 @@ export default {
 .prescript .prescript-table {
   border-top: 1px dashed #e5e5e5;
 }
-.outline .outline-body {
-  margin: 10px 0;
-  padding: 0;
-}
+// .outline .outline-body {
+//   margin: 10px 0;
+//   padding: 0;
+// }
 .inline {
   color: #666;
 }
@@ -721,9 +720,6 @@ export default {
 .btn-group {
   margin-top: -10px;
   background-color: #fff;
-  .btn {
-    // margin: 0 20px 10px;
-  }
 }
 .btn-blue {
   border-color: #00c6ae;
