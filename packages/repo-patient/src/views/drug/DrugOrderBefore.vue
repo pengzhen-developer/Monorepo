@@ -50,7 +50,8 @@
     </div>
     <div class="module">
       <div class="panel-pha">
-        <div class="panel-head icon-next"
+        <div class="panel-head "
+             :class="DrugStoreId&&'icon-next'"
              @click="goDrugPhaHomePage">
           <div class="head-ico">
             <img :src="order.DrugStoreLogo" />
@@ -149,7 +150,8 @@ export default {
         canSubmit: false
       },
       userAddr: {},
-      order: null
+      order: null,
+      DrugStoreId: ''
     }
   },
 
@@ -165,7 +167,7 @@ export default {
     const params = peace.util.decode(this.$route.params.json)
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
-
+    this.DrugStoreId = params.DrugStoreId
     // if (this.$route.query.code) {
     //   let code = this.$route.query.code
     //   let orderNo = this.$route.query.orderId
@@ -179,6 +181,10 @@ export default {
   methods: {
     goDrugPhaHomePage() {
       let json = this.$route.params.json
+      if (!this.DrugStoreId) {
+        // peace.util.alert('')
+        return
+      }
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     getDefaultAddress() {
@@ -470,6 +476,7 @@ page {
   padding-right: 20px;
   position: relative;
 }
+
 .userAddr.icon-next::after {
   content: '';
   position: absolute;
@@ -478,6 +485,20 @@ page {
   top: 50%;
   transform: translateY(-50%);
   right: 0px;
+  width: 7px;
+  height: 12px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/images/icons/icon-next.jpg');
+}
+.panel-head.icon-next::after {
+  content: '';
+  position: absolute;
+  display: block;
+  // top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
   width: 7px;
   height: 12px;
   background-size: cover;

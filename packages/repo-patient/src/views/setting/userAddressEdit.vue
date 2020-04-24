@@ -12,7 +12,8 @@
                label="手机号"
                v-model="internalAddr.mobile"
                data-name="mobile"
-               maxlength="12"
+               maxlength="11"
+               minlength="11"
                placeholder="请输入收货人的手机号码" />
     <van-field required
                readonly
@@ -39,7 +40,7 @@
                v-model="internalAddr.address"
                data-name="address" />
     <div class="fixed-bottom">
-      <div :class="['btn',canSubmit ? 'btn-blue' : 'disabled']"
+      <div class="btn btn-blue"
            @click="submit">保存</div>
     </div>
   </div>
@@ -74,7 +75,7 @@ export default {
       if (!this.internalAddr.consignee.replace(/\s+/g, '')) {
         bool = false
       }
-      if (!/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(this.internalAddr.mobile)) {
+      if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.internalAddr.mobile)) {
         bool = false
       }
       if (!this.internalAddr.province || !this.internalAddr.city || !this.internalAddr.district) {
@@ -113,6 +114,22 @@ export default {
       this.showPicker = false
     },
     submit() {
+      if (!this.internalAddr.consignee.replace(/\s+/g, '')) {
+        peace.util.warning('请填写收货人名称')
+        return
+      } else if (!this.internalAddr.mobile.replace(/\s+/g, '')) {
+        peace.util.warning('请填写手机号')
+        return
+      } else if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.internalAddr.mobile)) {
+        peace.util.warning('请填写正确手机号')
+        return
+      } else if (!this.internalAddr.province || !this.internalAddr.city || !this.internalAddr.district) {
+        peace.util.warning('请选择省市区')
+        return
+      } else if (!this.internalAddr.address.replace(/\s+/g, '')) {
+        peace.util.warning('请填写详细地址')
+        return
+      }
       const data = {
         addressId: this.internalAddr.addressId,
         consignee: this.internalAddr.consignee,
