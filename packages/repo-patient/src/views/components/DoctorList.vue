@@ -134,42 +134,25 @@ export default {
     },
 
     getServiceMoney(doctor) {
-      let moneyList = []
-
-      for (const key in doctor.consultationList) {
-        if (doctor.consultationList.hasOwnProperty(key)) {
-          if (key != 2) {
-            const element = doctor.consultationList[key]
-            moneyList.push(element.money)
-          }
-        }
-      }
-
-      const minMoney = Math.min.apply(null, moneyList)
+      const minMoney = doctor.doctorInfo.money
       //免费咨询列表收费应该显示为免费，而不是0起
       const params = peace.util.decode(this.$route.params.json)
       if (params.doctorTag === 'freeConsult') {
         return '免费'
       }
-      if (minMoney === Infinity) {
-        return ''
-      } else if (minMoney === 0) {
-        return `￥${minMoney || 0}起`
-      } else {
-        return `￥${minMoney || 0}起`
-      }
+      return `￥${minMoney || 0}起`
     },
-    //临时处理标签问题
+
     getSericeStatus(doctor) {
       return doctor.workStatus
     },
-    canShowInquiry(doctor,type){
+    canShowInquiry(doctor, type) {
       const params = peace.util.decode(this.$route.params.json)
-      const consultation= doctor.consultationList.filter(item=>item.tag==type)[0]
-      if(params.doctorTag === 'freeConsult'){
-        return consultation&&consultation.status&&consultation.money===0
-      }else{
-        return consultation&&consultation.status
+      const consultation = doctor.consultationList.filter(item => item.tag == type)[0]
+      if (params.doctorTag === 'freeConsult') {
+        return consultation && consultation.status && consultation.money === 0
+      } else {
+        return consultation && consultation.status
       }
     },
 
@@ -187,7 +170,7 @@ export default {
     redictToApply(doctorInfo, doctorConsultation) {
       if (typeof doctorConsultation == 'undefined') {
         return peace.util.alert('暂未开放，敬请期待')
-      }else if(doctorConsultation.tag === 'video'){
+      } else if (doctorConsultation.tag === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
 
