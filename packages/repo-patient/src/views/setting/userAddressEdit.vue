@@ -141,10 +141,9 @@ export default {
       }
       peace.service.patient
         .addAddress(data)
-        .then(() => {
+        .then(res => {
           peace.util.alert(this.internalAddr.addressId ? '编辑成功' : '添加成功')
-
-          this.$router.go(-1)
+          this.checkAddr(res.data.address_id)
 
           //
           // AccessCode: "GJ1FST"
@@ -161,6 +160,12 @@ export default {
           //   message: res.data.msg
           // })
         })
+    },
+    checkAddr(addressId) {
+      let data = { addressId }
+      peace.service.patient.setDefaultAddress(data).then(() => {
+        this.$router.go(-1)
+      })
     }
   }
 }

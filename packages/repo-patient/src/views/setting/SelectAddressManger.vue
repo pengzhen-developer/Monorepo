@@ -100,9 +100,6 @@ export default {
         // console.log('设置成功', res)
         this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
       })
-      // let json = this.$route.params.json
-      // let addr = peace.util.encode(address)
-      // this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
     }
   }
 }
@@ -180,10 +177,8 @@ export default {
   background-image: url('../../assets/images/icon-del.jpg');
 }
 
-
 .icon_none_address::before {
   content: '';
   background-image: url('../../assets/images/icons/icon_none_address.jpg');
 }
-
 </style>
