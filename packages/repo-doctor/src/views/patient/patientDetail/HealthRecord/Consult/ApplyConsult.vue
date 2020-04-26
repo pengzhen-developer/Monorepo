@@ -355,6 +355,7 @@ export default {
         this.dialog.chooseItem = ''
         this.dialog.source.present_history = []
       }
+      this.$refs.form.validateField('diagnose')
     },
     closeItem(item) {
       const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
@@ -365,10 +366,12 @@ export default {
           this.dialog.chooseItem = ''
         }
       }
+      this.$refs.form.validateField('diagnose')
     },
     saveItem() {
       this.view.model.diagnose = [...this.dialog.chooseData]
       this.dialog.diagnoseVisible = false
+      this.$refs.form.validateField('diagnose')
     },
 
     sendTransfer() {
