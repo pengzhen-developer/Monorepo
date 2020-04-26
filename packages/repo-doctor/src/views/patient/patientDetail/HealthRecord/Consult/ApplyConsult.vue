@@ -79,7 +79,7 @@
                     placeholder="请输入会诊说明"
                     type="textarea"
                     show-word-limit
-                    v-model="view.model.consultExplain"></el-input>
+                    v-model.trim="view.model.consultExplain"></el-input>
         </el-form-item>
       </el-row>
 
@@ -114,7 +114,7 @@
 
     </el-form>
 
-    <peace-dialog :modal-append-to-body="false"
+    <peace-dialog :append-to-body="true"
                   :visible.sync="dialog.visible"
                   title="选择会诊医生"
                   width="700px">
@@ -166,7 +166,7 @@
       </peace-table>
     </peace-dialog>
 
-    <peace-dialog :modal-append-to-body="false"
+    <peace-dialog :append-to-body="true"
                   title="初步诊断"
                   :visible.sync="dialog.diagnoseVisible">
       <div style="margin-bottom: 10px">
