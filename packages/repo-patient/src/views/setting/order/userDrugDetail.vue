@@ -166,9 +166,9 @@
         <template v-for="(item,index) in order.ords">
           <div class="dl-packet"
                :key="index"
-               v-if="index>0">
+               v-if="item.ServiceStates>0">
             <div class="dt">
-              {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'支付时间'}}：
+              {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]}}：
             </div>
             <div class="dd">{{item.CreateTime}}</div>
           </div>
