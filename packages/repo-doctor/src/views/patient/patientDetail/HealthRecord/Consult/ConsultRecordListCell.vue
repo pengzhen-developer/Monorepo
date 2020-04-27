@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <peace-dialog :modal-append-to-body="false"
+    <peace-dialog :append-to-body="true"
                   :visible.sync="dialog.visible"
                   custom-class="dialog"
                   title="会诊详情">
