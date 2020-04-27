@@ -33,7 +33,6 @@ export default {
       //   case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
       //   case peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
       // }
-      console.log(params)
       this.selectIndex = -1
     })
   },

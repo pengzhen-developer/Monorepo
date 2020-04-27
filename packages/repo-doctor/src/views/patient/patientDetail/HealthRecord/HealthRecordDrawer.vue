@@ -2,6 +2,7 @@
   <el-drawer :visible.sync="drawer"
              :modal="false"
              :before-close="handleClose"
+             :destroy-on-close="true"
              size="400px"
              class="ssss"
              style="margin-right: 90px;">
