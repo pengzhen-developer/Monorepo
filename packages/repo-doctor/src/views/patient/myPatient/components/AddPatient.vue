@@ -150,7 +150,7 @@ export default {
             this.ruleForm.sex = 2
           }
           peace.service.patient.addPatient(this.ruleForm).then(res => {
-            $peace.util.alert('添加成功')
+            $peace.util.alert(res.msg)
             if (res.success) {
               this.isSave = true
               this.closeMenu()
