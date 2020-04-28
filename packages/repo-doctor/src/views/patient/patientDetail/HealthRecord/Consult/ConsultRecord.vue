@@ -9,14 +9,22 @@
 
     <div class="layout-content">
       <div class="page">
-        <RecordList :id="params.id"
-                    type="out"
-                    :listType="listType"
-                    v-show="selectIndex === 'out'"></RecordList>
-        <RecordList :id="params.id"
-                    type="in"
-                    :listType="listType"
-                    v-show="selectIndex === 'in'"></RecordList>
+          <RecordList
+                  :noDataText="noDataText"
+                  :request-data="requestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'out'">
+              <ConsultRecordCell type="out"
+                                  :item="item"/>
+          </RecordList>
+          <RecordList
+                  :noDataText="noDataText"
+                  :request-data="requestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'in'">
+              <ConsultRecordCell type="in"
+                                  :item="item"/>
+          </RecordList>
       </div>
     </div>
 
@@ -32,6 +40,7 @@
 <script>
 import peace from '@src/library'
 import RecordList from '../RecordList'
+import ConsultRecordCell from  './ConsultRecordListCell'
 export default {
   props: {
     params: undefined
@@ -42,7 +51,20 @@ export default {
   data() {
     return {
       selectIndex: 'out',
-      listType: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊
+      listType: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
+      requestData: {
+        request: peace.service.health.getConsultRecordList,
+        data: {
+          // 请求列表参数
+          action: 'out',
+          patientNo: this.params.id
+        }
+      },
+    }
+  },
+  computed: {
+    noDataText() {
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[this.listType][this.selectIndex];
     }
   },
   methods: {
