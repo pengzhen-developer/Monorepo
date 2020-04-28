@@ -15,13 +15,12 @@
                     :text="noDataText"></NoData>
         </template>
         <p v-if="loading">加载中...</p>
+        <!-- <p v-if="noMore">没有更多了</p> -->
     </div>
 </template>
 
 <script>
-  import peace from '@src/library'
   import NoData from '@src/views/components/NoData'
-
   export default {
     name: "RecordList",
     props: {
@@ -37,10 +36,10 @@
     },
     data() {
       return {
-        list: [],
-        count: 0,
-        loading: false,
-        p: 1,
+        list: [], //列表数据源
+        count: 0, //列表总数
+        loading: false, //加载状态
+        pageIndex: 1, //请求页
       }
     },
     computed: {
@@ -56,14 +55,15 @@
     },
     methods: {
       load() {
+        //data 外部传入的请求参数、 request请求函数
         let {data, request} = this.requestData;
         // p、size 为组件内部管理的参数
-        const params = {p: this.p, size: 10, ...data}
+        const params = {p: this.pageIndex, size: 10, ...data}
         request(params).then(res => {
           if (res.data && res.data.list && Array.isArray(res.data.list)) {
             this.list = this.list.concat(res.data.list)
             this.count = res.data.count
-            this.p = this.p + 1
+            this.pageIndex = this.pageIndex + 1
           }
           this.loading = false
         })
