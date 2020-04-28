@@ -24,15 +24,7 @@ import peace from '@src/library'
 export default {
   created() {
     $peace.$on('hideDrawer', params => {
-      // switch (params) {
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
-      //   case peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
-      // }
+      console.log(params)
       this.selectIndex = -1
     })
   },
@@ -54,7 +46,7 @@ export default {
         {
           name: '随访',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
-          disable: true,
+          disable: false,
           icon: require('@src/assets/images/health-record/health_records_follow.png')
         },
         {

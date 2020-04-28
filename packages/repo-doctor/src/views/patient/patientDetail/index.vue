@@ -42,8 +42,6 @@ export default {
         case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
-          $peace.util.alert('暂未开放')
-          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
