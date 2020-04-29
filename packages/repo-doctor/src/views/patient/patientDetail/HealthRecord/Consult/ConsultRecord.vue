@@ -9,22 +9,20 @@
 
     <div class="layout-content">
       <div class="page">
-          <RecordList
-                  :noDataText="noDataText"
-                  :request-data="requestData"
-                  v-slot="item"
-                  v-show="selectIndex === 'out'">
-              <ConsultRecordCell type="out"
-                                  :item="item"/>
-          </RecordList>
-          <RecordList
-                  :noDataText="noDataText"
-                  :request-data="requestData"
-                  v-slot="item"
-                  v-show="selectIndex === 'in'">
-              <ConsultRecordCell type="in"
-                                  :item="item"/>
-          </RecordList>
+        <RecordList :noDataText="noDataText"
+                    :request-data="outRequestData"
+                    v-slot="item"
+                    v-show="selectIndex === 'out'">
+          <ConsultRecordCell type="out"
+                             :item="item" />
+        </RecordList>
+        <RecordList :noDataText="noDataText"
+                    :request-data="inRequestData"
+                    v-slot="item"
+                    v-show="selectIndex === 'in'">
+          <ConsultRecordCell type="in"
+                             :item="item" />
+        </RecordList>
       </div>
     </div>
 
@@ -40,19 +38,19 @@
 <script>
 import peace from '@src/library'
 import RecordList from '../RecordList'
-import ConsultRecordCell from  './ConsultRecordListCell'
+import ConsultRecordCell from './ConsultRecordListCell'
 export default {
   props: {
     params: undefined
   },
   components: {
-    RecordList
+    RecordList,
+    ConsultRecordCell
   },
   data() {
     return {
       selectIndex: 'out',
-      listType: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
-      requestData: {
+      outRequestData: {
         request: peace.service.health.getConsultRecordList,
         data: {
           // 请求列表参数
@@ -60,11 +58,21 @@ export default {
           patientNo: this.params.id
         }
       },
+      inRequestData: {
+        request: peace.service.health.getConsultRecordList,
+        data: {
+          // 请求列表参数
+          action: 'out',
+          patientNo: this.params.id
+        }
+      }
     }
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[this.listType][this.selectIndex];
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][
+        this.selectIndex
+      ]
     }
   },
   methods: {
