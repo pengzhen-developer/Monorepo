@@ -7,10 +7,12 @@ import axios from 'axios'
 import download from './download'
 import retry from './retry'
 
-import router from '@src/router'
+import Router from '@src/router'
 
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+
+let router = Router()
 
 // 记录 http 请求次数
 let httpCount = 0

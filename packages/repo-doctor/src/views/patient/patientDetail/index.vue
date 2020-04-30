@@ -38,17 +38,7 @@ export default {
   created() {
     this.getPatientInfo()
     $peace.$on('showDrawer', params => {
-      switch (params) {
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
-          this.$refs.showRecordDrawer.show(params)
-          break
-      }
+      this.$refs.showRecordDrawer.show(params)
     })
   },
   methods: {

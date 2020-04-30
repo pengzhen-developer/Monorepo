@@ -9,7 +9,7 @@ import 'quasar/dist/quasar.css'
 import '@quasar/extras/material-icons/material-icons.css'
 
 import langDe from 'quasar/lang/zh-hans'
-import { Quasar, LoadingBar, Notify, LocalStorage, SessionStorage, Cookies } from 'quasar'
+import { Quasar, Notify, LocalStorage, SessionStorage, Cookies } from 'quasar'
 
 export default ({ Vue }) => {
   Vue.use(Quasar, {
@@ -24,7 +24,6 @@ export default ({ Vue }) => {
     },
 
     plugins: {
-      LoadingBar,
       Notify,
 
       LocalStorage,
@@ -35,9 +34,6 @@ export default ({ Vue }) => {
     config: {
       brand: {
         primary: '#00C6AE'
-      },
-      loadingBar: {
-        color: 'danger'
       },
       notify: {
         position: 'top',

@@ -10,7 +10,9 @@ export default {
     tabClick(tab) {
       this.$store.commit('layout/selectTab', tab.name)
 
-      this.$router.push(tab.name)
+      if (this.$route.path !== tab.name) {
+        this.$router.push(tab.name)
+      }
     },
 
     tabRemove(name) {

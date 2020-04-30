@@ -14,7 +14,6 @@ const getters = {
 const mutations = {
     setList(state, params) {
         state.messageList = params;
-        console.log('setList', state.messageList)
     },
     setUnread(state, params) {
         state.unread = params;

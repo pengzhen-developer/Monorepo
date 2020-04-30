@@ -61,6 +61,8 @@ const install = function(Vue) {
 }
 
 export default {
+  version: '0.1.0',
+
   /** http 请求类 */
   http,
 

@@ -22,8 +22,7 @@
                 </RecordList>
             </div>
         </div>
-        <div class="layout-footer"
-             v-show="selectIndex === 'out'">
+        <div class="layout-footer">
             <div id="line"></div>
             <el-button @click="addFollowUp"
                        type="primary">添加随访方案

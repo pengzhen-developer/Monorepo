@@ -390,6 +390,7 @@ export default {
     h4 {
       font-size: 14px;
       font-weight: 400;
+      line-height: 1;
       color: rgba(102, 102, 102, 1);
       margin: 10px 0;
       padding: 0;

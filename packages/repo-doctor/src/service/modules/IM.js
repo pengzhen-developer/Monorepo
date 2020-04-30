@@ -5,7 +5,7 @@ import Store from '@src/store'
 import NIM from '/public/static/IM/NIM_Web_NIM_v7.0.0'
 import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 NIM.use(WebRTC)
-
+let store = Store()
 /**
  * 初始化 IM
  *
@@ -32,8 +32,8 @@ export function initNIM(
   }
 ) {
   const appKey = peace.config.NIM.key
-  const account = Store().state.user.userInfo.list.registerInfo.user_id
-  const token = Store().state.user.userInfo.list.registerInfo.token
+  const account = store.state.user.userInfo.list.registerInfo.user_id
+  const token = store.state.user.userInfo.list.registerInfo.token
   const db = false
 
   if (!$peace.NIM) {
@@ -183,8 +183,8 @@ export function onUpdateSession(session) {
 
     // 更新 session 与当前 session 相同, 设定未读数为 0
     if (
-      (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) ||
-      (Store.state.consultation.session && Store.state.consultation.session.id === session.id)
+      (store.state.inquiry.session && store.state.inquiry.session.id === session.id) ||
+      (store.state.consultation.session && store.state.consultation.session.id === session.id)
     ) {
       session.unread = 0
     }
@@ -202,9 +202,9 @@ export function onUpdateSession(session) {
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
-      if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
-        if (Store.state.inquiry.sessions && Store.state.inquiry.sessions.length > 0) {
-          peace.service.IM.setInquirySession(Store.state.inquiry.sessions.find((temp) => temp.id === session.id))
+      if (store.state.inquiry.session && store.state.inquiry.session.id === session.id) {
+        if (store.state.inquiry.sessions && store.state.inquiry.sessions.length > 0) {
+          peace.service.IM.setInquirySession(store.state.inquiry.sessions.find((temp) => temp.id === session.id))
           peace.service.IM.setInquirySessionMessages(session.lastMsg)
         } else {
           peace.service.IM.resetInquirySession()
@@ -225,10 +225,10 @@ export function onUpdateSession(session) {
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
-      if (Store.state.consultation.session && Store.state.consultation.session.id === session.id) {
-        if (Store.state.consultation.sessions && Store.state.consultation.sessions.length > 0) {
+      if (store.state.consultation.session && store.state.consultation.session.id === session.id) {
+        if (store.state.consultation.sessions && store.state.consultation.sessions.length > 0) {
           peace.service.IM.setConsultationSession(
-            Store.state.consultation.sessions.find((temp) => temp.id === session.id)
+            store.state.consultation.sessions.find((temp) => temp.id === session.id)
           )
           peace.service.IM.setConsultationSessionMessages(session.lastMsg)
         } else {
@@ -258,7 +258,7 @@ export function onMsg(message) {
  */
 export function onSysmsg(message) {
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
-  Store.dispatch('notification/getList')
+  store.dispatch('notification/getList')
 }
 
 /**
@@ -268,7 +268,7 @@ export function onSysmsg(message) {
  * @param {*} session
  */
 export function setInquirySessions(sessions) {
-  const serializationSessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessions)
+  const serializationSessions = $peace.NIM.mergeSessions(store.state.inquiry.sessions, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
   // 过滤 [待接诊] / [问诊中] 数据
   const filterMethod = (session) => {
@@ -302,7 +302,7 @@ export function setInquirySessions(sessions) {
     }
   }
 
-  Store.commit('inquiry/setInquirySessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
+  store.commit('inquiry/setInquirySessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
 }
 
 /**
@@ -312,14 +312,14 @@ export function setInquirySessions(sessions) {
  * @param {*} session
  */
 export function setConsultationSessions(sessions) {
-  const serializationSessions = $peace.NIM.mergeSessions(Store.state.consultation.sessions, sessions)
+  const serializationSessions = $peace.NIM.mergeSessions(store.state.consultation.sessions, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [等待会诊] / [会诊中]/[医生待审核] 数据
   const filterMethod = (session) => {
     if (session.scene === 'team' && session.content && session.content.consultInfo) {
       // 我是发起者
-      if (session.content.consultInfo.startDoctor[0].doctorId === Store.state.user.userInfo.list.docInfo.doctor_id) {
+      if (session.content.consultInfo.startDoctor[0].doctorId === store.state.user.userInfo.list.docInfo.doctor_id) {
         if (
           session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
           session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
@@ -328,7 +328,7 @@ export function setConsultationSessions(sessions) {
         }
       }
       // 我是接收者
-      if (session.content.consultInfo.receiveDoctor[0].doctorId === Store.state.user.userInfo.list.docInfo.doctor_id) {
+      if (session.content.consultInfo.receiveDoctor[0].doctorId === store.state.user.userInfo.list.docInfo.doctor_id) {
         if (
           session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 ||
           session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
@@ -358,7 +358,7 @@ export function setConsultationSessions(sessions) {
     }
   }
 
-  Store.commit('consultation/setConsultationSessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
+  store.commit('consultation/setConsultationSessions', deserializationSessions.filter(filterMethod).sort(sortMethod))
 }
 
 /**
@@ -368,7 +368,7 @@ export function setConsultationSessions(sessions) {
  * @param {*} session
  */
 export function setInquirySession(session) {
-  Store.commit('inquiry/setInquirySession', session)
+  store.commit('inquiry/setInquirySession', session)
 }
 
 /**
@@ -378,7 +378,7 @@ export function setInquirySession(session) {
  * @param {*} session
  */
 export function setConsultationSession(session) {
-  Store.commit('consultation/setConsultationSession', session)
+  store.commit('consultation/setConsultationSession', session)
 }
 
 /**
@@ -388,7 +388,7 @@ export function setConsultationSession(session) {
  * @param {*} session
  */
 export function resetInquirySession() {
-  Store.commit('inquiry/resetInquirySession')
+  store.commit('inquiry/resetInquirySession')
 }
 
 /**
@@ -398,7 +398,7 @@ export function resetInquirySession() {
  * @param {*} session
  */
 export function resetConsultationSession() {
-  Store.commit('consultation/resetConsultationSession')
+  store.commit('consultation/resetConsultationSession')
 }
 
 /**
@@ -408,10 +408,10 @@ export function resetConsultationSession() {
  * @param {*} message
  */
 export function setInquirySessionMessages(messages) {
-  const serializationMessages = $peace.NIM.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
+  const serializationMessages = $peace.NIM.mergeMsgs(store.state.inquiry.sessionMessages, messages)
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
-  Store.commit('inquiry/setInquirySessionMessages', deserializationMessages)
+  store.commit('inquiry/setInquirySessionMessages', deserializationMessages)
 }
 
 /**
@@ -421,10 +421,10 @@ export function setInquirySessionMessages(messages) {
  * @param {*} message
  */
 export function setConsultationSessionMessages(messages) {
-  const serializationMessages = $peace.NIM.mergeMsgs(Store.state.consultation.sessionMessages, messages)
+  const serializationMessages = $peace.NIM.mergeMsgs(store.state.consultation.sessionMessages, messages)
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
-  Store.commit('consultation/setConsultationSessionMessages', deserializationMessages)
+  store.commit('consultation/setConsultationSessionMessages', deserializationMessages)
 }
 
 /**
@@ -433,7 +433,7 @@ export function setConsultationSessionMessages(messages) {
  * @export
  */
 export function resetInquirySessionMessages() {
-  Store.commit('inquiry/resetInquirySessionMessages')
+  store.commit('inquiry/resetInquirySessionMessages')
 }
 
 /**
@@ -442,7 +442,7 @@ export function resetInquirySessionMessages() {
  * @export
  */
 export function resetConsultationSessionMessages() {
-  Store.commit('consultation/resetConsultationSessionMessages')
+  store.commit('consultation/resetConsultationSessionMessages')
 }
 
 /**
@@ -460,7 +460,7 @@ export function getInquirySessionsStatus(sessions) {
 
   const params = {
     sessionIdList: sessions.map((item) => item.id),
-    doctorId: Store.state.user.userInfo.list.docInfo.doctor_id
+    doctorId: store.state.user.userInfo.list.docInfo.doctor_id
   }
 
   return peace.service.inquiry.getList(params).then((res) => {
@@ -550,19 +550,19 @@ export function setConsultationSessionsStatus(sessions, sessionsStatus) {
  */
 export function setInquirySessionStatus(sessionWithStatus) {
   // 合并当前 session with status 到 store
-  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessionWithStatus)
+  store.state.inquiry.sessions = $peace.NIM.mergeSessions(store.state.inquiry.sessions, sessionWithStatus)
 
   // 反序列化当前 session with status
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.inquiry.sessions.find((session) => session.id === sessionWithStatus.id)
+  const currentSession = store.state.inquiry.sessions.find((session) => session.id === sessionWithStatus.id)
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.inquiry.sessions = Store.state.inquiry.sessions.filter((session) => session.content)
+  store.state.inquiry.sessions = store.state.inquiry.sessions.filter((session) => session.content)
 
-  return Store.state.inquiry.sessions
+  return store.state.inquiry.sessions
 }
 
 /**
@@ -576,19 +576,19 @@ export function setInquirySessionStatus(sessionWithStatus) {
  */
 export function setConsultationSessionStatus(sessionWithStatus) {
   // 合并当前 session with status 到 store
-  Store.state.consultation.sessions = $peace.NIM.mergeSessions(Store.state.consultation.sessions, sessionWithStatus)
+  store.state.consultation.sessions = $peace.NIM.mergeSessions(store.state.consultation.sessions, sessionWithStatus)
 
   // 反序列化当前 session with status
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.consultation.sessions.find((session) => session.id === sessionWithStatus.id)
+  const currentSession = store.state.consultation.sessions.find((session) => session.id === sessionWithStatus.id)
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.consultation.sessions = Store.state.consultation.sessions.filter((session) => session.content)
+  store.state.consultation.sessions = store.state.consultation.sessions.filter((session) => session.content)
 
-  return Store.state.consultation.sessions
+  return store.state.consultation.sessions
 }
 
 /**

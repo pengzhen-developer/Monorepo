@@ -20,7 +20,7 @@
           type: String,
         },
         schemeType: {
-          type: number,
+          type: Number,
           default: 2
         },
         schemeTitle: {

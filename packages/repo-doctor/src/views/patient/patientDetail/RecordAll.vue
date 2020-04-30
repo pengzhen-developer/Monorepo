@@ -178,7 +178,6 @@ export default {
   },
 
   created() {
-    console.log('created')
     this.get()
   },
 
@@ -186,9 +185,6 @@ export default {
     get() {
       const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
       peace.service.health.allHealthList(params).then(res => {
-        if (this.type == 1) {
-          console.log('res', res)
-        }
         // 格式化时间线
         if (this.type === '1' || this.type === '3') {
           const data = []

@@ -20,7 +20,7 @@
   import ApplyReferral from './Referral/ApplyReferral'
   import ConsultRecord from './Consult/ConsultRecord'
   import ApplyConsult from './Consult/ApplyConsult'
-
+  import FollowUpScheme from "./FollowUp/FollowUpScheme";
   export default {
     props: {
       params: undefined
@@ -65,6 +65,11 @@
             this.titleStr = '发起会诊'
           }
             break
+          case peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案: {
+            this.ComponentInstance = FollowUpScheme
+            this.titleStr = '随访方案库'
+          }
+          break
         }
 
         this.drawer = true
