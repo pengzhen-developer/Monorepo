@@ -11,7 +11,7 @@ module.exports = {
   assetsDir: 'static',
 
   // https://cli.vuejs.org/config/#chainwebpack
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias
       .set('@public', path.join(__dirname, 'public'))
       .set('@src', path.join(__dirname, 'src'))
@@ -40,7 +40,7 @@ module.exports = {
       sass: {
         // @/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
-        data: `@import "@src/assets/css/variable.scss";`
+        data: `@import "@src/boot/boot_ui_css/variable.scss";`
       }
     }
   },
@@ -52,7 +52,5 @@ module.exports = {
     }
   },
 
-  transpileDependencies: [
-    'quasar'
-  ]
+  transpileDependencies: ['quasar']
 }

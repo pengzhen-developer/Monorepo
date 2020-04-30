@@ -32,8 +32,8 @@ export function initNIM(
   }
 ) {
   const appKey = peace.config.NIM.key
-  const account = Store.state.user.userInfo.list.registerInfo.user_id
-  const token = Store.state.user.userInfo.list.registerInfo.token
+  const account = Store().state.user.userInfo.list.registerInfo.user_id
+  const token = Store().state.user.userInfo.list.registerInfo.token
   const db = false
 
   if (!$peace.NIM) {
@@ -154,7 +154,7 @@ export function onSessions(sessions) {
   // 处理问诊
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
-  peace.service.IM.getInquirySessionsStatus(sessions).then(inquirySessionsStatus => {
+  peace.service.IM.getInquirySessionsStatus(sessions).then((inquirySessionsStatus) => {
     const sessionsStatus = peace.service.IM.setInquirySessionsStatus(sessions, inquirySessionsStatus)
     peace.service.IM.setInquirySessions(sessionsStatus)
   })
@@ -163,7 +163,7 @@ export function onSessions(sessions) {
   // 处理会诊
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
-  peace.service.IM.getConsultationSessionsStatus(sessions).then(consultationSessionsStatus => {
+  peace.service.IM.getConsultationSessionsStatus(sessions).then((consultationSessionsStatus) => {
     const sessionsStatus = peace.service.IM.setConsultationSessionsStatus(sessions, consultationSessionsStatus)
     peace.service.IM.setConsultationSessions(sessionsStatus)
   })
@@ -204,7 +204,7 @@ export function onUpdateSession(session) {
       // 将新 message 更新到 sessionMessages store
       if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
         if (Store.state.inquiry.sessions && Store.state.inquiry.sessions.length > 0) {
-          peace.service.IM.setInquirySession(Store.state.inquiry.sessions.find(temp => temp.id === session.id))
+          peace.service.IM.setInquirySession(Store.state.inquiry.sessions.find((temp) => temp.id === session.id))
           peace.service.IM.setInquirySessionMessages(session.lastMsg)
         } else {
           peace.service.IM.resetInquirySession()
@@ -228,7 +228,7 @@ export function onUpdateSession(session) {
       if (Store.state.consultation.session && Store.state.consultation.session.id === session.id) {
         if (Store.state.consultation.sessions && Store.state.consultation.sessions.length > 0) {
           peace.service.IM.setConsultationSession(
-            Store.state.consultation.sessions.find(temp => temp.id === session.id)
+            Store.state.consultation.sessions.find((temp) => temp.id === session.id)
           )
           peace.service.IM.setConsultationSessionMessages(session.lastMsg)
         } else {
@@ -271,7 +271,7 @@ export function setInquirySessions(sessions) {
   const serializationSessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
   // 过滤 [待接诊] / [问诊中] 数据
-  const filterMethod = session => {
+  const filterMethod = (session) => {
     if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
       if (
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
@@ -316,7 +316,7 @@ export function setConsultationSessions(sessions) {
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [等待会诊] / [会诊中]/[医生待审核] 数据
-  const filterMethod = session => {
+  const filterMethod = (session) => {
     if (session.scene === 'team' && session.content && session.content.consultInfo) {
       // 我是发起者
       if (session.content.consultInfo.startDoctor[0].doctorId === Store.state.user.userInfo.list.docInfo.doctor_id) {
@@ -456,14 +456,14 @@ export function getInquirySessionsStatus(sessions) {
     sessions = [sessions]
   }
 
-  sessions = sessions.filter(session => session.scene === 'p2p')
+  sessions = sessions.filter((session) => session.scene === 'p2p')
 
   const params = {
-    sessionIdList: sessions.map(item => item.id),
+    sessionIdList: sessions.map((item) => item.id),
     doctorId: Store.state.user.userInfo.list.docInfo.doctor_id
   }
 
-  return peace.service.inquiry.getList(params).then(res => {
+  return peace.service.inquiry.getList(params).then((res) => {
     return res.data.list
   })
 }
@@ -479,12 +479,12 @@ export function getConsultationSessionsStatus(sessions) {
     sessions = [sessions]
   }
 
-  sessions = sessions.filter(session => session.scene === 'team')
+  sessions = sessions.filter((session) => session.scene === 'team')
 
   const params = {
-    teamIdList: sessions.map(item => item.id.replace('team-', ''))
+    teamIdList: sessions.map((item) => item.id.replace('team-', ''))
   }
-  return peace.service.consult.getInfoByTeamId(params).then(res => {
+  return peace.service.consult.getInfoByTeamId(params).then((res) => {
     return res.data.list
   })
 }
@@ -500,14 +500,16 @@ export function getConsultationSessionsStatus(sessions) {
  * @returns
  */
 export function setInquirySessionsStatus(sessions, sessionsStatus) {
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.scene === 'p2p') {
-      const currentSessionStatus = sessionsStatus.find(item => item.sessionId === session.id || item.id === session.id)
+      const currentSessionStatus = sessionsStatus.find(
+        (item) => item.sessionId === session.id || item.id === session.id
+      )
       session.content = currentSessionStatus
     }
   })
 
-  sessions = sessions.filter(session => session.content)
+  sessions = sessions.filter((session) => session.content)
 
   return sessions
 }
@@ -523,16 +525,16 @@ export function setInquirySessionsStatus(sessions, sessionsStatus) {
  * @returns
  */
 export function setConsultationSessionsStatus(sessions, sessionsStatus) {
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.scene === 'team') {
       const currentSessionStatus = sessionsStatus.find(
-        item => item.teamId === session.id.replace('team-', '') || item.id === session.id.replace('team-', '')
+        (item) => item.teamId === session.id.replace('team-', '') || item.id === session.id.replace('team-', '')
       )
       session.content = currentSessionStatus
     }
   })
 
-  sessions = sessions.filter(session => session.content)
+  sessions = sessions.filter((session) => session.content)
 
   return sessions
 }
@@ -554,11 +556,11 @@ export function setInquirySessionStatus(sessionWithStatus) {
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.inquiry.sessions.find(session => session.id === sessionWithStatus.id)
+  const currentSession = Store.state.inquiry.sessions.find((session) => session.id === sessionWithStatus.id)
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.inquiry.sessions = Store.state.inquiry.sessions.filter(session => session.content)
+  Store.state.inquiry.sessions = Store.state.inquiry.sessions.filter((session) => session.content)
 
   return Store.state.inquiry.sessions
 }
@@ -580,11 +582,11 @@ export function setConsultationSessionStatus(sessionWithStatus) {
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.consultation.sessions.find(session => session.id === sessionWithStatus.id)
+  const currentSession = Store.state.consultation.sessions.find((session) => session.id === sessionWithStatus.id)
   currentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.consultation.sessions = Store.state.consultation.sessions.filter(session => session.content)
+  Store.state.consultation.sessions = Store.state.consultation.sessions.filter((session) => session.content)
 
   return Store.state.consultation.sessions
 }
@@ -603,7 +605,7 @@ export function deSerializationSessions(sessions) {
     sessions = [sessions]
   }
 
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.lastMsg.custom && !(session.lastMsg.custom instanceof Object)) {
       session.lastMsg.custom = JSON.parse(session.lastMsg.custom)
     }
@@ -626,7 +628,7 @@ export function deSerializationSessions(sessions) {
  * @returns
  */
 export function deSerializationMessages(messages) {
-  messages.forEach(message => {
+  messages.forEach((message) => {
     if (message.custom && !(message.custom instanceof Object)) {
       message.custom = JSON.parse(message.custom)
     }

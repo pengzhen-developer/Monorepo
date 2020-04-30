@@ -2,13 +2,17 @@ import peace from '@src/library'
 
 // initial state
 const state = {
-  tabList: peace.cache.get(peace.type.USER.TAB_LIST, peace.type.SYSTEM.CACHE.SESSION_STORAGE) || [],
+  tabList: [],
 
   currentTab: ''
 }
 
 // mutations
 const mutations = {
+  restoreTab(state) {
+    state.tabList = peace.cache.get(peace.type.USER.TAB_LIST, peace.type.SYSTEM.CACHE.SESSION_STORAGE) || []
+  },
+
   /**
    * 标签页选中
    *
@@ -25,7 +29,7 @@ const mutations = {
    * @param {*} state
    */
   pushTab(state, argument) {
-    if (!state.tabList.find(item => item.path === argument.path)) {
+    if (!state.tabList.find((item) => item.path === argument.path)) {
       state.tabList.push(argument)
     }
   },
@@ -36,7 +40,7 @@ const mutations = {
    * @param {*} state
    */
   unshiftTab(state, argument) {
-    if (!state.tabList.find(item => item.path === argument.path)) {
+    if (!state.tabList.find((item) => item.path === argument.path)) {
       state.tabList.unshift(argument)
     }
   },
@@ -47,7 +51,7 @@ const mutations = {
    * @param {*} state
    */
   removeTab(state, argument) {
-    const index = state.tabList.findIndex(item => item.path === argument)
+    const index = state.tabList.findIndex((item) => item.path === argument)
 
     if (index !== -1) {
       state.tabList.splice(index, 1)
@@ -60,7 +64,7 @@ const mutations = {
    * @param {*} state
    */
   clearTab(state) {
-    state.tabList = state.tabList.filter(item => !item.closable)
+    state.tabList = state.tabList.filter((item) => !item.closable)
   }
 }
 

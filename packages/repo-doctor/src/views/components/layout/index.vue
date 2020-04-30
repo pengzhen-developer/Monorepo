@@ -73,7 +73,9 @@ export default {
           this.pushTab(path)
 
           // 跳转当前路由
-          this.$router.push(path)
+          if (this.$route.path !== path) {
+            this.$router.push(path)
+          }
         })
       },
       immediate: true
@@ -95,8 +97,8 @@ export default {
   methods: {
     pushTab(path) {
       const currentMenu =
-        this.menuList.find(item => item.path === path) ||
-        this.$store.state.layout.tabList.find(item => item.path === path)
+        this.menuList.find((item) => item.path === path) ||
+        this.$store.state.layout.tabList.find((item) => item.path === path)
 
       if (currentMenu) {
         // 将当前选中的项，添加到 tab

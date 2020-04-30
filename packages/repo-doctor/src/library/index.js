@@ -34,7 +34,7 @@ import type from '@src/type'
 // service
 import service from '@src/service'
 
-const install = function (Vue) {
+const install = function(Vue) {
   const peace = { http, util, cache, validate, config, type, service }
 
   // 暴露全局实例
@@ -49,18 +49,15 @@ const install = function (Vue) {
 
   // 注册 component
   const components = [Table, Dialog]
-  components.map(component => {
+  components.map((component) => {
     Vue.use(component)
   })
 
   // 注册 directive
   const directive = [drag, focus]
-  directive.map(directive => {
+  directive.map((directive) => {
     Vue.directive(directive.name, directive)
   })
-
-  console.log('-------框架加载完成-------')
-  console.log('-------使用内部命令查看详情-------')
 }
 
 export default {

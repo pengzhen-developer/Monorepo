@@ -1,42 +1,18 @@
-/*
- * @Author: PengZhen
- * @Description: 程序入口文件
- * @Date: 2017-12-05
+/**
+ * Vue 入口文件
+ *
+ * @Date        : 2020-04-22
+ * @Author      : PengZhen
+ * @Description : 参考 quasar-cli, 使用 boot 解耦初始化逻辑
  */
 
-import Vue from 'vue'
-import store from '@src/store'
-import router from '@src/router'
+import Boot from './boot/index'
 
-// root component
-import App from '@src/App.vue'
+const install = async () => {
+  const vueAppInstance = await Boot.install()
 
-// library
-import library from '@src/library'
-Vue.use(library.install)
+  // Set Prototype
+  Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
+}
 
-// UI
-import ElementUI from 'element-ui'
-Vue.use(ElementUI, { size: 'mini' })
-
-// css
-import '@src/assets/css/index.scss'
-
-// plugin
-import 'viewerjs/dist/viewer.css'
-import Viewer from 'v-viewer'
-Vue.use(Viewer, {
-  defaultOptions: {
-    zIndex: 9999
-  }
-})
-
-// initial
-const vueAppInstance = new Vue({
-  render: (h) => h(App),
-  router,
-  store
-}).$mount('#app')
-
-// 兼容 IE 9、10 低版本的 __proto__
-Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
+install()

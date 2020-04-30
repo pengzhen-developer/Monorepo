@@ -16,9 +16,12 @@ export default {
     // restore user info and user token
     if (peace.cache.get(peace.type.USER.INFO)) {
       this.$store.commit('user/restoreUserInfo', peace.cache.get(peace.type.USER.INFO))
+      this.$store.commit('layout/restoreTab')
 
-      peace.service.IM.initNIM()
-      peace.service.IM.initWebRTC()
+      setTimeout(() => {
+        peace.service.IM.initNIM()
+        peace.service.IM.initWebRTC()
+      }, 100)
     }
   }
 }
