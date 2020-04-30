@@ -33,6 +33,7 @@ module.exports = {
       })
     ]
   },
+
   //增加vue.config.js文件配置css
   css: {
     loaderOptions: {
@@ -42,5 +43,16 @@ module.exports = {
         data: `@import "@src/assets/css/variable.scss";`
       }
     }
-  }
+  },
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  },
+
+  transpileDependencies: [
+    'quasar'
+  ]
 }

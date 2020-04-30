@@ -33,12 +33,10 @@ Vue.use(Viewer, {
 
 // initial
 const vueAppInstance = new Vue({
-  render: h => h(App),
+  render: (h) => h(App),
   router,
   store
 }).$mount('#app')
 
 // 兼容 IE 9、10 低版本的 __proto__
-Object.setPrototypeOf
-  ? Object.setPrototypeOf($peace, vueAppInstance)
-  : ($peace.__proto__ = vueAppInstance)
+Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)

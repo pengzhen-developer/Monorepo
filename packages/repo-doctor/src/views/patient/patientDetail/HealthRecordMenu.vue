@@ -23,7 +23,7 @@
 import peace from '@src/library'
 export default {
   created() {
-    $peace.$on('hideDrawer', params => {
+    $peace.$on('hideDrawer', (params) => {
       console.log(params)
       this.selectIndex = -1
     })

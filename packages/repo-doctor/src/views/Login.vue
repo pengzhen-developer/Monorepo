@@ -100,7 +100,7 @@ export default {
 
       peace.service.login
         .sendSms(param)
-        .then(res => {
+        .then((res) => {
           this.$refs.pwd.focus()
           peace.validate.isEmpty('')
           peace.util.alert(res.msg, null, peace.type.SYSTEM.MESSAGE.SUCCESS)
@@ -124,7 +124,7 @@ export default {
           smsCode: this.view.model.password
         }
 
-        peace.service.login.login(params).then(res => {
+        peace.service.login.login(params).then((res) => {
           // 提示登录成功
           peace.util.alert('登录成功，正在跳转...', null, peace.type.SYSTEM.MESSAGE.SUCCESS)
 
