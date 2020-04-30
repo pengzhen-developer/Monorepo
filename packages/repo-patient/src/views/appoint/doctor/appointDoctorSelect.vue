@@ -244,10 +244,6 @@ export default {
   white-space: nowrap;
 }
 .card .card-name {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 .card .card-name .card-small {
@@ -263,10 +259,6 @@ export default {
   background: #fafafa;
 }
 .g-two {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -293,10 +285,6 @@ export default {
   border-left: 2px solid #f5f5f5;
 }
 .f-two {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: center;
   justify-content: flex-start;

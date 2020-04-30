@@ -124,7 +124,7 @@
               </div>
             </div>
             <div class="form-dl">
-              <div class="form-dt">初诊诊断 :</div>
+              <div class="form-dt start">初诊诊断 :</div>
               <div class="form-dd">{{internalData.illInfo.confirmIllness}}
               </div>
             </div>
@@ -664,6 +664,9 @@ export default {
     display: flex;
     padding-right: 10px;
     align-items: center;
+    &.start {
+      align-items: flex-start;
+    }
     span {
       flex: 1;
       text-align: justify;

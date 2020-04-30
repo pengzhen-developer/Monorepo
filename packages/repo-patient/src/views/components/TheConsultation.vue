@@ -330,10 +330,6 @@ export default {
   font-size: 11px;
 }
 .prescript .prescript-line {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-around;
 }
@@ -358,10 +354,7 @@ export default {
 }
 .prescript .prescript-table {
   border-top: 2px dotted #000;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   text-align: center;
   padding-top: 10px;
@@ -388,10 +381,6 @@ export default {
   border-radius: 5px;
   box-sizing: border-box;
 
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
@@ -405,10 +394,7 @@ export default {
   flex: 0 1 50%;
   font-size: 15px;
   padding: 10px 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
 }
 .namelist-dl .dt {
@@ -469,10 +455,6 @@ export default {
 }
 
 .column-2 {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   color: #000;
   font-size: 15px;
@@ -493,10 +475,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 .column-left .inline .span {
@@ -527,10 +505,7 @@ export default {
 .module {
   padding-left: 30px;
   box-sizing: border-box;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   flex-wrap: wrap;
   -webkit-flex-wrap: wrap;

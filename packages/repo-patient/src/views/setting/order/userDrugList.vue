@@ -119,37 +119,10 @@
           <!-- <div class="bottom">客服电话：4009020365</div> -->
         </div>
         <!--二维码弹窗-->
-        <van-overlay :show="showQRCode"
-                     @click="showQRCode = false">
-          <div class="overlay-wrapper">
-            <div @click.stop
-                 class="qr-code-wrapper">
-              <div class="qr-code-area">
-                <!--有二维码-->
-                <div v-if="QRCodeURL"
-                     class="qr-code">
-                  <div class="title">取药码</div>
-                </div>
-                <!--没有二维码-->
-                <div v-if="!QRCodeURL"
-                     class="qr-code qr-code--empty">
-                  <div class="title">取药码</div>
-                  <img class="img-qr-code-empty"
-                       :src="require('@src/assets/images/qrcode-empty.png')"
-                       alt="">
-                  <div class="context">暂无二维码</div>
-                  <div class="info">请使用取药码进行取药</div>
-                </div>
-              </div>
-              <img :src="require('@src/assets/images/message-line.png')"
-                   alt=""
-                   style="display: block; margin: -1px 0;">
-              <div class="text-area">
-                取药码：{{ PickUpCode }}
-              </div>
-            </div>
-          </div>
-        </van-overlay>
+        <QRCode :QRCodeURL="QRCodeURL"
+                v-model="showQRCode"
+                :PickUpCode="PickUpCode"></QRCode>
+
       </div>
     </template>
 
@@ -164,6 +137,7 @@
 
 <script>
 import peace from '@src/library'
+import QRCode from '@src/views/components/QRCode'
 
 const ENUM = {
   SHIPPING_METHOD: {
@@ -200,7 +174,7 @@ export default {
     }
   },
 
-  computed: {},
+  components: { QRCode },
 
   activated() {
     this.getDrugItems()
@@ -235,6 +209,7 @@ export default {
 
     onClickSeeQRCode(order) {
       this.PickUpCode = order.PickUpCode
+      this.QRCodeURL = order.QRCodeURL
       this.showQRCode = true
     },
 
@@ -443,10 +418,6 @@ export default {
   padding: 10px 15px;
 }
 .box-tab {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
 
@@ -525,10 +496,6 @@ export default {
   padding: 10px 15px;
 }
 .panel .panel-bottom {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -541,10 +508,6 @@ export default {
   white-space: nowrap;
 }
 .card-strip {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   font-size: 15px;
   align-items: center;
@@ -620,10 +583,6 @@ export default {
 
 /**/
 .small {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   padding-top: 10px;
   color: #999;

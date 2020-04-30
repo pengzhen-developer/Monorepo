@@ -52,21 +52,19 @@ export default {
   methods: {
     getList() {
       this.p++
-      peace.service.group
-        .commentLists({ doctorId: this.doctorId, p: this.p, size: this.size })
-        .then(res => {
-          this.list = this.list.concat(res.data.lists)
-          if (this.p * this.size >= res.data.count) {
-            this.finished = true
-          }
-          this.loading = false
-        })
+      peace.service.group.commentLists({ doctorId: this.doctorId, p: this.p, size: this.size }).then(res => {
+        this.list = this.list.concat(res.data.lists)
+        if (this.p * this.size >= res.data.count) {
+          this.finished = true
+        }
+        this.loading = false
+      })
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .body-card {
   background: #fff;
   padding: 16px;

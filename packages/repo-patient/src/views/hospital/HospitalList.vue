@@ -31,12 +31,13 @@
         </div>
       </div>
     </van-skeleton>
-    <div class="none" v-if="!loading&&data.length==0">
+    <div class="none"
+         v-if="!loading&&data.length==0">
       <div class="none-page">
         <div class="icon icon_none_source"></div>
         <div class="none-text">暂无可预约号源</div>
-      </div> 
-    </div> 
+      </div>
+    </div>
   </div>
 </template>
 
@@ -67,17 +68,17 @@ export default {
       type: 'recommendHsp' // 默认值
     }
   },
-  
+
   created() {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params || {}
     this.type = params.type || this.type
     this.data = this.items || []
     this.showNum = this.max
-    
+
     if (!this.data.length) {
       this.getHspList()
-    }else{
+    } else {
       this.loading = false
     }
   },
@@ -144,15 +145,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.none{
-  height:100%;
-  width:100%;
+.none {
+  height: 100%;
+  width: 100%;
 }
 .cards {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   margin: 15px 10px;
   font-size: 13px;

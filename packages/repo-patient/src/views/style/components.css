@@ -40,10 +40,6 @@ list
 }
 
 .list .list-items {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: center;
 
@@ -106,10 +102,7 @@ list-three [二列]
 */
 .list-two {
   position: relative;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -132,10 +125,7 @@ list-three [二列]
 .list-two .list-content {
   flex: 1;
   margin: 0 15px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   flex-direction: column;
   position: relative;
@@ -166,30 +156,26 @@ list-three [二列]
 }
 .list-content .content-title {
   color: #333;
-  font-size: 15px;
+  font-size: 14px;
 }
 .list-content .content-brief {
   color: #999;
-  font-size: 13px;
+  font-size: 12px;
   padding: 5px 0;
 }
 /*
 list-three [三列]
 */
 .list-three {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: center;
   align-items: stretch;
   background: #fff;
-  padding: 0;
-  border-bottom: 1px solid #f5f5f5;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
 }
 .list-three:first-child {
-  padding-top: 5px;
+  border-top: 1px solid #eee;
 }
 .list-three .list-icon {
   flex: 0 1 auto;
@@ -203,37 +189,35 @@ list-three [三列]
 .list-three .list-content {
   flex: 1;
   margin: 0 15px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   flex-direction: column;
 }
 .list-content .content-title {
   color: #333;
-  font-size: 15px;
+  font-size: 14px;
 }
 .list-content .content-brief {
   color: #999;
-  font-size: 13px;
+  font-size: 12px;
   padding: 5px 0;
 }
 .list-three .list-other {
   flex: 0 1 90px;
   width: 90px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   flex-direction: column;
   text-align: right;
 }
 .list-other .other-them {
-  font-size: 13px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   color: #999;
   flex: 1;
+  position: relative;
 }
 .list-other .other-price {
   font-size: 12px;
@@ -242,7 +226,7 @@ list-three [三列]
 }
 .other-price .price {
   display: inline;
-  font-size: 13px;
+  font-size: 14px;
   color: #ff344d;
 }
 
@@ -251,10 +235,6 @@ list-three [三列]
 /******************dl**********************/
 /*dl-addr*/
 .dl-addr {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   font-size: 13px;
   margin-bottom: 10px;
@@ -278,10 +258,6 @@ list-three [三列]
 }
 /*dl-packet*/
 .dl-packet {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
   align-content: center;
@@ -305,10 +281,6 @@ list-three [三列]
 /*************************btn**********************/
 /*btn-group*/
 .btn-group {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -324,10 +296,7 @@ list-three [三列]
 .tab {
   background-color: #fff;
   font-size: 15px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   margin: 15px;
   justify-content: center;
@@ -354,10 +323,7 @@ list-three [三列]
 .form-dl {
   background-color: #fff;
   padding: 15px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   color: #000;
   font-size: 15px;

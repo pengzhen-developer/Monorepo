@@ -7,43 +7,45 @@
 <template>
   <form bindsubmit="submitOrder"
         report-submit="true"
+        class="drug-from"
         v-if="order!=null">
     <div class="top">
       <!--tab-->
       <div class="tab">
-        <div @click="changeTab(0)"
-             :class="page.tabIndex == '0' ? 'tab-item active' : 'tab-item'">
-          <div class="span">到店取药</div>
-        </div>
         <div @click="changeTab(1)"
              :class="page.tabIndex == '1' ? 'tab-item active' : 'tab-item'">
-          <div class="span">配送到家</div>
+          配送到家
+        </div>
+        <div @click="changeTab(0)"
+             :class="page.tabIndex == '0' ? 'tab-item active' : 'tab-item'">
+          到店取药
         </div>
       </div>
       <!--tab^content-->
       <div class="content">
         <div class="tab-content"
              v-if="page.tabIndex == '0'">
-          <div class="addr-tit">取药地址</div>
-          <div class="addr-p">{{order.Detailed}}</div>
+          <div class="userAddr icon-next">
+            <div class="addr-p">{{order.Detailed}}</div>
+          </div>
         </div>
         <div class="tab-content"
              v-if="page.tabIndex == '1'">
-          <div class="addr-tit">我的地址</div>
-          <div v-if="userAddr && userAddr.detailAddress"
-               @click="goUserAddrPage"
+          <div @click="goUserAddrPage"
                class="userAddr icon-next">
-            <div class="addr-p">收货人：{{userAddr.consignee}}
-              <div class="inline">{{userAddr.mobile}}</div>
-            </div>
-            <div class="addr-p">{{userAddr.detailAddress}}</div>
-          </div>
-          <div v-else>
-            <div class="block"
-                 @click="goUserAddrPage">
-              <div class="icon icon-add"></div>
-              添加收货地址
-            </div>
+            <template v-if="userAddr && userAddr.detailAddress">
+              <div class="addr-p">{{userAddr.detailAddress}}</div>
+              <div class="addr-user">
+                <span>{{userAddr.consignee}}</span>
+                <span>{{userAddr.mobile}}</span>
+              </div>
+            </template>
+            <template v-else>
+              <div class="block ">
+                <div class="icon icon-add"></div>
+                添加收货地址
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -109,23 +111,27 @@
               </div>
             </div>
           </div>
-          <div class="bottom">
-            <div style="display: flex; justify-content: center; align-items: space-between;">
-              <van-button v-on:click="submitOrder('wxpay')"
-                          v-bind:disabled="!page.canSubmit || hasSubmitOrder"
-                          style="margin: 0 10px 0 0"
-                          size="large"
-                          type="primary">在线支付</van-button>
-              <van-button v-on:click="submitOrder('yibaopay')"
-                          v-bind:disabled="!page.canSubmit || hasSubmitOrder"
-                          size="large"
-                          type="primary">医保支付</van-button>
-            </div>
-            <div class="tips-bottom">
-              {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
-            </div>
-          </div>
         </div>
+      </div>
+    </div>
+    <div class="tips-bottom">
+      {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
+    </div>
+    <div class="bottom">
+      <div class="strong">￥{{order.OrderMoney}}</div>
+      <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
+        <van-button v-on:click="submitOrder('yibaopay')"
+                    v-bind:disabled="!page.canSubmit || hasSubmitOrder"
+                    size="small"
+                    style="margin: 0 12px 0 0"
+                    round
+                    type="primary">医保支付</van-button>
+        <van-button v-on:click="submitOrder('wxpay')"
+                    v-bind:disabled="!page.canSubmit || hasSubmitOrder"
+                    size="small"
+                    round
+                    type="primary">在线支付</van-button>
+
       </div>
     </div>
   </form>
@@ -191,7 +197,6 @@ export default {
       peace.service.patient.getDefaultAddress().then(res => {
         this.userAddr = res.data
         this.canSubmitProcesses()
-        //console.log('ressssssssssssssssssssssssss',res);
       })
     },
     getAddr(addr) {
@@ -269,7 +274,6 @@ export default {
         userAddr = this.userAddr
       bool = !!(this.page.tabIndex == '0' ? true : !!(userAddr && userAddr.detailAddress))
       this.page.canSubmit = bool
-      // console.log('can', bool)
       return bool
     },
 
@@ -291,13 +295,6 @@ export default {
 
     getPhaOrder() {
       const params = peace.util.decode(this.$route.params.json)
-      // 测试用例
-      // data = {
-      //     JZTClaimNo: '870000-201901171529010179-240808',
-      //     DrugStoreId:'O1CB1P',
-      //     AccessCode:'GJ1FST',
-      // }
-      // 测试用例结束
       peace.service.patient.getOrderBefore(params).then(res => {
         //防止 Freight  PromotionsCut 无此字段
         res.data.Freight = res.data.Freight || 0
@@ -317,8 +314,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-page {
-  background: #f5f5f5;
+.drug-from {
+  background: #f9f9f9;
+  padding: 10px;
+  min-height: 100%;
+  > .module {
+    border-radius: 3px;
+    overflow: hidden;
+  }
 }
 .top,
 .container {
@@ -326,41 +329,67 @@ page {
 }
 .top {
   overflow: hidden;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  padding: 15px 0;
 }
 .tab {
-  width: 214px;
-  margin: 10px auto;
+  width: 50%;
+  margin: 0 auto 15px;
+  height: 26px;
   border: 1px solid #00c6ae;
-}
-
-.tab-item.active {
-  background: #00c6ae;
-  color: #fff;
-}
-
-.tab-content {
-  padding: 5px 10px;
+  border-radius: 15px;
+  position: relative;
+  .tab-item {
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    line-height: normal;
+    position: absolute;
+    z-index: 1;
+    top: -1px;
+    border-radius: 15px;
+    padding: 0;
+    font-size: 12px;
+    &:first-child {
+      left: -1px;
+    }
+    &:last-child {
+      right: -1px;
+    }
+    &.active {
+      background: #00c6ae;
+      color: #fff;
+      z-index: 3;
+    }
+  }
 }
 .tab-content .addr-tit {
-  font-size: 15px;
+  font-size: 14px;
   position: relative;
   padding-left: 24px;
+  padding-bottom: 5px;
 }
-.tab-content .addr-tit::before {
+.tab-content .addr-p::before {
   content: '';
   position: absolute;
-  left: 0px;
-  top: 3px;
+  left: -27px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 14px;
-  height: 17px;
-  background-size: 100% 100%;
-  background-image: url('../../assets/images/icons/addr-tit.jpg');
+  height: 16px;
+  // background-size: 100% 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('~@src/assets/images/icons/addr-tit.jpg');
 }
 .tab-content .addr-p {
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
   margin: 5px 0;
-  font-weight: 700;
+  font-weight: 600;
   position: relative;
 }
 /*panel-pha*/
@@ -368,12 +397,7 @@ page {
   background: #fff;
 }
 .panel-pha .panel-head {
-  padding: 10px 15px;
-  border-bottom: 1px solid #e5e5e5;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+  padding: 9px 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -385,7 +409,6 @@ page {
   width: 28px;
   height: 28px;
   border: 1px solid #e5e5e5;
-  margin-right: 10px;
   img {
     width: 100%;
     height: 100%;
@@ -404,17 +427,32 @@ page {
 .panel-head .head-tit {
   flex: 1;
   color: #333333;
-  font-size: 30rpx;
-  border-radius: 4rpx;
-  padding-left: 30rpx;
+  font-size: 14px;
+  padding-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.panel-pha .panel-body {
-  padding: 10px 15px;
+.head-Rp {
+  color: #999;
+  font-size: 12px;
+  line-height: normal;
+  border: 1px solid #eee;
+  padding: 2px 10px;
+  border-radius: 15px;
+  margin-left: 5px;
 }
-.intro,
+.panel-pha .panel-body {
+  padding: 0 15px;
+}
+.intro {
+  padding: 8px 0;
+}
+.intro .dl-packet .dt,
+.intro .dl-packet .dd {
+  font-size: 13px;
+  padding: 2px 0;
+}
 .dl-packet .dd,
 .dl-packet .dt {
   padding: 3px 0;
@@ -424,8 +462,8 @@ page {
   color: #4e4e4e;
 }
 .str {
-  border-top: 1px solid #e5e5e5;
-  padding-top: 10px;
+  border-top: 1px solid #eee;
+  padding: 3px 0;
 }
 .str .dt {
   color: #333333;
@@ -433,69 +471,86 @@ page {
   line-height: 2.8;
 }
 .str .dd {
-  font-size: 11px;
+  font-size: 12px;
   color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
-.str .strong {
+.strong {
   color: #ff344d;
   font-size: 20px;
   font-weight: bold;
 }
-.bottom .btn {
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  margin: 5px;
-  border-color: #00c6ae;
-  background-color: #00c6ae;
-  color: #fff;
-  padding: 13px;
-  text-align: center;
+  height: 60px;
+  padding: 0 15px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.btn.btn-default {
-  background: #e0e0e0;
-  border-color: #e0e0e0;
-  color: #999999;
+.bottom .van-button {
+  width: 75px;
 }
-.bottom .tips-bottom {
+.tips-bottom {
+  margin-bottom: 60px;
   text-align: center;
+  color: #999;
+  font-size: 13px;
+  line-height: 1;
 }
 .icon-add {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   background-size: cover;
-  background-image: url('../../assets/images/icons/toolfk-img.jpg');
+  background-image: url('~@src/assets/images/icons/toolfk-img.jpg');
   margin-top: -5px;
 }
 .tab-content .block {
-  font-size: 15px;
+  font-size: 16px;
   color: #00c6ae;
-  text-align: center;
-  margin: 10px;
+  margin-left: -27px;
+  .icon {
+    margin-right: 8px;
+  }
 }
 .userAddr {
   width: 100%;
-  padding-right: 20px;
+  padding-right: 33px;
   position: relative;
+  padding-left: 42px;
+}
+
+.addr-user {
+  font-size: 12px;
+  color: #666;
+  span + span {
+    margin-left: 5px;
+  }
 }
 
 .userAddr.icon-next::after {
   content: '';
   position: absolute;
   display: block;
-  // top: 15px;
   top: 50%;
   transform: translateY(-50%);
-  right: 0px;
+  right: 15px;
   width: 7px;
   height: 12px;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('../../assets/images/icons/icon-next.jpg');
+  background-image: url('~@src/assets/images/icons/icon-next.jpg');
 }
 .panel-head.icon-next::after {
   content: '';
   position: absolute;
   display: block;
-  // top: 15px;
   top: 50%;
   transform: translateY(-50%);
   right: 12px;
@@ -503,43 +558,38 @@ page {
   height: 12px;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('../../assets/images/icons/icon-next.jpg');
+  background-image: url('~@src/assets/images/icons/icon-next.jpg');
 }
-.addr-p .inline {
-  float: right;
-}
+
 .list-three .list-other {
   flex: 0 1 65px;
   width: 65px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   flex-direction: column;
   text-align: right;
 }
-
+.list-other .other-them {
+  padding-right: 17px;
+}
 .list-other .other-them::after {
-  content: '?  ';
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  line-height: 1;
-  vertical-align: middle;
-  background: #00c6ae;
-  border-radius: 50%;
-  font-size: 10px;
-  color: #fff;
+  content: '';
+  width: 12px;
+  height: 12px;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   margin-bottom: 3px;
   margin-left: 2px;
-  padding: 0;
-  text-align: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('~@src/assets/images/ic_wenhao.png');
 }
 .list-icon.list-icon-none {
   padding: 0;
   background-color: #f7f7f7;
   background-size: cover;
-  background-image: url('../../assets/images/icons/nocontent.jpg');
+  background-image: url('~@src/assets/images/icons/nocontent.jpg');
 }
 </style>

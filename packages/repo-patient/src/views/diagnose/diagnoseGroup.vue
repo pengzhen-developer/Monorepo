@@ -13,11 +13,14 @@
              class="txt"></div>
       </div>
     </div>
+    <!-- :style="data.diseaseLists.length > 5 ? (page.nextClass ? 'padding-bottom: 35px' : 'max-height:65px;padding-bottom: 35px' ): ''" -->
+    <!-- :class="data.diseaseLists.length > 5 ? (page.nextClass ? 'pb35' : 'maxHeight' ): ''" -->
     <div class="box-bg"
-         :style="data.diseaseLists.length > 5 ? (page.nextClass ? 'padding-bottom: 35px' : 'max-height:65px;padding-bottom: 35px' ): ''">
+         :class="data.diseaseLists.length > 5 ? (page.nextClass ? 'pb35' : 'maxHeight' ): ''">
       <div v-for="(item, index) in data.diseaseLists"
            :key="index"
            :class="['label', checkValue == item.code ? 'blue' : '']"
+           :style=" {'margin-bottom': data.diseaseLists.length <= 5&&'0'}"
            @click="goDianodeHomePage(item)"
            data-code="item.code"
            data-value="item.name">
@@ -382,10 +385,6 @@ export default {
   font-size: 13px;
 }
 .box-block {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   align-items: center;
@@ -417,6 +416,13 @@ export default {
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
+  &.pb35 {
+    padding-bottom: 35px;
+  }
+  &.maxHeight {
+    padding-bottom: 35px;
+    max-height: 64px;
+  }
 }
 .box-bg .label {
   padding: 3px 9px;
@@ -456,10 +462,6 @@ export default {
   padding-bottom: 0;
 }
 .panel .panel-head {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   position: relative;
 }

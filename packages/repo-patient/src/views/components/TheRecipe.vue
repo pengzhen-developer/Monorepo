@@ -64,7 +64,7 @@
           <div class="column-left">
             <div class="inline">
               <div class="inline-flex">
-                <span>{{item.drugName}}</span>  
+                <span>{{item.drugName}}</span>
                 {{item.drugSpecifications}}
               </div>
 
@@ -230,10 +230,7 @@ export default {
 }
 .prescript .prescript-table {
   border-top: 2px dotted #eee;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   text-align: center;
   padding-top: 10px;
@@ -321,11 +318,11 @@ export default {
     display: block;
     word-wrap: break-word;
   }
-  .inline-flex{
+  .inline-flex {
     word-break: break-all;
     padding-right: 5px;
-    span{
-      margin-right:40px;
+    span {
+      margin-right: 40px;
     }
   }
   .bt {

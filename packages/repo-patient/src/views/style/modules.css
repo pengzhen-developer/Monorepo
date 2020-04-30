@@ -1,9 +1,5 @@
 /**************card******************/
 .card {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   margin: 5px 0;
   font-size: 13px;
@@ -104,10 +100,6 @@
 }
 /*card-imgs*/
 .card-imgs {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 .card-imgs .imgs-item {
@@ -246,10 +238,6 @@ panel
  --panel-block
 */
 .panel.panel-block {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 

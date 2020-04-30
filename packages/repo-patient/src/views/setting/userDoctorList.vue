@@ -248,10 +248,7 @@ export default {
 }
 .card-strip {
   padding-top: 10px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -103,10 +103,6 @@ export default {
   text-align: center;
 }
 .dl-two {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,10 +116,7 @@ export default {
 .dl-two .dd {
   float: 0 0 auto;
   width: 60px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+
   display: flex;
 }
 

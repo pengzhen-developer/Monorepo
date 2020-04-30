@@ -86,10 +86,6 @@ export default {
 
 <style lang="scss" scoped>
 .panel.panel-block {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   margin-top: 0;
   margin-bottom: 0;

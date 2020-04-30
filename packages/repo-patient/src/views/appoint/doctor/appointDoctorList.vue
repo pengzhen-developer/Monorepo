@@ -3,16 +3,15 @@
     <div class="scroll-x">
       <div class="box-scroll">
         <div class="scroll-items">
-          <div :class="['item', activeIndex == 'all' ? 'active' : '']" @click="checkTime({index:'all'})">
+          <div :class="['item', activeIndex == 'all' ? 'active' : '']"
+               @click="checkTime({index:'all'})">
             <div class="week">不限</div>
             <div class="week">日期</div>
           </div>
-          <div
-            :class="['item', activeIndex == index ? 'active' : '',item.disabled ? 'disabled' : '']"
-            :key="index"
-            @click="checkTime({index})"
-            v-for="(item,index) in dateList"
-          >
+          <div :class="['item', activeIndex == index ? 'active' : '',item.disabled ? 'disabled' : '']"
+               :key="index"
+               @click="checkTime({index})"
+               v-for="(item,index) in dateList">
             <div class="week">{{item.week}}</div>
             <div class="time">{{item.date}}</div>
           </div>
@@ -20,18 +19,28 @@
       </div>
     </div>
     <div class="content">
-      <div :key="item.doctorId" @click="goDoctorHomePage(item)" class="card" v-for="item in doctorList">
+      <div :key="item.doctorId"
+           @click="goDoctorHomePage(item)"
+           class="card"
+           v-for="item in doctorList">
         <div class="card-avatar avatar-circular">
-          <img :src="item.doctorInfo.avartor" class />
+          <img :src="item.doctorInfo.avartor"
+               class />
         </div>
         <div class="card-body">
           <div class="card-name">
             {{item.doctorInfo.name}}
-            <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}</div>
-            <van-button @click.stop="goDoctorAppointPage(item)" hairline plain size="mini" type="primary">预约</van-button>
+            <div class="card-small">{{item.doctorInfo.doctorTitle}} {{item.doctorInfo.deptName}}
+            </div>
+            <van-button @click.stop="goDoctorAppointPage(item)"
+                        hairline
+                        plain
+                        size="mini"
+                        type="primary">预约</van-button>
           </div>
           <!--          <div class="card-small">评分：&#45;&#45; 预约量：&#45;&#45;</div>-->
-          <div class="card-brief" v-if="item.doctorInfo.specialSkill">
+          <div class="card-brief"
+               v-if="item.doctorInfo.specialSkill">
             <div class="span s">擅长：</div>
             <div class="span xl">{{item.doctorInfo.specialSkill}}</div>
           </div>
@@ -53,7 +62,8 @@
           <!--          </div>-->
         </div>
       </div>
-      <div class="none-page" v-if="!doctorList.length && loaded">
+      <div class="none-page"
+           v-if="!doctorList.length && loaded">
         <div class="icon icon_none_source"></div>
         <div class="none-text">
           当日暂无可预约医生
@@ -93,7 +103,7 @@ export default {
           timeSharing
         })
         .then(res => {
-          this.loaded = true;
+          this.loaded = true
           !this.dateList.length && (this.dateList = res.data.weekDate),
             // this.dateList = [    //时间筛选
             //   {
@@ -208,12 +218,12 @@ export default {
         })
     },
     checkTime(obj) {
-      const item = this.dateList[obj.index] || {};
+      const item = this.dateList[obj.index] || {}
 
       if (item.disabled) {
         return
       }
-      this.activeIndex = obj.index;
+      this.activeIndex = obj.index
       this.getData(item.date ? item.year + '-' + item.date : '')
     },
     // 医生主页
@@ -250,21 +260,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .appoint-doctor-list{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.appoint-doctor-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    .scroll-x{
-      /*height: 40px;*/
-    }
-
-    .content{
-      flex: 1;
-      overflow-y: auto;
-      padding-top: 10px;
-    }
+  .scroll-x {
+    /*height: 40px;*/
   }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 10px;
+  }
+}
 
 /*·       doctor*/
 .card {
@@ -310,10 +320,6 @@ export default {
   white-space: nowrap;
 }
 .card .card-name {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 .card .card-name .card-small {
@@ -340,10 +346,6 @@ export default {
   margin-right: 10px;
 }
 .bar-line {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: stretch;
   justify-content: space-around;

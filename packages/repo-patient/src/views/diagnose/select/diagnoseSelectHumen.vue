@@ -163,10 +163,6 @@ export default {
   font-size: (30px/2);
 }
 .grid-two {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   overflow: hidden;
 }
@@ -180,10 +176,6 @@ export default {
   flex: 3;
   min-width: (400px/2);
 
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   flex-direction: column;
@@ -227,10 +219,6 @@ export default {
   height: (158px/2);
 }
 .girl-thr {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   /*允许换行*/
   flex-wrap: wrap;

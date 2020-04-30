@@ -540,10 +540,6 @@ export default {
   padding: (20px/2) (30px/2);
 }
 .box-tab {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
 
@@ -623,10 +619,6 @@ export default {
   padding: (20px/2) 0;
 }
 .panel .panel-bottom {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   align-items: center;
 }
@@ -638,10 +630,6 @@ export default {
   white-space: nowrap;
 }
 .card-strip {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   font-size: (30px/2);
   align-items: center;
@@ -710,10 +698,6 @@ export default {
 
 /**/
 .small {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   padding-top: (20px/2);
   color: #999;

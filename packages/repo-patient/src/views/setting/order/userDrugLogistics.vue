@@ -8,7 +8,8 @@
         </div>
         <div class="card-body">
           <div class="card-name"> {{ data.ords.length>0&&data.ords[0].Notes }}</div>
-          <div class="card-small">
+          <div class="card-small"
+               style="word-break: break-all;">
             {{ data.ShippingMethod == '1' ? 
                  '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone : 
                  '【自提地址】' + data.DrugStoreDetailed
@@ -34,7 +35,7 @@
              :class="{ 'active' : index == 0 }"
              :key="item.Notes">
           <div class="time">
-            <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
+            <div class="y">{{ item.CreateTime.toDate().formatDate('M-dd') }}</div>
             <div class="s">{{ item.CreateTime.toDate().formatDate('HH:mm') }}</div>
           </div>
           <div class="text">
@@ -57,42 +58,15 @@
       </div>
     </div>
     <!--二维码弹窗-->
-    <van-overlay :show="showQRCode"
-                 @click="showQRCode = false">
-      <div class="overlay-wrapper">
-        <div @click.stop
-             class="qr-code-wrapper">
-          <div class="qr-code-area">
-            <!--有二维码-->
-            <div v-if="QRCodeURL"
-                 class="qr-code">
-              <div class="title">取药码</div>
-            </div>
-            <!--没有二维码-->
-            <div v-if="!QRCodeURL"
-                 class="qr-code qr-code--empty">
-              <div class="title">取药码</div>
-              <img class="img-qr-code-empty"
-                   :src="require('@src/assets/images/qrcode-empty.png')"
-                   alt="">
-              <div class="context">暂无二维码</div>
-              <div class="info">请使用取药码进行取药</div>
-            </div>
-          </div>
-          <img :src="require('@src/assets/images/message-line.png')"
-               alt=""
-               style="display: block; margin: -1px 0">
-          <div class="text-area">
-            取药码：{{ PickUpCode }}
-          </div>
-        </div>
-      </div>
-    </van-overlay>
+    <QRCode :QRCodeURL="QRCodeURL"
+            v-model="showQRCode"
+            :PickUpCode="PickUpCode"></QRCode>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
+import QRCode from '@src/views/components/QRCode'
 
 const ENUM = {
   SHIPPING_METHOD: {
@@ -119,11 +93,11 @@ export default {
       data: undefined,
       shippingMethod: null,
       orderStatus: null,
-      showQRCode: null,
+      showQRCode: false,
       QRCodeURL: null
     }
   },
-
+  components: { QRCode },
   computed: {
     showTrackingNumber() {
       const ShippingMethod = this.shippingMethod
@@ -170,6 +144,7 @@ export default {
   color: #999;
   width: 78px;
   height: 26px;
+  line-height: normal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,81 +154,11 @@ export default {
   }
 }
 
-.overlay-wrapper {
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .qr-code-wrapper {
-    width: 250px;
-    border-radius: 5px;
-
-    .qr-code-area {
-      width: 100%;
-      background-color: #fff;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .qr-code {
-        width: 100%;
-        height: 100%;
-        font-size: 16px;
-
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-
-        .title {
-          margin: 0.42rem 0;
-        }
-      }
-
-      .qr-code--empty {
-        font-size: 15px;
-        color: #000;
-
-        .title {
-          margin: 0.42rem 0;
-        }
-
-        .img-qr-code-empty {
-          width: 118px;
-          height: 100px;
-          margin-bottom: 0.26rem;
-        }
-
-        .context {
-          margin-bottom: 0.1rem;
-        }
-
-        .info {
-          margin-bottom: 0.42rem;
-          font-size: 12px;
-          color: #ccc;
-        }
-      }
-    }
-    .text-area {
-      height: 50px;
-      width: 100%;
-      background-color: #fff;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
-
 .card-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 0;
   img {
     width: 90%;
     height: 90%;
@@ -263,14 +168,23 @@ export default {
 .user-drug-logistics {
   height: 100%;
   background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  .module {
+    flex: 1;
+    margin: 0;
+  }
 }
 .box {
   margin-top: 0;
 }
 .card {
   background: #fff;
-  padding: 5px;
+  padding: 15px;
   margin: 0 0 10px 0;
+  .card-name {
+    font-size: 16px;
+  }
 }
 .module {
   background: #fff;
@@ -294,10 +208,6 @@ export default {
   }
 }
 .time-line .item {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   color: #999999;
@@ -318,7 +228,7 @@ export default {
   border-left: 2px solid #d8d8d8;
   padding-left: 15px;
   flex: 1;
-  min-height: 82px;
+  min-height: 74px;
 }
 .time-line .time::after {
   content: '';
@@ -335,8 +245,8 @@ export default {
 }
 .time-line .item.active .time::after {
   content: '';
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   right: -9px;
   background: #00c6ae;
 }
@@ -344,7 +254,7 @@ export default {
   color: #000000;
 }
 .time-line .time .y {
-  font-size: 14px;
+  font-size: 16px;
   margin-top: -10px;
 }
 .time-line .text .status {
@@ -352,6 +262,6 @@ export default {
 }
 .time .s,
 .text .note {
-  font-size: 12px;
+  font-size: 13px;
 }
 </style>

@@ -381,10 +381,6 @@ export default {
   border-bottom: 1px solid #dedede;
 }
 .panel-addr .panel-head {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: flex-end;
   padding: 15px;
@@ -453,10 +449,6 @@ export default {
   background-image: url('../../assets/images/card-small.jpg');
 }
 .card-imgs {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 }
 .card-imgs .imgs-item {

@@ -400,10 +400,6 @@ export default {
   font-size: 13px;
 }
 .box-block {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   align-items: center;
@@ -470,10 +466,6 @@ export default {
   padding-bottom: 0;
 }
 .panel .panel-head {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   position: relative;
 }
@@ -558,10 +550,6 @@ export default {
   overflow: hidden;
 }
 .box-block {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   align-items: center;

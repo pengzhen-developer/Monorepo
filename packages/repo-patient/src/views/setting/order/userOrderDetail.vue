@@ -366,10 +366,6 @@ export default {
 }
 
 .module .module-body {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
   padding: (20px/2);
@@ -402,10 +398,6 @@ export default {
 }
 
 .dl-packet {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-between;
   align-content: center;
@@ -439,10 +431,6 @@ export default {
   padding-left: (15px/2);
 }
 .ul {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   padding-bottom: 15px;
 }

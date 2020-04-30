@@ -62,7 +62,8 @@
               value="推荐互联网医院"
               style="border-top:10px solid #f5f5f5" />
     <HspPage :items="data.recommendOrgan"
-             :max="2" v-if="data.recommendOrgan.length>0"></HspPage>
+             :max="2"
+             v-if="data.recommendOrgan.length>0"></HspPage>
     <!--    <div style="height: 50px;"></div>-->
   </div>
 </template>
@@ -106,7 +107,7 @@ export default {
   methods: {
     goMenuPage(item, data) {
       //可预约的医院小于3则不跳转
-      if(data.type=='recommendHsp'&&item.length<3){
+      if (data.type == 'recommendHsp' && item.length < 3) {
         return
       }
       let json
@@ -117,7 +118,6 @@ export default {
           break
         case 'appoint':
         case 'recommendHsp':
-          
           // 开通预约的医院列表
           json = peace.util.encode({ doctorTag: item.id, type: data.type })
           this.$router.push(`/hospital/HospitalList/${json}`)
@@ -301,10 +301,6 @@ export default {
 }
 
 .flex {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
 
   .card-simple {
