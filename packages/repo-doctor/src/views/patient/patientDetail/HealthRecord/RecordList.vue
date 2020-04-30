@@ -20,11 +20,15 @@
 </template>
 
 <script>
+  import peace from '@src/library'
   import NoData from '@src/views/components/NoData'
   export default {
     name: "RecordList",
     props: {
-      noDataText: String,
+      noDataText: {
+        type: String,
+        default: '暂无数据'
+      },
       requestData: {
         type: Object,
         default: () => {
@@ -55,18 +59,22 @@
     },
     methods: {
       load() {
+        if (peace.validate.isEmpty(this.requestData)) { return }
         //data 外部传入的请求参数、 request请求函数
         let {data, request} = this.requestData;
         // p、size 为组件内部管理的参数
-        const params = {p: this.pageIndex, size: 10, ...data}
-        request(params).then(res => {
-          if (res.data && res.data.list && Array.isArray(res.data.list)) {
-            this.list = this.list.concat(res.data.list)
-            this.count = res.data.count
-            this.pageIndex = this.pageIndex + 1
-          }
-          this.loading = false
-        })
+        if (request && typeof request == "function") {
+          const params = {p: this.pageIndex, size: 10, ...data}
+          request(params).then(res => {
+            if (res.data && res.data.list && Array.isArray(res.data.list)) {
+              this.list = this.list.concat(res.data.list)
+              this.count = res.data.count
+              this.pageIndex = this.pageIndex + 1
+            }
+            this.loading = false
+          })
+        }
+
       }
     }
   }

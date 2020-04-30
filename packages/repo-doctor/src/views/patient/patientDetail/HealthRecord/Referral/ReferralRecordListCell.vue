@@ -51,7 +51,10 @@ import {
 import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
 export default {
   props: {
-    item: undefined,
+    item: {
+      type: Object,
+      require: true,
+    },
     type: String
   },
   data() {
@@ -83,7 +86,6 @@ export default {
         referral_no: this.item.referralNo,
         referral_type: this.type
       }
-
       peace.service.inquiry.referralDocPc(params).then(res => {
         this.dialog.data = res.data
       })

@@ -353,6 +353,18 @@ export function offlineAddConsult(params) {
 }
 
 
+/**
+ * 获取 【获取方案库列表接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getFollowUpSchemeList(params) {
+  const getFollowUpSchemeList = 'client/v1/followup/scheme'
+
+  return peace.http.post(getFollowUpSchemeList, params)
+}
 
 
 
@@ -384,6 +396,7 @@ export default {
     /** 会诊列表 */
     getConsultRecordList,
     /** 发起会诊 */
-    offlineAddConsult
-
+    offlineAddConsult,
+    /** 随访方案库列表 */
+    getFollowUpSchemeList,
 }

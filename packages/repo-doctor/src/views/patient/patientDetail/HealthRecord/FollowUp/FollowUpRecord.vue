@@ -6,25 +6,28 @@
                 <el-radio-button label="in">随访记录</el-radio-button>
             </el-radio-group>
         </div>
-
         <div class="layout-content">
             <div class="page">
-                <RecordList :id="params.id"
-                            type="out"
-                            :listType="listType"
-                            v-show="selectIndex === 'out'"></RecordList>
-                <RecordList :id="params.id"
-                            type="in"
-                            :listType="listType"
-                            v-show="selectIndex === 'in'"></RecordList>
+                <RecordList :noDataText="noDataText"
+                            v-slot="item"
+                            v-show="selectIndex === 'out'">
+                    <FollowUpRecordListCell
+                            :item="item"/>
+                </RecordList>
+                <RecordList :noDataText="noDataText"
+                            v-slot="item"
+                            v-show="selectIndex === 'in'">
+                    <FollowUpRecordListCell
+                            :item="item"/>
+                </RecordList>
             </div>
         </div>
-
         <div class="layout-footer"
              v-show="selectIndex === 'out'">
             <div id="line"></div>
-            <el-button @click="startConsult"
-                       type="primary">添加随访方案</el-button>
+            <el-button @click="addFollowUp"
+                       type="primary">添加随访方案
+            </el-button>
         </div>
     </div>
 </template>
@@ -32,22 +35,31 @@
 <script>
   import peace from '@src/library'
   import RecordList from '../RecordList'
+  import FollowUpRecordListCell from "./FollowUpRecordListCell";
+
   export default {
     name: "FollowUpRecord",
     props: {
       params: undefined
     },
     components: {
-      RecordList
+      RecordList,
+      FollowUpRecordListCell
     },
     data() {
       return {
         selectIndex: 'out',
-        listType: peace.type.HEALTH_RECORD.ACTION_TYPE.随访
+      }
+    },
+    computed: {
+      noDataText() {
+        return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.随访][
+          this.selectIndex
+          ]
       }
     },
     methods: {
-      startConsult() {
+      addFollowUp() {
         $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案)
       }
     }
