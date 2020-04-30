@@ -115,7 +115,8 @@
           </template>
 
           <!-- 转诊单 -->
-          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单||
+          getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊卡片">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
