@@ -243,8 +243,8 @@ export default {
           $peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
           }).catch(err => {
-            console.log('播放对方的声音失败')
-            console.error(err)
+            // console.log('播放对方的声音失败')
+            // console.error(err)
           })
         }
 

@@ -432,7 +432,7 @@ export default {
       this.drug.visible = true
 
       this.$nextTick(function() {
-        console.log(this.$refs)
+        // console.log(this.$refs)
       })
     },
     //清空药品信息

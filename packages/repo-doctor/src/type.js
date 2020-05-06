@@ -236,7 +236,6 @@ export const HEALTH_RECORD = {
     发起转诊: '6',
     发起会诊: '7',
     添加随访方案: '8',
-    新建自定义方案: '9',
   },
   EMPTY_TEXT: {
     '1': {

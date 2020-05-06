@@ -589,7 +589,7 @@ export default {
             params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
-          console.log(params)
+          // console.log(params)
           peace.service.inquiry.addCase(params).then(res => {
             $peace.util.alert(res.msg)
 
@@ -668,7 +668,7 @@ export default {
       } else if (this.dialog.title === '疾病诊断') {
         this.medical.model.diagnose = [...this.dialog.chooseData]
       }
-      console.log(this.medical.model.diagnose)
+      // console.log(this.medical.model.diagnose)
       this.dialog.visible = false
     },
 
