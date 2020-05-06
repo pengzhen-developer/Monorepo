@@ -475,7 +475,8 @@ export default {
         }
         if (this.order.ords.length > 0) {
           this.order.ords.map((item, index) => {
-            if (item.ServiceStates == 3 && this.PickUpCode) {
+            /**拼接 运单编号 */
+            if (item.ServiceStates == 3 && this.showTrackingNumber) {
               return this.order.ords.splice(index, 1, item, { CreateTime: this.order.PickUpCode, ServiceStates: 9 })
             }
           })
