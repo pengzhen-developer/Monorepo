@@ -110,7 +110,7 @@ export default {
 
   methods: {
     getIllnessHistoryCommonly() {
-      const params = { type: '1', isCommon: '1' }
+      const params = { type: '1', isCommon: '1', methodType: 1 }
 
       return peace.service.inquiry.searchIllInfo(params).then(res => {
         this.confirmIllnessCommonly = res.data.map(item => {
@@ -146,7 +146,8 @@ export default {
       }
       const params = {
         keyword: this.searchIllnessHistory,
-        type: '3'
+        type: '3',
+        methodType: 1
       }
       peace.service.inquiry.searchIllInfo(params).then(res => {
         this.confirmIllnessList = (res.data && res.data.length
