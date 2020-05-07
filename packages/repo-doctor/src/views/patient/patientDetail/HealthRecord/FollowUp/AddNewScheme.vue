@@ -155,7 +155,7 @@ export default {
     },
     save() {
       //提交自定义随访方案
-      this.$refs.form.validate((valid, obj) => {
+      this.$refs.form.validate((valid, validObj) => {
         if (valid) {
           const tmp = [...this.model.list]
           //转换JSON
@@ -177,8 +177,17 @@ export default {
             this.$emit('updateList')
           })
         } else {
-          //根据 obj 获取到el-input的 field
-          const refName = obj[Object.keys(obj)[0]][0].field
+          // 根据 validObj 结构获取到 el-input 的 ref
+          // 当验证失败，validObj 结构为：
+          // validObj 的 key 则是验证失败的组件 ref name
+          // {
+          //   'list[0].content': [{ message: '请输入医嘱内容', field: 'list[0].content' }],
+          //   'projectName': [{ message: '请输入方案名称', field: 'projectName' }]
+          // }
+
+          console.log(this)
+          const refName = Object.keys(validObj)[0]
+
           if ($peace.validate.isEmpty(this.model.projectName)) {
             // 如果方案名称为空、获取Dom的方式和其他的不一样
             // 造成不同的原因是因为 rules: 中的层级

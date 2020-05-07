@@ -12,7 +12,9 @@ const install = async () => {
   const vueAppInstance = await Boot.install()
 
   // Set Prototype
-  Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
+  Object.setPrototypeOf
+    ? Object.setPrototypeOf($peace, vueAppInstance)
+    : ($peace.__proto__ = vueAppInstance)
 }
 
 install()

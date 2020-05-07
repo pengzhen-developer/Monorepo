@@ -379,6 +379,19 @@ export function AddFollowUpScheme(params) {
   })
 }
 
+/**
+ * 【问询列表接口 咨询列表接口】
+ *
+ * @export
+ * @param {*} params
+ *  tag: 咨询 ：inquiry 问询：follow
+ * @returns
+ */
+export function getPatientInquiryList(params) {
+  const getPatientInquiryList = 'client/v1/inquiry/getPatientInquiryListByPc'
+  return peace.http.post(getPatientInquiryList, params)
+}
+
 export default {
   /** 获取患者家人列表 */
   getFamilyList,
@@ -409,5 +422,7 @@ export default {
   /** 随访方案库列表 */
   getFollowUpSchemeList,
   /** 保存医嘱信息接口 */
-  AddFollowUpScheme
+  AddFollowUpScheme,
+  /** 咨询记录、问询记录列表接口 */
+  getPatientInquiryList
 }

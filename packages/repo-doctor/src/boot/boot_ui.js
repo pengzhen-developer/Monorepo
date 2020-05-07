@@ -23,18 +23,27 @@
  *          ],
  *
  */
-
+// ElementUI
 import ElementUI from 'element-ui'
 import './boot_ui_element-theme/default/theme/index.css'
 import './boot_ui_element-theme/default/theme/element-fix.scss'
 
+// Viewer
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
+
 export default ({ Vue }) => {
   Vue.use(ElementUI, { size: 'mini' })
 
+  Vue.use(Viewer, {
+    defaultOptions: {
+      zIndex: 9999
+    }
+  })
+
   console.log(
-    `%c ${'UI.ElementUI'} %c ${ElementUI.version} %c`,
+    `%c ${'UI'} %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'
   )
 }
