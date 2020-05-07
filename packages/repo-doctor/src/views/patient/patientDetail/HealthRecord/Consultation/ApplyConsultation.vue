@@ -1,69 +1,83 @@
 <template>
   <div>
-    <el-form :model="view.model"
-             :rules="view.rules"
-             label-position="left"
-             label-width="110px"
-             ref="form">
+    <el-form
+      :model="view.model"
+      :rules="view.rules"
+      label-position="left"
+      label-width="110px"
+      ref="form"
+    >
       <el-row>
         <el-form-item label="会诊患者">
           <span slot="label">会诊患者</span>
-          <span class="patientStyle">{{ params.familyInfo.name}} {{ params.familyInfo.sex}}
-            {{ params.familyInfo.age}}岁</span>
+          <span class="patientStyle"
+            >{{ params.familyInfo.name }} {{ params.familyInfo.sex }}
+            {{ params.familyInfo.age }}岁</span
+          >
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="初步诊断"
-                      prop="diagnose">
+        <el-form-item label="初步诊断" prop="diagnose">
           <span slot="label">初步诊断</span>
-          <el-button @click="choseDiagnose"
-                     style="min-width: 30px; text-decoration-line: underline;"
-                     type="text"
-                     v-show="!view.model.diagnose || view.model.diagnose.length == 0">请选择
+          <el-button
+            @click="choseDiagnose"
+            style="min-width: 30px; text-decoration-line: underline;"
+            type="text"
+            v-show="!view.model.diagnose || view.model.diagnose.length == 0"
+            >请选择
           </el-button>
 
-          <div class="diagnoseStyle"
-               v-if="view.model.diagnose && view.model.diagnose.length > 0">
+          <div class="diagnoseStyle" v-if="view.model.diagnose && view.model.diagnose.length > 0">
             <div class="diagnoseStyleTop">
-              <el-tag :key="item.id"
-                      class="tag"
-                      type="info"
-                      v-for="item in view.model.diagnose">{{ item.name }}</el-tag>
+              <el-tag :key="item.id" class="tag" type="info" v-for="item in view.model.diagnose">{{
+                item.name
+              }}</el-tag>
             </div>
-            <el-button @click="changeDialog"
-                       style="width: 30px; text-decoration-line: underline;"
-                       type="text">修改</el-button>
+            <el-button
+              @click="changeDialog"
+              style="width: 30px; text-decoration-line: underline;"
+              type="text"
+              >修改</el-button
+            >
           </div>
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
-        <el-form-item label="会诊医生"
-                      prop="doctorInfo">
+        <el-form-item label="会诊医生" prop="doctorInfo">
           <span slot="label">会诊医生</span>
-          <el-button @click="choseTransfer"
-                     style="min-width: auto; text-decoration-line: underline;"
-                     type="text"
-                     v-show="!view.model.doctorInfo">请选择</el-button>
+          <el-button
+            @click="choseTransfer"
+            style="min-width: auto; text-decoration-line: underline;"
+            type="text"
+            v-show="!view.model.doctorInfo"
+            >请选择</el-button
+          >
           <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
               <div class="topLine">
                 <div>
-                  <img :src="view.model.doctorInfo.photoDoc"
-                       style="width: 40px; height: 40px; border-radius: 50%;" />
-                  <span
-                        style="font-size:16px; font-weight:700;">{{view.model.doctorInfo.name }}</span>
-                  <span>{{view.model.doctorInfo.doctor_title }}</span>
+                  <img
+                    :src="view.model.doctorInfo.photoDoc"
+                    style="width: 40px; height: 40px; border-radius: 50%;"
+                  />
+                  <span style="font-size:16px; font-weight:700;">{{
+                    view.model.doctorInfo.name
+                  }}</span>
+                  <span>{{ view.model.doctorInfo.doctor_title }}</span>
                 </div>
                 <div>
-                  <el-button @click="choseTransfer"
-                             style="min-width: auto; text-decoration-line: underline;"
-                             type="text"
-                             v-show="view.model.doctorInfo">修改</el-button>
+                  <el-button
+                    @click="choseTransfer"
+                    style="min-width: auto; text-decoration-line: underline;"
+                    type="text"
+                    v-show="view.model.doctorInfo"
+                    >修改</el-button
+                  >
                 </div>
               </div>
               <div>
-                <span>{{view.model.doctorInfo.netdept_child }}</span>
-                <span>{{view.model.doctorInfo.netHospital_name }}</span>
+                <span>{{ view.model.doctorInfo.netdept_child }}</span>
+                <span>{{ view.model.doctorInfo.netHospital_name }}</span>
               </div>
             </div>
           </template>
@@ -71,130 +85,132 @@
       </el-row>
 
       <el-row>
-        <el-form-item label="会诊说明"
-                      prop="consultExplain">
+        <el-form-item label="会诊说明" prop="consultExplain">
           <span slot="label">会诊说明</span>
-          <el-input :rows="5"
-                    maxlength="500"
-                    placeholder="请输入会诊说明"
-                    type="textarea"
-                    show-word-limit
-                    v-model.trim="view.model.consultExplain"></el-input>
+          <el-input
+            :rows="5"
+            maxlength="500"
+            placeholder="请输入会诊说明"
+            type="textarea"
+            show-word-limit
+            v-model.trim="view.model.consultExplain"
+          ></el-input>
         </el-form-item>
       </el-row>
 
       <el-row>
-        <el-form-item label="期望会诊时间"
-                      prop="expectDate"
-                      style="display: inline-block;">
+        <el-form-item label="期望会诊时间" prop="expectDate" style="display: inline-block;">
           <span slot="label">期望会诊时间</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsDate"
-                          placeholder
-                          style="width: 145px;"
-                          v-model="view.model.expectDate"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker
+            :picker-options="view.rules.pickerOptionsDate"
+            placeholder
+            style="width: 145px;"
+            v-model="view.model.expectDate"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item label
-                      label-width="0"
-                      prop="expectTime"
-                      style="display: inline-block; ">
-          <el-time-select :picker-options="view.rules.pickerOptionsTime"
-                          placeholder
-                          style="width: 105px; margin-left: 10px;"
-                          v-model="view.model.expectTime"
-                          value-format="HH:mm"></el-time-select>
+        <el-form-item label label-width="0" prop="expectTime" style="display: inline-block; ">
+          <el-time-select
+            :picker-options="view.rules.pickerOptionsTime"
+            placeholder
+            style="width: 105px; margin-left: 10px;"
+            v-model="view.model.expectTime"
+            value-format="HH:mm"
+          ></el-time-select>
         </el-form-item>
       </el-row>
 
       <el-row style="text-align: center;">
-        <el-button style="width: 140px; margin-top: 50px;"
-                   @click="sendTransfer"
-                   type="primary">提交</el-button>
+        <el-button style="width: 140px; margin-top: 50px;" @click="sendTransfer" type="primary"
+          >提交</el-button
+        >
       </el-row>
-
     </el-form>
 
-    <peace-dialog :append-to-body="true"
-                  :visible.sync="dialog.visible"
-                  title="选择会诊医生"
-                  width="700px">
+    <peace-dialog
+      :append-to-body="true"
+      :visible.sync="dialog.visible"
+      title="选择会诊医生"
+      width="700px"
+    >
       <div>
-        <el-input clearable
-                  placeholder="请输入医院或医生姓名"
-                  style="width: 320px; margin-right: 40px;"
-                  v-model="dialog.model.name"></el-input>
-        <el-button @click="get"
-                   round
-                   type="primary">查询</el-button>
+        <el-input
+          clearable
+          placeholder="请输入医院或医生姓名"
+          style="width: 320px; margin-right: 40px;"
+          v-model="dialog.model.name"
+        ></el-input>
+        <el-button @click="get" round type="primary">查询</el-button>
       </div>
       <hr />
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="医生头像"
-                            prop="name"
-                            width="100px">
+      <peace-table pagination ref="table">
+        <peace-table-column label="医生头像" prop="name" width="100px">
           <template slot-scope="scope">
-            <img :src="scope.row.photoDoc"
-                 style="width: 40px; height: 40px; border-radius: 50%;" />
+            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
           </template>
         </peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="医生姓名"
-                            prop="name"
-                            width="100px"></peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="职称"
-                            prop="doctor_title"
-                            width="100px"></peace-table-column>
-        <peace-table-column label="科室"
-                            prop="netdept_child"
-                            width="100px"></peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="医院"
-                            prop="netHospital_name"></peace-table-column>
-        <peace-table-column fixed="right"
-                            label="操作"
-                            width="120px">
+        <peace-table-column
+          align="left"
+          header-align="left"
+          label="医生姓名"
+          prop="name"
+          width="100px"
+        ></peace-table-column>
+        <peace-table-column
+          align="left"
+          header-align="left"
+          label="职称"
+          prop="doctor_title"
+          width="100px"
+        ></peace-table-column>
+        <peace-table-column label="科室" prop="netdept_child" width="100px"></peace-table-column>
+        <peace-table-column
+          align="left"
+          header-align="left"
+          label="医院"
+          prop="netHospital_name"
+        ></peace-table-column>
+        <peace-table-column fixed="right" label="操作" width="120px">
           <template slot-scope="scope">
-            <el-button @click="chose(scope.row)"
-                       type="text">选择</el-button>
+            <el-button @click="chose(scope.row)" type="text">选择</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </peace-dialog>
 
-    <peace-dialog :append-to-body="true"
-                  title="初步诊断"
-                  :visible.sync="dialog.diagnoseVisible">
+    <peace-dialog :append-to-body="true" title="初步诊断" :visible.sync="dialog.diagnoseVisible">
       <div style="margin-bottom: 10px">
-        <el-select :remote-method="getPresent"
-                   @change="chooseItem"
-                   allow-create
-                   filterable
-                   placeholder="请输入初步诊断"
-                   remote
-                   style="width: 100%;"
-                   v-model="dialog.chooseItem">
-          <el-option :key="item.id"
-                     :label="item.name"
-                     :value="item.name"
-                     v-for="item in dialog.source.present_history"></el-option>
+        <el-select
+          :remote-method="getPresent"
+          @change="chooseItem"
+          allow-create
+          filterable
+          placeholder="请输入初步诊断"
+          remote
+          style="width: 100%;"
+          v-model="dialog.chooseItem"
+        >
+          <el-option
+            :key="item.id"
+            :label="item.name"
+            :value="item.name"
+            v-for="item in dialog.source.present_history"
+          ></el-option>
         </el-select>
       </div>
 
-      <div style="margin: 10px 0;"
-           v-if="dialog.chooseData.length > 0">
+      <div style="margin: 10px 0;" v-if="dialog.chooseData.length > 0">
         <p>已选诊断</p>
 
         <div style="margin: 10px 0;">
-          <el-tag :key="item.id"
-                  @close="closeItem(item)"
-                  closable
-                  style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                  v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
+          <el-tag
+            :key="item.id"
+            @close="closeItem(item)"
+            closable
+            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+            v-for="item in dialog.chooseData"
+            >{{ item.name }}</el-tag
+          >
         </div>
       </div>
 
@@ -202,18 +218,24 @@
         <p>常见诊断</p>
 
         <div style="margin: 10px 0;">
-          <el-tag :key="item.id"
-                  :type="dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
-                  @click="chooseItem(item)"
-                  style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                  v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
+          <el-tag
+            :key="item.id"
+            :type="
+              dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
+                ? 'info'
+                : 'primary'
+            "
+            @click="chooseItem(item)"
+            style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+            v-for="item in dialog.source.IllnessList"
+            >{{ item.name }}</el-tag
+          >
         </div>
       </div>
 
       <div style="margin-bottom: 10px; text-align: center;">
         <el-button @click="dialog.diagnoseVisible = false">取消</el-button>
-        <el-button @click="saveItem"
-                   type="primary">保存</el-button>
+        <el-button @click="saveItem" type="primary">保存</el-button>
       </div>
     </peace-dialog>
   </div>
@@ -504,4 +526,3 @@ export default {
   }
 }
 </style>
-

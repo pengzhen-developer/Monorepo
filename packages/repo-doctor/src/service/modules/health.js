@@ -288,7 +288,7 @@ export function getOneRecord(params) {
     "param": null
 }
  */
-export function consultDetail({dataNo}) {
+export function consultDetail({ dataNo }) {
   const params = {
     dataNo
   }
@@ -296,7 +296,6 @@ export function consultDetail({dataNo}) {
 
   return peace.http.post(path, params)
 }
-
 
 /**
  * 获取 【转诊记录列表接口】
@@ -310,7 +309,6 @@ export function getReferralRecordList(params) {
 
   return peace.http.post(getReferralRecordList, params)
 }
-
 
 /**
  * 【线下转诊提交接口】
@@ -338,7 +336,6 @@ export function getConsultRecordList(params) {
   return peace.http.post(getConsultRecordList, params)
 }
 
-
 /**
  * 【会诊提交接口】
  *
@@ -351,7 +348,6 @@ export function offlineAddConsult(params) {
 
   return peace.http.post(offlineAddConsult, params)
 }
-
 
 /**
  * 获取 【获取方案库列表接口】
@@ -376,9 +372,12 @@ export function getFollowUpSchemeList(params) {
 export function AddFollowUpScheme(params) {
   const addFollowUpScheme = 'client/v1/followup/addScenario'
 
-  return peace.http.post(addFollowUpScheme, params)
+  return peace.http.post(addFollowUpScheme, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
-
 
 export default {
   /** 获取患者家人列表 */
@@ -410,5 +409,5 @@ export default {
   /** 随访方案库列表 */
   getFollowUpSchemeList,
   /** 保存医嘱信息接口 */
-  AddFollowUpScheme,
+  AddFollowUpScheme
 }

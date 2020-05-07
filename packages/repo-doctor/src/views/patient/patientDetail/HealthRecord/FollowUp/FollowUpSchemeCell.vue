@@ -1,12 +1,12 @@
 <template>
   <div>
     <q-item clickable v-ripple @click="selectScheme" class="list-item">
-      <div style="display: flex">
-        <span class="item-title">{{ item.schemeTitle }}</span>
+      <div class="row q-mr-lg">
+        <span class="item-title ellipsis">{{ item.schemeTitle }}</span>
         <div class="custom-tag" v-show="item.schemeType === 1">自定义</div>
       </div>
       <div style="display: flex; align-items: center">
-        <span class="accessory-view">未选用</span>
+        <span class="accessory-view ellipsis">未选用</span>
         <i class="el-icon-arrow-right"></i>
       </div>
     </q-item>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "FollowUpSchemeCell",
+  name: 'FollowUpSchemeCell',
   props: {
     item: {
       id: {
@@ -28,16 +28,16 @@ export default {
       },
       schemeTitle: {
         type: String,
-        default: ""
+        default: ''
       }
     }
   },
   methods: {
     selectScheme() {
-      $peace.util.info("暂未开通");
+      $peace.util.info('暂未开通')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -66,7 +66,7 @@ export default {
     border-radius: 3px;
     font-size: 14px;
     font-weight: 400;
-    color: rgba(0, 198, 174, 1);
+    color: $--color-primary;
     line-height: 20px;
     text-align: center;
   }

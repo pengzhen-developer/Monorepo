@@ -113,7 +113,7 @@ export function getPrescripInfo(params) {
  * @returns
  */
 export function getConsultPrescripList(params) {
-  const getConsultPrescripList = 'client/v1/Consult/getConsultPrescripList'
+  const getConsultPrescripList = 'client/v1/Consultation/getConsultPrescripList'
 
   return peace.http.post(getConsultPrescripList, params)
 }

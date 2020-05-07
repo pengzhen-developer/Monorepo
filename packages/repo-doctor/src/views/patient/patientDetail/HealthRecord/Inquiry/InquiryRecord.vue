@@ -13,24 +13,24 @@
           :noDataText="noDataText"
           :request-data="outRequestData"
           v-slot="item"
-          v-show="selectIndex === 'out'"
+          v-show="selectIndex === 'inquiry'"
         >
-          <ReferralRecordCell type="out" :item="item" />
+          <InquiryRecordListCell type="inquiry" :item="item" />
         </RecordList>
         <RecordList
           :noDataText="noDataText"
           :request-data="inRequestData"
           v-slot="item"
-          v-show="selectIndex === 'in'"
+          v-show="selectIndex === 'followUp'"
         >
-          <ReferralRecordCell type="in" :item="item" />
+          <InquiryRecordListCell type="followUp" :item="item" />
         </RecordList>
       </div>
     </div>
 
-    <div class="layout-footer full-width" v-show="selectIndex === 'out'">
+    <div class="layout-footer full-width" v-show="selectIndex === 'inquiry'">
       <q-separator inset class="q-mb-md" />
-      <el-button @click="startReferral" type="primary">发起转诊 </el-button>
+      <el-button @click="sendMessage" type="primary">发送信息 </el-button>
     </div>
   </div>
 </template>
@@ -38,19 +38,20 @@
 <script>
 import peace from '@src/library'
 import RecordList from '../RecordList'
-import ReferralRecordCell from './ReferralRecordListCell'
+import InquiryRecordListCell from './InquiryRecordListCell'
 
 export default {
+  name: 'InquiryRecord',
   props: {
     params: undefined
   },
   components: {
     RecordList,
-    ReferralRecordCell
+    InquiryRecordListCell
   },
   data() {
     return {
-      selectIndex: 'out',
+      selectIndex: 'inquiry',
       outRequestData: {
         request: peace.service.health.getReferralRecordList,
         data: {
@@ -71,13 +72,13 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][
         this.selectIndex
       ]
     }
   },
   methods: {
-    startReferral() {
+    sendMessage() {
       $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊)
     }
   }
