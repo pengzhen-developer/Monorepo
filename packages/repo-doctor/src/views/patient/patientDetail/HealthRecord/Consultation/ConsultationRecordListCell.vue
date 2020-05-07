@@ -16,21 +16,11 @@
       <div class="item-content">
         <div class="info-row">
           <div class="info-row-label">
-            <<<<<<<
-            HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ConsultRecordListCell.vue
             {{ type === 'out' ? '会诊医生' : '申请医生' }}
           </div>
           <div class="info-row-content">
             <b>{{ item.doctorName + ' ' + item.doctorTitle }}</b> <br />
             {{ item.hospitalName + ' ' + item.deptName }}
-            =======
-            {{ type === 'out' ? '会诊医生' : '申请医生' }}
-          </div>
-          <div class="info-row-content">
-            <b>{{ item.doctorName + ' ' + item.doctorTitle }}</b> <br />
-            {{ item.hospitalName + ' ' + item.deptName }}
-            >>>>>>>
-            feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ConsultationRecordListCell.vue
           </div>
         </div>
         <div class="info-row">

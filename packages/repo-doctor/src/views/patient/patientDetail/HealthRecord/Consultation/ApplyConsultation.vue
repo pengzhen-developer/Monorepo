@@ -26,27 +26,11 @@
             v-show="!view.model.diagnose || view.model.diagnose.length == 0"
             >请选择
           </el-button>
-
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-          <div
-            class="diagnoseStyle"
-            v-if="view.model.diagnose && view.model.diagnose.length > 0"
-          >
-            <div class="diagnoseStyleTop">
-              <el-tag
-                :key="item.id"
-                class="tag"
-                type="info"
-                v-for="item in view.model.diagnose"
-                >{{ item.name }}</el-tag
-              >
-=======
           <div class="diagnoseStyle" v-if="view.model.diagnose && view.model.diagnose.length > 0">
             <div class="diagnoseStyleTop">
               <el-tag :key="item.id" class="tag" type="info" v-for="item in view.model.diagnose">{{
                 item.name
               }}</el-tag>
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
             </div>
             <el-button
               @click="changeDialog"
@@ -114,15 +98,7 @@
       </el-row>
 
       <el-row>
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-        <el-form-item
-          label="期望会诊时间"
-          prop="expectDate"
-          style="display: inline-block;"
-        >
-=======
         <el-form-item label="期望会诊时间" prop="expectDate" style="display: inline-block;">
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           <span slot="label">期望会诊时间</span>
           <el-date-picker
             :picker-options="view.rules.pickerOptionsDate"
@@ -132,16 +108,7 @@
             value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-        <el-form-item
-          label
-          label-width="0"
-          prop="expectTime"
-          style="display: inline-block; "
-        >
-=======
         <el-form-item label label-width="0" prop="expectTime" style="display: inline-block; ">
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           <el-time-select
             :picker-options="view.rules.pickerOptionsTime"
             placeholder
@@ -153,14 +120,7 @@
       </el-row>
 
       <el-row style="text-align: center;">
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-        <el-button
-          style="width: 140px; margin-top: 50px;"
-          @click="sendTransfer"
-          type="primary"
-=======
         <el-button style="width: 140px; margin-top: 50px;" @click="sendTransfer" type="primary"
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           >提交</el-button
         >
       </el-row>
@@ -185,14 +145,7 @@
       <peace-table pagination ref="table">
         <peace-table-column label="医生头像" prop="name" width="100px">
           <template slot-scope="scope">
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-            <img
-              :src="scope.row.photoDoc"
-              style="width: 40px; height: 40px; border-radius: 50%;"
-            />
-=======
             <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           </template>
         </peace-table-column>
         <peace-table-column
@@ -209,15 +162,7 @@
           prop="doctor_title"
           width="100px"
         ></peace-table-column>
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-        <peace-table-column
-          label="科室"
-          prop="netdept_child"
-          width="100px"
-        ></peace-table-column>
-=======
         <peace-table-column label="科室" prop="netdept_child" width="100px"></peace-table-column>
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
         <peace-table-column
           align="left"
           header-align="left"
@@ -232,15 +177,7 @@
       </peace-table>
     </peace-dialog>
 
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-    <peace-dialog
-      :append-to-body="true"
-      title="初步诊断"
-      :visible.sync="dialog.diagnoseVisible"
-    >
-=======
     <peace-dialog :append-to-body="true" title="初步诊断" :visible.sync="dialog.diagnoseVisible">
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
       <div style="margin-bottom: 10px">
         <el-select
           :remote-method="getPresent"
@@ -283,13 +220,7 @@
           <el-tag
             :key="item.id"
             :type="
-<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
-              dialog.chooseData.findIndex(
-                existItem => existItem.id === item.id
-              ) === -1
-=======
               dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
->>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
                 ? 'info'
                 : 'primary'
             "
@@ -310,7 +241,7 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 export default {
   props: {
@@ -318,8 +249,8 @@ export default {
   },
   created() {
     peace.service.patient.IllnessList().then(res => {
-      this.dialog.source.IllnessList = res.data.list;
-    });
+      this.dialog.source.IllnessList = res.data.list
+    })
   },
 
   data() {
@@ -338,38 +269,28 @@ export default {
         shouldSave: false,
 
         rules: {
-          diagnose: [
-            { required: true, message: "请输入初步诊断", trigger: "change" }
-          ],
-          doctorInfo: [
-            { required: true, message: "请选择会诊医生", trigger: "change" }
-          ],
-          expectDate: [
-            { required: true, message: "请选择期望会诊时间", trigger: "change" }
-          ],
-          expectTime: [
-            { required: true, message: "请选择期望会诊时间", trigger: "change" }
-          ],
-          consultExplain: [
-            { required: true, message: "请输入会诊说明", trigger: "change" }
-          ],
+          diagnose: [{ required: true, message: '请输入初步诊断', trigger: 'change' }],
+          doctorInfo: [{ required: true, message: '请选择会诊医生', trigger: 'change' }],
+          expectDate: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
+          expectTime: [{ required: true, message: '请选择期望会诊时间', trigger: 'change' }],
+          consultExplain: [{ required: true, message: '请输入会诊说明', trigger: 'change' }],
 
           pickerOptionsDate: {
             disabledDate(time) {
               return (
                 time.getTime() <
                 new Date()
-                  .formatDate("yyyy-MM-dd 00:00:00")
+                  .formatDate('yyyy-MM-dd 00:00:00')
                   .toDate()
                   .getTime()
-              );
+              )
             }
           },
 
           pickerOptionsTime: {
-            start: "08:00",
-            step: "00:30",
-            end: "18:00"
+            start: '08:00',
+            step: '00:30',
+            end: '18:00'
           }
         }
       },
@@ -379,7 +300,7 @@ export default {
         // 已选中项
         chooseData: [],
         // 当前选中项
-        chooseItem: "",
+        chooseItem: '',
         // 远程搜素数据源
         source: {
           present_history: [],
@@ -392,88 +313,86 @@ export default {
           name: undefined
         }
       }
-    };
+    }
   },
   methods: {
     get() {
-      const fetch = peace.service.inquiry.referralDocListPc;
+      const fetch = peace.service.inquiry.referralDocListPc
       const params = {
-        sourceAction: "offline",
+        sourceAction: 'offline',
         name: this.dialog.model.name
-      };
+      }
 
       this.$refs.table.loadData({
         fetch,
         params
-      });
+      })
     },
 
     getPresent(query) {
-      if (query !== "" && query.length > 0) {
-        const params = { name: query };
+      if (query !== '' && query.length > 0) {
+        const params = { name: query }
         peace.service.patient.getDiseaseInfo(params).then(res => {
-          this.dialog.source.present_history = res.data.list;
-        });
+          this.dialog.source.present_history = res.data.list
+        })
       } else {
-        this.dialog.source.present_history = [];
+        this.dialog.source.present_history = []
       }
     },
 
     choseTransfer() {
-      this.dialog.visible = true;
+      this.dialog.visible = true
 
       this.$nextTick(function() {
-        this.get();
-      });
+        this.get()
+      })
     },
 
     choseDiagnose() {
-      this.dialog.chooseData = [];
-      this.dialog.diagnoseVisible = true;
+      this.dialog.chooseData = []
+      this.dialog.diagnoseVisible = true
     },
 
     changeDialog() {
-      this.choseDiagnose();
+      this.choseDiagnose()
 
       this.$nextTick(function() {
-        this.dialog.chooseData = [...this.view.model.diagnose];
-      });
+        this.dialog.chooseData = [...this.view.model.diagnose]
+      })
     },
 
     chooseItem(item) {
       if (!item.id) {
         item = {
           name: item
-        };
+        }
       }
       const index = this.dialog.chooseData.findIndex(
         existItem => existItem.id === item.id && existItem.name === item.name
-      );
+      )
       if (index === -1) {
-        this.dialog.chooseData.push(item);
+        this.dialog.chooseData.push(item)
         // 选中后， 清空状态
-        this.dialog.chooseItem = "";
-        this.dialog.source.present_history = [];
+        this.dialog.chooseItem = ''
+        this.dialog.source.present_history = []
       }
-      this.$refs.form.validateField("diagnose");
+      this.$refs.form.validateField('diagnose')
     },
     closeItem(item) {
-      const index = this.dialog.chooseData.findIndex(
-        existItem => existItem === item
-      );
+      const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
       if (index !== -1) {
-        this.dialog.chooseData.splice(index, 1);
+        this.dialog.chooseData.splice(index, 1)
         if (this.dialog.chooseData.length == 0) {
-          this.view.model.diagnose = undefined;
-          this.dialog.chooseItem = "";
+          this.view.model.diagnose = undefined
+          this.dialog.chooseItem = ''
         }
       }
-      this.$refs.form.validateField("diagnose");
+      this.$refs.form.validateField('diagnose')
     },
     saveItem() {
-      this.view.model.diagnose = [...this.dialog.chooseData];
-      this.dialog.diagnoseVisible = false;
-      this.$refs.form.validateField("diagnose");
+      this.view.model.diagnose = [...this.dialog.chooseData]
+      this.dialog.diagnoseVisible = false
+      this.$refs.form.validateField('diagnose')
     },
 
     sendTransfer() {
@@ -481,49 +400,43 @@ export default {
         if (valid) {
           // 验证转诊时间
           if (
-            dayjs(
-              this.view.model.expectDate + " " + this.view.model.expectTime
-            ).toDate() <= new Date()
+            dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <=
+            new Date()
           ) {
-            $peace.util.warning("期望转诊时间不能小于当前时间");
+            $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
           else {
             const tmp =
-              this.view.model.diagnose &&
-              this.view.model.diagnose.map(item => item.name).toString();
+              this.view.model.diagnose && this.view.model.diagnose.map(item => item.name).toString()
 
             const params = {
               toDoctorId: this.view.model.doctorInfo.doctor_id,
               patientNo: this.params.id,
               consultExplain: this.view.model.consultExplain,
-              expectDate:
-                this.view.model.expectDate + " " + this.view.model.expectTime,
-              diagnose: tmp.replace(/,/g, " | ")
-            };
+              expectDate: this.view.model.expectDate + ' ' + this.view.model.expectTime,
+              diagnose: tmp.replace(/,/g, ' | ')
+            }
 
             peace.service.health.offlineAddConsult(params).then(() => {
-              $peace.$emit(
-                "showDrawer",
-                peace.type.HEALTH_RECORD.ACTION_TYPE.会诊
-              );
+              $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.会诊)
 
-              peace.util.alert("发起会诊成功");
-            });
+              peace.util.alert('发起会诊成功')
+            })
           }
         }
-      });
+      })
     },
 
     chose(row) {
-      this.dialog.visible = false;
+      this.dialog.visible = false
 
-      this.view.model.doctorInfo = row;
+      this.view.model.doctorInfo = row
 
-      this.$refs.form.validateField("doctorInfo");
+      this.$refs.form.validateField('doctorInfo')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -558,17 +471,15 @@ export default {
     line-height: 20px;
 
     &:after {
-      content: "：";
+      content: '：';
     }
   }
 
-  /deep/
-    .el-form-item.is-required:not(.is-no-asterisk)
-    > .el-form-item__label:before,
+  /deep/ .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
   .el-form-item.is-required:not(.is-no-asterisk)
     .el-form-item__label-wrap
     > .el-form-item__label:before {
-    content: "";
+    content: '';
     margin: 0;
   }
 

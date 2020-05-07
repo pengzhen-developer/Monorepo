@@ -8,11 +8,7 @@
     style="margin-right: 90px;"
   >
     <span class="title" slot="title">{{ titleStr }}</span>
-    <<<<<<< HEAD
     <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
-    =======
-    <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
-    >>>>>>> feature-新建随访方案
   </el-drawer>
 </template>
 

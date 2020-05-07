@@ -37,9 +37,7 @@
       <el-row>
         <el-form-item label="科别" prop="dep_id">
           <span slot="label">科别</span>
-          <span>{{
-            $store.state.user.userInfo.list.docInfo.netdept_child
-          }}</span>
+          <span>{{ $store.state.user.userInfo.list.docInfo.netdept_child }}</span>
         </el-form-item>
       </el-row>
       <el-row>
@@ -79,10 +77,7 @@
         <el-form-item label="过敏史" prop="allergy_history">
           <span slot="label">过敏史</span>
           <template
-            v-if="
-              medical.model.allergy_history &&
-                medical.model.allergy_history.length > 0
-            "
+            v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0"
           >
             <el-tag
               :key="item.id"
@@ -91,15 +86,11 @@
               v-for="item in medical.model.allergy_history"
               >{{ item.name }}</el-tag
             >
-            <el-button @click="changeDialog('过敏史')" type="text"
-              >修改</el-button
-            >
+            <el-button @click="changeDialog('过敏史')" type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('过敏史')" type="text"
-              >请选择</el-button
-            >
+            <el-button @click="showDialog('过敏史')" type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
@@ -107,12 +98,7 @@
         <el-form-item label="既往史" prop="past_history">
           <span slot="label">既往史</span>
 
-          <template
-            v-if="
-              medical.model.past_history &&
-                medical.model.past_history.length > 0
-            "
-          >
+          <template v-if="medical.model.past_history && medical.model.past_history.length > 0">
             <el-tag
               :key="item.id"
               style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
@@ -120,15 +106,11 @@
               v-for="item in medical.model.past_history"
               >{{ item.name }}</el-tag
             >
-            <el-button @click="changeDialog('既往史')" type="text"
-              >修改</el-button
-            >
+            <el-button @click="changeDialog('既往史')" type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('既往史')" type="text"
-              >请选择</el-button
-            >
+            <el-button @click="showDialog('既往史')" type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
@@ -138,39 +120,23 @@
           <div class="inspect">
             <div class="item">
               <span>体温</span>
-              <el-input
-                placeholder
-                v-model="medical.model.Inspection_index.temperature"
-              ></el-input>
+              <el-input placeholder v-model="medical.model.Inspection_index.temperature"></el-input>
               <span>度</span>
             </div>
             <div class="item">
               <span>体重</span>
-              <el-input
-                placeholder
-                v-model="medical.model.Inspection_index.weight"
-              ></el-input>
+              <el-input placeholder v-model="medical.model.Inspection_index.weight"></el-input>
               <span>kg</span>
             </div>
             <div class="item">
               <span>心率</span>
-              <el-input
-                placeholder
-                v-model="medical.model.Inspection_index.heart_rate"
-              ></el-input>
+              <el-input placeholder v-model="medical.model.Inspection_index.heart_rate"></el-input>
               <span>bpm</span>
             </div>
             <div class="item">
               <span>血压</span>
-              <el-input
-                placeholder
-                v-model="medical.model.blood_pressure_begin"
-              ></el-input
-              >/
-              <el-input
-                placeholder
-                v-model="medical.model.blood_pressure_end"
-              ></el-input>
+              <el-input placeholder v-model="medical.model.blood_pressure_begin"></el-input>/
+              <el-input placeholder v-model="medical.model.blood_pressure_end"></el-input>
               <span>mmHg</span>
             </div>
           </div>
@@ -190,9 +156,7 @@
       <el-row>
         <el-form-item label="诊断" prop="diagnose">
           <span slot="label">诊断</span>
-          <template
-            v-if="medical.model.diagnose && medical.model.diagnose.length > 0"
-          >
+          <template v-if="medical.model.diagnose && medical.model.diagnose.length > 0">
             <el-tag
               :key="item.id"
               style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
@@ -200,15 +164,11 @@
               v-for="item in medical.model.diagnose"
               >{{ item.name }}</el-tag
             >
-            <el-button @click="changeDialog('疾病诊断')" type="text"
-              >修改</el-button
-            >
+            <el-button @click="changeDialog('疾病诊断')" type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('疾病诊断')" type="text"
-              >请选择</el-button
-            >
+            <el-button @click="showDialog('疾病诊断')" type="text">请选择</el-button>
           </template>
         </el-form-item>
       </el-row>
@@ -243,9 +203,7 @@
       <el-row style="text-align: center;">
         <el-form-item label=" ">
           <el-button @click="close">取消</el-button>
-          <el-button @click="saveMedical" type="success" v-show="false"
-            >保存</el-button
-          >
+          <el-button @click="saveMedical" type="success" v-show="false">保存</el-button>
           <el-button @click="sendMedical" type="primary">发送</el-button>
         </el-form-item>
       </el-row>
@@ -336,9 +294,7 @@
             <el-tag
               :key="item.id"
               :type="
-                dialog.chooseData.findIndex(
-                  existItem => existItem.id === item.id
-                ) === -1
+                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
                   ? 'info'
                   : 'primary'
               "
@@ -359,9 +315,7 @@
             <el-tag
               :key="item.id"
               :type="
-                dialog.chooseData.findIndex(
-                  existItem => existItem.id === item.id
-                ) === -1
+                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
                   ? 'info'
                   : 'primary'
               "
@@ -382,9 +336,7 @@
             <el-tag
               :key="item.id"
               :type="
-                dialog.chooseData.findIndex(
-                  existItem => existItem.id === item.id
-                ) === -1
+                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
                   ? 'info'
                   : 'primary'
               "
@@ -406,7 +358,7 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 export default {
   data() {
@@ -417,54 +369,48 @@ export default {
         model: {
           visit_date: new Date().formatDate(),
           dep_id: this.$store.state.user.userInfo.list.docInfo.netdept_childId,
-          base_illness: "",
+          base_illness: '',
           present_history: [],
           allergy_history: [],
           past_history: [],
           diagnose: [],
-          blood_pressure_begin: "",
-          blood_pressure_end: "",
-          summary: "",
+          blood_pressure_begin: '',
+          blood_pressure_end: '',
+          summary: '',
           Inspection_index: {
-            blood_pressure: "",
-            temperature: "",
-            weight: "",
-            heart_rate: "",
-            More: ""
+            blood_pressure: '',
+            temperature: '',
+            weight: '',
+            heart_rate: '',
+            More: ''
           },
-          ALT: "",
-          AST: "",
-          HBV: ""
+          ALT: '',
+          AST: '',
+          HBV: ''
         },
-        type: "",
+        type: '',
 
         rules: {
-          visit_date: [
-            { required: true, message: "请输入就诊时间", trigger: "blur" }
-          ],
-          dep_id: [{ required: true, message: "请输入科别", trigger: "blur" }],
-          base_illness: [
-            { required: true, message: "请输入主诉", trigger: "blur" }
-          ],
-          diagnose: [
-            { required: true, message: "请输入疾病诊断", trigger: "blur" }
-          ]
+          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
+          dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
+          base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
+          diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'blur' }]
         }
       },
       typeOptions: [
-        { value: 1, label: "通用病历模板" },
-        { value: 2, label: "肝病病历模板" }
+        { value: 1, label: '通用病历模板' },
+        { value: 2, label: '肝病病历模板' }
       ],
 
       dialog: {
         visible: false,
 
         // 标题
-        title: "",
+        title: '',
         // 已选中项
         chooseData: [],
         // 当前选中项
-        chooseItem: "",
+        chooseItem: '',
 
         // 远程搜素数据源
         source: {
@@ -479,88 +425,84 @@ export default {
           IllnessList: []
         }
       }
-    };
+    }
   },
 
   watch: {
-    "medical.model.blood_pressure_begin"() {
+    'medical.model.blood_pressure_begin'() {
       this.medical.model.Inspection_index.blood_pressure =
-        this.medical.model.blood_pressure_begin +
-        "/" +
-        this.medical.model.blood_pressure_end;
+        this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     },
-    "medical.model.blood_pressure_end"() {
+    'medical.model.blood_pressure_end'() {
       this.medical.model.Inspection_index.blood_pressure =
-        this.medical.model.blood_pressure_begin +
-        "/" +
-        this.medical.model.blood_pressure_end;
+        this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
     }
   },
 
   created() {
-    this.getOptions();
+    this.getOptions()
     peace.service.patient.allergens().then(res => {
-      this.dialog.source.allergens = res.data.list;
-    });
+      this.dialog.source.allergens = res.data.list
+    })
 
     peace.service.patient.IllnessList().then(res => {
-      this.dialog.source.IllnessList = res.data.list;
-    });
+      this.dialog.source.IllnessList = res.data.list
+    })
 
     peace.service.patient.OldIllnessList().then(res => {
-      this.dialog.source.OldIllnessList = res.data.list;
-    });
+      this.dialog.source.OldIllnessList = res.data.list
+    })
   },
 
   mounted() {},
 
   methods: {
     handleChangeType(val) {
-      if (!val) return;
-      const templateKey = "templateChangeTips";
-      const currentTemplate = peace.cache.get(templateKey);
+      if (!val) return
+      const templateKey = 'templateChangeTips'
+      const currentTemplate = peace.cache.get(templateKey)
       if (currentTemplate !== val) {
-        this.$alert("肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)", "提示", {
-          confirmButtonText: "知道了"
-        });
-        peace.cache.set(templateKey, val);
+        this.$alert('肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)', '提示', {
+          confirmButtonText: '知道了'
+        })
+        peace.cache.set(templateKey, val)
       }
     },
 
     getOptions() {
       peace.service.inquiry.getRecordTemplate().then(res => {
-        const data = res.data.info;
+        const data = res.data.info
 
-        this.typeOptions = data.templateList;
-        this.medical.type = data.choseTemplateId;
-        this.handleChangeType(this.medical.type);
-      });
+        this.typeOptions = data.templateList
+        this.medical.type = data.choseTemplateId
+        this.handleChangeType(this.medical.type)
+      })
     },
 
     getPresent(query) {
-      if (query !== "" && query.length > 0) {
-        const params = { name: query };
+      if (query !== '' && query.length > 0) {
+        const params = { name: query }
         peace.service.patient.getDiseaseInfo(params).then(res => {
-          this.dialog.source.present_history = res.data.list;
-        });
+          this.dialog.source.present_history = res.data.list
+        })
       } else {
-        this.dialog.source.present_history = [];
+        this.dialog.source.present_history = []
       }
     },
 
     getAllergy(query) {
-      if (query !== "" && query.length > 0) {
-        const params = { name: query };
+      if (query !== '' && query.length > 0) {
+        const params = { name: query }
         peace.service.patient.allergenList(params).then(res => {
-          this.dialog.source.allergy_history = res.data.list;
-        });
+          this.dialog.source.allergy_history = res.data.list
+        })
       } else {
-        this.dialog.source.allergy_history = [];
+        this.dialog.source.allergy_history = []
       }
     },
 
     saveMedical() {
-      this.medical.visible = false;
+      this.medical.visible = false
     },
 
     sendMedical() {
@@ -581,55 +523,49 @@ export default {
           // }
           if (
             this.medical.model.Inspection_index.temperature &&
-            !/^\d+(\.\d{1,1})?$/.test(
-              this.medical.model.Inspection_index.temperature
-            )
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)
           ) {
-            $peace.util.warning("请输入正确的体温，最多保留一位小数");
-            return;
+            $peace.util.warning('请输入正确的体温，最多保留一位小数')
+            return
           }
           if (
             this.medical.model.Inspection_index.weight &&
-            !/^\d+(\.\d{1,1})?$/.test(
-              this.medical.model.Inspection_index.weight
-            )
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)
           ) {
-            $peace.util.warning("请输入正确的体重，最多保留一位小数");
-            return;
+            $peace.util.warning('请输入正确的体重，最多保留一位小数')
+            return
           }
           if (
             this.medical.model.Inspection_index.heart_rate &&
-            !/^\d+(\.\d{1,1})?$/.test(
-              this.medical.model.Inspection_index.heart_rate
-            )
+            !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)
           ) {
-            $peace.util.warning("请输入正确的心率，最多保留一位小数");
-            return;
+            $peace.util.warning('请输入正确的心率，最多保留一位小数')
+            return
           }
           if (
             this.medical.model.blood_pressure_begin &&
             !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)
           ) {
-            $peace.util.warning("请输入正确的血压，最多保留一位小数");
-            return;
+            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            return
           }
           if (
             this.medical.model.blood_pressure_end &&
             !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)
           ) {
-            $peace.util.warning("请输入正确的血压，最多保留一位小数");
-            return;
+            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            return
           }
 
           if (
             peace.validate.isEmpty(this.medical.model.blood_pressure_end) ||
             peace.validate.isEmpty(this.medical.model.blood_pressure_begin)
           ) {
-            this.medical.model.Inspection_index.blood_pressure = "";
+            this.medical.model.Inspection_index.blood_pressure = ''
           }
 
-          const alt = this.medical.model.ALT;
-          const ast = this.medical.model.AST;
+          const alt = this.medical.model.ALT
+          const ast = this.medical.model.AST
           // const hbv = this.medical.model.HBV
 
           if (
@@ -637,150 +573,124 @@ export default {
             parseInt(alt) < 0 ||
             parseInt(alt) > 1000
           ) {
-            $peace.util.warning(
-              "请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)"
-            );
-            return;
+            $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
+            return
           }
           if (
             (ast && !/^\d+(\.\d{1,1})?$/.test(ast)) ||
             parseInt(ast) < 0 ||
             parseInt(ast) > 1000
           ) {
-            $peace.util.warning(
-              "请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)"
-            );
-            return;
+            $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
+            return
           }
 
           const params = {
-            inquiry_no: this.$store.getters["inquiry/inquiryInfo"].inquiryNo,
-            patient_id: this.$store.getters["inquiry/patientInfo"].patientId,
-            family_id: this.$store.getters["inquiry/patientInfo"].familyId,
-            patient_name: this.$store.getters["inquiry/patientInfo"].familyName,
-            sex: this.$store.getters["inquiry/patientInfo"].familySex,
-            age: this.$store.getters["inquiry/patientInfo"].familyAge,
-            id_card: this.$store.getters["inquiry/patientInfo"].idCard,
+            inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
+            patient_id: this.$store.getters['inquiry/patientInfo'].patientId,
+            family_id: this.$store.getters['inquiry/patientInfo'].familyId,
+            patient_name: this.$store.getters['inquiry/patientInfo'].familyName,
+            sex: this.$store.getters['inquiry/patientInfo'].familySex,
+            age: this.$store.getters['inquiry/patientInfo'].familyAge,
+            id_card: this.$store.getters['inquiry/patientInfo'].idCard,
 
             ...this.medical.model
-          };
+          }
           // 病历模板
-          const type = this.medical.type;
+          const type = this.medical.type
           if (type) {
-            params.templateId = type;
+            params.templateId = type
           }
 
-          params.Inspection_index = JSON.stringify(params.Inspection_index);
-          params.present_history = params.present_history.toString();
+          params.Inspection_index = JSON.stringify(params.Inspection_index)
+          params.present_history = params.present_history.toString()
           params.allergy_history =
-            params.allergy_history &&
-            params.allergy_history.map(item => item.name).toString();
+            params.allergy_history && params.allergy_history.map(item => item.name).toString()
           params.past_history =
-<<<<<<< HEAD
-            params.past_history &&
-            params.past_history.map(item => item.name).toString();
-          params.diagnose =
-            params.diagnose &&
-            params.diagnose.map(item => item.name).toString();
-          params.diagnose = params.diagnose.replace(/,/g, " | ");
-          console.log(params);
-=======
             params.past_history && params.past_history.map(item => item.name).toString()
           params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
           // console.log(params)
->>>>>>> feature-新建随访方案
           peace.service.inquiry.addCase(params).then(res => {
-            $peace.util.alert(res.msg);
+            $peace.util.alert(res.msg)
 
-            $peace.inquiryComponent.$emit(
-              peace.type.INQUIRY.INQUIRY_ACTION.重置操作
-            );
-          });
+            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+          })
         }
-      });
+      })
     },
 
     showDialog(title) {
-      this.dialog.title = title;
-      this.dialog.chooseData = [];
+      this.dialog.title = title
+      this.dialog.chooseData = []
 
-      this.dialog.visible = true;
+      this.dialog.visible = true
     },
 
     changeDialog(title) {
-      this.showDialog(title);
+      this.showDialog(title)
 
       this.$nextTick(function() {
-        if (title === "过敏史") {
-          this.dialog.chooseData = [...this.medical.model.allergy_history];
-        } else if (title === "既往史") {
-          this.dialog.chooseData = [...this.medical.model.past_history];
-        } else if (title === "疾病诊断") {
-          this.dialog.chooseData = [...this.medical.model.diagnose];
+        if (title === '过敏史') {
+          this.dialog.chooseData = [...this.medical.model.allergy_history]
+        } else if (title === '既往史') {
+          this.dialog.chooseData = [...this.medical.model.past_history]
+        } else if (title === '疾病诊断') {
+          this.dialog.chooseData = [...this.medical.model.diagnose]
         }
-      });
+      })
     },
 
     chooseItem(item) {
       if (!item.id) {
         item = {
           name: item
-        };
+        }
       }
-      if (this.dialog.title === "过敏史") {
-        if (item.name === "无") {
-          this.dialog.chooseData = [];
+      if (this.dialog.title === '过敏史') {
+        if (item.name === '无') {
+          this.dialog.chooseData = []
         } else {
-          const index = this.dialog.chooseData.findIndex(
-            existItem => existItem.name === "无"
-          );
+          const index = this.dialog.chooseData.findIndex(existItem => existItem.name === '无')
 
           if (index !== -1) {
-            this.dialog.chooseData.splice(index, 1);
+            this.dialog.chooseData.splice(index, 1)
           }
         }
       }
 
       const index = this.dialog.chooseData.findIndex(
         existItem => existItem.id === item.id && existItem.name === item.name
-      );
+      )
 
       if (index === -1) {
-        this.dialog.chooseData.push(item);
+        this.dialog.chooseData.push(item)
 
         // 选中后， 清空状态
-        this.dialog.chooseItem = "";
-        this.dialog.source.present_history = [];
-        this.dialog.source.allergy_history = [];
+        this.dialog.chooseItem = ''
+        this.dialog.source.present_history = []
+        this.dialog.source.allergy_history = []
       }
     },
 
     closeItem(item) {
-      const index = this.dialog.chooseData.findIndex(
-        existItem => existItem === item
-      );
+      const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
 
       if (index !== -1) {
-        this.dialog.chooseData.splice(index, 1);
+        this.dialog.chooseData.splice(index, 1)
       }
     },
 
     saveItem() {
-      if (this.dialog.title === "过敏史") {
-        this.medical.model.allergy_history = [...this.dialog.chooseData];
-      } else if (this.dialog.title === "既往史") {
-        this.medical.model.past_history = [...this.dialog.chooseData];
-      } else if (this.dialog.title === "疾病诊断") {
-        this.medical.model.diagnose = [...this.dialog.chooseData];
+      if (this.dialog.title === '过敏史') {
+        this.medical.model.allergy_history = [...this.dialog.chooseData]
+      } else if (this.dialog.title === '既往史') {
+        this.medical.model.past_history = [...this.dialog.chooseData]
+      } else if (this.dialog.title === '疾病诊断') {
+        this.medical.model.diagnose = [...this.dialog.chooseData]
       }
-<<<<<<< HEAD
-      console.log(this.medical.model.diagnose);
-      this.dialog.visible = false;
-=======
       // console.log(this.medical.model.diagnose)
       this.dialog.visible = false
->>>>>>> feature-新建随访方案
     },
 
     close() {
@@ -799,23 +709,19 @@ export default {
         this.medical.model.summary
       ) {
         $peace.util.confirm(
-          "确定要退出病历吗？当前所有数据将会被清除!",
+          '确定要退出病历吗？当前所有数据将会被清除!',
           undefined,
           undefined,
           () => {
-            $peace.inquiryComponent.$emit(
-              peace.type.INQUIRY.INQUIRY_ACTION.重置操作
-            );
+            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
           }
-        );
+        )
       } else {
-        $peace.inquiryComponent.$emit(
-          peace.type.INQUIRY.INQUIRY_ACTION.重置操作
-        );
+        $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

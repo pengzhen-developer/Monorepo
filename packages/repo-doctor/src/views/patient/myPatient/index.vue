@@ -18,60 +18,28 @@
         <el-button @click="updateList" round type="primary">查询</el-button>
       </el-form-item>
     </el-form>
-<<<<<<< HEAD
-    <el-button
-      @click="addPatient"
-      type="primary"
-      icon="el-icon-circle-plus-outline"
-=======
     <el-button @click="addPatient" type="primary" icon="el-icon-circle-plus-outline"
->>>>>>> feature-新建随访方案
       >添加患者</el-button
     >
     <hr />
 
     <peace-table pagination ref="table">
-<<<<<<< HEAD
-      <peace-table-column
-        label="患者姓名"
-        prop="name"
-        width="140"
-      ></peace-table-column>
-=======
       <peace-table-column label="患者姓名" prop="name" width="140"></peace-table-column>
->>>>>>> feature-新建随访方案
       <peace-table-column label="基本信息" width="140">
         <template slot-scope="scope">
           <span>{{ `${scope.row.sex} , ${scope.row.age}岁` }}</span>
         </template>
       </peace-table-column>
-<<<<<<< HEAD
-      <peace-table-column
-        label="手机号码"
-        prop="tel"
-        width="120"
-      ></peace-table-column>
-      <peace-table-column
-        label="疾病标签"
-        min-width="340"
-        show-overflow-tooltip
-      >
-=======
       <peace-table-column label="手机号码" prop="tel" width="120"></peace-table-column>
       <peace-table-column label="疾病标签" min-width="340" show-overflow-tooltip>
->>>>>>> feature-新建随访方案
         <template slot-scope="scope">
-          <span>{{ scope.row.diagnoseInfo.join(",") }}</span>
+          <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
         </template>
       </peace-table-column>
       <peace-table-column
         :formatter="
           (r, c, v) => {
-<<<<<<< HEAD
-            return this.source.group_name.find(item => item.key === v).source;
-=======
             return this.source.group_name.find(item => item.key === v).source
->>>>>>> feature-新建随访方案
           }
         "
         label="患者来源"
@@ -79,13 +47,7 @@
       ></peace-table-column>
       <peace-table-column label="操作">
         <template slot-scope="scope">
-<<<<<<< HEAD
-          <el-button @click="showDetail(scope.row)" type="text"
-            >查看详情</el-button
-          >
-=======
           <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
->>>>>>> feature-新建随访方案
         </template>
       </peace-table-column>
     </peace-table>
@@ -96,23 +58,15 @@
       width="387px"
       title="添加患者"
     >
-<<<<<<< HEAD
-      <AddPatient
-        ref="checkInput"
-        @handleClose="handleClose"
-        v-on:updateList="updateList"
-      >
-=======
       <AddPatient ref="checkInput" @handleClose="handleClose" v-on:updateList="updateList">
->>>>>>> feature-新建随访方案
       </AddPatient>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import peace from "@src/library";
-import AddPatient from "./components/AddPatient";
+import peace from '@src/library'
+import AddPatient from './components/AddPatient'
 export default {
   components: {
     AddPatient
@@ -132,29 +86,29 @@ export default {
       source: {
         group_name: []
       }
-    };
+    }
   },
 
   created() {
     peace.service.patient.getSource().then(res => {
-      this.source.group_name = res.data;
-    });
+      this.source.group_name = res.data
+    })
   },
 
   mounted() {
     this.$nextTick().then(() => {
-      this.get();
-    });
+      this.get()
+    })
   },
 
   methods: {
     addPatient() {
-      this.addPatientDialog.visible = true;
+      this.addPatientDialog.visible = true
     },
     get() {
-      const fetch = peace.service.patient.patientListPc;
-      const params = this.view.model;
-      this.$refs.table.loadData({ fetch, params });
+      const fetch = peace.service.patient.patientListPc
+      const params = this.view.model
+      this.$refs.table.loadData({ fetch, params })
     },
     showDetail(row) {
       const currentMenu = {
@@ -163,39 +117,39 @@ export default {
         closable: true,
         name: row.name,
         title: row.name,
-        path: "/patient/patientDetail/" + row.patientNo
-      };
+        path: '/patient/patientDetail/' + row.patientNo
+      }
 
       // 将当前选中的项，添加到 tab
-      this.$store.commit("layout/pushTab", currentMenu);
+      this.$store.commit('layout/pushTab', currentMenu)
 
       // 选中当前 tab
-      this.$store.commit("layout/selectTab", currentMenu.path);
+      this.$store.commit('layout/selectTab', currentMenu.path)
 
       // 跳转当前路由
-      this.$router.push(currentMenu.path);
+      this.$router.push(currentMenu.path)
     },
     updateList() {
-      const fetch = peace.service.patient.patientListPc;
-      const params = this.view.model;
-      this.$refs.table.reloadData({ fetch, params });
+      const fetch = peace.service.patient.patientListPc
+      const params = this.view.model
+      this.$refs.table.reloadData({ fetch, params })
     },
     handleClose() {
-      const tmp = this.$refs.checkInput.isShouldSave();
+      const tmp = this.$refs.checkInput.isShouldSave()
       if (tmp) {
-        this.$confirm("关闭后将不保存当前内容，是否关闭？")
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            this.$refs.checkInput.$refs.ruleForm.resetFields();
-            this.addPatientDialog.visible = false;
+            this.$refs.checkInput.$refs.ruleForm.resetFields()
+            this.addPatientDialog.visible = false
           })
-          .catch(() => {});
+          .catch(() => {})
       } else {
-        this.$refs.checkInput.$refs.ruleForm.resetFields();
-        this.addPatientDialog.visible = false;
+        this.$refs.checkInput.$refs.ruleForm.resetFields()
+        this.addPatientDialog.visible = false
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -215,7 +169,7 @@ export default {
   display: inline-flex;
 
   &:before {
-    content: "";
+    content: '';
     background: #e7e7e1;
     width: 15px;
     height: 1px;
