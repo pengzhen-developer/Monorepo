@@ -1,4 +1,4 @@
-import peace from "@src/library";
+import peace from '@src/library'
 
 /**
  * 获取患者家人列表
@@ -8,9 +8,9 @@ import peace from "@src/library";
  * @returns
  */
 export function getFamilyList(params) {
-  const getFamilyList = "client/v1/health/getFamilyList";
+  const getFamilyList = 'client/v1/health/getFamilyList'
 
-  return peace.http.post(getFamilyList, params);
+  return peace.http.post(getFamilyList, params)
 }
 
 /**
@@ -21,9 +21,9 @@ export function getFamilyList(params) {
  * @returns
  */
 export function getOneHealth(params) {
-  const getOneHealth = "client/v1/health/getOneHealth";
+  const getOneHealth = 'client/v1/health/getOneHealth'
 
-  return peace.http.post(getOneHealth, params);
+  return peace.http.post(getOneHealth, params)
 }
 
 /**
@@ -34,9 +34,9 @@ export function getOneHealth(params) {
  * @returns
  */
 export function allHealthList(params) {
-  const allHealthList = "client/v1/health/allHealthList";
+  const allHealthList = 'client/v1/health/allHealthList'
 
-  return peace.http.post(allHealthList, params);
+  return peace.http.post(allHealthList, params)
 }
 
 /**
@@ -47,9 +47,9 @@ export function allHealthList(params) {
  * @returns
  */
 export function getOscillogram(params) {
-  const getOscillogram = "client/v1/health/getOscillogram";
+  const getOscillogram = 'client/v1/health/getOscillogram'
 
-  return peace.http.post(getOscillogram, params);
+  return peace.http.post(getOscillogram, params)
 }
 
 /**
@@ -60,9 +60,9 @@ export function getOscillogram(params) {
  * @returns
  */
 export function getWeekList(params) {
-  const getWeekList = "client/v1/health/getWeekList";
+  const getWeekList = 'client/v1/health/getWeekList'
 
-  return peace.http.post(getWeekList, params);
+  return peace.http.post(getWeekList, params)
 }
 
 /**
@@ -73,9 +73,9 @@ export function getWeekList(params) {
  * @returns
  */
 export function getWeekDetail(params) {
-  const getWeekDetail = "client/v1/health/getWeekDetail";
+  const getWeekDetail = 'client/v1/health/getWeekDetail'
 
-  return peace.http.post(getWeekDetail, params);
+  return peace.http.post(getWeekDetail, params)
 }
 
 /**
@@ -86,9 +86,9 @@ export function getWeekDetail(params) {
  * @returns
  */
 export function getOneRecord(params) {
-  const getOneRecord = "client/v1/health/getOneRecord";
+  const getOneRecord = 'client/v1/health/getOneRecord'
 
-  return peace.http.post(getOneRecord, params);
+  return peace.http.post(getOneRecord, params)
 }
 
 /**
@@ -291,10 +291,10 @@ export function getOneRecord(params) {
 export function consultDetail({ dataNo }) {
   const params = {
     dataNo
-  };
-  const path = "client/v1/health/consultDetail";
+  }
+  const path = 'client/v1/health/consultDetail'
 
-  return peace.http.post(path, params);
+  return peace.http.post(path, params)
 }
 
 /**
@@ -305,9 +305,9 @@ export function consultDetail({ dataNo }) {
  * @returns
  */
 export function getReferralRecordList(params) {
-  const getReferralRecordList = "client/v1/patient/DoctorReferralList";
+  const getReferralRecordList = 'client/v1/patient/DoctorReferralList'
 
-  return peace.http.post(getReferralRecordList, params);
+  return peace.http.post(getReferralRecordList, params)
 }
 
 /**
@@ -318,9 +318,9 @@ export function getReferralRecordList(params) {
  * @returns
  */
 export function offlineAddReferral(params) {
-  const offlineAddReferral = "client/v1/inquiry/offlineAddReferral";
+  const offlineAddReferral = 'client/v1/inquiry/offlineAddReferral'
 
-  return peace.http.post(offlineAddReferral, params);
+  return peace.http.post(offlineAddReferral, params)
 }
 
 /**
@@ -331,9 +331,9 @@ export function offlineAddReferral(params) {
  * @returns
  */
 export function getConsultRecordList(params) {
-  const getConsultRecordList = "client/v1/consult/getConsultListByPc";
+  const getConsultRecordList = 'client/v1/consult/getConsultListByPc'
 
-  return peace.http.post(getConsultRecordList, params);
+  return peace.http.post(getConsultRecordList, params)
 }
 
 /**
@@ -344,9 +344,9 @@ export function getConsultRecordList(params) {
  * @returns
  */
 export function offlineAddConsult(params) {
-  const offlineAddConsult = "client/v1/consult/offlineDoApply";
+  const offlineAddConsult = 'client/v1/consult/offlineDoApply'
 
-  return peace.http.post(offlineAddConsult, params);
+  return peace.http.post(offlineAddConsult, params)
 }
 
 /**
@@ -357,9 +357,26 @@ export function offlineAddConsult(params) {
  * @returns
  */
 export function getFollowUpSchemeList(params) {
-  const getFollowUpSchemeList = "client/v1/followup/scheme";
+  const getFollowUpSchemeList = 'client/v1/followup/scheme'
 
-  return peace.http.post(getFollowUpSchemeList, params);
+  return peace.http.post(getFollowUpSchemeList, params)
+}
+
+/**
+ * 【保存医嘱信息接口】
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function AddFollowUpScheme(params) {
+  const addFollowUpScheme = 'client/v1/followup/addScenario'
+
+  return peace.http.post(addFollowUpScheme, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 export default {
@@ -390,5 +407,7 @@ export default {
   /** 发起会诊 */
   offlineAddConsult,
   /** 随访方案库列表 */
-  getFollowUpSchemeList
-};
+  getFollowUpSchemeList,
+  /** 保存医嘱信息接口 */
+  AddFollowUpScheme
+}

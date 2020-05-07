@@ -44,4 +44,51 @@ Number.prototype.formatNum = function(precision = 2, separator) {
   } else {
     return "-";
   }
+<<<<<<< HEAD
 };
+=======
+}
+/**
+ * 数值转换汉字
+ * e.g. const number = 1
+ *     (1).toCN() => "一"
+ *     (11).toCN() => "十一"
+ *     (121).toCN() => "一百二十一"
+ *
+ */
+const CN = [{base: 0, cn: '零'}, {base: 1, cn: '一'}, {base: 1, cn: '二'}, {base: 1, cn: '三'}, {base: 1, cn: '四'}, {base: 1, cn: '五'}, {base: 1, cn: '六'}, {base: 1, cn: '七'}, {base: 1, cn: '八'}, {base: 1, cn: '九'}, {base: 10, cn: '十'}, {base: 100, cn: '百'}, {base: 1000, cn: '千'}, {base: 10000, cn: '万'}, {base: 100000000, cn: '亿'}, {base: 10000000000000000, cn: '兆'}]
+
+Number.prototype.toCN = function (i = CN.length - 1, emitLeadingOne = true) {
+  // 小数部分处理：
+  let deciPos = String(this).indexOf('.')
+  if (deciPos >= 0) {
+    let decimal = String(this).substring(deciPos + 1).replace(/\d/g, d => parseInt(d).toCN())
+    return `${Math.floor(this).toCN()}点${decimal}`
+  }
+
+  // 整数部分处理：
+  if (this < 10) {
+    return CN[this].cn
+  }
+  let a = Math.floor(this / CN[i].base)
+  let b = this % CN[i].base
+  let c = b.toCN(i - 1, emitLeadingOne && a == 0)
+  if (a > 0) {
+    let d = a.toCN()
+    if (emitLeadingOne && i == 10 && a == 1) {
+      d = ''
+    }
+    if (b > 0) {
+      if (String(CN[i].base).length - String(b).length > 1) {
+        return d + CN[i].cn + CN[0].cn + c
+      } else {
+        return d + CN[i].cn + c
+      }
+    } else {
+      return d + CN[i].cn
+    }
+  } else {
+    return c
+  }
+}
+>>>>>>> feature-新建随访方案

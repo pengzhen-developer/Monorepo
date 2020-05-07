@@ -16,24 +16,24 @@
       <div class="item-content">
         <div class="info-row">
           <div class="info-row-label">
-            {{ type === "out" ? "转诊医生" : "申请医生" }}
+            {{ type === 'out' ? '转诊医生' : '申请医生' }}
           </div>
           <div class="info-row-content">
-            <b>{{ item.docName + " " + item.docTitle }}</b> <br />
-            {{ item.netHospitalName + " " + item.netdeptChild }}
+            <b>{{ item.docName + ' ' + item.docTitle }}</b> <br />
+            {{ item.netHospitalName + ' ' + item.netdeptChild }}
           </div>
         </div>
         <div class="info-row">
           <div class="info-row-label">初步诊断</div>
-          <div class="info-row-content">{{ item.diagnose || " " }}</div>
+          <div class="info-row-content">{{ item.diagnose || ' ' }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">转诊说明</div>
-          <div class="info-row-content">{{ item.referralCause || " " }}</div>
+          <div class="info-row-content">{{ item.referralCause || ' ' }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">期望转诊时间</div>
-          <div class="info-row-content">{{ item.expectTime || " " }}</div>
+          <div class="info-row-content">{{ item.expectTime || ' ' }}</div>
         </div>
       </div>
     </div>
@@ -49,15 +49,16 @@
 </template>
 
 <script>
-import peace from "@src/library";
+import peace from '@src/library'
 
 import {
   getReferralStatus,
   getReferralStatusTextBorderColor,
   getReferralStatusBgColor
-} from "@src/views/filters/index";
+} from '@src/views/filters/index'
 
-import TheTransferDetail from "@src/views/record/transfer/TheTransferDetail";
+import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
+
 export default {
   props: {
     item: {
@@ -72,7 +73,7 @@ export default {
         visible: false,
         data: {}
       }
-    };
+    }
   },
   components: {
     TheTransferDetail
@@ -80,27 +81,27 @@ export default {
   filters: { getReferralStatus },
   computed: {
     borderColor() {
-      return getReferralStatusTextBorderColor(this.item.transferStatus);
+      return getReferralStatusTextBorderColor(this.item.transferStatus)
     },
 
     bgColor() {
-      return getReferralStatusBgColor(this.item.transferStatus);
+      return getReferralStatusBgColor(this.item.transferStatus)
     }
   },
   methods: {
     showDetail() {
-      this.dialog.data = undefined;
-      this.dialog.visible = true;
+      this.dialog.data = undefined
+      this.dialog.visible = true
       const params = {
         referral_no: this.item.referralNo,
         referral_type: this.type
-      };
+      }
       peace.service.inquiry.referralDocPc(params).then(res => {
-        this.dialog.data = res.data;
-      });
+        this.dialog.data = res.data
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -115,15 +116,17 @@ export default {
 
     .time-line-time {
       color: rgba(153, 153, 153, 1);
-
+      vertical-align: middle;
+      line-height: 15px;
       &:before {
         display: inline-block;
-        content: "";
+        content: '';
         width: 5px;
         height: 5px;
         background: #00c6ae;
         border-radius: 50%;
         margin: 0 8px 0 0;
+        vertical-align: middle;
       }
     }
 
@@ -147,6 +150,7 @@ export default {
       margin-bottom: 6px;
       font-size: 0;
       display: flex;
+
       &-label,
       &-content {
         font-size: 14px;
@@ -154,13 +158,16 @@ export default {
         display: inline-block;
         vertical-align: middle;
       }
+
       &-label {
         width: 99px;
         color: #666666;
+
         &:after {
-          content: "：";
+          content: '：';
         }
       }
+
       &-content {
         flex: 1;
         word-break: break-all;

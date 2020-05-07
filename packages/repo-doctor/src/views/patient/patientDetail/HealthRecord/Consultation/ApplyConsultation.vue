@@ -27,6 +27,7 @@
             >请选择
           </el-button>
 
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
           <div
             class="diagnoseStyle"
             v-if="view.model.diagnose && view.model.diagnose.length > 0"
@@ -39,6 +40,13 @@
                 v-for="item in view.model.diagnose"
                 >{{ item.name }}</el-tag
               >
+=======
+          <div class="diagnoseStyle" v-if="view.model.diagnose && view.model.diagnose.length > 0">
+            <div class="diagnoseStyleTop">
+              <el-tag :key="item.id" class="tag" type="info" v-for="item in view.model.diagnose">{{
+                item.name
+              }}</el-tag>
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
             </div>
             <el-button
               @click="changeDialog"
@@ -106,11 +114,15 @@
       </el-row>
 
       <el-row>
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
         <el-form-item
           label="期望会诊时间"
           prop="expectDate"
           style="display: inline-block;"
         >
+=======
+        <el-form-item label="期望会诊时间" prop="expectDate" style="display: inline-block;">
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           <span slot="label">期望会诊时间</span>
           <el-date-picker
             :picker-options="view.rules.pickerOptionsDate"
@@ -120,12 +132,16 @@
             value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
         <el-form-item
           label
           label-width="0"
           prop="expectTime"
           style="display: inline-block; "
         >
+=======
+        <el-form-item label label-width="0" prop="expectTime" style="display: inline-block; ">
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           <el-time-select
             :picker-options="view.rules.pickerOptionsTime"
             placeholder
@@ -137,10 +153,14 @@
       </el-row>
 
       <el-row style="text-align: center;">
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
         <el-button
           style="width: 140px; margin-top: 50px;"
           @click="sendTransfer"
           type="primary"
+=======
+        <el-button style="width: 140px; margin-top: 50px;" @click="sendTransfer" type="primary"
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           >提交</el-button
         >
       </el-row>
@@ -165,10 +185,14 @@
       <peace-table pagination ref="table">
         <peace-table-column label="医生头像" prop="name" width="100px">
           <template slot-scope="scope">
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
             <img
               :src="scope.row.photoDoc"
               style="width: 40px; height: 40px; border-radius: 50%;"
             />
+=======
+            <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
           </template>
         </peace-table-column>
         <peace-table-column
@@ -185,11 +209,15 @@
           prop="doctor_title"
           width="100px"
         ></peace-table-column>
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
         <peace-table-column
           label="科室"
           prop="netdept_child"
           width="100px"
         ></peace-table-column>
+=======
+        <peace-table-column label="科室" prop="netdept_child" width="100px"></peace-table-column>
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
         <peace-table-column
           align="left"
           header-align="left"
@@ -204,11 +232,15 @@
       </peace-table>
     </peace-dialog>
 
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
     <peace-dialog
       :append-to-body="true"
       title="初步诊断"
       :visible.sync="dialog.diagnoseVisible"
     >
+=======
+    <peace-dialog :append-to-body="true" title="初步诊断" :visible.sync="dialog.diagnoseVisible">
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
       <div style="margin-bottom: 10px">
         <el-select
           :remote-method="getPresent"
@@ -251,9 +283,13 @@
           <el-tag
             :key="item.id"
             :type="
+<<<<<<< HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ApplyConsult.vue
               dialog.chooseData.findIndex(
                 existItem => existItem.id === item.id
               ) === -1
+=======
+              dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
+>>>>>>> feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ApplyConsultation.vue
                 ? 'info'
                 : 'primary'
             "

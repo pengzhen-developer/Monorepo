@@ -8,22 +8,23 @@
     style="margin-right: 90px;"
   >
     <span class="title" slot="title">{{ titleStr }}</span>
-    <Component
-      ref="checkInput"
-      :params="params"
-      v-bind:is="ComponentInstance"
-    />
+    <<<<<<< HEAD
+    <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
+    =======
+    <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
+    >>>>>>> feature-新建随访方案
   </el-drawer>
 </template>
 
 <script>
-import peace from "@src/library";
-import FollowUpRecord from "./FollowUp/FollowUpRecord";
-import ReferralRecord from "./Referral/ReferralRecord";
-import ApplyReferral from "./Referral/ApplyReferral";
-import ConsultRecord from "./Consult/ConsultRecord";
-import ApplyConsult from "./Consult/ApplyConsult";
-import FollowUpScheme from "./FollowUp/FollowUpScheme";
+import peace from '@src/library'
+import InquiryRecord from './Inquiry/InquiryRecord'
+import FollowUpRecord from './FollowUp/FollowUpRecord'
+import ReferralRecord from './Referral/ReferralRecord'
+import ApplyReferral from './Referral/ApplyReferral'
+import ConsultationRecord from './Consultation/ConsultationRecord'
+import ApplyConsultation from './Consultation/ApplyConsultation'
+import FollowUpScheme from './FollowUp/FollowUpScheme'
 export default {
   props: {
     params: undefined
@@ -32,109 +33,114 @@ export default {
     return {
       drawer: false,
       innerDrawer: false,
-      titleStr: "",
+      titleStr: '',
       ComponentInstance: undefined,
       currentIndex: undefined
-    };
+    }
   },
   methods: {
     show(index) {
-      this.currentIndex = index;
+      this.currentIndex = index
       switch (index) {
         case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
+          {
+            this.ComponentInstance = InquiryRecord
+            this.titleStr = '咨询记录'
+          }
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
         case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
           {
-            this.ComponentInstance = FollowUpRecord;
-            this.titleStr = "随访记录";
+            this.ComponentInstance = FollowUpRecord
+            this.titleStr = '随访记录'
           }
-          break;
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
           {
-            this.ComponentInstance = ReferralRecord;
-            this.titleStr = "转诊记录";
+            this.ComponentInstance = ReferralRecord
+            this.titleStr = '转诊记录'
           }
-          break;
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
           {
-            this.ComponentInstance = ConsultRecord;
-            this.titleStr = "会诊记录";
+            this.ComponentInstance = ConsultationRecord
+            this.titleStr = '会诊记录'
           }
-          break;
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
           {
-            this.ComponentInstance = ApplyReferral;
-            this.titleStr = "发起转诊";
+            this.ComponentInstance = ApplyReferral
+            this.titleStr = '发起转诊'
           }
-          break;
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
           {
-            this.ComponentInstance = ApplyConsult;
-            this.titleStr = "发起会诊";
+            this.ComponentInstance = ApplyConsultation
+            this.titleStr = '发起会诊'
           }
-          break;
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案:
           {
-            this.ComponentInstance = FollowUpScheme;
-            this.titleStr = "随访方案库";
+            this.ComponentInstance = FollowUpScheme
+            this.titleStr = '随访方案库'
           }
-          break;
+          break
       }
 
-      this.drawer = true;
+      this.drawer = true
 
       this.$nextTick(function() {
         setTimeout(() => {
-          this.clearFocus();
-        }, 60);
-      });
+          this.clearFocus()
+        }, 60)
+      })
     },
     clearFocus() {
-      const focusElements = this.$el.querySelectorAll(":focus");
+      const focusElements = this.$el.querySelectorAll(':focus')
       focusElements.forEach(element => {
-        element.blur();
-      });
+        element.blur()
+      })
     },
     isAllEmpty(params) {
       for (var key in params) {
         if (!peace.validate.isEmpty(params[key])) {
-          return false; // 终止程序
+          return false // 终止程序
         }
       }
-      return true;
+      return true
     },
     handleClose(done) {
       if (
         this.ComponentInstance === ApplyReferral &&
         !this.isAllEmpty(this.$refs.checkInput.view.model)
       ) {
-        this.$confirm("关闭后将不保存当前内容，是否关闭？")
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            $peace.$emit("hideDrawer", this.currentIndex);
-            done();
+            $peace.$emit('hideDrawer', this.currentIndex)
+            done()
           })
           .catch(() => {
-            this.clearFocus();
-          });
+            this.clearFocus()
+          })
       } else if (
-        this.ComponentInstance === ApplyConsult &&
+        this.ComponentInstance === ApplyConsultation &&
         !this.isAllEmpty(this.$refs.checkInput.view.model)
       ) {
-        this.$confirm("关闭后将不保存当前内容，是否关闭？")
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            $peace.$emit("hideDrawer", this.currentIndex);
-            done();
+            $peace.$emit('hideDrawer', this.currentIndex)
+            done()
           })
           .catch(() => {
-            this.clearFocus();
-          });
+            this.clearFocus()
+          })
       } else {
-        $peace.$emit("hideDrawer", this.currentIndex);
-        done();
+        $peace.$emit('hideDrawer', this.currentIndex)
+        done()
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

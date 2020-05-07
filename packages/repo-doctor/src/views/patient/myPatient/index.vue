@@ -18,25 +18,34 @@
         <el-button @click="updateList" round type="primary">查询</el-button>
       </el-form-item>
     </el-form>
+<<<<<<< HEAD
     <el-button
       @click="addPatient"
       type="primary"
       icon="el-icon-circle-plus-outline"
+=======
+    <el-button @click="addPatient" type="primary" icon="el-icon-circle-plus-outline"
+>>>>>>> feature-新建随访方案
       >添加患者</el-button
     >
     <hr />
 
     <peace-table pagination ref="table">
+<<<<<<< HEAD
       <peace-table-column
         label="患者姓名"
         prop="name"
         width="140"
       ></peace-table-column>
+=======
+      <peace-table-column label="患者姓名" prop="name" width="140"></peace-table-column>
+>>>>>>> feature-新建随访方案
       <peace-table-column label="基本信息" width="140">
         <template slot-scope="scope">
           <span>{{ `${scope.row.sex} , ${scope.row.age}岁` }}</span>
         </template>
       </peace-table-column>
+<<<<<<< HEAD
       <peace-table-column
         label="手机号码"
         prop="tel"
@@ -47,6 +56,10 @@
         min-width="340"
         show-overflow-tooltip
       >
+=======
+      <peace-table-column label="手机号码" prop="tel" width="120"></peace-table-column>
+      <peace-table-column label="疾病标签" min-width="340" show-overflow-tooltip>
+>>>>>>> feature-新建随访方案
         <template slot-scope="scope">
           <span>{{ scope.row.diagnoseInfo.join(",") }}</span>
         </template>
@@ -54,7 +67,11 @@
       <peace-table-column
         :formatter="
           (r, c, v) => {
+<<<<<<< HEAD
             return this.source.group_name.find(item => item.key === v).source;
+=======
+            return this.source.group_name.find(item => item.key === v).source
+>>>>>>> feature-新建随访方案
           }
         "
         label="患者来源"
@@ -62,9 +79,13 @@
       ></peace-table-column>
       <peace-table-column label="操作">
         <template slot-scope="scope">
+<<<<<<< HEAD
           <el-button @click="showDetail(scope.row)" type="text"
             >查看详情</el-button
           >
+=======
+          <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
+>>>>>>> feature-新建随访方案
         </template>
       </peace-table-column>
     </peace-table>
@@ -75,11 +96,15 @@
       width="387px"
       title="添加患者"
     >
+<<<<<<< HEAD
       <AddPatient
         ref="checkInput"
         @handleClose="handleClose"
         v-on:updateList="updateList"
       >
+=======
+      <AddPatient ref="checkInput" @handleClose="handleClose" v-on:updateList="updateList">
+>>>>>>> feature-新建随访方案
       </AddPatient>
     </peace-dialog>
   </div>

@@ -477,8 +477,13 @@ export default {
       this.drug.visible = true;
 
       this.$nextTick(function() {
+<<<<<<< HEAD
         console.log(this.$refs);
       });
+=======
+        // console.log(this.$refs)
+      })
+>>>>>>> feature-新建随访方案
     },
     //清空药品信息
     resetDrugInfo() {

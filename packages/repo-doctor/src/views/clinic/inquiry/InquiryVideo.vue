@@ -276,9 +276,15 @@ export default {
           $peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
           }).catch(err => {
+<<<<<<< HEAD
             console.log("播放对方的声音失败");
             console.error(err);
           });
+=======
+            // console.log('播放对方的声音失败')
+            // console.error(err)
+          })
+>>>>>>> feature-新建随访方案
         }
 
         // 视频：展示对方的画面

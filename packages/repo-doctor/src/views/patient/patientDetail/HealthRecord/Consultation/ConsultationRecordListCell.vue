@@ -16,24 +16,34 @@
       <div class="item-content">
         <div class="info-row">
           <div class="info-row-label">
-            {{ type === "out" ? "会诊医生" : "申请医生" }}
+            <<<<<<<
+            HEAD:src/views/patient/patientDetail/HealthRecord/Consult/ConsultRecordListCell.vue
+            {{ type === 'out' ? '会诊医生' : '申请医生' }}
           </div>
           <div class="info-row-content">
-            <b>{{ item.doctorName + " " + item.doctorTitle }}</b> <br />
-            {{ item.hospitalName + " " + item.deptName }}
+            <b>{{ item.doctorName + ' ' + item.doctorTitle }}</b> <br />
+            {{ item.hospitalName + ' ' + item.deptName }}
+            =======
+            {{ type === 'out' ? '会诊医生' : '申请医生' }}
+          </div>
+          <div class="info-row-content">
+            <b>{{ item.doctorName + ' ' + item.doctorTitle }}</b> <br />
+            {{ item.hospitalName + ' ' + item.deptName }}
+            >>>>>>>
+            feature-新建随访方案:src/views/patient/patientDetail/HealthRecord/Consultation/ConsultationRecordListCell.vue
           </div>
         </div>
         <div class="info-row">
           <div class="info-row-label">初步诊断</div>
-          <div class="info-row-content">{{ item.disagnose || " " }}</div>
+          <div class="info-row-content">{{ item.disagnose || ' ' }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">会诊说明</div>
-          <div class="info-row-content">{{ item.consultExplain || " " }}</div>
+          <div class="info-row-content">{{ item.consultExplain || ' ' }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">期望会诊时间</div>
-          <div class="info-row-content">{{ item.expectTime || " " }}</div>
+          <div class="info-row-content">{{ item.expectTime || ' ' }}</div>
         </div>
       </div>
     </div>
@@ -53,13 +63,13 @@
 </template>
 
 <script>
-import peace from "@src/library";
-import TheConsultationDetail from "@src/views/record/consultation/TheConsultationDetail";
+import peace from '@src/library'
+import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
 import {
   getConsultationStatus,
   getConsultStatusTextBorderColor,
   getConsultStatusBgColor
-} from "@src/views/filters/index";
+} from '@src/views/filters/index'
 export default {
   props: {
     item: undefined,
@@ -74,31 +84,31 @@ export default {
         visible: false,
         data: {}
       }
-    };
+    }
   },
   filters: { getConsultationStatus },
   computed: {
     borderColor() {
-      return getConsultStatusTextBorderColor(this.item.consultStatus);
+      return getConsultStatusTextBorderColor(this.item.consultStatus)
     },
 
     bgColor() {
-      return getConsultStatusBgColor(this.item.consultStatus);
+      return getConsultStatusBgColor(this.item.consultStatus)
     }
   },
   methods: {
     showDetail() {
-      this.dialog.data = undefined;
-      this.dialog.visible = true;
+      this.dialog.data = undefined
+      this.dialog.visible = true
       const params = {
         consultNo: this.item.consultNo
-      };
+      }
       peace.service.consult.getConsultInfo(params).then(res => {
-        this.dialog.data = res.data.info;
-      });
+        this.dialog.data = res.data.info
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -113,15 +123,17 @@ export default {
 
     .time-line-time {
       color: rgba(153, 153, 153, 1);
-
+      vertical-align: middle;
+      line-height: 15px;
       &:before {
         display: inline-block;
-        content: "";
+        content: '';
         width: 5px;
         height: 5px;
         background: #00c6ae;
         border-radius: 50%;
         margin: 0 8px 0 0;
+        vertical-align: middle;
       }
     }
 
@@ -156,7 +168,7 @@ export default {
         width: 99px;
         color: #666666;
         &:after {
-          content: "：";
+          content: '：';
         }
       }
       &-content {

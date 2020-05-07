@@ -1,11 +1,7 @@
 <template>
   <div class="infinite-list-wrapper">
     <template v-if="list && list.length > 0">
-      <div
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled"
-      >
+      <div class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled">
         <div v-for="(item, index) in list" :key="index">
           <slot v-bind="item"></slot>
         </div>
@@ -20,14 +16,15 @@
 </template>
 
 <script>
-import peace from "@src/library";
-import NoData from "@src/views/components/NoData";
+import peace from '@src/library'
+import NoData from '@src/views/components/NoData'
+
 export default {
-  name: "RecordList",
+  name: 'RecordList',
   props: {
     noDataText: {
       type: String,
-      default: "暂无数据"
+      default: '暂无数据'
     },
     requestData: {
       type: Object,
@@ -43,41 +40,45 @@ export default {
       count: 0, //列表总数
       loading: false, //加载状态
       pageIndex: 1 //请求页
-    };
+    }
   },
   computed: {
     noMore() {
-      return this.count <= this.list.length;
+      return this.count <= this.list.length
     },
     disabled() {
-      return this.loading || this.noMore;
+      return this.loading || this.noMore
     }
   },
   created() {
-    this.load();
+    this.load()
   },
   methods: {
-    load() {
+    load(isReload = false) {
       if (peace.validate.isEmpty(this.requestData)) {
-        return;
+        return
       }
       //data 外部传入的请求参数、 request请求函数
-      let { data, request } = this.requestData;
+      let { data, request } = this.requestData
       // p、size 为组件内部管理的参数
-      if (request && typeof request == "function") {
-        const params = { p: this.pageIndex, size: 10, ...data };
+      if (request && typeof request == 'function') {
+        const params = { p: this.pageIndex, size: 10, ...data }
         request(params).then(res => {
           if (res.data && res.data.list && Array.isArray(res.data.list)) {
-            this.list = this.list.concat(res.data.list);
-            this.count = res.data.count;
-            this.pageIndex = this.pageIndex + 1;
+            this.list = isReload ? res.data.list : this.list.concat(res.data.list)
+            this.count = res.data.count || res.data.total || res.data.list.count
+            this.pageIndex = this.pageIndex + 1
           }
-          this.loading = false;
-        });
+          this.loading = false
+        })
       }
+    },
+    reloadData() {
+      this.pageIndex = 1
+      this.load(true)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

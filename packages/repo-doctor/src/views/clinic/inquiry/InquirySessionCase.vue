@@ -676,6 +676,7 @@ export default {
             params.allergy_history &&
             params.allergy_history.map(item => item.name).toString();
           params.past_history =
+<<<<<<< HEAD
             params.past_history &&
             params.past_history.map(item => item.name).toString();
           params.diagnose =
@@ -683,6 +684,12 @@ export default {
             params.diagnose.map(item => item.name).toString();
           params.diagnose = params.diagnose.replace(/,/g, " | ");
           console.log(params);
+=======
+            params.past_history && params.past_history.map(item => item.name).toString()
+          params.diagnose = params.diagnose && params.diagnose.map(item => item.name).toString()
+          params.diagnose = params.diagnose.replace(/,/g, ' | ')
+          // console.log(params)
+>>>>>>> feature-新建随访方案
           peace.service.inquiry.addCase(params).then(res => {
             $peace.util.alert(res.msg);
 
@@ -767,8 +774,13 @@ export default {
       } else if (this.dialog.title === "疾病诊断") {
         this.medical.model.diagnose = [...this.dialog.chooseData];
       }
+<<<<<<< HEAD
       console.log(this.medical.model.diagnose);
       this.dialog.visible = false;
+=======
+      // console.log(this.medical.model.diagnose)
+      this.dialog.visible = false
+>>>>>>> feature-新建随访方案
     },
 
     close() {

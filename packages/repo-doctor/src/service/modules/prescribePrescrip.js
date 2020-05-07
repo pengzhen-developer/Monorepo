@@ -1,4 +1,4 @@
-import peace from "@src/library";
+import peace from '@src/library'
 
 /**
  * 获取处方列表
@@ -8,9 +8,9 @@ import peace from "@src/library";
  * @returns
  */
 export function prescripList(params) {
-  const prescripList = "client/v1/Prescribeprescrip/prescripList";
+  const prescripList = 'client/v1/Prescribeprescrip/prescripList'
 
-  return peace.http.post(prescripList, params);
+  return peace.http.post(prescripList, params)
 }
 
 /**
@@ -20,23 +20,17 @@ export function prescripList(params) {
  * @param {*} params 参数列表
  * @returns
  */
-export function subPrescrip({
-  allergy_history,
-  diagnose,
-  drugsJson,
-  openId,
-  inquiry_no
-}) {
+export function subPrescrip({ allergy_history, diagnose, drugsJson, openId, inquiry_no }) {
   const params = {
     allergyHistory: allergy_history,
     diagnose,
     drugsJson,
     openId,
     inquiryNo: inquiry_no
-  };
-  const subPrescrip = "client/v1/Prescribeprescrip/subPrescrip";
+  }
+  const subPrescrip = 'client/v1/Prescribeprescrip/subPrescrip'
 
-  return peace.http.post(subPrescrip, params);
+  return peace.http.post(subPrescrip, params)
 }
 
 /**
@@ -46,23 +40,17 @@ export function subPrescrip({
  * @param {*} params 参数列表
  * @returns
  */
-export function offlineSubPrescrip({
-  allergy_history,
-  diagnose,
-  drugsJson,
-  openId,
-  consultNo
-}) {
+export function offlineSubPrescrip({ allergy_history, diagnose, drugsJson, openId, consultNo }) {
   const params = {
     allergyHistory: allergy_history,
     diagnose,
     drugsJson,
     openId,
     consultNo: consultNo
-  };
-  const offlineSubPrescrip = "client/v1/Prescribeprescrip/offlineSubPrescrip";
+  }
+  const offlineSubPrescrip = 'client/v1/Prescribeprescrip/offlineSubPrescrip'
 
-  return peace.http.post(offlineSubPrescrip, params);
+  return peace.http.post(offlineSubPrescrip, params)
 }
 
 /**
@@ -73,9 +61,9 @@ export function offlineSubPrescrip({
  * @returns
  */
 export function drugsList(params) {
-  const drugsList = "client/v1/Prescribeprescrip/drugsList";
+  const drugsList = 'client/v1/Prescribeprescrip/drugsList'
 
-  return peace.http.get(drugsList, { params });
+  return peace.http.get(drugsList, { params })
 }
 
 /**
@@ -86,9 +74,9 @@ export function drugsList(params) {
  * @returns
  */
 export function drugUsageList(params) {
-  const drugUsageList = "client/v1/Prescribeprescrip/drugUsageList";
+  const drugUsageList = 'client/v1/Prescribeprescrip/drugUsageList'
 
-  return peace.http.get(drugUsageList, { params });
+  return peace.http.get(drugUsageList, { params })
 }
 
 /**
@@ -99,9 +87,9 @@ export function drugUsageList(params) {
  * @returns
  */
 export function drugFrequencyList(params) {
-  const drugFrequencyList = "client/v1/Prescribeprescrip/drugFrequencyList";
+  const drugFrequencyList = 'client/v1/Prescribeprescrip/drugFrequencyList'
 
-  return peace.http.get(drugFrequencyList, { params });
+  return peace.http.get(drugFrequencyList, { params })
 }
 
 /**
@@ -112,9 +100,9 @@ export function drugFrequencyList(params) {
  * @returns
  */
 export function getPrescripInfo(params) {
-  const getPrescripInfo = "client/v1/Prescribeprescrip/getPrescripInfo";
+  const getPrescripInfo = 'client/v1/Prescribeprescrip/getPrescripInfo'
 
-  return peace.http.get(getPrescripInfo, { params });
+  return peace.http.get(getPrescripInfo, { params })
 }
 
 /**
@@ -125,9 +113,8 @@ export function getPrescripInfo(params) {
  * @returns
  */
 export function getConsultPrescripList(params) {
-  const getConsultPrescripList = "client/v1/Consult/getConsultPrescripList";
-
-  return peace.http.post(getConsultPrescripList, params);
+  const getConsultPrescripList = 'client/v1/Consultation/getConsultPrescripList'
+  return peace.http.post(getConsultPrescripList, params)
 }
 
 export default {
@@ -149,4 +136,4 @@ export default {
 
   /** 自动完成 - 获取药品列表 */
   drugsList
-};
+}
