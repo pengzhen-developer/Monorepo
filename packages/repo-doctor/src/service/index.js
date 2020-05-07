@@ -1,16 +1,16 @@
-import IM from './modules/IM'
+import IM from "./modules/IM";
 
-import follow from './modules/follow'
-import consult from './modules/consult'
-import inquiry from './modules/inquiry'
-import login from './modules/login'
-import patient from './modules/patient'
-import prescribePrescrip from './modules/prescribePrescrip'
-import personalCenter from './modules/personalCenter'
-import privateDoctor from './modules/privateDoctor'
-import health from './modules/health'
+import follow from "./modules/follow";
+import consult from "./modules/consult";
+import inquiry from "./modules/inquiry";
+import login from "./modules/login";
+import patient from "./modules/patient";
+import prescribePrescrip from "./modules/prescribePrescrip";
+import personalCenter from "./modules/personalCenter";
+import privateDoctor from "./modules/privateDoctor";
+import health from "./modules/health";
 
-import video from './modules/video'
+import video from "./modules/video";
 
 export default {
   /** 登录 */
@@ -39,4 +39,4 @@ export default {
 
   /** 健康档案 */
   health
-}
+};

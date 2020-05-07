@@ -1,53 +1,65 @@
 <template>
   <div>
-    <div class="list-item"
-         @click="showDetail">
+    <div class="list-item" @click="showDetail">
       <div class="time-line-header">
         <span class="time-line-time">{{ item.createdTime }}</span>
-        <span class="tag"
-              v-bind:style="{ color: borderColor, 'background-color':  bgColor,  'border-color': borderColor}">{{ item.consultStatus | getConsultationStatus }}</span>
+        <span
+          class="tag"
+          v-bind:style="{
+            color: borderColor,
+            'background-color': bgColor,
+            'border-color': borderColor
+          }"
+          >{{ item.consultStatus | getConsultationStatus }}</span
+        >
       </div>
       <div class="item-content">
         <div class="info-row">
-          <div class="info-row-label">{{ (type === 'out') ? "会诊医生" : "申请医生" }}</div>
+          <div class="info-row-label">
+            {{ type === "out" ? "会诊医生" : "申请医生" }}
+          </div>
           <div class="info-row-content">
-            <b>{{item.doctorName + ' ' + item.doctorTitle}}</b> <br />
-            {{item.hospitalName + ' ' + item.deptName}}
+            <b>{{ item.doctorName + " " + item.doctorTitle }}</b> <br />
+            {{ item.hospitalName + " " + item.deptName }}
           </div>
         </div>
         <div class="info-row">
           <div class="info-row-label">初步诊断</div>
-          <div class="info-row-content">{{ item.disagnose || ' ' }}</div>
+          <div class="info-row-content">{{ item.disagnose || " " }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">会诊说明</div>
-          <div class="info-row-content">{{ item.consultExplain || ' ' }}</div>
+          <div class="info-row-content">{{ item.consultExplain || " " }}</div>
         </div>
         <div class="info-row">
           <div class="info-row-label">期望会诊时间</div>
-          <div class="info-row-content">{{ item.expectTime || ' ' }}</div>
+          <div class="info-row-content">{{ item.expectTime || " " }}</div>
         </div>
       </div>
     </div>
-    <peace-dialog :append-to-body="true"
-                  :visible.sync="dialog.visible"
-                  custom-class="dialog"
-                  title="会诊详情">
-      <TheConsultationDetail :data="dialog.data"
-                             :type="type"
-                             @close="() => dialog.visible = false"></TheConsultationDetail>
+    <peace-dialog
+      :append-to-body="true"
+      :visible.sync="dialog.visible"
+      custom-class="dialog"
+      title="会诊详情"
+    >
+      <TheConsultationDetail
+        :data="dialog.data"
+        :type="type"
+        @close="() => (dialog.visible = false)"
+      ></TheConsultationDetail>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
-import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+import peace from "@src/library";
+import TheConsultationDetail from "@src/views/record/consultation/TheConsultationDetail";
 import {
   getConsultationStatus,
   getConsultStatusTextBorderColor,
   getConsultStatusBgColor
-} from '@src/views/filters/index'
+} from "@src/views/filters/index";
 export default {
   props: {
     item: undefined,
@@ -62,31 +74,31 @@ export default {
         visible: false,
         data: {}
       }
-    }
+    };
   },
   filters: { getConsultationStatus },
   computed: {
     borderColor() {
-      return getConsultStatusTextBorderColor(this.item.consultStatus)
+      return getConsultStatusTextBorderColor(this.item.consultStatus);
     },
 
     bgColor() {
-      return getConsultStatusBgColor(this.item.consultStatus)
+      return getConsultStatusBgColor(this.item.consultStatus);
     }
   },
   methods: {
     showDetail() {
-      this.dialog.data = undefined
-      this.dialog.visible = true
+      this.dialog.data = undefined;
+      this.dialog.visible = true;
       const params = {
         consultNo: this.item.consultNo
-      }
+      };
       peace.service.consult.getConsultInfo(params).then(res => {
-        this.dialog.data = res.data.info
-      })
+        this.dialog.data = res.data.info;
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,7 +116,7 @@ export default {
 
       &:before {
         display: inline-block;
-        content: '';
+        content: "";
         width: 5px;
         height: 5px;
         background: #00c6ae;
@@ -144,7 +156,7 @@ export default {
         width: 99px;
         color: #666666;
         &:after {
-          content: '：';
+          content: "：";
         }
       }
       &-content {

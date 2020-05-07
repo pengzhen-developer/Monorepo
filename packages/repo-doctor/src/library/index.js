@@ -5,63 +5,63 @@
  */
 
 // prototype
-import './prototype/date'
-import './prototype/number'
-import './prototype/string'
+import "./prototype/date";
+import "./prototype/number";
+import "./prototype/string";
 
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 // components
-import Table from './components/table'
-import Dialog from './components/dialog'
+import Table from "./components/table";
+import Dialog from "./components/dialog";
 
 // directive
-import drag from './directive/drag'
-import focus from './directive/focus'
+import drag from "./directive/drag";
+import focus from "./directive/focus";
 
 // http
-import http from './http'
+import http from "./http";
 
 // util
-import util from './helper/util'
-import cache from './helper/cache'
-import validate from './helper/validate'
+import util from "./helper/util";
+import cache from "./helper/cache";
+import validate from "./helper/validate";
 
 // config
-import config from '@src/config'
+import config from "@src/config";
 // type
-import type from '@src/type'
+import type from "@src/type";
 // service
-import service from '@src/service'
+import service from "@src/service";
 
 const install = function(Vue) {
-  const peace = { http, util, cache, validate, config, type, service }
+  const peace = { http, util, cache, validate, config, type, service };
 
   // 暴露全局实例
-  Window.$peace = peace
-  global.$peace = peace
-  Window.dayjs = dayjs
-  global.dayjs = dayjs
+  Window.$peace = peace;
+  global.$peace = peace;
+  Window.dayjs = dayjs;
+  global.dayjs = dayjs;
 
   // 挂载到 Vue
-  Vue.prototype.http = http
-  Vue.prototype.$peace = peace
+  Vue.prototype.http = http;
+  Vue.prototype.$peace = peace;
 
   // 注册 component
-  const components = [Table, Dialog]
-  components.map((component) => {
-    Vue.use(component)
-  })
+  const components = [Table, Dialog];
+  components.map(component => {
+    Vue.use(component);
+  });
 
   // 注册 directive
-  const directive = [drag, focus]
-  directive.map((directive) => {
-    Vue.directive(directive.name, directive)
-  })
-}
+  const directive = [drag, focus];
+  directive.map(directive => {
+    Vue.directive(directive.name, directive);
+  });
+};
 
 export default {
-  version: '0.1.0',
+  version: "0.1.0",
 
   /** http 请求类 */
   http,
@@ -86,4 +86,4 @@ export default {
 
   /** vue plugin */
   install
-}
+};

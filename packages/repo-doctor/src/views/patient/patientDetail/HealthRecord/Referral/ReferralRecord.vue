@@ -9,37 +9,36 @@
 
     <div class="layout-content">
       <div class="page">
-        <RecordList :noDataText="noDataText"
-                    :request-data="outRequestData"
-                    v-slot="item"
-                    v-show="selectIndex === 'out'">
-          <ReferralRecordCell type="out"
-                              :item="item" />
+        <RecordList
+          :noDataText="noDataText"
+          :request-data="outRequestData"
+          v-slot="item"
+          v-show="selectIndex === 'out'"
+        >
+          <ReferralRecordCell type="out" :item="item" />
         </RecordList>
-        <RecordList :noDataText="noDataText"
-                    :request-data="inRequestData"
-                    v-slot="item"
-                    v-show="selectIndex === 'in'">
-          <ReferralRecordCell type="in"
-                              :item="item" />
+        <RecordList
+          :noDataText="noDataText"
+          :request-data="inRequestData"
+          v-slot="item"
+          v-show="selectIndex === 'in'"
+        >
+          <ReferralRecordCell type="in" :item="item" />
         </RecordList>
       </div>
     </div>
 
-    <div class="layout-footer"
-         v-show="selectIndex === 'out'">
+    <div class="layout-footer" v-show="selectIndex === 'out'">
       <div id="line"></div>
-      <el-button @click="startReferral"
-                 type="primary">发起转诊
-      </el-button>
+      <el-button @click="startReferral" type="primary">发起转诊 </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
-import RecordList from '../RecordList'
-import ReferralRecordCell from './ReferralRecordListCell'
+import peace from "@src/library";
+import RecordList from "../RecordList";
+import ReferralRecordCell from "./ReferralRecordListCell";
 
 export default {
   props: {
@@ -51,12 +50,12 @@ export default {
   },
   data() {
     return {
-      selectIndex: 'out',
+      selectIndex: "out",
       outRequestData: {
         request: peace.service.health.getReferralRecordList,
         data: {
           // 请求列表参数
-          referral_type: 'out',
+          referral_type: "out",
           patientNo: this.params.id
         }
       },
@@ -64,25 +63,25 @@ export default {
         request: peace.service.health.getReferralRecordList,
         data: {
           // 请求列表参数
-          referral_type: 'out',
+          referral_type: "out",
           patientNo: this.params.id
         }
       }
-    }
+    };
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[
+        peace.type.HEALTH_RECORD.ACTION_TYPE.转诊
+      ][this.selectIndex];
     }
   },
   methods: {
     startReferral() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊)
+      $peace.$emit("showDrawer", peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

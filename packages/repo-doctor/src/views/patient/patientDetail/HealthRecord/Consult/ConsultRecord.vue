@@ -9,36 +9,36 @@
 
     <div class="layout-content">
       <div class="page">
-        <RecordList :noDataText="noDataText"
-                    :request-data="outRequestData"
-                    v-slot="item"
-                    v-show="selectIndex === 'out'">
-          <ConsultRecordCell type="out"
-                             :item="item" />
+        <RecordList
+          :noDataText="noDataText"
+          :request-data="outRequestData"
+          v-slot="item"
+          v-show="selectIndex === 'out'"
+        >
+          <ConsultRecordCell type="out" :item="item" />
         </RecordList>
-        <RecordList :noDataText="noDataText"
-                    :request-data="inRequestData"
-                    v-slot="item"
-                    v-show="selectIndex === 'in'">
-          <ConsultRecordCell type="in"
-                             :item="item" />
+        <RecordList
+          :noDataText="noDataText"
+          :request-data="inRequestData"
+          v-slot="item"
+          v-show="selectIndex === 'in'"
+        >
+          <ConsultRecordCell type="in" :item="item" />
         </RecordList>
       </div>
     </div>
 
-    <div class="layout-footer"
-         v-show="selectIndex === 'out'">
+    <div class="layout-footer" v-show="selectIndex === 'out'">
       <div id="line"></div>
-      <el-button @click="startConsult"
-                 type="primary">发起会诊</el-button>
+      <el-button @click="startConsult" type="primary">发起会诊</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
-import RecordList from '../RecordList'
-import ConsultRecordCell from './ConsultRecordListCell'
+import peace from "@src/library";
+import RecordList from "../RecordList";
+import ConsultRecordCell from "./ConsultRecordListCell";
 export default {
   props: {
     params: undefined
@@ -49,12 +49,12 @@ export default {
   },
   data() {
     return {
-      selectIndex: 'out',
+      selectIndex: "out",
       outRequestData: {
         request: peace.service.health.getConsultRecordList,
         data: {
           // 请求列表参数
-          action: 'out',
+          action: "out",
           patientNo: this.params.id
         }
       },
@@ -62,25 +62,25 @@ export default {
         request: peace.service.health.getConsultRecordList,
         data: {
           // 请求列表参数
-          action: 'out',
+          action: "out",
           patientNo: this.params.id
         }
       }
-    }
+    };
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[
+        peace.type.HEALTH_RECORD.ACTION_TYPE.会诊
+      ][this.selectIndex];
     }
   },
   methods: {
     startConsult() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊)
+      $peace.$emit("showDrawer", peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

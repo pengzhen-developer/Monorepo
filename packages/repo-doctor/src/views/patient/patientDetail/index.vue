@@ -1,25 +1,31 @@
 <template>
   <div class="patient-container">
     <div class="patient-detail">
-      <HealthRecordHeader v-if="patientData"
-                          :internalData="patientData"
-                          class="health-record-header"></HealthRecordHeader>
-      <HealthRecordDetail :id="id"
-                          class="health-record-detail"></HealthRecordDetail>
+      <HealthRecordHeader
+        v-if="patientData"
+        :internalData="patientData"
+        class="health-record-header"
+      ></HealthRecordHeader>
+      <HealthRecordDetail
+        :id="id"
+        class="health-record-detail"
+      ></HealthRecordDetail>
     </div>
     <HealthRecordMenu class="health-record-menu"></HealthRecordMenu>
-    <HealthRecordDrawer :params="patientData"
-                        ref="showRecordDrawer"></HealthRecordDrawer>
+    <HealthRecordDrawer
+      :params="patientData"
+      ref="showRecordDrawer"
+    ></HealthRecordDrawer>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
+import peace from "@src/library";
 
-import HealthRecordDrawer from './HealthRecord/HealthRecordDrawer'
-import HealthRecordHeader from './HealthRecordHeader'
-import HealthRecordDetail from './HealthRecordDetail'
-import HealthRecordMenu from './HealthRecordMenu'
+import HealthRecordDrawer from "./HealthRecord/HealthRecordDrawer";
+import HealthRecordHeader from "./HealthRecordHeader";
+import HealthRecordDetail from "./HealthRecordDetail";
+import HealthRecordMenu from "./HealthRecordMenu";
 export default {
   components: {
     HealthRecordDrawer,
@@ -32,27 +38,27 @@ export default {
     return {
       id: this.$route.params.id,
       patientData: undefined
-    }
+    };
   },
 
   created() {
-    this.getPatientInfo()
-    $peace.$on('showDrawer', params => {
-      this.$refs.showRecordDrawer.show(params)
-    })
+    this.getPatientInfo();
+    $peace.$on("showDrawer", params => {
+      this.$refs.showRecordDrawer.show(params);
+    });
   },
   methods: {
     getPatientInfo() {
-      const params = { patientNo: this.id }
+      const params = { patientNo: this.id };
 
       peace.service.patient.getOneHealth(params).then(res => {
-        const params = res.data
-        params.id = this.id
-        this.patientData = params
-      })
+        const params = res.data;
+        params.id = this.id;
+        this.patientData = params;
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -91,4 +97,3 @@ export default {
   }
 }
 </style>
-
