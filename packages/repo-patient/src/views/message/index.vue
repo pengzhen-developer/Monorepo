@@ -1,11 +1,11 @@
 <template>
   <div class="message">
-    <template v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
-      <div :id="session.id"
-           :key="session.id"
+    <template v-if="sessionsList.length > 0">
+      <div :id="session.id +'-'+ session.updateTime"
+           :key="session.id +'-'+ session.updateTime"
            @click="selectSession(session)"
            class="message-item"
-           v-for="session in $store.state.inquiry.sessions">
+           v-for="session in sessionsList">
         <div class="message-item-avatar">
           <img :src="session.content.doctorInfo.doctorAvatar" />
           <div class="message-item-unread"
@@ -58,6 +58,11 @@ export default {
     }
   },
 
+  computed: {
+    sessionsList() {
+      return this.$store.getters['inquiry/sessionList']
+    }
+  },
   methods: {
     getLastMessage(session) {
       const messageType = session.lastMsg.type
@@ -79,16 +84,11 @@ export default {
             return '[处方]'
           }
           // 视频通话
-          else if (
-            session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话
-          ) {
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '[视频通话]'
           }
           // 私人医生服务提醒
-          else if (
-            session.lastMsg.content.code ===
-            peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒
-          ) {
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒) {
             return '[自定义消息]'
           }
           // 其它
@@ -97,7 +97,6 @@ export default {
             session.lastMsg.content.data &&
             session.lastMsg.content.data.showTextInfo
           ) {
-
             return session.lastMsg.content.data.showTextInfo.patientClientText
           }
       }
@@ -105,6 +104,7 @@ export default {
 
     selectSession(session) {
       let params = null
+      let account = session.content.patientInfo.familyId
       if (
         session.content.inquiryInfo.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已退诊 ||
         session.content.inquiryInfo.inquiryStatus == peace.type.INQUIRY.INQUIRY_STATUS.已完成 ||
@@ -112,17 +112,20 @@ export default {
       ) {
         // 当前问诊【已完成】【已退诊】【已取消】
         // 获取数据库记录，无法在 service/IM.js 重置未读数，因此手动重置为 0
-        $peace.NIM.resetSessionUnread(session.id)
+
+        $peace.NIMS[account].im.resetSessionUnread(session.id)
 
         params = peace.util.encode({
-          inquiryNo: session.content.inquiryInfo.inquiryNo
+          inquiryNo: session.content.inquiryInfo.inquiryNo,
+          familyId: account
         })
       } else {
         params = peace.util.encode({
           id: 'p2p-' + session.content.doctorInfo.doctorId,
           scene: 'p2p',
           beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
-          to: session.content.doctorInfo.doctorId
+          to: session.content.doctorInfo.doctorId,
+          familyId: account
         })
       }
       // 清除聊天记录
@@ -202,7 +205,7 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
         display: block;
-        /deep/.blue{
+        /deep/.blue {
           color: #999999;
         }
       }

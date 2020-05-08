@@ -431,7 +431,8 @@ export default {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
         '1': '订单创建15分钟后未支付将自动关闭',
-        '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
+        // '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
+        '2': '',
         '3': '请及时与医生沟通',
         // '4': '医生已退诊',
         '4': '',
@@ -468,7 +469,8 @@ export default {
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
           beginTime: item.orderInfo.orderTime.toDate().getTime(),
-          to: item.doctorInfo.doctorId
+          to: item.doctorInfo.doctorId,
+          familyId: item.familyInfo.familyId
         })
 
         // 跳转聊天详情
@@ -478,7 +480,8 @@ export default {
       // 非问诊中,显示历史记录
       else {
         const params = peace.util.encode({
-          inquiryNo: item.inquiryInfo.inquiryNo
+          inquiryNo: item.inquiryInfo.inquiryNo,
+          familyId: item.familyInfo.familyId
         })
 
         this.$router.push(`/components/messageList/${params}`)

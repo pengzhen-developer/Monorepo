@@ -240,7 +240,6 @@ export default {
     //     }
     //   }
     // },
-
     // canShowSelf: {
     //   type: Boolean,
     //   default() {
@@ -296,7 +295,7 @@ export default {
       showNations: false,
       addGardian: false,
       childInfo: {},
-      canShowSelf:true
+      canShowSelf: true
     }
   },
 
@@ -354,10 +353,9 @@ export default {
       // 添加页面 只需加载民族列表
       this.getNationList()
     }
-    if(json.canShowSelf){
-      this.canShowSelf=json.canShowSelf==1?true:false
+    if (json.canShowSelf) {
+      this.canShowSelf = json.canShowSelf == 1 ? true : false
     }
-
   },
 
   methods: {
@@ -387,10 +385,10 @@ export default {
         //新增监护人信息
 
         //如果被监护人选择‘本人’则新增监护人不显示‘本人’
-        if(this.model.relation=='本人'){
-          this.canShowSelf=false
+        if (this.model.relation == '本人') {
+          this.canShowSelf = false
         }
-        
+
         this.addGardian = true
         this.age = null
         this.model = {
@@ -607,6 +605,8 @@ export default {
           this.submit()
         } else {
           peace.util.alert(res.msg)
+          //新增家人后断连接IM
+          peace.service.IM.initNIMS({ type: 'add', ...res.data })
           this.$router.go(-1)
         }
       })
@@ -633,7 +633,8 @@ export default {
 
         peace.service.patient.DelFamily(params).then(res => {
           peace.util.alert(res.msg)
-
+          //删除家人后断联该家人IM
+          peace.service.IM.initNIMS({ type: 'delete', accid: this.model.id })
           this.$router.go(-1)
         })
       })
@@ -642,7 +643,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 .container {
   display: flex;
   flex-direction: column;
@@ -742,7 +742,7 @@ export default {
     flex: 1;
   }
   .bottom {
-        position: fixed;
+    position: fixed;
     bottom: 0;
     width: 100%;
     padding: 10px 15px;

@@ -158,34 +158,29 @@
         <div class="service row flex"
              @click="goApply(serviceVideoInfo, 'video')">
           <!-- 视频咨询尚未开通 -->
-          <van-image
-            round
-            width="30px"
-            height="30px"
-            v-if="serviceVideoInfo.status"
-            style="margin: 0 10px 0 0;"
-            :src="require('@src/assets/images/ic_video_open.png')"
-          ></van-image>
-          <van-image
-            round
-            width="30px"
-            height="30px"
-            v-else
-            style="margin: 0 10px 0 0;"
-            :src="require('@src/assets/images/ic_video.png')"
-          ></van-image>
+          <van-image round
+                     width="30px"
+                     height="30px"
+                     v-if="serviceVideoInfo.status"
+                     style="margin: 0 10px 0 0;"
+                     :src="require('@src/assets/images/ic_video_open.png')"></van-image>
+          <van-image round
+                     width="30px"
+                     height="30px"
+                     v-else
+                     style="margin: 0 10px 0 0;"
+                     :src="require('@src/assets/images/ic_video.png')"></van-image>
 
           <div class="service-consult-content">
             <div class="row flex between"
                  style="margin: 0;">
               <span class="service-consult-content-name">视频咨询</span>
               <span v-if="serviceVideoInfo.status">
-                <span class="service-consult-content-fee"
-                  >￥{{ serviceVideoInfo.money }}</span
-                >
+                <span class="service-consult-content-fee">￥{{ serviceVideoInfo.money }}</span>
                 <span class="service-consult-content-unit"> / 次</span>
               </span>
-              <span v-else class="service-consult-content-description">
+              <span v-else
+                    class="service-consult-content-description">
                 暂未开通
               </span>
             </div>
@@ -476,7 +471,7 @@
 import AddPatientMsg from '@src/views/components/AddPatientMsg'
 import peace from '@src/library'
 import Vue from 'vue'
-import { Rate, Dialog } from 'vant'
+import { Rate } from 'vant'
 
 Vue.use(Rate)
 export default {
@@ -567,7 +562,7 @@ export default {
           this.serviceVideoInfo = res.data.consultationList.video || {}
           this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
         }
-        
+
         let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
 
         if (this.hasLogin() && this.isEwm && !isAddPatient) {
@@ -612,67 +607,22 @@ export default {
       if (!serviceInfo.status) {
         return peace.util.alert('暂未开通')
       }
-      if (type === 'video') {
+      if (type === 'image') {
+        const json = peace.util.encode({
+          doctorId: this.doctor.doctorInfo.doctorId,
+          consultingType: serviceInfo.tag,
+          consultingTypeId: serviceInfo.consultingTypeId
+        })
+        this.$router.push(`/components/doctorInquiryApply/${json}`)
+      }
+      // 视频问诊
+      else if (type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
-      peace.service.patient
-        .inquiryStatus(this.doctor.doctorInfo.doctorId, type)
-        .then(() => {
-          //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
-
-          if (type === 'image') {
-            const json = peace.util.encode({
-              doctorId: this.doctor.doctorInfo.doctorId,
-              consultingType: serviceInfo.tag,
-              consultingTypeId: serviceInfo.consultingTypeId
-            })
-            this.$router.push(`/components/doctorInquiryApply/${json}`)
-          }
-          // 视频问诊
-          else if (type === 'video') {
-            return peace.util.alert('H5版本暂不支持视频问诊')
-          }
-          // 私人医生
-          else if (type === 'private') {
-            return peace.util.alert('暂未开放，敬请期待')
-          }
-        })
-        .catch(res => {
-          let param = {}
-          switch (res.data.data.inquiryStatus) {
-            case 1:
-            case 2:
-              Dialog.confirm({
-                title: '温馨提示',
-                message: res.data.msg,
-                confirmButtonText: '去看看'
-              }).then(() => {
-                const params = {
-                  inquiryId: res.data.data.inquiryId
-                }
-                let json = peace.util.encode(params)
-                //跳转订单详情
-                this.$router.push(`/setting/userConsultDetail/${json}`)
-              })
-
-              break
-            case 3:
-            case 7:
-              param = peace.util.encode({
-                id: 'p2p-' + this.doctor.doctorInfo.doctorId,
-                scene: 'p2p',
-                beginTime: res.data.data.createTime.toDate().getTime(),
-                to: this.doctor.doctorInfo.doctorId
-              })
-              // 清除聊天记录
-              peace.service.IM.resetInquirySessionMessages()
-              // 跳转聊天详情
-              this.$router.push(`/components/messageList/${param}`)
-              break
-            default:
-              peace.util.alert(res.data.msg)
-          }
-        })
+      // 私人医生
+      else if (type === 'private') {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
     },
 
     goRegisterList() {

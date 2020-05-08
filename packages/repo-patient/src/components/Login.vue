@@ -148,8 +148,7 @@ export default {
           peace.cache.set(peace.type.USER.TEL, this.model.tel)
 
           // 初始化 IM
-          peace.service.IM.initNIM()
-
+          peace.service.IM.initNIMS()
           // 微信环境下授权
           this.WXAuth()
         })

@@ -257,7 +257,8 @@ export default {
                   inquiryStatus: res.data.inquiryStatus,
                   inquiryNo: res.data.inquiryNo,
                   doctorId: res.data.doctorId,
-                  createdTime: res.data.createTime
+                  createdTime: res.data.createTime,
+                  familyId: res.data.familyId
                 }
                 this.selectSession(session)
               }
@@ -281,7 +282,8 @@ export default {
                     inquiryStatus: res.data.data.param.inquiryStatus,
                     inquiryNo: '',
                     doctorId: res.data.data.param.doctorId,
-                    createdTime: res.data.data.data.createTime
+                    createdTime: res.data.data.data.createTime,
+                    familyId: res.data.data.param.familyId
                   }
                   this.selectSession(session)
                 })
@@ -318,14 +320,16 @@ export default {
         // $peace.NIM.resetSessionUnread(session.id)
 
         params = peace.util.encode({
-          inquiryNo: session.inquiryNo
+          inquiryNo: session.inquiryNo,
+          familyId: session.familyId
         })
       } else {
         params = peace.util.encode({
           id: 'p2p-' + session.doctorId,
           scene: 'p2p',
           beginTime: session.createdTime.toDate().getTime(),
-          to: session.doctorId
+          to: session.doctorId,
+          familyId: session.familyId
         })
       }
       // 清除聊天记录

@@ -101,7 +101,6 @@
 
 <script>
 import peace from '@src/library'
-import { Dialog } from 'vant'
 export default {
   data() {
     return {
@@ -170,78 +169,24 @@ export default {
     redictToApply(doctorInfo, doctorConsultation) {
       if (typeof doctorConsultation == 'undefined') {
         return peace.util.alert('暂未开放，敬请期待')
-      } else if (doctorConsultation.tag === 'video') {
+      }
+      // 视频问诊
+      else if (doctorConsultation.tag === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
-
-      peace.service.patient
-        .inquiryStatus(doctorInfo.doctorId, doctorConsultation.tag)
-        .then(() => {
-          //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
-
-          if (doctorConsultation.tag === 'image') {
-            const json = peace.util.encode({
-              doctorId: doctorInfo.doctorId,
-              consultingType: doctorConsultation.tag,
-              consultingTypeId: doctorConsultation.consultingTypeId
-            })
-            this.$router.push(`/components/doctorInquiryApply/${json}`)
-          }
-          // 视频问诊
-          else if (doctorConsultation.tag === 'video') {
-            return peace.util.alert('H5版本暂不支持视频问诊')
-          }
-          // 私人医生
-          else if (doctorConsultation.tag === 'private') {
-            return peace.util.alert('暂未开放，敬请期待')
-          }
+      // 私人医生
+      else if (doctorConsultation.tag === 'private') {
+        return peace.util.alert('暂未开放，敬请期待')
+      }
+      // 图文问诊
+      else if (doctorConsultation.tag === 'image') {
+        const json = peace.util.encode({
+          doctorId: doctorInfo.doctorId,
+          consultingType: doctorConsultation.tag,
+          consultingTypeId: doctorConsultation.consultingTypeId
         })
-        .catch(res => {
-          let param = {}
-          switch (res.data.data.inquiryStatus) {
-            case 1:
-            case 2:
-              Dialog.confirm({
-                title: '温馨提示',
-                message: res.data.msg,
-                confirmButtonText: '去看看'
-              }).then(() => {
-                const params = {
-                  inquiryId: res.data.data.inquiryId
-                }
-                let json = peace.util.encode(params)
-                //跳转订单详情
-                this.$router.push(`/setting/userConsultDetail/${json}`)
-              })
-
-              break
-            case 3:
-            case 7:
-              param = peace.util.encode({
-                id: 'p2p-' + doctorInfo.doctorId,
-                scene: 'p2p',
-                beginTime: res.data.data.createTime.toDate().getTime(),
-                to: doctorInfo.doctorId
-              })
-              // 清除聊天记录
-              peace.service.IM.resetInquirySessionMessages()
-              // 跳转聊天详情
-              this.$router.push(`/components/messageList/${param}`)
-              break
-            default:
-              peace.util.alert(res.data.msg)
-          }
-        })
-      // const params = peace.util.decode(this.$route.params.json)
-      // const json = peace.util.encode(
-      //   Object.assign(params, {
-      //     doctorId: doctorInfo.doctorId,
-      //     consultingType: doctorConsultation.tag,
-      //     consultingTypeId: doctorConsultation.consultingTypeId
-      //   })
-      // )
-
-      // this.$router.push(`/components/doctorInquiryApply/${json}`)
+        this.$router.push(`/components/doctorInquiryApply/${json}`)
+      }
     }
   }
 }

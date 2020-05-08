@@ -7,14 +7,51 @@ import NIM from '/public/static/IM/NIM_Web_NIM_v6.5.5'
 // NIM.use(WebRTC)
 
 /**
+ * 获取用户下的im账号
+ *  @export
+ *  @returns
+ */
+export function getImlist() {
+  const getImlist = 'client/v1/Patient/getImlist'
+
+  return peace.http.post(getImlist)
+}
+
+/**
  * 初始化 IM
  *
  * @export
- * @param {*} 回调函数
  * @returns
  */
-export function initNIM(
-  options = {
+export function initNIMS(info) {
+  if (info && info.type == 'delete') {
+    $peace.NIMS[info.accid].im.disconnect()
+    delete $peace.NIMS[info.accid]
+    return
+  }
+
+  peace.service.IM.getImlist().then((res) => {
+    let list = res.data
+
+    $peace.NIMS = {}
+    list.map((item, index) => {
+      $peace.NIMS[item.accid] = {
+        im: peace.service.IM.initNIM(item, index),
+        sessions: [],
+      }
+    })
+    Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
+    return $peace.NIMS
+  })
+}
+export function initNIM(args) {
+  const appKey = peace.config.NIM.key
+
+  const account = args && args.accid
+  const token = args && args.imToken
+  const db = false
+  let nim = null
+  const options = {
     onconnect: peace.service.IM.onConnect,
     onerror: peace.service.IM.onError,
     ondisconnect: peace.service.IM.onDisConnect,
@@ -28,18 +65,11 @@ export function initNIM(
     onmsg: peace.service.IM.onMsg,
 
     // 系统通知
-    oncustomsysmsg: peace.service.IM.onSysmsg
+    oncustomsysmsg: peace.service.IM.onSysmsg,
   }
-) {
-  const appKey = peace.config.NIM.key
-
-  const account = Store.state.user.userInfo.registerInfo.userId
-  const token = Store.state.user.userInfo.registerInfo.imToken
-  const db = false
-
-  if (!$peace.NIM) {
+  if (!$peace.NIMS[account]) {
     // 初始化 IM
-    $peace.NIM = NIM.getInstance({
+    nim = NIM.getInstance({
       appKey,
       account,
       token,
@@ -50,16 +80,15 @@ export function initNIM(
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      }
+      },
     })
   } else {
     // 更新 IM
-    $peace.NIM.disconnect()
-    $peace.NIM.setOptions({ appKey, account, token })
-    $peace.NIM.connect()
+    $peace.NIMS[account].disconnect()
+    $peace.NIMS[account].setOptions({ appKey, account, token })
+    $peace.NIMS[account].connect()
   }
-
-  return $peace.NIM
+  return nim
 }
 
 /**
@@ -112,7 +141,9 @@ export function onDisConnect(disConnectObject) {
       $peace.$router.replace(peace.config.system.errorPage)
       window.location.reload()
       break
-
+    case 'logout':
+      //删除家人，主动断联IM
+      break
     default:
       $peace.NIM.connect()
       break
@@ -153,12 +184,10 @@ export function onSessions(sessions) {
   // 处理问诊
   // 1. 根据 sessions 获取最新的状态
   // 2. 存储 store
-  peace.service.IM.getInquirySessionsStatus(sessions).then(inquirySessionsStatus => {
-    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(
-      sessions,
-      inquirySessionsStatus
-    )
-    peace.service.IM.setInquirySessions(sessionsStatus)
+
+  peace.service.IM.getInquirySessionsStatus(sessions, this.account).then((inquirySessionsStatus) => {
+    const sessionsStatus = peace.service.IM.setInquirySessionsStatus(sessions, inquirySessionsStatus)
+    peace.service.IM.setInquirySessions(sessionsStatus, this.account)
   })
 }
 
@@ -184,20 +213,20 @@ export function onUpdateSession(session) {
       // 当前 session update 存在状态更新, 更新 sessions 为最新状态
       // 因 resetSessionUnread 重置会话未读数，会触发 onUpdateSession 回调，使用 typeof session.lastMsg.content 验证是否已经更新状态
       if (session.lastMsg.type === 'custom' && typeof session.lastMsg.content === 'string') {
-        peace.service.IM.setInquirySessionStatus(session)
+        peace.service.IM.setInquirySessionStatus(session, this.account)
       }
 
       // 将新 sessions 更新到 sessions store
-      peace.service.IM.setInquirySessions(session)
+      peace.service.IM.setInquirySessions(session, this.account)
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
+
+      let currrentSession = Store.state.inquiry.sessionsFamily[this.account].sessions
       if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
-        if (Store.state.inquiry.sessions && Store.state.inquiry.sessions.length > 0) {
-          peace.service.IM.setInquirySession(
-            Store.state.inquiry.sessions.find(temp => temp.id === session.id)
-          )
-          peace.service.IM.setInquirySessionMessages(session.lastMsg)
+        if (currrentSession && currrentSession.length > 0) {
+          peace.service.IM.setInquirySession(currrentSession.find((temp) => temp.id === session.id))
+          peace.service.IM.setInquirySessionMessages(session.lastMsg, this.account)
         } else {
           peace.service.IM.resetInquirySession()
           peace.service.IM.resetInquirySessionMessages()
@@ -248,12 +277,13 @@ export function onSysmsg(message) {
  * @export
  * @param {*} session
  */
-export function setInquirySessions(sessions) {
-  const serializationSessions = $peace.NIM.mergeSessions(Store.state.inquiry.sessions, sessions)
+export function setInquirySessions(sessions, account) {
+  const currrentSession = $peace.NIMS[account].sessions
+  const serializationSessions = $peace.NIMS[account].im.mergeSessions(currrentSession, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [待接诊] 与 [已取消] 与 [医生未接诊直接退诊] 与 [医生未接诊系统直接退诊（超时）] 数据
-  const filterMethod = session => {
+  const filterMethod = (session) => {
     if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
       if (
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
@@ -269,7 +299,6 @@ export function setInquirySessions(sessions) {
 
     return true
   }
-
   // 排序规则:
   // 1. 按照私人医生排序
   // 2. 按照会话时间排序
@@ -287,11 +316,8 @@ export function setInquirySessions(sessions) {
       }
     }
   }
-
-  Store.commit(
-    'inquiry/setInquirySessions',
-    deserializationSessions.filter(filterMethod).sort(sortMethod)
-  )
+  $peace.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
+  Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
 }
 
 /**
@@ -320,8 +346,8 @@ export function resetInquirySession() {
  * @export
  * @param {*} message
  */
-export function setInquirySessionMessages(messages) {
-  const serializationMessages = $peace.NIM.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
+export function setInquirySessionMessages(messages, account) {
+  const serializationMessages = $peace.NIMS[account].im.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
   Store.commit('inquiry/setInquirySessionMessages', deserializationMessages)
@@ -342,19 +368,19 @@ export function resetInquirySessionMessages() {
  * @export
  * @param { Array, Object } sessions
  */
-export function getInquirySessionsStatus(sessions) {
+export function getInquirySessionsStatus(sessions, familyId) {
   if (!Array.isArray(sessions)) {
     sessions = [sessions]
   }
 
-  sessions = sessions.filter(session => session.scene === 'p2p')
+  sessions = sessions.filter((session) => session.scene === 'p2p')
 
   const params = {
-    sessionIdList: sessions.map(item => item.id),
-    patientId: Store.state.user.userInfo.patientInfo.id
+    sessionIdList: sessions.map((item) => item.id),
+    familyId: familyId,
   }
 
-  return peace.service.inquiry.getList(params).then(res => {
+  return peace.service.inquiry.getList(params).then((res) => {
     return res.data.list
   })
 }
@@ -370,16 +396,14 @@ export function getInquirySessionsStatus(sessions) {
  * @returns
  */
 export function setInquirySessionsStatus(sessions, sessionsStatus) {
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.scene === 'p2p') {
-      const currentSessionStatus = sessionsStatus.find(
-        item => item.sessionId === session.id || item.id === session.id
-      )
-      session.content = currentSessionStatus
+      const rStatus = sessionsStatus.find((item) => item.sessionId === session.id || item.id === session.id)
+      session.content = rStatus
     }
   })
 
-  sessions = sessions.filter(session => session.content)
+  sessions = sessions.filter((session) => session.content)
 
   return sessions
 }
@@ -393,10 +417,10 @@ export function setInquirySessionsStatus(sessions, sessionsStatus) {
  * @param {*} sessionWithStatus 存在状态的 session
  * @returns
  */
-export function setInquirySessionStatus(sessionWithStatus) {
+export function setInquirySessionStatus(sessionWithStatus, account) {
   // 合并当前 session with status 到 store
-  Store.state.inquiry.sessions = $peace.NIM.mergeSessions(
-    Store.state.inquiry.sessions,
+  Store.state.inquiry.sessionsFamily[account].sessions = Store.state.inquiry.sessionsFamily[account].im.mergeSessions(
+    Store.state.inquiry.sessionsFamily[account].sessions,
     sessionWithStatus
   )
 
@@ -404,15 +428,18 @@ export function setInquirySessionStatus(sessionWithStatus) {
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currentSession = Store.state.inquiry.sessions.find(
-    session => session.id === sessionWithStatus.id
+  const currrentSession = Store.state.inquiry.sessionsFamily[account].sessions.find(
+    (msg) => msg.id === sessionWithStatus.id
   )
-  currentSession.content = sessionWithStatus.lastMsg.content.data
+  currrentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
-  Store.state.inquiry.sessions = Store.state.inquiry.sessions.filter(session => session.content)
 
-  return Store.state.inquiry.sessions
+  Store.state.inquiry.sessionsFamily[account].sessions = Store.state.inquiry.sessionsFamily[account].sessions.filter(
+    (msg) => msg.content
+  )
+
+  return Store.state.inquiry.sessionsFamily[account].sessions
 }
 
 /**
@@ -428,8 +455,7 @@ export function deSerializationSessions(sessions) {
   if (!Array.isArray(sessions)) {
     sessions = [sessions]
   }
-
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     if (session.lastMsg.custom && !(session.lastMsg.custom instanceof Object)) {
       session.lastMsg.custom = JSON.parse(session.lastMsg.custom)
     }
@@ -452,7 +478,7 @@ export function deSerializationSessions(sessions) {
  * @returns
  */
 export function deSerializationMessages(messages) {
-  messages.forEach(message => {
+  messages.forEach((message) => {
     if (message.custom && !(message.custom instanceof Object)) {
       message.custom = JSON.parse(message.custom)
     }
@@ -466,13 +492,14 @@ export function deSerializationMessages(messages) {
 }
 
 export default {
+  getImlist,
   initNIM,
+  initNIMS,
   initWebRTC,
   onConnect,
   onDisConnect,
   onError,
   onWillReconnect,
-
   /** 初始化完成后, 收到会话列表的回调 */
   onSessions,
   /** 初始化完成后, 收到会话更新的回调 */
@@ -500,5 +527,5 @@ export default {
   /** 反序列化 sessions */
   deSerializationSessions,
   /** 反序列化 session messages */
-  deSerializationMessages
+  deSerializationMessages,
 }

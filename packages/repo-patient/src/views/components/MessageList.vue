@@ -632,6 +632,7 @@ export default {
       infoData: undefined,
       message: '',
       loading: false,
+      IM: null,
       tools: {
         visible: false
       },
@@ -664,7 +665,7 @@ export default {
         visible: false,
         position: 0
       },
-
+      params: {},
       hasSend: false,
       IsInFlamilyList: false
     }
@@ -786,18 +787,23 @@ export default {
     })
   },
   activated() {
+    this.params = peace.util.decode(this.$route.params.json)
     this.$nextTick().then(() => {
       if (!this.data) {
-        const params = peace.util.decode(this.$route.params.json)
         // 传递 inquiryNo 获取聊天记录
-        if (params.inquiryNo) {
+        if (this.params.inquiryNo) {
           this.getHistoryMsgsByDB()
         }
         // 传递 session 获取聊天记录
         else {
+          this.IM = this.$store.state.inquiry.sessionsFamily[this.params.familyId].im
           const interval = setInterval(() => {
             // 等待 IM 初始化完成，并且 sessions 已经获取到
-            if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
+            if (
+              this.IM &&
+              this.IM.isConnected() &&
+              this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions.length > 0
+            ) {
               window.clearInterval(interval)
               this.getInquiryInfo()
               this.getHistoryMsgsByIM()
@@ -807,29 +813,8 @@ export default {
       }
     })
   },
-  // created() {
-  //   if (!this.data) {
-  //     const params = peace.util.decode(this.$route.params.json)
-  //     // 传递 inquiryNo 获取聊天记录
-  //     if (params.inquiryNo) {
-  //       this.getHistoryMsgsByDB()
-  //     }
-  //     // 传递 session 获取聊天记录
-  //     else {
-  //       const interval = setInterval(() => {
-  //         // 等待 IM 初始化完成，并且 sessions 已经获取到
-  //         if ($peace.NIM && $peace.NIM.isConnected() && this.$store.state.inquiry.sessions.length) {
-  //           window.clearInterval(interval)
-
-  //           this.getHistoryMsgsByIM()
-  //         }
-  //       }, 100)
-  //     }
-  //   }
-  // },
 
   destroyed() {
-    // console.log('destroyed')
     // 清除当前聊天 session
     peace.service.IM.resetInquirySession()
     // 清除聊天记录
@@ -839,8 +824,8 @@ export default {
   methods: {
     getInquiryInfo() {
       let params = {
-        sessionIdList: [peace.util.decode(this.$route.params.json).id],
-        patientId: this.$store.state.user.userInfo.patientInfo.id
+        sessionIdList: [this.params.id],
+        familyId: this.params.familyId
       }
       peace.service.inquiry.getList(params).then(res => {
         this.internalDoctorInfo = res.data.list[0].doctorInfo
@@ -862,16 +847,14 @@ export default {
 
     //获取历史会话数据
     getHistoryMsgsByDB() {
-      const params = peace.util.decode(this.$route.params.json)
-
-      peace.service.patient.chatDetail(params).then(res => {
+      peace.service.patient.chatDetail(this.params).then(res => {
         const historyMessageFormatHandler = messages => {
           if (messages && Array.isArray(messages)) {
             messages.forEach(message => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
-              message.flow = $peace.$store.state.user.userInfo.patientInfo.id === message.from ? 'out' : 'in'
+              message.flow = this.params.familyId === message.from ? 'out' : 'in'
               message.type = messageTypeMap[message.type]
               message.text = message.body.msg
               message.content = message.body
@@ -888,12 +871,12 @@ export default {
         // this.internalDoctorInfo = res.data.doctorInfo
       })
     },
+
     //获取进行中会话数据
     getHistoryMsgsByIM() {
-      const params = peace.util.decode(this.$route.params.json)
-
+      const currrentSession = this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions
       const doneHandler = (error, message) => {
-        const session = this.$store.state.inquiry.sessions.find(item => item.id === message.scene + '-' + message.to)
+        const session = currrentSession.find(item => item.id === message.scene + '-' + message.to)
 
         console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
@@ -903,16 +886,16 @@ export default {
         peace.service.IM.resetInquirySession()
         peace.service.IM.resetInquirySessionMessages()
         peace.service.IM.setInquirySession(session)
-        peace.service.IM.setInquirySessionMessages(message.msgs)
+        peace.service.IM.setInquirySessionMessages(message.msgs, this.params.familyId)
       }
 
       // 重置会话未读数
-      $peace.NIM.resetSessionUnread(params.id)
+      this.IM.resetSessionUnread(this.params.id)
       // 获取本次问诊历史消息
-      $peace.NIM.getHistoryMsgs({
-        beginTime: params.beginTime,
-        scene: params.scene,
-        to: params.to,
+      this.IM.getHistoryMsgs({
+        beginTime: this.params.beginTime,
+        scene: this.params.scene,
+        to: this.params.to,
         done: doneHandler
       })
     },
@@ -1022,8 +1005,8 @@ export default {
           }, 0)
         }
 
-        $peace.NIM.sendText({
-          scene: this.$store.state.inquiry.session.scene,
+        this.IM.sendText({
+          scene: this.params.scene,
           to: this.$store.getters['inquiry/doctorInfo'].doctorId,
           text: this.message,
           done: doneHandler
@@ -1051,8 +1034,8 @@ export default {
           success: fileBlob => {
             const blob = new File([fileBlob], fileBlob.name, { type: fileBlob.type })
 
-            $peace.NIM.sendFile({
-              scene: this.$store.state.inquiry.session.scene,
+            this.IM.sendFile({
+              scene: this.params.scene,
               to: this.$store.getters['inquiry/doctorInfo'].doctorId,
               type: 'image',
               blob: blob,

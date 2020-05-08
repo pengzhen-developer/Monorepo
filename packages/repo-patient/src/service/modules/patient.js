@@ -359,10 +359,10 @@ export function getLastAppoint(params) {
  * @param {*doctorId,*consultingType} params
  * @returns
  */
-export function inquiryStatus(doctorId, consultingType) {
+export function inquiryStatus(doctorId, familyId, consultingType) {
   const inquiryStatus = 'client/v1/inquiry/inquiryStatus'
 
-  return peace.http.post(inquiryStatus, { doctorId, consultingType })
+  return peace.http.post(inquiryStatus, { doctorId, familyId, consultingType })
 }
 /**
  * 获取药店信息

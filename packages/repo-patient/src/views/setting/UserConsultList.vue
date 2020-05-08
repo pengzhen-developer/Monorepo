@@ -317,23 +317,23 @@ export default {
     },
 
     goChatingPage(item) {
-      
-      let params=''
+      let params = ''
       // 问诊中时, 咨询记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
           scene: 'p2p',
           beginTime: item.inquiryInfo.inquiryTime.toDate().getTime(),
-          to: item.doctorInfo.doctorId
+          to: item.doctorInfo.doctorId,
+          familyId: item.inquiryInfo.familyInfo.id
         })
       }
       // 非问诊中,显示历史记录
       else {
         params = peace.util.encode({
-          inquiryNo: item.inquiryInfo.inquiryNo
+          inquiryNo: item.inquiryInfo.inquiryNo,
+          familyId: item.inquiryInfo.familyInfo.id
         })
-        
       }
       // 清除聊天记录
       peace.service.IM.resetInquirySessionMessages()
@@ -593,7 +593,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  line-height:normal;
+  line-height: normal;
   &:first-child {
     margin-left: 0;
   }

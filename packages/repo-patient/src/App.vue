@@ -27,9 +27,8 @@
               <span>首页</span>
             </van-tabbar-item>
 
-            <template
-                      v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
-              <van-tabbar-item :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
+            <template v-if="unRead > 0">
+              <van-tabbar-item :info="unRead"
                                to="/message/index">
                 <i class="van-icon van-icon-comment"
                    slot="icon"></i>
@@ -87,10 +86,10 @@ export default {
       nowClickTime: 0,
       lastClickTime: 0,
       clickCount: 0,
-      config:{
-        debug: false, 
-        appId: '', 
-        timestamp:'' , 
+      config: {
+        debug: false,
+        appId: '',
+        timestamp: '',
         nonceStr: '',
         signature: '',
         jsApiList: [
@@ -101,16 +100,19 @@ export default {
           'onMenuShareQQ',
           'onMenuShareWeibo',
           'onMenuShareQZone'
-        ] 
+        ]
       }
     }
   },
 
   computed: {
     unRead() {
-      const reduceFunc = (accumulator, currentValue) => accumulator + currentValue.unread
-
-      return this.$store.state.inquiry.sessions.reduce(reduceFunc, 0)
+      if (this.$store.getters['inquiry/sessionList'] && this.$store.getters['inquiry/sessionList'].length > 0) {
+        const reduceFunc = (accumulator, currentValue) => accumulator + currentValue.unread
+        return this.$store.getters['inquiry/sessionList'].reduce(reduceFunc, 0)
+      } else {
+        return 0
+      }
     }
   },
 
@@ -167,27 +169,25 @@ export default {
       this.initNIM()
       this.initShareConfig()
     }, 1000)
-
-    
   },
-  
+
   methods: {
-    initShareConfig(){
-      let url= location.href.split('#')[0]
-      peace.service.index.getWXSign({url:url}).then(res => {
-        for(let i in res.data){
-          if(i!=='url'){
-            this.config[i]=res.data[i]
+    initShareConfig() {
+      let url = location.href.split('#')[0]
+      peace.service.index.getWXSign({ url: url }).then(res => {
+        for (let i in res.data) {
+          if (i !== 'url') {
+            this.config[i] = res.data[i]
           }
         }
         wx.config(this.config)
         wx.checkJsApi({
-          jsApiList: this.config.jsApiList, 
+          jsApiList: this.config.jsApiList,
           success: function() {
-          // 以键值对的形式返回，可用的api值true，不可用为false
-          // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            // 以键值对的形式返回，可用的api值true，不可用为false
+            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
           }
-        });
+        })
       })
     },
     validateWxAuth() {
@@ -209,7 +209,7 @@ export default {
       const userInfo = peace.cache.get(peace.type.USER.INFO)
 
       if (userInfo) {
-        peace.service.IM.initNIM()
+        peace.service.IM.initNIMS()
       }
     },
 

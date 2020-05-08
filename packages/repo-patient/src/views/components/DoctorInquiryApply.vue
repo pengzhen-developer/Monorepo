@@ -129,7 +129,8 @@
                          style="flex-direction: column;"
                          v-if="!isFixed">
                   <div>
-                    <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span
+                          style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                     <span style="color: #333333; font-size: 14px; ">
@@ -137,7 +138,8 @@
                     </span>
                   </div>
                   <div>
-                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                    <span
+                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                       {{ getSerivceType() }}
                     </span>
                     <span style="color: #333333; font-size: 12px; color: #F2223B;">
@@ -153,7 +155,8 @@
                          align="center"
                          v-else>
                   <div>
-                    <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span
+                          style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                   </div>
@@ -458,16 +461,16 @@ export default {
         {
           no: 0,
           answerList: [],
-          field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-          question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
-          mode: ANSWER_MODE.INPUT
+          field: ANSWER_FIELD.FAMILY,
+          question: '请问您要为哪位就诊人咨询？',
+          mode: ANSWER_MODE.CHECK
         },
         {
           no: 1,
           answerList: [],
-          field: ANSWER_FIELD.FAMILY,
-          question: '请问您要为哪位就诊人咨询？',
-          mode: ANSWER_MODE.CHECK
+          field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+          question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+          mode: ANSWER_MODE.INPUT
         },
         {
           no: 2,
@@ -786,7 +789,7 @@ export default {
     },
 
     addFamilyCallback(res) {
-      if (res.data.result) {
+      if (res.success) {
         this.getFamilyList()
       }
     },
@@ -981,16 +984,72 @@ export default {
         message: '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
       })
     },
+    FamilyInquriyStatus(familyId) {
+      return new Promise(resolve => {
+        peace.service.patient
+          .inquiryStatus(this.model.doctorId, familyId, this.model.consultingType)
+          .then(() => {
+            //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
+            resolve(true)
+          })
+          .catch(res => {
+            resolve(false)
+            let param = {}
+            switch (res.data.data.inquiryStatus) {
+              case 1:
+              case 2:
+                Dialog.confirm({
+                  title: '温馨提示',
+                  message: res.data.msg,
+                  confirmButtonText: '去看看'
+                }).then(() => {
+                  const params = {
+                    inquiryId: res.data.data.inquiryId,
+                    familyId: familyId
+                  }
+                  let json = peace.util.encode(params)
+                  //跳转订单详情
+                  this.$router.replace(`/setting/userConsultDetail/${json}`)
+                })
 
-    answer() {
-      if (this.setAnswer(arguments)) {
+                break
+              case 3:
+              case 7:
+                Dialog.confirm({
+                  title: '温馨提示',
+                  message: res.data.msg,
+                  confirmButtonText: '去看看'
+                }).then(() => {
+                  param = peace.util.encode({
+                    id: 'p2p-' + this.doctor.doctorInfo.doctorId,
+                    scene: 'p2p',
+                    beginTime: res.data.data.createTime.toDate().getTime(),
+                    to: this.doctor.doctorInfo.doctorId,
+                    familyId: familyId
+                  })
+                  // 清除聊天记录
+                  peace.service.IM.resetInquirySessionMessages()
+                  // 跳转聊天详情
+                  this.$router.replace(`/components/messageList/${param}`)
+                })
+
+                break
+              default:
+                peace.util.alert(res.data.msg)
+            }
+          })
+      })
+    },
+    async answer() {
+      let result = await this.setAnswer(arguments)
+      if (result) {
         this.beginNextQuestion()
 
         this.resetCurrentQuestion()
       }
     },
 
-    setAnswer(params) {
+    async setAnswer(params) {
       let answer = ''
 
       // 获取问题答案
@@ -1017,22 +1076,28 @@ export default {
       // 选择家人
       else if (this.current.field === this.ANSWER_FIELD.FAMILY) {
         if (params[0].id) {
-          answer = params[0].label
-          this.model.familyName = params[0].label
-          this.model.familyId = params[0].value
-          //家人男性过滤女性特殊时期问题
-          if (params[0].sex == '男') {
-            this.supplementaryList.splice(1, 1)
-          }
+          // 判断该家人与当前医生是否有进行中的问诊
+          let flag = await this.FamilyInquriyStatus(params[0].value)
           // 检查健康卡
-          this.checkHealthCard()
+          if (flag) {
+            answer = params[0].label
+            this.model.familyName = params[0].label
+            this.model.familyId = params[0].value
+            //家人男性过滤女性特殊时期问题
+            if (params[0].sex == '男') {
+              this.supplementaryList.splice(1, 1)
+            }
+            this.checkHealthCard()
+          } else {
+            return false
+          }
         } else {
           // 跳转新增家人
-          let canShowSelf=!this.current.answerList.find(item => item.relation === '本人')?1:2
+          let canShowSelf = !this.current.answerList.find(item => item.relation === '本人') ? 1 : 2
           const json = peace.util.encode({
             type: 'add',
             emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
-            canShowSelf:canShowSelf
+            canShowSelf: canShowSelf
           })
           this.$router.push({ path: `/setting/familyMember/${json}` })
 
