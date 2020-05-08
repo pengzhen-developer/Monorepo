@@ -2,8 +2,8 @@
   <div class="continer layout">
     <div class="layout-header">
       <el-radio-group v-model="selectIndex">
-        <el-radio-button label="out">我发起的</el-radio-button>
-        <el-radio-button label="in">发给我的</el-radio-button>
+        <el-radio-button label="inquiry">患者咨询</el-radio-button>
+        <el-radio-button label="followUp">我的问询</el-radio-button>
       </el-radio-group>
     </div>
 
@@ -11,19 +11,19 @@
       <div class="page">
         <RecordList
           :noDataText="noDataText"
-          :request-data="outRequestData"
+          :request-data="inquiryRequestData"
           v-slot="item"
           v-show="selectIndex === 'inquiry'"
         >
-          <InquiryRecordListCell type="inquiry" :item="item" />
+          <InquiryRecordListCell :item="item" />
         </RecordList>
         <RecordList
           :noDataText="noDataText"
-          :request-data="inRequestData"
+          :request-data="followRequestData"
           v-slot="item"
           v-show="selectIndex === 'followUp'"
         >
-          <InquiryRecordListCell type="followUp" :item="item" />
+          <FollowRecordListCell :item="item" />
         </RecordList>
       </div>
     </div>
@@ -39,7 +39,7 @@
 import peace from '@src/library'
 import RecordList from '../RecordList'
 import InquiryRecordListCell from './InquiryRecordListCell'
-
+import FollowRecordListCell from './FollowRecordListCell'
 export default {
   name: 'InquiryRecord',
   props: {
@@ -47,24 +47,25 @@ export default {
   },
   components: {
     RecordList,
-    InquiryRecordListCell
+    InquiryRecordListCell,
+    FollowRecordListCell
   },
   data() {
     return {
       selectIndex: 'inquiry',
-      outRequestData: {
-        request: peace.service.health.getReferralRecordList,
+      inquiryRequestData: {
+        request: peace.service.health.getPatientInquiryList,
         data: {
           // 请求列表参数
-          referral_type: 'out',
+          tag: 'inquiry',
           patientNo: this.params.id
         }
       },
-      inRequestData: {
-        request: peace.service.health.getReferralRecordList,
+      followRequestData: {
+        request: peace.service.health.getPatientInquiryList,
         data: {
           // 请求列表参数
-          referral_type: 'in',
+          tag: 'follow',
           patientNo: this.params.id
         }
       }

@@ -18,7 +18,7 @@ import CreateApp from './createApp'
 // Some libraries depend on it
 import boot_FrameworkQuasar from './boot_framework_quasar'
 import boot_Library from './boot_library'
-import boot_UI_Element from './boot_ui_element'
+import boot_UI from './boot_ui'
 
 // css
 import './boot_ui_css/index.scss'
@@ -39,10 +39,10 @@ const install = async () => {
     boot_Library,
 
     // UI
-    boot_UI_Element
+    boot_UI
   ]
 
-  boots.forEach(async (boot) => {
+  boots.forEach(async boot => {
     try {
       await boot({
         Vue,

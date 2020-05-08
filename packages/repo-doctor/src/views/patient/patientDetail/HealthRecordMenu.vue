@@ -1,16 +1,16 @@
 <template>
   <div>
-    <el-menu :collapse="true"
-             class="nav-menu">
+    <el-menu :collapse="true" class="nav-menu">
       <template v-for="menu in menuList">
-        <div class="menuItem"
-             :class="{ active: selectIndex === menu.index }"
-             :key="menu.index"
-             @click="menuSelect(menu.index)">
+        <div
+          class="menuItem"
+          :class="{ active: selectIndex === menu.index }"
+          :key="menu.index"
+          @click="menuSelect(menu.index)"
+        >
           <div class="nav-submenu">
-            <img :class="{ isDisable:  menu.disable }"
-                 v-bind:src="menu.icon">
-            <label :class="{ isDisable:  menu.disable }">{{ menu.name }}</label>
+            <img :class="{ isDisable: menu.disable }" v-bind:src="menu.icon" />
+            <label :class="{ isDisable: menu.disable }">{{ menu.name }}</label>
             <div class="line"></div>
           </div>
         </div>
@@ -23,7 +23,7 @@
 import peace from '@src/library'
 export default {
   created() {
-    $peace.$on('hideDrawer', (params) => {
+    $peace.$on('hideDrawer', params => {
       console.log(params)
       this.selectIndex = -1
     })
@@ -34,13 +34,13 @@ export default {
         {
           name: '咨询',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
-          disable: true,
+          disable: false,
           icon: require('@src/assets/images/health-record/health_records_talk.png')
         },
         {
           name: '病程',
           index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
-          disable: true,
+          disable: false,
           icon: require('@src/assets/images/health-record/health_records_course.png')
         },
         {
