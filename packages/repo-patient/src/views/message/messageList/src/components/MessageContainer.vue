@@ -1,6 +1,6 @@
 <template>
   <!-- 消息时间 -->
-  <div>
+  <div v-if="messageComponent">
     <template v-if="showTime">
       <div class="message time">
         <div class="message-body">
