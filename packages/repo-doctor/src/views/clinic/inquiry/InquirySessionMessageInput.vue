@@ -1,12 +1,14 @@
 <template>
   <div class="inquiry-session-message-input">
     <div class="control">
-      <el-upload :auto-upload="false"
-                 :on-change="sendImage"
-                 accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-                 action=" "
-                 ref="upload"
-                 style="display: inline-block;">
+      <el-upload
+        :auto-upload="false"
+        :on-change="sendImage"
+        accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+        action=" "
+        ref="upload"
+        style="display: inline-block;"
+      >
         <el-button type="text">
           <img src="~@src/assets/images/inquiry/chat_icon_pic.png" />
           <span>图片</span>
@@ -15,74 +17,67 @@
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendVideo"
-                 type="text">
+      <el-button @click="sendVideo" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_video.png" />
         <span>视频</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendCase"
-                 type="text">
+      <el-button @click="sendCase" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
         <span>写病历</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendRecipe"
-                 type="text">
+      <el-button @click="sendRecipe" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
         <span>开处方</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendTransfer"
-                 type="text">
+      <el-button @click="sendTransfer" type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
         <span>申请转诊</span>
       </el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button @click="sendConsultation"
-                 type="text">
+      <el-button @click="sendConsultation" type="text">
         <img src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
         <span>申请会诊</span>
       </el-button>
     </div>
     <div class="input-text">
-      <el-input :rows="6"
-                @keyup.ctrl.enter.native="sendText()"
-                placeholder
-                resize="none"
-                type="textarea"
-                v-model="message"></el-input>
+      <el-input
+        :rows="6"
+        @keyup.ctrl.enter.native="sendText()"
+        placeholder
+        resize="none"
+        type="textarea"
+        v-model="message"
+      ></el-input>
     </div>
     <div class="input-send">
       <el-dropdown placement="top">
-        <el-button round
-                   type="text">快速回复</el-button>
-        <el-dropdown-menu slot="dropdown"
-                          style="overflow: hidden;">
+        <el-button round type="text">快速回复</el-button>
+        <el-dropdown-menu slot="dropdown" style="overflow: hidden;">
           <div style="height: 150px; overflow: auto;">
-            <el-dropdown-item v-for="item in quickReplys"
-                              :key="item"
-                              @click.native="sendText(item)"
-                              style="padding: 5px 10px;">
+            <el-dropdown-item
+              v-for="item in quickReplys"
+              :key="item"
+              @click.native="sendText(item)"
+              style="padding: 5px 10px;"
+            >
               {{ item }}
             </el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button @click="sendText()"
-                 round
-                 type="primary">发送</el-button>
+      <el-button @click="sendText()" round type="primary">发送</el-button>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible"
-                  append-to-body
-                  title="病历详情">
+    <peace-dialog :visible.sync="caseDetail.visible" append-to-body title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </peace-dialog>
   </div>

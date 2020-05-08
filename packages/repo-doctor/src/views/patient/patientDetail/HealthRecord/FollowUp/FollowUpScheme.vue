@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="layout-footer full-width">
-      <q-separator inset class="q-mb-md" />
+      <q-separator inset class="q-mb-md bg-grey-3" />
       <el-button @click="addNewScheme" type="primary">新建自定义方案 </el-button>
     </div>
     <peace-dialog

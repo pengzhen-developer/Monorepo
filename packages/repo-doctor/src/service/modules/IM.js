@@ -10,8 +10,8 @@ let store = Store()
  * 初始化 IM
  *
  * @export
- * @param {*} 回调函数
  * @returns
+ * @param options
  */
 export function initNIM(
   options = {
@@ -43,7 +43,7 @@ export function initNIM(
       account,
       token,
       db,
-      debug: true,
+      debug: false,
       syncSessionUnread: true,
 
       ...options,

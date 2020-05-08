@@ -92,5 +92,8 @@ export default {
   .list {
     margin: 0 10px;
   }
+  /deep/ .no-data {
+    min-height: 280px !important;
+  }
 }
 </style>

@@ -15,6 +15,7 @@
 <script>
 import peace from '@src/library'
 import InquiryRecord from './Inquiry/InquiryRecord'
+import DiseaseRecord from './CourseOfDisease/DiseaseRecord'
 import FollowUpRecord from './FollowUp/FollowUpRecord'
 import ReferralRecord from './Referral/ReferralRecord'
 import ApplyReferral from './Referral/ApplyReferral'
@@ -45,6 +46,11 @@ export default {
           }
           break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
+          {
+            this.ComponentInstance = DiseaseRecord
+            this.titleStr = '病程记录'
+          }
+          break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
           {
             this.ComponentInstance = FollowUpRecord
@@ -98,7 +104,7 @@ export default {
       })
     },
     isAllEmpty(params) {
-      for (var key in params) {
+      for (const key of params) {
         if (!peace.validate.isEmpty(params[key])) {
           return false // 终止程序
         }

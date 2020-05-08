@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="layout-footer full-width">
-      <q-separator inset class="q-mb-md" />
+      <q-separator inset class="q-mb-md bg-grey-3" />
       <el-button @click="addFollowUp" type="primary">添加随访方案 </el-button>
     </div>
   </div>

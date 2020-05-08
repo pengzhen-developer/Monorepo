@@ -29,7 +29,7 @@
     </div>
 
     <div class="layout-footer full-width" v-show="selectIndex === 'inquiry'">
-      <q-separator inset class="q-mb-md" />
+      <q-separator inset class="q-mb-md bg-grey-3" />
       <el-button @click="sendMessage" type="primary">发送信息 </el-button>
     </div>
   </div>
