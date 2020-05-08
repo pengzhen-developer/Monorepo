@@ -45,7 +45,6 @@
 
 <script>
 import peace from '@src/library'
-import { onClickAvatar } from './common'
 
 import MessageTextContent from './MessageTextContent'
 import MessageImageContent from './MessageImageContent'
@@ -69,26 +68,38 @@ export default {
     MessageCheckCardContent
   },
   props: {
+    /**消息 */
     message: {
       type: Object,
       required: true
     },
+    /**是否显示显示 */
     showTime: {
       type: Boolean,
       required: true,
       default: false
     },
+    /**患者信息 */
     patientInfo: {
       type: Object,
       required: true
     },
+    /**医生信息 */
     doctorInfo: {
       type: Object,
       required: true
     },
+    /**判断家人是否存在于家人列表 */
     IsInFlamilyList: {
       type: Boolean,
-      required: true
+      required: false,
+      default: true
+    },
+    /**是否允许点击头像跳转 */
+    avatorClick: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
 
@@ -185,13 +196,36 @@ export default {
 
       return this.message.flow
     },
+
     onClickAvatar() {
-      onClickAvatar(this.flow, this.roleId, this.IsInFlamilyList)
+      if (!this.avatorClick) {
+        return
+      }
+      if (this.flow == 'out') {
+        this.gotoFamilyPage(this.roleId, this.IsInFlamilyList)
+      } else {
+        this.gotoDoctorDetail(this.roleId)
+      }
+    },
+    gotoDoctorDetail(roleId) {
+      const json = peace.util.encode({
+        doctorId: roleId
+      })
+      $peace.$router.push(`/components/DoctorDetail/${json}`)
+    },
+    gotoFamilyPage(roleId, flag) {
+      let familyId = roleId
+      if (flag) {
+        peace.cache.set('familyId', familyId)
+        $peace.$router.push(`/file/index/`)
+      } else {
+        $peace.util.alert('该就诊人已从您的家人列表移除，不可查看其健康档案')
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
+@import '../assets/style.scss';
 </style>

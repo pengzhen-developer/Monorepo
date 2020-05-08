@@ -5,14 +5,16 @@
     <div class="message-header">
       <van-image width="17px"
                  height="17px"
-                 :src="require('@src/assets/images/ic_check.png')" /> <span>检查单</span>
+                 :src="require('../assets/images/ic_fabingli.png')" /> <span>病历</span>
     </div>
     <div class="message-content">
-      <div class="item"
-           v-for="item in checkOrderTxt"
-           :key="item.itemId">
-        <div class="left elps">{{ item.name }}</div>
-        <div class="right">x 1</div>
+      <div class="item">
+        <div class="left other justify">诊断</div>
+        <div class="right other">{{diagnosis}}</div>
+      </div>
+      <div class="item">
+        <div class="left other justify">就诊时间</div>
+        <div class="right other">{{visitingTime}}</div>
       </div>
       <div class="message-line-solid"></div>
     </div>
@@ -28,8 +30,15 @@ export default {
     /*
      * 诊断
      */
-    checkOrderTxt: {
-      type: Array,
+    diagnosis: {
+      type: String,
+      required: true
+    },
+    /*
+     * 就诊时间
+     */
+    visitingTime: {
+      type: String,
       required: true
     }
   },
@@ -42,6 +51,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
-</style>

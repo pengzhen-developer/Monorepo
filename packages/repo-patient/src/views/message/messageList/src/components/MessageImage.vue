@@ -51,6 +51,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
-</style>

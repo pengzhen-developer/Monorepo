@@ -546,8 +546,8 @@ const routers = [
     meta: {
       auth: true,
     },
-    // component: () => import('@src/views/components/MessageList.vue')
-    component: () => import('@src/views/message/messageList/index.vue'),
+    // component: () => import('@src/views/components/MessageList.vue'),
+    component: () => import('@src/views/message/messageList/index'),
   },
   // 医生主页
   {

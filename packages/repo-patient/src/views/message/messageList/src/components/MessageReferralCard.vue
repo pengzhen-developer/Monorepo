@@ -5,7 +5,7 @@
     <div class="message-header">
       <van-image width="17px"
                  height="17px"
-                 :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span>
+                 :src="require('../assets/images/ic_zhuan.png')" /> <span>转诊单</span>
     </div>
     <div class="message-content">
       <div class="item">
@@ -88,6 +88,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
-</style>

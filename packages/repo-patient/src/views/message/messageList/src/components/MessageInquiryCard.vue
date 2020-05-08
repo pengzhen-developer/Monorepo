@@ -5,17 +5,17 @@
     <div class="message-header">
       <van-image width="20px"
                  height="17px"
-                 :src="require('@src/assets/images/ic_message.png')" />
+                 :src="require('../assets/images/ic_message.png')" />
       <span>
         {{ familyName }} |
         {{ familySex }} |
         {{ familyAge }}岁
       </span>
       <img v-if="isAgain === '1'"
-           src="~@/assets/images/ic_fz.png"
+           src="../assets/images/ic_fz.png"
            class="fz" />
       <img v-else
-           src="~@/assets/images/ic_cz.png"
+           src="../assets/images/ic_cz.png"
            class="fz" />
     </div>
     <div class="message-content">
@@ -30,7 +30,7 @@
          @click.stop="onClickMore()">
       <van-image width="16px"
                  height="18px"
-                 :src="require('@src/assets/images/ic_ck.png')" />
+                 :src="require('../assets/images/ic_ck.png')" />
       查看订单
     </div>
   </div>
@@ -94,6 +94,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
-</style>

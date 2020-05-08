@@ -678,6 +678,7 @@ export default {
           const element = document.querySelector('.message-list .item')
 
           if (element) {
+            console.log(element.scrollHeight)
             element.scrollTop = element.scrollHeight
           }
         })

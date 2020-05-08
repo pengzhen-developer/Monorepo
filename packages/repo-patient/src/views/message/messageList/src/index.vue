@@ -1,6 +1,6 @@
 
 <template>
-  <div class="message-list">
+  <div class="message-list-chat-room">
     <template v-if="messageList && messageList.length">
       <div @click="hideTools"
            class="item">
@@ -13,6 +13,7 @@
                             :showTime="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]"
                             :patientInfo="patientInfo"
                             :doctorInfo="doctorInfo"
+                            :avatorClick="true"
                             :IsInFlamilyList="IsInFlamilyList"></MessageContainer>
         </div>
 
@@ -86,9 +87,9 @@
       </div>
     </template>
     <template v-if="loading">
-      <!-- <van-loading></van-loading> -->
       <div class="loading">
         <van-loading />
+        <!-- <el-loading></el-loading> -->
       </div>
     </template>
   </div>
@@ -103,7 +104,7 @@ Vue.use(Toast)
 
 import Compressor from 'compressorjs'
 
-import MessageContainer from './MessageContainer.vue'
+import MessageContainer from './components/MessageContainer'
 export default {
   props: {
     data: {
@@ -136,16 +137,6 @@ export default {
       tools: {
         visible: false
       },
-
-      caseDetail: {
-        visible: false,
-        data: {}
-      },
-
-      recipeDetail: {
-        visible: false,
-        data: {}
-      },
       showTimeDic: {
         710: true, // 接诊
         731: true, // 审核处方通过
@@ -159,12 +150,6 @@ export default {
         // 900: true, // 接收随访
         // 910: true, // 随访结束
       },
-
-      imagePreview: {
-        images: [],
-        visible: false,
-        position: 0
-      },
       params: {},
       hasSend: false,
       IsInFlamilyList: false
@@ -175,7 +160,7 @@ export default {
     messageList: {
       handler() {
         this.$nextTick(() => {
-          const element = document.querySelector('.message-list .item')
+          const element = document.querySelector('.message-list-chat-room .item')
 
           if (element) {
             element.scrollTop = element.scrollHeight
@@ -184,11 +169,22 @@ export default {
       },
       immediate: true
     },
+    'tools.visible': {
+      handler() {
+        this.$nextTick(() => {
+          const element = document.querySelector('.message-list-chat-room .item')
 
+          if (element) {
+            element.scrollTop = element.scrollHeight
+          }
+        })
+      },
+      immediate: true
+    },
     infoData: {
       handler() {
         this.$nextTick(() => {
-          const element = document.querySelector('.message-list .item')
+          const element = document.querySelector('.message-list-chat-room .item')
 
           if (element) {
             element.scrollTop = element.scrollHeight
@@ -524,7 +520,6 @@ export default {
 
     hideTools() {
       this.tools.visible = false
-
       const scrollTop = this.$el.querySelector('.item').scrollTop
       const innerHeight = window.innerHeight
 
@@ -592,6 +587,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@src/views/message/messageList/style.scss';
+<style lang="scss">
+@import './assets/style.scss';
+.message-header {
+  background-image: url('./assets/images/bg-img.png');
+}
+.message-footer::after {
+  background-image: url('./assets/images/arrow-right.jpg');
+}
 </style>
