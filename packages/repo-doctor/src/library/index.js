@@ -12,6 +12,7 @@ import './prototype/string'
 import dayjs from 'dayjs'
 
 // components
+import Countdown from './components/countdown'
 import Table from './components/table'
 import Dialog from './components/dialog'
 
@@ -48,7 +49,7 @@ const install = function(Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = [Table, Dialog]
+  const components = [Table, Dialog, Countdown]
   components.map(component => {
     Vue.use(component)
   })

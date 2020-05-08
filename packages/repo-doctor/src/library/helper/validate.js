@@ -44,55 +44,171 @@ export const pattern = {
 }
 
 /**
- * 非空验证 正则验证
+ * 非空验证
  *
  * e.g.
  *
- * $peace.validate.isEmpty('http://192.168.0.254/1.json') => false
+ * isEmpty('http://192.168.0.254/1.json') => false
  * @export
- * @param {*} param
+ * @param {*} object
  * @returns
  */
-export function isEmpty(param) {
-  return param === null || param === undefined || param === ''
+export function isEmpty(object) {
+  return object === null || object === undefined || object === ''
 }
 
 /**
- * 长度 正则验证
+ * url 正则验证
  *
  * e.g.
  *
- * $peace.validate.length('http://192.168.0.254/1.json', 30) => true
+ * isUrl('http://192.168.0.254/1.json') => true
  * @export
  * @param {*} param
- * @param {*} length
  * @returns
  */
-export function length(param, length) {
-  return param.toString().length() <= length
+export function isUrl(param) {
+  return pattern.url.test(param)
 }
 
 /**
- * 长度 正则验证（1个双字节=3个单字节）
+ * 数字 正则验证（正负整数）
  *
  * e.g.
  *
- * $peace.validate.lengthForByte('你好1',4) => false
+ * isNumber(123) => true
  * @export
  * @param {*} param
- * @param {*} length
  * @returns
  */
-export function lengthForByte(param, length) {
-  // 1个中文字符占3个字节，其他字符占1个字节
-  /* eslint-disable no-control-regex */
-  let len = param.toString().replace(/[^\x00-\xff]/g, 'aaa').length
+export function isNumber(param) {
+  return pattern.number.test(param)
+}
 
-  if (len > length) {
-    return false
-  } else {
-    return true
-  }
+/**
+ * 数值 正则验证（包括整数、浮点数、正、负数）
+ *
+ * e.g.
+ *
+ * isNumerical(123) => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isNumerical(param) {
+  return pattern.numerical.test(param)
+}
+
+/**
+ * 数值 正则验证（包括整数、浮点数、正数）
+ *
+ * e.g.
+ *
+ * isPNumerical(123) => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isPNumerical(param) {
+  return pattern.pNumerical.test(param)
+}
+
+/**
+ * 整数 正则验证
+ *
+ * e.g.
+ *
+ * isInterger(-123) => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isInterger(param) {
+  return pattern.integer.test(param)
+}
+
+/**
+ * 正整数及0 正则验证
+ *
+ * e.g.
+ *
+ * isPInterger(123) => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isPInterger(param) {
+  return pattern.pInteger.test(param)
+}
+
+/**
+ * 负整数及0 正则验证
+ *
+ * e.g.
+ *
+ * isNInterger(-123) => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isNInterger(param) {
+  return pattern.nInterger.test(param)
+}
+
+/**
+ * 手机号码 正则验证
+ *
+ * e.g.
+ *
+ * isMobile('13011111111') => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isMobile(param) {
+  return pattern.mobile.test(param)
+}
+
+/**
+ * 电话号码 正则验证
+ *
+ * e.g.
+ *
+ * isTelephone('42901920') => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isTelephone(param) {
+  return pattern.telephone.test(param)
+}
+
+/**
+ * 身份证 正则验证
+ *
+ * e.g.
+ *
+ * isIDCard('400210188801011010') => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isIDCard(param) {
+  return pattern.idCard.test(param)
+}
+
+/**
+ * 邮箱 正则验证
+ *
+ * e.g.
+ *
+ * isEmail('aa@qq.com') => true
+ * @export
+ * @param {*} param
+ * @returns
+ */
+export function isEmail(param) {
+  return pattern.email.test(param)
 }
 
 /**
@@ -100,14 +216,14 @@ export function lengthForByte(param, length) {
  *
  * e.g.
  *
- * $peace.validate.range('36.5', 1, 100) => false
+ * isRange('36.5', 1, 100) => false
  * @export
  * @param {*} param
  * @param {*} iMin
  * @param {*} iMax
  * @returns
  */
-export function range(param, iMin, iMax) {
+export function isRange(param, iMin, iMax) {
   let re = /(\d+)/g
 
   while (re.exec(param)) {
@@ -120,175 +236,19 @@ export function range(param, iMin, iMax) {
   }
 }
 
-/**
- * url 正则验证
- *
- * e.g.
- *
- * $peace.validate.url('http://192.168.0.254/1.json') => true
- * @export
- * @param {*} param
- * @returns
- */
-export function url(param) {
-  return pattern.url.test(param)
-}
-
-/**
- * 数字 正则验证（正负整数）
- *
- * e.g.
- *
- * $peace.validate.number(123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function number(param) {
-  return pattern.number.test(param)
-}
-
-/**
- * 数值 正则验证（包括整数、浮点数、正、负数）
- *
- * e.g.
- *
- * $peace.validate.number(123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function numerical(param) {
-  return pattern.numerical.test(param)
-}
-
-/**
- * 数值 正则验证（包括整数、浮点数、正数）
- *
- * e.g.
- *
- * $peace.validate.number(123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function pNumerical(param) {
-  return pattern.pNumerical.test(param)
-}
-
-/**
- * 整数 正则验证
- *
- * e.g.
- *
- * $peace.validate.integer(-123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function interger(param) {
-  return pattern.integer.test(param)
-}
-
-/**
- * 正整数及0 正则验证
- *
- * e.g.
- *
- * $peace.validate.pInterger(123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function pInterger(param) {
-  return pattern.pInteger.test(param)
-}
-
-/**
- * 负整数及0 正则验证
- *
- * e.g.
- *
- * $peace.validate.nInterger(-123) => true
- * @export
- * @param {*} param
- * @returns
- */
-export function nInterger(param) {
-  return pattern.nInterger.test(param)
-}
-
-/**
- * 手机号码 正则验证
- *
- * e.g.
- *
- * $peace.validate.mobile('13011111111') => true
- * @export
- * @param {*} param
- * @returns
- */
-export function mobile(param) {
-  return pattern.mobile.test(param)
-}
-
-/**
- * 电话号码 正则验证
- *
- * e.g.
- *
- * $peace.validate.mobile('13011111111') => true
- * @export
- * @param {*} param
- * @returns
- */
-export function telephone(param) {
-  return pattern.telephone.test(param)
-}
-
-/**
- * 身份证 正则验证
- *
- * e.g.
- *
- * $peace.validate.idCard('400210188801011010') => true
- * @export
- * @param {*} param
- * @returns
- */
-export function idCard(param) {
-  return pattern.idCard.test(param)
-}
-
-/**
- * 邮箱 正则验证
- *
- * e.g.
- *
- * $peace.validate.email('aa@qq.com') => true
- * @export
- * @param {*} param
- * @returns
- */
-export function email(param) {
-  return pattern.email.test(param)
-}
-
 export default {
   pattern,
+
   isEmpty,
-  length,
-  lengthForByte,
-  range,
-  url,
-  number,
-  numerical,
-  pNumerical,
-  interger,
-  pInterger,
-  nInterger,
-  mobile,
-  telephone,
-  idCard,
-  email
+  isUrl,
+  isNumber,
+  isNumerical,
+  isPNumerical,
+  isInterger,
+  isPInterger,
+  isNInterger,
+  isMobile,
+  isTelephone,
+  isIDCard,
+  isRange
 }

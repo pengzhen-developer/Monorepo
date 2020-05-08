@@ -136,19 +136,19 @@ export function deepClone(item) {
  * @returns
  */
 export function alert(message = '温馨提示', title = '温馨提示', type = 'success') {
-  return Message({ message, title, type })
+  Message({ message, title, type })
 }
 export function info(msg = '温馨提示', title = '温馨提示', type = 'info') {
-  return Message({ message: msg, title, type })
+  Message({ message: msg, title, type })
 }
 export function warning(msg = '温馨提示', title = '温馨提示', type = 'warning') {
-  return Message({ message: msg, title, type })
+  Message({ message: msg, title, type })
 }
 export function error(msg = '温馨提示', title = '温馨提示', type = 'error') {
-  return Message({ message: msg, title, type })
+  Message({ message: msg, title, type })
 }
 export function success(msg = '温馨提示', title = '温馨提示', type = 'success') {
-  return Message({ message: msg, title, type })
+  Message({ message: msg, title, type })
 }
 
 /**
@@ -191,7 +191,10 @@ export function confirm(
  */
 export function formatDuration(bgTime, endTime) {
   if (bgTime > endTime) {
-    console.warn('【 peace 】【 util 】【 formatDuration 】格式化时间间隔出错，开始时间不能大于结束时间。', new Date())
+    console.warn(
+      '【 peace 】【 util 】【 formatDuration 】格式化时间间隔出错，开始时间不能大于结束时间。',
+      new Date()
+    )
 
     return ''
   }

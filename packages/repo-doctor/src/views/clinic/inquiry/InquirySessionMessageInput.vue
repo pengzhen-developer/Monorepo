@@ -138,7 +138,7 @@ export default {
 
         $peace.NIM.sendText({
           scene: this.$store.state.inquiry.session.scene,
-          to: this.$store.getters['inquiry/patientInfo'].patientId,
+          to: this.$store.getters['inquiry/patientInfo'].familyId,
           text: text,
           done: doneHandler
         })
@@ -157,7 +157,7 @@ export default {
 
         $peace.NIM.sendFile({
           scene: this.$store.state.inquiry.session.scene,
-          to: this.$store.getters['inquiry/patientInfo'].patientId,
+          to: this.$store.getters['inquiry/patientInfo'].familyId,
           type: 'image',
           blob: file.raw,
           done: doneHandler
@@ -166,7 +166,10 @@ export default {
     },
 
     sendVideo() {
-      if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+      if (
+        this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
+        peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
+      ) {
         $peace.videoComponent.call(this.$store.state.inquiry.session, 'inquiry')
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
@@ -182,7 +185,10 @@ export default {
         peace.service.inquiry.checkOverInquiry(params).then(res => {
           if (res.data.status === 1) {
             let message = ''
-            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            if (
+              this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
+              peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
+            ) {
               message = '您与患者尚未进行视频通话，暂时无法发送病历。'
             } else {
               message = '当前为无效会话，暂时无法发送病历。'
@@ -217,7 +223,10 @@ export default {
       peace.service.inquiry.checkOverInquiry(params).then(res => {
         if (res.data.status === 1) {
           let message = ''
-          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+          if (
+            this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
+            peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
+          ) {
             message = '您与患者尚未进行视频通话，暂时无法进行转诊。'
           } else {
             message = '当前为无效会话，暂时无法进行转诊。'
@@ -253,7 +262,10 @@ export default {
       peace.service.inquiry.checkOverInquiry(params).then(res => {
         if (res.data.status === 1) {
           let message = ''
-          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+          if (
+            this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
+            peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
+          ) {
             message = '您与患者尚未进行视频通话，暂时无法进行会诊。'
           } else {
             message = '当前为无效会话，暂时无法进行会诊。'

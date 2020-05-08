@@ -1,8 +1,7 @@
 <template>
   <div class="header-container">
     <div class="header-left">
-      <span
-            class="header-left-title">{{ $store.state.user.userInfo.list.docInfo.netHospital_name }}</span>
+      <span class="header-left-title">{{ $store.state.user.userInfo.list.docInfo.netHospital_name }}</span>
     </div>
     <div class="header-right">
       <el-dropdown @command="handleNotice">
@@ -56,7 +55,7 @@
         <el-dropdown-menu class="header-right-title-dropdown"
                           slot="dropdown">
           <div class="header-right-title-dropdown-content">
-            <h4>工作状态</h4>
+            <p class="text-h7 text-bold q-mb-sm">工作状态</p>
             <el-dropdown-item @click.native="setWorkstatus(1)"
                               class="dropdown-item">
               <div class="icon circle online"></div>
@@ -100,9 +99,11 @@
 
 <script>
 import peace from '@src/library'
+import util from '@src/util'
 import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
 import SignNotice from '../SignNotice'
 import OrgNotice from '../OrgNotice'
+
 export default {
   components: {
     TheConsultationDetail,
@@ -167,11 +168,13 @@ export default {
     },
     setWorkstatus(status) {
       peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
-        const userInfo = peace.cache.get(peace.type.USER.INFO)
+        const userInfo = util.user.getUserInfo()
         userInfo.list.docInfo.workStatus = status
 
+        // 储存用户信息
+        util.user.setUserInfo(userInfo)
+        // 更新 vuex
         this.$store.commit('user/setUserInfo', userInfo)
-        peace.cache.set(peace.type.USER.INFO, userInfo, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)
       })
     },
     handleNotice(item) {
@@ -200,11 +203,9 @@ export default {
       })
     },
     signOut() {
-      // 清空用户缓存
-      peace.cache.remove(peace.type.USER.INFO)
+      util.user.removeUserInfo()
 
-      // 重定向
-      this.$router.replace(peace.config.system.loginPage)
+      util.user.replaceToLogin()
 
       // 刷新页面，确保 vuex store 被清空
       setTimeout(() => {

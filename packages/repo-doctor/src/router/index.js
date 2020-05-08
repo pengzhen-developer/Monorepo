@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import peace from '@src/library'
+import util from '@src/util'
 
 export default function() {
   Vue.use(Router)
@@ -150,7 +151,7 @@ export default function() {
       {
         path: '/login',
         name: '/login',
-        component: () => import('@src/views/Login.vue')
+        component: () => import('@src/views/login/index')
       },
       {
         path: '/noAuth',
@@ -177,7 +178,7 @@ export default function() {
       peace.referrer = to
 
       // 验证权限
-      if (peace.cache.get(peace.type.USER.INFO, peace.type.SYSTEM.CACHE.LOCAL_STORAGE)) {
+      if (util.user.isSignIn()) {
         return next()
       } else {
         return next(peace.config.system.noAuthPage)

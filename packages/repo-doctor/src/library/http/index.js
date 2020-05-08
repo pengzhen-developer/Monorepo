@@ -3,6 +3,8 @@
  * @Date: 2017-12-21 18:55:33
  * @Description: axios 拦截器, 集成 download and retry
  */
+
+import util from '@src/util'
 import axios from 'axios'
 import download from './download'
 import retry from './retry'
@@ -59,9 +61,8 @@ axios.interceptors.request.use(
       }
 
       // 配置 authorization、accesstoken
-      request.headers.accesstoken = $peace.cache.get($peace.type.USER.INFO)
-        ? $peace.cache.get($peace.type.USER.INFO).list.loginInfo.token
-        : undefined
+      const userInfo = util.user.getUserInfo()
+      request.headers.accesstoken = userInfo?.list?.loginInfo?.token
 
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
@@ -131,11 +132,13 @@ axios.interceptors.response.use(
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
         // 清空用户缓存
-        $peace.cache.remove($peace.type.USER.INFO)
+        util.user.removeUserInfo()
         // 跳转提示页
         router.replace($peace.config.system.noAuthPage)
 
-        window.location.reload()
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000 * 3)
 
         return Promise.reject(response)
       }
