@@ -204,7 +204,11 @@ export function onUpdateSession(session) {
     console.warn('【 IM 】【 onUpdateSession 】', new Date(), session)
 
     // 更新 session 与当前 session 相同, 设定未读数为 0
-    if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
+    if (
+      Store.state.inquiry.session &&
+      Store.state.inquiry.session.id === session.id &&
+      this.account === Store.state.inquiry.session.content.patientInfo.familyId
+    ) {
       session.unread = 0
     }
 
@@ -223,7 +227,11 @@ export function onUpdateSession(session) {
       // 将新 message 更新到 sessionMessages store
 
       let currrentSession = Store.state.inquiry.sessionsFamily[this.account].sessions
-      if (Store.state.inquiry.session && Store.state.inquiry.session.id === session.id) {
+      if (
+        Store.state.inquiry.session &&
+        Store.state.inquiry.session.id === session.id &&
+        this.account === Store.state.inquiry.session.content.patientInfo.familyId
+      ) {
         if (currrentSession && currrentSession.length > 0) {
           peace.service.IM.setInquirySession(currrentSession.find((temp) => temp.id === session.id))
           peace.service.IM.setInquirySessionMessages(session.lastMsg, this.account)
