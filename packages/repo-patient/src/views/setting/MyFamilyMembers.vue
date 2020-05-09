@@ -38,7 +38,7 @@
     </template>
 
     <div class="bottom">
-      <div class="tips">温馨提示：最多添加5位家人</div>
+      <div class="tips">温馨提示：最多添加4位家人</div>
       <van-button @click="toAdd"
                   type="primary">新增家人</van-button>
     </div>
@@ -138,8 +138,8 @@ export default {
     },
 
     toAdd() {
-      if (this.members && this.members.length >= 5) {
-        return peace.util.alert('您最多可添加 5 位家人')
+      if (this.members && this.members.length >= 4) {
+        return peace.util.alert('您最多可添加 4 位家人')
       }
       let canShowSelf = this.members && !this.members.find(item => item.relation === '本人') ? 1 : 2
       let json = peace.util.encode({ type: 'add', canShowSelf: canShowSelf })
