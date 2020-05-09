@@ -1,37 +1,42 @@
 <template>
   <div class="header-container">
     <div class="header-left">
-      <span class="header-left-title">{{ $store.state.user.userInfo.list.docInfo.netHospital_name }}</span>
+      <span class="header-left-title">{{
+        $store.state.user.userInfo.list.docInfo.netHospital_name
+      }}</span>
     </div>
     <div class="header-right">
       <el-dropdown @command="handleNotice">
         <div class="header-right-message">
-          <el-badge class="mark"
-                    :value="$store.getters['notification/unread']"
-                    :hidden="$store.getters['notification/unread']==0">
+          <el-badge
+            class="mark"
+            :value="$store.getters['notification/unread']"
+            :hidden="$store.getters['notification/unread'] == 0"
+          >
             <img src="~@src/assets/images/layout/top_icon_message.png" />
           </el-badge>
           <span>消息</span>
         </div>
 
-        <el-dropdown-menu class="header-right-message-dropdown"
-                          slot="dropdown">
+        <el-dropdown-menu class="header-right-message-dropdown" slot="dropdown">
           <div class="header-right-message-dropdown-content">
             <h4 v-if="$store.getters['notification/messageList'].length == 0">暂无消息</h4>
-            <el-dropdown-item class="dropdown-item message"
-                              :command="item"
-                              v-for="(item,index) in $store.getters['notification/messageList']"
-                              :key="'item'+index">
+            <el-dropdown-item
+              class="dropdown-item message"
+              :command="item"
+              v-for="(item, index) in $store.getters['notification/messageList']"
+              :key="'item' + index"
+            >
               <el-badge :is-dot="item.isRead == 0">
                 <div :class="'icon icon-' + item.tag"></div>
               </el-badge>
               <div class="right">
                 <div class="title">
-                  <span class="caption">{{item.title}}</span>
-                  <span class="time">{{item.time}}</span>
+                  <span class="caption">{{ item.title }}</span>
+                  <span class="time">{{ item.time }}</span>
                 </div>
                 <div class="content">
-                  {{item.detail}}
+                  {{ item.detail }}
                 </div>
               </div>
             </el-dropdown-item>
@@ -41,35 +46,34 @@
 
       <el-dropdown>
         <div class="header-right-title">
-          <el-badge is-dot
-                    type="primary"
-                    :class="workStatus">
-            <el-avatar :size="30"
-                       :src="$store.state.user.userInfo.list.docInfo.avartor"></el-avatar>
+          <el-badge is-dot type="primary" :class="workStatus">
+            <el-avatar
+              :size="30"
+              :src="$store.state.user.userInfo.list.docInfo.avartor"
+            ></el-avatar>
           </el-badge>
           <span>欢迎您，</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.name }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
 
-        <el-dropdown-menu class="header-right-title-dropdown"
-                          slot="dropdown">
+        <el-dropdown-menu class="header-right-title-dropdown" slot="dropdown">
           <div class="header-right-title-dropdown-content">
             <p class="text-h7 text-bold q-mb-sm">工作状态</p>
-            <el-dropdown-item @click.native="setWorkstatus(1)"
-                              class="dropdown-item">
+            <el-dropdown-item @click.native="setWorkstatus(1)" class="dropdown-item">
               <div class="icon circle online"></div>
               <span>接诊中</span>
             </el-dropdown-item>
-            <el-dropdown-item @click.native="setWorkstatus(2)"
-                              class="dropdown-item">
+            <el-dropdown-item @click.native="setWorkstatus(2)" class="dropdown-item">
               <div class="icon circle offline"></div>
               <span>休息中</span>
             </el-dropdown-item>
-            <hr>
-            <el-dropdown-item @click.native="signOut"
-                              style="justify-content: center;"
-                              class="dropdown-item">
+            <hr />
+            <el-dropdown-item
+              @click.native="signOut"
+              style="justify-content: center;"
+              class="dropdown-item"
+            >
               <span>退出登录</span>
             </el-dropdown-item>
           </div>
@@ -77,22 +81,22 @@
       </el-dropdown>
     </div>
 
-    <peace-dialog :visible.sync="dialogHZ.visible"
-                  title="会诊详情">
-      <TheConsultationDetail :data="dialogHZ.data"
-                             @close="() => dialogHZ.visible = false"></TheConsultationDetail>
+    <peace-dialog :visible.sync="dialogHZ.visible" title="会诊详情">
+      <TheConsultationDetail
+        :data="dialogHZ.data"
+        @close="() => (dialogHZ.visible = false)"
+      ></TheConsultationDetail>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="dialogNotice.visible"
-                  title="签名提醒">
-      <SignNotice :num="dialogNotice.num"
-                  @close="() => dialogNotice.visible = false"></SignNotice>
+    <peace-dialog :visible.sync="dialogNotice.visible" title="签名提醒">
+      <SignNotice
+        :num="dialogNotice.num"
+        @close="() => (dialogNotice.visible = false)"
+      ></SignNotice>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="dialogOrg.visible"
-                  title="详情">
-      <OrgNotice :data="dialogOrg.data"
-                 @close="() => dialogOrg.visible = false"></OrgNotice>
+    <peace-dialog :visible.sync="dialogOrg.visible" title="详情">
+      <OrgNotice :data="dialogOrg.data" @close="() => (dialogOrg.visible = false)"></OrgNotice>
     </peace-dialog>
   </div>
 </template>
@@ -499,5 +503,3 @@ export default {
   }
 }
 </style>
-
-

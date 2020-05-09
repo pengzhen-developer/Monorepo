@@ -1,5 +1,5 @@
 <template>
-  <div class="infinite-list-wrapper">
+  <div class="infinite-list-wrapper full-width">
     <template v-if="list && list.length > 0">
       <div class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled">
         <div v-for="(item, index) in list" :key="index">
@@ -83,8 +83,6 @@ export default {
 
 <style lang="scss" scoped>
 .infinite-list-wrapper {
-  width: 380px;
-
   p {
     text-align: center;
   }

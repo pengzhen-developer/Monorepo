@@ -462,7 +462,7 @@ export default {
 
       $peace.WebRTC.call({
         type: WebRTC.NETCALL_TYPE_VIDEO,
-        account: session.content.patientInfo.patientId,
+        account: session.content.patientInfo.familyId,
         pushConfig: pushConfig,
         sessionConfig: sessionConfig,
         webrtcEnable: true

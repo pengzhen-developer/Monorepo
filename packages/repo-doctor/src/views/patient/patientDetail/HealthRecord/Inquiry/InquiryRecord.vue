@@ -1,5 +1,5 @@
 <template>
-  <div class="continer layout">
+  <div class="layout">
     <div class="layout-header">
       <el-radio-group v-model="selectIndex">
         <el-radio-button label="inquiry">患者咨询</el-radio-button>
@@ -8,24 +8,22 @@
     </div>
 
     <div class="layout-content">
-      <div class="page">
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="inquiryRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'inquiry'"
-        >
-          <InquiryRecordListCell :item="item" />
-        </RecordList>
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="followRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'followUp'"
-        >
-          <FollowRecordListCell :item="item" />
-        </RecordList>
-      </div>
+      <RecordList
+        :noDataText="noDataText"
+        :request-data="inquiryRequestData"
+        v-slot="item"
+        v-show="selectIndex === 'inquiry'"
+      >
+        <InquiryRecordListCell :item="item" />
+      </RecordList>
+      <RecordList
+        :noDataText="noDataText"
+        :request-data="followRequestData"
+        v-slot="item"
+        v-show="selectIndex === 'followUp'"
+      >
+        <FollowRecordListCell :item="item" />
+      </RecordList>
     </div>
 
     <div class="layout-footer full-width" v-show="selectIndex === 'inquiry'">
@@ -92,9 +90,10 @@ export default {
   display: flex;
   flex-direction: column;
 
-  align-items: center;
+  /*align-items: center;*/
 
   .layout-header {
+    text-align: center;
     margin: 0 0 16px 0;
   }
 
