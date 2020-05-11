@@ -95,7 +95,9 @@ export default {
             return '【处方】'
           }
           // 视频通话
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
+          else if (
+            session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话
+          ) {
             return '【视频通话】'
           }
           // 其它
@@ -145,6 +147,7 @@ export default {
       }
 
       $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+
       // 重置会话未读数
       $peace.NIM.resetSessionUnread(session.id)
       // 获取本次问诊历史消息

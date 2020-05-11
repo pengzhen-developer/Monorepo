@@ -1,11 +1,11 @@
 /**
  * 参考: https://github.com/xkeshi/vue-countdown
  */
-
 const MILLISECONDS_SECOND = 1000
 const MILLISECONDS_MINUTE = 60 * MILLISECONDS_SECOND
 const MILLISECONDS_HOUR = 60 * MILLISECONDS_MINUTE
 const MILLISECONDS_DAY = 24 * MILLISECONDS_HOUR
+const EVENT_VISIBILITY_CHANGE = 'visibilitychange'
 
 export default {
   name: 'PeaceCountdown',
@@ -13,13 +13,7 @@ export default {
   data() {
     return {
       /**
-       * Total number of time (in milliseconds) for the countdown.
-       * @type {number}
-       */
-      count: 0,
-
-      /**
-       * Define if the time is countdowning.
+       * It is counting down.
        * @type {boolean}
        */
       counting: false,
@@ -28,13 +22,19 @@ export default {
        * The absolute end time.
        * @type {number}
        */
-      endTime: 0
+      endTime: 0,
+
+      /**
+       * The remaining milliseconds.
+       * @type {number}
+       */
+      totalMilliseconds: 0
     }
   },
 
   props: {
     /**
-     * Start to countdown automatically when initialized.
+     * Starts the countdown automatically when initialized.
      */
     autoStart: {
       type: Boolean,
@@ -42,7 +42,7 @@ export default {
     },
 
     /**
-     * Indicate if emit the countdown events or not.
+     * Emits the countdown events.
      */
     emitEvents: {
       type: Boolean,
@@ -50,19 +50,12 @@ export default {
     },
 
     /**
-     * Update interval time (in milliseconds) of the countdown.
+     * The interval time (in milliseconds) of the countdown progress.
      */
     interval: {
       type: Number,
-      default: 1000
-    },
-
-    /**
-     * Add a leading zero to the output numbers if they are less than 10.
-     */
-    leadingZero: {
-      type: Boolean,
-      default: true
+      default: 1000,
+      validator: value => value >= 0
     },
 
     /**
@@ -74,7 +67,15 @@ export default {
     },
 
     /**
-     * Total number of time (in milliseconds) for the countdown.
+     * The tag name of the component's root element.
+     */
+    tag: {
+      type: String,
+      default: 'span'
+    },
+
+    /**
+     * The time (in milliseconds) to count down from.
      */
     time: {
       type: Number,
@@ -83,65 +84,58 @@ export default {
     },
 
     /**
-     * The tag of the component root element in the countdown.
+     * Transforms the output props before render.
      */
-    tag: {
-      type: String,
-      default: 'span'
+    transform: {
+      type: Function,
+      default: props => props
     }
   },
 
   computed: {
     /**
      * Remaining days.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     days() {
-      return Math.floor(this.count / MILLISECONDS_DAY)
+      return Math.floor(this.totalMilliseconds / MILLISECONDS_DAY)
     },
 
     /**
      * Remaining hours.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     hours() {
-      return Math.floor((this.count % MILLISECONDS_DAY) / MILLISECONDS_HOUR)
+      return Math.floor((this.totalMilliseconds % MILLISECONDS_DAY) / MILLISECONDS_HOUR)
     },
 
     /**
      * Remaining minutes.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     minutes() {
-      return Math.floor((this.count % MILLISECONDS_HOUR) / MILLISECONDS_MINUTE)
+      return Math.floor((this.totalMilliseconds % MILLISECONDS_HOUR) / MILLISECONDS_MINUTE)
     },
 
     /**
      * Remaining seconds.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     seconds() {
-      const { interval } = this
-      const seconds = (this.count % MILLISECONDS_MINUTE) / MILLISECONDS_SECOND
+      return Math.floor((this.totalMilliseconds % MILLISECONDS_MINUTE) / MILLISECONDS_SECOND)
+    },
 
-      if (interval < 10) {
-        return parseFloat(seconds.toFixed(3))
-      }
-
-      if (interval >= 10 && interval < 100) {
-        return parseFloat(seconds.toFixed(2))
-      }
-
-      if (interval >= 100 && interval < 1000) {
-        return parseFloat(seconds.toFixed(1))
-      }
-
-      return Math.floor(seconds)
+    /**
+     * Remaining milliseconds.
+     * @returns {number} The computed value.
+     */
+    milliseconds() {
+      return Math.floor(this.totalMilliseconds % MILLISECONDS_SECOND)
     },
 
     /**
      * Total remaining days.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     totalDays() {
       return this.days
@@ -149,220 +143,275 @@ export default {
 
     /**
      * Total remaining hours.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     totalHours() {
-      return Math.floor(this.count / MILLISECONDS_HOUR)
+      return Math.floor(this.totalMilliseconds / MILLISECONDS_HOUR)
     },
 
     /**
      * Total remaining minutes.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     totalMinutes() {
-      return Math.floor(this.count / MILLISECONDS_MINUTE)
+      return Math.floor(this.totalMilliseconds / MILLISECONDS_MINUTE)
     },
 
     /**
      * Total remaining seconds.
-     * @returns {number}
+     * @returns {number} The computed value.
      */
     totalSeconds() {
-      const { interval } = this
-      const seconds = this.count / MILLISECONDS_SECOND
-
-      if (interval < 10) {
-        return parseFloat(seconds.toFixed(3))
-      }
-
-      if (interval >= 10 && interval < 100) {
-        return parseFloat(seconds.toFixed(2))
-      }
-
-      if (interval >= 100 && interval < 1000) {
-        return parseFloat(seconds.toFixed(1))
-      }
-
-      return Math.floor(seconds)
+      return Math.floor(this.totalMilliseconds / MILLISECONDS_SECOND)
     }
   },
 
   render(createElement) {
-    const preprocess = value => (this.leadingZero && value < 10 ? `0${value}` : value)
-
     return createElement(
       this.tag,
       this.$scopedSlots.default
         ? [
-            this.$scopedSlots.default({
-              days: preprocess(this.days),
-              hours: preprocess(this.hours),
-              minutes: preprocess(this.minutes),
-              seconds: preprocess(this.seconds),
-              totalDays: preprocess(this.totalDays),
-              totalHours: preprocess(this.totalHours),
-              totalMinutes: preprocess(this.totalMinutes),
-              totalSeconds: preprocess(this.totalSeconds)
-            })
+            this.$scopedSlots.default(
+              this.transform({
+                days: this.days,
+                hours: this.hours,
+                minutes: this.minutes,
+                seconds: this.seconds,
+                milliseconds: this.milliseconds,
+                totalDays: this.totalDays,
+                totalHours: this.totalHours,
+                totalMinutes: this.totalMinutes,
+                totalSeconds: this.totalSeconds,
+                totalMilliseconds: this.totalMilliseconds
+              })
+            )
           ]
         : this.$slots.default
     )
   },
 
-  methods: {
-    /**
-     * Initialize count.
-     */
-    init() {
-      const { time } = this
+  watch: {
+    $props: {
+      deep: true,
+      immediate: true,
 
-      if (time > 0) {
-        this.count = time
-        this.endTime = this.now() + time
+      /**
+       * Update the countdown when props changed.
+       */
+      handler() {
+        this.totalMilliseconds = this.time
+        this.endTime = this.now() + this.time
 
         if (this.autoStart) {
-          this.$nextTick(() => {
-            this.start()
-          })
+          this.start()
         }
       }
-    },
+    }
+  },
 
+  methods: {
     /**
-     * Start to countdown.
+     * Starts to countdown.
      * @public
-     * @emits Countdown#countdownstart
+     * @emits Countdown#start
      */
     start() {
       if (this.counting) {
         return
       }
 
+      this.counting = true
+
       if (this.emitEvents) {
         /**
          * Countdown start event.
-         * @event Countdown#countdownstart
+         * @event Countdown#start
          */
-        this.$emit('countdownstart')
+        this.$emit('start')
       }
 
-      this.counting = true
-      this.next()
+      if (document.visibilityState === 'visible') {
+        this.continue()
+      }
     },
 
     /**
-     * Pause countdown.
-     * @public
-     * @emits Countdown#countdownpause
+     * Continues the countdown.
+     * @private
      */
-    pause() {
+    continue() {
       if (!this.counting) {
         return
       }
+
+      const delay = Math.min(this.totalMilliseconds, this.interval)
+
+      if (delay > 0) {
+        if (window.requestAnimationFrame) {
+          let init
+          let prev
+          const step = now => {
+            if (!init) {
+              init = now
+            }
+
+            if (!prev) {
+              prev = now
+            }
+
+            const range = now - init
+
+            if (
+              range >= delay ||
+              // Avoid losing time about one second per minute (now - prev ≈ 16ms) (#43)
+              range + (now - prev) / 2 >= delay
+            ) {
+              this.progress()
+            } else {
+              this.requestId = requestAnimationFrame(step)
+            }
+
+            prev = now
+          }
+
+          this.requestId = requestAnimationFrame(step)
+        } else {
+          this.timeoutId = setTimeout(() => {
+            this.progress()
+          }, delay)
+        }
+      } else {
+        this.end()
+      }
+    },
+
+    /**
+     * Pauses the countdown.
+     * @private
+     */
+    pause() {
+      if (window.requestAnimationFrame) {
+        cancelAnimationFrame(this.requestId)
+      } else {
+        clearTimeout(this.timeoutId)
+      }
+    },
+
+    /**
+     * Progresses to countdown.
+     * @private
+     * @emits Countdown#progress
+     */
+    progress() {
+      if (!this.counting) {
+        return
+      }
+
+      this.totalMilliseconds -= this.interval
+
+      if (this.emitEvents && this.totalMilliseconds > 0) {
+        /**
+         * Countdown progress event.
+         * @event Countdown#progress
+         */
+        this.$emit('progress', {
+          days: this.days,
+          hours: this.hours,
+          minutes: this.minutes,
+          seconds: this.seconds,
+          milliseconds: this.milliseconds,
+          totalDays: this.totalDays,
+          totalHours: this.totalHours,
+          totalMinutes: this.totalMinutes,
+          totalSeconds: this.totalSeconds,
+          totalMilliseconds: this.totalMilliseconds
+        })
+      }
+
+      this.continue()
+    },
+
+    /**
+     * Aborts the countdown.
+     * @public
+     * @emits Countdown#abort
+     */
+    abort() {
+      if (!this.counting) {
+        return
+      }
+
+      this.pause()
+      this.counting = false
 
       if (this.emitEvents) {
         /**
-         * Countdown pause event.
-         * @event Countdown#countdownpause
+         * Countdown abort event.
+         * @event Countdown#abort
          */
-        this.$emit('countdownpause')
+        this.$emit('abort')
       }
-
-      this.counting = false
-      clearTimeout(this.timeout)
     },
 
     /**
-     * Next countdown queue.
-     * @private
+     * Ends the countdown.
+     * @public
+     * @emits Countdown#end
      */
-    next() {
-      this.timeout = setTimeout(this.step.bind(this), this.interval)
-    },
-
-    /**
-     * Step to countdown.
-     * @private
-     * @emits Countdown#countdownprogress
-     */
-    step() {
+    end() {
       if (!this.counting) {
         return
       }
 
-      if (this.count > this.interval) {
-        this.count -= this.interval
-
-        if (this.emitEvents && this.count > 0) {
-          /**
-           * Countdown progress event.
-           * @event Countdown#countdownprogress
-           */
-          this.$emit('countdownprogress', {
-            days: this.days,
-            hours: this.hours,
-            minutes: this.minutes,
-            seconds: this.seconds,
-            totalDays: this.totalDays,
-            totalHours: this.totalHours,
-            totalMinutes: this.totalMinutes,
-            totalSeconds: this.totalSeconds
-          })
-        }
-
-        this.next()
-      } else {
-        this.count = 0
-        this.stop()
-      }
-    },
-
-    /**
-     * Stop the countdown.
-     * @public
-     * @emits Countdown#countdownend
-     */
-    stop() {
+      this.pause()
+      this.totalMilliseconds = 0
       this.counting = false
-      clearTimeout(this.timeout)
-      this.timeout = undefined
 
       if (this.emitEvents) {
         /**
          * Countdown end event.
-         * @event Countdown#countdownend
+         * @event Countdown#end
          */
-        this.$emit('countdownend')
+        this.$emit('end')
       }
     },
 
     /**
-     * Update the count.
+     * Updates the count.
      * @private
      */
     update() {
       if (this.counting) {
-        this.count = Math.max(0, this.endTime - this.now())
+        this.totalMilliseconds = Math.max(0, this.endTime - this.now())
+      }
+    },
+
+    /**
+     * visibility change event handler.
+     * @private
+     */
+    handleVisibilityChange() {
+      switch (document.visibilityState) {
+        case 'visible':
+          this.update()
+          this.continue()
+          break
+
+        case 'hidden':
+          this.pause()
+          break
+
+        default:
       }
     }
   },
 
-  watch: {
-    time() {
-      this.init()
-    }
-  },
-
-  created() {
-    this.init()
-  },
-
   mounted() {
-    window.addEventListener('focus', (this.onFocus = this.update.bind(this)))
+    document.addEventListener(EVENT_VISIBILITY_CHANGE, this.handleVisibilityChange)
   },
 
   beforeDestroy() {
-    window.removeEventListener('focus', this.onFocus)
-    clearTimeout(this.timeout)
+    document.removeEventListener(EVENT_VISIBILITY_CHANGE, this.handleVisibilityChange)
+    this.pause()
   }
 }

@@ -24,7 +24,7 @@ export default {
 
         // 加载 IM SDK
         $peace.NIM = util.IM.initIM()
-        $peace.WebRTC = util.IM.initWebRTC()
+        $peace.WebRTC = util.IM.initWebRTC($peace.NIM)
 
         util.user.replaceToHome()
       } else {

@@ -8,7 +8,7 @@ NIM.use(WebRTC)
 /**
  * IM 帮助类
  */
-const IMHelper = {
+export const IMHelper = {
   /**
    * 连接建立后的回调
    *
@@ -155,9 +155,11 @@ const IMHelper = {
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
-      if (store.state.inquiry.session.id === session.id) {
-        if (store.state.inquiry.sessions.length > 0) {
-          const currentSession = store.state.inquiry.sessions.find(temp => temp.id === session.id)
+      if (store.state.consultation.session.id === session.id) {
+        if (store.state.consultation.sessions.length > 0) {
+          const currentSession = store.state.consultation.sessions.find(
+            temp => temp.id === session.id
+          )
 
           consultationHelper.setConsultationSession(currentSession)
           consultationHelper.setConsultationSessionMessages(currentSession.lastMsg)
@@ -219,7 +221,7 @@ const IMHelper = {
 /**
  * 问诊帮助类
  */
-const inquiryHelper = {
+export const inquiryHelper = {
   /**
    * 从服务器获取当前 【问诊】【session】 的最新状态
    *
@@ -250,16 +252,27 @@ const inquiryHelper = {
    * @param {*} sessionWithStatus 存在状态的 session
    */
   setInquirySessionStatus(sessionWithStatus) {
-    // 当前 vuex sessions
-    const sotreSessions = $peace.$store.state.inquiry.sessions
-    // 合并
-    const serializationSessions = $peace.NIM.mergeSessions(sotreSessions, sessionWithStatus)
-    // 反序列化
-    const deserializationSession = IMHelper.deSerializationSessions(serializationSessions)[0]
-    // 赋值
-    const currentSessions = $peace.$store.state.inquiry.sessions
-    const currentSession = currentSessions.find(session => session.id === deserializationSession.id)
+    // 合并当前 session with status 到 store
+    $peace.$store.state.inquiry.sessions = $peace.NIM.mergeSessions(
+      $peace.$store.state.inquiry.sessions,
+      sessionWithStatus
+    )
+
+    // 反序列化当前 session with status
+    sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
+
+    // 将 session with status 更新到 session
+    const currentSession = $peace.$store.state.inquiry.sessions.find(
+      session => session.id === sessionWithStatus.id
+    )
     currentSession.content = sessionWithStatus.lastMsg.content.data
+
+    // 过滤无效 session
+    $peace.$store.state.inquiry.sessions = $peace.$store.state.inquiry.sessions.filter(
+      session => session.content
+    )
+
+    return $peace.$store.state.inquiry.sessions
   },
 
   /**
@@ -381,7 +394,7 @@ const inquiryHelper = {
 /**
  * 会诊帮助类
  */
-const consultationHelper = {
+export const consultationHelper = {
   /**
    * 从服务器获取当前 【会诊】【session】 的最新状态
    *
@@ -410,16 +423,27 @@ const consultationHelper = {
    * @param {*} sessionWithStatus 存在状态的 session
    */
   setConsultationSessionStatus(sessionWithStatus) {
-    // 当前 vuex sessions
-    const sotreSessions = $peace.$store.state.consultation.sessions
-    // 合并
-    const serializationSessions = $peace.NIM.mergeSessions(sotreSessions, sessionWithStatus)
-    // 反序列化
-    const deserializationSession = IMHelper.deSerializationSessions(serializationSessions)[0]
-    // 赋值
-    const currentSessions = $peace.$store.state.consultation.sessions
-    const currentSession = currentSessions.find(session => session.id === deserializationSession.id)
+    // 合并当前 session with status 到 store
+    $peace.$store.state.consultation.sessions = $peace.NIM.mergeSessions(
+      $peace.$store.state.consultation.sessions,
+      sessionWithStatus
+    )
+
+    // 反序列化当前 session with status
+    sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
+
+    // 将 session with status 更新到 session
+    const currentSession = $peace.$store.state.consultation.sessions.find(
+      session => session.id === sessionWithStatus.id
+    )
     currentSession.content = sessionWithStatus.lastMsg.content.data
+
+    // 过滤无效 session
+    $peace.$store.state.consultation.sessions = $peace.$store.state.consultation.sessions.filter(
+      session => session.content
+    )
+
+    return $peace.$store.state.consultation.sessions
   },
 
   /**
@@ -538,15 +562,7 @@ const consultationHelper = {
     // 反序列化
     const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
     // 更新 vuex session
-    $peace.$store.commit('inquiry/setConsultationSessionMessages', deserializationMessages)
-  },
-
-  /**
-   * 重置 inquiry session messages
-   *
-   */
-  resetInquirySessionMessages() {
-    $peace.$store.commit('inquiry/resetInquirySessionMessages')
+    $peace.$store.commit('consultation/setConsultationSessionMessages', deserializationMessages)
   },
 
   /**
@@ -570,10 +586,6 @@ export const initIM = () => {
   const token = user.list.registerInfo.token
   const db = false
 
-  console.log(`appKey: ${appKey}`)
-  console.log(`account: ${account}`)
-  console.log(`token: ${token}`)
-
   return NIM.getInstance({
     debug: true,
 
@@ -581,6 +593,9 @@ export const initIM = () => {
     account,
     token,
     db,
+
+    // 同步会话的未读数
+    syncSessionUnread: true,
 
     // 系统
     onconnect: IMHelper.onConnect,
@@ -611,6 +626,9 @@ export const initWebRTC = IMInstance => {
 }
 
 export default {
+  inquiryHelper,
+  consultationHelper,
+
   initIM,
   initWebRTC
 }

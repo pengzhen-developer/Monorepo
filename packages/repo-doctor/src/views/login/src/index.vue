@@ -166,7 +166,7 @@ export default {
 
             // 加载 IM SDK
             $peace.NIM = util.IM.initIM()
-            $peace.WebRTC = util.IM.initWebRTC()
+            $peace.WebRTC = util.IM.initWebRTC($peace.NIM)
 
             // 登陆后跳转
             util.user.replaceToReffer()
