@@ -2,12 +2,7 @@
   <div>
     <el-menu :collapse="true" class="nav-menu">
       <template v-for="menu in menuList">
-        <div
-          class="menuItem"
-          :class="{ active: selectIndex === menu.index }"
-          :key="menu.index"
-          @click="menuSelect(menu.index)"
-        >
+        <div class="menuItem" :class="{ active: selectIndex === menu.index }" :key="menu.index" @click="menuSelect(menu.index)">
           <div class="nav-submenu">
             <img :class="{ isDisable: menu.disable }" v-bind:src="menu.icon" alt="" />
             <label :class="{ isDisable: menu.disable }">{{ menu.name }}</label>
@@ -23,7 +18,7 @@
 import peace from '@src/library'
 export default {
   created() {
-    $peace.$on('hideDrawer', params => {
+    $peace.$on('hideDrawer', (params) => {
       console.log(params)
       this.selectIndex = -1
     })
@@ -73,7 +68,7 @@ export default {
         return
       }
       this.selectIndex = index
-      $peace.$emit('showDrawer', index)
+      $peace.$emit('showDrawer', { index: index })
     }
   }
 }

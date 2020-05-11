@@ -1,6 +1,6 @@
 <template>
-  <div class="continer layout">
-    <div class="layout-content">
+  <div class="layout">
+    <div class="layout-content full-width">
       <div class="page">
         <RecordList ref="table" :request-data="requestData" v-slot="item">
           <FollowUpSchemeCell :item="item" />
@@ -11,15 +11,8 @@
       <q-separator inset class="q-mb-md bg-grey-3" />
       <el-button @click="addNewScheme" type="primary">新建自定义方案 </el-button>
     </div>
-    <peace-dialog
-      :append-to-body="true"
-      :before-close="handleClose"
-      :visible.sync="addSchemeDialog.visible"
-      width="470px"
-      title="自定义随访方案"
-    >
-      <AddNewScheme ref="addScheme" @handleClose="handleClose" v-on:updateList="updateList">
-      </AddNewScheme>
+    <peace-dialog :append-to-body="true" :before-close="handleClose" :visible.sync="addSchemeDialog.visible" width="470px" title="自定义随访方案">
+      <AddNewScheme ref="addScheme" @handleClose="handleClose" v-on:updateList="updateList"> </AddNewScheme>
     </peace-dialog>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="continer layout">
+  <div class="layout">
     <div class="layout-header">
       <el-radio-group v-model="selectIndex">
         <el-radio-button label="out">我发起的</el-radio-button>
@@ -7,25 +7,14 @@
       </el-radio-group>
     </div>
 
-    <div class="layout-content">
-      <div class="page">
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="outRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'out'"
-        >
-          <ReferralRecordCell type="out" :item="item" />
-        </RecordList>
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="inRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'in'"
-        >
-          <ReferralRecordCell type="in" :item="item" />
-        </RecordList>
-      </div>
+    <div class="layout-content full-width">
+      <RecordList :noDataText="noDataText" :request-data="outRequestData" v-slot="item" v-show="selectIndex === 'out'">
+        <ReferralRecordCell type="out" :item="item" />
+      </RecordList>
+
+      <RecordList :noDataText="noDataText" :request-data="inRequestData" v-slot="item" v-show="selectIndex === 'in'">
+        <ReferralRecordCell type="in" :item="item" />
+      </RecordList>
     </div>
 
     <div class="layout-footer full-width" v-show="selectIndex === 'out'">
@@ -71,14 +60,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][this.selectIndex]
     }
   },
   methods: {
     startReferral() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊)
+      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊 })
     }
   }
 }

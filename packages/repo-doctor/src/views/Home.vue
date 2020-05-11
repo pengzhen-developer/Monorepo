@@ -105,7 +105,7 @@ export default {
 
   methods: {
     get() {
-      service.patient.waitList().then(res => {
+      service.patient.waitList().then((res) => {
         this.viewModel = res.data.info
       })
     },

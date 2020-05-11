@@ -7,21 +7,11 @@
       </el-radio-group>
     </div>
 
-    <div class="layout-content">
-      <RecordList
-        :noDataText="noDataText"
-        :request-data="inquiryRequestData"
-        v-slot="item"
-        v-show="selectIndex === 'inquiry'"
-      >
+    <div class="layout-content full-width">
+      <RecordList :noDataText="noDataText" :request-data="inquiryRequestData" v-slot="item" v-show="selectIndex === 'inquiry'">
         <InquiryRecordListCell :item="item" />
       </RecordList>
-      <RecordList
-        :noDataText="noDataText"
-        :request-data="followRequestData"
-        v-slot="item"
-        v-show="selectIndex === 'followUp'"
-      >
+      <RecordList :noDataText="noDataText" :request-data="followRequestData" v-slot="item" v-show="selectIndex === 'followUp'">
         <FollowRecordListCell :item="item" />
       </RecordList>
     </div>
@@ -71,14 +61,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][this.selectIndex]
     }
   },
   methods: {
     sendMessage() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊)
+      peace.util.info('暂未开通')
     }
   }
 }

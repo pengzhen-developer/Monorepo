@@ -6,15 +6,13 @@
         <el-radio-button label="in">随访记录</el-radio-button>
       </el-radio-group>
     </div>
-    <div class="layout-content">
-      <div class="page">
-        <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'out'">
-          <FollowUpRecordListCell :item="item" />
-        </RecordList>
-        <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'in'">
-          <FollowUpRecordListCell :item="item" />
-        </RecordList>
-      </div>
+    <div class="layout-content full-width">
+      <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'out'">
+        <FollowUpRecordListCell :item="item" />
+      </RecordList>
+      <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'in'">
+        <FollowUpRecordListCell :item="item" />
+      </RecordList>
     </div>
     <div class="layout-footer full-width">
       <q-separator inset class="q-mb-md bg-grey-3" />
@@ -44,14 +42,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.随访][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.随访][this.selectIndex]
     }
   },
   methods: {
     addFollowUp() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案)
+      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案 })
     }
   }
 }
@@ -72,6 +68,7 @@ export default {
   .layout-content {
     flex: 1;
     overflow: auto;
+
     margin: 0 0 16px 0;
   }
 

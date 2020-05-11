@@ -7,26 +7,16 @@
       </el-radio-group>
     </div>
 
-    <div class="layout-content">
-      <div class="page">
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="outRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'out'"
-        >
-          <ConsultRecordCell type="out" :item="item" />
-        </RecordList>
-        <RecordList
-          :noDataText="noDataText"
-          :request-data="inRequestData"
-          v-slot="item"
-          v-show="selectIndex === 'in'"
-        >
-          <ConsultRecordCell type="in" :item="item" />
-        </RecordList>
-      </div>
+    <div class="layout-content full-width">
+      <RecordList :noDataText="noDataText" :request-data="outRequestData" v-slot="item" v-show="selectIndex === 'out'">
+        <ConsultRecordCell type="out" :item="item" />
+      </RecordList>
+
+      <RecordList :noDataText="noDataText" :request-data="inRequestData" v-slot="item" v-show="selectIndex === 'in'">
+        <ConsultRecordCell type="in" :item="item" />
+      </RecordList>
     </div>
+
     <div class="layout-footer full-width" v-show="selectIndex === 'out'">
       <q-separator inset class="q-mb-md bg-grey-3" />
       <el-button @click="startConsult" type="primary">发起会诊</el-button>
@@ -69,14 +59,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][
-        this.selectIndex
-      ]
+      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][this.selectIndex]
     }
   },
   methods: {
     startConsult() {
-      $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊)
+      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊 })
     }
   }
 }

@@ -1,12 +1,5 @@
 <template>
-  <el-drawer
-    :visible.sync="drawer"
-    :modal="false"
-    :before-close="handleClose"
-    :destroy-on-close="true"
-    size="400px"
-    style="margin-right: 90px;"
-  >
+  <el-drawer :visible.sync="drawer" :modal="false" :before-close="handleClose" :destroy-on-close="true" size="400px" style="margin-right: 90px;">
     <span class="title" slot="title">{{ titleStr }}</span>
     <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
   </el-drawer>
@@ -16,12 +9,14 @@
 import peace from '@src/library'
 import InquiryRecord from './Inquiry/InquiryRecord'
 import DiseaseRecord from './CourseOfDisease/DiseaseRecord'
+import AddDiseaseRecord from './CourseOfDisease/AddDiseaseRecord'
 import FollowUpRecord from './FollowUp/FollowUpRecord'
 import ReferralRecord from './Referral/ReferralRecord'
 import ApplyReferral from './Referral/ApplyReferral'
 import ConsultationRecord from './Consultation/ConsultationRecord'
 import ApplyConsultation from './Consultation/ApplyConsultation'
 import FollowUpScheme from './FollowUp/FollowUpScheme'
+
 export default {
   props: {
     params: undefined
@@ -36,9 +31,9 @@ export default {
     }
   },
   methods: {
-    show(index) {
-      this.currentIndex = index
-      switch (index) {
+    show(parameter) {
+      this.currentIndex = parameter.index
+      switch (parameter.index) {
         case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
           {
             this.ComponentInstance = InquiryRecord
@@ -87,6 +82,15 @@ export default {
             this.titleStr = '随访方案库'
           }
           break
+        case peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程:
+          {
+            if (!peace.validate.isEmpty(parameter.item)) {
+              this.params.item = parameter.item
+            }
+            this.ComponentInstance = AddDiseaseRecord
+            this.titleStr = '添加病程'
+          }
+          break
       }
 
       this.drawer = true
@@ -99,12 +103,12 @@ export default {
     },
     clearFocus() {
       const focusElements = this.$el.querySelectorAll(':focus')
-      focusElements.forEach(element => {
+      focusElements.forEach((element) => {
         element.blur()
       })
     },
     isAllEmpty(params) {
-      for (const key of params) {
+      for (const key in params) {
         if (!peace.validate.isEmpty(params[key])) {
           return false // 终止程序
         }
@@ -112,10 +116,7 @@ export default {
       return true
     },
     handleClose(done) {
-      if (
-        this.ComponentInstance === ApplyReferral &&
-        !this.isAllEmpty(this.$refs.checkInput.view.model)
-      ) {
+      if (this.ComponentInstance === ApplyReferral && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
             $peace.$emit('hideDrawer', this.currentIndex)
@@ -124,10 +125,16 @@ export default {
           .catch(() => {
             this.clearFocus()
           })
-      } else if (
-        this.ComponentInstance === ApplyConsultation &&
-        !this.isAllEmpty(this.$refs.checkInput.view.model)
-      ) {
+      } else if (this.ComponentInstance === ApplyConsultation && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
+          .then(() => {
+            $peace.$emit('hideDrawer', this.currentIndex)
+            done()
+          })
+          .catch(() => {
+            this.clearFocus()
+          })
+      } else if (this.ComponentInstance === AddDiseaseRecord && !this.isAllEmpty(this.$refs.checkInput.model)) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
             $peace.$emit('hideDrawer', this.currentIndex)

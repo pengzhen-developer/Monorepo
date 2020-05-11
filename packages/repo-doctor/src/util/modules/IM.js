@@ -587,7 +587,7 @@ export const initIM = () => {
   const db = false
 
   return NIM.getInstance({
-    debug: true,
+    debug: false,
 
     appKey,
     account,

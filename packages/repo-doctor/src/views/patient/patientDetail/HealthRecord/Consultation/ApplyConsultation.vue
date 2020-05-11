@@ -1,19 +1,10 @@
 <template>
   <div>
-    <el-form
-      :model="view.model"
-      :rules="view.rules"
-      label-position="left"
-      label-width="110px"
-      ref="form"
-    >
+    <el-form :model="view.model" :rules="view.rules" label-position="left" label-width="110px" ref="form">
       <el-row>
         <el-form-item label="会诊患者">
           <span slot="label">会诊患者</span>
-          <span class="patientStyle"
-            >{{ params.familyInfo.name }} {{ params.familyInfo.sex }}
-            {{ params.familyInfo.age }}岁</span
-          >
+          <span class="patientStyle">{{ params.familyInfo.name }} {{ params.familyInfo.sex }} {{ params.familyInfo.age }}岁</span>
         </el-form-item>
       </el-row>
       <el-row>
@@ -28,48 +19,28 @@
           </el-button>
           <div class="diagnoseStyle" v-if="view.model.diagnose && view.model.diagnose.length > 0">
             <div class="diagnoseStyleTop">
-              <el-tag :key="item.id" class="tag" type="info" v-for="item in view.model.diagnose">{{
-                item.name
-              }}</el-tag>
+              <el-tag :key="item.id" class="tag" type="info" v-for="item in view.model.diagnose">{{ item.name }}</el-tag>
             </div>
-            <el-button
-              @click="changeDialog"
-              style="width: 30px; text-decoration-line: underline;"
-              type="text"
-              >修改</el-button
-            >
+            <el-button @click="changeDialog" style="width: 30px; text-decoration-line: underline;" type="text">修改</el-button>
           </div>
         </el-form-item>
       </el-row>
       <el-row class="transfer-doctor">
         <el-form-item label="会诊医生" prop="doctorInfo">
           <span slot="label">会诊医生</span>
-          <el-button
-            @click="choseTransfer"
-            style="min-width: auto; text-decoration-line: underline;"
-            type="text"
-            v-show="!view.model.doctorInfo"
+          <el-button @click="choseTransfer" style="min-width: auto; text-decoration-line: underline;" type="text" v-show="!view.model.doctorInfo"
             >请选择</el-button
           >
           <template v-if="view.model.doctorInfo">
             <div class="transfer-doctor-info">
               <div class="topLine">
                 <div>
-                  <img
-                    :src="view.model.doctorInfo.photoDoc"
-                    style="width: 40px; height: 40px; border-radius: 50%;"
-                  />
-                  <span style="font-size:16px; font-weight:700;">{{
-                    view.model.doctorInfo.name
-                  }}</span>
+                  <img :src="view.model.doctorInfo.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
+                  <span style="font-size:16px; font-weight:700;">{{ view.model.doctorInfo.name }}</span>
                   <span>{{ view.model.doctorInfo.doctor_title }}</span>
                 </div>
                 <div>
-                  <el-button
-                    @click="choseTransfer"
-                    style="min-width: auto; text-decoration-line: underline;"
-                    type="text"
-                    v-show="view.model.doctorInfo"
+                  <el-button @click="choseTransfer" style="min-width: auto; text-decoration-line: underline;" type="text" v-show="view.model.doctorInfo"
                     >修改</el-button
                   >
                 </div>
@@ -86,14 +57,7 @@
       <el-row>
         <el-form-item label="会诊说明" prop="consultExplain">
           <span slot="label">会诊说明</span>
-          <el-input
-            :rows="5"
-            maxlength="500"
-            placeholder="请输入会诊说明"
-            type="textarea"
-            show-word-limit
-            v-model.trim="view.model.consultExplain"
-          ></el-input>
+          <el-input :rows="5" maxlength="500" placeholder="请输入会诊说明" type="textarea" show-word-limit v-model.trim="view.model.consultExplain"></el-input>
         </el-form-item>
       </el-row>
 
@@ -120,25 +84,13 @@
       </el-row>
 
       <el-row style="text-align: center;">
-        <el-button style="width: 140px; margin-top: 50px;" @click="sendTransfer" type="primary"
-          >提交</el-button
-        >
+        <el-button style="width: 140px; margin-top: 50px;" @click="sendTransfer" type="primary">提交</el-button>
       </el-row>
     </el-form>
 
-    <peace-dialog
-      :append-to-body="true"
-      :visible.sync="dialog.visible"
-      title="选择会诊医生"
-      width="700px"
-    >
+    <peace-dialog :append-to-body="true" :visible.sync="dialog.visible" title="选择会诊医生" width="700px">
       <div>
-        <el-input
-          clearable
-          placeholder="请输入医院或医生姓名"
-          style="width: 320px; margin-right: 40px;"
-          v-model="dialog.model.name"
-        ></el-input>
+        <el-input clearable placeholder="请输入医院或医生姓名" style="width: 320px; margin-right: 40px;" v-model="dialog.model.name"></el-input>
         <el-button @click="get" round type="primary">查询</el-button>
       </div>
       <hr />
@@ -148,27 +100,10 @@
             <img :src="scope.row.photoDoc" style="width: 40px; height: 40px; border-radius: 50%;" />
           </template>
         </peace-table-column>
-        <peace-table-column
-          align="left"
-          header-align="left"
-          label="医生姓名"
-          prop="name"
-          width="100px"
-        ></peace-table-column>
-        <peace-table-column
-          align="left"
-          header-align="left"
-          label="职称"
-          prop="doctor_title"
-          width="100px"
-        ></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="医生姓名" prop="name" width="100px"></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="职称" prop="doctor_title" width="100px"></peace-table-column>
         <peace-table-column label="科室" prop="netdept_child" width="100px"></peace-table-column>
-        <peace-table-column
-          align="left"
-          header-align="left"
-          label="医院"
-          prop="netHospital_name"
-        ></peace-table-column>
+        <peace-table-column align="left" header-align="left" label="医院" prop="netHospital_name"></peace-table-column>
         <peace-table-column fixed="right" label="操作" width="120px">
           <template slot-scope="scope">
             <el-button @click="chose(scope.row)" type="text">选择</el-button>
@@ -189,12 +124,7 @@
           style="width: 100%;"
           v-model="dialog.chooseItem"
         >
-          <el-option
-            :key="item.id"
-            :label="item.name"
-            :value="item.name"
-            v-for="item in dialog.source.present_history"
-          ></el-option>
+          <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
         </el-select>
       </div>
 
@@ -219,11 +149,7 @@
         <div style="margin: 10px 0;">
           <el-tag
             :key="item.id"
-            :type="
-              dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
-                ? 'info'
-                : 'primary'
-            "
+            :type="dialog.chooseData.findIndex((existItem) => existItem.id === item.id) === -1 ? 'info' : 'primary'"
             @click="chooseItem(item)"
             style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
             v-for="item in dialog.source.IllnessList"
@@ -248,7 +174,7 @@ export default {
     params: undefined
   },
   created() {
-    peace.service.patient.IllnessList().then(res => {
+    peace.service.patient.IllnessList().then((res) => {
       this.dialog.source.IllnessList = res.data.list
     })
   },
@@ -332,7 +258,7 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.getDiseaseInfo(params).then(res => {
+        peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.dialog.source.present_history = res.data.list
         })
       } else {
@@ -367,9 +293,7 @@ export default {
           name: item
         }
       }
-      const index = this.dialog.chooseData.findIndex(
-        existItem => existItem.id === item.id && existItem.name === item.name
-      )
+      const index = this.dialog.chooseData.findIndex((existItem) => existItem.id === item.id && existItem.name === item.name)
       if (index === -1) {
         this.dialog.chooseData.push(item)
         // 选中后， 清空状态
@@ -379,7 +303,7 @@ export default {
       this.$refs.form.validateField('diagnose')
     },
     closeItem(item) {
-      const index = this.dialog.chooseData.findIndex(existItem => existItem === item)
+      const index = this.dialog.chooseData.findIndex((existItem) => existItem === item)
       if (index !== -1) {
         this.dialog.chooseData.splice(index, 1)
         if (this.dialog.chooseData.length == 0) {
@@ -396,19 +320,15 @@ export default {
     },
 
     sendTransfer() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证转诊时间
-          if (
-            dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <=
-            new Date()
-          ) {
+          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
             $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
           else {
-            const tmp =
-              this.view.model.diagnose && this.view.model.diagnose.map(item => item.name).toString()
+            const tmp = this.view.model.diagnose && this.view.model.diagnose.map((item) => item.name).toString()
 
             const params = {
               toDoctorId: this.view.model.doctorInfo.doctor_id,
@@ -419,7 +339,7 @@ export default {
             }
 
             peace.service.health.offlineAddConsult(params).then(() => {
-              $peace.$emit('showDrawer', peace.type.HEALTH_RECORD.ACTION_TYPE.会诊)
+              $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊 })
 
               peace.util.alert('发起会诊成功')
             })
@@ -476,9 +396,7 @@ export default {
   }
 
   /deep/ .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
-  .el-form-item.is-required:not(.is-no-asterisk)
-    .el-form-item__label-wrap
-    > .el-form-item__label:before {
+  .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label:before {
     content: '';
     margin: 0;
   }
