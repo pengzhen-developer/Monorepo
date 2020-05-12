@@ -1,0 +1,69 @@
+<template>
+  <div>
+    <MessageRecipeCard :diagnosis="diagnosis"
+                       :drugInfo="drugInfo"
+                       :visitingTime="visitingTime"
+                       @onClickDetail="onClickDetail"></MessageRecipeCard>
+    <peace-dialog :visible.sync="recipeDetail.visible"
+                  v-if="recipeDetail.visible"
+                  append-to-body
+                  title="处方详情">
+      <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
+    </peace-dialog>
+  </div>
+</template>
+
+<script>
+import peace from '@src/library'
+import MessageRecipeCard from './MessageRecipeCard'
+import InquirySessionRecipeDetail from '@src/views/clinic/inquiry/InquirySessionRecipeDetail'
+
+export default {
+  props: {
+    message: {
+      type: Object,
+      required: true
+    }
+  },
+  components: {
+    MessageRecipeCard,
+    InquirySessionRecipeDetail
+  },
+  computed: {
+    diagnosis() {
+      return this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.diagnosis
+    },
+    drugInfo() {
+      return this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.drugInfo
+    },
+    visitingTime() {
+      return (
+        this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.visitingTime
+      )
+    }
+  },
+  data() {
+    return {
+      recipeDetail: {
+        visible: false,
+        data: {}
+      }
+    }
+  },
+  methods: {
+    onClickDetail() {
+      const params = {
+        inquiry_no: this.message.content.data.inquiryInfo.inquiryNo,
+        prescriptionId: this.message.content.data.recipeInfo.recipeId
+      }
+      peace.service.prescribePrescrip.getPrescripInfo(params).then(res => {
+        this.recipeDetail.visible = true
+        this.recipeDetail.data = res.data
+      })
+    }
+  }
+}
+</script>
+
+<style>
+</style>

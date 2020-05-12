@@ -37,13 +37,14 @@
       </InquirySessionTransfer>
 
       <!-- 会诊 -->
-      <InquirySessionConsultation v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
+      <InquirySessionConsultation
+                                  v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
       </InquirySessionConsultation>
 
       <!-- 待接诊 / 问诊中 -->
       <template v-else>
         <div class="message-list">
-          <el-scrollbar class="message-list-scrollbar">
+          <el-scrollbar class="message-list-scrollbar chat-room-bg">
             <InquirySessionMessageList></InquirySessionMessageList>
           </el-scrollbar>
         </div>
@@ -115,7 +116,8 @@ import peace from '@src/library'
 
 import InquirySessionReceive from './InquirySessionReceive'
 
-import InquirySessionMessageList from './InquirySessionMessageList'
+// import InquirySessionMessageList from './InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
 import InquirySessionMessageInput from './InquirySessionMessageInput'
 
 import InquirySessionCase from './InquirySessionCase'
@@ -221,7 +223,10 @@ export default {
         peace.service.inquiry.checkOverInquiry(params).then(res => {
           if (res.data.status === 1) {
             let message = ''
-            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            if (
+              this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
+              peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
+            ) {
               message = '您与患者尚未进行视频通话，此时结束咨询将做退诊处理'
             } else {
               message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
@@ -269,7 +274,10 @@ export default {
           }
         })
       } else if (this.over.state === '未解决') {
-        const description = this.over.description === '其他' ? this.over.otherDescription.trim() : this.over.description
+        const description =
+          this.over.description === '其他'
+            ? this.over.otherDescription.trim()
+            : this.over.description
 
         if (!description) {
           return peace.util.warning('请选择未解决原因。')

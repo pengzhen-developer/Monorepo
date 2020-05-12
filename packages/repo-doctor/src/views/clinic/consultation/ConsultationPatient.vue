@@ -285,9 +285,12 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="inquiry.visible"
+                  class="chat-room-bg"
                   v-if="inquiry.visible"
                   title="问诊记录">
       <InquirySessionMessageList :data="inquiry.data"
+                                 :patientInfo="inquiry.patientInfo"
+                                 :doctorInfo="inquiry.doctorInfo"
                                  type="consult"></InquirySessionMessageList>
     </peace-dialog>
   </div>
@@ -296,7 +299,8 @@
 <script>
 import peace from '@src/library'
 
-import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+// import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 import ConsultationSessionRecipeDetail from './ConsultationSessionRecipeDetail'
 import ConsultationDetail from './ConsultationDetail'
@@ -330,7 +334,9 @@ export default {
 
       inquiry: {
         visible: false,
-        data: undefined
+        data: undefined,
+        patientInfo: {},
+        doctorInfo: {}
       }
     }
   },
@@ -420,6 +426,8 @@ export default {
 
         this.inquiry.data = []
         this.inquiry.data = res.data.msgInfo
+        this.inquiry.patientInfo = Object.assign({}, this.inquiry.patientInfo, res.data.patientInfo)
+        this.inquiry.doctorInfo = Object.assign({}, this.inquiry.doctorInfo, res.data.doctorInfo)
         this.inquiry.visible = true
       })
     }

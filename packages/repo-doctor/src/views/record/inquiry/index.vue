@@ -78,9 +78,12 @@
     </peace-table>
 
     <peace-dialog :visible.sync="dialog.visible"
+                  class="chat-room-bg"
                   append-to-body
                   title="问诊记录">
-      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
+      <InquirySessionMessageList :data="dialog.data"
+                                 :doctorInfo="dialog.doctorInfo"
+                                 :patientInfo="dialog.patientInfo"></InquirySessionMessageList>
     </peace-dialog>
   </div>
 </template>
@@ -88,8 +91,8 @@
 <script>
 import peace from '@src/library'
 
-import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
-
+// import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
 export default {
   components: {
     InquirySessionMessageList
@@ -109,7 +112,10 @@ export default {
           pickerOptionsStart: {
             disabledDate: time => {
               if (this.view.model.time_end) {
-                return time.getTime() > this.view.model.time_end.toDate().getTime() || time.getTime() > Date.now()
+                return (
+                  time.getTime() > this.view.model.time_end.toDate().getTime() ||
+                  time.getTime() > Date.now()
+                )
               } else {
                 return time.getTime() > Date.now()
               }
@@ -119,7 +125,10 @@ export default {
           pickerOptionsEnd: {
             disabledDate: time => {
               if (this.view.model.time_start) {
-                return time.getTime() < this.view.model.time_start.toDate().getTime() || time.getTime() > Date.now()
+                return (
+                  time.getTime() < this.view.model.time_start.toDate().getTime() ||
+                  time.getTime() > Date.now()
+                )
               } else {
                 return time.getTime() > Date.now()
               }
@@ -137,7 +146,9 @@ export default {
 
       dialog: {
         visible: false,
-        data: []
+        data: [],
+        doctorInfo: {},
+        patientInfo: {}
       }
     }
   },
@@ -182,7 +193,10 @@ export default {
         historyMessageFormatHandler(res.data.msgInfo)
 
         this.dialog.data = []
+
         this.dialog.data = res.data.msgInfo
+        this.dialog.patientInfo = Object.assign({}, this.dialog.patientInfo, res.data.patientInfo)
+        this.dialog.doctorInfo = Object.assign({}, this.dialog.doctorInfo, res.data.doctorInfo)
         this.dialog.visible = true
       })
     }
