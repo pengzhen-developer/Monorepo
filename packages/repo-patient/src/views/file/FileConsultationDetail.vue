@@ -57,7 +57,7 @@
           <van-tabs v-model="active"
           @change="changeTab"
                     swipeable>
-            <van-tab title="病历详情" :dot="caseInfo.readPatient==1">
+            <van-tab title="病历详情" :dot="caseInfo&&caseInfo.readPatient==1">
             </van-tab>
             <van-tab title="处方" :dot="unread>0">
             </van-tab>
@@ -133,7 +133,7 @@ export default {
         this.doctorInfo = res.data.doctorInfo
         this.consultSummary = res.data.consultSummary
         //初始化设定病历为已阅
-        if(this.caseInfo.readPatient==1){
+        if(this.caseInfo&&this.caseInfo.readPatient==1){
           this.updateCounsultRedDot(this.caseInfo.caseNo,'caseInfo')
         }
       })
@@ -155,11 +155,11 @@ export default {
     },
     changeTab(active){
       switch(active){
-        case 0:if(this.caseInfo.caseNo && this.caseInfo.readPatient == 1){
+        case 0:if(this.caseInfo&&this.caseInfo.caseNo && this.caseInfo.readPatient == 1){
                 this.updateCounsultRedDot(this.caseInfo.caseNo,'caseInfo')
               }
             break
-        case 1:if (this.prescribeInfos.list[this.currentIndex].prescriptionNo && this.prescribeInfos.list[this.currentIndex].readPatient == 1) {
+        case 1:if (this.prescribeInfos.list.length>0&&this.prescribeInfos.list[this.currentIndex].prescriptionNo && this.prescribeInfos.list[this.currentIndex].readPatient == 1) {
                   this.updateCounsultRedDot(this.prescribeInfos.list[this.currentIndex].prescriptionNo, 'prescribeInfo')
                 }
             break
