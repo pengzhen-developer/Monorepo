@@ -30,6 +30,17 @@
             height: 40px;
             border-radius: 50%;
           }
+          .img-name {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #00c6ae;
+            color: #fff;
+            font-size: 15px;
+          }
         }
       }
 
@@ -114,6 +125,17 @@
           p {
             margin: 0 0 2px 5px;
             color: #333333;
+          }
+        }
+        .ic_video {
+          display: flex;
+          align-items: center;
+          span {
+            margin: 0 5px;
+          }
+          img {
+            width: 24px;
+            height: 15px;
           }
         }
       }
@@ -292,6 +314,12 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            > div {
+              width: 100%;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
           }
         }
       }
@@ -395,11 +423,6 @@
     }
     .el-image {
       margin: 0 10px;
-    }
-    img {
-      margin: 0 10px;
-      width: 16px;
-      height: 18px;
     }
     &::after {
       content: '';

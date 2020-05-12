@@ -32,7 +32,7 @@
           <van-icon @click="showTools"
                     size='26px'
                     style="margin-top:6px;"
-                    :name="require('@src/assets/images/ic_more_functions.png')"
+                    :name="require('./assets/images/ic_more_functions.png')"
                     slot="left-icon" />
           <van-button @click="sendMessageText"
                       size="small"
@@ -96,7 +96,7 @@
 </template>
 <script>
 import peace from '@src/library'
-
+import Constant from './constant'
 import Vue from 'vue'
 import { Toast } from 'vant'
 
@@ -227,9 +227,9 @@ export default {
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
           // if (
-          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-          //   message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
+          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 ||
+          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.会诊提示
           // )
           //   return false
         }
@@ -252,8 +252,8 @@ export default {
 
     canShowInput() {
       if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === Constant.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === Constant.INQUIRY_STATUS.问诊中
       ) {
         return true
       } else {
@@ -434,16 +434,16 @@ export default {
       if (message.type === 'custom') {
         if (message.content && message.content.code) {
           if (
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.接诊 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.会诊提示 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.退诊 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.服务提醒 ||
+            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
           ) {
             return 'system'
           }
