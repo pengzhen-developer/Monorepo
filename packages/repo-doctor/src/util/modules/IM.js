@@ -80,7 +80,7 @@ export const IMHelper = {
     // 1. 根据 sessions 获取最新的状态
     // 2. 储存最新状态
     // 3. 更新 vuex store
-    inquiryHelper.getInquirySessionsStatus(sessions).then(inquirySessionsStatus => {
+    inquiryHelper.getInquirySessionsStatus(sessions).then((inquirySessionsStatus) => {
       const sessionsStatus = inquiryHelper.setInquirySessionsStatus(sessions, inquirySessionsStatus)
 
       inquiryHelper.setInquirySessions(sessionsStatus)
@@ -90,11 +90,8 @@ export const IMHelper = {
     // 1. 根据 sessions 获取最新的状态
     // 2. 储存最新状态
     // 3. 更新 vuex store
-    consultationHelper.getConsultationSessionsStatus(sessions).then(consultationSessionsStatus => {
-      const sessionsStatus = consultationHelper.setConsultationSessionsStatus(
-        sessions,
-        consultationSessionsStatus
-      )
+    consultationHelper.getConsultationSessionsStatus(sessions).then((consultationSessionsStatus) => {
+      const sessionsStatus = consultationHelper.setConsultationSessionsStatus(sessions, consultationSessionsStatus)
 
       consultationHelper.setConsultationSessions(sessionsStatus)
     })
@@ -113,10 +110,7 @@ export const IMHelper = {
     const store = $peace.$store
 
     // 当前会话处于激活状态，设定未读数为 0
-    if (
-      store.state.inquiry.session.id === session.id ||
-      store.state.consultation.session.id === session.id
-    ) {
+    if (store.state.inquiry.session.id === session.id || store.state.consultation.session.id === session.id) {
       session.unread = 0
     }
 
@@ -135,7 +129,7 @@ export const IMHelper = {
       // 将新 message 更新到 sessionMessages store
       if (store.state.inquiry.session.id === session.id) {
         if (store.state.inquiry.sessions.length > 0) {
-          const currentSession = store.state.inquiry.sessions.find(temp => temp.id === session.id)
+          const currentSession = store.state.inquiry.sessions.find((temp) => temp.id === session.id)
 
           inquiryHelper.setInquirySession(currentSession)
           inquiryHelper.setInquirySessionMessages(currentSession.lastMsg)
@@ -157,9 +151,7 @@ export const IMHelper = {
       // 将新 message 更新到 sessionMessages store
       if (store.state.consultation.session.id === session.id) {
         if (store.state.consultation.sessions.length > 0) {
-          const currentSession = store.state.consultation.sessions.find(
-            temp => temp.id === session.id
-          )
+          const currentSession = store.state.consultation.sessions.find((temp) => temp.id === session.id)
 
           consultationHelper.setConsultationSession(currentSession)
           consultationHelper.setConsultationSessionMessages(currentSession.lastMsg)
@@ -204,7 +196,7 @@ export const IMHelper = {
       sessions = [sessions]
     }
 
-    sessions.forEach(session => {
+    sessions.forEach((session) => {
       if (session.lastMsg.custom && !(session.lastMsg.custom instanceof Object)) {
         session.lastMsg.custom = JSON.parse(session.lastMsg.custom)
       }
@@ -232,14 +224,14 @@ export const inquiryHelper = {
       sessions = [sessions]
     }
 
-    sessions = sessions.filter(session => session.scene === 'p2p')
+    sessions = sessions.filter((session) => session.scene === 'p2p')
 
     const params = {
-      sessionIdList: sessions.map(item => item.id),
+      sessionIdList: sessions.map((item) => item.id),
       doctorId: $peace.$store.state.user.userInfo.list.docInfo.doctor_id
     }
 
-    return peace.service.inquiry.getList(params).then(res => {
+    return peace.service.inquiry.getList(params).then((res) => {
       return res.data.list
     })
   },
@@ -253,24 +245,17 @@ export const inquiryHelper = {
    */
   setInquirySessionStatus(sessionWithStatus) {
     // 合并当前 session with status 到 store
-    $peace.$store.state.inquiry.sessions = $peace.NIM.mergeSessions(
-      $peace.$store.state.inquiry.sessions,
-      sessionWithStatus
-    )
+    $peace.$store.state.inquiry.sessions = $peace.NIM.mergeSessions($peace.$store.state.inquiry.sessions, sessionWithStatus)
 
     // 反序列化当前 session with status
     sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
     // 将 session with status 更新到 session
-    const currentSession = $peace.$store.state.inquiry.sessions.find(
-      session => session.id === sessionWithStatus.id
-    )
+    const currentSession = $peace.$store.state.inquiry.sessions.find((session) => session.id === sessionWithStatus.id)
     currentSession.content = sessionWithStatus.lastMsg.content.data
 
     // 过滤无效 session
-    $peace.$store.state.inquiry.sessions = $peace.$store.state.inquiry.sessions.filter(
-      session => session.content
-    )
+    $peace.$store.state.inquiry.sessions = $peace.$store.state.inquiry.sessions.filter((session) => session.content)
 
     return $peace.$store.state.inquiry.sessions
   },
@@ -283,16 +268,14 @@ export const inquiryHelper = {
    * @returns
    */
   setInquirySessionsStatus(sessions, sessionsStatus) {
-    sessions.forEach(session => {
+    sessions.forEach((session) => {
       if (session.scene === 'p2p') {
-        const currentSessionStatus = sessionsStatus.find(
-          item => item.sessionId === session.id || item.id === session.id
-        )
+        const currentSessionStatus = sessionsStatus.find((item) => item.sessionId === session.id || item.id === session.id)
         session.content = currentSessionStatus
       }
     })
 
-    sessions = sessions.filter(session => session.content)
+    sessions = sessions.filter((session) => session.content)
 
     return sessions
   },
@@ -305,7 +288,7 @@ export const inquiryHelper = {
   setInquirySessions(sessions) {
     // 过滤规则:
     // 只显示 [待接诊] / [问诊中] 数据
-    const filterMethod = session => {
+    const filterMethod = (session) => {
       if (session.scene === 'p2p' && session.content && session.content.inquiryInfo) {
         if (
           session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
@@ -405,12 +388,12 @@ export const consultationHelper = {
       sessions = [sessions]
     }
 
-    sessions = sessions.filter(session => session.scene === 'team')
+    sessions = sessions.filter((session) => session.scene === 'team')
 
     const params = {
-      teamIdList: sessions.map(item => item.id.replace('team-', ''))
+      teamIdList: sessions.map((item) => item.id.replace('team-', ''))
     }
-    return peace.service.consult.getInfoByTeamId(params).then(res => {
+    return peace.service.consult.getInfoByTeamId(params).then((res) => {
       return res.data.list
     })
   },
@@ -424,24 +407,17 @@ export const consultationHelper = {
    */
   setConsultationSessionStatus(sessionWithStatus) {
     // 合并当前 session with status 到 store
-    $peace.$store.state.consultation.sessions = $peace.NIM.mergeSessions(
-      $peace.$store.state.consultation.sessions,
-      sessionWithStatus
-    )
+    $peace.$store.state.consultation.sessions = $peace.NIM.mergeSessions($peace.$store.state.consultation.sessions, sessionWithStatus)
 
     // 反序列化当前 session with status
     sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
     // 将 session with status 更新到 session
-    const currentSession = $peace.$store.state.consultation.sessions.find(
-      session => session.id === sessionWithStatus.id
-    )
+    const currentSession = $peace.$store.state.consultation.sessions.find((session) => session.id === sessionWithStatus.id)
     currentSession.content = sessionWithStatus.lastMsg.content.data
 
     // 过滤无效 session
-    $peace.$store.state.consultation.sessions = $peace.$store.state.consultation.sessions.filter(
-      session => session.content
-    )
+    $peace.$store.state.consultation.sessions = $peace.$store.state.consultation.sessions.filter((session) => session.content)
 
     return $peace.$store.state.consultation.sessions
   },
@@ -453,18 +429,16 @@ export const consultationHelper = {
    * @param {*} sessionsStatus 存在状态的 sessions
    */
   setConsultationSessionsStatus(sessions, sessionsStatus) {
-    sessions.forEach(session => {
+    sessions.forEach((session) => {
       if (session.scene === 'team') {
         const currentSessionStatus = sessionsStatus.find(
-          item =>
-            item.teamId === session.id.replace('team-', '') ||
-            item.id === session.id.replace('team-', '')
+          (item) => item.teamId === session.id.replace('team-', '') || item.id === session.id.replace('team-', '')
         )
         session.content = currentSessionStatus
       }
     })
 
-    sessions = sessions.filter(session => session.content)
+    sessions = sessions.filter((session) => session.content)
 
     return sessions
   },
@@ -477,7 +451,7 @@ export const consultationHelper = {
   setConsultationSessions(sessions) {
     // 过滤规则:
     // 过滤 [等待会诊] / [会诊中]/[医生待审核] 数据
-    const filterMethod = session => {
+    const filterMethod = (session) => {
       if (session.scene === 'team' && session.content && session.content.consultInfo) {
         const userId = $peace.$store.state.user.userInfo.list.docInfo.doctor_id
         const startDoctorId = session.content.consultInfo.startDoctor[0].doctorId
@@ -486,10 +460,8 @@ export const consultationHelper = {
         // 我是发起者
         if (userId === startDoctorId) {
           if (
-            session.content.consultInfo.consultStatus ===
-              peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
-            session.content.consultInfo.consultStatus ===
-              peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
+            session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
+            session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
           ) {
             return true
           }
@@ -497,12 +469,9 @@ export const consultationHelper = {
         // 我是接收者
         if (userId === receiveDoctorId) {
           if (
-            session.content.consultInfo.consultStatus ===
-              peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 ||
-            session.content.consultInfo.consultStatus ===
-              peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
-            session.content.consultInfo.consultStatus ===
-              peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
+            session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 ||
+            session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ||
+            session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中
           ) {
             return true
           }
@@ -566,6 +535,15 @@ export const consultationHelper = {
   },
 
   /**
+   * 重置 vuex inquiry session
+   *
+   * @param {*} session
+   */
+  resetConsultationSession() {
+    $peace.$store.commit('consultation/resetConsultationSession')
+  },
+
+  /**
    * 重置 consultation session messages
    *
    */
@@ -619,7 +597,7 @@ export const initIM = () => {
  * 初始化 WebRTC SDK
  *
  */
-export const initWebRTC = IMInstance => {
+export const initWebRTC = (IMInstance) => {
   return WebRTC.getInstance({
     nim: IMInstance
   })

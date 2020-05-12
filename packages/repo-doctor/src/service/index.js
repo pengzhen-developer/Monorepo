@@ -1,5 +1,3 @@
-import IM from './modules/IM'
-
 import follow from './modules/follow'
 import consult from './modules/consult'
 import inquiry from './modules/inquiry'
@@ -33,9 +31,6 @@ export default {
 
   /** 视频 */
   video,
-
-  /** IM */
-  IM,
 
   /** 健康档案 */
   health
