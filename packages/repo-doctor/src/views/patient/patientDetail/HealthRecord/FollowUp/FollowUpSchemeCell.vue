@@ -1,9 +1,13 @@
 <template>
   <div>
-    <q-item clickable v-ripple @click="selectScheme" class="list-item">
+    <q-item clickable
+            v-ripple
+            @click="selectScheme"
+            class="list-item">
       <div class="row q-mr-lg">
         <span class="item-title ellipsis">{{ item.schemeTitle }}</span>
-        <div class="custom-tag" v-show="item.schemeType === 1">自定义</div>
+        <div class="custom-tag"
+             v-show="item.schemeType === 1">自定义</div>
       </div>
       <div style="display: flex; align-items: center">
         <span class="accessory-view ellipsis">未选用</span>

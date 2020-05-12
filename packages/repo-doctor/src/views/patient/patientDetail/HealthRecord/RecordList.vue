@@ -1,14 +1,19 @@
 <template>
   <div class="infinite-list-wrapper">
     <template v-if="list && list.length > 0">
-      <div class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled">
-        <div v-for="(item, index) in list" :key="index" class="cursor-pointer">
+      <div class="list"
+           v-infinite-scroll="load"
+           infinite-scroll-disabled="disabled">
+        <div v-for="(item, index) in list"
+             :key="index"
+             class="cursor-pointer">
           <slot v-bind="item"></slot>
         </div>
       </div>
     </template>
     <template v-else>
-      <NoData type="health" :text="noDataText"></NoData>
+      <NoData type="health"
+              :text="noDataText"></NoData>
     </template>
     <p v-if="loading">加载中...</p>
     <!-- <p v-if="noMore">没有更多了</p> -->
@@ -27,10 +32,12 @@ export default {
     },
     requestData: {
       type: Object,
+      required: false,
       default: () => {}
     },
     data: {
       type: Array,
+      required: false,
       default: () => {
         return []
       }
@@ -71,7 +78,7 @@ export default {
   },
   methods: {
     load(isReload = false) {
-      if (Object.keys(this.requestData).length === 0) {
+      if ($peace.validate.isEmpty(this.requestData) || Object.keys(this.requestData).length === 0) {
         return
       }
       //data 外部传入的请求参数、 request请求函数

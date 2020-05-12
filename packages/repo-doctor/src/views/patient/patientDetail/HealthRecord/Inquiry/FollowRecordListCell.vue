@@ -1,13 +1,17 @@
 <template>
   <div v-on:click="showDetail">
     <div class="time-line q-mb-sm">{{ item.followTime }}</div>
-    <div class="q-pa-sm q-mb-md rounded-borders" style="background: #F9F9F9">
-      <div class="text-justify" style="color: #333333">
+    <div class="q-pa-sm q-mb-md rounded-borders"
+         style="background: #F9F9F9">
+      <div class="text-justify"
+           style="color: #333333">
         {{ item.chatContent }}
       </div>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible" append-to-body title="问诊记录">
+    <peace-dialog :visible.sync="dialog.visible"
+                  append-to-body
+                  title="问诊记录">
       <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
     </peace-dialog>
   </div>

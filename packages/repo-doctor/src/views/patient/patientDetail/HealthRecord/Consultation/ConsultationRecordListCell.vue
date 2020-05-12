@@ -1,17 +1,15 @@
 <template>
   <div>
-    <div class="list-item" @click="showDetail">
+    <div class="list-item"
+         @click="showDetail">
       <div class="time-line-header">
         <span class="time-line-time">{{ item.createdTime }}</span>
-        <span
-          class="tag"
-          v-bind:style="{
+        <span class="tag"
+              v-bind:style="{
             color: borderColor,
             'background-color': bgColor,
             'border-color': borderColor
-          }"
-          >{{ item.consultStatus | getConsultationStatus }}</span
-        >
+          }">{{ item.consultStatus | getConsultationStatus }}</span>
       </div>
       <div class="item-content">
         <div class="info-row">
@@ -37,17 +35,13 @@
         </div>
       </div>
     </div>
-    <peace-dialog
-      :append-to-body="true"
-      :visible.sync="dialog.visible"
-      custom-class="dialog"
-      title="会诊详情"
-    >
-      <TheConsultationDetail
-        :data="dialog.data"
-        :type="type"
-        @close="() => (dialog.visible = false)"
-      ></TheConsultationDetail>
+    <peace-dialog :append-to-body="true"
+                  :visible.sync="dialog.visible"
+                  custom-class="dialog"
+                  title="会诊详情">
+      <TheConsultationDetail :data="dialog.data"
+                             :type="type"
+                             @close="() => (dialog.visible = false)"></TheConsultationDetail>
     </peace-dialog>
   </div>
 </template>
@@ -55,11 +49,7 @@
 <script>
 import peace from '@src/library'
 import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
-import {
-  getConsultationStatus,
-  getConsultStatusTextBorderColor,
-  getConsultStatusBgColor
-} from '@src/views/filters/index'
+import { getConsultationStatus, getConsultStatusTextBorderColor, getConsultStatusBgColor } from '@src/views/filters/index'
 export default {
   props: {
     item: undefined,
@@ -93,7 +83,7 @@ export default {
       const params = {
         consultNo: this.item.consultNo
       }
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.dialog.data = res.data.info
       })
     }

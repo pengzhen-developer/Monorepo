@@ -7,16 +7,22 @@
       </el-radio-group>
     </div>
     <div class="layout-content full-width">
-      <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'out'">
+      <RecordList :noDataText="noDataText"
+                  v-slot="item"
+                  v-show="selectIndex === 'out'">
         <FollowUpRecordListCell :item="item" />
       </RecordList>
-      <RecordList :noDataText="noDataText" v-slot="item" v-show="selectIndex === 'in'">
+      <RecordList :noDataText="noDataText"
+                  v-slot="item"
+                  v-show="selectIndex === 'in'">
         <FollowUpRecordListCell :item="item" />
       </RecordList>
     </div>
     <div class="layout-footer full-width">
-      <q-separator inset class="q-mb-md bg-grey-3" />
-      <el-button @click="addFollowUp" type="primary">添加随访方案 </el-button>
+      <q-separator inset
+                   class="q-mb-md bg-grey-3" />
+      <el-button @click="addFollowUp"
+                 type="primary">添加随访方案 </el-button>
     </div>
   </div>
 </template>

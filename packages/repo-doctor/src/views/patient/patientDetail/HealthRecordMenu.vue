@@ -1,10 +1,16 @@
 <template>
   <div>
-    <el-menu :collapse="true" class="nav-menu">
+    <el-menu :collapse="true"
+             class="nav-menu">
       <template v-for="menu in menuList">
-        <div class="menuItem" :class="{ active: selectIndex === menu.index }" :key="menu.index" @click="menuSelect(menu.index)">
+        <div class="menuItem"
+             :class="{ active: selectIndex === menu.index }"
+             :key="menu.index"
+             @click="menuSelect(menu.index)">
           <div class="nav-submenu">
-            <img :class="{ isDisable: menu.disable }" v-bind:src="menu.icon" alt="" />
+            <img :class="{ isDisable: menu.disable }"
+                 v-bind:src="menu.icon"
+                 alt="" />
             <label :class="{ isDisable: menu.disable }">{{ menu.name }}</label>
             <div class="line"></div>
           </div>
@@ -17,11 +23,16 @@
 <script>
 import peace from '@src/library'
 export default {
-  created() {
-    $peace.$on('hideDrawer', (params) => {
-      console.log(params)
-      this.selectIndex = -1
+  mounted() {
+    this.$nextTick().then(() => {
+      $peace.$on('hideDrawer', () => {
+        this.selectIndex = -1
+      })
     })
+  },
+
+  destroyed() {
+    $peace.$off('hideDrawer')
   },
   data() {
     return {
@@ -62,7 +73,7 @@ export default {
   },
   methods: {
     menuSelect(index) {
-      const tmp = this.menuList[index - 1]
+      const tmp = this.menuList[parseInt(index) - 1]
       if (tmp.disable) {
         $peace.util.alert('暂未开放')
         return

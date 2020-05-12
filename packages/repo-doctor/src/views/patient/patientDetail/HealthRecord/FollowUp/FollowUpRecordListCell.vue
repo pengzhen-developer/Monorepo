@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "FollowUpRecordListCell"
-};
+  name: 'FollowUpRecordListCell'
+}
 </script>
 
 <style scoped></style>

@@ -1,17 +1,15 @@
 <template>
   <div>
-    <div class="list-item" @click="showDetail">
+    <div class="list-item"
+         @click="showDetail">
       <div class="time-line-header">
         <span class="time-line-time">{{ item.createdTime }}</span>
-        <span
-          class="tag"
-          v-bind:style="{
+        <span class="tag"
+              v-bind:style="{
             color: borderColor,
             'background-color': bgColor,
             'border-color': borderColor
-          }"
-          >{{ item.transferStatus | getReferralStatus }}</span
-        >
+          }">{{ item.transferStatus | getReferralStatus }}</span>
       </div>
       <div class="item-content">
         <div class="info-row">
@@ -37,13 +35,12 @@
         </div>
       </div>
     </div>
-    <peace-dialog
-      :append-to-body="true"
-      :visible.sync="dialog.visible"
-      custom-class="dialog"
-      title="转诊详情"
-    >
-      <TheTransferDetail :data="dialog.data" :type="type"></TheTransferDetail>
+    <peace-dialog :append-to-body="true"
+                  :visible.sync="dialog.visible"
+                  custom-class="dialog"
+                  title="转诊详情">
+      <TheTransferDetail :data="dialog.data"
+                         :type="type"></TheTransferDetail>
     </peace-dialog>
   </div>
 </template>
@@ -51,11 +48,7 @@
 <script>
 import peace from '@src/library'
 
-import {
-  getReferralStatus,
-  getReferralStatusTextBorderColor,
-  getReferralStatusBgColor
-} from '@src/views/filters/index'
+import { getReferralStatus, getReferralStatusTextBorderColor, getReferralStatusBgColor } from '@src/views/filters/index'
 
 import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
 
@@ -96,7 +89,7 @@ export default {
         referral_no: this.item.referralNo,
         referral_type: this.type
       }
-      peace.service.inquiry.referralDocPc(params).then(res => {
+      peace.service.inquiry.referralDocPc(params).then((res) => {
         this.dialog.data = res.data
       })
     }

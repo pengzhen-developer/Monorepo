@@ -1,82 +1,80 @@
 <template>
-  <el-form
-    class="q-pa-sm"
-    v-bind:model="model"
-    v-bind:rules="rules"
-    ref="form"
-    label-width="90px"
-    label-position="left"
-  >
-    <el-form-item label="方案名称" prop="projectName">
-      <el-input
-        v-model.trim="model.projectName"
-        placeholder="请输入方案名称"
-        ref="projectName"
-      ></el-input>
+  <el-form class="q-pa-sm"
+           v-bind:model="model"
+           v-bind:rules="rules"
+           ref="form"
+           label-width="90px"
+           label-position="left">
+    <el-form-item label="方案名称"
+                  prop="projectName">
+      <el-input v-model.trim="model.projectName"
+                placeholder="请输入方案名称"
+                ref="projectName"></el-input>
     </el-form-item>
 
-    <div v-for="(item, index) in model.list" v-bind:key="index.toString()">
+    <div v-for="(item, index) in model.list"
+         v-bind:key="index.toString()">
       <div class="row justify-between items-baseline">
         <p class="q-pb-md count-title">
           {{ index == 0 ? '首' : '第' + (index + 1).toCN() }}次遗嘱提醒
         </p>
-        <el-button
-          type="text"
-          class="text-red"
-          style="font-size: 14px"
-          icon="el-icon-delete"
-          v-show="index != 0 && index === model.list.length - 1"
-          v-on:click="deleteItem"
-          >删除
+        <el-button type="text"
+                   class="text-red"
+                   style="font-size: 14px"
+                   icon="el-icon-delete"
+                   v-show="index != 0 && index === model.list.length - 1"
+                   v-on:click="deleteItem">删除
         </el-button>
       </div>
       <el-row>
-        <el-form-item
-          label="发送时间"
-          v-bind:prop="`list[${index}].sendType`"
-          style="display: inline-block;"
-        >
-          <el-select v-model="model.list[index].sendType" style="width: 150px;">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+        <el-form-item label="发送时间"
+                      v-bind:prop="`list[${index}].sendType`"
+                      style="display: inline-block;">
+          <el-select v-model="model.list[index].sendType"
+                     style="width: 150px;">
+            <el-option v-for="item in options"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value"></el-option>
           </el-select>
         </el-form-item>
 
-        <el-cascader
-          :props="unitOptions"
-          placeholder="立即"
-          v-model="model.list[index].sendUnit"
-          separator=""
-          style="display: inline-block; width: 150px; margin-left: 10px;"
-        >
+        <el-cascader :props="unitOptions"
+                     placeholder="立即"
+                     v-model="model.list[index].sendUnit"
+                     separator=""
+                     style="display: inline-block; width: 150px; margin-left: 10px;">
         </el-cascader>
         <span class="q-ml-sm">后</span>
       </el-row>
-      <el-form-item label="医嘱内容" v-bind:prop="`list[${index}].content`">
-        <el-input
-          v-bind:ref="`list[${index}].content`"
-          v-model.trim="model.list[index].content"
-          maxlength="150"
-          show-word-limit
-          rows="7"
-          type="textarea"
-        ></el-input>
+      <el-form-item label="医嘱内容"
+                    v-bind:prop="`list[${index}].content`">
+        <el-input v-bind:ref="`list[${index}].content`"
+                  v-model.trim="model.list[index].content"
+                  maxlength="150"
+                  show-word-limit
+                  rows="7"
+                  type="textarea"></el-input>
       </el-form-item>
     </div>
 
-    <el-button type="text" style="font-size: 14px" icon="el-icon-circle-plus" v-on:click="addList"
-      >添加医嘱提醒
+    <el-button type="text"
+               style="font-size: 14px"
+               icon="el-icon-circle-plus"
+               v-on:click="addList">添加医嘱提醒
     </el-button>
 
     <div class="q-pt-sm q-pb-lg flex flex-center">
-      <el-button type="primary" plain size="mini" style="width: 84px" v-on:click="closeMenu"
-        >取消
+      <el-button type="primary"
+                 plain
+                 size="mini"
+                 style="width: 84px"
+                 v-on:click="closeMenu">取消
       </el-button>
-      <el-button style="width: 84px" size="mini" v-on:click="save" type="primary">保存 </el-button>
+      <el-button style="width: 84px"
+                 size="mini"
+                 v-on:click="save"
+                 type="primary">保存 </el-button>
     </div>
   </el-form>
 </template>
@@ -102,7 +100,7 @@ export default {
           if (level === 0) {
             const nodes = Array.from(new Array(51).keys())
               .slice(0)
-              .map(item => ({
+              .map((item) => ({
                 value: item,
                 label: item,
                 leaf: level >= 1
@@ -159,7 +157,7 @@ export default {
         if (valid) {
           const tmp = [...this.model.list]
           //转换JSON
-          const tmpMap = tmp.map(item => {
+          const tmpMap = tmp.map((item) => {
             item.adviceContent = item.content
             item.sendFutherTime = item.sendUnit[0]
             item.sendFutherUnit = item.sendUnit[1]

@@ -5,39 +5,57 @@
       <span>{{ item.inquiryWay }}</span>
     </div>
 
-    <div class="column q-pa-md q-mb-md rounded-borders no-wrap" style="background: #F9F9F9">
+    <div class="column q-px-md q-pt-md q-mb-md rounded-borders no-wrap"
+         style="background: #F9F9F9">
       <div class="row items-baseline">
-        <div class="col-2.5" style="color: #666666">病情描述：</div>
-        <div class="col-9 text-justify q-mb-sm" style="color: #333333">
+        <div class="col-2.5"
+             style="color: #666666">病情描述：</div>
+        <div class="col-9 text-justify q-mb-md"
+             style="color: #333333">
           {{ item.describe }}
         </div>
       </div>
 
-      <viewer v-if="item.imageList && item.imageList.length > 0" class="row full-width wrap q-mb-sm" :images="item.imageList">
-        <div v-for="(image, index) in item.imageList" v-bind:key="index.toString()" class="col-4 q-pr-sm q-pb-sm">
-          <img v-bind:src="image" class="fit" />
+      <viewer v-if="item.imageList && item.imageList.length > 0"
+              class="row full-width wrap q-mb-md"
+              :images="item.imageList"
+              v-on:click.native="stopEvent">
+        <div v-for="(image, index) in item.imageList"
+             v-bind:key="index.toString()"
+             class="col-4 q-pr-sm q-pb-sm">
+          <img v-bind:src="image"
+               class="fit" />
         </div>
       </viewer>
 
-      <div class="row items-center" v-if="(item.caseNo && item.caseNo.length > 0) || item.prescribePrescripCount > 0 || item.referralCount > 0">
-        <div class="tag row items-center q-mr-sm" v-if="item.caseNo && item.caseNo.length > 0">
-          <el-image v-bind:src="tipsInfo.caseHistory.icon" class="icon"></el-image>
+      <div class="row items-center q-mb-md"
+           v-if="(item.caseNo && item.caseNo.length > 0) || item.prescribePrescripCount > 0 || item.referralCount > 0">
+        <div class="tag row items-center q-mr-sm"
+             v-if="item.caseNo && item.caseNo.length > 0">
+          <el-image v-bind:src="tipsInfo.caseHistory.icon"
+                    class="icon"></el-image>
           <span class="title">{{ tipsInfo.caseHistory.title }}</span>
         </div>
 
-        <div class="tag row items-center q-mr-sm" v-if="item.prescribePrescripCount && item.prescribePrescripCount > 0">
-          <el-image v-bind:src="tipsInfo.prescription.icon" class="icon"></el-image>
+        <div class="tag row items-center q-mr-sm"
+             v-if="item.prescribePrescripCount && item.prescribePrescripCount > 0">
+          <el-image v-bind:src="tipsInfo.prescription.icon"
+                    class="icon"></el-image>
           <span class="title">{{ tipsInfo.prescription.title }}</span>
         </div>
 
-        <div class="tag row items-center q-mr-sm" v-if="item.referralCount && item.referralCount > 0">
-          <el-image v-bind:src="tipsInfo.consultation.icon" class="icon"></el-image>
+        <div class="tag row items-center q-mr-sm"
+             v-if="item.referralCount && item.referralCount > 0">
+          <el-image v-bind:src="tipsInfo.consultation.icon"
+                    class="icon"></el-image>
           <span class="title">{{ tipsInfo.consultation.title }}</span>
         </div>
       </div>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible" append-to-body title="问诊记录">
+    <peace-dialog :visible.sync="dialog.visible"
+                  append-to-body
+                  title="问诊记录">
       <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
     </peace-dialog>
   </div>
@@ -91,6 +109,9 @@ export default {
     }
   },
   methods: {
+    stopEvent(e) {
+      e.stopPropagation()
+    },
     showDetail() {
       const params = {
         inquiryNo: this.item.inquiryNo

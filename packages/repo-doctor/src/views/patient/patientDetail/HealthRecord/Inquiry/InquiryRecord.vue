@@ -8,17 +8,26 @@
     </div>
 
     <div class="layout-content full-width">
-      <RecordList :noDataText="noDataText" :request-data="inquiryRequestData" v-slot="item" v-show="selectIndex === 'inquiry'">
+      <RecordList :noDataText="noDataText"
+                  :request-data="inquiryRequestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'inquiry'">
         <InquiryRecordListCell :item="item" />
       </RecordList>
-      <RecordList :noDataText="noDataText" :request-data="followRequestData" v-slot="item" v-show="selectIndex === 'followUp'">
+      <RecordList :noDataText="noDataText"
+                  :request-data="followRequestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'followUp'">
         <FollowRecordListCell :item="item" />
       </RecordList>
     </div>
 
-    <div class="layout-footer full-width" v-show="selectIndex === 'inquiry'">
-      <q-separator inset class="q-mb-md bg-grey-3" />
-      <el-button @click="sendMessage" type="primary">发送信息 </el-button>
+    <div class="layout-footer full-width"
+         v-show="selectIndex === 'inquiry'">
+      <q-separator inset
+                   class="q-mb-md bg-grey-3" />
+      <el-button @click="sendMessage"
+                 type="primary">发送信息 </el-button>
     </div>
   </div>
 </template>

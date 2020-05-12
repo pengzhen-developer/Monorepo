@@ -15,19 +15,19 @@
 
         <div class="row items-baseline col-9 no-wrap">
           <div class="q-mr-sm">
-            <span v-show="model.diseaseInfo.tag.length === 0" class="text-primary text-weight-regular">添加标签</span>
+            <span v-show="model.diseaseInfo.tag.length === 0"
+                  class="text-primary text-weight-regular">添加标签</span>
 
-            <el-tag
-              v-for="(item, index) in model.diseaseInfo.tag"
-              v-bind:key="index.toString() + item.toString()"
-              type="info"
-              size="small"
-              class="q-mr-sm q-mb-sm"
-              >{{ item }}</el-tag
-            >
+            <el-tag v-for="(item, index) in model.diseaseInfo.tag"
+                    v-bind:key="index.toString() + item.toString()"
+                    type="info"
+                    size="small"
+                    class="q-mr-sm q-mb-sm">{{ item }}</el-tag>
           </div>
 
-          <el-button type="text" icon="el-icon-circle-plus" v-on:click="addLabel"></el-button>
+          <el-button type="text"
+                     icon="el-icon-circle-plus"
+                     v-on:click="addLabel"></el-button>
         </div>
       </div>
 
@@ -39,49 +39,56 @@
 
         <div class="row items-baseline col-9 no-wrap">
           <div class="q-mr-sm">
-            <span v-show="model.diagnoseInfo.tag.length === 0" class="text-primary">添加诊断</span>
+            <span v-show="model.diagnoseInfo.tag.length === 0"
+                  class="text-primary">添加诊断</span>
 
-            <el-tag
-              v-for="(item, index) in model.diagnoseInfo.tag"
-              v-bind:key="index.toString() + item.toString()"
-              type="info"
-              size="small"
-              class="q-mr-sm q-mb-sm"
-              >{{ item }}</el-tag
-            >
+            <el-tag v-for="(item, index) in model.diagnoseInfo.tag"
+                    v-bind:key="index.toString() + item.toString()"
+                    type="info"
+                    size="small"
+                    class="q-mr-sm q-mb-sm">{{ item }}</el-tag>
           </div>
-          <el-button type="text" icon="el-icon-circle-plus" v-on:click="addDiagnose"> </el-button>
+          <el-button type="text"
+                     icon="el-icon-circle-plus"
+                     v-on:click="addDiagnose"> </el-button>
         </div>
       </div>
 
-      <div class="row q-mb-md" v-bind:class="{ flexBaseLine: !action.isEditDisease, focusMarginTop: action.isEditDisease }">
+      <div class="row q-mb-md"
+           v-bind:class="{ flexBaseLine: !action.isEditDisease, focusMarginTop: action.isEditDisease }">
         <div class="col-2.5">
           <span class="span-width">基本病情</span>
           <span>：</span>
         </div>
 
-        <el-input
-          ref="diseaseInput"
-          v-show="action.isEditDisease"
-          v-model.trim="model.illnessInfo.illness"
-          v-on:blur="endEditDisease"
-          maxlength="150"
-          show-word-limit
-          rows="7"
-          type="textarea"
-          class="col-9"
-        ></el-input>
+        <el-input ref="diseaseInput"
+                  v-show="action.isEditDisease"
+                  v-model.trim="model.illnessInfo.illness"
+                  v-on:blur="endEditDisease"
+                  maxlength="150"
+                  show-word-limit
+                  rows="7"
+                  type="textarea"
+                  class="col-9"></el-input>
 
-        <div class="row items-baseline col-8 no-wrap" v-show="!action.isEditDisease">
+        <div class="row items-baseline col-8 no-wrap"
+             v-show="!action.isEditDisease">
           <div class="row items-baseline no-wrap">
-            <span v-show="showIllness" class="text-primary">填写病情</span>
-            <span class="col-grow q-mr-sm" style="word-break: break-all" v-show="!action.isEditDisease">{{ model.illnessInfo.illness }}</span>
-            <el-button v-show="!action.isEditDisease" type="text" icon="el-icon-edit" v-on:click="addDisease"></el-button>
+            <span v-show="showIllness"
+                  class="text-primary">填写病情</span>
+            <span class="col-grow q-mr-sm"
+                  style="word-break: break-all"
+                  v-show="!action.isEditDisease">{{ model.illnessInfo.illness }}</span>
+            <el-button v-show="!action.isEditDisease"
+                       type="text"
+                       icon="el-icon-edit"
+                       v-on:click="addDisease"></el-button>
           </div>
         </div>
       </div>
 
-      <q-separator class="q-my-sm bg-grey-3" style="height: 1px" />
+      <q-separator class="q-my-sm bg-grey-3"
+                   style="height: 1px" />
 
       <div class="q-my-md">
         <div class="row items-center justify-between q-mb-md">
@@ -89,59 +96,73 @@
             <div class="bg-primary q-mr-sm square-I"></div>
             <span class="title-style">患者病程</span>
           </div>
-          <el-button type="text" class="sort-Text" v-on:click="ascDisease">
+          <el-button type="text"
+                     class="sort-Text"
+                     v-on:click="ascDisease">
             <div class="flex justify-center items-center">
-              <span class="text-weight-regular q-mr-xs">{{ action.isAsc ? '最新病程优先' : '最早病程优先' }}</span>
-              <el-image class="asc-image" v-bind:class="[action.isAsc ? 'ascTran' : 'descTran']" v-bind:src="ascImage" />
+              <span
+                    class="text-weight-regular q-mr-xs">{{ action.isAsc ? '最新病程优先' : '最早病程优先' }}</span>
+              <el-image class="asc-image"
+                        v-bind:class="[action.isAsc ? 'ascTran' : 'descTran']"
+                        v-bind:src="ascImage" />
             </div>
           </el-button>
         </div>
 
-        <RecordList noDataText="暂未为该患者添加病程记录" :request-data="{}" :data="model.list" v-slot="item">
+        <RecordList noDataText="暂未为该患者添加病程记录"
+                    :request-data="{}"
+                    :data="model.list"
+                    v-slot="item">
           <DiseaseRecordListCell :item="item"></DiseaseRecordListCell>
         </RecordList>
       </div>
 
-      <el-backtop target=".layout-content" :bottom="90" :right="200"></el-backtop>
+      <el-backtop target=".layout-content"
+                  :bottom="90"
+                  :right="200"></el-backtop>
     </div>
 
     <div class="layout-footer full-width">
-      <q-separator inset class="q-mb-sm bg-grey-3" />
+      <q-separator inset
+                   class="q-mb-sm bg-grey-3" />
 
       <div class="text-center q-mt-md">
-        <el-button class="btn rounded-borders" v-on:click="addItem">添加病程</el-button>
-        <el-button class="btn rounded-borders" v-on:click="sendMessage">发送信息</el-button>
+        <el-button class="btn rounded-borders"
+                   v-on:click="addItem">添加病程</el-button>
+        <el-button class="btn rounded-borders"
+                   v-on:click="sendMessage">发送信息</el-button>
       </div>
     </div>
 
-    <peace-dialog :append-to-body="true" title="诊断" :visible.sync="dialog.diagnoseVisible">
+    <peace-dialog append-to-body
+                  title="诊断"
+                  :visible.sync="dialog.diagnoseVisible">
       <div style="margin-bottom: 10px">
-        <el-select
-          :remote-method="getPresent"
-          @change="chooseItem"
-          allow-create
-          filterable
-          placeholder="请输入初步诊断"
-          remote
-          style="width: 100%;"
-          v-model="dialog.chooseItem"
-        >
-          <el-option :key="item.id" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+        <el-select :remote-method="getPresent"
+                   @change="chooseItem"
+                   allow-create
+                   filterable
+                   placeholder="请输入初步诊断"
+                   remote
+                   style="width: 100%;"
+                   v-model="dialog.chooseItem">
+          <el-option :key="item.id"
+                     :label="item.name"
+                     :value="item.name"
+                     v-for="item in dialog.source.present_history"></el-option>
         </el-select>
       </div>
 
-      <div style="margin: 10px 0;" v-if="dialog.chooseData.length > 0">
+      <div style="margin: 10px 0;"
+           v-if="dialog.chooseData.length > 0">
         <p>已选诊断</p>
 
         <div style="margin: 10px 0;">
-          <el-tag
-            :key="item + index.toString()"
-            @close="closeItem(item)"
-            closable
-            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-            v-for="(item, index) in dialog.chooseData"
-            >{{ item }}</el-tag
-          >
+          <el-tag :key="item + index.toString()"
+                  @close="closeItem(item)"
+                  closable
+                  style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  v-for="(item, index) in dialog.chooseData">{{ item }}</el-tag>
         </div>
       </div>
 
@@ -149,42 +170,47 @@
         <p>常见诊断</p>
 
         <div style="margin: 10px 0;">
-          <el-tag
-            :key="item + index.toString()"
-            :type="dialog.chooseData.findIndex((existItem) => existItem === item) === -1 ? 'info' : 'primary'"
-            @click="chooseItem(item)"
-            style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-            v-for="(item, index) in dialog.source.IllnessList"
-            >{{ item }}</el-tag
-          >
+          <el-tag :key="item + index.toString()"
+                  :type="dialog.chooseData.findIndex((existItem) => existItem === item) === -1 ? 'info' : 'primary'"
+                  @click="chooseItem(item)"
+                  style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  v-for="(item, index) in dialog.source.IllnessList">{{ item }}</el-tag>
         </div>
       </div>
 
       <div style="margin-bottom: 10px; text-align: center;">
         <el-button @click="dialog.diagnoseVisible = false">取消</el-button>
-        <el-button @click="saveItem" type="primary">保存</el-button>
+        <el-button @click="saveItem"
+                   type="primary">保存</el-button>
       </div>
     </peace-dialog>
 
-    <peace-dialog :append-to-body="true" title="添加标签" :visible.sync="dialog.visible">
+    <peace-dialog append-to-body
+                  title="添加标签"
+                  :visible.sync="dialog.visible">
       <div style="margin-bottom: 10px">
-        <el-select @change="chooseItem" allow-create filterable placeholder="请输入标签" style="width: 100%;" v-model="dialog.chooseItem">
-          <el-option :key="item.name" :label="item.name" :value="item.name" v-for="item in dialog.source.present_history"></el-option>
+        <el-select @change="chooseItem"
+                   filterable
+                   placeholder="请输入标签"
+                   style="width: 100%;"
+                   v-model="dialog.chooseItem">
+          <el-option :key="item.name"
+                     :label="item.name"
+                     :value="item.name"
+                     v-for="item in dialog.source.present_history"></el-option>
         </el-select>
       </div>
 
-      <div style="margin: 10px 0;" v-if="dialog.chooseData.length > 0">
+      <div style="margin: 10px 0;"
+           v-if="dialog.chooseData.length > 0">
         <p>已选标签</p>
 
         <div style="margin: 10px 0;">
-          <el-tag
-            :key="item + index.toString()"
-            @close="closeItem(item)"
-            closable
-            style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-            v-for="(item, index) in dialog.chooseData"
-            >{{ item }}</el-tag
-          >
+          <el-tag :key="item + index.toString()"
+                  @close="closeItem(item)"
+                  closable
+                  style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  v-for="(item, index) in dialog.chooseData">{{ item }}</el-tag>
         </div>
       </div>
 
@@ -192,20 +218,18 @@
         <p>常见标签</p>
 
         <div style="margin: 10px 0;">
-          <el-tag
-            :key="item + index.toString()"
-            :type="dialog.chooseData.findIndex((existItem) => existItem === item) === -1 ? 'info' : 'primary'"
-            @click="chooseItem(item)"
-            style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-            v-for="(item, index) in dialog.source.labelList"
-            >{{ item }}</el-tag
-          >
+          <el-tag :key="item + index.toString()"
+                  :type="dialog.chooseData.findIndex((existItem) => existItem === item) === -1 ? 'info' : 'primary'"
+                  @click="chooseItem(item)"
+                  style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  v-for="(item, index) in dialog.source.labelList">{{ item }}</el-tag>
         </div>
       </div>
 
       <div style="margin-bottom: 10px; text-align: center;">
         <el-button @click="dialog.visible = false">取消</el-button>
-        <el-button @click="saveLabel" type="primary">保存</el-button>
+        <el-button @click="saveLabel"
+                   type="primary">保存</el-button>
       </div>
     </peace-dialog>
   </div>
@@ -384,7 +408,9 @@ export default {
     addItem() {
       $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程 })
     },
-    sendMessage() {},
+    sendMessage() {
+      peace.util.info('暂未开通')
+    },
     getDiseaseData() {
       const tmp = {
         familyId: '',

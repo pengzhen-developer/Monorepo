@@ -1,7 +1,15 @@
 <template>
-  <el-drawer :visible.sync="drawer" :modal="false" :before-close="handleClose" :destroy-on-close="true" size="400px" style="margin-right: 90px;">
-    <span class="title" slot="title">{{ titleStr }}</span>
-    <Component ref="checkInput" :params="params" v-bind:is="ComponentInstance" />
+  <el-drawer :visible.sync="drawer"
+             :modal="false"
+             :before-close="handleClose"
+             :destroy-on-close="true"
+             size="400px"
+             style="margin-right: 90px;">
+    <span class="title"
+          slot="title">{{ titleStr }}</span>
+    <Component ref="checkInput"
+               :params="params"
+               v-bind:is="ComponentInstance" />
   </el-drawer>
 </template>
 

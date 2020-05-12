@@ -8,18 +8,29 @@
     </div>
 
     <div class="layout-content full-width">
-      <RecordList :noDataText="noDataText" :request-data="outRequestData" v-slot="item" v-show="selectIndex === 'out'">
-        <ReferralRecordCell type="out" :item="item" />
+      <RecordList :noDataText="noDataText"
+                  :request-data="outRequestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'out'">
+        <ReferralRecordCell type="out"
+                            :item="item" />
       </RecordList>
 
-      <RecordList :noDataText="noDataText" :request-data="inRequestData" v-slot="item" v-show="selectIndex === 'in'">
-        <ReferralRecordCell type="in" :item="item" />
+      <RecordList :noDataText="noDataText"
+                  :request-data="inRequestData"
+                  v-slot="item"
+                  v-show="selectIndex === 'in'">
+        <ReferralRecordCell type="in"
+                            :item="item" />
       </RecordList>
     </div>
 
-    <div class="layout-footer full-width" v-show="selectIndex === 'out'">
-      <q-separator inset class="q-mb-md bg-grey-3" />
-      <el-button @click="startReferral" type="primary">发起转诊 </el-button>
+    <div class="layout-footer full-width"
+         v-show="selectIndex === 'out'">
+      <q-separator inset
+                   class="q-mb-md bg-grey-3" />
+      <el-button @click="startReferral"
+                 type="primary">发起转诊 </el-button>
     </div>
   </div>
 </template>

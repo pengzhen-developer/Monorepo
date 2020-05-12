@@ -1,15 +1,15 @@
 <template>
   <div class="patient-container">
     <div class="patient-detail">
-      <HealthRecordHeader
-        v-if="patientData"
-        :internalData="patientData"
-        class="health-record-header"
-      ></HealthRecordHeader>
-      <HealthRecordDetail :id="id" class="health-record-detail"></HealthRecordDetail>
+      <HealthRecordHeader v-if="patientData"
+                          :internalData="patientData"
+                          class="health-record-header"></HealthRecordHeader>
+      <HealthRecordDetail :id="id"
+                          class="health-record-detail"></HealthRecordDetail>
     </div>
     <HealthRecordMenu class="health-record-menu"></HealthRecordMenu>
-    <HealthRecordDrawer :params="patientData" ref="showRecordDrawer"></HealthRecordDrawer>
+    <HealthRecordDrawer :params="patientData"
+                        ref="showRecordDrawer"></HealthRecordDrawer>
   </div>
 </template>
 
@@ -40,15 +40,25 @@ export default {
 
   created() {
     this.getPatientInfo()
-    $peace.$on('showDrawer', params => {
-      this.$refs.showRecordDrawer.show(params)
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      $peace.$on('showDrawer', (params) => {
+        this.$refs.showRecordDrawer.show(params)
+      })
     })
   },
+
+  destroyed() {
+    $peace.$off('showDrawer')
+  },
+
   methods: {
     getPatientInfo() {
       const params = { patientNo: this.id }
 
-      peace.service.patient.getOneHealth(params).then(res => {
+      peace.service.patient.getOneHealth(params).then((res) => {
         const params = res.data
         params.id = this.id
         this.patientData = params

@@ -1,30 +1,53 @@
 <template>
-  <el-form :model="model" :rules="rules" label-position="left" label-width="85px" ref="model">
+  <el-form :model="model"
+           :rules="rules"
+           label-position="left"
+           label-width="85px"
+           ref="model">
     <el-row>
-      <el-form-item label="记录类型" prop="recordType">
+      <el-form-item label="记录类型"
+                    prop="recordType">
         <span slot="label">记录类型</span>
-        <el-select clearable placeholder="请选择" v-model="model.recordType" class="full-width">
-          <el-option :key="item.id" :label="item.typeTag" :value="item.typeTag" v-for="item in recordTypeList"></el-option>
+        <el-select clearable
+                   placeholder="请选择"
+                   v-model="model.recordType"
+                   class="full-width">
+          <el-option :key="item.id"
+                     :label="item.typeTag"
+                     :value="item.typeTag"
+                     v-for="item in recordTypeList"></el-option>
         </el-select>
       </el-form-item>
     </el-row>
 
     <el-row>
-      <el-form-item label="病程记录" prop="diseaseRecord">
+      <el-form-item label="病程记录"
+                    prop="diseaseRecord">
         <span slot="label">病程记录</span>
-        <el-input :rows="7" maxlength="500" placeholder="请输入病程记录" type="textarea" show-word-limit v-model.trim="model.diseaseRecord"></el-input>
+        <el-input :rows="7"
+                  maxlength="500"
+                  placeholder="请输入病程记录"
+                  type="textarea"
+                  show-word-limit
+                  v-model.trim="model.diseaseRecord"></el-input>
       </el-form-item>
     </el-row>
 
     <el-row>
-      <el-form-item label="病程日期" prop="recordDate">
+      <el-form-item label="病程日期"
+                    prop="recordDate">
         <span slot="label">病程日期</span>
-        <el-date-picker placeholder="请选择病程日期" v-model="model.recordDate" value-format="yyyy-MM-dd HH:mm:ss" class="full-width"></el-date-picker>
+        <el-date-picker placeholder="请选择病程日期"
+                        v-model="model.recordDate"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        class="full-width"></el-date-picker>
       </el-form-item>
     </el-row>
 
     <el-row class="text-center q-mt-xl">
-      <el-button style="width: 140px" v-on:click="saveItem" type="primary">提交</el-button>
+      <el-button style="width: 140px"
+                 v-on:click="saveItem"
+                 type="primary">提交</el-button>
     </el-row>
   </el-form>
 </template>
@@ -84,7 +107,7 @@ export default {
           }
           const params = Object.assign(tmp, this.params.familyInfo)
 
-          if (!peace.validate.isEmpty(this.params.item.id)) {
+          if (this.params.item && !peace.validate.isEmpty(this.params.item.id)) {
             params.courseId = this.params.item.id
           }
 
