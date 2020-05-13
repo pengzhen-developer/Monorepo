@@ -171,6 +171,10 @@ export default {
   margin-left: 34px;
 }
 
+/deep/ .el-drawer {
+  outline: none;
+}
+
 .el-drawer__wrapper {
   height: calc(100vh - 113px);
   position: absolute;
@@ -179,6 +183,10 @@ export default {
 
   /deep/ .el-drawer__header {
     margin-bottom: 20px;
+
+    .el-drawer__close-btn {
+      outline: none;
+    }
   }
 
   /deep/ .el-drawer__body {

@@ -140,7 +140,6 @@
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
-                   allow-create
                    filterable
                    placeholder="请输入初步诊断"
                    remote
@@ -190,6 +189,7 @@
                   :visible.sync="dialog.visible">
       <div style="margin-bottom: 10px">
         <el-select @change="chooseItem"
+                   allow-create
                    filterable
                    placeholder="请输入标签"
                    style="width: 100%;"
