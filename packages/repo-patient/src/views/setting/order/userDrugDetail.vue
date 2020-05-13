@@ -149,6 +149,17 @@
               {{ order.payTime }}</div>
           </div>
         </template>
+        <!-- 医保支付-支付方式，支付时间补丁 -->
+         <template v-if="showByYiBao">
+          <div class="dl-packet">
+            <div class="dt">支付方式:</div>
+            <div class="dd">医保卡支付</div>
+          </div>
+          <div class="dl-packet">
+            <div class="dt">支付时间:</div>
+            <div class="dd">线下药店支付</div>
+          </div>
+        </template>
         <template v-for="(item,index) in order.ords">
           <div class="dl-packet"
                :key="index"
@@ -314,7 +325,10 @@ export default {
     canShowPayway() {
       return this.order && this.order.payStatus < ENUM.PAY_STASUS.已付款
     },
-
+    //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
+    showByYiBao(){
+      return this.order&&this.order.paymentType==ENUM.PAYMENT_TYPE.医保支付&&this.order.payTime==''&&this.order.OrderStatus>ENUM.ORDER_STATUS.待下单
+    },
     // 是否显示取消订单
     canShowCancel() {
       return (
