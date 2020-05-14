@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import peace from '@src/library'
+import util from '@src/util'
 
 export default {
   methods: {
@@ -95,11 +95,7 @@ export default {
         case 'video':
           return '【视频】'
         case 'custom':
-          if (
-            session.lastMsg.content &&
-            session.lastMsg.content.data &&
-            session.lastMsg.content.data.showTextInfo
-          ) {
+          if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
             return session.lastMsg.content.data.showTextInfo.doctorClientText
           }
       }
@@ -113,11 +109,11 @@ export default {
           throw new Error(error)
         }
 
-        peace.service.IM.resetConsultationSession()
-        peace.service.IM.resetConsultationSessionMessages()
+        util.IM.consultationHelper.resetConsultationSession()
+        util.IM.consultationHelper.resetConsultationSessionMessages()
 
-        peace.service.IM.setConsultationSession(session)
-        peace.service.IM.setConsultationSessionMessages(message.msgs)
+        util.IM.consultationHelper.setConsultationSession(session)
+        util.IM.consultationHelper.setConsultationSessionMessages(message.msgs)
       }
 
       // 重置会话未读数

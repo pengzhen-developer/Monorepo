@@ -37,8 +37,7 @@
       </InquirySessionTransfer>
 
       <!-- 会诊 -->
-      <InquirySessionConsultation
-                                  v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
+      <InquirySessionConsultation v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
       </InquirySessionConsultation>
 
       <!-- 待接诊 / 问诊中 -->
@@ -113,6 +112,7 @@
 
 <script>
 import peace from '@src/library'
+import util from '@src/util'
 
 import InquirySessionReceive from './InquirySessionReceive'
 
@@ -162,9 +162,7 @@ export default {
 
   methods: {
     getInquiryType(session) {
-      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(
-        key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType
-      )
+      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find((key) => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
 
       const isAgain = session.content.inquiryInfo.isAgain
 
@@ -220,13 +218,10 @@ export default {
 
       if (this.over.state === '已解决') {
         // 验证是否有效会话
-        peace.service.inquiry.checkOverInquiry(params).then(res => {
+        peace.service.inquiry.checkOverInquiry(params).then((res) => {
           if (res.data.status === 1) {
             let message = ''
-            if (
-              this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-              peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-            ) {
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
               message = '您与患者尚未进行视频通话，此时结束咨询将做退诊处理'
             } else {
               message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
@@ -237,11 +232,11 @@ export default {
             peace.util.confirm(message, undefined, confirmOption, () => {
               peace.service.inquiry
                 .quitInquiry(params)
-                .then(res => {
+                .then((res) => {
                   peace.util.alert(res.msg)
 
-                  peace.service.IM.resetInquirySession()
-                  peace.service.IM.resetInquirySessionMessages()
+                  util.IM.inquiryHelper.resetInquirySession()
+                  util.IM.inquiryHelper.resetInquirySessionMessages()
                 })
                 .finally(() => {
                   this.over.visible = false
@@ -262,11 +257,11 @@ export default {
           else if (res.data.caseStatus === 2 && res.data.status === 2) {
             peace.service.inquiry
               .overInquiry(params)
-              .then(res => {
+              .then((res) => {
                 peace.util.alert(res.msg)
 
-                peace.service.IM.resetInquirySession()
-                peace.service.IM.resetInquirySessionMessages()
+                util.IM.inquiryHelper.resetInquirySession()
+                util.IM.inquiryHelper.resetInquirySessionMessages()
               })
               .finally(() => {
                 this.over.visible = false
@@ -274,10 +269,7 @@ export default {
           }
         })
       } else if (this.over.state === '未解决') {
-        const description =
-          this.over.description === '其他'
-            ? this.over.otherDescription.trim()
-            : this.over.description
+        const description = this.over.description === '其他' ? this.over.otherDescription.trim() : this.over.description
 
         if (!description) {
           return peace.util.warning('请选择未解决原因。')
@@ -290,11 +282,11 @@ export default {
         peace.util.confirm(message, undefined, confirmOption, () => {
           peace.service.inquiry
             .quitInquiry(params)
-            .then(res => {
+            .then((res) => {
               peace.util.alert(res.msg)
 
-              peace.service.IM.resetInquirySession()
-              peace.service.IM.resetInquirySessionMessages()
+              util.IM.inquiryHelper.resetInquirySession()
+              util.IM.inquiryHelper.resetInquirySessionMessages()
             })
             .finally(() => {
               this.over.visible = false

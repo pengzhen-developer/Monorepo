@@ -72,6 +72,7 @@
 
 <script>
 import peace from '@src/library'
+import util from '@src/util'
 
 export default {
   methods: {
@@ -95,32 +96,22 @@ export default {
             return '【处方】'
           }
           // 视频通话
-          else if (
-            session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话
-          ) {
+          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '【视频通话】'
           }
           // 其它
-          else if (
-            session.lastMsg.content &&
-            session.lastMsg.content.data &&
-            session.lastMsg.content.data.showTextInfo
-          ) {
+          else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
             return session.lastMsg.content.data.showTextInfo.doctorClientText
           }
       }
     },
 
     getInquiryStatus(session) {
-      return Object.keys(peace.type.INQUIRY.INQUIRY_STATUS).find(
-        key => peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.inquiryInfo.inquiryStatus
-      )
+      return Object.keys(peace.type.INQUIRY.INQUIRY_STATUS).find((key) => peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.inquiryInfo.inquiryStatus)
     },
 
     getInquiryType(session) {
-      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find(
-        key => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType
-      )
+      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find((key) => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
 
       const isAgain = session.content.inquiryInfo.isAgain
 
@@ -139,11 +130,11 @@ export default {
           throw new Error(error)
         }
 
-        peace.service.IM.resetInquirySession()
-        peace.service.IM.resetInquirySessionMessages()
+        util.IM.inquiryHelper.resetInquirySession()
+        util.IM.inquiryHelper.resetInquirySessionMessages()
 
-        peace.service.IM.setInquirySession(session)
-        peace.service.IM.setInquirySessionMessages(message.msgs)
+        util.IM.inquiryHelper.setInquirySession(session)
+        util.IM.inquiryHelper.setInquirySessionMessages(message.msgs)
       }
 
       $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)

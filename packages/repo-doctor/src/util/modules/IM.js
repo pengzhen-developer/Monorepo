@@ -248,7 +248,7 @@ export const inquiryHelper = {
     $peace.$store.state.inquiry.sessions = $peace.NIM.mergeSessions($peace.$store.state.inquiry.sessions, sessionWithStatus)
 
     // 反序列化当前 session with status
-    sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
+    sessionWithStatus = IMHelper.deSerializationSessions(sessionWithStatus)[0]
 
     // 将 session with status 更新到 session
     const currentSession = $peace.$store.state.inquiry.sessions.find((session) => session.id === sessionWithStatus.id)
@@ -351,7 +351,7 @@ export const inquiryHelper = {
     // 合并
     const serializationMessages = $peace.NIM.mergeMsgs(sessionMessages, messages)
     // 反序列化
-    const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
+    const deserializationMessages = IMHelper.deSerializationMessages(serializationMessages)
     // 更新 vuex session
     $peace.$store.commit('inquiry/setInquirySessionMessages', deserializationMessages)
   },
@@ -410,7 +410,7 @@ export const consultationHelper = {
     $peace.$store.state.consultation.sessions = $peace.NIM.mergeSessions($peace.$store.state.consultation.sessions, sessionWithStatus)
 
     // 反序列化当前 session with status
-    sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
+    sessionWithStatus = IMHelper.deSerializationSessions(sessionWithStatus)[0]
 
     // 将 session with status 更新到 session
     const currentSession = $peace.$store.state.consultation.sessions.find((session) => session.id === sessionWithStatus.id)
@@ -529,7 +529,7 @@ export const consultationHelper = {
     // 合并
     const serializationMessages = $peace.NIM.mergeMsgs(sessionMessages, messages)
     // 反序列化
-    const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
+    const deserializationMessages = IMHelper.deSerializationMessages(serializationMessages)
     // 更新 vuex session
     $peace.$store.commit('consultation/setConsultationSessionMessages', deserializationMessages)
   },
