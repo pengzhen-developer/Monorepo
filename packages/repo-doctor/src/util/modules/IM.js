@@ -207,6 +207,28 @@ export const IMHelper = {
     })
 
     return sessions
+  },
+
+  /**
+   * 反序列化 message
+   * 对话消息的扩展信息, 都以 JSON 字符串的形式, 存储在消息体上
+   * 反序列化 sessions, 有助于显示数据和进行类型判断
+   *
+   * @param {*} sessions
+   * @returns
+   */
+  deSerializationMessages(messages) {
+    messages.forEach((message) => {
+      if (message.custom && !(message.custom instanceof Object)) {
+        message.custom = JSON.parse(message.custom)
+      }
+
+      if (message.content && !(message.content instanceof Object)) {
+        message.content = JSON.parse(message.content)
+      }
+    })
+
+    return messages
   }
 }
 
