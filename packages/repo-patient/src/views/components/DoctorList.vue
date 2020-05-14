@@ -57,8 +57,8 @@
                 getServiceMoney(doctor)
               }}</span>
             </div>
-
-            <div class="title-service-item">
+            <!-- 咨询快捷方式屏蔽 -->
+            <!-- <div class="title-service-item">
               <div @click.stop="
                   redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='image'))
                 "
@@ -77,7 +77,7 @@
                      style="width: 20px;" />
                 <span>视频咨询</span>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- 候诊排队人数 -->
           <!-- <div class="title-wait">
