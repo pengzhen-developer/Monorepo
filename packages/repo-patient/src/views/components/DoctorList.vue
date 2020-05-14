@@ -60,7 +60,7 @@
 
             <div class="title-service-item">
               <div @click.stop="
-                  redictToApply(doctor.doctorInfo, doctor.consultationList[0])
+                  redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='image'))
                 "
                    class="title-service-item"
                    v-if="canShowInquiry(doctor,'image')">
@@ -69,7 +69,7 @@
                 <span>图文咨询</span>
               </div>
               <div @click.stop="
-                  redictToApply(doctor.doctorInfo, doctor.consultationList[1])
+                  redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='video'))
                 "
                    class="title-service-item"
                    v-if="canShowInquiry(doctor,'video')">
