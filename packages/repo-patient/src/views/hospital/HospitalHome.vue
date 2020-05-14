@@ -688,6 +688,10 @@ export default {
           font-weight: 500;
           color: rgba(0, 0, 0, 1);
           line-height: 45px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          padding:0 8px;
         }
       }
     }
