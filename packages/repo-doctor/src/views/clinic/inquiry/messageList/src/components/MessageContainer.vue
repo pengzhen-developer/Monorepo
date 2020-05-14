@@ -132,8 +132,7 @@ export default {
     messageComponent() {
       // 根据业务定义
       // 当消息类型为 custom 时，需要从 message.content.code 拿到真实的消息类型
-      const messageType =
-        this.message.type === 'custom' ? this.message.content.code : this.message.type
+      const messageType = this.message.type === 'custom' ? this.message.content.code : this.message.type
 
       // 根据消息类型，适配 UI Component
       return this.componentAdapter(messageType)
@@ -165,13 +164,10 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.接诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.转诊提示]: MessageSystemContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.会诊提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.退诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.取消问诊]: MessageSystemContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.评价提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.服务提醒]: MessageSystemContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.审核处方通过]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.病历]: MessageCaseCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方]: MessageRecipeCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.问诊卡片]: MessageInquiryCardContent,

@@ -27,7 +27,7 @@ export default {
   methods: {
     getMessageText() {
       if (this.message.content && this.message.content.data && this.message.content.data.showTextInfo) {
-        return this.message.content.data.showTextInfo.patientClientText
+        return this.message.content.data.showTextInfo.doctorClientText
       }
 
       if (this.message.text) {
