@@ -584,7 +584,14 @@ export default {
       })
     }
   },
-
+   beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if ( from.fullPath.indexOf('/setting/myFamilyMembers') != -1) {
+        // 从家人列表回来刷新我的家人列表 
+        vm.getFamilyList()
+      }
+    })
+  },
   activated() {
     this.$nextTick().then(() => {
       this.scrollToBottom()
@@ -789,6 +796,7 @@ export default {
     },
 
     addFamilyCallback(res) {
+      //新增我的家人
       if (res.success) {
         this.getFamilyList()
       }
@@ -887,6 +895,7 @@ export default {
         })
 
         famliyQuestion.answerList = familyList
+        this.current.answerList = familyList
       })
     },
 
@@ -1093,13 +1102,26 @@ export default {
           }
         } else {
           // 跳转新增家人
-          let canShowSelf = !this.current.answerList.find(item => item.relation === '本人') ? 1 : 2
-          const json = peace.util.encode({
-            type: 'add',
-            emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
-            canShowSelf: canShowSelf
-          })
-          this.$router.push({ path: `/setting/familyMember/${json}` })
+          
+          if(this.current.answerList.length>=4){
+            Dialog.confirm({
+              title: '温馨提示',
+              message: '您的家人数量已达上限，请删除后再新增',
+              confirmButtonText: '去新增'
+            }).then(()=>{
+              this.$router.push({ path: `/setting/myFamilyMembers` })
+            })
+          }else{
+            let canShowSelf = !this.current.answerList.find(item => item.relation === '本人') ? 1 : 2
+            const json = peace.util.encode({
+              type: 'add',
+              emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
+              canShowSelf: canShowSelf
+            })
+            this.$router.push({ path: `/setting/familyMember/${json}` })
+          }
+           
+          
 
           return false
         }
