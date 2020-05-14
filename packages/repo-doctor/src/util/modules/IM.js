@@ -132,7 +132,7 @@ export const IMHelper = {
           const currentSession = store.state.inquiry.sessions.find((temp) => temp.id === session.id)
 
           inquiryHelper.setInquirySession(currentSession)
-          inquiryHelper.setInquirySessionMessages(currentSession.lastMsg)
+          inquiryHelper.setInquirySessionMessages(currentSession?.lastMsg)
         } else {
           inquiryHelper.resetInquirySession()
           inquiryHelper.resetInquirySessionMessages()
