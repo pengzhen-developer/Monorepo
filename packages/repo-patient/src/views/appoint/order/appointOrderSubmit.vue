@@ -231,7 +231,7 @@ export default {
                     subname: '(' + item.relation + ')'
                   }
                 }) || []
-              this.fmlDic.push({ subname: 'add', name: '添加就诊人' })
+              this.fmlDic.push({ subname: null, name: '添加就诊人' })
 
               // console.log('familyId', this.fml.familyId)
               if (this.fml.familyId) {
