@@ -91,7 +91,11 @@
     </template>
 
     <template v-if="loaded && doctorList.length == 0">
-      <div class="none-page">
+       <div class="none-page" v-if="tagId=='subsequentVisit'">
+        <i class="icon icon_none_source"></i>
+        <div class="none-text">暂无排班记录</div>
+      </div>
+      <div class="none-page" v-else>
         <i class="icon icon_none_doctor"></i>
         <div class="none-text">暂无医生信息</div>
       </div>
@@ -106,19 +110,20 @@ export default {
     return {
       doctorList: [],
       loaded: false,
-      isFree: false
+      isFree: false,
+      tagId:''
     }
   },
 
   activated() {
     this.isFree = peace.util.decode(this.$route.params.json).doctorTag === 'freeConsult' ? true : false
+    this.tagId=peace.util.decode(this.$route.params.json).id
     this.get()
   },
 
   methods: {
     get() {
       const params = peace.util.decode(this.$route.params.json)
-
       if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
         peace.service.patient.getNetHospitalDoctorList(params).then(res => {
           this.doctorList = res.data
