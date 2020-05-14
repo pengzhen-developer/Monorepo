@@ -292,10 +292,10 @@ export default {
         hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
       }
 
-      peace.service.prescribePrescrip.drugUsageList(params).then(res => {
+      peace.service.prescribePrescrip.drugUsageList(params).then((res) => {
         this.dict.dic_usage = res.data
       })
-      peace.service.prescribePrescrip.drugFrequencyList(params).then(res => {
+      peace.service.prescribePrescrip.drugFrequencyList(params).then((res) => {
         this.dict.dic_frequency = res.data
       })
     },
@@ -307,7 +307,9 @@ export default {
     },
 
     deleteDrug(scope) {
-      this.drugList.splice(scope.$index, 1)
+      peace.util.confirm('确定删除吗', '提示', {}, () => {
+        this.drugList.splice(scope.$index, 1)
+      })
     },
 
     // 搜索药品
@@ -325,9 +327,9 @@ export default {
 
         peace.service.prescribePrescrip
           .drugsList(params)
-          .then(res => {
+          .then((res) => {
             if (res.data && res.data.length > 0) {
-              res.data.forEach(drug => {
+              res.data.forEach((drug) => {
                 drug.label = `${drug.drug_name} ${drug.drug_factory}`
 
                 this.queryDrugSource.push(drug)
@@ -346,7 +348,7 @@ export default {
     // 药品名称选择
     handleSelectDrug(item, scope) {
       // 当药品已存在，提示
-      if (this.drugList.filter(drug => drug.drugid === item.id).length === 1) {
+      if (this.drugList.filter((drug) => drug.drugid === item.id).length === 1) {
         peace.util.warning('药品已存在，请勿重复添加')
 
         if (scope.$index !== this.drugList.length - 1) {
@@ -378,7 +380,7 @@ export default {
 
     // 给药途径选择
     dicUsageChange(value, scope) {
-      const item = this.dict.dic_usage.find(item => item.id === value)
+      const item = this.dict.dic_usage.find((item) => item.id === value)
 
       scope.row.dic_usage = item.drugway_name
       scope.row.dic_usage_id = item.id
@@ -386,7 +388,7 @@ export default {
 
     // 用药频次选择
     dicFrequencyChange(value, scope) {
-      const item = this.dict.dic_frequency.find(item => item.id === value)
+      const item = this.dict.dic_frequency.find((item) => item.id === value)
 
       scope.row.dic_frequency = item.drugtimes_name
       scope.row.dic_frequency_id = item.id
@@ -414,10 +416,7 @@ export default {
           }
 
           // 验证用药频次
-          if (
-            peace.validate.isEmpty(drug.dic_frequency_id) ||
-            peace.validate.isEmpty(drug.dic_frequency)
-          ) {
+          if (peace.validate.isEmpty(drug.dic_frequency_id) || peace.validate.isEmpty(drug.dic_frequency)) {
             validObj = {
               isValid: false,
               message: `[${drug.drug_name}]请选择用药频次`
