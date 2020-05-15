@@ -5,39 +5,43 @@
     <div class="fixed-center form">
       <p class="text-white text-h6">医生工作站</p>
 
-      <el-form v-bind:model="model" v-bind:rules="rules" v-on:keyup.enter.native="login" ref="form">
-        <el-form-item class="q-mb-md" prop="tel">
-          <el-input
-            class="q-mb-md"
-            v-model="model.tel"
-            placeholder="请输入手机号"
-            maxlength="11"
-            minlength="11"
-          >
+      <el-form v-bind:model="model"
+               v-bind:rules="rules"
+               v-on:keyup.enter.native="login"
+               ref="form">
+        <el-form-item class="q-mb-md"
+                      prop="tel">
+          <el-input class="q-mb-md"
+                    v-model="model.tel"
+                    placeholder="请输入手机号"
+                    maxlength="11"
+                    minlength="11">
             <template slot="prepend">
-              <q-icon v-bind:name="usernameImage" size="28px" />
+              <q-icon v-bind:name="usernameImage"
+                      size="28px" />
             </template>
           </el-input>
         </el-form-item>
 
-        <el-form-item class="q-mb-md" prop="smsCode">
-          <el-input
-            ref="smsCode"
-            class="q-mb-md"
-            v-model="model.smsCode"
-            placeholder="请输入验证码"
-            maxlength="6"
-            minlength="6"
-          >
+        <el-form-item class="q-mb-md"
+                      prop="smsCode">
+          <el-input ref="smsCode"
+                    class="q-mb-md"
+                    v-model="model.smsCode"
+                    placeholder="请输入验证码"
+                    maxlength="6"
+                    minlength="6">
             <template slot="prepend">
-              <q-icon v-bind:name="passwordImage" size="28px" />
+              <q-icon v-bind:name="passwordImage"
+                      size="28px" />
             </template>
 
             <template slot="suffix">
               <template v-if="showCountdown">
                 <el-divider direction="vertical"></el-divider>
 
-                <peaceCountdown v-bind:time="countdownTime" v-on:countdownend="onCountdownEnd">
+                <peaceCountdown v-bind:time="countdownTime"
+                                v-on:end="onCountdownEnd">
                   <template slot-scope="props">
                     {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
                   </template>
@@ -46,23 +50,21 @@
               <template v-else>
                 <el-divider direction="vertical"></el-divider>
 
-                <el-button type="text" v-bind:disabled="isVerifyPhone" v-on:click="sendCode"
-                  >获取验证码</el-button
-                >
+                <el-button type="text"
+                           v-bind:disabled="isVerifyPhone"
+                           v-on:click="sendCode">获取验证码</el-button>
               </template>
             </template>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <q-btn
-            class="full-width q-py-sm"
-            color="primary"
-            label="登 录"
-            v-bind:ripple="false"
-            v-bind:loading="isLoging"
-            v-on:click="login"
-          >
+          <q-btn class="full-width q-py-sm"
+                 color="primary"
+                 label="登 录"
+                 v-bind:ripple="false"
+                 v-bind:loading="isLoging"
+                 v-on:click="login">
           </q-btn>
         </el-form-item>
       </el-form>
@@ -133,7 +135,7 @@ export default {
     sendCode() {
       service
         .sendSms(this.model)
-        .then(res => {
+        .then((res) => {
           peace.util.success(res.msg)
 
           this.$refs.smsCode.focus()
@@ -149,7 +151,7 @@ export default {
 
         service
           .login(this.model)
-          .then(res => {
+          .then((res) => {
             const userInfo = res.data
 
             // 储存用户信息
@@ -175,8 +177,8 @@ export default {
     },
 
     validateForm() {
-      return new Promise(resolve => {
-        this.$refs.form.validate(valid => {
+      return new Promise((resolve) => {
+        this.$refs.form.validate((valid) => {
           if (valid) {
             resolve()
           }
@@ -302,13 +304,7 @@ export default {
       border: 1px solid $--color-primary;
       border-radius: 3px;
       line-height: 50px;
-      background: linear-gradient(
-        to right,
-        $--color-primary 0,
-        $--color-primary 50px,
-        white 50px,
-        white 100%
-      );
+      background: linear-gradient(to right, $--color-primary 0, $--color-primary 50px, white 50px, white 100%);
       .close {
         position: absolute;
         top: 17px;

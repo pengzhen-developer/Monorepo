@@ -1,5 +1,5 @@
 /**
- * 参考: https://github.com/xkeshi/vue-countdown
+ * 参考: https://github.com/fengyuanchen/vue-countdown
  */
 const MILLISECONDS_SECOND = 1000
 const MILLISECONDS_MINUTE = 60 * MILLISECONDS_SECOND
@@ -55,7 +55,7 @@ export default {
     interval: {
       type: Number,
       default: 1000,
-      validator: value => value >= 0
+      validator: (value) => value >= 0
     },
 
     /**
@@ -80,7 +80,7 @@ export default {
     time: {
       type: Number,
       default: 0,
-      validator: value => value >= 0
+      validator: (value) => value >= 0
     },
 
     /**
@@ -88,7 +88,7 @@ export default {
      */
     transform: {
       type: Function,
-      default: props => props
+      default: (props) => props
     }
   },
 
@@ -250,7 +250,7 @@ export default {
         if (window.requestAnimationFrame) {
           let init
           let prev
-          const step = now => {
+          const step = (now) => {
             if (!init) {
               init = now
             }
