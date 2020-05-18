@@ -217,7 +217,7 @@
                class="pay"
                v-if="canShowPay"
                style="background: #00C6AE; ">
-            立即支付
+            在线支付
           </div>
         </div>
       </template>
