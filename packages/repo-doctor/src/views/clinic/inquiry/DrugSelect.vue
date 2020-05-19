@@ -24,7 +24,7 @@
             <el-autocomplete style="width: 400px"
                              placeholder="请输入药品关键字..."
                              popper-class="drug-select"
-                             v-model="scope.row.drug_name"
+                             v-model="scope.row.drugid_popup"
                              v-on:select="(item) => { handleSelectDrug(item, scope) }"
                              v-bind:fetch-suggestions="queryDrugAsync">
               <template slot-scope="{ item }">
@@ -59,7 +59,7 @@
                         v-model="scope.row.dic_usage_id_popup">
             <el-select placeholder="请选择给药途径"
                        popper-class="drug-select"
-                       v-model="scope.row.dic_usage_id"
+                       v-model="scope.row.dic_usage_id_popup"
                        v-on:change="item => { dicUsageChange(item, scope) }">
               <el-option v-bind:key="item.id"
                          v-bind:label="item.drugway_name"
@@ -93,7 +93,7 @@
                         v-model="scope.row.dic_frequency_id_popup">
             <el-select placeholder="请选择用药频次"
                        popper-class="drug-select"
-                       v-model="scope.row.dic_frequency_id"
+                       v-model="scope.row.dic_frequency_id_popup"
                        v-on:change="item => { dicFrequencyChange(item, scope) }">
               <el-option v-bind:key="item.id"
                          v-bind:label="item.drugtimes_name"
@@ -314,35 +314,33 @@ export default {
 
     // 搜索药品
     queryDrugAsync(queryString, cb) {
-      if (queryString) {
-        this.queryDrugSource = []
-        this.queryDrugLoading = true
+      this.queryDrugSource = []
+      this.queryDrugLoading = true
 
-        const netHospital_id = this.$store.state.user.userInfo.list.docInfo.netHospital_id
+      const netHospital_id = this.$store.state.user.userInfo.list.docInfo.netHospital_id
 
-        const params = {
-          hospitalId: netHospital_id,
-          drugname: queryString
-        }
-
-        peace.service.prescribePrescrip
-          .drugsList(params)
-          .then((res) => {
-            if (res.data && res.data.length > 0) {
-              res.data.forEach((drug) => {
-                drug.label = `${drug.drug_name} ${drug.drug_factory}`
-
-                this.queryDrugSource.push(drug)
-              })
-              cb(res.data)
-            } else {
-              cb([])
-            }
-          })
-          .finally(() => {
-            this.queryDrugLoading = false
-          })
+      const params = {
+        hospitalId: netHospital_id,
+        drugname: queryString
       }
+
+      peace.service.prescribePrescrip
+        .drugsList(params)
+        .then((res) => {
+          if (res.data && res.data.length > 0) {
+            res.data.forEach((drug) => {
+              drug.label = `${drug.drug_name} ${drug.drug_factory}`
+
+              this.queryDrugSource.push(drug)
+            })
+            cb(res.data)
+          } else {
+            cb([])
+          }
+        })
+        .finally(() => {
+          this.queryDrugLoading = false
+        })
     },
 
     // 药品名称选择
