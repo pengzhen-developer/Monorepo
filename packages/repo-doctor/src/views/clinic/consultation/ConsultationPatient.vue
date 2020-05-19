@@ -258,7 +258,7 @@
                    style="text-align: center;">
                 <img style="width: 26px; height: 26px;"
                      src="~@src/assets/images/inquiry/ic_huizhen@2x.png" />
-                <p style="font-size: 14px;">会诊意见</p>
+                <p style="font-size: 14px;">会诊小结</p>
               </div>
             </el-col>
           </el-row>
@@ -357,7 +357,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.inquiry.getCase(params).then(res => {
+      peace.service.inquiry.getCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
       })
@@ -370,7 +370,7 @@ export default {
         size: 999
       }
 
-      peace.service.prescribePrescrip.getConsultPrescripList(params).then(res => {
+      peace.service.prescribePrescrip.getConsultPrescripList(params).then((res) => {
         this.recipeDialog.visible = true
         this.recipeDialog.data = res.data
       })
@@ -381,7 +381,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultDetail.visible = true
         this.consultDetail.data = res.data.info
       })
@@ -392,7 +392,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.data = res.data.info
       })
     },
@@ -406,10 +406,10 @@ export default {
         inquiryNo: this.data.inquiryNo
       }
 
-      peace.service.patient.getOneInquiry(params).then(res => {
-        const historyMessageFormatHandler = messages => {
+      peace.service.patient.getOneInquiry(params).then((res) => {
+        const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
-            messages.forEach(message => {
+            messages.forEach((message) => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
