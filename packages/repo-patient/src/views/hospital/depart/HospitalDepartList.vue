@@ -72,8 +72,7 @@ export default {
     goMenuPage(item) {
       let json = peace.util.encode({
         deptId: item.id,
-        txt: item.text,
-        txtId: item.id
+        deptName: item.text
       })
       this.$router.push(`/components/doctorList/${json}`)
     },

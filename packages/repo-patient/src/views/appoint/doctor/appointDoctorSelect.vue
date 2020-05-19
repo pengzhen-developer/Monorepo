@@ -11,9 +11,10 @@
           {{doctorInfo.name}}
           <div class="card-small">{{doctorInfo.doctorTitle}} {{doctorInfo.deptName}}</div>
         </div>
-        <!--                <div class="card-small">-->
-        <!--                    评分：7.6  预约量：123-->
-        <!--                </div>-->
+        <div class="card-small"
+             v-if="params.from">
+          <span>评分：7.6</span> <span>预约量：123</span>
+        </div>
         <div class="card-brief"
              v-if="doctorInfo.specialSkill">
           <div class="span s">擅长：</div>
@@ -188,7 +189,17 @@ export default {
       json = peace.util.encode(json)
 
       if (!item.isExpire && item.number) {
-        this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
+        /**复诊续方-参数待定 */
+        if (this.params.from) {
+          const json = peace.util.encode({
+            doctorId: this.doctorInfo.doctorId,
+            consultingType: 'fuzhen',
+            consultingTypeId: 'consultingTypeId'
+          })
+          this.$router.push(`/components/doctorInquiryApply/${json}`)
+        } else {
+          this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
+        }
       }
     }
   }
@@ -198,6 +209,12 @@ export default {
 <style lang="scss" scoped>
 .scroll-x {
   position: relative;
+  border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
+  height: 47px;
+}
+.box-scroll .scroll-items > .item {
+  border-color: #e5e5e5;
 }
 .card {
   padding: 7px 5px;
@@ -216,11 +233,9 @@ export default {
   font-size: 13px;
   padding: 7px 0;
 }
-.card .card-small,
-.card .card-brief {
-  /*line-height: 1.3;*/
-}
-.card-brief {
+.card .card-small span {
+  margin-right: 10px;
+  color: #666;
 }
 .card-brief,
 .p-small {
@@ -257,18 +272,20 @@ export default {
 }
 .source {
   background: #fafafa;
+  padding-top: 12.5px;
 }
 .g-two {
   display: flex;
   align-items: stretch;
   justify-content: center;
   background: #fff;
-  border-top: 1px solid #f5f5f5;
-  border-bottom: 1px solid #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  &:first-child {
+    margin-bottom: 12.5px;
+  }
 }
-.g-two + .g-two {
-  margin-top: 15px;
-}
+
 .g-two .left {
   flex: 0 0 auto;
   width: 1.33333rem;
@@ -282,7 +299,7 @@ export default {
 }
 .g-two > .content {
   flex: 1;
-  border-left: 2px solid #f5f5f5;
+  border-left: 1px solid #e5e5e5;
 }
 .f-two {
   display: flex;
@@ -290,24 +307,37 @@ export default {
   justify-content: flex-start;
   color: #333;
   font-size: 14px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
 }
 .f-two:last-child {
   border-bottom: none;
 }
 .f-two .content {
   flex: 1;
-  padding: 15px;
+  padding: 20px 10px 20px 15px;
+  display: flex;
+  align-items: center;
 }
 .content .label {
   border-radius: 2px;
-  padding: 0px 3px;
-  font-size: 10px;
+  padding: 0px 5px;
+  font-size: 11px;
+  line-height: normal;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .inline {
-  display: inline;
-  padding-right: 8px;
-  vertical-align: middle;
+  height: 20px;
+  line-height: 20px;
+  &:first-child {
+    font-family: monospace;
+  }
+  &:nth-child(2) {
+    min-width: 60px;
+    margin-left: 18px;
+  }
 }
 .content.disabled .inline {
   color: #c4c4c4;
@@ -336,12 +366,12 @@ export default {
 .right > .btn {
   font-size: 14px;
   width: 65px;
-  line-height: 1;
+  line-height: 20px;
   margin: 0;
-  margin-right: 20px;
+  margin-right: 15px;
   text-align: center;
-  padding: 6px;
-  border-radius: 5px;
+  padding: 2.5px 7.5px;
+  border-radius: 4px;
 }
 .content.disabled + .right > .btn {
   background: #fff;

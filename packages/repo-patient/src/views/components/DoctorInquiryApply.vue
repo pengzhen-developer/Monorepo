@@ -187,6 +187,7 @@
         <transition-group tag="div"
                           name="van-slide-left">
           <div class="message-layout left"
+               v-if="supplementaryFlag"
                key="supplementary">
             <div class="supplementary">
               <span class="supplementary__title">补充信息</span>
@@ -384,10 +385,10 @@ const SUPPLEMENTARY_MODE_MSG_MAP = {
 }
 
 const ANSWER_FIELD = {
-  /** 问诊描述 */
-  ILLNESS_DESCRIBE: 'illnessDescribe',
   /** 就诊人 */
   FAMILY: 'family',
+  /** 问诊描述 */
+  ILLNESS_DESCRIBE: 'illnessDescribe',
   /** 是否复诊 */
   IS_AGAIN: 'isAgain',
   /** 确认是否继续 */
@@ -404,6 +405,75 @@ const IMAGES_UPLOAD_TYPE = {
   // 患处
   AFFECTED_IMAGES: 2
 }
+/**在线咨询 INQUIRY_QUESTION_LISI*/
+const INQUIRY_QUESTION_LISI = [
+  {
+    no: 0,
+    answerList: [],
+    field: ANSWER_FIELD.FAMILY,
+    question: '请问您要为哪位就诊人咨询？',
+    mode: ANSWER_MODE.CHECK
+  },
+  {
+    no: 1,
+    answerList: [],
+    field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+    mode: ANSWER_MODE.INPUT
+  }
+]
+/**复诊续方 FUZHEN__QUESTION_LISI*/
+const FUZHEN__QUESTION_LISI = [
+  {
+    no: 0,
+    answerList: [],
+    field: ANSWER_FIELD.FAMILY,
+    question: '请问您要为哪位就诊人咨询？',
+    mode: ANSWER_MODE.CHECK
+  },
+  {
+    no: 1,
+    answerList: [],
+    field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+    mode: ANSWER_MODE.INPUT
+  },
+  {
+    no: 2,
+    answerList: [],
+    field: ANSWER_FIELD.IS_AGAIN,
+    question: '就诊人是否为复诊？',
+    mode: ANSWER_MODE.CHECK
+  },
+  {
+    no: 3,
+    answerList: [],
+    field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
+    question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
+    mode: ANSWER_MODE.CHECK
+  },
+  {
+    no: 4,
+    answerList: [],
+    field: ANSWER_FIELD.ATTACHMENT,
+    question: '请问您是否需要补充病历、处方、检查报告等图片？',
+    mode: ANSWER_MODE.FILE
+  },
+  {
+    no: 5,
+    answerList: [],
+    field: ANSWER_FIELD.ATTACHMENT,
+    question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
+    mode: ANSWER_MODE.FILE_CONFIRM
+  },
+  {
+    no: 6,
+    answerList: [],
+    field: ANSWER_FIELD.ILLNESS_CONFIRM,
+    question: '请选择您的初诊诊断(多选)',
+    mode: ANSWER_MODE.ILLNESS_CONFIRM
+  }
+]
 
 export default {
   components: {
@@ -434,8 +504,10 @@ export default {
         confirmIllness: '',
         // 问诊类型
         consultingType: '',
+        //区分咨询、复诊
+        serviceType: '',
         // 是否复诊
-        isAgain: true,
+        isAgain: false,
         // 非复诊确认
         isAgainConfrim: true,
         // 特殊时期
@@ -457,57 +529,7 @@ export default {
       welcomeList: [],
 
       // 问题列表
-      questionList: [
-        {
-          no: 0,
-          answerList: [],
-          field: ANSWER_FIELD.FAMILY,
-          question: '请问您要为哪位就诊人咨询？',
-          mode: ANSWER_MODE.CHECK
-        },
-        {
-          no: 1,
-          answerList: [],
-          field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-          question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
-          mode: ANSWER_MODE.INPUT
-        },
-        {
-          no: 2,
-          answerList: [],
-          field: ANSWER_FIELD.IS_AGAIN,
-          question: '就诊人是否为复诊？',
-          mode: ANSWER_MODE.CHECK
-        },
-        {
-          no: 3,
-          answerList: [],
-          field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
-          question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
-          mode: ANSWER_MODE.CHECK
-        },
-        {
-          no: 4,
-          answerList: [],
-          field: ANSWER_FIELD.ATTACHMENT,
-          question: '请问您是否需要补充病历、处方、检查报告等图片？',
-          mode: ANSWER_MODE.FILE
-        },
-        {
-          no: 5,
-          answerList: [],
-          field: ANSWER_FIELD.ATTACHMENT,
-          question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
-          mode: ANSWER_MODE.FILE_CONFIRM
-        },
-        {
-          no: 6,
-          answerList: [],
-          field: ANSWER_FIELD.ILLNESS_CONFIRM,
-          question: '请选择您的初诊诊断(多选)',
-          mode: ANSWER_MODE.ILLNESS_CONFIRM
-        }
-      ],
+      questionList: [],
 
       // 答题路径
       questionPath: [],
@@ -544,6 +566,8 @@ export default {
       ],
 
       supplementaryMode: null,
+
+      supplementaryFlag: false,
 
       chatList: [],
 
@@ -883,6 +907,9 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       this.model.doctorId = params.doctorId
       this.model.consultingType = params.consultingType
+      this.model.serviceType = params.serviceType
+      this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
+      this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
 
     getFamilyList() {

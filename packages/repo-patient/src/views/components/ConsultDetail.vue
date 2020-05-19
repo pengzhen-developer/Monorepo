@@ -1,25 +1,19 @@
 <template>
   <div class="page">
     <div class="consult-detatil"
-         v-if="internalData &&
-               internalData.inquiryInfo &&
-               internalData.doctorInfo &&
-               internalData.familyInfo &&
-               internalData.illInfo">
+         v-if="canShowInfo">
       <!--TOP-->
       <div class="module nmg">
         <div class="strong">
           {{ internalData.inquiryInfo.statusTxt }}
-          <!-- <span class="money"
-                v-if="internalData.inquiryInfo.inquiryStatus == '1'">¥{{ internalData.orderInfo.orderMoney }}</span> -->
           <div class='typeTag fz'
-               v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain.toString()==='1'">
+               v-if="internalData.inquiryInfo.isAgain.toString()==='1'">
             复诊</div>
           <div class='typeTag zx'
                v-else>咨询</div>
         </div>
         <div class="brief"
-             v-if="internalData.inquiryInfo.inquiryStatus!=4">
+             v-if="internalData.inquiryInfo.inquiryStatus!=ENUM.INQUIRY_STATUS.已退诊">
           {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
         </div>
         <div class="brief"
@@ -27,15 +21,11 @@
           {{internalData.inquiryInfo.overCause}}
         </div>
         <div class="cancelText"
-             v-if="
-          (internalData.inquiryInfo.inquiryStatus == '6' ||
-            internalData.inquiryInfo.inquiryStatus == '4') &&
-            internalData.orderInfo.payMoney != '0.00'
-        ">
+             v-if="canShowCancelText">
           订单取消后退款将在1-3个工作日内原路返回，请注意查收
         </div>
         <div class="waitText"
-             v-if="internalData.inquiryInfo.inquiryStatus == '2'">
+             v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
           <div class="cancelText">
             接诊后可以在“消息”中查看回复
           </div>
@@ -73,6 +63,10 @@
       <!--订单内容-->
       <div class="module order">
         <div class="module-item">
+          <div class="b">复诊时间</div>
+          <div class="span">2020/05/12 8:00-20:00</div>
+        </div>
+        <div class="module-item">
           <div class="b">个人信息</div>
           <div class="form-dl">
             <div class="form-dt"><span>姓名</span> :</div>
@@ -102,7 +96,7 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="internalData.inquiryInfo && internalData.inquiryInfo.isAgain.toString()==='1'">
+             v-if="internalData.inquiryInfo.isAgain.toString()==='1'">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img"
@@ -131,7 +125,7 @@
           </div>
         </div>
         <div class="module-item"
-             v-if="internalData.supplementaryInfo && (internalData.supplementaryInfo.affectedImages.length>0||internalData.supplementaryInfo.pregnancyText||internalData.supplementaryInfo.allergicHistory)">
+             v-if="canShowSupplementaryInfo">
           <div>
             <div class="b">补充信息</div>
             <div class="form-dl img"
@@ -191,17 +185,10 @@
         </template>
       </div>
 
-      <!-- <div class="module pdtb"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'">
-        <div class="brief right">
-          应付金额：
-          <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
-        </div>
-      </div> -->
       <div class="module pdtb"
-           v-if="internalData.inquiryInfo.inquiryStatus != '1'">
+           v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付">
         <!-- 取消订单的状态 -->
-        <template v-if="internalData.inquiryInfo.inquiryStatus == '6'">
+        <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
           <div class="brief right"
                v-if="internalData.orderInfo.payMoney == 0">
             <template v-if="internalData.orderInfo.orderMoney == 0">
@@ -216,7 +203,7 @@
                v-else>
             实付金额：
             <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '6'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+                    v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -227,7 +214,7 @@
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
               <span
-                    v-if="internalData.inquiryInfo.inquiryStatus == '4'&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+                    v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -236,33 +223,27 @@
     <template v-if="internalData&&
                internalData.inquiryInfo">
       <div class="footer"
-           v-if="internalData.inquiryInfo.inquiryStatus == '2'">
+           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
         <div class="footer-btn wait-btn"
              @click="showCancellPop(internalData)">取消订单</div>
       </div>
       <div class="h64"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
-               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5')"></div>
+           v-if="canShowBottom"></div>
       <div class="footer fixedBottom"
-           v-if="!fromChatRoom&&(internalData.inquiryInfo.inquiryStatus == '3' ||
-               (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-               internalData.inquiryInfo.inquiryStatus == '5')">
+           v-if="canShowBottom">
+        <div class="footer-btn chat-btn"
+             @click="goChatingPage(internalData)"
+             v-if="canShowChatBtn">咨询记录</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="
-            (internalData.inquiryInfo.inquiryStatus == '4'&&internalData.inquiryInfo.quitStatus!='1'&&internalData.inquiryInfo.quitStatus!='2') ||
-              internalData.inquiryInfo.inquiryStatus == '5'">咨询记录</div>
-        <div class="footer-btn chat-btn"
-             @click="goChatingPage(internalData)"
-             v-if="
-            internalData.inquiryInfo.inquiryStatus == '3'">进入咨询</div>
+            internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中">进入咨询</div>
       </div>
       <div class="h115"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
+           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付&&internalData.inquiryInfo.time>0">
       </div>
       <div class="pay fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == '1'&&internalData.inquiryInfo.time>0">
+           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付&&internalData.inquiryInfo.time>0">
         <div class="pay-item">
           <div class="count-down">
             <span>订单关闭倒计时：</span>
@@ -328,6 +309,15 @@ const ENUM = {
     微信支付: 'wxpay',
     支付宝支付: 'alipay',
     医保支付: 'yibaopay'
+  },
+  /** 问诊状态 */
+  INQUIRY_STATUS: {
+    待支付: 1,
+    待接诊: 2,
+    问诊中: 3,
+    已退诊: 4,
+    已完成: 5,
+    已取消: 6
   }
 }
 export default {
@@ -350,6 +340,7 @@ export default {
 
   data() {
     return {
+      ENUM: ENUM,
       internalData: {},
 
       caseDetail: {
@@ -386,6 +377,57 @@ export default {
     paymentTypeText() {
       return Object.keys(ENUM.PAYMENT_TYPE).find(
         key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType
+      )
+    },
+    canShowInfo() {
+      return (
+        this.internalData &&
+        this.internalData.inquiryInfo &&
+        this.internalData.doctorInfo &&
+        this.internalData.familyInfo &&
+        this.internalData.illInfo &&
+        this.internalData.orderInfo &&
+        this.internalData.supplementaryInfo
+      )
+    },
+    canShowCancelText() {
+      return (
+        this.internalData &&
+        this.internalData.inquiryInfo &&
+        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消 ||
+          this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊) &&
+        this.internalData.orderInfo.payMoney != '0.00'
+      )
+    },
+    canShowSupplementaryInfo() {
+      return (
+        this.internalData &&
+        this.internalData.supplementaryInfo &&
+        (this.internalData.supplementaryInfo.affectedImages.length > 0 ||
+          this.internalData.supplementaryInfo.pregnancyText ||
+          this.internalData.supplementaryInfo.allergicHistory)
+      )
+    },
+    canShowBottom() {
+      return (
+        !this.fromChatRoom &&
+        this.internalData &&
+        this.internalData.inquiryInfo &&
+        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中 ||
+          (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊 &&
+            this.internalData.inquiryInfo.quitStatus != '1' &&
+            this.internalData.inquiryInfo.quitStatus != '2') ||
+          this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已完成)
+      )
+    },
+    canShowChatBtn() {
+      return (
+        (this.internalData &&
+          this.internalData.inquiryInfo &&
+          this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊 &&
+          this.internalData.inquiryInfo.quitStatus != '1' &&
+          this.internalData.inquiryInfo.quitStatus != '2') ||
+        this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已完成
       )
     }
   },
@@ -438,7 +480,9 @@ export default {
         '4': '',
         '5': '祝您身体健康',
         '6':
-          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
+          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消',
+        /** 复诊 */
+        '7': '请在约定时间准时上线复诊'
       }
 
       return dic[status]
@@ -707,7 +751,7 @@ export default {
   box-sizing: border-box;
   .module,
   .brief {
-    border-radius: 5px;
+    border-radius: 3px;
   }
   .module {
     background: #fff;

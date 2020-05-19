@@ -1,23 +1,23 @@
 <template>
   <div class="doctor-list">
     <template v-if="doctorList && doctorList.length > 0">
-      <div :key="doctor.doctorInfo.doctorId"
-           @click.prevent="redictToDetail(doctor.doctorInfo)"
+      <div :key="doctor.doctorId"
+           @click.prevent="redictToDetail(doctor)"
            class="item"
            v-for="doctor in doctorList">
         <div>
-          <img :src="doctor.doctorInfo.avartor"
+          <img :src="doctor.avartor"
                class="avatar" />
         </div>
         <div class="detail">
           <div class="title-doctor">
             <span class="title-doctor-name">{{
-              doctor.doctorInfo.doctorName
+              doctor.doctorName
             }}</span>
-            <span>{{ doctor.doctorInfo.doctorTitle }}</span>
+            <span>{{ doctor.doctorTitle }}</span>
             <!-- 服务部标签 服务部未开通故屏蔽-->
-            <template v-if="doctor.doctorInfo.serviceList">
-              <template v-for="(it, i) in doctor.doctorInfo.serviceList">
+            <template v-if="doctor.serviceList">
+              <template v-for="(it, i) in doctor.serviceList">
                 <div :class="['label', 'label-'+it]"
                      :key="i"
                      v-if="it!=='prvivateDoctor'">
@@ -25,8 +25,8 @@
                 </div>
               </template>
             </template>
-            <template v-if="doctor.doctorInfo.tags">
-              <template v-for="(it, i) in doctor.doctorInfo.tags">
+            <template v-if="doctor.tags">
+              <template v-for="(it, i) in doctor.tags">
                 <div :class="['label', 'label-'+it]"
                      :key="i"
                      v-if="it!=='prvivateDoctor'">
@@ -35,19 +35,19 @@
               </template>
             </template>
             <div class="tag-work online"
-                 v-if="getSericeStatus(doctor)==1">接诊中</div>
+                 v-if="doctor.workStatus==1">接诊中</div>
             <div class="tag-work outline"
-                 v-else-if="getSericeStatus(doctor)==2">休息中</div>
+                 v-else-if="doctor.workStatus==2">休息中</div>
           </div>
           <div class="title-hospital">
-            <span>{{ doctor.doctorInfo.hospitalName }}</span>
-            <span>{{ doctor.doctorInfo.deptName }}</span>
+            <span>{{ doctor.hospitalName }}</span>
+            <span>{{ doctor.deptName }}</span>
           </div>
           <div class="title-description"
-               v-if="doctor.doctorInfo.specialSkill">
+               v-if="doctor.specialSkill">
             <span class="title-description-label">擅长:</span>
             <span class="title-description-detail">{{
-              doctor.doctorInfo.specialSkill
+              doctor.specialSkill
             }}</span>
           </div>
           <div class="title-service">
@@ -91,11 +91,13 @@
     </template>
 
     <template v-if="loaded && doctorList.length == 0">
-       <div class="none-page" v-if="tagId=='subsequentVisit'">
+      <div class="none-page"
+           v-if="tagId=='subsequentVisit'">
         <i class="icon icon_none_source"></i>
         <div class="none-text">暂无排班记录</div>
       </div>
-      <div class="none-page" v-else>
+      <div class="none-page"
+           v-else>
         <i class="icon icon_none_doctor"></i>
         <div class="none-text">暂无医生信息</div>
       </div>
@@ -111,13 +113,13 @@ export default {
       doctorList: [],
       loaded: false,
       isFree: false,
-      tagId:''
+      tagId: ''
     }
   },
 
   activated() {
     this.isFree = peace.util.decode(this.$route.params.json).doctorTag === 'freeConsult' ? true : false
-    this.tagId=peace.util.decode(this.$route.params.json).id
+    this.tagId = peace.util.decode(this.$route.params.json).id
     this.get()
   },
 
@@ -138,7 +140,7 @@ export default {
     },
 
     getServiceMoney(doctor) {
-      const minMoney = doctor.doctorInfo.money
+      const minMoney = doctor.money
       //免费咨询列表收费应该显示为免费，而不是0起
       const params = peace.util.decode(this.$route.params.json)
       if (params.doctorTag === 'freeConsult') {
@@ -147,9 +149,6 @@ export default {
       return `￥${minMoney || 0}起`
     },
 
-    getSericeStatus(doctor) {
-      return doctor.workStatus
-    },
     canShowInquiry(doctor, type) {
       const params = peace.util.decode(this.$route.params.json)
       const consultation = doctor.consultationList.filter(item => item.tag == type)[0]

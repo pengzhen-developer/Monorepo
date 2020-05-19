@@ -81,16 +81,8 @@
                    class="label blue-full">继续支付</div>
             </div>
           </div>
-          <!-- <div class="panel-bottom" style="padding-left: 0; justify-content: flex-end;"
-            v-if="item.inquiryInfo.inquiryStatus === 3 || item.inquiryInfo.inquiryStatus === 5">
-            <div :data-index="index" @click="gouserPrescripCasePage(item)" class="label blue"
-              data-tip="病历" v-if="item.inquiryInfo.isCase">咨询小结</div>
-            <div :data-index="index" @click="gouserPrescripListPage(item)" class="label blue"
-              data-tip="处方" v-if="item.inquiryInfo.isPrescrip">用药建议</div>
-            <div :data-index="index" @click="goChatingPage(item)" class="label blue">咨询记录</div>
-          </div> -->
           <div class="panel-bottom"
-               v-if="!(!item.inquiryInfo.consultNo&&!item.inquiryInfo.referralNo&&!item.inquiryInfo.isCase&&!item.inquiryInfo.isPrescrip&&!item.inquiryInfo.checkOrderNo)"
+               v-if="canShowPanelBottom(item)"
                style="justify-content: flex-end;">
             <div :data-index="index"
                  @click="gouserConsultationPage(item)"
@@ -130,9 +122,6 @@
         </div>
       </template>
     </van-list>
-    <!-- <template v-if="loaded&& consultList.length > 0">
-      <div class="bottom">客服电话：400-902-0365</div>
-    </template> -->
 
     <peace-dialog :visible.sync="caseDetail.visible"
                   title="咨询小结">
@@ -228,6 +217,18 @@ export default {
   },
 
   methods: {
+    canShowPanelBottom(item) {
+      return (
+        item.inquiryInfo &&
+        !(
+          !item.inquiryInfo.consultNo &&
+          !item.inquiryInfo.referralNo &&
+          !item.inquiryInfo.isCase &&
+          !item.inquiryInfo.isPrescrip &&
+          !item.inquiryInfo.checkOrderNo
+        )
+      )
+    },
     get() {
       if (!this.timer) {
         this.timer = setTimeout(() => {
@@ -263,8 +264,10 @@ export default {
           if (expireTime > inquiryInfo.currentTime) {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }
-          item.inquiryType =
-            (inquiryInfo.inquiryType == '图文咨询' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '咨询')
+          // item.inquiryType =
+          //   (inquiryInfo.inquiryType == '图文咨询' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '咨询')
+
+          item.inquiryType = inquiryInfo.isAgain == 1 ? '复诊续方' : inquiryInfo.inquiryType
         })
         this.consultList = this.consultList.concat(res.data.list)
         this.loading = false

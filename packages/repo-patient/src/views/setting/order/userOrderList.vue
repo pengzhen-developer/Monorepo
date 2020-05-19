@@ -79,6 +79,75 @@
                    @click="goPay(item)">继续支付</div>
             </div>
           </div>
+          <!-- 复诊订单 -->
+          <div class="panel"
+               :key="index"
+               v-if="item.orderType=='fuzhen'">
+            <div class="panel-body"
+                 @click="goConsultDetailPage(item)">
+              <div class="card ">
+                <img class="card-avatar avatar-circular card-img"
+                     :src="item.doctorInfo.avartor" />
+                <div class="card-body">
+                  <div class="card-name card-flex">{{item.doctorInfo.name}}
+                    {{item.doctorInfo.deptName}}
+                    <div class="card-gary">[{{item.inquiryType}}]
+                    </div>
+                  </div>
+                </div>
+                <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
+                     v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
+                  {{page.orderTypeMap[item.orderType][item.inquiryInfo.inquiryStatus]}}
+                </div>
+              </div>
+              <div class="small">
+                <div class="small-item">
+                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-val"
+                       v-if="item.familyInfo">{{item.familyInfo.familyName}}
+                    {{item.familyInfo.familySex}}
+                    {{item.familyInfo.familyAge}}岁</div>
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">订单金额:</div>
+                  <div class="small-item-val"
+                       :class="item.orderInfo.orderMoney==0?'price-free':'price'"
+                       v-if="item.orderInfo">
+                    {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
+                    <span
+                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
+                  </div>
+
+                </div>
+                <div class="small-item">
+                  <div class="small-item-key">复诊时间:</div>
+                  <div class="small-item-val">2019/11/13 8:00-20:00</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-bottom"
+                 style="padding-left: 0"
+                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
+              <div class="count-down">
+                <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
+                <van-count-down millisecond
+                                v-if="item.inquiryInfo.inquiryStatus ==1"
+                                @finish="finishHander(item,index)"
+                                :time="item.time"
+                                format="mm:ss" />
+                <van-count-down millisecond
+                                v-else
+                                @finish="finishHander(item,index)"
+                                :time="item.time"
+                                format="HH:mm:ss" />
+              </div>
+              <div class="label gary"
+                   @click="showCancellPop(item,index)">取消订单</div>
+              <div class="label blue"
+                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   @click="goPay(item)">继续支付</div>
+            </div>
+          </div>
           <!-- 预约挂号 -->
           <div class="panel"
                :key="index"
@@ -164,17 +233,20 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 const ENUM = {
-  // 咨询类型 inquiryType
-  // 图文 0 图文咨询 1图文复诊
-  // 视频 0 视频咨询 1视频复诊
+  /** 咨询类型 inquiryType */
+
+  /** 图文 0 图文咨询 1复诊续方（图文复诊） */
+
+  /** 视频 0 视频咨询 1复诊续方（视频复诊） */
+
   INQUIRY_TYPE: [
     {
       type: 'image',
-      value: ['图文咨询', '图文复诊']
+      value: ['图文咨询', '复诊续方']
     },
     {
       type: 'video',
-      value: ['视频咨询', '视频复诊']
+      value: ['视频咨询', '复诊续方']
     }
   ]
 }
@@ -294,18 +366,15 @@ export default {
       }
     },
     getData() {
-      // this.orderList = []
       this.p++
       peace.service.patient.getOrderList({ p: this.p, size: this.size }).then(res => {
         if (res.data.list.length > 0) {
           res.data.list.map(item => {
-            //   item.time =  15 * 60 * 1000;
             item.close = true
 
             if (item.orderType == 'register') {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
-                // item.time = (item.orderExpireTime - item.currentTime - 14 * 60) * 1000
               }
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
@@ -313,7 +382,6 @@ export default {
                 inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
-                // item.time = (expireTime - inquiryInfo.currentTime - 14 * 60) * 1000
               }
               item.inquiryType = this.getInquiryType(item.orderInfo.inquiryType, inquiryInfo.isAgain)
             }
@@ -531,9 +599,6 @@ export default {
 .userConsultList {
   height: 100%;
 }
-.none-page {
-  /*background-color: #fff;*/
-}
 
 .box {
   margin: 0;
@@ -559,7 +624,6 @@ export default {
   border-left: none;
 }
 .box-tab .tab-item .span {
-  /*display: inline-block;*/
   text-align: center;
   color: #333;
   font-size: (30px/2);
@@ -615,7 +679,6 @@ export default {
 .panel .panel-head,
 .panel .panel-body,
 .panel .panel-bottom {
-  // padding: (20px/2) (30px/2);
   padding: (20px/2) 0;
 }
 .panel .panel-bottom {
@@ -787,6 +850,16 @@ export default {
             5: '已完成',
             6: '已取消'
           },
+          *复诊订单状态
+        inquiry: {
+            : '待支付',
+            :'预约成功',
+            : '待接诊',
+            : '已接诊',
+            : '已退诊',
+            : '已完成',
+            : '已取消'
+          },
         *检查单状态
     */
 /*red*/
@@ -837,9 +910,7 @@ export default {
 .panel-bottom .time {
   font-size: (26px/2);
 }
-.small .money {
-  /*font-size: (30px/2);*/
-}
+
 .label-jq {
   position: relative;
   background: #504c4f;

@@ -131,12 +131,12 @@
               <img src="@src/assets/images/ic_tag.png"
                    v-if="item.isAttention==1" />>
 
-              <span class="name">{{ item.name }}</span>
+              <span class="name">{{ item.doctorName }}</span>
               <div class="jd">
-                <div>{{ item.netdeptChild + " " + item.doctorTitle }}</div>
+                <div>{{ item.netdeptName + " " + item.doctorTitle }}</div>
               </div>
               <span class="tags">
-                <template v-for="item in item.serviceList">
+                <template v-for="item in item.tags">
                   <span :key="item"
                         v-if="item === 'register'"
                         class="tags hao">号</span>
@@ -221,7 +221,6 @@ export default {
           desc: this.hospitalInfo.nethospitalInfo.brief,
           imgUrl: this.hospitalInfo.nethospitalInfo.icon
         }
-        console.log('channelId', peace.cache.get(peace.type.SYSTEM.CHANNELID))
         if (channelId) {
           obj.url =
             peace.config.api.base +
@@ -230,7 +229,6 @@ export default {
             '&channelId=' +
             channelId
         }
-        console.log('url', obj.url)
         peace.wx.share.share(obj)
       })
     },
@@ -266,8 +264,7 @@ export default {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         deptId: item.id,
-        txt: item.netdeptName,
-        txtId: item.id,
+        deptName: item.netdeptName,
         type: 'departDoctorList'
       })
       this.$router.push(`/components/doctorList/${json}`)
@@ -370,36 +367,6 @@ export default {
           peace.util.alert('该功能正在建设中，敬请期待')
           break
       }
-
-      // switch (item.id) {
-      //   // 预约挂号
-      //   case 'appointment':
-      //     json = peace.util.encode({
-      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-      //       id: item.id,
-      //       Date: new Date()
-      //     })
-
-      //     this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
-      //     break
-
-      //   // 在线咨询
-      //   case 'onlineConsultant':
-      //   // 复诊续方
-      //   case 'subsequentVisit':
-      //     json = peace.util.encode({
-      //       netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-      //       id: item.id,
-      //       Date: new Date()
-      //     })
-
-      //     this.$router.push(`/components/doctorList/${json}`)
-      //     break
-
-      //   default:
-      //     peace.util.alert('暂未开放，敬请期待')
-      //     break
-      // }
     }
   }
 }

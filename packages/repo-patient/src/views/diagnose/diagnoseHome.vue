@@ -52,54 +52,17 @@
          style="border-color: #fff">
       <div class="panel-head">
         <div class="head-tit">推荐医生</div>
-        <!--                <picker mode="selector" bindchange="bindCityChange" value="{{index}}" range="{{cityList}}" range-key="name">-->
         <div class="head-more"
              @click="showCityDicFn">{{checkCity || '选择城市'}}</div>
-        <!--                </picker>-->
         <van-action-sheet v-model="showCityDic"
                           :actions="cityDic"
                           @select="checkCityDic" />
       </div>
-      <!--        <div class="panel-body">-->
-      <!--        </div>-->
     </div>
-    <!-- <van-loading size="24px"
-                 v-if="showLoadingType"
-                 class="load">加载中...</van-loading>
-    <div class="card"
-         v-for="(item, index) in doctorList"
-         @click="goHomeIndex(item)"
-         data-id="item.doctorId"
-         :key="index">
-      <div class="card-avatar avatar-circular">
-        <img class=""
-             :src="item.avartor" />
-      </div>
-      <div class="card-body">
-        <div class="card-name">{{item.name}}
-          <div class="card-small">
-            {{item.doctorTitle}}
-            <div :class="['label', 'label-'+it]"
-                 v-for="(it, i) in item.serviceList"
-                 :key="i">
-              {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-            </div>
-          </div>
-        </div>
-        <div class="card-small">
-          {{item.netHospitalName}} {{item.deptName}}
-        </div>
-        <div class="card-brief"
-             v-if="item.specialSkill">
-          <div class="span s">擅长：</div>
-          <div class="span xl">
-            {{item.specialSkill}}</div>
-        </div>
-      </div>
-    </div> -->
+
     <van-list v-model="showLoadingType"
               :finished="finished"
-              :finished-text="!nodata&&'没有更多了'"
+              :finished-text="!nodata?'没有更多了':''"
               @load="getDoctList">
       <van-cell class="card"
                 v-for="(item, index) in doctorList"
@@ -239,12 +202,6 @@ export default {
         .then(res => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
 
-          // res.data.list.map(item=>{
-          //   if(item.workStatus==1&&item.serviceList==0){
-          //     item.workStatus=3
-          //   }
-          // })
-
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (!this.showLoadingType && this.doctorList.length == 0) {
@@ -360,12 +317,7 @@ export default {
   font-size: 13px;
   padding: 7px 0;
 }
-// .card .card-small,
-// .card .card-brief {
-//   /*line-height: 1.3;*/
-// }
-// .card-brief {
-// }
+
 .card-brief,
 .p-small {
   display: 1;
@@ -615,7 +567,5 @@ export default {
   border: 1px solid #00c6ae;
   border-radius: 5px;
   bottom: -6px;
-  /*left: 50%;*/
-  /*margin-left: -8px;*/
 }
 </style>

@@ -111,86 +111,125 @@
 
       <!-- 问诊服务 -->
       <div class="body-card">
-        <div class="row flex between">
+        <div class="row flex column">
           <div class="row flex">
             <van-image width="30px"
                        height="30px"
                        :src="require('@src/assets/images/ic_interrogation.png')" />
-            <h4 class="body-card-title">问诊服务</h4>
+            <h4 class="body-card-title">在线咨询</h4>
           </div>
-          <div></div>
-        </div>
-
-        <!-- 图文咨询 -->
-        <div class="service row flex"
-             @click="goApply(serviceImageInfo, 'image')">
-          <van-image width="30px"
-                     height="30px"
-                     v-if="serviceImageInfo.status"
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
-          <van-image width="30px"
-                     height="30px"
-                     v-else
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_tuwen.png')"></van-image>
-
-          <div class="service-consult-content">
-            <div class="row flex between"
-                 style="margin: 0;">
-              <span class="service-consult-content-name">图文咨询</span>
-              <span v-if="serviceImageInfo.status">
-                <span class="service-consult-content-fee">￥{{ serviceImageInfo.money }}</span>
-                <span class="service-consult-content-unit"> / 次</span>
-              </span>
-              <span v-else
-                    class="service-consult-content-description">
-                暂未开通
-              </span>
-            </div>
-            <div>
-              <span class="service-consult-content-description">可通过文字、图片的形式和医生沟通</span>
-            </div>
+          <div class="row body-card-tip">
+            医生提供图文或视频健康指导，不进行医学判断
           </div>
         </div>
+        <div class="row flex col-two ">
+          <!-- 图文咨询  @click="goApply(serviceImageInfo, 'image')"-->
+          <div class=" row flex column center"
+               @click="showDialog(serviceImageInfo, 'image')">
+            <van-image width="27px"
+                       height="27px"
+                       v-if="serviceImageInfo.status"
+                       style="margin: 0 10px 0 0;"
+                       :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
+            <van-image width="27px"
+                       height="27px"
+                       v-else
+                       style="margin: 0 10px 0 0;"
+                       :src="require('@src/assets/images/ic_tuwen.png')"></van-image>
 
-        <!-- 视频咨询 -->
-        <div class="service row flex"
-             @click="goApply(serviceVideoInfo, 'video')">
-          <!-- 视频咨询尚未开通 -->
-          <van-image round
-                     width="30px"
-                     height="30px"
-                     v-if="serviceVideoInfo.status"
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_video_open.png')"></van-image>
-          <van-image round
-                     width="30px"
-                     height="30px"
-                     v-else
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/ic_video.png')"></van-image>
-
-          <div class="service-consult-content">
-            <div class="row flex between"
-                 style="margin: 0;">
-              <span class="service-consult-content-name">视频咨询</span>
-              <span v-if="serviceVideoInfo.status">
-                <span class="service-consult-content-fee">￥{{ serviceVideoInfo.money }}</span>
-                <span class="service-consult-content-unit"> / 次</span>
-              </span>
-              <span v-else
-                    class="service-consult-content-description">
-                暂未开通
-              </span>
+            <div class="service-consult-content auto">
+              <div class="row flex column"
+                   style="margin: 0;">
+                <span class="service-consult-content-name">图文咨询</span>
+                <span v-if="serviceImageInfo.status">
+                  <span class="service-consult-content-fee">
+                    <span
+                          class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.money }}
+                  </span>
+                  <span class="service-consult-content-unit"> / 次</span>
+                </span>
+                <span v-else
+                      class="service-consult-content-description">
+                  暂未开通
+                </span>
+              </div>
             </div>
-            <div>
-              <span class="service-consult-content-description">可通过视频的形式和医生沟通</span>
+          </div>
+
+          <!-- 视频咨询 @click="goApply(serviceVideoInfo, 'video')"-->
+          <div class=" row flex column center"
+               @click="showDialog(serviceImageInfo, 'video')">
+            <!-- 视频咨询尚未开通 -->
+            <van-image round
+                       width="27px"
+                       height="27px"
+                       v-if="serviceVideoInfo.status"
+                       style="margin: 0 10px 0 0;"
+                       :src="require('@src/assets/images/ic_video_open.png')"></van-image>
+            <van-image round
+                       width="27px"
+                       height="27px"
+                       v-else
+                       style="margin: 0 10px 0 0;"
+                       :src="require('@src/assets/images/ic_video.png')"></van-image>
+
+            <div class="service-consult-content auto">
+              <div class="row flex column"
+                   style="margin: 0;">
+                <span class="service-consult-content-name">视频咨询</span>
+                <span v-if="serviceVideoInfo.status">
+                  <span class="service-consult-content-fee">
+                    <span
+                          class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.money }}
+                  </span>
+                  <span class="service-consult-content-unit"> / 次</span>
+                </span>
+                <span v-else
+                      class="service-consult-content-description">
+                  暂未开通
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
+      <!-- 复诊续方 -->
+      <div class="body-card">
+        <div class="row flex column">
+          <div class="row flex">
+            <van-image width="30px"
+                       height="30px"
+                       :src="require('@src/assets/images/ic_consultation.png')" />
+            <h4 class="body-card-title">复诊续方</h4>
+            <div class=" flex flex-1 end"
+                 @click="gotoAppointPage">
+              <span class="see-more">查看更多</span>
+              <van-image width="10.5px"
+                         height="10.5px"
+                         :src="require('@src/assets/images/ic_more_right.png')" />
+            </div>
+          </div>
+          <div class="row body-card-tip">
+            可以在线开具处方、开药、开检查化验
+          </div>
+        </div>
+        <div class="row flex fz-card-list">
+          <div class="fz-card flex column row"
+               v-for="item in 5"
+               :key='item'>
+            <div class="fz-card-time">2020/06/06 下午</div>
+            <div class="fz-card-tag">专家门诊</div>
+            <div class="flex between"
+                 style="width:100%;">
+              <div class="fz-card-price">￥26.5</div>
+              <van-button round
+                          @click.stop="showDialog({status:'111'},'fuzhen')"
+                          size="small"
+                          type="primary">预约</van-button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- 挂号服务 -->
       <div class="body-card"
            v-if="doctor.registerData&&doctor.registerData.length > 0">
@@ -463,6 +502,35 @@
                  :src="require('@src/assets/images/ic_cry.png')"></van-image>
       <div class="none-text">医生暂时将不能为您提供服务</div>
     </div>
+
+    <!-- 咨询提示 ,复诊提示-->
+    <div class="shadow"
+         v-if="dialog.visible"
+         @click="closeDialog"></div>
+    <div class="dialog"
+         v-if="dialog.visible">
+      <van-image width="19px"
+                 height="19px"
+                 :src="require('@src/assets/images/ic_cha.png')"
+                 @click="closeDialog"></van-image>
+      <div class="dialog-title">{{dialog.data.title}}</div>
+      <div class="dialog-content">
+        <template v-if="dialog.data.list&&dialog.data.list.length>0">
+          <span v-for="(item,index) in dialog.data.list"
+                :key="index">{{item}}</span>
+        </template>
+        <template v-else>
+          {{dialog.data.content}}
+        </template>
+      </div>
+      <div class="dialog-message"
+           v-if="dialog.data.message"
+           v-html="dialog.data.message"></div>
+      <van-button round
+                  size="large"
+                  type="primary"
+                  @click.stop="gotoInquiryApplyPage">{{dialog.data.btn}}</van-button>
+    </div>
   </div>
 
 </template>
@@ -502,7 +570,32 @@ export default {
       },
       common: {},
       showFamily: false, //判断是否弹出弹框
-      isEwm: 0
+      isEwm: 0,
+      consult: {
+        title: '温馨提示',
+        list: [],
+        content:
+          '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
+        message: '咨询时间：<br>8:00 - 17:00请在对应时间段内咨询',
+        btn: '确认'
+      },
+      subsequent: {
+        title: '用户服务须知',
+        list: [
+          '急重症问题请您线下进行就医，以免耽误病情。',
+          '全额预缴诊疗费用，医生接诊时进行结算，就诊日医生未接诊将全额退款。',
+          '医生对复诊患者可开具检査检验，给出进一步诊疗建议，符合条件的患者可开具处方。',
+          '急重症问题请您线下进行就医，以免耽误病情医生给出结论后手动结束复诊。',
+          '药品配送到家，因药品为特殊商品，经发出不得退换。'
+        ],
+        content: '',
+        message: '',
+        btn: '同意'
+      },
+      dialog: {
+        visible: false,
+        data: undefined
+      }
     }
   },
   activated() {
@@ -533,7 +626,6 @@ export default {
       return peace.cache.get(peace.type.USER.INFO) == null ? false : true
     },
     goLogin() {
-      //!this.hasLogin()&&this.isEwm 未登录且通过分享进入医生主页
       if (!this.hasLogin() && this.isEwm) {
         this.$router.push(`/login`)
       }
@@ -542,6 +634,60 @@ export default {
       this.showFamily = !this.showFamily
       if (flag) {
         this.getWapDoctorInfo()
+      }
+    },
+    //复诊续方查看更多
+    gotoAppointPage() {
+      let json = peace.util.encode({
+        doctorId: this.doctor.doctorInfo.doctorId,
+        hospitalCode: this.doctor.doctorInfo.nethospitalid,
+        time: new Date().toDate().formatDate('MM-dd'),
+        date: new Date(),
+        from: true
+      })
+      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
+    },
+    closeDialog() {
+      this.dialog.visible = false
+    },
+    showDialog(serviceInfo, type) {
+      if (!serviceInfo.status) {
+        return peace.util.alert('暂未开通')
+      }
+      if (type === 'video') {
+        return peace.util.alert('H5版本暂不支持视频问诊')
+      }
+      if (type === 'image' || type === 'video') {
+        this.dialog.data = Object.assign({}, this.consult, serviceInfo, { type: type })
+      } else if (type === 'fuzhen') {
+        this.dialog.data = Object.assign({}, this.subsequent, serviceInfo, { type: type })
+      }
+
+      this.dialog.visible = true
+    },
+    gotoInquiryApplyPage() {
+      // serviceType  服务类别（inquiry：在线咨询 returnVisit：复诊 ）
+      //在线咨询
+      if (this.dialog.data.type === 'image') {
+        const json = peace.util.encode({
+          doctorId: this.doctor.doctorInfo.doctorId,
+          consultingType: this.dialog.data.tag,
+          serviceType: 'inquiry'
+        })
+        this.$router.push(`/components/doctorInquiryApply/${json}`)
+      }
+      // 视频问诊
+      else if (this.dialog.data.type === 'video') {
+        return peace.util.alert('H5版本暂不支持视频问诊')
+      }
+      //复诊咨询
+      else if (this.dialog.data.type === 'fuzhen') {
+        const json = peace.util.encode({
+          doctorId: this.doctor.doctorInfo.doctorId,
+          consultingType: this.dialog.data.tag,
+          serviceType: 'returnVisit'
+        })
+        this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
     },
     getWapDoctorInfo() {
@@ -607,6 +753,7 @@ export default {
       if (!serviceInfo.status) {
         return peace.util.alert('暂未开通')
       }
+
       if (type === 'image') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
@@ -684,6 +831,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep.van-button--small {
+  height: 26px;
+  line-height: normal;
+}
 .none-page-doctor {
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
@@ -708,13 +859,83 @@ export default {
 }
 .shadow {
   position: fixed;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   margin: auto;
   z-index: 999;
+}
+.dialog {
+  position: fixed;
+  background: rgb(255, 255, 255);
+  width: calc(100% - 55px);
+  height: fit-content;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 1000;
+  border-radius: 7px;
+  padding: 25px 24px;
+  color: #333;
+  .van-image {
+    box-sizing: content-box;
+    position: absolute;
+    padding: 12px;
+    right: 0;
+    top: 0;
+    z-index: 1001;
+  }
+  .dialog-title {
+    height: 25px;
+    font-size: 18px;
+    text-align: center;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 25px;
+  }
+  .dialog-content {
+    font-size: 15px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    line-height: 21px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    span {
+      display: block;
+      padding-left: 12px;
+      position: relative;
+      &::before {
+        content: ' ';
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: #333;
+        position: absolute;
+        left: 0;
+        top: 10px;
+      }
+    }
+  }
+  .dialog-message {
+    margin-bottom: 20px;
+    background: rgba(249, 249, 249, 1);
+    border-radius: 4px;
+    color: rgba(51, 51, 51, 1);
+    padding: 12px 10px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 15px;
+    line-height: 21px;
+  }
+  .van-button {
+    height: 45px;
+    line-height: 45px;
+  }
 }
 .family {
   position: fixed;
@@ -749,6 +970,12 @@ export default {
   }
   &.commen {
     align-items: flex-start;
+  }
+  &.flex-1 {
+    flex: 1;
+  }
+  &.end {
+    justify-content: flex-end;
   }
   .see-more {
     margin-right: 5px;
@@ -888,22 +1115,24 @@ export default {
   .body {
     flex: 1;
     background: #f5f5f5;
-    padding: 16px;
+    padding: 15px 12.5px;
 
     .body-card {
       &:first-child {
-        margin-top: -30px;
+        margin-top: -35px;
       }
-
+      &:last-child {
+        margin-bottom: 0;
+      }
       background: #fff;
       min-height: 60px;
-      margin: 0 0 14px 0;
-      padding: 16px;
-      border-radius: 14px;
+      margin: 0 0 10px 0;
+      padding: 15px;
+      border-radius: 7px;
 
       .row {
-        margin: 0 0 8px 0;
-
+        margin: 0 0 5px 0;
+        width: 100%;
         &.flex {
           display: flex;
           align-items: center;
@@ -926,12 +1155,70 @@ export default {
         &:last-child {
           margin: 0;
         }
+        &.col-two {
+          > .row {
+            padding: 10px 0;
+            width: calc(50% - 7.5px);
+            border-radius: 7px;
+            margin-bottom: 0;
+            &:first-child {
+              margin-right: 15px;
+              background-color: rgba(0, 198, 174, 0.06);
+            }
+            &:last-child {
+              background-color: rgba(64, 169, 255, 0.06);
+            }
+            .service-consult-content-name {
+              margin: 6px 0 3px 0;
+              font-size: 16px;
+              line-height: 23px;
+            }
+          }
+        }
       }
 
       .body-card-title {
-        margin: 0 16px;
+        margin: 0 8px;
         font-weight: bold;
         font-size: 16px;
+      }
+      .body-card-tip {
+        color: #999;
+        font-size: 12px;
+        padding-bottom: 10px;
+      }
+
+      .fz-card-list {
+        overflow-y: auto;
+        .fz-card {
+          align-items: flex-start;
+          flex: none;
+          width: 142px;
+          height: 102px;
+          background: rgba(249, 249, 249, 1);
+          border-radius: 7px;
+          margin-right: 10px;
+          margin-bottom: 0;
+          padding: 15px 10px;
+          &:last-child {
+            margin-right: 0;
+          }
+          .fz-card-time {
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+          }
+          .fz-card-tag {
+            color: #999;
+            font-size: 13px;
+          }
+          .fz-card-price {
+            flex: 1;
+            color: #f2223b;
+            font-size: 13px;
+            font-weight: bold;
+          }
+        }
       }
 
       .hospital,
@@ -960,7 +1247,9 @@ export default {
       .service-consult-content {
         flex: 1;
         margin: 0 0 0 0;
-
+        &.auto {
+          flex: none;
+        }
         .service-consult-content-name {
           color: #333333;
           font-size: 15px;
@@ -971,10 +1260,15 @@ export default {
           font-weight: bold;
           color: #f2223b;
           font-size: 16px;
+          .service-consult-content-fee-sub {
+            font-size: 12px;
+            font-weight: normal;
+          }
         }
 
         .service-consult-content-unit {
           font-size: 12px;
+          color: #999;
         }
 
         .service-consult-content-description {
