@@ -51,7 +51,7 @@ export default {
         case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
           {
             this.ComponentInstance = DiseaseRecord
-            this.titleStr = '病程记录'
+            this.titleStr = '病程管理'
           }
           break
         case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
