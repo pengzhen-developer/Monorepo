@@ -182,7 +182,7 @@
                 </el-row>
               </el-form>
             </div>
-            <div v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
+            <div v-if="[5,6,7,8,10].includes (internalData.consultStatus)  ">
               <el-col>
                 <span class="sub-title">受邀医生</span>
               </el-col>
@@ -337,13 +337,13 @@ export default {
     },
 
     formatterCheckStatus(v) {
-      const temp = this.checkStatus.find(item => item.checkStatus === v)
+      const temp = this.checkStatus.find((item) => item.checkStatus === v)
 
       return temp && temp.checkTxt
     },
 
     formatterConsultStatus(v) {
-      const temp = this.consultStatus.find(item => item.consultStatus === v)
+      const temp = this.consultStatus.find((item) => item.consultStatus === v)
 
       return temp && temp.consultTxt
     }
