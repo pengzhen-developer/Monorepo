@@ -26,7 +26,7 @@
         <div class="tab-content"
              v-if="page.tabIndex == '0'">
           <div class="userAddr icon-next">
-            <div class="addr-p">{{order.Detailed}}</div>
+            <div class="addr-p">{{Detailed}}</div>
           </div>
         </div>
         <div class="tab-content"
@@ -157,7 +157,8 @@ export default {
       },
       userAddr: {},
       order: null,
-      DrugStoreId: ''
+      DrugStoreId: '',
+      Detailed: ''
     }
   },
 
@@ -174,6 +175,7 @@ export default {
     this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
     this.page.json = params
     this.DrugStoreId = params.DrugStoreId
+    this.Detailed = params.Detailed
     // if (this.$route.query.code) {
     //   let code = this.$route.query.code
     //   let orderNo = this.$route.query.orderId
