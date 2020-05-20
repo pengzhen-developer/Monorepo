@@ -252,10 +252,11 @@
             </el-form>
           </el-collapse-item>
         </template>
-
+      </div>
+      <div class="record-content">
         <!-- 会诊正常完成 -->
         <template v-if="internalData.consultFind">
-          <el-collapse-item name="8">
+          <el-collapse-item name="9">
             <template slot="title">
               <span class="title">会诊小结</span>
             </template>
