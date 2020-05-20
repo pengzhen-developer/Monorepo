@@ -125,8 +125,9 @@
           <template slot="title">
             <span class="title">审核信息</span>
           </template>
-          <el-row class="gray">
-            <div v-if="internalData.consultStatus >= 2 ">
+          <el-row class="gray"
+                  :class="internalData.status >= 2&&'pd'">
+            <div v-if="internalData.status >= 2 ">
               <el-col>
                 <span class="sub-title">发起机构</span>
               </el-col>
@@ -154,7 +155,7 @@
                 </el-row>
               </el-form>
             </div>
-            <div v-if="internalData.consultStatus >= 4 ">
+            <div v-if="internalData.status >= 4 ">
               <el-col>
                 <span class="sub-title">受邀机构</span>
               </el-col>
@@ -182,7 +183,7 @@
                 </el-row>
               </el-form>
             </div>
-            <div v-if="[5,6, 7,10].includes (internalData.consultStatus)  ">
+            <div v-if="[5,6, 7,10].includes (internalData.status)  ">
               <el-col>
                 <span class="sub-title">受邀医生</span>
               </el-col>
@@ -224,12 +225,8 @@
         <ConsultationSessionSuggest :consultNo="internalData.consultNo"
                                     @close="$emit('close')"></ConsultationSessionSuggest>
       </div>
-
       <!-- 会议记录 -->
-      <div class="record-content"
-           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
-                 internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ||
-                (internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && internalData.consultFind)">
+      <div class="record-content">
         <!-- 会诊关闭 -->
         <template v-if="internalData.consultStatus === 8">
           <el-collapse-item name="8">
@@ -257,7 +254,7 @@
         </template>
 
         <!-- 会诊正常完成 -->
-        <template v-else>
+        <template v-if="internalData.consultFind">
           <el-collapse-item name="8">
             <template slot="title">
               <span class="title">会诊小结</span>
@@ -318,6 +315,98 @@
           </el-collapse-item>
         </template>
       </div>
+      <!-- <div class="record-content"
+           v-if="internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                 internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ||
+                (internalData.consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 && internalData.consultFind)"> -->
+      <!-- 会诊关闭 -->
+      <!-- <template v-if="internalData.consultStatus === 8">
+          <el-collapse-item name="8">
+            <template slot="title">
+              <span class="title">会诊关闭信息</span>
+            </template>
+
+            <el-form>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="关闭时间">
+                    <span>{{ internalData.consultEndTime }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="关闭原因">
+                    <span>{{ internalData.closeReason || '期望会诊时间已过期' }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </el-collapse-item>
+        </template> -->
+
+      <!-- 会诊正常完成 -->
+      <!-- <template v-else>
+          <el-collapse-item name="8">
+            <template slot="title">
+              <span class="title">会诊小结</span>
+            </template>
+
+            <el-form>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="会诊所见">
+                    <span>{{ internalData.consultFind }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="疾病诊断">
+                    <span>{{ internalData.consultDiagnose }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="建议">
+                    <span slot="label">建议</span>
+                    <span>{{ internalData.consultSuggest }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="医生签名"
+                                v-if="internalData.doctorSignImg">
+                    <img :src="internalData.doctorSignImg"
+                         alt="医生签名"
+                         style="height: 20px" />
+                  </el-form-item>
+                  <el-form-item label="医生签名"
+                                v-else>
+                    <span>{{internalData.toDoctorName}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="开始时间">
+                    <span>{{ internalData.consultStartTime }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="结束时间">
+                    <span>{{ internalData.consultEndTime }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </el-collapse-item>
+        </template>
+      </div> -->
     </el-collapse>
   </div>
 </template>
@@ -348,7 +437,11 @@ export default {
   computed: {
     internalData() {
       const temp = $peace.util.deepClone(this.data)
-
+      if (temp.consultStatus == 8) {
+        temp.status = temp.closeConsultStatus
+      } else {
+        temp.status = temp.consultStatus
+      }
       return temp
     }
   },
@@ -384,13 +477,13 @@ export default {
     },
 
     formatterCheckStatus(v) {
-      const temp = this.checkStatus.find(item => item.checkStatus === v)
+      const temp = this.checkStatus.find((item) => item.checkStatus === v)
 
       return temp && temp.checkTxt
     },
 
     formatterConsultStatus(v) {
-      const temp = this.consultStatus.find(item => item.consultStatus === v)
+      const temp = this.consultStatus.find((item) => item.consultStatus === v)
 
       return temp && temp.consultTxt
     }
@@ -536,9 +629,11 @@ export default {
       line-height: 24px;
     }
     .gray {
-      padding: 5px 10px;
       background-color: #f9f9f9;
       border-radius: 4px;
+      &.pd {
+        padding: 5px 10px;
+      }
       .sub-title {
         padding-left: 16px;
         font-size: 14px;
