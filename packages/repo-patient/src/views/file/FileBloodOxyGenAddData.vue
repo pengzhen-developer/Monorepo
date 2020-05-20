@@ -109,8 +109,6 @@ export default {
     onRateConfirm(value) {
       this.rateShow = false
       this.selectRate = true
-      // console.log('rateShowwwwwwwwwww', this.rateShow)
-      // debugger
       this.model.pulseRate = value
     },
     confirm() {
@@ -125,7 +123,7 @@ export default {
       params.idCard = json.idCard
       params.familyId = json.familyId
       if (!this.selectRate) {
-        params.pulseRate = '-'
+        params.pulseRate = ''
       }
       peace.service.health.addBloodOxygendata(params).then(res => {
         peace.util.alert(res.msg)

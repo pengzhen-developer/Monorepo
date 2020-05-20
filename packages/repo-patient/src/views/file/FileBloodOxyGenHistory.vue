@@ -20,7 +20,10 @@
         <div slot="label"
              style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%;">
           <span>
-            脉率：{{ data.pulseRate }} 次/分
+            <template v-if="data.pulseRate">
+              脉率：{{ data.pulseRate }} 次/分
+            </template>
+            <template v-else>--</template>
           </span>
           <span>
             {{ data.measureTime && data.measureTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}
