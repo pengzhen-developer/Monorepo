@@ -1,7 +1,7 @@
 <template>
   <div class="file-examination-detail">
     <div class="outline"
-         v-if="data.consultStatus==7">
+         v-if="data.consultStatus==7||data.consultStatus==8">
       <div class="outline-body bdstyle">
         <div class="dl-packet">
           <div class="dt">会诊医生</div>

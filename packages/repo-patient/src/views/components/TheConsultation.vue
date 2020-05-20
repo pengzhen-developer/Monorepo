@@ -189,6 +189,20 @@
             </div>
           </div>
           <div class="time-item"
+               v-if="data[current].consultStatus=='8'">
+            <div class="time-time">
+              <div>
+                {{data[current].endTime&&data[current].endTime.split(' ')[0].substring(5)}}
+              </div>
+              <div>
+                {{data[current].endTime&&data[current].endTime.split(' ')[1].substring(0,5)}}
+              </div>
+            </div>
+            <div class="item  b0">
+              <div class="item-time color-333">{{data[current].consultStatusText}}</div>
+            </div>
+          </div>
+          <div class="time-item"
                v-if="data[current].consultStatus=='9'">
             <div class="time-time"></div>
             <div class="item  b0">
@@ -222,7 +236,7 @@
     </div>
     <!-- 会诊小结   -->
     <div class="outline"
-         v-if="data[current].consultStatus == '7'">
+         v-if="canShowResult(data[current])">
       <div class="outline-header">
         <div class="outline-tit">会诊小结</div>
       </div>
@@ -264,7 +278,18 @@ export default {
   mounted() {
     this.getData()
   },
+
   methods: {
+    canShowResult(data) {
+      return (
+        (data && data.consultStatus == '7') ||
+        (data.consultStatus == '8' &&
+          data.consultFind &&
+          data.consultDiagnose &&
+          data.consultSuggest &&
+          data.doctorSignImg)
+      )
+    },
     getData() {
       const params = peace.util.decode(this.$route.params.json)
       if (params.consultNo) {
