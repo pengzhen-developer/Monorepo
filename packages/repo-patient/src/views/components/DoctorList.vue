@@ -53,11 +53,28 @@
           <div class="title-service">
             <div>
               <span class="title-service-money"
-                    :class="isFree&&'free'">{{
-                getServiceMoney(doctor)
-              }}</span>
+                    v-if="doctor.money"
+                    :class="isFree&&'free'">
+                <template v-if='isFree'>免费 </template>
+                <template v-else>￥<span class="bold">{{doctor.money}}</span>起</template>
+              </span>
             </div>
-            <!-- 咨询快捷方式屏蔽 -->
+
+            <div class="title-service-item">
+              <div class="title-service-item"
+                   :class="canShowImg(doctor,'inquiry')&&'unopen'">
+                <img src="@src/assets/images/ic_free_talk.png"
+                     style="width: 15px;" />
+                <span>咨询</span>
+              </div>
+              <div class="title-service-item"
+                   :class="canShowImg(doctor,'returnVisit')&&'unopen'">
+                <img src="@src/assets/images/ic_online_retalk.png"
+                     style="width: 15px;" />
+                <span>复诊</span>
+              </div>
+            </div>
+
             <!-- <div class="title-service-item">
               <div @click.stop="
                   redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='image'))
@@ -147,6 +164,19 @@ export default {
         return '免费'
       }
       return `￥${minMoney || 0}起`
+    },
+
+    canShowImg(doctor, type) {
+      if (doctor.serviceManage && doctor.serviceManage.length > 0) {
+        const serviceManage = doctor.serviceManage.find(item => item.serviceType == type)
+        if (typeof serviceManage == 'undefined') {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     },
 
     canShowInquiry(doctor, type) {
@@ -326,6 +356,9 @@ export default {
           &.free {
             color: #f96a0e;
           }
+          .bold {
+            font-weight: 600;
+          }
         }
         .title-service-money-extend {
           color: #fb2828;
@@ -337,7 +370,9 @@ export default {
           align-items: center;
           color: #000000;
           margin: 0 0 0 10px;
-
+          &.unopen {
+            opacity: 0.3;
+          }
           span {
             margin: 0 0 0 5px;
           }

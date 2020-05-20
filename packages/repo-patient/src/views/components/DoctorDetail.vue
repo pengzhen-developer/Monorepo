@@ -163,7 +163,7 @@
             <van-image round
                        width="27px"
                        height="27px"
-                       v-if="serviceVideoInfo.status"
+                       v-if="serviceVideoInfo.status=='1'"
                        style="margin: 0 10px 0 0;"
                        :src="require('@src/assets/images/ic_video_open.png')"></van-image>
             <van-image round
@@ -177,7 +177,7 @@
               <div class="row flex column"
                    style="margin: 0;">
                 <span class="service-consult-content-name">视频咨询</span>
-                <span v-if="serviceVideoInfo.status">
+                <span v-if="serviceVideoInfo.status=='1'">
                   <span class="service-consult-content-fee">
                     <span
                           class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.money }}

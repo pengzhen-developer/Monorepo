@@ -326,7 +326,7 @@ export default {
         case '在线咨询':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: 'onlineConsultant',
+            serviceType: 'inquiry',
             Date: new Date()
           })
           this.$router.push(`/components/doctorList/${json}`)
@@ -335,7 +335,7 @@ export default {
         case '复诊续方':
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: 'subsequentVisit',
+            serviceType: 'returnVisit',
             Date: new Date()
           })
           this.$router.push(`/components/doctorList/${json}`)
