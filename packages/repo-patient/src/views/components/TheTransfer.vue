@@ -336,7 +336,9 @@ export default {
       peace.service.IM.resetInquirySessionMessages()
 
       // 跳转聊天详情
-      this.$router.push(`/components/messageList/${params}`)
+      setTimeout(() => {
+        this.$router.push(`/components/messageList/${params}`)
+      }, 500)
     },
     next() {
       if (this.current + 1 >= this.data.length) {

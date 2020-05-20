@@ -296,8 +296,8 @@ export default {
             if (
               this.IM &&
               this.IM.isConnected() &&
-              this.$store.state.inquiry.sessionsFamily[this.params.familyId]&&
-              this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions&&
+              this.$store.state.inquiry.sessionsFamily[this.params.familyId] &&
+              this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions &&
               this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions.length > 0
             ) {
               window.clearInterval(interval)
