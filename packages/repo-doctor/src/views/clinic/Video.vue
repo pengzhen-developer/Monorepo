@@ -177,6 +177,10 @@ export default {
      * Web RTC Event
      */
     initWebRTCEventListener() {
+      if ($peace.WebRTC && $peace.WebRTC.hadAddEventListener) {
+        return
+      }
+
       $peace.WebRTC.on('beCalling', this.onBeCalling)
       $peace.WebRTC.on('callAccepted', this.onCallAccepted)
       $peace.WebRTC.on('callRejected', this.onCallRejected)
@@ -185,6 +189,9 @@ export default {
       $peace.WebRTC.on('hangup', this.onHangup)
       $peace.WebRTC.on('callerAckSync', this.onCallerAckSync)
       $peace.WebRTC.on('error', this.onError)
+
+      console.log('监听监听!!!!!!!!!!!!!!!!!!!!!!!')
+      $peace.WebRTC.hadAddEventListener = true
     },
 
     playSenderAudio() {
@@ -233,8 +240,7 @@ export default {
 
       if (type === 'consult') {
         toAccount =
-          session.content.consultInfo.receiveDoctor[0].doctorId ===
-          this.$store.state.user.userInfo.list.docInfo.doctor_id
+          session.content.consultInfo.receiveDoctor[0].doctorId === this.$store.state.user.userInfo.list.docInfo.doctor_id
             ? session.content.consultInfo.startDoctor[0].doctorId
             : session.content.consultInfo.receiveDoctor[0].doctorId
       }
@@ -255,7 +261,7 @@ export default {
         sessionConfig: this.sessionConfig,
         webrtcEnable: true
       })
-        .then(callObject => {
+        .then((callObject) => {
           // 设置 超时 30s，主叫挂断
           this.setHangupTimeout()
 
@@ -265,7 +271,7 @@ export default {
           this.beCalledInfo = callObject
           this.beCallState = peace.type.VIDEO.BE_CALL_STATE.邀请
         })
-        .catch(callObject => {
+        .catch((callObject) => {
           // 发起呼叫失败
           console.warn('【 WebRTC 】【 call error】', new Date(), callObject)
 
@@ -424,7 +430,7 @@ export default {
           // 播放对方声音
           $peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
-          }).catch(err => {
+          }).catch((err) => {
             console.log('播放对方的声音失败')
             console.error(err)
           })
@@ -462,60 +468,28 @@ export default {
 
       switch (controlObject.type) {
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_AUDIO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了麦克风 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_ON:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方打开了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方打开了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_NOTIFY_VIDEO_OFF:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方关闭了摄像头 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_REJECT:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方拒绝从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_AUDIO_TO_VIDEO_AGREE:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方同意从音频切换到视频通话 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SWITCH_VIDEO_TO_AUDIO:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方请求从视频切换为音频 】', new Date(), controlObject)
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
           console.warn('【 WebRTC 】【 onControl 】【 对方占线 】', new Date(), controlObject)
@@ -525,11 +499,7 @@ export default {
           this.hangupVideo()
           break
         case WebRTC.NETCALL_CONTROL_COMMAND_SELF_CAMERA_INVALID:
-          console.warn(
-            '【 WebRTC 】【 onControl 】【 对方摄像头不可用 】',
-            new Date(),
-            controlObject
-          )
+          console.warn('【 WebRTC 】【 onControl 】【 对方摄像头不可用 】', new Date(), controlObject)
           break
 
         default:
@@ -583,12 +553,12 @@ export default {
           return $peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_IN
           })
-            .then(startDevice => {
+            .then((startDevice) => {
               console.warn('【 WebRTC 】【 startDevice 】', new Date(), startDevice)
 
               return startDevice
             })
-            .catch(startDevice => {
+            .catch((startDevice) => {
               console.error('【 WebRTC 】【 startDevice 】', new Date(), startDevice)
 
               return startDevice
@@ -603,12 +573,12 @@ export default {
             width: 200,
             height: 125
           })
-            .then(startDevice => {
+            .then((startDevice) => {
               console.warn('【 WebRTC 】【 startDevice 】', new Date(), startDevice)
 
               return startDevice
             })
-            .catch(startDevice => {
+            .catch((startDevice) => {
               console.error('【 WebRTC 】【 startDevice 】', new Date(), startDevice)
 
               return startDevice
@@ -625,7 +595,7 @@ export default {
             cut: true
           })
         })
-        .catch(startRtc => {
+        .catch((startRtc) => {
           console.error('【 WebRTC 】【 startRtc 】', new Date(), startRtc)
 
           return startRtc
@@ -634,7 +604,6 @@ export default {
 
     showMeesageNotify() {
       const accept = () => {
-        console.warn('luci')
         this.closeMessageNofity()
         this.processJoin()
         this.accept()
@@ -680,6 +649,8 @@ export default {
     },
 
     hangupVideo() {
+      console.log('挂断，挂断!!!!!!!!!!!!!!!!!!!!!!!')
+
       // 停止声音播放
       this.pauseAudio()
 
@@ -748,7 +719,7 @@ export default {
           action: 'start'
         }
 
-        peace.service.video.processConsult(params).then(res => {
+        peace.service.video.processConsult(params).then((res) => {
           if (res.code !== 200) {
             this.hangupVideo()
           }
@@ -882,11 +853,11 @@ export default {
       const startDoctorList = this.custom.session.content.consultInfo.startDoctor
       const receiveDoctorList = this.custom.session.content.consultInfo.receiveDoctor
 
-      if (startDoctorList.find(item => item.doctorId === doctorId)) {
+      if (startDoctorList.find((item) => item.doctorId === doctorId)) {
         return 'from'
       }
 
-      if (receiveDoctorList.find(item => item.doctorId === doctorId)) {
+      if (receiveDoctorList.find((item) => item.doctorId === doctorId)) {
         return 'to'
       }
 

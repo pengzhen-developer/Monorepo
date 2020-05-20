@@ -147,9 +147,7 @@ export default {
   methods: {
     getConsultStatus() {
       return Object.keys(peace.type.CONSULTATION.CONSULTATION_STATUS).find(
-        key =>
-          peace.type.CONSULTATION.CONSULTATION_STATUS[key] ===
-          this.$store.getters['consultation/consultInfo'].consultStatus
+        (key) => peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
       )
     },
 
@@ -193,42 +191,30 @@ export default {
 
       if (session && session.id) {
         // 判断是否存在未完成的会诊编号
-        peace.service.consult.getConsultNo().then(res => {
+        peace.service.consult.getConsultNo().then((res) => {
           // 存在正在进行中的会诊，并且选中的不是当前正在会诊中的会诊
-          if (
-            res.data.consultNo &&
-            res.data.teamId &&
-            res.data.consultNo !== session.content.consultInfo.consultNo
-          ) {
-            peace.service.consult
-              .getInfoByTeamId({ teamIdList: [res.data.teamId] })
-              .then(consult => {
-                const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
+          if (res.data.consultNo && res.data.teamId && res.data.consultNo !== session.content.consultInfo.consultNo) {
+            peace.service.consult.getInfoByTeamId({ teamIdList: [res.data.teamId] }).then((consult) => {
+              const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
 
-                consult.data.list.forEach(item => {
-                  const startDoctor = item.consultInfo.startDoctor
-                  const receiveDoctor = item.consultInfo.receiveDoctor
+              consult.data.list.forEach((item) => {
+                const startDoctor = item.consultInfo.startDoctor
+                const receiveDoctor = item.consultInfo.receiveDoctor
 
-                  // 当前人是发起方？
-                  if (startDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
-                    this.tipsSource = 'start'
-                    this.tips =
-                      '您正在与' +
-                      receiveDoctor.map(item => item.doctorName).join(',') +
-                      '医生进行会诊，无法开启新的会诊'
-                    this.tipsForConsult = res.data
-                  }
-                  // 当前人是发起方？
-                  else if (receiveDoctor.filter(temp => temp.doctorId === doctorId).length > 0) {
-                    this.tipsSource = 'receive'
-                    this.tips =
-                      '您正在与' +
-                      startDoctor.map(item => item.doctorName).join(',') +
-                      '医生进行会诊，无法开启新的会诊，是否立即关闭？'
-                    this.tipsForConsult = res.data
-                  }
-                })
+                // 当前人是发起方？
+                if (startDoctor.filter((temp) => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'start'
+                  this.tips = '您正在与' + receiveDoctor.map((item) => item.doctorName).join(',') + '医生进行会诊，无法开启新的会诊'
+                  this.tipsForConsult = res.data
+                }
+                // 当前人是发起方？
+                else if (receiveDoctor.filter((temp) => temp.doctorId === doctorId).length > 0) {
+                  this.tipsSource = 'receive'
+                  this.tips = '您正在与' + startDoctor.map((item) => item.doctorName).join(',') + '医生进行会诊，无法开启新的会诊，是否立即关闭？'
+                  this.tipsForConsult = res.data
+                }
               })
+            })
           }
         })
       }
@@ -307,6 +293,7 @@ $--control-height: 150px;
 
     .message-input {
       height: $--control-height;
+      min-height: $--control-height;
     }
   }
 }
