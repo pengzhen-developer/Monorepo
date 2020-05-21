@@ -26,7 +26,7 @@
         <div class="tab-content"
              v-if="page.tabIndex == '0'">
           <div class="userAddr icon-next">
-            <div class="addr-p">{{Detailed}}</div>
+            <div class="addr-p">{{order.Province+order.City+order.County+ order.Detailed}}</div>
           </div>
         </div>
         <div class="tab-content"
@@ -157,8 +157,7 @@ export default {
       },
       userAddr: {},
       order: null,
-      DrugStoreId: '',
-      Detailed: ''
+      DrugStoreId: ''
     }
   },
 
