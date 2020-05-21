@@ -193,9 +193,8 @@
           </div>
         </div>
       </div>
-      <!-- 复诊续方 -->
-      <div class="body-card"
-           v-if="returnVisitList.length>0">
+      <!-- 复诊续方 v-if="returnVisitList.length>0"-->
+      <div class="body-card">
         <div class="row flex column">
           <div class="row flex">
             <van-image width="30px"
@@ -667,7 +666,7 @@ export default {
       if (this.dialog.data.type === 'image') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
-          consultingType: this.dialog.data.tag,
+          consultingType: this.dialog.data.type,
           serviceType: 'inquiry'
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
@@ -680,11 +679,12 @@ export default {
       else if (this.dialog.data.type === 'returnVisit') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
-          consultingType: this.dialog.data.tag,
+          consultingType: 'image',
           serviceType: 'returnVisit',
-          appointmentDate: this.dialog.data.appointmentDate,
-          appointmentStartTime: this.dialog.data.appointmentStartTime,
-          appointmentEndTime: this.dialog.data.appointmentEndTime
+          appointmentDate: this.dialog.data.appointmentDate || '', //yyyy-mm-dd
+          appointmentStartTime: this.dialog.data.appointmentStartTime || '',
+          appointmentEndTime: this.dialog.data.appointmentEndTime || '',
+          sourceDisType: 0
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
@@ -696,9 +696,6 @@ export default {
         this.doctorStatus = res.data.doctorInfo.doctorStatus
 
         if (res.data.doctorInfo.service) {
-          // this.serviceImageInfo = res.data.consultationList.image || {}
-          // this.serviceVideoInfo = res.data.consultationList.video || {}
-          // this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
           this.returnVisitList = res.data.doctorInfo.service.returnVisit
           this.inquiryList = res.data.doctorInfo.service.inquiry
           this.inquiryList.forEach(item => {

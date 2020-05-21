@@ -908,6 +908,11 @@ export default {
       this.model.doctorId = params.doctorId
       this.model.consultingType = params.consultingType
       this.model.serviceType = params.serviceType
+      if (params.serviceType == 'returnVisit') {
+        this.model.appointmentDate = params.appointmentDate
+        this.model.appointmentStartTime = params.appointmentStartTime
+        this.model.appointmentEndTime = params.appointmentEndTime
+      }
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
@@ -1023,7 +1028,7 @@ export default {
     FamilyInquriyStatus(familyId) {
       return new Promise(resolve => {
         peace.service.patient
-          .inquiryStatus(this.model.doctorId, familyId, this.model.consultingType)
+          .inquiryStatus(this.model.doctorId, familyId, this.model.consultingType, this.model.serviceType)
           .then(() => {
             //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
             resolve(true)

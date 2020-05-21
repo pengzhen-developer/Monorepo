@@ -194,11 +194,12 @@ export default {
         if (this.params.from) {
           const json = peace.util.encode({
             doctorId: this.doctorInfo.doctorId,
-            consultingType: 'returnVisit',
+            consultingType: 'image',
             serviceType: 'returnVisit',
             appointmentDate: item.appointmentDate,
             appointmentStartTime: item.appointmentStartTime,
-            appointmentEndTime: item.appointmentEndTime
+            appointmentEndTime: item.appointmentEndTime,
+            sourceDisType: 0
           })
           this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {
