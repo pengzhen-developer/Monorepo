@@ -193,8 +193,9 @@
           </div>
         </div>
       </div>
-      <!-- 复诊续方 v-if="returnVisitList.length>0"-->
-      <div class="body-card">
+      <!-- 复诊续方 -->
+      <div class="body-card"
+           v-if="returnVisitList.length>0">
         <div class="row flex column">
           <div class="row flex">
             <van-image width="30px"
@@ -215,15 +216,15 @@
         </div>
         <div class="row flex fz-card-list">
           <div class="fz-card flex column row"
-               v-for="item in 5"
-               :key='item'>
-            <div class="fz-card-time">2020/06/06 下午</div>
-            <div class="fz-card-tag">专家门诊</div>
+               v-for="(item,index) in returnVisitList"
+               :key='index'>
+            <div class="fz-card-time">2020/06/06 {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
+            <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
             <div class="flex between"
                  style="width:100%;">
-              <div class="fz-card-price">￥26.5</div>
+              <div class="fz-card-price">￥{{item.unitPrice||'0.00'}}</div>
               <van-button round
-                          @click.stop="showDialog({status:'111'},'returnVisit')"
+                          @click.stop="showDialog({...item,status:'111'},'returnVisit')"
                           size="small"
                           type="primary">预约</van-button>
             </div>
@@ -681,9 +682,9 @@ export default {
           doctorId: this.doctor.doctorInfo.doctorId,
           consultingType: 'image',
           serviceType: 'returnVisit',
-          appointmentDate: this.dialog.data.appointmentDate || '', //yyyy-mm-dd
-          appointmentStartTime: this.dialog.data.appointmentStartTime || '',
-          appointmentEndTime: this.dialog.data.appointmentEndTime || '',
+          appointmentDate: this.dialog.data.year || '' + '-' + this.dialog.data.data || '', //yyyy-mm-dd
+          appointmentStartTime: this.dialog.data.startTime || '',
+          appointmentEndTime: this.dialog.data.endTime || '',
           sourceDisType: 0
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)

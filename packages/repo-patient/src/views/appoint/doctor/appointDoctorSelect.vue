@@ -11,10 +11,9 @@
           {{doctorInfo.name}}
           <div class="card-small">{{doctorInfo.doctorTitle}} {{doctorInfo.deptName}}</div>
         </div>
-        <div class="card-small"
-             v-if="params.from">
+        <!-- <div class="card-small">
           <span>评分：7.6</span> <span>预约量：123</span>
-        </div>
+        </div> -->
         <div class="card-brief"
              v-if="doctorInfo.specialSkill">
           <div class="span s">擅长：</div>
@@ -196,9 +195,9 @@ export default {
             doctorId: this.doctorInfo.doctorId,
             consultingType: 'image',
             serviceType: 'returnVisit',
-            appointmentDate: item.appointmentDate,
-            appointmentStartTime: item.appointmentStartTime,
-            appointmentEndTime: item.appointmentEndTime,
+            appointmentDate: item.year || '' + '-' + item.data || '',
+            appointmentStartTime: item.startTime,
+            appointmentEndTime: item.endTime,
             sourceDisType: 0
           })
           this.$router.push(`/components/doctorInquiryApply/${json}`)
