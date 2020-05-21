@@ -142,7 +142,8 @@ export default {
       peace.service.appoint
         .choiceVisitingTime({
           doctorId: this.params.doctorId,
-          hospitalCode: this.params.hospitalCode
+          hospitalCode: this.params.hospitalCode,
+          sourceDisType: this.params.from ? 0 : 1
         })
         .then(res => {
           this.dateList = res.data.weekDate || []
@@ -187,14 +188,17 @@ export default {
       json.source.type = obj.type
       json.date = this.dateList[this.activeIndex]
       json = peace.util.encode(json)
-
+      debugger
       if (!item.isExpire && item.number) {
         /**复诊续方-参数待定 */
         if (this.params.from) {
           const json = peace.util.encode({
             doctorId: this.doctorInfo.doctorId,
-            consultingType: 'fuzhen',
-            consultingTypeId: 'consultingTypeId'
+            consultingType: 'returnVisit',
+            serviceType: 'returnVisit',
+            appointmentDate: item.appointmentDate,
+            appointmentStartTime: item.appointmentStartTime,
+            appointmentEndTime: item.appointmentEndTime
           })
           this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {

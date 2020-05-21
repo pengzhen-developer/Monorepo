@@ -113,7 +113,7 @@ export default {
       let json
       switch (data.type) {
         case 'guide':
-          json = peace.util.encode({ doctorTag: item.id })
+          json = peace.util.encode({ doctorTag: item.id, serviceType: 'inquiry' })
           this.$router.push(`/components/doctorList/${json}`)
           break
         case 'appoint':

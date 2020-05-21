@@ -144,7 +144,7 @@
                 <span v-if="serviceImageInfo.status">
                   <span class="service-consult-content-fee">
                     <span
-                          class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.money }}
+                          class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.price }}
                   </span>
                   <span class="service-consult-content-unit"> / 次</span>
                 </span>
@@ -180,7 +180,7 @@
                 <span v-if="serviceVideoInfo.status=='1'">
                   <span class="service-consult-content-fee">
                     <span
-                          class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.money }}
+                          class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.price }}
                   </span>
                   <span class="service-consult-content-unit"> / 次</span>
                 </span>
@@ -194,7 +194,8 @@
         </div>
       </div>
       <!-- 复诊续方 -->
-      <div class="body-card">
+      <div class="body-card"
+           v-if="returnVisitList.length>0">
         <div class="row flex column">
           <div class="row flex">
             <van-image width="30px"
@@ -223,7 +224,7 @@
                  style="width:100%;">
               <div class="fz-card-price">￥26.5</div>
               <van-button round
-                          @click.stop="showDialog({status:'111'},'fuzhen')"
+                          @click.stop="showDialog({status:'111'},'returnVisit')"
                           size="small"
                           type="primary">预约</van-button>
             </div>
@@ -248,11 +249,7 @@
 
         <div class="service row flex"
              v-for="(registerItem, index) in doctor.registerData"
-             :key="
-            registerItem.timeSharing +
-              registerItem.bookingStart +
-              registerItem.bookingEnd
-          ">
+             :key="index">
           <div class="service-consult-content">
             <div class="row flex"
                  style="margin: 0 0 4px 0;">
@@ -595,7 +592,9 @@ export default {
       dialog: {
         visible: false,
         data: undefined
-      }
+      },
+      returnVisitList: [],
+      inquiryList: []
     }
   },
   activated() {
@@ -607,7 +606,7 @@ export default {
       this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
       peace.cache.set('isEwm', this.isEwm)
     }
-    this.getWapDoctorInfo()
+    this.getDoctorInfo()
     this.goLogin()
   },
   beforeRouteEnter(to, from, next) {
@@ -617,10 +616,7 @@ export default {
       }
     })
   },
-  mounted() {
-    // this.getWapDoctorInfo()
-    // this.goLogin()
-  },
+
   methods: {
     hasLogin() {
       return peace.cache.get(peace.type.USER.INFO) == null ? false : true
@@ -659,7 +655,7 @@ export default {
       }
       if (type === 'image' || type === 'video') {
         this.dialog.data = Object.assign({}, this.consult, serviceInfo, { type: type })
-      } else if (type === 'fuzhen') {
+      } else if (type === 'returnVisit') {
         this.dialog.data = Object.assign({}, this.subsequent, serviceInfo, { type: type })
       }
 
@@ -681,32 +677,39 @@ export default {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
       //复诊咨询
-      else if (this.dialog.data.type === 'fuzhen') {
+      else if (this.dialog.data.type === 'returnVisit') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
           consultingType: this.dialog.data.tag,
-          serviceType: 'returnVisit'
+          serviceType: 'returnVisit',
+          appointmentDate: this.dialog.data.appointmentDate,
+          appointmentStartTime: this.dialog.data.appointmentStartTime,
+          appointmentEndTime: this.dialog.data.appointmentEndTime
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
     },
-    getWapDoctorInfo() {
+    getDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.doctor.getWapDoctorInfo(params).then(res => {
+      peace.service.doctor.getDoctorInfo(params).then(res => {
         this.doctorStatus = res.data.doctorInfo.doctorStatus
-        let obj = {
-          url: '',
-          title: this.doctor.doctorInfo.name + ' ' + this.doctor.doctorInfo.doctorTitle,
-          desc: this.doctor.doctorInfo.specialSkill,
-          imgUrl: this.doctor.doctorInfo.avartor
-        }
 
-        peace.wx.share.share(obj)
-        if (res.data.consultationList) {
-          this.serviceImageInfo = res.data.consultationList.image || {}
-          this.serviceVideoInfo = res.data.consultationList.video || {}
-          this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
+        if (res.data.doctorInfo.service) {
+          // this.serviceImageInfo = res.data.consultationList.image || {}
+          // this.serviceVideoInfo = res.data.consultationList.video || {}
+          // this.servicePrivateInfo = res.data.consultationList.prvivateDoctor || {}
+          this.returnVisitList = res.data.doctorInfo.service.returnVisit
+          this.inquiryList = res.data.doctorInfo.service.inquiry
+          this.inquiryList.forEach(item => {
+            if (item.type == 'image') {
+              this.serviceImageInfo = item || {}
+            } else if (item.type == 'video') {
+              this.serviceVideoInfo = item || {}
+            } else if (item.type == 'prvivateDoctor') {
+              this.servicePrivateInfo = item || {}
+            }
+          })
         }
 
         let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
@@ -718,6 +721,14 @@ export default {
         }
         this.doctor = res.data
         this.getCommentList()
+        let obj = {
+          url: '',
+          title: this.doctor.doctorInfo.name + ' ' + this.doctor.doctorInfo.doctorTitle,
+          desc: this.doctor.doctorInfo.specialSkill,
+          imgUrl: this.doctor.doctorInfo.avartor
+        }
+
+        peace.wx.share.share(obj)
       })
     },
 

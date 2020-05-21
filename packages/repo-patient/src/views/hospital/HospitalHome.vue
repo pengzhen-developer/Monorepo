@@ -265,7 +265,8 @@ export default {
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         deptId: item.id,
         deptName: item.netdeptName,
-        type: 'departDoctorList'
+        type: 'departDoctorList',
+        serviceType: 'inquiry'
       })
       this.$router.push(`/components/doctorList/${json}`)
     },
@@ -274,7 +275,8 @@ export default {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         type: 'starDoctorList',
-        Date: new Date()
+        Date: new Date(),
+        serviceType: 'inquiry'
       })
 
       this.$router.push(`/components/doctorList/${json}`)

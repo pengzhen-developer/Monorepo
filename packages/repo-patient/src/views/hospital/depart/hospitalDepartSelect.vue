@@ -131,7 +131,7 @@ export default {
       if (this.params.id == 'consult') {
         obj.netHospitalId = this.params.netHospitalId
         obj.type = 'departDoctorList'
-
+        obj.serviceType = 'inquiry'
         let json = peace.util.encode(obj)
 
         // 咨询入口
