@@ -1,17 +1,27 @@
 <template>
   <div>
-    <el-form :model="ruleForm" :rules="rules" label-position="right" label-width="100px" ref="ruleForm">
-      <el-form-item label="姓名" prop="name">
+    <el-form :model="ruleForm"
+             :rules="rules"
+             label-position="right"
+             label-width="100px"
+             ref="ruleForm">
+      <el-form-item label="姓名"
+                    prop="name">
         <span slot="label">姓名</span>
-        <el-input v-model="ruleForm.name" placeholder="请输入姓名"></el-input>
+        <el-input v-model="ruleForm.name"
+                  placeholder="请输入姓名"></el-input>
       </el-form-item>
-      <el-form-item label="身份证" prop="idCard">
+      <el-form-item label="身份证"
+                    prop="idCard">
         <span slot="label">身份证</span>
-        <el-input v-model.trim="ruleForm.idCard" placeholder="请输入身份证号"></el-input>
+        <el-input v-model.trim="ruleForm.idCard"
+                  placeholder="请输入身份证号"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="sexStr">
+      <el-form-item label="性别"
+                    prop="sexStr">
         <span slot="label">性别</span>
-        <el-input v-model="ruleForm.sexStr" :disabled="true"></el-input>
+        <el-input v-model="ruleForm.sexStr"
+                  :disabled="true"></el-input>
         <!-- 禁用选择 -->
         <!-- <el-select v-model="ruleForm.sexStr"
                    style="width: 100%;"
@@ -24,31 +34,46 @@
         </el-select> -->
       </el-form-item>
 
-      <el-form-item label="生日" prop="birthday">
+      <el-form-item label="生日"
+                    prop="birthday">
         <span slot="label">生日</span>
         <!-- <el-date-picker v-model="ruleForm.birthday"
                         type="date"
                         style="width: 100%;"
                         placeholder="选择日期">
         </el-date-picker> -->
-        <el-input prefix-icon="el-icon-date" v-model="ruleForm.birthday" :disabled="true"></el-input>
+        <el-input prefix-icon="el-icon-date"
+                  v-model="ruleForm.birthday"
+                  :disabled="true"></el-input>
       </el-form-item>
 
-      <el-form-item label="民族" prop="nation">
+      <el-form-item label="民族"
+                    prop="nation">
         <span slot="label">民族</span>
-        <el-select filterable label="民族" style="width: 100%;" placeholder="请选择" v-model="ruleForm.nation">
-          <el-option :key="item.code" :label="item.name" :value="item.name" v-for="item in nationals"></el-option>
+        <el-select filterable
+                   label="民族"
+                   style="width: 100%;"
+                   placeholder="请选择"
+                   v-model="ruleForm.nation">
+          <el-option :key="item.code"
+                     :label="item.name"
+                     :value="item.name"
+                     v-for="item in nationals"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="联系方式" prop="tel">
+      <el-form-item label="联系方式"
+                    prop="tel">
         <span slot="label">手机号码</span>
-        <el-input v-model="ruleForm.tel" placeholder="请输入手机号码"></el-input>
+        <el-input v-model="ruleForm.tel"
+                  placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="closeMenu" type="info">取消</el-button>
-        <el-button @click="submitForm('ruleForm')" type="primary">保存</el-button>
+        <el-button @click="closeMenu"
+                   type="info">取消</el-button>
+        <el-button @click="submitForm('ruleForm')"
+                   type="primary">保存</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -91,7 +116,7 @@ export default {
   watch: {
     // 根据身份证解析性别和生日
     'ruleForm.idCard'(val) {
-      if (peace.validate.idCard(val)) {
+      if (peace.validate.isIDCard(val)) {
         if (val.length == 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
           this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
