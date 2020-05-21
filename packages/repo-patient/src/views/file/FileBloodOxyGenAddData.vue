@@ -71,7 +71,7 @@ export default {
     let lastData = this.$peace.cache.get('bloodOxyGenLastData') || ''
     if (lastData) {
       this.model.bloodOxygen = lastData.bloodOxygen
-      this.model.pulseRate = lastData.pulseRate == '-' ? 60 : Number(lastData.pulseRate)
+      this.model.pulseRate = lastData.pulseRate == '' ? 60 : Number(lastData.pulseRate)
     }
     this.minDate = this.getMinDay()
     for (let i = 0; i <= 220; i++) {

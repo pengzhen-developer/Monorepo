@@ -93,7 +93,7 @@ export default {
     if (lastData) {
       this.model.systolicPressure = lastData.systolicPressure
       this.model.diastolicPressure = lastData.diastolicPressure
-      this.model.pulseRate = lastData.pulseRate == '-' ? 60 : Number(lastData.pulseRate)
+      this.model.pulseRate = lastData.pulseRate == '' ? 60 : Number(lastData.pulseRate)
     }
     this.minDate = this.getMinDay()
     for (let i = 0; i <= 220; i++) {
@@ -132,8 +132,6 @@ export default {
     onRateConfirm(value) {
       this.rateShow = false
       this.selectRate = true
-      // console.log('rateShowwwwwwwwwww', this.rateShow)
-      // debugger
       this.model.pulseRate = value
     },
     confirm() {
@@ -148,7 +146,7 @@ export default {
       params.idCard = json.idCard
       params.familyId = json.familyId
       if (!this.selectRate) {
-        params.pulseRate = '-'
+        params.pulseRate = ''
       }
       peace.service.health.addBloodPressure(params).then(res => {
         peace.util.alert(res.msg)
