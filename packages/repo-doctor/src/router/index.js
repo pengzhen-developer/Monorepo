@@ -20,7 +20,7 @@ export default function() {
             path: '/home',
             name: '/home',
             meta: { Auth: true },
-            component: () => import('@src/views/Home.vue')
+            component: () => import('@src/views/home')
           },
 
           // 诊室 - 我的问诊
