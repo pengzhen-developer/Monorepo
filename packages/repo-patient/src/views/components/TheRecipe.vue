@@ -300,7 +300,7 @@ export default {
   }
 
   .outline {
-    margin: 10px 0;
+    margin: 0 0 10px 0;
     padding-left: 15px;
   }
   .outline .outline-header {

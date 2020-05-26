@@ -218,13 +218,13 @@
           <div class="fz-card flex column row"
                v-for="(item,index) in returnVisitList"
                :key='index'>
-            <div class="fz-card-time">2020/06/06 {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
+            <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
             <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
             <div class="flex between"
                  style="width:100%;">
-              <div class="fz-card-price">￥{{item.unitPrice||'0.00'}}</div>
+              <div class="fz-card-price">￥{{item.unitPrice}}</div>
               <van-button round
-                          @click.stop="showDialog({...item,status:'111'},'returnVisit')"
+                          @click.stop="showDialog(item,'returnVisit')"
                           size="small"
                           type="primary">预约</van-button>
             </div>
@@ -637,7 +637,7 @@ export default {
       let json = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
-        time: new Date().toDate().formatDate('MM-dd'),
+        time: this.doctor.doctorInfo.service.returnVisit[0].timeSharing.substring(5),
         date: new Date(),
         from: true
       })
@@ -647,13 +647,13 @@ export default {
       this.dialog.visible = false
     },
     showDialog(serviceInfo, type) {
-      if (!serviceInfo.status) {
-        return peace.util.alert('暂未开通')
-      }
       if (type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
       if (type === 'image' || type === 'video') {
+        if (!serviceInfo.status) {
+          return peace.util.alert('暂未开通')
+        }
         this.dialog.data = Object.assign({}, this.consult, serviceInfo, { type: type })
       } else if (type === 'returnVisit') {
         this.dialog.data = Object.assign({}, this.subsequent, serviceInfo, { type: type })
@@ -680,12 +680,14 @@ export default {
       else if (this.dialog.data.type === 'returnVisit') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
-          consultingType: 'image',
+          consultingType: 'returnVisit',
           serviceType: 'returnVisit',
-          appointmentDate: this.dialog.data.year || '' + '-' + this.dialog.data.data || '', //yyyy-mm-dd
-          appointmentStartTime: this.dialog.data.startTime || '',
-          appointmentEndTime: this.dialog.data.endTime || '',
-          sourceDisType: 0
+          appointmentDate: this.dialog.data.timeSharing,
+          appointmentStartTime: this.dialog.data.startTime,
+          appointmentEndTime: this.dialog.data.endTime,
+          sourceDisType: 0,
+          sourceCode: this.dialog.data.sourceCode,
+          money: this.dialog.data.unitPrice
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }

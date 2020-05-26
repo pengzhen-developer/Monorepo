@@ -1,13 +1,14 @@
 <template>
   <div class="page">
     <div class="consult-detatil"
+         :style="{'margin-bottom':canShowPayBottom?'115px':canShowBottom?'64px':'0'}"
          v-if="canShowInfo">
       <!--TOP-->
-      <div class="module nmg">
+      <div class="module top">
         <div class="strong">
           {{ internalData.inquiryInfo.statusTxt }}
           <div class='typeTag fz'
-               v-if="internalData.inquiryInfo.isAgain.toString()==='1'">
+               v-if="retrunVisitBlock">
             复诊</div>
           <div class='typeTag zx'
                v-else>咨询</div>
@@ -62,9 +63,10 @@
       </div>
       <!--订单内容-->
       <div class="module order">
-        <div class="module-item">
+        <div class="module-item"
+             v-if="retrunVisitBlock">
           <div class="b">复诊时间</div>
-          <div class="span">2020/05/12 8:00-20:00</div>
+          <div class="span">{{internalData.inquiryInfo.appointmentTime}}</div>
         </div>
         <div class="module-item">
           <div class="b">个人信息</div>
@@ -96,7 +98,7 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="internalData.inquiryInfo.isAgain.toString()==='1'">
+             v-if="retrunVisitBlock">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img"
@@ -156,36 +158,36 @@
         </div>
       </div>
       <!--订单报文-->
-      <div class="module pdtb">
-        <div class="dl-packet">
-          <div class="dt">订单号码</div>
-          <div class="dd">{{ internalData.orderInfo.orderNo }}</div>
+      <div class="module message">
+        <div class="message-item">
+          <div class="message-item-left">订单编号</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
         </div>
-        <div class="dl-packet">
-          <div class="dt">订单金额</div>
-          <div class="dd">{{ internalData.orderInfo.orderMoney }}元</div>
+        <div class="message-item">
+          <div class="message-item-left">订单金额</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderMoney }}元</div>
         </div>
-        <div class="dl-packet">
-          <div class="dt">优惠金额</div>
-          <div class="dd">0.00元</div>
+        <div class="message-item">
+          <div class="message-item-left">优惠金额</div>
+          <div class="message-item-right">0.00元</div>
         </div>
-        <div class="dl-packet">
-          <div class="dt">订单时间</div>
-          <div class="dd">{{ internalData.orderInfo.orderTime }}</div>
+        <div class="message-item">
+          <div class="message-item-left">订单时间</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
         </div>
         <template v-if="internalData.orderInfo.paymentType">
-          <div class="dl-packet">
-            <div class="dt">支付方式</div>
-            <div class="dd">{{paymentTypeText}}</div>
+          <div class="message-item">
+            <div class="message-item-left">支付方式</div>
+            <div class="message-item-right">{{paymentTypeText}}</div>
           </div>
-          <div class="dl-packet">
-            <div class="dt">支付时间</div>
-            <div class="dd">{{ internalData.orderInfo.payTime }}</div>
+          <div class="message-item">
+            <div class="message-item-left">支付时间</div>
+            <div class="message-item-right">{{ internalData.orderInfo.payTime }}</div>
           </div>
         </template>
       </div>
 
-      <div class="module pdtb"
+      <div class="module"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
@@ -225,10 +227,10 @@
       <div class="footer"
            v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
         <div class="footer-btn wait-btn"
-             @click="showCancellPop(internalData)">取消订单</div>
+             @click="showCancellPop(internalData)">
+          {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预订':'取消订单'}}</div>
       </div>
-      <div class="h64"
-           v-if="canShowBottom"></div>
+
       <div class="footer fixedBottom"
            v-if="canShowBottom">
         <div class="footer-btn chat-btn"
@@ -239,11 +241,8 @@
              v-if="
             internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中">进入咨询</div>
       </div>
-      <div class="h115"
-           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付&&internalData.inquiryInfo.time>0">
-      </div>
       <div class="pay fixedBottom"
-           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付&&internalData.inquiryInfo.time>0">
+           v-if="canShowPayBottom">
         <div class="pay-item">
           <div class="count-down">
             <span>订单关闭倒计时：</span>
@@ -379,6 +378,11 @@ export default {
         key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType
       )
     },
+    retrunVisitBlock() {
+      return (
+        this.internalData && this.internalData.inquiryInfo && this.internalData.inquiryInfo.isAgain.toString() === '1'
+      )
+    },
     canShowInfo() {
       return (
         this.internalData &&
@@ -420,6 +424,14 @@ export default {
           this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已完成)
       )
     },
+    canShowPayBottom() {
+      return (
+        this.internalData &&
+        this.internalData.inquiryInfo &&
+        this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付 &&
+        this.internalData.inquiryInfo.time > 0
+      )
+    },
     canShowChatBtn() {
       return (
         (this.internalData &&
@@ -448,7 +460,12 @@ export default {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo
       let money = order.orderMoney
-      let typeName = order.inquiryType == 'image' ? '图文问诊' : ''
+      let typeName = ''
+      if (data.inquiryInfo.serviceType == 'returnVisit') {
+        typeName = '复诊续方'
+      } else {
+        typeName = order.inquiryType == 'image' ? '图文咨询' : '视频咨询'
+      }
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
       let inquiryId = data.inquiryInfo.inquiryId
@@ -473,16 +490,17 @@ export default {
       const dic = {
         // '1': '15分钟之后未支付系统将自动关闭订单',
         '1': '订单创建15分钟后未支付将自动关闭',
-        // '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
-        '2': '',
+        '2':
+          this.internalData.inquiryInfo.serviceType == 'returnVisit' && this.internalData.inquiryInfo.isCurrentDate != 1
+            ? '请在约定时间准时上线复诊'
+            : '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
+        // '2': '',
         '3': '请及时与医生沟通',
         // '4': '医生已退诊',
         '4': '',
         '5': '祝您身体健康',
         '6':
-          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消',
-        /** 复诊 */
-        '7': '请在约定时间准时上线复诊'
+          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
       }
 
       return dic[status]
@@ -688,53 +706,8 @@ export default {
   &:last-child {
     border-bottom: 0;
   }
-  .pt5 {
-    margin-top: 5px;
-  }
 }
-.order {
-  padding: 0 15px;
-  .b {
-    padding-left: 0 !important;
-  }
-  .form-dl {
-    padding: 4px 0;
-    border-bottom: 0;
-    &:last-child {
-      padding-bottom: 10px;
-    }
-  }
 
-  .form-dt {
-    color: #999;
-    min-width: 70px;
-    display: flex;
-    padding-right: 10px;
-    align-items: center;
-    &.start {
-      align-items: flex-start;
-    }
-    span {
-      flex: 1;
-      text-align: justify;
-      text-align-last: justify;
-      padding-right: 3px;
-      height: 16px;
-      line-height: 16px;
-      &::after {
-        content: ' ';
-        display: inline-block;
-        width: 100%;
-        height: 0px;
-      }
-    }
-  }
-  .form-dd {
-    color: #333;
-    text-align: left;
-    padding-left: 2px;
-  }
-}
 .bb {
   height: 1px;
   background: #e8e8e8;
@@ -755,12 +728,87 @@ export default {
   }
   .module {
     background: #fff;
+    margin-top: 0;
     margin-bottom: 10px;
+    padding: 10px;
+    &:last-child {
+      margin-bottom: 5px;
+    }
+    &.top {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    &.order {
+      padding: 5px 15px;
+      .b {
+        padding-left: 0 !important;
+      }
+      .form-dl {
+        padding: 4px 0;
+        border-bottom: 0;
+        &:last-child {
+          padding-bottom: 10px;
+        }
+      }
+
+      .form-dt {
+        color: #999;
+        min-width: 70px;
+        display: flex;
+        padding-right: 10px;
+        align-items: center;
+        &.start {
+          align-items: flex-start;
+        }
+        span {
+          flex: 1;
+          text-align: justify;
+          text-align-last: justify;
+          padding-right: 3px;
+          height: 16px;
+          line-height: 16px;
+          &::after {
+            content: ' ';
+            display: inline-block;
+            width: 100%;
+            height: 0px;
+          }
+        }
+      }
+      .form-dd {
+        color: #333;
+        text-align: left;
+        padding-left: 2px;
+      }
+    }
+    &.message {
+      .message-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        height: 26px;
+        .message-item-left {
+          width: 30%;
+          color: #999;
+        }
+        .message-item-right {
+          width: 70%;
+          text-align: right;
+          color: #333;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-align: right;
+        }
+      }
+    }
     .cancelText {
       height: 45px;
       background: rgba(240, 252, 250, 1);
       border-radius: 2px;
-      margin: 10px 15px 0 15px;
+      margin: 10px 0 0 0;
       font-size: 12px;
       color: rgba(0, 198, 174, 1);
       line-height: 16px;
@@ -775,7 +823,7 @@ export default {
       box-sizing: border-box;
       background: rgba(240, 252, 250, 1);
       border-radius: 2px;
-      margin: 10px 15px 0 15px;
+      margin: 10px 0 0 0;
       .cancelText {
         height: 27px;
         line-height: 27px;
@@ -842,22 +890,16 @@ export default {
   .typeTag.fz {
     background-color: #fa8c16;
   }
-  .nmg {
-    margin-top: 0;
-    padding-bottom: 10px;
-  }
   .module .strong {
     font-weight: 600;
     font-size: 18px;
     line-height: 21px;
-    padding: 10px 15px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
   }
   .module .brief {
     font-size: 13px;
-    padding: 0 15px;
-    /*color: #888;*/
   }
   .module .small {
     font-size: 15px;
@@ -912,33 +954,7 @@ export default {
   .span {
     padding: 10px 15px 10px 0;
   }
-  .ul {
-    padding: 0 15px;
-  }
-  .dl-packet {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    color: #999;
-    font-size: 13px;
-  }
-  .dl-packet .dt {
-    flex: 0 0 auto;
-    width: 115px;
-    padding: 5px 15px;
-  }
-  .dl-packet .dd {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: right;
-    padding: 5px 15px;
-    color: #333;
-  }
-  .pdtb {
-    padding: 10px 0;
-  }
+
   .right {
     // text-align: right;
     display: flex;
@@ -957,18 +973,6 @@ export default {
       color: #999;
       font-size: 12px;
     }
-  }
-  .ul {
-    display: flex;
-    padding-bottom: 15px;
-  }
-  .ul .li {
-    flex: 0 0 auto;
-    width: 45px;
-    height: 45px;
-    margin-right: 13px;
-    border: 1px solid #e5e5e5;
-    padding: 5px;
   }
   .label.label-private {
     font-size: 8px;

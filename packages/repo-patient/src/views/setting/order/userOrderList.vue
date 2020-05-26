@@ -20,20 +20,21 @@
                 <img class="card-avatar avatar-circular card-img"
                      :src="item.doctorInfo.avartor" />
                 <div class="card-body">
-                  <div class="card-name card-flex">{{item.doctorInfo.name}}
-                    {{item.doctorInfo.deptName}}
+                  <div class="card-name card-flex"><span>{{item.doctorInfo.name}}</span>
+                    <span>{{item.doctorInfo.deptName}}</span>
                     <div class="card-gary">[{{item.inquiryType}}]
                     </div>
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
+                     :style="{'color': item.inquiryInfo&&item.inquiryInfo.inquiryStatus&&item.inquiryInfo.serviceType=='returnVisit'&&item.inquiryInfo.isCurrentDate!='1'&&'#00c6ae'}"
                      v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
-                  {{page.orderTypeMap[item.orderType][item.inquiryInfo.inquiryStatus]}}
+                  {{item.inquiryInfo.statusTxt}}
                 </div>
               </div>
               <div class="small">
                 <div class="small-item">
-                  <div class="small-item-key">就/复诊人:</div>
+                  <div class="small-item-key">就诊人:</div>
                   <div class="small-item-val"
                        v-if="item.familyInfo">{{item.familyInfo.familyName}}
                     {{item.familyInfo.familySex}}
@@ -42,86 +43,22 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
-                       :class="item.orderInfo.orderMoney==0?'price-free':'price'"
+                       :class="item.orderInfo.orderMoney==0||item.orderInfo.orderMoney == null?'price-free':'price'"
                        v-if="item.orderInfo">
-                    {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
+                    {{item.orderInfo.orderMoney == 0||item.orderInfo.orderMoney == null ? '免费' : '￥'+ item.orderInfo.orderMoney }}
                     <span
-                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
-                  </div>
-
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">下单时间:</div>
-                  <div class="small-item-val">{{item.orderInfo.orderTime}}</div>
-                </div>
-              </div>
-            </div>
-            <div class="panel-bottom"
-                 style="padding-left: 0"
-                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
-              <div class="count-down">
-                <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
-                <van-count-down millisecond
-                                v-if="item.inquiryInfo.inquiryStatus ==1"
-                                @finish="finishHander(item,index)"
-                                :time="item.time"
-                                format="mm:ss" />
-                <van-count-down millisecond
-                                v-else
-                                @finish="finishHander(item,index)"
-                                :time="item.time"
-                                format="HH:mm:ss" />
-              </div>
-              <div class="label gary"
-                   @click="showCancellPop(item,index)">取消订单</div>
-              <div class="label blue"
-                   v-if="item.inquiryInfo.inquiryStatus === 1"
-                   @click="goPay(item)">继续支付</div>
-            </div>
-          </div>
-          <!-- 复诊订单 -->
-          <div class="panel"
-               :key="index"
-               v-if="item.orderType=='fuzhen'">
-            <div class="panel-body"
-                 @click="goConsultDetailPage(item)">
-              <div class="card ">
-                <img class="card-avatar avatar-circular card-img"
-                     :src="item.doctorInfo.avartor" />
-                <div class="card-body">
-                  <div class="card-name card-flex">{{item.doctorInfo.name}}
-                    {{item.doctorInfo.deptName}}
-                    <div class="card-gary">[{{item.inquiryType}}]
-                    </div>
+                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
                   </div>
                 </div>
-                <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
-                     v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
-                  {{page.orderTypeMap[item.orderType][item.inquiryInfo.inquiryStatus]}}
-                </div>
-              </div>
-              <div class="small">
-                <div class="small-item">
-                  <div class="small-item-key">就/复诊人:</div>
-                  <div class="small-item-val"
-                       v-if="item.familyInfo">{{item.familyInfo.familyName}}
-                    {{item.familyInfo.familySex}}
-                    {{item.familyInfo.familyAge}}岁</div>
-                </div>
-                <div class="small-item">
-                  <div class="small-item-key">订单金额:</div>
-                  <div class="small-item-val"
-                       :class="item.orderInfo.orderMoney==0?'price-free':'price'"
-                       v-if="item.orderInfo">
-                    {{item.orderInfo.orderMoney == 0 ? '免费' : '￥'+ item.orderInfo.orderMoney }}
-                    <span
-                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'(已退款￥'+item.orderInfo.payMoney+')'}}</span>
-                  </div>
-
-                </div>
-                <div class="small-item">
+                <div class="small-item"
+                     v-if="item.inquiryInfo.serviceType=='returnVisit'">
                   <div class="small-item-key">复诊时间:</div>
-                  <div class="small-item-val">2019/11/13 8:00-20:00</div>
+                  <div class="small-item-val">{{item.inquiryInfo.appointmentTime}}</div>
+                </div>
+                <div class="small-item"
+                     v-else>
+                  <div class="small-item-key">下单时间:</div>
+                  <div class="small-item-val">{{item.orderInfo.orderTime.replace(/-/g,'/')}}</div>
                 </div>
               </div>
             </div>
@@ -129,17 +66,21 @@
                  style="padding-left: 0"
                  v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
               <div class="count-down">
-                <span>{{item.inquiryInfo.inquiryStatus ==1 ? '订单关闭倒计时：': '医生接诊倒计时：'}}</span>
-                <van-count-down millisecond
-                                v-if="item.inquiryInfo.inquiryStatus ==1"
-                                @finish="finishHander(item,index)"
-                                :time="item.time"
-                                format="mm:ss" />
-                <van-count-down millisecond
-                                v-else
-                                @finish="finishHander(item,index)"
-                                :time="item.time"
-                                format="HH:mm:ss" />
+                <template v-if="item.inquiryInfo.inquiryStatus ==1">
+                  <span>订单关闭倒计时：</span>
+                  <van-count-down millisecond
+                                  @finish="finishHander(item,index)"
+                                  :time="item.time"
+                                  format="mm:ss" />
+                </template>
+                <template
+                          v-if="item.inquiryInfo.inquiryStatus ==2&&(item.inquiryInfo.serviceType=='returnVisit'?item.inquiryInfo.isCurrentDate=='1':'')">
+                  <span>医生接诊倒计时：</span>
+                  <van-count-down millisecond
+                                  @finish="finishHander(item,index)"
+                                  :time="item.time"
+                                  format="HH:mm:ss" />
+                </template>
               </div>
               <div class="label gary"
                    @click="showCancellPop(item,index)">取消订单</div>
@@ -148,6 +89,7 @@
                    @click="goPay(item)">继续支付</div>
             </div>
           </div>
+
           <!-- 预约挂号 -->
           <div class="panel"
                :key="index"
@@ -158,9 +100,9 @@
                 <img class="card-avatar avatar-circular card-img"
                      :src="item.doctorInfo.avartor" />
                 <div class="card-body">
-                  <div class="card-name card-flex">{{item.doctorInfo.name}}
-                    {{item.doctorInfo.deptName}}
-                    <div class="card-gary">[预约挂号]</div>
+                  <div class="card-name card-flex"><span>{{item.doctorInfo.name}}</span>
+                    <span>{{item.doctorInfo.deptName}}</span>
+                    <div class="card-gary">[{{item.inquiryType}}]</div>
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
@@ -178,12 +120,12 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
-                       :class="['small-price',item.orderMoney == 0 ? 'default' : 'money']">
-                    {{item.orderMoney == 0 ? '免费' : '￥'+ item.orderMoney }}
+                       :class="item.orderMoney==0||item.orderMoney == null?'price-free':'price'">
+                    {{item.orderMoney == 0||item.orderMoney == null ? '免费' : '￥'+ item.orderMoney }}
                   </div>
                 </div>
                 <div class="small-item">
-                  <div class="small-item-key">预约就诊时间:</div>
+                  <div class="small-item-key time">预约就诊时间:</div>
                   <div class="small-item-val">{{item.bookDate}}</div>
                 </div>
               </div>
@@ -232,24 +174,7 @@ import { Dialog } from 'vant'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
-const ENUM = {
-  /** 咨询类型 inquiryType */
 
-  /** 图文 0 图文咨询 1复诊续方（图文复诊） */
-
-  /** 视频 0 视频咨询 1复诊续方（视频复诊） */
-
-  INQUIRY_TYPE: [
-    {
-      type: 'image',
-      value: ['图文咨询', '复诊续方']
-    },
-    {
-      type: 'video',
-      value: ['视频咨询', '复诊续方']
-    }
-  ]
-}
 export default {
   props: {},
   data() {
@@ -304,13 +229,8 @@ export default {
     this.orderList = []
     this.get()
   },
-  created() {
-    // this.getData()
-  },
+
   methods: {
-    getInquiryType(type, isAgin) {
-      return ENUM.INQUIRY_TYPE.find(item => item.type === type).value.find((item, index) => index == isAgin)
-    },
     finishHander(item, index) {
       item.close = false
       if (item.orderType == 'inquiry') {
@@ -342,14 +262,13 @@ export default {
         json = {}
       let doctorId = data.doctorInfo.doctorId
       let doctorName = data.doctorInfo.name
+      typeName = data.inquiryType
       if (data.orderType == 'register') {
         orderNo = data.orderNo
-        typeName = '预约挂号'
         money = data.orderMoney
         json = { money, typeName, doctorName, orderNo, doctorId }
       } else if (data.orderType == 'inquiry') {
         orderNo = data.orderInfo.orderNo
-        typeName = '图文问诊 '
         money = data.orderInfo.orderMoney
         let inquiryId = data.inquiryInfo.inquiryId
         json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
@@ -376,6 +295,7 @@ export default {
               if (item.orderExpireTime > item.currentTime) {
                 item.time = (item.orderExpireTime - item.currentTime) * 1000
               }
+              item.inquiryType = '预约挂号'
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
               let expireTime =
@@ -383,7 +303,11 @@ export default {
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
               }
-              item.inquiryType = this.getInquiryType(item.orderInfo.inquiryType, inquiryInfo.isAgain)
+              if (item.inquiryInfo.serviceType == 'returnVisit') {
+                item.inquiryType = '复诊续方'
+              } else {
+                item.inquiryType = item.orderInfo.inquiryType == 'image' ? '图文咨询' : '视频咨询'
+              }
             }
           })
         }
@@ -478,8 +402,6 @@ export default {
       this.$router.push(`/setting/userConsultDetail/${json}`)
     },
     goOrderDetailPage(item) {
-      // console.log(item);
-      // return;
       let json = peace.util.encode({
         orderInfo: item
       })
@@ -519,7 +441,7 @@ export default {
   .panel {
     background: #fff;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 7px;
     padding: 1px 15px;
     border-bottom: 0;
     margin-bottom: 15px;
@@ -527,16 +449,22 @@ export default {
       margin-bottom: 0;
     }
     .panel-body {
-      padding-top: 0;
+      padding-top: 12px;
     }
     .card {
       align-items: center;
+      margin-top: 0;
       .card-name {
         font-size: 15px;
+        span {
+          margin-right: 7px;
+        }
       }
-      .card-gary {
-        margin-left: 5px;
-      }
+    }
+    .card .card-avatar.avatar-circular,
+    .avatar-circular {
+      margin: 0;
+      margin-right: 13px;
     }
     .small {
       flex-direction: column;
@@ -553,9 +481,27 @@ export default {
         }
         .small-item-key {
           color: #999;
-          margin-right: 10px;
+          margin-right: 13px;
+          // width: 65px;
+          width: 5em;
+          text-align: justify;
+          text-align-last: justify;
+          height: 20px;
+          line-height: 20px;
+          &.time {
+            // width: 85px;
+            width: 7em;
+          }
+          &::after {
+            content: ' ';
+            display: inline-block;
+            width: 100%;
+            height: 0px;
+          }
         }
         .small-item-val {
+          height: 20px;
+          line-height: 20px;
           flex: 1;
           color: #333;
           display: flex;
@@ -668,11 +614,7 @@ export default {
   box-sizing: border-box;
   padding-bottom: (30px/2);
 }
-.panel {
-  padding: 0;
-  box-shadow: none;
-  border-bottom: 10px solid #f5f5f5;
-}
+
 .content .panel:first-child {
   margin-top: 0;
 }
@@ -791,10 +733,14 @@ export default {
 }
 .label {
   font-size: 12px;
-  // padding: 5px (24px/2);
-  padding: 3px 10px;
-  margin-left: (20px/2);
-  border-radius: (40px/2);
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 27px;
+  margin-left: 10px;
+  border-radius: 20px;
 }
 .label.gary {
   color: #999;
@@ -817,7 +763,7 @@ export default {
   margin-top: (5px/2);
 }
 .panel .panel-head {
-  padding: 0 (30px/2);
+  padding: 0 15px;
 }
 /*
      *   * 挂号订单状态
@@ -849,16 +795,6 @@ export default {
             4: '已退诊',
             5: '已完成',
             6: '已取消'
-          },
-          *复诊订单状态
-        inquiry: {
-            : '待支付',
-            :'预约成功',
-            : '待接诊',
-            : '已接诊',
-            : '已退诊',
-            : '已完成',
-            : '已取消'
           },
         *检查单状态
     */
@@ -948,9 +884,5 @@ export default {
 }
 .card .card-avatar {
   margin-left: 0;
-}
-.panel {
-  margin-bottom: 0;
-  border-bottom: (20px/2) solid #f5f5f5;
 }
 </style>

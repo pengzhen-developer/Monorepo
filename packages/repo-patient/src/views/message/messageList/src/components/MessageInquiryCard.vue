@@ -11,7 +11,7 @@
         {{ familySex }} |
         {{ familyAge }}岁
       </span>
-      <img v-if="isAgain === '1'"
+      <img v-if="isReturnVisit"
            src="../assets/images/ic_fz.png"
            class="fz" />
       <img v-else
@@ -64,7 +64,7 @@ export default {
      * 是否复诊
      */
     isAgain: {
-      type: String,
+      type: [String, Number, Boolean],
       required: true
     },
     /*
@@ -82,7 +82,11 @@ export default {
       required: true
     }
   },
-
+  computed: {
+    isReturnVisit() {
+      return this.isAgain.toString === '1' || this.isAgain == true
+    }
+  },
   methods: {
     onClickContent() {
       this.$emit('onClickContent')

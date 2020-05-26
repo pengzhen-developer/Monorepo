@@ -129,13 +129,11 @@ export default {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params
     this.activeDate = params.time
-
-    // this.getData()
   },
   activated() {
-    // console.log('active')
     this.getData()
   },
+
   methods: {
     getData() {
       peace.service.appoint
@@ -156,13 +154,21 @@ export default {
         return this.activeDate ? this.activeDate == item.date : !item.disabled
       })
       ~this.activeIndex && this.getSourceData(this.dateList[this.activeIndex])
+      this.$nextTick(() => {
+        const element = document.querySelector('.scroll-items')
+        const itemEle = document.querySelector('.scroll-items .item')
+        if (this.activeIndex && element && itemEle) {
+          element.scrollLeft = itemEle.offsetWidth * Number(this.activeIndex)
+        }
+      })
     },
     getSourceData(item) {
       peace.service.appoint
         .choiceVisitingTimeByWeek({
           hospitalCode: this.params.hospitalCode,
           doctorId: this.params.doctorId,
-          timeSharing: item.year + '-' + item.date
+          timeSharing: item.year + '-' + item.date,
+          sourceDisType: this.params.from ? 0 : 1
         })
         .then(res => {
           this.AM = res.data.list.AM || []
@@ -187,18 +193,19 @@ export default {
       json.source.type = obj.type
       json.date = this.dateList[this.activeIndex]
       json = peace.util.encode(json)
-      debugger
       if (!item.isExpire && item.number) {
-        /**复诊续方-参数待定 */
+        /**复诊续方*/
         if (this.params.from) {
           const json = peace.util.encode({
             doctorId: this.doctorInfo.doctorId,
-            consultingType: 'image',
+            consultingType: 'returnVisit',
             serviceType: 'returnVisit',
-            appointmentDate: item.year || '' + '-' + item.data || '',
+            appointmentDate: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
             appointmentStartTime: item.startTime,
             appointmentEndTime: item.endTime,
-            sourceDisType: 0
+            sourceDisType: 0,
+            sourceCode: item.sourceCode,
+            money: item.unitPrice
           })
           this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {

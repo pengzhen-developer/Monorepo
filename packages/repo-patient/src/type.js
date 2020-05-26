@@ -56,6 +56,9 @@ export const EMIT = {
 
   /** 补充过敏 新增过敏史 */
   SUPPLEMENTARY_ALLERGIES: 'SUPPLEMENTARY_ALLERGIES',
+
+  /**复诊 - 重新选择号源 */
+  DOCTOR_RETURNVISIT_RESELECT_NUMBER: 'DoctorReturnVisitReselectNumber',
 }
 
 /**

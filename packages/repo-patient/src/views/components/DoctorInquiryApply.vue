@@ -140,13 +140,13 @@
                   <div>
                     <span
                           style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
-                      {{ getSerivceType() }}
+                      {{ doctor.doctorInfo.serviceName }}
                     </span>
-                    <span style="color: #333333; font-size: 12px; color: #F2223B;">
+                    <span style=" font-size: 11px; color: #F2223B;">
                       {{ getSerivceUnit() }}
                     </span>
-                    <span style="color: #333333; font-size: 14px; color: #F2223B;">
-                      {{ getSerivceMoney() }}
+                    <span style=" font-size: 16px; color: #F2223B;">
+                      {{ doctor.doctorInfo.serviceMoney }}
                     </span>
                   </div>
                 </van-row>
@@ -161,14 +161,15 @@
                     </span>
                   </div>
                   <div>
-                    <span style="color: #333333; font-size: 12px;  margin: 0 8px 0 0;">
-                      {{ getSerivceType() }}
+                    <span
+                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                      {{ doctor.doctorInfo.serviceName }}
                     </span>
-                    <span style="color: #333333; font-size: 12px; color: #F2223B;">
+                    <span style=" font-size: 11px; color: #F2223B;">
                       {{ getSerivceUnit() }}
                     </span>
-                    <span style="color: #333333; font-size: 14px; color: #F2223B;">
-                      {{ getSerivceMoney() }}
+                    <span style=" font-size: 16px; color: #F2223B;">
+                      {{ doctor.doctorInfo.serviceMoney }}
                     </span>
                   </div>
                 </van-row>
@@ -438,36 +439,36 @@ const FUZHEN__QUESTION_LISI = [
     question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
     mode: ANSWER_MODE.INPUT
   },
+  // {
+  //   no: 2,
+  //   answerList: [],
+  //   field: ANSWER_FIELD.IS_AGAIN,
+  //   question: '就诊人是否为复诊？',
+  //   mode: ANSWER_MODE.CHECK
+  // },
+  // {
+  //   no: 3,
+  //   answerList: [],
+  //   field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
+  //   question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
+  //   mode: ANSWER_MODE.CHECK
+  // },
   {
     no: 2,
-    answerList: [],
-    field: ANSWER_FIELD.IS_AGAIN,
-    question: '就诊人是否为复诊？',
-    mode: ANSWER_MODE.CHECK
-  },
-  {
-    no: 3,
-    answerList: [],
-    field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
-    question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
-    mode: ANSWER_MODE.CHECK
-  },
-  {
-    no: 4,
     answerList: [],
     field: ANSWER_FIELD.ATTACHMENT,
     question: '请问您是否需要补充病历、处方、检查报告等图片？',
     mode: ANSWER_MODE.FILE
   },
   {
-    no: 5,
+    no: 3,
     answerList: [],
     field: ANSWER_FIELD.ATTACHMENT,
     question: '互联网医院复诊需上传复诊凭证，无凭证医生或将无法为您开具处方，请您知悉。',
     mode: ANSWER_MODE.FILE_CONFIRM
   },
   {
-    no: 6,
+    no: 4,
     answerList: [],
     field: ANSWER_FIELD.ILLNESS_CONFIRM,
     question: '请选择您的初诊诊断(多选)',
@@ -608,10 +609,10 @@ export default {
       })
     }
   },
-   beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if ( from.fullPath.indexOf('/setting/myFamilyMembers') != -1) {
-        // 从家人列表回来刷新我的家人列表 
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from.fullPath.indexOf('/setting/myFamilyMembers') != -1) {
+        // 从家人列表回来刷新我的家人列表
         vm.getFamilyList()
       }
     })
@@ -628,7 +629,7 @@ export default {
     // 获取字典数据
     this.getFamilyList()
     // 获取当前医生详情
-    this.getWapDoctorInfo()
+    this.getDoctorInfo()
     // 设置参数
     this.setModel()
   },
@@ -732,6 +733,7 @@ export default {
         peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD,
         this.doctorInquiryApplySupplementaryUploadCallback
       )
+      $peace.$on(peace.type.EMIT.DOCTOR_RETURNVISIT_RESELECT_NUMBER, this.reselcetNumerCallback)
     },
 
     offEmits() {
@@ -740,6 +742,7 @@ export default {
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD)
+      $peace.$off(peace.type.EMIT.DOCTOR_RETURNVISIT_RESELECT_NUMBER)
     },
 
     getLatestQuestionIndex() {
@@ -860,6 +863,12 @@ export default {
       this.onAfterSupplementaryAnswer(mode)
     },
 
+    reselcetNumerCallback(res) {
+      if (res) {
+        console.log('cb', res)
+      }
+    },
+
     pushToChatList(params, others = {}) {
       const { chatMode = 'a', type = 'text', context, images } = params
 
@@ -905,14 +914,16 @@ export default {
 
     setModel() {
       const params = peace.util.decode(this.$route.params.json)
+
       this.model.doctorId = params.doctorId
       this.model.consultingType = params.consultingType
       this.model.serviceType = params.serviceType
-      if (params.serviceType == 'returnVisit') {
-        this.model.appointmentDate = params.appointmentDate
-        this.model.appointmentStartTime = params.appointmentStartTime
-        this.model.appointmentEndTime = params.appointmentEndTime
-      }
+      this.model.appointmentDate = params.appointmentDate || ''
+      this.model.appointmentStartTime = params.appointmentStartTime || ''
+      this.model.appointmentEndTime = params.appointmentEndTime || ''
+      this.model.sourceCode = params.sourceCode || ''
+      this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
+
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
@@ -931,10 +942,25 @@ export default {
       })
     },
 
-    getWapDoctorInfo() {
+    getDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.doctor.getWapDoctorInfo(params).then(res => {
-        this.doctor = res.data
+      peace.service.doctor.getDoctorInfo(params).then(res => {
+        let doctor = res.data,
+          serviceName = '',
+          serviceMoney = 0
+        serviceMoney = Number(params.money)
+        if (this.model.serviceType == 'returnVisit') {
+          serviceName = '复诊续方'
+        } else {
+          serviceName = this.model.consultingType == 'video' ? '视频问诊' : '图文咨询'
+          doctor.doctorInfo.service.inquiry.forEach(item => {
+            if (item.type == this.model.consultingType) {
+              serviceMoney = Number(item.price)
+            }
+          })
+        }
+        doctor.doctorInfo = Object.assign({}, doctor.doctorInfo, { serviceName, serviceMoney })
+        this.doctor = doctor
       })
     },
 
@@ -1134,16 +1160,16 @@ export default {
           }
         } else {
           // 跳转新增家人
-          
-          if(this.current.answerList.length>=4){
+
+          if (this.current.answerList.length >= 4) {
             Dialog.confirm({
               title: '温馨提示',
               message: '您的家人数量已达上限，请删除后再新增',
               confirmButtonText: '去新增'
-            }).then(()=>{
+            }).then(() => {
               this.$router.push({ path: `/setting/myFamilyMembers` })
             })
-          }else{
+          } else {
             let canShowSelf = !this.current.answerList.find(item => item.relation === '本人') ? 1 : 2
             const json = peace.util.encode({
               type: 'add',
@@ -1152,27 +1178,25 @@ export default {
             })
             this.$router.push({ path: `/setting/familyMember/${json}` })
           }
-           
-          
 
           return false
         }
       }
 
       // 是否复诊
-      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
-        answer = params[0]
+      // else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
+      //   answer = params[0]
 
-        this.model.isAgain = params[0] === '是' ? '1' : '0'
-      }
+      //   this.model.isAgain = params[0] === '是' ? '1' : '0'
+      // }
 
       // 是否复诊确认
-      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
-        answer = params[0]
+      // else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
+      //   answer = params[0]
 
-        this.model.isAgain = params[0] === '我要复诊' ? '1' : '0'
-        this.model.isAgainConfrim = params[0] === '继续咨询' ? '1' : '0'
-      }
+      //   this.model.isAgain = params[0] === '我要复诊' ? '1' : '0'
+      //   this.model.isAgainConfrim = params[0] === '继续咨询' ? '1' : '0'
+      // }
 
       // 上传附件
       else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
@@ -1244,7 +1268,7 @@ export default {
         if (this.attachment === '我已遗失' || this.attachment === '确认遗失') {
           nextQuestionIndex = currentQuestionIndex + 1
         } else {
-          nextQuestionIndex = 6
+          nextQuestionIndex = this.questionList.length - 1
         }
       }
       // 正常情况下一步
@@ -1416,7 +1440,19 @@ export default {
             })
           }
         })
-        .catch(() => {
+        .catch(res => {
+          //201  号源不足
+          if (res.data.code == '201') {
+            peace.util.alert(res.data.msg)
+            // return Dialog.confirm({
+            //   title: '提示',
+            //   message: res.data.msg,
+            //   confirmButtonText: '重新预约'
+            // }).then(() => {
+            //   //重新选择号源
+            //   this.goToReSelectNumber()
+            // })
+          }
           this.sending = false
         })
     },
@@ -1425,8 +1461,8 @@ export default {
       // console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
-        typeName: data.inquiryType === 'image' ? '图文问诊' : '',
-        doctorId: data.data,
+        typeName: this.doctor.doctorInfo.serviceName,
+        doctorId: data.doctorId,
         doctorName: data.doctorName,
         orderNo: data.orderNo,
         inquiryId: data.inquiryId
@@ -1454,7 +1490,7 @@ export default {
       let json = peace.util.encode(params)
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
-
+    goToReSelectNumber() {},
     viewImage(file, fileIndex) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex

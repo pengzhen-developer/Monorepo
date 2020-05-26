@@ -244,7 +244,7 @@
           <div class="dd">
             <img :src="data[current].doctorSignImg"
                  v-if="data[current].doctorSignImg"
-                 style="width:88rpx;height: 33rpx;background-size: cover" />
+                 style="width:44px;height: 16.5px;background-size: cover" />
           </div>
         </div>
       </div>

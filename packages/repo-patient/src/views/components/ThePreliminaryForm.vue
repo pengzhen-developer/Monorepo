@@ -2,6 +2,11 @@
   <div class="consult-detatil">
     <div class="module order"
          v-if="internalData!=null">
+      <div class="module-item"
+           v-if="retrunVisitBlock">
+        <div class="b">复诊时间</div>
+        <div class="span">{{internalData.inquiryOrderInfo.appointmentDate}}</div>
+      </div>
       <div class="module-item">
         <div class="b">个人信息</div>
         <div class="form-dl">
@@ -33,7 +38,7 @@
 
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo&&internalData.inquiryOrderInfo.isAgain==='1'">
+           v-if="retrunVisitBlock">
         <div>
           <div class="b">复诊信息</div>
           <div class="form-dl img"
@@ -126,7 +131,15 @@ export default {
       }
     }
   },
-
+  computed: {
+    retrunVisitBlock() {
+      return (
+        this.internalData &&
+        this.internalData.inquiryOrderInfo &&
+        this.internalData.inquiryOrderInfo.isAgain.toString() === '1'
+      )
+    }
+  },
   mounted() {
     this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
   },
@@ -178,7 +191,7 @@ export default {
   }
 }
 .order {
-  padding: 0 15px;
+  padding: 5px 15px;
   .b {
     padding-left: 0 !important;
   }
