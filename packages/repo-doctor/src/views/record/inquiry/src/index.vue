@@ -94,7 +94,7 @@
 <script>
 import peace from '@src/library'
 
-import MessageList from '@src/views/clinic/inquiry/messageList/index'
+import MessageList from '@src/views/components/inquiry/messageList/index'
 
 export default {
   components: {

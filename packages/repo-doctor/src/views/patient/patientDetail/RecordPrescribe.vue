@@ -3,7 +3,8 @@
 */
 
 <template>
-  <div @click="get" class="record-prescribe">
+  <div @click="get"
+       class="record-prescribe">
     <div class="record-prescribe-left">
       <img src="~@src/assets/images/inquiry/ic_rp.png" />
     </div>
@@ -12,7 +13,9 @@
       <p class="record-prescribe-right-text">{{ data.netHospitalName }} | {{ data.netdeptName }}</p>
     </div>
 
-    <peace-dialog :visible.sync="prescribeDialog.visible" append-to-body title="病历详情">
+    <peace-dialog :visible.sync="prescribeDialog.visible"
+                  append-to-body
+                  title="病历详情">
       <InquirySessionRecipeDetail :data="prescribeDialog.data"></InquirySessionRecipeDetail>
     </peace-dialog>
   </div>
@@ -20,7 +23,7 @@
 
 <script>
 import peace from '@src/library'
-import InquirySessionRecipeDetail from '@src/views/clinic/inquiry/InquirySessionRecipeDetail'
+import InquirySessionRecipeDetail from '@src/views/components/inquiry/InquirySessionRecipeDetail'
 
 export default {
   props: {
@@ -44,7 +47,7 @@ export default {
     get() {
       const params = { prescriptionId: this.data.id }
 
-      peace.service.prescribePrescrip.getPrescripInfo(params).then(res => {
+      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.prescribeDialog.visible = true
         this.prescribeDialog.data = res.data
       })

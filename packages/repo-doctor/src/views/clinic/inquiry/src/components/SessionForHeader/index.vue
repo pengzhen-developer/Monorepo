@@ -1,6 +1,15 @@
 <template>
   <div class="flex justify-between items-center header q-px-md bg-grey-2">
-    <span class="q-mr-md text-subtitle1">{{ patientInfo.familyName }}</span>
+    <div>
+      <span class="q-mr-md text-subtitle1">{{ patientInfo.familyName }}</span>
+
+      <el-tag effect="dark"
+              size="medium"
+              class="q-ml-md"
+              type="primary">
+        {{ inquiryStatusText }}
+      </el-tag>
+    </div>
 
     <el-button v-if="canShowOver"
                plain
@@ -19,7 +28,7 @@
 </template>
 
 <script>
-import type from '@src/type'
+import Type from '@src/type'
 
 import OverInquiry from './OverInquiry'
 
@@ -39,12 +48,20 @@ export default {
       return this.$store.state.inquiry?.session ?? {}
     },
 
+    inquiryInfo() {
+      return this.session?.content?.inquiryInfo ?? {}
+    },
+
     patientInfo() {
       return this.session?.content?.patientInfo ?? {}
     },
 
     canShowOver() {
-      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === type.INQUIRY.INQUIRY_STATUS.问诊中
+      return this.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.问诊中
+    },
+
+    inquiryStatusText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_TYPE).find((key) => Type.INQUIRY.INQUIRY_TYPE[key] === this.inquiryInfo?.inquiryType)
     }
   },
 

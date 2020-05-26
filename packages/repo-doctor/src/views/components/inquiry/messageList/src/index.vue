@@ -2,8 +2,7 @@
 <template>
   <div>
     <!-- 待接诊   -->
-    <template
-              v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === constant.INQUIRY_STATUS.待接诊">
+    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === constant.INQUIRY_STATUS.待接诊">
       <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
                                     :data="messageList[0].content.data">
       </InquiryPreliminaryForReceive>
@@ -35,7 +34,7 @@
 // import peace from '@src/library'
 import Constant from './constant'
 
-import InquiryPreliminaryForReceive from '@src/views/clinic/inquiry/InquiryPreliminaryForReceive'
+import InquiryPreliminaryForReceive from '@src/views/components/inquiry/InquiryPreliminaryForReceive'
 
 import MessageContainer from './components/MessageContainer'
 export default {
@@ -104,7 +103,7 @@ export default {
       let sessionMessages = this.data || this.$store.state.inquiry.sessionMessages
 
       // 过滤无效数据
-      sessionMessages = sessionMessages.filter(message => {
+      sessionMessages = sessionMessages.filter((message) => {
         // 屏蔽系统消息
         if (message.type === 'notification') {
           return false

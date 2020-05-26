@@ -19,7 +19,7 @@
 
 <script>
 import peace from '@src/library'
-import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
 
 export default {
   name: 'FollowRecordListCell',

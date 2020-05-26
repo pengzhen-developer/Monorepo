@@ -51,7 +51,7 @@
       <peace-table-column label="年龄"
                           prop="age"></peace-table-column>
       <peace-table-column label="复诊时间"
-                          width="150"
+                          width="180"
                           prop="returnVisitTime"></peace-table-column>
       <peace-table-column label="订单金额"
                           align="right"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import MessageList from '@src/views/clinic/inquiry/messageList'
+import MessageList from '@src/views/components/inquiry/messageList'
 
 import Service from './service'
 

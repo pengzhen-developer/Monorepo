@@ -119,7 +119,7 @@ import util from '@src/util'
 import InquirySessionReceive from './InquirySessionReceive'
 
 // import InquirySessionMessageList from './InquirySessionMessageList'
-import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
+import InquirySessionMessageList from '@src/views/components/inquiry/messageList/index'
 import InquirySessionMessageInput from './InquirySessionMessageInput'
 
 import InquirySessionCase from './InquirySessionCase'

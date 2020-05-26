@@ -23,7 +23,7 @@
 
 <script>
 import peace from '@src/library'
-import InquiryNewCaseDetail from '@src/views/clinic/inquiry/InquiryNewCaseDetail.vue'
+import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
 
 export default {
   props: {

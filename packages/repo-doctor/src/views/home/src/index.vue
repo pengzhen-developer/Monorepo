@@ -248,7 +248,7 @@ export default {
     },
 
     goInquiry() {
-      this.$router.push('/clinic/inquiry')
+      this.$router.push('/components/inquiry')
     },
 
     goReturnVisit() {

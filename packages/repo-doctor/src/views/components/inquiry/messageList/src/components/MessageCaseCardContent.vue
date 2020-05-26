@@ -14,7 +14,7 @@
 <script>
 import peace from '@src/library'
 import MessageCaseCard from './MessageCaseCard'
-import InquirySessionCaseDetail from '@src/views/clinic/inquiry/InquirySessionCaseDetail'
+import InquirySessionCaseDetail from '@src/views/components/inquiry/InquirySessionCaseDetail'
 export default {
   props: {
     message: {
@@ -47,7 +47,7 @@ export default {
       const params = {
         inquiry_no: this.message.content.data.inquiryInfo.inquiryNo
       }
-      peace.service.inquiry.getCase(params).then(res => {
+      peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })

@@ -21,7 +21,7 @@
 <script>
 // import peace from '@src/library'
 import MessageInquiryCard from './MessageInquiryCard'
-import InquiryPreliminary from '@src/views/clinic/inquiry/InquiryPreliminary'
+import InquiryPreliminary from '@src/views/components/inquiry/InquiryPreliminary'
 
 export default {
   props: {
@@ -45,22 +45,13 @@ export default {
       return this.message.content.data.patientInfo.familyAge
     },
     isAgain() {
-      return (
-        this.message.content.data.inquiryOrderInfo &&
-        this.message.content.data.inquiryOrderInfo.isAgain
-      )
+      return this.message.content.data.inquiryOrderInfo && this.message.content.data.inquiryOrderInfo.isAgain
     },
     confirmIllness() {
-      return (
-        this.message.content.data.inquiryOrderInfo &&
-        this.message.content.data.inquiryOrderInfo.confirmIllness
-      )
+      return this.message.content.data.inquiryOrderInfo && this.message.content.data.inquiryOrderInfo.confirmIllness
     },
     describe() {
-      return (
-        this.message.content.data.inquiryOrderInfo &&
-        this.message.content.data.inquiryOrderInfo.describe
-      )
+      return this.message.content.data.inquiryOrderInfo && this.message.content.data.inquiryOrderInfo.describe
     }
   },
   data() {

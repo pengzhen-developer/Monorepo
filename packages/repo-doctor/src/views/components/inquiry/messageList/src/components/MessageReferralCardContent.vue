@@ -21,7 +21,7 @@
 <script>
 import peace from '@src/library'
 import MessageReferralCard from './MessageReferralCard'
-import InquiryTransferDetail from '@src/views/clinic/inquiry/InquiryTransferDetail'
+import InquiryTransferDetail from '@src/views/components/inquiry/InquiryTransferDetail'
 export default {
   props: {
     message: {
@@ -45,22 +45,13 @@ export default {
     },
 
     doctorName() {
-      return (
-        this.message.content.data.referralInfo.toDoctorInfo &&
-        this.message.content.data.referralInfo.toDoctorInfo.name
-      )
+      return this.message.content.data.referralInfo.toDoctorInfo && this.message.content.data.referralInfo.toDoctorInfo.name
     },
     doctorDeptName() {
-      return (
-        this.message.content.data.referralInfo.toDoctorInfo &&
-        this.message.content.data.referralInfo.toDoctorInfo.deptName
-      )
+      return this.message.content.data.referralInfo.toDoctorInfo && this.message.content.data.referralInfo.toDoctorInfo.deptName
     },
     doctorHospitalName() {
-      return (
-        this.message.content.data.referralInfo.toDoctorInfo &&
-        this.message.content.data.referralInfo.toDoctorInfo.hospitalName
-      )
+      return this.message.content.data.referralInfo.toDoctorInfo && this.message.content.data.referralInfo.toDoctorInfo.hospitalName
     }
   },
   data() {
@@ -81,7 +72,7 @@ export default {
         referral_type: 'out'
       }
 
-      peace.service.inquiry.referralDocPc(params).then(res => {
+      peace.service.inquiry.referralDocPc(params).then((res) => {
         this.transfer.data = res.data
       })
     }

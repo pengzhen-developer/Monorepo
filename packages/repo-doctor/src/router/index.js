@@ -28,7 +28,7 @@ export default function() {
             path: '/clinic/inquiry',
             name: '/clinic/inquiry',
             meta: { Auth: true },
-            component: () => import('@src/views/clinic/inquiry/index.vue')
+            component: () => import('@src/views/clinic/inquiry')
           },
           // 诊室 - 复诊续方
           {

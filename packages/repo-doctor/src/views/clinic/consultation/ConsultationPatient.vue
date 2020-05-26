@@ -299,8 +299,8 @@
 <script>
 import peace from '@src/library'
 
-// import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
-import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
+// import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/components/inquiry/messageList/index'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 import ConsultationSessionRecipeDetail from './ConsultationSessionRecipeDetail'
 import ConsultationDetail from './ConsultationDetail'

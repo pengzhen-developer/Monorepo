@@ -22,7 +22,7 @@
 <script>
 import peace from '@src/library'
 import MessageConsultationCard from './MessageConsultationCard'
-import InquiryConsultationDetail from '@src/views/clinic/inquiry/InquiryConsultationDetail'
+import InquiryConsultationDetail from '@src/views/components/inquiry/InquiryConsultationDetail'
 
 export default {
   props: {
