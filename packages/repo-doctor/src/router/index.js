@@ -123,7 +123,7 @@ export default function() {
             path: '/sys/myServiceTime',
             name: '/sys/myServiceTime',
             meta: { Auth: true },
-            component: () => import('@src/views/sys/myServiceTime/index.vue')
+            component: () => import('@src/views/sys/myServiceTime')
           },
           // 我的 - 服务设定
           {
