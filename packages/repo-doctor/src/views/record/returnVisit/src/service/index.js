@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 发送验证码
+   * 获取复诊续方列表
    *
    * @param {*} params
    */
-  sendSms(params) {
+  getReturnVisitList(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Login/sendSms'
+    const apiPath = 'client/v1/inquiry/getReturnVisitList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -21,14 +21,14 @@ export default {
   },
 
   /**
-   * 登录
+   * 获取复诊续方详情
    *
    * @param {*} params
    */
-  login(params) {
+  getReturnVisitDetail(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Login/login'
+    const apiPath = 'client/v1/inquiry/getReturnVisitDetail'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

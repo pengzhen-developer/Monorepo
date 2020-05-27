@@ -119,12 +119,20 @@ export const config = {
         id: 41,
         pid: 4,
         closable: true,
-        name: '问诊记录',
-        title: '问诊记录',
+        name: '咨询记录',
+        title: '咨询记录',
         path: '/record/inquiry'
       },
       {
         id: 42,
+        pid: 4,
+        closable: true,
+        name: '复诊记录',
+        title: '复诊记录',
+        path: '/record/returnVisit'
+      },
+      {
+        id: 43,
         pid: 4,
         closable: true,
         name: '处方记录',
@@ -132,7 +140,7 @@ export const config = {
         path: '/record/prescription'
       },
       {
-        id: 43,
+        id: 44,
         pid: 4,
         closable: true,
         name: '转诊记录',
@@ -140,7 +148,7 @@ export const config = {
         path: '/record/transfer'
       },
       {
-        id: 44,
+        id: 45,
         pid: 4,
         closable: true,
         name: '会诊记录',

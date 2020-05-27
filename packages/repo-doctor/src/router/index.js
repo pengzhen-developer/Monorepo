@@ -87,7 +87,14 @@ export default function() {
             path: '/record/inquiry',
             name: '/record/inquiry',
             meta: { Auth: true },
-            component: () => import('@src/views/record/inquiry/index.vue')
+            component: () => import('@src/views/record/inquiry')
+          },
+          // 记录 - 复诊记录
+          {
+            path: '/record/returnVisit',
+            name: '/record/returnVisit',
+            meta: { Auth: true },
+            component: () => import('@src/views/record/returnVisit')
           },
           // 记录 - 处方记录
           {

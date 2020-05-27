@@ -7,7 +7,18 @@
                   style="width: 130px;"
                   v-model="view.model.name"></el-input>
       </el-form-item>
-      <el-form-item label="问诊类型">
+      <el-form-item label="订单日期">
+        <el-date-picker :picker-options="view.rules.pickerOptionsStart"
+                        style="width: 145px;"
+                        v-model="view.model.time_start"
+                        value-format="yyyy-MM-dd"></el-date-picker>
+        <span class="q-mx-sm">-</span>
+        <el-date-picker :picker-options="view.rules.pickerOptionsEnd"
+                        style="width: 145px;"
+                        v-model="view.model.time_end"
+                        value-format="yyyy-MM-dd"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="咨询类型">
         <el-select clearable
                    placeholder="全部"
                    style="width: 130px;"
@@ -17,17 +28,6 @@
                      :value="item.value"
                      v-for="item in view.source.inquiryType"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="问诊下单时间">
-        <el-date-picker :picker-options="view.rules.pickerOptionsStart"
-                        style="width: 145px;"
-                        v-model="view.model.time_start"
-                        value-format="yyyy-MM-dd"></el-date-picker>
-        <span class="character"></span>
-        <el-date-picker :picker-options="view.rules.pickerOptionsEnd"
-                        style="width: 145px;"
-                        v-model="view.model.time_end"
-                        value-format="yyyy-MM-dd"></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="get"
@@ -40,7 +40,7 @@
 
     <peace-table pagination
                  ref="table">
-      <peace-table-column label="问诊单号"
+      <peace-table-column label="咨询单号"
                           prop="inquiry_no"
                           width="180"></peace-table-column>
       <peace-table-column align="left"
@@ -50,7 +50,7 @@
                           prop="sex"></peace-table-column>
       <peace-table-column label="年龄"
                           prop="age"></peace-table-column>
-      <peace-table-column label="问诊类型"
+      <peace-table-column label="咨询类型"
                           prop="type"
                           width="120px">
         <template slot-scope="scope">
@@ -70,20 +70,23 @@
       <peace-table-column fixed="right"
                           label="操作">
         <template slot-scope="scope">
-          <el-button @click="showDetail(scope.row)"
-                     type="text"
-                     v-if="!(scope.row.status === '已取消')">查看详情</el-button>
+          <el-button type="text"
+                     v-bind:title="getControlTitleTip(scope.row)"
+                     v-bind:disabled="getDisabledState(scope.row)"
+                     v-on:click="showDetail(scope.row)">查看详情</el-button>
         </template>
       </peace-table-column>
     </peace-table>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  class="chat-room-bg"
-                  append-to-body
-                  title="问诊记录">
-      <InquirySessionMessageList :data="dialog.data"
-                                 :doctorInfo="dialog.doctorInfo"
-                                 :patientInfo="dialog.patientInfo"></InquirySessionMessageList>
+    <peace-dialog title="问诊记录"
+                  v-bind:visible.sync="dialog.visible"
+                  v-if="dialog.visible">
+
+      <MessageList v-bind:data="dialog.data"
+                   v-bind:doctorInfo="dialog.doctorInfo"
+                   v-bind:patientInfo="dialog.patientInfo">
+      </MessageList>
+
     </peace-dialog>
   </div>
 </template>
@@ -91,11 +94,11 @@
 <script>
 import peace from '@src/library'
 
-// import InquirySessionMessageList from '@src/views/clinic/inquiry/InquirySessionMessageList'
-import InquirySessionMessageList from '@src/views/clinic/inquiry/messageList/index'
+import MessageList from '@src/views/clinic/inquiry/messageList/index'
+
 export default {
   components: {
-    InquirySessionMessageList
+    MessageList
   },
 
   data() {
@@ -110,12 +113,9 @@ export default {
 
         rules: {
           pickerOptionsStart: {
-            disabledDate: time => {
+            disabledDate: (time) => {
               if (this.view.model.time_end) {
-                return (
-                  time.getTime() > this.view.model.time_end.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() > this.view.model.time_end.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -123,12 +123,9 @@ export default {
           },
 
           pickerOptionsEnd: {
-            disabledDate: time => {
+            disabledDate: (time) => {
               if (this.view.model.time_start) {
-                return (
-                  time.getTime() < this.view.model.time_start.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() < this.view.model.time_start.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -138,8 +135,8 @@ export default {
 
         source: {
           inquiryType: [
-            { label: '图文问诊', value: 'image' },
-            { label: '视频问诊', value: 'video' }
+            { label: '图文', value: 'image' },
+            { label: '视频', value: 'video' }
           ]
         }
       },
@@ -174,10 +171,10 @@ export default {
         inquiryNo: row.inquiry_no
       }
 
-      peace.service.patient.getOneInquiry(params).then(res => {
-        const historyMessageFormatHandler = messages => {
+      peace.service.patient.getOneInquiry(params).then((res) => {
+        const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
-            messages.forEach(message => {
+            messages.forEach((message) => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
@@ -199,6 +196,22 @@ export default {
         this.dialog.doctorInfo = Object.assign({}, this.dialog.doctorInfo, res.data.doctorInfo)
         this.dialog.visible = true
       })
+    },
+
+    getControlTitleTip(row) {
+      const controlTitleTipMap = {
+        ['已取消']: '复诊未开始，未产生复诊记录'
+      }
+
+      return controlTitleTipMap[row.status]
+    },
+
+    getDisabledState(row) {
+      const disabledMap = {
+        ['已取消']: true
+      }
+
+      return disabledMap[row.status] ?? false
     }
   }
 }

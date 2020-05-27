@@ -50,15 +50,13 @@
     }
 
     .el-form-item + .el-form-item {
-      margin-left: 20px;
+      margin-right: 20px;
     }
   }
 }
 //table fixed:right 高度不够覆盖内容
 .el-table__fixed-right {
-  height: calc(
-    100% - 1px
-  ) !important; //设置高优先，以覆盖内联样式 -1 不影响table自身的border
+  height: calc(100% - 1px) !important; //设置高优先，以覆盖内联样式 -1 不影响table自身的border
   &::before {
     height: 0;
   }
