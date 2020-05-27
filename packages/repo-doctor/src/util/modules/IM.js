@@ -106,11 +106,8 @@ export const IMHelper = {
   onUpdateSession(session) {
     console.warn('【 IM 】【 onUpdateSession 】', new Date(), session)
 
-    // 获取 vuex store
-    const store = $peace.$store
-
     // 当前会话处于激活状态，设定未读数为 0
-    if (store.state.inquiry.session.id === session.id || store.state.consultation.session.id === session.id) {
+    if ($peace.$store.state.inquiry.session?.id === session.id || $peace.$store.state.consultation.session?.id === session.id) {
       session.unread = 0
     }
 
@@ -127,9 +124,9 @@ export const IMHelper = {
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
-      if (store.state.inquiry.session.id === session.id) {
-        if (store.state.inquiry.sessions.length > 0) {
-          const currentSession = store.state.inquiry.sessions.find((temp) => temp.id === session.id)
+      if ($peace.$store.state.inquiry.session?.id === session.id) {
+        if ($peace.$store.state.inquiry.sessions?.length > 0) {
+          const currentSession = $peace.$store.state.inquiry.sessions?.find((temp) => temp.id === session.id)
 
           inquiryHelper.setInquirySession(currentSession)
           inquiryHelper.setInquirySessionMessages(currentSession?.lastMsg)
@@ -149,9 +146,9 @@ export const IMHelper = {
 
       // 将新 session 更新到 session store
       // 将新 message 更新到 sessionMessages store
-      if (store.state.consultation.session.id === session.id) {
-        if (store.state.consultation.sessions.length > 0) {
-          const currentSession = store.state.consultation.sessions.find((temp) => temp.id === session.id)
+      if ($peace.$store.state.consultation.session?.id === session.id) {
+        if ($peace.$store.state.consultation.sessions?.length > 0) {
+          const currentSession = $peace.$store.state.consultation.sessions?.find((temp) => temp.id === session.id)
 
           consultationHelper.setConsultationSession(currentSession)
           consultationHelper.setConsultationSessionMessages(currentSession.lastMsg)

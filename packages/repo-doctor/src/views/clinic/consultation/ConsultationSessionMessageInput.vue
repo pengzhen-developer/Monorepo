@@ -143,6 +143,8 @@ import ConsultationSessionSuggest from './ConsultationSessionSuggest'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 
 export default {
+  inject: ['provideCall'],
+
   components: {
     ConsultationSessionSuggest,
     ConsultationSessionCaseDetail
@@ -188,6 +190,10 @@ export default {
   },
 
   computed: {
+    injectCall() {
+      return this.provideCall
+    },
+
     summaryMaxLength() {
       if (this.consultSuggestDialog.model.consultSuggest) {
         return 1000 - this.consultSuggestDialog.model.consultSuggest.length
@@ -210,7 +216,7 @@ export default {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
 
-        peace.service.patient.getDiseaseInfo(params).then(res => {
+        peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.diagnoseDialog.source.present_history = res.data.list
         })
       } else {
@@ -225,9 +231,7 @@ export default {
         }
       }
 
-      const index = this.diagnoseDialog.chooseData.findIndex(
-        existItem => existItem.id === item.id && existItem.name === item.name
-      )
+      const index = this.diagnoseDialog.chooseData.findIndex((existItem) => existItem.id === item.id && existItem.name === item.name)
 
       if (index === -1) {
         this.diagnoseDialog.chooseData.push(item)
@@ -239,7 +243,7 @@ export default {
     },
 
     closeItem(item) {
-      const index = this.diagnoseDialog.chooseData.findIndex(existItem => existItem === item)
+      const index = this.diagnoseDialog.chooseData.findIndex((existItem) => existItem === item)
 
       if (index !== -1) {
         this.diagnoseDialog.chooseData.splice(index, 1)
@@ -273,19 +277,18 @@ export default {
       const params = {
         consultNo: session.content.consultInfo.consultNo,
         toDoctorId:
-          session.content.consultInfo.receiveDoctor[0].doctorId ===
-          this.$store.state.user.userInfo.list.docInfo.doctor_id
+          session.content.consultInfo.receiveDoctor[0].doctorId === this.$store.state.user.userInfo.list.docInfo.doctor_id
             ? session.content.consultInfo.startDoctor[0].doctorId
             : session.content.consultInfo.receiveDoctor[0].doctorId
       }
 
-      peace.service.consult.doctorStatus(params).then(res => {
+      peace.service.consult.doctorStatus(params).then((res) => {
         if (res.data.fromDoctorConsultStatus === 1) {
           return peace.util.warning('您正在会诊中，不可开始新的会诊')
         } else if (res.data.toDoctorConsultStatus === 1) {
           return peace.util.warning('医生正在会诊中，无法接听您的视频')
         } else {
-          $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+          this.injectCall(this.$store.state.consultation?.session, 'consult')
         }
       })
     },
@@ -363,7 +366,7 @@ export default {
     },
 
     invitedChange(val, row) {
-      const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === row.doctorId)
+      const index = this.invitedDialog.chooseList.findIndex((item) => item.doctorId === row.doctorId)
 
       if (index === -1) {
         this.invitedDialog.chooseList.push(row)
@@ -375,8 +378,8 @@ export default {
     },
 
     closeInvitedChange(doctorId) {
-      const index = this.invitedDialog.chooseList.findIndex(item => item.doctorId === doctorId)
-      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex(item => item === doctorId)
+      const index = this.invitedDialog.chooseList.findIndex((item) => item.doctorId === doctorId)
+      const checkboxIndex = this.invitedDialog.chooseListForCheckBox.findIndex((item) => item === doctorId)
 
       if (index !== -1) {
         this.invitedDialog.chooseList.splice(index, 1)
@@ -387,10 +390,10 @@ export default {
     saveInvited() {
       const params = {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
-        inviteDoctorIds: this.invitedDialog.chooseList.map(item => item.doctorId)
+        inviteDoctorIds: this.invitedDialog.chooseList.map((item) => item.doctorId)
       }
 
-      peace.service.consult.chooseInviteDoctor(params).then(res => {
+      peace.service.consult.chooseInviteDoctor(params).then((res) => {
         $peace.util.alert(res.msg)
 
         this.invitedDialog.visible = false
@@ -398,16 +401,12 @@ export default {
     },
 
     saveConsultSuggest() {
-      if (
-        this.consultSuggestDialog.model.consultSuggest &&
-        this.consultSuggestDialog.model.consultDiagnose &&
-        this.consultSuggestDialog.model.consultFind
-      ) {
+      if (this.consultSuggestDialog.model.consultSuggest && this.consultSuggestDialog.model.consultDiagnose && this.consultSuggestDialog.model.consultFind) {
         const diagnose = this.consultSuggestDialog.model.consultDiagnose
 
         const params = {
           consultNo: this.$store.getters['consultation/consultInfo'].consultNo,
-          consultDiagnose: diagnose.map(v => v.name),
+          consultDiagnose: diagnose.map((v) => v.name),
           consultFind: this.consultSuggestDialog.model.consultFind,
           consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
@@ -427,14 +426,14 @@ export default {
         consultNo: consultNo
       }
 
-      peace.service.inquiry.getCase(params).then(res => {
+      peace.service.inquiry.getCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
       })
     }
   },
   created() {
-    peace.service.patient.IllnessList().then(res => {
+    peace.service.patient.IllnessList().then((res) => {
       this.diagnoseDialog.source.IllnessList = res.data.list
     })
   }

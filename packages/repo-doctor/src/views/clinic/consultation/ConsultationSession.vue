@@ -163,10 +163,6 @@ export default {
       this.consultationAction = ''
     },
 
-    sendVideo() {
-      $peace.videoComponent.sendVideo()
-    },
-
     overConsultation() {
       if (!this.$store.getters['consultation/consultInfo'].isCommit) {
         $peace.util.confirm('尚未填写会诊小结，去填写？', undefined, undefined, () => {
@@ -284,6 +280,7 @@ $--control-height: 150px;
     }
 
     .message-list {
+      flex: 1;
       min-height: calc(100% - #{$--control-height} - 60px);
 
       .message-list-scrollbar {

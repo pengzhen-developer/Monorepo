@@ -23,12 +23,19 @@ export default function() {
             component: () => import('@src/views/home')
           },
 
-          // 诊室 - 我的问诊
+          // 诊室 - 在线咨询
           {
             path: '/clinic/inquiry',
             name: '/clinic/inquiry',
             meta: { Auth: true },
             component: () => import('@src/views/clinic/inquiry/index.vue')
+          },
+          // 诊室 - 复诊续方
+          {
+            path: '/clinic/returnVisit',
+            name: '/clinic/returnVisit',
+            meta: { Auth: true },
+            component: () => import('@src/views/clinic/returnVisit')
           },
           // 诊室 - 我的会诊
           {

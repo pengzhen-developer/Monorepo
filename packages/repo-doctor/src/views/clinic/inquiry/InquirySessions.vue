@@ -6,13 +6,13 @@
     </div>
 
     <div class="body"
-         v-if="$store.state.inquiry.sessions && $store.state.inquiry.sessions.length > 0">
+         v-if="storeSessions.length > 0">
       <el-scrollbar class="body-scrollbar">
         <div :class="{ active: $store.state.inquiry.session && $store.state.inquiry.session.id === session.id }"
              :key="session.id"
              @click="selectSession(session)"
              class="inquiry"
-             v-for="session in $store.state.inquiry.sessions">
+             v-for="session in storeSessions">
           <div class="inquiry-patient">
             <div class="inquiry-patient-left">
               <template v-if="session.unread">
@@ -65,7 +65,7 @@
     <div class="body-no-data"
          v-else>
       <img src="~@src/assets/images/inquiry/ic_no one.png">
-      <span>暂无问诊</span>
+      <span class="text-grey-5">暂无问诊</span>
     </div>
   </div>
 </template>
@@ -75,6 +75,19 @@ import peace from '@src/library'
 import util from '@src/util'
 
 export default {
+  computed: {
+    storeSessions() {
+      const sessions = this.$store.state.inquiry?.sessions ?? []
+      const filterSessions = sessions.filter((session) => {
+        const inquiryType = session?.content?.inquiryInfo?.inquiryType
+        return inquiryType === 'image' || inquiryType === 'video'
+      })
+      const cloneSessions = peace.util.deepClone(filterSessions)
+
+      return cloneSessions
+    }
+  },
+
   methods: {
     getLastMessage(session) {
       const messageType = session.lastMsg.type

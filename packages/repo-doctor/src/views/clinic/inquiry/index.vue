@@ -3,10 +3,12 @@
     <div class="inquiry-left">
       <InquirySessions></InquirySessions>
     </div>
-    <div class="inquiry-center" v-if="$store.state.inquiry.session && $store.state.inquiry.session.id">
+    <div class="inquiry-center"
+         v-if="canShowSession">
       <InquirySession></InquirySession>
     </div>
-    <div class="inquiry-right" v-if="$store.state.inquiry.session && $store.state.inquiry.session.id">
+    <div class="inquiry-right"
+         v-if="canShowExtend">
       <InquiryPatient></InquiryPatient>
     </div>
   </div>
@@ -32,19 +34,37 @@ export default {
     }
   },
 
+  computed: {
+    canShowSession() {
+      return (
+        !!this.$store.state.inquiry?.session?.id &&
+        (this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === 'image' ||
+          this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === 'video')
+      )
+    },
+
+    canShowExtend() {
+      return (
+        !!this.$store.state.inquiry?.session?.id &&
+        (this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === 'image' ||
+          this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === 'video')
+      )
+    }
+  },
+
   watch: {
     // 监听 sessions 变化
     // 更新定时器
     '$store.state.inquiry.sessions': {
       handler(sessions) {
         // 清理已存在的 sessions interval
-        this.intervalList.forEach(intervalObject => window.clearInterval(intervalObject.intervalValue))
+        this.intervalList.forEach((intervalObject) => window.clearInterval(intervalObject.intervalValue))
         this.intervalList = []
 
         // 清理 loading
         this.loading && this.loading.close()
 
-        sessions.forEach(session => {
+        sessions.forEach((session) => {
           const intervalObject = {
             id: session.id,
             value: undefined,
@@ -100,7 +120,7 @@ export default {
           if (this.loading && this.loading.visible) {
             window.location.reload()
           }
-        }, 1000 * 30)
+        }, 1000 * 3000)
       }
 
       // 已接诊, 正计时
@@ -118,7 +138,7 @@ export default {
 
     // 定时器 - 获取问诊时间
     getIntervalValue(session) {
-      return session && this.intervalList.find(intervalObject => intervalObject.id === session.id).value
+      return session && this.intervalList.find((intervalObject) => intervalObject.id === session.id).value
     }
   }
 }

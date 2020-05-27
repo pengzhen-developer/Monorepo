@@ -16,7 +16,7 @@
         {{ familySex }} |
         {{ familyAge }}岁
       </span> -->
-      <img v-if="isAgain === '1'"
+      <img v-if="isAgain"
            src="../assets/images/ic_fz.png"
            class="fz" />
       <img v-else
@@ -68,7 +68,7 @@ export default {
      * 是否复诊
      */
     isAgain: {
-      type: String,
+      type: [String, Boolean, Number],
       required: true
     },
     /*

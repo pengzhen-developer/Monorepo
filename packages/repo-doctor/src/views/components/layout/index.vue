@@ -1,32 +1,34 @@
 <template>
   <div class="layout">
-    <Video></Video>
+    <TheVideo>
 
-    <div class="layout-header">
-      <TheHeader></TheHeader>
-    </div>
-
-    <div class="layout-body">
-      <div class="layout-body-left">
-        <TheNav ref="layoutNav"></TheNav>
+      <div class="layout-header">
+        <TheHeader></TheHeader>
       </div>
-      <div class="layout-body-right">
-        <div class="layout-body-right-tab">
-          <TheTab></TheTab>
-        </div>
 
-        <div class="layout-body-right-content">
-          <el-scrollbar class="layout-body-right-content-scrollbar">
-            <transition mode="out-in"
-                        name="el-fade-in-linear">
-              <router-view :key="$route.fullPath"
-                           class="layout-body-right-content-app">
-              </router-view>
-            </transition>
-          </el-scrollbar>
+      <div class="layout-body">
+        <div class="layout-body-left">
+          <TheNav ref="layoutNav"></TheNav>
+        </div>
+        <div class="layout-body-right">
+          <div class="layout-body-right-tab">
+            <TheTab></TheTab>
+          </div>
+
+          <div class="layout-body-right-content">
+            <el-scrollbar class="layout-body-right-content-scrollbar">
+              <transition mode="out-in"
+                          name="el-fade-in-linear">
+                <router-view :key="$route.fullPath"
+                             class="layout-body-right-content-app">
+                </router-view>
+              </transition>
+            </el-scrollbar>
+          </div>
         </div>
       </div>
-    </div>
+
+    </TheVideo>
 
     <el-backtop target=".layout-body-right-content-scrollbar .el-scrollbar__wrap"></el-backtop>
   </div>
@@ -37,7 +39,7 @@ import TheHeader from './TheHeader'
 import TheNav from './TheNav'
 import TheTab from './TheTab'
 
-import Video from '@src/views/clinic/Video'
+import TheVideo from './TheVideo'
 
 import peace from '@src/library'
 
@@ -49,7 +51,7 @@ export default {
     TheNav,
     TheTab,
 
-    Video
+    TheVideo
   },
 
   data() {
@@ -83,11 +85,7 @@ export default {
 
     '$store.state.layout.tabList': {
       handler() {
-        peace.cache.set(
-          peace.type.USER.TAB_LIST,
-          this.$store.state.layout.tabList,
-          peace.type.SYSTEM.CACHE.SESSION_STORAGE
-        )
+        peace.cache.set(peace.type.USER.TAB_LIST, this.$store.state.layout.tabList, peace.type.SYSTEM.CACHE.SESSION_STORAGE)
       },
 
       immediate: true
@@ -96,9 +94,7 @@ export default {
 
   methods: {
     pushTab(path) {
-      const currentMenu =
-        this.menuList.find((item) => item.path === path) ||
-        this.$store.state.layout.tabList.find((item) => item.path === path)
+      const currentMenu = this.menuList.find((item) => item.path === path) || this.$store.state.layout.tabList.find((item) => item.path === path)
 
       if (currentMenu) {
         // 将当前选中的项，添加到 tab

@@ -22,6 +22,14 @@
 import peace from '@src/library'
 
 export default {
+  inject: ['provideCall'],
+
+  computed: {
+    injectCall() {
+      return this.provideCall
+    }
+  },
+
   methods: {
     // 接受
     receive() {
@@ -43,7 +51,7 @@ export default {
         }
 
         peace.util.confirm(message, undefined, option, () => {
-          $peace.videoComponent.call(this.$store.state.consultation.session, 'consult')
+          this.injectCall(this.$store.state.consultation.session, 'consult')
         })
       }
 
@@ -52,11 +60,11 @@ export default {
 
     // 拒绝
     refuse() {
-      const refuseMessage = confirmCallback => {
+      const refuseMessage = (confirmCallback) => {
         this.$prompt('退诊后自动退还问诊费用，请输入退诊原因。', '提示', {
           confirmButtonText: '确认退诊',
           cancelButtonText: '取消退诊',
-          inputType: 'textarea',
+          inputType: 'textarea'
         }).then(({ value }) => {
           if (value) {
             confirmCallback(value)
@@ -66,7 +74,7 @@ export default {
         })
       }
 
-      const refuseHandler = reason => {
+      const refuseHandler = (reason) => {
         const params = {
           reason: reason,
           consultNo: this.$store.state.consultation.session.content.consultInfo.consultNo,

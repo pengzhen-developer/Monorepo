@@ -341,6 +341,7 @@ $--control-height: 200px;
     height: calc(100% - #{$--header-height});
 
     .message-list {
+      flex: 1;
       height: calc(100% - #{$--control-height});
 
       .message-list-scrollbar {
@@ -350,6 +351,7 @@ $--control-height: 200px;
 
     .message-input {
       height: $--control-height;
+      min-height: $--control-height;
     }
   }
 }

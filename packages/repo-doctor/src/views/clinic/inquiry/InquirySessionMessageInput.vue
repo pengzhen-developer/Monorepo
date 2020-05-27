@@ -1,14 +1,12 @@
 <template>
   <div class="inquiry-session-message-input">
     <div class="control">
-      <el-upload
-        :auto-upload="false"
-        :on-change="sendImage"
-        accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-        action=" "
-        ref="upload"
-        style="display: inline-block;"
-      >
+      <el-upload :auto-upload="false"
+                 :on-change="sendImage"
+                 accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+                 action=" "
+                 ref="upload"
+                 style="display: inline-block;">
         <el-button type="text">
           <img src="~@src/assets/images/inquiry/chat_icon_pic.png" />
           <span>图片</span>
@@ -17,67 +15,74 @@
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendVideo" type="text">
+      <el-button @click="sendVideo"
+                 type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_video.png" />
         <span>视频</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendCase" type="text">
+      <el-button @click="sendCase"
+                 type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
         <span>写病历</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendRecipe" type="text">
+      <el-button @click="sendRecipe"
+                 type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
         <span>开处方</span>
       </el-button>
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-button @click="sendTransfer" type="text">
+      <el-button @click="sendTransfer"
+                 type="text">
         <img src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
         <span>申请转诊</span>
       </el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button @click="sendConsultation" type="text">
+      <el-button @click="sendConsultation"
+                 type="text">
         <img src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
         <span>申请会诊</span>
       </el-button>
     </div>
     <div class="input-text">
-      <el-input
-        :rows="6"
-        @keyup.ctrl.enter.native="sendText()"
-        placeholder
-        resize="none"
-        type="textarea"
-        v-model="message"
-      ></el-input>
+      <el-input :rows="6"
+                @keyup.ctrl.enter.native="sendText()"
+                placeholder
+                resize="none"
+                type="textarea"
+                v-model="message"></el-input>
     </div>
     <div class="input-send">
       <el-dropdown placement="top">
-        <el-button round type="text">快速回复</el-button>
-        <el-dropdown-menu slot="dropdown" style="overflow: hidden;">
+        <el-button round
+                   type="text">快速回复</el-button>
+        <el-dropdown-menu slot="dropdown"
+                          style="overflow: hidden;">
           <div style="height: 150px; overflow: auto;">
-            <el-dropdown-item
-              v-for="item in quickReplys"
-              :key="item"
-              @click.native="sendText(item)"
-              style="padding: 5px 10px;"
-            >
+            <el-dropdown-item v-for="item in quickReplys"
+                              :key="item"
+                              @click.native="sendText(item)"
+                              style="padding: 5px 10px;">
               {{ item }}
             </el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button @click="sendText()" round type="primary">发送</el-button>
+      <el-button @click="sendText()"
+                 round
+                 type="primary">发送</el-button>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible" append-to-body title="病历详情">
+    <peace-dialog :visible.sync="caseDetail.visible"
+                  append-to-body
+                  title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </peace-dialog>
   </div>
@@ -89,6 +94,8 @@ import peace from '@src/library'
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
 
 export default {
+  inject: ['provideCall'],
+
   components: {
     InquirySessionCaseDetail
   },
@@ -113,6 +120,12 @@ export default {
         '您这种情况建议去医院找医生面诊',
         '希望您早日康复'
       ]
+    }
+  },
+
+  computed: {
+    injectCall() {
+      return this.provideCall
     }
   },
 
@@ -161,11 +174,8 @@ export default {
     },
 
     sendVideo() {
-      if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-        peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-      ) {
-        $peace.videoComponent.call(this.$store.state.inquiry.session, 'inquiry')
+      if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+        this.injectCall(this.$store.state.inquiry.session, 'inquiry')
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
@@ -177,16 +187,13 @@ export default {
       }
 
       if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
-        peace.service.inquiry.checkOverInquiry(params).then(res => {
+        peace.service.inquiry.checkOverInquiry(params).then((res) => {
           if (res.data.status === 1) {
             let message = ''
-            if (
-              this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-              peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-            ) {
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
               message = '您与患者尚未进行视频通话，暂时无法发送病历。'
             } else {
-              message = '当前为无效会话，暂时无法发送病历。'
+              message = '当前为无效会话，暂时无效会话，暂时无法发送病历。'
             }
 
             $peace.util.warning(message)
@@ -215,13 +222,10 @@ export default {
       }
 
       // 验证是否有效会话
-      peace.service.inquiry.checkOverInquiry(params).then(res => {
+      peace.service.inquiry.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
           let message = ''
-          if (
-            this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-            peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-          ) {
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行转诊。'
           } else {
             message = '当前为无效会话，暂时无法进行转诊。'
@@ -254,13 +258,10 @@ export default {
       }
 
       // 验证是否有效会话
-      peace.service.inquiry.checkOverInquiry(params).then(res => {
+      peace.service.inquiry.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
           let message = ''
-          if (
-            this.$store.getters['inquiry/inquiryInfo'].inquiryType ===
-            peace.type.INQUIRY.INQUIRY_TYPE.视频问诊
-          ) {
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行会诊。'
           } else {
             message = '当前为无效会话，暂时无法进行会诊。'
@@ -291,7 +292,7 @@ export default {
       const params = {
         inquiry_no: inquiryNo
       }
-      peace.service.inquiry.getCase(params).then(res => {
+      peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })

@@ -55,12 +55,20 @@ export const config = {
         id: 21,
         pid: 2,
         closable: true,
-        name: '我的问诊',
-        title: '我的问诊',
+        name: '在线咨询',
+        title: '在线咨询',
         path: '/clinic/inquiry'
       },
       {
-        id: 22,
+        id: 21,
+        pid: 2,
+        closable: true,
+        name: '复诊续方',
+        title: '复诊续方',
+        path: '/clinic/returnVisit'
+      },
+      {
+        id: 23,
         pid: 2,
         closable: true,
         name: '我的会诊',
