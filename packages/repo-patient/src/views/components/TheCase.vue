@@ -5,7 +5,7 @@
       <div class="prescript-no">NO.{{internalData.case_no}}</div>
       <div class="prescript-head">{{internalData.hospitalName}}</div>
       <div class="prescript-h4">门(急)诊病历</div>
-      <div class="prescript-table">
+      <div class="prescript-table dotted-line-before">
         <div class="th">
           姓名
           <div class="td">{{internalData.patientName}}</div>
@@ -319,11 +319,6 @@ table {
     margin: 5px 0;
   }
   .prescript .prescript-table {
-    border-top: 2px dotted #eeeeee;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
     text-align: center;
     padding-top: 10px;

@@ -182,10 +182,6 @@ export default {
   }
 
   &.panel-block {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
     box-shadow: 0 2px 5px #efefef;
 
@@ -287,9 +283,6 @@ export default {
       background-size: 7.5px;
       background-repeat: no-repeat;
     }
-  }
-
-  .panel-body {
   }
 
   .panel-bottom {

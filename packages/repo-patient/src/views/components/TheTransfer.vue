@@ -26,7 +26,7 @@
       <div class="prescript-no">No.{{data[current].reReferralOut.referralNo}}</div>
       <div class="prescript-head">{{data[current].reReferralOut.doctorInfo.hospitalName}}</div>
       <div class="prescript-h4">转诊单</div>
-      <div class="prescript-table">
+      <div class="prescript-table dotted-line-before">
         <div class="th">姓名
           <div class="td">{{data[current].familyInfo.name}}</div>
         </div>
@@ -409,8 +409,6 @@ export default {
   margin: 5px 0;
 }
 .prescript .prescript-table {
-  border-top: 2px dotted #000;
-
   display: flex;
   text-align: center;
   padding-top: 10px;
@@ -571,13 +569,6 @@ export default {
   padding-bottom: 0;
 }
 
-.prescript .prescript-table {
-  border-top: 1px dashed #e5e5e5;
-}
-// .outline .outline-body {
-//   margin: 10px 0;
-//   padding: 0;
-// }
 .inline {
   color: #666;
 }

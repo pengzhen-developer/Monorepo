@@ -18,7 +18,7 @@
           <span>{{internalData.prescriptionTime}} </span>
         </div>
       </div>
-      <div class="prescript-table">
+      <div class="prescript-table dotted-line-before">
         <div class="th">
           姓名
           <div class="td">{{internalData.patientName}}</div>
@@ -37,29 +37,45 @@
         </div>
       </div>
     </div>
+    <!--体重-->
+    <div class="outline"
+         v-if="internalData.weight">
+      <div class="outline-header">
+        <div class="outline-tit outline-weight">体重 <span>{{internalData.weight}}kg</span></div>
+      </div>
+    </div>
     <!--临床诊断-->
     <div class="outline">
       <div class="outline-header">
         <div class="outline-tit">临床诊断</div>
       </div>
       <div class="outline-body">
-        <div :data-index="index"
-             :key="item.DiagnosisName"
-             class="inline"
+        <div :key="index"
+             class="inline color-000"
              v-for="(item,index) in internalData.diagnosisInfos">
           {{item.DiagnosisName ? item.DiagnosisName: internalData.diagnosisInfos.length ? '' : '暂无'}}
         </div>
       </div>
     </div>
-    <!--RP-->
+    <!--过敏史-->
     <div class="outline">
+      <div class="outline-header">
+        <div class="outline-tit">过敏史</div>
+      </div>
+      <div class="outline-body">
+        <div class="inline">
+          {{internalData.allergicHistory || '暂无'}}
+        </div>
+      </div>
+    </div>
+    <!--RP-->
+    <div class="outline ">
       <div class="outline-header">
         <div class="outline-tit">Rp</div>
       </div>
-      <div class="outline-body">
-        <div :class="{ [`index-${index}`]: true }"
-             :key="item.drugName"
-             class="column-2"
+      <div class="outline-body drug">
+        <div :key="index"
+             class="column-2 dotted-line-after"
              v-for="(item, index) in internalData.drugCode">
           <div class="column-left">
             <div class="inline">
@@ -67,13 +83,8 @@
                 <span>{{item.drugName}}</span>
                 {{item.drugSpecifications}}
               </div>
-
               <div class="inline">x{{item.drugQty}}</div>
             </div>
-            <!-- <div class="inline">
-              <div class="span">{{item.drugSpecifications}}</div>
-            </div> -->
-
             <div class="small"
                  v-if="item.drugUse">{{item.drugUse}}</div>
           </div>
@@ -197,13 +208,14 @@ export default {
 .prescript {
   background: #fff;
   padding: 5px 15px;
-  margin-bottom: 10px;
+  margin-bottom: 7.5px;
 }
 
 .prescript .prescript-no,
 .prescript .prescript-line {
   color: #999;
   font-size: 11px;
+  line-height: 15px;
 }
 .prescript .prescript-line {
   display: flex;
@@ -219,18 +231,16 @@ export default {
 .prescript .prescript-head {
   font-size: 15px;
   line-height: 1.5;
-  margin-top: 10px;
+  margin-top: 8px;
   text-align: center;
 }
 .prescript .prescript-h4 {
   font-size: 22px;
   font-weight: 600;
   text-align: center;
-  margin: 5px 0;
+  margin-bottom: 5px;
 }
 .prescript .prescript-table {
-  border-top: 2px dotted #eee;
-
   display: flex;
   text-align: center;
   padding-top: 10px;
@@ -264,12 +274,12 @@ export default {
 
   .prescript.icon-status::after {
     content: '';
-    right: 10px;
+    right: 5px;
     top: 15px;
     display: block;
     position: absolute;
     width: 98px;
-    height: 105px;
+    height: 98px;
     background-size: cover;
   }
   /* 1、审核中  2、待取药  3、已作废  4、已失效 5、已配药  6、已取药*/
@@ -300,23 +310,45 @@ export default {
   }
 
   .outline {
-    margin: 0 0 10px 0;
-    padding-left: 15px;
+    margin: 0 0 7.5px 0;
+    padding-left: 19px;
+    padding-right: 19px;
   }
   .outline .outline-header {
     margin: 10px 0;
   }
   .outline .outline-body {
     margin-top: 10px;
+    margin-right: 0;
     padding: 15px 0;
     border-top: 1px solid #dedede;
     overflow: hidden;
+    &.drug {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .outline-tit {
+    color: #666;
+    .outline-weight {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 17px;
+      span {
+        color: #333;
+        font-weight: normal;
+      }
+    }
   }
   .outline-body,
   .outline-body .inline,
   .inline {
     display: block;
     word-wrap: break-word;
+    &.color-000 {
+      color: #000;
+    }
   }
   .inline-flex {
     word-break: break-all;
@@ -335,14 +367,16 @@ export default {
     display: flex;
     color: #000;
     font-size: 15px;
-    border-top: 1px dotted #bfbfbf;
     margin-top: 1px;
     padding: 10px 0;
+    position: relative;
+    &:last-child {
+      &:after {
+        border-width: 0;
+      }
+    }
   }
-  .column-2.index-0 {
-    border-top: 0;
-    padding-top: 0;
-  }
+
   .column-2 .column-left {
     flex: 1 1 auto;
   }
@@ -365,7 +399,7 @@ export default {
   .column-left .small {
     color: #999;
     font-size: 13px;
-    padding-top: 10px;
+    padding-top: 5px;
   }
   .column-2 .column-right {
     flex: 0 0 auto;
@@ -376,10 +410,7 @@ export default {
   .module {
     padding: 5px 30px;
     box-sizing: border-box;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
+
     display: flex;
     flex-wrap: wrap;
     -webkit-flex-wrap: wrap;

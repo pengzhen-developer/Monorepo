@@ -56,10 +56,9 @@
             <span style=" font-size: 15px; color: #333333;">RP</span>
           </div>
         </div>
-        <div class="row-body"
+        <div class="row-body dotted-line-after"
              v-for="item in data.list[current].drugCode"
-             :key="item.drugCode"
-             style="border-bottom: 1px dashed #BFBFBF;">
+             :key="item.drugCode">
           <div class="flex between"
                style="margin: 0 0 5px 0;">
             <div style="flex:1;">
@@ -135,7 +134,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     data: {
@@ -164,8 +162,8 @@ export default {
       }
       this.getCurrent()
     },
-    getCurrent(){
-      this.$emit('getCurrent',this.current)
+    getCurrent() {
+      this.$emit('getCurrent', this.current)
     }
   }
 }
@@ -241,8 +239,9 @@ export default {
         &::before {
           content: '';
           margin: 0 10px 0 0;
-          height: 20px;
+          height: 15px;
           width: 4px;
+          border-radius: 2px;
           background-color: #00c6ae;
         }
       }
@@ -254,6 +253,11 @@ export default {
       font-weight: 400;
       color: #000000;
       line-height: 20px;
+      &:last-child {
+        &::after {
+          border-width: 0;
+        }
+      }
     }
   }
 

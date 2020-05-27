@@ -239,7 +239,9 @@ export default {
         ShippingMethod: +this.page.tabIndex, // 0 自提 1配送
         Detailed: +this.page.tabIndex ? this.userAddr.detailAddress : this.order.Detailed,
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
-        UserPhone: +this.page.tabIndex ? this.userAddr.mobile : ''
+        UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
+        SourcePlatformCode: this.order.SourcePlatformCode,
+        TargetPlatformCodes: this.order.TargetPlatformCodes
       }
       peace.service.patient
         .submitOrder(params)
