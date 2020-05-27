@@ -130,7 +130,7 @@ export default function() {
             path: '/sys/myServiceSetting',
             name: '/sys/myServiceSetting',
             meta: { Auth: true },
-            component: () => import('@src/views/sys/myServiceSetting/index.vue')
+            component: () => import('@src/views/sys/myServiceSetting')
           },
           // 我的 - 我的药房
           {
