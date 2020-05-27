@@ -78,10 +78,9 @@ export default {
   computed: {
     storeSessions() {
       const sessions = this.$store.state.inquiry?.sessions ?? []
-      const filterSessions = sessions.filter((session) => {
-        const inquiryType = session?.content?.inquiryInfo?.inquiryType
-        return inquiryType === 'image' || inquiryType === 'video'
-      })
+      const filterSessions = sessions.filter(
+        (session) => session?.content?.inquiryInfo?.inquiryType === 'image' || session?.content?.inquiryInfo?.inquiryType === 'video'
+      )
       const cloneSessions = peace.util.deepClone(filterSessions)
 
       return cloneSessions

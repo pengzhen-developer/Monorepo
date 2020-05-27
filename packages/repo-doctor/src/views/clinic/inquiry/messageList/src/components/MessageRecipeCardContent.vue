@@ -8,7 +8,7 @@
                   v-if="recipeDetail.visible"
                   append-to-body
                   title="处方详情">
-      <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
+      <RecipeDetail v-bind:data="recipeDetail.data"></RecipeDetail>
     </peace-dialog>
   </div>
 </template>
@@ -16,7 +16,7 @@
 <script>
 import peace from '@src/library'
 import MessageRecipeCard from './MessageRecipeCard'
-import InquirySessionRecipeDetail from '@src/views/clinic/inquiry/InquirySessionRecipeDetail'
+import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 
 export default {
   props: {
@@ -27,7 +27,7 @@ export default {
   },
   components: {
     MessageRecipeCard,
-    InquirySessionRecipeDetail
+    RecipeDetail
   },
   computed: {
     diagnosis() {
@@ -37,9 +37,7 @@ export default {
       return this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.drugInfo
     },
     visitingTime() {
-      return (
-        this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.visitingTime
-      )
+      return this.message.content.data.recipeInfo && this.message.content.data.recipeInfo.visitingTime
     }
   },
   data() {
@@ -56,7 +54,7 @@ export default {
         inquiry_no: this.message.content.data.inquiryInfo.inquiryNo,
         prescriptionId: this.message.content.data.recipeInfo.recipeId
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then(res => {
+      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })

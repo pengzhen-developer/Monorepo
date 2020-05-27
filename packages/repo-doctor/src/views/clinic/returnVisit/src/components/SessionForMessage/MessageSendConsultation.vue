@@ -292,7 +292,7 @@ export default {
                   center: true
                 })
 
-                this.$emit('control', 'MessageList')
+                this.$emit('close')
               })
               .finally(() => {
                 this.isSending = false
@@ -303,7 +303,7 @@ export default {
     },
 
     close() {
-      this.$emit('control', 'MessageList')
+      this.$emit('close')
     }
   }
 }

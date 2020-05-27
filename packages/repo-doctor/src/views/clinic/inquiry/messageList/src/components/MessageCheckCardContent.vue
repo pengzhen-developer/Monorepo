@@ -30,10 +30,7 @@ export default {
   },
   computed: {
     checkOrderTxt() {
-      return (
-        this.message.content.data.checkOrderInfo &&
-        this.message.content.data.checkOrderInfo.checkOrderTxt
-      )
+      return this.message.content.data.checkOrderInfo && this.message.content.data.checkOrderInfo.checkOrderTxt
     }
   },
   data() {
@@ -50,7 +47,7 @@ export default {
         checkOrderNo: this.message.content.data.checkOrderInfo.checkOrderNo
       }
 
-      peace.service.inquiry.getOrderDetail(params).then(res => {
+      peace.service.inquiry.getOrderDetail(params).then((res) => {
         this.checkOrder.visible = true
         this.checkOrder.data = res.data.info
       })

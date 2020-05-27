@@ -1,8 +1,7 @@
 <template>
   <div class="inquiry-session-message-list">
     <!-- 待接诊 -->
-    <template
-              v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
       <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
                                     :data="messageList[0].content.data">
       </InquiryPreliminaryForReceive>
@@ -72,8 +71,7 @@
             <div class="message-content">
               <div class="content top">
                 {{ message.content.data.inquiryOrderInfo.confirmIllness }}</div>
-              <div class="content"><span
-                      class="t">病情描述:</span>{{ message.content.data.inquiryOrderInfo.describe }}
+              <div class="content"><span class="t">病情描述:</span>{{ message.content.data.inquiryOrderInfo.describe }}
               </div>
             </div>
           </div>
@@ -267,8 +265,7 @@
         </template>
 
         <!-- 病历消息 -->
-        <template
-                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -303,8 +300,7 @@
         </template>
 
         <!-- 处方消息 -->
-        <template
-                  v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -384,6 +380,10 @@
       <InquiryCheckOrderInfo :data="checkOrder.data"
                              @close="() => checkOrder.visible = false"></InquiryCheckOrderInfo>
     </peace-dialog>
+
+    <peace-dialog v-bind:visible.sync="recipeDetail.visible">
+      <RecipeDetail v-bind:data="recipeDetail.data"></RecipeDetail>
+    </peace-dialog>
   </div>
 </template>
 
@@ -396,11 +396,13 @@ import InquiryConsultationDetail from './InquiryConsultationDetail'
 import InquiryTransferDetail from './InquiryTransferDetail'
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
 import InquirySessionRecipeDetail from './InquirySessionRecipeDetail'
+import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 import InquiryPreliminary from './InquiryPreliminary'
 import InquiryCheckOrderInfo from './InquiryCheckOrderInfo'
 
 export default {
   components: {
+    RecipeDetail,
     InquiryPreliminaryForReceive,
 
     InquiryConsultationDetail,
@@ -467,7 +469,7 @@ export default {
       let sessionMessages = this.data || this.$store.state.inquiry.sessionMessages
 
       // 过滤无效数据
-      sessionMessages = sessionMessages.filter(message => {
+      sessionMessages = sessionMessages.filter((message) => {
         // 屏蔽系统消息
         if (message.type === 'notification') {
           return false
@@ -588,7 +590,7 @@ export default {
       const params = {
         inquiry_no: message.content.data.inquiryInfo.inquiryNo
       }
-      peace.service.inquiry.getCase(params).then(res => {
+      peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })
@@ -599,7 +601,7 @@ export default {
         inquiry_no: message.content.data.inquiryInfo.inquiryNo,
         prescriptionId: message.content.data.recipeInfo.recipeId
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then(res => {
+      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })
@@ -614,7 +616,7 @@ export default {
         referral_type: 'out'
       }
 
-      peace.service.inquiry.referralDocPc(params).then(res => {
+      peace.service.inquiry.referralDocPc(params).then((res) => {
         this.transfer.data = res.data
       })
     },
@@ -627,7 +629,7 @@ export default {
         consultNo: message.content.data.consultInfo.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultation.data = res.data.info
       })
     },
@@ -642,7 +644,7 @@ export default {
         checkOrderNo: message.content.data.checkOrderInfo.checkOrderNo
       }
 
-      peace.service.inquiry.getOrderDetail(params).then(res => {
+      peace.service.inquiry.getOrderDetail(params).then((res) => {
         this.checkOrder.visible = true
         this.checkOrder.data = res.data.info
       })

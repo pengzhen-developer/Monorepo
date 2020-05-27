@@ -21,7 +21,8 @@
       <q-scroll-area class="content"
                      v-bind:thumb-style="thumbStyle">
         <Component v-bind:is="componentInstance"
-                   v-on:control="control">
+                   v-bind:session="session"
+                   v-on:close="close">
         </Component>
       </q-scroll-area>
     </div>
@@ -72,6 +73,10 @@ export default {
       }
     },
 
+    session() {
+      return this.$store.state.inquiry?.session
+    },
+
     sessionMessagaes() {
       return this.$store.state.inquiry?.sessionMessages
     }
@@ -97,6 +102,10 @@ export default {
     // 会话 / 写病历 / 写处方 等等
     control(type) {
       this.componentType = type
+    },
+
+    close() {
+      this.control('MessageList')
     }
   }
 }

@@ -209,7 +209,7 @@ export default {
       inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
     }
     peace.service.inquiry.getCase(paramsForCase).then((res) => {
-      this.model.diagnose = res.data.diagnose
+      this.view.model.diagnose = res.data.diagnose
     })
   },
 
@@ -285,7 +285,7 @@ export default {
                 center: true
               })
 
-              this.$emit('control', 'MessageList')
+              this.$emit('close')
             })
           }
         }
@@ -293,7 +293,7 @@ export default {
     },
 
     close() {
-      this.$emit('control', 'MessageList')
+      this.$emit('close')
     }
   }
 }

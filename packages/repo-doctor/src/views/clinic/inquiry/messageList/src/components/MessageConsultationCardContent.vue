@@ -49,22 +49,13 @@ export default {
       return this.message.content.data.consultInfo && this.message.content.data.consultInfo.diagnose
     },
     doctorName() {
-      return (
-        this.message.content.data.consultInfo.toDoctorInfo &&
-        this.message.content.data.consultInfo.toDoctorInfo.name
-      )
+      return this.message.content.data.consultInfo.toDoctorInfo && this.message.content.data.consultInfo.toDoctorInfo.name
     },
     doctorDeptName() {
-      return (
-        this.message.content.data.consultInfo.toDoctorInfo &&
-        this.message.content.data.consultInfo.toDoctorInfo.deptName
-      )
+      return this.message.content.data.consultInfo.toDoctorInfo && this.message.content.data.consultInfo.toDoctorInfo.deptName
     },
     doctorHospitalName() {
-      return (
-        this.message.content.data.consultInfo.toDoctorInfo &&
-        this.message.content.data.consultInfo.toDoctorInfo.hospitalName
-      )
+      return this.message.content.data.consultInfo.toDoctorInfo && this.message.content.data.consultInfo.toDoctorInfo.hospitalName
     }
   },
   data() {
@@ -84,7 +75,7 @@ export default {
         consultNo: this.message.content.data.consultInfo.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultation.data = res.data.info
       })
     }

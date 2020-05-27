@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 获取预约列表
+   * 获取病历详情
    *
    * @param {*} params
    */
-  getReservationList(params) {
+  getCase(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/returnvisit/getReservationList'
+    const apiPath = 'client/v1/inquiry/getCase'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -21,14 +21,35 @@ export default {
   },
 
   /**
-   * 接诊
+   * 获取处方详情
    *
    * @param {*} params
    */
-  receiveInquiry(params) {
+  getPrescripInfo(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/patient/receiveInquiry'
+    const apiPath = 'client/v1/Prescribeprescrip/getPrescripInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 发送线上处方
+   *
+   * 咨询 / 复诊续方
+   *
+   * @param {*} params
+   */
+  subPrescrip(params) {
+    const isMock = false
+
+    const apiPath = 'client/v1/Prescribeprescrip/subPrescrip'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -40,14 +61,16 @@ export default {
   },
 
   /**
-   * 退诊
+   * 发送线下处方
+   *
+   * 咨询 / 复诊续方
    *
    * @param {*} params
    */
-  quitInquiry(params) {
+  offlineSubPrescrip(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/patient/quitInquiry'
+    const apiPath = 'client/v1/Prescribeprescrip/offlineSubPrescrip'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -59,33 +82,14 @@ export default {
   },
 
   /**
-   * 检查会话有效性
+   * 确认发送处方
    *
    * @param {*} params
    */
-  checkOverInquiry(params) {
+  confirmSend(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/patient/checkOverInquiry'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 获取健康档案
-   *
-   * @param {*} params
-   */
-  getOneHealth(params) {
-    const isMock = false
-
-    const apiPath = 'client/v1/health/getOneHealth'
+    const apiPath = 'client/v1/Prescribeprescrip/confirmSend'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

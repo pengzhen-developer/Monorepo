@@ -119,7 +119,21 @@
               <span class="title">临床诊断：</span>
               <span class="content">{{item.diagnosisInfos}}</span>
             </div>
-            <div class="rp-title">Rp</div>
+
+            <div class="flex justify-between items-end q-mb-xs">
+              <span class="text-h6 text-weight-bolder">Rp</span>
+              <div class="flex items-baseline"
+                   v-if="canShowAudit(item.PrescriptionAudit.auditCode)"
+                   v-bind:class="getThemeClass(item.PrescriptionAudit.auditCode)">
+                <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ item.PrescriptionAudit.auditResult }}</span>
+                <i v-on:click="showAudit(item)"
+                   class="text-subtitle2 cursor-pointer el-icon-question"
+                   style="line-height: none;"></i>
+              </div>
+            </div>
+
+            <div style="border-bottom: 1px solid #F3F3F3;"></div>
+
             <div class="dragList">
               <div class="dragItem"
                    v-for="(drug,index) in item.drugCode"
@@ -219,14 +233,34 @@
         </template>
       </el-tab-pane>
     </el-tabs>
+
+    <!-- 前置审方详情 -->
+    <peace-dialog title="系统审方结果"
+                  v-bind:visible.sync="audit.visible"
+                  append-to-body>
+      <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
+    </peace-dialog>
   </div>
 </template>
 <script>
+const adiutThemeMap = {
+  /** 通过 */
+  ['OK']: 'primary',
+  /** 提示 */
+  ['I']: 'info',
+  /** 慎用 */
+  ['R']: 'warning',
+  /** 禁用 */
+  ['D']: 'negative'
+}
+
 import NoData from '@src/views/components/NoData'
+import RecipeAudit from '@src/views/components/recipe/RecipeAudit'
 import get from 'lodash/get'
 export default {
   name: 'ConsultDetail',
   components: {
+    RecipeAudit,
     NoData
   },
   props: {
@@ -240,7 +274,12 @@ export default {
   data() {
     return {
       activeName: 'first',
-      prescribeIndex: 1
+      prescribeIndex: 1,
+
+      audit: {
+        visible: false,
+        data: {}
+      }
     }
   },
   computed: {
@@ -280,6 +319,25 @@ export default {
     }
   },
   methods: {
+    /** 是否显示前置审方按钮 */
+    canShowAudit(code) {
+      const showAduitMap = ['I', 'R', 'D']
+      return showAduitMap.includes(code)
+    },
+
+    getThemeClass(code) {
+      const theme = adiutThemeMap[code]
+
+      return {
+        [`text-${theme}`]: true
+      }
+    },
+
+    showAudit(item) {
+      this.audit.visible = true
+      this.audit.data = item.PrescriptionAudit
+    },
+
     goToNext() {
       if (this.prescribeIndex == this.data.prescribeInfos.list.length) {
         this.prescribeIndex = 1

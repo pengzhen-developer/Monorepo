@@ -60,7 +60,7 @@
     <peace-dialog :visible.sync="dialog.visible"
                   append-to-body
                   title="处方详情">
-      <InquirySessionRecipeDetail :data="dialog.data"></InquirySessionRecipeDetail>
+      <RecipeDetail :data="dialog.data"></RecipeDetail>
     </peace-dialog>
   </div>
 </template>
@@ -68,11 +68,11 @@
 <script>
 import peace from '@src/library'
 
-import InquirySessionRecipeDetail from '@src/views/clinic/inquiry/InquirySessionRecipeDetail'
+import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 
 export default {
   components: {
-    InquirySessionRecipeDetail
+    RecipeDetail
   },
 
   data() {
@@ -86,12 +86,9 @@ export default {
 
         rules: {
           pickerOptionsStart: {
-            disabledDate: time => {
+            disabledDate: (time) => {
               if (this.view.model.e_Date) {
-                return (
-                  time.getTime() > this.view.model.e_Date.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() > this.view.model.e_Date.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -99,12 +96,9 @@ export default {
           },
 
           pickerOptionsEnd: {
-            disabledDate: time => {
+            disabledDate: (time) => {
               if (this.view.model.s_Date) {
-                return (
-                  time.getTime() < this.view.model.s_Date.toDate().getTime() ||
-                  time.getTime() > Date.now()
-                )
+                return time.getTime() < this.view.model.s_Date.toDate().getTime() || time.getTime() > Date.now()
               } else {
                 return time.getTime() > Date.now()
               }
@@ -141,7 +135,7 @@ export default {
       const params = {
         prescriptionId: row.id
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then(res => {
+      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.dialog.data = res.data
       })
     }

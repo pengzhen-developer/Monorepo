@@ -49,11 +49,15 @@
       </el-alert>
 
       <!-- 写病历 -->
-      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历">
+      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"
+                               v-bind:session="this.$store.state.consultation.session"
+                               v-on:close="resetAction">
       </ConsultationSessionCase>
 
       <!-- 写处方 -->
-      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方">
+      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"
+                                 v-bind:session="this.$store.state.consultation.session"
+                                 v-on:close="resetAction">
       </ConsultationSessionRecipe>
 
       <template v-else>
