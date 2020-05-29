@@ -31,7 +31,7 @@
       <div class="row">
         <div class="row-header">
           <div class="row-header-title">
-            <span style=" font-size: 15px; color: #333333;">处方编号</span>
+            <span class="row-header-title-span">处方编号</span>
           </div>
         </div>
         <div class="row-body">
@@ -39,10 +39,21 @@
         </div>
       </div>
 
+      <div class="row"
+           v-if='data.list.length>0&&data.list[current].weight'>
+        <div class="row-header">
+          <div class="row-header-title weight">
+            <div class="row-header-title-span weight">
+              体重
+              <span>{{data.list[current].weight}}kg</span></div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="row-header">
           <div class="row-header-title">
-            <span style=" font-size: 15px; color: #333333;">临床诊断</span>
+            <span class="row-header-title-span">临床诊断</span>
           </div>
         </div>
         <div class="row-body">
@@ -53,7 +64,18 @@
       <div class="row">
         <div class="row-header">
           <div class="row-header-title">
-            <span style=" font-size: 15px; color: #333333;">RP</span>
+            <span class="row-header-title-span">过敏史</span>
+          </div>
+        </div>
+        <div class="row-body">
+          <span>{{ allergyHistory||'无' }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row-header">
+          <div class="row-header-title">
+            <span class="row-header-title-span">RP</span>
           </div>
         </div>
         <div class="row-body dotted-line-after"
@@ -85,7 +107,7 @@
       <div class="row">
         <div class="row-header">
           <div class="row-header-title">
-            <span style=" font-size: 15px; color: #333333;">处方审核</span>
+            <span class="row-header-title-span">处方审核</span>
           </div>
         </div>
         <div class="row-body">
@@ -100,14 +122,12 @@
           <div class="flex"
                style="flex: 1;">
             <span class="justify row-dd"><span>医师</span> ：</span>
-            <!-- <span>{{ data.list[current].psychiatric }}</span> -->
             <span class="row-img"><img :src="data.list[current].doctorSignImage"
                    v-if="data.list[current].doctorSignImage" /></span>
           </div>
           <div class="flex"
                style="flex: 1;">
             <span class="row-dd">审核药师：</span>
-            <!-- <span>{{ data.list[current].prescriptionPharmacistName }}</span> -->
             <span class="row-img"><img :src="data.list[current].prescriptionSign"
                    v-if="data.list[current].prescriptionSign" /></span>
           </div>
@@ -143,6 +163,12 @@ export default {
           list: [],
           total: 0
         }
+      }
+    },
+    allergyHistory: {
+      type: String,
+      default() {
+        return '无'
       }
     }
   },
@@ -235,7 +261,9 @@ export default {
         align-items: center;
         padding: 10px 0;
         border-bottom: 1px solid #dedede;
-
+        &.weight {
+          border-width: 0;
+        }
         &::before {
           content: '';
           margin: 0 10px 0 0;
@@ -243,6 +271,20 @@ export default {
           width: 4px;
           border-radius: 2px;
           background-color: #00c6ae;
+        }
+
+        .row-header-title-span {
+          font-size: 15px;
+          color: #666;
+          width: 100%;
+          &.weight {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+              font-size: #333;
+            }
+          }
         }
       }
     }
@@ -253,6 +295,9 @@ export default {
       font-weight: 400;
       color: #000000;
       line-height: 20px;
+      span {
+        padding-left: 14px;
+      }
       &:last-child {
         &::after {
           border-width: 0;

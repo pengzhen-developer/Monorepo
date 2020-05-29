@@ -96,7 +96,8 @@
       <div class="outline-header">
         <div class="outline-tit">处方审核</div>
       </div>
-      <div class="outline-body">{{ internalData.prescriptionExamMemo }}</div>
+      <div class="outline-body"><span class="inline">{{ internalData.prescriptionExamMemo }}</span>
+      </div>
     </div>
     <!--医生签名-->
     <div class="outline module">
@@ -327,14 +328,16 @@ export default {
       padding: 0;
       margin: 0;
     }
+    > .inline {
+      padding-left: 15px;
+    }
   }
   .outline-tit {
     color: #666;
-    .outline-weight {
+    &.outline-weight {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-right: 17px;
       span {
         color: #333;
         font-weight: normal;
@@ -368,7 +371,7 @@ export default {
     color: #000;
     font-size: 15px;
     margin-top: 1px;
-    padding: 10px 0;
+    padding: 10px 0 10px 15px;
     position: relative;
     &:last-child {
       &:after {

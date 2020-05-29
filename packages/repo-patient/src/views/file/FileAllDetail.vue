@@ -67,6 +67,7 @@
         <FileCaseDetail :data="caseInfo"
                         v-if='active==0'></FileCaseDetail>
         <FileRecipeDetail :data="prescribeInfos"
+                          :allergyHistory="caseInfo&&caseInfo.allergyHistory||''"
                           v-else-if='active==1'></FileRecipeDetail>
         <FileExaminationDetail v-else-if='active==2'></FileExaminationDetail>
       </div>

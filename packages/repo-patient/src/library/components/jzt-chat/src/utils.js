@@ -32,7 +32,7 @@ function diffByKey(source, target, keyName = 'id') {
   }
   return {
     added,
-    removed
+    removed,
   }
 }
 
@@ -40,7 +40,7 @@ function actionAnimation(el, animationClassName, afterAnimationCallback) {
   const eventName = 'animationend'
 
   function onLeaveAnimationEnd(event) {
-    console.log("animation stopped", event)
+    console.log('animation stopped', event)
 
     this.removeEventListener(eventName, onLeaveAnimationEnd)
     this.classList.remove(animationClassName)

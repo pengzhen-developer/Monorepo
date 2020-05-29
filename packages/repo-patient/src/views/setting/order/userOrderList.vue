@@ -27,7 +27,7 @@
                   </div>
                 </div>
                 <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
-                     :style="{'color': item.inquiryInfo&&item.inquiryInfo.inquiryStatus&&item.inquiryInfo.serviceType=='returnVisit'&&item.inquiryInfo.isCurrentDate!='1'&&'#00c6ae'}"
+                     :style="{'color':item.heightLight&&'#00c6ae'}"
                      v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
                   {{item.inquiryInfo.statusTxt}}
                 </div>
@@ -303,8 +303,13 @@ export default {
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
               }
+              item.heightLight = false
               if (item.inquiryInfo.serviceType == 'returnVisit') {
                 item.inquiryType = '复诊续方'
+                /** 预约成功-- #00c6ae */
+                if (item.inquiryInfo.inquiryStatus == '2' && item.inquiryInfo.isCurrentDate != '1') {
+                  item.heightLight = true
+                }
               } else {
                 item.inquiryType = item.orderInfo.inquiryType == 'image' ? '图文咨询' : '视频咨询'
               }

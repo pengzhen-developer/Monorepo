@@ -120,12 +120,13 @@
     <div class="bottom">
       <div class="strong">￥{{order.OrderMoney}}</div>
       <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
-        <van-button v-on:click="submitOrder('yibaopay')"
+        <!-- 购药暂时屏蔽医保支付  2020-05-29-->
+        <!-- <van-button v-on:click="submitOrder('yibaopay')"
                     v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                     size="small"
                     style="margin: 0 12px 0 0"
                     round
-                    type="primary">医保支付</van-button>
+                    type="primary">医保支付</van-button> -->
         <van-button v-on:click="submitOrder('wxpay')"
                     v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                     size="small"
@@ -240,7 +241,6 @@ export default {
         Detailed: +this.page.tabIndex ? this.userAddr.detailAddress : this.order.Detailed,
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
-        SourcePlatformCode: this.order.SourcePlatformCode,
         TargetPlatformCodes: this.order.TargetPlatformCodes
       }
       peace.service.patient

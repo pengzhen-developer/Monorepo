@@ -55,19 +55,24 @@
       <div class="file-all-detail-content">
         <van-sticky>
           <van-tabs v-model="active"
-          @change="changeTab"
+                    @change="changeTab"
                     swipeable>
-            <van-tab title="病历详情" :dot="caseInfo&&caseInfo.readPatient==1">
+            <van-tab title="病历详情"
+                     :dot="caseInfo&&caseInfo.readPatient==1">
             </van-tab>
-            <van-tab title="处方" :dot="unread>0">
+            <van-tab title="处方"
+                     :dot="unread>0">
             </van-tab>
-            <van-tab title="会诊小结" :dot="consultSummary.readPatient==1">
+            <van-tab title="会诊小结"
+                     :dot="consultSummary.readPatient==1">
             </van-tab>
           </van-tabs>
         </van-sticky>
         <FileCaseDetail :data="caseInfo"
                         v-if='active==0'></FileCaseDetail>
-        <FileRecipeDetail :data="prescribeInfos" @getCurrent="getCurrent"
+        <FileRecipeDetail :data="prescribeInfos"
+                          :allergyHistory="caseInfo&&caseInfo.allergyHistory||''"
+                          @getCurrent="getCurrent"
                           v-else-if='active==1'></FileRecipeDetail>
         <FileConsultantSummaryDetail :data="consultSummary"
                                      v-else-if='active==2'></FileConsultantSummaryDetail>
@@ -100,17 +105,16 @@ export default {
       familyInfo: {},
       prescribeInfos: {},
       consultSummary: {},
-      currentIndex:0,
-      
+      currentIndex: 0
     }
   },
-  computed:{
-    unread(){
-      let readPatient=0
-      if(this.prescribeInfos.list&&this.prescribeInfos.list.length>0){
-        this.prescribeInfos.list.forEach(item=>{
-          if(item.readPatient ==1){
-            readPatient+=item.readPatient 
+  computed: {
+    unread() {
+      let readPatient = 0
+      if (this.prescribeInfos.list && this.prescribeInfos.list.length > 0) {
+        this.prescribeInfos.list.forEach(item => {
+          if (item.readPatient == 1) {
+            readPatient += item.readPatient
           }
         })
       }
@@ -133,47 +137,60 @@ export default {
         this.doctorInfo = res.data.doctorInfo
         this.consultSummary = res.data.consultSummary
         //初始化设定病历为已阅
-        if(this.caseInfo&&this.caseInfo.readPatient==1){
-          this.updateCounsultRedDot(this.caseInfo.caseNo,'caseInfo')
+        if (this.caseInfo && this.caseInfo.readPatient == 1) {
+          this.updateCounsultRedDot(this.caseInfo.caseNo, 'caseInfo')
         }
       })
     },
-    
-    updateCounsultRedDot(dataNo,type){
-      peace.service.group.updateCounsultRedDot({dataNo}).then(()=>{
-        switch(type){
-          case 'caseInfo':this.caseInfo.readPatient=2
-              break
-          case 'prescribeInfo':this.prescribeInfos.list[this.currentIndex].readPatient=2
-              break
-          case 'consultSummary':this.consultSummary.readPatient=2
-              break
+
+    updateCounsultRedDot(dataNo, type) {
+      peace.service.group.updateCounsultRedDot({ dataNo }).then(() => {
+        switch (type) {
+          case 'caseInfo':
+            this.caseInfo.readPatient = 2
+            break
+          case 'prescribeInfo':
+            this.prescribeInfos.list[this.currentIndex].readPatient = 2
+            break
+          case 'consultSummary':
+            this.consultSummary.readPatient = 2
+            break
           default:
-              break
+            break
         }
       })
     },
-    changeTab(active){
-      switch(active){
-        case 0:if(this.caseInfo&&this.caseInfo.caseNo && this.caseInfo.readPatient == 1){
-                this.updateCounsultRedDot(this.caseInfo.caseNo,'caseInfo')
-              }
-            break
-        case 1:if (this.prescribeInfos.list.length>0&&this.prescribeInfos.list[this.currentIndex].prescriptionNo && this.prescribeInfos.list[this.currentIndex].readPatient == 1) {
-                  this.updateCounsultRedDot(this.prescribeInfos.list[this.currentIndex].prescriptionNo, 'prescribeInfo')
-                }
-            break
-        case 2:if (this.consultSummary.consultNo && this.consultSummary.readPatient == 1) {
-                this.updateCounsultRedDot(this.consultSummary.consultNo, 'consultSummary')
-              }
-            break
+    changeTab(active) {
+      switch (active) {
+        case 0:
+          if (this.caseInfo && this.caseInfo.caseNo && this.caseInfo.readPatient == 1) {
+            this.updateCounsultRedDot(this.caseInfo.caseNo, 'caseInfo')
+          }
+          break
+        case 1:
+          if (
+            this.prescribeInfos.list.length > 0 &&
+            this.prescribeInfos.list[this.currentIndex].prescriptionNo &&
+            this.prescribeInfos.list[this.currentIndex].readPatient == 1
+          ) {
+            this.updateCounsultRedDot(this.prescribeInfos.list[this.currentIndex].prescriptionNo, 'prescribeInfo')
+          }
+          break
+        case 2:
+          if (this.consultSummary.consultNo && this.consultSummary.readPatient == 1) {
+            this.updateCounsultRedDot(this.consultSummary.consultNo, 'consultSummary')
+          }
+          break
         default:
-            break
+          break
       }
     },
-    getCurrent(index){
-      this.currentIndex=index
-      if (this.prescribeInfos.list[this.currentIndex].prescriptionNo && this.prescribeInfos.list[this.currentIndex].readPatient == 1) {
+    getCurrent(index) {
+      this.currentIndex = index
+      if (
+        this.prescribeInfos.list[this.currentIndex].prescriptionNo &&
+        this.prescribeInfos.list[this.currentIndex].readPatient == 1
+      ) {
         this.updateCounsultRedDot(this.prescribeInfos.list[this.currentIndex].prescriptionNo, 'prescribeInfo')
       }
     }
@@ -185,17 +202,17 @@ export default {
 .page {
   height: 100%;
 }
-/deep/.van-info{
-  top:50%;
-  right:-10px;
-  border:0;
+/deep/.van-info {
+  top: 50%;
+  right: -10px;
+  border: 0;
   padding: 0;
-  width:8px;
-  height:8px;
+  width: 8px;
+  height: 8px;
 }
-/deep/.van-info--dot{
-  display:block;
-  background-color: #F2223B;
+/deep/.van-info--dot {
+  display: block;
+  background-color: #f2223b;
 }
 .file-all-detail {
   // height: 100%;

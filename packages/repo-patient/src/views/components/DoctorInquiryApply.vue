@@ -39,7 +39,7 @@
       <transition-group tag="div"
                         name="van-slide-left">
         <div v-for="(item, index) in answerList"
-             :key="item.question">
+             :key="item.question+index">
           <div class="message-layout left"
                v-if="item.question">
             <div class="message in"
@@ -100,6 +100,7 @@
           </div>
         </transition-group>
 
+        <!-- 医生卡片 -->
         <transition-group tag="div"
                           name="van-slide-left">
           <van-sticky key="doctor"
@@ -202,9 +203,11 @@
             </div>
           </div>
         </transition-group>
+
         <jzt-chat :list="chatList"
                   @after-refresh="onAfterRefresh"
                   @click-update-btn="onClickUpdateBtn"></jzt-chat>
+
       </template>
     </div>
     <!-- 当前问题 -->
@@ -588,14 +591,15 @@ export default {
       },
 
       offsetTop: 0,
-      isFixed: false
+      isFixed: false,
+      answerStauts: false
     }
   },
 
   computed: {
     current() {
       if (this.questionIndex > -1) {
-        return this.questionList[this.questionIndex]
+        return peace.util.deepClone(this.questionList[this.questionIndex])
       }
 
       return {}
@@ -607,6 +611,11 @@ export default {
       this.$nextTick().then(() => {
         this.scrollToBottom()
       })
+    },
+    questionDone(val) {
+      if (val) {
+        this.onAfterRefresh()
+      }
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -617,6 +626,7 @@ export default {
       }
     })
   },
+
   activated() {
     this.$nextTick().then(() => {
       this.scrollToBottom()
@@ -673,6 +683,7 @@ export default {
       })
       if (sup === undefined) throw new Error('Supplementary could not be found')
       sup.hasAnswer = false
+      // this.supplementaryMode = null
       // 具体删除
       this.chatList.splice(index, 1)
       this.chatList.splice(qIndex, 1)
@@ -685,10 +696,15 @@ export default {
     onAfterRefresh() {
       this.$nextTick(() => {
         this.scrollToBottom()
+        this.answerStauts = false
       })
     },
 
     onClickSupplementaryAnswerButton(mode, value = null) {
+      if (this.answerStauts) {
+        return
+      }
+      this.answerStauts = true
       const typeActionMap = {
         allergies: this.typeActionAllergies,
         woman: this.typeActionWoman,
@@ -709,8 +725,13 @@ export default {
     },
 
     onMutationSupplementaryMode({ mode, hasAnswer }) {
+      if (this.answerStauts) {
+        return
+      }
+      this.answerStauts = true
       // 如果已经回答 无反应
       if (hasAnswer) return
+      // this.supplementaryList.find(item=>item.)
       const prev = this.chatList[this.chatList.length - 1]
       // 上一条没有回答的话 撤销
       if (prev !== undefined && prev.position === 'left') this.chatList.pop()
@@ -823,6 +844,7 @@ export default {
     },
 
     addFamilyCallback(res) {
+      this.answerStauts = false
       //新增我的家人
       if (res.success) {
         this.getFamilyList()
@@ -830,6 +852,7 @@ export default {
     },
 
     uploaderCallback(res) {
+      this.answerStauts = false
       // 兼容 answer auguments
       if (res && res.length) {
         this.answer(res)
@@ -839,6 +862,7 @@ export default {
     },
 
     illnessCallback(res) {
+      this.answerStauts = false
       // 兼容 answer auguments
       if (res) {
         this.answer(res)
@@ -848,6 +872,7 @@ export default {
     },
 
     supplementaryAllergiesSaveCallback({ foodAllergy, drugAllergy }) {
+      this.answerStauts = false
       this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
       this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
       this.model.allergicHistory = drugAllergy
@@ -864,6 +889,7 @@ export default {
     },
 
     reselcetNumerCallback(res) {
+      this.answerStauts = false
       if (res) {
         console.log('cb', res)
       }
@@ -900,6 +926,7 @@ export default {
     },
 
     doctorInquiryApplySupplementaryUploadCallback(result) {
+      this.answerStauts = false
       if (result.length) {
         this.affectedImages = result
         this.pushToChatList({
@@ -1016,6 +1043,7 @@ export default {
 
       const nextQuestionIndex = this.questionPath[this.questionPath.length - length] || 0
 
+      this.answerStauts = false
       this.questionDone = false
       this.doneList = []
       this.answerList.splice(this.answerList.length - length, length)
@@ -1041,6 +1069,7 @@ export default {
 
         this.$nextTick().then(() => {
           this.scrollToBottom()
+          this.answerStauts = false
         })
       }, 500)
     },
@@ -1060,6 +1089,7 @@ export default {
             resolve(true)
           })
           .catch(res => {
+            this.answerStauts = false
             resolve(false)
             let param = {}
             switch (res.data.data.inquiryStatus) {
@@ -1108,6 +1138,10 @@ export default {
       })
     },
     async answer() {
+      if (this.answerStauts) {
+        return
+      }
+      this.answerStauts = true
       let result = await this.setAnswer(arguments)
       if (result) {
         this.beginNextQuestion()

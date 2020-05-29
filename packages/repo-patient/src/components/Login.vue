@@ -80,6 +80,7 @@ export default {
       }
     })
   },
+
   mounted() {
     if (peace.cache.get(peace.type.USER.TEL) != null) {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
@@ -116,13 +117,14 @@ export default {
         .then(res => {
           // 开启倒计时
           this.countDownTime = 1000 * 60
-          // 获取到焦点
-          this.$refs.sms.focus()
+          this.$refs.sms && this.$refs.sms.focus()
 
           peace.util.alert(res.msg)
         })
         .finally(() => {
           setTimeout(() => {
+            // 获取到焦点
+
             this.hasSend = false
           }, 500)
         })

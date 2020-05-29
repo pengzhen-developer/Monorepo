@@ -58,7 +58,7 @@ axios.interceptors.request.use(
             }
 
             return formData
-          }
+          },
         ]
       }
 
@@ -85,7 +85,7 @@ axios.interceptors.request.use(
       }
 
       // 配置 cancelToken
-      request.cancelToken = new axios.CancelToken(cancel => {
+      request.cancelToken = new axios.CancelToken((cancel) => {
         $peace.cancelTokenList = cancelTokenList
         $peace.cancelTokenList.push(cancel)
       })

@@ -205,8 +205,8 @@
             <div class=" flex flex-1 end"
                  @click="gotoAppointPage">
               <span class="see-more">查看更多</span>
-              <van-image width="10.5px"
-                         height="10.5px"
+              <van-image width="13px"
+                         height="13px"
                          :src="require('@src/assets/images/ic_more_right.png')" />
             </div>
           </div>
@@ -1057,7 +1057,7 @@ export default {
 
     background-image: url('~@/assets/images/bg-1.png');
     background-repeat: no-repeat;
-    background-size: auto 105px;
+    background-size: 100% 105px;
 
     display: flex;
     justify-content: space-between;
