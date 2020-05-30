@@ -208,6 +208,8 @@ export default {
               this.audit.prescriptionNo = res.data.result.prescriptionNo
             } else {
               Peace.util.alert(res.msg)
+
+              this.$emit('close')
             }
           })
         } else if (this.consultNo) {
@@ -219,6 +221,8 @@ export default {
               this.audit.prescriptionNo = res.data.result.prescriptionNo
             } else {
               Peace.util.alert(res.msg)
+
+              this.$emit('close')
             }
           })
         }
