@@ -26,12 +26,12 @@
     <div class="content">
       <!-- 写病历 -->
       <InquirySessionCase v-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"
-                          v-bind:session="this.$store.state.inquriy.session">
+                          v-bind:session="this.$store.state.inquiry.session">
       </InquirySessionCase>
 
       <!-- 写处方 -->
       <InquirySessionRecipe v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"
-                            v-bind:session="this.$store.state.inquriy.session">
+                            v-bind:session="this.$store.state.inquiry.session">
       </InquirySessionRecipe>
 
       <!-- 转诊 -->
