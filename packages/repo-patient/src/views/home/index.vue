@@ -111,9 +111,10 @@ export default {
         return
       }
       let json
+      let serviceType = item.id == 'againInquiry' ? 'returnVisit' : 'inquiry'
       switch (data.type) {
         case 'guide':
-          json = peace.util.encode({ doctorTag: item.id, serviceType: 'inquiry' })
+          json = peace.util.encode({ doctorTag: item.id, serviceType })
           this.$router.push(`/components/doctorList/${json}`)
           break
         case 'appoint':
