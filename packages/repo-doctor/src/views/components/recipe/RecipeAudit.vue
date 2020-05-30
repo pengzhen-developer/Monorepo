@@ -3,7 +3,7 @@
 <template>
   <div>
     <div class="q-mb-lg q-mt-sm flex justify-center items-center"
-         v-bind:class="getThemeClass()">
+         v-bind:class="getTextThemeClass()">
 
       <el-image style="width: 30px; height: 30px;"
                 v-bind:src="getIcon()"></el-image>
@@ -18,10 +18,12 @@
          v-for="checkItem in data.checkInfo"
          v-bind:key="checkItem.productCode">
       <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
-        <div class="bg-negative relative-position"
+        <div v-bind:class="getBackgroudThemeClass()"
+             class="relative-position"
              style="width: 4px; height: 16px; left: -24px"></div>
         <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.drugName }}</span>
-        <span class="bg-negative text-white text-caption q-py-none q-px-sm">{{ checkItem.actionMsg }}</span>
+        <span v-bind:class="getBackgroudThemeClass()"
+              class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionMsg }}</span>
       </div>
 
       <div class="content q-px-lg q-py-md">
@@ -31,7 +33,7 @@
              v-bind:key="checkLastItem.productCode + index">
           <div class="col-2 text-weight-bold text-justify">{{ checkLastItem.ruleMsg }}</div>
           <div class="col-1 text-negative text-weight-bold"
-               v-bind:class="getThemeClass(checkLastItem.actionCode)">{{ checkLastItem.actionMsg }}</div>
+               v-bind:class="getTextThemeClass(checkLastItem.actionCode)">{{ checkLastItem.actionMsg }}</div>
           <div class="col">{{ checkLastItem.ruleMsgText }}</div>
 
           <el-divider v-if="index !== checkItem.checkInfo.length - 1"
@@ -60,11 +62,19 @@ export default {
       return require(`./assets/img/ic_${this.data?.auditCode}@2x.png`)
     },
 
-    getThemeClass(code = this.data?.auditCode) {
+    getTextThemeClass(code = this.data?.auditCode) {
       const theme = adiutThemeMap[code]
 
       return {
         [`text-${theme}`]: true
+      }
+    },
+
+    getBackgroudThemeClass(code = this.data?.auditCode) {
+      const theme = adiutThemeMap[code]
+
+      return {
+        [`bg-${theme}`]: true
       }
     }
   }
@@ -74,6 +84,10 @@ export default {
 <style lang="scss" scoped>
 .text-info {
   color: #3e96f9 !important;
+}
+
+.bg-info {
+  background: #3e96f9 !important;
 }
 
 .card {

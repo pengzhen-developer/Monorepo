@@ -77,7 +77,7 @@
                 </div>
                 <div class="text-subtitle2 text-left"
                      style="width: 100px">待接诊</div>
-                <div class="col text-h5 text-bold">{{ returnVisit.todoProcessingCount }}</div>
+                <div class="col text-h5 text-bold">{{ returnVisit.todoReceiveingCount }}</div>
               </div>
               <div class="card-border-bottom col flex items-center justify-around q-px-lg"
                    v-on:click="goReturnVisit">
@@ -248,7 +248,7 @@ export default {
     },
 
     goInquiry() {
-      this.$router.push('/components/inquiry')
+      this.$router.push('/clinic/inquiry')
     },
 
     goReturnVisit() {

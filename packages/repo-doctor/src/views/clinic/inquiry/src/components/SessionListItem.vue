@@ -3,7 +3,17 @@
        v-bind:class="{ active : this.active}">
     <div class="flex justify-between items-baseline q-mb-sm">
       <div class="flex items-end">
-        <span class="q-mr-md text-bold"> {{ patientInfo.familyName }} </span>
+
+        <template v-if="unread">
+          <el-badge v-bind:value="unread"
+                    class="q-mr-md">
+            <span class="text-bold"> {{ patientInfo.familyName }} </span>
+          </el-badge>
+        </template>
+        <template v-else>
+          <span class="q-mr-md text-bold"> {{ patientInfo.familyName }} </span>
+        </template>
+
         <span class="q-mr-sm text-caption"> {{ patientInfo.familySex }} </span>
         <span class="q-mr-sm text-caption"> {{ `${ patientInfo.familyAge }岁` }} </span>
       </div>
@@ -58,6 +68,10 @@ export default {
   },
 
   computed: {
+    unread() {
+      return this.session?.unread
+    },
+
     inquiryInfo() {
       return this.session?.content?.inquiryInfo ?? {}
     },
