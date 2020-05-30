@@ -53,7 +53,7 @@
             <div class="code">{{item.inquiryInfo.describe}}</div>
             <div class="small">
               <div class="small-time">{{item.inquiryInfo.inquiryTime}}</div>
-              <div class="small-type">{{item.inquiryType}}</div>
+              <div class="small-type">{{item.inquiryInfo.inquiryType}}</div>
               <!-- <div class="small-price item.inquiryInfo.isFree? 'default' : 'money'">
                 {{item.inquiryInfo.isFree ? '免费' : '￥' + item.inquiryInfo.orderMoney }}</div> -->
             </div>

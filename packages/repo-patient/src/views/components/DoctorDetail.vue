@@ -608,6 +608,7 @@ export default {
     }
     this.getDoctorInfo()
     this.goLogin()
+    this.dialog.visible = false
   },
   beforeRouteEnter(to, from, next) {
     next(() => {
@@ -1204,7 +1205,8 @@ export default {
         .fz-card {
           align-items: flex-start;
           flex: none;
-          width: 142px;
+          // width: 142px;
+          width: calc(50% - 5px);
           height: 102px;
           background: rgba(249, 249, 249, 1);
           border-radius: 7px;
