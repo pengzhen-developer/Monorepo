@@ -339,7 +339,7 @@
         </div>
 
         <van-tabs v-model="activeTab">
-          <van-tab title="线上咨询时间">
+          <van-tab title="复诊续方时间">
             <table class="time-table">
               <thead>
                 <tr>

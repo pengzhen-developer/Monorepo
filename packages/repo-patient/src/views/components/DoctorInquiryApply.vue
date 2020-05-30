@@ -194,12 +194,14 @@
             <div class="supplementary">
               <span class="supplementary__title">补充信息</span>
               <span class="supplementary__info">可选择补充如下信息，让医生全面了解您的病情。</span>
-              <span v-for="child in supplementaryList"
-                    :key="child.mode"
-                    class="supplementary__content"
-                    :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
-                    @click="onMutationSupplementaryMode(child)">
-                {{ child.msg }}</span>
+              <template v-for="child in supplementaryList">
+                <span :key="child.mode"
+                      v-if="!child.hidden"
+                      class="supplementary__content"
+                      :class="child.hasAnswer ? 'supplementary__content--focus' : ''"
+                      @click="onMutationSupplementaryMode(child)">
+                  {{ child.msg }}</span>
+              </template>
             </div>
           </div>
         </transition-group>
@@ -222,7 +224,6 @@
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
             <van-field ref="input"
                        v-model.trim="current.answer"
-                       clearable
                        class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
               <van-button @click="answer"
@@ -555,17 +556,20 @@ export default {
         {
           mode: SUPPLEMENTARY_MODE.ALLERGIES,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.ALLERGIES],
-          hasAnswer: false
+          hasAnswer: false,
+          hidden: false
         },
         {
           mode: SUPPLEMENTARY_MODE.WOMAN,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.WOMAN],
-          hasAnswer: false
+          hasAnswer: false,
+          hidden: false
         },
         {
           mode: SUPPLEMENTARY_MODE.IMAGES,
           msg: SUPPLEMENTARY_MODE_MSG_MAP[SUPPLEMENTARY_MODE.IMAGES],
-          hasAnswer: false
+          hasAnswer: false,
+          hidden: false
         }
       ],
 
@@ -592,7 +596,8 @@ export default {
 
       offsetTop: 0,
       isFixed: false,
-      answerStauts: false
+      answerStauts: false,
+      selectFamilyStatus: false
     }
   },
 
@@ -683,7 +688,7 @@ export default {
       })
       if (sup === undefined) throw new Error('Supplementary could not be found')
       sup.hasAnswer = false
-      // this.supplementaryMode = null
+
       // 具体删除
       this.chatList.splice(index, 1)
       this.chatList.splice(qIndex, 1)
@@ -844,7 +849,6 @@ export default {
     },
 
     addFamilyCallback(res) {
-      this.answerStauts = false
       //新增我的家人
       if (res.success) {
         this.getFamilyList()
@@ -852,7 +856,6 @@ export default {
     },
 
     uploaderCallback(res) {
-      this.answerStauts = false
       // 兼容 answer auguments
       if (res && res.length) {
         this.answer(res)
@@ -862,7 +865,6 @@ export default {
     },
 
     illnessCallback(res) {
-      this.answerStauts = false
       // 兼容 answer auguments
       if (res) {
         this.answer(res)
@@ -872,7 +874,6 @@ export default {
     },
 
     supplementaryAllergiesSaveCallback({ foodAllergy, drugAllergy }) {
-      this.answerStauts = false
       this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
       this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
       this.model.allergicHistory = drugAllergy
@@ -889,7 +890,6 @@ export default {
     },
 
     reselcetNumerCallback(res) {
-      this.answerStauts = false
       if (res) {
         console.log('cb', res)
       }
@@ -926,7 +926,6 @@ export default {
     },
 
     doctorInquiryApplySupplementaryUploadCallback(result) {
-      this.answerStauts = false
       if (result.length) {
         this.affectedImages = result
         this.pushToChatList({
@@ -1043,7 +1042,6 @@ export default {
 
       const nextQuestionIndex = this.questionPath[this.questionPath.length - length] || 0
 
-      this.answerStauts = false
       this.questionDone = false
       this.doneList = []
       this.answerList.splice(this.answerList.length - length, length)
@@ -1069,7 +1067,6 @@ export default {
 
         this.$nextTick().then(() => {
           this.scrollToBottom()
-          this.answerStauts = false
         })
       }, 500)
     },
@@ -1089,7 +1086,6 @@ export default {
             resolve(true)
           })
           .catch(res => {
-            this.answerStauts = false
             resolve(false)
             let param = {}
             switch (res.data.data.inquiryStatus) {
@@ -1138,10 +1134,6 @@ export default {
       })
     },
     async answer() {
-      if (this.answerStauts) {
-        return
-      }
-      this.answerStauts = true
       let result = await this.setAnswer(arguments)
       if (result) {
         this.beginNextQuestion()
@@ -1176,18 +1168,21 @@ export default {
 
       // 选择家人
       else if (this.current.field === this.ANSWER_FIELD.FAMILY) {
+        if (this.selectFamilyStatus) {
+          return
+        }
+        this.selectFamilyStatus = true
         if (params[0].id) {
           // 判断该家人与当前医生是否有进行中的问诊
           let flag = await this.FamilyInquriyStatus(params[0].value)
           // 检查健康卡
+          this.selectFamilyStatus = false
           if (flag) {
             answer = params[0].label
             this.model.familyName = params[0].label
             this.model.familyId = params[0].value
-            //家人男性过滤女性特殊时期问题
-            if (params[0].sex == '男') {
-              this.supplementaryList.splice(1, 1)
-            }
+            const data = this.supplementaryList.find(item => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
+            data.hidden = params[0].sex === '女' && params[0].age >= 14 ? false : true
             this.checkHealthCard()
           } else {
             return false
