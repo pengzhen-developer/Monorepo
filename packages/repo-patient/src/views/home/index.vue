@@ -1,6 +1,14 @@
 <template>
-  <div class="home-layout"
-       v-if="data && data.guide">
+  <van-pull-refresh v-model="isLoading"
+                    class="home-layout"
+                    v-if="data && data.guide"
+                    loosing-text=" "
+                    pulling-text=" "
+                    loading-text=" "
+                    success-text="刷新成功"
+                    @refresh="getHomeInfo">
+    <!-- <div class="home-layout"
+       v-if="data && data.guide"> -->
     <div class="banner">
       <div class="banner-img"></div>
     </div>
@@ -64,8 +72,8 @@
     <HspPage :items="data.recommendOrgan"
              :max="2"
              v-if="data.recommendOrgan.length>0"></HspPage>
-    <!--    <div style="height: 50px;"></div>-->
-  </div>
+    <!-- </div> -->
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -73,6 +81,11 @@ import peace from '@src/library'
 import HspPage from '@src/views/hospital/HospitalList'
 import Humens from '@src/views/diagnose/select/diagnoseSelectHumen'
 import DepartPage from '@src/views/hospital/depart/HospitalDepartList'
+
+import Vue from 'vue'
+import { PullRefresh } from 'vant'
+
+Vue.use(PullRefresh)
 
 export default {
   components: {
@@ -82,14 +95,13 @@ export default {
   },
   data() {
     return {
-      data: {}
+      data: {},
+      isLoading: false
     }
   },
 
   activated() {
-    peace.service.index.getMenu().then(res => {
-      this.data = res.data
-    })
+    this.getHomeInfo()
   },
 
   created() {},
@@ -105,6 +117,12 @@ export default {
     // }
   },
   methods: {
+    getHomeInfo() {
+      peace.service.index.getMenu().then(res => {
+        this.data = res.data
+        this.isLoading = false
+      })
+    },
     goMenuPage(item, data) {
       //可预约的医院小于3则不跳转
       if (data.type == 'recommendHsp' && item.length < 3) {
@@ -153,7 +171,8 @@ export default {
 
 <style lang="scss" scoped>
 .home-layout {
-  height: 100%;
+  min-height: 100%;
+  height: auto;
 }
 
 .banner {

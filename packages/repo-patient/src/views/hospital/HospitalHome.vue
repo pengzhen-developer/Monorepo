@@ -1,15 +1,18 @@
 <template>
-  <div class="home-layout"
-       v-if="hospitalInfo">
+  <van-pull-refresh v-model="isLoading"
+                    class="home-layout"
+                    v-if="hospitalInfo"
+                    loosing-text=" "
+                    pulling-text=" "
+                    loading-text=" "
+                    success-text="刷新成功"
+                    @refresh="getHospitalInfo">
     <template v-if="hospitalInfo.nethospitalStatus">
       <div class="banner">
         <img class="bgImg"
              src="@src/assets/images/newIndex/bg_home.png" />
         <img class="banner-icon"
-             :src="hospitalInfo.nethospitalInfo.icon" />>
-        <!-- <div class="banner-img">
-          <img :src="hospitalInfo.nethospitalInfo.icon" />
-        </div> -->
+             :src="hospitalInfo.nethospitalInfo.icon" />
       </div>
       <section class="info">
         <div class="name-wrap">
@@ -65,18 +68,7 @@
           </template>
         </div>
       </section>
-      <!-- <section class="functions">
-        <div @click="goMenuPage" style="line-height:30px;text-align:center;">智能导诊</div>
-      </section> -->
       <section class="functions">
-
-        <!-- <div class="item"
-             v-for="(item, index) in hospitalInfo.guideH5"
-             :key="'index' + index"
-             @click="goMenuList(item)">
-          <img :src="require('@src/assets/images/newIndex/' + item.icon + '.png')" />
-          <span class="name">{{ item.text }}</span>
-        </div> -->
         <div class="item"
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
@@ -119,7 +111,8 @@
              @click="goStarDoctor"></i>
         </div>
 
-        <div class="doc-wrap">
+        <div class="doc-wrap"
+             v-if="hospitalInfo.doctorList.length>0">
           <div class="item-wrap"
                @click="goDoctorHomeIndexPage(item)"
                v-for="(item,index) in hospitalInfo.doctorList"
@@ -181,11 +174,16 @@
                   size="40px" />
       </div>
     </div>
-  </div>
+  </van-pull-refresh>
+
 </template>
 
 <script>
 import peace from '@src/library'
+import Vue from 'vue'
+import { PullRefresh } from 'vant'
+
+Vue.use(PullRefresh)
 export default {
   data() {
     return {
@@ -194,6 +192,8 @@ export default {
       brief: {
         visible: false
       },
+
+      isLoading: false,
 
       colorArr: ['#E6FFFB', '#E6F7FF', '#F9F0FF', '#F0F5FF', '#E6FFFB', '#FFFBE6']
     }
@@ -211,9 +211,9 @@ export default {
     getHospitalInfo() {
       const params = peace.util.decode(this.$route.params.json)
       const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
-      // peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, nethospitalId);
       const channelId = peace.cache.get(peace.type.SYSTEM.CHANNELID)
       peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
+        this.isLoading = false
         this.hospitalInfo = res.data
         let obj = {
           url: '',
@@ -427,6 +427,8 @@ export default {
 
 .home-layout {
   background: rgba(249, 249, 249, 1);
+  min-height: 100%;
+  height: auto;
   .none-page {
     background: #fff;
     padding-top: 37%;
@@ -660,7 +662,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          padding:0 8px;
+          padding: 0 8px;
         }
       }
     }
