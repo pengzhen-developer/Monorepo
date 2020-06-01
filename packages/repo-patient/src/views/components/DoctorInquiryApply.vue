@@ -949,6 +949,7 @@ export default {
       this.model.appointmentEndTime = params.appointmentEndTime || ''
       this.model.sourceCode = params.sourceCode || ''
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
+      this.model.price = params.money
 
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
