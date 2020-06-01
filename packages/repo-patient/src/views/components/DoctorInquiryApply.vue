@@ -1212,7 +1212,7 @@ export default {
           }
         } else {
           // 跳转新增家人
-
+          this.selectFamilyStatus = false
           if (this.current.answerList.length >= 4) {
             Dialog.confirm({
               title: '温馨提示',
