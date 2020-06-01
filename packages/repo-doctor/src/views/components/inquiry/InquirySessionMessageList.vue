@@ -60,10 +60,10 @@
               <span>|</span>
               <span v-text="message.content.data.patientInfo.familyAge"></span>
               <span>岁</span>
-              <img v-if="message.content.data.inquiryOrderInfo.isAgain === '0'"
+              <img v-if="!message.content.data.inquiryOrderInfo.isAgain"
                    :src="require('@src/assets/images/ic_zx.png')"
                    class="fz" />
-              <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
+              <img v-if="message.content.data.inquiryOrderInfo.isAgain"
                    :src="require('@src/assets/images/ic_fz.png')"
                    class="fz" />
             </div>

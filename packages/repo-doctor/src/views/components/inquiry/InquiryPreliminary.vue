@@ -4,7 +4,7 @@
          v-if="internalData!=null">
       <div class="card"
            style="display: flex; align-items: center; background:rgba(255,251,230,1); margin: 0 0 10px 0;"
-           v-if="internalData.inquiryInfo.isAgain === 0">
+           v-if="!internalData.inquiryInfo.isAgain">
         <img style="width: 20px; height: 20px; margin: 0 14px 0 0;"
              v-bind:src="require('@src/assets/images/warning@2x.png')">
         <span>患者选择在线咨询，未提供线下复诊凭证，</span>
@@ -60,7 +60,7 @@
 
       </div>
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain === '1'">
+           v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain">
         <div>
           <div class="b">复诊信息</div>
           <div class="form-dl img"
