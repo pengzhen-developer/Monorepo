@@ -180,7 +180,7 @@
                             @click="apply"
                             type="primary"
                             :round="true"
-                            :disabled="sending">{{model.serviceType='returnVisit'?'去预约':'去咨询'}}
+                            :disabled="sending">{{model.serviceType=='returnVisit'?'去预约':'去咨询'}}
                 </van-button>
               </van-row>
             </van-row>
@@ -1203,6 +1203,8 @@ export default {
             this.model.foodAllergy = ''
             this.model.drugAllergy = ''
             this.model.affectedImages = []
+            this.supplementaryList.map(item => (item.hasAnswer = false))
+            this.chatList = []
 
             this.checkHealthCard()
           } else {
