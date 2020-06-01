@@ -59,8 +59,8 @@ export const INQUIRY = {
 
   /** 问诊类型 */
   INQUIRY_TYPE: {
-    图文问诊: 'image',
-    视频问诊: 'video'
+    图文: 'image',
+    视频: 'video'
   },
 
   /** 是否发送病历 */
