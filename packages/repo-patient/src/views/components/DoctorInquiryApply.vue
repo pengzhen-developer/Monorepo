@@ -180,7 +180,8 @@
                             @click="apply"
                             type="primary"
                             :round="true"
-                            :disabled="sending">去咨询</van-button>
+                            :disabled="sending">{{model.serviceType='returnVisit'?'去预约':'去咨询'}}
+                </van-button>
               </van-row>
             </van-row>
           </van-sticky>
@@ -524,7 +525,17 @@ export default {
         // 食物过敏
         drugAllergy: '',
         // 患处图片
-        affectedImages: []
+        affectedImages: [],
+        //价格
+        price: '',
+        //号源code
+        sourceCode: '',
+        //预约日期
+        appointmentDate: '',
+        //预约开始时间
+        appointmentStartTime: '',
+        //预约结束时间
+        appointmentEndTime: ''
       },
 
       // 附件
@@ -979,7 +990,7 @@ export default {
         if (this.model.serviceType == 'returnVisit') {
           serviceName = '复诊续方'
         } else {
-          serviceName = this.model.consultingType == 'video' ? '视频问诊' : '图文咨询'
+          serviceName = this.model.consultingType == 'video' ? '视频咨询' : '图文咨询'
           doctor.doctorInfo.service.inquiry.forEach(item => {
             if (item.type == this.model.consultingType) {
               serviceMoney = Number(item.price)
@@ -1184,6 +1195,15 @@ export default {
             this.model.familyId = params[0].value
             const data = this.supplementaryList.find(item => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
             data.hidden = params[0].sex === '女' && params[0].age >= 14 ? false : true
+
+            //更换家人-重置家人已选择的补充信息
+
+            this.model.isPregnancy = null
+            this.model.allergicHistory = ''
+            this.model.foodAllergy = ''
+            this.model.drugAllergy = ''
+            this.model.affectedImages = []
+
             this.checkHealthCard()
           } else {
             return false

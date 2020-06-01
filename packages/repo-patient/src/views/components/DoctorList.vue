@@ -109,7 +109,7 @@
 
     <template v-if="loaded && doctorList.length == 0">
       <div class="none-page"
-           v-if="tagId=='subsequentVisit'">
+           v-if="serviceType=='returnVisit'">
         <i class="icon icon_none_source"></i>
         <div class="none-text">暂无排班记录</div>
       </div>
@@ -130,13 +130,13 @@ export default {
       doctorList: [],
       loaded: false,
       isFree: false,
-      tagId: ''
+      serviceType: ''
     }
   },
 
   activated() {
     this.isFree = peace.util.decode(this.$route.params.json).doctorTag === 'freeConsult' ? true : false
-    this.tagId = peace.util.decode(this.$route.params.json).id
+    this.serviceType = peace.util.decode(this.$route.params.json).serviceType
     this.get()
   },
 
