@@ -17,13 +17,15 @@
         <div class="q-mr-lg">
           <span>复诊价格：</span>
         </div>
-        <div v-for="(service, index) in servicePrice"
-             v-bind:key="index"
-             class="bg-grey-2 q-px-md q-py-sm q-mr-lg"
-             style="border-radius:4px;">
-          <span class="text-bold q-mr-sm">{{ service.titleText }}</span>
-          <span class="text-red">{{ service.price }}元</span>
-          <span>/次</span>
+        <div class="col">
+          <div v-for="(service, index) in servicePrice"
+               v-bind:key="index"
+               class="inline-block bg-grey-2 q-px-md q-py-sm q-mr-lg q-mb-md"
+               style="border-radius:4px;">
+            <span class="text-bold q-mr-sm">{{ service.titleText }}</span>
+            <span class="text-red">{{ service.price }}元</span>
+            <span>/次</span>
+          </div>
         </div>
       </div>
 

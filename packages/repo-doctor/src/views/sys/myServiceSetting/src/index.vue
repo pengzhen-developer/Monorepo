@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="q-mb-lg">
-      <div class="flex items-center q-mb-lg">
+      <div class="flex items-baseline q-mb-lg">
         <div class="tag text-subtitle1 text-weight-medium flex items-center">在线咨询</div>
-        <div class="text-grey-5 q-mr-lg">（开通在线咨询服务后，患者可向您进行健康咨询，咨询期间不可开具处方）</div>
+        <div class="text-grey-5 text-caption q-mr-lg">（开通在线咨询服务后，患者可向您进行健康咨询，咨询期间不可开具处方）</div>
       </div>
 
       <InquirySetting v-if="inquriyService"
@@ -14,14 +14,30 @@
     <div class="q-my-lg divider"></div>
 
     <div class="q-mb-lg">
-      <div class="flex items-center q-mb-lg">
+      <div class="flex items-baseline q-mb-lg">
         <div class="tag text-subtitle1 text-weight-medium flex items-center">复诊续方</div>
-        <div class="text-grey-5">（医院开通复诊续方服务并为您排班后，患者可预约向您复诊续方，您可为符合条件的患者开具处方）</div>
+        <div class="text-grey-5 text-caption">（医院开通复诊续方服务并为您排班后，患者可预约向您复诊续方，您可为符合条件的患者开具处方）</div>
       </div>
 
       <InquiryAgainSetting v-if="inquriyAgainService"
                            v-bind:data="inquriyAgainService"
                            v-on:success="get"></InquiryAgainSetting>
+    </div>
+
+    <div class="q-my-lg divider"></div>
+
+    <div class="q-mb-lg">
+      <div class="flex items-baseline q-mb-lg">
+        <div class="tag text-subtitle1 text-weight-medium flex items-center">私人医生</div>
+        <div class="text-grey-5 text-caption q-mr-lg">（您可结合您的专长，为患者提供定制化服务）</div>
+
+        <div style="border-radius: 16px;"
+             class="bg-grey-2 q-px-md q-py-xs">
+          <span class="text-grey-6">暂未开放</span>
+        </div>
+      </div>
+
+      <PrivateDoctorSetting></PrivateDoctorSetting>
     </div>
   </div>
 </template>
@@ -31,11 +47,13 @@ import Service from './service'
 
 import InquirySetting from './components/InquirySetting'
 import InquiryAgainSetting from './components/InquiryAgainSetting'
+import PrivateDoctorSetting from './components/PrivateDoctorSetting'
 
 export default {
   components: {
     InquirySetting,
-    InquiryAgainSetting
+    InquiryAgainSetting,
+    PrivateDoctorSetting
   },
 
   data() {
