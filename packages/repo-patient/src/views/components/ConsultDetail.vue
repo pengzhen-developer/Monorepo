@@ -499,8 +499,7 @@ export default {
         // '4': '医生已退诊',
         '4': '',
         '5': '祝您身体健康',
-        '6':
-          this.internalData.orderInfo.payMoney == '0.00' ? '咨询订单已取消，如遇紧急情况请及时就医' : '咨询订单已取消'
+        '6': this.internalData.orderInfo.payMoney == '0.00' ? '订单已取消，如遇紧急情况请及时就医' : '订单已取消'
       }
 
       return dic[status]
