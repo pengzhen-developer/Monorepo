@@ -128,7 +128,7 @@
                @click="showDialog(serviceImageInfo, 'image')">
             <van-image width="27px"
                        height="27px"
-                       v-if="serviceImageInfo.status"
+                       v-if="serviceImageInfo.status=='1'"
                        style="margin: 0 10px 0 0;"
                        :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
             <van-image width="27px"
@@ -141,7 +141,7 @@
               <div class="row flex column"
                    style="margin: 0;">
                 <span class="service-consult-content-name">图文咨询</span>
-                <span v-if="serviceImageInfo.status">
+                <span v-if="serviceImageInfo.status=='1'">
                   <span class="service-consult-content-fee">
                     <span
                           class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.price }}
@@ -149,6 +149,7 @@
                   <span class="service-consult-content-unit"> / 次</span>
                 </span>
                 <span v-else
+                      style="line-height: 24px;"
                       class="service-consult-content-description">
                   暂未开通
                 </span>
@@ -222,7 +223,7 @@
             <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
             <div class="flex between"
                  style="width:100%;">
-              <div class="fz-card-price">￥{{item.unitPrice}}</div>
+              <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
               <van-button round
                           @click.stop="showDialog(item,'returnVisit')"
                           size="small"
@@ -1273,6 +1274,7 @@ export default {
           font-weight: bold;
           color: #f2223b;
           font-size: 16px;
+          line-height: 22px;
           .service-consult-content-fee-sub {
             font-size: 12px;
             font-weight: normal;
