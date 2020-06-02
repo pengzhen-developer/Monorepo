@@ -160,7 +160,7 @@
 
           <div class="card card-blue row">
             <div class="row col-6"
-                 v-on:click="goConsultation">
+                 v-on:click="goConsultation({ type: 1 })">
               <div class="col-6 flex justify-center items-center">
                 <q-icon style="font-size: 48px"
                         v-bind:name="`img:${ require('./assets/img/ic_ing4@2x.png') }`"></q-icon>
@@ -172,7 +172,7 @@
             </div>
             <div class="card-border-left col-6 flex column">
               <div class="card-border-bottom col flex items-center justify-around q-px-lg"
-                   v-on:click="goConsultation">
+                   v-on:click="goConsultation({ type: 'out' })">
                 <div style="width: 60px">
                   <q-icon style="font-size: 20px"
                           v-bind:name="`img:${ require('./assets/img/ic_ing5@2x.png') }`"></q-icon>
@@ -182,7 +182,7 @@
                 <div class="col text-h5 text-bold">{{ consultation.todoStarterCount }}</div>
               </div>
               <div class="col flex items-center justify-around q-px-lg"
-                   v-on:click="goConsultation">
+                   v-on:click="goConsultation({ type: 'in' })">
                 <div style="width: 60px">
                   <q-icon style="font-size: 20px"
                           v-bind:name="`img:${ require('./assets/img/ic_ing3@2x.png') }`"></q-icon>
@@ -263,8 +263,8 @@ export default {
       this.$router.push({ name: '/patient/privateDoctor', params })
     },
 
-    goConsultation() {
-      this.$router.push('/record/consultation')
+    goConsultation(params) {
+      this.$router.push({ name: '/record/consultation', params })
     }
   }
 }

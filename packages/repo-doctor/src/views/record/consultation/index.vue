@@ -227,7 +227,7 @@ export default {
   },
 
   created() {
-    this.view.action = this.source.action.OUT
+    this.view.action = this.$route.params.type || this.source.action.OUT
 
     peace.service.consult.getConsultStatusMap().then((res) => {
       this.source.consultStatus = res.data
