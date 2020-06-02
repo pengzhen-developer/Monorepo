@@ -332,23 +332,23 @@ export default {
     canShowInitiatorOrganization() {
       const showInitiatorOrganizationStatusMap = [3, 4, 5, 6, 7, 8, 9, 10]
 
-      return showInitiatorOrganizationStatusMap.includes(this.consultStatus)
+      return showInitiatorOrganizationStatusMap.includes(this.consultStatus) && this.data?.outCheckSuggest
     },
 
     canShowReceiverOrganization() {
       const showReceiverOrganizationStatusMap = [5, 6, 7, 8, 9, 10]
 
-      return showReceiverOrganizationStatusMap.includes(this.consultStatus)
-    },
-
-    canShowOrganization() {
-      return this.canShowInitiatorOrganization || this.canShowReceiverOrganization
+      return showReceiverOrganizationStatusMap.includes(this.consultStatus) && this.data?.inCheckSuggest
     },
 
     canShowFromDoctor() {
       const showFromDoctorStatusMap = [5, 6, 7, 10]
 
-      return showFromDoctorStatusMap.includes(this.consultStatus)
+      return showFromDoctorStatusMap.includes(this.consultStatus) && this.data?.doctorExamineTime
+    },
+
+    canShowOrganization() {
+      return this.canShowInitiatorOrganization || this.canShowReceiverOrganization || this.canShowFromDoctor
     }
   },
 
