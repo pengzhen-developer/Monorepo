@@ -48,7 +48,7 @@
                v-for="(item,index) in AM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
-              <div class="inline red">￥{{item.unitPrice}}</div>
+              <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
               <div
                    :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
                 剩余{{item.number}}</div>
@@ -69,7 +69,7 @@
                v-for="(item,index) in PM">
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
-              <div class="inline red">￥{{item.unitPrice}}</div>
+              <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
               <div
                    :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
                 剩余{{item.number}}</div>

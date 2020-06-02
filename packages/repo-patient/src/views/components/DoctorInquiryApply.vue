@@ -49,7 +49,7 @@
           <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
             <van-image-preview v-model="imagePreview.visible"
                                :start-position="imagePreview.position"
-                               :images="item.answer.map(file => file.content)">
+                               :images="item.answer.map(file => file.path)">
               <template v-slot:cover>
                 <van-button icon="cross"
                             type="primary"
@@ -64,7 +64,7 @@
               <div class="message out img">
 
                 <img style="max-width: 140px; max-height: 140px; width: auto; height: auto; border-radius: 8px;"
-                     :src="file.content"
+                     :src="file.path"
                      @click="viewImage(file, fileIndex)">
               </div>
               <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
@@ -607,7 +607,6 @@ export default {
 
       offsetTop: 0,
       isFixed: false,
-      answerStauts: false,
       selectFamilyStatus: false
     }
   },
@@ -712,15 +711,10 @@ export default {
     onAfterRefresh() {
       this.$nextTick(() => {
         this.scrollToBottom()
-        this.answerStauts = false
       })
     },
 
     onClickSupplementaryAnswerButton(mode, value = null) {
-      if (this.answerStauts) {
-        return
-      }
-      this.answerStauts = true
       const typeActionMap = {
         allergies: this.typeActionAllergies,
         woman: this.typeActionWoman,
@@ -741,10 +735,6 @@ export default {
     },
 
     onMutationSupplementaryMode({ mode, hasAnswer }) {
-      if (this.answerStauts) {
-        return
-      }
-      this.answerStauts = true
       // 如果已经回答 无反应
       if (hasAnswer) return
       // this.supplementaryList.find(item=>item.)
@@ -939,12 +929,12 @@ export default {
     doctorInquiryApplySupplementaryUploadCallback(result) {
       if (result.length) {
         this.affectedImages = result
+        this.model.affectedImages = this.affectedImages
         this.pushToChatList({
           type: 'images',
           images: result
         })
         const mode = SUPPLEMENTARY_MODE.IMAGES
-
         this.onAfterSupplementaryAnswer(mode)
       }
     },
@@ -1256,6 +1246,10 @@ export default {
           answer = params[0]
 
           this.attachment = params[0]
+          this.model.attachment = Array.isArray(params[0]) ? params[0] : []
+          // this.uploadHandler(params[0], this.IMAGES_UPLOAD_TYPE.ATTACHMENT).then(() => {
+          //   this.attachment = params[0]
+          // })
         } else {
           this.$router.push({
             name: `/components/uploader`,
@@ -1379,10 +1373,10 @@ export default {
     async apply() {
       this.sending = true
 
-      await Promise.all([
-        this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT),
-        this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES)
-      ])
+      // await Promise.all([
+      //   this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT),
+      //   this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES)
+      // ])
       await this.applyHandler()
 
       this.sending = false
@@ -1397,7 +1391,7 @@ export default {
               const files = []
               for (let i = 0; i < dataArray.length; i++) {
                 new Compressor(dataArray[i].file, {
-                  quality: 0.6,
+                  quality: 0.4,
                   convertSize: 50000,
                   success: fileBlob => {
                     files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
@@ -1414,46 +1408,53 @@ export default {
           // 上传
           compress()
             .then(files => {
-              const params = new FormData()
-
-              params.append('source', 'inquiryApply')
-              params.append('type', type)
-              files.forEach(file => {
-                params.append('file[]', file)
+              let Promises = files.map(item => {
+                return this.uploader(item, type)
               })
-
-              peace.service.inquiry
-                .images(params)
-                .then(res => {
-                  if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
-                    this.model.attachment = res.data
-                  } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
-                    this.model.affectedImages = res.data
-                  }
-
-                  resolve()
-                })
-                .catch(error => {
-                  this.sending = false
-
-                  reject(error)
-                })
+              Promise.all(Promises).then(datas => {
+                if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
+                  this.model.attachment = datas
+                } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
+                  this.model.affectedImages = datas
+                }
+                this.sending = false
+              })
             })
-            .catch(() => {
+            .catch(err => {
               this.sending = false
+              peace.util.alert('图片上传失败，请稍后再试')
+              reject(err)
             })
         } else {
           resolve()
         }
       })
     },
+    uploader(file, type) {
+      const params = new FormData()
+      params.append('source', 'inquiryApply')
+      params.append('type', type)
+      params.append('file[]', file)
 
+      return new Promise((resolve, reject) => {
+        peace.service.inquiry
+          .images(params)
+          .then(res => {
+            resolve(res.data[0])
+          })
+          .catch(error => {
+            peace.util.alert('图片上传失败，请稍后再试')
+            reject(error)
+          })
+      })
+    },
     applyHandler() {
       // const params = this.model
       let params = {}
       for (let key in this.model) {
         params[key] = this.model[key]
       }
+
       return peace.service.inquiry
         .apply(params)
         .then(res => {
