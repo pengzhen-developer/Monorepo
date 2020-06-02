@@ -64,7 +64,7 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| item.inquiryInfo.inquiryStatus === 2">
+                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| (item.inquiryInfo.inquiryStatus === 2&&item.inquiryInfo.serviceType=='returnVisit'&&item.inquiryInfo.isCurrentDate =='1')">
               <div class="count-down">
                 <template v-if="item.inquiryInfo.inquiryStatus ==1">
                   <span>订单关闭倒计时：</span>
@@ -82,8 +82,8 @@
                                   format="HH:mm:ss" />
                 </template>
               </div>
-              <div class="label gary"
-                   @click="showCancellPop(item,index)">取消订单</div>
+              <!-- <div class="label gary"
+                   @click="showCancellPop(item,index)">取消订单</div> -->
               <div class="label blue"
                    v-if="item.inquiryInfo.inquiryStatus === 1"
                    @click="goPay(item)">继续支付</div>
@@ -142,19 +142,19 @@
               </div>
               <div class="count-down"
                    v-if="item.orderStatus == '3'"></div>
-              <div class="label gary"
+              <!-- <div class="label gary"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'&&item.close">取消订单
-              </div>
+              </div> -->
               <div class="label blue"
                    @click="goPay(item)"
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'&&item.close">继续支付</div>
-              <div class="label blue"
+              <!-- <div class="label blue"
                    @click="canselOrder(item,index)"
                    data-orderid="item.orderId"
-                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div>
+                   v-if="item.orderStatus == '3' && item.cancelState">申请退号</div> -->
             </div>
           </div>
         </template>
