@@ -51,7 +51,7 @@
                 私人医生
               </div>
               <van-image width=13
-                         v-if="internalData.orderInfo.inquiryType=='image'"
+                         v-if="internalData.orderInfo.inquiryType=='image'|| internalData.inquiryInfo.isAgain.toString() === '1'"
                          :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
               <van-image width=13
                          v-if="internalData.orderInfo.inquiryType=='video'"
@@ -228,7 +228,7 @@
            v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
         <div class="footer-btn wait-btn"
              @click="showCancellPop(internalData)">
-          {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预订':'取消订单'}}</div>
+          {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预约':'取消订单'}}</div>
       </div>
 
       <div class="footer fixedBottom"
