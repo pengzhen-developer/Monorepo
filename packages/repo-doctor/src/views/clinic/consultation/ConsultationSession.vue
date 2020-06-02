@@ -100,7 +100,7 @@ import ConsultationSessionReceive from './ConsultationSessionReceive'
 import ConsultationSessionMessageList from './ConsultationSessionMessageList'
 import ConsultationSessionMessageInput from './ConsultationSessionMessageInput'
 
-import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 
 export default {
   components: {

@@ -101,7 +101,7 @@
 <script>
 import peace from '@src/library'
 import util from '@src/util'
-import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import SignNotice from '../SignNotice'
 import OrgNotice from '../OrgNotice'
 

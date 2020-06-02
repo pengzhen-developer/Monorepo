@@ -48,7 +48,7 @@
 
 <script>
 import peace from '@src/library'
-import TheConsultationDetail from '@src/views/record/consultation/TheConsultationDetail'
+import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import { getConsultationStatus, getConsultStatusTextBorderColor, getConsultStatusBgColor } from '@src/views/filters/index'
 export default {
   props: {

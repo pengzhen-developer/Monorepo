@@ -178,7 +178,7 @@
 <script>
 import peace from '@src/library'
 
-import TheConsultationDetail from './TheConsultationDetail'
+import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import ConsultationSessionMessageList from '@src/views/clinic/consultation/ConsultationSessionMessageList'
 
 export default {
@@ -229,7 +229,7 @@ export default {
   created() {
     this.view.action = this.source.action.OUT
 
-    peace.service.consult.getConsultStatusMap().then(res => {
+    peace.service.consult.getConsultStatusMap().then((res) => {
       this.source.consultStatus = res.data
     })
   },
@@ -271,7 +271,7 @@ export default {
         consultNo: row.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.dialog.data = res.data.info
       })
     },
@@ -281,10 +281,10 @@ export default {
         consultNo: row.consultNo
       }
 
-      peace.service.consult.getChatRecord(params).then(res => {
-        const historyMessageFormatHandler = messages => {
+      peace.service.consult.getChatRecord(params).then((res) => {
+        const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
-            messages.forEach(message => {
+            messages.forEach((message) => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
@@ -306,7 +306,7 @@ export default {
     },
 
     formatterConsultStatus(r, c, v) {
-      const temp = this.source.consultStatus.find(item => item.consultStatus === v)
+      const temp = this.source.consultStatus.find((item) => item.consultStatus === v)
 
       return temp && temp.consultTxt
     }
