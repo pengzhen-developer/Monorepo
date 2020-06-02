@@ -26,7 +26,6 @@
           <span class="q-mb-sm text-subtitle2">苹果用户请扫码</span>
           <el-image class="qrcode q-mb-sm"
                     v-bind:src="iOSQRCode" />
-
         </div>
       </div>
     </div>
@@ -34,12 +33,21 @@
 </template>
 
 <script>
+import Peace from '@src/library'
+
 export default {
   data() {
     return {
-      iOSQRCode: 'http://ehospital.holoalpha.com/public/images/android_qrcode.png',
-      androidQRCode: 'http://ehospital.holoalpha.com/public/images/android_qrcode.png'
+      iOSQRCode: '',
+      androidQRCode: ''
     }
+  },
+
+  created() {
+    const version = Peace.cache.get('version', 'sessionStorage')
+
+    this.androidQRCode = version.data.androidQRCode
+    this.iOSQRCode = version.data.iOSQRCode
   }
 }
 </script>

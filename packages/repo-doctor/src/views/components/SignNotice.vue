@@ -16,17 +16,18 @@
       <h1>您当前有<span>{{num}}</span>张处方未签名</h1>
     </template>
     <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0 0 0;">
-      <div
-           style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <span>安卓请扫码：</span>
-        <img :src="`http://ehospital.holoalpha.com/public/images/android_qrcode.png?t=${ new Date().getTime() }`"
-             class="code" />
-      </div>
-      <div
-           style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <span>苹果请扫码：</span>
-        <img :src="`http://ehospital.holoalpha.com/public/images/ios_qrcode.png?t=${ new Date().getTime() }`"
-             class="code" />
+      <div class="q-mb-md flex justify-around">
+        <div class="flex column items-center q-mr-lg">
+          <span class="q-mb-sm text-subtitle2">安卓用户请扫码</span>
+          <el-image class="qrcode q-mb-sm"
+                    v-bind:src="androidQRCode" />
+        </div>
+
+        <div class="flex column items-center">
+          <span class="q-mb-sm text-subtitle2">苹果用户请扫码</span>
+          <el-image class="qrcode q-mb-sm"
+                    v-bind:src="iOSQRCode" />
+        </div>
       </div>
     </div>
 
@@ -42,6 +43,8 @@
 </template>
 
 <script>
+import Peace from '@src/library'
+
 export default {
   name: 'SignNotice',
   props: {
@@ -51,11 +54,45 @@ export default {
         return {}
       }
     }
+  },
+
+  data() {
+    return {
+      iOSQRCode: '',
+      androidQRCode: ''
+    }
+  },
+
+  created() {
+    const version = Peace.cache.get('version', 'sessionStorage')
+
+    this.androidQRCode = version.data.androidQRCode
+    this.iOSQRCode = version.data.iOSQRCode
   }
 }
 </script>
 
 <style scoped lang="scss">
+.qrcode {
+  width: 120px;
+  height: 120px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 1000ms cubic-bezier(0.175, 0.885, 0.32, 1) 0s;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background: #ffffff7a;
+
+  &:hover {
+    padding: 5px;
+    transform: scale(2.5);
+    background: transparent;
+    background: #fff;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+
+    z-index: 1;
+  }
+}
+
 .signNotice {
   .top {
     height: 32px;

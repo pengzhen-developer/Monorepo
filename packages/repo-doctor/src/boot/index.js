@@ -19,6 +19,7 @@ import CreateApp from './createApp'
 import boot_FrameworkQuasar from './boot_framework_quasar'
 import boot_Library from './boot_library'
 import boot_UI from './boot_ui'
+import boot_Version from './boot_version'
 
 // css
 import './boot_ui_css/index.scss'
@@ -42,7 +43,7 @@ const install = async () => {
     boot_UI
   ]
 
-  boots.forEach(async boot => {
+  boots.forEach(async (boot) => {
     try {
       await boot({
         Vue,
@@ -57,7 +58,11 @@ const install = async () => {
     }
   })
 
-  return new Vue(app)
+  // 初始化成功后
+  // 检查版本信息
+  if (boot_Version.validVersion()) {
+    return new Vue(app)
+  }
 }
 
 export default {
