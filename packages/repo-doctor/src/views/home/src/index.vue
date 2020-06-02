@@ -6,7 +6,7 @@
 
     <div class="row q-col-gutter-x-lg q-mb-lg">
       <!-- 在线咨询卡片 -->
-      <template v-if="inquiry.status">
+      <template v-if="inquiry.status === 1">
         <div class="col-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">在线咨询</span>
@@ -50,7 +50,7 @@
       </template>
 
       <!-- 复诊续方卡片 -->
-      <template v-if="returnVisit.status">
+      <template v-if="returnVisit.status === 1">
         <div class="col-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">复诊续方</span>
@@ -109,7 +109,7 @@
       <div class="col-6">
         <div class="row q-col-gutter-x-lg">
           <!-- 双向转诊卡片 -->
-          <template v-if="transfer.status">
+          <template v-if="transfer.status === 1">
             <div class="col-6">
               <div class="q-mb-sm">
                 <span class="text-subtitle2">双向转诊</span>
@@ -130,7 +130,7 @@
           </template>
 
           <!-- 私人医生卡片 -->
-          <template v-if="priviteDoctor.status">
+          <template v-if="priviteDoctor.status === 1">
             <div class="col-6">
               <div class="q-mb-sm">
                 <span class="text-subtitle2">私人医生</span>
@@ -152,7 +152,7 @@
       </div>
 
       <!-- 远程会诊卡片 -->
-      <template v-if="consultation.status">
+      <template v-if="consultation.status === 1">
         <div class="col-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">远程会诊</span>
