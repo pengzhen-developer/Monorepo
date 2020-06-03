@@ -101,6 +101,12 @@
         <span class="text-caption">发送 (ctrl + enter)</span>
       </el-button>
     </div>
+
+    <peace-dialog v-bind:visible.sync="caseDetail.visible"
+                  append-to-body
+                  title="病历详情">
+      <CaseDetail v-bind:data="caseDetail.data"></CaseDetail>
+    </peace-dialog>
   </div>
 </template>
 
@@ -108,8 +114,14 @@
 import Peace from '@src/library'
 import Service from './../../service'
 
+import CaseDetail from '@src/views/components/case/CaseDetail'
+
 export default {
   inject: ['provideCall'],
+
+  components: {
+    CaseDetail
+  },
 
   data() {
     return {
@@ -125,7 +137,12 @@ export default {
         '是否有不良反应',
         '您这种情况建议去医院找医生面诊',
         '希望您早日康复'
-      ]
+      ],
+
+      caseDetail: {
+        visible: false,
+        data: {}
+      }
     }
   },
 
@@ -175,7 +192,6 @@ export default {
       }
     },
 
-    // TODO
     sendVideo() {
       // sourcePatient
       // h5 / wx
@@ -188,6 +204,7 @@ export default {
 
     sendCase() {
       const params = {
+        inquiry_no: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo,
         inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
       }
 
@@ -195,9 +212,14 @@ export default {
       Service.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
           return Peace.util.warning('当前为无效会话，暂时无法发送病历。')
+        } else if (res.data.caseStatus === 1) {
+          this.$emit('control', '发病历')
+        } else {
+          Service.getCase(params).then((res) => {
+            this.caseDetail.visible = true
+            this.caseDetail.data = res.data
+          })
         }
-
-        this.$emit('control', '发病历')
       })
     },
 
