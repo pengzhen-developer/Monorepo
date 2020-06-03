@@ -83,6 +83,12 @@ export default {
   },
 
   watch: {
+    session(oldSession, newSession) {
+      if (oldSession.id !== newSession.id) {
+        this.close()
+      }
+    },
+
     sessionMessagaes() {
       // 监听消息，当存在消息更新，滚动至最底部
       this.$nextTick().then(() => {

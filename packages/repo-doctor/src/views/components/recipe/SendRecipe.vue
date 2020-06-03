@@ -82,6 +82,7 @@
 
       <div class="q-mb-md">
         <DrugSelect ref="drugSelect"
+                    v-bind:data="drugModel"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
@@ -130,6 +131,9 @@ export default {
       /** 病历详情 */
       caseInfo: {},
 
+      /** 药品列表 */
+      drugModel: [],
+
       /** 前置审方 */
       audit: {
         visible: false,
@@ -153,10 +157,36 @@ export default {
   },
 
   created() {
+    this.resetModel()
     this.getCase()
   },
 
   methods: {
+    setModel() {
+      const drugsJson = this.$refs.drugSelect.getModel()
+
+      const params = {
+        openId: this.docInfo?.openid,
+        weight: this.weight,
+        inquiryNo: this.inquiryNo,
+        consultNo: this.consultNo,
+        diagnose: this.caseInfo.diagnose,
+        allergyHistory: this.caseInfo.allergy_history,
+        drugsJson: JSON.stringify(drugsJson)
+      }
+
+      Peace.cache.set(this.inquiryNo, params, 'sessionStorage')
+    },
+
+    resetModel() {
+      const recipeCache = Peace.cache.get(this.inquiryNo, 'sessionStorage')
+
+      if (recipeCache) {
+        this.weight = recipeCache.weight
+        this.drugModel = JSON.parse(recipeCache.drugsJson)
+      }
+    },
+
     /**
      * 获取病历，展示患者基本信息
      *
@@ -168,7 +198,7 @@ export default {
         consultNo: this.consultNo
       }
 
-      Service.getCase(params).then((res) => {
+      return Service.getCase(params).then((res) => {
         this.caseInfo = res.data
       })
     },
@@ -207,6 +237,7 @@ export default {
               this.audit.data = res.data.result
               this.audit.prescriptionNo = res.data.result.prescriptionNo
             } else {
+              Peace.cache.remove(this.inquiryNo, 'sessionStorage')
               Peace.util.alert(res.msg)
 
               this.$emit('close')
@@ -220,6 +251,7 @@ export default {
               this.audit.data = res.data.result
               this.audit.prescriptionNo = res.data.result.prescriptionNo
             } else {
+              Peace.cache.remove(this.inquiryNo, 'sessionStorage')
               Peace.util.alert(res.msg)
 
               this.$emit('close')
@@ -244,6 +276,7 @@ export default {
       }
 
       Service.confirmSend(params).then((res) => {
+        Peace.cache.remove(this.inquiryNo, 'sessionStorage')
         Peace.util.success(res.msg)
 
         this.$emit('close')
@@ -251,9 +284,10 @@ export default {
     },
 
     close() {
-      Peace.util.confirm('确定要退出处方吗？当前所有数据将会被清除!', undefined, undefined, () => {
-        this.$emit('close')
-      })
+      // 处方关闭前，缓存当前处方数据
+      this.setModel()
+
+      this.$emit('close')
     }
   }
 }

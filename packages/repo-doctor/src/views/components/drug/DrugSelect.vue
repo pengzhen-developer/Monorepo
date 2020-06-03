@@ -1,3 +1,6 @@
+// 药品选择
+// 表格内编辑
+
 
 <template>
   <peace-table v-bind:data="drugList"
@@ -217,7 +220,15 @@ import peace from '@src/library'
 
 export default {
   props: {
-    // 最多可选择药品
+    // 默认药品
+    data: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+
+    // 最多可选择药品数量
     maxCount: {
       type: Number,
       default() {
@@ -228,6 +239,9 @@ export default {
 
   data() {
     return {
+      // 数据源
+      drugList: [],
+
       // 行模型
       model: {
         // 药品编码
@@ -258,9 +272,6 @@ export default {
         dic_frequency_id: undefined
       },
 
-      // 表格数据源
-      drugList: [],
-
       // 药品异步获取数据源
       queryDrugLoading: false,
       queryDrugSource: [],
@@ -277,17 +288,15 @@ export default {
     // 当新选择药品时，新增一行
     drugList: {
       handler() {
-        const lastDrug = this.drugList[this.drugList.length - 1]
-
-        if (lastDrug.drugid && this.drugList.length < this.maxCount) {
-          this.addDrug()
-        }
+        this.addDrug()
       },
       deep: true
     }
   },
 
   created() {
+    this.drugList = this.data
+
     this.getDictionary()
     this.addDrug()
   },
@@ -307,9 +316,13 @@ export default {
     },
 
     addDrug() {
-      const row = peace.util.deepClone(this.model)
+      const lastDrug = this.drugList[this.drugList.length - 1]
 
-      this.drugList.push(row)
+      if (this.drugList.length === 0 || (lastDrug.drugid && this.drugList.length < this.maxCount)) {
+        const row = peace.util.deepClone(this.model)
+
+        this.drugList.push(row)
+      }
     },
 
     deleteDrug(scope) {
