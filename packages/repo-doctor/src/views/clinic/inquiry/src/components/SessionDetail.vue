@@ -5,6 +5,7 @@
 
     <!-- 根据会话状态显示 -->
     <Component class="col"
+               ref="componentInstanceMap"
                v-bind:is="componentInstance"></Component>
   </div>
 </template>
@@ -24,6 +25,12 @@ const componentInstanceMap = {
 }
 
 export default {
+  provide() {
+    return {
+      provideControl: this.control
+    }
+  },
+
   components: {
     SessionForHeader
   },
@@ -33,6 +40,12 @@ export default {
       const inquiryStatus = this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus
 
       return componentInstanceMap[inquiryStatus]
+    }
+  },
+
+  methods: {
+    control(type) {
+      this.$refs.componentInstanceMap.control(type)
     }
   }
 }

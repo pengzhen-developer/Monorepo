@@ -53,6 +53,8 @@ import Util from '@src/util'
 import Service from './../../service'
 
 export default {
+  inject: ['provideControl'],
+
   data() {
     return {
       state: '',
@@ -63,6 +65,10 @@ export default {
   },
 
   computed: {
+    injectControl() {
+      return this.provideControl
+    },
+
     inquiryInfo() {
       return this.$store.state.inquiry?.session?.content?.inquiryInfo
     },
@@ -133,7 +139,7 @@ export default {
 
             Peace.util.confirm(message, undefined, confirmOption, () => {
               this.cancel()
-              this.sendCase()
+              this.injectControl('发病历')
             })
           }
           // 正常问诊
