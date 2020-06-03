@@ -5,7 +5,7 @@
            v-on:click="goWebSite">
         <el-image v-bind:src="require('@src/assets/img/logo.png')"></el-image>
       </div>
-      <span class="title-1">九州通智药云平台</span>
+      <span class="title-1">智药云平台</span>
       <span class="title-2">控制台</span>
     </div>
 
