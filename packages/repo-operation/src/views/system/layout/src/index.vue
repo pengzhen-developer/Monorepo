@@ -12,9 +12,9 @@
         <router-view />
       </el-main>
       <el-footer class="layout-footer">
-        <span>Copyright</span>
-        <span>©</span>
-        <span>2020 九州通智药云平台出品</span>
+        <span>全息云通健康科技（武汉）有限公司 </span>
+        <span style="margin:0 5px;"> | </span>
+        <span> 鄂ICP备19008514</span>
       </el-footer>
     </el-container>
   </el-container>

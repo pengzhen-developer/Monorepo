@@ -20,7 +20,7 @@
             <el-image v-bind:src="logoImage"></el-image>
           </div>
           <div class="title">
-            <span>九州通智药云平台</span>
+            <span>智药云平台</span>
           </div>
         </div>
 
