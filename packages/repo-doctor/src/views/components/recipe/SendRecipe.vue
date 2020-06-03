@@ -47,6 +47,7 @@
           <span class="q-mx-sm">：</span>
           <el-input-number style="width: 120px;"
                            controls-position="right"
+                           v-bind:min="0"
                            v-bind:max="200"
                            v-model="weight"
                            v-bind:precision="1">

@@ -25,11 +25,12 @@
               <span>设置价格</span>
 
               <q-input style="width: 80px;"
-                       mask="# 元"
-                       maxlength="8"
+                       mask="#"
+                       maxlength="6"
                        fill-mask="0"
                        reverse-fill-mask
                        input-class="text-right"
+                       suffix="元"
                        v-model="imageInquiryFeeMask"
                        v-bind:disabled="!imageInquiryStatus"
                        v-on:change="changeImageInquiryFee" />
@@ -56,11 +57,12 @@
             <div class="flex justify-between items-center">
               <span>设置价格</span>
               <q-input style="width: 80px;"
-                       mask="# 元"
-                       maxlength="5"
+                       mask="#"
+                       maxlength="6"
                        fill-mask="0"
                        reverse-fill-mask
                        input-class="text-right"
+                       suffix="元"
                        v-model="videoInquiryFeeMask"
                        v-bind:disabled="!videoInquiryStatus"
                        v-on:change="changeVideoInquiryFee" />
@@ -207,5 +209,10 @@ export default {
 
 ::v-deep .q-field__control {
   height: 24px;
+}
+
+::v-deep .q-field__suffix {
+  line-height: 1;
+  padding: 5px;
 }
 </style>
