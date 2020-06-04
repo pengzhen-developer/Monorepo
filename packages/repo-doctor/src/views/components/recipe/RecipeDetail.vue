@@ -201,7 +201,7 @@
     </div>
 
     <!-- 前置审方详情 -->
-    <peace-dialog title="系统审方结果"
+    <peace-dialog title="智能审方结果"
                   v-bind:visible.sync="visible"
                   append-to-body>
       <RecipeAudit v-bind:data="audit"></RecipeAudit>
