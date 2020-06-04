@@ -135,7 +135,8 @@
                         v-model="scope.row.consump_popup">
             <el-input-number controls-position="right"
                              v-model="scope.row.medication_days"
-                             v-bind:min="0"></el-input-number>
+                             v-bind:min="0"
+                             v-bind:max="60"></el-input-number>
           </q-popup-edit>
         </div>
       </template>
