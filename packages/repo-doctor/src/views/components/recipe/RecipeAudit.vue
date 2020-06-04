@@ -32,7 +32,7 @@
              v-for="(checkLastItem, index) in checkItem.checkInfo"
              v-bind:key="checkLastItem.productCode + index">
           <div class="col-2 text-weight-bold text-justify">{{ checkLastItem.ruleMsg }}</div>
-          <div class="col-1 text-negative text-weight-bold"
+          <div class="col-1 text-weight-bold"
                v-bind:class="getTextThemeClass(checkLastItem.actionCode)">{{ checkLastItem.actionMsg }}</div>
           <div class="col">{{ checkLastItem.ruleMsgText }}</div>
 
