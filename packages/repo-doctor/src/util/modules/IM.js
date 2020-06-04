@@ -34,6 +34,11 @@ export const IMHelper = {
 
         util.user.removeUserInfo()
         util.user.replaceToLogin()
+
+        // 刷新页面，确保 vuex store 被清空
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000 * 3)
         break
 
       default:
@@ -64,6 +69,11 @@ export const IMHelper = {
 
     util.user.removeUserInfo()
     util.user.replaceToLogin()
+
+    // 刷新页面，确保 vuex store 被清空
+    setTimeout(() => {
+      window.location.reload()
+    }, 1000 * 3)
   },
 
   /**

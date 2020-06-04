@@ -215,7 +215,7 @@ export default {
       // 刷新页面，确保 vuex store 被清空
       setTimeout(() => {
         window.location.reload()
-      }, 0)
+      }, 1000 * 3)
     }
   }
 }

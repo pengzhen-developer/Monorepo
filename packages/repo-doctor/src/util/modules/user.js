@@ -18,7 +18,7 @@ export const getUserInfo = () => {
  * @param {*} userInfo 用户信息
  * @returns
  */
-export const setUserInfo = userInfo => {
+export const setUserInfo = (userInfo) => {
   peace.cache.set(USER_INFO, userInfo)
 }
 
@@ -48,7 +48,8 @@ export const replaceToLogin = (referrer = '') => {
     name: '/login',
     query: {
       referrer: referrer || $router.history.current.fullPath
-    }
+    },
+    replace: true
   })
 }
 
