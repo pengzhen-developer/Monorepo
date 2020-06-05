@@ -22,8 +22,9 @@
                 v-bind:style="inquiryStatusTextStyle">{{ inquiryStatusText }}</el-tag>
       </div>
     </div>
-    <div class="full-width q-mb-md text-caption ellipsis">
-      <span v-bind:title="lastMessage">{{ lastMessage }}</span>
+    <div class="full-width q-mb-md text-caption ellipsis"
+         style="max-height: 24px;">
+      <span v-html="lastMessage"></span>
     </div>
     <div class="text-right footer">
       <!-- 复诊续方没有图标和类型 -->

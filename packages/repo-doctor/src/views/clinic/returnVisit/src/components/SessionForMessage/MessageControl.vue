@@ -1,80 +1,82 @@
 <template>
   <div class="session-detail-control">
-    <q-editor class="content flex column"
-              ref="editor"
-              flat
-              toolbar-text-color="white"
-              toolbar-bg="grey-1"
-              content-class="session-detail-input"
-              v-model="editorMessage"
-              v-bind:toolbar="[['ImageControl'],['VideoControl'],['CaseControl'],['PrescriptionControl'],['TransferControl'],['ConsultationrControl']]"
-              v-on:keyup.ctrl.enter.exact="sendText()">
-      <template v-slot:ImageControl>
-        <el-upload v-bind:auto-upload="false"
-                   v-bind:on-change="sendImage"
-                   accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-                   action=" "
-                   ref="upload">
-          <el-button type="text">
-            <div class="flex items-center">
-              <img class="q-mr-xs"
-                   src="~@src/assets/images/inquiry/chat_icon_pic.png" />
-              <span class="text-grey-6">图片</span>
-            </div>
-          </el-button>
-        </el-upload>
-      </template>
-      <template v-slot:VideoControl>
-        <el-button type="text"
-                   v-on:click="sendVideo">
-          <div class="flex items-center">
-            <img class="q-mr-xs"
-                 src="~@src/assets/images/inquiry/chat_icon_video.png" />
-            <span class="text-grey-6">视频</span>
+    <div class="content flex column">
+      <div class="q-editor__toolbars-container">
+        <div class="q-editor__toolbar row no-wrap scroll-x bg-grey-1">
+          <div class="q-editor__toolbar-group">
+            <el-upload v-bind:auto-upload="false"
+                       v-bind:on-change="sendImage"
+                       accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+                       action=" "
+                       ref="upload">
+              <el-button type="text">
+                <div class="flex items-center">
+                  <img class="q-mr-xs"
+                       src="~@src/assets/images/inquiry/chat_icon_pic.png" />
+                  <span class="text-grey-6">图片</span>
+                </div>
+              </el-button>
+            </el-upload>
           </div>
-        </el-button>
-      </template>
-      <template v-slot:CaseControl>
-        <el-button type="text"
-                   v-on:click="sendCase">
-          <div class="flex items-center">
-            <img class="q-mr-xs"
-                 src="~@src/assets/images/inquiry/chat_icon_medical.png" />
-            <span class="text-grey-6">写病历</span>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text"
+                       v-on:click="sendVideo">
+              <div class="flex items-center">
+                <img class="q-mr-xs"
+                     src="~@src/assets/images/inquiry/chat_icon_video.png" />
+                <span class="text-grey-6">视频</span>
+              </div>
+            </el-button>
           </div>
-        </el-button>
-      </template>
-      <template v-slot:PrescriptionControl>
-        <el-button type="text"
-                   v-on:click="sendRecipe">
-          <div class="flex items-center">
-            <img class="q-mr-xs"
-                 src="~@src/assets/images/inquiry/chat_icon_pr.png" />
-            <span class="text-grey-6">开处方</span>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text"
+                       v-on:click="sendCase">
+              <div class="flex items-center">
+                <img class="q-mr-xs"
+                     src="~@src/assets/images/inquiry/chat_icon_medical.png" />
+                <span class="text-grey-6">写病历</span>
+              </div>
+            </el-button>
           </div>
-        </el-button>
-      </template>
-      <template v-slot:TransferControl>
-        <el-button type="text"
-                   v-on:click="sendTransfer">
-          <div class="flex items-center">
-            <img class="q-mr-xs"
-                 src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
-            <span class="text-grey-6">申请转诊</span>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text"
+                       v-on:click="sendRecipe">
+              <div class="flex items-center">
+                <img class="q-mr-xs"
+                     src="~@src/assets/images/inquiry/chat_icon_pr.png" />
+                <span class="text-grey-6">开处方</span>
+              </div>
+            </el-button>
           </div>
-        </el-button>
-      </template>
-      <template v-slot:ConsultationrControl>
-        <el-button type="text"
-                   v-on:click="sendConsultation">
-          <div class="flex items-center">
-            <img class="q-mr-xs"
-                 src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
-            <span class="text-grey-6">申请会诊</span>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text"
+                       v-on:click="sendTransfer">
+              <div class="flex items-center">
+                <img class="q-mr-xs"
+                     src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
+                <span class="text-grey-6">申请转诊</span>
+              </div>
+            </el-button>
           </div>
-        </el-button>
-      </template>
-    </q-editor>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text"
+                       v-on:click="sendConsultation">
+              <div class="flex items-center">
+                <img class="q-mr-xs"
+                     src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
+                <span class="text-grey-6">申请会诊</span>
+              </div>
+            </el-button>
+          </div>
+        </div>
+      </div>
+      <div class="q-editor__content session-detail-input">
+        <el-input type="textarea"
+                  resize="none"
+                  v-model="editorMessage"
+                  v-on:keyup.ctrl.enter.exact.native="sendText()"></el-input>
+      </div>
+    </div>
 
     <div class="footer q-px-md flex justify-end items-center">
       <el-dropdown placement="top"
@@ -154,7 +156,7 @@ export default {
 
   methods: {
     sendText(text) {
-      const message = text || this.editorMessage
+      const message = (text || this.editorMessage).replace(/^\s+|\s+$/g, '')
 
       if (message) {
         $peace.NIM.sendText({
@@ -334,13 +336,23 @@ export default {
 
     ::v-deep .q-editor__content {
       flex: 1;
-      padding: 12px 16px;
       width: 100%;
+      padding: 10px 0;
       word-break: break-all;
     }
 
     ::v-deep .el-upload-list__item {
       display: none;
+    }
+
+    ::v-deep .session-detail-input {
+      .el-textarea {
+        height: 100%;
+      }
+      .el-textarea__inner {
+        height: 100%;
+        border: 0;
+      }
     }
   }
 
