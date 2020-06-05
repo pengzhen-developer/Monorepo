@@ -105,7 +105,7 @@
               <div class="dt">应付金额:</div>
               <div class="dd">
                 <div class="strong">
-                  ￥{{order.OrderMoney}}</div>
+                  ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
                 <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
               </div>
@@ -118,7 +118,7 @@
       {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
     </div>
     <div class="bottom">
-      <div class="strong">￥{{order.OrderMoney}}</div>
+      <div class="strong">￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
       <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
         <!-- 购药暂时屏蔽医保支付  2020-05-29-->
         <!-- <van-button v-on:click="submitOrder('yibaopay')"
