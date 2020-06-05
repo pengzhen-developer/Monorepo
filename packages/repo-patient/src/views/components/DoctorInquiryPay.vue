@@ -4,6 +4,7 @@
          v-if="orderStatus==1">
       <span>请在</span>
       <van-count-down millisecond
+                      @finish="finishHander"
                       :time="time"
                       format="mm:ss" />
       <span>后内完成支付，超时订单自动取消</span>
@@ -58,27 +59,56 @@ export default {
       data: {},
       params: {},
       time: 0,
-      createdTime: ''
+      createdTime: '',
+      interval: null
     }
   },
   created() {},
   mounted() {
-    let that = this
-    this.params = peace.util.decode(this.$route.params.json)
-    let orderNo = this.params.orderNo
-    peace.service.index.getOrderInfo({ orderNo }).then(res => {
-      let data = res.data
-      this.createdTime = data.createdTime
-      if (data.expireTime > data.currentTime) {
-        that.time = (data.expireTime - data.currentTime) * 1000
-      }
-      this.orderStatus = data.orderStatus
-      if (data.orderStatus == 3) {
-        // that.payCallback();
-      }
-    })
+    this.getOrderInfo()
   },
   methods: {
+    finishHander() {
+      let { typeName, orderNo } = peace.util.decode(this.$route.params.json)
+      if (typeName.includes('挂号')) {
+        this.cancelRegisterOrder(orderNo)
+      } else {
+        this.cancelInquiryOrder(orderNo)
+      }
+    },
+    cancelInquiryOrder(orderNo) {
+      let params = {
+        orderNo: orderNo,
+        cancelType: 2
+      }
+      peace.service.patient.cancel(params).then(() => {
+        this.payCallback()
+      })
+    },
+
+    cancelRegisterOrder(orderNo) {
+      let params = {
+        orderNo: orderNo,
+        cancelType: 2
+      }
+      peace.service.appoint.orderCancel(params).then(() => {
+        this.payCallback()
+      })
+    },
+    getOrderInfo() {
+      let that = this
+      this.params = peace.util.decode(this.$route.params.json)
+      let orderNo = this.params.orderNo
+      peace.service.index.getOrderInfo({ orderNo }).then(res => {
+        let data = res.data
+        this.createdTime = data.createdTime
+        if (data.expireTime > data.currentTime) {
+          that.time = (data.expireTime - data.currentTime) * 1000
+        }
+        this.orderStatus = data.orderStatus
+      })
+    },
+
     pay() {
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
@@ -127,7 +157,7 @@ export default {
         })
         //支付成功去掉支付中转页 直接跳转详情
         // this.$router.replace(`/components/doctorInquiryPayResult/${json}`)
-         this.$router.replace(`/setting/userConsultDetail/${json}`)
+        this.$router.replace(`/setting/userConsultDetail/${json}`)
       }
     }
   }
