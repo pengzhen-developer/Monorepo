@@ -342,7 +342,7 @@ export default {
     },
 
     canShowFromDoctor() {
-      const showFromDoctorStatusMap = [5, 6, 7, 10]
+      const showFromDoctorStatusMap = [5, 6, 7, 8]
 
       return showFromDoctorStatusMap.includes(this.consultStatus) && this.data?.doctorExamineTime
     },
