@@ -884,11 +884,10 @@ export default {
   position: fixed;
   background: rgb(255, 255, 255);
   width: calc(100% - 55px);
-  height: fit-content;
   left: 0;
   right: 0;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
   margin: auto;
   z-index: 1000;
   border-radius: 7px;

@@ -454,8 +454,17 @@ export default {
     },
     finish(data) {
       data.inquiryInfo.time = 0
+      this.cancelInquiryOrder(data.orderInfo.orderNo)
     },
-
+    cancelInquiryOrder(orderNo) {
+      let params = {
+        orderNo: orderNo,
+        cancelType: 2
+      }
+      peace.service.patient.cancel(params).then(() => {
+        this.getConsultDetail()
+      })
+    },
     goToPay(data) {
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo

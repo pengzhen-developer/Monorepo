@@ -15,7 +15,7 @@
                :key="index"
                v-if="item.orderType=='inquiry'">
             <div class="panel-body"
-                 @click="goConsultDetailPage(item)">
+                 @click="goConsultDetailPage(item,index,'countDown_inquiry_')">
               <div class="card ">
                 <img class="card-avatar avatar-circular card-img"
                      :src="item.doctorInfo.avartor" />
@@ -70,6 +70,7 @@
                   <span>订单关闭倒计时：</span>
                   <van-count-down millisecond
                                   @finish="finishHander(item,index)"
+                                  :ref="'countDown_inquiry_' + index"
                                   :time="item.time"
                                   format="mm:ss" />
                 </template>
@@ -86,7 +87,7 @@
                    @click="showCancellPop(item,index)">取消订单</div> -->
               <div class="label blue"
                    v-if="item.inquiryInfo.inquiryStatus === 1"
-                   @click="goPay(item)">继续支付</div>
+                   @click="goPay(item,index,'countDown_inquiry_')">继续支付</div>
             </div>
           </div>
 
@@ -95,7 +96,7 @@
                :key="index"
                v-if="item.orderType=='register'">
             <div class="panel-body"
-                 @click="goOrderDetailPage(item)">
+                 @click="goOrderDetailPage(item,index,'countDown_register_')">
               <div class="card ">
                 <img class="card-avatar avatar-circular card-img"
                      :src="item.doctorInfo.avartor" />
@@ -137,6 +138,7 @@
                 <span>订单关闭倒计时:</span>
                 <van-count-down millisecond
                                 @finish="finishHander(item,index)"
+                                :ref="'countDown_register_'+index"
                                 :time="item.time"
                                 format="HH:mm:ss" />
               </div>
@@ -148,7 +150,7 @@
                    v-if="item.orderStatus == '1'&&item.close">取消订单
               </div> -->
               <div class="label blue"
-                   @click="goPay(item)"
+                   @click="goPay(item,index,'countDown_register_')"
                    data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'&&item.close">继续支付</div>
               <!-- <div class="label blue"
@@ -232,13 +234,17 @@ export default {
 
   methods: {
     finishHander(item, index) {
-      item.close = false
       if (item.orderType == 'inquiry') {
-        item.inquiryInfo.inquiryStatus = 6
-        let orderNo = item.orderInfo.orderNo
-        this.cancelInquiryOrder(orderNo, index, 'auto')
-        item.inquiryInfo.statusTxt = '已取消'
+        //待支付倒计时结束自动取消，待接诊倒计时结束不处理
+        if (item.inquiryInfo.inquiryStatus == 1) {
+          item.close = false
+          item.inquiryInfo.inquiryStatus = 6
+          let orderNo = item.orderInfo.orderNo
+          this.cancelInquiryOrder(orderNo, index, 'auto')
+          item.inquiryInfo.statusTxt = '已取消'
+        }
       } else if (item.orderType == 'register') {
+        item.close = false
         let orderNo = item.orderNo
         if (!item.cancelState && item.orderStatus != 1) {
           return
@@ -255,7 +261,9 @@ export default {
       let data = JSON.parse(JSON.stringify(item))
       this.orderList.splice(index, 1, data)
     },
-    goPay(data) {
+    goPay(data, index, type) {
+      const countDown = this.$refs[type + index][0]
+      countDown.pause()
       let typeName = '',
         orderNo = '',
         money = '',
@@ -400,13 +408,17 @@ export default {
         }
       })
     },
-    goConsultDetailPage(item) {
+    goConsultDetailPage(item, index, type) {
+      const countDown = this.$refs[type + index][0]
+      countDown.pause()
       let json = peace.util.encode({
         inquiryId: item.inquiryInfo.inquiryId
       })
       this.$router.push(`/setting/userConsultDetail/${json}`)
     },
-    goOrderDetailPage(item) {
+    goOrderDetailPage(item, index, type) {
+      const countDown = this.$refs[type + index][0]
+      countDown.pause()
       let json = peace.util.encode({
         orderInfo: item
       })
