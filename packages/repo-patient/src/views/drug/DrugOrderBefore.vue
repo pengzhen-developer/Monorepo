@@ -172,7 +172,10 @@ export default {
   },
   created() {
     const params = peace.util.decode(this.$route.params.json)
-    this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
+    // this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
+    /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
+    /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
+    this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
     this.page.json = params
     this.DrugStoreId = params.DrugStoreId
     this.Detailed = params.Detailed
