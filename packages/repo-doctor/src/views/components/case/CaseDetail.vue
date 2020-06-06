@@ -87,7 +87,7 @@
               internalData.Inspection_index.blood_pressure ||
               internalData.Inspection_index.More)">
         <div class="info-row-label">
-          <span>体检指标</span>
+          <span>检查指标</span>
         </div>
         <div class="info-row-content spec-row">
           <div class="info-row"
