@@ -262,8 +262,10 @@ export default {
       this.orderList.splice(index, 1, data)
     },
     goPay(data, index, type) {
-      const countDown = this.$refs[type + index][0]
-      countDown.pause()
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
       let typeName = '',
         orderNo = '',
         money = '',
@@ -409,16 +411,21 @@ export default {
       })
     },
     goConsultDetailPage(item, index, type) {
-      const countDown = this.$refs[type + index][0]
-      countDown.pause()
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
+
       let json = peace.util.encode({
         inquiryId: item.inquiryInfo.inquiryId
       })
       this.$router.push(`/setting/userConsultDetail/${json}`)
     },
     goOrderDetailPage(item, index, type) {
-      const countDown = this.$refs[type + index][0]
-      countDown.pause()
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
       let json = peace.util.encode({
         orderInfo: item
       })
