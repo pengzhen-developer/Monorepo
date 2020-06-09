@@ -150,7 +150,7 @@
           </div>
         </template>
         <!-- 医保支付-支付方式，支付时间补丁 -->
-         <template v-if="showByYiBao">
+        <template v-if="showByYiBao">
           <div class="dl-packet">
             <div class="dt">支付方式:</div>
             <div class="dd">医保卡支付</div>
@@ -326,8 +326,13 @@ export default {
       return this.order && this.order.payStatus < ENUM.PAY_STASUS.已付款
     },
     //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
-    showByYiBao(){
-      return this.order&&this.order.paymentType==ENUM.PAYMENT_TYPE.医保支付&&this.order.payTime==''&&this.order.OrderStatus>ENUM.ORDER_STATUS.待下单
+    showByYiBao() {
+      return (
+        this.order &&
+        this.order.paymentType == ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.payTime == '' &&
+        this.order.OrderStatus > ENUM.ORDER_STATUS.待下单
+      )
     },
     // 是否显示取消订单
     canShowCancel() {
@@ -341,6 +346,7 @@ export default {
       )
     },
     //是否显示取消订单 - top
+    /**CustomerType 机构类型：0是医院，10是药店，20是JNT运营,30连锁药店，40分院，50云药房,60对接机构 */
     canShowCancelTop() {
       return (
         this.order &&
@@ -349,7 +355,8 @@ export default {
           (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
             this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-            this.order.OrderStatus === ENUM.ORDER_STATUS.已下单))
+            this.order.OrderStatus === ENUM.ORDER_STATUS.已下单)) &&
+        this.order.CustomerType != 50
       )
     },
     // 是否显示继续支付

@@ -22,20 +22,60 @@
                class="text">
             运单编号：{{ PickUpCode }}
           </div>
-          <!--          <div class="text"-->
-          <!--               v-if="data.ShippingMethod == '1'">配送编号：无</div>-->
         </div>
       </div>
 
     </div>
-    <div class="module">
+    <div class="module"
+         v-if="data.ShippingMethod == '1'">
+      <div class="time-line"
+           v-if="!loading">
+        <van-loading></van-loading>
+      </div>
+      <div class="time-line"
+           v-if="expressList.length>0">
+        <div class="item"
+             v-for="(item,index) in expressList"
+             :class="{ 'active' : index == 0 }"
+             :key="index">
+          <div class="time"
+               :class="!item.isChild&&'main'">
+            <div class="y">{{ item.time.toDate().formatDate('MM-dd') }}</div>
+            <div class="s">{{ item.time.toDate().formatDate('HH:mm') }}</div>
+          </div>
+          <div class="text express">
+            <template v-if="!item.isChild">
+              <div class="status">{{item.status}}</div>
+              <div class="context"
+                   @click="startCall(item.tels)"
+                   v-html="item.context"></div>
+            </template>
+            <template v-else>
+              <div class="status sub"
+                   @click="startCall(item.tels)"
+                   v-html="item.context"></div>
+            </template>
+          </div>
+        </div>
+      </div>
+      <div class="time-line"
+           v-if="expressList.length==0&&loading">
+        <div class="none-page"
+             style="background: #fff;">
+          <div class="icon ic_no_wuliu t20"></div>
+          <div class="none-text">暂无物流信息</div>
+        </div>
+      </div>
+    </div>
+    <div class="module"
+         v-else>
       <div class="time-line">
         <div class="item"
              v-for="(item,index) in data.ords"
              :class="{ 'active' : index == 0 }"
              :key="item.Notes">
           <div class="time">
-            <div class="y">{{ item.CreateTime.toDate().formatDate('M-dd') }}</div>
+            <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
             <div class="s">{{ item.CreateTime.toDate().formatDate('HH:mm') }}</div>
           </div>
           <div class="text">
@@ -61,13 +101,27 @@
     <QRCode :QRCodeURL="QRCodeURL"
             v-model="showQRCode"
             :PickUpCode="PickUpCode"></QRCode>
+
+    <!-- 电话列表弹框 -->
+    <van-action-sheet v-model="action.visible"
+                      cancel-text="取消"
+                      close-on-click-action>
+      <div v-for="(item,index) in action.data"
+           :key="index"
+           class="action-item">
+        <a :href="'tel:'+item">{{item}}</a>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 import QRCode from '@src/views/components/QRCode'
+import Vue from 'vue'
+import { ActionSheet } from 'vant'
 
+Vue.use(ActionSheet)
 const ENUM = {
   SHIPPING_METHOD: {
     SELF: 0,
@@ -94,7 +148,14 @@ export default {
       shippingMethod: null,
       orderStatus: null,
       showQRCode: false,
-      QRCodeURL: null
+      QRCodeURL: null,
+      //快递物流信息
+      expressList: [],
+      loading: false,
+      action: {
+        visible: false,
+        data: null
+      }
     }
   },
   components: { QRCode },
@@ -108,29 +169,73 @@ export default {
   },
 
   created() {
-    this.getLogistics()
+    this.getData()
   },
 
   methods: {
     onClickSeeQRCode() {
       this.showQRCode = true
     },
+
     //获取时间轴
-    getLogistics() {
+    async getData() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.purchasedrug.SelectOrderStreamApi(params).then(res => {
-        this.data = res.data
-        this.getDrugOrderDetail()
+      const data = await peace.service.purchasedrug.SelectOrderStreamApi(params)
+      this.data = data.data
+      const info = await peace.service.purchasedrug.SelectOrderDetApi(params)
+      this.PickUpCode = info.data.PickUpCode
+      this.orderStatus = info.data.OrderStatus
+      this.shippingMethod = info.data.ShippingMethod
+      if (this.shippingMethod == ENUM.SHIPPING_METHOD.HOME) {
+        if (!this.PickUpCode) {
+          this.loading = true
+          return
+        }
+        const expressNo = this.PickUpCode
+        let expressData = null
+        try {
+          expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })
+          this.expressList = this.assembleList(expressData.data.data)
+        } catch (res) {
+          peace.util.alert(res.data.data.message)
+        }
+        this.loading = true
+      }
+    },
+    assembleList(list) {
+      for (let i = 0; i < list.length - 1; i++) {
+        list[i].isChild = false
+        for (let j = i + 1; j < list.length; j++) {
+          if (list[j].status == list[i].status) {
+            list[j].isChild = true
+          } else {
+            list[j].isChild = false
+            i = j
+          }
+        }
+      }
+      this.matchPhone(list)
+      return list
+    },
+    matchPhone(list) {
+      list.map(item => {
+        item.tels = item.context.match(/(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g)
+        if (item.tels && item.tels.length > 0) {
+          item.tels.map(tel => {
+            // const temp = `<a style="color: #00c6ae;" href="tel:${tel}">${tel}</a>`
+            const temp = `<span style="color: #00c6ae;">${tel}</span>`
+            item.context = item.context.replace(tel, temp)
+          })
+        }
+
+        return item
       })
     },
-    //调整获取订单状态、运单号、配送方式
-    getDrugOrderDetail() {
-      const params = peace.util.decode(this.$route.params.json)
-      peace.service.purchasedrug.SelectOrderDetApi(params).then(res => {
-        this.PickUpCode = res.data.PickUpCode
-        this.orderStatus = res.data.OrderStatus
-        this.shippingMethod = res.data.ShippingMethod
-      })
+    startCall(tels) {
+      if (tels && tels.length > 0) {
+        this.action.visible = true
+        this.action.data = tels
+      }
     }
   }
 }
@@ -153,7 +258,16 @@ export default {
     color: #00c6ae;
   }
 }
-
+.action-item {
+  height: 50px;
+  > a {
+    color: #000;
+    text-align: center;
+    line-height: 50px;
+    font-size: 16px;
+    display: block;
+  }
+}
 .card-avatar {
   display: flex;
   align-items: center;
@@ -197,8 +311,11 @@ export default {
   font-size: 13px;
 }
 .time-line {
-  padding: 25px 0;
+  padding: 25px 5px 25px 0;
 
+  .van-loading {
+    text-align: center;
+  }
   .item {
     &:last-child {
       .text {
@@ -227,9 +344,11 @@ export default {
 .time-line .text {
   border-left: 2px solid #d8d8d8;
   padding-left: 15px;
+  padding-bottom: 30px;
   flex: 1;
   min-height: 74px;
 }
+
 .time-line .time::after {
   content: '';
   position: absolute;
@@ -240,8 +359,24 @@ export default {
   height: 10px;
   border-radius: 50%;
 }
+.time-line .time.main::after {
+  content: '';
+  position: absolute;
+  right: -9px;
+  top: -5px;
+  background: #d8d8d8;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
 .item.active .text {
   color: #00c6ae;
+}
+.item.active .text.express .status {
+  color: #333;
+}
+.item.active .text.express .context {
+  color: #999;
 }
 .time-line .item.active .time::after {
   content: '';
@@ -250,7 +385,7 @@ export default {
   right: -9px;
   background: #00c6ae;
 }
-.item.active .time {
+.item.active .time .y {
   color: #000000;
 }
 .time-line .time .y {
@@ -259,6 +394,13 @@ export default {
 }
 .time-line .text .status {
   margin-top: -10px;
+}
+.time-line .text .status.sub {
+  font-size: 12px;
+}
+.time-line .text .context {
+  margin-top: 5px;
+  font-size: 12px;
 }
 .time .s,
 .text .note {

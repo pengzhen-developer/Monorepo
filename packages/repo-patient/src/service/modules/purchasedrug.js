@@ -91,6 +91,19 @@ export function SelectOrderListApi(params) {
   return peace.http.post(SelectOrderListApi, params)
 }
 
+/**
+ * 快递信息
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function ExpressQuery(params) {
+  const ExpressQuery = 'client/v1/Purchasedrug/expressQuery'
+
+  return peace.http.post(ExpressQuery, params)
+}
+
 export default {
   /** 获取药品说明书列表 */
   getDrugBookList,
@@ -105,5 +118,7 @@ export default {
   /** 订单详情 */
   SelectOrderStreamApi,
   /** 购药列表 */
-  SelectOrderListApi
+  SelectOrderListApi,
+  /**快递信息 */
+  ExpressQuery,
 }

@@ -266,3 +266,8 @@
 /*content: '';*/
 /*background-image: url();*/
 /*}*/
+
+.ic_no_wuliu::before {
+  content: '';
+  background-image: url('../../assets/images/icons/ic_no wuliu.png');
+}
