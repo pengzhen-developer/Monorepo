@@ -45,14 +45,18 @@
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">体重</span>
           <span class="q-mx-sm">：</span>
-          <el-input-number style="width: 120px;"
-                           controls-position="right"
-                           v-bind:min="0"
-                           v-bind:max="200"
-                           v-model="weight"
-                           v-bind:precision="1">
-          </el-input-number>
-          <div class="q-ml-sm">kg</div>
+          <div class="flex">
+            <el-input-number style="width: 120px;"
+                             controls-position="right"
+                             v-bind:max="200"
+                             v-model="weight"
+                             v-bind:precision="1">
+            </el-input-number>
+            <div class="flex items-center bg-grey-2 q-px-sm"
+                 style="border-radius: 5px">
+              kg
+            </div>
+          </div>
         </div>
       </div>
 
@@ -83,13 +87,14 @@
 
       <div class="q-mb-md">
         <DrugSelect ref="drugSelect"
-                    v-bind:data="drugModel"
+                    v-bind:data="drugList"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
       <div class="q-mb-md text-center">
         <el-button v-on:click="close">取消</el-button>
         <el-button v-on:click="send"
+                   v-bind:disabled="sending"
                    type="primary">发送</el-button>
       </div>
     </div>
@@ -133,13 +138,15 @@ export default {
       caseInfo: {},
 
       /** 药品列表 */
-      drugModel: [],
+      drugList: [],
 
       /** 前置审方 */
       audit: {
         visible: false,
         data: {}
-      }
+      },
+
+      sending: false
     }
   },
 
@@ -164,16 +171,11 @@ export default {
 
   methods: {
     setModel() {
-      const drugsJson = this.$refs.drugSelect.getModel()
+      const drugList = this.$refs.drugSelect.getModel()
 
       const params = {
-        openId: this.docInfo?.openid,
         weight: this.weight,
-        inquiryNo: this.inquiryNo,
-        consultNo: this.consultNo,
-        diagnose: this.caseInfo.diagnose,
-        allergyHistory: this.caseInfo.allergy_history,
-        drugsJson: JSON.stringify(drugsJson)
+        drugList: drugList
       }
 
       Peace.cache.set(this.inquiryNo, params, 'sessionStorage')
@@ -184,7 +186,7 @@ export default {
 
       if (recipeCache) {
         this.weight = recipeCache.weight
-        this.drugModel = JSON.parse(recipeCache.drugsJson)
+        this.drugList = recipeCache.drugList
       }
     },
 
@@ -208,15 +210,21 @@ export default {
      * 发送处方
      */
     send() {
-      const validObject = this.$refs.drugSelect.valid()
-      const drugsJson = this.$refs.drugSelect.getModel()
+      const validObject = this.$refs.drugSelect.validModel()
+      const drugList = this.$refs.drugSelect.getModel()
 
       if (validObject.isValid === false) {
         return Peace.util.warning(validObject.message)
       }
 
-      if (drugsJson.length < 1) {
+      if (drugList.length < 1) {
         return Peace.util.warning('请添加处方药品')
+      }
+
+      if (drugList.some((drug) => drug.drugStatus === 'disable')) {
+        return Peace.util.confirm('处方内含有停用药品，是否删除该药品', '提示', { type: 'error' }, () => {
+          this.drugList = drugList.filter((drug) => drug.drugStatus === 'enable')
+        })
       }
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
@@ -227,37 +235,46 @@ export default {
           consultNo: this.consultNo,
           diagnose: this.caseInfo.diagnose,
           allergyHistory: this.caseInfo.allergy_history,
-          drugsJson: JSON.stringify(drugsJson)
+          drugList: drugList
         }
 
+        this.sending = true
         if (this.inquiryNo) {
-          Service.subPrescrip(params).then((res) => {
-            // 前置审方不合法，显示前置审方审核结果
-            if (res.data.isAdopt === false) {
-              this.audit.visible = true
-              this.audit.data = res.data.result
-              this.audit.prescriptionNo = res.data.result.prescriptionNo
-            } else {
-              Peace.cache.remove(this.inquiryNo, 'sessionStorage')
-              Peace.util.alert(res.msg)
+          Service.subPrescrip(params)
+            .then((res) => {
+              // 前置审方不合法，显示前置审方审核结果
+              if (res.data.isAdopt === false) {
+                this.audit.visible = true
+                this.audit.data = res.data.result
+                this.audit.prescriptionNo = res.data.result.prescriptionNo
+              } else {
+                Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+                Peace.util.alert(res.msg)
 
-              this.$emit('close')
-            }
-          })
+                this.$emit('close')
+              }
+            })
+            .finnaly(() => {
+              this.sending = false
+            })
         } else if (this.consultNo) {
-          Service.offlineSubPrescrip(params).then((res) => {
-            // 前置审方不合法，显示前置审方审核结果
-            if (res.data.isAdopt === false) {
-              this.audit.visible = true
-              this.audit.data = res.data.result
-              this.audit.prescriptionNo = res.data.result.prescriptionNo
-            } else {
-              Peace.cache.remove(this.inquiryNo, 'sessionStorage')
-              Peace.util.alert(res.msg)
+          Service.offlineSubPrescrip(params)
+            .then((res) => {
+              // 前置审方不合法，显示前置审方审核结果
+              if (res.data.isAdopt === false) {
+                this.audit.visible = true
+                this.audit.data = res.data.result
+                this.audit.prescriptionNo = res.data.result.prescriptionNo
+              } else {
+                Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+                Peace.util.alert(res.msg)
 
-              this.$emit('close')
-            }
-          })
+                this.$emit('close')
+              }
+            })
+            .finally(() => {
+              this.sending = false
+            })
         }
       })
     },
@@ -266,6 +283,8 @@ export default {
      * 确认发送处方
      */
     sendConfirm() {
+      this.sending = true
+
       const params = {
         openId: this.docInfo?.openid,
         businessNo: this.inquiryNo || this.consultNo,
@@ -276,12 +295,16 @@ export default {
         params.sourceAction = 'offline'
       }
 
-      Service.confirmSend(params).then((res) => {
-        Peace.cache.remove(this.inquiryNo, 'sessionStorage')
-        Peace.util.success(res.msg)
+      Service.confirmSend(params)
+        .then((res) => {
+          Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+          Peace.util.success(res.msg)
 
-        this.$emit('close')
-      })
+          this.$emit('close')
+        })
+        .finally(() => {
+          this.sending = false
+        })
     },
 
     close() {

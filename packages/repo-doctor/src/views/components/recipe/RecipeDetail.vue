@@ -188,14 +188,16 @@
                 style="width: 6em;">药师审方结果</span>
           <span class="q-mx-xs">：</span>
           <span class="col text-weight-bold">
-            <!-- 暂未对接 -->
+            {{ data.PrescriptionExamMemo }}
           </span>
         </div>
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 6em;">系统审方结果</span>
           <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.PrescriptionExamMemo }}</span>
+          <span class="col text-weight-bold">
+            <!-- 暂未对接 -->
+          </span>
         </div>
       </div>
     </div>

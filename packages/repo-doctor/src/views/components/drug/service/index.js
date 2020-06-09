@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 获取病历详情
+   * 获取常用处方列表
    *
    * @param {*} params
    */
-  getCase(params) {
+  getCommonlyPrescriptionList(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/inquiry/getCase'
+    const apiPath = 'client/v100/prescription/commonprescription/getList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -21,14 +21,52 @@ export default {
   },
 
   /**
-   * 获取处方详情
+   * 获取常用药品列表
    *
    * @param {*} params
    */
-  getPrescripInfo(params) {
+  getCommonlyDrugList(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Prescribeprescrip/getPrescripInfo'
+    const apiPath = 'client/v100/prescription/commondrug/getList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取药品列表(根据关键字)
+   *
+   * @param {*} params
+   */
+  getDrugList(params) {
+    const isMock = false
+
+    const apiPath = 'client/v100/prescription/drug/getList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取用药频次字典
+   *
+   * @param {*} params
+   */
+  drugFrequencyList(params) {
+    const isMock = false
+
+    const apiPath = 'client/v1/Prescribeprescrip/drugFrequencyList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -40,74 +78,20 @@ export default {
   },
 
   /**
-   * 发送线上处方
-   *
-   * 咨询 / 复诊续方
+   * 获取给药途径字典
    *
    * @param {*} params
    */
-  subPrescrip(params) {
+  drugUsageList(params) {
     const isMock = false
 
-    const apiPath = 'client/v100/prescription/prescribeprescrip/onlineSubmit'
+    const apiPath = 'client/v1/Prescribeprescrip/drugUsageList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http
-      .post(requestApi, params, {
-        headers: {
-          post: { 'Content-Type': 'application/json' }
-        }
-      })
-      .then((res) => {
-        return res
-      })
-  },
-
-  /**
-   * 发送线下处方
-   *
-   * 咨询 / 复诊续方
-   *
-   * @param {*} params
-   */
-  offlineSubPrescrip(params) {
-    const isMock = false
-
-    const apiPath = 'client/v100/prescription/prescribeprescrip/offlineSubmit'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http
-      .post(requestApi, params, {
-        headers: {
-          post: { 'Content-Type': 'application/json' }
-        }
-      })
-      .then((res) => {
-        return res
-      })
-  },
-
-  /**
-   * 确认发送处方
-   *
-   * @param {*} params
-   */
-  confirmSend(params) {
-    const isMock = false
-
-    const apiPath = 'client/v1/Prescribeprescrip/confirmSend'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   }

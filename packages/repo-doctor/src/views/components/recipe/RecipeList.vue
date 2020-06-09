@@ -67,7 +67,7 @@ export default {
     },
 
     prev() {
-      this.currentIndex = this.current === 0 ? this.total - 1 : this.currentIndex - 1
+      this.currentIndex = this.current === 1 ? this.total - 1 : this.currentIndex - 1
     },
 
     getRecipeDetail() {

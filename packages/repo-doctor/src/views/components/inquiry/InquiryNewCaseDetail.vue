@@ -181,11 +181,11 @@
                  style="margin-top: 5px; border-top: 1px solid #f3f3f3;padding: 5px 0;">
               <div class="dataItem">
                 <span class="title">药师审方结果：</span>
-                <span class="content">{{getText(item.prescription)}}</span>
+                <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
               </div>
               <div class="dataItem">
                 <span class="title">系统审方结果：</span>
-                <span class="content">{{item.prescriptionExamMemo =='' ? '无':item.prescriptionExamMemo}}</span>
+                <span class="content"></span>
               </div>
             </div>
           </div>
