@@ -151,7 +151,7 @@ export default function() {
             path: '/sys/myPharmacy',
             name: '/sys/myPharmacy',
             meta: { Auth: true },
-            component: () => import('@src/views/sys/myPharmacy/index.vue')
+            component: () => import('@src/views/sys/myPharmacy')
           },
           // 我的 - 我的随访
           {

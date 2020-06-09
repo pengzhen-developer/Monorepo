@@ -46,10 +46,10 @@
                     type="primary"
                     :class="workStatus">
             <el-avatar :size="30"
-                       :src="$store.state.user.userInfo.list.docInfo.avartor"></el-avatar>
+                       :src="docInfo.avartor"></el-avatar>
           </el-badge>
           <span>欢迎您，</span>
-          <span>{{ $store.state.user.userInfo.list.docInfo.name }}</span>
+          <span>{{ docInfo.name }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
 
@@ -136,6 +136,10 @@ export default {
   computed: {
     netHospital_name() {
       return this.$store.state.user?.userInfo?.list?.docInfo?.netHospital_name
+    },
+
+    docInfo() {
+      return this.$store.state.user?.userInfo?.list?.docInfo ?? {}
     },
 
     workStatus() {
