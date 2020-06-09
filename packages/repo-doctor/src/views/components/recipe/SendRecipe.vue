@@ -254,7 +254,7 @@ export default {
                 this.$emit('close')
               }
             })
-            .finnaly(() => {
+            .finally(() => {
               this.sending = false
             })
         } else if (this.consultNo) {

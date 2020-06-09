@@ -56,7 +56,7 @@
           </el-input-number>
           <div class="flex items-center bg-grey-2 q-px-sm"
                style="border-radius: 5px">
-            {{ model.drugUnit }}
+            {{ data.drugUnit }}
           </div>
         </div>
       </el-form-item>
