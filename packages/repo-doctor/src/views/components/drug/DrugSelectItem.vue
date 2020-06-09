@@ -5,7 +5,8 @@
   <div class="drug-select">
     <!-- 未选择药品 -->
     <el-card v-if="!data.drugName"
-             style="min-height: 250px">
+             style="min-height: 250px"
+             shadow="never">
       <el-autocomplete class="full-width"
                        style="height: 40px;"
                        placeholder="请输入药品名称..."
@@ -25,7 +26,8 @@
     </el-card>
 
     <!-- 已选择药品 -->
-    <el-card v-else>
+    <el-card v-else
+             shadow="never">
       <div slot="header"
            class="flex justify-between items-center">
 
@@ -34,7 +36,7 @@
                   effect="dark"
                   type="warning"
                   v-if="data.drugStatus === 'disable'">停用</el-tag>
-          <span class="q-mr-md col text-weight-bold ellipsis"
+          <span class="q-mr-md col text-weight-medium ellipsis text-subtitle1"
                 v-bind:title="data.drugName">{{ data.drugName }}</span>
           <el-button icon="el-icon-delete"
                      type="text"
@@ -86,7 +88,7 @@
                                v-bind:precision="2"
                                v-model="data.singleDose">
               </el-input-number>
-              <div class="flex items-center bg-grey-2 q-px-sm"
+              <div class="flex items-center bg-grey-2 q-px-xs"
                    style="border-radius: 5px">
                 {{ data.drugUnit }}
               </div>
@@ -220,7 +222,7 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .el-card__header,
 ::v-deep .el-card__body {
-  padding: 8px 24px;
+  padding: 8px;
 }
 
 ::v-deep .durg-select-form {
@@ -232,12 +234,22 @@ export default {
 ::v-deep .el-autocomplete {
   .el-input--mini .el-input__inner {
     border: 0;
-    height: 56px;
     padding: 16px 8px;
   }
 }
 
-::v-deep .el-input-number .el-input__inner {
+::v-deep .el-input-number .el-input__inner,
+::v-deep .el-select .el-input__inner {
   text-align: left;
+  padding: 0 8px !important;
+}
+
+::v-deep .el-form-item__label {
+  padding: 0 4px 0 0;
+}
+
+::v-deep .el-input-number--mini .el-input-number__decrease,
+::v-deep .el-input-number--mini .el-input-number__increase {
+  width: 24px;
 }
 </style>

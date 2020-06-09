@@ -6,7 +6,7 @@
   <div class="relative-position">
 
     <div class="absolute"
-         style="right: 0; top: -32px;">
+         style="right: 0; top: -40px;">
       <el-button type="text"
                  v-on:click="showCommonlyPrescription">
         <span>常用处方</span>
@@ -14,8 +14,8 @@
       </el-button>
     </div>
 
-    <div class="row q-col-gutter-md">
-      <div class="col-6"
+    <div class="row q-col-gutter-sm">
+      <div class="col-4"
            v-for="(drug, index) in drugList"
            v-bind:key="index">
         <DrugSelectItem v-bind:data.sync="drug"
@@ -23,8 +23,7 @@
       </div>
 
       <div v-if="showDrugSelect"
-           class="col-6">
-
+           class="col-4">
         <DrugSelectItem v-on:add="onAddDrug"></DrugSelectItem>
       </div>
     </div>
@@ -246,7 +245,7 @@ export default {
     },
 
     checkCommonlyPrescription(row) {
-      Peace.util.confirm('选择常用处方，将清除以选药品', '提示', {}, () => {
+      Peace.util.confirm('选择常用处方，将清除已选药品', '提示', {}, () => {
         const drugList = Peace.util.deepClone(row.drugList)
 
         // el-input-number bug
