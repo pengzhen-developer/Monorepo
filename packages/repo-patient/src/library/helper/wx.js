@@ -12,7 +12,7 @@ import share from './share'
  */
 export function payInvoke(data, paySuc = null, payCancel = null) {
   if (WeixinJSBridge) {
-    WeixinJSBridge.invoke('getBrandWCPayRequest', data, function (res) {
+    WeixinJSBridge.invoke('getBrandWCPayRequest', data, function(res) {
       if (res.err_msg == 'get_brand_wcpay_request:ok') {
         // 使用以上方式判断前端返回,微信团队郑重提示：
         //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -41,7 +41,7 @@ export function payInvoke(data, paySuc = null, payCancel = null) {
 export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
   return service.index
     .pay(params)
-    .then(res => {
+    .then((res) => {
       if (res.code === 200) {
         let data = res.data
         if (data) {
@@ -49,7 +49,7 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
         }
       }
     })
-    .catch(res => {
+    .catch((res) => {
       if (res.data) {
         console.log('订单异常时响应', res.data)
         if (orderExp) {
@@ -62,11 +62,12 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
 export function auth(appId, redirectUrl) {
   let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect`
   // alert(url);
-  window.location.href = url
+  // window.location.href = url
+  window.location.replace(url)
 }
 export default {
   pay,
   payInvoke,
   auth,
-  share
+  share,
 }
