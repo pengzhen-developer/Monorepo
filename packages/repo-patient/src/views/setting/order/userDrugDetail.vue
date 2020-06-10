@@ -356,7 +356,7 @@ export default {
             this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
             this.order.OrderStatus === ENUM.ORDER_STATUS.已下单)) &&
-        this.order.CustomerType != 50
+        this.order.DrugStoreType != 50
       )
     },
     // 是否显示继续支付
