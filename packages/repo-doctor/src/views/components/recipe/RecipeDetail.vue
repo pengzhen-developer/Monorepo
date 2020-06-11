@@ -53,7 +53,6 @@
           <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
         </div>
       </div>
-
       <div class="row q-mb-xs">
         <div class="row col-6"
              v-if="data.weight">
@@ -62,11 +61,20 @@
           <span class="q-mx-xs">：</span>
           <span class="col text-weight-bold">{{ data.weight + 'kg' }}</span>
         </div>
+      </div>
+
+      <div class="row q-mb-xs">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">开具时间</span>
           <span class="q-mx-xs">：</span>
           <span class="col text-weight-bold">{{ data.PrescriptionTime }}</span>
+        </div>
+        <div class="row col-6">
+          <span class="text-justify"
+                style="width: 4em;">病历号</span>
+          <span class="q-mx-xs">：</span>
+          <span class="col text-weight-bold">{{ data.caseNo }}</span>
         </div>
       </div>
 
