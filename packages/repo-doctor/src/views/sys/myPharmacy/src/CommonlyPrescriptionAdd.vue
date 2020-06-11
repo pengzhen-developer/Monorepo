@@ -3,7 +3,7 @@
 <template>
   <div class="q-px-lg q-py-sm">
     <div class="q-mb-md row">
-      <span class="text-justify em-4">临床诊断</span>
+      <span class="text-justify em-4">疾病诊断</span>
       <span class="q-mx-sm">：</span>
       <el-select class="col"
                  remote

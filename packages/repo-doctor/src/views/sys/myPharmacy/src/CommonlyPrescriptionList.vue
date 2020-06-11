@@ -3,7 +3,7 @@
     <el-form inline=""
              v-bind:model="model"
              v-on:keyup.enter.native="getCommonlyPrescriptionList">
-      <el-form-item label=临床诊断>
+      <el-form-item label="疾病诊断">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
 
@@ -25,9 +25,11 @@
     <hr>
 
     <peace-table pagination
-                 ref="table">
+                 ref="table"
+                 v-bind:pageSize="5">
       <peace-table-column label="疾病诊断"
                           min-width="200px"
+                          align="left"
                           prop="diagnosis"></peace-table-column>
 
       <peace-table-column label="性别"

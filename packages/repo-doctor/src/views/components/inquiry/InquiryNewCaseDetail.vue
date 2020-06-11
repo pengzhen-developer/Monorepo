@@ -110,7 +110,7 @@
             <span class="content">{{item.prescriptionNo}}</span>
           </div>
           <div class="item">
-            <span class="title">临床诊断：</span>
+            <span class="title">疾病诊断：</span>
             <span class="content">{{item.diagnosisInfos}}</span>
           </div>
           <div class="item"
