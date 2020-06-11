@@ -49,7 +49,7 @@
                      height="300px"
                      ref="table"
                      pagination
-                     row-class-name="cursor-pointer"
+                     v-bind:row-class-name="rowClass"
                      v-bind:show-header="false"
                      v-on:row-click="rowSelect">
           <el-table-column type="selection"
@@ -121,7 +121,7 @@ export default {
 
   computed: {
     nextable() {
-      return !!this.prescriptionDrug?.drugId
+      return this.prescriptionDrug?.drugId && this.prescriptionDrug?.drugStatus !== 'disable'
     },
 
     showHistory() {
@@ -162,7 +162,19 @@ export default {
       }
     },
 
+    rowClass({ row }) {
+      if (row.drugStatus === 'disable') {
+        return 'disabled cursor-pointer'
+      }
+
+      return 'cursor-pointer'
+    },
+
     rowSelect(row) {
+      if (row.drugStatus === 'disable') {
+        return
+      }
+
       this.prescriptionDrug = Peace.util.deepClone(row)
       this.$refs.table.$children[1].clearSelection()
       this.$refs.table.$children[1].toggleRowSelection(row, true)
