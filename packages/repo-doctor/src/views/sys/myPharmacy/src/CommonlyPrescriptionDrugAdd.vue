@@ -10,6 +10,8 @@
         <el-input size="medium"
                   placeholder="请输入药品名称或拼音字母"
                   v-model="queryString"
+                  ref="searchInput"
+                  v-on:focus="() => this.showHistory = true"
                   v-on:keyup.enter.native="search()"></el-input>
       </div>
       <div class="">
@@ -22,7 +24,7 @@
     </div>
 
     <!-- 搜索历史 -->
-    <div v-if="showHistory">
+    <div v-show="showHistory">
       <div class="q-mb-md">
         <span class="q-mr-md text-subtitle2">历史记录</span>
         <span class="cursor-pointer"
@@ -43,7 +45,7 @@
     </div>
 
     <!-- 搜索结果 -->
-    <div v-show="showQueryList">
+    <div v-show="!showHistory">
       <div class="q-mb-lg">
         <peace-table size="small"
                      height="300px"
@@ -113,11 +115,13 @@ export default {
 
   data() {
     return {
+      showHistory: true,
+
       queryString: '',
 
       historyList: [],
 
-      prescriptionDrugList: [],
+      prescriptionDrugList: undefined,
 
       prescriptionDrug: {},
 
@@ -127,26 +131,23 @@ export default {
     }
   },
 
-  computed: {
-    showHistory() {
-      return this.prescriptionDrugList?.length <= 0
-    },
-
-    showQueryList() {
-      return this.prescriptionDrugList?.length > 0
-    }
-  },
-
   created() {
     this.historyList = this.getCacheHistory()
   },
 
   methods: {
     search(item) {
-      if (item || this.queryString) {
+      debugger
+      this.showHistory = false
+      this.prescriptionDrugList = []
+      this.queryString = item || this.queryString
+
+      this.$refs.searchInput.blur()
+
+      if (this.queryString) {
         const fetch = Service.getDrugList
         const params = {
-          drugName: item || this.queryString
+          drugName: this.queryString
         }
 
         this.$refs.table
@@ -155,12 +156,15 @@ export default {
             this.prescriptionDrugList = res.data.list
           })
           .finally(() => {
-            this.addCacheHistory(item || this.queryString)
+            this.addCacheHistory(this.queryString)
           })
       } else {
         const fetch = Service.getCommonlyDrugList
+        const params = {
+          drugName: this.queryString
+        }
 
-        this.$refs.table.loadData({ fetch }).then((res) => {
+        this.$refs.table.loadData({ fetch, params }).then((res) => {
           this.prescriptionDrugList = res.data.list
         })
       }

@@ -9,6 +9,8 @@
         <el-input size="medium"
                   placeholder="请输入药品名称或拼音字母"
                   v-model="queryString"
+                  ref="searchInput"
+                  v-on:focus="() => this.showHistory = true"
                   v-on:keyup.enter.native="search()"></el-input>
       </div>
       <div class="">
@@ -21,7 +23,7 @@
     </div>
 
     <!-- 搜索历史 -->
-    <div v-if="showHistory">
+    <div v-show="showHistory">
       <div class="q-mb-md">
         <span class="q-mr-md text-subtitle2">历史记录</span>
         <span class="cursor-pointer"
@@ -42,7 +44,7 @@
     </div>
 
     <!-- 搜索结果 -->
-    <div v-show="showQueryList">
+    <div v-show="!showHistory">
       <peace-table height="300"
                    size="small"
                    ref="table"
@@ -75,21 +77,13 @@ import Service from './../service'
 export default {
   data() {
     return {
+      showHistory: true,
+
       queryString: '',
 
       historyList: [],
 
       drugList: []
-    }
-  },
-
-  computed: {
-    showHistory() {
-      return this.drugList?.length <= 0
-    },
-
-    showQueryList() {
-      return this.drugList?.length > 0
     }
   },
 
@@ -99,10 +93,16 @@ export default {
 
   methods: {
     search(item) {
-      if (item || this.queryString) {
+      this.showHistory = false
+      this.drugList = []
+      this.queryString = item || this.queryString
+
+      this.$refs.searchInput.blur()
+
+      if (this.queryString) {
         const fetch = Service.getDrugList
         const params = {
-          drugName: item || this.queryString
+          drugName: this.queryString
         }
 
         this.$refs.table
@@ -111,10 +111,10 @@ export default {
             this.drugList = res.data.list
           })
           .finally(() => {
-            this.addCacheHistory(item || this.queryString)
+            this.addCacheHistory(this.queryString)
           })
       } else {
-        this.drugList = []
+        this.showHistory = true
       }
     },
 
