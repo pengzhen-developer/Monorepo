@@ -144,8 +144,12 @@ export default {
 
   methods: {
     setPropsToModel() {
+      this.model.companyName = this.data.companyName ?? undefined
+      this.model.specification = this.data.specification ?? undefined
+      this.model.drugStatus = this.data.drugStatus ?? undefined
       this.model.drugId = this.data.drugId ?? undefined
       this.model.drugName = this.data.drugName ?? undefined
+      this.model.drugUnit = this.data.drugUnit ?? undefined
       this.model.drugRoute = this.data.drugRoute ?? undefined
       this.model.drugRouteId = this.data.drugRouteId ?? undefined
       this.model.drugFrequency = this.data.drugFrequency ?? undefined
