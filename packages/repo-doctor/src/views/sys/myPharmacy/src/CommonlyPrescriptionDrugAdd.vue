@@ -50,10 +50,7 @@
                      ref="table"
                      pagination
                      v-bind:row-class-name="rowClass"
-                     v-bind:show-header="false"
-                     v-on:row-click="rowSelect">
-          <el-table-column type="selection"
-                           width="50"></el-table-column>
+                     v-bind:show-header="false">
           <peace-table-column align="left">
             <template slot-scope="scope">
               <el-tag class="q-mr-sm"
@@ -65,16 +62,17 @@
           </peace-table-column>
           <el-table-column prop="specification"></el-table-column>
           <el-table-column prop="companyName"></el-table-column>
+          <el-table-column width="60"
+                           align="center">
+            <template slot-scope="scope">
+              <span v-if="inAddedList(scope.row)">已添加</span>
+              <span v-else-if="isDisabled(scope.row)">已停用</span>
+              <i v-else
+                 v-on:click="next(scope.row)"
+                 class="el-icon-circle-plus text-h6 text-primary"></i>
+            </template>
+          </el-table-column>
         </peace-table>
-      </div>
-
-      <div class="text-center">
-        <el-button style="width: 80px;"
-                   v-on:click="cancel">取消</el-button>
-        <el-button style="width: 80px;"
-                   v-bind:disabled="!nextable"
-                   v-on:click="next"
-                   type="primary">下一步</el-button>
       </div>
     </div>
 
@@ -103,6 +101,16 @@ export default {
     CommonlyPrescriptionDrugUsageAdd
   },
 
+  props: {
+    /** 已添加 */
+    addedList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+
   data() {
     return {
       queryString: '',
@@ -120,10 +128,6 @@ export default {
   },
 
   computed: {
-    nextable() {
-      return this.prescriptionDrug?.drugId && this.prescriptionDrug?.drugStatus !== 'disable'
-    },
-
     showHistory() {
       return this.prescriptionDrugList?.length <= 0
     },
@@ -163,29 +167,28 @@ export default {
     },
 
     rowClass({ row }) {
-      if (row.drugStatus === 'disable') {
+      if (row.drugStatus === 'disable' || this.addedList.findIndex((item) => item.drugId === row.drugId) !== -1) {
         return 'disabled cursor-pointer'
       }
 
       return 'cursor-pointer'
     },
 
-    rowSelect(row) {
-      if (row.drugStatus === 'disable') {
-        return
-      }
+    inAddedList(row) {
+      return this.addedList.findIndex((item) => item.drugId === row.drugId) !== -1
+    },
 
-      this.prescriptionDrug = Peace.util.deepClone(row)
-      this.$refs.table.$children[1].clearSelection()
-      this.$refs.table.$children[1].toggleRowSelection(row, true)
+    isDisabled(row) {
+      return row.drugStatus === 'disable'
     },
 
     cancel() {
       this.$emit('cancel')
     },
 
-    next() {
+    next(row) {
       this.drugUsageDialog.visible = true
+      this.prescriptionDrug = Peace.util.deepClone(row)
     },
 
     onDrugUsageSuccess(drug) {

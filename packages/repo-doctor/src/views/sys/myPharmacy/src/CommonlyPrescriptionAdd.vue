@@ -115,7 +115,8 @@
                   append-to-body
                   v-if="drugAddDialog.visible"
                   v-bind:visible.sync="drugAddDialog.visible">
-      <CommonlyPrescriptionDrugAdd v-on:success="onDrugAddSuccess"
+      <CommonlyPrescriptionDrugAdd v-bind:addedList="drugAddDialog.addedList"
+                                   v-on:success="onDrugAddSuccess"
                                    v-on:cancel="onDrugAddCancel"></CommonlyPrescriptionDrugAdd>
     </peace-dialog>
 
@@ -173,7 +174,8 @@ export default {
       diagnosisList: [],
 
       drugAddDialog: {
-        visible: false
+        visible: false,
+        addedList: []
       },
 
       drugUsageAddDialog: {
@@ -214,6 +216,7 @@ export default {
         Peace.util.warning('处方药品最多可添加 5 种药品')
       } else {
         this.drugAddDialog.visible = true
+        this.drugAddDialog.addedList = this.prescriptionDrugList
       }
     },
 
