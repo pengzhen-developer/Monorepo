@@ -287,6 +287,16 @@ const ENUM = {
     已付款: 3,
     退款中: 4,
     已退款: 5
+  },
+  /**DrugStoreType 机构类型：0是医院，10是药店，20是JNT运营,30连锁药店，40分院，50云药房,60对接机构 */
+  DRUG_STORE_TYPE: {
+    医院: 0,
+    药店: 10,
+    JNT运营: 20,
+    连锁药店: 30,
+    分院: 40,
+    云药房: 50,
+    对接机构: 60
   }
 }
 
@@ -346,17 +356,15 @@ export default {
       )
     },
     //是否显示取消订单 - top
-    /**CustomerType 机构类型：0是医院，10是药店，20是JNT运营,30连锁药店，40分院，50云药房,60对接机构 */
+
     canShowCancelTop() {
       return (
         this.order &&
         this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
-        ((this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 &&
-          (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
-            this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) ||
-          (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-            this.order.OrderStatus === ENUM.ORDER_STATUS.已下单)) &&
-        this.order.DrugStoreType != 50
+        (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
+          (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 &&
+            this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
+            this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房))
       )
     },
     // 是否显示继续支付

@@ -316,7 +316,20 @@ export default {
     // 清除聊天记录
     peace.service.IM.resetInquirySessionMessages()
   },
-
+  mounted() {
+    document.body.addEventListener('focusout', () => {
+      //软键盘收起的事件处理
+      setTimeout(() => {
+        let u = navigator.userAgent
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
+        if (isiOS) {
+          const element = document.querySelector('.message-list-chat-room .input')
+          peace.util.alert(element.scrollHeight)
+          window.scrollTo(0, 0)
+        }
+      }, 100)
+    })
+  },
   methods: {
     getInquiryInfo() {
       let params = {
@@ -526,6 +539,7 @@ export default {
       const innerHeight = window.innerHeight
 
       const interval = setInterval(() => {
+        console.log('innerHeight_', innerHeight, 'window.innerHeight', window.innerHeight)
         if (innerHeight !== window.innerHeight) {
           window.clearInterval(interval)
           this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
@@ -596,5 +610,14 @@ export default {
 }
 .message-footer::after {
   background-image: url('./assets/images/arrow-right.jpg');
+}
+</style>
+<style lang="scss" scoped>
+.message-list-chat-room .input .van-field /deep/.van-field__control {
+  line-height: 20px;
+  padding: 7px 8px;
+  border-radius: 3px;
+  border: 1px solid #d2d2d2;
+  background-color: #fff;
 }
 </style>

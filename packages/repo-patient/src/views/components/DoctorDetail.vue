@@ -507,10 +507,12 @@
          @click="closeDialog"></div>
     <div class="dialog"
          v-if="dialog.visible">
-      <van-image width="19px"
+      <img :src="require('@src/assets/images/ic_cha.png')"
+           @click="closeDialog">
+      <!-- <van-image width="19px"
                  height="19px"
                  :src="require('@src/assets/images/ic_cha.png')"
-                 @click="closeDialog"></van-image>
+                 @click="closeDialog"></van-image> -->
       <div class="dialog-title">{{dialog.data.title}}</div>
       <div class="dialog-content">
         <template v-if="dialog.data.list&&dialog.data.list.length>0">
@@ -893,13 +895,15 @@ export default {
   border-radius: 7px;
   padding: 25px 24px;
   color: #333;
-  .van-image {
-    box-sizing: content-box;
+  img {
     position: absolute;
     padding: 12px;
     right: 0;
     top: 0;
     z-index: 1001;
+    width: 43px;
+    height: 43px;
+    display: block;
   }
   .dialog-title {
     height: 25px;
