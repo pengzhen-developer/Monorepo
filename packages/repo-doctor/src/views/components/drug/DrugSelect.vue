@@ -50,7 +50,13 @@
             <div v-for="drug in scope.row.drugList"
                  v-bind:key="drug.durgId"
                  class="q-mb-sm">
-              <p class="text-weight-bold">{{ drug.drugName }}</p>
+              <div>
+                <el-tag class="q-mr-sm"
+                        effect="dark"
+                        type="warning"
+                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
+                <span class="text-weight-bold">{{ drug.drugName }}</span>
+              </div>
               <span>用法用量：</span>
               <span>每次{{ drug.singleDose }}{{ drug.drugUnit }}</span>
               <span>，{{ drug.drugFrequency }}</span>
