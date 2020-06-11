@@ -14,7 +14,7 @@
                        v-bind:fetch-suggestions="getDrugList"
                        v-on:select="drugSelect">
         <template slot-scope="{ item }">
-          <div>
+          <div v-bind:class="{ disabled : item.drugStatus === 'disable'}">
             <el-tag class="q-mr-sm"
                     effect="dark"
                     type="warning"
@@ -205,7 +205,11 @@ export default {
     drugSelect(drug) {
       const drugObject = Peace.util.deepClone(drug)
 
-      this.$emit('add', drugObject)
+      if (drugObject.drugStatus !== 'disable') {
+        this.$emit('add', drugObject)
+      } else {
+        Peace.util.warning('药品已停用')
+      }
     },
 
     remove() {
