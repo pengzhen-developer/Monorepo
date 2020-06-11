@@ -206,5 +206,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep .el-checkbox__inner {
+  border-radius: 50%;
+}
 </style>
