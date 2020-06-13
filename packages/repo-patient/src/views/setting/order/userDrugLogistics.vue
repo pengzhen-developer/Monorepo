@@ -24,15 +24,16 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="module"
-         v-if="data.ShippingMethod == '1'">
-      <div class="time-line"
-           v-if="!loading">
+         v-if="!loading">
+      <div class="time-line ">
         <van-loading></van-loading>
       </div>
-      <div class="time-line"
+    </div>
+    <div class="module"
+         v-if="data.ShippingMethod == '1'&&loading">
+      <div class="time-line express"
            v-if="expressList.length>0">
         <div class="item"
              v-for="(item,index) in expressList"
@@ -58,21 +59,10 @@
           </div>
         </div>
       </div>
-      <div class="time-line"
-           v-if="expressList.length==0&&loading">
-        <div class="none-page"
-             style="background: #fff;">
-          <div class="icon ic_no_wuliu t20"></div>
-          <div class="none-text">暂无物流信息</div>
-        </div>
-      </div>
-    </div>
-    <div class="module"
-         v-else>
-      <div class="time-line">
+      <div class="time-line self">
         <div class="item"
-             v-for="(item,index) in data.ords"
-             :class="{ 'active' : index == 0 }"
+             v-for="(item,index) in timeLine"
+             :class="{ 'active' : index == 0&&expressList.length==0 }"
              :key="item.Notes">
           <div class="time">
             <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
@@ -96,7 +86,17 @@
           </div>
         </div>
       </div>
+
+      <!-- <div class="time-line"
+           v-if="expressList.length==0">
+        <div class="none-page"
+             style="background: #fff;">
+          <div class="icon ic_no_wuliu t20"></div>
+          <div class="none-text">暂无物流信息</div>
+        </div>
+      </div> -->
     </div>
+
     <!--二维码弹窗-->
     <QRCode :QRCodeURL="QRCodeURL"
             v-model="showQRCode"
@@ -165,6 +165,15 @@ export default {
       const OrderStatus = this.orderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.PickUpCode
+    },
+    timeLine() {
+      const ShippingMethod = this.shippingMethod
+      if (ShippingMethod === undefined) return false
+      if (ShippingMethod === ENUM.SHIPPING_METHOD.SELF) {
+        return this.data.ords
+      } else {
+        return this.data.ords.filter(item => item.ServiceStates != 4 && item.ServiceStates != 6)
+      }
     }
   },
 
@@ -197,7 +206,7 @@ export default {
           expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })
           this.expressList = this.assembleList(expressData.data.data)
         } catch (res) {
-          peace.util.alert(res.data.data.message)
+          // peace.util.alert(res.data.data.message)
         }
         this.loading = true
       }
@@ -302,7 +311,7 @@ export default {
 }
 .module {
   background: #fff;
-  padding: 5px;
+  padding: 30px 5px 10px;
   margin: 0 0 10px 0;
 }
 .card .text {
@@ -311,17 +320,18 @@ export default {
   font-size: 13px;
 }
 .time-line {
-  padding: 25px 5px 25px 0;
-
-  .van-loading {
-    text-align: center;
-  }
-  .item {
-    &:last-child {
-      .text {
-        border-left: 2px solid transparent;
+  padding-right: 5px;
+  &.self {
+    .item {
+      &:last-child {
+        .text {
+          border-left: 2px solid transparent;
+        }
       }
     }
+  }
+  .van-loading {
+    text-align: center;
   }
 }
 .time-line .item {
@@ -338,9 +348,9 @@ export default {
   position: relative;
   text-align: right;
 }
-.time-line .item:last-child .text {
-  min-height: 20px;
-}
+// .time-line .item:last-child .text {
+//   min-height: 20px;
+// }
 .time-line .text {
   border-left: 2px solid #d8d8d8;
   padding-left: 15px;
