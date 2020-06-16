@@ -184,15 +184,15 @@ export default {
   methods: {
     get() {
       const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
-      peace.service.health.allHealthList(params).then(res => {
+      peace.service.health.allHealthList(params).then((res) => {
         // 格式化时间线
         if (this.type === '1' || this.type === '3') {
           const data = []
 
-          const time = Array.from(new Set(res.data.list.map(item => item.measureTime)))
+          const time = Array.from(new Set(res.data.list.map((item) => item.measureTime)))
 
-          time.forEach(item => {
-            const list = res.data.list.filter(temp => temp.measureTime === item)
+          time.forEach((item) => {
+            const list = res.data.list.filter((temp) => temp.measureTime === item)
 
             data.push({
               timeLine: item,

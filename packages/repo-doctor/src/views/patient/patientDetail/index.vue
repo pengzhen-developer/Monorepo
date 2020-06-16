@@ -16,10 +16,12 @@
 <script>
 import peace from '@src/library'
 
-import HealthRecordDrawer from './HealthRecord/HealthRecordDrawer'
-import HealthRecordHeader from './HealthRecordHeader'
-import HealthRecordDetail from './HealthRecordDetail'
-import HealthRecordMenu from './HealthRecordMenu'
+import HealthRecordDrawer from './healthRecordDrawer/HealthRecordDrawer'
+import HealthRecordMenu from './healthRecordMenu/HealthRecordMenu'
+
+import HealthRecordHeader from './healthRecordHeader/HeaderRecordHeader'
+import HealthRecordDetail from './healthRecordDetail/HealthRecordDetail'
+
 export default {
   components: {
     HealthRecordDrawer,

@@ -79,7 +79,7 @@ export default function() {
             path: '/patient/patientDetail/Report/:dataId/:idCard/:serviceId/:type',
             name: '/patient/patientDetail/Report',
             meta: { Auth: true },
-            component: () => import('@src/views/patient/patientDetail/Report.vue')
+            component: () => import('@src/views/patient/patientDetail/components/Report.vue')
           },
 
           // 记录 - 问诊记录
