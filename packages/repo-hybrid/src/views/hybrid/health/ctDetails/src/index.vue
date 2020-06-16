@@ -20,11 +20,11 @@
                   transition-next="jump-up">
       <q-tab-panel class="q-pa-none"
                    name="报告明细">
-        <ReportDetails></ReportDetails>
+        <ReportDetails v-bind:resultInfo='resultInfo'></ReportDetails>
       </q-tab-panel>
       <q-tab-panel class="q-pa-none"
                    name="基本信息">
-        <PersonInfo></PersonInfo>
+        <PersonInfo v-bind:baseInfo='baseInfo'></PersonInfo>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import Service from './service'
+
 export default {
   components: {
     ReportDetails: () => import('./components/ReportDetails'),
@@ -40,7 +42,29 @@ export default {
 
   data() {
     return {
-      tab: '报告明细'
+      tab: '报告明细',
+      baseInfo: {},
+      resultInfo: {}
+    }
+  },
+  created() {
+    this.fetch()
+  },
+
+  methods: {
+    fetch() {
+      this.getPacsDetail()
+    },
+
+    getPacsDetail() {
+      const params = {
+        checkId: this.$route.params.checkId
+      }
+
+      Service.getPacsDetail(params).then((res) => {
+        this.baseInfo = res.data.baseInfo
+        this.resultInfo = res.data.resultInfo
+      })
     }
   }
 }

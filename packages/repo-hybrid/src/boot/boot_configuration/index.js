@@ -107,7 +107,7 @@ export default {
       // hybrid - demo
       {
         menuRouteName: 'ctDetails',
-        menuRoute: 'health/ctDetails/:platform?/:token?',
+        menuRoute: 'health/ctDetails/:platform?/:token?/:checkId?',
         menuPath: 'views/hybrid/health/ctDetails'
       }
     ]

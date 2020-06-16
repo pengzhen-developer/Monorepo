@@ -5,7 +5,6 @@
     <div v-for="(item,index) in items"
          :key="index">
       <ReportDetailsItem v-bind:item='item'></ReportDetailsItem>
-
       <q-separator class="q-my-sm bg-grey-2"
                    v-if="index!=4"></q-separator>
       <div class="bg-grey-2 q-mb-sm"
@@ -18,48 +17,31 @@
 </template>
 
 <script>
-import Service from './../service'
-
 export default {
   components: {
     ReportDetailsItem: () => import('./ReportDetailsItem.vue')
   },
+  props: {
+    resultInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       items: [
-        { key: '诊断', value: '急性会厌炎症' },
-        { key: '症状', value: '脑实质各叶未见明显异常' },
-        { key: '结论', value: '左侧刮骨骨折' },
-        { key: '部位', value: '头颅' },
-        { key: '阴性阳性', value: '阴性' },
-        { key: '检查医生', value: '欧阳霸' },
-        { key: '接收时间', value: '2020-04-15 08:12:10' },
-        { key: '审核医生', value: '欧阳霸' },
-        { key: '审核时间', value: '2020-04-15 08:12:10' }
+        { key: '诊断', value: this.resultInfo.diagnosis },
+        { key: '症状', value: this.resultInfo.symptom },
+        { key: '结论', value: this.resultInfo.conclusion },
+        { key: '部位', value: this.resultInfo.bodyPart },
+        { key: '阴性阳性', value: this.resultInfo.yinYang },
+        { key: '检查医生', value: this.resultInfo.reportDoctor },
+        { key: '接收时间', value: this.resultInfo.reportDate },
+        { key: '审核医生', value: this.resultInfo.checkDoctor },
+        { key: '审核时间', value: this.resultInfo.checkDate }
       ]
-    }
-  },
-
-  created() {
-    // this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      this.getUserInfo()
-      this.getUserInfo2()
-    },
-
-    getUserInfo() {
-      Service.fetch().then((res) => {
-        console.log('获取到了第 1 个', res)
-      })
-    },
-
-    getUserInfo2() {
-      Service.fetch().then((res) => {
-        console.log('获取到了第 2 个', res)
-      })
     }
   }
 }

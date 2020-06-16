@@ -16,7 +16,7 @@
 </template>
 
 <script>
-const platformMap = ['iOS', 'Android', 'H5', 'Wechat']
+import Util from '@src/util'
 
 export default {
   data() {
@@ -26,9 +26,8 @@ export default {
   },
 
   created() {
-    // 验证必选参数
-    // 平台来源
-    if (!platformMap.includes(this.$route.params.platform)) {
+    // 验证平台来源
+    if (!Object.prototype.hasOwnProperty.call(Util.hybrid.platformMap, this.$route.params.platform)) {
       this.errorMessage = '参数验证失败'
     }
   }

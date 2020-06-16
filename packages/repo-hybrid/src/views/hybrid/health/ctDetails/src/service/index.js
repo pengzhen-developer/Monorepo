@@ -1,22 +1,29 @@
 import Peace from '@src/library'
+import Util from '@src/util'
 
 export default {
   /**
-   * 从服务端获取数据
+   * 获取影像报告详情
    *
    * @param {*} params
    */
-  fetch(params) {
-    const isMock = false
+  getPacsDetail(params) {
+    const isMock = true
 
-    const apiPath = 'fetch'
+    const apiPath = `${Util.hybrid.getURIPrefix()}/report/v110/check/pacsDetail`
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+    return Peace.http
+      .post(requestApi, params, {
+        headers: {
+          accesstoken: Util.hybrid.getURIToken()
+        }
+      })
+      .then((res) => {
+        return res
+      })
   }
 }
