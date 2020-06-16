@@ -7,8 +7,8 @@
             active-color="primary"
             v-model="tab">
       <q-tab v-bind:ripple="false"
-             name="检查结果"
-             label="检查结果" />
+             name="报告明细"
+             label="报告明细" />
       <q-tab v-bind:ripple="false"
              name="基本信息"
              label="基本信息" />
@@ -19,12 +19,12 @@
                   transition-prev="jump-up"
                   transition-next="jump-up">
       <q-tab-panel class="q-pa-none"
-                   name="检查结果">
-        <Component1></Component1>
+                   name="报告明细">
+        <ReportDetails></ReportDetails>
       </q-tab-panel>
       <q-tab-panel class="q-pa-none"
                    name="基本信息">
-        <Component2></Component2>
+        <PersonInfo></PersonInfo>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -34,13 +34,13 @@
 <script>
 export default {
   components: {
-    Component1: () => import('./components/Component1'),
-    Component2: () => import('./components/Component2')
+    ReportDetails: () => import('./components/ReportDetails'),
+    PersonInfo: () => import('./components/PersonInfo')
   },
 
   data() {
     return {
-      tab: '检查结果'
+      tab: '报告明细'
     }
   }
 }

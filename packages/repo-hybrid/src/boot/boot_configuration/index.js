@@ -106,9 +106,9 @@ export default {
     hybridNavMenu: [
       // hybrid - demo
       {
-        menuRouteName: 'health',
-        menuRoute: 'health/:platform?/:token?',
-        menuPath: 'views/hybrid/health'
+        menuRouteName: 'ctDetails',
+        menuRoute: 'health/ctDetails/:platform?/:token?',
+        menuPath: 'views/hybrid/health/ctDetails'
       }
     ]
   }
