@@ -10,7 +10,7 @@ import Download from './download'
 import Retry from './retry'
 
 Axios.download = Download
-Axios.defaults.headers.post['Content-Type'] = 'application/json'
+Axios.defaults.headers.post['Content-Type'] = 'agreements/json'
 
 // Request interceptor
 Axios.interceptors.request.use(

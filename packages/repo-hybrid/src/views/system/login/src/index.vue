@@ -62,7 +62,7 @@
                  color="primary"
                  label="登 录"
                  v-bind:ripple="false"
-                 v-bind:loading="isLoging"
+                 v-bind:loading="isLoading"
                  v-on:click="login">
           </q-btn>
         </el-form-item>
@@ -75,7 +75,7 @@
     </div>
   </div>
 </template>
- 
+
 <script>
 import Peace from '@src/library'
 import Util from '@src/util'
@@ -86,7 +86,7 @@ export default {
     return {
       countdownTime: 0,
       countdownInterval: 60 * 1000,
-      isLoging: false,
+      isLoading: false,
 
       usernameImage: 'img:' + require('./assets/img/user.png'),
       passwordImage: 'img:' + require('./assets/img/pwd.png'),
@@ -144,7 +144,7 @@ export default {
 
     login() {
       this.validateForm().then(() => {
-        this.isLoging = true
+        this.isLoading = true
 
         Service.login(this.model)
           .then((res) => {
@@ -160,7 +160,7 @@ export default {
             Util.user.replaceToReffer()
           })
           .finally(() => {
-            this.isLoging = false
+            this.isLoading = false
           })
       })
     },

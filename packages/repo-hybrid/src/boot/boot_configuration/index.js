@@ -109,6 +109,26 @@ export default {
         menuRouteName: 'ctDetails',
         menuRoute: 'health/ctDetails/:platform?/:token?/:checkId?',
         menuPath: 'views/hybrid/health/ctDetails'
+      },
+      {
+        menuRouteName: 'health',
+        menuRoute: 'health/:platform?/:token?',
+        menuPath: 'views/hybrid/health'
+      },
+      {
+        menuRouteName: 'privacyAgreement',
+        menuRoute: 'agreements/privacyAgreement/:platform?/:token?',
+        menuPath: 'views/hybrid/agreements/privacyAgreement'
+      },
+      {
+        menuRouteName: 'userAgreement',
+        menuRoute: 'agreements/userAgreement/:platform?/:token?',
+        menuPath: 'views/hybrid/agreements/userAgreement'
+      },
+      {
+        menuRouteName: 'bloodRoutine',
+        menuRoute: 'health/checkOrder/bloodRoutine/:platform?/:token?',
+        menuPath: 'views/hybrid/health/checkOrder/bloodRoutine'
       }
     ]
   }

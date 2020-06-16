@@ -15,12 +15,10 @@ export default function({ configuration }) {
 
   const routes = generateRoutes(configuration)
 
-  const Router = new VueRouter({
+  return new VueRouter({
     mode: 'history',
     base: process.env.VUE_APP_RELEASE_FLODER_PATH,
     routes: routes,
-    scrollBehavior: () => ({ x: 0, y: 0 })
+    scrollBehavior: () => ({x: 0, y: 0})
   })
-
-  return Router
 }

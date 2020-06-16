@@ -17,6 +17,9 @@ import boot_Quasar from './boot_quasar'
 // UI Library
 import boot_UI from './boot_ui'
 
+//global style
+import boot_styles from "./boot_styles";
+
 /**
  * Boot install
  *
@@ -34,10 +37,13 @@ const install = async () => {
     boot_Quasar,
 
     // UI
-    boot_UI
+    boot_UI,
+
+    //global style
+    boot_styles
   ]
 
-  boots.forEach(async (boot) => {
+  for (const boot of boots) {
     try {
       await boot({
         Vue,
@@ -48,10 +54,8 @@ const install = async () => {
       })
     } catch (error) {
       console.error('[Library] boot error:', error)
-
-      return
     }
-  })
+  }
 
   return new Vue(app)
 }

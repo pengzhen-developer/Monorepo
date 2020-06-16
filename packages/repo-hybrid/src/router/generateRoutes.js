@@ -41,7 +41,7 @@ export default function generateRoutes(configuration) {
     }
   ]
 
-  configuration.routes.layoutNavMenu.forEach((item) => {
+  for (const item of configuration.routes.layoutNavMenu) {
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
       const component = () => import(`@src/${item.menuPath}/index.js`)
 
@@ -59,7 +59,8 @@ export default function generateRoutes(configuration) {
         component: notFound
       })
     }
-  })
+  }
+
 
   configuration.routes.hybridNavMenu.forEach((item) => {
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
