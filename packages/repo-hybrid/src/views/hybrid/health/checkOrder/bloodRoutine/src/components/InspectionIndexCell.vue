@@ -56,10 +56,6 @@
     .separator-line {
         height: 1px;
         background-color: #F5F5F5;
-
-        /*--q-color-grey-333: #333333;*/
-        /*--q-color-grey-666: #666666;*/
-        /*--q-color-grey-999: #999999;*/
     }
 
     .check-title-label {

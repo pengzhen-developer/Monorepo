@@ -37,7 +37,7 @@ import Service from './service'
 export default {
   components: {
     ReportDetails: () => import('./components/ReportDetails'),
-    PersonInfo: () => import('./components/PersonInfo')
+    PersonInfo: () => import('../../components/PersonInfo')
   },
 
   data() {

@@ -24,7 +24,7 @@
       </q-tab-panel>
       <q-tab-panel class="q-pa-none"
                    name="基本信息">
-       <div></div>
+        <PersonInfo v-bind:baseInfo='bloodRoutine.baseInfo'></PersonInfo>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -34,9 +34,11 @@
 <script>
   import Service from './service/index'
   import bloodRoutineResult from "./pages/bloodRoutineResult";
-export default {
+  import PersonInfo from "../../../components/PersonInfo";
+  export default {
   components: {
     bloodRoutineResult,
+    PersonInfo
   },
   data() {
     return {
@@ -52,7 +54,9 @@ export default {
   },
   methods: {
     fetch() {
-      const params = {}
+      const params = {
+        checkId: this.$route.params.checkId
+      }
       Service.fetch(params).then((res) => {
         this.bloodRoutine = res.data
       })
