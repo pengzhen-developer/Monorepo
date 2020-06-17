@@ -20,11 +20,11 @@
                   transition-next="jump-up">
       <q-tab-panel class="q-pa-none"
                    name="检查结果">
-        <bloodRoutineResult v-bind:blood-routine="bloodRoutine.resultInfo"></bloodRoutineResult>
+        <BloodRoutineResult v-bind:blood-routine="bloodRoutine.resultInfo"></BloodRoutineResult>
       </q-tab-panel>
       <q-tab-panel class="q-pa-none"
                    name="基本信息">
-        <PersonInfo v-bind:baseInfo='bloodRoutine.baseInfo'></PersonInfo>
+        <PersonBaseInfo v-bind:data="bloodRoutine.baseInfo"></PersonBaseInfo>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -33,12 +33,10 @@
 
 <script>
 import Service from './service/index'
-import bloodRoutineResult from './pages/bloodRoutineResult'
-import PersonInfo from './../../components/PersonInfo'
 export default {
   components: {
-    bloodRoutineResult,
-    PersonInfo
+    BloodRoutineResult: () => import('./pages/BloodRoutineResult'),
+    PersonBaseInfo: () => import('./pages/PersonBaseInfo')
   },
   data() {
     return {
@@ -57,7 +55,7 @@ export default {
       const params = {
         checkId: this.$route.params.checkId
       }
-      Service.fetch(params).then((res) => {
+      Service.fetch(params).then(res => {
         this.bloodRoutine = res.data
       })
     }

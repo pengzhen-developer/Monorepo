@@ -107,26 +107,26 @@ export default {
       // 健康档案 - 影像 PACS
       {
         menuRouteName: 'pacs',
-        menuRoute: 'health/pacs/:platform/:token?/:checkId?',
+        menuRoute: 'health/pacs/:platform/:token/:checkId',
         menuPath: 'views/hybrid/health/pacs'
       },
       // 健康档案 - 检验 inspection
       {
         menuRouteName: 'inspection',
-        menuRoute: 'health/inspection/:platform/:token?/:checkId?',
+        menuRoute: 'health/inspection/:platform/:token/:checkId',
         menuPath: 'views/hybrid/health/inspection'
       },
 
       // 隐私协议
       {
         menuRouteName: 'privacyAgreement',
-        menuRoute: 'agreements/privacyAgreement/:platform/:token?',
+        menuRoute: 'agreements/privacyAgreement/:platform',
         menuPath: 'views/hybrid/agreements/privacyAgreement'
       },
       // 用户协议
       {
         menuRouteName: 'userAgreement',
-        menuRoute: 'agreements/userAgreement/:platform/:token?',
+        menuRoute: 'agreements/userAgreement/:platform',
         menuPath: 'views/hybrid/agreements/userAgreement'
       },
       // 关于我们
