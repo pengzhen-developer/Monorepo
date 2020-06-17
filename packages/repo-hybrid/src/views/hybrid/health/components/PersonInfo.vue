@@ -18,7 +18,7 @@ export default {
     PersonInfoItem: () => import('./PersonInfoItem.vue')
   },
   props: {
-    baseInfo: {
+    data: {
       type: Object,
       default: () => {
         return {}
@@ -28,17 +28,25 @@ export default {
 
   data() {
     return {
-      items: [
-        { key: '项目名称', value: this.baseInfo.itemName },
-        { key: '就诊医院', value: this.baseInfo.hospitalName },
-        { key: '就诊人', value: this.baseInfo.patientName },
-        { key: '性别', value: this.baseInfo.patientSex },
-        { key: '年龄', value: this.baseInfo.age },
-        { key: '报告时间', value: this.baseInfo.inspectionDate },
-        { key: '申请科室', value: this.baseInfo.applyDept },
-        { key: '申请医师', value: this.baseInfo.applyDoctor },
-        { key: '影像ID', value: this.baseInfo.pacsId }
-      ]
+      items: []
+    }
+  },
+  watch: {
+    data: {
+      handler() {
+        this.items = [
+          { key: '项目名称', value: this.data.itemName },
+          { key: '就诊医院', value: this.data.hospitalName },
+          { key: '就诊人', value: this.data.patientName },
+          { key: '性别', value: this.data.patientSex },
+          { key: '年龄', value: this.data.age },
+          { key: '报告时间', value: this.data.inspectionDate },
+          { key: '申请科室', value: this.data.applyDept },
+          { key: '申请医师', value: this.data.applyDoctor },
+          { key: '影像ID', value: this.data.pacsId }
+        ]
+      },
+      immediate: true
     }
   }
 }

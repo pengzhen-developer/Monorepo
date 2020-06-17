@@ -22,7 +22,7 @@ export default {
     ReportDetailsItem: () => import('./ReportDetailsItem.vue')
   },
   props: {
-    resultInfo: {
+    data: {
       type: Object,
       default: () => {
         return {}
@@ -31,17 +31,25 @@ export default {
   },
   data() {
     return {
-      items: [
-        { key: '诊断', value: this.resultInfo.diagnosis },
-        { key: '症状', value: this.resultInfo.symptom },
-        { key: '结论', value: this.resultInfo.conclusion },
-        { key: '部位', value: this.resultInfo.bodyPart },
-        { key: '阴性阳性', value: this.resultInfo.yinYang },
-        { key: '检查医生', value: this.resultInfo.reportDoctor },
-        { key: '接收时间', value: this.resultInfo.reportDate },
-        { key: '审核医生', value: this.resultInfo.checkDoctor },
-        { key: '审核时间', value: this.resultInfo.checkDate }
-      ]
+      items: []
+    }
+  },
+  watch: {
+    data: {
+      handler() {
+        this.items = [
+          { key: '诊断', value: this.data.diagnosis },
+          { key: '症状', value: this.data.symptom },
+          { key: '结论', value: this.data.conclusion },
+          { key: '部位', value: this.data.bodyPart },
+          { key: '阴性阳性', value: this.data.yinYang },
+          { key: '检查医生', value: this.data.reportDoctor },
+          { key: '接收时间', value: this.data.reportDate },
+          { key: '审核医生', value: this.data.checkDoctor },
+          { key: '审核时间', value: this.data.checkDate }
+        ]
+      },
+      immediate: true
     }
   }
 }

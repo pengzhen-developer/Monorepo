@@ -20,11 +20,11 @@
                   transition-next="jump-up">
       <q-tab-panel class="q-pa-none"
                    name="报告明细">
-        <ReportDetails v-bind:resultInfo='resultInfo'></ReportDetails>
+        <ReportDetails v-bind:data='resultInfo'></ReportDetails>
       </q-tab-panel>
       <q-tab-panel class="q-pa-none"
                    name="基本信息">
-        <PersonInfo v-bind:baseInfo='baseInfo'></PersonInfo>
+        <PersonInfo v-bind:data='baseInfo'></PersonInfo>
       </q-tab-panel>
     </q-tab-panels>
   </div>
