@@ -2,13 +2,15 @@ export const platformMap = {
   iOS: 'iOS',
   Android: 'Android',
   H5: 'H5',
-  Wechat: 'Wechat'
+  Wechat: 'Wechat',
+  PC: 'PC'
 }
 export const platformAPIMap = {
-  [platformMap['iOS']]: 'webapp',
-  [platformMap['Android']]: 'webapp',
-  [platformMap['H5']]: 'h5',
-  [platformMap['Wechat']]: 'Wechat'
+  [platformMap['iOS']]: process.env.VUE_APP_BASE_API_IOS,
+  [platformMap['Android']]: process.env.VUE_APP_BASE_API_ANDROID,
+  [platformMap['PC']]: process.env.VUE_APP_BASE_API_PC,
+  [platformMap['H5']]: process.env.VUE_APP_BASE_API_H5,
+  [platformMap['Wechat']]: process.env.VUE_APP_BASE_API_WECHAT
 }
 
 export default {
