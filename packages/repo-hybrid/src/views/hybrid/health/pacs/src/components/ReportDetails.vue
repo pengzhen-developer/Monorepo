@@ -2,54 +2,73 @@
   <q-list>
     <div class="bg-grey-2 q-mb-sm"
          style="height: 10px; width: 100%;"></div>
-    <div v-for="(item,index) in items"
-         :key="index">
-      <ReportDetailsItem v-bind:item='item'></ReportDetailsItem>
-      <q-separator class="q-my-sm bg-grey-2"
-                   v-if="index!=4"></q-separator>
-      <div class="bg-grey-2 q-mb-sm"
-           style="height: 10px; width: 100%;"
-           v-else></div>
 
-    </div>
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">诊断</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.diagnosis }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">症状</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.symptom }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">结论</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.conclusion }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">部位</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.bodyPart }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">阴性阳性</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.yinYang }}</div>
+    </q-item>
+
+    <div class="bg-grey-2 q-mb-sm"
+         style="height: 10px; width: 100%;"></div>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">检查医生</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.reportDoctor }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">接收时间</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.reportDate }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">审核医生</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.checkDoctor }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
+      <div class="col-3">审核时间</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.checkDate }}</div>
+    </q-item>
 
   </q-list>
 </template>
 
 <script>
 export default {
-  components: {
-    ReportDetailsItem: () => import('./ReportDetailsItem.vue')
-  },
   props: {
     data: {
       type: Object,
       default: () => {
         return {}
       }
-    }
-  },
-  data() {
-    return {
-      items: []
-    }
-  },
-  watch: {
-    data: {
-      handler() {
-        this.items = [
-          { key: '诊断', value: this.data.diagnosis },
-          { key: '症状', value: this.data.symptom },
-          { key: '结论', value: this.data.conclusion },
-          { key: '部位', value: this.data.bodyPart },
-          { key: '阴性阳性', value: this.data.yinYang },
-          { key: '检查医生', value: this.data.reportDoctor },
-          { key: '接收时间', value: this.data.reportDate },
-          { key: '审核医生', value: this.data.checkDoctor },
-          { key: '审核时间', value: this.data.checkDate }
-        ]
-      },
-      immediate: true
     }
   }
 }

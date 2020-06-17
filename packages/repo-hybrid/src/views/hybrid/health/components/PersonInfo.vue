@@ -1,52 +1,74 @@
 <template>
   <div>
     <q-list>
+
       <div class="bg-grey-2 q-mb-sm"
            style="height: 10px; width: 100%;"></div>
-      <div v-for="(item,index) in items"
-           :key="index">
-        <PersonInfoItem v-bind:item='item'></PersonInfoItem>
-        <q-separator class="q-my-sm bg-grey-2"></q-separator>
-      </div>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">项目名称</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.itemName }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">就诊医院</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.hospitalName }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">就诊人</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.patientName }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">性别</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.patientSex }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">年龄</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.age }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">报告时间</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.inspectionDate }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">申请科室</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.applyDept }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">申请医师</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.applyDoctor }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
+        <div class="col-3">影像ID</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.pacsId }}</div>
+      </q-item>
 
     </q-list>
   </div>
 </template>
 <script>
 export default {
-  components: {
-    PersonInfoItem: () => import('./PersonInfoItem.vue')
-  },
   props: {
     data: {
       type: Object,
       default: () => {
         return {}
       }
-    }
-  },
-
-  data() {
-    return {
-      items: []
-    }
-  },
-  watch: {
-    data: {
-      handler() {
-        this.items = [
-          { key: '项目名称', value: this.data.itemName },
-          { key: '就诊医院', value: this.data.hospitalName },
-          { key: '就诊人', value: this.data.patientName },
-          { key: '性别', value: this.data.patientSex },
-          { key: '年龄', value: this.data.age },
-          { key: '报告时间', value: this.data.inspectionDate },
-          { key: '申请科室', value: this.data.applyDept },
-          { key: '申请医师', value: this.data.applyDoctor },
-          { key: '影像ID', value: this.data.pacsId }
-        ]
-      },
-      immediate: true
     }
   }
 }

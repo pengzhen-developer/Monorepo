@@ -8,7 +8,7 @@ export default {
    * @param {*} params
    */
   getPacsDetail(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = `${Util.hybrid.getURIPrefix()}/report/v110/check/pacsDetail`
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
