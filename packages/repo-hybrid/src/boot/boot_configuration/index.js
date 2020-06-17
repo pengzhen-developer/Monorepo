@@ -104,35 +104,35 @@ export default {
      *
      */
     hybridNavMenu: [
-      // hybrid - demo
+      // 健康档案 - 影像 PACS
       {
-        menuRouteName: 'ctDetails',
-        menuRoute: 'health/ctDetails/:platform?/:token?/:checkId?',
-        menuPath: 'views/hybrid/health/ctDetails'
+        menuRouteName: 'pacs',
+        menuRoute: 'health/pacs/:platform/:token?/:checkId?',
+        menuPath: 'views/hybrid/health/pacs'
       },
+      // 健康档案 - 检验 inspection
       {
-        menuRouteName: 'health',
-        menuRoute: 'health/:platform?/:token?',
-        menuPath: 'views/hybrid/health'
+        menuRouteName: 'inspection',
+        menuRoute: 'health/inspection/:platform/:token?/:checkId?',
+        menuPath: 'views/hybrid/health/inspection'
       },
+
+      // 隐私协议
       {
         menuRouteName: 'privacyAgreement',
-        menuRoute: 'agreements/privacyAgreement/:platform?/:token?',
+        menuRoute: 'agreements/privacyAgreement/:platform/:token?',
         menuPath: 'views/hybrid/agreements/privacyAgreement'
       },
+      // 用户协议
       {
         menuRouteName: 'userAgreement',
-        menuRoute: 'agreements/userAgreement/:platform?/:token?',
+        menuRoute: 'agreements/userAgreement/:platform/:token?',
         menuPath: 'views/hybrid/agreements/userAgreement'
       },
-      {
-        menuRouteName: 'bloodRoutine',
-        menuRoute: 'health/checkOrder/bloodRoutine/:platform?/:token?/:checkId?',
-        menuPath: 'views/hybrid/health/checkOrder/bloodRoutine'
-      },
+      // 关于我们
       {
         menuRouteName: 'aboutUs',
-        menuRoute: 'agreements/aboutUs/:platform?',
+        menuRoute: 'agreements/aboutUs/:platform',
         menuPath: 'views/hybrid/agreements/aboutUs'
       }
     ]

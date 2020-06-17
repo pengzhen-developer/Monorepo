@@ -1,23 +1,20 @@
-import Peace from '@src/library'
-
-const hexToRGBA = function hexToRgbA(hex){
-  let c;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-    c= hex.substring(1).split('');
-    if(c.length === 3){
-      c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+const hexToRGBA = function hexToRgbA(hex, opacity) {
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    let c = hex.substring(1).split('')
+    if (c.length === 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]]
     }
-    c= '0x'+c.join('');
-    return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',\' + _opacity + \')';
+    c = '0x' + c.join('')
+
+    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${opacity})`
   }
-  throw new Error('Bad Hex');
+  throw new Error('Bad Hex')
 }
 
 // export boot install function
 // async is optional
 
-export default async ({configuration}) => {
-
+export default async ({ configuration }) => {
   const styleConfig = new Map([
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],
@@ -31,28 +28,25 @@ export default async ({configuration}) => {
 
     ['grey-333', '#333333'],
     ['grey-666', '#666666'],
-    ['grey-999', '#999999'],
+    ['grey-999', '#999999']
   ])
 
-  const style = document.createElement('style');
+  const style = document.createElement('style')
+  style.type = 'text/css'
+  style.appendChild(document.createTextNode('/* This is boot_styles auto generate */'))
 
   for (let [key, value] of styleConfig) {
-    document.documentElement.style.setProperty('--q-color-' + key, value);
-    const styleSheetNode =
-      `
-.text-${key}{ color: ${value}; }
-.bg-${key}{ color: ${value}; }
-      `
-    // 对WebKit hack :(
-    style.appendChild(
-      document.createTextNode(styleSheetNode)
-    )
+    document.body.style.setProperty('--q-color-' + key, value)
+    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ color: ${value}; }`
+    const styleSheetTextNode = document.createTextNode(styleSheetNode)
+    style.appendChild(styleSheetTextNode)
   }
+
   // 将 <style> 元素加到页面中
   document.head.appendChild(style)
 
   console.log(
-    `%c ${'Library'} %c ${Peace.version} %c`,
+    `%c ${'Styles'} %c N/A %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'

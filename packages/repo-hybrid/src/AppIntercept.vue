@@ -8,8 +8,9 @@
   <div>
     <div class="fixed-center"
          v-if="processing">
-      <q-spinner-cube color="primary"
-                      size="4em" />
+      <q-spinner color="primary"
+                 size="4em"
+                 v-bind:thickness="2" />
     </div>
 
     <router-view v-else></router-view>

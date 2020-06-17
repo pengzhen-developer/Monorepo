@@ -32,10 +32,10 @@
 </template>
 
 <script>
-  import Service from './service/index'
-  import bloodRoutineResult from "./pages/bloodRoutineResult";
-  import PersonInfo from "../../../components/PersonInfo";
-  export default {
+import Service from './service/index'
+import bloodRoutineResult from './pages/bloodRoutineResult'
+import PersonInfo from './../../components/PersonInfo'
+export default {
   components: {
     bloodRoutineResult,
     PersonInfo
@@ -50,7 +50,7 @@
     }
   },
   created() {
-   this.fetch()
+    this.fetch()
   },
   methods: {
     fetch() {
