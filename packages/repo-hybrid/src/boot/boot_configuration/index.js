@@ -129,6 +129,11 @@ export default {
         menuRouteName: 'bloodRoutine',
         menuRoute: 'health/checkOrder/bloodRoutine/:platform?/:token?/:checkId?',
         menuPath: 'views/hybrid/health/checkOrder/bloodRoutine'
+      },
+      {
+        menuRouteName: 'aboutUs',
+        menuRoute: 'agreements/aboutUs/:platform?',
+        menuPath: 'views/hybrid/agreements/aboutUs'
       }
     ]
   }
