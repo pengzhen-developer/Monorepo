@@ -168,6 +168,18 @@ export function cancel(params) {
 
   return peace.http.post(cancel, params)
 }
+/**
+ * 复诊报道
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function report(params) {
+  const report = 'client/v1/inquiry/report'
+
+  return peace.http.post(report, params)
+}
 
 /**
  * 获取处方列表
@@ -405,6 +417,8 @@ export default {
   inquiryDetail,
   /** 取消咨询 */
   cancel,
+  /**复诊报道 */
+  report,
   /** 获取订单列表 */
   getOrderList,
   /** 获取订单详情 */

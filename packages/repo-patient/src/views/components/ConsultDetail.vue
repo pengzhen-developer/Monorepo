@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="consult-detatil"
-         :style="{'margin-bottom':canShowPayBottom?'115px':canShowBottom?'64px':'0'}"
+         :style="{'margin-bottom':canShowPayBottom?'115px':canShowBottom?'64px':'0','padding-bottom':canShowReportBottom?reportHeight:'10px'}"
          v-if="canShowInfo">
       <!--TOP-->
       <div class="module top">
@@ -13,6 +13,7 @@
           <div class='typeTag zx'
                v-else>咨询</div>
         </div>
+
         <div class="brief"
              v-if="internalData.inquiryInfo.inquiryStatus!=ENUM.INQUIRY_STATUS.已退诊">
           {{ getInquiryText(internalData.inquiryInfo.inquiryStatus) }}
@@ -21,6 +22,7 @@
              v-else>
           {{internalData.inquiryInfo.overCause}}
         </div>
+
         <div class="cancelText"
              v-if="canShowCancelText">
           订单取消后退款将在1-3个工作日内原路返回，请注意查收
@@ -260,6 +262,18 @@
                @click="goToPay(internalData)">立即支付</div>
         </div>
       </div>
+      <!-- 复诊-报道 -->
+      <div class="report fixedBottom"
+           v-if="canShowReportBottom">
+        <van-button class="cancel-btn"
+                    @click="showCancellPop(internalData)">取消订单</van-button>
+        <van-button class="report-btn"
+                    @click="report(internalData)"
+                    :disabled="internalData.inquiryInfo.reportButton!=1">报道</van-button>
+        <div class="report-tip"
+             v-if="internalData.inquiryInfo.reportButton!=1"><img
+               :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报道</div>
+      </div>
     </template>
 
     <peace-dialog :visible.sync="caseDetail.visible"
@@ -361,13 +375,23 @@ export default {
         position: 0,
         images: []
       },
-      fromChatRoom: false
+      fromChatRoom: false,
+      reportHeight: '0px'
     }
   },
   watch: {
     data: {
       handler() {
         this.internalData = this.data
+      },
+      immediate: true
+    },
+    canShowReportBottom: {
+      handler() {
+        this.$nextTick(() => {
+          const element = document.querySelector('.report')
+          this.reportHeight = element ? element.clientHeight + 15 + 'px' : '0px'
+        })
       },
       immediate: true
     }
@@ -429,7 +453,18 @@ export default {
         this.internalData &&
         this.internalData.inquiryInfo &&
         this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付 &&
-        this.internalData.inquiryInfo.time > 0
+        this.internalData.inquiryInfo.time > 0 &&
+        ((this.internalData.inquiryInfo.reportTime && this.internalData.inquiryInfo.appointmentStatus == 1) ||
+          this.internalData.inquiryInfo.appointmentStatus == 0)
+      )
+    },
+    canShowReportBottom() {
+      return (
+        this.internalData &&
+        this.internalData.inquiryInfo &&
+        this.internalData.inquiryInfo.serviceType == 'returnVisit' &&
+        !this.internalData.inquiryInfo.reportTime &&
+        this.internalData.inquiryInfo.appointmentStatus == 1
       )
     },
     canShowChatBtn() {
@@ -443,6 +478,7 @@ export default {
       )
     }
   },
+
   activated() {
     this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
@@ -453,6 +489,7 @@ export default {
       this.getConsultDetail()
     },
     finish(data) {
+      if (!this.canShowPayBottom) return
       data.inquiryInfo.time = 0
       this.cancelInquiryOrder(data.orderInfo.orderNo)
     },
@@ -463,6 +500,12 @@ export default {
       }
       peace.service.patient.cancel(params).then(() => {
         this.getConsultDetail()
+      })
+    },
+    report(data) {
+      const params = { inquiryNo: data.inquiryInfo.inquiryNo }
+      peace.service.patient.report(params).then(() => {
+        this.goToPay(data)
       })
     },
     goToPay(data) {
@@ -497,8 +540,10 @@ export default {
 
     getInquiryText(status) {
       const dic = {
-        // '1': '15分钟之后未支付系统将自动关闭订单',
-        '1': '订单创建15分钟后未支付将自动关闭',
+        '1':
+          this.internalData.inquiryInfo.appointmentStatus == 1
+            ? this.internalData.inquiryInfo.statusTxtContent
+            : '订单创建15分钟后未支付将自动关闭',
         '2':
           this.internalData.inquiryInfo.serviceType == 'returnVisit' && this.internalData.inquiryInfo.isCurrentDate != 1
             ? '请在约定时间准时上线复诊'
@@ -508,9 +553,13 @@ export default {
         // '4': '医生已退诊',
         '4': '',
         '5': '祝您身体健康',
-        '6': this.internalData.orderInfo.payMoney == '0.00' ? '订单已取消，如遇紧急情况请及时就医' : '订单已取消'
+        '6':
+          this.internalData.inquiryInfo.appointmentStatus == 2
+            ? this.internalData.inquiryInfo.statusTxtContent
+            : this.internalData.orderInfo.payMoney == '0.00'
+            ? '订单已取消，如遇紧急情况请及时就医'
+            : '订单已取消'
       }
-
       return dic[status]
     },
 
@@ -615,10 +664,14 @@ export default {
     }
   }
 }
-
+.report,
 .footer,
 .pay {
   &.fixedBottom {
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -627,13 +680,46 @@ export default {
 .h64 {
   height: 64px;
 }
+.report {
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  .cancel-btn {
+    width: 32%;
+    margin-right: 4%;
+    color: #999;
+    height: 45px;
+    border-radius: 23px;
+  }
+  .report-btn {
+    width: 64%;
+    background-color: #00c6ae;
+    color: #fff;
+    height: 45px;
+    border-radius: 23px;
+  }
+  .report-tip {
+    margin-top: 14px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    line-height: 1;
+    color: #999;
+    font-size: 13px;
+    img {
+      width: 13px;
+      height: 13px;
+      display: block;
+      margin-right: 5px;
+    }
+  }
+}
 .footer {
-  width: 100%;
-  background-color: #fff;
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff;
   .footer-btn {
     display: flex;
     align-items: center;
@@ -657,11 +743,7 @@ export default {
 }
 .pay {
   height: 115px;
-  background-color: #fff;
   padding: 10px 15px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
   flex-direction: column;
   justify-content: space-around;
   .pay-item {

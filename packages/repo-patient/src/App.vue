@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <!-- <ActiveHome v-show="$route.path !== $peace.config.system.homePage &&
-                        $route.path !== $peace.config.system.authPage"></ActiveHome> -->
+    <!-- <ActiveHome v-show="canShowActiveHome"></ActiveHome> -->
 
     <div class="layout">
       <!-- 中部功能 keepAlive router  -->
@@ -101,7 +100,8 @@ export default {
           'onMenuShareWeibo',
           'onMenuShareQZone'
         ]
-      }
+      },
+      canShowActiveHome: false
     }
   },
 
@@ -131,6 +131,18 @@ export default {
         if (key !== undefined) {
           this.active = key
         }
+
+        const showActiveHomePathMap = [
+          '/home/index',
+          '/message/index',
+          '/file/index',
+          '/setting/index',
+          '/login',
+          '/WXAuth',
+          '/redirect'
+        ]
+        const index = showActiveHomePathMap.findIndex(item => item == this.$route.path)
+        this.canShowActiveHome = index > -1 ? false : true
       },
       immediate: true
     }

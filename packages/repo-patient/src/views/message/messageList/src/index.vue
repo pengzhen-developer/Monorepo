@@ -317,18 +317,18 @@ export default {
     peace.service.IM.resetInquirySessionMessages()
   },
   mounted() {
-    document.body.addEventListener('focusout', () => {
-      //软键盘收起的事件处理
-      setTimeout(() => {
-        let u = navigator.userAgent
-        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
-        if (isiOS) {
-          const element = document.querySelector('.message-list-chat-room .input')
-          peace.util.alert(element.scrollHeight)
-          window.scrollTo(0, 0)
-        }
-      }, 100)
-    })
+    // document.body.addEventListener('focusout', () => {
+    //   //软键盘收起的事件处理
+    //   setTimeout(() => {
+    //     let u = navigator.userAgent
+    //     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
+    //     if (isiOS) {
+    //       const element = document.querySelector('.message-list-chat-room .input')
+    //       peace.util.alert(element.scrollHeight)
+    //       window.scrollTo(0, 0)
+    //     }
+    //   }, 100)
+    // })
   },
   methods: {
     getInquiryInfo() {
@@ -539,8 +539,8 @@ export default {
       const innerHeight = window.innerHeight
 
       const interval = setInterval(() => {
-        console.log('innerHeight_', innerHeight, 'window.innerHeight', window.innerHeight)
         if (innerHeight !== window.innerHeight) {
+          console.log('innerHeight_', innerHeight, 'window.innerHeight', window.innerHeight)
           window.clearInterval(interval)
           this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
         }

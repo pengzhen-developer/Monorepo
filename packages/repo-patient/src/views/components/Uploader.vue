@@ -47,13 +47,15 @@ export default {
 
   methods: {
     beforeRead(file) {
-      if (!file.content) {
-        file = Array.prototype.slice.call(file)
-      } else {
-        file = [file]
-      }
       let flag = true
-      file.forEach(item => {
+      var files = []
+      if (!file.type) {
+        files = Array.prototype.slice.call(file)
+      } else {
+        files = [file]
+      }
+
+      files.forEach(item => {
         if (item.type !== 'image/jpeg' && item.type !== 'image/jpg' && item.type !== 'image/png') {
           $peace.util.alert('请上传 jpeg、jpg、png 格式图片')
           flag = false
@@ -113,7 +115,8 @@ export default {
               })
             })
             .catch(err => {
-              peace.util.alert('图片上传失败，请稍后再试')
+              peace.util.alert(err.msg || '图片上传失败，请稍后再试')
+              this.loading = false
               reject(err)
             })
         } else {

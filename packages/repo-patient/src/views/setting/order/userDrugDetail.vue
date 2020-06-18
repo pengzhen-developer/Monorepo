@@ -1,236 +1,245 @@
 <template>
-  <div class="user-drug-detail"
-       v-if="order != null">
-    <div class="top"
-         v-if="order.OrderStatusText">
-      <!--tab^content-->
-
-      <div class="order"
-           @click="goDrugLogiPage">
-        <div class="order-card">
-          <div class="icon icon-status"
-               :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
-          <div class="text">{{order.OrderStatusText + '  '}}</div>
-          <div v-if="showQRCodeBtn"
-               class="btn-wrapper">
-            <div @click.stop
-                 class="btn--code"
-                 @click="onClickSeeQRCode">查看取药码</div>
-          </div>
-        </div>
-        <div class="order-text"></div>
-      </div>
-      <div class="cancelText"
-           v-if="order.OrderStatus ==ENUM.ORDER_STATUS.已取消 && order.payMoney != 0 ">
-        订单取消后退款将在1-3个工作日内原路返回，请注意查收
-      </div>
-      <div class="divider"></div>
-      <div class="tab-content"
-           v-if="order.ShippingMethod ==ENUM.SHIPPING_METHOD.到店取药">
-        <div class="addr-tit">到店取药</div>
-        <div class="addr-p icon-next">{{order.DrugStoreDetailed}}</div>
-      </div>
-      <div class="tab-content"
-           v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
-        <div class="addr-tit">配送到家</div>
-        <div class="userAddr">
-          <div class="addr-p">{{order.Detailed}}</div>
-          <div class="addr-user">
-            <span>{{order.UserName}}</span>
-            <span>{{order.UserPhone}}</span>
-          </div>
-        </div>
-      </div>
+  <div class="user-drug-bg">
+    <div class="warn-tip"
+         v-if="order&&order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货">
+      <img :src="require('@src/assets/images/warn.png')">
+      <span>{{order.ShippingMethod ==ENUM.SHIPPING_METHOD.配送到家?'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再签收。':'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再取走药品。'}}</span>
     </div>
+    <div class="user-drug-detail"
+         v-if="order != null">
+      <div class="top"
+           v-if="order.OrderStatusText">
+        <!--tab^content-->
 
-    <div class="module"
-         v-if="order.DrugStoreName">
-      <div class="panel-pha">
-        <div class="panel-head icon-next">
-          <div class="head-ico">
-            <img :src="order.DrugStoreLogo" />
+        <div class="order"
+             @click="goDrugLogiPage">
+          <div class="order-card">
+            <div class="icon icon-status"
+                 :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
+            <div class="text">{{order.OrderStatusText + '  '}}</div>
+            <div v-if="showQRCodeBtn"
+                 class="btn-wrapper">
+              <div @click.stop
+                   class="btn--code"
+                   @click="onClickSeeQRCode">查看取药码</div>
+            </div>
           </div>
-          <div class="head-tit">{{ order.DrugStoreName }}</div>
-          <div class="head-Rp"
-               @click="goPrescripDetailPage">查看处方
+          <div class="order-text"></div>
+        </div>
+        <div class="cancelText"
+             v-if="order.OrderStatus ==ENUM.ORDER_STATUS.已取消 && order.payMoney != 0 ">
+          订单取消后退款将在1-3个工作日内原路返回，请注意查收
+        </div>
+        <div class="divider"></div>
+        <div class="tab-content"
+             v-if="order.ShippingMethod ==ENUM.SHIPPING_METHOD.到店取药">
+          <div class="addr-tit">到店取药</div>
+          <div class="addr-p icon-next">{{order.DrugStoreDetailed}}</div>
+        </div>
+        <div class="tab-content"
+             v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
+          <div class="addr-tit">配送到家</div>
+          <div class="userAddr">
+            <div class="addr-p">{{order.Detailed}}</div>
+            <div class="addr-user">
+              <span>{{order.UserName}}</span>
+              <span>{{order.UserPhone}}</span>
+            </div>
           </div>
         </div>
-        <div class="panel-body">
-          <div class="list-three"
-               v-for="(item, index) in order.OrderDet"
-               :key="index">
-            <div class="list-icon"
-                 :class="item.DrugImage ? '' : 'list-icon-none'">
-              <img :src="item.DrugImage" />
+      </div>
+
+      <div class="module"
+           v-if="order.DrugStoreName">
+        <div class="panel-pha">
+          <div class="panel-head icon-next">
+            <div class="head-ico">
+              <img :src="order.DrugStoreLogo" />
             </div>
-            <div class="list-content">
-              <div class="content-title">{{item.DrugName}}</div>
-              <div class="content-brief">{{item.DrugSpecification}}</div>
-            </div>
-            <div class="list-other">
-              <div class="other-them"
-                   @click="goInterDrugPage(item)">
-                说明书
-              </div>
-              <div class="other-price">
-                <div class="price">￥{{item.DrugPrice}}</div>
-                x{{item.DrugNumber}}
-              </div>
+            <div class="head-tit">{{ order.DrugStoreName }}</div>
+            <div class="head-Rp"
+                 @click="goPrescripDetailPage">查看处方
             </div>
           </div>
-          <div class="module intro">
-            <div class="dl-packet">
-              <div class="dt">配送方式:</div>
-              <div class="dd">{{order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 ? '到店取药': '配送到家'}}
+          <div class="panel-body">
+            <div class="list-three"
+                 v-for="(item, index) in order.OrderDet"
+                 :key="index">
+              <div class="list-icon"
+                   :class="item.DrugImage ? '' : 'list-icon-none'">
+                <img :src="item.DrugImage" />
               </div>
-            </div>
-            <div class="dl-packet"
-                 v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
-              <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight.toString().toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut.toString().toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">订单总价:</div>
-              <div class="dd">
-                ￥{{order.TotalAmount}}
+              <div class="list-content">
+                <div class="content-title">{{item.DrugName}}</div>
+                <div class="content-brief">{{item.DrugSpecification}}</div>
               </div>
-            </div>
-          </div>
-          <div class="module str"
-               v-if="canShowPayMoney">
-            <div class="dl-packet">
-              <div class="dt">
-                {{canShowPayway?'应付金额:':'实付金额:'}}
-              </div>
-              <div class="dd">
-                <div class="strong">
-                  ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
-                  <span class="refunded"
-                        v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == ENUM.PAY_STASUS.已退款">(已退款)</span>
+              <div class="list-other">
+                <div class="other-them"
+                     @click="goInterDrugPage(item)">
+                  说明书
+                </div>
+                <div class="other-price">
+                  <div class="price">￥{{item.DrugPrice}}</div>
+                  x{{item.DrugNumber}}
                 </div>
               </div>
             </div>
-          </div>
+            <div class="module intro">
+              <div class="dl-packet">
+                <div class="dt">配送方式:</div>
+                <div class="dd">
+                  {{order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 ? '到店取药': '配送到家'}}
+                </div>
+              </div>
+              <div class="dl-packet"
+                   v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
+                <div class="dt">配送费:</div>
+                <div class="dd">￥{{order.Freight.toString().toFixed(2)}}</div>
+              </div>
+              <div class="dl-packet">
+                <div class="dt">优惠金额:</div>
+                <div class="dd">￥{{order.PromotionsCut.toString().toFixed(2)}}</div>
+              </div>
+              <div class="dl-packet">
+                <div class="dt">订单总价:</div>
+                <div class="dd">
+                  ￥{{order.TotalAmount}}
+                </div>
+              </div>
+            </div>
+            <div class="module str"
+                 v-if="canShowPayMoney">
+              <div class="dl-packet">
+                <div class="dt">
+                  {{canShowPayway?'应付金额:':'实付金额:'}}
+                </div>
+                <div class="dd">
+                  <div class="strong">
+                    ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
+                    <span class="refunded"
+                          v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == ENUM.PAY_STASUS.已退款">(已退款)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="box"
-         :style="{'margin-bottom':canShowBtnBox &&'60px'}"
-         v-if="order.OrderId">
-      <!-- 待支付不显示 - 时间轴-->
-      <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
-        <div class="dl-packet">
-          <div class="dt">订单编号：</div>
-          <div class="dd">{{order.OrderId}}</div>
-          <!-- 待下单状态的取消订单在底部 已接单 -->
-          <div class="cancel-btn"
-               @click="canselOrder"
-               v-if="canShowCancelTop">取消订单</div>
-        </div>
-        <div class="dl-packet">
-          <div class="dt">创建时间：</div>
-          <div class="dd">{{order.ords.legnth>0?order.ords[0].CreateTime:order.CreateTime}}</div>
-        </div>
-        <template v-if="order.payStatus>ENUM.PAY_STASUS.已取消">
+      <div class="box"
+           :style="{'margin-bottom':canShowBtnBox &&'60px'}"
+           v-if="order.OrderId">
+        <!-- 待支付不显示 - 时间轴-->
+        <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
           <div class="dl-packet">
-            <div class="dt">支付方式：</div>
-            <div class="dd">
-              {{ paymentTypeText }}</div>
+            <div class="dt">订单编号：</div>
+            <div class="dd">{{order.OrderId}}</div>
+            <!-- 待下单状态的取消订单在底部 已接单 -->
+            <div class="cancel-btn"
+                 @click="canselOrder"
+                 v-if="canShowCancelTop">取消订单</div>
           </div>
           <div class="dl-packet">
-            <div class="dt">支付时间：</div>
-            <div class="dd">
-              {{ order.payTime }}</div>
+            <div class="dt">创建时间：</div>
+            <div class="dd">{{order.ords.legnth>0?order.ords[0].CreateTime:order.CreateTime}}</div>
           </div>
-        </template>
-        <!-- 医保支付-支付方式，支付时间补丁 -->
-        <template v-if="showByYiBao">
-          <div class="dl-packet">
-            <div class="dt">支付方式:</div>
-            <div class="dd">医保卡支付</div>
-          </div>
-          <div class="dl-packet">
-            <div class="dt">支付时间:</div>
-            <div class="dd">线下药店支付</div>
-          </div>
-        </template>
-        <template v-for="(item,index) in order.ords">
-          <div class="dl-packet"
-               :key="index"
-               v-if="item.ServiceStates>0">
-            <div class="dt">
-              {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'运单编号'}}：
+          <template v-if="order.payStatus>ENUM.PAY_STASUS.已取消">
+            <div class="dl-packet">
+              <div class="dt">支付方式：</div>
+              <div class="dd">
+                {{ paymentTypeText }}</div>
             </div>
-            <div class="dd">{{item.CreateTime}}</div>
+            <div class="dl-packet">
+              <div class="dt">支付时间：</div>
+              <div class="dd">
+                {{ order.payTime }}</div>
+            </div>
+          </template>
+          <!-- 医保支付-支付方式，支付时间补丁 -->
+          <template v-if="showByYiBao">
+            <div class="dl-packet">
+              <div class="dt">支付方式:</div>
+              <div class="dd">医保卡支付</div>
+            </div>
+            <div class="dl-packet">
+              <div class="dt">支付时间:</div>
+              <div class="dd">线下药店支付</div>
+            </div>
+          </template>
+          <template v-for="(item,index) in order.ords">
+            <div class="dl-packet"
+                 :key="index"
+                 v-if="item.ServiceStates>0">
+              <div class="dt">
+                {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'运单编号'}}：
+              </div>
+              <div class="dd">{{item.CreateTime}}</div>
+            </div>
+          </template>
+
+        </template>
+      </div>
+
+      <div class="count-down"
+           v-if="canShowCountDown">
+        <span>订单 </span>
+        <van-count-down millisecond
+                        @finish="getDrugOrderDetail()"
+                        :time="time"
+                        format="mm:ss" /> 后将自动关闭
+      </div>
+
+      <div class='bottom-1'
+           :class="order.OrderStatus !== 0&&'other'"
+           v-if="canShowBtnBox">
+        <template v-if="order.OrderStatus !== 0">
+          <div @click="submitOrder"
+               class="btn block btn-blue"
+               v-if="canShowReceive">
+            确认取药
+          </div>
+
+          <div @click="submitOrder"
+               class="btn block btn-blue"
+               v-if="canShowSign">
+            确认收货
           </div>
         </template>
+        <template v-else>
+          <div class="left"><span class="money">¥{{ curPayMoney }}</span></div>
+          <div class="right">
+            <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
+              待药店联系您进行医保支付
+            </div>
 
-      </template>
-    </div>
+            <div @click="canselOrder"
+                 class="pay cancel"
+                 v-if="canShowCancel"
+                 style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
+              取消订单
+            </div>
 
-    <div class="count-down"
-         v-if="canShowCountDown">
-      <span>订单 </span>
-      <van-count-down millisecond
-                      @finish="getDrugOrderDetail()"
-                      :time="time"
-                      format="mm:ss" /> 后将自动关闭
-    </div>
-
-    <div class='bottom-1'
-         :class="order.OrderStatus !== 0&&'other'"
-         v-if="canShowBtnBox">
-      <template v-if="order.OrderStatus !== 0">
-        <div @click="submitOrder"
-             class="btn block btn-blue"
-             v-if="canShowReceive">
-          确认取药
-        </div>
-
-        <div @click="submitOrder"
-             class="btn block btn-blue"
-             v-if="canShowSign">
-          确认收货
-        </div>
-      </template>
-      <template v-else>
-        <div class="left"><span class="money">¥{{ curPayMoney }}</span></div>
-        <div class="right">
-          <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
-            待药店联系您进行医保支付
+            <div @click="payOrder(order)"
+                 class="pay"
+                 v-if="canShowPay"
+                 style="background: #00C6AE; ">
+              在线支付
+            </div>
           </div>
+        </template>
+      </div>
 
-          <div @click="canselOrder"
-               class="pay cancel"
-               v-if="canShowCancel"
-               style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-            取消订单
-          </div>
+      <peace-dialog :visible.sync="recipeDetail.visible">
+        <TheRecipe :data="recipeDetail.data"></TheRecipe>
+      </peace-dialog>
 
-          <div @click="payOrder(order)"
-               class="pay"
-               v-if="canShowPay"
-               style="background: #00C6AE; ">
-            在线支付
-          </div>
-        </div>
-      </template>
+      <QRCode :QRCodeURL="QRCodeURL"
+              v-model="showQRCode"
+              :PickUpCode="PickUpCode"></QRCode>
     </div>
-
-    <peace-dialog :visible.sync="recipeDetail.visible">
-      <TheRecipe :data="recipeDetail.data"></TheRecipe>
-    </peace-dialog>
-
-    <QRCode :QRCodeURL="QRCodeURL"
-            v-model="showQRCode"
-            :PickUpCode="PickUpCode"></QRCode>
   </div>
+
 </template>
 
 <script>
@@ -572,6 +581,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.warn-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  background: rgba(254, 252, 235, 1);
+  img {
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin-right: 12px;
+  }
+  span {
+    color: rgba(249, 106, 14, 1);
+    font-size: 12px;
+    line-height: normal;
+  }
+}
 .head-more {
   .label {
     border-radius: 4px;
@@ -607,6 +634,10 @@ export default {
   border-top: 4px dashed #e5e5e5;
   transform: scaleY(0.25);
   margin-bottom: 8px;
+}
+.user-drug-bg {
+  min-height: 100%;
+  background: #f9f9f9;
 }
 .user-drug-detail {
   min-height: 100%;

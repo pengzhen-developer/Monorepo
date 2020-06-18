@@ -5,137 +5,143 @@
 
 
 <template>
-  <form bindsubmit="submitOrder"
-        report-submit="true"
-        class="drug-from"
-        v-if="order!=null">
-    <div class="top">
-      <!--tab-->
-      <div class="tab">
-        <div @click="changeTab(1)"
-             :class="page.tabIndex == '1' ? 'tab-item active' : 'tab-item'">
-          配送到家
-        </div>
-        <div @click="changeTab(0)"
-             :class="page.tabIndex == '0' ? 'tab-item active' : 'tab-item'">
-          到店取药
-        </div>
-      </div>
-      <!--tab^content-->
-      <div class="content">
-        <div class="tab-content"
-             v-if="page.tabIndex == '0'">
-          <div class="userAddr icon-next">
-            <div class="addr-p">{{order.Province+order.City+order.County+ order.Detailed}}</div>
-          </div>
-        </div>
-        <div class="tab-content"
-             v-if="page.tabIndex == '1'">
-          <div @click="goUserAddrPage"
-               class="userAddr icon-next">
-            <template v-if="userAddr && userAddr.detailAddress">
-              <div class="addr-p">{{userAddr.detailAddress}}</div>
-              <div class="addr-user">
-                <span>{{userAddr.consignee}}</span>
-                <span>{{userAddr.mobile}}</span>
-              </div>
-            </template>
-            <template v-else>
-              <div class="block ">
-                <div class="icon icon-add"></div>
-                添加收货地址
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
+  <div class="drug-bg">
+    <div class="warn-tip">
+      <img :src="require('@src/assets/images/warn.png')">
+      <span>药品为特殊商品，一经售出不退不换</span>
     </div>
-    <div class="module">
-      <div class="panel-pha">
-        <div class="panel-head "
-             :class="DrugStoreId&&'icon-next'"
-             @click="goDrugPhaHomePage">
-          <div class="head-ico">
-            <img :src="order.DrugStoreLogo" />
+    <form bindsubmit="submitOrder"
+          report-submit="true"
+          class="drug-from"
+          v-if="order!=null">
+      <div class="top">
+        <!--tab-->
+        <div class="tab">
+          <div @click="changeTab(1)"
+               :class="page.tabIndex == '1' ? 'tab-item active' : 'tab-item'">
+            配送到家
           </div>
-          <div class="head-tit">{{order.DrugStoreName}}</div>
+          <div @click="changeTab(0)"
+               :class="page.tabIndex == '0' ? 'tab-item active' : 'tab-item'">
+            到店取药
+          </div>
         </div>
-        <div class="panel-body">
-          <div class="list-three"
-               v-for="(item, index) in order.OrderDet"
-               :key="index">
-            <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
-              <img :src="item.DrugImage" />
-            </div>
-            <div class="list-content">
-              <div class="content-title">{{item.DrugName}}</div>
-              <div class="content-brief">{{item.DrugSpecification}}</div>
-            </div>
-            <div class="list-other">
-              <div class="other-them"
-                   @click="goInterDrugPage(item)">说明书</div>
-              <div class="other-price">
-                <div class="price">￥{{item.DrugPrice}}</div>
-                x{{item.DrugNumber}}
-              </div>
+        <!--tab^content-->
+        <div class="content">
+          <div class="tab-content"
+               v-if="page.tabIndex == '0'">
+            <div class="userAddr icon-next">
+              <div class="addr-p">{{order.Province+order.City+order.County+ order.Detailed}}</div>
             </div>
           </div>
-          <div class="module intro">
-            <div class="dl-packet">
-              <div class="dt">配送方式:</div>
-              <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
-            </div>
-            <div class="dl-packet"
-                 v-if="page.tabIndex == '1'">
-              <div class="dt">配送费:</div>
-              <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">优惠金额:</div>
-              <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
-            </div>
-            <div class="dl-packet">
-              <div class="dt">订单总价:</div>
-              <div class="dd">￥{{order.TotalAmount}}
-              </div>
+          <div class="tab-content"
+               v-if="page.tabIndex == '1'">
+            <div @click="goUserAddrPage"
+                 class="userAddr icon-next">
+              <template v-if="userAddr && userAddr.detailAddress">
+                <div class="addr-p">{{userAddr.detailAddress}}</div>
+                <div class="addr-user">
+                  <span>{{userAddr.consignee}}</span>
+                  <span>{{userAddr.mobile}}</span>
+                </div>
+              </template>
+              <template v-else>
+                <div class="block ">
+                  <div class="icon icon-add"></div>
+                  添加收货地址
+                </div>
+              </template>
             </div>
           </div>
-          <div class="module str">
-            <div class="dl-packet">
-              <div class="dt">应付金额:</div>
-              <div class="dd">
-                <div class="strong">
-                  ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
-                <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
+        </div>
+      </div>
+      <div class="module">
+        <div class="panel-pha">
+          <div class="panel-head "
+               :class="DrugStoreId&&'icon-next'"
+               @click="goDrugPhaHomePage">
+            <div class="head-ico">
+              <img :src="order.DrugStoreLogo" />
+            </div>
+            <div class="head-tit">{{order.DrugStoreName}}</div>
+          </div>
+          <div class="panel-body">
+            <div class="list-three"
+                 v-for="(item, index) in order.OrderDet"
+                 :key="index">
+              <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
+                <img :src="item.DrugImage" />
+              </div>
+              <div class="list-content">
+                <div class="content-title">{{item.DrugName}}</div>
+                <div class="content-brief">{{item.DrugSpecification}}</div>
+              </div>
+              <div class="list-other">
+                <div class="other-them"
+                     @click="goInterDrugPage(item)">说明书</div>
+                <div class="other-price">
+                  <div class="price">￥{{item.DrugPrice}}</div>
+                  x{{item.DrugNumber}}
+                </div>
+              </div>
+            </div>
+            <div class="module intro">
+              <div class="dl-packet">
+                <div class="dt">配送方式:</div>
+                <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
+              </div>
+              <div class="dl-packet"
+                   v-if="page.tabIndex == '1'">
+                <div class="dt">配送费:</div>
+                <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
+              </div>
+              <div class="dl-packet">
+                <div class="dt">优惠金额:</div>
+                <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
+              </div>
+              <div class="dl-packet">
+                <div class="dt">订单总价:</div>
+                <div class="dd">￥{{order.TotalAmount}}
+                </div>
+              </div>
+            </div>
+            <div class="module str">
+              <div class="dl-packet">
+                <div class="dt">应付金额:</div>
+                <div class="dd">
+                  <div class="strong">
+                    ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
+                  <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="tips-bottom">
-      {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
-    </div>
-    <div class="bottom">
-      <div class="strong">￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
-      <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
-        <!-- 购药暂时屏蔽医保支付  2020-05-29-->
-        <!-- <van-button v-on:click="submitOrder('yibaopay')"
+      <div class="tips-bottom">
+        {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
+      </div>
+      <div class="bottom">
+        <div class="strong">￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
+        <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
+          <!-- 购药暂时屏蔽医保支付  2020-05-29-->
+          <!-- <van-button v-on:click="submitOrder('yibaopay')"
                     v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                     size="small"
                     style="margin: 0 12px 0 0"
                     round
                     type="primary">医保支付</van-button> -->
-        <van-button v-on:click="submitOrder('wxpay')"
-                    v-bind:disabled="!page.canSubmit || hasSubmitOrder"
-                    size="small"
-                    round
-                    type="primary">在线支付</van-button>
+          <van-button v-on:click="submitOrder('wxpay')"
+                      v-bind:disabled="!page.canSubmit || hasSubmitOrder"
+                      size="small"
+                      round
+                      type="primary">在线支付</van-button>
 
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -242,6 +248,9 @@ export default {
         MergeStoreInfo: this.page.json.MergeStoreInfo,
         ShippingMethod: +this.page.tabIndex, // 0 自提 1配送
         Detailed: +this.page.tabIndex ? this.userAddr.detailAddress : this.order.Detailed,
+        ProvincialCity: +this.page.tabIndex
+          ? this.userAddr.province + ',' + this.userAddr.city + ',' + this.userAddr.district
+          : this.order.Province + ',' + this.order.City + ',' + this.order.County,
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
         TargetPlatformCodes: this.order.TargetPlatformCodes
@@ -320,6 +329,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.warn-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 10px;
+  background: rgba(254, 252, 235, 1);
+  img {
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin-right: 12px;
+  }
+  span {
+    color: rgba(249, 106, 14, 1);
+    font-size: 12px;
+    line-height: normal;
+  }
+}
+.drug-bg {
+  background: #f9f9f9;
+  min-height: 100%;
+}
 .drug-from {
   background: #f9f9f9;
   padding: 10px;

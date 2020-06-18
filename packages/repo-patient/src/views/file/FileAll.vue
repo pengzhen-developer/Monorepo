@@ -153,7 +153,8 @@
                     <van-image width="35px"
                                height="35px"
                                :src="require('@src/assets/images/file/ic_huizhen.png')" />
-                    <div class="small-dot" v-if="item.isExistRedDot==1"></div>
+                    <div class="small-dot"
+                         v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
                     <p style="font-size: 16px; color: #333333; line-height: 32px;">
@@ -165,6 +166,52 @@
                   </div>
                 </div>
               </template>
+              <!-- 检验检查 -->
+              <template v-if="item.healthType === 'check'">
+                <!-- 检查 -->
+                <template v-if="item.checkType === 'inspection'">
+                  <div class="note card case"
+                       @click="util.goDetail('检验检查', item)">
+                    <div class="case-left">
+                      <van-image width="35px"
+                                 height="35px"
+                                 :src="require('@src/assets/images/ic_jianyan.png')" />
+                      <div class="small-dot"
+                           v-if="item.isExistRedDot==1"></div>
+                    </div>
+                    <div class="case-right">
+                      <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                        {{item.itemName}}
+                      </p>
+                      <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                        {{ item.netHospitalName }} | {{ item.netDeptName }}
+                      </p>
+                    </div>
+                  </div>
+                </template>
+                <!-- 影像 -->
+                <template v-if="item.checkType === 'pacs'">
+                  <div class="note card case"
+                       @click="util.goDetail('检验检查', item)">
+                    <div class="case-left">
+                      <van-image width="35px"
+                                 height="35px"
+                                 :src="require('@src/assets/images/ic_yinxiang.png')" />
+                      <div class="small-dot"
+                           v-if="item.isExistRedDot==1"></div>
+                    </div>
+                    <div class="case-right">
+                      <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                        {{item.itemName}}
+                      </p>
+                      <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                        {{ item.netHospitalName }} | {{ item.netDeptName }}
+                      </p>
+                    </div>
+                  </div>
+                </template>
+              </template>
+
             </div>
           </div>
         </div>
@@ -365,16 +412,16 @@ export default {
     .case-left {
       width: 50px;
       text-align: left;
-      position:relative;
-      .small-dot{
-        width:8px;
-        height:8px;
-        display:block;
-        border-radius:50%;
-        background:#F2223B;
-        position:absolute;
-        top:-2px;
-        left:31px;
+      position: relative;
+      .small-dot {
+        width: 8px;
+        height: 8px;
+        display: block;
+        border-radius: 50%;
+        background: #f2223b;
+        position: absolute;
+        top: -2px;
+        left: 31px;
       }
     }
     .case-right {

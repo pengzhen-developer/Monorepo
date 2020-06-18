@@ -351,19 +351,19 @@ export default {
           this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
           break
         // 查询报告
-        // case '查询报告':
-        //   json = peace.util.encode({
-        //     hsp:{
-        //       hospitalName:this.hospitalInfo.nethospitalInfo.name,
-        //       netHospitalId:this.hospitalInfo.nethospitalInfo.netHospitalId,
-        //     },
-        //     netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        //     banHsp:true,
-        //     id: 'queryReport',
-        //     Date: new Date()
-        //   })
-        //   this.$router.push(`/record/recordCondition/${json}`)
-        //   break
+        case '查询报告':
+          json = peace.util.encode({
+            hsp: {
+              hospitalName: this.hospitalInfo.nethospitalInfo.name,
+              netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId
+            },
+            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+            banHsp: true,
+            id: 'queryReport',
+            Date: new Date()
+          })
+          this.$router.push(`/record/recordCondition/${json}`)
+          break
 
         default:
           peace.util.alert('该功能正在建设中，敬请期待')

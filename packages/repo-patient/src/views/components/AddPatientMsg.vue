@@ -8,8 +8,14 @@
         <div class="family no-family"
              :class="hasFamily==1&&showFamily&&'show'">
           <div class="navWrap">
-            <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}</div>
-            <div class="subTitle">请填写您的就诊信息</div>
+            <template v-if="type=='doctorDetail'">
+              <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}
+              </div>
+              <div class="subTitle">请填写您的就诊信息</div>
+            </template>
+            <template v-else-if="type=='recordCondition'">
+              <div class="title">请填写您的就诊信息</div>
+            </template>
           </div>
           <div class="form form-for-family">
             <van-field label="姓名"
@@ -69,19 +75,25 @@
           <div class="bottom">
             <van-button @click="submit"
                         round
-                        type="primary">提交</van-button>
+                        type="primary">{{submitTxt}}</van-button>
           </div>
         </div>
         <div class="family has-family"
              :class="hasFamily==2&&showFamily&&'show'">
           <div class="navWrap">
-            <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}</div>
-            <div class="subTitle">请选择您的就诊人</div>
+            <template v-if="type=='doctorDetail'">
+              <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}
+              </div>
+              <div class="subTitle">请填写您的就诊信息</div>
+            </template>
+            <template v-else-if="type=='recordCondition'">
+              <div class="title">请填写您的就诊信息</div>
+            </template>
           </div>
           <div class="mainWrap">
             <div class="familyWrap">
               <div class="family-item"
-                   :class="checkId==index&&'checked'"
+                   :class="{'checked':checkId==index,'report': type=='recordCondition'}"
                    @click="selcetMyFamily(item,index)"
                    v-for="(item,index) in familyList"
                    :key="index">
@@ -95,7 +107,7 @@
               </div>
               <div class="addWrap"
                    @click="addFamily"
-                   v-if="familyList.length<10">
+                   v-if="familyList.length<4">
                 <van-image width="20px"
                            height="20px"
                            :src="require('@src/assets/images/ic_add.png')"></van-image>
@@ -106,7 +118,8 @@
           </div>
           <div class="h47"></div>
           <div class="footWrap"
-               @click="submit">提交</div>
+               @click="submit">{{submitTxt}}</div>
+
         </div>
       </div>
 
@@ -151,6 +164,10 @@
 
 <script>
 import peace from '@src/library'
+const TXT_MAP = {
+  recordCondition: '查询',
+  doctorDetail: '提交'
+}
 export default {
   props: {
     showFamily: {
@@ -165,10 +182,15 @@ export default {
           doctorTitle: ''
         }
       }
+    },
+    type: {
+      type: String,
+      default: 'doctorDetail'
     }
   },
   data() {
     return {
+      submitTxt: '',
       checkId: -1,
       hasSend: false,
       hasFamily: 0, //判断是否存在家人信息
@@ -180,6 +202,7 @@ export default {
         birthday: ''
       },
       familyId: '',
+      familyInfo: {},
       isNationExist: false,
       age: null,
       ageLimit: 7, //测试为7 上线为6
@@ -246,6 +269,7 @@ export default {
     }
   },
   activated() {
+    this.submitTxt = this.type && TXT_MAP[this.type]
     if (this.showFamily) {
       this.getFamilyList()
       this.getNationList()
@@ -257,14 +281,16 @@ export default {
       if (this.checkId == index) {
         this.checkId = -1
         this.familyId = ''
+        this.familyInfo = {}
       } else {
         this.checkId = index
         this.familyId = item.familyId
+        this.familyInfo = item
       }
     },
     addFamily() {
-      if (this.members && this.members.length >= 10) {
-        return peace.util.alert('您最多可添加 10 位家人')
+      if (this.familyList && this.familyList.length >= 4) {
+        return peace.util.alert('您最多可添加 4 位家人')
       }
       let json = peace.util.encode({ type: 'add' })
       this.$router.push(`/setting/familyMember/${json}`)
@@ -446,17 +472,22 @@ export default {
         return
       }
       this.hasSend = true
-      peace.service.group
-        .addData(params)
-        .then(res => {
-          peace.util.alert(res.msg)
-          this.changeFlag(true)
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.hasSend = false
-          }, 0)
-        })
+      if (this.type == 'doctorDetail') {
+        peace.service.group
+          .addData(params)
+          .then(res => {
+            peace.util.alert(res.msg)
+            this.changeFlag(true)
+          })
+          .finally(() => {
+            setTimeout(() => {
+              this.hasSend = false
+            }, 0)
+          })
+      } else if (this.type == 'recordCondition') {
+        this.changeFlag({ flag: true, familyInfo: this.familyInfo })
+        this.hasSend = false
+      }
     }
   }
 }
@@ -504,7 +535,7 @@ export default {
 }
 .navWrap {
   // min-height: 50px;
-  height: 50px;
+  // height: 50px;
   .title {
     font-size: 18px;
     font-weight: bold;
@@ -540,6 +571,11 @@ export default {
       background: #e5f9f6;
       border-color: #00c6ae;
       position: relative;
+      &.report {
+        &::after {
+          height: 0;
+        }
+      }
       &::after {
         content: '';
         position: absolute;

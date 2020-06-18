@@ -3,7 +3,7 @@ import peace from '@src/library'
 export const goDetail = (type, data) => {
   if (type === '病历') {
     const json = peace.util.encode({
-      dataNo: data.dataNo
+      dataNo: data.dataNo,
     })
     $peace.$router.push(`/file/fileAllDetail/${json}`)
   }
@@ -14,7 +14,7 @@ export const goDetail = (type, data) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.dataNo,
-      familyId: data.familyId
+      familyId: data.familyId,
     })
 
     if (data.id) {
@@ -30,7 +30,7 @@ export const goDetail = (type, data) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.dataNo,
-      familyId: data.familyId
+      familyId: data.familyId,
     })
 
     if (data.dataNo) {
@@ -46,7 +46,7 @@ export const goDetail = (type, data) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.dataNo,
-      familyId: data.familyId
+      familyId: data.familyId,
     })
 
     if (data.id) {
@@ -62,7 +62,7 @@ export const goDetail = (type, data) => {
       type: peace.config.file.type[type],
       idCard: data.idCard,
       dataId: data.dataNo,
-      familyId: data.familyId
+      familyId: data.familyId,
     })
 
     if (data.dataNo) {
@@ -75,7 +75,7 @@ export const goDetail = (type, data) => {
   // 跳转转诊详情
   else if (type === '转诊单') {
     const json = peace.util.encode({
-      referralNo: data.referralNo
+      referralNo: data.referralNo,
     })
 
     $peace.$router.push(`/components/theTransfer/${json}`)
@@ -84,15 +84,24 @@ export const goDetail = (type, data) => {
   // 跳转会诊单详情
   else if (type === '会诊单') {
     const json = peace.util.encode({
-      dataNo: data.dataNo
+      dataNo: data.dataNo,
     })
     $peace.$router.push(`/file/fileConsultationDetail/${json}`)
   }
+
+  // 跳转检验检查详情
+  else if (type === '检验检查') {
+    const json = peace.util.encode({
+      type: data.checkType,
+      checkId: data.id,
+    })
+    $peace.$router.push(`/file/fileRecordDetail/${json}`)
+  }
 }
 
-export const goHealthDetail = data => {
+export const goHealthDetail = (data) => {
   const json = peace.util.encode({
-    familyId: data.familyId
+    familyId: data.familyId,
   })
 
   $peace.$router.push(`/file/fileHealthDetail/${json}`)
@@ -107,7 +116,7 @@ export const goReportList = (type, serviceType, idCard) => {
       serviceType: serviceType,
       idcard: idCard,
       idCard: idCard,
-      serviceId: peace.config.file.week[type]
+      serviceId: peace.config.file.week[type],
     })
   } else if (serviceType === '月报') {
     json = peace.util.encode({
@@ -115,14 +124,14 @@ export const goReportList = (type, serviceType, idCard) => {
       serviceType: serviceType,
       idcard: idCard,
       idCard: idCard,
-      serviceId: peace.config.file.month[type]
+      serviceId: peace.config.file.month[type],
     })
   }
 
   $peace.$router.push(`/file/fileReportList/${json}`)
 }
 
-export const getUnit = type => {
+export const getUnit = (type) => {
   return peace.config.file.unit[type]
 }
 
@@ -130,5 +139,5 @@ export default {
   goDetail,
   goHealthDetail,
   goReportList,
-  getUnit
+  getUnit,
 }

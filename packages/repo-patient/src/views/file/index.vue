@@ -101,6 +101,11 @@
               <div class="none-text">暂无数据</div>
             </div>
           </van-tab>
+          <van-tab title="检验检查">
+            <FileRecord v-if="active === 5"
+                        :key="familyId"
+                        :familyId="familyId"></FileRecord>
+          </van-tab>
           <van-tab title="其    他">
             <div class="none-page">
               <div class="icon icon_none_source"></div>
@@ -124,13 +129,14 @@ import FileAll from './FileAll'
 import FileDay from './FileDay'
 import FileCase from './FileCase'
 // import FileOther from './FileOther'
-
+import FileRecord from './FileRecord'
 export default {
   components: {
     FileAll,
     FileDay,
     // FileOther,
-    FileCase
+    FileCase,
+    FileRecord
   },
 
   data() {
@@ -161,29 +167,29 @@ export default {
       this.changeSwipeTrack(0)
     })
   },
-  
+
   methods: {
     goFamily() {
       this.$router.push('/setting/myFamilyMembers')
     },
 
     getFamilyList() {
-      if(peace.cache.get('familyId')){
-        this.familyId=peace.cache.get('familyId')
-      }else{
+      if (peace.cache.get('familyId')) {
+        this.familyId = peace.cache.get('familyId')
+      } else {
         this.familyId = ''
       }
       peace.service.health.familyLists().then(res => {
         this.myFamilyList = res.data.list
-        res.data.list.map((item,index) => {
+        res.data.list.map((item, index) => {
           if (item.sex === '1') {
             item.sex = '男'
           } else if (item.sex === '0') {
             item.sex = '女'
           }
 
-          if(item.id==this.familyId){
-            this.index=index
+          if (item.id == this.familyId) {
+            this.index = index
           }
         })
         this.$nextTick(function() {

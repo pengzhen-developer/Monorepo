@@ -1462,7 +1462,12 @@ export default {
           if (res.data.errorState === 0) {
             // 需要支付，跳转支付
             if (res.data.inquiryStatus === 1) {
-              this.goToPay(res.data)
+              //复诊非当日不调支付
+              if (res.data.inquiryType == 'returnVisit' && res.data.isCurrentDate == 2) {
+                this.goToConsultDetail(res.data)
+              } else {
+                this.goToPay(res.data)
+              }
             }
             // 不需要支付，跳转订单
             else {

@@ -205,7 +205,18 @@ export function addPersonInfo(params) {
   return peace.http.post(addPersonInfo, params)
 }
 
+/**
+ * 查询检验检查
+ *
+ * @export
+ * @param {*} 类型
+ * @returns
+ */
+export function getRecordList(params) {
+  const getRecordList = 'client/report/v110/check/getList'
 
+  return peace.http.post(getRecordList, params)
+}
 
 export default {
   getHealthCase,
@@ -225,5 +236,7 @@ export default {
   addBloodOxygendata,
   addBodyFatData,
   getPersonInfo,
-  addPersonInfo
+  addPersonInfo,
+
+  getRecordList,
 }

@@ -489,6 +489,7 @@
     <template>
       <AddPatientMsg :doctor="doctor.doctorInfo"
                      :showFamily.sync="showFamily"
+                     type='doctorDetail'
                      @changeFlag="changeFlag"></AddPatientMsg>
     </template>
 
@@ -650,6 +651,7 @@ export default {
     closeDialog() {
       this.dialog.visible = false
     },
+
     showDialog(serviceInfo, type) {
       if (type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
@@ -659,12 +661,27 @@ export default {
           return peace.util.alert('暂未开通')
         }
         this.dialog.data = Object.assign({}, this.consult, serviceInfo, { type: type })
+        this.dialog.visible = true
       } else if (type === 'returnVisit') {
         this.dialog.data = Object.assign({}, this.subsequent, serviceInfo, { type: type })
+        const params = {
+          doctorId: this.doctor.doctorInfo.doctorId,
+          timeSharing: this.dialog.data.timeSharing,
+          sourceCode: this.dialog.data.sourceCode,
+          bookingStart: this.dialog.data.startTime,
+          bookingEnd: this.dialog.data.endTime
+        }
+        peace.service.inquiry
+          .checkSource(params)
+          .then(() => {
+            this.dialog.visible = true
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
-
-      this.dialog.visible = true
     },
+
     gotoInquiryApplyPage() {
       // serviceType  服务类别（inquiry：在线咨询 returnVisit：复诊 ）
       //在线咨询

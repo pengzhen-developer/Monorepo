@@ -287,6 +287,18 @@ const routers = [
     },
     component: () => import('@src/views/file/FileConsultationDetail.vue'),
   },
+  //检验检查单
+  {
+    path: '/file/fileRecordDetail/:json',
+    name: '/file/fileRecordDetail/:json',
+    meta: {
+      auth: false,
+      navbar: {
+        title: '健康档案-报告详情',
+      },
+    },
+    component: () => import('@src/views/file/FileRecordDetail.vue'),
+  },
   // 我的
   {
     path: '/setting/index',
@@ -1052,6 +1064,14 @@ const routers = [
       auth: false,
     },
     component: () => import('@src/components/Login.vue'),
+  },
+  {
+    path: '/components/agreement/:json',
+    name: '/components/agreement',
+    meta: {
+      auth: false,
+    },
+    component: () => import('@src/views/components/Agreement.vue'),
   },
   {
     path: '/components/CommentForDoctor/:json',

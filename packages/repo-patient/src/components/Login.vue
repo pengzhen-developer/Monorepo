@@ -2,7 +2,10 @@
   <div class="login">
     <div class="login-form">
       <h4 class="login-form-title"
-          v-if="!fromPath">手机快捷登录</h4>
+          v-if="!fromPath">
+        <div class="title">手机快捷登录</div>
+        <div class="tip">手机验证码直接登录，无须注册</div>
+      </h4>
       <h4 class="login-form-title "
           v-else>
         <div class="other">为保证您的信息安全</div>
@@ -24,6 +27,7 @@
                  v-model="model.smsCode">
         <div @click="sendSms"
              class="login-form-smsCode"
+             :class="!countDownTime&&'theme'"
              slot="right-icon">
 
           <template v-if="countDownTime">
@@ -43,15 +47,15 @@
       </van-field>
 
       <van-button @click="signIn"
+                  :disabled="!CanSignIn"
                   class="login-form-sign-in"
                   type="primary">登录</van-button>
     </div>
 
     <div class="login-footer">
-      <!-- <span class="gray">进入互联网诊疗服务平台即代表你已同意</span>
-      <span>用户协议及隐私策略</span> -->
-      <span class="gray">登录互联网诊疗服务平台</span>
-      <span>即代表你已同意用户协议及隐私策略</span>
+      登录即代表你已同意<span class="theme"
+            @click="gotoAgreementPage('userAgreement')">《用户协议》</span>及<span class="theme"
+            @click="gotoAgreementPage('privacyAgreement')">《隐私政策》</span>
     </div>
   </div>
 </template>
@@ -90,8 +94,17 @@ export default {
       })
     }
   },
-
+  computed: {
+    CanSignIn() {
+      return this.model.tel && this.model.smsCode && this.model.tel.length == 11 && this.model.smsCode.length == 6
+    }
+  },
   methods: {
+    gotoAgreementPage(type) {
+      const params = peace.util.encode({ type })
+      this.$router.push(`/components/agreement/${params}`)
+    },
+
     countDownFinished() {
       this.countDownTime = undefined
     },
@@ -196,32 +209,56 @@ export default {
     flex-direction: column;
     overflow-y: auto;
 
-    margin: 80px 10px 0 10px;
+    margin: 80px 16px 0 16px;
 
     .login-form-title {
-      margin: 0 15px 25px 15px;
-      font-size: 22px;
+      margin: 0 0 20px 0;
+
       .other {
         text-align: center;
+        font-size: 18px;
+      }
+      .title {
+        font-size: 27px;
+      }
+      .tip {
+        font-size: 11px;
+        line-height: normal;
+        color: #999;
+        font-weight: 400;
+        margin-top: 3px;
       }
     }
 
     .login-form-smsCode {
       color: #333333;
+      font-size: 13px;
     }
 
     .login-form-sign-in {
-      margin: 30px 15px 15px 15px;
+      margin: 30px 0 15px 0;
     }
   }
 
   .login-footer {
     margin: 0 0 10px 0;
-    text-align: center;
-    span {
-      width: 100%;
-      display: block;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme {
+    color: $primary !important;
+    font-size: 13px;
+  }
+  /deep/ .van-cell {
+    padding: 14px 0 14px 0;
+    margin-top: 11px;
+  }
+  /deep/ .van-cell__value {
+    font-size: 17px;
+  }
+  /deep/ .van-button--disabled {
+    opacity: 0.4;
   }
 }
 </style>

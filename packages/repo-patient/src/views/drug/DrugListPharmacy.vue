@@ -263,6 +263,7 @@ export default {
         AccessCode: item.AccessCode,
         ShippingMethod: item.ShippingMethod, // 0 门店自提  1 门店配送  2 全部
         Detailed: item.Detailed, // 地址
+        ProvincialCity: item.Province + ',' + item.City + ',' + item.County,
         familyId,
         IsMergeStore: item.IsMergeStore,
         MergeStoreInfo: item.MergeStoreInfo

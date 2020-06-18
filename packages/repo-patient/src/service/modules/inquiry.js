@@ -12,8 +12,8 @@ export function getList(params) {
 
   return peace.http.post(getList, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' }
-    }
+      post: { 'Content-Type': 'application/json' },
+    },
   })
 }
 
@@ -54,8 +54,8 @@ export function images(params) {
 
   return peace.http.post(images, params, {
     headers: {
-      post: { 'Content-Type': 'multipart/form-data' }
-    }
+      post: { 'Content-Type': 'multipart/form-data' },
+    },
   })
 }
 
@@ -71,8 +71,25 @@ export function apply(params) {
 
   return peace.http.post(apply, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' }
-    }
+      post: { 'Content-Type': 'application/json' },
+    },
+  })
+}
+/**
+ * 复诊号源校验
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+
+export function checkSource(params) {
+  const checkSource = 'client/v1/inquiry/checkSource'
+
+  return peace.http.post(checkSource, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' },
+    },
   })
 }
 
@@ -88,5 +105,7 @@ export default {
   /** 提交问诊时，图片上传 */
   images,
   /** 提交问诊 */
-  apply
+  apply,
+  /** 复诊号源校验 */
+  checkSource,
 }

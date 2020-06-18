@@ -98,7 +98,7 @@ export default {
       let data = { addressId }
       peace.service.patient.setDefaultAddress(data).then(() => {
         // console.log('设置成功', res)
-        this.$router.push({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
+        this.$router.replace({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
       })
     }
   }

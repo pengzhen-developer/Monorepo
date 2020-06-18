@@ -64,9 +64,9 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.close&&item.inquiryInfo.inquiryStatus === 1|| (item.inquiryInfo.inquiryStatus === 2&&item.inquiryInfo.serviceType=='returnVisit'&&item.inquiryInfo.isCurrentDate =='1')">
+                 v-if="item.close&&OrderCloseCountDown(item)||OrderReceptCountDown(item) ">
               <div class="count-down">
-                <template v-if="item.inquiryInfo.inquiryStatus ==1">
+                <template v-if="OrderCloseCountDown(item)">
                   <span>订单关闭倒计时：</span>
                   <van-count-down millisecond
                                   @finish="finishHander(item,index)"
@@ -74,8 +74,7 @@
                                   :time="item.time"
                                   format="mm:ss" />
                 </template>
-                <template
-                          v-if="item.inquiryInfo.inquiryStatus ==2&&(item.inquiryInfo.serviceType=='returnVisit'?item.inquiryInfo.isCurrentDate=='1':'')">
+                <template v-if="OrderReceptCountDown(item)">
                   <span>医生接诊倒计时：</span>
                   <van-count-down millisecond
                                   @finish="finishHander(item,index)"
@@ -86,7 +85,7 @@
               <!-- <div class="label gary"
                    @click="showCancellPop(item,index)">取消订单</div> -->
               <div class="label blue"
-                   v-if="item.inquiryInfo.inquiryStatus === 1"
+                   v-if="item.inquiryInfo.inquiryStatus === 1&&(item.inquiryInfo.appointmentStatus =='0'||(item.inquiryInfo.reportTime&&item.inquiryInfo.appointmentStatus =='1'))"
                    @click="goPay(item,index,'countDown_inquiry_')">继续支付</div>
             </div>
           </div>
@@ -233,15 +232,29 @@ export default {
   },
 
   methods: {
+    OrderCloseCountDown(item) {
+      return (
+        item.inquiryInfo.inquiryStatus == 1 &&
+        (item.inquiryInfo.appointmentStatus == '0' ||
+          (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == '1'))
+      )
+    },
+    OrderReceptCountDown(item) {
+      return item.inquiryInfo.inquiryStatus == 2
+    },
     finishHander(item, index) {
       if (item.orderType == 'inquiry') {
         //待支付倒计时结束自动取消，待接诊倒计时结束不处理
-        if (item.inquiryInfo.inquiryStatus == 1) {
+        if (
+          item.inquiryInfo.inquiryStatus == 1 &&
+          (item.inquiryInfo.appointmentStatus == 0 ||
+            (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == 1))
+        ) {
           item.close = false
           item.inquiryInfo.inquiryStatus = 6
           let orderNo = item.orderInfo.orderNo
           this.cancelInquiryOrder(orderNo, index, 'auto')
-          item.inquiryInfo.statusTxt = '已取消'
+          item.inquiryInfo.statusTxt = item.inquiryInfo.appointmentStatus == 1 ? item.inquiryInfo.statusTxt : '已取消'
         }
       } else if (item.orderType == 'register') {
         item.close = false

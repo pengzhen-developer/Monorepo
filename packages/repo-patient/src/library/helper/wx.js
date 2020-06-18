@@ -51,7 +51,7 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
     })
     .catch((res) => {
       if (res.data) {
-        console.log('订单异常时响应', res.data)
+        console.warn('订单异常时响应', res.data)
         if (orderExp) {
           orderExp(res)
         }

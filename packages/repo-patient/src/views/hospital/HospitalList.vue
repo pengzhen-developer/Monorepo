@@ -100,7 +100,6 @@ export default {
 
       if (this.type == 'report') {
         $peace.$recordCondition.formData.hsp = item
-        $peace.$recordCondition.canSubmitProcesses()
         this.$router.go(-1)
         $peace.$recordCondition = null
         return

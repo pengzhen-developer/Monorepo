@@ -178,7 +178,6 @@ export default {
     },
     checkTime(index) {
       let item = this.dateList[index]
-
       if (item.disabled) {
         return
       }
@@ -186,7 +185,27 @@ export default {
       this.activeDate = item.date
       this.getSourceData(item)
     },
-    goAppointOrderSubmitPage(item, obj) {
+    async goAppointOrderSubmitPage(item, obj) {
+      const params = {
+        doctorId: this.doctorInfo.doctorId,
+        timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+        sourceCode: item.sourceCode,
+        bookingStart: item.startTime,
+        bookingEnd: item.endTime
+      }
+
+      try {
+        await peace.service.inquiry.checkSource(params)
+      } catch (err) {
+        peace.util.alert(err.data.msg)
+        const param = Object.assign(item, {
+          year: this.dateList[this.activeIndex].year,
+          date: this.dateList[this.activeIndex].date
+        })
+        this.getSourceData(param)
+        return
+      }
+
       let json = {}
       json.doctorInfo = this.doctorInfo
       json.source = item

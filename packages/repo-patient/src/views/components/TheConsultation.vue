@@ -321,6 +321,9 @@ export default {
   .tip-right {
     display: flex;
     align-items: center;
+    span {
+      line-height: normal;
+    }
   }
 }
 .page {
