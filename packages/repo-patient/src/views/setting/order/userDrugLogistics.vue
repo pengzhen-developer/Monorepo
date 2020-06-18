@@ -41,20 +41,20 @@
              :key="index">
           <div class="time"
                :class="!item.isChild&&'main'">
-            <div class="y">{{ item.time.toDate().formatDate('MM-dd') }}</div>
-            <div class="s">{{ item.time.toDate().formatDate('HH:mm') }}</div>
+            <div class="y">{{ item.Time.toDate().formatDate('MM-dd') }}</div>
+            <div class="s">{{ item.Time.toDate().formatDate('HH:mm') }}</div>
           </div>
           <div class="text express">
             <template v-if="!item.isChild">
-              <div class="status">{{item.status}}</div>
+              <div class="status">{{item.Status}}</div>
               <div class="context"
                    @click="startCall(item.tels)"
-                   v-html="item.context"></div>
+                   v-html="item.Content"></div>
             </template>
             <template v-else>
               <div class="status sub"
                    @click="startCall(item.tels)"
-                   v-html="item.context"></div>
+                   v-html="item.Content"></div>
             </template>
           </div>
         </div>
@@ -201,10 +201,11 @@ export default {
           return
         }
         const expressNo = this.PickUpCode
+        // const expressNo = 'YT4543884635668'
         let expressData = null
         try {
           expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })
-          this.expressList = this.assembleList(expressData.data.data)
+          this.expressList = this.assembleList(expressData.data.Stream)
         } catch (res) {
           // peace.util.alert(res.data.data.message)
         }
@@ -215,7 +216,7 @@ export default {
       for (let i = 0; i < list.length - 1; i++) {
         list[i].isChild = false
         for (let j = i + 1; j < list.length; j++) {
-          if (list[j].status == list[i].status) {
+          if (list[j].Status == list[i].Status) {
             list[j].isChild = true
           } else {
             list[j].isChild = false
@@ -228,12 +229,12 @@ export default {
     },
     matchPhone(list) {
       list.map(item => {
-        item.tels = item.context.match(/(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g)
+        item.tels = item.Content.match(/(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g)
         if (item.tels && item.tels.length > 0) {
           item.tels.map(tel => {
             // const temp = `<a style="color: #00c6ae;" href="tel:${tel}">${tel}</a>`
             const temp = `<span style="color: #00c6ae;">${tel}</span>`
-            item.context = item.context.replace(tel, temp)
+            item.Content = item.Content.replace(tel, temp)
           })
         }
 
