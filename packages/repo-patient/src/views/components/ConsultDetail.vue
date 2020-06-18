@@ -513,6 +513,10 @@ export default {
       let order = data.orderInfo
       let money = order.orderMoney
       let typeName = ''
+      if (!money) {
+        this.getConsultDetail()
+        return
+      }
       if (data.inquiryInfo.serviceType == 'returnVisit') {
         typeName = '复诊续方'
       } else {
