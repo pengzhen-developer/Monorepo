@@ -22,6 +22,12 @@
     <q-separator class="q-my-sm bg-grey-2"></q-separator>
 
     <q-item class="row flex justify-between items-center">
+      <div class="col-3">印象</div>
+      <div class="text-justify text-grey-7 row-value">{{ data.impression }}</div>
+    </q-item>
+    <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+    <q-item class="row flex justify-between items-center">
       <div class="col-3">部位</div>
       <div class="text-justify text-grey-7 row-value">{{ data.bodyPart }}</div>
     </q-item>
