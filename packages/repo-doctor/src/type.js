@@ -187,6 +187,11 @@ export const VIDEO = {
  * 健康档案
  */
 export const HEALTH = {
+  CHECK_TYPE: {
+    检验: 'inspection',
+    影像: 'pacs'
+  },
+
   HEALTH_TYPE: {
     血氧: 'bloodOxygenData',
     血压: 'bloodPressureData',

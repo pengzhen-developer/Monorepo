@@ -7,6 +7,7 @@ import prescribePrescrip from './modules/prescribePrescrip'
 import personalCenter from './modules/personalCenter'
 import privateDoctor from './modules/privateDoctor'
 import health from './modules/health'
+import report from './modules/report'
 
 import video from './modules/video'
 
@@ -28,6 +29,8 @@ export default {
   prescribePrescrip,
   /** 私人医生 */
   privateDoctor,
+  /** 健康档案 */
+  report,
 
   /** 视频 */
   video,

@@ -127,6 +127,42 @@
         <NoData type="health"></NoData>
       </template>
 
+      <!-- 检验检查 -->
+      <template v-else-if="type === '7'">
+        <div :key="health.timeLine"
+             class="time-line"
+             v-for="health in healthInfo">
+          <div class="time-line-header">
+            <span class="time-line-node"></span>
+            <span class="time-line-time">{{ health.timeLine }}</span>
+          </div>
+
+          <div class="time-line-content">
+            <el-row :gutter="15"
+                    type="flex"
+                    style="flex-wrap: wrap;">
+              <el-col :key="healthItem.id"
+                      :span="8"
+                      v-for="healthItem in health.list">
+                <template v-if="healthItem.checkType === $peace.type.HEALTH.CHECK_TYPE.检验">
+                  <div class="time-line-content-card">
+                    <RecordInspection :data="healthItem"
+                                      :type="type"></RecordInspection>
+                  </div>
+                </template>
+
+                <template v-if="healthItem.checkType === $peace.type.HEALTH.CHECK_TYPE.检验">
+                  <div class="time-line-content-card">
+                    <RecordPACS :data="healthItem"
+                                :type="type"></RecordPACS>
+                  </div>
+                </template>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </template>
+
       <!-- 其它 -->
       <template v-else-if="type === '6'">
         <NoData type="health"></NoData>
@@ -150,6 +186,8 @@ import RecordBloodOxygen from './RecordBloodOxygen'
 import RecordBodyFat from './RecordBodyFat'
 import RecordConsult from './RecordConsult'
 import RecordReferral from './RecordReferral'
+import RecordInspection from './RecordInspection'
+import RecordPACS from './RecordPACS'
 
 import NoData from '@src/views/components/NoData'
 
@@ -168,6 +206,8 @@ export default {
     RecordBodyFat,
     RecordConsult,
     RecordReferral,
+    RecordInspection,
+    RecordPACS,
     NoData
   },
 
@@ -193,6 +233,23 @@ export default {
 
           time.forEach((item) => {
             const list = res.data.list.filter((temp) => temp.measureTime === item)
+
+            data.push({
+              timeLine: item,
+              list: list
+            })
+          })
+
+          this.healthInfo = data
+        }
+        // 格式化时间线
+        else if (this.type === '7') {
+          const data = []
+
+          const time = Array.from(new Set(res.data.list.map((item) => item.createdTime)))
+
+          time.forEach((item) => {
+            const list = res.data.list.filter((temp) => temp.createdTime === item)
 
             data.push({
               timeLine: item,

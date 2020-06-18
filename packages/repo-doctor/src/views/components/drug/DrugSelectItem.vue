@@ -10,16 +10,20 @@
       <el-autocomplete class="full-width"
                        style="height: 40px;"
                        placeholder="请输入药品名称..."
+                       popper-class="auto-width"
                        v-model="drugQueryString"
                        v-bind:fetch-suggestions="getDrugList"
                        v-on:select="drugSelect">
         <template slot-scope="{ item }">
-          <div v-bind:class="{ disabled : item.drugStatus === 'disable'}">
-            <el-tag class="q-mr-sm"
-                    effect="dark"
-                    type="warning"
-                    v-if="item.drugStatus === 'disable'">停用</el-tag>
-            <span>{{ item.drugName }}</span>
+          <div class="q-py-xs"
+               v-bind:class="{ disabled : item.drugStatus === 'disable'}">
+            <div>
+              <el-tag class="q-mr-sm"
+                      effect="dark"
+                      type="warning"
+                      v-if="item.drugStatus === 'disable'">停用</el-tag>{{ item.drugName }}
+            </div>
+            <div class="text-caption text-grey-6">{{ item.companyName }}</div>
           </div>
         </template>
       </el-autocomplete>
@@ -222,6 +226,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.auto-width {
+  width: 400px;
+}
+</style>
 
 <style lang="scss" scoped>
 ::v-deep .el-card__header,

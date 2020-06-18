@@ -66,6 +66,20 @@
                  v-bind:loading="isLoging"
                  v-on:click="login">
           </q-btn>
+
+          <div class="text-grey-3 q-mt-sm">
+            <span>登录即代表你已同意</span>
+            <span>《</span>
+            <span class="cursor-pointer"
+                  style="text-decoration: underline;"
+                  v-on:click="goProtocal">用户协议</span>
+            <span>》</span>
+            <span>《</span>
+            <span class="cursor-pointer"
+                  style="text-decoration: underline;"
+                  v-on:click="goPrivacy">隐私政策</span>
+            <span>》</span>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -184,6 +198,14 @@ export default {
           }
         })
       })
+    },
+
+    goProtocal() {
+      window.open(`${process.env.VUE_APP_HYBRID_API}hybrid/agreements/userAgreement/PC`)
+    },
+
+    goPrivacy() {
+      window.open(`${process.env.VUE_APP_HYBRID_API}hybrid/agreements/privacyAgreement/PC`)
     }
   }
 }
