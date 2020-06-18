@@ -15,10 +15,19 @@ export default function({ configuration }) {
 
   const routes = generateRoutes(configuration)
 
-  return new VueRouter({
+  const router = new VueRouter({
     mode: 'history',
     base: process.env.VUE_APP_RELEASE_FLODER_PATH,
     routes: routes,
-    scrollBehavior: () => ({x: 0, y: 0})
+    scrollBehavior: () => ({ x: 0, y: 0 })
   })
+
+  router.beforeEach((to, from, next) => {
+    // set title
+    document.title = to.meta?.title ?? ''
+
+    next()
+  })
+
+  return router
 }

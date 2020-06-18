@@ -106,12 +106,14 @@ export default {
     hybridNavMenu: [
       // 健康档案 - 影像 PACS
       {
+        title: '报告单',
         menuRouteName: 'pacs',
         menuRoute: 'health/pacs/:platform/:token/:checkId',
         menuPath: 'views/hybrid/health/pacs'
       },
       // 健康档案 - 检验 inspection
       {
+        title: '报告单',
         menuRouteName: 'inspection',
         menuRoute: 'health/inspection/:platform/:token/:checkId',
         menuPath: 'views/hybrid/health/inspection'
@@ -119,18 +121,21 @@ export default {
 
       // 隐私协议
       {
+        title: '隐私协议',
         menuRouteName: 'privacyAgreement',
         menuRoute: 'agreements/privacyAgreement/:platform',
         menuPath: 'views/hybrid/agreements/privacyAgreement'
       },
       // 用户协议
       {
+        title: '用户协议',
         menuRouteName: 'userAgreement',
         menuRoute: 'agreements/userAgreement/:platform',
         menuPath: 'views/hybrid/agreements/userAgreement'
       },
       // 关于我们
       {
+        title: '关于我们',
         menuRouteName: 'aboutUs',
         menuRoute: 'agreements/aboutUs/:platform',
         menuPath: 'views/hybrid/agreements/aboutUs'

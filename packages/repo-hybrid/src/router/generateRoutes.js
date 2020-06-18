@@ -9,6 +9,17 @@ export default function generateRoutes(configuration) {
       component: () => import('@src/AppIntercept'),
 
       children: [
+        // hybrid is empty route
+        // you can use '/[dynamicHybridNavRoutes]'
+        {
+          path: '',
+          name: '',
+          component: () => import('@src/layouts/hybrid'),
+
+          // hybrid Nav
+          children: dynamicHybridNavRoutes
+        },
+
         {
           path: 'layout',
           name: 'layout',
@@ -16,15 +27,6 @@ export default function generateRoutes(configuration) {
 
           // layout Nav
           children: dynamicLayoutNavRoutes
-        },
-
-        {
-          path: 'hybrid',
-          name: 'hybrid',
-          component: () => import('@src/layouts/hybrid'),
-
-          // hybrid Nav
-          children: dynamicHybridNavRoutes
         }
       ]
     },
@@ -48,6 +50,7 @@ export default function generateRoutes(configuration) {
       dynamicLayoutNavRoutes.push({
         path: item.menuRoute,
         name: item.menuRouteName,
+        meta: item,
         component: component
       })
     } else {
@@ -61,7 +64,6 @@ export default function generateRoutes(configuration) {
     }
   }
 
-
   configuration.routes.hybridNavMenu.forEach((item) => {
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
       const component = () => import(`@src/${item.menuPath}/index.js`)
@@ -69,6 +71,7 @@ export default function generateRoutes(configuration) {
       dynamicHybridNavRoutes.push({
         path: item.menuRoute,
         name: item.menuRouteName,
+        meta: item,
         component: component
       })
     } else {
