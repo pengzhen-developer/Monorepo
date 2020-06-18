@@ -1071,7 +1071,7 @@ const routers = [
     meta: {
       auth: false,
     },
-    component: () => import('@src/views/components/Agreement.vue'),
+    component: () => import('@src/views/components/agreement.vue'),
   },
   {
     path: '/components/CommentForDoctor/:json',
