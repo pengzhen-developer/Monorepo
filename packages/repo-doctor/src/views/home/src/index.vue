@@ -160,7 +160,7 @@
 
           <div class="card card-blue row">
             <div class="row col-6"
-                 v-on:click="goConsultation({ type: 1 })">
+                 v-on:click="goConsultation({ type: 'in' })">
               <div class="col-6 flex justify-center items-center">
                 <q-icon style="font-size: 48px"
                         v-bind:name="`img:${ require('./assets/img/ic_ing4@2x.png') }`"></q-icon>
