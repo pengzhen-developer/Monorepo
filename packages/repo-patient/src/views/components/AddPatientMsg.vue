@@ -485,8 +485,28 @@ export default {
             }, 0)
           })
       } else if (this.type == 'recordCondition') {
-        this.changeFlag({ flag: true, familyInfo: this.familyInfo })
-        this.hasSend = false
+        if (this.hasFamily == 2) {
+          this.changeFlag({ flag: true, familyInfo: this.familyInfo })
+          this.hasSend = false
+        } else {
+          params.idcard = params.idCard
+          params.type = 1
+          params.nethospitalid = peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)
+          params.source = params.nethospitalid && params.nethospitalid != '' ? 2 : 1
+          peace.service.patient
+            .bindFamily(params)
+            .then(res => {
+              peace.util.alert(res.msg)
+              //新增家人后断连接IM
+              peace.service.IM.initNIMS({ type: 'add', ...res.data })
+              this.changeFlag({ flag: true, familyInfo: { familyId: res.data.accid, name: params.name } })
+            })
+            .finally(() => {
+              setTimeout(() => {
+                this.hasSend = false
+              }, 0)
+            })
+        }
       }
     }
   }

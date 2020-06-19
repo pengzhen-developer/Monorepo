@@ -172,6 +172,7 @@ export default {
           this.p = 0
           this.loaded = false
           this.finished = false
+          this.list = []
           this.get()
         } else {
           peace.util.alert('请选择医院')
