@@ -186,6 +186,10 @@ export default {
       this.getSourceData(item)
     },
     async goAppointOrderSubmitPage(item, obj) {
+      if (item.isExpire == 1 || item.number == 0) {
+        return
+      }
+
       const params = {
         doctorId: this.doctorInfo.doctorId,
         timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
@@ -212,24 +216,23 @@ export default {
       json.source.type = obj.type
       json.date = this.dateList[this.activeIndex]
       json = peace.util.encode(json)
-      if (!item.isExpire && item.number) {
-        /**复诊续方*/
-        if (this.params.from) {
-          const json = peace.util.encode({
-            doctorId: this.doctorInfo.doctorId,
-            consultingType: 'returnVisit',
-            serviceType: 'returnVisit',
-            appointmentDate: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
-            appointmentStartTime: item.startTime,
-            appointmentEndTime: item.endTime,
-            sourceDisType: 0,
-            sourceCode: item.sourceCode,
-            money: item.unitPrice
-          })
-          this.$router.push(`/components/doctorInquiryApply/${json}`)
-        } else {
-          this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
-        }
+
+      /**复诊续方*/
+      if (this.params.from) {
+        const json = peace.util.encode({
+          doctorId: this.doctorInfo.doctorId,
+          consultingType: 'returnVisit',
+          serviceType: 'returnVisit',
+          appointmentDate: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+          appointmentStartTime: item.startTime,
+          appointmentEndTime: item.endTime,
+          sourceDisType: 0,
+          sourceCode: item.sourceCode,
+          money: item.unitPrice
+        })
+        this.$router.push(`/components/doctorInquiryApply/${json}`)
+      } else {
+        this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
       }
     }
   }
