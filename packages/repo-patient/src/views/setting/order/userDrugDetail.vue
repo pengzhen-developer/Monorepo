@@ -372,8 +372,8 @@ export default {
         this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 &&
-            this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 &&
-            this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房))
+            this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) &&
+          this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
       )
     },
     // 是否显示继续支付
