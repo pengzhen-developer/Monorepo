@@ -330,7 +330,11 @@ export default {
               if (item.inquiryInfo.serviceType == 'returnVisit') {
                 item.inquiryType = '复诊预约'
                 /** 预约成功-- #00c6ae */
-                if (item.inquiryInfo.inquiryStatus == '2' && item.inquiryInfo.isCurrentDate != '1') {
+                if (
+                  item.inquiryInfo.inquiryStatus == '1' &&
+                  item.inquiryInfo.appointmentStatus == '1' &&
+                  !item.inquiryInfo.reportTime
+                ) {
                   item.heightLight = true
                 }
               } else {

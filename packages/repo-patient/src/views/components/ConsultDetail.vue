@@ -187,10 +187,15 @@
             <div class="message-item-right">{{ internalData.orderInfo.payTime }}</div>
           </div>
         </template>
+        <div class="message-item"
+             v-if="internalData.inquiryInfo.appointmentStatus==2">
+          <div class="message-item-left">关闭时间</div>
+          <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
+        </div>
       </div>
 
       <div class="module"
-           v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付">
+           v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
           <div class="brief right"
@@ -262,17 +267,17 @@
                @click="goToPay(internalData)">立即支付</div>
         </div>
       </div>
-      <!-- 复诊-报道 -->
+      <!-- 复诊-报到 -->
       <div class="report fixedBottom"
            v-if="canShowReportBottom">
         <van-button class="cancel-btn"
                     @click="showCancellPop(internalData)">取消订单</van-button>
         <van-button class="report-btn"
                     @click="report(internalData)"
-                    :disabled="internalData.inquiryInfo.reportButton!=1">报道</van-button>
+                    :disabled="internalData.inquiryInfo.reportButton!=1">报到</van-button>
         <div class="report-tip"
              v-if="internalData.inquiryInfo.reportButton!=1"><img
-               :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报道</div>
+               :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报到</div>
       </div>
     </template>
 
@@ -464,7 +469,8 @@ export default {
         this.internalData.inquiryInfo &&
         this.internalData.inquiryInfo.serviceType == 'returnVisit' &&
         !this.internalData.inquiryInfo.reportTime &&
-        this.internalData.inquiryInfo.appointmentStatus == 1
+        this.internalData.inquiryInfo.appointmentStatus == 1 &&
+        this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待支付
       )
     },
     canShowChatBtn() {
@@ -513,7 +519,7 @@ export default {
       let order = data.orderInfo
       let money = order.orderMoney
       let typeName = ''
-      if (!money) {
+      if (!Number(money)) {
         this.getConsultDetail()
         return
       }
@@ -545,13 +551,10 @@ export default {
     getInquiryText(status) {
       const dic = {
         '1':
-          this.internalData.inquiryInfo.appointmentStatus == 1
+          this.internalData.inquiryInfo.appointmentStatus == 1 && !this.internalData.inquiryInfo.reportTime
             ? this.internalData.inquiryInfo.statusTxtContent
             : '订单创建15分钟后未支付将自动关闭',
-        '2':
-          this.internalData.inquiryInfo.serviceType == 'returnVisit' && this.internalData.inquiryInfo.isCurrentDate != 1
-            ? '请在约定时间准时上线复诊'
-            : '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
+        '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
         // '2': '',
         '3': '请及时与医生沟通',
         // '4': '医生已退诊',
