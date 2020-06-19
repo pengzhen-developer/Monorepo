@@ -1,6 +1,4 @@
-# Mobile Framework
-
-Create By vue-cli@4.0.0
+# Hybrid
 
 ## Project setup
 

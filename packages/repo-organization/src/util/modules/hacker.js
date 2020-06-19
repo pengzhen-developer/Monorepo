@@ -1,5 +1,4 @@
 import router from '@src/router'
-import routerPath from '@src/router/routerPath'
 
 let hackerClickCount = 0
 let currentHackerTimestamp = 0
@@ -36,7 +35,7 @@ export const isDeveloper = () => {
  * @returns
  */
 export const redirectToDevTools = () => {
-  return router.router.push(routerPath.hacker.DEV_TOOLS)
+  return router.router.push('/dev')
 }
 
 export default {

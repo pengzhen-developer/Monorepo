@@ -16,7 +16,7 @@ $--color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !defau
 /* Color
 -------------------------- */
 /// color|1|Brand Color|0
-$--color-primary: #00c6ae !default;
+$--color-primary: #3099a6 !default;
 /// color|1|Background Color|4
 $--color-white: #ffffff !default;
 /// color|1|Background Color|4
@@ -940,53 +940,53 @@ $--calendar-cell-width: 85px !default;
 --------------------------*/
 $--sm: 768px !default;
 $--md: 992px !default;
-$--lg: 1400px !default;
+$--lg: 1200px !default;
 $--xl: 1920px !default;
 
 $--breakpoints: (
   'xs': (
-    max-width: $--sm - 1,
+    max-width: $--sm - 1
   ),
   'sm': (
-    min-width: $--sm,
+    min-width: $--sm
   ),
   'md': (
-    min-width: $--md,
+    min-width: $--md
   ),
   'lg': (
-    min-width: $--lg,
+    min-width: $--lg
   ),
   'xl': (
-    min-width: $--xl,
-  ),
+    min-width: $--xl
+  )
 );
 
 $--breakpoints-spec: (
   'xs-only': (
-    max-width: $--sm - 1,
+    max-width: $--sm - 1
   ),
   'sm-and-up': (
-    min-width: $--sm,
+    min-width: $--sm
   ),
   'sm-only': '(min-width: #{$--sm}) and (max-width: #{$--md - 1})',
   'sm-and-down': (
-    max-width: $--md - 1,
+    max-width: $--md - 1
   ),
   'md-and-up': (
-    min-width: $--md,
+    min-width: $--md
   ),
   'md-only': '(min-width: #{$--md}) and (max-width: #{$--lg - 1})',
   'md-and-down': (
-    max-width: $--lg - 1,
+    max-width: $--lg - 1
   ),
   'lg-and-up': (
-    min-width: $--lg,
+    min-width: $--lg
   ),
   'lg-only': '(min-width: #{$--lg}) and (max-width: #{$--xl - 1})',
   'lg-and-down': (
-    max-width: $--xl - 1,
+    max-width: $--xl - 1
   ),
   'xl-only': (
-    min-width: $--xl,
-  ),
+    min-width: $--xl
+  )
 );

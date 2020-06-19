@@ -1,42 +1,23 @@
-import base64 from './../util/base64'
 import signKey from './../util/signKey'
+import { LocalStorage } from 'quasar'
 
 export function set(key, value) {
-  if (key !== null && key !== undefined && value !== null && value !== undefined) {
-    key = signKey(key)
-
-    const encodeValue = base64.encode(window.unescape(window.encodeURIComponent(JSON.stringify(value))))
-
-    window.localStorage.setItem(key, encodeValue)
-
-    return true
-  }
-
-  return false
+  key = signKey(key)
+  return LocalStorage.set(key, value)
 }
 
 export function get(key) {
-  if (key !== null && key !== undefined) {
-    key = signKey(key)
-
-    const value = window.localStorage.getItem(key)
-
-    if (value !== null && value !== undefined) {
-      return JSON.parse(window.decodeURIComponent(window.escape(base64.decode(value))))
-    }
-  }
-
-  return undefined
+  key = signKey(key)
+  return LocalStorage.getItem(key)
 }
 
 export function remove(key) {
   key = signKey(key)
-
-  window.localStorage.removeItem(key)
+  return LocalStorage.remove(key)
 }
 
 export function clear() {
-  window.localStorage.clear()
+  return LocalStorage.clear()
 }
 
 export default {

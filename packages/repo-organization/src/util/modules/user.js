@@ -1,6 +1,4 @@
 import Peace from '@src/library'
-import RouterPath from '@src/router/routerPath'
-import Router from '@src/router'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
@@ -67,11 +65,11 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  return Router.router.push({
-    name: RouterPath.system.LOGIN,
+  return $peace.$router.push({
+    name: '/login',
     query: {
-      referrer: referrer || Router.router.history.current.fullPath,
-    },
+      referrer: referrer || $peace.$router.history.current.fullPath
+    }
   })
 }
 
@@ -93,5 +91,5 @@ export default {
   removeUserInfo,
   isSignIn,
 
-  replaceToLogin,
+  replaceToLogin
 }

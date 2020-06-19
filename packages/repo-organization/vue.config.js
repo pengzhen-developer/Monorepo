@@ -9,6 +9,9 @@ module.exports = {
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
 
+  // https://cli.vuejs.org/config/#productionSourceMap
+  productionSourceMap: false,
+
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
     // 移除 prefetch 插件
@@ -26,38 +29,38 @@ module.exports = {
   // https://cli.vuejs.org/zh/config/#configurewebpack
   configureWebpack: (config) => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
+    // externals 配置后，import 将不会被 webpack 编译
+    // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
       // e.g.
-      // '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
-      // '/public/static/IM/NIM_Web_WebRTC_v6.5.5': 'WebRTC'
+      // ['vue']: 'Vue',
+      // ['element-ui']: 'ELEMENT',
+      ['vue']: 'Vue',
+      ['element-ui']: 'ELEMENT',
+      ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
+      ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
     }
   },
 
-  //增加vue.config.js文件配置css
   css: {
     loaderOptions: {
       sass: {
         // @src/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
-        data: `@import "@src/assets/css/variable.scss";`,
-      },
-
-      less: {
-        modifyVars: {
-          green: '#00C6AE',
-          blue: '#00C6AE',
-        },
-      },
-
-      postcss: {
-        plugins: [
-          require('postcss-pxtorem')({
-            rootValue: process.env.VUE_APP_PLATFORM === 'mobile' ? 37.5 : 16, // 换算的基数
-            selectorBlackList: [], // 忽略转换正则匹配项
-            propList: ['*'],
-          }),
-        ],
-      },
-    },
+        // data: `@import "@src/assets/css/variable.scss";`
+      }
+    }
   },
+
+  /**
+   * THIS IS GENERATED AUTOMATICALLY.
+   * DO NOT EDIT.
+   */
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  },
+  transpileDependencies: ['quasar']
 }
