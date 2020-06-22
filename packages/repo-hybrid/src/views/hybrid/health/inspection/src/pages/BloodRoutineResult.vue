@@ -17,9 +17,8 @@
       </div>
       <div class="separator-line" />
       <div class="check-cell">
-        <span class="row-3 label text-grey-333">检查医生</span>
-        <span
-              class="text-right col-grow text-grey-666 label">{{ bloodRoutine.inspectionPerson }}</span>
+        <span class="row-3 label text-grey-333">接收时间</span>
+        <span class="text-right col-grow text-grey-666 label">{{ bloodRoutine.receiveTime }}</span>
       </div>
       <div class="separator-line" />
       <div class="check-cell">
