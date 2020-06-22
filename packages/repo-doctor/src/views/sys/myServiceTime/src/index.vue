@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- 复诊续方排班 -->
+    <!-- 复诊续方时间 -->
     <div class="q-mb-lg">
       <div class="q-mb-md">
-        <span class="text-subtitle1">复诊续方排班</span>
+        <span class="text-subtitle1">复诊续方时间</span>
         <span class="text-subtitle2 text-grey-5">（互联网医院出诊时间）</span>
         <span class="text-amber-8">*医院统一排班，不可编辑</span>
       </div>

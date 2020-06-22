@@ -113,7 +113,7 @@ export default {
       return this.data?.servicePrice
     },
 
-    /** 复诊续方排班 */
+    /** 复诊续方时间 */
     schedules() {
       return this.data?.schedules
     }
