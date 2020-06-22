@@ -150,7 +150,8 @@ export default {
 }
 .cards {
   display: flex;
-  margin: 15px 10px;
+  margin: 5px 0;
+  padding: 10px;
   font-size: 13px;
   color: #000;
   border: 0;

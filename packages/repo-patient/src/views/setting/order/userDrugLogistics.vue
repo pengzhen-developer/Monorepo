@@ -381,7 +381,7 @@ export default {
   border-radius: 50%;
 }
 .item.active .text {
-  color: #00c6ae;
+  color: #333;
 }
 .item.active .text.express .status {
   color: #333;

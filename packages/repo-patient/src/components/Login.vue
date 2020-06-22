@@ -162,10 +162,12 @@ export default {
           //缓存登录手机号
           peace.cache.set(peace.type.USER.TEL, this.model.tel)
 
-          // 初始化 IM
-          peace.service.IM.initNIMS()
-          // 微信环境下授权
-          this.WXAuth()
+          this.$nextTick(() => {
+            // 初始化 IM
+            peace.service.IM.initNIMS()
+            // 微信环境下授权
+            this.WXAuth()
+          })
         })
         .finally(() => {
           setTimeout(() => {

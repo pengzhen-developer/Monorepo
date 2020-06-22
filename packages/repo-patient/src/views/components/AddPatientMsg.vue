@@ -164,10 +164,7 @@
 
 <script>
 import peace from '@src/library'
-const TXT_MAP = {
-  recordCondition: '查询',
-  doctorDetail: '提交'
-}
+
 export default {
   props: {
     showFamily: {
@@ -190,7 +187,7 @@ export default {
   },
   data() {
     return {
-      submitTxt: '',
+      submitTxt: '提交',
       checkId: -1,
       hasSend: false,
       hasFamily: 0, //判断是否存在家人信息
@@ -269,7 +266,6 @@ export default {
     }
   },
   activated() {
-    this.submitTxt = this.type && TXT_MAP[this.type]
     if (this.showFamily) {
       this.getFamilyList()
       this.getNationList()
@@ -313,6 +309,9 @@ export default {
           })
         } else {
           this.hasFamily = 1
+        }
+        if (this.type == 'recordCondition' && this.hasFamily == 2) {
+          this.submitTxt = '查询'
         }
       })
     },
