@@ -217,11 +217,11 @@ axios.interceptors.response.use(
     if (error.response && error.response.status) {
       switch (error.response.status) {
         default:
-          $peace.util.alert('服务器异常，请稍后再试', '提示', 'error')
+          $peace.util.alert('服务升级中，请稍候', '提示', 'error')
           break
       }
     } else {
-      $peace.util.alert('服务器异常，请稍后再试', '提示', 'error')
+      $peace.util.alert('服务升级中，请稍候', '提示', 'error')
     }
 
     return Promise.reject(error)
