@@ -32,9 +32,9 @@
       </div>
     </div>
     <div class="module"
-         v-if="data.ShippingMethod == '1'&&loading">
+         v-if="loading">
       <div class="time-line express"
-           v-if="expressList.length>0">
+           v-if="data.ShippingMethod == '1'&&expressList.length>0">
         <div class="item"
              v-for="(item,index) in expressList"
              :class="{ 'active' : index == 0 }"
@@ -209,6 +209,8 @@ export default {
         } catch (res) {
           // peace.util.alert(res.data.data.message)
         }
+        this.loading = true
+      } else {
         this.loading = true
       }
     },
