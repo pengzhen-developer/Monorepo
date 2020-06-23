@@ -121,7 +121,7 @@ export default {
 
       // 隐私协议
       {
-        title: '隐私协议',
+        title: '隐私政策',
         menuRouteName: 'privacyAgreement',
         menuRoute: 'agreements/privacyAgreement/:platform',
         menuPath: 'views/hybrid/agreements/privacyAgreement'
