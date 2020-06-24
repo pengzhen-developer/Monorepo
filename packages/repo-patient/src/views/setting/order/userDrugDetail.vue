@@ -1,9 +1,11 @@
 <template>
   <div class="user-drug-bg">
     <div class="warn-tip"
-         v-if="order&&order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货">
+         v-if="order&&order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货||order.OrderStatus==ENUM.ORDER_STATUS.待下单">
       <img :src="require('@src/assets/images/warn.png')">
-      <span>{{order.ShippingMethod ==ENUM.SHIPPING_METHOD.配送到家?'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再签收。':'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再取走药品。'}}</span>
+      <span
+            v-if="order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货">{{order.ShippingMethod ==ENUM.SHIPPING_METHOD.配送到家?'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再签收。':'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再取走药品。'}}</span>
+      <span v-if="order.OrderStatus==ENUM.ORDER_STATUS.待下单">药品为特殊商品，一经售出不退不换</span>
     </div>
     <div class="user-drug-detail"
          v-if="order != null">
@@ -373,7 +375,7 @@ export default {
         (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 &&
             this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) &&
-          this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
+        this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
       )
     },
     // 是否显示继续支付
