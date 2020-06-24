@@ -187,7 +187,7 @@
            v-if="canShowCountDown">
         <span>订单 </span>
         <van-count-down millisecond
-                        @finish="getDrugOrderDetail()"
+                        @finish="finishHander()"
                         :time="time"
                         format="mm:ss" /> 后将自动关闭
       </div>
@@ -480,7 +480,12 @@ export default {
     onClickSeeQRCode() {
       this.showQRCode = true
     },
-
+    finishHander() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.purchasedrug.CancelOrder(params).then(() => {
+        this.getDrugOrderDetail()
+      })
+    },
     payCallback() {
       // let orderId = ''
       // if (this.$route.query.orderId) {

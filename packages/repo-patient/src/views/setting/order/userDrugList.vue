@@ -82,7 +82,7 @@
                      v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
                   <span>订单关闭倒计时：</span>
                   <van-count-down millisecond
-                                  @finish="getDrugItems()"
+                                  @finish="finishHander(item)"
                                   :time="item.time"
                                   format="mm:ss" />
                 </div>
@@ -192,6 +192,12 @@ export default {
     // }
   },
   methods: {
+    finishHander(item) {
+      const params = { OrderId: item.OrderId }
+      peace.service.purchasedrug.CancelOrder(params).then(() => {
+        this.getDrugItems()
+      })
+    },
     ifShowLogistics(item) {
       return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.PickUpCode
     },
