@@ -41,13 +41,13 @@ export default [
   {
     id: '2-1-2',
     parentId: '2-1',
-    menuPath: null,
-    menuRouteName: null,
-    menuRoute: null,
-    menuName: '机构管理',
+    menuRouteName: 'platform/user/organization',
+    menuRoute: 'platform/user/organization',
+    menuName: '机构列表',
+    menuPath: 'views/platform/user/organization',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
 
@@ -66,25 +66,25 @@ export default [
   {
     id: '2-2-1',
     parentId: '2-2',
-    menuRouteName: 'not-found',
-    menuRoute: 'not-found',
+    menuRouteName: 'platform/check/qualification',
+    menuRoute: 'platform/check/qualification',
     menuName: '资质认证',
-    menuPath: '',
+    menuPath: 'views/platform/check/qualification',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
   {
     id: '2-2-2',
     parentId: '2-2',
-    menuRouteName: 'not-found',
-    menuRoute: 'not-found',
+    menuRouteName: 'platform/check/service',
+    menuRoute: 'platform/check/service',
     menuName: '服务开通',
-    menuPath: '',
+    menuPath: 'views/platform/check/service',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
 

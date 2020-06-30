@@ -8,20 +8,21 @@
              size="mini">
       <el-form-item label="联系人：">
         <el-input v-model="model.linkman"
-                  placeholder="请输入联系人"></el-input>
+                  placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="手机号码：">
         <el-input v-model="model.tel"
-                  placeholder="请输入手机号码"></el-input>
+                  placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="所属医院：">
+      <el-form-item label="所属机构：">
         <el-input v-model="model.hospitalName"
-                  placeholder="请输入所属医院"></el-input>
+                  placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="申请状态：">
+      <el-form-item label="认证状态：">
         <el-select v-model="model.checkStatus"
-                   placeholder="请选择申请状态"
+                   placeholder="全部"
                    clearable>
+          <el-option label="全部" value=""></el-option>
           <el-option v-for="(value, label) in source.ENUM_CHECK_STATUS"
                      v-bind:key="value"
                      v-bind:label="label"
@@ -40,13 +41,14 @@
                 pagination>
       <el-table-column type="index"
                        width="50"
+                       label="序号"
                        align="center">
       </el-table-column>
       <el-table-column min-width="100px"
                        label="联系人"
                        prop="linkman"></el-table-column>
       <el-table-column min-width="120px"
-                       label="手机号"
+                       label="手机号码"
                        prop="tel"></el-table-column>
       <el-table-column min-width="180px"
                        label="邮箱"

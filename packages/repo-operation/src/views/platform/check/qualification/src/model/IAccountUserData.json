@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "object"
+                },
+                "linkman": {
+                  "type": "string"
+                },
+                "tel": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "isOpen": {
+                  "type": "integer"
+                },
+                "checkStatus": {
+                  "type": "integer"
+                },
+                "hospitalName": {
+                  "type": "string"
+                },
+                "socialCreditCode": {
+                  "type": "string"
+                },
+                "reasonsFailure": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string"
+                },
+                "applyTime": {
+                  "type": "null"
+                },
+                "checkTime": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "id",
+                "linkman",
+                "tel",
+                "username",
+                "email",
+                "isOpen",
+                "checkStatus",
+                "hospitalName",
+                "socialCreditCode",
+                "reasonsFailure",
+                "createdTime",
+                "applyTime",
+                "checkTime"
+              ]
+            }
+          ]
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": ["list", "total"]
+    }
+  },
+  "required": ["code", "success", "msg", "data"]
+}
