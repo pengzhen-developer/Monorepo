@@ -40,25 +40,25 @@ export default [
   {
     id: '2-1',
     parentId: '2',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'account/base',
+    menuRoute: 'account/base',
     menuName: '基本信息',
-    menuPath: '',
+    menuPath: 'views/account/base',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
   {
     id: '2-2',
     parentId: '2',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'account/security',
+    menuRoute: 'account/security',
     menuName: '安全信息',
-    menuPath: '',
+    menuPath: 'views/account/security',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
 
