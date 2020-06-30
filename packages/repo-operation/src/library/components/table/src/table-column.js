@@ -5,15 +5,15 @@ const ExtendTableColumnProps = {
     type: String,
     default() {
       return 'center'
-    },
+    }
   },
 
   'show-overflow-tooltip': {
     type: Boolean,
     default() {
       return false
-    },
-  },
+    }
+  }
 }
 
 export default {
@@ -22,7 +22,7 @@ export default {
   props: {
     ...TableColumn.props,
 
-    ...ExtendTableColumnProps,
+    ...ExtendTableColumnProps
   },
 
   render(h) {
@@ -37,7 +37,7 @@ export default {
       on: this.$listeners,
 
       // 扩展 slots
-      scopedSlots: this.$scopedSlots,
+      scopedSlots: this.$scopedSlots
     })
-  },
+  }
 }

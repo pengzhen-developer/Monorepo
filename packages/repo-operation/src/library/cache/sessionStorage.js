@@ -1,42 +1,23 @@
-import base64 from './../util/base64'
-import signKey from './../util/signKey'
+import signKey from '../util/signKey'
+import { SessionStorage } from 'quasar'
 
 export function set(key, value) {
-  if (key !== null && key !== undefined && value !== null && value !== undefined) {
-    key = signKey(key)
-
-    const encodeValue = base64.encode(window.unescape(window.encodeURIComponent(JSON.stringify(value))))
-
-    window.sessionStorage.setItem(key, encodeValue)
-
-    return true
-  }
-
-  return false
+  key = signKey(key)
+  return SessionStorage.set(key, value)
 }
 
 export function get(key) {
-  if (key !== null && key !== undefined) {
-    key = signKey(key)
-
-    const value = window.sessionStorage.getItem(key)
-
-    if (value !== null && value !== undefined) {
-      return JSON.parse(window.decodeURIComponent(window.escape(base64.decode(value))))
-    }
-  }
-
-  return undefined
+  key = signKey(key)
+  return SessionStorage.getItem(key)
 }
 
 export function remove(key) {
   key = signKey(key)
-
-  window.sessionStorage.removeItem(key)
+  return SessionStorage.remove(key)
 }
 
 export function clear() {
-  window.sessionStorage.clear()
+  return SessionStorage.clear()
 }
 
 export default {

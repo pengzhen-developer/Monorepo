@@ -18,5 +18,5 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
-  },
+  }
 }

@@ -5,8 +5,8 @@ const ExtendPaginationProps = {
     type: Boolean,
     default() {
       return true
-    },
-  },
+    }
+  }
 }
 
 export default {
@@ -15,7 +15,7 @@ export default {
   props: {
     ...Pagination.props,
 
-    ...ExtendPaginationProps,
+    ...ExtendPaginationProps
   },
 
   data() {
@@ -24,7 +24,7 @@ export default {
       internalCurrentPage: this.currentPage,
       internalPageSizes: this.pageSizes,
       internalTotal: this.total,
-      internalLayout: this.layout,
+      internalLayout: this.layout
     }
   },
 
@@ -39,7 +39,7 @@ export default {
       this.internalCurrentPage = currentPage
 
       return this.$parent.loadData()
-    },
+    }
   },
 
   render(h) {
@@ -50,7 +50,7 @@ export default {
         pageSize: this.internalPageSize,
         pageSizes: this.internalPageSizes,
         total: this.internalTotal,
-        layout: this.internalLayout,
+        layout: this.internalLayout
       }),
 
       // 扩展 attrs
@@ -61,13 +61,13 @@ export default {
         {},
         {
           'size-change': this.internalSizeChange,
-          'current-change': this.internalCurrentChange,
+          'current-change': this.internalCurrentChange
         },
         this.$listeners
       ),
 
       // 扩展 slots
-      scopedSlots: this.$scopedSlots,
+      scopedSlots: this.$scopedSlots
     })
-  },
+  }
 }

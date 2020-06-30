@@ -1,66 +1,65 @@
-/*
- * @Author: PengZhen
- * @Description: 基础依赖入口，并以插件形式，向外暴露
- * @Date: 2017-07-05 16:07:33
+/**
+ * library
+ *
+ * @Date        : 2017-07-05
+ * @Author      : PengZhen
+ * @Description : 基于 Vue Plugin 形式，注册常用方法和组件
+ *                    1， http 请求类
+ *                    2,  util 工具类
+ *                    3， validate 验证类
+ *                    4， cache 缓存类
+ *                    5， vue components 公用组件
+ *                    6， vue directive 公用指令
+ *                    7， vue filters 公用过滤器
  */
-
-// prototype
-import './prototype/date'
-import './prototype/number'
-import './prototype/string'
-
-// filter
-import './filter'
-
-// components
-import Countdown from './components/countdown'
-import Table from './components/table'
 
 // http
 import http from './http'
 // util
 import util from './util'
+// validate
+import validate from './validate'
 // cache
 import cache from './cache'
-// cache
-import validate from './validate'
+// components
+import PeaceCountDown from './components/countdown'
+import PeaceDialog from './components/dialog'
+import { Table, TableColumn, Pagination } from './components/table'
+// directive
+import Drag from './directive/drag'
 
-const install = function (Vue) {
-  const peace = { http, util, cache, validate }
+const install = (Vue) => {
+  window.$peace = window.$peace || {}
+  window.$p = window.$peace
+  Vue.prototype.$peace = $peace
+  Vue.prototype.$p = $peace
 
-  // 暴露全局实例
-  Window.$peace = peace
-  global.$peace = peace
+  window.$peace.http = http
+  window.$peace.util = util
+  window.$peace.cache = cache
+  window.$peace.validate = validate
 
-  // 注册 component
-  const components = [Countdown, Table]
-  components.map((component) => {
-    Vue.use(component)
-  })
+  Vue.component(PeaceCountDown.name, PeaceCountDown)
+  Vue.component(PeaceDialog.name, PeaceDialog)
+  Vue.component(Table.name, Table)
+  Vue.component(TableColumn.name, TableColumn)
+  Vue.component(Pagination.name, Pagination)
 
-  // 挂载到 Vue
-  Vue.prototype.$peace = peace
+  Vue.directive(Drag.name, Drag)
 
-  console.log(
-    `%c Library %c Done `,
-    'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff'
-  )
+  // 处理向下兼容性
+  // Set Prototype
+  cache.setPrototypeOf ? Object.setPrototypeOf(cache, cache.localStorage) : (cache.__proto__ = cache.localStorage)
 }
 
 export default {
-  /** http 请求类 */
-  http,
+  name: 'library',
+  version: '1.0.0',
 
-  /** 常用工具类 */
-  util,
-
-  /** 缓存工具类 */
-  cache,
-
-  /** 验证工具类 */
-  validate,
-
-  /** vue plugin */
   install,
+
+  http,
+  util,
+  cache,
+  validate
 }

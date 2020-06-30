@@ -5,7 +5,7 @@ const APP_NAME = Package.name
 const APP_VERSION = Package.version
 
 const getSign = () => {
-  return `${COMPANY}-${APP_NAME}-v${APP_VERSION}`
+  return `[${COMPANY}]-[${APP_NAME}]-[${APP_VERSION}]`
 }
 
 export { getSign }

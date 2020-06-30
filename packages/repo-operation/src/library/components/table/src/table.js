@@ -8,32 +8,32 @@ const ExtendPaginationProp = {
     type: Number,
     default() {
       return 10
-    },
+    }
   },
   currentPage: {
     type: Number,
     default() {
       return 1
-    },
+    }
   },
   total: {
     type: Number,
     default() {
       return 0
-    },
+    }
   },
   pageSizes: {
     type: Array,
     default() {
       return [5, 10, 20, 30, 40, 50, 100]
-    },
+    }
   },
   layout: {
     type: String,
     default() {
       return 'total, sizes, -> , prev, pager, next, slot'
-    },
-  },
+    }
+  }
 }
 
 const ExtendTableProp = {
@@ -41,8 +41,8 @@ const ExtendTableProp = {
     type: Boolean,
     default() {
       return false
-    },
-  },
+    }
+  }
 }
 
 export default {
@@ -57,7 +57,7 @@ export default {
     // 可接收 Pagination Props
     ...Pagination.props,
     // 扩展 Pagination Props ( 相当于修改 Pagination Props )
-    ...ExtendPaginationProp,
+    ...ExtendPaginationProp
   },
 
   data() {
@@ -71,15 +71,15 @@ export default {
         // axios methods
         method: 'post',
         // axios params
-        params: {},
-      },
+        params: {}
+      }
     }
   },
 
   watch: {
     data() {
       this.internalData = this.data
-    },
+    }
   },
 
   created() {
@@ -108,7 +108,7 @@ export default {
       this.Pagination = new pagination({
         components: { Pagination },
         parent: this,
-        propsData: this.$props,
+        propsData: this.$props
       }).$mount()
     },
 
@@ -145,7 +145,7 @@ export default {
           api: config.api || this.config.api,
           method: config.method || this.config.method,
           fetch: config.fetch || this.config.fetch,
-          params: Object.assign({}, this.config.params, config.params),
+          params: Object.assign({}, this.config.params, config.params)
         }
       )
 
@@ -172,8 +172,8 @@ export default {
     },
 
     reloadData(config = {}) {
-      this.Pagination.internalPageSize = 1
-
+      this.Pagination.internalPageSize = 10
+      this.Pagination.internalCurrentPage = 1
       return this.loadData(config)
     },
 
@@ -215,7 +215,7 @@ export default {
       else {
         return new Error('未正确配置加载方法, 无法获取远端数据!')
       }
-    },
+    }
   },
 
   render(h) {
@@ -223,7 +223,7 @@ export default {
       props: { ...this.$props, data: this.internalData },
       attrs: this.$attrs,
       on: { ...this.$listeners, 'sort-change': this.internalSortChange },
-      scopedSlots: this.$scopedSlots,
+      scopedSlots: this.$scopedSlots
     })
-  },
+  }
 }

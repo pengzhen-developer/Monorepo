@@ -1,40 +1,18 @@
-import Package from '@/package.json'
+/**
+ * Vue 入口文件
+ *
+ * @Date        : 2020-04-22
+ * @Author      : PengZhen
+ * @Description : 参考 quasar-cli, 使用 boot 解耦初始化逻辑
+ */
 
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Boot from './boot'
 
-// Import Library
-import Library from '@src/library'
-Vue.use(Library)
+const install = async () => {
+  const vueAppInstance = await Boot.install()
 
-// Import CSS
-import '@src/assets/css/index.scss'
-
-// Import main
-if (process.env.VUE_APP_PLATFORM === 'web') {
-  require('./main.web')
-} else if (process.env.VUE_APP_PLATFORM === 'mobile') {
-  require('./main.mobile')
+  // Set Prototype
+  Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
 }
 
-// Set Vue config
-Vue.config.productionTip = false
-
-// Install Vue App
-const vueAppInstance = new Vue({
-  router: router.router,
-  store: store,
-  render: (h) => h(App),
-}).$mount('#app')
-
-// Set Prototype
-Object.setPrototypeOf ? Object.setPrototypeOf($peace, vueAppInstance) : ($peace.__proto__ = vueAppInstance)
-
-console.log(
-  `%c 全息云通 %c v${Package.version} %c`,
-  'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
-  'background:#41b883 ; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
-  'background:transparent'
-)
+install()

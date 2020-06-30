@@ -4,14 +4,13 @@
  * @Description: Download for axios
  */
 
-import axios from 'axios'
+import Axios from 'axios'
 
-const MSG_NOT_ALLOW_CONTENT_DISPOSITION =
-  '无法获取 content-disposition, 请确保后端 CORS 的配置,允许访问该 content-disposition '
+const MSG_NOT_ALLOW_CONTENT_DISPOSITION = '无法获取 content-disposition, 请确保 CORS 的配置,允许访问该 content-disposition '
 
 export default (url, param, method = 'get') => {
-  const downloadFile = response => {
-    if (!response.headers.hasOwnProperty('content-disposition')) {
+  const downloadFile = (response) => {
+    if (!response.headers['content-disposition']) {
       throw new Error(MSG_NOT_ALLOW_CONTENT_DISPOSITION)
     }
 
@@ -40,21 +39,21 @@ export default (url, param, method = 'get') => {
   // GET 请求，参数处理
   if (method.toLocaleLowerCase() === 'get') {
     const qs = require('qs')
-    return axios({
+    return Axios({
       url: `${url}?${qs.stringify(param, { arrayFormat: 'repeat' })}`,
       method: 'GET',
       responseType: 'blob',
-      isDownload: true
+      isDownload: true,
     }).then(downloadFile)
   }
 
   // POST 请求，参数处理
   else if (method.toLocaleLowerCase() === 'post') {
-    return axios({
+    return Axios({
       url,
       method: 'POST',
       data: param,
-      responseType: 'blob'
+      responseType: 'blob',
     }).then(downloadFile)
   }
 }

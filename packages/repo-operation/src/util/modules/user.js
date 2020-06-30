@@ -1,9 +1,34 @@
 import Peace from '@src/library'
-import RouterPath from '@src/router/routerPath'
-import Router from '@src/router'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
+const USER_CD_KEY = 'user_cd_key'
+
+/**
+ * 缓存用户 cdkey
+ *
+ * @param {*} userInfo cdkey
+ * @returns
+ */
+export const setUserCDKey = (cdkey) => {
+  return Peace.cache.localStorage.set(USER_CD_KEY, cdkey)
+}
+/**
+ * 获取用户 cdkey
+ *
+ * @returns
+ */
+export const getUserCDKey = () => {
+  return Peace.cache.localStorage.get(USER_CD_KEY)
+}
+
+/**
+ * 清空用户 cdkey
+ *
+ */
+export const removeUserCDKey = () => {
+  return Peace.cache.localStorage.remove(USER_CD_KEY)
+}
 
 /**
  * 缓存用户信息
@@ -14,7 +39,6 @@ const USER_INFO = 'user_info'
 export const setUserInfo = (userInfo) => {
   return Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
-
 /**
  * 获取用户信息（缓存）
  *
@@ -23,13 +47,13 @@ export const setUserInfo = (userInfo) => {
 export const getUserInfo = () => {
   return Peace.cache.localStorage.get(USER_INFO)
 }
-
 /**
  * 清空用户信息（缓存）
  *
  */
 export const removeUserInfo = () => {
-  return Peace.cache.localStorage.remove(USER_INFO)
+  Peace.cache.localStorage.remove(USER_INFO)
+  Peace.cache.localStorage.remove(USER_CD_KEY)
 }
 
 /**
@@ -41,11 +65,11 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  return Router.router.push({
-    name: RouterPath.system.LOGIN,
+  return $peace.$router.push({
+    name: '/login',
     query: {
-      referrer: referrer || Router.router.history.current.fullPath,
-    },
+      referrer: referrer || $peace.$router.history.current.fullPath
+    }
   })
 }
 
@@ -59,9 +83,13 @@ export const isSignIn = () => {
 
 export default {
   setUserInfo,
+  getUserCDKey,
+  removeUserCDKey,
+
+  setUserCDKey,
   getUserInfo,
   removeUserInfo,
   isSignIn,
 
-  replaceToLogin,
+  replaceToLogin
 }

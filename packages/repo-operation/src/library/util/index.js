@@ -1,19 +1,31 @@
-let Notify = {}
-let Toast = {}
-
-import { encode, decode } from './base64'
-
-import validate from './../validate'
-
 import platform from './platform'
+import { encode, decode } from './base64'
+import { Message } from 'element-ui'
 
-/** UI library */
-if (process.env.VUE_APP_PLATFORM === 'web') {
-  Notify = require('element-ui/lib/notification').default
-  Toast = require('element-ui/lib/message').default
-} else if (process.env.VUE_APP_PLATFORM === 'mobile') {
-  Notify = require('vant/lib/notify').default
-  Toast = require('vant/lib/toast').default
+/**
+ *
+ *
+ * @export
+ * @param {*} options
+ */
+export function alert(options, type = 'info') {
+  if (this.type(options).isString) {
+    Message({
+      message: options,
+      type: type
+    })
+  } else {
+    Message(options)
+  }
+}
+export function warning(options) {
+  this.alert(options, 'warning')
+}
+export function success(options) {
+  this.alert(options, 'success')
+}
+export function error(options) {
+  this.alert(options, 'error')
 }
 
 /**
@@ -46,6 +58,30 @@ export function type(object) {
 }
 
 /**
+ * 获取时间间隔
+ *
+ * @export
+ * @param {*} bgTime
+ * @param {*} endTime
+ * @returns
+ */
+export function getDuration(bgTime, endTime) {
+  const totalSecs = (endTime - bgTime) / 1000
+
+  const dd = Math.floor(totalSecs / 3600 / 24)
+  const HH = Math.floor((totalSecs - dd * 24 * 3600) / 3600)
+  const mm = Math.floor((totalSecs - dd * 24 * 3600 - HH * 3600) / 60)
+  const ss = Math.floor(totalSecs - dd * 24 * 3600 - HH * 3600 - mm * 60)
+
+  return {
+    dd,
+    HH,
+    mm,
+    ss
+  }
+}
+
+/**
  * 获取 url 参数
  *
  * @export
@@ -54,7 +90,7 @@ export function type(object) {
  * @returns 需要解析参数的参数值
  */
 export function queryUrlParam(name, url = window.location.href) {
-  if (validate.isEmpty(name)) {
+  if (name === undefined || name === null || name === '') {
     return console.error('[queryUrlParam]：name is required')
   }
 
@@ -162,69 +198,21 @@ export function deepClone(item) {
   return result
 }
 
-/**
- * 消息提示
- *
- * @export
- * @param {*} options
- * @returns
- */
-export function alert(options) {
-  // 参数为字符串，表现为 toast
-  if (type(options).isString) {
-    Toast(options)
-
-    return true
-  }
-  // 参数为对象，表现为 notify
-  else if (type(options).isObject) {
-    Notify(options)
-
-    return true
-  }
-
-  console.warn('参数格式错误')
-
-  return false
-}
-export function success(message) {
-  // 参数为字符串，表现为 toast
-  if (type(message).isString) {
-    Toast({ message, type: 'success' })
-
-    return true
-  }
-}
-export function warning(message) {
-  // 参数为字符串，表现为 toast
-  if (type(message).isString) {
-    Toast({ message, type: 'warning' })
-
-    return true
-  }
-}
-export function error(message) {
-  // 参数为字符串，表现为 toast
-  if (type(message).isString) {
-    Toast({ message, type: 'error' })
-
-    return true
-  }
-}
-
 export default {
+  alert,
+  warning,
+  success,
+  error,
+
   platform,
   encode,
   decode,
 
   type,
 
+  getDuration,
+
   queryUrlParam,
   arrayToTree,
-  deepClone,
-
-  alert,
-  success,
-  warning,
-  error
+  deepClone
 }
