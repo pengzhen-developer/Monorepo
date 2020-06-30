@@ -121,7 +121,7 @@ export default {
 
   filters: {
     getEnumLabel: function(value, ENUM) {
-      return Object.keys(ENUM).find((key) => ENUM[key] === value)
+      return Object.keys(ENUM).find(key => ENUM[key] === value)
     }
   },
 
@@ -156,11 +156,12 @@ export default {
     get() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-
-      this.$refs.table.loadData({ fetch, params }).then((res) => {
-        res?.data?.list?.forEach((row) => {
+      this.$refs.table.loadData({ fetch, params }).then(res => {
+        res?.data?.list?.forEach(row => {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName) ? '——' : row.hospitalName
-          row.socialCreditCode = Peace.validate.isEmpty(row.socialCreditCode) ? '——' : row.socialCreditCode
+          row.socialCreditCode = Peace.validate.isEmpty(row.socialCreditCode)
+            ? '——'
+            : row.socialCreditCode
           row.applyTime = Peace.validate.isEmpty(row.applyTime) ? '——' : row.applyTime
         })
         return res
@@ -172,7 +173,10 @@ export default {
     },
 
     canShowDetail(row) {
-      return row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 || row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
+      return (
+        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 ||
+        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
+      )
     },
 
     getIsOpenText(row) {
@@ -205,7 +209,7 @@ export default {
             isOpen: row.isOpen
           }
 
-          Service.updateAccountStatus(params).then((res) => {
+          Service.updateAccountStatus(params).then(res => {
             Peace.util.success(res.msg)
 
             this.get()

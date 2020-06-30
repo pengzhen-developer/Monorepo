@@ -185,5 +185,30 @@ export default [
     iconType: 'Material Icons',
     enable: true,
     closable: true
-  }
+  },
+
+  {
+    id: '2-6',
+    parentId: '2',
+    menuRouteName: null,
+    menuRoute: null,
+    menuName: '日志管理',
+    menuPath: null,
+    menuIcon: 'settings',
+    iconType: 'Material Icons',
+    enable: null,
+    closable: null
+  },
+  {
+    id: '2-6-1',
+    parentId: '2-6',
+    menuRouteName: 'platform/logger/recordList',
+    menuRoute: 'platform/logger/recordList',
+    menuName: '日志记录',
+    menuPath: 'views/platform/logger/recordList',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
 ]
