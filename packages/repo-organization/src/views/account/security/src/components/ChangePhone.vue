@@ -83,7 +83,7 @@
 export default {
   data() {
     return {
-      showTab1: true,
+      showTab1: false,
       oldPhone: '12312313131',
       oldCode: '',
       newPhone: '213123131',
@@ -100,7 +100,14 @@ export default {
 </script>
 
 <style  scoped>
+p {
+  margin: 0;
+  padding: 0;
+}
 .content-bgd {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: white;
