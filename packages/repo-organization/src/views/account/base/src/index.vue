@@ -1,10 +1,9 @@
 <template>
   <div class="content-bgd">
-
     <div class="content-item">
       <div class="item-title">
         <div class="title-left"></div>
-        <p class="title"> 账号信息</p>
+        <p class="title">账号信息</p>
       </div>
       <div class="item-content">
         <div class="item-child">
@@ -75,7 +74,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -102,9 +100,11 @@ export default {
 }
 </script>
 
-<style>
-</style>
 <style scoped>
+p {
+  margin: 0;
+  padding: 0;
+}
 .content-bgd {
   width: 100%;
   height: 100%;

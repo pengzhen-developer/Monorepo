@@ -85,7 +85,6 @@ export default {
     },
 
     resetNavSelect() {
-      debugger
       // 初始化进入？ 默认选中第一项
       if (this.$route.path === '/layout') {
         const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
