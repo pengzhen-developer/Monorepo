@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import Util from '@src/util'
+
 export default {
   data() {
     return {
@@ -20,7 +22,7 @@ export default {
     }
   },
   created() {
-    this.src = this.$route.meta.menuPath
+    this.src = this.$route.meta.menuPath + '?cdkey=' + Util.user.getUserCDKey()
   }
 }
 </script>

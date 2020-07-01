@@ -1,4 +1,48 @@
+import Peace from '@src/library'
+
 import configuration_nav_console from './configuration_nav_console'
+import configuration_nav_organization from './configuration_nav_organization'
+import configuration_nav_prescription from './configuration_nav_prescription'
+
+/** 控制台 - 加载子系统 */
+/** 思路： */
+/** 通过 url 参数加载子系统配置文件 */
+/** 通过 document.referrer 验证， document.referrer 为控制台则需要缓存 url 信息，便于刷新后重载 */
+
+if (document.referrer.indexOf(window.location.origin) !== -1) {
+  const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
+
+  /** 子站，首次进入 */
+  // 清理必要信息
+  if (ORIGINAL_HREF === null) {
+    window.sessionStorage.clear()
+  }
+
+  window.sessionStorage.setItem('ORIGINAL_HREF', ORIGINAL_HREF || window.location.href)
+}
+
+/** 动态菜单 */
+const dynamicTitle = () => {
+  const title = Peace.util.queryUrlParam('title', window.sessionStorage.getItem('ORIGINAL_HREF'))
+
+  return title ?? '智药云控制台'
+}
+
+/** 动态配置 */
+const dynimicRoutes = () => {
+  const configuration = Peace.util.queryUrlParam('configuration', window.sessionStorage.getItem('ORIGINAL_HREF'))
+
+  switch (configuration) {
+    case 'prescription':
+      return configuration_nav_prescription
+
+    case 'organization':
+      return configuration_nav_organization
+
+    default:
+      return configuration_nav_console
+  }
+}
 
 export default {
   /**
@@ -6,7 +50,7 @@ export default {
    *
    */
   application: {
-    title: '智药云平台控制台'
+    title: dynamicTitle()
   },
 
   /**
@@ -40,8 +84,8 @@ export default {
      *
      */
     layoutNavMenu: [
-      /** 智药云控制台路由 */
-      ...configuration_nav_console
+      /** 动态路由 */
+      ...dynimicRoutes()
     ],
 
     /**

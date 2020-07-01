@@ -107,7 +107,7 @@ export default {
     redirectSerivceSite(product) {
       const cdKey = Util.user.getUserCDKey()
 
-      window.open(product.url + '?cdkey=' + cdKey)
+      window.open(`${window.location.origin}?cdkey=${cdKey}&configuration=prescription&title=${product.serviceName}`)
     }
   }
 }
