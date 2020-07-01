@@ -57,10 +57,12 @@ export default {
       })
     },
 
-    // 菜单更新，还原 nav
+    // 菜单更新，默认选中第一项
     childrenMenuTree() {
       this.$nextTick().then(() => {
-        this.resetNavSelect()
+        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+
+        firstMenuNode?.click()
       })
     }
   },
@@ -92,9 +94,9 @@ export default {
         firstMenuNode?.click()
       }
 
-      // 页面被刷新？ 恢复菜单选中
-      else if (this.$route.path && this.$route.name) {
-        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.name}"]`)
+      // 恢复菜单选中
+      else {
+        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.id}"]`)
 
         currentMenuNode?.click()
       }

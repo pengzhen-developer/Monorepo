@@ -25,7 +25,6 @@
 
 <script>
 import Peace from '@src/library'
-import Constant from './constant.js'
 
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
@@ -93,11 +92,6 @@ export default {
     },
 
     parentMenuSelect(index) {
-      // 因路由表现形式为 /layout/menuPath ，从链接无法获取顶级菜单选中项
-      // 记录当前选中的顶级菜单
-      // 便于刷新后还原状态
-      Peace.cache.sessionStorage.set(Constant.PARENT_MENU_INDEX, index)
-
       const currentMenu = this.menuTree.find((menu) => menu.id === index)
 
       // 当前为功能菜单
@@ -105,7 +99,6 @@ export default {
         this.menuSelect(index)
       }
       // 加载子菜单
-      // 默认选中第一项子菜单
       else {
         this.childrenMenuTree = currentMenu.children
       }

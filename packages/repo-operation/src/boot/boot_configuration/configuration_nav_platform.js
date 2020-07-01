@@ -143,7 +143,7 @@ export default [
     menuRouteName: 'order',
     menuRoute: 'order',
     menuName: '订单概览',
-    menuPath: process.env.VUE_APP_MOCK_API + 'OrderManage/OrderManage?CustType=10',
+    menuPath: process.env.VUE_APP_PRESCRIPTION + 'OrderManage/OrderManage?CustType=10',
     menuIcon: null,
     iconType: null,
     enable: true,
@@ -210,5 +210,5 @@ export default [
     iconType: null,
     enable: true,
     closable: true
-  },
+  }
 ]

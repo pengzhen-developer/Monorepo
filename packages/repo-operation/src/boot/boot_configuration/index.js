@@ -1,5 +1,6 @@
 import configuration_nav_home from './configuration_nav_home'
 import configuration_nav_platform from './configuration_nav_platform'
+import configuration_nav_nethospital from './configuration_nav_nethospital'
 
 export default {
   /**
@@ -45,7 +46,10 @@ export default {
       ...configuration_nav_home,
 
       /** 平台管理路由 */
-      ...configuration_nav_platform
+      ...configuration_nav_platform,
+
+      /** 互医管理路由 */
+      ...configuration_nav_nethospital
     ],
 
     /**

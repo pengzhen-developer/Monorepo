@@ -26,6 +26,7 @@
               <el-menu-item v-for="menu in menuTree"
                             v-bind:key="menu.id"
                             v-bind:index="menu.id"
+                            v-bind:router="menu.id"
                             v-bind:disabled="menu.enable === false">
                 <template v-if="menu.iconType === 'Material Icons'">
                   <q-icon v-bind:name="menu.menuIcon"
@@ -108,18 +109,16 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Util from '@src/util'
-import Constant from './../constant.js'
 
 export default {
-  inject: ['provideToggleDrawer', 'provdeParentMenuSelect', 'provideMenuTree'],
+  inject: ['provideToggleDrawer', 'provdeParentMenuSelect', 'provideMenuList', 'provideMenuTree'],
 
   data() {
     return {
       configuration: window.configuration,
 
-      defaultActive: Peace.cache.sessionStorage.get(Constant.PARENT_MENU_INDEX),
+      defaultActive: '',
 
       user: undefined
     }
@@ -132,6 +131,10 @@ export default {
 
     parentMenuSelect() {
       return this.provdeParentMenuSelect
+    },
+
+    menuList() {
+      return this.provideMenuList()
     },
 
     menuTree() {
@@ -168,19 +171,43 @@ export default {
 
   methods: {
     resetHeaderSelect() {
-      // 初始化进入？ 默认选中第一项
+      // 初始化进入？ 默认选中第一个顶级菜单
       if (this.$route.path === '/layout') {
         const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
 
         firstMenuNode?.click()
+
+        return
       }
 
-      // 页面被刷新？ 恢复菜单选中
-      else if (this.defaultActive) {
-        const menuNode = this.$el.querySelector(`li[class='el-menu-item is-active']`)
+      // 恢复菜单选中
+      else {
+        // 存在 path，根据 path 寻找顶级菜单
+        const node = this.$route?.meta
+        const root = this.deepQueryRoot(this.menuList, node)
+
+        const menuNode = this.$el.querySelector(`li[router="${root.id}"]`)
 
         menuNode?.click()
       }
+    },
+
+    deepQueryRoot(list, node) {
+      var arr = []
+
+      const find = (list, node) => {
+        list.some((item) => {
+          if (item.id === node.parentId) {
+            arr.push(item)
+
+            return find(list, item)
+          }
+        })
+      }
+
+      find(list, node)
+
+      return arr.find((item) => item.parentId === null)
     },
 
     signOut() {

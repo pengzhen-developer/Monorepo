@@ -3,7 +3,7 @@
     <!-- 存在多层节点 -->
     <template v-if="data.children">
       <el-submenu v-bind:index="data.id"
-                  v-bind:router="data.menuRoute"
+                  v-bind:router="data.id"
                   v-bind:disabled="data.enable === false">
 
         <template slot="title">
