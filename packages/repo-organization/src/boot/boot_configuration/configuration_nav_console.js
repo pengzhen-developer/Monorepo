@@ -77,25 +77,25 @@ export default [
   {
     id: '3-1',
     parentId: '3',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'service/list',
+    menuRoute: 'service/list',
     menuName: '服务列表',
-    menuPath: '',
+    menuPath: 'views/service/list',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
   {
     id: '3-2',
     parentId: '3',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'service/certificate',
+    menuRoute: 'service/certificate',
     menuName: '服务凭证',
-    menuPath: '',
+    menuPath: 'views/service/certificate',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   }
 ]

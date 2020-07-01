@@ -83,7 +83,7 @@
 export default {
   data() {
     return {
-      showTab1: false,
+      showTab1: true,
       oldPhone: '12312313131',
       oldCode: '',
       newPhone: '213123131',
@@ -170,6 +170,7 @@ p {
 }
 
 .btn-getcode {
+  padding: 6px 16px;
   margin-left: 10px;
 }
 .phone-code {
