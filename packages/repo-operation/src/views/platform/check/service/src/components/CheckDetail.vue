@@ -6,11 +6,11 @@
         <template v-if="data.checkStatus === 1">
           <el-form-item label="审核结果" prop="checkStatus">
             <el-radio-group v-model="model.checkStatus">
-              <el-radio label="3">通过</el-radio>
-              <el-radio label="2">驳回</el-radio>
+              <el-radio :label="3">通过</el-radio>
+              <el-radio :label="2">驳回</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="备注" prop="reason">
+          <el-form-item v-if="model.checkStatus === 2" label="备注" prop="reason">
             <el-input
               type="textarea"
               placeholder="请填写驳回原因"
@@ -20,13 +20,14 @@
               v-model="model.reason"
             ></el-input>
           </el-form-item>
-
           <div class="dialog-btn">
             <el-button v-on:click="visible = false">取 消</el-button>
             <el-button type="primary" v-bind:loading="isLoading" v-on:click="doCheck">确 定</el-button>
           </div>
         </template>
+      </el-form>
 
+      <el-form label-width="90px">
         <!-- 已通过  -->
         <template v-if="data.checkStatus === 3">
           <el-form-item label="审核结果">
@@ -36,7 +37,6 @@
             <span>{{ data.checkTime }}</span>
           </el-form-item>
         </template>
-
         <!-- 未通过 -->
         <template v-if="data.checkStatus === 2">
           <el-form-item label="审核结果">
@@ -45,9 +45,6 @@
           <el-form-item label="备注">
             <span>{{ checkInfo.reason }}</span>
           </el-form-item>
-          <!-- <el-form-item label="审核时间：">
-            <span>{{ data.checkTime }}</span>
-          </el-form-item>-->
         </template>
       </el-form>
     </el-dialog>
@@ -78,11 +75,22 @@ export default {
   },
 
   data() {
-    let checkEmpty = (rule, value, callback) => {
+    let checkStatusEmpty = (rule, value, callback) => {
       if (Peace.validate.isEmpty(value)) {
         return callback(new Error());
       }
       callback();
+    };
+    let checkReasonEmpty = (rule, value, callback) => {
+      if (this.model.checkStatus === 2) {
+        if (Peace.validate.isEmpty(value)) {
+          return callback(new Error());
+        } else {
+          callback();
+        }
+      } else {
+        callback();
+      }
     };
     return {
       CONSTANT,
@@ -99,10 +107,18 @@ export default {
 
       rules: {
         checkStatus: [
-          { validator: checkEmpty, message: "请选择审核结果", trigger: "blur" }
+          {
+            validator: checkStatusEmpty,
+            message: "请选择审核结果",
+            trigger: "change"
+          }
         ],
         reason: [
-          { validator: checkEmpty, message: "请填写驳回原因", trigger: "blur" }
+          {
+            validator: checkReasonEmpty,
+            message: "请填写驳回原因",
+            trigger: "blur"
+          }
         ]
       }
     };
@@ -117,9 +133,7 @@ export default {
       this.$emit("input", value);
 
       this.$nextTick(() => {
-        if (this.data.checkStatus === 1) {
-          this.$refs.form.resetFields();
-        }
+        this.$refs.form.resetFields();
       });
 
       if (this.data.checkStatus === 2) {
@@ -139,12 +153,11 @@ export default {
         Service.doCheck(params)
           .then(res => {
             Peace.util.success(res.msg);
-
-            this.isLoading = false;
           })
           .finally(() => {
             this.visible = false;
             this.$emit("refresh");
+            this.isLoading = false;
           });
       });
     },
@@ -166,7 +179,7 @@ export default {
 
       Service.getReason(params)
         .then(res => {
-          this.checkInfo = res.data
+          this.checkInfo = res.data;
         })
         .finally(() => {});
     }

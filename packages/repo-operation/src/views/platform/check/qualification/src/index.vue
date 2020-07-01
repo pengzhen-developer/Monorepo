@@ -8,19 +8,25 @@
       label-suffix
       size="mini"
     >
-      <el-form-item label="联系人：">
-        <el-input v-model="model.linkman" placeholder="请输入"></el-input>
-      </el-form-item>
-      <el-form-item label="手机号码：">
-        <el-input v-model="model.tel" placeholder="请输入"></el-input>
-      </el-form-item>
-      <el-form-item label="所属机构：">
+      <el-form-item label="机构名称：">
         <el-input v-model="model.hospitalName" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="账号状态：">
-        <el-select v-model="model.accountStatus" placeholder="全部" clearable>
+      <el-form-item label="机构类型：">
+        <el-select v-model="model.role" placeholder="全部" clearable>
+          <el-option label="全部" value></el-option>
           <el-option
-            v-for="(value, label) in source.ENUM_IS_OPEN"
+            v-for="(value, label) in source.ENUM_ORGANIZATION_TYPE"
+            v-bind:key="value"
+            v-bind:label="label"
+            v-bind:value="value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="认证状态：">
+        <el-select v-model="model.checkStatus" placeholder="全部" clearable>
+          <el-option label="全部" value></el-option>
+          <el-option
+            v-for="(value, label) in source.ENUM_CHECK_STATUS"
             v-bind:key="value"
             v-bind:label="label"
             v-bind:value="value"
@@ -32,19 +38,24 @@
       </el-form-item>
     </el-form>
 
-    <el-button style="margin-bottom: 30px;" type="primary" icon="el-icon-plus" v-on:click="get">新增</el-button>
-
     <PeaceTable ref="table" size="mini" pagination>
-      <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
-      <el-table-column min-width="200px" label="机构名称" prop="hospitalName"></el-table-column>
-      <el-table-column min-width="200px" label="机构类型" prop="hospitalName"></el-table-column>
+      <el-table-column width="50" label="序号" align="center" prop="code"></el-table-column>
+      <el-table-column min-width="180px" label="机构名称" prop="hospitalName"></el-table-column>
+      <el-table-column min-width="100px" label="机构类型" prop="role">
+        <template
+          slot-scope="scope"
+        >{{ scope.row.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE) }}</template>
+      </el-table-column>
       <el-table-column min-width="100px" label="联系人" prop="linkman"></el-table-column>
       <el-table-column min-width="120px" label="手机号码" prop="tel"></el-table-column>
-      <el-table-column min-width="180px" label="入驻方式" prop="email"></el-table-column>
-      <el-table-column min-width="120px" label="账号状态" prop="isOpen">
-        <template slot-scope="scope">{{ getIsOpenText(scope.row) }}</template>
+      <el-table-column min-width="80px" align="center" label="认证状态" prop="checkStatus">
+        <template slot-scope="scope">
+          <span class="dot" v-bind:class="getColorType(scope.row)"></span>
+          <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
+        </template>
       </el-table-column>
-      <el-table-column min-width="160px" label="认证时间" prop="createdTime"></el-table-column>
+      <el-table-column width="100px" align="center" label="申请时间" prop="applyTime"></el-table-column>
+      <el-table-column width="100px" align="center" label="审核时间" prop="checkTime"></el-table-column>
       <el-table-column min-width="80px" align="center" fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button type="text" v-if="canShowAduit(scope.row)" v-on:click="aduit(scope.row)">审核</el-button>
@@ -84,10 +95,9 @@ export default {
   data() {
     return {
       model: {
-        linkman: "",
-        tel: "",
         hospitalName: "",
-        accountStatus: ""
+        role: "",
+        checkStatus: "",
       },
 
       aduitDialog: {
@@ -98,7 +108,7 @@ export default {
 
       source: {
         ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS,
-        ENUM_IS_OPEN: CONSTANT.ENUM_IS_OPEN
+        ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE,
       }
     };
   },
@@ -119,12 +129,9 @@ export default {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
             ? "——"
             : row.hospitalName;
-          row.socialCreditCode = Peace.validate.isEmpty(row.socialCreditCode)
+          row.checkTime = Peace.validate.isEmpty(row.checkTime)
             ? "——"
-            : row.socialCreditCode;
-          row.applyTime = Peace.validate.isEmpty(row.applyTime)
-            ? "——"
-            : row.applyTime;
+            : row.checkTime;
         });
         return res;
       });
@@ -141,46 +148,16 @@ export default {
       );
     },
 
-    getIsOpenText(row) {
-      if (row.isOpen === 1) {
-        return "已启用";
-      } else {
-        return "已禁用";
-      }
-    },
-
     aduit(row) {
-      this.aduitDialog.title = "医院信息审核";
+      this.aduitDialog.title = "审核";
       this.aduitDialog.visible = true;
       this.aduitDialog.data = row;
     },
 
     detail(row) {
-      this.aduitDialog.title = "医院信息审核详情";
+      this.aduitDialog.title = "查看详情";
       this.aduitDialog.visible = true;
       this.aduitDialog.data = row;
-    },
-
-    changeOpenState(row) {
-      const message =
-        row.isOpen === 1 ? "确定启用该账号？" : "确定禁用该账号？";
-
-      this.$confirm(message, "提示")
-        .then(() => {
-          const params = {
-            accountId: row.id,
-            isOpen: row.isOpen
-          };
-
-          Service.updateAccountStatus(params).then(res => {
-            Peace.util.success(res.msg);
-
-            this.get();
-          });
-        })
-        .catch(() => {
-          row.isOpen = row.isOpen === 1 ? 2 : 1;
-        });
     },
 
     getColorType(row) {

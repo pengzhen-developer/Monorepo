@@ -29,6 +29,17 @@
                      v-bind:value="value"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="账号状态：">
+        <el-select v-model="model.isOpen"
+                   placeholder="全部"
+                   clearable>
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="(value, label) in source.ENUM_IS_OPEN"
+                     v-bind:key="value"
+                     v-bind:label="label"
+                     v-bind:value="value"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label=" ">
         <el-button type="primary"
                    icon="el-icon-search"
@@ -86,7 +97,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column min-width="80px"
+      <!-- <el-table-column min-width="80px"
                        align="center"
                        fixed="right"
                        label="操作">
@@ -99,7 +110,7 @@
                      v-on:click="detail(scope.row)">详情</el-button>
           <span v-if="!canShowAduit(scope.row) && !canShowDetail(scope.row)">——</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </PeaceTable>
 
     <AduitDetail v-model="aduitDialog.visible"
@@ -133,7 +144,8 @@ export default {
         linkman: '',
         tel: '',
         hospitalName: '',
-        checkStatus: ''
+        checkStatus: '',
+        isOpen: ''
       },
 
       aduitDialog: {
@@ -143,7 +155,8 @@ export default {
       },
 
       source: {
-        ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS
+        ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS,
+        ENUM_IS_OPEN: CONSTANT.ENUM_IS_OPEN
       }
     }
   },

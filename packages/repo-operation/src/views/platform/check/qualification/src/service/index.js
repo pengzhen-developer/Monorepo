@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 获取账号管理列表
+   * 获取资质认证列表
    *
    * @param {*} params
    */
   getList(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/getList'
+    const apiPath = 'operate/account/getCertificationList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -40,14 +40,14 @@ export default {
   },
 
   /**
-   * 更新账号状态
+   * 获取资质认证详情
    *
    * @param {*} params
    */
-  updateAccountStatus(params) {
+  getCertificationDetail(params) {
     const isMock = false
 
-    const apiPath = 'operate/Account/updateAccountStatus'
+    const apiPath = 'operate/account/getCertificationDetail'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

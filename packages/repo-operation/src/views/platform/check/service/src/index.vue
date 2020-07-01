@@ -174,6 +174,9 @@ export default {
 
       this.$refs.table.loadData({ fetch, params }).then(res => {
         res?.data?.list?.forEach(row => {
+          row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
+            ? "——"
+            : row.hospitalName;
           row.checkTime = Peace.validate.isEmpty(row.checkTime)
             ? "——"
             : row.checkTime;
@@ -183,14 +186,11 @@ export default {
     },
 
     canShowCheck(row) {
-      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.待审核;
+      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.待审核
     },
 
     canShowDetail(row) {
-      return (
-        row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.已通过 ||
-        row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过
-      );
+      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过
     },
 
     check(row) {
@@ -208,7 +208,7 @@ export default {
     getColorType(row) {
       const dict = {
         1: "info",
-        2: "primary",
+        2: "danger",
         3: "success",
       };
 
