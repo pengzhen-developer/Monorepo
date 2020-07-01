@@ -114,8 +114,8 @@ p {
 }
 .operate {
   font-size: 14px;
-  color: #3099a6;
-  border: 1px solid #3099a6;
+  color: var(--q-color-primary);
+  border: 1px solid var(--q-color-primary);
   padding: 5px 46px;
   border-radius: 5px;
 }

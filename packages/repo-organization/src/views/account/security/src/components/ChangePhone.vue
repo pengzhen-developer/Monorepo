@@ -1,11 +1,9 @@
 <template>
   <div class="content-bgd">
-    <el-steps :active="1"
-              class="steps">
-      <el-step title="步骤 1"></el-step>
-      <el-step title="步骤 2"></el-step>
-      <el-step title="步骤 3"></el-step>
-    </el-steps>
+
+    <Steps v-bind:list='list'
+           v-bind:active="active"
+           v-on:increase='increase'></Steps>
 
     <div class="tab1"
          v-if="showTab1">
@@ -80,21 +78,41 @@
 </template>
 
 <script>
+import Steps from './steps'
+
 export default {
+  components: { Steps },
+
   data() {
     return {
       showTab1: true,
       oldPhone: '12312313131',
       oldCode: '',
       newPhone: '213123131',
-      newCode: ''
+      newCode: '',
+      active: 0,
+      list: [
+        {
+          title: '选择机构类型'
+        },
+        {
+          title: '完善机构信息'
+        },
+        {
+          title: '提交审核'
+        }
+      ]
     }
   },
 
-  extends: {
+  methods: {
     nextPoint() {},
     getCode() {},
-    getCodeNew() {}
+    getCodeNew() {},
+    increase() {
+      if (this.active == this.list.length - 1) return
+      this.$emit('increase', this.active++)
+    }
   }
 }
 </script>
@@ -140,7 +158,7 @@ p {
   display: flex;
   align-items: center;
   padding: 0 15px;
-  border: 1px #3099a6 solid;
+  border: 1px var(--q-color-primary) solid;
   border-radius: 2px;
 }
 

@@ -9,22 +9,22 @@
         <div class="item-child">
           <p class="child-key">用户名</p>
           <p>：</p>
-          <p class="child-value">{{ userData.username }}</p>
+          <p class="child-value">{{ accountInfo.username }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">联系人</p>
           <p>：</p>
-          <p class="child-value">{{ userData.contacts }}</p>
+          <p class="child-value">{{ accountInfo.linkman }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">手机号码</p>
           <p>：</p>
-          <p class="child-value">{{ userData.phone }}</p>
+          <p class="child-value">{{ accountInfo.tel }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">邮箱</p>
           <p>：</p>
-          <p class="child-value">{{ userData.email }}</p>
+          <p class="child-value">{{ accountInfo.email }}</p>
         </div>
       </div>
     </div>
@@ -40,37 +40,42 @@
         <div class="item-child">
           <p class="child-key">机构类型</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.mechanismType }}</p>
+          <p class="child-value">{{ hosInfo.role }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">机构名称</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.mechanismName }}</p>
+          <p class="child-value">{{ hosInfo.hospitalName }}</p>
         </div>
         <div class="item-child">
           <p class="child-key-other">统一社会信用代码</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.mechanismCode }}</p>
+          <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">医院属性</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.mechanismStatus }}</p>
+          <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">详细地址</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.address }}</p>
+          <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">医院等级</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.hospitalGrade }}</p>
+          <p class="child-value">{{ hosInfo.level }}</p>
         </div>
         <div class="item-child">
-          <p class="child-key">医院等级</p>
+          <p class="child-key">资质证明</p>
           <p>：</p>
-          <p class="child-value">{{ mechanism.hospitalGrade }}</p>
+          <img :src="hosInfo.license"
+               class="img"
+               alt="">
+          <img :src="hosInfo.certificate"
+               class="img"
+               alt="">
         </div>
       </div>
     </div>
@@ -78,23 +83,26 @@
 </template>
 
 <script>
+import Service from './service'
+
 export default {
   data() {
     return {
-      userData: {
-        username: 'zhansan',
-        contacts: '张三',
-        phone: '131554545545',
-        email: '324234243.@qq.com'
-      },
-      mechanism: {
-        mechanismType: '医疗机构',
-        mechanismName: '北辰医院',
-        mechanismCode: '52141122MJ1825564A',
-        mechanismStatus: '公立医院 综合医院',
-        address: '湖北省武汉市汉阳区5.5医药产业园',
-        hospitalGrade: '三级甲等'
-      }
+      accountInfo: {},
+      hosInfo: {}
+    }
+  },
+
+  created() {
+    this.getUserData()
+  },
+
+  methods: {
+    getUserData() {
+      Service.getAccountDetailInfo().then((res) => {
+        this.accountInfo = res.data.accountInfo
+        this.hosInfo = res.data.hosInfo
+      })
     }
   }
 }
@@ -169,5 +177,10 @@ p {
   margin: 10px 0 20px 0;
   height: 1px;
   background: #e9e9e9;
+}
+.img {
+  width: 130px;
+  height: 130px;
+  margin-right: 20px;
 }
 </style>
