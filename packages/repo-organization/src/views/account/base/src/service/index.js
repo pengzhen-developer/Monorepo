@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 账号密码登录
+   * 获取基础服务
    *
    * @param {*} params
    */
-  doLogin(params) {
+  getAccountDetailInfo(params) {
     const isMock = false
 
-    const apiPath = 'operate/index/doLogin'
+    const apiPath = 'console/bank/getAccountDetailInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

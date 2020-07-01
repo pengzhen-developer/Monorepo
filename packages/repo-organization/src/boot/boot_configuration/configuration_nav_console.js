@@ -40,25 +40,25 @@ export default [
   {
     id: '2-1',
     parentId: '2',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'account/base',
+    menuRoute: 'account/base',
     menuName: '基本信息',
-    menuPath: '',
+    menuPath: 'views/account/base',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
   {
     id: '2-2',
     parentId: '2',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'account/security',
+    menuRoute: 'account/security',
     menuName: '安全信息',
-    menuPath: '',
+    menuPath: 'views/account/security',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
 
@@ -77,25 +77,25 @@ export default [
   {
     id: '3-1',
     parentId: '3',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'service/list',
+    menuRoute: 'service/list',
     menuName: '服务列表',
-    menuPath: '',
+    menuPath: 'views/service/list',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   },
   {
     id: '3-2',
     parentId: '3',
-    menuRouteName: null,
-    menuRoute: null,
+    menuRouteName: 'service/certificate',
+    menuRoute: 'service/certificate',
     menuName: '服务凭证',
-    menuPath: '',
+    menuPath: 'views/service/certificate',
     menuIcon: null,
     iconType: null,
-    enable: false,
+    enable: true,
     closable: true
   }
 ]

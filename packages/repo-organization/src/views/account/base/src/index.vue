@@ -1,0 +1,186 @@
+<template>
+  <div class="content-bgd">
+    <div class="content-item">
+      <div class="item-title">
+        <div class="title-left"></div>
+        <p class="title">账号信息</p>
+      </div>
+      <div class="item-content">
+        <div class="item-child">
+          <p class="child-key">用户名</p>
+          <p>：</p>
+          <p class="child-value">{{ accountInfo.username }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">联系人</p>
+          <p>：</p>
+          <p class="child-value">{{ accountInfo.linkman }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">手机号码</p>
+          <p>：</p>
+          <p class="child-value">{{ accountInfo.tel }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">邮箱</p>
+          <p>：</p>
+          <p class="child-value">{{ accountInfo.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="content-item">
+      <div class="item-title">
+        <div class="title-left"></div>
+        <p class="title"> 机构信息</p>
+      </div>
+      <div class="item-content">
+        <div class="item-child">
+          <p class="child-key">机构类型</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.role }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">机构名称</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.hospitalName }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key-other">统一社会信用代码</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">医院属性</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">详细地址</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">医院等级</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.level }}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">资质证明</p>
+          <p>：</p>
+          <img :src="hosInfo.license"
+               class="img"
+               alt="">
+          <img :src="hosInfo.certificate"
+               class="img"
+               alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Service from './service'
+
+export default {
+  data() {
+    return {
+      accountInfo: {},
+      hosInfo: {}
+    }
+  },
+
+  created() {
+    this.getUserData()
+  },
+
+  methods: {
+    getUserData() {
+      Service.getAccountDetailInfo().then((res) => {
+        this.accountInfo = res.data.accountInfo
+        this.hosInfo = res.data.hosInfo
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+p {
+  margin: 0;
+  padding: 0;
+}
+.content-bgd {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 20px;
+}
+.content-item {
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+.item-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.title-left {
+  width: 4px;
+  height: 16px;
+  background: #3099a6;
+  border-radius: 2px;
+}
+.title {
+  font-size: #333333;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.item-content {
+  margin: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.item-child {
+  width: 33%;
+  margin-top: 10px;
+  display: flex;
+}
+.child-key {
+  width: 4em;
+  font-size: 14px;
+  color: #333333;
+  text-align: justify;
+  text-align-last: justify;
+}
+.child-value {
+  font-size: 14px;
+  color: #666666;
+}
+.child-key-other {
+  width: 8em;
+  font-size: 14px;
+  color: #333333;
+  text-align: justify;
+  text-align-last: justify;
+}
+.line {
+  width: 100%;
+  margin: 10px 0 20px 0;
+  height: 1px;
+  background: #e9e9e9;
+}
+.img {
+  width: 130px;
+  height: 130px;
+  margin-right: 20px;
+}
+</style>
