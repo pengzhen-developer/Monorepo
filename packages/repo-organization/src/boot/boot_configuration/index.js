@@ -3,6 +3,8 @@ import Peace from '@src/library'
 import configuration_nav_console from './configuration_nav_console'
 import configuration_nav_organization from './configuration_nav_organization'
 import configuration_nav_prescription from './configuration_nav_prescription'
+import configuration_nav_rationaldruguse from './configuration_nav_rationaldruguse'
+import configuration_nav_drugsupplie from './configuration_nav_drugsupplie'
 
 /** 控制台 - 加载子系统 */
 /** 思路： */
@@ -38,6 +40,12 @@ const dynimicRoutes = () => {
 
     case 'organization':
       return configuration_nav_organization
+
+    case 'rationaldruguse':
+      return configuration_nav_rationaldruguse
+
+    case 'drugsupplie':
+      return configuration_nav_drugsupplie
 
     default:
       return configuration_nav_console

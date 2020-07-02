@@ -22,7 +22,8 @@
                flat
                round
                dense
-               color="grey-7">
+               color="grey-7"
+               v-show="false">
           <q-badge color="primary"
                    floating>3</q-badge>
           <i class="text-h6 el-icon-message"></i>
