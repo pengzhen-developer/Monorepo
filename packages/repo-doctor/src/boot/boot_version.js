@@ -61,7 +61,7 @@ export default {
 
       return true
     } else {
-      Library.util.warning('您当前访问的系统版本过低，请清除浏览器缓存后重新刷新本页面')
+      console.error('当前访问的系统版本过低，请清除浏览器缓存后重新刷新本页面')
 
       return false
     }
