@@ -173,35 +173,21 @@ export default [
     enable: false,
     closable: true
   },
-
   {
     id: '2-5',
-    parentId: '2',
-    menuRouteName: 'baidu',
-    menuRoute: 'baidu',
-    menuName: '测试',
-    menuPath: 'https://www.baidu.com/',
-    menuIcon: 'hourglass_empty',
-    iconType: 'Material Icons',
-    enable: true,
-    closable: true
-  },
-
-  {
-    id: '2-6',
     parentId: '2',
     menuRouteName: null,
     menuRoute: null,
     menuName: '日志管理',
     menuPath: null,
-    menuIcon: 'settings',
+    menuIcon: 'archive',
     iconType: 'Material Icons',
     enable: null,
     closable: null
   },
   {
-    id: '2-6-1',
-    parentId: '2-6',
+    id: '2-5-1',
+    parentId: '2-5',
     menuRouteName: 'platform/logger/recordList',
     menuRoute: 'platform/logger/recordList',
     menuName: '日志记录',
