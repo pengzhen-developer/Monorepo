@@ -28,6 +28,8 @@
         <el-form-item class="q-mb-md"
                       prop="password">
           <el-input class="q-mb-md"
+                    type="password"
+                    show-password
                     v-model="model.password"
                     placeholder="请输入密码"
                     maxlength="36"

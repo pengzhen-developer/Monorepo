@@ -45,7 +45,7 @@
           </div>
         </transition>
         <!-- 消息通知 -->
-        <q-btn class="q-mr-sm"
+        <!-- <q-btn class="q-mr-sm"
                flat
                round
                dense
@@ -64,7 +64,7 @@
                       v-close-popup>第 3 条消息</q-item>
             </q-list>
           </q-menu>
-        </q-btn>
+        </q-btn> -->
 
         <!-- 菜单控制 -->
         <q-btn class="q-mr-sm"

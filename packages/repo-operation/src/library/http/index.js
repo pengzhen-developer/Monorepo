@@ -49,6 +49,11 @@ Axios.interceptors.response.use(
     else if (response?.data?.code === 403) {
       Util.warning(response.data.msg)
 
+      LibraryUtil.user.removeUserInfo()
+      setTimeout(() => {
+        LibraryUtil.user.replaceToLogin()
+      }, 1000)
+      
       return Promise.reject(response)
     }
 

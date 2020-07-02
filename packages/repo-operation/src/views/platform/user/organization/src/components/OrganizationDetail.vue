@@ -27,6 +27,28 @@
               <el-form-item label="资质证明">
                 <span>
                   <el-image
+                    v-if="data.medicalStructureLicense"
+                    class="info-img"
+                    fit="contain"
+                    :src="data.medicalStructureLicense"
+                    :preview-src-list="imgList"
+                  >
+                    <div slot="error" class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image
+                    v-if="data.internetHospitalLicense"
+                    class="info-img"
+                    fit="contain"
+                    :src="data.internetHospitalLicense"
+                    :preview-src-list="imgList"
+                  >
+                    <div slot="error" class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image
                     v-if="data.businessLicense"
                     class="info-img"
                     fit="contain"
@@ -38,10 +60,10 @@
                     </div>
                   </el-image>
                   <el-image
-                    v-if="data.businessCertificate"
+                    v-if="data.managementLicense"
                     class="info-img"
                     fit="contain"
-                    :src="data.businessCertificate"
+                    :src="data.managementLicense"
                     :preview-src-list="imgList"
                   >
                     <div slot="error" class="image-slot">
@@ -95,7 +117,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     value: {
@@ -118,12 +139,20 @@ export default {
   computed: {
     imgList() {
       let imgList = [];
+      if (this.data.medicalStructureLicense) {
+        imgList.push(this.data.medicalStructureLicense);
+      }
+
+      if (this.data.internetHospitalLicense) {
+        imgList.push(this.data.internetHospitalLicense);
+      }
+
       if (this.data.businessLicense) {
         imgList.push(this.data.businessLicense);
       }
 
-      if (this.data.businessCertificate) {
-        imgList.push(this.data.businessCertificate);
+      if (this.data.managementLicense) {
+        imgList.push(this.data.managementLicense);
       }
 
       return imgList;
