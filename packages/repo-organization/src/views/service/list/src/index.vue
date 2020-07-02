@@ -1,55 +1,74 @@
 <template>
-  <div class="service-list-content">
+  <div class="q-pa-lg">
+    <el-form inline=""
+             label-width="100px"
+             label-position="right">
+      <el-form-item label="提交时间：">
+        <el-date-picker type="daterange"
+                        v-model="model.pickDate"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="状态：">
 
-    <div class="block">
-      <span class="demonstration">提交时间：</span>
-      <el-date-picker type="daterange"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期">
-      </el-date-picker>
+        <el-select v-model="model.checkStatus"
+                   placeholder="请选择">
+          <el-option v-for="item in options"
+                     v-bind:key="item.value"
+                     v-bind:label="item.label"
+                     v-bind:value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label=" ">
+        <el-button type="primary"
+                   v-on:click="get">查询</el-button>
+      </el-form-item>
+    </el-form>
 
-      <span class="status">状态：</span>
-      <el-select v-model="value"
-                 placeholder="请选择">
-        <el-option v-for="item in options"
-                   :key="item.value"
-                   :label="item.label"
-                   :value="item.value">
-        </el-option>
-      </el-select>
+    <div>
 
-      <el-button type="primary"
-                 class="btn-fund">查询</el-button>
-
-    </div>
-
-    <div class="table">
-      <el-table :data="tableData"
-                style="width: 100%"
-                max-height="600">
+      <PeaceTable ref="table"
+                  style="width: 100%"
+                  pagination
+                  max-height="600">
         <el-table-column type="index"
                          fixed
                          label="序号"
                          width="150">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="serviceName"
                          label="服务名称">
         </el-table-column>
-        <el-table-column prop="updataTime"
+        <el-table-column prop="applyTime"
                          label="提交时间">
         </el-table-column>
-        <el-table-column prop="status"
-                         label="状态">
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <div class="status-item">
+              <div v-bind:class="getClassForCode(scope.row.checkStatus)"></div>
+              <span>
+                {{ getStatusForCode(scope.row.checkStatus) }}
+              </span>
+            </div>
+
+          </template>
         </el-table-column>
-        <el-table-column prop="time"
+        <el-table-column prop="checkTime"
                          label="审核时间">
         </el-table-column>
-        <el-table-column prop="remarks"
-                         width="300"
+        <el-table-column width="300"
                          label="备注">
+          <template slot-scope="scope">
+            <span>
+              {{ getReason(scope.row.failureReason) }}
+            </span>
+          </template>
         </el-table-column>
-      </el-table>
+      </PeaceTable>
     </div>
 
   </div>
@@ -57,108 +76,99 @@
 </template>
 
 <script>
+import Service from './service'
+import Peace from '@src/library'
+
 export default {
-  methods: {
-    deleteRow(index, rows) {
-      rows.splice(index, 1)
-    }
-  },
   data() {
     return {
+      model: {
+        pickDate: '',
+        startTime: '',
+        endTime: '',
+        checkStatus: ''
+      },
+
       options: [
         {
-          value: '选项1',
-          label: '黄金糕'
+          value: '1',
+          label: '待审核',
+          class: 'statusColor1'
         },
         {
-          value: '选项2',
-          label: '双皮奶'
+          value: '2',
+          label: '未通过',
+          class: 'statusColor2'
         },
         {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
-      value: '',
-      tableData: [
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaadadadadadadadadadaadadadadadadaada'
-        },
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaada'
-        },
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaada'
-        },
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaada'
-        },
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaada'
-        },
-        {
-          name: '互联网医院',
-          updataTime: '2020-04-07 18:07:37',
-          status: '未通过',
-          time: '2020-04-07 18:07:37',
-          remarks: 'dadadadadadadadaadadadadadadaada'
+          value: '3',
+          label: '已通过',
+          class: 'statusColor3'
         }
       ]
+    }
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.get()
+    })
+  },
+
+  methods: {
+    get() {
+      const fetch = Service.getMyServiceList
+      const params = this.model
+
+      const [start, end] = this.model.pickDate
+      params.startTime = start
+      params.endTime = end
+
+      this.$refs.table.loadData({ fetch, params })
+    },
+
+    getStatusForCode(code) {
+      return this.options.find((item) => item.value == code).label
+    },
+    getClassForCode(code) {
+      return this.options.find((item) => item.value == code).class
+    },
+    getReason(reason) {
+      if (Peace.validate.isEmpty(reason)) {
+        return '—'
+      }
+      return reason
     }
   }
 }
 </script>
 
 <style scoped>
-.service-list-content {
-  padding: 20px 40px;
-}
-.table {
-  margin-top: 30px;
-}
-.block {
+.status-item {
   display: flex;
-  flex-direction: row;
+  align-items: center;
 }
-.demonstration {
-  font-size: 14px;
-  color: #333333;
+
+.statusColor1 {
+  width: 6px;
+  height: 6px;
+  border-radius: 8px;
+  margin-right: 8px;
+  background: #faad14;
 }
-.status {
-  font-size: 14px;
-  color: #333333;
-  margin-left: 20px;
+.statusColor2 {
+  width: 6px;
+  width: 6px;
+  margin-right: 8px;
+  height: 6px;
+  border-radius: 8px;
+  background: #dddddd;
 }
-.btn-fund {
-  margin-left: 20px;
-  padding: 6px 16px;
+.statusColor3 {
+  width: 6px;
+  margin-right: 8px;
+  height: 6px;
+  border-radius: 8px;
+  background: var(--q-color-primary);
 }
 </style>

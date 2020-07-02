@@ -1,5 +1,5 @@
 <template>
-  <div class="content-bgd">
+  <div class="q-pa-lg">
     <div class="content-item">
       <div class="item-title">
         <div class="title-left"></div>
@@ -67,15 +67,15 @@
           <p>：</p>
           <p class="child-value">{{ hosInfo.level }}</p>
         </div>
-        <div class="item-child">
+        <div class="item-child-line">
           <p class="child-key">资质证明</p>
           <p>：</p>
-          <img :src="hosInfo.license"
-               class="img"
-               alt="">
-          <img :src="hosInfo.certificate"
-               class="img"
-               alt="">
+          <el-image class="img"
+                    :src="hosInfo.license"
+                    fit='fill'></el-image>
+          <el-image class="img"
+                    :src="hosInfo.structureLicense"
+                    fit='fill'></el-image>
         </div>
       </div>
     </div>
@@ -113,14 +113,7 @@ p {
   margin: 0;
   padding: 0;
 }
-.content-bgd {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: white;
-  padding: 20px;
-}
+
 .content-item {
   display: flex;
   flex-direction: column;
@@ -138,7 +131,7 @@ p {
   border-radius: 2px;
 }
 .title {
-  font-size: #333333;
+  color: var(--q-color-grey-333);
   margin-left: 10px;
   font-weight: 600;
   font-size: 16px;
@@ -154,21 +147,25 @@ p {
   margin-top: 10px;
   display: flex;
 }
+.item-child-line {
+  margin-top: 10px;
+  display: flex;
+}
 .child-key {
   width: 4em;
   font-size: 14px;
-  color: #333333;
+  color: var(--q-color-grey-333);
   text-align: justify;
   text-align-last: justify;
 }
 .child-value {
   font-size: 14px;
-  color: #666666;
+  color: var(--q-color-grey-666);
 }
 .child-key-other {
   width: 8em;
   font-size: 14px;
-  color: #333333;
+  color: var(--q-color-grey-333);
   text-align: justify;
   text-align-last: justify;
 }

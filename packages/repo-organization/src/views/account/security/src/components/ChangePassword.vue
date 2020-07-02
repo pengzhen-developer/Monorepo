@@ -3,19 +3,22 @@
     <el-form ref="form"
              class="dialog-content"
              :model="form"
+             :rules="rules"
              label-width="100px">
 
-      <el-form-item label="原始密码：">
+      <el-form-item label="原始密码："
+                    prop="oldPassword">
         <el-input v-model="form.oldPassword"
-                  v-bind:minlength="4"
+                  v-bind:minlength="6"
                   v-bind:maxlength="20"
                   placeholder="请输入原密码"></el-input>
       </el-form-item>
 
-      <el-form-item label="新密码：">
+      <el-form-item label="新密码："
+                    prop="newPassword">
         <el-input v-model="form.newPassword"
                   show-password
-                  v-bind:minlength="4"
+                  v-bind:minlength="6"
                   v-bind:maxlength="20"
                   placeholder="6-20位字母、数字"></el-input>
       </el-form-item>
@@ -25,25 +28,52 @@
                    v-on:click="onCancel">取消</el-button>
         <el-button type="primary"
                    class="btn"
-                   v-on:click="onSubmit">立即创建</el-button>
+                   v-on:click="onSubmit('form')">提交</el-button>
 
       </el-form-item>
     </el-form>
   </div>
 </template>
+
 <script>
+import Service from '.././service'
+import Peace from '@src/library'
+
 export default {
   data() {
     return {
       form: {
         oldPassword: '',
         newPassword: ''
+      },
+      rules: {
+        oldPassword: [
+          { required: true, message: '请输入原密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
-    onSubmit() {
-      this.$emit('onSucess')
+    onSubmit(form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          const params = {
+            oldPwd: this.form.oldPassword,
+            newPwd: this.form.newPassword
+          }
+          Service.changePwd(params).then((res) => {
+            Peace.util.success(res.msg)
+            this.$emit('onSucess')
+          })
+        } else {
+          return false
+        }
+      })
     },
 
     onCancel() {

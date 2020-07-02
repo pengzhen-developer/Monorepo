@@ -28,7 +28,8 @@
     </div>
 
     <div v-if="changePhoneVisible">
-      <ChangePhone />
+      <ChangePhone v-on:onCancel="changePhoneVisible = false"
+                   v-on:onSuccess="changePhoneVisible = false" />
     </div>
 
   </div>
@@ -103,12 +104,12 @@ p {
 }
 
 .title {
-  color: #333333;
+  color: var(--q-color-grey-333);
   font-size: 16px;
   font-weight: 600;
 }
 .content {
-  color: #666666;
+  color: var(--q-color-grey-666);
   max-width: 360px;
   font-size: 14px;
 }
