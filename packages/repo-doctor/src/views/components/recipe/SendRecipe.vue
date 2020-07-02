@@ -11,13 +11,13 @@
       </div>
     </el-alert>
 
-    <div class="q-px-md q-mt-md">
+    <div class="q-px-md q-mt-sm">
       <div class="q-mb-md text-center">
         <p class="text-subtitle1">{{ docInfo.netHospital_name }}</p>
         <p class="text-h5">普通处方笺</p>
       </div>
 
-      <div class="row q-mb-md">
+      <div class="row q-mb-sm">
         <div class="col-3">
           <span class="text-grey-7">姓名</span>
           <span class="q-mx-sm">：</span>
@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-md">
+      <div class="row q-mb-sm">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">体重</span>
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-md">
+      <div class="row q-mb-sm">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">初步诊断</span>
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-md">
+      <div class="row q-mb-sm">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">过敏史</span>
@@ -79,20 +79,20 @@
         </div>
       </div>
 
-      <el-divider></el-divider>
+      <el-divider style="margin: 8px 0;"></el-divider>
 
-      <div class="q-mb-md">
+      <div class="q-mb-sm">
         <span class="text-subtitle1 text-weight-bold">处方药品</span>
         <span class="text-body2 text-grey-5">（最多可添加 5 种药品）</span>
       </div>
 
-      <div class="q-mb-md">
+      <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
                     v-bind:data="drugList"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
-      <div class="q-mb-md text-center">
+      <div class="q-mb-sm text-center">
         <el-button v-on:click="close">取消</el-button>
         <el-button v-on:click="send"
                    v-bind:disabled="sending"
@@ -112,6 +112,7 @@
     </peace-dialog>
   </div>
 </template>
+
 
 <script>
 import Peace from '@src/library'
@@ -322,5 +323,9 @@ export default {
 .text-justify {
   text-align: justify;
   text-align-last: justify;
+}
+
+.el-divider--horizontal {
+  margin: 12px 0;
 }
 </style>

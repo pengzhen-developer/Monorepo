@@ -6,7 +6,7 @@
   <div class="relative-position">
 
     <div class="absolute"
-         style="right: 0; top: -40px;">
+         style="right: 0; top: -30px;">
       <el-button type="text"
                  v-on:click="showCommonlyPrescription">
         <span>常用处方</span>
