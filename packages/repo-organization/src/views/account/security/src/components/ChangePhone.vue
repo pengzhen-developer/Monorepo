@@ -37,7 +37,7 @@
               <template v-if="showCountdown">
                 <div class="count-down">
                   <PeaceCountdown v-bind:time="countdownTime"
-                                  v-on:countdownend="onCountdownEnd">
+                                  v-on:end="onCountdownEnd">
                     <template slot-scope="props">
                       {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
                     </template>
@@ -94,7 +94,7 @@
               <template v-if="showCountdown">
                 <div class="count-down">
                   <PeaceCountdown v-bind:time="countdownTime"
-                                  v-on:countdownend="onCountdownEnd">
+                                  v-on:end="onCountdownEnd">
                     <template slot-scope="props">
                       {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
                     </template>
@@ -254,6 +254,7 @@ export default {
           Peace.util.success(res.msg)
         })
         .finally(() => {
+          debugger
           this.countdownTime = this.countdownInterval
         })
     },
@@ -286,6 +287,7 @@ export default {
       })
     },
     onCountdownEnd() {
+      debugger
       this.countdownTime = 0
     },
     hidTips() {
