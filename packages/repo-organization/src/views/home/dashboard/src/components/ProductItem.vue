@@ -32,7 +32,6 @@ export default {
   border-radius: 4px;
   overflow: hidden;
   min-height: 138px;
-
   &:hover {
     cursor: pointer;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
@@ -48,7 +47,7 @@ export default {
 
     .el-image {
       width: 60px;
-      height: 60px;
+      height: 40px;
       border-radius: 5px;
     }
   }

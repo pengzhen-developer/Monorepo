@@ -2,28 +2,28 @@ export default [
   {
     id: '1',
     parentId: null,
-    menuRoute: null,
-    menuRouteName: null,
+    menuRoute: 'home/dashboard',
+    menuRouteName: 'home/dashboard',
     menuName: '首页',
-    menuPath: null,
-    menuIcon: 'dashboard',
-    iconType: 'Material Icons',
+    menuPath: 'views/home/dashboard',
+    menuIcon: 'el-icon-s-home',
+    iconType: 'Element-UI Icons',
     enable: null,
-    closable: null
+    closable: null,
   },
 
-  {
-    id: '1-1',
-    parentId: '1',
-    menuRouteName: 'home/dashboard',
-    menuRoute: 'home/dashboard',
-    menuName: '控制台',
-    menuPath: 'views/home/dashboard',
-    menuIcon: null,
-    iconType: null,
-    enable: true,
-    closable: true
-  },
+  // {
+  //   id: '1-1',
+  //   parentId: '1',
+  //   menuRouteName: 'home/dashboard',
+  //   menuRoute: 'home/dashboard',
+  //   menuName: '控制台',
+  //   menuPath: 'views/home/dashboard',
+  //   menuIcon: null,
+  //   iconType: null,
+  //   enable: true,
+  //   closable: true
+  // },
 
   {
     id: '2',
@@ -32,10 +32,10 @@ export default [
     menuRoute: null,
     menuName: '账号中心',
     menuPath: null,
-    menuIcon: 'el-icon-location',
+    menuIcon: 'el-icon-s-custom',
     iconType: 'Element-UI Icons',
     enable: null,
-    closable: null
+    closable: null,
   },
   {
     id: '2-1',
@@ -47,7 +47,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true
+    closable: true,
   },
   {
     id: '2-2',
@@ -58,8 +58,9 @@ export default [
     menuPath: 'views/account/security',
     menuIcon: null,
     iconType: null,
+
     enable: true,
-    closable: true
+    closable: true,
   },
 
   {
@@ -69,10 +70,10 @@ export default [
     menuRoute: null,
     menuName: '我的服务',
     menuPath: null,
-    menuIcon: 'el-icon-location',
+    menuIcon: 'el-icon-menu',
     iconType: 'Element-UI Icons',
     enable: null,
-    closable: null
+    closable: null,
   },
   {
     id: '3-1',
@@ -83,8 +84,9 @@ export default [
     menuPath: 'views/service/list',
     menuIcon: null,
     iconType: null,
+
     enable: true,
-    closable: true
+    closable: true,
   },
   {
     id: '3-2',
@@ -95,7 +97,8 @@ export default [
     menuPath: 'views/service/certificate',
     menuIcon: null,
     iconType: null,
+
     enable: true,
-    closable: true
-  }
+    closable: true,
+  },
 ]

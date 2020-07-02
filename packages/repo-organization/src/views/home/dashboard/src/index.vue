@@ -1,7 +1,7 @@
 <template>
   <div class="bg-grey-2">
     <div class="q-mb-md">
-      <h4>平台基础服务</h4>
+      <h4>平台SaaS服务</h4>
       <div class="row q-col-gutter-md">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3"
              v-for="service in serviceList"
@@ -11,6 +11,7 @@
                        v-bind:isPassText="service.isPassText"
                        v-bind:checkStatus="service.checkStatus"
                        v-bind:checkStatusText="service.checkStatusText"
+                       v-bind:isOpenStatus="service.isOpenStatus"
                        v-bind:features="service.item"
                        v-on:openService="onOpenService(service)">
           </ServiceItem>
@@ -64,7 +65,7 @@ export default {
 
   methods: {
     getServiceBaseInfo() {
-      Service.getBaseInfo().then((res) => {
+      Service.getBaseInfo().then(res => {
         this.serviceList = res.data.serviceList
         this.productList = res.data.useService
       })
@@ -97,7 +98,7 @@ export default {
 
     doApply(service) {
       const params = { serviceId: service.id }
-      Service.doApply(params).then((res) => {
+      Service.doApply(params).then(res => {
         Peace.util.success(res.msg)
 
         this.getServiceBaseInfo()
@@ -106,8 +107,15 @@ export default {
 
     redirectSerivceSite(product) {
       const cdKey = Util.user.getUserCDKey()
+      const configMap = [
+        { serviceName: '互联网医院管理端', config: 'organization' },
+        { serviceName: '处方管理医院端', config: 'prescription' },
+        { serviceName: '合理用药管理', config: 'rationaldruguse' },
+        { serviceName: '药品供应管理端', config: 'drugsupplie' }
+      ]
+      const config = configMap.find(item => item.serviceName == product.serviceName).config
 
-      window.open(`${window.location.origin}?cdkey=${cdKey}&configuration=rationaldruguse&title=${product.serviceName}`)
+      window.open(`${window.location.origin}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`)
     }
   }
 }

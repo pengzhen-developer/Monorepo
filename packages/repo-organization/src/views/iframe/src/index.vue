@@ -22,7 +22,7 @@ export default {
     }
   },
   created() {
-    this.src = this.$route.meta.menuPath + '?cdkey=' + Util.user.getUserCDKey()
+    this.src = this.$route.meta.menuPath + '?sso=true&cdkey=' + Util.user.getUserCDKey()
   }
 }
 </script>

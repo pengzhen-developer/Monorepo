@@ -8,12 +8,14 @@
         <el-tag size="mini"
                 v-bind:type="isPassType">{{ isPassTextVisible }}</el-tag>
       </div>
+      <!-- v-bind:class="checkStatusType" -->
       <div class="header-control"
            v-if="showCheckStatusText"
-           v-bind:class="checkStatusType"
            v-on:click="openService">
-        <div class="dash"></div>
-        <div class="text">{{ checkStatusTextVisible }}</div>
+        <!-- <div class="dash"></div> -->
+        <div class="text"
+             v-if="checkStatusTextVisible">{{ checkStatusTextVisible }}</div>
+
       </div>
     </div>
     <div class="content">
@@ -52,6 +54,10 @@ export default {
       type: String,
       required: true
     },
+    isOpenStatus: {
+      type: String,
+      required: true
+    },
     features: {
       type: Array,
       required: true,
@@ -63,10 +69,12 @@ export default {
 
   computed: {
     checkStatusTextVisible() {
+      if (this.isOpenStatus === '待开放') {
+        return '待开放'
+      }
       if (this.checkStatusText === '未申请') {
         return '申请开通'
       }
-
       return this.checkStatusText
     },
 
@@ -82,6 +90,9 @@ export default {
     },
 
     showCheckStatusText() {
+      if (this.isOpenStatus === '待开放') {
+        return true
+      }
       if (this.checkStatusText === '已通过') {
         return false
       }
@@ -112,7 +123,8 @@ export default {
       // 定义每行最大 item
       const lineMaxCount = 2
       // 求剩余空白行
-      const remainingCount = this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
+      const remainingCount =
+        this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
       // 求剩余空白行数组，并添加特殊标识
       const remainingArray = new Array(remainingCount).fill('dispaly-none')
       // 合并空白行数组
@@ -124,6 +136,9 @@ export default {
 
   methods: {
     openService() {
+      if (this.isOpenStatus === '待开放') {
+        return true
+      }
       this.$emit('openService')
     }
   }
@@ -145,7 +160,7 @@ export default {
 
   .header {
     display: flex;
-
+    align-items: center;
     margin: 0 0 16px 0;
 
     .header-title {
@@ -169,7 +184,17 @@ export default {
     .header-control {
       display: flex;
       align-items: center;
-
+      .text {
+        // color: var(--q-color-warning);
+        color: #fff;
+        background-color: var(--q-color-primary);
+        width: 92px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 4px;
+        margin-left: 20px;
+      }
       &.warning {
         .dash {
           background: var(--q-color-warning);

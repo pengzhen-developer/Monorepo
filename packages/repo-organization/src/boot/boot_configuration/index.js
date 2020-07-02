@@ -9,9 +9,9 @@ import configuration_nav_drugsupplie from './configuration_nav_drugsupplie'
 /** 控制台 - 加载子系统 */
 /** 思路： */
 /** 通过 url 参数加载子系统配置文件 */
-/** 通过 document.referrer 验证， document.referrer 为控制台则需要缓存 url 信息，便于刷新后重载 */
+/** 通过 url 是否传递了 configuration 决定缓存策略 */
 
-if (document.referrer.indexOf(window.location.origin) !== -1) {
+if (Peace.util.queryUrlParam('configuration')) {
   const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
 
   /** 子站，首次进入 */
@@ -26,7 +26,6 @@ if (document.referrer.indexOf(window.location.origin) !== -1) {
 /** 动态菜单 */
 const dynamicTitle = () => {
   const title = Peace.util.queryUrlParam('title', window.sessionStorage.getItem('ORIGINAL_HREF'))
-
   return title ?? '智药云控制台'
 }
 
@@ -58,7 +57,7 @@ export default {
    *
    */
   application: {
-    title: dynamicTitle()
+    title: dynamicTitle(),
   },
 
   /**
@@ -67,7 +66,7 @@ export default {
    * 可选： #00C6AE / #3099A6
    */
   theme: {
-    primary: '#3099A6'
+    primary: '#3099A6',
   },
 
   /**
@@ -93,7 +92,7 @@ export default {
      */
     layoutNavMenu: [
       /** 动态路由 */
-      ...dynimicRoutes()
+      ...dynimicRoutes(),
     ],
 
     /**
@@ -108,6 +107,6 @@ export default {
       //   menuRoute: 'health/pacs',
       //   menuPath: 'views/hybrid/health/pacs'
       // }
-    ]
-  }
+    ],
+  },
 }
