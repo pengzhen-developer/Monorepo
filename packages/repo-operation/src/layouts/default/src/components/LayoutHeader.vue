@@ -36,7 +36,7 @@
                   <i v-bind:class="{[menu.menuIcon]: true }"
                      class="q-mr-sm text-h6 text-weight-bolder"></i>
                 </template>
-                <label v-if="$q.screen.gt.sm"
+                <label v-if="$q.screen.gt.md"
                        class="text-subtitle2 cursor-pointer"
                        slot="title">{{ menu.menuName }}
                 </label>

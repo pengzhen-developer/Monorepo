@@ -1,6 +1,9 @@
 import configuration_nav_home from './configuration_nav_home'
 import configuration_nav_platform from './configuration_nav_platform'
 import configuration_nav_nethospital from './configuration_nav_nethospital'
+import configuration_nav_rationaldruguse from './configuration_nav_rationaldruguse'
+import configuration_nav_prescription from './configuration_nav_prescription'
+import configuration_nav_drugsupplie from './configuration_nav_drugsupplie'
 
 export default {
   /**
@@ -49,7 +52,16 @@ export default {
       ...configuration_nav_platform,
 
       /** 互医管理路由 */
-      ...configuration_nav_nethospital
+      ...configuration_nav_nethospital,
+
+      /** 合理用药管理路由 */
+      ...configuration_nav_rationaldruguse,
+
+      /** 处方共享管理路由 */
+      ...configuration_nav_prescription,
+
+      /** 药品供应管理路由 */
+      ...configuration_nav_drugsupplie
     ],
 
     /**
