@@ -14,7 +14,7 @@
         <el-form-item class="q-mb-md"
                       prop="username">
           <el-input class="q-mb-md"
-                    v-model="model.username"
+                    v-model.trim="model.username"
                     placeholder="请输入用户名"
                     maxlength="11"
                     minlength="11">
@@ -30,7 +30,7 @@
           <el-input class="q-mb-md"
                     type="password"
                     show-password
-                    v-model="model.password"
+                    v-model.trim="model.password"
                     placeholder="请输入密码"
                     maxlength="36"
                     minlength="6">

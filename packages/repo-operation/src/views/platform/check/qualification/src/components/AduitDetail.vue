@@ -382,10 +382,11 @@ export default {
         Service.doCheck(params)
           .then(res => {
             Peace.util.success(res.msg);
-          })
-          .finally(() => {
             this.visible = false;
             this.$emit("refresh");
+            this.isLoading = false;
+          })
+          .catch(() => {
             this.isLoading = false;
           });
       });

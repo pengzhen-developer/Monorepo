@@ -123,7 +123,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="资质证明">
-                <div class="upload-list" v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+                <div
+                  class="upload-list"
+                  v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''"
+                >
                   <div class="upload-item">
                     <el-upload
                       action
@@ -462,7 +465,14 @@ export default {
 
   computed: {
     showRegion() {
-      return (this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 && this.model.province && this.model.city && this.model.district) || this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 || this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构
+      return (
+        (this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 &&
+          this.model.province &&
+          this.model.city &&
+          this.model.district) ||
+        this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 ||
+        this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构
+      );
     }
   },
 
@@ -483,85 +493,84 @@ export default {
       });
     },
 
-    'model.role'(value) {
-      switch(value) {
+    "model.role"(value) {
+      switch (value) {
         case 1:
-          this.model.province = ""
-          this.model.city = ""
-          this.model.district = ""
-          this.model.address = ""
-          this.model.latitude = ""
-          this.model.longitude = ""
+          this.model.province = "";
+          this.model.city = "";
+          this.model.district = "";
+          this.model.address = "";
+          this.model.latitude = "";
+          this.model.longitude = "";
 
-          this.model.businessLicense = ""
-          this.model.managementLicense = ""
-          break
+          this.model.businessLicense = "";
+          this.model.managementLicense = "";
+          break;
         case 2:
-          this.model.hospitalLabel = ""
-          this.model.hospitalTypeLabel = ""
-          this.model.hospitalLevel = ""
+          this.model.hospitalLabel = "";
+          this.model.hospitalTypeLabel = "";
+          this.model.hospitalLevel = "";
 
-          this.model.province = ""
-          this.model.city = ""
-          this.model.district = ""
-          this.model.address = ""
-          this.model.latitude = ""
-          this.model.longitude = ""
+          this.model.province = "";
+          this.model.city = "";
+          this.model.district = "";
+          this.model.address = "";
+          this.model.latitude = "";
+          this.model.longitude = "";
 
-          this.lock = false
+          this.lock = false;
 
           this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
           this.model.internetHospitalLicense = ""; // 互联网医院牌照
           this.model.businessLicense = ""; //  营业执照
           this.model.managementLicense = ""; // 经营许可证
-          break
+          break;
         case 3:
-          this.model.hospitalLabel = ""
-          this.model.hospitalTypeLabel = ""
-          this.model.hospitalLevel = ""
-          
-          this.model.province = ""
-          this.model.city = ""
-          this.model.district = ""
-          this.model.address = ""
-          this.model.latitude = ""
-          this.model.longitude = ""
+          this.model.hospitalLabel = "";
+          this.model.hospitalTypeLabel = "";
+          this.model.hospitalLevel = "";
 
-          this.lock = false
+          this.model.province = "";
+          this.model.city = "";
+          this.model.district = "";
+          this.model.address = "";
+          this.model.latitude = "";
+          this.model.longitude = "";
+
+          this.lock = false;
 
           this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
           this.model.internetHospitalLicense = ""; // 互联网医院牌照
           this.model.businessLicense = ""; //  营业执照
           this.model.managementLicense = ""; // 经营许可证
-          break
+          break;
       }
     }
   },
 
   methods: {
-
     handleProvinceChange(val) {
-      this.model.province = val
+      this.model.province = val;
     },
     handleCityChange(val) {
-      this.model.city =val
+      this.model.city = val;
     },
     handleAreaChange(val) {
-      this.model.district = val
+      this.model.district = val;
     },
 
     // 打开地图选点
     openMapDialogVisible() {
-      this.lock = true
-      const { province, city, area } = this.$refs.regionSelector.getSelected()
+      this.lock = true;
+      const { province, city, area } = this.$refs.regionSelector.getSelected();
 
       this.defaultDetail = {
         province,
         city,
         area,
         address: this.model.address,
-        latitude: '',
-        longitude: '',
+        latitude: "",
+        longitude: ""
       };
 
       this.mapDialogVisible = true;
@@ -569,22 +578,21 @@ export default {
 
     // 获取格式化地址（子组件触发）
     getAddressData(param) {
-
       this.defaultDetail = {
         province: param.province_id,
         city: param.city_id,
         area: param.area_id,
         address: param.address,
         latitude: param.latitude,
-        longitude: param.longitude,
-      }
+        longitude: param.longitude
+      };
 
-      this.model.province = param.province_id
-      this.model.city = param.city_id
-      this.model.district = param.area_id
-      this.model.address = param.address
-      this.model.latitude = param.latitude
-      this.model.longitude = param.longitude
+      this.model.province = param.province_id;
+      this.model.city = param.city_id;
+      this.model.district = param.area_id;
+      this.model.address = param.address;
+      this.model.latitude = param.latitude;
+      this.model.longitude = param.longitude;
 
       this.mapDialogVisible = false;
     },
@@ -649,10 +657,11 @@ export default {
         Service.addOrganization(params)
           .then(res => {
             Peace.util.success(res.msg);
-          })
-          .finally(() => {
             this.visible = false;
             this.$emit("refresh");
+            this.isLoading = false;
+          })
+          .catch(() => {
             this.isLoading = false;
           });
       });

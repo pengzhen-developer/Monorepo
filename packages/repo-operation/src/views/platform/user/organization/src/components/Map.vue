@@ -2,7 +2,7 @@
   <div>
     <div class="control">
       <el-form inline label-width="100px">
-        <el-form-item label="所属辖区" required>
+        <el-form-item label="所属辖区" class="is-required">
           <region-selector
             :defaultArea="detail.area"
             :defaultCity="detail.city"
@@ -16,7 +16,7 @@
           ></region-selector>
           <el-button :disabled="!isSelected" @click="saved" type="primary">选定地址</el-button>
         </el-form-item>
-        <el-form-item label="详细地址">
+        <el-form-item label="详细地址" class="is-required">
           <el-autocomplete
             :fetch-suggestions="keywordSearch"
             :trigger-on-focus="false"
@@ -73,7 +73,7 @@ const filterRegion = str => {
 };
 
 export default {
-  name: 'TMap',
+  name: "TMap",
   components: { RegionSelector },
   data() {
     return {
