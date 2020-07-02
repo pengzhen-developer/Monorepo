@@ -18,7 +18,8 @@
         <el-input v-model="model.hospitalName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="账号状态：">
-        <el-select v-model="model.accountStatus" placeholder="全部" clearable>
+        <el-select v-model="model.isOpen" placeholder clearable>
+          <el-option label="全部" value></el-option>
           <el-option
             v-for="(value, label) in source.ENUM_IS_OPEN"
             v-bind:key="value"
@@ -32,39 +33,44 @@
       </el-form-item>
     </el-form>
 
-    <el-button style="margin-bottom: 30px;" type="primary" icon="el-icon-plus" v-on:click="get">新增</el-button>
+    <el-button
+      style="margin-bottom: 30px;"
+      type="primary"
+      icon="el-icon-plus"
+      v-on:click="addOrganization"
+    >新增</el-button>
 
     <PeaceTable ref="table" size="mini" pagination>
       <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
-      <el-table-column min-width="200px" label="机构名称" prop="hospitalName"></el-table-column>
-      <el-table-column min-width="200px" label="机构类型" prop="hospitalName"></el-table-column>
+      <el-table-column min-width="180px" label="机构名称" align="center" prop="hospitalName"></el-table-column>
+      <el-table-column min-width="100px" label="机构类型" prop="role"></el-table-column>
       <el-table-column min-width="100px" label="联系人" prop="linkman"></el-table-column>
       <el-table-column min-width="120px" label="手机号码" prop="tel"></el-table-column>
-      <el-table-column min-width="180px" label="入驻方式" prop="email"></el-table-column>
-      <el-table-column min-width="120px" label="账号状态" prop="isOpen">
-        <template slot-scope="scope">{{ getIsOpenText(scope.row) }}</template>
+      <el-table-column min-width="100px" label="入驻方式" align="center" prop="source"></el-table-column>
+      <el-table-column min-width="100px" label="账号状态" align="center" prop="isOpen">
+        <template slot-scope="scope">{{ scope.row.isOpen | getEnumLabel(source.ENUM_IS_OPEN) }}</template>
       </el-table-column>
-      <el-table-column min-width="160px" label="认证时间" prop="createdTime"></el-table-column>
-      <el-table-column min-width="80px" align="center" fixed="right" label="操作">
+      <el-table-column width="100px" label="认证时间" align="center" prop="checkTime"></el-table-column>
+      <el-table-column min-width="180px" align="center" fixed="right" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" v-if="canShowAduit(scope.row)" v-on:click="aduit(scope.row)">审核</el-button>
-          <el-button type="text" v-if="canShowDetail(scope.row)" v-on:click="detail(scope.row)">详情</el-button>
-          <span v-if="!canShowAduit(scope.row) && !canShowDetail(scope.row)">——</span>
+          <el-button type="text" v-on:click="toDetail(scope.row)">基本信息</el-button>
+          <el-button type="text" v-on:click="toService(scope.row)">已选服务</el-button>
         </template>
       </el-table-column>
     </PeaceTable>
 
-    <AduitDetail
-      v-model="aduitDialog.visible"
-      v-bind:title="aduitDialog.title"
-      v-bind:data="aduitDialog.data"
-      v-on:refresh="get"
-    ></AduitDetail>
+    <OrganizationDetail v-model="detailDialog.visible" v-bind:data="detailDialog.data"></OrganizationDetail>
+
+    <ServiceList v-model="serviceDialog.visible" v-bind:data="serviceDialog.data"></ServiceList>
+
+    <AddOrganization v-model="addDialog.visible" v-on:refresh="get"></AddOrganization>
   </div>
 </template>
 
 <script>
-import AduitDetail from "./components/AduitDetail";
+import OrganizationDetail from "./components/OrganizationDetail";
+import ServiceList from "./components/ServiceList";
+import AddOrganization from "./components/AddOrganization";
 
 import Peace from "@src/library";
 import Service from "./service";
@@ -72,7 +78,9 @@ import CONSTANT from "./constant";
 
 export default {
   components: {
-    AduitDetail
+    OrganizationDetail,
+    ServiceList,
+    AddOrganization
   },
 
   filters: {
@@ -87,13 +95,21 @@ export default {
         linkman: "",
         tel: "",
         hospitalName: "",
-        accountStatus: ""
+        isOpen: ""
       },
 
-      aduitDialog: {
+      detailDialog: {
         visible: false,
-        title: "",
         data: {}
+      },
+
+      serviceDialog: {
+        visible: false,
+        data: {}
+      },
+
+      addDialog: {
+        visible: false
       },
 
       source: {
@@ -119,103 +135,33 @@ export default {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
             ? "——"
             : row.hospitalName;
-          row.socialCreditCode = Peace.validate.isEmpty(row.socialCreditCode)
+          row.checkTime = Peace.validate.isEmpty(row.checkTime)
             ? "——"
-            : row.socialCreditCode;
-          row.applyTime = Peace.validate.isEmpty(row.applyTime)
-            ? "——"
-            : row.applyTime;
+            : row.checkTime;
         });
         return res;
       });
     },
 
-    canShowAduit(row) {
-      return row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.待审核;
+    // 基本信息
+    toDetail(row) {
+      this.detailDialog.visible = true;
+      this.detailDialog.data = row;
     },
 
-    canShowDetail(row) {
-      return (
-        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 ||
-        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
-      );
+    // 已选服务
+    toService(row) {
+      this.serviceDialog.visible = true;
+      this.serviceDialog.data = row;
     },
 
-    getIsOpenText(row) {
-      if (row.isOpen === 1) {
-        return "已启用";
-      } else {
-        return "已禁用";
-      }
-    },
-
-    aduit(row) {
-      this.aduitDialog.title = "医院信息审核";
-      this.aduitDialog.visible = true;
-      this.aduitDialog.data = row;
-    },
-
-    detail(row) {
-      this.aduitDialog.title = "医院信息审核详情";
-      this.aduitDialog.visible = true;
-      this.aduitDialog.data = row;
-    },
-
-    changeOpenState(row) {
-      const message =
-        row.isOpen === 1 ? "确定启用该账号？" : "确定禁用该账号？";
-
-      this.$confirm(message, "提示")
-        .then(() => {
-          const params = {
-            accountId: row.id,
-            isOpen: row.isOpen
-          };
-
-          Service.updateAccountStatus(params).then(res => {
-            Peace.util.success(res.msg);
-
-            this.get();
-          });
-        })
-        .catch(() => {
-          row.isOpen = row.isOpen === 1 ? 2 : 1;
-        });
-    },
-
-    getColorType(row) {
-      const dict = {
-        1: "primary",
-        2: "info",
-        3: "success",
-        4: "danger"
-      };
-
-      return dict[row.checkStatus];
+    // 新增机构
+    addOrganization() {
+      this.addDialog.visible = true;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-::v-deep .dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 0 10px 0 0;
-
-  &.primary {
-    background: #e4e4e4;
-  }
-  &.info {
-    background: var(--q-color-warning);
-  }
-  &.success {
-    background: var(--q-color-primary);
-  }
-  &.danger {
-    background: var(--q-color-negative);
-  }
-}
 </style>

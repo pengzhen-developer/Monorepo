@@ -93,7 +93,7 @@
                        v-on:change="changeOpenState(scope.row)">
             </el-switch>
 
-            <span style="margin-left: 5px;">{{ getIsOpenText(scope.row) }}</span>
+            <span style="margin-left: 5px;">{{ scope.row.isOpen | getEnumLabel(source.ENUM_IS_OPEN) }}</span>
           </div>
         </template>
       </el-table-column>
@@ -192,14 +192,6 @@ export default {
         row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 ||
         row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
       )
-    },
-
-    getIsOpenText(row) {
-      if (row.isOpen === 1) {
-        return '已启用'
-      } else {
-        return '已禁用'
-      }
     },
 
     aduit(row) {

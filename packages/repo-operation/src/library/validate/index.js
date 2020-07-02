@@ -236,5 +236,6 @@ export default {
   isMobile,
   isTelephone,
   isIDCard,
+  isEmail,
   isRange
 }
