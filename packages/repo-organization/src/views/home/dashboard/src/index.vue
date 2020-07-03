@@ -114,8 +114,10 @@ export default {
         { serviceName: '药品供应管理端', config: 'drugsupplie' }
       ]
       const config = configMap.find(item => item.serviceName == product.serviceName).config
-
-      window.open(`${window.location.origin}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`)
+      const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
+      window.open(
+        `${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`
+      )
     }
   }
 }
