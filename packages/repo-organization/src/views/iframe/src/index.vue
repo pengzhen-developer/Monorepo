@@ -25,9 +25,9 @@ export default {
     this.src = this.$route.meta.menuPath
 
     if (this.src.indexOf('?') === -1) {
-      this.src = this.src + '?cdkey=' + Util.user.getUserCDKey()
+      this.src = this.src + '?sso=true&cdkey=' + Util.user.getUserCDKey()
     } else {
-      this.src = this.src + '&cdkey=' + Util.user.getUserCDKey()
+      this.src = this.src + '&sso=true&&cdkey=' + Util.user.getUserCDKey()
     }
   }
 }
