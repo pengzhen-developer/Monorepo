@@ -116,6 +116,7 @@ export default {
 <style lang="scss" scoped>
 .layout-tabs {
   height: 40px;
+  width: 100%;
 
   ::v-deep .el-tabs__header {
     margin: 0;
