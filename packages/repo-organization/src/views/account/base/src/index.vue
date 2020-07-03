@@ -67,13 +67,16 @@
           <p>：</p>
           <p class="child-value">{{ hosInfo.level }}</p>
         </div>
-        <div class="item-child-line">
+        <div class="item-child-line"
+             v-if="canShowCertificate">
           <p class="child-key">资质证明</p>
           <p>：</p>
           <el-image class="img"
+                    v-if="hosInfo.license"
                     :src="hosInfo.license"
                     fit='fill'></el-image>
           <el-image class="img"
+                    v-if="hosInfo.structureLicense"
                     :src="hosInfo.structureLicense"
                     fit='fill'></el-image>
         </div>
@@ -96,10 +99,14 @@ export default {
   created() {
     this.getUserData()
   },
-
+  computed: {
+    canShowCertificate() {
+      return this.hosInfo?.license || this.hosInfo?.structureLicense ? true : false
+    }
+  },
   methods: {
     getUserData() {
-      Service.getAccountDetailInfo().then((res) => {
+      Service.getAccountDetailInfo().then(res => {
         this.accountInfo = res.data.accountInfo
         this.hosInfo = res.data.hosInfo
       })
