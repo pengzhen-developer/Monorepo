@@ -14,6 +14,7 @@
            v-on:click="openService">
         <!-- <div class="dash"></div> -->
         <div class="text"
+             v-bind:class="checkStatusTextType"
              v-if="checkStatusTextVisible">{{ checkStatusTextVisible }}</div>
 
       </div>
@@ -77,7 +78,12 @@ export default {
       }
       return this.checkStatusText
     },
-
+    checkStatusTextType() {
+      if (this.isOpenStatus === '待开放') {
+        return 'default'
+      }
+      return ''
+    },
     checkStatusType() {
       if (this.checkStatusText === '待审核') {
         return 'danger'
@@ -194,6 +200,10 @@ export default {
         text-align: center;
         border-radius: 4px;
         margin-left: 20px;
+        &.default {
+          background: var(--q-color-grey-f5f5f5);
+          color: var(--q-color-grey-999);
+        }
       }
       &.warning {
         .dash {

@@ -30,7 +30,8 @@ export default async ({ configuration }) => {
 
     ['grey-333', '#333333'],
     ['grey-666', '#666666'],
-    ['grey-999', '#999999']
+    ['grey-999', '#999999'],
+    ['grey-f5f5f5', '#f5f5f5'],
   ])
 
   const style = document.createElement('style')
