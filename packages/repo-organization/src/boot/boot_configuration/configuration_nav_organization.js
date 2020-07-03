@@ -10,10 +10,10 @@ export default [
     menuRouteName: 'home',
     menuName: '首页',
     menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'home',
-    menuIcon: 'dashboard',
-    iconType: 'Material Icons',
+    menuIcon: 'el-icon-s-home',
+    iconType: 'Element-UI Icons',
     enable: null,
-    closable: null,
+    closable: null
   },
   /**医院 */
   {
@@ -23,10 +23,10 @@ export default [
     menuRouteName: null,
     menuName: '医院',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'local_hospital',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-2-1',
@@ -38,7 +38,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-2-2',
@@ -50,7 +50,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-2-3',
@@ -62,7 +62,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-2-4',
@@ -74,7 +74,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-2-5',
@@ -86,7 +86,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**患者 */
   {
@@ -96,10 +96,10 @@ export default [
     menuRouteName: '患者列表',
     menuName: '患者',
     menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'patient/list',
-    menuIcon: 'dashboard',
-    iconType: 'Material Icons',
+    menuIcon: 'el-icon-s-custom',
+    iconType: 'Element-UI Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   /**咨询 */
   {
@@ -109,10 +109,10 @@ export default [
     menuRouteName: 'inquiry/list',
     menuName: '问诊',
     menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'inquiry/list',
-    menuIcon: 'dashboard',
+    menuIcon: 'question_answer',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   /**处方 */
   {
@@ -122,10 +122,10 @@ export default [
     menuRouteName: null,
     menuName: '处方',
     menuPath: null,
-    menuIcon: 'dashboard',
-    iconType: 'Material Icons',
+    menuIcon: 'el-icon-s-order',
+    iconType: 'Element-UI Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-5-1',
@@ -137,7 +137,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-5-2',
@@ -149,7 +149,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**转诊 */
   {
@@ -159,10 +159,10 @@ export default [
     menuRouteName: null,
     menuName: '转诊',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'shop_two',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-6-1',
@@ -174,7 +174,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-6-2',
@@ -186,7 +186,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**会诊 */
   {
@@ -196,10 +196,10 @@ export default [
     menuRouteName: null,
     menuName: '会诊',
     menuPath: null,
-    menuIcon: 'dashboard',
-    iconType: 'Material Icons',
+    menuIcon: 'el-icon-s-platform',
+    iconType: 'Element-UI Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-7-1',
@@ -211,7 +211,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-7-2',
@@ -223,7 +223,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**挂号 */
   {
@@ -233,10 +233,10 @@ export default [
     menuRouteName: null,
     menuName: '挂号',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'note_add',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-8-1',
@@ -248,7 +248,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-8-2',
@@ -260,7 +260,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-8-3',
@@ -272,7 +272,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**复诊 */
   {
@@ -282,10 +282,10 @@ export default [
     menuRouteName: null,
     menuName: '复诊',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'restore_page',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-9-1',
@@ -297,7 +297,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-9-2',
@@ -309,7 +309,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-9-3',
@@ -321,7 +321,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**检查 */
   {
@@ -331,10 +331,10 @@ export default [
     menuRouteName: null,
     menuName: '检查',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'article',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-10-1',
@@ -346,7 +346,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-10-2',
@@ -358,7 +358,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   /**设置 */
   {
@@ -368,10 +368,10 @@ export default [
     menuRouteName: null,
     menuName: '设置',
     menuPath: null,
-    menuIcon: 'dashboard',
+    menuIcon: 'settings',
     iconType: 'Material Icons',
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-11-1',
@@ -383,7 +383,7 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
+    closable: true
   },
   {
     id: '3-11-2',
@@ -395,6 +395,6 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: true,
-  },
+    closable: true
+  }
 ]
