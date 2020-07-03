@@ -493,18 +493,21 @@ export default {
       });
     },
 
-    "model.role"(value) {
-      switch (value) {
+    "model.role"(newVal, oldVal) {
+      console.log(newVal, oldVal)
+      switch (newVal) {
         case 1:
-          this.model.province = "";
-          this.model.city = "";
-          this.model.district = "";
-          this.model.address = "";
-          this.model.latitude = "";
-          this.model.longitude = "";
+          if (oldVal === 2 || oldVal === 3) {
+            this.model.province = "";
+            this.model.city = "";
+            this.model.district = "";
+            this.model.address = "";
+            this.model.latitude = "";
+            this.model.longitude = "";
 
-          this.model.businessLicense = "";
-          this.model.managementLicense = "";
+            this.model.businessLicense = "";
+            this.model.managementLicense = "";
+          }
           break;
         case 2:
           this.model.hospitalLabel = "";
