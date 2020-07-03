@@ -55,7 +55,7 @@
     </div>
 
     <div class="fixed-bottom text-center text-white text-subtitle2 q-mb-md">
-      Copyright
+      全息云通健康科技（武汉）有限公司<br/>鄂ICP备19008514
     </div>
   </div>
 </template>
