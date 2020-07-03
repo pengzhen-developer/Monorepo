@@ -30,10 +30,46 @@ export default [
     menuRouteName: '5-2',
     menuRoute: '5-2',
     menuName: '订单管理',
+    menuPath: null,
+    menuIcon: 'supervisor_account',
+    iconType: 'Material Icons',
+    enable: true,
+    closable: true
+  },
+  {
+    id: '5-2-1',
+    parentId: '5-2',
+    menuRouteName: '5-2-1',
+    menuRoute: '5-2-1',
+    menuName: '订单概览',
+    menuPath: null,
+    menuIcon: 'supervisor_account',
+    iconType: 'Material Icons',
+    enable: false,
+    closable: true
+  },
+  {
+    id: '5-2-2',
+    parentId: '5-2',
+    menuRouteName: '5-2-2',
+    menuRoute: '5-2-2',
+    menuName: '订单明细',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'OrderManage/OrderManage',
     menuIcon: 'supervisor_account',
     iconType: 'Material Icons',
     enable: true,
+    closable: true
+  },
+  {
+    id: '5-2-3',
+    parentId: '5-2',
+    menuRouteName: '5-2-3',
+    menuRoute: '5-2-3',
+    menuName: '售后订单',
+    menuPath: null,
+    menuIcon: 'supervisor_account',
+    iconType: 'Material Icons',
+    enable: false,
     closable: true
   }
 ]
