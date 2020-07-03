@@ -30,7 +30,7 @@
     <template v-else>
       <el-menu-item v-bind:key="data.id"
                     v-bind:index="data.id"
-                    v-bind:router="data.menuRoute"
+                    v-bind:router="data.id"
                     v-bind:disabled="data.enable === false">
         <template v-if="data.iconType === 'Material Icons'">
           <q-icon v-bind:name="data.menuIcon"

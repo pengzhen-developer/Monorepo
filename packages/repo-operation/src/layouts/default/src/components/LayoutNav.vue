@@ -57,12 +57,20 @@ export default {
       })
     },
 
-    // 菜单更新，默认选中第一项
+    // 菜单更新，默认选中第一项 or 当前路由
     childrenMenuTree() {
       this.$nextTick().then(() => {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.meta.id}"]`)
 
-        firstMenuNode?.click()
+        //  trigger by tabs click, currentMenuNode is exists
+        if (currentMenuNode) {
+          return currentMenuNode.click()
+        }
+        // trigger by header click, currentMenuNode is not exists
+        else {
+          const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+          firstMenuNode?.click()
+        }
       })
     }
   },
@@ -96,7 +104,7 @@ export default {
 
       // 恢复菜单选中
       else {
-        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.id}"]`)
+        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.meta.id}"]`)
 
         currentMenuNode?.click()
       }
