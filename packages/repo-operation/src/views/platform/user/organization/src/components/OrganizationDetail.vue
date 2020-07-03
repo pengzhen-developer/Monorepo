@@ -24,7 +24,7 @@
               <el-form-item label="详细地址">
                 <span>{{ data.addressStr }}</span>
               </el-form-item>
-              <el-form-item label="资质证明">
+              <el-form-item v-if="imgList.length > 0" label="资质证明">
                 <span>
                   <el-image
                     v-if="data.medicalStructureLicense"

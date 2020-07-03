@@ -580,8 +580,7 @@ export default {
 
       if (!isJPG) {
         this.$message.error("上传图片支持jpg、jpeg、bmp、gif、png 格式");
-      }
-      if (!isLt2M) {
+      } else if (!isLt2M) {
         this.$message.error("上传图片大小不能超过2M");
       }
       return isJPG && isLt2M;
