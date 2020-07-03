@@ -103,7 +103,7 @@ export default [
     menuRouteName: 'patientList',
     menuRoute: 'patientList',
     menuName: '患者列表',
-    menuPath: process.env.VUE_APP_NETHOSPITAL + '/patient/list',
+    menuPath: process.env.VUE_APP_NETHOSPITAL + '/user/patient',
     menuIcon: null,
     iconType: null,
     enable: true,
