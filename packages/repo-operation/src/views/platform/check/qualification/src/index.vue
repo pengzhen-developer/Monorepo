@@ -9,7 +9,7 @@
       size="mini"
     >
       <el-form-item label="机构名称：">
-        <el-input v-model="model.hospitalName" placeholder="请输入"></el-input>
+        <el-input v-model.trim="model.hospitalName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="机构类型：">
         <el-select v-model="model.role" placeholder="全部" clearable>
@@ -33,7 +33,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="" label-width="0">
+      <el-form-item label label-width="0">
         <el-button type="primary" icon="el-icon-search" v-on:click="get">查询</el-button>
       </el-form-item>
     </el-form>
@@ -41,21 +41,21 @@
     <PeaceTable ref="table" size="mini" pagination>
       <el-table-column width="50" label="序号" align="center" prop="code"></el-table-column>
       <el-table-column min-width="180px" label="机构名称" prop="hospitalName"></el-table-column>
-      <el-table-column min-width="100px" label="机构类型" prop="role">
+      <el-table-column min-width="120px" label="机构类型" prop="role" align="center">
         <template
           slot-scope="scope"
         >{{ scope.row.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE) }}</template>
       </el-table-column>
       <el-table-column min-width="100px" label="联系人" prop="linkman"></el-table-column>
-      <el-table-column min-width="120px" label="手机号码" prop="tel"></el-table-column>
-      <el-table-column min-width="80px" align="center" label="认证状态" prop="checkStatus">
+      <el-table-column width="120px" label="手机号码" prop="tel" align="center"></el-table-column>
+      <el-table-column min-width="110px" align="center" label="认证状态" prop="checkStatus">
         <template slot-scope="scope">
           <span class="dot" v-bind:class="getColorType(scope.row)"></span>
           <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="100px" align="center" label="申请时间" prop="applyTime"></el-table-column>
-      <el-table-column width="100px" align="center" label="审核时间" prop="checkTime"></el-table-column>
+      <el-table-column min-width="160px" align="center" label="申请时间" prop="applyTime"></el-table-column>
+      <el-table-column min-width="160px" align="center" label="审核时间" prop="checkTime"></el-table-column>
       <el-table-column min-width="80px" align="center" fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button type="text" v-if="canShowAduit(scope.row)" v-on:click="aduit(scope.row)">审核</el-button>
@@ -97,7 +97,7 @@ export default {
       model: {
         hospitalName: "",
         role: "",
-        checkStatus: "",
+        checkStatus: ""
       },
 
       aduitDialog: {
@@ -108,7 +108,7 @@ export default {
 
       source: {
         ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS,
-        ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE,
+        ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE
       }
     };
   },
@@ -124,7 +124,7 @@ export default {
       const fetch = Service.getList;
       const params = Peace.util.deepClone(this.model);
 
-      this.$refs.table.loadData({ fetch, params }).then(res => {
+      this.$refs.table.reloadData({ fetch, params }).then(res => {
         res?.data?.list?.forEach(row => {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
             ? "——"

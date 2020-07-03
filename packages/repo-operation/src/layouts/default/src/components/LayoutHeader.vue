@@ -28,6 +28,10 @@
                             v-bind:index="menu.id"
                             v-bind:router="menu.id"
                             v-bind:disabled="menu.enable === false">
+                <template v-if="menu.iconType === 'Zyy Icons'">
+                  <i v-bind:class="{[menu.menuIcon]: true }"
+                     class="q-mr-sm text-h6 text-weight-bolder"></i>
+                </template>
                 <template v-if="menu.iconType === 'Material Icons'">
                   <q-icon v-bind:name="menu.menuIcon"
                           class="q-mr-sm text-h6 text-weight-bolder"></q-icon>

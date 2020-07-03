@@ -403,6 +403,13 @@ export default {
             trigger: "change"
           }
         ],
+        district: [
+          {
+            required: true,
+            message: "请选择省市区",
+            trigger: "change"
+          }
+        ],
         address: [
           {
             required: true,
@@ -486,6 +493,8 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.form.resetFields();
+        this.model.latitude = "";
+        this.model.longitude = "";
         this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
         this.model.internetHospitalLicense = ""; // 互联网医院牌照
         this.model.businessLicense = ""; //  营业执照
@@ -494,58 +503,17 @@ export default {
     },
 
     "model.role"(newVal, oldVal) {
-      console.log(newVal, oldVal)
       switch (newVal) {
         case 1:
           if (oldVal === 2 || oldVal === 3) {
-            this.model.province = "";
-            this.model.city = "";
-            this.model.district = "";
-            this.model.address = "";
-            this.model.latitude = "";
-            this.model.longitude = "";
-
-            this.model.businessLicense = "";
-            this.model.managementLicense = "";
+            this.resetForm(1);
           }
           break;
         case 2:
-          this.model.hospitalLabel = "";
-          this.model.hospitalTypeLabel = "";
-          this.model.hospitalLevel = "";
-
-          this.model.province = "";
-          this.model.city = "";
-          this.model.district = "";
-          this.model.address = "";
-          this.model.latitude = "";
-          this.model.longitude = "";
-
-          this.lock = false;
-
-          this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
-          this.model.internetHospitalLicense = ""; // 互联网医院牌照
-          this.model.businessLicense = ""; //  营业执照
-          this.model.managementLicense = ""; // 经营许可证
+          this.resetForm(2);
           break;
         case 3:
-          this.model.hospitalLabel = "";
-          this.model.hospitalTypeLabel = "";
-          this.model.hospitalLevel = "";
-
-          this.model.province = "";
-          this.model.city = "";
-          this.model.district = "";
-          this.model.address = "";
-          this.model.latitude = "";
-          this.model.longitude = "";
-
-          this.lock = false;
-
-          this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
-          this.model.internetHospitalLicense = ""; // 互联网医院牌照
-          this.model.businessLicense = ""; //  营业执照
-          this.model.managementLicense = ""; // 经营许可证
+          this.resetForm(3);
           break;
       }
     }
@@ -678,6 +646,33 @@ export default {
           }
         });
       });
+    },
+
+    resetForm(role) {
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate();
+      });
+
+      this.model.province = "";
+      this.model.city = "";
+      this.model.district = "";
+      this.model.address = "";
+      this.model.latitude = "";
+      this.model.longitude = "";
+
+      this.model.medicalStructureLicense = ""; // 医疗机构执业许可证
+      this.model.internetHospitalLicense = ""; // 互联网医院牌照
+
+      if (role === 2 || role === 3) {
+        this.model.hospitalLabel = "";
+        this.model.hospitalTypeLabel = "";
+        this.model.hospitalLevel = "";
+
+        this.lock = false;
+
+        this.model.businessLicense = ""; //  营业执照
+        this.model.managementLicense = ""; // 经营许可证
+      }
     }
   }
 };

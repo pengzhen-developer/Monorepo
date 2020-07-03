@@ -172,7 +172,6 @@ export default {
     },
 
     reloadData(config = {}) {
-      this.Pagination.internalPageSize = 10
       this.Pagination.internalCurrentPage = 1
       return this.loadData(config)
     },

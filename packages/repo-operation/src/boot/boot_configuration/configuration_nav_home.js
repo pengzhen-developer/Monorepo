@@ -6,8 +6,8 @@ export default [
     menuRouteName: null,
     menuName: '首页',
     menuPath: null,
-    menuIcon: '3d_rotation',
-    iconType: 'Material Icons',
+    menuIcon: null,
+    iconType: null,
     enable: false,
     closable: null
   }

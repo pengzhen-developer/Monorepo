@@ -6,8 +6,8 @@ export default [
     menuRouteName: null,
     menuName: '合理用药管理',
     menuPath: null,
-    menuIcon: 'toll',
-    iconType: 'Material Icons',
+    menuIcon: null,
+    iconType: null,
     menuType: 'iframe',
     enable: true,
     closable: null
@@ -20,8 +20,8 @@ export default [
     menuRouteName: '4-1',
     menuName: '审方配置',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigManagement',
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: 'zyy-shenfang',
+    iconType: 'Zyy Icons',
     enable: true,
     closable: true
   },
@@ -33,8 +33,8 @@ export default [
     menuRoute: '4-2',
     menuName: '药师审核',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'Customer/PharmacistCustomer',
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: 'zyy-yaoshi',
+    iconType: 'Zyy Icons',
     enable: true,
     closable: true
   },
@@ -45,8 +45,8 @@ export default [
     menuRoute: '4-3',
     menuName: '处方管理',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'PrescriptionList/PrescriptionList',
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: 'zyy-dingdan',
+    iconType: 'Zyy Icons',
     enable: true,
     closable: true
   }

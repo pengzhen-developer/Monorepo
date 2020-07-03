@@ -6,8 +6,8 @@ export default [
     menuRouteName: null,
     menuName: '处方共享管理',
     menuPath: null,
-    menuIcon: 'el-icon-s-finance',
-    iconType: 'Element-UI Icons',
+    menuIcon: null,
+    iconType: null,
     menuType: 'iframe',
     enable: true,
     closable: null
@@ -19,8 +19,8 @@ export default [
     menuRouteName: '5-1',
     menuName: '流向配置',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigDrugStoreManagement',
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: 'zyy-liuxiang',
+    iconType: 'Zyy Icons',
     enable: true,
     closable: true
   },
@@ -55,8 +55,8 @@ export default [
     menuRoute: '5-2-2',
     menuName: '订单明细',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'OrderManage/OrderManage',
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: 'zyy-dingdan',
+    iconType: 'Zyy Icons',
     enable: true,
     closable: true
   },

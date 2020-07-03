@@ -75,7 +75,7 @@ export default {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
 
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     goEditView() {

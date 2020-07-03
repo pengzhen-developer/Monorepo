@@ -1,5 +1,7 @@
 import '@src/assets/css/ui-fix.scss'
 
+import '@src/assets/font/css/zyy-icon.css'
+
 const hexToRGBA = function hexToRgbA(hex, opacity) {
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     let c = hex.substring(1).split('')

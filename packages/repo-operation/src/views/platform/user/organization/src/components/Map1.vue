@@ -108,8 +108,13 @@ export default {
   },
   methods: {
     reset() {
-      let {getMapScript, initMap} = this
-      return getMapScript().then(initMap)
+      await this.getMapScript()
+
+      await this.initMap()
+
+      await this.getRegion()
+
+      
     },
     // 加载腾讯地图
     getMapScript () {
@@ -153,52 +158,68 @@ export default {
         });
 
         // 绑定地图点击事件
-        qmap.event.addListener(map, "click", function(event) {
-          return _this.mapClick(event);
+        new qq.maps.event.addListener(this.map, "click", (event) => {
+          return this.mapClick(event);
         });
 
         // 地址逆解析服务 latLng --> Address
-        _this.api.geocoder = new qmap.Geocoder({
-          complete: function(result) {
-            return _this.parseAddressCallback(result);
+        this.api.geocoder = new qq.maps.Geocoder({
+          complete: (result) => {
+            return this.parseAddressCallback(result);
+          },
+          error: (err) => {
+            console.log('地址逆解析错误', err)
           }
         });
 
         // 城市搜索服务（省/市）
-        _this.api.cityService = new qmap.CityService({
-          map,
-          complete: function(result) {
-            return _this.getCityLocationSuccess(result);
+        this.api.cityService = new qq.maps.CityService({
+          complete: (result) => {
+            return this.getCityLocationSuccess(result);
           },
-          error: function() {
-            return _this.getCityLocationError();
+          error: (err) => {
+            console.log('城市搜索错误', err)
+            return this.getCityLocationError();
           }
         });
 
         // 关键词搜索服务
-        _this.api.searchService = new qmap.SearchService({
+        this.api.searchService = new qq.maps.SearchService({
+          map: this.map,
           // autoExtend 自动向外扩展(地址)
           autoExtend: false,
           pageIndex: 1,
           pageCapacity: 20,
-          complete: function(result) {
-            return _this.bykeywordSearchCallBack(result);
+          complete: (result) => {
+            return this.bykeywordSearchCallBack(result);
           },
-          error: function() {
-            if (_this.callback) {
-              _this.callback([]);
+          error: (err) => {
+            console.log('关键词搜索错误', err)
+            if (this.callback) {
+              this.callback([]);
             }
           }
         });
 
         // 创建 Marker
-        _this.api.marker = new qmap.Marker({
-          animation: qmap.MarkerAnimation.DOWN,
+        this.api.marker = new qq.maps.Marker({
+          animation: new qq.maps.MarkerAnimation.DOWN,
           //设置显示Marker的地图
-          map: null,
+          map: this.map,
           visible: false
         });
       }
+
+      return Promise.resolve(this.map)
+    },
+
+    getRegion() {
+      return new Promise((resolve) => {
+        Service.getRegion().then(res => {
+          this.region = res.data;
+          resolve(this.region)
+        });
+      })
     },
 
 

@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'zyy-icon';
+  src: url('../font/zyy-icon.eot?79386360');
+  src: url('../font/zyy-icon.eot?79386360#iefix') format('embedded-opentype'),
+       url('../font/zyy-icon.woff2?79386360') format('woff2'),
+       url('../font/zyy-icon.woff?79386360') format('woff'),
+       url('../font/zyy-icon.ttf?79386360') format('truetype'),
+       url('../font/zyy-icon.svg?79386360#zyy-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'zyy-icon';
+    src: url('../font/zyy-icon.svg?79386360#zyy-icon') format('svg');
+  }
+}
+*/
+ 
+ [class^="zyy-"]:before, [class*=" zyy-"]:before {
+  font-family: "zyy-icon";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.zyy-chart-bar:before { content: '\e800'; } /* '' */
+.zyy-dingdan:before { content: '\e802'; } /* '' */
+.zyy-guanggao:before { content: '\e803'; } /* '' */
+.zyy-guize:before { content: '\e804'; } /* '' */
+.zyy-jigou:before { content: '\e805'; } /* '' */
+.zyy-liebiao:before { content: '\e806'; } /* '' */
+.zyy-liuxiang:before { content: '\e807'; } /* '' */
+.zyy-pie:before { content: '\e808'; } /* '' */
+.zyy-pingtai:before { content: '\e809'; } /* '' */
+.zyy-quanxian:before { content: '\e80a'; } /* '' */
+.zyy-rizhi:before { content: '\e80b'; } /* '' */
+.zyy-shenfang:before { content: '\e80c'; } /* '' */
+.zyy-shenhe:before { content: '\e80d'; } /* '' */
+.zyy-yaofang:before { content: '\e80e'; } /* '' */
+.zyy-yaopin:before { content: '\e80f'; } /* '' */
+.zyy-yaoshi:before { content: '\e810'; } /* '' */
+.zyy-yisheng:before { content: '\e812'; } /* '' */
+.zyy-yonghu:before { content: '\e813'; } /* '' */
+.zyy-zhifu:before { content: '\e814'; } /* '' */
+.zyy-zidian:before { content: '\e815'; } /* '' */
+.zyy-user:before { content: '\e817'; } /* '' */
+.zyy-doc-text-inv:before { content: '\f15c'; } /* '' */

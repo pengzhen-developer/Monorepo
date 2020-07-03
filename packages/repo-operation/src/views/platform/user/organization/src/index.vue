@@ -9,13 +9,13 @@
       size="mini"
     >
       <el-form-item label="联系人：">
-        <el-input v-model="model.linkman" placeholder="请输入"></el-input>
+        <el-input v-model.trim="model.linkman" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="手机号码：">
-        <el-input v-model="model.tel" placeholder="请输入"></el-input>
+        <el-input v-model.trim="model.tel" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="所属机构：">
-        <el-input v-model="model.hospitalName" placeholder="请输入"></el-input>
+      <el-form-item label="机构名称：">
+        <el-input v-model.trim="model.hospitalName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="账号状态：">
         <el-select v-model="model.isOpen" placeholder clearable>
@@ -28,7 +28,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="" label-width="0">
+      <el-form-item label label-width="0">
         <el-button type="primary" icon="el-icon-search" v-on:click="get">查询</el-button>
       </el-form-item>
     </el-form>
@@ -42,15 +42,15 @@
 
     <PeaceTable ref="table" size="mini" pagination>
       <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
-      <el-table-column min-width="180px" label="机构名称" align="center" prop="hospitalName"></el-table-column>
-      <el-table-column min-width="100px" label="机构类型" prop="role"></el-table-column>
+      <el-table-column min-width="180px" label="机构名称" prop="hospitalName"></el-table-column>
+      <el-table-column min-width="120px" label="机构类型" prop="role" align="center"></el-table-column>
       <el-table-column min-width="100px" label="联系人" prop="linkman"></el-table-column>
-      <el-table-column min-width="120px" label="手机号码" prop="tel"></el-table-column>
+      <el-table-column width="120px" label="手机号码" prop="tel" align="center"></el-table-column>
       <el-table-column min-width="100px" label="入驻方式" align="center" prop="source"></el-table-column>
       <el-table-column min-width="100px" label="账号状态" align="center" prop="isOpen">
         <template slot-scope="scope">{{ scope.row.isOpen | getEnumLabel(source.ENUM_IS_OPEN) }}</template>
       </el-table-column>
-      <el-table-column width="100px" label="认证时间" align="center" prop="checkTime"></el-table-column>
+      <el-table-column width="160px" label="认证时间" align="center" prop="checkTime"></el-table-column>
       <el-table-column min-width="180px" align="center" fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button type="text" v-on:click="toDetail(scope.row)">基本信息</el-button>
@@ -130,7 +130,7 @@ export default {
       const fetch = Service.getList;
       const params = Peace.util.deepClone(this.model);
 
-      this.$refs.table.loadData({ fetch, params }).then(res => {
+      this.$refs.table.reloadData({ fetch, params }).then(res => {
         res?.data?.list?.forEach(row => {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
             ? "——"

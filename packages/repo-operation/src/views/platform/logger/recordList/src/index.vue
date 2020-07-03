@@ -42,10 +42,16 @@
           <el-date-picker type="date"
                           placeholder="开始时间"
                           v-model="model.startTime"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          :pickerOptions="startPickerOptions"
                           style="width: 180px;"></el-date-picker>
           <div class="q-mx-md mid-line"></div>
           <el-date-picker placeholder="结束时间"
                           v-model="model.endTime"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          :pickerOptions="endPickerOptions"
                           style="width: 180px;"></el-date-picker>
         </div>
       </el-form-item>
@@ -128,6 +134,30 @@ export default {
         endTime: ''
       },
 
+      startPickerOptions: {
+        disabledDate: time => {
+          if (this.model.endTime) {
+            return time.getTime() > new Date(this.model.endTime).getTime();
+          } else {
+            return time.getTime() > Date.now();
+          }
+        }
+      },
+      endPickerOptions: {
+        disabledDate: time => {
+          if (this.model.startTime) {
+            return (
+              time.getTime() <
+                new Date(this.model.startTime).setDate(
+                  new Date(this.model.startTime).getDate() - 1
+                ) || time.getTime() > Date.now()
+            );
+          } else {
+            return time.getTime() > Date.now();
+          }
+        }
+      },
+
       dialog: {
         visible: false,
         title: '',
@@ -150,7 +180,7 @@ export default {
     get() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-      this.$refs.table.loadData({ fetch, params }).then(res => {
+      this.$refs.table.reloadData({ fetch, params }).then(res => {
         return res
       })
     },
