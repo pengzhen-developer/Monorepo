@@ -52,6 +52,7 @@ export const getUserInfo = () => {
  *
  */
 export const removeUserInfo = () => {
+  Peace.cache.sessionStorage.clear()
   Peace.cache.localStorage.remove(USER_INFO)
   Peace.cache.localStorage.remove(USER_CD_KEY)
 }
