@@ -8,7 +8,7 @@
       <span class="step-title"
             :class="[active==index&&'active',active<index&&'before']">{{item.title}}</span>
       <span class="step-line"
-            :class="[active==index&&'active',index==list.length-1&&'none']"></span>
+            :class="[active>index&&'active',index==list.length-1&&'none']"></span>
     </div>
   </div>
 </template>

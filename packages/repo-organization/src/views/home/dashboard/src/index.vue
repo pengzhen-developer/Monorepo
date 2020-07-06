@@ -108,12 +108,14 @@ export default {
     redirectSerivceSite(product) {
       const cdKey = Util.user.getUserCDKey()
       const configMap = [
-        { serviceName: '互联网医院管理端', config: 'organization' },
-        { serviceName: '处方管理医院端', config: 'prescription' },
-        { serviceName: '合理用药管理', config: 'rationaldruguse' },
-        { serviceName: '药品供应管理端', config: 'drugsupplie' }
+        { serviceName: '互联网医院管理端', serviceType: 1, config: 'organization' },
+        { serviceName: '处方管理医院端', serviceType: 3, config: 'prescription' },
+        { serviceName: '合理用药管理', serviceType: 2, config: 'rationaldruguse' },
+        { serviceName: '药品供应管理端', serviceType: 4, config: 'drugsupplie' }
       ]
-      const config = configMap.find(item => item.serviceName == product.serviceName).config
+      const config = configMap.find(
+        item => item.serviceType == product.serviceType || item.serviceName == product.serviceName
+      ).config
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
       window.open(
         `${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`
