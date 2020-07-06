@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       model: {
-        pickDate: '',
+        pickDate: [],
         startTime: '',
         endTime: '',
         checkStatus: ''
@@ -125,11 +125,12 @@ export default {
     get() {
       const fetch = Service.getMyServiceList
       const params = this.model
-
+      if (this.model.pickDate == null) {
+        this.model.pickDate = ['', '']
+      }
       const [start, end] = this.model.pickDate
       params.startTime = start
       params.endTime = end
-
       this.$refs.table.loadData({ fetch, params })
     },
 
