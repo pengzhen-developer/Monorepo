@@ -37,16 +37,20 @@
                   max-height="600">
         <el-table-column type="index"
                          fixed
+                         align="center"
                          label="序号"
-                         width="150">
+                         width="50">
         </el-table-column>
         <el-table-column prop="serviceName"
+                         align="center"
                          label="服务名称">
         </el-table-column>
         <el-table-column prop="applyTime"
+                         align="center"
                          label="提交时间">
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="状态"
+                         align="center">
           <template slot-scope="scope">
             <div class="status-item">
               <div v-bind:class="getClassForCode(scope.row.checkStatus)"></div>
@@ -58,9 +62,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="checkTime"
+                         align="center"
                          label="审核时间">
         </el-table-column>
         <el-table-column width="300"
+                         align="center"
                          label="备注">
           <template slot-scope="scope">
             <span>
@@ -146,6 +152,7 @@ export default {
 <style scoped>
 .status-item {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 

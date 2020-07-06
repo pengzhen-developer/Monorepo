@@ -6,12 +6,15 @@
       <el-table-column fixed
                        prop="serviceName"
                        width="300"
+                       align="center"
                        label="服务名称">
       </el-table-column>
       <el-table-column prop="accessKeyId"
+                       align="center"
                        label="Accesskey  ID">
       </el-table-column>
-      <el-table-column label="AccessKey Secret ">
+      <el-table-column label="AccessKey Secret "
+                       align="center">
         <template slot-scope="scope">
           <div class="status-item">
             <span v-if='scope.row.isHide'>
@@ -27,11 +30,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="createdTime"
+                       align="center"
                        width="200"
                        label="创建时间">
       </el-table-column>
       <el-table-column fixed="right"
                        label="操作"
+                       align="center"
                        width="150">
         <template slot-scope="scope">
           <el-button @click.native.prevent="redText(scope.$index, tableData)"
@@ -87,6 +92,7 @@ export default {
 <style scoped>
 .status-item {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 .eyes {
