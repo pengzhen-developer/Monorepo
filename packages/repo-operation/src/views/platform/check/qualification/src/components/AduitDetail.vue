@@ -14,10 +14,10 @@
                 <el-form-item class="inline-half" label="机构类型">
                   <span>{{ detail.hosInfo.role }}</span>
                 </el-form-item>
-                <el-form-item class="inline-half" label="医院属性">
+                <el-form-item v-if="detail.hosInfo.hospitalAttribute" class="inline-half" label="医院属性">
                   <span>{{ detail.hosInfo.hospitalAttribute }}</span>
                 </el-form-item>
-                <el-form-item class="inline-half" label="医院等级">
+                <el-form-item v-if="detail.hosInfo.level" class="inline-half" label="医院等级">
                   <span>{{ detail.hosInfo.level }}</span>
                 </el-form-item>
                 <el-form-item label="统一社会信用代码" label-width="150px">
@@ -134,10 +134,10 @@
                 <el-form-item class="inline-half" label="机构类型">
                   <span>{{ detail.hosInfo.role }}</span>
                 </el-form-item>
-                <el-form-item class="inline-half" label="医院属性">
+                <el-form-item v-if="detail.hosInfo.hospitalAttribute" class="inline-half" label="医院属性">
                   <span>{{ detail.hosInfo.hospitalAttribute }}</span>
                 </el-form-item>
-                <el-form-item class="inline-half" label="医院等级">
+                <el-form-item v-if="detail.hosInfo.level" class="inline-half" label="医院等级">
                   <span>{{ detail.hosInfo.level }}</span>
                 </el-form-item>
                 <el-form-item label="统一社会信用代码" label-width="150px">
