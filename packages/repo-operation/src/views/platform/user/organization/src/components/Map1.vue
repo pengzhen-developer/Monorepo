@@ -610,6 +610,7 @@ export default {
 ::v-deep .el-form-item__content {
   width: calc(100% - 125px);
   display: flex;
+  align-items: center;
 }
 .el-select + .el-select {
   margin-left: 11px;

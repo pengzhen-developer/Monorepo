@@ -50,7 +50,9 @@
       <el-table-column min-width="100px" label="账号状态" align="center" prop="isOpen">
         <template slot-scope="scope">{{ scope.row.isOpen | getEnumLabel(source.ENUM_IS_OPEN) }}</template>
       </el-table-column>
-      <el-table-column width="160px" label="认证时间" align="center" prop="checkTime"></el-table-column>
+      <el-table-column width="160px" label="认证时间" align="center" prop="checkTime">
+        <template slot-scope="scope">{{ scope.row.source == "运营添加" ? scope.row.createdTime:(scope.row.source == "机构注册" ? scope.row.checkTime:"——") }}</template>
+      </el-table-column>
       <el-table-column min-width="180px" align="center" fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button type="text" v-on:click="toDetail(scope.row)">基本信息</el-button>
@@ -135,9 +137,6 @@ export default {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName)
             ? "——"
             : row.hospitalName;
-          row.checkTime = Peace.validate.isEmpty(row.checkTime)
-            ? "——"
-            : row.checkTime;
         });
         return res;
       });

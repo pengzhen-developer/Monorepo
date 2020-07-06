@@ -2,8 +2,7 @@
   <div>
     <el-dialog width="600px" v-bind:visible.sync="visible" title="已选服务">
       <el-table :data="list" v-loading="isLoading" style="width: 100%">
-        <el-table-column prop="hospitalName" label="服务名称"></el-table-column>
-        <el-table-column prop="serviceName" label="服务类型"></el-table-column>
+        <el-table-column prop="serviceName" label="服务名称"></el-table-column>
         <el-table-column prop="checkTime" label="开通时间" align="center"></el-table-column>
       </el-table>
     </el-dialog>

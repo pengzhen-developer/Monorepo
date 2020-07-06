@@ -101,7 +101,6 @@
                     ></el-input>
                     <el-input
                       v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 || model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构"
-                      suffix-icon="el-icon-location"
                       v-model="model.address"
                       placeholder="请输入详细地址"
                     ></el-input>
@@ -380,7 +379,13 @@ export default {
             validator: validateNumberCharacter,
             message: "统一社会信用代码只能输入数字和字母",
             trigger: "blur"
-          }
+          },
+          {
+            min: 18,
+            max: 18,
+            message: "统一社会信用代码长度为18位",
+            trigger: "blur"
+          },
         ],
         hospitalLabel: [
           {

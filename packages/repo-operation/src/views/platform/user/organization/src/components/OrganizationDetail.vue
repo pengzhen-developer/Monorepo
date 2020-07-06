@@ -12,10 +12,10 @@
               <el-form-item class="inline-half" label="机构类型">
                 <span>{{ data.role }}</span>
               </el-form-item>
-              <el-form-item class="inline-half" label="医院属性">
+              <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel" class="inline-half" label="医院属性">
                 <span>{{ data.hospitalLabel }} {{ data.hospitalTypeLabel }}</span>
               </el-form-item>
-              <el-form-item class="inline-half" label="医院等级">
+              <el-form-item v-if="data.hospitalLevel" class="inline-half" label="医院等级">
                 <span>{{ data.hospitalLevel }}</span>
               </el-form-item>
               <el-form-item label="统一社会信用代码" label-width="150px">
