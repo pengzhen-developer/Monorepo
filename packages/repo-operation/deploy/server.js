@@ -30,7 +30,7 @@ const SERVER_LIST = {
     port: 2212,
     username: 'root',
     password: 'L0QZKNbxt8T8tl@E',
-    path: '/data/wwwroot/zycloud/zycloud_operate/public/web '
+    path: '/data/wwwroot/zycloud/zycloud_operate/public/web'
   }
 }
 
