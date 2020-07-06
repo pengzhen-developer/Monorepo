@@ -74,10 +74,22 @@
           <el-image class="img"
                     v-if="hosInfo.license"
                     :src="hosInfo.license"
+                    :preview-src-list="hosInfo.licenseList"
                     fit='fill'></el-image>
           <el-image class="img"
                     v-if="hosInfo.structureLicense"
+                    :preview-src-list="hosInfo.structureLicenseList"
                     :src="hosInfo.structureLicense"
+                    fit='fill'></el-image>
+          <el-image class="img"
+                    v-if="hosInfo.certificate"
+                    :preview-src-list="hosInfo.certificateList"
+                    :src="hosInfo.certificate"
+                    fit='fill'></el-image>
+          <el-image class="img"
+                    v-if="hosInfo.hospitalLicense"
+                    :preview-src-list="hosInfo.hospitalLicenseList"
+                    :src="hosInfo.hospitalLicense"
                     fit='fill'></el-image>
         </div>
       </div>
@@ -101,12 +113,21 @@ export default {
   },
   computed: {
     canShowCertificate() {
-      return this.hosInfo?.license || this.hosInfo?.structureLicense ? true : false
+      return this.hosInfo?.license ||
+        this.hosInfo?.structureLicense ||
+        this.hosInfo?.certificate ||
+        this.hosInfo?.hospitalLicense
+        ? true
+        : false
     }
   },
   methods: {
     getUserData() {
-      Service.getAccountDetailInfo().then(res => {
+      Service.getAccountDetailInfo().then((res) => {
+        res.data.hosInfo.licenseList = [res.data.hosInfo.license]
+        res.data.hosInfo.certificateList = [res.data.hosInfo.certificate]
+        res.data.hosInfo.hospitalLicenseList = [res.data.hosInfo.hospitalLicense]
+        res.data.hosInfo.structureLicenseList = [res.data.hosInfo.structureLicense]
         this.accountInfo = res.data.accountInfo
         this.hosInfo = res.data.hosInfo
       })
