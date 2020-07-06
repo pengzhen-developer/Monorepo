@@ -19,7 +19,7 @@ export default [
     menuRouteName: '6-1',
     menuName: '药房审核',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'Customer/PharmacyReview',
-    menuIcon: 'zyy-yaofang',
+    menuIcon: 'zyy-yfsh',
     iconType: 'Zyy Icons',
     enable: true,
     closable: true
@@ -31,7 +31,7 @@ export default [
     menuRoute: '6-2',
     menuName: '药房列表',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'DrugStore/DrugStore',
-    menuIcon: 'zyy-liebiao',
+    menuIcon: 'zyy-yflb',
     iconType: 'Zyy Icons',
     enable: true,
     closable: true

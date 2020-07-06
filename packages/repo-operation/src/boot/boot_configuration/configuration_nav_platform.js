@@ -18,9 +18,9 @@ export default [
     parentId: '2',
     menuRoute: null,
     menuRouteName: null,
-    menuName: '用户管理',
+    menuName: '机构管理',
     menuPath: null,
-    menuIcon: 'zyy-user',
+    menuIcon: 'zyy-jggl',
     iconType: 'Zyy Icons',
     enable: null,
     closable: null
@@ -95,7 +95,7 @@ export default [
     menuRoute: null,
     menuName: '基础数据',
     menuPath: null,
-    menuIcon: 'zyy-chart-bar',
+    menuIcon: 'zyy-jcsj',
     iconType: 'Zyy Icons',
     enable: null,
     closable: null
@@ -177,9 +177,9 @@ export default [
     parentId: '2',
     menuRouteName: null,
     menuRoute: null,
-    menuName: '日志管理',
+    menuName: '平台日志',
     menuPath: null,
-    menuIcon: 'zyy-rizhi',
+    menuIcon: 'zyy-ptrz',
     iconType: 'Zyy Icons',
     enable: null,
     closable: null

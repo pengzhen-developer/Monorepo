@@ -26,7 +26,7 @@
                 <el-form-item label="详细地址">
                   <span>{{ detail.hosInfo.hospitalAddres }}</span>
                 </el-form-item>
-                <el-form-item label="资质证明">
+                <el-form-item label="资质证明" v-if="imgList.length > 0">
                   <span>
                     <el-image
                       v-if="detail.hosInfo.license"

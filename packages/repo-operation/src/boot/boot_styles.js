@@ -1,6 +1,6 @@
 import '@src/assets/css/ui-fix.scss'
 
-import '@src/assets/font/css/zyy-icon.css'
+// import '@src/assets/font/iconfont.css'
 
 const hexToRGBA = function hexToRgbA(hex, opacity) {
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
@@ -48,6 +48,25 @@ export default async ({ configuration }) => {
 
   // 将 <style> 元素加到页面中
   document.head.appendChild(style)
+
+  // 链接样式
+  let linkConfig = ['//at.alicdn.com/t/font_1926315_balu7jwcwea.css']
+  let i = 0
+  let link = null
+  let createLink = () => {
+    if (i >= linkConfig.length) {
+      return
+    }
+    link = document.createElement('link')
+    link.href = linkConfig[i]
+    link.setAttribute('rel', 'stylesheet')
+    link.onload = () => {
+      i++
+      createLink()
+    }
+    document.head.appendChild(link)
+  }
+  createLink()
 
   console.log(
     `%c ${'Styles'} %c N/A %c`,
