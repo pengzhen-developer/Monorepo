@@ -52,20 +52,22 @@
           <p>：</p>
           <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
         </div>
-        <div class="item-child">
+        <div class="item-child"
+             v-if="hosInfo.hospitalAttribute">
           <p class="child-key">医院属性</p>
           <p>：</p>
           <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
+        </div>
+        <div class="item-child"
+             v-if="hosInfo.level">
+          <p class="child-key">医院等级</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.level }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">详细地址</p>
           <p>：</p>
           <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">医院等级</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.level }}</p>
         </div>
         <div class="item-child-line"
              v-if="canShowCertificate">
@@ -176,6 +178,7 @@ p {
   display: flex;
 }
 .item-child-line {
+  width: 100%;
   margin-top: 10px;
   display: flex;
 }
