@@ -22,6 +22,8 @@ const scpConnectConfig = {
 scpClient.scp(scpPath, scpConnectConfig, (err) => {
   spinner.stop()
 
+  console.log(`Deploying for ${process.env.NODE_ENV}... `)
+
   if (err) {
     const errorMessage = `Deploy failed.`
 

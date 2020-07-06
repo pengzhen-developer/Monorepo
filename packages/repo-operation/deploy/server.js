@@ -20,17 +20,17 @@ const SERVER_LIST = {
     port: 2212,
     username: 'root',
     password: 'Q!s4EezzIBPpqcmQ',
-    path: '/home/abc'
+    path: '/data/wwwroot/zycloud/zycloud_operate/public/web'
   },
 
   test: {
     name: '测试环境',
     domain: 'https://testoperate.holoalpha.com/web',
-    host: '119.3.60.72',
+    host: '122.112.213.196',
     port: 2212,
     username: 'root',
-    password: 'Q!s4EezzIBPpqcmQ',
-    path: '/home/abc'
+    password: 'L0QZKNbxt8T8tl@E',
+    path: '/data/wwwroot/zycloud/zycloud_operate/public/web '
   }
 }
 
