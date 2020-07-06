@@ -11,13 +11,19 @@
             <i v-bind:class="{[data.menuIcon]: true }"
                class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
           </template>
-          <template v-if="data.iconType === 'Material Icons'">
+
+          <template v-else-if="data.iconType === 'Material Icons'">
             <q-icon v-bind:name="data.menuIcon"
                     class="q-mr-md text-h6 text-weight-bolder text-grey-7"></q-icon>
           </template>
+
           <template v-else-if="data.iconType === 'Element-UI Icons'">
             <i v-bind:class="{[data.menuIcon]: true }"
                class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
+          </template>
+
+          <template v-else>
+            <i class="inline-block q-mr-lg"></i>
           </template>
 
           <label class="text-black text-subtitle2"
@@ -38,18 +44,24 @@
                     v-bind:disabled="data.enable === false">
         <template v-if="data.iconType === 'Zyy Icons'">
           <i v-bind:class="{[data.menuIcon]: true }"
-              class="text-h6 text-weight-bolder text-grey-7"></i>
-        </template>
-        <template v-if="data.iconType === 'Material Icons'">
-          <q-icon v-bind:name="data.menuIcon"
-                  class="text-h6 text-weight-bolder text-grey-7"></q-icon>
-        </template>
-        <template v-else-if="data.iconType === 'Element-UI Icons'">
-          <i v-bind:class="{[data.menuIcon]: true }"
-             class="text-h6 text-weight-bolder text-grey-7"></i>
+             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>
 
-        <label class="text-black text-subtitle2">{{ data.menuName }}</label>
+        <template v-else-if="data.iconType === 'Material Icons'">
+          <q-icon v-bind:name="data.menuIcon"
+                  class="q-mr-md text-h6 text-weight-bolder text-grey-7"></q-icon>
+        </template>
+
+        <template v-else-if="data.iconType === 'Element-UI Icons'">
+          <i v-bind:class="{[data.menuIcon]: true }"
+             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
+        </template>
+
+        <template v-else>
+          <i class="inline-block q-mr-lg"></i>
+        </template>
+
+        <label class="text-black text-subtitle2 cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
     </template>
 
@@ -97,12 +109,6 @@ export default {
 
       background: var(--q-color-primary);
     }
-  }
-
-  label {
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 16px;
   }
 }
 </style>
