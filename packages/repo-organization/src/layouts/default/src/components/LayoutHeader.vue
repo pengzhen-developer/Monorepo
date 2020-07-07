@@ -9,8 +9,7 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span v-if="$q.screen.gt.sm"
-                class="q-ml-xl q-mt-md q-mr-lg text-h6 text-grey-7 text-weight-medium animated jump-down">
+          <span class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>

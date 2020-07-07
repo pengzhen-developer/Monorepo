@@ -9,7 +9,7 @@
     <q-drawer class="layout-drawer"
               side="left"
               show-if-above
-              v-bind:width="260"
+              v-bind:width="240"
               v-bind:breakpoint="0"
               v-model="showDrawerModel">
       <LayoutNav></LayoutNav>
