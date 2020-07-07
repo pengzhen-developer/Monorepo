@@ -39,7 +39,7 @@
                        align="center"
                        width="150">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="redText(scope.$index, tableData)"
+          <el-button @click.native.prevent="redText(scope.row)"
                      type="text"
                      size="small">
             开发文档
@@ -78,8 +78,8 @@ export default {
       })
     },
 
-    redText(index, rows) {
-      console.log(index, rows)
+    redText(row) {
+      window.open(row.pdfUrl)
     },
 
     showAndHid(row) {
