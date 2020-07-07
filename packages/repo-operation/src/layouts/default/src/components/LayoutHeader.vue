@@ -8,14 +8,10 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span v-if="$q.screen.gt.sm"
-                class="q-ml-xl q-mt-md q-mr-lg text-h6 text-grey-7 text-weight-medium animated jump-down">
+          <span class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>
-      </div>
-
-      <div class="flex items-center">
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
@@ -28,56 +24,16 @@
                             v-bind:index="menu.id"
                             v-bind:router="menu.id"
                             v-bind:disabled="menu.enable === false">
-                <template v-if="menu.iconType === 'Zyy Icons'">
-                  <i v-bind:class="{[menu.menuIcon]: true }"
-                     class="q-mr-sm text-h6 text-weight-bolder zyy-icon"></i>
-                </template>
-                <template v-if="menu.iconType === 'Material Icons'">
-                  <q-icon v-bind:name="menu.menuIcon"
-                          class="q-mr-sm text-h6 text-weight-bolder"></q-icon>
-                </template>
-                <template v-else-if="menu.iconType === 'Element-UI Icons'">
-                  <i v-bind:class="{[menu.menuIcon]: true }"
-                     class="q-mr-sm text-h6 text-weight-bolder"></i>
-                </template>
-                <label v-if="$q.screen.gt.md"
-                       class="text-subtitle2 cursor-pointer"
+                <label class="text-subtitle2 cursor-pointer"
                        slot="title">{{ menu.menuName }}
                 </label>
               </el-menu-item>
             </el-menu>
           </div>
         </transition>
-        <!-- 消息通知 -->
-        <!-- <q-btn class="q-mr-sm"
-               flat
-               round
-               dense
-               color="grey-7">
-          <q-badge color="primary"
-                   floating>3</q-badge>
-          <i class="text-h6 el-icon-message"></i>
-          <q-tooltip>您有 3 条未读消息</q-tooltip>
-          <q-menu>
-            <q-list paddingg>
-              <q-item clickable
-                      v-close-popup>第 1 条消息</q-item>
-              <q-item clickable
-                      v-close-popup>第 2 条消息</q-item>
-              <q-item clickable
-                      v-close-popup>第 3 条消息</q-item>
-            </q-list>
-          </q-menu>
-        </q-btn> -->
+      </div>
 
-        <!-- 菜单控制 -->
-        <q-btn class="q-mr-sm"
-               flat
-               round
-               dense
-               icon="menu"
-               color="grey-7"
-               v-on:click="toggleDrawer" />
+      <div class="flex items-center">
 
         <!-- 用户头像 -->
         <q-btn class="q-mr-sm"
@@ -231,7 +187,6 @@ export default {
 ::v-deep .el-menu--horizontal > .el-menu-item {
   &.is-active {
     color: var(--q-color-primary);
-    border-bottom: 0;
   }
 
   padding: 0;

@@ -22,10 +22,6 @@
                class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
           </template>
 
-          <template v-else>
-            <i class="inline-block q-mr-lg"></i>
-          </template>
-
           <label class="text-black text-subtitle2"
                  slot="title">{{ data.menuName }}</label>
         </template>
@@ -44,7 +40,7 @@
                     v-bind:disabled="data.enable === false">
         <template v-if="data.iconType === 'Zyy Icons'">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-bolder text-grey-7 zyy-icon"></i>
+             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>
 
         <template v-else-if="data.iconType === 'Material Icons'">
@@ -55,10 +51,6 @@
         <template v-else-if="data.iconType === 'Element-UI Icons'">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-        </template>
-
-        <template v-else>
-          <i class="inline-block q-mr-lg"></i>
         </template>
 
         <label class="text-black text-subtitle2 cursor-pointer">{{ data.menuName }}</label>
@@ -88,6 +80,14 @@ export default {
       background: #f9f9f9;
     }
   }
+
+  i {
+    width: 28px;
+  }
+
+  .el-menu-item {
+    padding-left: 64px !important;
+  }
 }
 
 .el-menu-item {
@@ -97,14 +97,6 @@ export default {
 
   &.is-active {
     background: rgba(0, 166, 206, 0.1) !important;
-
-    i {
-      color: var(--q-color-primary) !important;
-    }
-
-    label {
-      color: var(--q-color-primary) !important;
-    }
 
     &::before {
       content: '';
@@ -117,6 +109,10 @@ export default {
 
       background: var(--q-color-primary);
     }
+  }
+
+  i {
+    width: auto;
   }
 }
 </style>

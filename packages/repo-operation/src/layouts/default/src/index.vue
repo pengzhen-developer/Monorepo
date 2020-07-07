@@ -10,8 +10,23 @@
               side="left"
               show-if-above
               v-bind:width="240"
+              v-bind:breakpoint="0"
               v-model="showDrawerModel">
       <LayoutNav></LayoutNav>
+
+      <div class="q-mini-drawer-hide absolute-center"
+           style="left: unset; right: -24px;"
+           v-on:click="toggleDrawer">
+
+        <q-btn class="bg-grey-4"
+               style="width: 16px; height: 128px; border-radius: 5px 128px 128px 5px;"
+               flat
+               v-bind:ripple="false">
+          <q-icon class="absolute text-grey-6"
+                  style="left: -4px;"
+                  v-bind:name="showDrawerModel ? 'chevron_left' : 'chevron_right'"></q-icon>
+        </q-btn>
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -129,6 +144,10 @@ export default {
   .layout-drawer {
     ::v-deep .q-drawer {
       box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    ::v-deep .q-layout--prevent-focus {
+      visibility: visible;
     }
   }
 }
