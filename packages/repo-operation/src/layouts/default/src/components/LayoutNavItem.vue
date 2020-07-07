@@ -83,6 +83,7 @@ export default {
 
   i {
     width: 28px;
+    display: inline-block;
   }
 
   .el-menu-item {
@@ -112,7 +113,8 @@ export default {
   }
 
   i {
-    width: auto;
+    width: 28px;
+    display: inline-block;
   }
 }
 </style>
