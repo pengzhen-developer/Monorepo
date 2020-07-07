@@ -9,7 +9,8 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
+          <span
+                class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>
@@ -20,8 +21,11 @@
         <q-btn class="q-mr-sm"
                flat
                round>
-          <q-avatar size="26px">
-            <img src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg">
+          <q-avatar size="32px">
+            <img v-if='user.icon'
+                 :src="user.icon">
+            <div class="avatar"
+                 v-else>{{username}}</div>
           </q-avatar>
 
           <q-tooltip>
@@ -66,6 +70,9 @@ export default {
   computed: {
     toggleDrawer() {
       return this.provideToggleDrawer
+    },
+    username() {
+      return this.user?.username.substr(0, 1).toUpperCase()
     }
   },
 
@@ -76,15 +83,26 @@ export default {
   methods: {
     signOut() {
       Util.user.removeUserInfo()
-      Util.referrer.replaceToReferrer()
+      Util.referrer.redirectToReferrer()
     },
 
     goWebSite() {
-      Util.referrer.replaceToReferrer()
+      Util.referrer.redirectToReferrer('_blank')
     }
   }
 }
 </script>
 
 <style>
+.avatar {
+  color: #fff;
+  background: var(--q-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  line-height: 1;
+}
 </style>

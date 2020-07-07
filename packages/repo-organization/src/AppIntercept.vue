@@ -60,13 +60,13 @@ export default {
       const param = { cdkey: this.cdKey }
 
       this.auth(param)
-        .then((res) => {
+        .then(res => {
           Util.user.setUserCDKey(this.cdKey)
           Util.user.setUserInfo(res.data)
 
           this.$router.push('/layout')
         })
-        .catch((res) => {
+        .catch(res => {
           this.cdKeyError(res.msg)
         })
         .finally(() => {
@@ -89,7 +89,7 @@ export default {
 
       const requestApi = isMock ? mockPath : serverPath
 
-      return Peace.http.post(requestApi, params).then((res) => {
+      return Peace.http.post(requestApi, params).then(res => {
         return res
       })
     },
@@ -100,7 +100,7 @@ export default {
       this.tips = reason
 
       setTimeout(() => {
-        Util.referrer.replaceToReferrer()
+        Util.referrer.redirectToReferrer()
       }, 3000)
     }
   }
