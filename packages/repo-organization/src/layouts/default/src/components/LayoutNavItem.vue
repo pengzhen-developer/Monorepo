@@ -22,10 +22,6 @@
                class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
           </template>
 
-          <template v-else>
-            <i class="inline-block q-mr-lg"></i>
-          </template>
-
           <label class="text-black text-subtitle2"
                  slot="title">{{ data.menuName }}</label>
         </template>
@@ -57,10 +53,6 @@
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>
 
-        <template v-else>
-          <i class="inline-block q-mr-lg"></i>
-        </template>
-
         <label class="text-black text-subtitle2 cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
     </template>
@@ -88,6 +80,14 @@ export default {
       background: #f9f9f9;
     }
   }
+
+  i {
+    width: 28px;
+  }
+
+  .el-menu-item {
+    padding-left: 64px !important;
+  }
 }
 
 .el-menu-item {
@@ -109,6 +109,10 @@ export default {
 
       background: var(--q-color-primary);
     }
+  }
+
+  i {
+    width: auto;
   }
 }
 </style>
