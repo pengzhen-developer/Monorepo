@@ -9,7 +9,7 @@
         <template slot="title">
           <template v-if="data.iconType === 'Zyy Icons'">
             <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
+               class="q-mr-md text-h6 text-weight-bolder text-grey-7 zyy-icon"></i>
           </template>
 
           <template v-else-if="data.iconType === 'Material Icons'">
@@ -83,6 +83,7 @@ export default {
 
   i {
     width: 28px;
+    display: inline-block;
   }
 
   .el-menu-item {
@@ -112,7 +113,8 @@ export default {
   }
 
   i {
-    width: auto;
+    width: 28px;
+    display: inline-block;
   }
 }
 </style>

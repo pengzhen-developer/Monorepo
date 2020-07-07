@@ -17,38 +17,6 @@
       </div>
 
       <div class="flex items-center">
-        <!-- 消息通知 -->
-        <!-- <q-btn class="q-mr-sm"
-               flat
-               round
-               dense
-               color="grey-7"
-               v-show="false">
-          <q-badge color="primary"
-                   floating>3</q-badge>
-          <i class="text-h6 el-icon-message"></i>
-          <q-tooltip>您有 3 条未读消息</q-tooltip>
-          <q-menu>
-            <q-list paddingg>
-              <q-item clickable
-                      v-close-popup>第 1 条消息</q-item>
-              <q-item clickable
-                      v-close-popup>第 2 条消息</q-item>
-              <q-item clickable
-                      v-close-popup>第 3 条消息</q-item>
-            </q-list>
-          </q-menu>
-        </q-btn> -->
-
-        <!-- 菜单控制 -->
-        <q-btn class="q-mr-sm"
-               flat
-               round
-               dense
-               icon="menu"
-               color="grey-7"
-               v-on:click="toggleDrawer" />
-
         <!-- 用户头像 -->
         <q-btn class="q-mr-sm"
                flat
