@@ -39,8 +39,8 @@
         <q-btn class="q-mr-sm"
                flat
                round>
-          <q-avatar size="26px">
-            <img src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg">
+          <q-avatar size="32px">
+            <div class="user-avatar">{{username}}</div>
           </q-avatar>
 
           <q-tooltip>
@@ -85,6 +85,9 @@ export default {
   },
 
   computed: {
+    username() {
+      return this.user.username ? this.user.username.substr(0, 1).toUpperCase():''
+    },
     toggleDrawer() {
       return this.provideToggleDrawer
     },
@@ -191,5 +194,16 @@ export default {
 
   padding: 0;
   margin: 0 20px;
+}
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--q-color-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 32px;
+  text-align: center;
 }
 </style>

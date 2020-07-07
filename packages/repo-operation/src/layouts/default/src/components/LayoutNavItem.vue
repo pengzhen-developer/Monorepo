@@ -7,9 +7,9 @@
                   v-bind:disabled="data.enable === false">
 
         <template slot="title">
-          <template v-if="data.iconType === 'Zyy Icons'">
+          <template v-if="data.iconType === 'Local Icons'">
             <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-bolder text-grey-7 zyy-icon"></i>
+               class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
           </template>
 
           <template v-else-if="data.iconType === 'Material Icons'">
@@ -38,7 +38,7 @@
                     v-bind:index="data.id"
                     v-bind:router="data.id"
                     v-bind:disabled="data.enable === false">
-        <template v-if="data.iconType === 'Zyy Icons'">
+        <template v-if="data.iconType === 'Local Icons'">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>

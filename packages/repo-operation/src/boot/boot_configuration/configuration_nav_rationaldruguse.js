@@ -20,8 +20,8 @@ export default [
     menuRouteName: '4-1',
     menuName: '审方配置',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigManagement',
-    menuIcon: 'zyy-sfpz',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-sfpz',
+    iconType: 'Local Icons',
     enable: true,
     closable: true
   },
@@ -33,8 +33,8 @@ export default [
     menuRoute: '4-2',
     menuName: '药师审核',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'Customer/PharmacistCustomer',
-    menuIcon: 'zyy-ysgl',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-ysgl',
+    iconType: 'Local Icons',
     enable: true,
     closable: true
   },
@@ -45,8 +45,8 @@ export default [
     menuRoute: '4-3',
     menuName: '处方管理',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'PrescriptionList/PrescriptionList',
-    menuIcon: 'zyy-cfgl',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-cfgl',
+    iconType: 'Local Icons',
     enable: true,
     closable: true
   }

@@ -20,8 +20,8 @@ export default [
     menuRouteName: null,
     menuName: '机构管理',
     menuPath: null,
-    menuIcon: 'zyy-jggl',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-jggl',
+    iconType: 'Local Icons',
     enable: null,
     closable: null
   },
@@ -58,8 +58,8 @@ export default [
     menuRoute: null,
     menuName: '审核管理',
     menuPath: null,
-    menuIcon: 'zyy-shenhe',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-shenhe',
+    iconType: 'Local Icons',
     enable: null,
     closable: null
   },
@@ -95,8 +95,8 @@ export default [
     menuRoute: null,
     menuName: '基础数据',
     menuPath: null,
-    menuIcon: 'zyy-jcsj',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-jcsj',
+    iconType: 'Local Icons',
     enable: null,
     closable: null
   },
@@ -179,8 +179,8 @@ export default [
     menuRoute: null,
     menuName: '平台日志',
     menuPath: null,
-    menuIcon: 'zyy-ptrz',
-    iconType: 'Zyy Icons',
+    menuIcon: 'zyy-icon zyy-ptrz',
+    iconType: 'Local Icons',
     enable: null,
     closable: null
   },
