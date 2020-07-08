@@ -673,5 +673,17 @@ export default [
     iconType: null,
     enable: true,
     closable: true
+  },
+  {
+    id: '11-11-5',
+    parentId: '11-11',
+    menuRouteName: '部门管理',
+    menuRoute: '部门管理',
+    menuName: '部门管理',
+    menuPath: process.env.VUE_APP_PRESCRIPTION_SITE + 'Department/Department',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
   }
 ]
