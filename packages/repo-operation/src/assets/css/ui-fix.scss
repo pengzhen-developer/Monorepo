@@ -1,6 +1,10 @@
-.el-button--mini,
 .el-table--mini {
   font-size: 14px !important;
+}
+
+.el-button--mini,
+.el-button--mini.is-round {
+  padding: 6px 16px;
 }
 
 .el-table th {
