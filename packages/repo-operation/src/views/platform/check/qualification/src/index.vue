@@ -34,7 +34,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label label-width="0">
-        <el-button type="primary" icon="el-icon-search" v-on:click="get">查询</el-button>
+        <el-button type="primary" v-on:click="get">查询</el-button>
       </el-form-item>
     </el-form>
 
