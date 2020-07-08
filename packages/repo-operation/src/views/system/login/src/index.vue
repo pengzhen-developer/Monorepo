@@ -16,8 +16,7 @@
           <el-input class="q-mb-md"
                     v-model.trim="model.username"
                     placeholder="请输入用户名"
-                    maxlength="11"
-                    minlength="11">
+                    maxlength="30">
             <template slot="prepend">
               <q-icon v-bind:name="usernameImage"
                       size="28px" />
@@ -32,8 +31,7 @@
                     show-password
                     v-model.trim="model.password"
                     placeholder="请输入密码"
-                    maxlength="36"
-                    minlength="6">
+                    maxlength="30">
             <template slot="prepend">
               <q-icon v-bind:name="passwordImage"
                       size="28px" />
@@ -55,7 +53,7 @@
     </div>
 
     <div class="fixed-bottom text-center text-white text-subtitle2 q-mb-md">
-      全息云通健康科技（武汉）有限公司<br/>鄂ICP备19008514
+      全息云通健康科技（武汉）有限公司<br />鄂ICP备19008514
     </div>
   </div>
 </template>
