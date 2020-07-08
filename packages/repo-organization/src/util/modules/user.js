@@ -54,6 +54,12 @@ export const getUserInfo = () => {
 export const removeUserInfo = () => {
   Peace.cache.localStorage.remove(USER_INFO)
   Peace.cache.localStorage.remove(USER_CD_KEY)
+
+  // 请查看 boot/boot_configuration/index.js
+
+  // window.open() 会传递 session
+  // 在退出登陆时，清除 ORIGINAL_HREF，确保下次进入的是控制台
+  window.sessionStorage.removeItem('ORIGINAL_HREF')
 }
 
 /**
@@ -68,8 +74,8 @@ export const replaceToLogin = (referrer = '') => {
   return $peace.$router.push({
     name: '/login',
     query: {
-      referrer: referrer || $peace.$router.history.current.fullPath
-    }
+      referrer: referrer || $peace.$router.history.current.fullPath,
+    },
   })
 }
 
@@ -91,5 +97,5 @@ export default {
   removeUserInfo,
   isSignIn,
 
-  replaceToLogin
+  replaceToLogin,
 }

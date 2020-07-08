@@ -32,7 +32,7 @@
             <span>{{ user.username }}，你好</span>
           </q-tooltip>
 
-          <q-popup-proxy>
+          <q-popup-proxy v-if="showSignOut">
             <q-list dense
                     bordered
                     padding
@@ -73,6 +73,9 @@ export default {
     },
     username() {
       return this.user?.username.substr(0, 1).toUpperCase()
+    },
+    showSignOut() {
+      return !window.sessionStorage.getItem('ORIGINAL_HREF')
     }
   },
 
