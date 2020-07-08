@@ -157,13 +157,13 @@ export default [
     enable: true,
     closable: true
   },
-  
+
   {
     id: '3-6',
     parentId: '3',
     menuRoute: null,
     menuRouteName: null,
-    menuName: '业务管理',
+    menuName: '业务订单',
     menuPath: null,
     menuIcon: 'zyy-icon zyy-ywgl',
     iconType: 'Local Icons',
@@ -325,5 +325,5 @@ export default [
     iconType: null,
     enable: true,
     closable: true
-  },
+  }
 ]
