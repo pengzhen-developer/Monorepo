@@ -61,7 +61,14 @@ export const removeUserInfo = () => {
   // 在退出登陆时，清除 ORIGINAL_HREF，确保下次进入的是控制台
   window.sessionStorage.removeItem('ORIGINAL_HREF')
 }
-
+/**
+ * 清除站点缓存（缓存）
+ *
+ * @returns
+ */
+export const removeOriginalHref = () => {
+  window.sessionStorage.removeItem('ORIGINAL_HREF')
+}
 /**
  * 重定向到登录页，并且记录当前页面地址
  * 请注意，此方法只记录 url 参数
@@ -74,8 +81,8 @@ export const replaceToLogin = (referrer = '') => {
   return $peace.$router.push({
     name: '/login',
     query: {
-      referrer: referrer || $peace.$router.history.current.fullPath,
-    },
+      referrer: referrer || $peace.$router.history.current.fullPath
+    }
   })
 }
 
@@ -98,4 +105,5 @@ export default {
   isSignIn,
 
   replaceToLogin,
+  removeOriginalHref
 }

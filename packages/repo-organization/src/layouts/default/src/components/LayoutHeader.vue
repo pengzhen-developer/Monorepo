@@ -9,8 +9,7 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span
-                class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
+          <span class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>
@@ -90,6 +89,7 @@ export default {
     },
 
     goWebSite() {
+      Util.user.removeOriginalHref()
       Util.referrer.redirectToReferrer('_blank')
     }
   }
