@@ -38,7 +38,6 @@
 <script>
 import Service from '.././service'
 import Peace from '@src/library'
-import Util from '@src/util'
 
 export default {
   data() {
@@ -69,18 +68,12 @@ export default {
           }
           Service.changePwd(params).then((res) => {
             Peace.util.success(res.msg)
-            this.signOut()
-            // this.$emit('onSucess')
+            this.$emit('onSucess')
           })
         } else {
           return false
         }
       })
-    },
-
-    signOut() {
-      Util.user.removeUserInfo()
-      Util.referrer.redirectToReferrer()
     },
 
     onCancel() {
