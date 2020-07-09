@@ -22,7 +22,7 @@
     <div class="q-mb-md">
       <h4>使用中的产品</h4>
       <div class="row q-col-gutter-md">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
              v-for="product in productList"
              v-bind:key="product.id">
           <ProductItem v-bind:serviceName="product.serviceName"

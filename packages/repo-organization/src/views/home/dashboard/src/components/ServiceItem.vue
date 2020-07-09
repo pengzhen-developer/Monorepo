@@ -127,7 +127,7 @@ export default {
     // flex  平均分布， 且支持换行
     dispalyFeatures() {
       // 定义每行最大 item
-      const lineMaxCount = 2
+      const lineMaxCount = 3
       // 求剩余空白行
       const remainingCount = this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
       // 求剩余空白行数组，并添加特殊标识
@@ -156,7 +156,7 @@ export default {
   padding: 24px 24px 12px 24px;
   margin: 0 0 16px 0;
   border-radius: 4px;
-  min-height: 174px;
+  min-height: 144px;
 
   &:hover {
     cursor: pointer;
@@ -239,13 +239,12 @@ export default {
 
   .content {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
 
     .feature-item {
       display: flex;
       align-items: center;
-      width: 50%;
+      width: 33.33%;
       margin: 0 0 12px 0;
 
       .dash {

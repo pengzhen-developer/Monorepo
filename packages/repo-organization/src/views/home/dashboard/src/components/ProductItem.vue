@@ -31,7 +31,8 @@ export default {
   margin: 0 0 16px 0;
   border-radius: 4px;
   overflow: hidden;
-  min-height: 174px;
+  min-height: 144px;
+
   &:hover {
     cursor: pointer;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
