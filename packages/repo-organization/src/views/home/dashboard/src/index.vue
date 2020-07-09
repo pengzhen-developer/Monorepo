@@ -3,7 +3,7 @@
     <div class="q-mb-md">
       <h4>平台SaaS服务</h4>
       <div class="row q-col-gutter-md">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3"
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
              v-for="service in serviceList"
              v-bind:key="service.id">
           <ServiceItem v-bind:serviceName="service.serviceName"
@@ -22,7 +22,7 @@
     <div class="q-mb-md">
       <h4>使用中的产品</h4>
       <div class="row q-col-gutter-md">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
              v-for="product in productList"
              v-bind:key="product.id">
           <ProductItem v-bind:serviceName="product.serviceName"
@@ -65,7 +65,7 @@ export default {
 
   methods: {
     getServiceBaseInfo() {
-      Service.getBaseInfo().then(res => {
+      Service.getBaseInfo().then((res) => {
         this.serviceList = res.data.serviceList
         this.productList = res.data.useService
       })
@@ -98,7 +98,7 @@ export default {
 
     doApply(service) {
       const params = { serviceId: service.id }
-      Service.doApply(params).then(res => {
+      Service.doApply(params).then((res) => {
         Peace.util.success(res.msg)
 
         this.getServiceBaseInfo()
@@ -113,13 +113,9 @@ export default {
         { serviceName: '合理用药管理', serviceType: 2, config: 'rationaldruguse' },
         { serviceName: '药品供应管理端', serviceType: 4, config: 'drugsupplie' }
       ]
-      const config = configMap.find(
-        item => item.serviceType == product.serviceType || item.serviceName == product.serviceName
-      ).config
+      const config = configMap.find((item) => item.serviceType == product.serviceType || item.serviceName == product.serviceName).config
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
-      window.open(
-        `${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`
-      )
+      window.open(`${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`)
     }
   }
 }

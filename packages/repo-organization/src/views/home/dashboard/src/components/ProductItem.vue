@@ -31,7 +31,7 @@ export default {
   margin: 0 0 16px 0;
   border-radius: 4px;
   overflow: hidden;
-  min-height: 138px;
+  min-height: 174px;
   &:hover {
     cursor: pointer;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
@@ -42,7 +42,7 @@ export default {
     justify-content: center;
     align-items: center;
 
-    padding: 24px 0;
+    padding: 48px 0;
     background: var(--q-color-primary);
 
     .el-image {

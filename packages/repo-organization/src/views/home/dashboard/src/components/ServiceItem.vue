@@ -156,7 +156,7 @@ export default {
   padding: 24px 24px 12px 24px;
   margin: 0 0 16px 0;
   border-radius: 4px;
-  min-height: 138px;
+  min-height: 174px;
 
   &:hover {
     cursor: pointer;
