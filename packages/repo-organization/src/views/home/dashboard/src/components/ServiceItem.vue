@@ -129,8 +129,7 @@ export default {
       // 定义每行最大 item
       const lineMaxCount = 2
       // 求剩余空白行
-      const remainingCount =
-        this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
+      const remainingCount = this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
       // 求剩余空白行数组，并添加特殊标识
       const remainingArray = new Array(remainingCount).fill('dispaly-none')
       // 合并空白行数组
@@ -313,6 +312,7 @@ export default {
 
     &:hover {
       background: var(--q-color-primary-light-9);
+      color: #fff;
     }
   }
 }
