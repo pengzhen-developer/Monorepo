@@ -35,18 +35,18 @@
 
       <div class="flex items-center">
 
-        <!-- 用户头像 -->
+        <!-- 用户名称 -->
+        <span class="q-mr-sm">
+          {{ user.username }}
+        </span>
+
+        <!-- 用户控制 -->
         <q-btn class="q-mr-sm"
                flat
-               round>
-          <q-avatar size="32px">
-            <div class="user-avatar">{{username}}</div>
-          </q-avatar>
-
-          <q-tooltip>
-            <span>{{ user.username }}，你好</span>
-          </q-tooltip>
-
+               round
+               dense
+               icon="keyboard_arrow_down"
+               color="grey-7">
           <q-popup-proxy>
             <q-list dense
                     bordered
@@ -86,7 +86,7 @@ export default {
 
   computed: {
     username() {
-      return this.user.username ? this.user.username.substr(0, 1).toUpperCase():''
+      return this.user.username ? this.user.username.substr(0, 1).toUpperCase() : ''
     },
     toggleDrawer() {
       return this.provideToggleDrawer
@@ -202,7 +202,7 @@ export default {
   background-color: var(--q-color-primary);
   font-size: 16px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
   line-height: 32px;
   text-align: center;
 }
