@@ -53,7 +53,7 @@
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>
 
-        <label class="text-black text-subtitle2 cursor-pointer">{{ data.menuName }}</label>
+        <label class="text-black text-caption cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
     </template>
 

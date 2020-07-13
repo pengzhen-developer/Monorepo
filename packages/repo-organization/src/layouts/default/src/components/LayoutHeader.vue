@@ -16,22 +16,20 @@
       </div>
 
       <div class="flex items-center">
-        <!-- 用户头像 -->
+
+        <!-- 用户名称 -->
+        <span class="q-mr-sm">
+          {{ user.username }}
+        </span>
+
+        <!-- 用户控制 -->
         <q-btn class="q-mr-sm"
                flat
-               round>
-          <q-avatar size="32px">
-            <img v-if='user.icon'
-                 :src="user.icon">
-            <div class="avatar"
-                 v-else>{{username}}</div>
-          </q-avatar>
-
-          <q-tooltip>
-            <span>{{ user.username }}，你好</span>
-          </q-tooltip>
-
-          <q-popup-proxy v-if="showSignOut">
+               round
+               dense
+               icon="keyboard_arrow_down"
+               color="grey-7">
+          <q-popup-proxy>
             <q-list dense
                     bordered
                     padding
