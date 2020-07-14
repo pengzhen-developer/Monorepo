@@ -149,9 +149,14 @@ export default {
         const node = this.$route?.meta
         const root = this.deepQueryRoot(this.menuList, node)
 
-        const menuNode = this.$el.querySelector(`li[router="${root.id}"]`)
+        if (root) {
+          const menuNode = this.$el.querySelector(`li[router="${root?.id}"]`)
+          menuNode?.click()
+        } else {
+          const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
 
-        menuNode?.click()
+          firstMenuNode?.click()
+        }
       }
     },
 

@@ -73,6 +73,33 @@ export default function generateRoutes(configuration) {
     }
   })
 
+  configuration.routes.nihilityNavMenu.forEach((item) => {
+    if (item.menuPath && item.menuRoute && item.menuRouteName) {
+      let component = null
+
+      if (Peace.validate.isUrl(item.menuPath)) {
+        component = () => import(`@src/views/iframe/index.js`)
+      } else {
+        component = () => import(`@src/${item.menuPath}/index.js`)
+      }
+
+      dynamicLayoutNavRoutes.push({
+        path: item.menuRoute,
+        name: item.menuRouteName,
+        meta: item,
+        component: component
+      })
+    } else {
+      const notFound = () => import(`@src/views/exception/404`)
+
+      dynamicLayoutNavRoutes.push({
+        path: 'not-found',
+        name: 'not-found',
+        component: notFound
+      })
+    }
+  })
+
   configuration.routes.hybridNavMenu.forEach((item) => {
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
       const component = () => import(`@src/${item.menuPath}/index.js`)

@@ -64,6 +64,8 @@ export default {
       provideToggleDrawer: this.toggleDrawer,
       provdeParentMenuSelect: this.parentMenuSelect,
       provdeMenuSelect: this.menuSelect,
+      provideAddTab: this.addTab,
+      provideGetTab: this.getTab,
 
       // provide property
       // provide function for computed
@@ -126,6 +128,21 @@ export default {
       this.$store.commit('tabs/addTab', currentMenu)
       // 选中当前 tab
       this.$store.commit('tabs/selectTab', currentMenu)
+    },
+
+    getTab(index) {
+      const nihilityNavMenu = Peace.util.deepClone(this.configuration.routes.nihilityNavMenu)
+
+      const currentMenu = nihilityNavMenu.find((menu) => menu.id === index)
+
+      return currentMenu
+    },
+
+    addTab(tab) {
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', tab)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', tab)
     }
   }
 }
