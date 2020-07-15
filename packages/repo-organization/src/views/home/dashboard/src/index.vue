@@ -28,7 +28,7 @@
           <ProductItem v-bind:serviceName="product.serviceName"
                        v-bind:img="product.img"
                        v-bind:url="product.url"
-                       v-on:click.native="redirectSerivceSite(product)">
+                       v-on:click.native="isExistService(product)">
           </ProductItem>
         </div>
       </div>
@@ -104,7 +104,12 @@ export default {
         this.getServiceBaseInfo()
       })
     },
-
+    isExistService(product) {
+      const params = { serviceId: product.serviceId, accountId: product.accountId }
+      Service.isExistService(params).then(() => {
+        this.redirectSerivceSite(product)
+      })
+    },
     redirectSerivceSite(product) {
       const cdKey = Util.user.getUserCDKey()
       const configMap = [

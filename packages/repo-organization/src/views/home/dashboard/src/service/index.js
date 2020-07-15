@@ -38,4 +38,22 @@ export default {
       return res
     })
   },
+  /**
+   * 跳转前判断服务是否启用接口-V0.3.0
+   *
+   * @param {*} params
+   */
+  isExistService(params) {
+    const isMock = false
+
+    const apiPath = 'console/Service/isExistService'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  }
 }
