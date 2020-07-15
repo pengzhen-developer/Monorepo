@@ -61,9 +61,30 @@ export const replaceToRoot = () => {
   })
 }
 
+/**
+ * 跳转医生工作台
+ *
+ */
+export const redirectToDoctorWorkbench = () => {
+  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_DOCTOR_WORKBENCH_SITE
+
+  window.open(CONSOLE_DOCTOR_WORKBENCH_PATH)
+}
+/**
+ * 跳转药师工作台
+ *
+ */
+export const redirectTOPharmacistWorkbench = () => {
+  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_PHARMACIST_WORKBENCH_SITE
+
+  window.open(CONSOLE_PHARMACIST_WORKBENCH_PATH)
+}
+
 export default {
   replaceToLogin,
   replaceToReffer,
   replaceToHome,
-  replaceToRoot
+  replaceToRoot,
+  redirectToDoctorWorkbench,
+  redirectTOPharmacistWorkbench
 }

@@ -7,7 +7,13 @@
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="./assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
-
+      <div class="login">
+        <el-button class="button"
+                   type="primary"
+                   plain>登录</el-button>
+        <el-button type="primary"
+                   class="button">注册</el-button>
+      </div>
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href="/">首页</a></li>
@@ -33,15 +39,7 @@
             </ul>
           </li>
           <li><a href="#contact">关于我们</a></li>
-          <li>
-            <el-button>登录</el-button>
-          </li>
-          <li>
-            <el-button type="primary">注册</el-button>
-          </li>
-
         </ul>
-
       </nav><!-- .nav-menu -->
 
     </div>
@@ -52,5 +50,18 @@
 export default {}
 </script>
 
-<style>
+<style scoped>
+.login {
+  height: 45px;
+  float: right;
+  margin-left: 30px;
+  line-height: 45px;
+}
+.button {
+  height: 40px;
+  width: 80px;
+}
+button:active {
+  border: none;
+}
 </style>
