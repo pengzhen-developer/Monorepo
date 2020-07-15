@@ -143,7 +143,7 @@ export default {
   margin: 0 0 25px 0;
 
   &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
+    border-bottom: 1px solid $--color-primary;
   }
 
   &.is-required:not(.is-no-asterisk) > .el-form-item__label:before,

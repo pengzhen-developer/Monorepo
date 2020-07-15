@@ -414,7 +414,7 @@ export default {
 
             .terms-item {
               font-size: 12px;
-              color: var(--q-color-primary);
+              color: $--color-primary;
 
               &:hover {
                 cursor: pointer;
@@ -438,7 +438,7 @@ export default {
   margin: 0 0 25px 0;
 
   &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
+    border-bottom: 1px solid $--color-primary;
   }
 
   .el-form-item__label {

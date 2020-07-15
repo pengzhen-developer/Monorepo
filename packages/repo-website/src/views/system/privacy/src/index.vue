@@ -1,0 +1,926 @@
+<template>
+  <div class="layout">
+
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:10pt 0pt 10pt; orphans:0; text-align:center; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">隐私政策</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:Calibri; font-size:10.5pt">("</span><span
+            style="font-family:宋体; font-size:10.5pt">我们</span><span
+            style="font-family:Calibri; font-size:10.5pt">")</span><span
+            style="font-family:宋体; font-size:10.5pt">非常重视用户的隐私和个人信息保护。您在使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务时，我们可能会收集和使用您的相关信息。我们希望通过《</span><span
+            style="font-family:宋体; font-size:10.5pt">全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">隐私政策》</span><span
+            style="font-family:Calibri; font-size:10.5pt">("</span><span
+            style="font-family:宋体; font-size:10.5pt">本隐私政策</span><span
+            style="font-family:Calibri; font-size:10.5pt">")</span><span
+            style="font-family:宋体; font-size:10.5pt">向您说明我们在您使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务时如何收集、使用、保存、共享和转让这些信息，以及我们为您提供的访问、更新、删除和保护这些信息的方式。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">本隐私政策将帮助您了解以下内容</span><span
+            style="font-family:Calibri; font-size:10.5pt">:</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">目录</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">一、我们如何收集和使用您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">二、我们如何使用</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies
+      </span><span style="font-family:宋体; font-size:10.5pt">和同类技术</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">三、我们如何共享、转让、公开披露您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">四、我们如何保护和保存您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">五、您如何管理个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">六、未成年人的个人信息保护</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">七、通知和修订</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">八、如何联系我们</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">本隐私政策与您所使用的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">智药云平台服务以及该服务所包括的各种业务功能（以下统称“我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务”）息息相关，希望您在使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务前仔细阅读并确认您已经充分理解本隐私政策所写明的内容，并让您可以按照本隐私政策的指引做出您认为适当的选择。本隐私政策中涉及的相关术语，我们尽量以简明扼要的表述，并提供进一步说明的链接，以便您更好地理解。您使用或在我们更新本隐私政策后（我们会及时提示您更新的情况）继续使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务，即意味着您同意本隐私政策</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">含更新版本</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">内容，并且同意我们按照本隐私政策收集、使用、保存和共享您的相关信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">一、我们如何收集和使用您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span
+            style="font-family:宋体; font-size:10.5pt">个人信息是指以电子或者其他方式记录的能够单独或者与其他信息结合识别特定自然人身份或者反映特定自然人活动情况的各种信息。本隐私政策中涉及的个人信息包括：基本信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括个人姓名、生日、性别、住址、个人电话号码、电子邮箱</span><span
+            style="font-family:Calibri; font-size:10.5pt">);</span><span
+            style="font-family:宋体; font-size:10.5pt">个人身份信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括身份证等</span><span
+            style="font-family:Calibri; font-size:10.5pt">);</span><span
+            style="font-family:宋体; font-size:10.5pt">网络身份标识信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括系统账号、</span><span
+            style="font-family:Calibri; font-size:10.5pt">IP</span><span
+            style="font-family:宋体; font-size:10.5pt">地址、邮箱地址及与前述有关的密码、口令、口令保护答案</span><span
+            style="font-family:Calibri; font-size:10.5pt">);</span><span
+            style="font-family:宋体; font-size:10.5pt">个人上网记录</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括网站浏览记录、软件使用记录、点击记录</span><span
+            style="font-family:Calibri; font-size:10.5pt">);</span><span
+            style="font-family:宋体; font-size:10.5pt">个人常用设备信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括硬件型号、设备</span><span
+            style="font-family:Calibri; font-size:10.5pt">MAC</span><span
+            style="font-family:宋体; font-size:10.5pt">地址、操作系统类型、软件列表唯一设备识别码</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">如</span><span
+            style="font-family:Calibri; font-size:10.5pt">IMEI/android
+        ID/IDFA/OPENUDID/GUID</span><span style="font-family:宋体; font-size:10.5pt">、</span><span
+            style="font-family:Calibri; font-size:10.5pt">SIM</span><span
+            style="font-family:宋体; font-size:10.5pt">卡</span><span
+            style="font-family:Calibri; font-size:10.5pt">IMSI</span><span
+            style="font-family:宋体; font-size:10.5pt">信息等在内的描述个人常用设备基本情况的信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">));</span><span
+            style="font-family:宋体; font-size:10.5pt">个人位置信息</span><span
+            style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">包括行程信息、精准定位信息、经纬度等</span><span
+            style="font-family:Calibri; font-size:10.5pt">);</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span
+            style="font-family:宋体; font-size:10.5pt">个人敏感信息是指一旦泄露、非法提供或滥用可能危害人身和财产安全，极易导致个人名誉、身心健康受到损害或歧视性待遇等的个人信息，本隐私政策中涉及的个人敏感信息包括：您的财产信息、个人身份信息、网络身份识别信息等。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">我们仅会出于以下目的，收集和使用您的个人信息：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">一</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">您须授权我们收集和使用您个人信息的情形</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务包括一些核心功能，比如：医疗机构开展互联网医院服务、处方审核服务、处方流转服务、药品配送服务等。我们可能会收集、保存和使用下列与您有关的信息才能实现上述这些功能。如果您不提供相关信息，您将无法享受我们提供的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务。这些功能包括：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、实现互联网医院和处方管理服务所必须的功能</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）用户注册</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">您首先需要注册一个全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">账户成为全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">用户。当您注册时，您需要至少向我们提供您准备使用的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">账户名、密码、您本人的手机号码或者电子邮箱地址，我们将通过发送短信验证码或邮件的方式来验证您的身份是否有效。您的账户名为您的默认昵称，您可以修改补充您的昵称及您的相关信息，这些信息均属于您的“账户信息”。当您要基于平台申请互联网医院、处方管理服务等服务内容时，我们需要您提供所属机构的相关信息，并进行审核。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）平台服务信息展示和搜索</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">为了让您快速地找到您所需要的服务，我们可能会收集您使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的设备信息（包括设备名称、设备型号、设备识别码、操作系统和应用程序版本、语言设置、分辨率、服务提供商网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">ID</span><span
+            style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">PLMN</span><span
+            style="font-family:宋体; font-size:10.5pt">））、浏览器类型来为您提供商品信息展示的最优方式。我们也会为了不断改进和优化上述的功能来使用您的上述个人信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）客服与售后功能</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">我们的电话客服和售后功能会使用您的账号信息和订单信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、保障交易安全所必须的功能</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">为提高您使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务时系统的安全性，更准确地预防钓鱼网站欺诈和保护账户安全，我们可能会通过了解您的浏览信息、您常用的软件信息、设备信息等手段来判断您的账号风险，并可能会记录一些我们认为有风险的链接</span><span
+            style="font-family:Calibri; font-size:10.5pt">("URL")</span><span
+            style="font-family:宋体; font-size:10.5pt">；我们也会收集您的设备信息对于全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">系统问题进行分析、统计流量并排查可能存在的风险、在您选择向我们发送异常信息时予以排查。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">二</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">您充分知晓，以下情形中，我们收集、使用个人信息无需征得您的授权同意：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、与国家安全、国防安全有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、与公共安全、公共卫生、重大公共利益有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、与犯罪侦查、起诉、审判和判决执行等有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、出于维护个人信息主体或其他个人的生命、财产等重大合法权益但又很难得到本人同意的；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">、所收集的个人信息是个人信息主体或监护人自行向社会公众公开的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">、从合法公开披露的信息中收集的您的个人信息的，如合法的新闻报道、政府信息公开等渠道；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">7</span><span
+            style="font-family:宋体; font-size:10.5pt">、根据您的要求签订合同所必需的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">8</span><span
+            style="font-family:宋体; font-size:10.5pt">、用于维护所提供的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的安全稳定运行所必需的，例如发现、处置产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的故障；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">9</span><span
+            style="font-family:宋体; font-size:10.5pt">、为合法的新闻报道所必需的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">10</span><span
+            style="font-family:宋体; font-size:10.5pt">、学术研究机构基于公共利益开展统计或学术研究所必要，且对外提供学术研究或描述的结果时，对结果中所包含的个人信息进行去标识化处理的；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">11</span><span
+            style="font-family:宋体; font-size:10.5pt">、法律法规规定的其他情形。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">三</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">我们从第三方获得您个人信息的情形</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span
+            style="font-family:宋体; font-size:10.5pt">我们可能从第三方获取您授权共享的账户信息（头像、昵称），并在您同意本隐私政策后将您的第三方账户与您的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">账户绑定，使您可以通过第三方账户直接登录并使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务。我们会将依据与第三方的约定、对个人信息来源的合法性进行确认后，在符合相关法律和法规规定的前提下，使用您的这些个人信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">四</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">您个人信息使用的规则</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们会根据本隐私政策的约定并为实现我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务功能对所收集的个人信息进行使用。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、在收集您的个人信息后，我们将通过技术手段对数据进行去标识化处理，去标识化处理的信息将无法识别主体。请您了解并同意，在此情况下我们有权使用已经去标识化的信息；并在不透露您个人信息的前提下，我们有权对用户数据库进行分析并予以商业化的利用。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、请您注意，您在使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务时所提供的所有个人信息，除非您删除或通过系统设置拒绝我们收集，否则将在您使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务期间持续授权我们使用。在您注销账号时，我们将停止使用并删除您的个人信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们会对我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务使用情况进行统计，并可能会与公众或第三方共享这些统计信息，以展示我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的整体使用趋势。但这些统计信息不包含您的任何身份识别信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">、当我们展示您的个人信息时，我们会采用包括内容替换、匿名处理方式对您的信息进行脱敏，以保护您的信息安全。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">、当我们要将您的个人信息用于本隐私政策未载明的其它用途时，或基于特定目的收集而来的信息用于其他目的时，会通过您主动做出勾选的形式事先征求您的同意。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">二、我们如何使用</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">和同类技术</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">一</span><span
+            style="font-family:Calibri; font-size:10.5pt">)Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">的使用</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、为实现您联机体验的个性化需求，使您获得更轻松的访问体验。我们会在您的计算机或移动设备上发送一个或多个名为</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">的小数据文件，指定给您的</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies </span><span
+            style="font-family:宋体; font-size:10.5pt">是唯一的，它只能被将</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">发布给您的域中的</span><span
+            style="font-family:Calibri; font-size:10.5pt">Web</span><span
+            style="font-family:宋体; font-size:10.5pt">服务器读取。我们向您发送</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">是为了简化您重复登录的步骤，帮助判断您的登录状态以及账户或数据安全。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们不会将</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies </span><span
+            style="font-family:宋体; font-size:10.5pt">用于本隐私政策所述目的之外的任何用途。您可根据自己的偏好管理或删除</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">。您可以清除计算机上保存的所有</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">，大部分网络浏览器会自动接受</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">，但您通常可根据自己的需要来修改浏览器的设置以拒绝</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">；另外，您也可以清除软件内保存的所有</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">。但如果您这么做，您可能需要在每一次访问全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">网站时亲自更改用户设置，而且您之前所记录的相应信息也均会被删除，并且可能会对您所使用服务的安全性有一定影响。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">(</span><span
+            style="font-family:宋体; font-size:10.5pt">二</span><span
+            style="font-family:Calibri; font-size:10.5pt">)</span><span
+            style="font-family:宋体; font-size:10.5pt">网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">Beacon</span><span
+            style="font-family:宋体; font-size:10.5pt">和同类技术的使用</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">除</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies
+      </span><span style="font-family:宋体; font-size:10.5pt">外，我们还会在网站上使用网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">Beacon</span><span
+            style="font-family:宋体; font-size:10.5pt">等其他同类技术。我们的网页上常会包含一些电子图像（称为</span><span
+            style="font-family:Calibri; font-size:10.5pt">"</span><span
+            style="font-family:宋体; font-size:10.5pt">单像素</span><span
+            style="font-family:Calibri; font-size:10.5pt">" GIF
+      </span><span style="font-family:宋体; font-size:10.5pt">文件或</span><span
+            style="font-family:Calibri; font-size:10.5pt">"</span><span
+            style="font-family:宋体; font-size:10.5pt">网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">Beacon"</span><span
+            style="font-family:宋体; font-size:10.5pt">）。我们使用网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">Beacon</span><span
+            style="font-family:宋体; font-size:10.5pt">的方式有：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、通过在全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">网站上使用网络</span><span
+            style="font-family:Calibri; font-size:10.5pt">Beacon</span><span
+            style="font-family:宋体; font-size:10.5pt">，计算用户访问数量，并通过访问</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies
+      </span><span style="font-family:宋体; font-size:10.5pt">辨认注册的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">用户。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、通过得到的</span><span
+            style="font-family:Calibri; font-size:10.5pt">Cookies</span><span
+            style="font-family:宋体; font-size:10.5pt">信息，为您提供个性化服务。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">三、我们如何共享、转让、公开披露您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（一）共享</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们不会与全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">以外的任何公司、组织和个人共享您的个人信息，但以下情况除外：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）事先获得您明确的同意或授权；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）根据适用的法律法规、法律程序的要求、强制性的行政或司法要求所必须的情况下进行提供；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）在法律法规允许的范围内，为维护全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">的关联方或合作伙伴、您或其他全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">用户或社会公众利益、财产或安全免遭损害而有必要提供；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）只有共享您的个人信息，才能实现我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的核心功能或提供您需要的服务；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">）应您需求为您处理您与他人的纠纷或争议；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">）符合与您签署的相关协议（包括在线签署的电子协议以及相应的平台规则）或其他的法律文件约定所提供；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">7</span><span
+            style="font-family:宋体; font-size:10.5pt">）基于学术研究而使用；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">8</span><span
+            style="font-family:宋体; font-size:10.5pt">）基于符合法律法规的社会公共利益而使用。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们可能会将您的个人信息与我们的关联方共享。但我们只会共享必要的个人信息，且受本隐私政策中所声明目的的约束。我们的关联方如要改变个人信息的处理目的，将再次征求您的授权同意。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们可能会向合作伙伴等第三方共享您的服务订阅信息、账户信息、设备信息以及位置信息，以保障为您提供的服务顺利完成。但我们仅会出于合法、正当、必要、特定、明确的目的共享您的个人信息，并且只会共享提供服务所必要的个人信息。我们的合作伙伴无权将共享的个人信息用于任何其他用途。我们的合作伙伴包括以下类型：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）商品或技术服务的供应商。我们可能会将您的个人信息共享给支持我们功能的第三方。这些支持包括为我们的供货或提供基础设施技术服务、物流配送服务、支付服务、数据处理等。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）委托我们进行推广的合作伙伴。有时我们会代表其他企业向使用我们产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务的用户群提供促销推广的服务。我们可能会使用您的个人信息以及您的非个人信息集合形成的间接用户画像与委托我们进行推广的合作伙伴（“委托方”）共享，但我们仅会向这些委托方提供推广的覆盖面和有效性的信息，而不会提供您的个人身份信息，或者我们将这些信息进行汇总，以便它不会识别您个人。比如我们可以告知该委托方有多少人看了他们的推广信息或在看到这些信息后购买了委托方的商品，或者向他们提供不能识别个人身份的统计信息，帮助他们了解其受众或顾客。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、为了遵守法律、执行或适用我们的使用条件和其他协议，或者为了保护全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">、您或其他全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">客户的权利及其财产或安全，比如为防止欺诈等违法活动和减少信用风险，而与其他公司和组织交换信息。不过</span><span
+            style="font-family:Calibri; font-size:10.5pt">,</span><span
+            style="font-family:宋体; font-size:10.5pt">这并不包括违反本隐私政策中所作的承诺而为获利目的出售、出租、共享或以其它方式披露的个人信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（二）转让</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">我们不会将您的个人信息转让给任何公司、组织和个人，但以下情况除外：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、事先获得您明确的同意或授权；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、根据适用的法律法规、法律程序的要求、强制性的行政或司法要求所必须的情况进行提供；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、符合与您签署的相关协议（包括在线签署的电子协议以及相应的平台规则）或其他的法律文件约定所提供；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、在涉及合并、收购、资产转让或类似的交易时，如涉及到个人信息转让，我们会要求新的持有您个人信息的公司、组织继续受本隐私政策的约束，否则</span><span
+            style="font-family:Calibri; font-size:10.5pt">,</span><span
+            style="font-family:宋体; font-size:10.5pt">我们将要求该公司、组织重新向您征求授权同意。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（三）公开披露</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span
+            style="font-family:宋体; font-size:10.5pt">我们仅会在以下情况下，且采取符合业界标准的安全防护措施的前提下，才会公开披露您的个人信息：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、根据您的需求，在您明确同意的披露方式下披露您所指定的个人信息；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、根据法律、法规的要求、强制性的行政执法或司法要求所必须提供您个人信息的情况下，我们可能会依据所要求的个人信息类型和披露方式公开披露您的个人信息。在符合法律法规的前提下，当我们收到上述披露信息的请求时，我们会要求必须出具与之相应的法律文件，如传票或调查函。我们坚信，对于要求我们提供的信息，应该在法律允许的范围内尽可能保持透明。我们对所有的请求都进行了慎重的审查，以确保其具备合法依据，且仅限于执法部门因特定调查目的且有合法权利获取的数据。在法律法规许可的前提下，我们披露的文件均在加密密钥的保护之下。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">四、我们如何保护和保存您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（一）我们保护您个人信息的技术与措施</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">我们非常重视个人信息安全，并采取一切合理可行的措施，保护您的个人信息：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、数据安全技术措施我们会采用符合业界标准的安全防护措施，包括建立合理的制度规范、安全技术来防止您的个人信息遭到未经授权的访问使用、修改</span><span
+            style="font-family:Calibri; font-size:10.5pt">,</span><span
+            style="font-family:宋体; font-size:10.5pt">避免数据的损坏或丢失。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">的网络服务采取了传输层安全协议等加密技术，通过</span><span
+            style="font-family:Calibri; font-size:10.5pt">https</span><span
+            style="font-family:宋体; font-size:10.5pt">等方式提供浏览服务，确保用户数据在传输过程中的安全。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">采取加密技术对用户个人信息进行加密保存，并通过隔离技术进行隔离。在个人信息使用时，例如个人信息展示、个人信息关联计算，我们会采用包括内容替换、</span><span
+            style="font-family:Calibri; font-size:10.5pt">SHA256</span><span
+            style="font-family:宋体; font-size:10.5pt">在内多种数据脱敏技术增强个人信息在使用中安全性。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">采用严格的数据访问权限控制和多重身份认证技术保护个人信息，避免数据被违规使用。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">采用代码安全自动检查、数据访问日志分析技术进行个人信息安全审计。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">为保护个人信息采取的其他安全措施全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">通过建立数据分类分级制度、数据安全管理规范、数据安全开发规范来管理规范个人信息的存储和使用。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">通过信息接触者保密协议、监控和审计机制来对数据进行全面安全控制。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">建立数据安全委员会并下设信息保护专职部门、数据安全应急响应组织来推进和保障个人信息安全。我们还会举办安全和隐私保护培训课程，加强员工对于保护个人信息重要性的认识。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们仅允许有必要知晓这些信息的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">及全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">关联方的员工、合作伙伴访问个人信息，并为此设置了严格的访问权限控制和监控机制。我们同时要求可能接触到您个人信息的所有人员履行相应的保密义务。如果未能履行这些义务，可能会被追究法律责任或被中止与全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">的合作关系。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们会采取一切合理可行的措施，确保未收集无关的个人信息。我们只会在达成本隐私政策所述目的所需的期限内保留您的个人信息，除非需要延长保留期或受到法律的允许。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们还在用户数据保护上做了一些创造性工作在全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">配送体系，采用了独特的“隐私包装”，避免用户敏感信息在配送环节的暴露，同时</span><span
+            style="font-family:Calibri; font-size:10.5pt">,</span><span
+            style="font-family:宋体; font-size:10.5pt">大力强化对全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">物流员工的数据安全培训和要求，提高物流员工保护用户敏感信息的意识。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">、互联网并非绝对安全的环境，而且电子邮件、即时通讯、社交软件等与其他用户的交流方式无法确定是否完全加密，我们建议您使用此类工具时请使用复杂密码，并注意保护您的个人信息安全。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">7</span><span
+            style="font-family:宋体; font-size:10.5pt">、互联网环境并非百分之百安全，我们将尽力确保或担保您发送给我们的任何信息的安全性。如果我们的物理、技术、或管理防护设施遭到破坏，导致信息被非授权访问、公开披露、篡改、或毁坏，导致您的合法权益受损，我们将承担相应的法律责任。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">8</span><span
+            style="font-family:宋体; font-size:10.5pt">、安全事件处置在通过全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">网站与第三方进行网上商品或服务的交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息，如联络方式或者邮政地址等。请您妥善保护自己的个人信息，仅在必要的情形下向他人提供。为应对个人信息泄露、损毁和丢失等可能出现的风险，全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">制定了多项制度，明确安全事件、安全漏洞的分类分级标准及相应的处理流程。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">也为安全事件建立了专门的应急响应团队，按照安全事件处置规范要求，针对不同安全事件启动安全预案，进行止损、分析、定位、制定补救措施、联合相关部门进行溯源和打击。在不幸发生个人信息安全事件后，我们将按照法律法规的要求，及时向您告知：安全事件的基本情况和可能的影响、我们已采取或将要采取的处置措施、您可自主防范和降低风险的建议、对您的补救措施等。我们同时将及时将事件相关情况以邮件、信函、电话、推送通知等方式告知您，难以逐一告知个人信息主体时，我们会采取合理、有效的方式发布公告。同时，我们还将按照监管部门要求，主动上报个人信息安全事件的处置情况。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">9</span><span
+            style="font-family:宋体; font-size:10.5pt">、如果您对我们的个人信息保护有任何疑问，可通过本隐私政策中约定的联系方式联系我们。如您发现自己的个人信息泄密，尤其是您的账户及密码发生泄露，请您立即通过本隐私政策【八、如何联系我们】中约定的联系方式联络我们，以便我们采取相应措施。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（二）您个人信息的保存</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、您的个人信息将存储于中华人民共和国境内。如您使用跨境交易服务，且需要向境外传输您的个人信息完成交易的，我们会单独征得您的授权同意并要求接收方按照我们的说明、本隐私政策以及其他任何相关的保密和安全措施来处理这些个人信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、请您注意，当您成功申请注销全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">账户后，我们将对您的个人信息进行删除或匿名化处理。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、如果我们终止服务或运营，我们会至少提前三十日向您通知，并在终止服务或运营后对您的个人信息进行删除或匿名化处理。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">五、您如何管理您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">非常重视您对个人信息的关注，并尽全力保护您对于您个人信息访问、更正、删除以及撤回同意的权利，以使您拥有充分的能力保障您的隐私和安全。您的权利包括：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、访问和更正您的个人信息除法律法规规定外，您有权随时访问和更正您的个人信息，具体包括：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）您的账户信息：移动端、</span><span
+            style="font-family:Calibri; font-size:10.5pt">PC</span><span
+            style="font-family:宋体; font-size:10.5pt">端您可以在“我的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">”页面的“个人信息”菜单中查阅您提交给全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">的所有个人信息，如您需要变更您的信息，您可拨打客服服务热线</span><span
+            style="font-family:Calibri; font-size:10.5pt">400-648-5566</span><span
+            style="font-family:宋体; font-size:10.5pt">申请变更。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）您的收货信息：移动端、</span><span
+            style="font-family:Calibri; font-size:10.5pt">PC</span><span
+            style="font-family:宋体; font-size:10.5pt">端您可以通过访问“我的全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">”页面的“收货地址”菜单中随时添加、更改、删除您的收货地址信息（包括收货人姓名、收货地址、收货人的电话号码。您也可以将最常用的收货地址设置为默认地址，如此您下次购买商品时在您未更改收货地址时，您的商品会配送到您默认地址。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）您的订单信息：移动端、</span><span
+            style="font-family:Calibri; font-size:10.5pt">PC</span><span
+            style="font-family:宋体; font-size:10.5pt">端您可以通过访问“我的订单”页面查看您的所有已经完成、待付款或待售后的订单。您可以选择删除已经完成和已取消的订单来删除您的订单信息，但这样可能导致我们无法准确判断您的购买信息而难以提供相应的售后服务，您也无法对删除的订单使用我们的晒单和评价功能。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）您的浏览信息：您可以访问或清除您的搜索历史记录、查看和管理其他数据。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">）您的评论信息：移动端、</span><span
+            style="font-family:Calibri; font-size:10.5pt">PC</span><span
+            style="font-family:宋体; font-size:10.5pt">端您可以访问您的个人评论。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">）对于您在使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务过程中产生的其他个人信息需要访问或更正，请随时联系我们。我们会根据本隐私政策所列明的方式和期限响应您的请求。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">7</span><span
+            style="font-family:宋体; font-size:10.5pt">）您无法访问和更正的个人信息：除上述列明的信息外，您的部分个人信息我们还无法为您提供访问和更正的服务，这些信息主要是为了提升您的用户体验和保证交易安全所收集的您的设备信息、您使用扩展功能时产生的个人信息。上述信息我们会在您的授权范围内进行使用，您无法访问和更正，但您可联系我们进行删除或做匿名化处理。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、删除您的个人信息</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">您在我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务页面中可以直接清除或删除的信息，包括订单信息、浏览信息、收货地址信息；在以下情形中，您可以向我们提出删除个人信息的请求：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）如果我们处理个人信息的行为违反法律法规；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）如果我们收集、使用您的个人信息，却未征得您的同意；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）如果我们处理个人信息的行为违反了与您的约定；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）如果我们终止服务及运营。若我们决定响应您的删除请求，我们还将同时通知从我们获得您的个人信息的实体，要求其及时删除，除非法律法规另有规定，或这些实体获得您的独立授权。若我们响应您的删除请求，我们不能保证立即从备份系统中删除相应的信息，但会在备份系统更新时删除这些信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、改变您授权同意的范围或撤回您的授权您可以通过删除信息、关闭设备功能、在全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">网站或软件中进行隐私设置等方式改变您授权我们继续收集个人信息的范围或撤回您的授权。您也可以通过注销账户的方式，撤回我们继续收集您个人信息的全部授权。请您理解，每个业务功能需要一些基本的个人信息才能得以完成，当您撤回同意或授权后，我们无法继续为您提供撤回同意或授权所对应的服务，也不再处理您相应的个人信息。但您撤回同意或授权的决定，不会影响此前基于您的授权而开展的个人信息处理。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、如果您不想接受我们给您发送的促销信息，您随时可通过以下方式取消：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）您可以根据促销短信内容提示，来取消我们给您发送的手机促销短信。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）您可以通过移动端</span><span
+            style="font-family:Calibri; font-size:10.5pt">APP</span><span
+            style="font-family:宋体; font-size:10.5pt">“我的</span><span
+            style="font-family:Calibri; font-size:10.5pt">-</span><span
+            style="font-family:宋体; font-size:10.5pt">设置</span><span
+            style="font-family:Calibri; font-size:10.5pt">-</span><span
+            style="font-family:宋体; font-size:10.5pt">推送消息”设置是否接受我们通过“通知”推动给您的商品和促销信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）我们可能会与第三方的平台或媒体（“平台”）合作基于您的个人信息向您推荐个性化的商品。这些个人信息包括诸如在本网站的购物情况、访问本网站关联公司网站的情况及您在您的账户设置中填写的信息。平台仅向我们提供了展示商品的窗口，窗口内容的链接是全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">站内的个性化商品展示信息，由全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">进行管理，因此我们不会向广告商提供您的任何个人信息。您知晓并理解平台是自主经营的实体，全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">无法对其进行管理。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）为了保护您的隐私，我们不会以任何方式和途径向您推送涉及宗教信仰、性等相关敏感内容的促销或商品信息给您。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">、响应您的请求</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span
+            style="font-family:宋体; font-size:10.5pt">如果您无法通过上述方式访问、更正或删除您的个人信息，或您需要访问、更正或删除您在使用我们产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务时所产生的其他个人信息，或您认为全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">存在任何违反法律法规或与您关于个人信息的收集或使用的约定，通过本隐私政策中的其他方式与我们联系。为了保障安全，我们可能需要您提供书面请求，或提供您的身份证明文件，我们将在收到您反馈并验证您的身份后的</span><span
+            style="font-family:Calibri; font-size:10.5pt">15</span><span
+            style="font-family:宋体; font-size:10.5pt">天内答复您的请求。对于您合理的请求，我们原则上不收取费用，但对多次重复、超出合理限度的请求，我们将视情收取一定成本费用。对于那些无端重复、需要过多技术手段（例如，需要开发新系统或从根本上改变现行惯例）、给他人合法权益带来风险或者非常不切实际（例如，涉及备份磁带上存放的信息）的请求，我们可能会予以拒绝。在以下情形中，按照法律法规要求，我们将无法响应您的请求：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）与国家安全、国防安全有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）与公共安全、公共卫生、重大公共利益有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）与犯罪侦查、起诉和审判等有关的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）有充分证据表明您存在主观恶意或滥用权利的；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">）响应您的请求将导致您或其他个人、组织的合法权益受到严重损害的。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">六、未成年人的个人信息保护</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">非常重视对未成年人个人信息的保护。若您是</span><span
+            style="font-family:Calibri; font-size:10.5pt">18</span><span
+            style="font-family:宋体; font-size:10.5pt">周岁以下的未成年人，在使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务前，应事先取得您监护人的同意。全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">根据国家相关法律法规的规定保护未成年人的个人信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、我们不会主动直接向未成年人收集其个人信息。对于经监护人同意而收集未成年人个人信息的情况，我们只会在受到法律允许、监护人同意或者保护未成年人所必要的情况下使用、共享、转让或披露此信息。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">、如果有事实证明未成年人并未取得监护人同意的情况下注册使用了我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务，我们会与相关监护人协商，并设法尽快删除相关个人信息。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">、对于可能涉及的不满</span><span
+            style="font-family:Calibri; font-size:10.5pt">14</span><span
+            style="font-family:宋体; font-size:10.5pt">周岁的儿童个人信息，我们进一步采取以下措施予以保障：</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）对于收集到的儿童个人信息，我们除遵守本隐私政策关于用户个人信息的约定外，还会秉持正当必要、知情同意、目的明确、安全保障、依法利用的原则，严格遵循《儿童个人信息网络保护规定》等法律法规的要求进行存储、使用、披露，且不会超过实现收集、使用目的所必须的期限，到期后我们会对儿童个人信息进行删除或匿名化处理。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）当您作为监护人为被监护的儿童选择使用全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">相关服务时，我们可能需要向您收集被监护的儿童个人信息，用于向您履行相关服务之必要。在具体服务中需要向您收集儿童个人信息的，我们会事先取得您的授权同意，并告知您收集的目的和用途。如果您不提供前述信息，您将无法享受我们提供的相关服务。此外，您在使用晒单、评价及问答功能分享商品相关信息时可能会主动向我们提供儿童个人信息，请您明确知悉并谨慎选择。您作为监护人应当正确履行监护职责，保护儿童个人信息安全。若儿童本人需要注册或使用我们的产品与</span><span
+            style="font-family:Calibri; font-size:10.5pt">/</span><span
+            style="font-family:宋体; font-size:10.5pt">或服务，您应正确引导并予以监护。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）儿童或其监护人有权随时访问和更正儿童个人信息，还可以向我们提出更正和删除的请求。如您对儿童个人信息相关事宜有任何意见、建议或投诉、举报，请联系我们。我们会随时为您提供帮助。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">七、通知和修订</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、为给您提供更好的服务以及随着全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">业务的发展，本隐私政策也会随之更新。但未经您明确同意，我们不会削减您依据本隐私政策所应享有的权利。我们会通过在全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">网站、全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">移动端上发出更新版本并在生效前通过网站公告或以其他适当方式提醒您相关内容的更新，也请您访问全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">以便及时了解最新的隐私政策。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、对于重大变更，我们还会提供更为显著的通知（我们会通过包括但不限于邮件、短信或在浏览页面做特别提示等方式，说明隐私政策的具体变更内容）。本隐私政策所指的重大变更包括但不限于：</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">）我们的服务模式发生重大变化。如处理个人信息的目的、处理的个人信息类型、个人信息的使用方式等；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">）我们在所有权结构、组织架构等方面发生重大变化。如业务调整、破产并购等引起的所有者变更等；</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">3</span><span
+            style="font-family:宋体; font-size:10.5pt">）个人信息共享、转让或公开披露的主要对象发生变化；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">4</span><span
+            style="font-family:宋体; font-size:10.5pt">）您参与个人信息处理方面的权利及其行使方式发生重大变化；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">5</span><span
+            style="font-family:宋体; font-size:10.5pt">）我们负责处理个人信息安全的责任部门、联络方式及投诉渠道发生变化时；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">（</span><span
+            style="font-family:Calibri; font-size:10.5pt">6</span><span
+            style="font-family:宋体; font-size:10.5pt">）个人信息安全影响评估报告表明存在高风险时。</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:宋体; font-size:10.5pt">八、如何联系我们</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">1</span><span
+            style="font-family:宋体; font-size:10.5pt">、如您对本隐私政策或您个人信息的相关事宜有任何问题、意见或建议，请联系全息云通健康科技（武汉）有限公司</span><span
+            style="font-family:宋体; font-size:10.5pt">个人信息保护负责人热线：</span><span
+            style="font-family:Calibri; font-size:10.5pt">400-648-5566</span><span
+            style="font-family:宋体; font-size:10.5pt">；</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">2</span><span
+            style="font-family:宋体; font-size:10.5pt">、一般情况下，我们将在</span><span
+            style="font-family:Calibri; font-size:10.5pt">15</span><span
+            style="font-family:宋体; font-size:10.5pt">天内回复。如果您对我们的回复不满意，特别是我们的个人信息处理行为损害了您的合法权益，您还可以向网信、电信、公安及工商等监管部门进行投诉或举报。</span>
+    </p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
+    <p
+       style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
+      <span style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
+
+  </div>
+
+</template>
+
+<script>
+export default {}
+</script>
+
+
+<style lang="scss" scoped>
+.layout {
+  width: 800px;
+  margin: 0 auto;
+}
+</style>
