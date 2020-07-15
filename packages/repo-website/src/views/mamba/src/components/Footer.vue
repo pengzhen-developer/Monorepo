@@ -1,87 +1,125 @@
 <template>
-  <footer id="footer">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row">
+  <section id="myfooter"
+           class="portfolio section-bg">
+    <div class="container"
+         data-aos="fade-up"
+         data-aos-delay="100">
 
-          <div class="col-lg-3 col-md-6 footer-info">
-            <h3>Mamba</h3>
-            <p>
-              A108 Adam Street <br>
-              NY 535022, USA<br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
-            </p>
-            <div class="social-links mt-3">
-              <a href="#"
-                 class="twitter"><i class="bx bxl-twitter"></i></a>
-              <a href="#"
-                 class="facebook"><i class="bx bxl-facebook"></i></a>
-              <a href="#"
-                 class="instagram"><i class="bx bxl-instagram"></i></a>
-              <a href="#"
-                 class="google-plus"><i class="bx bxl-skype"></i></a>
-              <a href="#"
-                 class="linkedin"><i class="bx bxl-linkedin"></i></a>
+      <div class="section-title">
+        <h2>关于我们</h2>
+      </div>
+      <div class="footer-bottom">
+        <div class="bottom-item">
+          <p>扫码体验</p>
+          <div class="qr-code-list">
+            <div class="qr-code-content">
+              <img src="../assets/img/my/iOS.png"
+                   class="qr-code-img" />
+              医生工作台iOS
+            </div>
+            <div class="qr-code-content">
+              <img src="../assets/img/my/android.png"
+                   class="qr-code-img" />
+              医生工作台安卓
+            </div>
+            <div class="qr-code-content">
+              <img src="../assets/img/my/web.png"
+                   class="qr-code-img" />
+              患者应用小程序
             </div>
           </div>
+        </div>
 
-          <div class="col-lg-2 col-md-6 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-            </ul>
+        <div class="line"></div>
+
+        <div class="bottom-item">
+          <p>联系我们</p>
+          <!-- <div class="information">
+            <img src="../assets/img/my/icon_phone.png"
+                 alt="">
+            电话：072-4592888
+          </div> -->
+          <div class="information">
+            <img src="../assets/img/my/icon_email.png"
+                 alt="">
+            邮箱：xiej@jk.com
           </div>
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-4 col-md-6 footer-newsletter">
-            <h4>Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-            <form action=""
-                  method="post">
-              <input type="email"
-                     name="email"><input type="submit"
-                     value="Subscribe">
-            </form>
-
-          </div>
-
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Mamba</span></strong>. All Rights Reserved
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
+    <div class="bottom">
+      <div class="bottom-line"></div>
+      Copyright © 2020 jk998
     </div>
-  </footer>
+
+  </section>
 </template>
 
 <script>
 export default {}
 </script>
 
-<style>
+<style scoped>
+section {
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.footer-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.line {
+  width: 1px;
+  margin: 0px 126px;
+  height: 210px;
+  background: #d9d9d9;
+}
+.bottom-item {
+  font-size: 24px;
+  color: var(--q-color-grey-333);
+  display: flex;
+  flex-direction: column;
+}
+.qr-code-list {
+  display: flex;
+}
+.qr-code-content {
+  display: flex;
+  color: var(--q-color-grey-666);
+  font-size: 14px;
+  margin-right: 20px;
+  align-items: center;
+  flex-direction: column;
+}
+.qr-code-img {
+  width: 138px;
+  height: 138px;
+}
+.information {
+  color: var(--q-color-grey-333);
+  font-size: 20px;
+  margin-top: 20px;
+}
+.information img {
+  width: 24px;
+  margin-right: 20px;
+}
+.bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--q-color-grey-999);
+  font-size: 12px;
+}
+.bottom-line {
+  height: 1px;
+  width: 1200px;
+  margin-top: 60px;
+  margin-bottom: 30px;
+  background: #cccccc;
+}
 </style>

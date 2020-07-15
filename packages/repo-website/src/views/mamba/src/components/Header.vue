@@ -10,6 +10,7 @@
       <div class="login">
         <el-button class="button"
                    type="primary"
+                   @click="login"
                    plain>登录</el-button>
         <el-button type="primary"
                    class="button">注册</el-button>
@@ -23,22 +24,17 @@
           <!-- <li><a href="#team">新闻动态</a></li> -->
           <li class="drop-down"><a href="">开放赋能</a>
             <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="drop-down"><a href="#">Drop Down 2</a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-              <li><a href="#">Drop Down 5</a></li>
+              <li><a href="https://docs.qq.com/doc/DZkp4dWZUTWV1TFZJ"
+                   target="blank">处方审核服务接口</a></li>
+              <li><a href="https://docs.qq.com/doc/DWG9OaVdubElGQXpj"
+                   target="blank">处方共享服务接口</a></li>
+              <li><a href="https://docs.qq.com/doc/DWHZod0lJWGdMY0pa"
+                   target="blank">互联网医院处方共享接口</a></li>
+              <li><a href="https://docs.qq.com/doc/DZnNqTmdMb2JwZHdo"
+                   target="blank">药品供应服务接口</a></li>
             </ul>
           </li>
-          <li><a href="#contact">关于我们</a></li>
+          <li><a href="#myfooter">关于我们</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -47,7 +43,17 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    login() {
+      this.$router.push('/login')
+    },
+
+    goToText1() {
+      window.open(process.env.VUE_APP_1)
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -44,10 +44,10 @@ export default {
 }
 .role-content {
   margin-left: 20px;
-  color: #3099a6;
+  color: var(--q-color-primary);
   height: 40px;
   padding: 5px 25px;
-  border: 1px #3099a6 solid;
+  border: 1px var(--q-color-primary) solid;
   display: flex;
   justify-content: center;
   align-items: center;

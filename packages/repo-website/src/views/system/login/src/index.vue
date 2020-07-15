@@ -1,196 +1,173 @@
+/** 
+ * @Author: PengZhen
+ * @Date: 2020/04/13
+ * @Description: 登录
+ * @UI: https://lanhuapp.com/web/#/item/project/board?pid=ce4d8d92-61c7-4cde-afed-380b8825379e
+ */
+
+
 <template>
   <div class="container">
-    <div class="window-width window-height container-masker"></div>
+    <div class="layout">
+      <div class="layout-left"></div>
+      <div class="layout-right">
+        <div class="top">
+          <el-button class="go-back"
+                     type="text"
+                     icon="el-icon-arrow-left"
+                     v-on:click="goHome">返回首页</el-button>
 
-    <div class="fixed-center form">
-      <p class="text-white text-h6">
-        {{ configuration.application.title }}
-      </p>
+        </div>
 
-      <el-form v-bind:model="model"
-               v-bind:rules="rules"
-               v-on:keyup.enter.native="login"
-               ref="form">
-        <el-form-item class="q-mb-md"
-                      prop="username">
-          <el-input class="q-mb-md"
-                    v-model.trim="model.username"
-                    placeholder="请输入用户名"
-                    maxlength="30">
-            <template slot="prepend">
-              <q-icon v-bind:name="usernameImage"
-                      size="28px" />
-            </template>
-          </el-input>
-        </el-form-item>
+        <div class="center">
+          <div class="logo">
+            <el-image v-bind:src="logoImage"
+                      v-on:click="goHome">
+            </el-image>
+          </div>
+          <div class="title">
+            <span>智药云平台</span>
+          </div>
+        </div>
 
-        <el-form-item class="q-mb-md"
-                      prop="password">
-          <el-input class="q-mb-md"
-                    type="password"
-                    show-password
-                    v-model.trim="model.password"
-                    placeholder="请输入密码"
-                    maxlength="30">
-            <template slot="prepend">
-              <q-icon v-bind:name="passwordImage"
-                      size="28px" />
-            </template>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <q-btn class="full-width q-py-sm"
-                 color="primary"
-                 label="登 录"
-                 v-bind:ripple="false"
-                 v-bind:loading="isLoading"
-                 v-on:click="login">
-          </q-btn>
-        </el-form-item>
-      </el-form>
-
-    </div>
-
-    <div class="fixed-bottom text-center text-white text-subtitle2 q-mb-md">
-      全息云通健康科技（武汉）有限公司<br />鄂ICP备19008514
+        <div class="bottom">
+          <Component v-bind:is="mode"></Component>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Util from '@src/util'
-import Service from './service'
+import SignByPhone from './components/SignByPhone'
+import SignByUserName from './components/SignByUserName'
+import ResetPassword from './components/ResetPassword'
+
+import RouterPath from '@src/router/routerPath'
+import Constant from './constant'
 
 export default {
+  components: {
+    SignByPhone,
+    SignByUserName,
+    ResetPassword
+  },
+
   data() {
     return {
-      configuration: window.configuration,
+      mode: Constant.action.SIGN_BY_USERNAME,
 
-      isLoading: false,
-
-      usernameImage: 'img:' + require('./assets/img/user.png'),
-      passwordImage: 'img:' + require('./assets/img/pwd.png'),
-
-      model: {
-        username: Util.user.getUserInfo()?.username ?? '',
-        password: ''
-      },
-
-      rules: {
-        username: [{ required: true, message: '请输入用户名' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      logoImage: require('@src/assets/logo-2.png')
     }
   },
 
   methods: {
-    login() {
-      this.validateForm().then(() => {
-        this.isLoading = true
-
-        Service.doLogin(this.model)
-          .then((res) => {
-            // 储存用户信息
-            Util.user.setUserInfo(res.data)
-
-            // 缓存
-            this.$store.commit('user/setUserInfo', res.data)
-
-            // 登陆后跳转
-            this.$router.push('/layout')
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      })
+    goHome() {
+      this.$router.push(RouterPath.system.HOME)
     },
 
-    validateForm() {
-      return new Promise((resolve) => {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            resolve()
-          }
-        })
-      })
+    changeMode(mode) {
+      this.mode = mode
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-/* Change the white to any color ;) */
-::v-deep input:-webkit-autofill,
-::v-deep input:-webkit-autofill:hover,
-::v-deep input:-webkit-autofill:focus,
-::v-deep input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
-}
-
 .container {
-  background: url('./assets/img/bg.png') no-repeat;
-  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
 
-  .container-masker {
-    background: var(--q-color-primary);
-    opacity: 0.6;
-  }
+  width: 100vw;
+  min-height: 100vh;
 
-  ::v-deep .el-form-item.is-error,
-  ::v-deep .el-input__inner {
-    border-color: transparent !important;
-  }
-
-  ::v-deep .el-form-item__error {
+  .layout {
     display: flex;
-    align-items: center;
+    width: 100%;
 
-    width: 200px;
-    height: 48px;
-    padding: 0 0 0 20px;
-    font-size: 14px;
+    .layout-left {
+      background-size: 100% 100%;
+      background-image: url('./assets/img/bg_login.jpg');
+      background-color: linear-gradient(to bottom, #ffffff, #8595a4, #005f71);
 
-    background: var(--q-color-warning);
-    color: white;
-    border-radius: 10px;
+      flex: 1;
+    }
 
-    position: absolute;
-    top: 0;
-    left: auto;
-    right: -220px;
+    .layout-right {
+      min-width: 400px;
+      max-width: 800px;
+      width: 30%;
 
-    &::before {
-      position: absolute;
-      top: 21px;
-      left: -4px;
-      content: '';
-      border-radius: 3px;
-      border: 5px solid;
-      border-color: var(--q-color-warning) transparent transparent var(--q-color-warning);
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-      display: block;
+      .top {
+        padding: 32px 36px;
+        margin: 0 0 10% 0;
+
+        .el-button {
+          font-size: 12px;
+          color: rgba(0, 0, 0, 0.65);
+        }
+      }
+
+      .center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 5% 0;
+
+        .logo {
+          width: 120px;
+          height: 80px;
+          margin: 0 0 12px 0;
+          overflow: hidden;
+        }
+
+        .title {
+          font-size: 16px;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.85);
+        }
+      }
+
+      .bottom {
+        width: 60%;
+        min-width: 272px;
+        margin: 0 auto;
+      }
     }
   }
+}
 
-  ::v-deep .el-input__suffix {
-    display: flex;
-    align-items: center;
-    padding: 0 8px 0 0;
+::v-deep .el-form-item {
+  border-bottom: 1px solid #e8e8e8;
+  margin: 0 0 25px 0;
+
+  &:focus-within {
+    border-bottom: 1px solid var(--q-color-primary);
   }
 
-  ::v-deep .el-input-group__prepend {
-    padding: 0 16px;
+  &.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
+  &.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label:before {
+    content: '';
+  }
+
+  .el-form-item__label {
+    padding: 0;
+
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .el-input__inner {
+    border-radius: 0;
     border: 0;
-    background: var(--q-color-primary);
-    border-color: var(--q-color-primary);
+    padding: 0;
+    line-height: 36px;
+    height: 36px;
   }
 
-  ::v-deep .el-input__inner {
-    min-width: 250px;
-    height: 48px;
-    line-height: 48px;
+  .el-form-item__error {
+    margin: 5px 0 0 0;
   }
 }
 </style>
