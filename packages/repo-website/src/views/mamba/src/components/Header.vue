@@ -11,10 +11,10 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href="/">首页</a></li>
-          <li><a href="#about">产品服务</a></li>
-          <li><a href="#services">解决方案</a></li>
-          <li><a href="#portfolio">合作案例</a></li>
-          <li><a href="#team">新闻动态</a></li>
+          <li><a href="#about-lists">产品服务</a></li>
+          <li><a href="#portfolio">解决方案</a></li>
+          <li><a href="#services">合作案例</a></li>
+          <!-- <li><a href="#team">新闻动态</a></li> -->
           <li class="drop-down"><a href="">开放赋能</a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -33,7 +33,15 @@
             </ul>
           </li>
           <li><a href="#contact">关于我们</a></li>
+          <li>
+            <el-button>登录</el-button>
+          </li>
+          <li>
+            <el-button type="primary">注册</el-button>
+          </li>
+
         </ul>
+
       </nav><!-- .nav-menu -->
 
     </div>
