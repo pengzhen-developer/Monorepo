@@ -36,8 +36,8 @@ const data = [
   }
 ]
 
-const xAxiosData = data.map(item => item.date)
-const yAxiosData = data.map(item => item.value)
+const xAxiosData = data.map((item) => item.date)
+const yAxiosData = data.map((item) => item.value)
 // 只有3根分割线，替换最值分割线的颜色为背景色隐藏
 const ySplitLineColors = ['#F6F6F6', '#F6F6F6', '#fff']
 // 如果分割线数量根据数据来如下替换
@@ -46,11 +46,14 @@ const ySplitLineColors = ['#F6F6F6', '#F6F6F6', '#fff']
 //   tmp[tmp.length] = '#fff'
 //   return tmp
 // })()
+import Service from '../service'
 import ECharts from 'vue-echarts'
+
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/tooltip'
+
 export default {
   name: 'order-count-chart',
 
@@ -160,6 +163,21 @@ export default {
           }
         ]
       }
+    }
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.get()
+    })
+  },
+  methods: {
+    get() {
+      Service.get7DaysOrderNum()
+        .then((res) => {
+          console.log(res)
+        })
+        .finally(() => {})
     }
   }
 }
