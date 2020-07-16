@@ -20,8 +20,8 @@
                    class="img-fluid"
                    alt=""></div>
             <div class="member-info my-member-info">
-              <h4>这是一条新闻标题一条新闻标题标题</h4>
-              <span>2020/07/07 00:00</span>
+              <h4>待更新</h4>
+              <span>2020/07/17 08:00</span>
             </div>
           </div>
         </div>
@@ -34,8 +34,8 @@
                    class="img-fluid"
                    alt=""></div>
             <div class="member-info my-member-info">
-              <h4>这是一条新闻标题一条新闻标题标题</h4>
-              <span>2020/07/07 00:00</span>
+              <h4>待更新</h4>
+              <span>2020/07/17 08:00</span>
             </div>
           </div>
         </div>
@@ -48,8 +48,8 @@
                    class="img-fluid"
                    alt=""></div>
             <div class="member-info my-member-info">
-              <h4>这是一条新闻标题一条新闻标题标题</h4>
-              <span>2020/07/07 00:00</span>
+              <h4>待更新</h4>
+              <span>2020/07/17 08:00</span>
             </div>
           </div>
         </div>
@@ -62,8 +62,8 @@
                    class="img-fluid"
                    alt=""></div>
             <div class="member-info my-member-info">
-              <h4>这是一条新闻标题一条新闻标题标题</h4>
-              <span>2020/07/07 00:00</span>
+              <h4>待更新</h4>
+              <span>2020/07/17 08:00</span>
             </div>
           </div>
         </div>
