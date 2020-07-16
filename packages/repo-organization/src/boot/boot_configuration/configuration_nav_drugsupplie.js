@@ -112,5 +112,17 @@ export default [
     iconType: null,
     enable: true,
     closable: true
+  },
+  {
+    id: '5-6',
+    parentId: null,
+    menuRoute: '云仓管理',
+    menuRouteName: '云仓管理',
+    menuName: '云仓管理',
+    menuPath: process.env.VUE_APP_PRESCRIPTION_SITE + 'Pharmacy/Warehouse',
+    menuIcon: 'dashboard',
+    iconType: 'Material Icons',
+    enable: true,
+    closable: true
   }
 ]

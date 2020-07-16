@@ -2,6 +2,18 @@
 
 export default [
   {
+    id: '33',
+    parentId: null,
+    menuRoute: '首页',
+    menuRouteName: '首页',
+    menuName: '首页',
+    menuPath: process.env.VUE_APP_PRESCRIPTION_SITE + 'Control/PharmacistIndexPageZyy',
+    menuIcon: 'el-icon-s-home',
+    iconType: 'Element-UI Icons',
+    enable: null,
+    closable: null
+  },
+  {
     id: '3-3',
     parentId: null,
     menuRoute: null,
