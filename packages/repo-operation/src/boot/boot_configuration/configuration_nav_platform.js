@@ -154,7 +154,9 @@ export default [
     menuRouteName: '2-3-5',
     menuRoute: '2-3-5',
     menuName: '药品说明书',
-    menuPath: process.env.VUE_APP_OPERATION_SITE + 'knowledgebase/web?uri=knowledgeBaseManage/drugsInstructions/drugsInstructionList.html',
+    menuPath:
+      process.env.VUE_APP_OPERATION_SITE +
+      'knowledgebase/web?uri=knowledgeBaseManage/drugsInstructions/drugsInstructionList.html',
     menuIcon: null,
     iconType: null,
     enable: true,
@@ -166,7 +168,9 @@ export default [
     menuRouteName: '2-3-6',
     menuRoute: '2-3-6',
     menuName: '药品说明书审核',
-    menuPath: process.env.VUE_APP_OPERATION_SITE + 'knowledgebase/web?uri=knowledgeBaseExamine/drugsInstructions/instructionExamineList.html',
+    menuPath:
+      process.env.VUE_APP_OPERATION_SITE +
+      'knowledgebase/web?uri=knowledgeBaseExamine/drugsInstructions/instructionExamineList.html',
     menuIcon: null,
     iconType: null,
     enable: true,
@@ -174,6 +178,30 @@ export default [
   },
   {
     id: '2-4',
+    parentId: '2',
+    menuRouteName: null,
+    menuRoute: null,
+    menuName: '数据统计',
+    menuPath: null,
+    menuIcon: 'zyy-icon zyy-ptrz',
+    iconType: 'Local Icons',
+    enable: null,
+    closable: null
+  },
+  {
+    id: '2-4-1',
+    parentId: '2-4',
+    menuRouteName: 'platform/statistics/ywq',
+    menuRoute: 'platform/statistics/ywq',
+    menuName: '医网签调用',
+    menuPath: 'views/platform/statistics/ywq',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
+  {
+    id: '2-5',
     parentId: '2',
     menuRouteName: null,
     menuRoute: null,
@@ -185,8 +213,8 @@ export default [
     closable: null
   },
   {
-    id: '2-4-1',
-    parentId: '2-4',
+    id: '2-5-1',
+    parentId: '2-5',
     menuRouteName: 'platform/logger/recordList',
     menuRoute: 'platform/logger/recordList',
     menuName: '日志记录',

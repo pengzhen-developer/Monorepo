@@ -2,7 +2,8 @@
   <div class="card-style q-pa-md">
     <div class="card-title">处方量趋势图 (近7日)</div>
     <div class="chart-container">
-      <v-chart :options="polar" :autoresize="true" />
+      <v-chart :options="polar"
+               :autoresize="true" />
     </div>
   </div>
 </template>
@@ -11,28 +12,28 @@
 const data = [
   {
     date: '0701',
-    value: 1,
+    value: 1
   },
   {
     date: '0702',
-    value: 5,
+    value: 5
   },
   {
     date: '0703',
-    value: 19,
+    value: 19
   },
   {
     date: '0704',
-    value: 8,
+    value: 8
   },
   {
     date: '0705',
-    value: 2,
+    value: 2
   },
   {
     date: '0706',
-    value: 5,
-  },
+    value: 5
+  }
 ]
 
 const xAxiosData = data.map((item) => item.date)
@@ -55,7 +56,7 @@ export default {
   name: 'prescription-count-chart',
 
   components: {
-    'v-chart': ECharts,
+    'v-chart': ECharts
   },
 
   data() {
@@ -66,7 +67,7 @@ export default {
           left: '0%',
           right: '5%',
           bottom: '10%',
-          containLabel: true,
+          containLabel: true
         },
         xAxis: {
           type: 'category',
@@ -77,18 +78,18 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#999',
-              fontSize: 12,
-            },
+              fontSize: 12
+            }
           },
           //改变坐标轴和文本的样式
           axisLine: {
             lineStyle: {
-              width: 0,
-            },
+              width: 0
+            }
           },
           axisTick: {
-            show: false,
-          },
+            show: false
+          }
         },
         yAxis: {
           type: 'value',
@@ -96,12 +97,13 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#999',
-              fontSize: 12,
+              fontSize: 12
             },
-            showMaxLabel: false,
+            showMaxLabel: false
           },
           splitNumber: 2,
           min: function(value) {
+            console.log(value)
             return 0
           },
           max: function(value) {
@@ -110,26 +112,26 @@ export default {
           //改变坐标轴和文本的样式
           axisLine: {
             lineStyle: {
-              width: 0,
-            },
+              width: 0
+            }
           },
           axisTick: {
-            show: false,
+            show: false
           },
           splitLine: {
             //格线样式
             lineStyle: {
               type: 'dotted',
-              color: ySplitLineColors,
-            },
-          },
+              color: ySplitLineColors
+            }
+          }
         },
         tooltip: {
           trigger: 'item',
           formatter: function(params) {
             const val = params.data
             return val.value
-          },
+          }
         },
         series: [
           {
@@ -145,12 +147,12 @@ export default {
                 lineStyle: {
                   normal: {
                     color: '#3099A6',
-                    width: 1,
-                  },
-                },
+                    width: 1
+                  }
+                }
               },
               borderColor: '#FFF',
-              borderWidth: 2,
+              borderWidth: 2
             },
             areaStyle: {
               normal: {
@@ -163,22 +165,22 @@ export default {
                   colorStops: [
                     {
                       offset: 0,
-                      color: '#00C6AE', // 0% 处的颜色
+                      color: '#00C6AE' // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: 'white', // 100% 处的颜色
-                    },
+                      color: 'white' // 100% 处的颜色
+                    }
                   ],
-                  globalCoord: false, // 缺省为 false
-                },
-              },
-            },
-          },
-        ],
-      },
+                  globalCoord: false // 缺省为 false
+                }
+              }
+            }
+          }
+        ]
+      }
     }
-  },
+  }
 }
 </script>
 
