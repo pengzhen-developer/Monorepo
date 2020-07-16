@@ -6,7 +6,7 @@
 import Util from '@src/util'
 
 import Service from './service'
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
 import Constant from './constant'
 export default {
   data() {
@@ -21,11 +21,11 @@ export default {
       const params = { cdkey: cdKey }
 
       Service.getBaseInfo(params)
-        .then(res => {
+        .then((res) => {
           if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-            this.$router.replace(RouterPath.system.INFORMMATION)
+            this.$router.replace(path.INFORMMATION)
           } else {
-            this.$router.replace(RouterPath.system.HOME)
+            this.$router.replace(path.HOME)
           }
         })
         .catch(() => {
@@ -34,7 +34,7 @@ export default {
           Util.user.replaceToLogin()
         })
     } else {
-      this.$router.replace(RouterPath.system.HOME)
+      this.$router.replace(path.system.HOME)
     }
   }
 }

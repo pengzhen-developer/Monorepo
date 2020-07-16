@@ -62,7 +62,7 @@ export default {
   .el-button {
     margin-top: 25px;
     width: 120px;
-    background: $--color-primary;
+    background: var(--q-color-primary);
     font-family: PingFangSC-Regular, PingFang SC;
     display: flex;
     align-items: center;

@@ -43,7 +43,8 @@ import SignByPhone from './components/SignByPhone'
 import SignByUserName from './components/SignByUserName'
 import ResetPassword from './components/ResetPassword'
 
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
+
 import Constant from './constant'
 
 export default {
@@ -57,13 +58,13 @@ export default {
     return {
       mode: Constant.action.SIGN_BY_USERNAME,
 
-      logoImage: require('@src/assets/logo-2.png')
+      logoImage: require('@src/assets/img/logo.png')
     }
   },
 
   methods: {
     goHome() {
-      this.$router.push(RouterPath.system.HOME)
+      this.$router.push(path.HOME)
     },
 
     changeMode(mode) {
@@ -77,7 +78,8 @@ export default {
 .container {
   display: flex;
   justify-content: center;
-
+  padding: 0px;
+  max-width: 100%;
   width: 100vw;
   min-height: 100vh;
 
@@ -143,7 +145,7 @@ export default {
   margin: 0 0 25px 0;
 
   &:focus-within {
-    border-bottom: 1px solid $--color-primary;
+    border-bottom: 1px solid var(--q-color-primary);
   }
 
   &.is-required:not(.is-no-asterisk) > .el-form-item__label:before,

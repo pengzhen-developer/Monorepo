@@ -13,7 +13,7 @@
     <!-- ======= Main ======= -->
     <main id="main">
       <!-- ======= 平台数据开始 ======= -->
-      <PlatformData></PlatformData>
+      <!-- <PlatformData></PlatformData> -->
       <!-- ======= 平台数据结束 ======= -->
 
       <!-- ======= 平台服务开始  ======= -->
@@ -27,6 +27,10 @@
       <!-- ======= 合作案例开始 ======= -->
       <CooperationCase></CooperationCase>
       <!-- ======= 合作案例结束 ======= -->
+
+      <!-- ======= 新闻动态开始 ======= -->
+      <News></News>
+      <!-- ======= 新闻动态结束 ======= -->
 
     </main><!-- End Main -->
 
@@ -45,10 +49,11 @@ import TopBar from './components/TopBar'
 import Header from './components/Header'
 import Banner from './components/Banner'
 import Footer from './components/Footer'
-import PlatformData from './components/PlatformData'
+// import PlatformData from './components/PlatformData'
 import PlatformService from './components/PlatformService'
 import Solution from './components/Solution'
 import CooperationCase from './components/CooperationCase'
+import News from './components/News'
 
 export default {
   components: {
@@ -56,9 +61,10 @@ export default {
     Header,
     Banner,
     Footer,
-    PlatformData,
+    // PlatformData,
     PlatformService,
     Solution,
+    News,
     CooperationCase
   },
 

@@ -1,104 +1,11 @@
 <template>
   <div>
     <el-container>
-      <div class="upper">
-        <el-button class="up-btn"
-                   @click="gotoDoctorWorkbench"> 我是医生 </el-button>
-        <el-button class="up-btn"
-                   @click="gotoPharmacistWorkbench"> 我是药师 </el-button>
-      </div>
-      <el-header class="header max-width"
-                 height="52px">
-        <div class="left">
-          <a href="">
-            <el-image style="width: 98px; height: 40px;"
-                      :src="require('./assets/images/logo.png')"
-                      lazy>
-            </el-image>
-          </a>
-        </div>
-        <div class="main">
-          <el-tabs v-model="mode">
-            <el-tab-pane v-for="item in menu"
-                         :key="item.index"
-                         :label="item.title"
-                         :name="item.name">
-            </el-tab-pane>
 
-          </el-tabs>
-        </div>
-        <div class="right">
-          <template v-if="hasLogin">
-            <el-button type="text"
-                       class="console-btn"
-                       v-on:click="goConsole">控制台</el-button>
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link gary-color">
-                {{ userName }}<i class="el-icon-s-operation gary-color"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-          <template v-else>
-            <div class="bth-hover">
-              <el-button class="login-btn"
-                         :class="active&&'none'"
-                         v-on:click="goLogin">登录</el-button>
-            </div>
-            <div class="bth-hover"
-                 @mousemove="active=1"
-                 @mouseout="active=0">
-              <el-button class="register-btn "
-                         v-on:click="goRegister">注册</el-button>
-            </div>
-          </template>
-        </div>
-      </el-header>
       <el-main style="padding:0;">
         <Component :is="mode"></Component>
       </el-main>
-      <el-footer class="footer "
-                 height="363px">
-        <div class="max-width">
-          <div class="left">
-            <div>
-              <el-image style="width: 109px; height: 35px;"
-                        :src="require('./assets/images/logo_footer.png')"
-                        lazy>
-              </el-image>
-            </div>
-            <div class="title">智药云</div>
-            <!-- <div class="dd"><span>电话：</span><span>4008004488</span></div>
-            <div class="dd"><span>网址：</span><span>http://jztzzy.jk.com</span></div> -->
-            <div class="dd"><span>地址：</span><span>武汉市洪山区光谷新发展国际中心A座2301室</span></div>
-          </div>
-          <div class="main">
-            <span>全息云通健康科技（武汉）有限公司 </span> <span>鄂ICP备19008514</span>
-          </div>
-          <div class="right">
-            <div>
-              <div class="title">系统</div>
-              <div class="dd"><a href="">多店云仓</a></div>
-              <div class="dd"><a href="">多点健康</a></div>
-              <!-- <div class="dd"><a href="">好德医</a></div> -->
-              <div class="dd"><a href="">智药云</a></div>
-            </div>
-            <div>
-              <div class="title">智药云</div>
-              <div class="dd"
-                   v-on:click="changMode('Home')">首页</div>
-              <div class="dd"
-                   v-on:click="changMode('Produce')">产品</div>
-              <div class="dd"
-                   v-on:click="changMode('Solutions')">解决方案</div>
-              <div class="dd"
-                   v-on:click="changMode('Around')">关于我们</div>
-            </div>
-          </div>
-        </div>
-      </el-footer>
+
     </el-container>
   </div>
 </template>
@@ -111,7 +18,7 @@ import Solutions from './components/Solutions'
 import Around from './components/Around'
 import Service from './service'
 
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
 import Util from '@src/util'
 export default {
   components: {
@@ -147,20 +54,20 @@ export default {
       Util.user.redirectTOPharmacistWorkbench()
     },
     goRegister() {
-      this.$router.push(RouterPath.system.REGISTER)
+      this.$router.push(path.REGISTER)
     },
     goLogin() {
-      this.$router.push(RouterPath.system.LOGIN)
+      this.$router.push(path.LOGIN)
     },
     goConsole() {
       //跳转前刷新一次checkStatus
-      Service.getAccountInfo().then(res => {
+      Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
 
         if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(RouterPath.system.INFORMMATION)
+          this.$router.replace(path.INFORMMATION)
         } else {
-          this.$router.replace(RouterPath.system.HOME)
+          this.$router.replace(path.HOME)
 
           Util.user.redirectToConsole()
         }
@@ -222,7 +129,7 @@ export default {
   line-height: 52px;
   &.is-active {
     color: #fff;
-    background-color: $--color-primary;
+    background-color: var(--q-color-primary);
   }
 }
 .header {
@@ -276,8 +183,8 @@ export default {
         border-radius: 0;
       }
       .login-btn {
-        border: 1px solid $--color-primary;
-        color: $--color-primary;
+        border: 1px solid var(--q-color-primary);
+        color: var(--q-color-primary);
         &.none {
           color: #333;
           border: 0;
@@ -285,8 +192,8 @@ export default {
       }
       &:hover {
         .register-btn {
-          border: 1px solid $--color-primary;
-          color: $--color-primary;
+          border: 1px solid var(--q-color-primary);
+          color: var(--q-color-primary);
         }
       }
     }

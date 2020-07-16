@@ -146,7 +146,7 @@
 <script>
 import Util from '@src/util'
 import Peace from '@src/library'
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
 import Service from './service'
 import Constant from './constant'
 
@@ -215,7 +215,7 @@ export default {
         ]
       },
 
-      logoImage: require('@src/assets/logo.png')
+      logoImage: require('@src/assets/img/logo_white.png')
     }
   },
 
@@ -234,18 +234,18 @@ export default {
       this.showPassword = !this.showPassword
     },
     goHome() {
-      this.$router.push(RouterPath.system.HOME)
+      this.$router.push(path.HOME)
     },
     goLogin() {
-      this.$router.push(RouterPath.system.LOGIN)
+      this.$router.push(path.LOGIN)
     },
 
     goTerms() {
-      window.open(process.env.VUE_APP_RELEASE_FLODER_PATH + RouterPath.system.TERMS.substring(1))
+      window.open(process.env.VUE_APP_RELEASE_FLODER_PATH + path.TERMS.substring(1))
     },
 
     goPrivacy() {
-      window.open(process.env.VUE_APP_RELEASE_FLODER_PATH + RouterPath.system.PRIVACY.substring(1))
+      window.open(process.env.VUE_APP_RELEASE_FLODER_PATH + path.PRIVACY.substring(1))
     },
 
     onCountdownEnd() {
@@ -294,7 +294,7 @@ export default {
         Util.user.updateUserInfo(res.data)
 
         if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(RouterPath.system.INFORMMATION)
+          this.$router.replace(path.INFORMMATION)
         }
       })
     },
@@ -414,7 +414,7 @@ export default {
 
             .terms-item {
               font-size: 12px;
-              color: $--color-primary;
+              color: var(--q-color-primary);
 
               &:hover {
                 cursor: pointer;
@@ -438,7 +438,7 @@ export default {
   margin: 0 0 25px 0;
 
   &:focus-within {
-    border-bottom: 1px solid $--color-primary;
+    border-bottom: 1px solid var(--q-color-primary);
   }
 
   .el-form-item__label {

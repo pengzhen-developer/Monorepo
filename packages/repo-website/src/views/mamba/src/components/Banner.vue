@@ -16,11 +16,14 @@
             <div class="carousel-item active"
                  v-bind:style="{ 'background-image': `url(${require('../assets/img/my/banner.png')})` }">
               <div class="carousel-container">
-                <div class="carousel-content container">
-                  <h2 class="animate__animated animate__fadeInDown">智药云</h2>
-                  <p class="animate__animated animate__fadeInUp">互联网云医院 | 处方共享服务 | 合理用药服务 | 药品供应服务</p>
-                  <a href="#about"
-                     class="btn-get-started animate__animated animate__fadeInUp scrollto">查看更多</a>
+                <div class=" carousel-content container  banner-content ">
+                  <el-image class="animate__animated animate__fadeInDown"
+                            style="width: 242px; height: 75px;"
+                            :src="require('@src/assets/img/logo2_white.png')">
+                  </el-image>
+                  <p class="animate__animated animate__fadeInUp banner-mid">互联网云医院 | 处方共享服务 | 合理用药服务 | 药品供应服务</p>
+                  <a href="#about-lists"
+                     class="btn-get-started animate__animated animate__fadeInUp scrollto banner-bottom">查看更多</a>
                 </div>
               </div>
             </div>
@@ -52,5 +55,17 @@
 <script>
 export default {}
 </script>
-<style >
+<style  scoped>
+.banner-mid {
+  width: 100% !important;
+  font-size: 32px;
+  margin-top: 60px;
+  margin-bottom: 90px;
+}
+.banner-content {
+  text-align: center !important;
+}
+.banner-bottom {
+  background: var(--q-color-primary) !important;
+}
 </style>

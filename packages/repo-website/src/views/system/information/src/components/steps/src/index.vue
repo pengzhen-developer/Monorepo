@@ -109,7 +109,7 @@ export default {
         flex: none;
       }
       &.active {
-        background-color: $--color-primary;
+        background-color: var(--q-color-primary);
       }
     }
   }

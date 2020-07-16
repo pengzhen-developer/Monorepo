@@ -1,6 +1,6 @@
 <template>
   <section id="myfooter"
-           class="portfolio section-bg">
+           class="team">
     <div class="container"
          data-aos="fade-up"
          data-aos-delay="100">
@@ -35,13 +35,13 @@
         <div class="bottom-item">
           <p>联系我们</p>
           <!-- <div class="information">
-            <img src="../assets/img/my/icon_phone.png"
-                 alt="">
+            <i class=" zyy-icon zyy-icon_dianhua"
+               style="color: #707070;"></i>
             电话：072-4592888
           </div> -->
           <div class="information">
-            <img src="../assets/img/my/icon_email.png"
-                 alt="">
+            <i class=" zyy-icon zyy-icon_youxiang2"
+               style="color: #707070;"></i>
             邮箱：xiej@jk.com
           </div>
         </div>
@@ -103,7 +103,7 @@ section {
   font-size: 20px;
   margin-top: 20px;
 }
-.information img {
+.information i {
   width: 24px;
   margin-right: 20px;
 }

@@ -94,14 +94,14 @@ export default {
         width: 120px;
         height: 32px;
         border-radius: 4px;
-        border: 1px solid $--color-primary;
-        color: $--color-primary;
+        border: 1px solid var(--q-color-primary);
+        color: var(--q-color-primary);
         background-color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         &:hover {
-          background-color: $--color-primary;
+          background-color: var(--q-color-primary);
           color: #fff;
         }
       }

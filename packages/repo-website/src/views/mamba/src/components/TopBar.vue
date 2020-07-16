@@ -6,14 +6,12 @@
         <div class=" role">
           <el-button class="role-content"
                      @click="gotoPharmacistWorkbench">
-            <img src="../assets/img/my/icon_pharmacist.png"
-                 class="role-img" />
+            <i class="role-img zyy-icon zyy-icon_yaoshi"></i>
             我是药师
           </el-button>
           <el-button class="role-content"
                      @click="gotoDoctorWorkbench">
-            <img src="../assets/img/my/icon_doctor.png"
-                 class="role-img" />
+            <i class="role-img zyy-icon zyy-icon_yisheng"></i>
             我是医生
           </el-button>
         </div>
@@ -55,8 +53,6 @@ export default {
   border-radius: 30px;
 }
 .role-img {
-  width: 20px;
   margin-right: 5px;
-  height: 20px;
 }
 </style>

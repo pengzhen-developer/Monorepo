@@ -521,7 +521,7 @@ export default {
       font-size: 14px;
       font-family: PingFangSC-Regular, PingFang SC;
       color: #fff;
-      background-color: $--color-primary;
+      background-color: var(--q-color-primary);
       border-radius: 4px;
       height: 32px;
       padding: 0;

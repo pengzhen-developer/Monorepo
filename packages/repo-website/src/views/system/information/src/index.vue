@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-container>
+    <el-container style="padding-top:0px;">
       <el-header height="52px">
         <div class="left"
              @click="backHome">
-          <el-image style="width: 98px; height: 40px;"
-                    :src="require('@src/assets/images/logo.png')">
+          <el-image style="width: 160px; height: 40px;"
+                    :src="require('@src/assets/img/logo.png')">
           </el-image>
         </div>
 
@@ -44,12 +44,14 @@
 <script>
 import Constant from '../constant'
 import Service from './../service'
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
+
 import CheckPending from './components/CheckPending'
 import OrgRegister from './components/OrgRegister'
 import CheckFailure from './components/CheckFailure'
 import CheckWaiting from './components/CheckWaiting'
-import { user } from '@src/util'
+import Util from '@src/util/index'
+
 export default {
   components: {
     CheckPending,
@@ -76,7 +78,7 @@ export default {
       }
     },
     hasLogin() {
-      return user.isSignIn()
+      return Util.user?.isSignIn()
     }
   },
   mounted() {
@@ -85,15 +87,15 @@ export default {
   methods: {
     handleCommand(command) {
       if (command == 'loginOut') {
-        user.removeUserInfo()
-        this.$router.replace(RouterPath.system.LOGIN)
+        Util.user.removeUserInfo()
+        this.$router.replace(path.LOGIN)
       }
     },
     backHome() {
-      this.$router.replace(RouterPath.system.HOME)
+      this.$router.replace(path.HOME)
     },
     getAccountInfo() {
-      Service.getAccountInfo().then(res => {
+      Service.getAccountInfo().then((res) => {
         this.info = res.data
         if (this.info.checkStatus == this.checkStatus.已通过) {
           this.backHome()
@@ -104,6 +106,12 @@ export default {
       if (flag) {
         this.info.checkStatus = this.checkStatus.未申请
       }
+    },
+    goLogin() {
+      this.$router.push(path.LOGIN)
+    },
+    goRegister() {
+      this.$router.push(path.REGISTER)
     }
   }
 }

@@ -59,7 +59,7 @@
 import Util from '@src/util'
 import Peace from '@src/library'
 import Service from './../service'
-import RouterPath from '@src/router/routerPath'
+import { path } from '@src/router/generateRoutes'
 import Constant from './../constant'
 
 export default {
@@ -80,7 +80,7 @@ export default {
 
   methods: {
     goRegister() {
-      this.$router.push(RouterPath.system.REGISTER)
+      this.$router.push(path.REGISTER)
     },
 
     goSignByPhone() {
@@ -114,9 +114,9 @@ export default {
         Util.user.updateUserInfo(res.data)
 
         if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(RouterPath.system.INFORMMATION)
+          this.$router.replace(path.INFORMMATION)
         } else {
-          this.$router.replace(RouterPath.system.HOME)
+          this.$router.replace(path.HOME)
 
           Util.user.redirectToConsole()
         }

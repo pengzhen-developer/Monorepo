@@ -1,4 +1,6 @@
 import Peace from '@src/library'
+import RouterPath from '@src/router/generateRoutes'
+import Router from '@src/router'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
@@ -40,6 +42,20 @@ export const setUserInfo = (userInfo) => {
   return Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
 /**
+ * 更新用户信息
+ *
+ * @param {*} userInfo 用户信息
+ * @returns
+ */
+export const updateUserInfo = (userInfo) => {
+  const oldUserInfo = getUserInfo()
+  const newUserInfo = userInfo
+
+  const updatedUserInfo = Object.assign({}, oldUserInfo, newUserInfo)
+
+  return setUserInfo(updatedUserInfo)
+}
+/**
  * 获取用户信息（缓存）
  *
  * @returns
@@ -52,7 +68,6 @@ export const getUserInfo = () => {
  *
  */
 export const removeUserInfo = () => {
-  Peace.cache.sessionStorage.clear()
   Peace.cache.localStorage.remove(USER_INFO)
   Peace.cache.localStorage.remove(USER_CD_KEY)
 }
@@ -66,14 +81,41 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  return $peace.$router.push({
-    name: '/login',
+  return Router.router.push({
+    name: RouterPath.system.LOGIN,
     query: {
-      referrer: referrer || $peace.$router.history.current.fullPath
+      referrer: referrer || Router.router.history.current.fullPath
     }
   })
 }
 
+/**
+ * 跳转控制台
+ *
+ */
+export const redirectToConsole = () => {
+  const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?cdkey=' + getUserCDKey()
+
+  window.open(CONSOLE_SITE_PATH)
+}
+/**
+ * 跳转医生工作台
+ *
+ */
+export const redirectToDoctorWorkbench = () => {
+  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_DOCTOR_WORKBENCH_SITE
+
+  window.open(CONSOLE_DOCTOR_WORKBENCH_PATH)
+}
+/**
+ * 跳转药师工作台
+ *
+ */
+export const redirectTOPharmacistWorkbench = () => {
+  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_PHARMACIST_WORKBENCH_SITE
+
+  window.open(CONSOLE_PHARMACIST_WORKBENCH_PATH)
+}
 /**
  * 是否已登录
  *
@@ -83,14 +125,18 @@ export const isSignIn = () => {
 }
 
 export default {
-  setUserInfo,
-  getUserCDKey,
-  removeUserCDKey,
-
-  setUserCDKey,
   getUserInfo,
+  setUserInfo,
+  updateUserInfo,
   removeUserInfo,
   isSignIn,
 
-  replaceToLogin
+  getUserCDKey,
+  setUserCDKey,
+  removeUserCDKey,
+
+  replaceToLogin,
+  redirectToConsole,
+  redirectToDoctorWorkbench,
+  redirectTOPharmacistWorkbench
 }
