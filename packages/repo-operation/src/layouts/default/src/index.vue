@@ -109,7 +109,7 @@ export default {
     },
 
     parentMenuSelect(index) {
-      const currentMenu = this.menuTree.find((menu) => menu.id === index)
+      const currentMenu = this.menuTree.find(menu => menu.id === index)
 
       // 当前为功能菜单
       if (currentMenu.menuPath) {
@@ -122,7 +122,7 @@ export default {
     },
 
     menuSelect(index) {
-      const currentMenu = this.menuList.find((menu) => menu.id === index)
+      const currentMenu = this.menuList.find(menu => menu.id === index)
 
       // 新增到当前 tab
       this.$store.commit('tabs/addTab', currentMenu)
