@@ -129,7 +129,7 @@ export default {
   line-height: 45px;
 }
 .button {
-  height: 40px;
+  height: 30px;
   width: 80px;
 }
 button:active {

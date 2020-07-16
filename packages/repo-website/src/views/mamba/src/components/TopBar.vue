@@ -7,12 +7,14 @@
           <el-button class="role-content"
                      @click="gotoPharmacistWorkbench">
             <i class="role-img zyy-icon zyy-icon_yaoshi"></i>
-            我是药师
+            <span style="line-height:nomal;">我是药师</span>
+
           </el-button>
           <el-button class="role-content"
                      @click="gotoDoctorWorkbench">
             <i class="role-img zyy-icon zyy-icon_yisheng"></i>
-            我是医生
+
+            <span style="line-height:nomal;">我是医生</span>
           </el-button>
         </div>
 
@@ -43,7 +45,7 @@ export default {
 .role-content {
   margin-left: 20px;
   color: var(--q-color-primary);
-  height: 40px;
+  height: 30px;
   padding: 5px 25px;
   border: 1px var(--q-color-primary) solid;
   display: flex;
