@@ -91,5 +91,23 @@ export default {
     return Peace.http.get(requestApi, {}).then((res) => {
       return res
     })
+  },
+
+  /**
+   *  获取处方总数
+   *
+   * @param {*} params
+   */
+  prescriptionCountOfAll(params) {
+    const isMock = false
+    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/prescriptionCountOfAll'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

@@ -13,7 +13,7 @@
                   v-bind:src="require('../assets/img/prescriptionCount.png')"> </el-image>
         <div>
           <p class="title-label">处方量</p>
-          <p class="count-label">{{ data.PrescriptionNum }}</p>
+          <p class="count-label">{{ rpData }}</p>
         </div>
       </div>
 
@@ -55,13 +55,15 @@ export default {
 
   data() {
     return {
-      data: {}
+      data: {},
+      rpData: {}
     }
   },
 
   mounted() {
     this.$nextTick().then(() => {
       this.get()
+      this.prescriptionCountOfAll()
     })
   },
 
@@ -70,6 +72,14 @@ export default {
       Service.getOverview()
         .then((res) => {
           this.data = res.data
+        })
+        .finally(() => {})
+    },
+
+    prescriptionCountOfAll() {
+      Service.prescriptionCountOfAll()
+        .then((res) => {
+          this.rpData = res.data
         })
         .finally(() => {})
     },
