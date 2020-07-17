@@ -2,14 +2,45 @@
   <div class="card-style q-pa-md">
     <div class="row items-center">
       <div class="card-title q-mr-lg">数据总览</div>
-      <el-button size="small" type="primary" @click="showDataScreen" plain>查看数据大屏</el-button>
+      <el-button size="small"
+                 type="primary"
+                 @click="showDataScreen"
+                 plain>查看数据大屏</el-button>
     </div>
     <div class="container">
-      <div class="data-item" v-for="item in list" v-bind:key="item.id">
-        <el-image class="image q-mr-md" v-bind:src="item.icon"> </el-image>
+      <div class="data-item">
+        <el-image class="image q-mr-md"
+                  v-bind:src="require('../assets/img/prescriptionCount.png')"> </el-image>
         <div>
-          <p class="title-label">{{ item.title }}</p>
-          <p class="count-label">{{ item.count }}</p>
+          <p class="title-label">处方量</p>
+          <p class="count-label">{{ data.PrescriptionNum }}</p>
+        </div>
+      </div>
+
+      <div class="data-item">
+        <el-image class="image q-mr-md"
+                  v-bind:src="require('../assets/img/orderCount.png')"> </el-image>
+        <div>
+          <p class="title-label">订单量</p>
+          <p class="count-label">{{ data.OrderNum }}</p>
+        </div>
+      </div>
+
+      <div class="data-item">
+        <el-image class="image q-mr-md"
+                  v-bind:src="require('../assets/img/hosptailCount.png')"> </el-image>
+        <div>
+          <p class="title-label">医疗机构</p>
+          <p class="count-label">{{ data.HospitalNum }}</p>
+        </div>
+      </div>
+
+      <div class="data-item">
+        <el-image class="image q-mr-md"
+                  v-bind:src="require('../assets/img/drugRoomCount.png')"> </el-image>
+        <div>
+          <p class="title-label">药品供应机构</p>
+          <p class="count-label">{{ data.DrugSupplyNum }}</p>
         </div>
       </div>
     </div>
@@ -17,45 +48,36 @@
 </template>
 
 <script>
+import Service from '../service'
+
 export default {
   name: 'data-overview',
 
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          icon: require('../assets/img/prescriptionCount.png'),
-          title: '处方量',
-          count: '1,378,938',
-        },
-        {
-          id: 2,
-          icon: require('../assets/img/orderCount.png'),
-          title: '订单量',
-          count: '900,0000',
-        },
-        {
-          id: 3,
-          icon: require('../assets/img/hosptailCount.png'),
-          title: '医疗机构',
-          count: '658',
-        },
-        {
-          id: 4,
-          icon: require('../assets/img/drugRoomCount.png'),
-          title: '药品供应机构',
-          count: '658',
-        },
-      ],
+      data: {}
     }
   },
 
+  mounted() {
+    this.$nextTick().then(() => {
+      this.get()
+    })
+  },
+
   methods: {
+    get() {
+      Service.getOverview()
+        .then((res) => {
+          this.data = res.data
+        })
+        .finally(() => {})
+    },
+
     showDataScreen() {
       this.$parent.toggleDataScreen()
-    },
-  },
+    }
+  }
 }
 </script>
 

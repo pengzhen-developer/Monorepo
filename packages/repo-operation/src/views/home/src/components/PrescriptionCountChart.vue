@@ -9,35 +9,10 @@
 </template>
 
 <script>
-const data = [
-  {
-    date: '0701',
-    value: 1
-  },
-  {
-    date: '0702',
-    value: 5
-  },
-  {
-    date: '0703',
-    value: 19
-  },
-  {
-    date: '0704',
-    value: 8
-  },
-  {
-    date: '0705',
-    value: 2
-  },
-  {
-    date: '0706',
-    value: 5
-  }
-]
+// const data = []
 
-const xAxiosData = data.map((item) => item.date)
-const yAxiosData = data.map((item) => item.value)
+// const xAxiosData = data.map((item) => item.date)
+// const yAxiosData = data.map((item) => item.count)
 // 只有3根分割线，替换最值分割线的颜色为背景色隐藏
 const ySplitLineColors = ['#F6F6F6', '#F6F6F6', '#fff']
 // 如果分割线数量根据数据来如下替换
@@ -47,6 +22,8 @@ const ySplitLineColors = ['#F6F6F6', '#F6F6F6', '#fff']
 //   return tmp
 // })()
 import ECharts from 'vue-echarts'
+import Service from '../service'
+
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
@@ -61,6 +38,7 @@ export default {
 
   data() {
     return {
+      listData: [],
       polar: {
         grid: {
           top: '15%',
@@ -73,7 +51,7 @@ export default {
           type: 'category',
           boundaryGap: false,
           show: true,
-          data: xAxiosData,
+          data: [],
           //改变坐标轴文本的样式
           axisLabel: {
             textStyle: {
@@ -135,7 +113,7 @@ export default {
         },
         series: [
           {
-            data: yAxiosData,
+            data: [],
             type: 'line',
             symbol: 'circle', //折点设定为实心点
             symbolSize: 6, //设定实心点的大小
@@ -179,6 +157,24 @@ export default {
           }
         ]
       }
+    }
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.get()
+    })
+  },
+
+  methods: {
+    get() {
+      Service.preCountOfSevenDays()
+        .then((res) => {
+          this.listData = res.data.list
+          this.polar.xAxis.data = this.listData.map((item) => item.date.substring(item.date.length - 5))
+          this.polar.series[0].data = this.listData.map((item) => item.count)
+        })
+        .finally(() => {})
     }
   }
 }
