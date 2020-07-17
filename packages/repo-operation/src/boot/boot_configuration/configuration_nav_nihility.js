@@ -17,7 +17,7 @@ export default [
     menuRouteName: '999-1',
     menuRoute: '999-1',
     menuName: '服务详情',
-    menuPath: process.env.VUE_APP_NETHOSPITAL + 'organization/details/',
+    menuPath: process.env.VUE_APP_NETHOSPITAL + '/organization/details/',
     menuIcon: null,
     iconType: null,
     enable: true,

@@ -9,33 +9,6 @@
 </template>
 
 <script>
-// const data = [
-//   {
-//     date: '0701',
-//     value: 1
-//   },
-//   {
-//     date: '0702',
-//     value: 5
-//   },
-//   {
-//     date: '0703',
-//     value: 19
-//   },
-//   {
-//     date: '0704',
-//     value: 8
-//   },
-//   {
-//     date: '0705',
-//     value: 2
-//   },
-//   {
-//     date: '0706',
-//     value: 5
-//   }
-// ]
-
 // const xAxiosData = data.map((item) => item.date)
 // const yAxiosData = data.map((item) => item.value)
 // 只有3根分割线，替换最值分割线的颜色为背景色隐藏
@@ -67,10 +40,10 @@ export default {
       polar: {
         grid: {
           top: '15%',
-          left: '0%',
+          left: '5%',
           right: '5%',
-          bottom: '10%',
-          containLabel: true
+          bottom: '20%',
+          containLabel: false
         },
         xAxis: {
           data: [],
@@ -101,9 +74,6 @@ export default {
             showMaxLabel: false
           },
           splitNumber: 2,
-          min: function() {
-            return 0
-          },
           max: function(value) {
             return value.max * 1.2
           },
@@ -137,7 +107,6 @@ export default {
             type: 'bar',
             data: [],
             barWidth: 16, //柱子宽度
-            barGap: 1, //柱子之间间距
             itemStyle: {
               //柱样式
               normal: {

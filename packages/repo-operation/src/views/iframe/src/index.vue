@@ -40,11 +40,11 @@ export default {
 
       if (iframe.attachEvent) {
         iframe.attachEvent('onload', function() {
-          // alert('Local iframe is now loaded.')
+          //alert('Local iframe is now loaded.')
         })
       } else {
         iframe.onload = function() {
-          // alert('Local iframe is now loaded.')
+          //alert('Local iframe is now loaded.')
         }
       }
     })

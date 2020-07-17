@@ -36,8 +36,17 @@ export default {
         backgroundColor: '#fff',
         tooltip: {
           trigger: 'item',
+          padding: [10, 15],
+          textStyle: {
+            fontSize: 20
+          },
           formatter: function(params) {
-            return params.name + '\n云仓' + params.value[2] + '\n药店' + params.value[3]
+            const { name, value } = params
+            return `
+                    ${name} <br/>
+                    云仓：${value[2]} <br/>
+                    药店：${value[3]} <br/>
+                `
           }
         },
         geo: {
