@@ -180,8 +180,8 @@
           </div>
         </template>
         <div class="message-item"
-             v-if="internalData.inquiryInfo.appointmentStatus==2">
-          <div class="message-item-left">关闭时间</div>
+             v-if="internalData.inquiryInfo.inquiryStatus== ENUM.INQUIRY_STATUS.已取消">
+          <div class="message-item-left">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
           <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
         </div>
       </div>
