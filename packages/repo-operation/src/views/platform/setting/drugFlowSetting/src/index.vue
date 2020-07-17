@@ -1,35 +1,83 @@
 <template>
   <div>
-    <Component v-bind:is="ComponentInstance"></Component>
+    <!-- 返回列表 -->
+    <div class="q-mb-lg"
+         v-if="displayView === '编辑' || displayView === '详情'">
+      <el-button type="primary"
+                 v-on:click="back">
+        <div class="q-px-md q-py-sm">
+          <i class="el-icon-arrow-left"></i>
+          <span>返回上一页</span>
+        </div>
+      </el-button>
+    </div>
 
-    <!-- 编辑模式下,需要实时预览 -->
-    <template v-if="isEditorPreview">
-      <!-- 分隔符 -->
+    <template v-if="displayView === '列表'">
+      <!-- 药品流向列表 -->
+      <DrugFlowList v-on:on-edit="goEdit"
+                    v-on:on-preview="goPreview"></DrugFlowList>
+    </template>
+
+    <template v-if="displayView === '编辑'">
+      <!-- 编辑药品流向 -->
+      <DrugFlowEditor v-bind:custName="custName"
+                      v-bind:pharmacyRule.sync="pharmacyRule"
+                      v-bind:pharmacyConf.sync="pharmacyConf"
+                      v-bind:data.sync="data"></DrugFlowEditor>
+
       <q-separator class="q-my-xl bg-primary"></q-separator>
 
-      <!-- 标题 -->
-      <div class="text-body1 text-center">预览详情</div>
+      <!-- 预览药品流向 -->
+      <DrugFlowView v-bind:custName="custName"
+                    v-bind:pharmacyRule="pharmacyRule"
+                    v-bind:pharmacyConf="pharmacyConf"
+                    v-bind:data="data"></DrugFlowView>
 
-      <!-- 预览详情 -->
-      <Component v-bind:data="data"
-                 v-bind:type="type"
-                 v-bind:is="ComponentPreviewInstance"></Component>
+      <div class="text-center">
+        <el-button type="primary"
+                   v-on:click="save">
+          <div class="q-py-xs q-px-xl">保存</div>
+        </el-button>
+
+        <el-button v-on:click="back">
+          <div class="q-py-xs q-px-xl">取消</div>
+        </el-button>
+      </div>
+    </template>
+
+    <template v-if="displayView === '详情'">
+      <!-- 预览药品流向 -->
+      <DrugFlowView v-bind:custName="custName"
+                    v-bind:pharmacyRule="pharmacyRule"
+                    v-bind:pharmacyConf="pharmacyConf"
+                    v-bind:data="data"></DrugFlowView>
     </template>
   </div>
 </template>
 
 <script>
+import Peace from '@src/library'
+import Service from './service'
+
 import CONSTANT from './../constant'
 import DrugFlowList from './components/DrugFlowList'
 import DrugFlowEditor from './components/DrugFlowEditor'
 import DrugFlowView from './components/DrugFlowView'
 
+import { IPharmacyRuleModel, IPharmacyConfModel } from './model/IPharmacyModel'
+
 export default {
   provide() {
     return {
-      provideSetDispalyView: this.setDispalyView,
-      providePreview: this.preview
+      provideStoreList: () => this.storeList,
+      provideCloudStoreList: () => this.cloudStoreList
     }
+  },
+
+  components: {
+    DrugFlowList,
+    DrugFlowEditor,
+    DrugFlowView
   },
 
   data() {
@@ -38,39 +86,88 @@ export default {
 
       displayView: CONSTANT.DISPLAY_VIEW.列表,
 
-      type: undefined,
-      data: undefined
+      storeList: [],
+      cloudStoreList: [],
+
+      pharmacyRule: new IPharmacyRuleModel(),
+      pharmacyConf: new IPharmacyConfModel(),
+      data: []
     }
   },
 
-  computed: {
-    isEditorPreview() {
-      return this.displayView === CONSTANT.DISPLAY_VIEW.编辑
-    },
-
-    ComponentPreviewInstance() {
-      return DrugFlowView
-    },
-
-    ComponentInstance() {
-      const displayViewComponentMap = {
-        [CONSTANT.DISPLAY_VIEW.列表]: DrugFlowList,
-        [CONSTANT.DISPLAY_VIEW.编辑]: DrugFlowEditor,
-        [CONSTANT.DISPLAY_VIEW.详情]: DrugFlowView
-      }
-
-      return displayViewComponentMap[this.displayView]
-    }
+  created() {
+    this.getStore()
+    this.getCloudStore()
   },
 
   methods: {
-    setDispalyView(displayView) {
-      this.displayView = displayView
+    getStore() {
+      return Service.SimpleStoreList2().then((res) => {
+        const formatData = []
+
+        res.data.forEach((item) => {
+          item.label = item.Name + ' ' + (item.Address ?? '')
+          item.value = item.DrugStoreKeyId
+
+          if (item.SimpleStoreSon) {
+            item.SimpleStoreSon.forEach((item) => {
+              item.label = item.SonName + ' ' + (item.Address ?? '')
+              item.value = item.DrugStoreKeyId
+            })
+
+            item.children = item.SimpleStoreSon
+          }
+
+          formatData.push(item)
+        })
+
+        this.storeList = formatData
+      })
     },
 
-    preview(data, type) {
-      this.type = type
-      this.data = data
+    getCloudStore() {
+      return Service.CloudStoreList().then((res) => {
+        this.cloudStoreList = res.data
+      })
+    },
+
+    back() {
+      this.displayView = CONSTANT.DISPLAY_VIEW.列表
+    },
+
+    save() {
+      const params = Peace.util.deepClone(this.data)
+
+      params.forEach((item) => {
+        item.CustCode = item.CustCode || this.custCode
+        item.DisplayImg = item.DisplayImg && item.DisplayImg.split('?')[0]
+      })
+
+      Service.save(params).then(() => {
+        this.back()
+      })
+    },
+
+    goEdit(custCode, custName) {
+      this.custCode = custCode
+      this.custName = custName
+      this.displayView = CONSTANT.DISPLAY_VIEW.编辑
+
+      Service.getDetail({ custCode: custCode }).then((res) => {
+        this.pharmacyRule.RuleFlag = res.data.RuleFlag
+        this.data = res.data.List
+      })
+    },
+
+    goPreview(custCode, custName) {
+      this.custCode = custCode
+      this.custName = custName
+      this.displayView = CONSTANT.DISPLAY_VIEW.详情
+
+      Service.getDetail({ custCode: custCode }).then((res) => {
+        this.pharmacyRule.RuleFlag = res.data.RuleFlag
+        this.data = res.data.List
+      })
     }
   }
 }

@@ -18,7 +18,7 @@ export default [
     menuRoute: '5-1',
     menuRouteName: '5-1',
     menuName: '流向配置',
-    menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigDrugStoreManagement',
+    menuPath: 'views/platform/setting/drugFlowSetting',
     menuIcon: 'zyy-icon zyy-lxpz',
     iconType: 'Local Icons',
     enable: true,

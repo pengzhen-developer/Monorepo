@@ -2,42 +2,55 @@
 
 <template>
   <div class="relative-position">
-    <div class="absolute"
-         style="top: -20px; left: 70px">
+
+    <el-checkbox v-bind:checked="pharmacyList.length > 0"
+                 v-model="checked"
+                 label="药店"> </el-checkbox>
+
+    <div v-if="checked"
+         class="absolute"
+         style="top: 0px; left: 70px">
       <span class="cursor-pointer text-primary text-caption"
             v-on:click="showDialog">请选择</span>
     </div>
 
-    <div v-if="data.length"
+    <div v-if="pharmacyList.length"
          class="row q-col-gutter-x-md">
-      <div class="col-3 col-lg-2 q-my-md"
-           v-for="pharmacy in data"
-           v-bind:key="pharmacy.name">
+      <div class="q-my-md"
+           style="max-width: 240px;"
+           v-for="pharmacy in pharmacyList"
+           v-bind:key="pharmacy.DisplayName">
         <q-card>
-          <q-card-section class="bg-primary">
-            <q-img v-bind:src="pharmacy.image"
-                   style="height: 100px;"></q-img>
+          <q-card-section style="min-height: 100px; min-width: 200px;"
+                          class="bg-white">
+            <el-image style="height: 100px; width: 100%;"
+                      v-bind:src="pharmacy.DisplayImg"
+                      v-bind:preview-src-list="[pharmacy.DisplayImg]">
+            </el-image>
           </q-card-section>
 
           <q-separator />
 
           <q-card-actions align="center"
                           style="min-height: 40px;">
-            <span> {{ pharmacy.name }} </span>
+            <span> {{ pharmacy.DisplayName }} </span>
           </q-card-actions>
         </q-card>
       </div>
     </div>
 
     <peace-dialog title="选择药店"
+                  v-if="dialog.visible"
                   v-bind:visible.sync="dialog.visible">
-      <el-tree class="q-mb-md"
-               node-key="id"
+      <el-tree style="height: 600px; overflow: auto;"
+               class="q-mb-md"
+               node-key="DrugStoreKeyId"
                ref="tree"
                show-checkbox
-               v-bind:data="tree"
-               v-bind:default-checked-keys="data.pharmacy"
-               v-bind:default-expand-all="true"
+               v-bind:check-strictly="true"
+               v-bind:data="storeList"
+               v-bind:default-checked-keys="checkList"
+               v-bind:default-expand-all="false"
                v-bind:check-on-click-node="true"
                v-on:check-change="checkChange">
       </el-tree>
@@ -50,67 +63,80 @@
       <div class="text-center">
         <el-button style="min-width: 120px;"
                    type=""
-                   v-on:click="closeDialog">取消</el-button>
+                   v-on:click="closeDialog">
+          <div class="q-py-xs q-px-xl">取消</div>
+        </el-button>
         <el-button style="min-width: 120px;"
                    type="primary"
-                   v-on:click="check">提交</el-button>
+                   v-on:click="check">
+          <div class="q-py-xs q-px-xl">提交</div>
+        </el-button>
       </div>
     </peace-dialog>
   </div>
 </template>
 
 <script>
+import { IPharmacyModel } from './../model/IPharmacyModel'
+
 export default {
   props: {
-    data: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+    pharmacyRule: Object,
+    pharmacyConf: Object,
+    data: Array
   },
+
+  inject: ['provideStoreList', 'provideCloudStoreList'],
 
   data() {
     return {
-      checkCount: undefined,
+      checked: false,
 
-      tree: [
-        {
-          id: 1,
-          label: '一级 1',
-          children: [
-            {
-              id: 4,
-              label: '二级 1-1',
-              children: [
-                { id: 9, label: '三级 1-1-1' },
-                { id: 10, label: '三级 1-1-2' }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: '一级 2',
-          children: [
-            { id: 5, label: '二级 2-1' },
-            { id: 6, label: '二级 2-2' }
-          ]
-        },
-        {
-          id: 3,
-          label: '一级 3',
-          children: [
-            { id: 7, label: '二级 3-1' },
-            { id: 8, label: '二级 3-2' }
-          ]
-        }
-      ],
+      pharmacyList: [],
+
+      checkList: [],
+      checkCount: undefined,
 
       dialog: {
         visible: false
       }
     }
+  },
+
+  computed: {
+    storeList() {
+      return this.provideStoreList()
+    },
+
+    cloudStoreList() {
+      return this.provideCloudStoreList()
+    }
+  },
+
+  watch: {
+    checked() {
+      if (this.checked === false) {
+        this.pharmacyList = []
+        this.checkList = []
+        this.checkCount = undefined
+
+        for (let i = this.data.length - 1; i >= 0; i--) {
+          const item = this.data[i]
+
+          if (item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType !== 50) {
+            this.data.splice(i, 1)
+          }
+        }
+      }
+    }
+  },
+
+  created() {
+    this.pharmacyList = this.data.filter(
+      (item) => item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType !== 50
+    )
+
+    this.checkList = this.pharmacyList.map((item) => item.DrugStoreId)
   },
 
   methods: {
@@ -123,24 +149,50 @@ export default {
     },
 
     checkChange() {
-      const keys = this.$refs.tree.getCheckedKeys()
+      const keys = this.$refs.tree.getCheckedNodes()
 
       this.checkCount = keys.length
     },
 
     check() {
-      const keys = this.$refs.tree.getCheckedKeys()
+      // 移除药店
+      for (let i = this.data.length - 1; i >= 0; i--) {
+        const item = this.data[i]
 
-      this.data.splice(0, this.data.length)
+        if (item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType !== 50) {
+          this.data.splice(i, 1)
+        }
+      }
 
-      keys.forEach((item) => {
-        this.data.push({
-          name: item,
-          image: item
-        })
+      const nodes = this.$refs.tree.getCheckedNodes()
+      this.pharmacyList = []
+      this.checkList = []
+
+      nodes.forEach((node) => {
+        const pharmacy = new IPharmacyModel()
+
+        // set pharmacy
+        pharmacy.RuleFlag = this.pharmacyRule.value
+        pharmacy.ConfType = this.pharmacyConf.value
+        pharmacy.CustCode = ''
+        pharmacy.CustomerType = 10
+        pharmacy.DrugStoreId = node.DrugStoreKeyId
+        pharmacy.DisplayName = node.Name || node.SonName
+        pharmacy.DisplayImg = node.DrugStoreLogo
+
+        this.data.push(pharmacy)
+        this.pharmacyList.push(pharmacy)
+
+        this.checkList.push(pharmacy.DrugStoreId)
       })
 
       this.dialog.visible = false
+    },
+
+    resetCheck() {
+      this.pharmacyList = this.data.filter(
+        (item) => item.RuleFlag === this.pharmacyRule.RuleFlag && item.ConfType === this.pharmacyConf.ConfType && item.CustomerType !== 50
+      )
     }
   }
 }
