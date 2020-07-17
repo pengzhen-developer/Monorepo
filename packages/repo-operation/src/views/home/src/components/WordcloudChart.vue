@@ -1,14 +1,6 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">
-      近7日处方诊断关键字
-    </div>
-    <div class="col q-px-sm">
-      <v-chart :options="option"
-               :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="option"
+           :autoresize="true" />
 </template>
 
 <script>
@@ -17,17 +9,17 @@ import ECharts from 'vue-echarts'
 import 'dragon-echarts-wordcloud'
 
 const data = [
-  { name: '微信', value: 3328 },
-  { name: '东莞日报', value: 289 },
-  { name: '一点资讯', value: 287 },
-  { name: '东方头条网', value: 233 },
-  { name: '南方都市报', value: 228 },
-  { name: '新粤网', value: 207 },
-  { name: '南方plus', value: 206 },
-  { name: '网易新闻', value: 201 },
-  { name: '东方头条', value: 180 },
-  { name: '趣头条', value: 178 },
-  { name: '羊城派', value: 151 },
+  { name: '急性肠梗阻', value: 3328 },
+  { name: '消化系溃疡', value: 289 },
+  { name: '急性腹膜炎', value: 287 },
+  { name: '急性阑尾炎', value: 233 },
+  { name: '消化性溃疡穿孔', value: 228 },
+  { name: '急性胰腺炎', value: 207 },
+  { name: '尿路感染', value: 206 },
+  { name: '急性胃炎', value: 201 },
+  { name: '急性胃肠炎', value: 180 },
+  { name: '食管癌', value: 178 },
+  { name: '慢性肠炎', value: 151 },
   { name: '东莞时报', value: 143 },
   { name: '莞讯网', value: 139 },
   { name: '广州日报', value: 137 },
@@ -38,7 +30,7 @@ const data = [
   { name: '腾讯新闻.APP', value: 107 },
   { name: '南方网', value: 103 },
   { name: 'UC头条', value: 98 },
-  { name: '凤凰新闻', value: 93 },
+  { name: '口，鼻出血', value: 93 },
   { name: '报告诉', value: 77 },
   { name: '网易新闻.APP', value: 74 }
 ].slice()

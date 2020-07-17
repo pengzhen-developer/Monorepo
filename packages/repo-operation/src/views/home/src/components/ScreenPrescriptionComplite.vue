@@ -1,73 +1,127 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">
-      近7日订单完成率
+  <div class="col row full-width full-height">
+    <div class="flex column justify-center items-center col">
+      <v-chart :options="opComplete"
+               :autoresize="true" />
     </div>
-    <div class="col row">
-      <div class="col text-right circle-left">
-        <el-progress type="circle"
-                     :percentage="30"
-                     color="rgba(187,66,239,1)"></el-progress>
-        <span>已完成</span>
-      </div>
-      <div class="col circle-right">
-        <el-progress type="circle"
-                     :percentage="70"
-                     color="rgba(67,102,243,1)"></el-progress>
-        <span>未完成</span>
-      </div>
+    <div class="flex justify-center items-center col">
+      <v-chart :options="opUncomplete"
+               :autoresize="true" />
     </div>
   </div>
 </template>
 
 <script>
-const colors = {
-  default: '#193F80',
-  // done: 'linear-gradient(0deg,rgba(187,66,239,1),rgba(226,58,245,1))',
-  // undone: 'linear-gradient(267deg,rgba(67,102,243,1),rgba(29,67,243,1))'
-  done: 'rgba(187,66,239,1)',
-  undone: 'rgba(67,102,243,1)'
-}
+import ECharts from 'vue-echarts'
+// 手动引入 ECharts 各模块来减小打包体积
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/component/tooltip'
+
 export default {
+  components: {
+    'v-chart': ECharts
+  },
+
   data() {
     return {
-      colors: colors,
-      doneValue: 30,
-      undoneValue: 70,
-      data: [{ color: 'rgba(187,66,239,1)' }]
+      opComplete: {
+        title: [
+          {
+            text: '已完成',
+            left: 'center',
+            top: '80%',
+            textStyle: { fontWeight: 'normal', fontSize: '12', color: '#389af4', textAlign: 'center' }
+          }
+        ],
+        series: [
+          {
+            name: '已完成',
+            type: 'pie',
+            clockWise: false,
+            radius: [30, 20],
+            itemStyle: { normal: { color: '#BB42EF', shadowColor: '#BB42EF', shadowBlur: 0, label: { show: false }, labelLine: { show: false } } },
+            hoverAnimation: false,
+            center: ['50%', '40%'],
+            label: {
+              normal: {
+                show: true,
+                position: 'center',
+                padding: [0, 0, 0, 0],
+                align: 'center',
+                width: 70,
+                height: 50,
+                lineHeight: 14,
+                fontSize: 14,
+                formatter() {
+                  return '30%'
+                }
+              }
+            },
+            data: [
+              { value: 70, name: 'invisible', itemStyle: { normal: { color: '#dfeaff' }, emphasis: { color: '#dfeaff' } } },
+              { value: 30, label: { normal: { position: 'center', show: true, textStyle: { fontSize: '14', fontWeight: 'bold', color: '#fff' } } } }
+            ]
+          }
+        ]
+      },
+
+      opUncomplete: {
+        title: {
+          text: '未完成',
+          left: 'center',
+          top: '80%',
+          textStyle: { fontWeight: 'normal', fontSize: '12', color: '#389af4', textAlign: 'center' }
+        },
+        series: [
+          {
+            name: '未完成',
+            type: 'pie',
+            clockWise: false,
+            radius: [30, 20],
+            itemStyle: { normal: { color: '#389af4', shadowColor: '#389af4', shadowBlur: 0, label: { show: false }, labelLine: { show: false } } },
+            hoverAnimation: false,
+            center: ['50%', '40%'],
+            label: {
+              normal: {
+                show: true,
+                position: 'center',
+                padding: [0, 0, 0, 0],
+                align: 'center',
+                width: 70,
+                height: 50,
+                lineHeight: 14,
+                fontSize: 14,
+                formatter() {
+                  return '20%'
+                }
+              }
+            },
+            data: [
+              { value: 80, name: 'invisible', itemStyle: { normal: { color: '#dfeaff' }, emphasis: { color: '#dfeaff' } } },
+              { value: 20, label: { normal: { position: 'center', show: true, textStyle: { fontSize: '14', fontWeight: 'bold', color: '#fff' } } } }
+            ]
+          }
+        ]
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-progress {
-  ::v-deep.el-progress__text {
-    color: #fff;
-  }
+.card-title:before {
+  content: '';
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 10px;
+  background: rgba(48, 153, 166, 1);
+  width: 2px;
+  height: 14px;
+  border: 2px solid rgba(108, 206, 230, 1);
 }
-
-.circle-left {
-  padding-right: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  span {
-    color: rgba(255, 255, 255, 0.2);
-    padding-right: 15%;
-    margin-top: 5px;
-  }
-}
-.circle-right {
-  padding-left: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  span {
-    margin-top: 5px;
-    color: rgba(255, 255, 255, 0.2);
-    padding-left: 15%;
-  }
+.echarts {
+  width: 100% !important;
+  height: 100% !important;
 }
 </style>

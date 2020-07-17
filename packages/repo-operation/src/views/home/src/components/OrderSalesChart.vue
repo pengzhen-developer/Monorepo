@@ -1,14 +1,6 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">
-      近半年订单销售额
-    </div>
-    <div class="col q-px-sm">
-      <v-chart :options="option"
-               :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="option"
+           :autoresize="true" />
 </template>
 <script>
 const data = [
@@ -52,6 +44,22 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
+          //改变坐标轴文本的样式
+          axisLabel: {
+            textStyle: {
+              color: '#999',
+              fontSize: 12
+            }
+          },
+          //改变坐标轴和文本的样式
+          axisLine: {
+            lineStyle: {
+              width: 0
+            }
+          },
+          axisTick: {
+            show: false
+          },
           data: xAxiosData
         },
         yAxis: {

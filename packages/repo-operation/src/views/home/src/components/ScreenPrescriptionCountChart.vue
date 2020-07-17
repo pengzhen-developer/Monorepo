@@ -1,11 +1,7 @@
 <template>
-  <div class="column full-width full-height" style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">
-      近7日处方量统计
-    </div>
-    <div class="col q-px-sm">
-      <v-chart :options="polar" :autoresize="true" />
-    </div>
+  <div class="column full-width full-height">
+    <v-chart :options="polar"
+             :autoresize="true" />
   </div>
 </template>
 
@@ -13,28 +9,28 @@
 const data = [
   {
     date: '0701',
-    value: 1,
+    value: 1
   },
   {
     date: '0702',
-    value: 5,
+    value: 5
   },
   {
     date: '0703',
-    value: 19,
+    value: 19
   },
   {
     date: '0704',
-    value: 8,
+    value: 8
   },
   {
     date: '0705',
-    value: 2,
+    value: 2
   },
   {
     date: '0706',
-    value: 5,
-  },
+    value: 5
+  }
 ]
 
 const xAxiosData = data.map((item) => item.date)
@@ -51,7 +47,7 @@ export default {
   name: 'screen-prescription-count-chart',
 
   components: {
-    'v-chart': ECharts,
+    'v-chart': ECharts
   },
 
   data() {
@@ -62,7 +58,7 @@ export default {
           left: '0%',
           right: '0%',
           bottom: '0%',
-          containLabel: true,
+          containLabel: true
         },
         xAxis: {
           data: xAxiosData,
@@ -70,43 +66,43 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#999',
-              fontSize: 12,
-            },
+              fontSize: 12
+            }
           },
           //改变坐标轴和文本的样式
           axisLine: {
             lineStyle: {
-              width: 0,
-            },
+              width: 0
+            }
           },
           axisTick: {
-            show: false,
-          },
+            show: false
+          }
         },
         yAxis: {
           //改变坐标轴文本的样式
           axisLabel: {
             textStyle: {
               color: '#999',
-              fontSize: 12,
+              fontSize: 12
             },
             interval: 0,
-            showMaxLabel: false,
+            showMaxLabel: false
           },
           //改变坐标轴和文本的样式
           axisLine: {
             lineStyle: {
-              width: 0,
-            },
+              width: 0
+            }
           },
           axisTick: {
-            show: false,
+            show: false
           },
           splitLine: {
             //格线样式
             lineStyle: {
-              color: ySplitLineColors,
-            },
+              color: ySplitLineColors
+            }
           },
           splitNumber: 2,
           min: function() {
@@ -114,14 +110,14 @@ export default {
           },
           max: function(value) {
             return value.max * 1.5
-          },
+          }
         },
         tooltip: {
           trigger: 'item',
           formatter: function(params) {
             const val = params.data
             return val.value
-          },
+          }
         },
         series: [
           {
@@ -133,7 +129,7 @@ export default {
             label: {
               show: true,
               position: 'top',
-              color: '#FFFFFF',
+              color: '#FFFFFF'
             },
             itemStyle: {
               //柱样式
@@ -148,22 +144,22 @@ export default {
                   colorStops: [
                     {
                       offset: 0,
-                      color: '#0477D5', // 0% 处的颜色
+                      color: '#0477D5' // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: '#01D9FE', // 100% 处的颜色
-                    },
+                      color: '#01D9FE' // 100% 处的颜色
+                    }
                   ],
-                  globalCoord: false, // 缺省为 false
-                },
-              },
-            },
-          },
-        ],
-      },
+                  globalCoord: false // 缺省为 false
+                }
+              }
+            }
+          }
+        ]
+      }
     }
-  },
+  }
 }
 </script>
 

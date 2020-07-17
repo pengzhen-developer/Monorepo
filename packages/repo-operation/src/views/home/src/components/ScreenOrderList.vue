@@ -1,12 +1,6 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">近7日机构订单排名</div>
-    <div class="col q-px-sm">
-      <v-chart :options="polar"
-               :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="polar"
+           :autoresize="true" />
 </template>
 
 <script>
@@ -41,8 +35,8 @@ const data = [
   }
 ]
 
-const xAxiosData = data.map(item => item.name)
-const yAxiosData = data.map(item => item.value)
+const xAxiosData = data.map((item) => item.name)
+const yAxiosData = data.map((item) => item.value)
 // 只有4根分割线，替换最值分割线的颜色为背景色隐藏
 const ySplitLineColors = ['#0C2150', '#0C2150', '#0C2150', '#000a3b']
 
@@ -62,7 +56,7 @@ export default {
     return {
       polar: {
         grid: {
-          top: '0%',
+          top: '5%',
           left: '0%',
           right: '0%',
           bottom: '0%',

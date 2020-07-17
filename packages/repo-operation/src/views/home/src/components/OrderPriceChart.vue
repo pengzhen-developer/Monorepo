@@ -1,12 +1,6 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">近7日订单价格区间</div>
-    <div class="col q-px-sm">
-      <v-chart :options="polar"
-               :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="polar"
+           :autoresize="true" />
 </template>
 
 <script>
@@ -201,12 +195,12 @@ export default {
           {
             name: '',
             type: 'pie',
-            radius: ['30%', '80%'],
-            center: ['40%', '50%'],
+            radius: ['10%', '80%'],
+            center: ['30%', '50%'],
             roseType: 'radius',
             label: {
-              show: true,
               normal: {
+                show: false,
                 position: 'outside',
                 fontSize: 16,
                 color: '#fff'
@@ -215,7 +209,7 @@ export default {
             labelLine: {
               length: 1,
               length2: 20,
-              smooth: true
+              smooth: false
             },
             data: result
           }

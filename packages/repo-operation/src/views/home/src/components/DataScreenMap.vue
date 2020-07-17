@@ -1,21 +1,30 @@
 <template>
   <div class="column full-width full-height">
-    <div class="container col-2 q-pa-md">
-      <div class="data-item "
-           v-for="item in list"
-           v-bind:key="item.id">
-        <el-image class="image q-mr-md"
-                  v-bind:src="item.icon"> </el-image>
-        <div>
-          <p class="title-label">{{ item.title }}</p>
-          <p class="count-label">{{ item.count }}</p>
+
+    <div class="q-pa-md">
+      <div class="row q-col-gutter-md">
+        <div class="col-4"
+             v-for="item in list"
+             v-bind:key="item.id">
+          <div class="q-pa-sm row">
+            <el-image class="q-mr-md"
+                      style="width: 40px; height: 40px;"
+                      v-bind:src="item.icon"> </el-image>
+
+            <div class="flex column justify-center">
+              <div>{{ item.title }}</div>
+              <div>{{ item.count }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="chart-container col full-width">
+
+    <div class="col full-width">
       <v-chart :options="polar"
                :autoresize="true" />
     </div>
+
   </div>
 </template>
 
@@ -552,54 +561,5 @@ export default {
 .echarts {
   width: 100% !important;
   height: 100% !important;
-}
-.container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-  margin: 10px 0;
-
-  .data-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 30%;
-    margin-right: 3%;
-    padding: 1.5%;
-    margin-bottom: 2%;
-    // clip-path: polygon(6px 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
-
-    background: linear-gradient(-45deg, transparent 4px, #021950 0) bottom right, linear-gradient(-135deg, transparent 4px, #021950 0) top right,
-      linear-gradient(135deg, transparent 4px, #021950 0) top left, linear-gradient(45deg, transparent 4px, #021950 0) bottom left;
-    background-size: 50% 51%;
-    background-repeat: no-repeat;
-    // border: 2px solid #1a3f81;
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
-    .image {
-      width: 56px;
-      height: 56px;
-    }
-
-    p {
-      margin: 0;
-      padding: 0;
-    }
-
-    .title-label {
-      font-size: 11px;
-      font-weight: 400;
-      color: #02d9fd;
-    }
-
-    .count-label {
-      font-size: 20px;
-      font-weight: 600;
-      color: #ffffff;
-    }
-  }
 }
 </style>

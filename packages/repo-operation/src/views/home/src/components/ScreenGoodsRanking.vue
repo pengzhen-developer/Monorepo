@@ -1,12 +1,6 @@
 <template>
-  <div class="column full-width full-height"
-       style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">近半年商品数量排名</div>
-    <div class="col q-px-sm">
-      <v-chart :options="polar"
-               :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="polar"
+           :autoresize="true" />
 </template>
 
 <script>

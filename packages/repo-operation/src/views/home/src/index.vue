@@ -1,6 +1,7 @@
 <template>
   <div class="full-width full-height">
-    <div v-show="!showDataScreen" class="full-width full-height home_bg_style">
+    <div v-show="!showDataScreen"
+         class="full-width full-height home_bg_style">
       <div class="row q-col-gutter-x-md">
         <div class="col-4 col-lg-4 col-md-6 col-sm-12">
           <todo-list class="q-mb-md"></todo-list>
@@ -13,6 +14,7 @@
         </div>
       </div>
     </div>
+
     <data-screen v-show="showDataScreen"></data-screen>
   </div>
 </template>
@@ -32,28 +34,22 @@ export default {
     DataOverview,
     PrescriptionCountChart,
     OrderCountChart,
-    TodoList,
+    TodoList
   },
-
-  inject: ['provideToggleDrawer'],
 
   data() {
     return {
-      showDataScreen: false,
+      showDataScreen: false
     }
   },
 
-  computed: {
-    toggleDrawer() {
-      return this.provideToggleDrawer(false)
-    },
-  },
+  created() {},
 
   methods: {
     toggleDataScreen() {
       this.showDataScreen = !this.showDataScreen
-    },
-  },
+    }
+  }
 }
 </script>
 

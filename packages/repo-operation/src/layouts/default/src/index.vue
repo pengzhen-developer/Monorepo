@@ -9,6 +9,7 @@
     <q-drawer class="layout-drawer"
               side="left"
               show-if-above
+              v-if="hasNavMenu"
               v-bind:width="240"
               v-bind:breakpoint="0"
               v-model="showDrawerModel">
@@ -82,7 +83,8 @@ export default {
       menuTree: [],
       childrenMenuTree: [],
 
-      showDrawerModel: true
+      showDrawerModel: true,
+      hasNavMenu: true
     }
   },
 
@@ -109,20 +111,25 @@ export default {
     },
 
     parentMenuSelect(index) {
-      const currentMenu = this.menuTree.find(menu => menu.id === index)
+      const currentMenu = this.menuTree.find((menu) => menu.id === index)
 
-      // 当前为功能菜单
-      if (currentMenu.menuPath) {
-        this.menuSelect(index)
-      }
-      // 加载子菜单
-      else {
-        this.childrenMenuTree = currentMenu.children
-      }
+      // 是否隐藏 nav
+      this.hasNavMenu = currentMenu.children
+
+      this.$nextTick(() => {
+        // 当前为功能菜单，点击跳转功能
+        if (currentMenu.menuPath) {
+          this.menuSelect(index)
+        }
+        // 当前为顶级菜单，点击加载子菜单
+        else {
+          this.childrenMenuTree = currentMenu.children
+        }
+      })
     },
 
     menuSelect(index) {
-      const currentMenu = this.menuList.find(menu => menu.id === index)
+      const currentMenu = this.menuList.find((menu) => menu.id === index)
 
       // 新增到当前 tab
       this.$store.commit('tabs/addTab', currentMenu)

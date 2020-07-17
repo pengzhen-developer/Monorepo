@@ -1,34 +1,38 @@
 <template>
-  <div class="column full-width full-height" style="border:2px solid rgba(26, 63, 129, 1);">
-    <div class="card-title text-grey col-2 q-px-md q-my-sm">近7日机构处方订单排名</div>
-    <div class="col q-px-sm">
-      <v-chart :options="polar" :autoresize="true" />
-    </div>
-  </div>
+  <v-chart :options="polar"
+           :autoresize="true" />
 </template>
 
 <script>
 const data = [
   {
     name: '北辰医院',
-    value: 744,
+    value: 744
   },
   {
     name: '五莲医院',
-    value: 563,
+    value: 563
   },
   {
     name: '中心医院',
-    value: 620,
+    value: 620
   },
   {
     name: '上医馆',
-    value: 631,
+    value: 631
   },
   {
     name: '第一医院',
-    value: 740,
+    value: 740
   },
+  {
+    name: '第二医院',
+    value: 740
+  },
+  {
+    name: '第三医院',
+    value: 740
+  }
 ]
 
 const yAxiosData = data.map((item) => item.name)
@@ -42,7 +46,7 @@ export default {
   name: 'screen-hosptail-list',
 
   components: {
-    'v-chart': ECharts,
+    'v-chart': ECharts
   },
 
   data() {
@@ -51,20 +55,20 @@ export default {
         grid: {
           top: '0%',
           left: '0%',
-          right: '0%',
+          right: '5%',
           bottom: '0%',
-          containLabel: true,
+          containLabel: true
         },
         xAxis: {
           type: 'value',
           //改变坐标轴文本的样式
           axisLabel: {
-            show: false,
+            show: false
           },
           splitLine: {
             //格线样式
-            show: false,
-          },
+            show: false
+          }
         },
         yAxis: {
           type: 'category',
@@ -73,20 +77,20 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#02D9FD',
-              fontSize: 12,
-            },
+              fontSize: 12
+            }
           },
           //改变坐标轴和文本的样式
           axisLine: {
-            show: false,
-          },
+            show: false
+          }
         },
         tooltip: {
           trigger: 'item',
           formatter: function(params) {
             const val = params.data
             return val.value
-          },
+          }
         },
         series: [
           {
@@ -98,7 +102,7 @@ export default {
             label: {
               show: true,
               position: 'right',
-              color: '#FFFFFF',
+              color: '#FFFFFF'
             },
             itemStyle: {
               //柱样式
@@ -113,22 +117,22 @@ export default {
                   colorStops: [
                     {
                       offset: 0,
-                      color: '#0477D5', // 0% 处的颜色
+                      color: '#0477D5' // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: '#01D9FE', // 100% 处的颜色
-                    },
+                      color: '#01D9FE' // 100% 处的颜色
+                    }
                   ],
-                  globalCoord: false, // 缺省为 false
-                },
-              },
-            },
-          },
-        ],
-      },
+                  globalCoord: false // 缺省为 false
+                }
+              }
+            }
+          }
+        ]
+      }
     }
-  },
+  }
 }
 </script>
 
