@@ -15,19 +15,10 @@
           class="drug-from"
           v-if="order!=null">
       <div class="top">
-        <!--tab-->
-        <div class="tab">
-          <div @click="changeTab(1)"
-               :class="page.tabIndex == '1' ? 'tab-item active' : 'tab-item'">
-            配送到家
-          </div>
-          <div @click="changeTab(0)"
-               :class="page.tabIndex == '0' ? 'tab-item active' : 'tab-item'">
-            到店取药
-          </div>
-        </div>
-        <!--tab^content-->
         <div class="content">
+          <div class="addr-tit">
+            {{page.tabIndex==0?'取药地址':'收货地址'}}
+          </div>
           <div class="tab-content"
                v-if="page.tabIndex == '0'">
             <div class="userAddr icon-next">
@@ -85,37 +76,45 @@
                 </div>
               </div>
             </div>
-            <div class="module intro">
-              <div class="dl-packet">
-                <div class="dt">配送方式:</div>
-                <div class="dd">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
-              </div>
-              <div class="dl-packet"
-                   v-if="page.tabIndex == '1'">
-                <div class="dt">配送费:</div>
-                <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
-              </div>
-              <div class="dl-packet">
-                <div class="dt">优惠金额:</div>
-                <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
-              </div>
-              <div class="dl-packet">
-                <div class="dt">订单总价:</div>
-                <div class="dd">￥{{order.TotalAmount}}
-                </div>
-              </div>
-            </div>
-            <div class="module str">
-              <div class="dl-packet">
-                <div class="dt">应付金额:</div>
-                <div class="dd">
-                  <div class="strong">
-                    ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
-                  <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
-                </div>
-              </div>
-            </div>
+          </div>
+        </div>
+      </div>
+      <div class="module intro">
+        <div class="dl-packet">
+          <div class="dt">支付方式 ：</div>
+          <div class="dd more"
+               @click="changeShowPopup">{{payName}}</div>
+        </div>
+        <div class="dl-packet">
+          <div class="dt"></div>
+          <div class="dd"
+               @click="changeShowPopup">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
+        </div>
+      </div>
+      <div class="module str">
+        <div class="dl-packet">
+          <div class="dt">订单总价 ：</div>
+          <div class="dd">￥{{order.TotalAmount}}
+          </div>
+        </div>
+        <div class="dl-packet"
+             v-if="page.tabIndex == '1'">
+          <div class="dt">配送费 ：</div>
+          <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
+        </div>
+        <div class="dl-packet">
+          <div class="dt">优惠金额 ：</div>
+          <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
+        </div>
+        <div class="line"></div>
+        <div class="dl-packet">
+          <div class="dt money">应付金额 ：</div>
+          <div class="dd">
+            <div class="strong">
+              ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
+            <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
+
           </div>
         </div>
       </div>
@@ -136,11 +135,51 @@
                       v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                       size="small"
                       round
-                      type="primary">在线支付</van-button>
+                      type="primary">提交订单</van-button>
 
         </div>
       </div>
     </form>
+
+    <van-popup v-model="showPopup"
+               round
+               closeable
+               :close-icon="colseIcon"
+               position="bottom">
+      <div class="pop-title">
+        <span>请选择您的支付方式</span>
+      </div>
+
+      <div class="pop-box">
+        <div class="pop-subtitle">支付方式</div>
+        <div class="pop-list">
+          <div class="pop-tag"
+               :class="{'active':!item.disabled&&json.payIndex==item.index,'disabled':item.disabled}"
+               v-for="(item,index) in payList"
+               :key="index"
+               @click="selectPay(item)">
+            {{item.name}}
+          </div>
+
+        </div>
+      </div>
+      <div class="pop-box">
+        <div class="pop-subtitle">配送方式</div>
+        <div class="pop-list">
+          <div class=" pop-tag"
+               :class="{'active':!item.disabled&&json.tabIndex==item.index,'disabled':item.disabled}"
+               v-for="(item,index) in tabList"
+               :key="index"
+               @click="changeTab(item.index,item.disabled)">
+            {{item.name}}
+          </div>
+        </div>
+      </div>
+      <van-button type="primary"
+                  round
+                  @click="changeShowPopup"
+                  size="large">确认</van-button>
+    </van-popup>
   </div>
 </template>
 
@@ -151,6 +190,13 @@ export default {
   name: 'DrugOrderBefore',
   data() {
     return {
+      payList: [
+        { index: 0, name: '在线支付', disabled: false },
+        { index: 1, name: '到店支付', disabled: true },
+        { index: 2, name: '货到付款', disabled: true }
+      ],
+      showPopup: false,
+      colseIcon: require('@src/assets/images/ic_close@2x.png'),
       hasSubmitOrder: false,
 
       orderId: '',
@@ -160,7 +206,12 @@ export default {
         accessToken: '',
         json: {},
         tabIndex: '',
+        payIndex: '',
         canSubmit: false
+      },
+      json: {
+        tabIndex: '',
+        payIndex: ''
       },
       userAddr: {},
       order: null,
@@ -182,6 +233,7 @@ export default {
     /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
     /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
     this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
+    this.page.payIndex = '0'
     this.page.json = params
     this.DrugStoreId = params.DrugStoreId
     this.Detailed = params.Detailed
@@ -195,17 +247,44 @@ export default {
     //   })
     // }
   },
+  computed: {
+    payName() {
+      return this.payList.find((item) => item.index == this.page.payIndex)?.name
+    },
+    tabList() {
+      let list = [
+        { index: 1, name: '配送到家', disabled: false },
+        { index: 0, name: '到店取药', disabled: false }
+      ]
+      const ShippingMethod = this.page.json.ShippingMethod
+      if (ShippingMethod == '0' || ShippingMethod == '1') {
+        list.map((item) => (item.disabled = true))
+        let item = list.find((item) => item.index == ShippingMethod)
+        item.disabled = false
+      }
+      return list
+    }
+  },
   methods: {
+    changeShowPopup() {
+      this.showPopup = !this.showPopup
+      if (!this.showPopup) {
+        this.page.payIndex = this.json.payIndex
+        this.page.tabIndex = this.json.tabIndex
+      } else {
+        this.json.payIndex = this.page.payIndex
+        this.json.tabIndex = this.page.tabIndex
+      }
+    },
     goDrugPhaHomePage() {
       let json = this.$route.params.json
       if (!this.DrugStoreId) {
-        // peace.util.alert('')
         return
       }
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     getDefaultAddress() {
-      peace.service.patient.getDefaultAddress().then(res => {
+      peace.service.patient.getDefaultAddress().then((res) => {
         this.userAddr = res.data
         this.canSubmitProcesses()
       })
@@ -257,15 +336,19 @@ export default {
       }
       peace.service.patient
         .submitOrder(params)
-        .then(res => {
+        .then((res) => {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
-          let params = { orderNo }
+          let orderType = 'drug'
+          let money = this.page.tabIndex == '1' ? this.order.OrderMoney : this.order.pickOrderMoney
+          let params = { orderNo, orderType, money }
 
           if (paymentType === 'yibaopay') {
             this.payCallback()
           } else {
-            peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
+            // peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
+            const json = peace.util.encode(params)
+            this.$router.replace(`/components/ExpenseDetail/${json}`)
           }
         })
         .catch(() => {
@@ -291,26 +374,39 @@ export default {
       this.page.canSubmit = bool
       return bool
     },
-
-    changeTab(index) {
-      if (index == this.page.tabIndex) {
+    selectPay(item) {
+      if (item.disabled) {
         return
       }
-      if (this.page.json.ShippingMethod == '0' && index == '1') {
-        peace.util.alert('该药店不支持配送到家。')
+      if (item.index == this.json.payIndex) {
         return
       }
-      if (this.page.json.ShippingMethod == '1' && index == '0') {
-        peace.util.alert('该药店不支持到店配药。')
+      this.json.payIndex = item.index
+      this.json.payName = item.name
+      this.canSubmitProcesses()
+    },
+    changeTab(index, disabled) {
+      if (index == this.json.tabIndex) {
         return
       }
-      this.page.tabIndex = index
+      if (disabled) {
+        return
+      }
+      // if (this.page.json.ShippingMethod == '0' && index == '1') {
+      //   peace.util.alert('该药店不支持配送到家。')
+      //   return
+      // }
+      // if (this.page.json.ShippingMethod == '1' && index == '0') {
+      //   peace.util.alert('该药店不支持到店配药。')
+      //   return
+      // }
+      this.json.tabIndex = index
       this.canSubmitProcesses()
     },
 
     getPhaOrder() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.patient.getOrderBefore(params).then(res => {
+      peace.service.patient.getOrderBefore(params).then((res) => {
         //防止 Freight  PromotionsCut 无此字段
         res.data.Freight = res.data.Freight || 0
         res.data.PromotionsCut = res.data.PromotionsCut || 0
@@ -329,6 +425,54 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.van-popup {
+  padding: 23px 15px 15px 15px;
+  /deep/.van-popup__close-icon--top-right {
+    top: 23px;
+    right: 16px;
+  }
+  .pop-title {
+    font-size: 18px;
+    font-family: Helvetica;
+    color: rgba(0, 0, 0, 1);
+  }
+  .pop-box {
+    margin-top: 25px;
+    .pop-subtitle {
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 16px;
+    }
+    .pop-list {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      .pop-tag {
+        width: 91px;
+        height: 31px;
+        background-color: #f1f1f1;
+        border-radius: 16px;
+        border: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        &.active {
+          background: #e5f9f6;
+          border-color: $primary;
+          color: $primary;
+        }
+        &.disabled {
+          color: #ccc;
+        }
+      }
+    }
+  }
+  .van-button {
+    margin-top: 56px;
+  }
+}
 .warn-tip {
   display: flex;
   align-items: center;
@@ -358,6 +502,29 @@ export default {
   > .module {
     border-radius: 3px;
     overflow: hidden;
+    margin-top: 10px;
+    background-color: #fff;
+    .more {
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0px;
+        width: 6px;
+        height: 10px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url('~@src/assets/images/icons/icon-next.jpg');
+      }
+    }
+    .line {
+      height: 0.5px;
+      background: #eee;
+      margin-top: 8px;
+    }
   }
 }
 .top,
@@ -368,7 +535,7 @@ export default {
   overflow: hidden;
   margin-bottom: 10px;
   border-radius: 3px;
-  padding: 15px 0;
+  padding: 15px;
 }
 .tab {
   width: 50%;
@@ -403,16 +570,17 @@ export default {
     }
   }
 }
-.tab-content .addr-tit {
+.addr-tit {
   font-size: 14px;
   position: relative;
   padding-left: 24px;
-  padding-bottom: 5px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
 }
-.tab-content .addr-p::before {
+.addr-tit::before {
   content: '';
   position: absolute;
-  left: -27px;
+  left: 0px;
   top: 50%;
   transform: translateY(-50%);
   width: 14px;
@@ -483,12 +651,18 @@ export default {
   padding: 0 15px;
 }
 .intro {
-  padding: 8px 0;
+  padding: 8px 15px;
 }
-.intro .dl-packet .dt,
-.intro .dl-packet .dd {
+.intro .dl-packet .dt {
   font-size: 13px;
   padding: 2px 0;
+}
+.intro .dl-packet .dd {
+  font-size: 13px;
+  padding: 2px 15px 2px 0;
+}
+.dl-packet .dt {
+  width: 140px;
 }
 .dl-packet .dd,
 .dl-packet .dt {
@@ -500,16 +674,17 @@ export default {
 }
 .str {
   border-top: 1px solid #eee;
-  padding: 3px 0;
+  padding: 8px 15px 3px;
 }
 .str .dt {
-  color: #333333;
   font-size: 14px;
-  line-height: 2.8;
+  &.money {
+    color: #333333;
+    line-height: 2.8;
+  }
 }
 .str .dd {
   font-size: 12px;
-  color: #999;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -558,9 +733,8 @@ export default {
 }
 .userAddr {
   width: 100%;
-  padding-right: 33px;
+  padding-right: 18px;
   position: relative;
-  padding-left: 42px;
 }
 
 .addr-user {
@@ -577,9 +751,9 @@ export default {
   display: block;
   top: 50%;
   transform: translateY(-50%);
-  right: 15px;
-  width: 7px;
-  height: 12px;
+  right: 0px;
+  width: 6px;
+  height: 10px;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('~@src/assets/images/icons/icon-next.jpg');
@@ -591,13 +765,15 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   right: 12px;
-  width: 7px;
-  height: 12px;
+  width: 6px;
+  height: 10px;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('~@src/assets/images/icons/icon-next.jpg');
 }
-
+.list-three:last-child {
+  border-bottom: 0;
+}
 .list-three .list-other {
   flex: 0 1 65px;
   width: 65px;

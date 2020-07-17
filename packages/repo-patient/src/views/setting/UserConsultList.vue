@@ -249,15 +249,17 @@ export default {
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
       let inquiryId = order.inquiryId
-      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
+      let orderType = 'inquiry'
+      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      // this.$router.push(`/components/doctorInquiryPay/${json}`)
+      this.$router.push(`/components/ExpenseDetail/${json}`)
     },
     getConsultList() {
       this.p++
-      peace.service.patient.inquiryList({ p: this.p, size: this.size }).then(res => {
+      peace.service.patient.inquiryList({ p: this.p, size: this.size }).then((res) => {
         this.loaded = true
-        res.data.list.map(item => {
+        res.data.list.map((item) => {
           // item.time =  15 * 60 * 1000;
           let inquiryInfo = item.inquiryInfo
           let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
@@ -363,7 +365,7 @@ export default {
           const params = {
             orderNo: item.inquiryInfo.orderNo
           }
-          peace.service.patient.cancel(params).then(res => {
+          peace.service.patient.cancel(params).then((res) => {
             peace.util.alert(res.msg)
 
             this.get()

@@ -206,11 +206,7 @@ export default {
       const ShippingMethod = order.ShippingMethod
       const OrderStatus = order.OrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return (
-        ShippingMethod === ENUM.SHIPPING_METHOD.SELF &&
-        OrderStatus >= ENUM.ORDER_STATUS.ACCEPT &&
-        OrderStatus !== ENUM.ORDER_STATUS.CANCEL
-      )
+      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
 
     onClickSeeQRCode(order) {
@@ -230,8 +226,8 @@ export default {
         OrderType: this.tabIndex == '1' ? '6' : this.tabIndex
       }
 
-      peace.service.purchasedrug.SelectOrderListApi(params).then(res => {
-        res.data.map(item => {
+      peace.service.purchasedrug.SelectOrderListApi(params).then((res) => {
+        res.data.map((item) => {
           if (item.expireTime > item.currentTime) {
             item.time = (item.expireTime - item.currentTime) * 1000
           }
@@ -248,8 +244,13 @@ export default {
     payOrder(item) {
       let orderNo = item.OrderId
       this.currentOrderId = item.OrderId
-      let params = { orderNo }
-      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+      // let params = { orderNo }
+      // peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+      let orderType = 'drug'
+      let money = item.OrderMoney
+      let params = { orderNo, orderType, money }
+      const json = peace.util.encode(params)
+      this.$router.replace(`/components/ExpenseDetail/${json}`)
     },
     payCallback() {
       let orderId = ''
@@ -272,7 +273,7 @@ export default {
         resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
-        peace.service.purchasedrug.CancelOrder(params).then(res => {
+        peace.service.purchasedrug.CancelOrder(params).then((res) => {
           peace.util.alert(res.msg)
           this.getDrugItems()
         })
@@ -292,11 +293,9 @@ export default {
 
     submitOrder(item) {
       const params = { OrderId: item.OrderId }
-      let resTxt = item.ShippingMethod
-        ? '收到药品确认无误后再确认收货，以免造成损失'
-        : '收到药品确认无误后再确认取药，以免造成损失'
+      let resTxt = item.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
-        peace.service.purchasedrug.ConfirmReceipt(params).then(res => {
+        peace.service.purchasedrug.ConfirmReceipt(params).then((res) => {
           peace.util.alert(res.msg)
           this.getDrugItems()
         })

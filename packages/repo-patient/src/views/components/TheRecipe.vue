@@ -179,7 +179,7 @@ export default {
     get() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.patient.getPrescripInfo(params).then(res => {
+      peace.service.patient.getPrescripInfo(params).then((res) => {
         this.internalData = res.data
       })
     },

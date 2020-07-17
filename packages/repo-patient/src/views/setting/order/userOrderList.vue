@@ -46,8 +46,7 @@
                        :class="item.orderInfo.orderMoney==0||item.orderInfo.orderMoney == null?'price-free':'price'"
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0||item.orderInfo.orderMoney == null ? '免费' : '￥'+ item.orderInfo.orderMoney }}
-                    <span
-                          v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
+                    <span v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
                   </div>
                 </div>
                 <div class="small-item"
@@ -235,8 +234,7 @@ export default {
     OrderCloseCountDown(item) {
       return (
         item.inquiryInfo.inquiryStatus == 1 &&
-        (item.inquiryInfo.appointmentStatus == '0' ||
-          (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == '1'))
+        (item.inquiryInfo.appointmentStatus == '0' || (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == '1'))
       )
     },
     OrderReceptCountDown(item) {
@@ -247,8 +245,7 @@ export default {
         //待支付倒计时结束自动取消，待接诊倒计时结束不处理
         if (
           item.inquiryInfo.inquiryStatus == 1 &&
-          (item.inquiryInfo.appointmentStatus == 0 ||
-            (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == 1))
+          (item.inquiryInfo.appointmentStatus == 0 || (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == 1))
         ) {
           item.close = false
           item.inquiryInfo.inquiryStatus = 6
@@ -282,22 +279,26 @@ export default {
       let typeName = '',
         orderNo = '',
         money = '',
+        orderType = '',
         json = {}
       let doctorId = data.doctorInfo.doctorId
       let doctorName = data.doctorInfo.name
+      orderType = data.orderType
       typeName = data.inquiryType
       if (data.orderType == 'register') {
         orderNo = data.orderNo
         money = data.orderMoney
-        json = { money, typeName, doctorName, orderNo, doctorId }
+        json = { money, typeName, doctorName, orderNo, doctorId, orderType }
       } else if (data.orderType == 'inquiry') {
         orderNo = data.orderInfo.orderNo
         money = data.orderInfo.orderMoney
         let inquiryId = data.inquiryInfo.inquiryId
-        json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
+        json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       }
       json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+
+      // this.$router.push(`/components/doctorInquiryPay/${json}`)
+      this.$router.push(`/components/ExpenseDetail/${json}`)
     },
     get() {
       if (!this.timer) {
@@ -309,9 +310,9 @@ export default {
     },
     getData() {
       this.p++
-      peace.service.patient.getOrderList({ p: this.p, size: this.size }).then(res => {
+      peace.service.patient.getOrderList({ p: this.p, size: this.size }).then((res) => {
         if (res.data.list.length > 0) {
-          res.data.list.map(item => {
+          res.data.list.map((item) => {
             item.close = true
 
             if (item.orderType == 'register') {
@@ -321,8 +322,7 @@ export default {
               item.inquiryType = '预约挂号'
             } else if (item.orderType == 'inquiry') {
               let inquiryInfo = item.inquiryInfo
-              let expireTime =
-                inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
+              let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
               if (expireTime > inquiryInfo.currentTime) {
                 item.time = (expireTime - inquiryInfo.currentTime) * 1000
               }
@@ -330,11 +330,7 @@ export default {
               if (item.inquiryInfo.serviceType == 'returnVisit') {
                 item.inquiryType = '复诊预约'
                 /** 预约成功-- #00c6ae */
-                if (
-                  item.inquiryInfo.inquiryStatus == '1' &&
-                  item.inquiryInfo.appointmentStatus == '1' &&
-                  !item.inquiryInfo.reportTime
-                ) {
+                if (item.inquiryInfo.inquiryStatus == '1' && item.inquiryInfo.appointmentStatus == '1' && !item.inquiryInfo.reportTime) {
                   item.heightLight = true
                 }
               } else {
@@ -371,7 +367,7 @@ export default {
       if (type == 'auto') {
         params.cancelType = 2
       }
-      peace.service.patient.cancel(params).then(res => {
+      peace.service.patient.cancel(params).then((res) => {
         if (type == 'hand') {
           peace.util.alert(res.msg)
           if (res.code == '200') {
@@ -412,7 +408,7 @@ export default {
       if (hasAlert == 'auto') {
         params.cancelType = 2
       }
-      peace.service.appoint.orderCancel(params).then(res => {
+      peace.service.appoint.orderCancel(params).then((res) => {
         if (hasAlert == 'hand') {
           peace.util.alert(res.msg || '退号成功')
           if (res.code == '200') {

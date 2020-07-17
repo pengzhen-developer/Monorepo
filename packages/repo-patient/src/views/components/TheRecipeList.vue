@@ -15,7 +15,7 @@
             </div>
             <div class="word-body">
               <div class="word-title">
-                <div class="title">{{item.patientName}}的用药建议</div>
+                <div class="title">{{item.patientName}}的处方</div>
                 <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
                      class="label label-default"
                      v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
@@ -41,14 +41,16 @@
         <div class="tips-bottom"
              v-if="internalData && internalData.length">
           <div>为确保广大患者的用药安全，请注意：</div>
-          <div>1. 医生开具用药建议之后，会有专业药师团队对用药建议进行审核。审核通过的用药建议方能进行购药。</div>
-          <div>2. 用药建议开具3日内有效。</div>
-          <div>3. 用药建议仅限平台认证的药店配药，自行下载用药建议去其他药店购药，药品安全平台不做担保。</div>
+          <div>1. 医生开具处方之后，会有专业药师团队对处方进行审核。审核通过的处方方能进行购药。</div>
+          <div>2. 处方开具3日内有效。</div>
+          <div>3. 处方仅限平台认证的药店配药，自行下载处方去其他药店购药，药品安全平台不做担保。</div>
         </div>
         <div class="none-page"
              v-if="loaded && internalData.length == 0">
           <div class="icon icon_none_prescrip"></div>
-          <div class="none-text">暂无用药建议</div>
+          <div class="none-text">暂无处方</div>
+          <div class="none-text">如需用药需求可在线复诊续方</div>
+          <!-- <van-button type='primary' @click="gotoDoctorList">在线复诊</van-button> -->
         </div>
 
         <peace-dialog :visible.sync="recipeDetail.visible"
@@ -58,11 +60,9 @@
       </div>
     </template>
     <template v-else>
-      <div
-           style="display: flex; flex-direction: column; height: 100%; background: #F8FDFD; justify-content: center; align-items: center;">
+      <div style="display: flex; flex-direction: column; height: 100%; background: #F8FDFD; justify-content: center; align-items: center;">
         <div style="flex: 1; padding: 30px 16px 0 16px; overflow: auto">
-          <h4
-              style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0; text-align: center;">
+          <h4 style="font-size: 16px; color: rgba(0,198,174,1); line-height: 22px; margin: 0 0 10px 0; text-align: center;">
             登录后即可查看医生为您开具的处方、快捷取药</h4>
           <img src="@src/assets/images/no-login.png">
         </div>
@@ -128,7 +128,7 @@ export default {
     get() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.patient.getMyPrescripList(params).then(res => {
+      peace.service.patient.getMyPrescripList(params).then((res) => {
         this.internalData = res.data
         this.loaded = true
       })
@@ -146,6 +146,9 @@ export default {
       $peace.referrer = this.$route
       this.$router.push(peace.config.system.loginPage)
     }
+    // gotoDoctorList(){
+    //   this.$router.push(`/components/doctorList`)
+    // }
   }
 }
 </script>
@@ -252,13 +255,7 @@ export default {
     right: 0;
     top: 0;
     justify-content: flex-end;
-    background: linear-gradient(
-      212deg,
-      rgba(242, 34, 59, 1) 0,
-      rgba(242, 34, 59, 1) 50%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 1) 100%
-    );
+    background: linear-gradient(212deg, rgba(242, 34, 59, 1) 0, rgba(242, 34, 59, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 100%);
     span {
       height: 18px;
       width: 20px;

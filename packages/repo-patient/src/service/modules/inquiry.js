@@ -12,8 +12,8 @@ export function getList(params) {
 
   return peace.http.post(getList, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' },
-    },
+      post: { 'Content-Type': 'application/json' }
+    }
   })
 }
 
@@ -54,8 +54,8 @@ export function images(params) {
 
   return peace.http.post(images, params, {
     headers: {
-      post: { 'Content-Type': 'multipart/form-data' },
-    },
+      post: { 'Content-Type': 'multipart/form-data' }
+    }
   })
 }
 
@@ -71,8 +71,8 @@ export function apply(params) {
 
   return peace.http.post(apply, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' },
-    },
+      post: { 'Content-Type': 'application/json' }
+    }
   })
 }
 /**
@@ -88,9 +88,23 @@ export function checkSource(params) {
 
   return peace.http.post(checkSource, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' },
-    },
+      post: { 'Content-Type': 'application/json' }
+    }
   })
+}
+
+/**
+ * 预售订单-医生患者信息
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+
+export function getFamilyDoctorInfo(params) {
+  const getFamilyDoctorInfo = 'client/v1/inquiry/getFamilyDoctorInfo'
+
+  return peace.http.post(getFamilyDoctorInfo, params)
 }
 
 export default {
@@ -108,4 +122,7 @@ export default {
   apply,
   /** 复诊号源校验 */
   checkSource,
+
+  /** 预售订单-医生患者信息 */
+  getFamilyDoctorInfo
 }

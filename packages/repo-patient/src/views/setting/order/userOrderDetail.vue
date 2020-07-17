@@ -3,8 +3,7 @@
     <!--TOP-->
     <div class="module nmg">
       <div class="strong">
-        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}} <span
-              class="money"
+        {{page.statusDic[info.orderInfo.orderType][info.orderInfo.orderStatus].text}} <span class="money"
               v-if="info.orderInfo.orderStatus == '1'">¥{{info.orderInfo.orderMoney}}</span></div>
 
       <div class="brief"
@@ -207,9 +206,11 @@ export default {
       let typeName = '预约挂号'
       let doctorName = data.doctorInfo.doctorName
       let orderNo = order.orderNo
-      let json = { money, typeName, doctorName, orderNo, doctorId }
+      let orderType = 'register'
+      let json = { money, typeName, doctorName, orderNo, doctorId, orderType }
       json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      // this.$router.push(`/components/doctorInquiryPay/${json}`)
+      this.$router.push(`/components/ExpenseDetail/${json}`)
     },
     getData() {
       peace.service.patient
@@ -217,7 +218,7 @@ export default {
           orderNo: this.params.orderInfo.orderNo,
           orderType: this.params.orderInfo.orderType
         })
-        .then(res => {
+        .then((res) => {
           this.info = res.data || {}
         })
     },
@@ -242,7 +243,7 @@ export default {
               orderNo: this.info.orderInfo.orderNo,
               type
             })
-            .then(res => {
+            .then((res) => {
               peace.util.alert(res.msg || '退号成功')
               this.getData()
             })

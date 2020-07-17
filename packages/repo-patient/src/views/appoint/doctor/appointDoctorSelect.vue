@@ -49,8 +49,7 @@
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
-              <div
-                   :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
                 剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -70,8 +69,7 @@
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
-              <div
-                   :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
                 剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -95,9 +93,12 @@
 
 <script>
 import peace from '@src/library'
-
+import { Dialog } from 'vant'
 export default {
   props: {},
+  components: {
+    [Dialog.Component.name]: Dialog.Component
+  },
   data() {
     return {
       loaded: false,
@@ -142,14 +143,14 @@ export default {
           hospitalCode: this.params.hospitalCode,
           sourceDisType: this.params.from ? 0 : 1
         })
-        .then(res => {
+        .then((res) => {
           this.dateList = res.data.weekDate || []
           this.doctorInfo = res.data.list.doctorInfo || {}
           this.initSource()
         })
     },
     initSource() {
-      this.activeIndex = this.dateList.findIndex(item => {
+      this.activeIndex = this.dateList.findIndex((item) => {
         // 默认用户已选的日期，如没有则默认第一条非禁用的日期
         return this.activeDate ? this.activeDate == item.date : !item.disabled
       })
@@ -170,7 +171,7 @@ export default {
           timeSharing: item.year + '-' + item.date,
           sourceDisType: this.params.from ? 0 : 1
         })
-        .then(res => {
+        .then((res) => {
           this.AM = res.data.list.AM || []
           this.PM = res.data.list.PM || []
           this.loaded = true
@@ -219,7 +220,7 @@ export default {
 
       /**复诊续方*/
       if (this.params.from) {
-        const json = peace.util.encode({
+        const temp = {
           doctorId: this.doctorInfo.doctorId,
           consultingType: 'returnVisit',
           serviceType: 'returnVisit',
@@ -228,12 +229,83 @@ export default {
           appointmentEndTime: item.endTime,
           sourceDisType: 0,
           sourceCode: item.sourceCode,
-          money: item.unitPrice
-        })
-        this.$router.push(`/components/doctorInquiryApply/${json}`)
+          price: item.unitPrice
+        }
+        if (!this.params.isAgain) {
+          const json = peace.util.encode(temp)
+          this.$router.push(`/components/doctorInquiryApply/${json}`)
+        } else {
+          this.params.model = Object.assign(this.params.model, temp)
+          this.apply(item)
+        }
       } else {
         this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
       }
+    },
+
+    apply(item) {
+      const json = peace.util.deepClone(this.params.model)
+      const model = peace.util.encode(json)
+      const params = {
+        doctorId: this.doctorInfo.doctorId,
+        timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+        sourceCode: item.sourceCode,
+        bookingStart: item.startTime,
+        bookingEnd: item.endTime
+      }
+      peace.service.inquiry
+        .checkSource(params)
+        .then(() => {
+          this.$router.replace(`/components/ConsultDetailBefore/${model}`)
+        })
+        .catch(() => {
+          return Dialog.confirm({
+            title: '提示',
+            message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
+            onfirmButtonText: '确定'
+          }).then(() => {
+            //重新选择号源
+            const param = Object.assign(item, {
+              year: this.dateList[this.activeIndex].year,
+              date: this.dateList[this.activeIndex].date
+            })
+            this.getSourceData(param)
+          })
+        })
+    },
+
+    goToPay(data) {
+      // console.log(data)
+      const json = peace.util.encode({
+        money: data.orderMoney,
+        typeName: this.doctor.doctorInfo.serviceName,
+        doctorId: data.doctorId,
+        doctorName: data.doctorName,
+        orderNo: data.orderNo,
+        inquiryId: data.inquiryId
+      })
+      this.$router.replace(`/components/doctorInquiryPay/${json}`)
+    },
+
+    goToMessage(data) {
+      const params = peace.util.encode({
+        id: 'p2p-' + this.model.doctorId,
+        scene: 'p2p',
+        beginTime: data.startTime.toDate().getTime(),
+        to: this.model.doctorId
+      })
+
+      // 跳转聊天详情
+      this.$router.replace(`/components/messageList/${params}`)
+    },
+
+    goToConsultDetail(data) {
+      const params = {
+        inquiryId: data.inquiryId
+      }
+
+      let json = peace.util.encode(params)
+      this.$router.replace(`/setting/userConsultDetail/${json}`)
     }
   }
 }

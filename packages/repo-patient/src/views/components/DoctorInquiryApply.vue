@@ -130,8 +130,7 @@
                          style="flex-direction: column;"
                          v-if="!isFixed">
                   <div>
-                    <span
-                          style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                     <span style="color: #333333; font-size: 14px; ">
@@ -139,8 +138,7 @@
                     </span>
                   </div>
                   <div>
-                    <span
-                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <span style=" font-size: 11px; color: #F2223B;">
@@ -156,14 +154,12 @@
                          align="center"
                          v-else>
                   <div>
-                    <span
-                          style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                   </div>
                   <div>
-                    <span
-                          style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <span style=" font-size: 11px; color: #F2223B;">
@@ -634,7 +630,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       if (from.fullPath.indexOf('/setting/myFamilyMembers') != -1) {
         // 从家人列表回来刷新我的家人列表
         vm.getFamilyList()
@@ -681,19 +677,19 @@ export default {
       this.isFixed = e.isFixed
     },
     deleteQA(id) {
-      const index = this.chatList.findIndex(chat => {
+      const index = this.chatList.findIndex((chat) => {
         return chat.id === id
       })
       // ChatList中需要删除的回答
       const Answer = this.chatList[index]
-      const qIndex = this.chatList.findIndex(chat => {
+      const qIndex = this.chatList.findIndex((chat) => {
         return chat.id === Answer.qid
       })
       // ChatList中需要删除的问题
       const question = this.chatList[qIndex]
       if (question === undefined) throw new Error('Question could not be found')
       // 需要将该问题设置为 未回答
-      const sup = this.supplementaryList.find(sup => {
+      const sup = this.supplementaryList.find((sup) => {
         return sup.mode === question.mode
       })
       if (sup === undefined) throw new Error('Supplementary could not be found')
@@ -752,14 +748,8 @@ export default {
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY, this.addFamilyCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD, this.uploaderCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS, this.illnessCallback)
-      $peace.$on(
-        peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE,
-        this.supplementaryAllergiesSaveCallback
-      )
-      $peace.$on(
-        peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD,
-        this.doctorInquiryApplySupplementaryUploadCallback
-      )
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE, this.supplementaryAllergiesSaveCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_UPLOAD, this.doctorInquiryApplySupplementaryUploadCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_RETURNVISIT_RESELECT_NUMBER, this.reselcetNumerCallback)
     },
 
@@ -794,7 +784,7 @@ export default {
     },
 
     setHasAnswer(mode) {
-      const index = this.supplementaryList.findIndex(el => {
+      const index = this.supplementaryList.findIndex((el) => {
         return el.mode === mode
       })
       if (index === -1) throw new Error('Period error!')
@@ -875,11 +865,11 @@ export default {
     },
 
     supplementaryAllergiesSaveCallback({ foodAllergy, drugAllergy }) {
-      this.model.foodAllergy = foodAllergy.map(item => item.value).toString()
-      this.model.drugAllergy = drugAllergy.map(item => item.value).toString()
+      this.model.foodAllergy = foodAllergy.map((item) => item.value).toString()
+      this.model.drugAllergy = drugAllergy.map((item) => item.value).toString()
       this.model.allergicHistory = drugAllergy
         .concat(foodAllergy)
-        .map(item => item.value)
+        .map((item) => item.value)
         .toString()
 
       const context = this.model.allergicHistory
@@ -950,17 +940,17 @@ export default {
       this.model.appointmentEndTime = params.appointmentEndTime || ''
       this.model.sourceCode = params.sourceCode || ''
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
-      this.model.price = params.money
+      this.model.price = params.price
 
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
 
     getFamilyList() {
-      peace.service.patient.getMyFamilyList().then(res => {
-        const famliyQuestion = this.questionList.find(item => item.field === this.ANSWER_FIELD.FAMILY)
+      peace.service.patient.getMyFamilyList().then((res) => {
+        const famliyQuestion = this.questionList.find((item) => item.field === this.ANSWER_FIELD.FAMILY)
         const familyList = res.data
-        familyList.forEach(item => {
+        familyList.forEach((item) => {
           item.label = item.name
           item.value = item.id
         })
@@ -972,21 +962,22 @@ export default {
 
     getDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.doctor.getDoctorInfo(params).then(res => {
+      peace.service.doctor.getDoctorInfo(params).then((res) => {
         let doctor = res.data,
           serviceName = '',
           serviceMoney = 0
-        serviceMoney = Number(params.money)
+        serviceMoney = Number(params.price)
         if (this.model.serviceType == 'returnVisit') {
           serviceName = '复诊续方'
         } else {
           serviceName = this.model.consultingType == 'video' ? '视频咨询' : '图文咨询'
-          doctor.doctorInfo.service.inquiry.forEach(item => {
+          doctor.doctorInfo.service.inquiry.forEach((item) => {
             if (item.type == this.model.consultingType) {
               serviceMoney = Number(item.price)
             }
           })
         }
+        this.model.price = serviceMoney
         doctor.doctorInfo = Object.assign({}, doctor.doctorInfo, { serviceName, serviceMoney })
         this.doctor = doctor
       })
@@ -1080,14 +1071,14 @@ export default {
       })
     },
     FamilyInquriyStatus(familyId) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         peace.service.patient
           .inquiryStatus(this.model.doctorId, familyId, this.model.consultingType, this.model.serviceType)
           .then(() => {
             //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
             resolve(true)
           })
-          .catch(res => {
+          .catch((res) => {
             resolve(false)
             let param = {}
             switch (res.data.data.inquiryStatus) {
@@ -1183,7 +1174,7 @@ export default {
             answer = params[0].label
             this.model.familyName = params[0].label
             this.model.familyId = params[0].value
-            const data = this.supplementaryList.find(item => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
+            const data = this.supplementaryList.find((item) => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
             data.hidden = params[0].sex === '女' && params[0].age >= 14 ? false : true
 
             //更换家人-重置家人已选择的补充信息
@@ -1193,7 +1184,7 @@ export default {
             this.model.foodAllergy = ''
             this.model.drugAllergy = ''
             this.model.affectedImages = []
-            this.supplementaryList.map(item => (item.hasAnswer = false))
+            this.supplementaryList.map((item) => (item.hasAnswer = false))
             this.chatList = []
 
             this.checkHealthCard()
@@ -1212,7 +1203,7 @@ export default {
               this.$router.push({ path: `/setting/myFamilyMembers` })
             })
           } else {
-            let canShowSelf = !this.current.answerList.find(item => item.relation === '本人') ? 1 : 2
+            let canShowSelf = !this.current.answerList.find((item) => item.relation === '本人') ? 1 : 2
             const json = peace.util.encode({
               type: 'add',
               emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
@@ -1340,7 +1331,7 @@ export default {
         nethospitalid: this.doctor.doctorInfo.nethospitalid
       }
 
-      peace.service.patient.isExistCardRelation(params).then(res => {
+      peace.service.patient.isExistCardRelation(params).then((res) => {
         if (!res.data.result) {
           Dialog.confirm({
             title: '提示',
@@ -1349,12 +1340,12 @@ export default {
           }).then(() => {
             peace.service.patient
               .createHealthcard(params)
-              .then(res => {
+              .then((res) => {
                 if (res.data.result) {
                   peace.util.alert('领取成功，请填写信息后提交问诊！')
                 }
               })
-              .catch(res => {
+              .catch((res) => {
                 if (res.data.code === 202) {
                   Dialog.confirm({
                     title: '提示',
@@ -1373,10 +1364,6 @@ export default {
     async apply() {
       this.sending = true
 
-      // await Promise.all([
-      //   this.uploadHandler(this.attachment, this.IMAGES_UPLOAD_TYPE.ATTACHMENT),
-      //   this.uploadHandler(this.affectedImages, this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES)
-      // ])
       await this.applyHandler()
 
       this.sending = false
@@ -1387,13 +1374,13 @@ export default {
         if (Array.isArray(dataArray) && dataArray.length) {
           // 压缩
           const compress = () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
               const files = []
               for (let i = 0; i < dataArray.length; i++) {
                 new Compressor(dataArray[i].file, {
                   quality: 0.4,
                   convertSize: 50000,
-                  success: fileBlob => {
+                  success: (fileBlob) => {
                     files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
 
                     if (files.length === dataArray.length) {
@@ -1407,11 +1394,11 @@ export default {
 
           // 上传
           compress()
-            .then(files => {
-              let Promises = files.map(item => {
+            .then((files) => {
+              let Promises = files.map((item) => {
                 return this.uploader(item, type)
               })
-              Promise.all(Promises).then(datas => {
+              Promise.all(Promises).then((datas) => {
                 if (type === this.IMAGES_UPLOAD_TYPE.ATTACHMENT) {
                   this.model.attachment = datas
                 } else if (type === this.IMAGES_UPLOAD_TYPE.AFFECTED_IMAGES) {
@@ -1420,7 +1407,7 @@ export default {
                 this.sending = false
               })
             })
-            .catch(err => {
+            .catch((err) => {
               this.sending = false
               peace.util.alert('图片上传失败，请稍后再试')
               reject(err)
@@ -1439,80 +1426,110 @@ export default {
       return new Promise((resolve, reject) => {
         peace.service.inquiry
           .images(params)
-          .then(res => {
+          .then((res) => {
             resolve(res.data[0])
           })
-          .catch(error => {
+          .catch((error) => {
             peace.util.alert('图片上传失败，请稍后再试')
             reject(error)
           })
       })
     },
     applyHandler() {
-      // const params = this.model
-      let params = {}
-      for (let key in this.model) {
-        params[key] = this.model[key]
+      const json = peace.util.deepClone(this.model)
+      const model = peace.util.encode(json)
+      if (json.serviceType !== 'returnVisit') {
+        this.$router.replace(`/components/ConsultDetailBefore/${model}`)
+        return
       }
-
+      const params = {
+        doctorId: json.doctorId,
+        timeSharing: json.appointmentDate,
+        sourceCode: json.sourceCode,
+        bookingStart: json.appointmentStartTime,
+        bookingEnd: json.appointmentEndTime
+      }
       return peace.service.inquiry
-        .apply(params)
-        .then(res => {
-          // 订单提交成功
-          if (res.data.errorState === 0) {
-            // 需要支付，跳转支付
-            if (res.data.inquiryStatus === 1) {
-              //复诊非当日不调支付
-              if (res.data.inquiryType == 'returnVisit' && res.data.isCurrentDate == 2) {
-                this.goToConsultDetail(res.data)
-              } else {
-                this.goToPay(res.data)
-              }
-            }
-            // 不需要支付，跳转订单
-            else {
-              this.goToConsultDetail(res.data)
-            }
-          }
-
-          // 订单提交失败
-          // errorState:1 存在未支付订单， 跳转订单
-          if (res.data.errorState === 1) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '去看看'
-            }).then(() => {
-              this.goToConsultDetail(res.data)
-            })
-          }
-
-          // errorState:2 存在未结束订单，跳转咨询
-          if (res.data.errorState === 2) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '继续咨询'
-            }).then(() => {
-              this.goToMessage(res.data)
-            })
-          }
+        .checkSource(params)
+        .then(() => {
+          this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         })
-        .catch(res => {
-          //201  号源不足
-          if (res.data.code == '201') {
-            peace.util.alert(res.data.msg)
-            // return Dialog.confirm({
-            //   title: '提示',
-            //   message: res.data.msg,
-            //   confirmButtonText: '重新预约'
-            // }).then(() => {
-            //   //重新选择号源
-            //   this.goToReSelectNumber()
-            // })
-          }
-          this.sending = false
+        .catch(() => {
+          return Dialog.confirm({
+            title: '提示',
+            message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
+            onfirmButtonText: '确定'
+          }).then(() => {
+            //重新选择号源
+            this.goToReSelectSource()
+            this.sending = false
+          })
         })
+      // return peace.service.inquiry
+      //   .apply(params)
+      //   .then((res) => {
+      //     // 订单提交成功
+      //     if (res.data.errorState === 0) {
+      //       // 需要支付，跳转支付
+      //       if (res.data.inquiryStatus === 1) {
+      //         //复诊非当日不调支付
+      //         // if (res.data.inquiryType == 'returnVisit' && res.data.isCurrentDate == 2) {
+      //         //   this.goToConsultDetail(res.data)
+      //         // } else {
+      //         //   this.goToPay(res.data)
+      //         // }
+      //         const json = peace.util.decode({
+      //           isPreSale: true
+      //         })
+      //         this.$router.replace(`/components/ConsultDetailBefore/${json}`)
+      //       }
+      //       // 不需要支付，跳转订单
+      //       else {
+      //         this.goToConsultDetail(res.data)
+      //       }
+      //     }
+
+      //     // 订单提交失败
+      //     // errorState:1 存在未支付订单， 跳转订单
+      //     if (res.data.errorState === 1) {
+      //       return Dialog.confirm({
+      //         title: '提示',
+      //         message: res.msg,
+      //         confirmButtonText: '去看看'
+      //       }).then(() => {
+      //         this.goToConsultDetail(res.data)
+      //       })
+      //     }
+
+      //     // errorState:2 存在未结束订单，跳转咨询
+      //     if (res.data.errorState === 2) {
+      //       return Dialog.confirm({
+      //         title: '提示',
+      //         message: res.msg,
+      //         confirmButtonText: '继续咨询'
+      //       }).then(() => {
+      //         this.goToMessage(res.data)
+      //       })
+      //     }
+      //   })
+      //   .catch((res) => {
+      //     console.log(res)
+      //     //203  号源不足
+      //     if (res.data.code == '203') {
+      //       return Dialog.confirm({
+      //         title: '提示',
+      //         // message: res.data.msg,
+      //         message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
+      //         confirmButtonText: '确定'
+      //       }).then(() => {
+      //         //重新选择号源
+      //         this.goToReSelectSource()
+      //       })
+      //     } else {
+      //       peace.util.alert(res.data.message)
+      //     }
+      //     this.sending = false
+      //   })
     },
 
     goToPay(data) {
@@ -1523,7 +1540,8 @@ export default {
         doctorId: data.doctorId,
         doctorName: data.doctorName,
         orderNo: data.orderNo,
-        inquiryId: data.inquiryId
+        inquiryId: data.inquiryId,
+        orderType: 'inquiry'
       })
       this.$router.replace(`/components/doctorInquiryPay/${json}`)
     },
@@ -1548,7 +1566,19 @@ export default {
       let json = peace.util.encode(params)
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
-    goToReSelectNumber() {},
+    goToReSelectSource() {
+      const param = {
+        doctorId: this.doctor.doctorInfo.doctorId,
+        hospitalCode: this.doctor.doctorInfo.nethospitalid,
+        time: this.model.appointmentDate.substring(5),
+        date: new Date(),
+        from: true,
+        isAgain: true
+      }
+      const model = peace.util.deepClone(this.model)
+      let json = peace.util.encode({ model, ...param })
+      this.$router.replace(`/appoint/doctor/appointDoctorSelect/${json}`)
+    },
     viewImage(file, fileIndex) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex

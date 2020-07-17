@@ -3,33 +3,33 @@ const routers = [
     path: '/',
     name: '/',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/components/redirect/Redirect.vue'),
+    component: () => import('@src/components/redirect/Redirect.vue')
   },
   {
     path: '/redirect',
     name: '/redirect',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/components/redirect/Redirect.vue'),
+    component: () => import('@src/components/redirect/Redirect.vue')
   },
   {
     path: '/WXAuth',
     name: '/WXAuth',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/components/redirect/WXAuth.vue'),
+    component: () => import('@src/components/redirect/WXAuth.vue')
   },
   {
     path: '/errorPage',
     name: '/errorPage',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/components/ErrorPage.vue'),
+    component: () => import('@src/components/ErrorPage.vue')
   },
   // 首页
   {
@@ -40,8 +40,8 @@ const routers = [
       keepAlive: true,
       tabBar: true,
       navbar: {
-        title: '首页',
-      },
+        title: '首页'
+      }
     },
     component: () => {
       if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && $peace.cache.get($peace.type.SYSTEM.CHANNELID)) {
@@ -49,7 +49,7 @@ const routers = [
       } else {
         return import('@src/views/home/index.vue')
       }
-    },
+    }
   },
   // 医院首页
   {
@@ -60,10 +60,10 @@ const routers = [
       keepAlive: true,
       tabBar: true,
       navbar: {
-        title: '首页',
-      },
+        title: '首页'
+      }
     },
-    component: () => import('@src/views/hospital/HospitalHome.vue'),
+    component: () => import('@src/views/hospital/HospitalHome.vue')
   },
   {
     path: '/home/map/:json',
@@ -74,10 +74,10 @@ const routers = [
       tabBar: true,
       navbar: {
         title: '地图',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/home/map.vue'),
+    component: () => import('@src/views/home/map.vue')
   },
   // 消息
   {
@@ -88,10 +88,10 @@ const routers = [
       keepAlive: true,
       tabBar: true,
       navbar: {
-        title: '消息',
-      },
+        title: '消息'
+      }
     },
-    component: () => import('@src/views/message/index.vue'),
+    component: () => import('@src/views/message/index.vue')
   },
 
   // 健康档案
@@ -102,10 +102,10 @@ const routers = [
       auth: true,
       tabBar: true,
       navbar: {
-        title: '健康档案',
-      },
+        title: '健康档案'
+      }
     },
-    component: () => import('@src/views/file/index.vue'),
+    component: () => import('@src/views/file/index.vue')
   },
 
   {
@@ -114,10 +114,10 @@ const routers = [
     meta: {
       tabBar: true,
       navbar: {
-        title: '健康档案-基本健康信息',
-      },
+        title: '健康档案-基本健康信息'
+      }
     },
-    component: () => import('@src/views/file/FileHealthDetail.vue'),
+    component: () => import('@src/views/file/FileHealthDetail.vue')
   },
   {
     path: '/file/fileAllDetail/:json',
@@ -125,10 +125,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-全部',
-      },
+        title: '健康档案-全部'
+      }
     },
-    component: () => import('@src/views/file/FileAllDetail.vue'),
+    component: () => import('@src/views/file/FileAllDetail.vue')
   },
   {
     path: '/file/fileReportList/:json',
@@ -136,10 +136,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-报表',
-      },
+        title: '健康档案-报表'
+      }
     },
-    component: () => import('@src/views/file/FileReportList.vue'),
+    component: () => import('@src/views/file/FileReportList.vue')
   },
   {
     path: '/file/fileBloodPressureHistory/:json',
@@ -147,10 +147,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-血压历史数据',
-      },
+        title: '健康档案-血压历史数据'
+      }
     },
-    component: () => import('@src/views/file/FileBloodPressureHistory.vue'),
+    component: () => import('@src/views/file/FileBloodPressureHistory.vue')
   },
   {
     path: '/file/fileBloodPressureDetail/:json',
@@ -158,10 +158,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-血压详情',
-      },
+        title: '健康档案-血压详情'
+      }
     },
-    component: () => import('@src/views/file/FileBloodPressureDetail.vue'),
+    component: () => import('@src/views/file/FileBloodPressureDetail.vue')
   },
   {
     path: '/file/fileBloodPressureAddData/:json',
@@ -169,10 +169,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-添加血压',
-      },
+        title: '健康档案-添加血压'
+      }
     },
-    component: () => import('@src/views/file/FileBloodPressureAddData.vue'),
+    component: () => import('@src/views/file/FileBloodPressureAddData.vue')
   },
 
   {
@@ -181,10 +181,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-血氧历史数据',
-      },
+        title: '健康档案-血氧历史数据'
+      }
     },
-    component: () => import('@src/views/file/FileBloodOxyGenHistory.vue'),
+    component: () => import('@src/views/file/FileBloodOxyGenHistory.vue')
   },
   {
     path: '/file/fileBloodOxyGenDetail/:json',
@@ -192,10 +192,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-血氧详情',
-      },
+        title: '健康档案-血氧详情'
+      }
     },
-    component: () => import('@src/views/file/FileBloodOxyGenDetail.vue'),
+    component: () => import('@src/views/file/FileBloodOxyGenDetail.vue')
   },
   {
     path: '/file/fileBloodOxyGenAddData/:json',
@@ -203,10 +203,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-添加血氧',
-      },
+        title: '健康档案-添加血氧'
+      }
     },
-    component: () => import('@src/views/file/FileBloodOxyGenAddData.vue'),
+    component: () => import('@src/views/file/FileBloodOxyGenAddData.vue')
   },
 
   {
@@ -215,10 +215,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-体脂历史数据',
-      },
+        title: '健康档案-体脂历史数据'
+      }
     },
-    component: () => import('@src/views/file/FileBodyFatHistory.vue'),
+    component: () => import('@src/views/file/FileBodyFatHistory.vue')
   },
   {
     path: '/file/fileBodyFatDetail/:json',
@@ -226,10 +226,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-体脂详情',
-      },
+        title: '健康档案-体脂详情'
+      }
     },
-    component: () => import('@src/views/file/FileBodyFatDetail.vue'),
+    component: () => import('@src/views/file/FileBodyFatDetail.vue')
   },
   {
     path: '/file/fileBodyFatAddData/:json',
@@ -237,10 +237,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-添加体脂',
-      },
+        title: '健康档案-添加体脂'
+      }
     },
-    component: () => import('@src/views/file/FileBodyFatAddData.vue'),
+    component: () => import('@src/views/file/FileBodyFatAddData.vue')
   },
 
   {
@@ -249,10 +249,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-血糖',
-      },
+        title: '健康档案-血糖'
+      }
     },
-    component: () => import('@src/views/file/FileBloodSugarDetail.vue'),
+    component: () => import('@src/views/file/FileBloodSugarDetail.vue')
   },
   {
     path: '/file/fileBloodSugarHistory/:json',
@@ -260,10 +260,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-历史数据',
-      },
+        title: '健康档案-历史数据'
+      }
     },
-    component: () => import('@src/views/file/FileBloodSugarHistory.vue'),
+    component: () => import('@src/views/file/FileBloodSugarHistory.vue')
   },
   {
     path: '/file/fileBloodSugarAddData/:json',
@@ -271,10 +271,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-添加血压',
-      },
+        title: '健康档案-添加血压'
+      }
     },
-    component: () => import('@src/views/file/FileBloodSugarAddData.vue'),
+    component: () => import('@src/views/file/FileBloodSugarAddData.vue')
   },
   {
     path: '/file/fileConsultationDetail/:json',
@@ -282,10 +282,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-会诊单',
-      },
+        title: '健康档案-会诊单'
+      }
     },
-    component: () => import('@src/views/file/FileConsultationDetail.vue'),
+    component: () => import('@src/views/file/FileConsultationDetail.vue')
   },
   //检验检查单
   {
@@ -294,10 +294,10 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '健康档案-报告详情',
-      },
+        title: '健康档案-报告详情'
+      }
     },
-    component: () => import('@src/views/file/FileRecordDetail.vue'),
+    component: () => import('@src/views/file/FileRecordDetail.vue')
   },
   // 我的
   {
@@ -308,10 +308,10 @@ const routers = [
       keepAlive: true,
       tabBar: true,
       navbar: {
-        title: '个人中心',
-      },
+        title: '个人中心'
+      }
     },
-    component: () => import('@src/views/setting/index.vue'),
+    component: () => import('@src/views/setting/index.vue')
   },
 
   // 我的家人
@@ -322,10 +322,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的家人',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/MyFamilyMembers.vue'),
+    component: () => import('@src/views/setting/MyFamilyMembers.vue')
   },
   // 我的家人
   {
@@ -335,10 +335,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的家人',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/FamilyMembersModel.vue'),
+    component: () => import('@src/views/components/FamilyMembersModel.vue')
   },
 
   // 电子健康卡详情
@@ -349,10 +349,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的家人',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/CardDetail.vue'),
+    component: () => import('@src/views/setting/CardDetail.vue')
   },
   {
     path: '/card/index',
@@ -361,10 +361,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的家人',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/card/index.vue'),
+    component: () => import('@src/views/card/index.vue')
   },
   // 我的咨询
   {
@@ -374,10 +374,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的咨询',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/UserConsultList.vue'),
+    component: () => import('@src/views/setting/UserConsultList.vue')
   },
 
   // 咨询详情
@@ -388,10 +388,23 @@ const routers = [
       auth: true,
       navbar: {
         title: '咨询详情',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/ConsultDetail.vue'),
+    component: () => import('@src/views/components/ConsultDetail.vue')
+  },
+
+  {
+    path: '/components/ConsultDetailBefore/:json',
+    name: '/components/ConsultDetailBefore',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '订单详情',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/ConsultDetailBefore.vue')
   },
 
   // 用药建议
@@ -401,11 +414,11 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '用药建议',
-        back: true,
-      },
+        title: '我的处方',
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheRecipeList.vue'),
+    component: () => import('@src/views/components/TheRecipeList.vue')
   },
   // 用药建议详情（处方详情）
   {
@@ -414,11 +427,11 @@ const routers = [
     meta: {
       auth: true,
       navbar: {
-        title: '用药建议',
-        back: true,
-      },
+        title: '处方详情',
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheRecipe.vue'),
+    component: () => import('@src/views/components/TheRecipe.vue')
   },
   // 咨询小结（病历详情）
   {
@@ -428,10 +441,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '咨询小结',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheCase.vue'),
+    component: () => import('@src/views/components/TheCase.vue')
   },
   // 检查单
   {
@@ -441,10 +454,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '检查单',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheInspection.vue'),
+    component: () => import('@src/views/components/TheInspection.vue')
   },
   // 转诊单
   {
@@ -454,10 +467,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '转诊详情',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheTransfer.vue'),
+    component: () => import('@src/views/components/TheTransfer.vue')
   },
   // 会诊单
   {
@@ -467,10 +480,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '会诊详情',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/TheConsultation.vue'),
+    component: () => import('@src/views/components/TheConsultation.vue')
   },
   // 问诊表单
   {
@@ -480,10 +493,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '问诊表单',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/ThePreliminaryForm.vue'),
+    component: () => import('@src/views/components/ThePreliminaryForm.vue')
   },
   // 用药建议
   {
@@ -493,10 +506,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '药房列表',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/drug/DrugListPharmacy.vue'),
+    component: () => import('@src/views/drug/DrugListPharmacy.vue')
   },
 
   // 地图选择
@@ -507,10 +520,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '选择地点',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/drug/DrugMapSelect.vue'),
+    component: () => import('@src/views/drug/DrugMapSelect.vue')
   },
   // 提交订单
   {
@@ -520,10 +533,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '提交订单',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/drug/DrugOrderBefore.vue'),
+    component: () => import('@src/views/drug/DrugOrderBefore.vue')
   },
   // 药店信息
   {
@@ -533,10 +546,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '药店',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/drug/drugPhaHome.vue'),
+    component: () => import('@src/views/drug/drugPhaHome.vue')
   },
   // 医生列表
   {
@@ -546,20 +559,20 @@ const routers = [
       auth: false,
       navbar: {
         title: '医生列表',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/DoctorList.vue'),
+    component: () => import('@src/views/components/DoctorList.vue')
   },
   // 消息列表
   {
     path: '/components/messageList/:json',
     name: '/components/messageList',
     meta: {
-      auth: true,
+      auth: true
     },
     // component: () => import('@src/views/components/MessageList.vue'),
-    component: () => import('@src/views/message/messageList/index'),
+    component: () => import('@src/views/message/messageList/index')
   },
   // 医生主页
   {
@@ -569,10 +582,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '医生主页',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/DoctorDetail.vue'),
+    component: () => import('@src/views/components/DoctorDetail.vue')
   },
   // 申请图文问诊
   {
@@ -583,10 +596,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '图文咨询',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/DoctorInquiryApply.vue'),
+    component: () => import('@src/views/components/DoctorInquiryApply.vue')
   },
   // 补充过敏史
   {
@@ -597,10 +610,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '添加过敏史',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/SupplementaryAllergies.vue'),
+    component: () => import('@src/views/components/SupplementaryAllergies.vue')
   },
   // 新增过敏史
   {
@@ -611,16 +624,16 @@ const routers = [
       auth: true,
       navbar: {
         title: '新增过敏史',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/AddAllergiesInfo.vue'),
+    component: () => import('@src/views/components/AddAllergiesInfo.vue')
   },
   // 附件上传
   {
     path: '/components/uploader/',
     name: '/components/uploader',
-    component: () => import('@src/views/components/Uploader.vue'),
+    component: () => import('@src/views/components/Uploader.vue')
   },
   // 申请图文问诊 - 订单支付
   {
@@ -630,10 +643,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '支付方式',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/DoctorInquiryPay.vue'),
+    component: () => import('@src/views/components/DoctorInquiryPay.vue')
   },
   // 申请图文问诊 - 订单支付结果
   {
@@ -643,12 +656,24 @@ const routers = [
       auth: true,
       navbar: {
         title: '支付结果',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/DoctorInquiryPayResult.vue'),
+    component: () => import('@src/views/components/DoctorInquiryPayResult.vue')
   },
-
+  // 费用明细页
+  {
+    path: '/components/ExpenseDetail/:json',
+    name: '/components/ExpenseDetail/:json',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '支付',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/ExpenseDetail.vue')
+  },
   // 添加既往史
   {
     path: '/components/addIllnessHistory',
@@ -657,10 +682,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '添加既往史',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/AddIllnessHistory.vue'),
+    component: () => import('@src/views/components/AddIllnessHistory.vue')
   },
   // 添加过敏史
   {
@@ -670,10 +695,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '添加过敏史',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/AddAllergicHistory.vue'),
+    component: () => import('@src/views/components/AddAllergicHistory.vue')
   },
   // 添加过敏史
   {
@@ -683,10 +708,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '添加过敏史',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/AddFoodAllergy.vue'),
+    component: () => import('@src/views/components/AddFoodAllergy.vue')
   },
 
   // 知情同意书
@@ -697,10 +722,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '知情同意书',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/components/InformedConsent.vue'),
+    component: () => import('@src/views/components/InformedConsent.vue')
   },
 
   // 医院列表
@@ -711,10 +736,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '医院列表',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/HospitalList.vue'),
+    component: () => import('@src/views/hospital/HospitalList.vue')
   },
   // 医院通知列表
   {
@@ -725,10 +750,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '医院通知',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/notice/HospitalNoticesList.vue'),
+    component: () => import('@src/views/hospital/notice/HospitalNoticesList.vue')
   },
   // 医院通知详情
   {
@@ -739,10 +764,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '医院通知',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/notice/HospitalNoticesDetail.vue'),
+    component: () => import('@src/views/hospital/notice/HospitalNoticesDetail.vue')
   },
   // 医院主页
   {
@@ -752,10 +777,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '医院主页',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/HospitalHome.vue'),
+    component: () => import('@src/views/hospital/HospitalHome.vue')
   },
   // 医院科室二联动
   {
@@ -766,10 +791,10 @@ const routers = [
       keepAlive: true,
       navbar: {
         title: '科室选择',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/depart/hospitalDepartSelect.vue'),
+    component: () => import('@src/views/hospital/depart/hospitalDepartSelect.vue')
   },
   // 预约挂号医生列表
   {
@@ -779,10 +804,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '选择医生',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/appoint/doctor/appointDoctorList.vue'),
+    component: () => import('@src/views/appoint/doctor/appointDoctorList.vue')
   },
   {
     path: '/hospital/depart/HospitalDepartList',
@@ -790,10 +815,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '选择科室',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/hospital/depart/HospitalDepartList.vue'),
+    component: () => import('@src/views/hospital/depart/HospitalDepartList.vue')
   },
   {
     path: '/appoint/doctor/appointDoctorSelect/:json',
@@ -803,10 +828,10 @@ const routers = [
       keepAlive: true,
       navbar: {
         title: '选择就诊时间',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/appoint/doctor/appointDoctorSelect.vue'),
+    component: () => import('@src/views/appoint/doctor/appointDoctorSelect.vue')
   },
   {
     path: '/appoint/order/appointOrderSubmit/:json',
@@ -816,10 +841,10 @@ const routers = [
       keepAlive: true,
       navbar: {
         title: '预约信息',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/appoint/order/appointOrderSubmit.vue'),
+    component: () => import('@src/views/appoint/order/appointOrderSubmit.vue')
   },
   {
     path: '/setting/userDoctorList',
@@ -828,10 +853,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的医生',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/userDoctorList.vue'),
+    component: () => import('@src/views/setting/userDoctorList.vue')
   },
   {
     path: '/setting/AdressManger',
@@ -840,10 +865,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '地址管理',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/AdressManger.vue'),
+    component: () => import('@src/views/setting/AdressManger.vue')
   },
   {
     path: '/setting/SelectAddressManger/:json',
@@ -852,10 +877,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '选择地址',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/SelectAddressManger.vue'),
+    component: () => import('@src/views/setting/SelectAddressManger.vue')
   },
   {
     path: '/setting/userAddressEdit/:json',
@@ -864,10 +889,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '编辑地址',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/userAddressEdit.vue'),
+    component: () => import('@src/views/setting/userAddressEdit.vue')
   },
   {
     path: '/setting/userAddressEdit',
@@ -876,10 +901,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '添加新地址',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/userAddressEdit.vue'),
+    component: () => import('@src/views/setting/userAddressEdit.vue')
   },
   {
     path: '/setting/order/userOrderList',
@@ -888,10 +913,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '我的订单',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/order/userOrderList.vue'),
+    component: () => import('@src/views/setting/order/userOrderList.vue')
   },
   {
     path: '/setting/order/userDrugList',
@@ -900,10 +925,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '购药记录',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/order/userDrugList.vue'),
+    component: () => import('@src/views/setting/order/userDrugList.vue')
   },
   {
     path: '/setting/order/userOrderDetail/:json',
@@ -912,10 +937,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '订单详情',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/order/userOrderDetail.vue'),
+    component: () => import('@src/views/setting/order/userOrderDetail.vue')
   },
   {
     path: '/record/recordCondition/:json',
@@ -925,10 +950,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '查询报告',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/record/recordCondition.vue'),
+    component: () => import('@src/views/record/recordCondition.vue')
   },
   {
     path: '/record/recordHome/:json',
@@ -938,10 +963,10 @@ const routers = [
       auth: true,
       navbar: {
         title: '查询报告',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/record/recordHome.vue'),
+    component: () => import('@src/views/record/recordHome.vue')
   },
   {
     path: '/diagnose/select/diagnoseSelectBody/:json',
@@ -951,10 +976,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '选择症状',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/diagnose/select/diagnoseSelectBody.vue'),
+    component: () => import('@src/views/diagnose/select/diagnoseSelectBody.vue')
   },
   {
     path: '/diagnose/diagnoseHome/:json',
@@ -964,10 +989,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '疾病',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/diagnose/diagnoseHome.vue'),
+    component: () => import('@src/views/diagnose/diagnoseHome.vue')
   },
   {
     path: '/diagnose/diagnoseGroup/:json',
@@ -977,10 +1002,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '疾病人群',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/diagnose/diagnoseGroup.vue'),
+    component: () => import('@src/views/diagnose/diagnoseGroup.vue')
   },
   {
     path: '/diagnose/select/diagnoseSelectHumen/:json',
@@ -990,10 +1015,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '常见人群',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/diagnose/select/diagnoseSelectHumen.vue'),
+    component: () => import('@src/views/diagnose/select/diagnoseSelectHumen.vue')
   },
   {
     path: '/diagnose/diagnoseName/:json',
@@ -1003,10 +1028,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '疾病描述',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/diagnose/diagnoseName.vue'),
+    component: () => import('@src/views/diagnose/diagnoseName.vue')
   },
 
   {
@@ -1016,10 +1041,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '说明书',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/inter/DrugInterList.vue'),
+    component: () => import('@src/views/inter/DrugInterList.vue')
   },
   {
     path: '/inter/drugInterDetail/:json',
@@ -1028,10 +1053,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '说明书',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/inter/DrugInterDetail.vue'),
+    component: () => import('@src/views/inter/DrugInterDetail.vue')
   },
   {
     path: '/order/userDrugDetail/:json',
@@ -1040,10 +1065,10 @@ const routers = [
       auth: false,
       navbar: {
         title: '订单详情',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/order/userDrugDetail.vue'),
+    component: () => import('@src/views/setting/order/userDrugDetail.vue')
   },
   {
     path: '/order/userDrugLogistics/:json',
@@ -1052,43 +1077,43 @@ const routers = [
       auth: false,
       navbar: {
         title: '订单状态',
-        back: true,
-      },
+        back: true
+      }
     },
-    component: () => import('@src/views/setting/order/userDrugLogistics.vue'),
+    component: () => import('@src/views/setting/order/userDrugLogistics.vue')
   },
   {
     path: '/login',
     name: '/login',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/components/Login.vue'),
+    component: () => import('@src/components/Login.vue')
   },
   {
     path: '/components/agreement/:json',
     name: '/components/agreement',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/views/components/agreement.vue'),
+    component: () => import('@src/views/components/agreement.vue')
   },
   {
     path: '/components/CommentForDoctor/:json',
     name: '/components/CommentForDoctor',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/views/components/CommentForDoctor.vue'),
+    component: () => import('@src/views/components/CommentForDoctor.vue')
   },
   {
     path: '/components/CommentList/:json',
     name: '/components/CommentList',
     meta: {
-      auth: false,
+      auth: false
     },
-    component: () => import('@src/views/components/CommentList.vue'),
-  },
+    component: () => import('@src/views/components/CommentList.vue')
+  }
 ]
 
 export default routers

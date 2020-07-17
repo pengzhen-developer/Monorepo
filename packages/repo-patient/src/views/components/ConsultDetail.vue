@@ -159,19 +159,11 @@
           </div>
         </div>
       </div>
-      <!--订单报文-->
+      <!--订单操作时间轴-->
       <div class="module message">
         <div class="message-item">
           <div class="message-item-left">订单编号</div>
           <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
-        </div>
-        <div class="message-item">
-          <div class="message-item-left">订单金额</div>
-          <div class="message-item-right">{{ internalData.orderInfo.orderMoney }}元</div>
-        </div>
-        <div class="message-item">
-          <div class="message-item-left">优惠金额</div>
-          <div class="message-item-right">0.00元</div>
         </div>
         <div class="message-item">
           <div class="message-item-left">订单时间</div>
@@ -193,6 +185,17 @@
           <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
         </div>
       </div>
+      <!-- 订单收费明细 -->
+      <div class="module message">
+        <div class="message-item">
+          <div class="message-item-left">订单费用</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderMoney }}元</div>
+        </div>
+        <div class="message-item">
+          <div class="message-item-left">优惠券</div>
+          <div class="message-item-right">0.00元</div>
+        </div>
+      </div>
 
       <div class="module"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
@@ -211,8 +214,7 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span
-                    v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -222,8 +224,7 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span
-                    v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+              <span v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
             </div>
           </div>
         </template>
@@ -276,8 +277,7 @@
                     @click="report(internalData)"
                     :disabled="internalData.inquiryInfo.reportButton!=1">报到</van-button>
         <div class="report-tip"
-             v-if="internalData.inquiryInfo.reportButton!=1"><img
-               :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报到</div>
+             v-if="internalData.inquiryInfo.reportButton!=1"><img :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报到</div>
       </div>
     </template>
 
@@ -326,7 +326,7 @@ const ENUM = {
   PAYMENT_TYPE: {
     微信支付: 'wxpay',
     支付宝支付: 'alipay',
-    医保支付: 'yibaopay'
+    医保卡支付: 'yibaopay'
   },
   /** 问诊状态 */
   INQUIRY_STATUS: {
@@ -403,14 +403,10 @@ export default {
   },
   computed: {
     paymentTypeText() {
-      return Object.keys(ENUM.PAYMENT_TYPE).find(
-        key => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType
-      )
+      return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
     },
     retrunVisitBlock() {
-      return (
-        this.internalData && this.internalData.inquiryInfo && this.internalData.inquiryInfo.isAgain.toString() === '1'
-      )
+      return this.internalData && this.internalData.inquiryInfo && this.internalData.inquiryInfo.isAgain.toString() === '1'
     },
     canShowInfo() {
       return (
@@ -531,14 +527,16 @@ export default {
       let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
       let inquiryId = data.inquiryInfo.inquiryId
-      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId }
+      let orderType = 'inquiry'
+      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       json = peace.util.encode(json)
-      this.$router.push(`/components/doctorInquiryPay/${json}`)
+      // this.$router.push(`/components/doctorInquiryPay/${json}`)
+      this.$router.push(`/components/ExpenseDetail/${json}`)
     },
 
     getConsultDetail() {
       let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
-      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then((res) => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {
@@ -623,7 +621,7 @@ export default {
           const params = {
             orderNo: item.orderInfo.orderNo
           }
-          peace.service.patient.cancel(params).then(res => {
+          peace.service.patient.cancel(params).then((res) => {
             peace.util.alert(res.msg)
 
             this.get()
@@ -636,7 +634,7 @@ export default {
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
-      this.imagePreview.images = files.map(item => item.image_path)
+      this.imagePreview.images = files.map((item) => item.image_path)
     }
   }
 }
@@ -765,6 +763,9 @@ export default {
       display: flex;
       align-items: center;
       color: #999;
+      .van-count-down {
+        color: #999;
+      }
       span {
         margin-right: 5px;
       }

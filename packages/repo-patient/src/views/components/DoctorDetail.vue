@@ -143,8 +143,7 @@
                 <span class="service-consult-content-name">图文咨询</span>
                 <span v-if="serviceImageInfo.status=='1'">
                   <span class="service-consult-content-fee">
-                    <span
-                          class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.price }}
+                    <span class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.price }}
                   </span>
                   <span class="service-consult-content-unit"> / 次</span>
                 </span>
@@ -180,8 +179,7 @@
                 <span class="service-consult-content-name">视频咨询</span>
                 <span v-if="serviceVideoInfo.status=='1'">
                   <span class="service-consult-content-fee">
-                    <span
-                          class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.price }}
+                    <span class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.price }}
                   </span>
                   <span class="service-consult-content-unit"> / 次</span>
                 </span>
@@ -575,8 +573,7 @@ export default {
       consult: {
         title: '温馨提示',
         list: [],
-        content:
-          '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
+        content: '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
         message: '咨询时间：<br>8:00 - 17:00请在对应时间段内咨询',
         btn: '确认'
       },
@@ -676,7 +673,7 @@ export default {
           .then(() => {
             this.dialog.visible = true
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err)
           })
       }
@@ -708,7 +705,7 @@ export default {
           appointmentEndTime: this.dialog.data.endTime,
           sourceDisType: 0,
           sourceCode: this.dialog.data.sourceCode,
-          money: this.dialog.data.unitPrice
+          price: this.dialog.data.unitPrice
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
@@ -716,13 +713,13 @@ export default {
     getDoctorInfo() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.doctor.getDoctorInfo(params).then(res => {
+      peace.service.doctor.getDoctorInfo(params).then((res) => {
         this.doctorStatus = res.data.doctorInfo.doctorStatus
 
         if (res.data.doctorInfo.service) {
           this.returnVisitList = res.data.doctorInfo.service.returnVisit
           this.inquiryList = res.data.doctorInfo.service.inquiry
-          this.inquiryList.forEach(item => {
+          this.inquiryList.forEach((item) => {
             if (item.type == 'image') {
               this.serviceImageInfo = item || {}
             } else if (item.type == 'video') {
@@ -848,7 +845,7 @@ export default {
 
     getCommentList() {
       // , p: 1, size: 3
-      peace.service.group.commentLists({ doctorId: this.doctor.doctorInfo.doctorId }).then(res => {
+      peace.service.group.commentLists({ doctorId: this.doctor.doctorInfo.doctorId }).then((res) => {
         this.common = res.data
       })
     },

@@ -63,7 +63,7 @@ export default {
           icon: 'icon_01_01_01'
         },
         {
-          text: '用药建议',
+          text: '我的处方',
           id: 'prescrip',
           icon: 'icon_01_01_02'
         },
