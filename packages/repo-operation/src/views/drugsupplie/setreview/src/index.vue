@@ -18,6 +18,7 @@
       <el-form-item label
                     label-width="0">
         <el-button type="primary"
+                   v-bind:disabled="searching"
                    v-on:click="get">搜 索</el-button>
       </el-form-item>
     </el-form>
@@ -31,15 +32,17 @@
                        align="center"></el-table-column>
       <el-table-column min-width="180px"
                        label="处方来源机构"
-                       prop="hospitalName">
-        <template slot-scope="scope">{{scope.row.hospitalName=="" ? "——": scope.row.hospitalName }}</template>
+                       prop="SourceHospitalName">
       </el-table-column>
       <el-table-column width="260px"
                        label="审方机构"
-                       prop="hospitalName"></el-table-column>
+                       prop="CheckHospitalNames">
+        <template slot-scope="scope">
+          {{ getName(scope.row) }} </template>
+      </el-table-column>
       <el-table-column min-width="100px"
                        label="审方方案数目"
-                       prop="linkman"></el-table-column>
+                       prop="ProjectCount"></el-table-column>
       <el-table-column min-width="180px"
                        align="center"
                        fixed="right"
@@ -47,7 +50,8 @@
         <template slot-scope="scope">
           <el-button type="text"
                      v-on:click="toDetail(scope.row)">审方团队</el-button>
-          <el-button type="text">审方方案</el-button>
+          <el-button type="text"
+                     v-on:click="redirect(scope.row)">审方方案</el-button>
         </template>
       </el-table-column>
     </PeaceTable>
@@ -65,13 +69,17 @@
 <script>
 import ReviewDetail from './components/ReviewDetail'
 import Service from './service'
+import Peace from '@src/library'
 
 export default {
+  inject: ['provideAddTab', 'provideGetTab'],
   components: {
     ReviewDetail
   },
   data() {
     return {
+      searching: false,
+
       model: {
         sourceHospitalName: '',
         checkHospitalName: ''
@@ -89,24 +97,46 @@ export default {
       this.get()
     })
   },
-
+  computed: {
+    addTab() {
+      return this.provideAddTab
+    },
+    getTab() {
+      return this.provideGetTab
+    }
+  },
   methods: {
     get() {
       const fetch = Service.getList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.searching = true
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.searching = false
+      })
     },
 
     // 基本信息
     toDetail(row) {
-      row = ['1', '2', '3']
       this.detailDialog.visible = true
-      this.detailDialog.data = row
+      this.detailDialog.data = { code: row.SourceHospitalCode, name: row.SourceHospitalName }
     },
 
     onClose() {
       this.detailDialog.visible = false
+      this.get()
+    },
+    //跳转审方方案
+    redirect(row) {
+      const tab = Peace.util.deepClone(this.getTab('44-1'))
+
+      tab.menuPath = tab.menuPath + '?hospitalCode=' + row.SourceHospitalCode + '&hospitalName=' + row.SourceHospitalName
+      tab.menuName = row.SourceHospitalName
+      this.addTab(tab)
+    },
+
+    getName(row) {
+      return row.CheckHospitalNames ?? '——'
     }
   }
 }

@@ -1,20 +1,24 @@
 <template>
   <div>
-    <div class="content-wrap">
+    <q-scroll-area v-bind:thumb-style="thumbStyle"
+                   v-bind:style="scrollAreaStyle"
+                   style="height: 400px;">
       <el-checkbox-group v-model="checkedList"
                          class="review-team-list"
                          @change="handleCheckedCitiesChange">
         <el-checkbox v-for="(item) in reviewTeamList"
                      class="team-list"
-                     :label="item.id"
-                     :key="item.id">{{item.name}}</el-checkbox>
+                     :label="item.Code"
+                     :key="item.Code">{{item.Name}}</el-checkbox>
       </el-checkbox-group>
-    </div>
+    </q-scroll-area>
+
     <p class="num">已选择：<span>{{this.checkedList.length}}</span></p>
 
     <div class="text-center">
       <el-button type="primary"
                  class="large hasmargin "
+                 v-bind:disabled="saveing"
                  v-on:click="save">保 存</el-button>
       <el-button class="large"
                  v-on:click="cancelDialog">取 消</el-button>
@@ -23,47 +27,65 @@
 </template>
 
 <script>
+import Peace from '@src/library'
 import Service from './../service'
 
 export default {
   props: {
-    data: Array
+    data: Object
   },
 
   data() {
     return {
-      isLoading: false,
+      saveing: false,
       checkedList: [],
+      reviewTeamList: [],
 
-      reviewTeamList: [
-        { name: '湖北省人民医院1', id: '1' },
-        { name: '湖北省人民医院2', id: '2' },
-        { name: '湖北省人民医院3', id: '3' },
-        { name: '湖北省人民医院4', id: '4' },
-        { name: '湖北省人民医院5', id: '5' },
-        { name: '湖北省人民医院6', id: '6' },
-        { name: '湖北省人民医院7', id: '7' },
-        { name: '湖北省人民医院8', id: '8' },
-        { name: '湖北省人民医院9', id: '9' },
-        { name: '湖北省人民医院10', id: '10' },
-        { name: '湖北省人民医院11', id: '11' },
-        { name: '湖北省人民医院12', id: '12' }
-      ]
+      thumbStyle: {
+        right: '0px',
+        borderRadius: '5px',
+        backgroundColor: '#ccc',
+        width: '5px',
+        opacity: 0.75
+      },
+      scrollAreaStyle: {}
     }
   },
 
   created() {
-    this.checkedList = this.data
+    this.get().then(() => {
+      this.getTeam()
+    })
   },
 
   methods: {
+    get() {
+      const fetch = Service.getReviewList()
+      return fetch.then((res) => {
+        this.reviewTeamList = res.data.list
+      })
+    },
+
+    getTeam() {
+      const fetch = Service.getTeamRelaction
+      const params = { ClientID: this.data.code }
+
+      return fetch(params).then((res) => {
+        const array = JSON.parse(res?.data?.list?.RelationJson ?? '[]')
+        array.map((item) => {
+          this.checkedList.push(item.patentid)
+        })
+      })
+    },
     handleCheckedCitiesChange(value) {
       this.nowArray = []
-
       value.map((item) => {
-        const obj = this.reviewTeamList.find((temp) => temp.id === item)
-        obj.a = 'd'
-        this.nowArray.push(obj)
+        const obj = this.reviewTeamList.find((temp) => temp.Code === item)
+        const nowObj = {}
+        nowObj.patentid = obj.Code
+        nowObj.custName = obj.Name
+        nowObj.teamson = []
+        this.nowArray.push(nowObj)
       })
     },
 
@@ -72,24 +94,29 @@ export default {
     },
 
     save() {
-      Service.save({ list: this.nowArray }).then(() => {
-        this.cancelDialog()
-      })
+      this.saveing = true
+
+      var obj = {
+        ClientID: this.data.code,
+        ClientName: this.data.name,
+        teams: this.nowArray
+      }
+      Service.save(JSON.stringify(obj))
+        .then(() => {
+          Peace.util.alert('保存成功')
+
+          this.cancelDialog()
+        })
+        .finally(() => {
+          this.saveing = false
+        })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.content-wrap {
-  width: 100%;
-  overflow: hidden;
-}
-
 .review-team-list {
-  width: 105%;
-  height: 535px;
-  overflow-y: auto;
   margin-bottom: 20px;
 
   .team-list {
