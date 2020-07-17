@@ -37,7 +37,7 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function(params) {
-            return params.name + ' : ' + params.value[2]
+            return params.name + '\n云仓' + params.value[2] + '\n药店' + params.value[3]
           }
         },
         geo: {
@@ -65,13 +65,7 @@ export default {
             symbolSize: 12,
             itemStyle: {
               normal: {
-                color: function(params) {
-                  if (params.data.value[2] > 50) {
-                    return '#69C0FF'
-                  } else {
-                    return '#FAAD14'
-                  }
-                },
+                color: '#69C0FF',
                 borderColor: '#BAE7FF',
                 borderWidth: 3
               }
@@ -102,8 +96,7 @@ export default {
 
   methods: {
     get() {
-      const params = { includeCloudStore: 1 }
-      Service.getDrugStoreList(params)
+      Service.getDrugStoreList()
         .then((res) => {
           this.polar.series[0].data = this.convertData(res.data)
         })
@@ -122,10 +115,15 @@ export default {
     convertData(data) {
       const res = []
       for (let i = 0; i < data.length; i++) {
-        res.push({
-          name: data[i].City,
-          value: [data[i].Longitude, data[i].Latitude, 14]
-        })
+        const item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, data[i])
+        //[Longitude, Latitude]
+        const points = item.FirstLonLat.split(',')
+        if (points && points.length == 2) {
+          res.push({
+            name: item.City,
+            value: [points[0], points[1], item.CloudStoreNum, item.DrugStoreNum]
+          })
+        }
       }
       return res
     }

@@ -80,15 +80,15 @@ export default {
    *
    * @param {*} params
    */
-  getDrugStoreList(params) {
+  getDrugStoreList() {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/DrugStore/SimpleStoreList2'
+    const apiPath = 'mds/openapi/psd/Stat/GetCityDrugStoreNum'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi, { params }).then((res) => {
+    return Peace.http.get(requestApi, {}).then((res) => {
       return res
     })
   }
