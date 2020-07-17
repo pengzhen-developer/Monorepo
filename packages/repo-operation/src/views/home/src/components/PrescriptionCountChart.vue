@@ -9,36 +9,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 // const data = []
-=======
-const data = [
-  {
-    date: '0701',
-    value: 1
-  },
-  {
-    date: '0702',
-    value: 5
-  },
-  {
-    date: '0703',
-    value: 19
-  },
-  {
-    date: '0704',
-    value: 8
-  },
-  {
-    date: '0705',
-    value: 2
-  },
-  {
-    date: '0706',
-    value: 5
-  }
-]
->>>>>>> 完成流向配置
 
 // const xAxiosData = data.map((item) => item.date)
 // const yAxiosData = data.map((item) => item.count)
@@ -187,7 +158,6 @@ export default {
         ]
       }
     }
-<<<<<<< HEAD
   },
 
   mounted() {
@@ -206,8 +176,6 @@ export default {
         })
         .finally(() => {})
     }
-=======
->>>>>>> 完成流向配置
   }
 }
 </script>
