@@ -1,6 +1,8 @@
 import Peace from '@src/library'
 
 export default function generateRoutes(configuration) {
+  configuration = Peace.util.deepClone(configuration)
+
   const dynamicLayoutNavRoutes = []
   const dynamicHybridNavRoutes = []
 

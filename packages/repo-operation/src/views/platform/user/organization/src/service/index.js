@@ -53,11 +53,13 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    }).then((res) => {
-      return res
-    })
+    return Peace.http
+      .post(requestApi, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      .then((res) => {
+        return res
+      })
   },
 
   /**
@@ -67,8 +69,7 @@ export default {
    */
   getService(params) {
     const isMock = false
-
-    const apiPath = 'operate/Service/chooseService'
+    const apiPath = 'operate/service/chooseService'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -96,6 +97,5 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
-  },
-  
+  }
 }

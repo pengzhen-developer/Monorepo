@@ -9,6 +9,6 @@ export default [
     menuIcon: null,
     iconType: null,
     enable: true,
-    closable: null,
+    closable: true
   }
 ]

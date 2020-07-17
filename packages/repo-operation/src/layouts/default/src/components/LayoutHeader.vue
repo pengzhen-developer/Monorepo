@@ -148,7 +148,6 @@ export default {
         // 存在 path，根据 path 寻找顶级菜单
         const node = this.$route?.meta
         const root = this.deepQueryRoot(this.menuList, node)
-
         if (root) {
           const menuNode = this.$el.querySelector(`li[router="${root?.id}"]`)
           menuNode?.click()
