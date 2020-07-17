@@ -183,7 +183,7 @@ export default [
     menuRoute: null,
     menuName: '数据统计',
     menuPath: null,
-    menuIcon: 'zyy-icon zyy-ptrz',
+    menuIcon: 'zyy-icon zyy-sjtj',
     iconType: 'Local Icons',
     enable: null,
     closable: null

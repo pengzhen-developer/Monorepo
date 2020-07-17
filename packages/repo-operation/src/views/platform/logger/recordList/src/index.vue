@@ -71,6 +71,7 @@
                 pagination>
       <el-table-column min-width="100px"
                        label="序号"
+                       width="100px"
                        align="center"
                        type="index"></el-table-column>
       <el-table-column min-width="150px"
@@ -135,25 +136,23 @@ export default {
       },
 
       startPickerOptions: {
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.model.endTime) {
-            return time.getTime() > new Date(this.model.endTime).getTime();
+            return time.getTime() > new Date(this.model.endTime).getTime()
           } else {
-            return time.getTime() > Date.now();
+            return time.getTime() > Date.now()
           }
         }
       },
       endPickerOptions: {
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.model.startTime) {
             return (
-              time.getTime() <
-                new Date(this.model.startTime).setDate(
-                  new Date(this.model.startTime).getDate() - 1
-                ) || time.getTime() > Date.now()
-            );
+              time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) ||
+              time.getTime() > Date.now()
+            )
           } else {
-            return time.getTime() > Date.now();
+            return time.getTime() > Date.now()
           }
         }
       },
@@ -180,7 +179,7 @@ export default {
     get() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-      this.$refs.table.reloadData({ fetch, params }).then(res => {
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
         return res
       })
     },
