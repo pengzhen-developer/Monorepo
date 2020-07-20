@@ -132,6 +132,14 @@ export default {
     },
 
     back() {
+      // 重置数据
+      this.storeList = []
+      this.cloudStoreList = []
+
+      this.pharmacyRule = new IPharmacyRuleModel()
+      this.pharmacyConf = new IPharmacyConfModel()
+      this.data = []
+
       this.displayView = CONSTANT.DISPLAY_VIEW.列表
     },
 

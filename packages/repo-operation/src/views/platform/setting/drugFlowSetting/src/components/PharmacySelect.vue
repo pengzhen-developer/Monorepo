@@ -27,13 +27,6 @@ export default {
     pharmacyRule: Object,
     pharmacyConf: Object,
     data: Array
-  },
-
-  data() {
-    return {
-      pharmacyCloudChecked: false,
-      pharmacyChecked: false
-    }
   }
 }
 </script>

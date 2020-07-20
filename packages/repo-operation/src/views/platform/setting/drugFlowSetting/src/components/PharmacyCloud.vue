@@ -98,23 +98,36 @@
                   v-bind:visible.sync="dialog.visible">
       <peace-table ref="table"
                    height="400px"
+                   class="q-mb-lg"
                    v-bind:data="cloudStoreList">
+        <el-table-column label=" "
+                         align="center"
+                         width="80px">
+          <template slot-scope="scope">
+            <el-radio name="仓库"
+                      v-model="DrugStoreKeyId"
+                      v-bind:label="scope.row.DrugStoreKeyId"
+                      type="text"></el-radio>
+          </template>
+        </el-table-column>
         <el-table-column label="仓库名称"
                          prop="Name"></el-table-column>
         <el-table-column label="所在城市"
                          prop="City"></el-table-column>
-        <el-table-column label="操作"
-                         width="120px">
-          <template slot-scope="scope">
-            <el-button v-if="scope.row.DrugStoreKeyId === pharmacy.DrugStoreId"
-                       disabled
-                       type="text">已选择</el-button>
-            <el-button v-else
-                       type="text"
-                       v-on:click="check(scope.row)">选择</el-button>
-          </template>
-        </el-table-column>
       </peace-table>
+
+      <div class="text-center">
+        <el-button style="min-width: 120px;"
+                   type=""
+                   v-on:click="closeDialog">
+          <div class="q-py-xs q-px-xl">取消</div>
+        </el-button>
+        <el-button style="min-width: 120px;"
+                   type="primary"
+                   v-on:click="check">
+          <div class="q-py-xs q-px-xl">提交</div>
+        </el-button>
+      </div>
     </peace-dialog>
   </div>
 </template>
@@ -144,6 +157,8 @@ export default {
       },
 
       fileList: [],
+
+      DrugStoreKeyId: '',
 
       dialogImageUrl: '',
       dialogVisible: false,
@@ -212,15 +227,24 @@ export default {
     if (pharmacyCloudData) {
       this.pharmacy = pharmacyCloudData
       this.fileList = [{ name: new Date().getTime(), url: pharmacyCloudData.DisplayImg }]
+      this.DrugStoreKeyId = this.pharmacy.DrugStoreId
     }
   },
 
   methods: {
     showDialog() {
       this.dialog.visible = true
+
+      this.DrugStoreKeyId = this.pharmacy.DrugStoreId
     },
 
-    check(row) {
+    closeDialog() {
+      this.dialog.visible = false
+    },
+
+    check() {
+      const row = this.cloudStoreList.find((item) => item.DrugStoreKeyId === this.DrugStoreKeyId)
+
       // set pharmacy
       this.pharmacy.RuleFlag = this.pharmacyRule.value
       this.pharmacy.ConfType = this.pharmacyConf.value
@@ -274,6 +298,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-radio__label {
+  display: none;
+}
+
 .line-bg {
   &::before {
     content: ' ';

@@ -137,6 +137,7 @@ export default {
     )
 
     this.checkList = this.pharmacyList.map((item) => item.DrugStoreId)
+    this.checkCount = this.checkList.length
   },
 
   methods: {
