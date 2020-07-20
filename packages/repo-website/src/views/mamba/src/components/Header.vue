@@ -41,7 +41,7 @@
       </div>
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
-          <li class="active"><a href="/">首页</a></li>
+          <li class="active"><a :href="honePath">首页</a></li>
           <li><a href="#about-lists">产品服务</a></li>
           <li><a href="#portfolio">解决方案</a></li>
 
@@ -115,6 +115,9 @@ export default {
     },
     checkStatus() {
       return Util.user.getUserInfo()?.checkStatus
+    },
+    honePath() {
+      return process.env.VUE_APP_RELEASE_FLODER_PATH
     }
   }
 }
