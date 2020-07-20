@@ -8,31 +8,29 @@
       <div class="section-title">
         <h2>关于我们</h2>
       </div>
-      <div class="footer-bottom">
-        <div class="bottom-item">
+      <div class="footer-bottom row">
+
+        <div class="bottom-item col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
           <p>扫码体验</p>
-          <div class="qr-code-list">
-            <div class="qr-code-content">
-              <img src="../assets/img/my/iOS.png"
-                   class="qr-code-img" />
+          <div class="qr-code-list row">
+            <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+              <img src="../assets/img/my/iOS.png" />
               医生工作台iOS
             </div>
-            <div class="qr-code-content">
-              <img src="../assets/img/my/android.png"
-                   class="qr-code-img" />
+            <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+              <img src="../assets/img/my/android.png" />
               医生工作台安卓
             </div>
-            <div class="qr-code-content">
-              <img src="../assets/img/my/web.png"
-                   class="qr-code-img" />
+            <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+              <img src="../assets/img/my/web.png" />
               患者应用小程序
             </div>
           </div>
         </div>
 
-        <div class="line"></div>
+        <div class="line d-none d-lg-block"></div>
 
-        <div class="bottom-item">
+        <div class="bottom-item col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
           <p>联系我们</p>
           <!-- <div class="information">
             <i class=" zyy-icon zyy-icon_dianhua"
@@ -49,7 +47,7 @@
     </div>
 
     <div class="bottom">
-      <div class="bottom-line"></div>
+      <div class="bottom-line "></div>
       Copyright © 2020 jk998
     </div>
 
@@ -73,7 +71,7 @@ section {
 }
 .line {
   width: 1px;
-  margin: 0px 126px;
+  margin: 0px 120px;
   height: 210px;
   background: #d9d9d9;
 }
@@ -81,6 +79,7 @@ section {
   font-size: 24px;
   color: var(--q-color-grey-333);
   display: flex;
+  margin-bottom: 20px;
   flex-direction: column;
 }
 .qr-code-list {
@@ -89,15 +88,15 @@ section {
 .qr-code-content {
   display: flex;
   color: var(--q-color-grey-666);
-  font-size: 14px;
-  margin-right: 20px;
+  font-size: 13px;
   align-items: center;
   flex-direction: column;
 }
-.qr-code-img {
-  width: 138px;
-  height: 138px;
+
+.qr-code-content img {
+  width: 100%;
 }
+
 .information {
   color: var(--q-color-grey-333);
   font-size: 20px;
@@ -117,7 +116,6 @@ section {
 }
 .bottom-line {
   height: 1px;
-  width: 1200px;
   margin-top: 60px;
   margin-bottom: 30px;
   background: #cccccc;

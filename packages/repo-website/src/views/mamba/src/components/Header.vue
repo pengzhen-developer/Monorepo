@@ -11,7 +11,7 @@
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="./assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
-      <div class="login">
+      <div class="login d-none d-sm-block">
 
         <template v-if="hasLogin">
           <el-button type="text"

@@ -13,7 +13,7 @@
 
       <div class="row">
 
-        <div class="col-xl-3 col-lg-4 col-md-6 row-item"
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12"
              data-aos="fade-up">
           <div class="member">
             <div class="pic"><img src="../assets/img/my/pic01.png"
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6 row-item"
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12"
              data-aos="fade-up"
              data-aos-delay="100">
           <div class="member">
@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6 row-item"
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12"
              data-aos="fade-up"
              data-aos-delay="200">
           <div class="member">
@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6 row-item"
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12"
              data-aos="fade-up"
              data-aos-delay="300">
           <div class="member">
@@ -85,9 +85,7 @@ section {
 .team-bgd {
   background: #f5f9fc;
 }
-.row-item {
-  width: 25%;
-}
+
 .my-member-info {
   padding: 15px !important;
   margin-bottom: -40px;
