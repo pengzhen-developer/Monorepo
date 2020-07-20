@@ -19,7 +19,7 @@
       <DrugFlowByVarietyView v-bind:data.sync="data"></DrugFlowByVarietyView>
     </template>
 
-    <template v-if="RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按病种').value">
+    <template v-if="RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按病症').value">
       <DrugFlowByDiseaseView v-bind:data.sync="data"></DrugFlowByDiseaseView>
     </template>
 

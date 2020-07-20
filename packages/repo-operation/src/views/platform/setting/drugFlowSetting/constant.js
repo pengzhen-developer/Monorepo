@@ -14,7 +14,7 @@ export default {
   RULE_FLAG_MAP: [
     { label: '不限', value: 1 },
     { label: '按品种', value: 2 },
-    { label: '按病种', value: 3 }
+    { label: '按病症', value: 3 }
   ],
 
   /**

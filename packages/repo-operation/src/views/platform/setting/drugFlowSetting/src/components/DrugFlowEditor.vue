@@ -27,7 +27,7 @@
                          v-bind:data.sync="data"></DrugFlowByVariety>
     </template>
 
-    <template v-if="pharmacyRule.RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按病种').value">
+    <template v-if="pharmacyRule.RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按病症').value">
       <DrugFlowByDisease v-bind:pharmacyRule.sync="pharmacyRule"
                          v-bind:pharmacyConf.sync="pharmacyConf"
                          v-bind:data.sync="data"></DrugFlowByDisease>

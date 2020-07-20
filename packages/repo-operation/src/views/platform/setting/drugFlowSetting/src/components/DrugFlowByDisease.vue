@@ -1,4 +1,4 @@
-/** 按病种 */
+/** 按病症 */
 
 <template>
   <div>
@@ -9,21 +9,21 @@
         <el-tabs>
           <el-tab-pane label="普通订单"
                        lazy>
-            <PharmacySelect v-bind:pharmacyRule="setRule('按病种')"
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('普通')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
 
           <el-tab-pane label="慢病重症订单"
                        lazy>
-            <PharmacySelect v-bind:pharmacyRule="setRule('按病种')"
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('重症')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
 
           <el-tab-pane label="其它订单"
                        lazy>
-            <PharmacySelect v-bind:pharmacyRule="setRule('按病种')"
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('其它')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
