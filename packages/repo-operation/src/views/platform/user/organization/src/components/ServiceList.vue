@@ -16,10 +16,10 @@
           <p class="text-grey-333 text-weight-bold">{{item.serviceName}}</p>
           <div class="row justify-between items-center">
             <div class="items-center">
-              <span v-bind:style="{ color: serviceStatusTitleColor(item.isPass), 'line-height': '26px'}">使用状态：</span>
-              <span v-bind:style="{ color: serviceStatusTextColor(item.isPass) }"
-                    class="q-mr-md">{{serviceStatusText(item.isPass)}}</span>
-              <el-switch v-model="item.isPass"
+              <span v-bind:style="{ color: serviceStatusTitleColor(item.isOpen), 'line-height': '26px'}">使用状态：</span>
+              <span v-bind:style="{ color: serviceStatusTextColor(item.isOpen) }"
+                    class="q-mr-md">{{serviceStatusText(item.isOpen)}}</span>
+              <el-switch v-model="item.isOpen"
                          :active-value="2"
                          :inactive-value="1"
                          active-color="#3099A6"
@@ -27,6 +27,7 @@
                          v-on:change="changeValue(item)"></el-switch>
             </div>
             <el-button type="text"
+                       v-bind:style="{ color: serviceStatusTextColor(item.isOpen)}"
                        v-show="showSerice(item)"
                        @click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
           </div>
@@ -85,14 +86,14 @@ export default {
 
   methods: {
     changeValue(item) {
-      const message = item.isPass === 1 ? '确定禁用该服务？' : '确定开启该服务？'
+      const message = item.isOpen === 1 ? '确定禁用该服务？' : '确定开启该服务？'
 
       this.$confirm(message, '提示')
         .then(() => {
           const params = {
             accountId: this.data.id,
             accountServiceId: item.serviceId,
-            isOpen: item.isPass
+            isOpen: item.isOpen
           }
 
           Service.operateService(params).then((res) => {
@@ -102,7 +103,7 @@ export default {
           })
         })
         .catch(() => {
-          item.isPass = item.isPass === 1 ? 2 : 1
+          item.isOpen = item.isOpen === 1 ? 2 : 1
         })
     },
     showSerice(item) {
@@ -135,7 +136,11 @@ export default {
     serviceStatusTitleColor(code) {
       return code == 1 ? '#999' : '#333'
     },
+
     serviceDetail(params) {
+      if (params.isOpen == 1) {
+        return
+      }
       const configMap = [
         { serviceName: '互联网医院管理端', serviceType: 1, tagName: '999-1' },
         { serviceName: '处方管理医院端', serviceType: 3, tagName: '999-3' },
