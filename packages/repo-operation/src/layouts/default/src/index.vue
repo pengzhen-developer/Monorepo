@@ -120,10 +120,12 @@ export default {
         // 当前为功能菜单，点击跳转功能
         if (currentMenu.menuPath) {
           this.menuSelect(index)
+
+          this.childrenMenuTree = []
         }
         // 当前为顶级菜单，点击加载子菜单
         else {
-          this.childrenMenuTree = Peace.util.deepClone(currentMenu.children)
+          this.childrenMenuTree = currentMenu.children
         }
       })
     },

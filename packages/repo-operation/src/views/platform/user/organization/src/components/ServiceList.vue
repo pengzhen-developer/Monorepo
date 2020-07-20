@@ -19,14 +19,15 @@
               <span v-bind:style="{ color: serviceStatusTitleColor(item.isPass), 'line-height': '26px'}">使用状态：</span>
               <span v-bind:style="{ color: serviceStatusTextColor(item.isPass) }"
                     class="q-mr-md">{{serviceStatusText(item.isPass)}}</span>
-              <el-switch disabled="true"
-                         v-model="item.isPass"
+              <el-switch v-model="item.isPass"
                          :active-value="2"
                          :inactive-value="1"
                          active-color="#3099A6"
-                         inactive-color="#999999"></el-switch>
+                         inactive-color="#999999"
+                         v-on:change="changeValue(item)"></el-switch>
             </div>
             <el-button type="text"
+                       v-show="showSerice(item)"
                        @click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
           </div>
         </div>
@@ -37,6 +38,7 @@
 
 <script>
 import Service from './../service'
+import Peace from '@/src/library'
 
 export default {
   inject: ['provideAddTab', 'provideGetTab'],
@@ -82,6 +84,34 @@ export default {
   },
 
   methods: {
+    changeValue(item) {
+      const message = item.isPass === 1 ? '确定禁用该服务？' : '确定开启该服务？'
+
+      this.$confirm(message, '提示')
+        .then(() => {
+          const params = {
+            accountId: this.data.id,
+            accountServiceId: item.serviceId,
+            isOpen: item.isPass
+          }
+
+          Service.operateService(params).then((res) => {
+            Peace.util.success(res.msg)
+
+            this.getService()
+          })
+        })
+        .catch(() => {
+          item.isPass = item.isPass === 1 ? 2 : 1
+        })
+    },
+    showSerice(item) {
+      if (item.serviceType == 1 || item.serviceType == 2) {
+        return true
+      } else {
+        return false
+      }
+    },
     getService() {
       this.isLoading = true
       const params = {
@@ -106,11 +136,29 @@ export default {
       return code == 1 ? '#999' : '#333'
     },
     serviceDetail(params) {
-      const tab = this.getTab('999-1')
+      const configMap = [
+        { serviceName: '互联网医院管理端', serviceType: 1, tagName: '999-1' },
+        { serviceName: '处方管理医院端', serviceType: 3, tagName: '999-3' },
+        { serviceName: '合理用药管理', serviceType: 2, tagName: '22-1' },
+        { serviceName: '药品供应管理端', serviceType: 4, tagName: '999-4' }
+      ]
+      const tagName = configMap.find((item) => item.serviceType == params.serviceType).tagName
 
-      tab.menuPath = tab.menuPath + `${params.hospitalId}`
+      const tab = this.getTab(tagName)
+      switch (params.serviceType) {
+        case 1:
+          tab.menuPath = tab.menuPath + `${params.hospitalId}`
 
-      this.addTab(tab)
+          this.addTab(tab)
+          break
+        case 2:
+          tab.menuPath = tab.menuPath + `?hospitalCode=${params.hospitalCode}&hospitalName=${params.hospitalName}`
+
+          this.addTab(tab)
+          break
+        default:
+          break
+      }
     },
     back() {
       this.$parent.toggleServiceDialog()
