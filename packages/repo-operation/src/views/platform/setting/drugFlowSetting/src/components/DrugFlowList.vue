@@ -7,7 +7,7 @@
              label-suffix=""
              size="mini">
       <el-form-item label="机构名称：">
-        <el-input v-model="model.custName"
+        <el-input v-model.trim="model.custName"
                   placeholder="请输入机构名称"></el-input>
       </el-form-item>
 
