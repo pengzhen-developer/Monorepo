@@ -157,7 +157,7 @@ export default {
           this.addTab(tab)
           break
         case 2:
-          tab.menuPath = tab.menuPath + `?hospitalCode=${params.hospitalCode}&hospitalName=${params.hospitalName}`
+          tab.menuPath = tab.menuPath + `?hospitalCode=${params.custCode}&hospitalName=${params.hospitalName}`
 
           this.addTab(tab)
           break
