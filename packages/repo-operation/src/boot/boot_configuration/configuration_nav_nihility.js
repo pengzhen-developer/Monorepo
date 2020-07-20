@@ -48,5 +48,30 @@ export default [
     iconType: null,
     enable: true,
     closable: true
+  },
+  {
+    id: '2',
+    parentId: null,
+    menuRoute: null,
+    menuRouteName: null,
+    menuName: '平台管理',
+    menuPath: null,
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: null
+  },
+
+  {
+    id: '22-1',
+    parentId: '2',
+    menuRoute: '22-1',
+    menuRouteName: '22-1',
+    menuName: '合理用药管理服务详情',
+    menuPath: process.env.VUE_APP_OPERATION_SITE + 'HospitalManage/HospitalIndex',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
   }
 ]
