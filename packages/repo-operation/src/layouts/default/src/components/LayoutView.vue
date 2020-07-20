@@ -2,7 +2,7 @@
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
     <div class="q-pt-md q-pr-md q-pb-none q-pl-md">
-      <template v-if="isIFrame">
+      <div v-show="isIFrame">
         <transition appear
                     mode="out-in"
                     name="el-fade-in-linear">
@@ -10,16 +10,18 @@
                        v-bind:key="$route.fullPath"
                        v-bind:style="routerViewIframeStyle"></router-view>
         </transition>
-      </template>
-      <template v-else>
+      </div>
+      <div v-show="!isIFrame">
         <transition appear
                     mode="out-in"
                     name="el-fade-in-linear">
-          <router-view class="router-view bg-white q-pa-md"
-                       v-bind:key="$route.fullPath"
-                       v-bind:style="routerViewStyle"></router-view>
+          <keep-alive>
+            <router-view class="router-view bg-white q-pa-md"
+                         v-bind:key="$route.fullPath"
+                         v-bind:style="routerViewStyle"></router-view>
+          </keep-alive>
         </transition>
-      </template>
+      </div>
     </div>
   </q-scroll-area>
 </template>

@@ -123,7 +123,7 @@ export default {
         }
         // 当前为顶级菜单，点击加载子菜单
         else {
-          this.childrenMenuTree = currentMenu.children
+          this.childrenMenuTree = Peace.util.deepClone(currentMenu.children)
         }
       })
     },
