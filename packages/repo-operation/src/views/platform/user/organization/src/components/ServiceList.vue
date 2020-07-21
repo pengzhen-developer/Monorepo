@@ -8,7 +8,11 @@
       已开通的服务
     </div>
     <p class="text-grey-333 text-weight-bold">{{this.data.hospitalName}}</p>
-    <div v-if="!isEmpty"
+    <div class="no-data"
+         v-if="isEmpty">
+      暂未开通服务
+    </div>
+    <div v-else
          class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-6 col-lg-4"
            v-for="item in list"
@@ -35,10 +39,7 @@
         </div>
       </div>
     </div>
-    <div class="no-data"
-         v-else>
-      暂未开通服务
-    </div>
+
   </div>
 </template>
 
@@ -71,7 +72,7 @@ export default {
     },
 
     isEmpty() {
-      return !(this.list.length > 0)
+      return this.list.length === 0
     }
   },
   data() {
@@ -117,8 +118,7 @@ export default {
 
       Service.getService(params)
         .then((res) => {
-          console.log(res)
-          this.list = [] //res.data.list
+          this.list = res.data.list
         })
         .finally(() => {
           this.isLoading = false
