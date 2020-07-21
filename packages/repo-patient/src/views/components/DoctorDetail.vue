@@ -705,6 +705,7 @@ export default {
           appointmentEndTime: this.dialog.data.endTime,
           sourceDisType: 0,
           sourceCode: this.dialog.data.sourceCode,
+          sourceItemCode: this.dialog.data.sourceItemCode,
           price: this.dialog.data.unitPrice
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)

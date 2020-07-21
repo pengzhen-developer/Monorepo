@@ -229,6 +229,7 @@ export default {
           appointmentEndTime: item.endTime,
           sourceDisType: 0,
           sourceCode: item.sourceCode,
+          sourceItemCode: item.sourceItemCode,
           price: item.unitPrice
         }
         if (!this.params.isAgain) {
@@ -259,17 +260,17 @@ export default {
           this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         })
         .catch(() => {
+          //重新选择号源
+          const param = Object.assign(item, {
+            year: this.dateList[this.activeIndex].year,
+            date: this.dateList[this.activeIndex].date
+          })
+          this.getSourceData(param)
+
           return Dialog.confirm({
             title: '提示',
             message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
             onfirmButtonText: '确定'
-          }).then(() => {
-            //重新选择号源
-            const param = Object.assign(item, {
-              year: this.dateList[this.activeIndex].year,
-              date: this.dateList[this.activeIndex].date
-            })
-            this.getSourceData(param)
           })
         })
     },

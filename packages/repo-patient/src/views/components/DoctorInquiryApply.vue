@@ -939,6 +939,7 @@ export default {
       this.model.appointmentStartTime = params.appointmentStartTime || ''
       this.model.appointmentEndTime = params.appointmentEndTime || ''
       this.model.sourceCode = params.sourceCode || ''
+      this.model.sourceItemCode = params.sourceItemCode || ''
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
       this.model.price = params.price
 
@@ -1459,11 +1460,14 @@ export default {
             title: '提示',
             message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
             onfirmButtonText: '确定'
-          }).then(() => {
-            //重新选择号源
-            this.goToReSelectSource()
-            this.sending = false
           })
+            .then(() => {
+              //重新选择号源
+              this.goToReSelectSource()
+            })
+            .finally(() => {
+              this.sending = false
+            })
         })
       // return peace.service.inquiry
       //   .apply(params)
