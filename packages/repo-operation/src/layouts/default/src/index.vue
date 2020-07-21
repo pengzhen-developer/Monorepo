@@ -32,8 +32,8 @@
 
     <q-page-container>
       <q-page class="bg-grey-1">
-        <LayoutTabs class="bg-white"></LayoutTabs>
-        <LayoutView class="bg-grey-2"></LayoutView>
+        <LayoutTabs></LayoutTabs>
+        <LayoutView></LayoutView>
       </q-page>
     </q-page-container>
   </q-layout>

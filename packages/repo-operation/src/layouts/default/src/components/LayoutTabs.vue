@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center full-width">
+  <div class="flex items-center full-width bg-white">
     <el-tabs class="layout-tabs"
              v-model="active"
              v-on:tab-click="tabClick"

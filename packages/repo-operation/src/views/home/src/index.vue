@@ -1,5 +1,6 @@
 <template>
-  <div class="full-width full-height">
+  <div class="full-width full-height"
+       style="padding: 0">
     <div v-show="!showDataScreen"
          class="full-width full-height home_bg_style">
       <div class="row q-col-gutter-x-md">

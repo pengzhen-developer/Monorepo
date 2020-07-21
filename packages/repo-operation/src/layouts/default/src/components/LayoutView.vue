@@ -1,27 +1,24 @@
 <template>
-  <q-scroll-area v-bind:thumb-style="thumbStyle"
+  <q-scroll-area class="bg-grey-2 q-pt-md q-pr-md q-pb-none q-pl-md"
+                 v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-    <div class="q-pt-md q-pr-md q-pb-none q-pl-md">
-      <div v-show="isIFrame">
-        <transition appear
-                    mode="out-in"
-                    name="el-fade-in-linear">
-          <router-view class="iframe-router-view"
-                       v-bind:key="$route.fullPath"
-                       v-bind:style="routerViewIframeStyle"></router-view>
-        </transition>
-      </div>
-      <div v-show="!isIFrame">
-        <transition appear
-                    mode="out-in"
-                    name="el-fade-in-linear">
-          <keep-alive>
-            <router-view class="router-view bg-white q-pa-md"
-                         v-bind:key="$route.fullPath"
-                         v-bind:style="routerViewStyle"></router-view>
-          </keep-alive>
-        </transition>
-      </div>
+    <div v-bind:style="routerViewStyle">
+      <transition appear
+                  mode="out-in"
+                  name="el-fade-in-linear">
+        <router-view class="router-view iframe-router-view"
+                     v-if="isIFrame"
+                     v-bind:key="$route.fullPath"
+                     v-bind:style="routerViewIframeStyle"></router-view>
+      </transition>
+      <transition appear
+                  mode="out-in"
+                  name="el-fade-in-linear">
+        <router-view class="router-view bg-white q-pa-md"
+                     v-if="!isIFrame"
+                     v-bind:key="$route.fullPath"
+                     v-bind:style="routerViewStyle"></router-view>
+      </transition>
     </div>
   </q-scroll-area>
 </template>
@@ -78,17 +75,16 @@ export default {
 
     setRouterViewStyle() {
       // 存在 300 ms 的 router-view 切换特效
-      // 仅设定 iframe 样式
-      setTimeout(() => {
-        const element = this?.$el?.querySelector('.iframe-router-view')
+      const offset = dom.offset(this?.$el)
 
-        if (element) {
-          const offset = dom.offset(element)
-          this.routerViewIframeStyle = {
-            height: `${document.body.clientHeight - offset?.top - 8}px`
-          }
-        }
-      }, 300)
+      this.routerViewStyle = {
+        ['height']: `${document.body.clientHeight - offset?.top - 16}px`,
+        ['min-height']: `${document.body.clientHeight - offset?.top - 16}px`
+      }
+
+      this.routerViewIframeStyle = {
+        ['height']: `${document.body.clientHeight - offset?.top - 16}px`
+      }
     }
   }
 }
