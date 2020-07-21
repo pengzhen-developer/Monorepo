@@ -55,7 +55,7 @@ export default {
     const json = peace.util.decode(this.$route.params.json)
     this.type = json.orderType || json.type
     this.orderNo = json.orderNo
-    this.money = json.money
+    this.money = json.money.toString().toFixed(2)
     this.getOrderInfo()
   },
   methods: {

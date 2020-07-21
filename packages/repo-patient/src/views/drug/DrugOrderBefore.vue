@@ -10,10 +10,8 @@
       <img :src="require('@src/assets/images/warn.png')">
       <span>药品为特殊商品，一经售出不退不换</span>
     </div>
-    <form bindsubmit="submitOrder"
-          report-submit="true"
-          class="drug-from"
-          v-if="order!=null">
+    <div class="drug-from"
+         v-if="order!=null">
       <div class="top">
         <div class="content">
           <div class="addr-tit">
@@ -132,14 +130,13 @@
                     round
                     type="primary">医保支付</van-button> -->
           <van-button v-on:click="submitOrder('wxpay')"
-                      v-bind:disabled="!page.canSubmit || hasSubmitOrder"
                       size="small"
                       round
                       type="primary">提交订单</van-button>
 
         </div>
       </div>
-    </form>
+    </div>
 
     <van-popup v-model="showPopup"
                round
@@ -227,25 +224,13 @@ export default {
     }
     this.getDefaultAddress()
   },
+  destroyed() {
+    $peace.$off('SelectAddress')
+  },
   created() {
-    const params = peace.util.decode(this.$route.params.json)
-    // this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
-    /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
-    /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
-    this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
-    this.page.payIndex = '0'
-    this.page.json = params
-    this.DrugStoreId = params.DrugStoreId
-    this.Detailed = params.Detailed
-    // if (this.$route.query.code) {
-    //   let code = this.$route.query.code
-    //   let orderNo = this.$route.query.orderId
-    //   let params = { code, orderNo }
-    //   peace.service.index.GetWxLoginStatus(params).then(res => {
-    //     let data = res.data
-    //     peace.wx.payInvoke(data, this.payCallback)
-    //   })
-    // }
+    $peace.$on('SelectAddress', this.selectAddressCallback)
+
+    this.initData(this.$route.params.json)
   },
   computed: {
     payName() {
@@ -266,6 +251,22 @@ export default {
     }
   },
   methods: {
+    selectAddressCallback(json) {
+      if (json) {
+        this.initData(json)
+      }
+    },
+    initData(json) {
+      const params = peace.util.decode(json)
+      // this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
+      /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
+      /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
+      this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
+      this.page.payIndex = '0'
+      this.page.json = params
+      this.DrugStoreId = params.DrugStoreId
+      this.Detailed = params.Detailed
+    },
     changeShowPopup() {
       this.showPopup = !this.showPopup
       if (!this.showPopup) {
@@ -286,7 +287,6 @@ export default {
     getDefaultAddress() {
       peace.service.patient.getDefaultAddress().then((res) => {
         this.userAddr = res.data
-        this.canSubmitProcesses()
       })
     },
     getAddr(addr) {
@@ -295,8 +295,10 @@ export default {
       this.page.tabIndex = 1
     },
     goUserAddrPage() {
-      let json = this.$route.params.json
-      this.$router.push(`/setting/SelectAddressManger/${json}`)
+      let json = peace.util.decode(this.$route.params.json)
+      const param = peace.util.encode({ ...json, emit: 'SelectAddress' })
+
+      this.$router.push(`/setting/SelectAddressManger/${param}`)
     },
 
     /**
@@ -307,8 +309,9 @@ export default {
      */
     submitOrder(paymentType = 'wxpay') {
       this.hasSubmitOrder = true
-
-      if (!this.canSubmitProcesses()) {
+      let canSubmit = this.page.tabIndex == 0 ? true : this.userAddr && this.userAddr.detailAddress ? true : false
+      if (!canSubmit) {
+        peace.util.alert('请添加收货地址')
         return
       }
       if (!this.showBtn) {
@@ -346,12 +349,11 @@ export default {
           if (paymentType === 'yibaopay') {
             this.payCallback()
           } else {
-            // peace.wx.pay(params, null, this.payCallback, this.payCallback, '?' + 'orderId=' + orderNo)
             const json = peace.util.encode(params)
             this.$router.replace(`/components/ExpenseDetail/${json}`)
           }
         })
-        .catch(() => {
+        .finally(() => {
           this.showBtn = true
         })
     },
@@ -367,13 +369,7 @@ export default {
       const json = peace.util.encode({ OrderId: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
-    canSubmitProcesses() {
-      let bool = false,
-        userAddr = this.userAddr
-      bool = !!(this.page.tabIndex == '0' ? true : !!(userAddr && userAddr.detailAddress))
-      this.page.canSubmit = bool
-      return bool
-    },
+
     selectPay(item) {
       if (item.disabled) {
         return
@@ -383,7 +379,6 @@ export default {
       }
       this.json.payIndex = item.index
       this.json.payName = item.name
-      this.canSubmitProcesses()
     },
     changeTab(index, disabled) {
       if (index == this.json.tabIndex) {
@@ -401,7 +396,6 @@ export default {
       //   return
       // }
       this.json.tabIndex = index
-      this.canSubmitProcesses()
     },
 
     getPhaOrder() {
@@ -411,8 +405,6 @@ export default {
         res.data.Freight = res.data.Freight || 0
         res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
-
-        this.canSubmitProcesses()
       })
     },
 
@@ -576,6 +568,7 @@ export default {
   padding-left: 24px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 .addr-tit::before {
   content: '';
@@ -593,7 +586,6 @@ export default {
 .tab-content .addr-p {
   font-size: 14px;
   color: #333;
-  margin: 5px 0;
   font-weight: 600;
   position: relative;
 }
@@ -721,12 +713,11 @@ export default {
   height: 16px;
   background-size: cover;
   background-image: url('~@src/assets/images/icons/toolfk-img.jpg');
-  margin-top: -5px;
+  margin-top: -2.5px;
 }
 .tab-content .block {
   font-size: 16px;
   color: #00c6ae;
-  margin-left: -27px;
   .icon {
     margin-right: 8px;
   }

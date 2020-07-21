@@ -55,10 +55,10 @@ export default {
       this.getAddressList()
     },
     getAddressList() {
-      peace.service.patient.getAddressLists().then(res => {
+      peace.service.patient.getAddressLists().then((res) => {
         const tmp = res.data.addressLists
         this.isGet = true
-        this.addr = tmp.map(item => item)
+        this.addr = tmp.map((item) => item)
       })
     },
     goUserAddressEdit(address) {
@@ -75,30 +75,30 @@ export default {
         undefined,
         undefined,
         () => {
-          debugger
           this.delAddress(addressId)
         },
         () => {}
       )
     },
     delAddress(id) {
-      debugger
       const data = {
         addressId: id
       }
       peace.service.patient.delAddress(data).then(() => {
         this.get()
-        // console.log(res)
       })
     },
     checkAddr(address) {
-      let json = this.$route.params.json
-      let addr = peace.util.encode(address)
+      let json = peace.util.decode(this.$route.params.json)
+
+      const param = peace.util.encode({ ...json, ...address })
       let { addressId } = address
       let data = { addressId }
       peace.service.patient.setDefaultAddress(data).then(() => {
-        // console.log('设置成功', res)
-        this.$router.replace({ path: `/drug/drugOrderBefore/${json}`, query: { addr } })
+        if (json.emit) {
+          $peace.$emit(json.emit, param)
+        }
+        this.$router.go(-1)
       })
     }
   }
