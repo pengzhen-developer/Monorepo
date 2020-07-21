@@ -23,6 +23,7 @@ export default {
       src: ''
     }
   },
+
   created() {
     const user = Util.user.getUserInfo()
 
