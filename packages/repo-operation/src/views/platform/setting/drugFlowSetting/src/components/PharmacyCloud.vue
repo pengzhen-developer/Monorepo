@@ -145,6 +145,8 @@ export default {
     data: Array
   },
 
+  inject: ['provideCustCode', 'provideCustName'],
+
   data() {
     return {
       checked: false,
@@ -166,10 +168,21 @@ export default {
     }
   },
 
+  computed: {
+    custCode() {
+      return this.provideCustCode()
+    },
+
+    custName() {
+      return this.provideCustName()
+    }
+  },
+
   watch: {
     checked() {
       if (this.checked === false) {
         this.pharmacy = new IPharmacyModel()
+        this.fileList = [{ name: new Date().getTime(), url: this.pharmacy.DisplayImg }]
 
         for (let i = this.data.length - 1; i >= 0; i--) {
           const item = this.data[i]
@@ -227,7 +240,11 @@ export default {
 
   methods: {
     getCloudStore() {
-      return Service.CloudStoreList().then((res) => {
+      const params = {
+        custCode: this.custCode
+      }
+
+      return Service.CloudStoreList(params).then((res) => {
         this.cloudStoreList = res.data
       })
     },

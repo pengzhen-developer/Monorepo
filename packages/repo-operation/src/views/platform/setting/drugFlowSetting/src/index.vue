@@ -69,6 +69,8 @@ import { IPharmacyRuleModel, IPharmacyConfModel } from './model/IPharmacyModel'
 export default {
   provide() {
     return {
+      provideCustCode: () => this.custCode,
+      provideCustName: () => this.custName,
       provideGetStoreList: () => this.getStore,
       provideGetCloudStoreList: () => this.getCloudStore
     }
@@ -85,6 +87,9 @@ export default {
       CONSTANT,
 
       displayView: CONSTANT.DISPLAY_VIEW.列表,
+
+      custCode: '',
+      custName: '',
 
       storeList: [],
       cloudStoreList: [],
