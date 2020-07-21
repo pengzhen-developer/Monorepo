@@ -2,7 +2,7 @@
   <div class="full-width full-height"
        style="padding: 0">
     <div v-show="!showDataScreen"
-         class="full-width full-height home_bg_style">
+         class="full-width full-height">
       <div class="row q-col-gutter-x-md">
         <div class="col-4 col-lg-4 col-md-6 col-sm-12">
           <todo-list class="q-mb-md"></todo-list>

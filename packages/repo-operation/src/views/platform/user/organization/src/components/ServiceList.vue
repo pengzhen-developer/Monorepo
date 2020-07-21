@@ -8,7 +8,8 @@
       已开通的服务
     </div>
     <p class="text-grey-333 text-weight-bold">{{this.data.hospitalName}}</p>
-    <div class="row q-col-gutter-md">
+    <div v-if="!isEmpty"
+         class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-6 col-lg-4"
            v-for="item in list"
            v-bind:key="item.id">
@@ -33,6 +34,10 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="no-data"
+         v-else>
+      暂未开通服务
     </div>
   </div>
 </template>
@@ -63,20 +68,12 @@ export default {
 
     getTab() {
       return this.provideGetTab
+    },
+
+    isEmpty() {
+      return !(this.list.length > 0)
     }
   },
-  // [{
-  // applyTime: "2020-07-09 19:40:32"
-  // checkStatus: 3
-  // checkTime: "2020-07-09 19:40:37"
-  // code: 1
-  // hospitalName: "的范德萨范德萨"
-  // id: "vejluxpycw"
-  // isPass: 2
-  // role: 1
-  // serviceId: "vbvbdfgdfd"
-  // serviceName: "处方共享管理"
-  // }]
   data() {
     return {
       isLoading: false,
@@ -98,7 +95,6 @@ export default {
 
           Service.operateService(params).then((res) => {
             Peace.util.success(res.msg)
-
             this.getService()
           })
         })
@@ -121,14 +117,15 @@ export default {
 
       Service.getService(params)
         .then((res) => {
-          this.list = res.data.list
+          console.log(res)
+          this.list = [] //res.data.list
         })
         .finally(() => {
           this.isLoading = false
         })
     },
     serviceStatusText(code) {
-      return code == 1 ? '未开通' : '已开通'
+      return code == 1 ? '已禁用' : '已启用'
     },
     serviceStatusTextColor(code) {
       return code == 1 ? '#999999' : '#3099A6'
@@ -138,9 +135,6 @@ export default {
     },
 
     serviceDetail(params) {
-      if (params.isOpen == 1) {
-        return
-      }
       const configMap = [
         { serviceName: '互联网医院管理端', serviceType: 1, tagName: '999-1' },
         { serviceName: '处方管理医院端', serviceType: 3, tagName: '999-3' },
@@ -175,12 +169,21 @@ export default {
 <style lang="scss" scoped>
 .service-card {
   background: #f4fafa;
-  // height: 124px;
   min-width: 400px;
   border-radius: 10px;
 
   span {
     font-size: 12px;
   }
+}
+
+.no-data {
+  width: 100% !important;
+
+  padding: 48px;
+  text-align: center;
+  color: var(--q-color-grey-999);
+  background-color: #f5f5f5;
+  border-radius: 4px;
 }
 </style>
