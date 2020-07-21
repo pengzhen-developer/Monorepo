@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import Peace from '@src/library'
 import Service from './../service'
 
 import { IPharmacyModel } from './../model/IPharmacyModel'
@@ -193,13 +194,13 @@ export default {
 
         // 添加修改后的云药房（已完成所有字段填写）
         if (
-          this.pharmacy.RuleFlag &&
-          this.pharmacy.ConfType &&
-          this.pharmacy.CustomerType &&
-          this.pharmacy.DrugStoreId &&
-          this.pharmacy.DrugStoreName &&
-          this.pharmacy.DisplayImg &&
-          this.pharmacy.DisplayName
+          !Peace.validate.isEmpty(this.pharmacy.RuleFlag) &&
+          !Peace.validate.isEmpty(this.pharmacy.ConfType) &&
+          !Peace.validate.isEmpty(this.pharmacy.CustomerType) &&
+          !Peace.validate.isEmpty(this.pharmacy.DrugStoreId) &&
+          !Peace.validate.isEmpty(this.pharmacy.DrugStoreName) &&
+          !Peace.validate.isEmpty(this.pharmacy.DisplayImg) &&
+          !Peace.validate.isEmpty(this.pharmacy.DisplayName)
         ) {
           this.data.push(this.pharmacy)
         }
