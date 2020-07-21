@@ -7,39 +7,41 @@
       <i class="el-icon-s-unfold"></i>
       已开通的服务
     </div>
-    <p class="text-grey-333 text-weight-bold">{{this.data.hospitalName}}</p>
     <div class="no-data"
          v-if="isEmpty">
-      暂未开通服务
+      <el-image class="image q-mr-md"
+                v-bind:src="require('../assets/image/nodata.png')"> </el-image>
+      <span>暂未开通任何服务</span>
     </div>
-    <div v-else
-         class="row q-col-gutter-md">
-      <div class="col-sm-12 col-md-6 col-lg-4"
-           v-for="item in list"
-           v-bind:key="item.id">
-        <div class="column q-pa-md service-card">
-          <p class="text-grey-333 text-weight-bold">{{item.serviceName}}</p>
-          <div class="row justify-between items-center">
-            <div class="items-center">
-              <span v-bind:style="{ color: serviceStatusTitleColor(item.isOpen), 'line-height': '26px'}">使用状态：</span>
-              <span v-bind:style="{ color: serviceStatusTextColor(item.isOpen) }"
-                    class="q-mr-md">{{serviceStatusText(item.isOpen)}}</span>
-              <el-switch v-model="item.isOpen"
-                         :active-value="2"
-                         :inactive-value="1"
-                         active-color="#3099A6"
-                         inactive-color="#999999"
-                         v-on:change="changeValue(item)"></el-switch>
+    <div v-else>
+      <p class="text-grey-333 text-weight-bold">{{this.data.hospitalName}}</p>
+      <div class="row q-col-gutter-md">
+        <div class="col-sm-12 col-md-6 col-lg-4"
+             v-for="item in list"
+             v-bind:key="item.id">
+          <div class="column q-pa-md service-card">
+            <p class="text-grey-333 text-weight-bold">{{item.serviceName}}</p>
+            <div class="row justify-between items-center">
+              <div class="items-center">
+                <span v-bind:style="{ color: serviceStatusTitleColor(item.isOpen), 'line-height': '26px'}">使用状态：</span>
+                <span v-bind:style="{ color: serviceStatusTextColor(item.isOpen) }"
+                      class="q-mr-md">{{serviceStatusText(item.isOpen)}}</span>
+                <el-switch v-model="item.isOpen"
+                           :active-value="2"
+                           :inactive-value="1"
+                           active-color="#3099A6"
+                           inactive-color="#999999"
+                           v-on:change="changeValue(item)"></el-switch>
+              </div>
+              <el-button type="text"
+                         v-bind:style="{ color: serviceStatusTextColor(item.isOpen)}"
+                         v-show="showSerice(item)"
+                         @click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
             </div>
-            <el-button type="text"
-                       v-bind:style="{ color: serviceStatusTextColor(item.isOpen)}"
-                       v-show="showSerice(item)"
-                       @click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -179,11 +181,21 @@ export default {
 
 .no-data {
   width: 100% !important;
-
+  display: flex;
+  flex-direction: column;
   padding: 48px;
   text-align: center;
-  color: var(--q-color-grey-999);
-  background-color: #f5f5f5;
-  border-radius: 4px;
+
+  .image {
+    margin: 0 auto;
+    width: 137px;
+    height: 150px;
+    margin-bottom: 24px;
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--q-color-grey-999);
+  }
 }
 </style>
