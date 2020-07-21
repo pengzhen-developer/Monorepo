@@ -3,22 +3,25 @@
                  v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
     <div v-bind:style="routerViewStyle">
-      <transition appear
-                  mode="out-in"
-                  name="el-fade-in-linear">
-        <router-view class="router-view iframe-router-view"
-                     v-if="isIFrame"
-                     v-bind:key="$route.fullPath"
-                     v-bind:style="routerViewIframeStyle"></router-view>
-      </transition>
-      <transition appear
-                  mode="out-in"
-                  name="el-fade-in-linear">
-        <router-view class="router-view bg-white q-pa-md"
-                     v-if="!isIFrame"
-                     v-bind:key="$route.fullPath"
-                     v-bind:style="routerViewStyle"></router-view>
-      </transition>
+      <template v-if="isIFrame">
+
+        <transition appear
+                    mode="out-in"
+                    name="el-fade-in-linear">
+          <router-view class="router-view iframe-router-view"
+                       v-bind:key="$route.meta.menuPath"
+                       v-bind:style="routerViewIframeStyle"></router-view>
+        </transition>
+      </template>
+      <template v-if="!isIFrame">
+        <transition appear
+                    mode="out-in"
+                    name="el-fade-in-linear">
+          <router-view class="router-view bg-white q-pa-md"
+                       v-bind:key="$route.fullPath"
+                       v-bind:style="routerViewStyle"></router-view>
+        </transition>
+      </template>
     </div>
   </q-scroll-area>
 </template>

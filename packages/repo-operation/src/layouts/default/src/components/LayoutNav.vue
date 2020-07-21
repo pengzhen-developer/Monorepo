@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import Peace from '@src/library'
 import LayoutNavItem from './LayoutNavItem'
 
 export default {
@@ -62,11 +63,17 @@ export default {
       this.$nextTick().then(() => {
         const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.meta.id}"]`)
 
-        //  trigger by tabs click, currentMenuNode is exists
-        if (currentMenuNode) {
+        // 当前路由属于 nihility，并不存在于菜单，可以直接通过路由控制跳转
+        if (Peace.validate.isUrl(this.$route.meta.menuPath)) {
+          // no code
+        }
+
+        // 当前路由属于左侧菜单的某一项，模拟点击，跳转路由
+        else if (currentMenuNode) {
           return currentMenuNode.click()
         }
-        // trigger by header click, currentMenuNode is not exists
+
+        // 当前路由不存在？选中当前导航下第一个有效的菜单
         else {
           const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
           firstMenuNode?.click()
