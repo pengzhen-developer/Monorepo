@@ -82,7 +82,7 @@
                   说明书
                 </div>
                 <div class="other-price">
-                  <div class="price">￥{{item.DrugPrice}}</div>
+                  <div class="price">¥{{item.DrugPrice}}</div>
                   x{{item.DrugNumber}}
                 </div>
               </div>
@@ -146,17 +146,17 @@
         <div class="dl-packet">
           <div class="dt">订单费用</div>
           <div class="dd">
-            ￥{{order.TotalAmount}}
+            ¥{{order.TotalAmount}}
           </div>
         </div>
         <div class="dl-packet"
              v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
           <div class="dt">配送费</div>
-          <div class="dd">￥{{order.Freight.toString().toFixed(2)}}</div>
+          <div class="dd">¥{{order.Freight.toString().toFixed(2)}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">优惠券</div>
-          <div class="dd">￥{{order.PromotionsCut.toString().toFixed(2)}}</div>
+          <div class="dd">-¥{{order.PromotionsCut.toString().toFixed(2)}}</div>
         </div>
       </div>
 
@@ -168,7 +168,7 @@
           </div>
           <div class="dd">
             <div class="strong">
-              ￥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
+              ¥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
               <span class="refunded"
                     v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == ENUM.PAY_STASUS.已退款">(已退款)</span>
             </div>
