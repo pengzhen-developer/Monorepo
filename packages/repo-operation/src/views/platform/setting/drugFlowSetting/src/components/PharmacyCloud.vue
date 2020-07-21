@@ -144,8 +144,6 @@ export default {
     data: Array
   },
 
-  inject: ['provideStoreList', 'provideCloudStoreList'],
-
   data() {
     return {
       checked: false,
@@ -157,22 +155,13 @@ export default {
       },
 
       fileList: [],
+      cloudStoreList: [],
 
       DrugStoreKeyId: '',
 
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false
-    }
-  },
-
-  computed: {
-    storeList() {
-      return this.provideStoreList()
-    },
-
-    cloudStoreList() {
-      return this.provideCloudStoreList()
     }
   },
 
@@ -220,6 +209,8 @@ export default {
   },
 
   created() {
+    this.getCloudStore()
+
     const pharmacyCloudData = this.data.find(
       (item) => item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType === 50
     )
@@ -228,10 +219,18 @@ export default {
       this.pharmacy = pharmacyCloudData
       this.fileList = [{ name: new Date().getTime(), url: pharmacyCloudData.DisplayImg }]
       this.DrugStoreKeyId = this.pharmacy.DrugStoreId
+    } else {
+      this.fileList = [{ name: new Date().getTime(), url: this.pharmacy.DisplayImg }]
     }
   },
 
   methods: {
+    getCloudStore() {
+      return Service.CloudStoreList().then((res) => {
+        this.cloudStoreList = res.data
+      })
+    },
+
     showDialog() {
       this.dialog.visible = true
 

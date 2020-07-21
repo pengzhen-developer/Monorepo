@@ -69,8 +69,8 @@ import { IPharmacyRuleModel, IPharmacyConfModel } from './model/IPharmacyModel'
 export default {
   provide() {
     return {
-      provideStoreList: () => this.storeList,
-      provideCloudStoreList: () => this.cloudStoreList
+      provideGetStoreList: () => this.getStore,
+      provideGetCloudStoreList: () => this.getCloudStore
     }
   },
 
@@ -95,42 +95,7 @@ export default {
     }
   },
 
-  created() {
-    this.getStore()
-    this.getCloudStore()
-  },
-
   methods: {
-    getStore() {
-      return Service.SimpleStoreList2().then((res) => {
-        const formatData = []
-
-        res.data.forEach((item) => {
-          item.label = item.Name + ' ' + (item.Address ?? '')
-          item.value = item.DrugStoreKeyId
-
-          if (item.SimpleStoreSon) {
-            item.SimpleStoreSon.forEach((item) => {
-              item.label = item.SonName + ' ' + (item.Address ?? '')
-              item.value = item.DrugStoreKeyId
-            })
-
-            item.children = item.SimpleStoreSon
-          }
-
-          formatData.push(item)
-        })
-
-        this.storeList = formatData
-      })
-    },
-
-    getCloudStore() {
-      return Service.CloudStoreList().then((res) => {
-        this.cloudStoreList = res.data
-      })
-    },
-
     back() {
       // 重置数据
       this.storeList = []

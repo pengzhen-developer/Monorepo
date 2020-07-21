@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import Service from './../service'
 import { IPharmacyModel } from './../model/IPharmacyModel'
 
 export default {
@@ -86,13 +87,12 @@ export default {
     data: Array
   },
 
-  inject: ['provideStoreList', 'provideCloudStoreList'],
-
   data() {
     return {
       checked: false,
 
       pharmacyList: [],
+      storeList: [],
 
       checkList: [],
       checkCount: undefined,
@@ -100,16 +100,6 @@ export default {
       dialog: {
         visible: false
       }
-    }
-  },
-
-  computed: {
-    storeList() {
-      return this.provideStoreList()
-    },
-
-    cloudStoreList() {
-      return this.provideCloudStoreList()
     }
   },
 
@@ -132,6 +122,8 @@ export default {
   },
 
   created() {
+    this.getStore()
+
     this.pharmacyList = this.data.filter(
       (item) => item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType !== 50
     )
@@ -141,6 +133,30 @@ export default {
   },
 
   methods: {
+    getStore() {
+      return Service.SimpleStoreList2().then((res) => {
+        const formatData = []
+
+        res.data.forEach((item) => {
+          item.label = item.Name + ' ' + (item.Address ?? '')
+          item.value = item.DrugStoreKeyId
+
+          if (item.SimpleStoreSon) {
+            item.SimpleStoreSon.forEach((item) => {
+              item.label = item.SonName + ' ' + (item.Address ?? '')
+              item.value = item.DrugStoreKeyId
+            })
+
+            item.children = item.SimpleStoreSon
+          }
+
+          formatData.push(item)
+        })
+
+        this.storeList = formatData
+      })
+    },
+
     showDialog() {
       this.dialog.visible = true
     },
