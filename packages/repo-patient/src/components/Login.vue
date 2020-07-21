@@ -78,7 +78,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     let isEwm = peace.util.decode(from.params.json).isEwm ? 1 : 0
-    next(vm => {
+    next((vm) => {
       if (isEwm && from.fullPath.indexOf('components/doctorDetai') != -1) {
         vm.fromPath = from.fullPath
       }
@@ -90,7 +90,7 @@ export default {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
     } else {
       this.$nextTick(() => {
-        this.$refs.tel.focus()
+        this.$refs.tel && this.$refs.tel.focus()
       })
     }
   },
@@ -117,8 +117,10 @@ export default {
 
       // 验证
       if (!(this.model.tel && peace.validate.pattern.mobile.test(this.model.tel))) {
-        this.$refs.tel.focus()
-        return peace.util.alert('请输入正确的手机号')
+        setTimeout(() => {
+          this.$refs.tel && this.$refs.tel.focus()
+          return peace.util.alert('请输入正确的手机号')
+        }, 500)
       }
       if (this.hasSend) {
         return
@@ -127,17 +129,17 @@ export default {
       // 发送验证码
       peace.service.login
         .sendSms(this.model)
-        .then(res => {
+        .then((res) => {
           // 开启倒计时
           this.countDownTime = 1000 * 60
-          this.$refs.sms && this.$refs.sms.focus()
-
           peace.util.alert(res.msg)
+          setTimeout(() => {
+            // 获取到焦点
+            this.$refs.sms && this.$refs.sms.focus()
+          }, 500)
         })
         .finally(() => {
           setTimeout(() => {
-            // 获取到焦点
-
             this.hasSend = false
           }, 500)
         })
@@ -155,7 +157,7 @@ export default {
 
       peace.service.login
         .login(params)
-        .then(res => {
+        .then((res) => {
           // 存储用户信息
           this.$store.commit('user/setUserInfo', res.data)
           peace.cache.set(peace.type.USER.INFO, res.data)
