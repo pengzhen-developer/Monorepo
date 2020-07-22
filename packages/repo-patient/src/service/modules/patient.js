@@ -271,8 +271,8 @@ export function getOrderBefore(params) {
 
   return peace.http.post(getOrderBefore, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' },
-    },
+      post: { 'Content-Type': 'application/json' }
+    }
   })
 }
 
@@ -281,8 +281,8 @@ export function submitOrder(params) {
 
   return peace.http.post(submitOrder, params, {
     headers: {
-      post: { 'Content-Type': 'application/json' },
-    },
+      post: { 'Content-Type': 'application/json' }
+    }
   })
 }
 
@@ -383,10 +383,18 @@ export function inquiryStatus(doctorId, familyId, consultingType, serviceType) {
  * @param {*DrugStoreId} params
  * @returns
  */
-export function getDrugStoreApi(AccessCode, DrugStoreId) {
+export function getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore) {
   const getDrugStoreApi = 'client/v1/Purchasedrug/GetDrugStoreApi'
 
-  return peace.http.post(getDrugStoreApi, { AccessCode, DrugStoreId })
+  return peace.http.post(
+    getDrugStoreApi,
+    { AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore },
+    {
+      headers: {
+        post: { 'Content-Type': 'application/json' }
+      }
+    }
+  )
 }
 export default {
   /** 获取医生列表 */
@@ -454,5 +462,5 @@ export default {
 
   inquiryStatus,
   /** 获取药店信息 **/
-  getDrugStoreApi,
+  getDrugStoreApi
 }

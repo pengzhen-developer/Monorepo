@@ -143,7 +143,7 @@ export default {
       let { claimNo } = paramsRoute
       window.addEventListener(
         'message',
-        event => {
+        (event) => {
           // 接收位置信息
           if (!this.messageOn) {
             if (event.data && event.data != 'isAxure') {
@@ -190,7 +190,7 @@ export default {
       // }
       // params.Latitude = 114.21772;
       // params.Longitude = 30.55473;
-      peace.service.patient.getStoresList(params).then(res => {
+      peace.service.patient.getStoresList(params).then((res) => {
         if (res.data.Type == '1') {
           this.phaList = res.data.JoinJnt
           this.phaAddrList = []
@@ -213,11 +213,11 @@ export default {
     mapDistance: function() {
       let userLoc = this.userLocation
       //console.log('location', this.userLocation);
-      this.phaAddrList.map(item => {
+      this.phaAddrList.map((item) => {
         let loc = item.location
         item.distance = this.getDistance(loc.lat, loc.lng, userLoc.lat, userLoc.lng)
       })
-      this.phaList.map(item => {
+      this.phaList.map((item) => {
         item.distance = this.getDistance(item.Latitude, item.Longitude, userLoc.lat, userLoc.lng)
         //console.log('item',item.distance)
       })
@@ -238,13 +238,7 @@ export default {
         return ''
       } else {
         ;(radLat1 = me.bds(lat1)), (radLat2 = me.bds(lat2)), (a = radLat1 - radLat2), (b = me.bds(lng1) - me.bds(lng2))
-        s =
-          2 *
-          Math.asin(
-            Math.sqrt(
-              Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)
-            )
-          )
+        s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)))
         s = s * 6378.137 // EARTH_RADIUS;
         s = Math.round(s * 10000) / 10000 //输出为公里
         //s=s.toFixed(4);
@@ -261,6 +255,7 @@ export default {
         JZTClaimNo,
         DrugStoreId: item.DrugStoreId,
         AccessCode: item.AccessCode,
+        CustomerType: item.CustomerType,
         ShippingMethod: item.ShippingMethod, // 0 门店自提  1 门店配送  2 全部
         Detailed: item.Detailed, // 地址
         ProvincialCity: item.Province + ',' + item.City + ',' + item.County,

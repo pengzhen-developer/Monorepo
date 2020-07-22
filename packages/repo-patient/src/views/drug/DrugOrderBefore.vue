@@ -47,7 +47,7 @@
       <div class="module">
         <div class="panel-pha">
           <div class="panel-head "
-               :class="DrugStoreId&&'icon-next'"
+               :class="CustomerType!='50'&&'icon-next'"
                @click="goDrugPhaHomePage">
             <div class="head-ico">
               <img :src="order.DrugStoreLogo" />
@@ -212,7 +212,7 @@ export default {
       },
       userAddr: {},
       order: null,
-      DrugStoreId: ''
+      CustomerType: ''
     }
   },
 
@@ -264,7 +264,7 @@ export default {
       this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
       this.page.payIndex = '0'
       this.page.json = params
-      this.DrugStoreId = params.DrugStoreId
+      this.CustomerType = params.CustomerType
       this.Detailed = params.Detailed
     },
     changeShowPopup() {
@@ -279,7 +279,8 @@ export default {
     },
     goDrugPhaHomePage() {
       let json = this.$route.params.json
-      if (!this.DrugStoreId) {
+      //云药房不跳转店铺详情
+      if (this.CustomerType == '50') {
         return
       }
       this.$router.push(`/drug/drugPhaHome/${json}`)
