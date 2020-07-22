@@ -145,7 +145,7 @@ export default {
     data: Array
   },
 
-  inject: ['provideCustCode', 'provideCustName'],
+  inject: ['provideCustCode', 'provideCustName', 'provideCloudStoreList'],
 
   data() {
     return {
@@ -158,7 +158,6 @@ export default {
       },
 
       fileList: [],
-      cloudStoreList: [],
 
       DrugStoreKeyId: '',
 
@@ -169,6 +168,10 @@ export default {
   },
 
   computed: {
+    cloudStoreList() {
+      return this.provideCloudStoreList()
+    },
+
     custCode() {
       return this.provideCustCode()
     },
@@ -223,8 +226,6 @@ export default {
   },
 
   created() {
-    this.getCloudStore()
-
     const pharmacyCloudData = this.data.find(
       (item) => item.RuleFlag === this.pharmacyRule.value && item.ConfType === this.pharmacyConf.value && item.CustomerType === 50
     )
@@ -239,16 +240,6 @@ export default {
   },
 
   methods: {
-    getCloudStore() {
-      const params = {
-        custCode: this.custCode
-      }
-
-      return Service.CloudStoreList(params).then((res) => {
-        this.cloudStoreList = res.data
-      })
-    },
-
     showDialog() {
       this.dialog.visible = true
 

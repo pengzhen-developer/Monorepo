@@ -69,6 +69,9 @@ import { IPharmacyRuleModel, IPharmacyConfModel } from './model/IPharmacyModel'
 export default {
   provide() {
     return {
+      provideStoreList: () => this.storeList,
+      provideCloudStoreList: () => this.cloudStoreList,
+
       provideCustCode: () => this.custCode,
       provideCustName: () => this.custName,
       provideGetStoreList: () => this.getStore,
@@ -100,7 +103,46 @@ export default {
     }
   },
 
+  created() {
+    this.getStore()
+    this.getCloudStore()
+  },
+
   methods: {
+    getStore() {
+      return Service.SimpleStoreList2().then((res) => {
+        const formatData = []
+
+        res.data.forEach((item) => {
+          item.label = item.Name + ' ' + (item.Address ?? '')
+          item.value = item.DrugStoreKeyId
+
+          if (item.SimpleStoreSon) {
+            item.SimpleStoreSon.forEach((item) => {
+              item.label = item.SonName + ' ' + (item.Address ?? '')
+              item.value = item.DrugStoreKeyId
+            })
+
+            item.children = item.SimpleStoreSon
+          }
+
+          formatData.push(item)
+        })
+
+        this.storeList = formatData
+      })
+    },
+
+    getCloudStore() {
+      const params = {
+        custCode: this.custCode
+      }
+
+      return Service.CloudStoreList(params).then((res) => {
+        this.cloudStoreList = res.data
+      })
+    },
+
     back() {
       // 重置数据
       this.storeList = []
@@ -114,7 +156,8 @@ export default {
     },
 
     save() {
-      const params = Peace.util.deepClone(this.data)
+      const cloneData = Peace.util.deepClone(this.data)
+      const params = cloneData.filter((item) => item.RuleFlag === this.pharmacyRule.RuleFlag)
 
       params.forEach((item) => {
         item.CustCode = item.CustCode || this.custCode

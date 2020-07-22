@@ -71,7 +71,7 @@ export default {
 
   methods: {
     change() {
-      this.data.splice(0, this.data.length)
+      // this.data.splice(0, this.data.length)
     }
   }
 }
