@@ -34,7 +34,7 @@
                            v-on:change="changeValue(item)"></el-switch>
               </div>
               <el-button type="text"
-                         v-bind:style="{ color: serviceStatusTextColor(item.isOpen)}"
+                         class="primary-light-1"
                          v-show="showSerice(item)"
                          @click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
             </div>
