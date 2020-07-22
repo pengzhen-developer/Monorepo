@@ -111,8 +111,12 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      if (this.$router.fullPath !== '/layout') {
+      if (this.$route.fullPath !== '/layout') {
         this.resetActive()
+      } else {
+        // 默认选中第一个
+        const firstMenuNode = this.$el.querySelector(`.q-header li.el-menu-item:not(.is-disabled)`)
+        firstMenuNode?.click()
       }
     })
   },
