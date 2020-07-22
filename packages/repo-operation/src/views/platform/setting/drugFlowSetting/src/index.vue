@@ -103,10 +103,7 @@ export default {
     }
   },
 
-  created() {
-    this.getStore()
-    this.getCloudStore()
-  },
+  created() {},
 
   methods: {
     getStore() {
@@ -174,6 +171,9 @@ export default {
       this.custName = custName
       this.displayView = CONSTANT.DISPLAY_VIEW.编辑
 
+      this.getStore()
+      this.getCloudStore()
+
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
         this.data = res.data.List
@@ -184,6 +184,9 @@ export default {
       this.custCode = custCode
       this.custName = custName
       this.displayView = CONSTANT.DISPLAY_VIEW.详情
+
+      this.getStore()
+      this.getCloudStore()
 
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
