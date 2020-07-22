@@ -948,12 +948,13 @@ export default {
     },
 
     getFamilyList() {
-      peace.service.patient.getMyFamilyList().then((res) => {
+      peace.service.IM.getImlist().then((res) => {
         const famliyQuestion = this.questionList.find((item) => item.field === this.ANSWER_FIELD.FAMILY)
+
         const familyList = res.data
         familyList.forEach((item) => {
           item.label = item.name
-          item.value = item.id
+          item.value = item.accid
         })
 
         famliyQuestion.answerList = familyList
@@ -1166,7 +1167,7 @@ export default {
           return
         }
         this.selectFamilyStatus = true
-        if (params[0].id) {
+        if (params[0].value) {
           // 判断该家人与当前医生是否有进行中的问诊
           let flag = await this.FamilyInquriyStatus(params[0].value)
           // 检查健康卡
