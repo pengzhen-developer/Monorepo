@@ -46,7 +46,7 @@
                        :class="item.orderInfo.orderMoney==0||item.orderInfo.orderMoney == null?'price-free':'price'"
                        v-if="item.orderInfo">
                     {{item.orderInfo.orderMoney == 0||item.orderInfo.orderMoney == null ? '免费' : '￥'+ item.orderInfo.orderMoney }}
-                    <span v-if="(item.inquiryInfo.inquiryStatus=='4'||item.inquiryInfo.inquiryStatus=='6')&&item.orderInfo.payMoney>0">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
+                    <span v-if="item.orderInfo.refundTime">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
                   </div>
                 </div>
                 <div class="small-item"

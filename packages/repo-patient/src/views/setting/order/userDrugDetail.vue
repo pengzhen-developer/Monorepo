@@ -140,6 +140,12 @@
             <div class="dd">{{item.CreateTime}}</div>
           </div>
         </template>
+        <div class="dl-packet"
+             v-if="order.refundTime">
+          <div class="dt">退款时间：</div>
+          <div class="dd">
+            {{ order.refundTime }}</div>
+        </div>
       </div>
 
       <div class="module intro">
@@ -170,7 +176,7 @@
             <div class="strong">
               ¥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
               <span class="refunded"
-                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.payStatus == ENUM.PAY_STASUS.已退款">(已退款)</span>
+                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
             </div>
           </div>
         </div>

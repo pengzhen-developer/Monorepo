@@ -68,8 +68,8 @@
                 </div>
               </div>
               <div class="small"
-                   v-if="item.orderStatusHandle">
-                <div class="small-price refund">{{item.orderStatusHandle + '：￥' + item.OrderMoney}}
+                   v-if="item.refundTime">
+                <div class="small-price refund">{{'已退款：￥' + item.OrderMoney}}
                 </div>
               </div>
             </div>
@@ -77,7 +77,6 @@
             <template v-if="!(item.paymentType === 'yibaopay' && item.OrderStatus == '0')">
               <div class="panel-bottom"
                    v-if="item.OrderStatus != 5">
-                <!-- <div class="time"></div> -->
                 <div class="count-down"
                      v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
                   <span>订单关闭倒计时：</span>

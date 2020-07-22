@@ -184,6 +184,11 @@
           <div class="message-item-left">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
           <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
         </div>
+        <div class="message-item"
+             v-if="internalData.orderInfo.refundTime">
+          <div class="message-item-left">退款时间</div>
+          <div class="message-item-right">{{ internalData.orderInfo.refundTime }}</div>
+        </div>
       </div>
       <!-- 订单收费明细 -->
       <div class="module message">
@@ -214,7 +219,7 @@
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
             </div>
           </div>
         </template>
@@ -224,7 +229,7 @@
             实付金额：
             <div class="money">
               {{ "¥" + internalData.orderInfo.payMoney }}
-              <span v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊&&internalData.orderInfo.payMoney != '0.00'">（已退款）</span>
+              <span v-if="internalData.orderInfo.refundTime">（已退款）</span>
             </div>
           </div>
         </template>

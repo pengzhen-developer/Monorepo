@@ -103,7 +103,7 @@
         </div>
         <div class="dl-packet">
           <div class="dt">优惠金额 ：</div>
-          <div class="dd">￥{{order.PromotionsCut.toFixed(2)}}</div>
+          <div class="dd">-￥{{order.PromotionsCut.toFixed(2)}}</div>
         </div>
         <div class="line"></div>
         <div class="dl-packet">
