@@ -81,7 +81,6 @@ export default {
       const offset = dom.offset(this?.$el)
 
       this.routerViewStyle = {
-        ['height']: `${document.body.clientHeight - offset?.top - 16}px`,
         ['min-height']: `${document.body.clientHeight - offset?.top - 16}px`
       }
 
