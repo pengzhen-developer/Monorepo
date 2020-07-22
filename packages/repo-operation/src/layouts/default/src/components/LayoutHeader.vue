@@ -72,13 +72,15 @@
 import Util from '@src/util'
 
 export default {
-  inject: ['provideToggleDrawer', 'provdeParentMenuSelect', 'provideMenuList', 'provideMenuTree'],
+  inject: ['provdeParentMenuSelect', 'provideMenuTree'],
+
+  props: {
+    defaultActive: String
+  },
 
   data() {
     return {
       configuration: window.configuration,
-
-      defaultActive: '',
 
       user: undefined
     }
@@ -88,16 +90,9 @@ export default {
     username() {
       return this.user.username ? this.user.username.substr(0, 1).toUpperCase() : ''
     },
-    toggleDrawer() {
-      return this.provideToggleDrawer
-    },
 
     parentMenuSelect() {
       return this.provdeParentMenuSelect
-    },
-
-    menuList() {
-      return this.provideMenuList()
     },
 
     menuTree() {
@@ -105,78 +100,11 @@ export default {
     }
   },
 
-  watch: {
-    // 路由更新，还原 nav
-    '$route.path'() {
-      this.$nextTick().then(() => {
-        this.resetHeaderSelect()
-      })
-    },
-
-    // 菜单更新，还原 nav
-    menuTree() {
-      this.$nextTick().then(() => {
-        this.resetHeaderSelect()
-      })
-    }
-  },
-
   created() {
     this.user = Util.user.getUserInfo() ?? {}
   },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      // 设定导航选中
-      this.resetHeaderSelect()
-    })
-  },
-
   methods: {
-    resetHeaderSelect() {
-      // 初始化进入？ 默认选中第一个顶级菜单
-      if (this.$route.path === '/layout') {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-
-        firstMenuNode?.click()
-
-        return
-      }
-
-      // 恢复菜单选中
-      else {
-        // 存在 path，根据 path 寻找顶级菜单
-        const node = this.$route?.meta
-        const root = this.deepQueryRoot(this.menuList, node)
-        if (root) {
-          const menuNode = this.$el.querySelector(`li[router="${root?.id}"]`)
-          menuNode?.click()
-        } else {
-          const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-
-          firstMenuNode?.click()
-        }
-      }
-    },
-
-    deepQueryRoot(list, node) {
-      var arr = []
-
-      const find = (list, node) => {
-        list.some((item) => {
-          if (item.id === node.parentId) {
-            arr.push(item)
-
-            return find(list, item)
-          }
-        })
-      }
-
-      find(list, node)
-
-      return arr.find((item) => item.parentId === null)
-    },
-
     signOut() {
       Util.user.removeUserInfo()
 
