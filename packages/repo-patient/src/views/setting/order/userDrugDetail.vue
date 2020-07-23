@@ -150,7 +150,7 @@
 
       <div class="module intro">
         <div class="dl-packet">
-          <div class="dt">订单费用</div>
+          <div class="dt">药品金额</div>
           <div class="dd">
             ¥{{order.TotalAmount}}
           </div>
