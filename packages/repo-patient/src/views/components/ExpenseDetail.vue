@@ -10,7 +10,7 @@
       <span>后内完成支付，超时订单自动取消</span>
     </div>
     <div class="cost-content">
-      <div>订单费用</div>
+      <div>自费金额</div>
       <div class="cost-money"><span>￥</span>{{money}}</div>
       <div class="cost-code">订单编号： {{orderNo}}</div>
 

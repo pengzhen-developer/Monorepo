@@ -268,6 +268,9 @@ export default {
       this.Detailed = params.Detailed
     },
     changeShowPopup() {
+      if (!this.showBtn) {
+        return
+      }
       this.showPopup = !this.showPopup
       if (!this.showPopup) {
         this.page.payIndex = this.json.payIndex
@@ -278,6 +281,9 @@ export default {
       }
     },
     goDrugPhaHomePage() {
+      if (!this.showBtn) {
+        return
+      }
       let json = this.$route.params.json
       //云药房不跳转店铺详情
       if (this.CustomerType == '50') {
@@ -296,6 +302,9 @@ export default {
       this.page.tabIndex = 1
     },
     goUserAddrPage() {
+      if (!this.showBtn) {
+        return
+      }
       let json = peace.util.decode(this.$route.params.json)
       const param = peace.util.encode({ ...json, emit: 'SelectAddress' })
 
@@ -410,6 +419,9 @@ export default {
     },
 
     goInterDrugPage(item) {
+      if (!this.showBtn) {
+        return
+      }
       const params = peace.util.encode({ name: item.DrugName })
       this.$router.push(`/inter/drugInterList/${params}`)
     }
