@@ -64,12 +64,12 @@
                 <div class="small-time">{{item.CreateTime}}</div>
                 <div class="small-price default">
                   共{{item.TotalNumber}}件药品 合计：
-                  <span class="b">￥{{item.OrderMoney }}</span>
+                  <span class="b">￥{{item.OrderMoney.toString().toFixed(2) }}</span>
                 </div>
               </div>
               <div class="small"
                    v-if="item.refundTime">
-                <div class="small-price refund">{{'已退款：￥' + item.OrderMoney}}
+                <div class="small-price refund">{{'已退款：￥' + item.OrderMoney.toString().toFixed(2)}}
                 </div>
               </div>
             </div>
