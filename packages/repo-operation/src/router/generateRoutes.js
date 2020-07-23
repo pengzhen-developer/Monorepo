@@ -1,5 +1,5 @@
 import Peace from '@src/library'
-
+import Util from '@src/util'
 export default function generateRoutes(configuration) {
   configuration = Peace.util.deepClone(configuration)
 
@@ -41,7 +41,17 @@ export default function generateRoutes(configuration) {
       name: '/login',
       component: () => import('@src/views/system/login')
     },
-
+    {
+      path: '/dataScreen',
+      name: '/dataScreen',
+      component: () => import('@src/views/home/src/components/DataScreen'),
+      beforeEnter: (to, from, next) => {
+        if (!Util.user.isSignIn()) {
+          return next('/404')
+        }
+        return next()
+      }
+    },
     {
       path: '*',
       component: () => import('@src/views/exception/404')

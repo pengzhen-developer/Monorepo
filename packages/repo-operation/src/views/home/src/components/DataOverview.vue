@@ -85,7 +85,9 @@ export default {
     },
 
     showDataScreen() {
-      this.$parent.toggleDataScreen()
+      // this.$parent.toggleDataScreen()
+      const url = process.env.VUE_APP_RELEASE_FLODER_PATH + 'dataScreen'
+      window.open(url)
     }
   }
 }
