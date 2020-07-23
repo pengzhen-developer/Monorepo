@@ -18,7 +18,7 @@ export default [
     menuRoute: '5-1',
     menuRouteName: '5-1',
     menuName: '流向配置',
-    menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigDrugStoreManagement',
+    menuPath: 'views/platform/setting/drugFlowSetting',
     menuIcon: 'zyy-icon zyy-lxpz',
     iconType: 'Local Icons',
     enable: true,
@@ -43,8 +43,8 @@ export default [
     menuRoute: '5-2-1',
     menuName: '订单概览',
     menuPath: null,
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: null,
+    iconType: null,
     enable: false,
     closable: true
   },
@@ -55,8 +55,8 @@ export default [
     menuRoute: '5-2-2',
     menuName: '订单明细',
     menuPath: process.env.VUE_APP_OPERATION_SITE + 'OrderManage/OrderManage',
-    menuIcon: 'zyy-icon zyy-dingdan',
-    iconType: 'Local Icons',
+    menuIcon: null,
+    iconType: null,
     enable: true,
     closable: true
   },
@@ -67,8 +67,8 @@ export default [
     menuRoute: '5-2-3',
     menuName: '售后订单',
     menuPath: null,
-    menuIcon: 'supervisor_account',
-    iconType: 'Material Icons',
+    menuIcon: null,
+    iconType: null,
     enable: false,
     closable: true
   }

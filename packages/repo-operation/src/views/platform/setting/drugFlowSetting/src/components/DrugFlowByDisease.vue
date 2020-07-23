@@ -1,52 +1,33 @@
-/** 按病种 */
+/** 按病症 */
 
 <template>
   <div>
-    <div class="flex items-center q-mb-lg">
-      <div class="em-6 text-justify">选择病种</div>
-      <div class="q-mr-md">：</div>
-      <div class="col">
-        <el-radio-group v-model="active">
-          <el-radio-button v-for="rule in list"
-                           v-bind:key="rule"
-                           v-bind:label="rule">{{ rule }}</el-radio-button>
-        </el-radio-group>
-
-      </div>
-    </div>
-
     <div class="flex q-mb-md">
       <div class="em-6 text-justify">选择流向药店</div>
       <div class="q-mr-md">：</div>
-      <div class="col"
-           v-for="rule in list"
-           v-bind:key="rule"
-           v-bind:label="rule"
-           v-show="rule === active">
-        <div class="q-mb-md">
-          <div class="q-mb-md">
-            <el-checkbox class="q-md-md inline-block"
-                         v-model="model[active].pharmacyCloudChecked"
-                         label="云药房"></el-checkbox>
-          </div>
+      <div class="col">
+        <el-tabs>
+          <el-tab-pane label="普通订单"
+                       lazy>
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
+                            v-bind:pharmacyConf="setConf('普通')"
+                            v-bind:data.sync="data"></PharmacySelect>
+          </el-tab-pane>
 
-          <div class="q-mb-md"
-               v-if="model[active].pharmacyCloudChecked">
-            <PharmacyCloud v-bind:data.sync="model[active].pharmacyCloudData"></PharmacyCloud>
-          </div>
-        </div>
+          <el-tab-pane label="慢病重症订单"
+                       lazy>
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
+                            v-bind:pharmacyConf="setConf('重症')"
+                            v-bind:data.sync="data"></PharmacySelect>
+          </el-tab-pane>
 
-        <q-separator class="q-mb-md"
-                     color="grey-2" />
-
-        <div>
-          <el-checkbox v-model="model[active].pharmacyChecked"
-                       label="药店"></el-checkbox>
-
-          <div v-if="model[active].pharmacyChecked">
-            <Pharmacy v-bind:data.sync="model[active].pharmacyData"></Pharmacy>
-          </div>
-        </div>
+          <el-tab-pane label="其它订单"
+                       lazy>
+            <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
+                            v-bind:pharmacyConf="setConf('其它')"
+                            v-bind:data.sync="data"></PharmacySelect>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
@@ -55,61 +36,24 @@
 <script>
 import CONSTANT from './../../constant'
 
-import IPharmacyViewModel from './../model/IPharmacy'
-import IPharmacyCloudViewModel from './../model/IPharmacyCloud'
-
-import Pharmacy from './../components/Pharmacy'
-import PharmacyCloud from './../components/PharmacyCloud'
+import PharmacySelect from './../components/PharmacySelect'
 
 export default {
-  inject: ['providePreview'],
-
   components: {
-    Pharmacy,
-    PharmacyCloud
+    PharmacySelect
   },
 
-  data() {
-    return {
-      list: CONSTANT.DISEASE_LIST,
-      active: CONSTANT.DISEASE_LIST.普通订单,
-
-      model: {
-        [CONSTANT.DISEASE_LIST.普通订单]: {
-          ...new IPharmacyViewModel(),
-          ...new IPharmacyCloudViewModel()
-        },
-
-        [CONSTANT.DISEASE_LIST.慢病重症订单]: {
-          ...new IPharmacyViewModel(),
-          ...new IPharmacyCloudViewModel()
-        },
-
-        [CONSTANT.DISEASE_LIST.其它订单]: {
-          ...new IPharmacyViewModel(),
-          ...new IPharmacyCloudViewModel()
-        }
-      }
-    }
+  props: {
+    data: Array
   },
 
-  computed: {
-    setDispalyView() {
-      return this.provideSetDispalyView
+  methods: {
+    setRule(type) {
+      return CONSTANT.RULE_FLAG_MAP.find((item) => item.label === type)
     },
 
-    preview() {
-      return this.providePreview
-    }
-  },
-
-  watch: {
-    model: {
-      handler() {
-        this.preview(this.model, CONSTANT.RULE_LIST.按病种)
-      },
-      deep: true,
-      immediate: true
+    setConf(type) {
+      return CONSTANT.CONF_TYPE_MAP.find((item) => item.label === type)
     }
   }
 }
@@ -122,5 +66,23 @@ export default {
   display: inline-block;
   text-align: justify;
   text-align-last: justify;
+}
+
+.el-tabs {
+  ::v-deep .el-tabs__header {
+    background: #fbfbfb;
+    padding: 0 16px;
+    border: 1px solid #e2e2e2;
+    margin: 0;
+  }
+
+  ::v-deep .el-tab-pane {
+    border: 1px solid #e2e2e2;
+    padding: 16px;
+  }
+
+  ::v-deep .el-tabs__nav-wrap::after {
+    top: -10px;
+  }
 }
 </style>

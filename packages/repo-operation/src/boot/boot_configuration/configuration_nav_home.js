@@ -2,13 +2,13 @@ export default [
   {
     id: '1',
     parentId: null,
-    menuRoute: null,
-    menuRouteName: null,
+    menuRoute: 'home',
+    menuRouteName: 'home',
     menuName: '首页',
-    menuPath: null,
+    menuPath: 'views/home',
     menuIcon: null,
     iconType: null,
-    enable: false,
-    closable: null
+    enable: true,
+    closable: true
   }
 ]

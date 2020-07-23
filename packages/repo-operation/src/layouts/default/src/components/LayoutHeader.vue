@@ -35,18 +35,18 @@
 
       <div class="flex items-center">
 
-        <!-- 用户头像 -->
+        <!-- 用户名称 -->
+        <span class="q-mr-sm">
+          {{ user.username }}
+        </span>
+
+        <!-- 用户控制 -->
         <q-btn class="q-mr-sm"
                flat
-               round>
-          <q-avatar size="32px">
-            <div class="user-avatar">{{username}}</div>
-          </q-avatar>
-
-          <q-tooltip>
-            <span>{{ user.username }}，你好</span>
-          </q-tooltip>
-
+               round
+               dense
+               icon="keyboard_arrow_down"
+               color="grey-7">
           <q-popup-proxy>
             <q-list dense
                     bordered
@@ -72,13 +72,15 @@
 import Util from '@src/util'
 
 export default {
-  inject: ['provideToggleDrawer', 'provdeParentMenuSelect', 'provideMenuList', 'provideMenuTree'],
+  inject: ['provdeParentMenuSelect', 'provideMenuTree'],
+
+  props: {
+    defaultActive: String
+  },
 
   data() {
     return {
       configuration: window.configuration,
-
-      defaultActive: '',
 
       user: undefined
     }
@@ -86,18 +88,11 @@ export default {
 
   computed: {
     username() {
-      return this.user.username ? this.user.username.substr(0, 1).toUpperCase():''
-    },
-    toggleDrawer() {
-      return this.provideToggleDrawer
+      return this.user.username ? this.user.username.substr(0, 1).toUpperCase() : ''
     },
 
     parentMenuSelect() {
       return this.provdeParentMenuSelect
-    },
-
-    menuList() {
-      return this.provideMenuList()
     },
 
     menuTree() {
@@ -105,74 +100,11 @@ export default {
     }
   },
 
-  watch: {
-    // 路由更新，还原 nav
-    '$route.path'() {
-      this.$nextTick().then(() => {
-        this.resetHeaderSelect()
-      })
-    },
-
-    // 菜单更新，还原 nav
-    menuTree() {
-      this.$nextTick().then(() => {
-        this.resetHeaderSelect()
-      })
-    }
-  },
-
   created() {
     this.user = Util.user.getUserInfo() ?? {}
   },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      // 设定导航选中
-      this.resetHeaderSelect()
-    })
-  },
-
   methods: {
-    resetHeaderSelect() {
-      // 初始化进入？ 默认选中第一个顶级菜单
-      if (this.$route.path === '/layout') {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-
-        firstMenuNode?.click()
-
-        return
-      }
-
-      // 恢复菜单选中
-      else {
-        // 存在 path，根据 path 寻找顶级菜单
-        const node = this.$route?.meta
-        const root = this.deepQueryRoot(this.menuList, node)
-
-        const menuNode = this.$el.querySelector(`li[router="${root.id}"]`)
-
-        menuNode?.click()
-      }
-    },
-
-    deepQueryRoot(list, node) {
-      var arr = []
-
-      const find = (list, node) => {
-        list.some((item) => {
-          if (item.id === node.parentId) {
-            arr.push(item)
-
-            return find(list, item)
-          }
-        })
-      }
-
-      find(list, node)
-
-      return arr.find((item) => item.parentId === null)
-    },
-
     signOut() {
       Util.user.removeUserInfo()
 
@@ -202,7 +134,7 @@ export default {
   background-color: var(--q-color-primary);
   font-size: 16px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
   line-height: 32px;
   text-align: center;
 }

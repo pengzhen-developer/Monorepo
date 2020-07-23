@@ -1,15 +1,28 @@
 <template>
   <div>
-    <div class="text-h6 q-mb-md">互联网医院</div>
+
+    <div class="text-body1 text-center">预览详情</div>
+
+    <div class="text-h6 q-mb-md">{{ custName }}</div>
 
     <div class="flex items-center q-mb-lg">
       <div class="em-6 text-justify">已选配置规则</div>
       <div class="q-mr-md">：</div>
-      <div class="col">{{ type }}</div>
+      <div class="col">{{ RuleFlagLabel }}</div>
     </div>
 
-    <Component v-bind:is="ComponentInstance"
-               v-bind:data="data"></Component>
+    <template v-if="RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '不限').value">
+      <DrugFlowByAllView v-bind:data.sync="data"></DrugFlowByAllView>
+    </template>
+
+    <template v-if="RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按品种').value">
+      <DrugFlowByVarietyView v-bind:data.sync="data"></DrugFlowByVarietyView>
+    </template>
+
+    <template v-if="RuleFlag === CONSTANT.RULE_FLAG_MAP.find((item) => item.label === '按病症').value">
+      <DrugFlowByDiseaseView v-bind:data.sync="data"></DrugFlowByDiseaseView>
+    </template>
+
   </div>
 </template>
 
@@ -24,21 +37,37 @@ import DrugFlowByVarietyView from './DrugFlowByVarietyView'
 import DrugFlowByDiseaseView from './DrugFlowByDiseaseView'
 
 export default {
-  props: {
-    data: Object,
-
-    type: String
+  components: {
+    DrugFlowByAllView,
+    DrugFlowByVarietyView,
+    DrugFlowByDiseaseView
   },
 
-  computed: {
-    ComponentInstance() {
-      const ruleComponentMap = {
-        [CONSTANT.RULE_LIST.不限]: DrugFlowByAllView,
-        [CONSTANT.RULE_LIST.按品种]: DrugFlowByVarietyView,
-        [CONSTANT.RULE_LIST.按病种]: DrugFlowByDiseaseView
-      }
+  props: {
+    custName: String,
+    pharmacyRule: Object,
+    pharmacyConf: Object,
+    data: Array
+  },
 
-      return ruleComponentMap[this.type]
+  data() {
+    return {
+      CONSTANT,
+
+      // 当前选中的配置规则，默认不限
+      RuleFlag: '',
+      RuleFlagLabel: ''
+    }
+  },
+
+  watch: {
+    pharmacyRule: {
+      handler() {
+        this.RuleFlag = this.pharmacyRule.RuleFlag
+        this.RuleFlagLabel = CONSTANT.RULE_FLAG_MAP.find((item) => item.value === this.pharmacyRule.RuleFlag)?.label
+      },
+      deep: true,
+      immediate: true
     }
   }
 }

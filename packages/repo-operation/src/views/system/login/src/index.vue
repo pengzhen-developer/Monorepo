@@ -65,8 +65,6 @@ import Service from './service'
 export default {
   data() {
     return {
-      configuration: window.configuration,
-
       isLoading: false,
 
       usernameImage: 'img:' + require('./assets/img/user.png'),
@@ -82,6 +80,10 @@ export default {
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
     }
+  },
+
+  created() {
+    this.configuration = window.configuration
   },
 
   methods: {

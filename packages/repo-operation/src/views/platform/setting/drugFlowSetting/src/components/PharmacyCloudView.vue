@@ -1,26 +1,29 @@
 <template>
   <div class="q-px-md">
-    <div class="flex items-start row q-col-gutter-x-md">
-
-      <div v-if="data.name"
-           class="col-3 col-lg-2 q-mb-md">
+    <div class="flex items-start row q-col-gutter-x-md"
+         v-for="pharmacy in pharmacyList"
+         v-bind:key="pharmacy.DrugStoreId">
+      <div class="q-mb-md"
+           style="max-width: 240px;">
         <q-card>
-          <q-card-section class="flex justify-center items-center bg-light-blue-1">
-            <q-icon class="text-primary text-h1"
-                    name="account_balance"></q-icon>
+          <q-card-section style="min-height: 140px; min-width: 200px;"
+                          class="flex justify-center items-center">
+            <el-image style="width: 100%; height: 100%;"
+                      v-bind:src="pharmacy.DisplayImg"
+                      v-bind:preview-src-list="[pharmacy.DisplayImg]">
+            </el-image>
           </q-card-section>
 
           <q-separator />
 
           <q-card-actions align="center"
                           style="min-height: 40px;">
-            <span> {{ data.name }} </span>
+            <span> {{ pharmacy.DisplayName }} </span>
           </q-card-actions>
         </q-card>
       </div>
 
-      <div class="col-3"
-           v-if="data.store">
+      <div>
         <q-card>
           <q-card-section class="bg-white flex items-center">
             <div class="bg-primary q-pa-sm q-mr-md"
@@ -29,7 +32,7 @@
                       name="home"></q-icon>
             </div>
 
-            <span>{{ data.store }}</span>
+            <span>{{ pharmacy.DrugStoreName || pharmacy.DisplayName }}</span>
           </q-card-section>
         </q-card>
       </div>
@@ -38,15 +41,14 @@
 </template>
 
 <script>
-import { IPharmacyCloud } from './../model/IPharmacyCloud'
-
 export default {
   props: {
-    data: {
-      type: Object,
-      default() {
-        return new IPharmacyCloud()
-      }
+    data: Array
+  },
+
+  computed: {
+    pharmacyList() {
+      return this.data
     }
   }
 }
