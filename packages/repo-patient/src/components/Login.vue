@@ -213,7 +213,7 @@ export default {
     flex-direction: column;
     overflow-y: auto;
 
-    margin: 80px 16px 0 16px;
+    margin: 32px 16px 0 16px;
 
     .login-form-title {
       margin: 0 0 20px 0;
@@ -255,8 +255,11 @@ export default {
     font-size: 13px;
   }
   /deep/ .van-cell {
-    padding: 14px 0 14px 0;
+    padding: 14px 10px;
     margin-top: 11px;
+    &::after {
+      left: 0;
+    }
   }
   /deep/ .van-cell__value {
     font-size: 17px;
