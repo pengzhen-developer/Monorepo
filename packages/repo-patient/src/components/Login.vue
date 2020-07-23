@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-form">
       <h4 class="login-form-title"
-          v-if="!fromPath">
+          v-if="!isEwm">
         <div class="title">手机快捷登录</div>
         <div class="tip">手机验证码直接登录，无须注册</div>
       </h4>
@@ -73,18 +73,13 @@ export default {
       hasLogin: false,
       hasSend: false,
       countDownTime: undefined,
-      fromPath: ''
+      isEwm: false
     }
   },
-  beforeRouteEnter(to, from, next) {
-    let isEwm = peace.util.decode(from.params.json).isEwm ? 1 : 0
-    next((vm) => {
-      if (isEwm && from.fullPath.indexOf('components/doctorDetai') != -1) {
-        vm.fromPath = from.fullPath
-      }
-    })
-  },
 
+  activated() {
+    this.isEwm = peace.cache.get('isEwm') ? true : false
+  },
   mounted() {
     if (peace.cache.get(peace.type.USER.TEL) != null) {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
@@ -184,14 +179,14 @@ export default {
         return this.$router.replace({
           path: peace.config.system.authPage,
           query: {
-            referrer: this.fromPath || this.$route.query.referrer || peace.config.system.homePage
+            referrer: this.$route.query.referrer || peace.config.system.homePage
           }
         })
       } else {
         peace.util.alert('当前不是微信环境')
 
         return this.$router.replace({
-          path: this.fromPath || this.$route.query.referrer || peace.config.system.homePage
+          path: this.$route.query.referrer || peace.config.system.homePage
         })
       }
     }

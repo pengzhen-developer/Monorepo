@@ -608,7 +608,9 @@ export default {
       peace.cache.set('isEwm', this.isEwm)
     }
     this.getDoctorInfo()
-    this.goLogin()
+    if (!this.hasLogin() && this.isEwm) {
+      this.goLogin()
+    }
     this.dialog.visible = false
   },
   beforeRouteEnter(to, from, next) {
@@ -624,9 +626,8 @@ export default {
       return peace.cache.get(peace.type.USER.INFO) == null ? false : true
     },
     goLogin() {
-      if (!this.hasLogin() && this.isEwm) {
-        this.$router.push(`/login`)
-      }
+      peace.util.alert('为保障您的数据安全，请登录后使用。')
+      this.$router.push({ path: '/login', query: { referrer: this.$route.fullPath } })
     },
     changeFlag(flag) {
       this.showFamily = !this.showFamily
@@ -650,6 +651,11 @@ export default {
     },
 
     showDialog(serviceInfo, type) {
+      if (!this.hasLogin()) {
+        this.goLogin()
+        return
+      }
+
       if (type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
