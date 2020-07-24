@@ -48,7 +48,8 @@ export default {
         width: '5px',
         opacity: 0.75
       },
-      scrollAreaStyle: {}
+      scrollAreaStyle: {},
+      nowArray: []
     }
   },
 
@@ -72,21 +73,23 @@ export default {
 
       return fetch(params).then((res) => {
         const array = JSON.parse(res?.data?.list?.RelationJson ?? '[]')
+        this.nowArray = array
         array.map((item) => {
           this.checkedList.push(item.patentid)
         })
       })
     },
     handleCheckedCitiesChange(value) {
-      this.nowArray = []
+      this.checkArray = []
       value.map((item) => {
         const obj = this.reviewTeamList.find((temp) => temp.Code === item)
         const nowObj = {}
         nowObj.patentid = obj.Code
         nowObj.custName = obj.Name
         nowObj.teamson = []
-        this.nowArray.push(nowObj)
+        this.checkArray.push(nowObj)
       })
+      this.nowArray = this.checkArray
     },
 
     cancelDialog() {
