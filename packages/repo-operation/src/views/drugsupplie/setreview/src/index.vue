@@ -136,7 +136,7 @@ export default {
     },
 
     getName(row) {
-      return row.CheckHospitalNames ?? '——'
+      return row.CheckHospitalNames == null || row.CheckHospitalNames == '' ? '——' : row.CheckHospitalNames
     }
   }
 }
