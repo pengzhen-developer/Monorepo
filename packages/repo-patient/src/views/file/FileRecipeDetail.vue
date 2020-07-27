@@ -93,7 +93,7 @@
             </div>
             <div>
               <span style="font-size: 15px; color: #000;margin-left:10px;">x
-                {{ item.drugQty }}</span>
+                {{ item.drugQty}}{{item.drugQuantityUnit}}</span>
             </div>
           </div>
           <div>
