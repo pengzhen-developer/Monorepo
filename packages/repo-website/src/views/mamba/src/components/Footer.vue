@@ -48,7 +48,7 @@
 
     <div class="bottom">
       <div class="bottom-line "></div>
-      Copyright © 2020 jk998
+      Copyright &copy; 全息云通健康科技（武汉）有限公司
     </div>
 
   </section>

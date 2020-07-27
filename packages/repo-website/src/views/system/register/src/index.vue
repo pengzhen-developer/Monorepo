@@ -8,26 +8,23 @@
 
 <template>
   <div class="container">
+    <div class="container-header">
+      <div class="logo">
+        <el-image v-bind:src="logoImage"
+                  v-on:click="goHome">
+        </el-image>
+      </div>
+      <div class="title">
+        <span>智药云平台</span>
+      </div>
+    </div>
     <div class="layout">
       <div class="layout-top">
-        <div class="logo">
-          <el-image v-bind:src="logoImage"
-                    v-on:click="goHome">
-          </el-image>
-        </div>
         <div class="title">
-          <span>智药云平台</span>
-        </div>
-      </div>
-
-      <div class="layout-bottom">
-        <div class="title">
-
-          <div class="title-column"></div>
-          <div class="title-column center">
+          <div class=" center">
             <span>注册</span>
           </div>
-          <div class="title-column right">
+          <div class=" right">
             <span>已有账号，</span>
             <el-link type="primary"
                      v-bind:underline="false"
@@ -38,60 +35,65 @@
         <div class="body">
           <el-form v-bind:model="model"
                    v-bind:rules="rules"
-                   label-width="85px"
-                   label-position="left"
-                   label-suffix="："
                    size="mini"
                    ref="form">
-            <el-form-item label="用户名"
+            <!-- <el-form-item label="用户名"
                           prop="username">
               <el-input v-model="model.username"
                         v-bind:minlength="4"
                         v-bind:maxlength="30"
                         placeholder="4-30位字母数字的组合"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
-            <el-form-item label="手机号码"
-                          prop="tel">
+            <el-form-item prop="tel">
               <el-input v-model="model.tel"
                         v-bind:minlength="11"
                         v-bind:maxlength="11"
-                        placeholder="请输入手机号"></el-input>
+                        placeholder="请输入手机号">
+                <div slot="prepend">
+                  <i class="zyy-icon zyy-shoujihao"></i>
+                </div>
+              </el-input>
             </el-form-item>
 
-            <el-form-item label="验证码"
+            <el-form-item class="code"
                           prop="verificationCode">
               <el-input v-model="model.verificationCode"
                         v-bind:minlength="6"
                         v-bind:maxlength="6"
                         placeholder="请输入验证码">
-
-                <div slot="suffix">
-                  <template v-if="showCountdown">
-                    <PeaceCountdown v-bind:time="countdownTime"
-                                    v-on:end="onCountdownEnd">
-                      <template slot-scope="props">
-                        {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
-                      </template>
-                    </PeaceCountdown>
-                  </template>
-                  <template v-else>
-                    <el-button type="text"
-                               v-bind:disabled="isVerifyPhone"
-                               v-on:click="sendCode">获取验证码</el-button>
-                  </template>
+                <div slot="prepend">
+                  <i class="zyy-icon zyy-yanzhengma"></i>
                 </div>
-
               </el-input>
+
+              <div class="btnCode">
+                <template v-if="showCountdown">
+                  <PeaceCountdown v-bind:time="countdownTime"
+                                  v-on:end="onCountdownEnd">
+                    <template slot-scope="props">
+                      {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
+                    </template>
+                  </PeaceCountdown>
+                </template>
+                <template v-else>
+                  <el-button type="primary"
+                             v-bind:disabled="isVerifyPhone"
+                             v-on:click="sendCode">获取验证码</el-button>
+                </template>
+              </div>
+
             </el-form-item>
 
-            <el-form-item label="密码"
-                          prop="password">
-              <!-- <el-input v-model="model.password"
+            <el-form-item prop="password">
+              <el-input v-model="model.password"
                         show-password
                         placeholder="6-20位字母和数字的组合">
-              </el-input> -->
-              <template slot>
+                <div slot="prepend">
+                  <i class="zyy-icon zyy-mima"></i>
+                </div>
+              </el-input>
+              <!-- <template slot>
                 <input :type="showPassword?'password':'text'"
                        placeholder="6-20位字母和数字的组合"
                        minlength="6"
@@ -99,20 +101,26 @@
                        v-model="model.password">
                 <i class="el-icon-view"
                    @click="changeShowPassword"></i>
-              </template>
+              </template> -->
             </el-form-item>
 
-            <el-form-item label="联系人"
-                          prop="linkman">
+            <el-form-item prop="linkman">
               <el-input v-model="model.linkman"
                         v-bind:maxlength="10"
-                        placeholder="请输入联系人姓名"></el-input>
+                        placeholder="请输入联系人姓名">
+                <div slot="prepend">
+                  <i class="zyy-icon zyy-yonghu"></i>
+                </div>
+              </el-input>
             </el-form-item>
 
-            <el-form-item label="邮箱"
-                          prop="email">
+            <el-form-item prop="email">
               <el-input v-model="model.email"
-                        placeholder="请输入邮箱"></el-input>
+                        placeholder="请输入邮箱">
+                <div slot="prepend">
+                  <i class="zyy-icon zyy-icon_youxiang2"></i>
+                </div>
+              </el-input>
             </el-form-item>
           </el-form>
 
@@ -138,7 +146,11 @@
                        v-on:click="register">注册</el-button>
           </div>
         </div>
+
       </div>
+    </div>
+    <div class="container-bottom">
+      Copyright &copy; 全息云通健康科技（武汉）有限公司
     </div>
   </div>
 </template>
@@ -167,14 +179,14 @@ export default {
         verificationCode: ''
       },
       rules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          {
-            pattern: Peace.validate.pattern.username,
-            message: '请输入4-30位数字字母的组合',
-            trigger: 'blur'
-          }
-        ],
+        // username: [
+        //   { required: true, message: '请输入用户名', trigger: 'blur' },
+        //   {
+        //     pattern: Peace.validate.pattern.username,
+        //     message: '请输入4-30位数字字母的组合',
+        //     trigger: 'blur'
+        //   }
+        // ],
         tel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           {
@@ -274,7 +286,7 @@ export default {
           return
         }
         this.isRegistering = true
-
+        this.model.username = this.model.tel
         const params = Peace.util.deepClone(this.model)
 
         Service.register(params)
@@ -313,47 +325,45 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  background-size: 100% 100%;
-  background-image: url('./assets/img/bg_register.jpg');
-  background-color: linear-gradient(to bottom, #ffffff, #8595a4, #005f71);
+  background-color: #fafafa;
+  padding: 0;
   display: flex;
-  justify-content: center;
-
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   min-width: 100vw;
   min-height: 100vh;
   width: 100%;
   height: 100%;
+  .container-header {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    align-items: center;
+    background-color: var(--q-color-primary);
+    .logo {
+      width: 140px;
+      height: 40px;
+      margin: 0 20px 0 30px;
+      overflow: hidden;
+    }
 
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
   .layout {
     display: flex;
     flex-direction: column;
 
-    width: 412px;
+    width: 460px;
 
     margin: 64px 0 0 0;
 
     .layout-top {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      .logo {
-        width: 120px;
-        height: 40px;
-        margin: 0 0 10px 0;
-        overflow: hidden;
-      }
-
-      .title {
-        font-size: 18px;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.85);
-        margin: 0 0 33px 0;
-      }
-    }
-
-    .layout-bottom {
       background: #fff;
       border-radius: 8px;
 
@@ -363,28 +373,20 @@ export default {
         justify-content: space-between;
 
         height: 80px;
-        padding: 40px 0 16px 0;
-
-        background: rgba(250, 250, 250, 1);
-        border-radius: 8px 8px 0px 0px;
-
-        .title-column {
-          flex: 1;
-          width: 33%;
-          min-width: 33%;
-        }
+        padding: 40px 80px 12px;
 
         .center {
           text-align: center;
 
-          font-size: 21px;
-          font-weight: 500;
+          font-size: 24px;
+          font-weight: 600;
           color: rgba(51, 51, 51, 1);
         }
         .right {
           display: flex;
           justify-content: flex-end;
-          padding: 0 40px 0 0;
+          color: #000;
+          font-size: 16px;
           span {
             font-size: 14px;
           }
@@ -395,8 +397,12 @@ export default {
       }
 
       .body {
-        padding: 20px 40px 40px;
-
+        border-top: 1px solid #f5f5f5;
+        padding: 20px 80px 40px;
+        .el-form-item {
+          border-radius: 4px;
+          border: 1px solid rgba(217, 217, 217, 1);
+        }
         .terms-layout {
           display: flex;
           margin: 0 0 30px 0;
@@ -431,6 +437,12 @@ export default {
       }
     }
   }
+  .container-bottom {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 12px;
+    padding: 20px 0;
+  }
 }
 
 ::v-deep .el-form-item {
@@ -443,8 +455,9 @@ export default {
 
   .el-form-item__label {
     padding: 0;
-
+    margin-bottom: 0;
     font-weight: 400;
+    line-height: 40px !important;
     color: rgba(0, 0, 0, 0.85);
   }
 
@@ -452,8 +465,11 @@ export default {
     border-radius: 0;
     border: 0;
     padding: 0;
-    line-height: 24px;
-    height: 24px;
+    line-height: 40px;
+    height: 40px;
+  }
+  .el-input-group__prepend {
+    background: #fff;
   }
 
   .el-form-item__error {
@@ -469,8 +485,37 @@ export default {
     }
   }
   i {
-    margin-left: 20px;
     color: #c0c4cc;
+  }
+
+  &.code {
+    border: 0;
+    width: 100%;
+    border: 0px !important;
+    display: flex;
+
+    .el-form-item__content {
+      display: flex;
+      width: 100%;
+    }
+
+    .el-input {
+      width: 70%;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+    }
+    .btnCode {
+      margin-left: 15px;
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      background: #f5f5f5;
+      button {
+        height: 100%;
+      }
+    }
   }
 }
 </style>
