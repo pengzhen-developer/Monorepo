@@ -505,7 +505,7 @@ export default {
         orderNo: orderNo,
         cancelType: 2
       }
-      peace.service.patient.cancel(params).then(() => {
+      peace.service.patient.cancel(params).finally(() => {
         this.getConsultDetail()
       })
     },

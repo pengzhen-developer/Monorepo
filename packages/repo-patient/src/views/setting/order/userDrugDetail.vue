@@ -439,7 +439,7 @@ export default {
     },
     finishHander() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.purchasedrug.CancelOrder(params).then(() => {
+      peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.getDrugOrderDetail()
       })
     },

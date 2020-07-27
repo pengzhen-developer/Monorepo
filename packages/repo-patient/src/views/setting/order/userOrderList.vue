@@ -367,16 +367,22 @@ export default {
       if (type == 'auto') {
         params.cancelType = 2
       }
-      peace.service.patient.cancel(params).then((res) => {
-        if (type == 'hand') {
-          peace.util.alert(res.msg)
-          if (res.code == '200') {
-            let data = this.orderList[index]
-            data.inquiryInfo.inquiryStatus = '6'
-            this.orderList.splice(index, 1, data)
+      peace.service.patient
+        .cancel(params)
+        .then((res) => {
+          if (type == 'hand') {
+            peace.util.alert(res.msg)
+            if (res.code == '200') {
+              let data = this.orderList[index]
+              data.inquiryInfo.inquiryStatus = '6'
+              this.orderList.splice(index, 1, data)
+            }
           }
-        }
-      })
+        })
+        .catch(() => {
+          let data = this.orderList[index]
+          this.orderList.splice(index, 1, data)
+        })
     },
     canselOrder(item, index) {
       if (!item.cancelState && item.orderStatus != 1) {
@@ -408,20 +414,26 @@ export default {
       if (hasAlert == 'auto') {
         params.cancelType = 2
       }
-      peace.service.appoint.orderCancel(params).then((res) => {
-        if (hasAlert == 'hand') {
-          peace.util.alert(res.msg || '退号成功')
-          if (res.code == '200') {
-            let data = this.orderList[index]
-            if (data.orderStatus == '1') {
-              data.orderStatus = '2'
-            } else {
-              data.orderStatus = '6'
+      peace.service.appoint
+        .orderCancel(params)
+        .then((res) => {
+          if (hasAlert == 'hand') {
+            peace.util.alert(res.msg || '退号成功')
+            if (res.code == '200') {
+              let data = this.orderList[index]
+              if (data.orderStatus == '1') {
+                data.orderStatus = '2'
+              } else {
+                data.orderStatus = '6'
+              }
+              this.orderList.splice(index, 1, data)
             }
-            this.orderList.splice(index, 1, data)
           }
-        }
-      })
+        })
+        .catch(() => {
+          let data = this.orderList[index]
+          this.orderList.splice(index, 1, data)
+        })
     },
     goConsultDetailPage(item, index, type) {
       if (this.$refs[type + index] && this.$refs[type + index].length > 0) {

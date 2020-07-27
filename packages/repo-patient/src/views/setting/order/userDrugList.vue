@@ -193,7 +193,7 @@ export default {
   methods: {
     finishHander(item) {
       const params = { OrderId: item.OrderId }
-      peace.service.purchasedrug.CancelOrder(params).then(() => {
+      peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.getDrugItems()
       })
     },

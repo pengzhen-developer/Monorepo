@@ -149,7 +149,7 @@ export default {
         orderNo: this.orderNo,
         cancelType: 2
       }
-      peace.service.patient.cancel(params).then(() => {
+      peace.service.patient.cancel(params).finally(() => {
         this.payCallback()
       })
     },
@@ -159,13 +159,13 @@ export default {
         orderNo: this.orderNo,
         cancelType: 2
       }
-      peace.service.appoint.orderCancel(params).then(() => {
+      peace.service.appoint.orderCancel(params).finally(() => {
         this.payCallback()
       })
     },
     cancelDrugOrder() {
       let params = { OrderId: this.orderNo }
-      peace.service.purchasedrug.CancelOrder(params).then(() => {
+      peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.payCallback()
       })
     }
