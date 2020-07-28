@@ -6,16 +6,6 @@
              label-position="right"
              label-suffix=""
              size="mini">
-      <!-- <el-form-item label="业务系统：">
-        <el-select v-model="model.businessSystem"
-                   placeholder="全部"
-                   clearable>
-          <el-option v-for="(value, label) in source.ENUM_BUSINESSSYSTEM_STATUS"
-                     v-bind:key="value"
-                     v-bind:label="label"
-                     v-bind:value="value"></el-option>
-        </el-select>
-      </el-form-item> -->
       <el-form-item label="业务模块：">
         <el-input v-model="model.businessModule"
                   placeholder="请输入"></el-input>
@@ -69,47 +59,33 @@
     <PeaceTable ref="table"
                 size="mini"
                 pagination>
-      <el-table-column min-width="100px"
+      <el-table-column width="60px"
                        label="序号"
                        align="center"
-                       type="index"></el-table-column>
-      <el-table-column min-width="150px"
+                       type="index"
+                       :index="indexMethod"></el-table-column>
+      <el-table-column width="200px"
                        align="center"
                        label="业务模块"
                        prop="businessModule"></el-table-column>
-      <!-- <el-table-column min-width="100px"
-                       label="表名"
-                       prop="createdTime"></el-table-column> -->
-      <!-- <el-table-column min-width="120px"
-                       label="业务主键值"
-                       prop="hospitalName"></el-table-column> -->
-      <el-table-column min-width="150px"
+      <el-table-column width="160px"
                        align="center"
                        label="操作类型"
                        prop="operationType"></el-table-column>
-      <el-table-column min-width="150px"
+      <el-table-column width="160px"
                        align="center"
                        label="操作人"
                        prop="operator"></el-table-column>
-      <el-table-column min-width="150px"
+      <el-table-column width="160px"
                        align="center"
                        label="操作时间"
                        prop="operationTime"></el-table-column>
-      <!-- <el-table-column min-width="80px"
+      <el-table-column min-width="130px"
+                       label="备注"
                        align="center"
-                       fixed="right"
-                       label="操作">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-on:click="detail(scope.row)">详情</el-button>
-        </template>
-      </el-table-column> -->
+                       prop="remarks"></el-table-column>
     </PeaceTable>
 
-    <!-- <logger-detail v-model="dialog.visible"
-                   v-bind:title="dialog.title"
-                   v-bind:data="dialog.data"
-                   v-on:refresh="get"></logger-detail> -->
   </div>
 </template>
 
@@ -117,13 +93,8 @@
 import Peace from '@src/library'
 import Service from './service'
 import CONSTANT from './constant'
-// import LoggerDetail from './components/LoggerDetail'
 
 export default {
-  // components: {
-  //   LoggerDetail
-  // },
-
   data() {
     return {
       model: {
@@ -135,25 +106,20 @@ export default {
       },
 
       startPickerOptions: {
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.model.endTime) {
-            return time.getTime() > new Date(this.model.endTime).getTime();
+            return time.getTime() > new Date(this.model.endTime).getTime()
           } else {
-            return time.getTime() > Date.now();
+            return time.getTime() > Date.now()
           }
         }
       },
       endPickerOptions: {
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.model.startTime) {
-            return (
-              time.getTime() <
-                new Date(this.model.startTime).setDate(
-                  new Date(this.model.startTime).getDate() - 1
-                ) || time.getTime() > Date.now()
-            );
+            return time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) || time.getTime() > Date.now()
           } else {
-            return time.getTime() > Date.now();
+            return time.getTime() > Date.now()
           }
         }
       },
@@ -180,7 +146,7 @@ export default {
     get() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-      this.$refs.table.reloadData({ fetch, params }).then(res => {
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
         return res
       })
     },
@@ -193,12 +159,11 @@ export default {
         endTime: ''
       })
       this.get()
+    },
+    indexMethod(index) {
+      const { internalCurrentPage, internalPageSize } = this.$refs.table.Pagination
+      return index + (internalCurrentPage - 1) * internalPageSize + 1
     }
-    // detail(row) {
-    //   this.dialog.title = '医院信息审核详情'
-    //   this.dialog.visible = true
-    //   this.dialog.data = row
-    // }
   }
 }
 </script>

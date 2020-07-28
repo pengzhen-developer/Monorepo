@@ -22,6 +22,10 @@ export default {
 
   inject: ['provdeMenuSelect', 'provideChildrenMenuTree'],
 
+  props: {
+    defaultActive: String
+  },
+
   data() {
     return {
       scrollAreaStyle: {},
@@ -36,10 +40,6 @@ export default {
   },
 
   computed: {
-    defaultActive() {
-      return this.$store.state.tabs?.activeTab?.id
-    },
-
     menuSelect() {
       return this.provdeMenuSelect
     },
@@ -49,41 +49,10 @@ export default {
     }
   },
 
-  watch: {
-    // 路由更新，还原 nav
-    '$route.path'() {
-      this.$nextTick().then(() => {
-        this.resetNavSelect()
-      })
-    },
-
-    // 菜单更新，默认选中第一项 or 当前路由
-    childrenMenuTree() {
-      this.$nextTick().then(() => {
-        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.meta.id}"]`)
-
-        //  trigger by tabs click, currentMenuNode is exists
-        if (currentMenuNode) {
-          return currentMenuNode.click()
-        }
-        // trigger by header click, currentMenuNode is not exists
-        else {
-          const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-          firstMenuNode?.click()
-        }
-      })
-    }
-  },
-
-  created() {},
-
   mounted() {
     this.$nextTick().then(() => {
       // 设定滚动区域样式
       this.setScrollAreaStyle()
-
-      // 设定导航选中
-      this.resetNavSelect()
     })
   },
 
@@ -91,22 +60,6 @@ export default {
     setScrollAreaStyle() {
       this.scrollAreaStyle = {
         height: `${document.body.clientHeight - 64}px`
-      }
-    },
-
-    resetNavSelect() {
-      // 初始化进入？ 默认选中第一项
-      if (this.$route.path === '/layout') {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-
-        firstMenuNode?.click()
-      }
-
-      // 恢复菜单选中
-      else {
-        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.meta.id}"]`)
-
-        currentMenuNode?.click()
       }
     }
   }

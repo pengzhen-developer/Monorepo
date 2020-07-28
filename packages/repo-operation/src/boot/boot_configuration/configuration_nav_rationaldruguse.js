@@ -16,16 +16,27 @@ export default [
   {
     id: '4-1',
     parentId: '4',
-    menuRoute: '4-1',
-    menuRouteName: '4-1',
+    menuRoute: null,
+    menuRouteName: null,
     menuName: '审方配置',
-    menuPath: process.env.VUE_APP_OPERATION_SITE + 'ConfigManagement/ConfigManagement',
+    menuPath: null,
     menuIcon: 'zyy-icon zyy-sfpz',
     iconType: 'Local Icons',
     enable: true,
     closable: true
   },
-
+  {
+    id: '4-1-1',
+    parentId: '4-1',
+    menuRoute: 'drugsupplie/setreview',
+    menuRouteName: 'drugsupplie/setreview',
+    menuName: '审方设置',
+    menuPath: 'views/drugsupplie/setreview',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
   {
     id: '4-2',
     parentId: '4',

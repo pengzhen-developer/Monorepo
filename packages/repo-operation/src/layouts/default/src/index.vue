@@ -3,16 +3,17 @@
             view="hHh lpR lFf">
 
     <q-header class="layout-header bg-white text-grey-7 q-mb-xs">
-      <LayoutHeader></LayoutHeader>
+      <LayoutHeader v-bind:defaultActive="defaultHeanderNavActive"></LayoutHeader>
     </q-header>
 
     <q-drawer class="layout-drawer"
               side="left"
               show-if-above
+              v-if="hasNavMenu"
               v-bind:width="240"
               v-bind:breakpoint="0"
               v-model="showDrawerModel">
-      <LayoutNav></LayoutNav>
+      <LayoutNav v-bind:defaultActive="defaultDrawerNavActive"></LayoutNav>
 
       <div class="q-mini-drawer-hide absolute-center"
            style="left: unset; right: -24px;"
@@ -31,8 +32,8 @@
 
     <q-page-container>
       <q-page class="bg-grey-1">
-        <LayoutTabs class="bg-white"></LayoutTabs>
-        <LayoutView class="bg-grey-2"></LayoutView>
+        <LayoutTabs></LayoutTabs>
+        <LayoutView></LayoutView>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -64,6 +65,8 @@ export default {
       provideToggleDrawer: this.toggleDrawer,
       provdeParentMenuSelect: this.parentMenuSelect,
       provdeMenuSelect: this.menuSelect,
+      provideAddTab: this.addTab,
+      provideGetTab: this.getTab,
 
       // provide property
       // provide function for computed
@@ -80,12 +83,42 @@ export default {
       menuTree: [],
       childrenMenuTree: [],
 
+      defaultHeanderNavActive: '',
+      defaultDrawerNavActive: '',
+
       showDrawerModel: true
+    }
+  },
+
+  watch: {
+    // 当路由发生变化，还原顶部菜单及导航菜单选中
+    '$route.path': {
+      handler() {
+        this.resetActive()
+      }
+    }
+  },
+
+  computed: {
+    hasNavMenu() {
+      return this.childrenMenuTree?.length > 0
     }
   },
 
   created() {
     this.getMenu()
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      if (this.$route.fullPath !== '/layout') {
+        this.resetActive()
+      } else {
+        // 默认选中第一个
+        const firstMenuNode = this.$el.querySelector(`.q-header li.el-menu-item:not(.is-disabled)`)
+        firstMenuNode?.click()
+      }
+    })
   },
 
   methods: {
@@ -106,17 +139,42 @@ export default {
       }
     },
 
+    getTab(index) {
+      const nihilityNavMenu = Peace.util.deepClone(this.configuration.routes.nihilityNavMenu)
+
+      const currentMenu = nihilityNavMenu.find((menu) => menu.id === index)
+
+      return currentMenu
+    },
+
+    addTab(tab) {
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', tab)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', tab)
+    },
+
     parentMenuSelect(index) {
       const currentMenu = this.menuTree.find((menu) => menu.id === index)
 
-      // 当前为功能菜单
-      if (currentMenu.menuPath) {
-        this.menuSelect(index)
-      }
-      // 加载子菜单
-      else {
-        this.childrenMenuTree = currentMenu.children
-      }
+      this.$nextTick(() => {
+        // 当前为功能菜单，点击跳转功能
+        if (currentMenu.menuPath) {
+          this.menuSelect(index)
+
+          this.childrenMenuTree = []
+        }
+        // 当前为顶级菜单，点击加载子菜单
+        // 并且默认加载第一个有效的功能
+        else {
+          this.childrenMenuTree = currentMenu.children
+
+          this.$nextTick().then(() => {
+            const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
+            firstMenuNode?.click()
+          })
+        }
+      })
     },
 
     menuSelect(index) {
@@ -126,6 +184,66 @@ export default {
       this.$store.commit('tabs/addTab', currentMenu)
       // 选中当前 tab
       this.$store.commit('tabs/selectTab', currentMenu)
+    },
+
+    resetActive() {
+      // step 1, 还原 header nav active
+      this.resetHeaderNavActive()
+
+      // step 2, 加载 drawer nav, 还原 drawer nav active
+      this.resetDrawerNavSource()
+      this.resetDrawerNavActive()
+
+      // step 3, 还原 tabs active
+      this.resetTabActive()
+    },
+
+    resetHeaderNavActive() {
+      const router = this.$route?.meta
+      const rootRouter = this.deepQueryRoot(this.menuList, router)
+
+      this.defaultHeanderNavActive = rootRouter?.id ?? router?.id
+    },
+
+    resetDrawerNavSource() {
+      const router = this.$route?.meta
+      const rootRouter = this.deepQueryRoot(this.menuList, router)
+      const currentMenu = this.menuTree.find((menu) => menu.id === rootRouter?.id)
+
+      this.childrenMenuTree = currentMenu?.children ?? []
+    },
+
+    resetDrawerNavActive() {
+      const router = this.$route?.meta
+
+      this.defaultDrawerNavActive = router?.id
+    },
+
+    resetTabActive() {
+      const router = this.$route?.meta
+
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', router)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', router)
+    },
+
+    deepQueryRoot(list, node) {
+      var arr = []
+
+      const find = (list, node) => {
+        list.some((item) => {
+          if (item.id === node.parentId) {
+            arr.push(item)
+
+            return find(list, item)
+          }
+        })
+      }
+
+      find(list, node)
+
+      return arr.find((item) => item.parentId === null)
     }
   }
 }
