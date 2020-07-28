@@ -38,9 +38,7 @@ export default {
     hasLogin() {
       return Util.user.isSignIn()
     },
-    userName() {
-      return Util.user.getUserInfo()?.username
-    },
+
     checkStatus() {
       return Util.user.getUserInfo()?.checkStatus
     }

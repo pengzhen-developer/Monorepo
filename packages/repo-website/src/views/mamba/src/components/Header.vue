@@ -19,7 +19,7 @@
                      v-on:click="goConsole">控制台</el-button>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link gary-color">
-              {{ userName }}<i class="el-icon-s-operation gary-color"></i>
+              {{ tel }}<i class="el-icon-s-operation gary-color"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
@@ -110,8 +110,8 @@ export default {
     hasLogin() {
       return Util.user.isSignIn()
     },
-    userName() {
-      return Util.user.getUserInfo()?.username
+    tel() {
+      return Util.user.getUserInfo()?.tel
     },
     checkStatus() {
       return Util.user.getUserInfo()?.checkStatus
