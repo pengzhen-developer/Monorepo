@@ -139,7 +139,7 @@
                  :key="'drug' + index">
               <div class="title">
                 <span>{{drug.drugName}} {{drug.drugSpecifications}}</span>
-                <span> x{{drug.drugQty}}</span>
+                <span> x{{drug.drugQty + drug.drugQuantityUnit}}</span>
               </div>
               <div class="usage">
                 {{drug.drugUse}}

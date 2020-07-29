@@ -118,7 +118,7 @@
               </div>
               <div>
                 <span>x</span>
-                <span>{{ drug.drugQty }}</span>
+                <span>{{ drug.drugQty + drug.drugQuantityUnit }}</span>
               </div>
             </div>
             <div class="text-grey-6">
