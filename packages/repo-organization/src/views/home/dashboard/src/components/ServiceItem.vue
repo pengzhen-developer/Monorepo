@@ -70,9 +70,6 @@ export default {
 
   computed: {
     checkStatusTextVisible() {
-      if (this.isOpenStatus === '待开放') {
-        return '待开放'
-      }
       if (this.checkStatusText === '未申请') {
         return '申请开通'
       }
@@ -97,7 +94,7 @@ export default {
 
     showCheckStatusText() {
       if (this.isOpenStatus === '待开放') {
-        return true
+        return false
       }
       if (this.checkStatusText === '已通过') {
         return false
@@ -120,7 +117,9 @@ export default {
       if (this.isPassText === '已通过') {
         return '已开通'
       }
-
+      if (this.isOpenStatus === '待开放') {
+        return '待开放'
+      }
       return this.isPassText
     },
 
@@ -129,7 +128,8 @@ export default {
       // 定义每行最大 item
       const lineMaxCount = 3
       // 求剩余空白行
-      const remainingCount = this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
+      const remainingCount =
+        this.features.length % lineMaxCount === 0 ? 0 : lineMaxCount - (this.features.length % lineMaxCount)
       // 求剩余空白行数组，并添加特殊标识
       const remainingArray = new Array(remainingCount).fill('dispaly-none')
       // 合并空白行数组
@@ -166,6 +166,7 @@ export default {
   .header {
     display: flex;
     align-items: center;
+    min-height: 32px;
     margin: 0 0 16px 0;
 
     .header-title {
