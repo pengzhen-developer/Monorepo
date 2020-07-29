@@ -1,72 +1,80 @@
 <template>
   <div>
-    <el-dialog width="700px" v-bind:visible.sync="visible" title="基本信息">
-      <el-form label-width="90px" label-suffix>
+    <el-dialog width="520px"
+               v-bind:visible.sync="visible"
+               title="基本信息">
+      <el-form v-if="!editVisible"
+               class="base-info"
+               label-width="90px"
+               label-suffix>
+        <div class="edit-btn"
+             v-if="!editVisible"
+             @click="editOrg"><i class="el-icon-edit"></i></div>
         <div class="info-list">
           <div class="info-item">
             <div class="info-title">机构信息</div>
             <div class="info-content">
-              <el-form-item class="inline-half" label="机构名称">
-                <span>{{ data.hospitalName }}</span>
-              </el-form-item>
-              <el-form-item class="inline-half" label="机构类型">
+              <el-form-item label="机构类型">
                 <span>{{ data.role }}</span>
               </el-form-item>
-              <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel" class="inline-half" label="医院属性">
-                <span>{{ data.hospitalLabel }} {{ data.hospitalTypeLabel }}</span>
+              <el-form-item label="机构名称">
+                <span>{{ data.hospitalName }}</span>
               </el-form-item>
-              <el-form-item v-if="data.hospitalLevel" class="inline-half" label="医院等级">
-                <span>{{ data.hospitalLevel }}</span>
-              </el-form-item>
-              <el-form-item label="统一社会信用代码" label-width="150px">
+              <el-form-item label="统一社会信用代码"
+                            label-width="150px">
                 <span>{{ data.socialCreditCode }}</span>
+              </el-form-item>
+              <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel"
+                            label="医院属性">
+                <span>{{ data.hospitalLabel }} {{ data.hospitalTypeLabel }}</span>
               </el-form-item>
               <el-form-item label="详细地址">
                 <span>{{ data.addressStr }}</span>
               </el-form-item>
-              <el-form-item v-if="imgList.length > 0" label="资质证明">
+              <el-form-item v-if="data.hospitalLevel"
+                            label="医院等级">
+                <span>{{ data.hospitalLevel }}</span>
+              </el-form-item>
+              <el-form-item v-if="imgList.length > 0"
+                            label="资质证明">
                 <span>
-                  <el-image
-                    v-if="data.medicalStructureLicense"
-                    class="info-img"
-                    fit="contain"
-                    :src="data.medicalStructureLicense"
-                    :preview-src-list="imgList"
-                  >
-                    <div slot="error" class="image-slot">
+                  <el-image v-if="data.medicalStructureLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="data.medicalStructureLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
                   </el-image>
-                  <el-image
-                    v-if="data.internetHospitalLicense"
-                    class="info-img"
-                    fit="contain"
-                    :src="data.internetHospitalLicense"
-                    :preview-src-list="imgList"
-                  >
-                    <div slot="error" class="image-slot">
+                  <el-image v-if="data.internetHospitalLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="data.internetHospitalLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
                   </el-image>
-                  <el-image
-                    v-if="data.businessLicense"
-                    class="info-img"
-                    fit="contain"
-                    :src="data.businessLicense"
-                    :preview-src-list="imgList"
-                  >
-                    <div slot="error" class="image-slot">
+                  <el-image v-if="data.businessLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="data.businessLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
                   </el-image>
-                  <el-image
-                    v-if="data.managementLicense"
-                    class="info-img"
-                    fit="contain"
-                    :src="data.managementLicense"
-                    :preview-src-list="imgList"
-                  >
-                    <div slot="error" class="image-slot">
+                  <el-image v-if="data.managementLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="data.managementLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
                   </el-image>
@@ -78,16 +86,13 @@
           <div class="info-item">
             <div class="info-title">账号信息</div>
             <div class="info-content">
-              <el-form-item class="inline-half" label="用户名">
-                <span>{{ data.username }}</span>
-              </el-form-item>
-              <el-form-item class="inline-half" label="联系人">
+              <el-form-item label="联系人">
                 <span>{{ data.linkman }}</span>
               </el-form-item>
-              <el-form-item class="inline-half" label="手机号码">
+              <el-form-item label="手机号码">
                 <span>{{ data.hideTel }}</span>
               </el-form-item>
-              <el-form-item class="inline-half" label="邮箱">
+              <el-form-item label="邮箱">
                 <span>{{ data.hideEmail }}</span>
               </el-form-item>
             </div>
@@ -112,12 +117,23 @@
           </div>-->
         </div>
       </el-form>
+
+      <OrganizationModel v-if="editVisible"
+                         ref="editOrg"
+                         v-on:close="close"
+                         v-on:refresh="refresh"></OrganizationModel>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import OrganizationModel from './OrganizationModel'
+
 export default {
+  components: {
+    OrganizationModel
+  },
+
   props: {
     value: {
       required: true,
@@ -132,68 +148,113 @@ export default {
   data() {
     return {
       isLoading: false,
-      visible: this.value
-    };
+      visible: this.value,
+
+      editVisible: false
+    }
   },
 
   computed: {
     imgList() {
-      let imgList = [];
+      let imgList = []
       if (this.data.medicalStructureLicense) {
-        imgList.push(this.data.medicalStructureLicense);
+        imgList.push(this.data.medicalStructureLicense)
       }
 
       if (this.data.internetHospitalLicense) {
-        imgList.push(this.data.internetHospitalLicense);
+        imgList.push(this.data.internetHospitalLicense)
       }
 
       if (this.data.businessLicense) {
-        imgList.push(this.data.businessLicense);
+        imgList.push(this.data.businessLicense)
       }
 
       if (this.data.managementLicense) {
-        imgList.push(this.data.managementLicense);
+        imgList.push(this.data.managementLicense)
       }
 
-      return imgList;
+      return imgList
     }
   },
 
   watch: {
     value(value) {
-      this.visible = value;
+      this.visible = value
+      this.editVisible = false
     },
 
     visible(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   },
 
-  methods: {}
-};
+  methods: {
+    editOrg() {
+      this.editVisible = true
+      this.$nextTick(() => {
+        this.$refs.editOrg.init(this.data.id)
+      })
+    },
+    close(params) {
+      if (params.type) {
+        this.$emit('close')
+      } else {
+        this.editVisible = false
+      }
+    },
+    refresh() {
+      this.$emit('refresh')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-form-item__label {
+.base-info {
+  position: relative;
+  padding: 20px;
+  background-color: #f9f9f9;
+  .edit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(48, 153, 166, 0.1);
+    cursor: pointer;
+    .el-icon-edit {
+      font-size: 18px;
+      color: rgba(48, 153, 166, 1);
+      z-index: 1;
+    }
+  }
+}
+
+::v-deep .base-info .el-form-item__label {
   position: relative;
   padding-right: 30px;
+  color: #333333;
   text-align: justify;
   text-align-last: justify;
   &::after {
-    content: "：";
+    content: '：';
     position: absolute;
     top: 0;
     right: 18px;
   }
 }
 
-.el-form-item__content {
+.base-info .el-form-item__content {
   span {
-    color: #9da4af;
+    color: #666666;
   }
 }
 
-.el-form-item {
+.base-info .el-form-item {
   margin-bottom: 8px;
   &.inline-half {
     display: inline-block;
@@ -206,7 +267,7 @@ export default {
   }
 }
 
-.info {
+.base-info .info {
   &-item {
     border-bottom: 1px solid #e9e9e9;
     margin-bottom: 24px;
@@ -223,7 +284,7 @@ export default {
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 4px;
       left: 0;
@@ -242,7 +303,7 @@ export default {
   }
 }
 
-::v-deep .image-slot {
+::v-deep .base-info .image-slot {
   display: flex;
   justify-content: center;
   align-items: center;

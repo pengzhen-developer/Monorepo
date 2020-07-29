@@ -104,12 +104,24 @@
         </el-table-column>
       </PeaceTable>
 
+      <!-- 机构基本信息 -->
       <OrganizationDetail v-model="detailDialog.visible"
-                          v-bind:data="detailDialog.data"></OrganizationDetail>
+                          v-bind:data="detailDialog.data"
+                          v-on:close="detailDialog.visible = false"
+                          v-on:refresh="get"></OrganizationDetail>
 
-      <AddOrganization v-model="addDialog.visible"
-                       v-on:refresh="get"></AddOrganization>
+      <!-- 新增机构 -->
+      <el-dialog width="520px"
+                 v-bind:visible.sync="addDialog.visible"
+                 title="新增机构">
+        <OrganizationModel v-if="addDialog.visible"
+                           ref="addOrg"
+                           v-on:close="addDialog.visible = false"
+                           v-on:refresh="get"></OrganizationModel>
+      </el-dialog>
     </div>
+
+    <!-- 已选服务 -->
     <ServiceList v-if="serviceDialog.visible"
                  v-bind:data="serviceDialog.data"></ServiceList>
   </div>
@@ -118,7 +130,7 @@
 <script>
 import OrganizationDetail from './components/OrganizationDetail'
 import ServiceList from './components/ServiceList'
-import AddOrganization from './components/AddOrganization'
+import OrganizationModel from './components/OrganizationModel'
 
 import Peace from '@src/library'
 import Service from './service'
@@ -128,11 +140,11 @@ export default {
   components: {
     OrganizationDetail,
     ServiceList,
-    AddOrganization
+    OrganizationModel
   },
 
   filters: {
-    getEnumLabel: function(value, ENUM) {
+    getEnumLabel: function (value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
@@ -201,6 +213,9 @@ export default {
     // 新增机构
     addOrganization() {
       this.addDialog.visible = true
+      this.$nextTick(() => {
+        this.$refs.addOrg.init()
+      })
     },
     toggleServiceDialog() {
       this.serviceDialog.visible = false

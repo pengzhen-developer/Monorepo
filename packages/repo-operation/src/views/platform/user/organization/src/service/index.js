@@ -21,6 +21,25 @@ export default {
   },
 
   /**
+   * 获取机构信息
+   *
+   * @param {*} params
+   */
+  getOrganizationInfo(params) {
+    const isMock = false
+
+    const apiPath = 'operate/account/getOneOrgInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 新增机构
    *
    * @param {*} params
@@ -29,6 +48,25 @@ export default {
     const isMock = false
 
     const apiPath = 'operate/Account/addOrganization'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 更新机构
+   *
+   * @param {*} params
+   */
+  editOrganization(params) {
+    const isMock = false
+
+    const apiPath = 'operate/account/editOperateOrg'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
