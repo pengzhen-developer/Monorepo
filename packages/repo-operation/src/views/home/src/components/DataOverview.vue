@@ -7,6 +7,7 @@
                  @click="showDataScreen"
                  plain>查看数据大屏</el-button>
     </div>
+
     <div class="container">
       <div class="data-item">
         <el-image class="image q-mr-md"
@@ -56,7 +57,7 @@ export default {
   data() {
     return {
       data: {},
-      rpData: {}
+      rpData: ''
     }
   },
 

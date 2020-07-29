@@ -99,7 +99,7 @@
             <el-button type="text"
                        v-on:click="toDetail(scope.row)">基本信息</el-button>
             <el-button type="text"
-                       v-on:click="toService(scope.row)">已选服务</el-button>
+                       v-on:click="toService(scope.row)">服务管理</el-button>
           </template>
         </el-table-column>
       </PeaceTable>

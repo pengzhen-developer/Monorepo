@@ -80,7 +80,7 @@ export default {
             showMaxLabel: false
           },
           splitNumber: 2,
-          max: function(value) {
+          max: function (value) {
             return value.max * 1.3
           },
           //改变坐标轴和文本的样式
@@ -102,7 +102,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: function(params) {
+          formatter: function (params) {
             const val = params.data
             return val.value
           }
@@ -110,9 +110,16 @@ export default {
         series: [
           {
             data: [],
+            label: {
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#999999'
+              }
+            },
             type: 'line',
             symbol: 'circle', //折点设定为实心点
-            symbolSize: 6, //设定实心点的大小
+            symbolSize: 7, //设定实心点的大小
             smooth: true,
             hoverAnimation: true,
             itemStyle: {
@@ -123,10 +130,10 @@ export default {
                     color: '#3099A6',
                     width: 1
                   }
-                }
-              },
-              borderColor: '#FFF',
-              borderWidth: 2
+                },
+                borderColor: '#fff',
+                borderWidth: 1
+              }
             },
             areaStyle: {
               normal: {
