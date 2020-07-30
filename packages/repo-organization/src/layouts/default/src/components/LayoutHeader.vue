@@ -19,7 +19,7 @@
 
         <!-- 用户名称 -->
         <span class="q-mr-sm">
-          {{ user.username }}
+          {{ user.tel }}
         </span>
 
         <!-- 用户控制 -->
@@ -68,8 +68,8 @@ export default {
     toggleDrawer() {
       return this.provideToggleDrawer
     },
-    username() {
-      return this.user?.username.substr(0, 1).toUpperCase()
+    tel() {
+      return this.user?.tel
     },
     showSignOut() {
       return !window.sessionStorage.getItem('ORIGINAL_HREF')
