@@ -25,6 +25,7 @@
 
             <div class="column q-pa-sm bg-white">
               <div class="row justify-between items-center q-mb-sm">
+
                 <div class="items-center">
                   <span v-bind:style="{ color: serviceStatusTitleColor(item.isOpen), 'line-height': '26px'}">使用状态：</span>
                   <span v-bind:style="{ color: serviceStatusTextColor(item.isOpen) }"

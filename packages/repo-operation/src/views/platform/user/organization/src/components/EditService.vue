@@ -55,9 +55,11 @@
 
     <span slot="footer"
           class="dialog-footer">
-      <el-button v-on:click="visible = false">取 消</el-button>
       <el-button type="primary"
+                 style="width:120px; margin-right: 30px;"
                  v-on:click="submit">确 定</el-button>
+      <el-button v-on:click="visible = false"
+                 style="width:120px;">取 消</el-button>
     </span>
   </el-dialog>
 </template>
@@ -183,5 +185,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep .el-form-item__label {
+  font-size: 14px;
+  color: black;
+  font-weight: 500;
+}
+
+::v-deep .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
+  content: '';
+  color: #000;
+  margin-right: 0;
+}
 </style>

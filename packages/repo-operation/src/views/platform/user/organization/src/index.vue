@@ -91,7 +91,7 @@
               : '——'
           }}</template>
         </el-table-column>
-        <el-table-column min-width="180px"
+        <el-table-column width="200px"
                          align="center"
                          fixed="right"
                          label="操作">
