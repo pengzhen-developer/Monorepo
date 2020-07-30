@@ -2,17 +2,11 @@
 import localConfiguration from './boot_configuration'
 
 // Get configuration from server
-// import Peace from '@src/library'
-// const getConfiguration = () => {
-//   return Peace.http.get('api/configuration')
-// }
 
 export default async () => {
   // Get configuration from local
   const configuration = localConfiguration
-
   // Get configuration from server
-  // const configuration = await getConfiguration()
 
   // export configuration
 

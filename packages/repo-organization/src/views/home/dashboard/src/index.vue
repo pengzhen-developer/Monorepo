@@ -6,7 +6,7 @@
       <img src="./image/ic_empty.png"
            style="width:137px;height:150px;"
            alt="">
-      <dev>暂无产品可使用，可选择下方服务申请开通哦~</dev>
+      <div>暂无产品可使用，可选择下方服务申请开通哦~</div>
     </div>
     <div class="q-mb-md"
          v-else>
@@ -204,6 +204,8 @@ export default {
       ]
       const config = configMap.find((item) => item.serviceType == product.serviceType).config
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
+
+      Peace.cache.localStorage.set('serviceId', product.serviceId)
       window.open(
         `${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`
       )
