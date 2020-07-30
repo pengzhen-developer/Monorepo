@@ -154,9 +154,7 @@ export default [
     menuRouteName: '2-3-5',
     menuRoute: '2-3-5',
     menuName: '药品说明书',
-    menuPath:
-      process.env.VUE_APP_OPERATION_SITE +
-      'knowledgebase/web?uri=knowledgeBaseManage/drugsInstructions/drugsInstructionList.html',
+    menuPath: process.env.VUE_APP_OPERATION_SITE + 'knowledgebase/web?uri=knowledgeBaseManage/drugsInstructions/drugsInstructionList.html',
     menuIcon: null,
     iconType: null,
     enable: true,
@@ -168,9 +166,7 @@ export default [
     menuRouteName: '2-3-6',
     menuRoute: '2-3-6',
     menuName: '药品说明书审核',
-    menuPath:
-      process.env.VUE_APP_OPERATION_SITE +
-      'knowledgebase/web?uri=knowledgeBaseExamine/drugsInstructions/instructionExamineList.html',
+    menuPath: process.env.VUE_APP_OPERATION_SITE + 'knowledgebase/web?uri=knowledgeBaseExamine/drugsInstructions/instructionExamineList.html',
     menuIcon: null,
     iconType: null,
     enable: true,
@@ -219,6 +215,42 @@ export default [
     menuRoute: 'platform/logger/recordList',
     menuName: '日志记录',
     menuPath: 'views/platform/logger/recordList',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
+  {
+    id: '2-5-2',
+    parentId: '2-5',
+    menuRouteName: '2-5-2',
+    menuRoute: 'platform/logger/menu',
+    menuName: '菜单管理',
+    menuPath: 'views/uims/menu',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
+  {
+    id: '2-5-3',
+    parentId: '2-5',
+    menuRouteName: '2-5-3',
+    menuRoute: 'platform/logger/role',
+    menuName: '角色管理',
+    menuPath: 'views/uims/role',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
+  {
+    id: '2-5-4',
+    parentId: '2-5',
+    menuRouteName: '2-5-4',
+    menuRoute: 'platform/logger/user',
+    menuName: '用户管理',
+    menuPath: 'views/uims/user',
     menuIcon: null,
     iconType: null,
     enable: true,
