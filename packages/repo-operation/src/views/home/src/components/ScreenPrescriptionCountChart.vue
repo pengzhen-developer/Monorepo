@@ -6,35 +6,6 @@
 </template>
 
 <script>
-const data = [
-  {
-    date: '0701',
-    value: 1
-  },
-  {
-    date: '0702',
-    value: 5
-  },
-  {
-    date: '0703',
-    value: 19
-  },
-  {
-    date: '0704',
-    value: 8
-  },
-  {
-    date: '0705',
-    value: 2
-  },
-  {
-    date: '0706',
-    value: 5
-  }
-]
-
-const xAxiosData = data.map((item) => item.date)
-const yAxiosData = data.map((item) => item.value)
 // 只有4根分割线，替换最值分割线的颜色为背景色隐藏
 const ySplitLineColors = ['#0C2150', '#0C2150', '#0C2150', '#000a3b']
 
@@ -50,23 +21,49 @@ export default {
     'v-chart': ECharts
   },
 
+  props: {
+    data: {
+      type: Object
+    }
+  },
+
+  watch: {
+    data: {
+      handler(val) {
+        this.polar.xAxis.data = val.xAxis
+        this.polar.series[0].data = val.data
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
   data() {
     return {
       polar: {
         grid: {
-          top: '0%',
-          left: '0%',
-          right: '0%',
-          bottom: '0%',
+          top: 0,
+          left: 6,
+          right: 6,
+          bottom: 0,
           containLabel: true
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
         xAxis: {
-          data: xAxiosData,
+          data: [],
           //改变坐标轴文本的样式
           axisLabel: {
             textStyle: {
-              color: '#999',
+              color: 'rgba(255, 255, 255, 0.3)',
               fontSize: 12
+            },
+            formatter: (value) => {
+              return value.split('-').splice(1, 2).join('')
             }
           },
           //改变坐标轴和文本的样式
@@ -83,7 +80,7 @@ export default {
           //改变坐标轴文本的样式
           axisLabel: {
             textStyle: {
-              color: '#999',
+              color: 'rgba(255, 255, 255, 0.3)',
               fontSize: 12
             },
             interval: 0,
@@ -105,36 +102,29 @@ export default {
             }
           },
           splitNumber: 2,
-          min: function() {
+          min: function () {
             return 0
           },
-          max: function(value) {
+          max: function (value) {
             return value.max * 1.5
-          }
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: function(params) {
-            const val = params.data
-            return val.value
           }
         },
         series: [
           {
             name: '销量',
             type: 'bar',
-            data: yAxiosData,
+            data: [],
             barWidth: 14, //柱子宽度
             barGap: 1, //柱子之间间距
             label: {
               show: true,
               position: 'top',
-              color: '#FFFFFF'
+              color: 'rgba(255, 255, 255, 0.6)'
             },
             itemStyle: {
               //柱样式
               normal: {
-                barBorderRadius: [3, 3, 0, 0],
+                barBorderRadius: [4, 4, 0, 0],
                 color: {
                   type: 'linear', //设置线性渐变
                   x: 0,
@@ -144,11 +134,11 @@ export default {
                   colorStops: [
                     {
                       offset: 0,
-                      color: '#0477D5' // 0% 处的颜色
+                      color: '#01D9FE' // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: '#01D9FE' // 100% 处的颜色
+                      color: '#0477D5' // 100% 处的颜色
                     }
                   ],
                   globalCoord: false // 缺省为 false

@@ -22,6 +22,26 @@ export default {
     'v-chart': ECharts
   },
 
+  props: {
+    data: {
+      type: Object
+    }
+  },
+
+  watch: {
+    data: {
+      handler(val) {
+        this.opComplete.series[0].data[1].value = val.complete
+        this.opComplete.series[0].data[0].value = 100 - val.complete
+
+        this.opUncomplete.series[0].data[1].value = val.incomplete
+        this.opUncomplete.series[0].data[0].value = 100 - val.incomplete
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
   data() {
     return {
       opComplete: {
@@ -29,37 +49,70 @@ export default {
           {
             text: '已完成',
             left: 'center',
-            top: '80%',
-            textStyle: { fontWeight: 'normal', fontSize: '12', color: '#389af4', textAlign: 'center' }
+            top: '78%',
+            textStyle: { fontWeight: 'normal', fontSize: '12', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }
           }
         ],
+        tooltip: {
+          trigger: 'item',
+          axisPointer: {
+            type: 'none'
+          },
+          formatter: function (params) {
+            return (
+              "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
+              params.color +
+              ";'></span>" +
+              params.name +
+              ' : ' +
+              params.value +
+              '%'
+            )
+          }
+        },
         series: [
           {
-            name: '已完成',
+            name: '',
             type: 'pie',
             clockWise: false,
-            radius: [30, 20],
-            itemStyle: { normal: { color: '#BB42EF', shadowColor: '#BB42EF', shadowBlur: 0, label: { show: false }, labelLine: { show: false } } },
+            radius: [34, 36],
             hoverAnimation: false,
             center: ['50%', '40%'],
-            label: {
-              normal: {
-                show: true,
-                position: 'center',
-                padding: [0, 0, 0, 0],
-                align: 'center',
-                width: 70,
-                height: 50,
-                lineHeight: 14,
-                fontSize: 14,
-                formatter() {
-                  return '30%'
-                }
-              }
+            labelLine: {
+              show: false
             },
             data: [
-              { value: 70, name: 'invisible', itemStyle: { normal: { color: '#dfeaff' }, emphasis: { color: '#dfeaff' } } },
-              { value: 30, label: { normal: { position: 'center', show: true, textStyle: { fontSize: '14', fontWeight: 'bold', color: '#fff' } } } }
+              {
+                value: 0,
+                name: '其他',
+                itemStyle: { normal: { color: '#193F80', borderColor: '#193F80', borderWidth: 6 } },
+                label: {
+                  normal: {
+                    show: false
+                  }
+                }
+              },
+              {
+                value: 0,
+                name: '已完成',
+                itemStyle: {
+                  normal: {
+                    color: '#BB42EF',
+                    borderColor: '#BB42EF',
+                    borderWidth: 6
+                  }
+                },
+                label: {
+                  normal: {
+                    position: 'center',
+                    show: true,
+                    textStyle: { fontSize: '16', fontWeight: 'bold', color: '#fff' },
+                    formatter: (val) => {
+                      return val.value + '%'
+                    }
+                  }
+                }
+              }
             ]
           }
         ]
@@ -69,36 +122,73 @@ export default {
         title: {
           text: '未完成',
           left: 'center',
-          top: '80%',
-          textStyle: { fontWeight: 'normal', fontSize: '12', color: '#389af4', textAlign: 'center' }
+          top: '78%',
+          textStyle: { fontWeight: 'normal', fontSize: '12', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }
+        },
+        tooltip: {
+          trigger: 'item',
+          axisPointer: {
+            type: 'none'
+          },
+          formatter: function (params) {
+            return (
+              "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
+              params.color +
+              ";'></span>" +
+              params.name +
+              ' : ' +
+              params.value +
+              '%'
+            )
+          }
         },
         series: [
           {
-            name: '未完成',
+            name: '',
             type: 'pie',
             clockWise: false,
-            radius: [30, 20],
-            itemStyle: { normal: { color: '#389af4', shadowColor: '#389af4', shadowBlur: 0, label: { show: false }, labelLine: { show: false } } },
+            radius: [34, 36],
             hoverAnimation: false,
             center: ['50%', '40%'],
-            label: {
-              normal: {
-                show: true,
-                position: 'center',
-                padding: [0, 0, 0, 0],
-                align: 'center',
-                width: 70,
-                height: 50,
-                lineHeight: 14,
-                fontSize: 14,
-                formatter() {
-                  return '20%'
-                }
-              }
+            labelLine: {
+              show: false
             },
             data: [
-              { value: 80, name: 'invisible', itemStyle: { normal: { color: '#dfeaff' }, emphasis: { color: '#dfeaff' } } },
-              { value: 20, label: { normal: { position: 'center', show: true, textStyle: { fontSize: '14', fontWeight: 'bold', color: '#fff' } } } }
+              {
+                value: 0,
+                name: '其他',
+                itemStyle: { normal: { color: '#193F80', borderColor: '#193F80', borderWidth: 6 } },
+                label: {
+                  normal: {
+                    show: false
+                  }
+                }
+              },
+              {
+                value: 0,
+                name: '未完成',
+                itemStyle: {
+                  normal: {
+                    color: '#4366F3',
+                    borderColor: '#4366F3',
+                    borderWidth: 6
+                  }
+                },
+                label: {
+                  normal: {
+                    position: 'center',
+                    show: true,
+                    textStyle: {
+                      fontSize: '16',
+                      fontWeight: 'bold',
+                      color: '#fff'
+                    },
+                    formatter: (val) => {
+                      return val.value + '%'
+                    }
+                  }
+                }
+              }
             ]
           }
         ]

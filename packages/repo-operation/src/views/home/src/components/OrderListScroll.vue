@@ -1,6 +1,6 @@
 <template>
   <div class="column full-width full-height">
-    <div class="row col-2">
+    <div class="row col-2 table-header">
       <div class="col header">订单来源</div>
       <div class="col header">接单机构</div>
       <div class="col header">订单金额（元）</div>
@@ -10,13 +10,14 @@
                          class="seamless-warp col"
                          :class-option="classOption">
       <div class="full-width column col">
-        <div class="row col"
+        <div class="row col table-row"
+             :class="index%2 === 0 ? 'even':'odd'"
              v-for="(item,index) in orderList"
              :key="index">
-          <div class="col">{{item.source}}</div>
-          <div class="col">{{item.acpectOrg}}</div>
-          <div class="col">{{item.price}}</div>
-          <div class="col">{{item.createTime}}</div>
+          <div class="col table-cell">{{item.source}}</div>
+          <div class="col table-cell">{{item.custName}}</div>
+          <div class="col table-cell">{{item.price}}</div>
+          <div class="col table-cell">{{item.createTime && item.createTime.substring(0, 10)}}</div>
         </div>
       </div>
     </vue-seamless-scroll>
@@ -29,20 +30,26 @@ export default {
   components: {
     vueSeamlessScroll
   },
+
+  props: {
+    data: {
+      type: Array
+    }
+  },
+
+  watch: {
+    data: {
+      handler(val) {
+        this.orderList = val
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
   data() {
     return {
-      orderList: [
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.4', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.5', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.6', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.7', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.8', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.4', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.5', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.6', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.7', createTime: '2020-07-05' },
-        { source: '微医黄冈', acpectOrg: '九州通湖北仓', price: '59.8', createTime: '2020-07-05' }
-      ]
+      orderList: []
     }
   },
   computed: {
@@ -69,10 +76,25 @@ export default {
   overflow: hidden;
 }
 .col {
-  text-align: center;
+  font-size: 12px;
   color: #fff;
-  &.header {
+  line-height: 30px;
+  text-align: center;
+}
+.table-header {
+  height: 30px;
+  background-color: rgba(2, 25, 80, 1);
+  .header {
     color: #02d9fd;
+  }
+}
+.table-row {
+  height: 30px;
+  .table-cell {
+    height: 30px;
+  }
+  &.odd {
+    background-color: rgba(2, 25, 80, 1);
   }
 }
 </style>
