@@ -31,11 +31,11 @@ export default {
   watch: {
     data: {
       handler(val) {
-        this.opComplete.series[0].data[1].value = val.complete
-        this.opComplete.series[0].data[0].value = 100 - val.complete
+        this.opComplete.series[0].data[1].value = val.complete * 100
+        this.opComplete.series[0].data[0].value = 100 - val.complete * 100
 
-        this.opUncomplete.series[0].data[1].value = val.incomplete
-        this.opUncomplete.series[0].data[0].value = 100 - val.incomplete
+        this.opUncomplete.series[0].data[1].value = val.incomplete * 100
+        this.opUncomplete.series[0].data[0].value = 100 - val.incomplete * 100
       },
       immediate: true,
       deep: true
