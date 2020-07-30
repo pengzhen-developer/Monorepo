@@ -29,11 +29,13 @@ export default async function(configuration) {
 
     const configurationByService = await getConfiguration(params)
 
-    var reg = /[^{}]*{(.*)}[^}]*/
+    const reg = /[^{}]*{(.*)}[^}]*/
     configurationByService.data.menuArr.find((value) => {
-      var route = value.menuPath && value.menuPath.replace(reg, '$1')
+      console.log(value)
+      const route = value.menuPath && value.menuPath.replace(reg, '$1')
       value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
       value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
+      console.log(value)
     })
     configuration.routes.layoutNavMenu = configurationByService.data.menuArr
   }
