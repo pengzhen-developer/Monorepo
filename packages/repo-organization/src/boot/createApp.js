@@ -30,7 +30,7 @@ export default async function(configuration) {
     const configurationByService = await getConfiguration(params)
 
     const reg = /[^{}]*{(.*)}[^}]*/
-    configurationByService.data.menuArr.find((value) => {
+    configurationByService.data.menuArr.map((value) => {
       console.log(value)
       const route = value.menuPath && value.menuPath.replace(reg, '$1')
       value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
