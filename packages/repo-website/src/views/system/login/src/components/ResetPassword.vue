@@ -295,9 +295,6 @@ export default {
       span {
         font-size: 14px;
       }
-      .el-link {
-        text-decoration: underline;
-      }
     }
   }
 }

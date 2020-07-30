@@ -206,9 +206,6 @@ export default {
       span {
         font-size: 14px;
       }
-      .el-link {
-        text-decoration: underline;
-      }
     }
   }
 
@@ -241,9 +238,6 @@ export default {
       font-size: 16px;
       span {
         font-size: 14px;
-      }
-      .el-link {
-        text-decoration: underline;
       }
     }
   }

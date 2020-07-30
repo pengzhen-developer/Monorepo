@@ -259,9 +259,9 @@ export default {
       span {
         font-size: 14px;
       }
-      .el-link {
-        text-decoration: underline;
-      }
+      // .el-link {
+      //   text-decoration: none !important;
+      // }
     }
   }
   .line {
@@ -294,9 +294,9 @@ export default {
       span {
         font-size: 14px;
       }
-      .el-link {
-        text-decoration: underline;
-      }
+      // .el-link {
+      //   text-decoration: none;
+      // }
     }
   }
 }
