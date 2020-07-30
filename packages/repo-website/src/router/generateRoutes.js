@@ -28,11 +28,6 @@ export default function generateRoutes() {
       name: '/',
       component: () => import('@src/views/home')
     },
-    {
-      path: path.HOME,
-      name: path.HOME,
-      component: () => import('@src/views/home')
-    },
 
     {
       path: path.LOGIN,
@@ -65,24 +60,9 @@ export default function generateRoutes() {
       component: () => import('@src/views/system/terms')
     },
     {
-      path: path['EXCEPTION-403'],
-      name: path['EXCEPTION-403'],
-      component: () => import('@src/views/exception/403')
-    },
-    {
-      path: path['EXCEPTION-404'],
-      name: path['EXCEPTION-404'],
-      component: () => import('@src/views/exception/404')
-    },
-    {
-      path: path['EXCEPTION-500'],
-      name: path['EXCEPTION-500'],
-      component: () => import('@src/views/exception/500')
-    },
-    {
       path: '*',
       name: path['EXCEPTION-404'],
-      component: () => import('@src/views/exception/404')
+      component: () => import('@src/views/home')
     }
   ]
 
