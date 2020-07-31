@@ -81,23 +81,21 @@
         <div class="row-body dotted-line-after"
              v-for="item in data.list[current].drugCode"
              :key="item.drugCode">
-          <div class="flex between"
-               style="margin: 0 0 5px 0;">
-            <div style="flex:1;">
-              <span style="font-size: 15px; color: #000; font-weight: bold; margin: 0 10px 0 0;">
+          <div class="flex between">
+            <div class="row-body-item-left">
+              <span>
                 {{ item.drugName }}
               </span>
-              <span style="font-size: 15px; color: #000; font-weight: bold;">
+              <span>
                 {{ item.drugSpecifications }}
               </span>
             </div>
-            <div>
-              <span style="font-size: 15px; color: #000;margin-left:10px;">x
-                {{ item.drugQty}}{{item.drugQuantityUnit}}</span>
+            <div class="row-body-item-right">
+              x {{ item.drugQty}}{{item.drugQuantityUnit}}
             </div>
           </div>
-          <div>
-            <span style="font-size: 13px; color: #999;">{{
+          <div class="row-body-item-drugUse">
+            <span>{{
               item.drugUse
             }}</span>
           </div>
@@ -298,6 +296,11 @@ export default {
       font-weight: 400;
       color: #000000;
       line-height: 20px;
+      &.dotted-line-after {
+        .flex {
+          margin: 0px 0px 5px;
+        }
+      }
       span {
         padding-left: 14px;
       }
@@ -305,6 +308,31 @@ export default {
         &::after {
           border-width: 0;
         }
+      }
+      .row-body-item-left {
+        padding-left: 14px;
+        flex: 1;
+        > span {
+          padding-left: 0;
+          font-size: 15px;
+          color: #000;
+          font-weight: bold;
+          word-break: break-all;
+          &:first-child {
+            margin-right: 20px;
+          }
+        }
+      }
+      .row-body-item-right {
+        min-width: 50px;
+        font-size: 15px;
+        color: #000;
+        margin-left: 10px;
+        text-align: right;
+      }
+      .row-body-item-drugUse {
+        font-size: 13px;
+        color: #999;
       }
     }
   }

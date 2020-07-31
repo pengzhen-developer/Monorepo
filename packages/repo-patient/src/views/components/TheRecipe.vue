@@ -83,7 +83,7 @@
                 <span>{{item.drugName}}</span>
                 {{item.drugSpecifications}}
               </div>
-              <div class="inline">x{{item.drugQty}}</div>
+              <div class="inline unit">x{{item.drugQty}}</div>
             </div>
             <div class="small"
                  v-if="item.drugUse">{{item.drugUse}}</div>
@@ -357,7 +357,7 @@ export default {
     word-break: break-all;
     padding-right: 5px;
     span {
-      margin-right: 40px;
+      margin-right: 20px;
     }
   }
   .bt {
@@ -388,6 +388,11 @@ export default {
     text-overflow: ellipsis;
     display: flex;
     justify-content: space-between;
+    &.unit {
+      width: 50px;
+      white-space: nowrap;
+      display: block;
+    }
   }
   .column-left .inline .span {
     flex: 0 0 auto;
