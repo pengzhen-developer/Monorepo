@@ -2,27 +2,27 @@
   <q-scroll-area class="bg-grey-2 q-pt-md q-pr-md q-pb-none q-pl-md"
                  v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
+
     <div v-bind:style="routerViewStyle">
-      <template v-if="isIFrame">
-        <transition appear
-                    mode="out-in"
-                    name="el-fade-in-linear">
-          <router-view class="router-view iframe-router-view"
-                       v-bind:key="$route.meta.menuPath"
-                       v-bind:style="routerViewIframeStyle"></router-view>
-        </transition>
-      </template>
-      <template v-show="!isIFrame">
-        <transition appear
-                    mode="out-in"
-                    name="el-fade-in-linear">
-          <keep-alive>
-            <router-view class="router-view bg-white q-pa-md"
-                         v-bind:key="$route.fullPath"
-                         v-bind:style="routerViewStyle"></router-view>
-          </keep-alive>
-        </transition>
-      </template>
+      <transition appear
+                  mode="out-in"
+                  name="el-fade-in-linear">
+        <router-view class="router-view iframe-router-view"
+                     v-if="isIFrame"
+                     v-bind:key="$route.meta.menuPath"
+                     v-bind:style="routerViewIframeStyle"></router-view>
+      </transition>
+
+      <transition appear
+                  mode="out-in"
+                  name="el-fade-in-linear">
+        <keep-alive>
+          <router-view class="router-view bg-white q-pa-md"
+                       v-show="!isIFrame"
+                       v-bind:key="$route.fullPath"
+                       v-bind:style="routerViewStyle"></router-view>
+        </keep-alive>
+      </transition>
     </div>
   </q-scroll-area>
 </template>
@@ -43,20 +43,22 @@ export default {
       },
       scrollAreaStyle: {},
       routerViewStyle: {},
-      routerViewIframeStyle: {}
-    }
-  },
+      routerViewIframeStyle: {},
 
-  computed: {
-    isIFrame() {
-      return Peace.validate.isUrl(this.$route.meta.menuPath)
+      isIFrame: false
     }
   },
 
   watch: {
     $route() {
+      this.isIFrame = Peace.validate.isUrl(this.$route.meta.menuPath)
+
       this.setRouterViewStyle()
     }
+  },
+
+  created() {
+    this.isIFrame = Peace.validate.isUrl(this.$route.meta.menuPath)
   },
 
   mounted() {

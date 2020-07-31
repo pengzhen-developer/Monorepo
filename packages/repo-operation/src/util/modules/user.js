@@ -106,7 +106,7 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const isSignIn = () => {
-  return !!Peace.cache.localStorage.get(USER_INFO)
+  return !!(Peace.cache.localStorage.get(USER_INFO) && Peace.cache.localStorage.get(ACCOUNT_MENU_LIST))
 }
 
 export default {

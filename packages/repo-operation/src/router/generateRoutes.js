@@ -9,6 +9,7 @@ const getDynamicRoutes = () => {
     // 获取缓存的权限菜单
     const accountMenuList = Util.user.getAccountMenuList()
 
+    // 验证菜单
     // 声明 layout root route
     dynamicLayoutRootRoutes = [
       {
