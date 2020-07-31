@@ -128,7 +128,7 @@ import ScreenGoodsRanking from './ScreenGoodsRanking'
 import OrderSalesChart from './OrderSalesChart'
 
 import Service from '../service/data'
-import GEODATA from '../constant'
+import CONSTANT from '../constant'
 
 export default {
   name: 'data-screen',
@@ -248,11 +248,11 @@ export default {
           let result = []
           for (let i = 0; i < list.length; i++) {
             let item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, list[i])
-            let points = GEODATA.geoData[item.City] //item.FirstLonLat.split(',')
-            if (points && points.length == 2) {
+            let points = CONSTANT.cityData.find((city) => city.name == item.City)
+            if (points) {
               result.push({
                 name: item.City,
-                value: [points[0], points[1], item.CloudStoreNum, item.DrugStoreNum]
+                value: [points.lng, points.lat, item.CloudStoreNum, item.DrugStoreNum]
               })
             }
           }

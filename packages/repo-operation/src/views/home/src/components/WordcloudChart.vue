@@ -53,7 +53,7 @@ export default {
           {
             type: 'wordCloud',
             gridSize: 24,
-            sizeRange: [12, 20],
+            sizeRange: [12, 18],
             rotationRange: [0, 0],
             shape: 'circle ',
             textStyle: {

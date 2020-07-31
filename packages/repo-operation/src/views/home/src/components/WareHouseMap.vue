@@ -14,7 +14,7 @@
 <script>
 import ECharts from 'vue-echarts'
 import Service from '../service'
-import GEODATA from '../constant'
+import CONSTANT from '../constant'
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
@@ -125,11 +125,11 @@ export default {
       const res = []
       for (let i = 0; i < data.length; i++) {
         const item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, data[i])
-        const points = GEODATA.geoData[item.City] //item.FirstLonLat.split(',')
-        if (points && points.length == 2) {
+        const points = CONSTANT.cityData.find((city) => city.name == item.City)
+        if (points) {
           res.push({
             name: item.City,
-            value: [points[0], points[1], item.CloudStoreNum, item.DrugStoreNum]
+            value: [points.lng, points.lat, item.CloudStoreNum, item.DrugStoreNum]
           })
         }
       }
