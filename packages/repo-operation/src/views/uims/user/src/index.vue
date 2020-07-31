@@ -120,13 +120,13 @@ export default {
 
   computed: {
     dateValueList() {
-      return this.model.dateValue
+      return this.model.dateValue || []
     }
   },
 
   watch: {
     dateValueList(newValue, oldValue) {
-      if (newValue != oldValue) {
+      if (newValue != oldValue && newValue.length === 2) {
         const [startValue, endValue] = newValue
         this.model.startTime = startValue
         this.model.endTime = endValue
