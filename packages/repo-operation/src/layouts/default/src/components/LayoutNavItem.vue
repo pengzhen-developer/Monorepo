@@ -4,7 +4,7 @@
     <template v-if="data.children">
       <el-submenu v-bind:index="data.id.toString()"
                   v-bind:router="data.id.toString()"
-                  v-bind:disabled="data.enable === false">
+                  v-bind:disabled="!data.enable">
 
         <template slot="title">
           <i v-bind:class="{[data.menuIcon]: true }"
@@ -24,7 +24,7 @@
       <el-menu-item v-bind:key="data.id.toString()"
                     v-bind:index="data.id.toString()"
                     v-bind:router="data.id.toString()"
-                    v-bind:disabled="data.enable === false">
+                    v-bind:disabled="!data.enable">
         <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>

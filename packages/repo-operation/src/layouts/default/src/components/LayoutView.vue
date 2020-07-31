@@ -3,22 +3,25 @@
                  v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
 
-    <div v-bind:style="routerViewStyle">
+    <div v-if="isIFrame"
+         v-bind:style="routerViewStyle">
+
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
         <router-view class="router-view iframe-router-view"
-                     v-if="isIFrame"
                      v-bind:key="$route.meta.menuPath"
                      v-bind:style="routerViewIframeStyle"></router-view>
       </transition>
+    </div>
 
+    <div v-show="!isIFrame"
+         v-bind:style="routerViewStyle">
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
         <keep-alive>
           <router-view class="router-view bg-white q-pa-md"
-                       v-show="!isIFrame"
                        v-bind:key="$route.fullPath"
                        v-bind:style="routerViewStyle"></router-view>
         </keep-alive>
@@ -45,7 +48,7 @@ export default {
       routerViewStyle: {},
       routerViewIframeStyle: {},
 
-      isIFrame: false
+      isIFrame: undefined
     }
   },
 
