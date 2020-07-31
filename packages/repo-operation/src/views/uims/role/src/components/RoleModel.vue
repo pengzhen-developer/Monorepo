@@ -1,19 +1,21 @@
 <template>
   <div class="full-width full-height">
     <div class="q-mb-lg">
-      <el-form label-width="auto"
+      <el-form ref="form"
+               label-width="auto"
                v-bind:model="model"
+               v-bind:rules="rules"
                v-on:keyup.enter.native="save"
                v-on:submit.native.prevent>
-        <el-form-item>
+        <el-form-item prop="roleName">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">角色名称</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
 
-          <el-input v-bind:disabled="!model.id"
-                    v-model.trim="model.__角色名称"></el-input>
+          <el-input maxlength="10"
+                    v-model.trim="model.roleName"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -22,7 +24,21 @@
             <span class="text-justify em-4">角色备注</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
-          <el-input v-model.trim="model.__角色备注"></el-input>
+          <el-input maxlength="10"
+                    v-model.trim="model.remark"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="status">
+          <div class="flex inline"
+               slot="label">
+            <span class="text-justify em-4">角色状态</span>
+            <span class="text-center q-ml-sm">：</span>
+          </div>
+
+          <el-radio-group v-model="model.status">
+            <el-radio v-bind:label="true">启用</el-radio>
+            <el-radio v-bind:label="false">禁用</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item>
@@ -46,7 +62,7 @@
                      highlight-current
                      v-bind:default-checked-keys="defaultChecked"
                      v-bind:filter-node-method="filterNode"
-                     v-bind:props="{ children: 'children', label: 'label' }"
+                     v-bind:props="{ children: 'children', label: 'menuName' }"
                      v-bind:data="menuTree">
             </el-tree>
           </q-scroll-area>
@@ -66,6 +82,9 @@
 </template>
 
 <script>
+import Peace from '@src/library'
+import Service from './../service'
+
 export default {
   props: {
     data: Object
@@ -84,62 +103,22 @@ export default {
         height: '400px'
       },
 
-      menuTree: [
-        {
-          id: 1,
-          label: '一级 1',
-          children: [
-            {
-              id: 4,
-              label: '二级 1-1',
-              children: [
-                {
-                  id: 9,
-                  label: '三级 1-1-1'
-                },
-                {
-                  id: 10,
-                  label: '三级 1-1-2'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: '一级 2',
-          children: [
-            {
-              id: 5,
-              label: '二级 2-1'
-            },
-            {
-              id: 6,
-              label: '二级 2-2'
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: '一级 3',
-          children: [
-            {
-              id: 7,
-              label: '二级 3-1'
-            },
-            {
-              id: 8,
-              label: '二级 3-2'
-            }
-          ]
-        }
-      ],
-
+      menuTree: [],
+      defaultChecked: [],
       filterText: '',
 
-      defaultChecked: [1, 2],
+      model: {
+        roleName: '',
+        remark: '',
+        status: true
+      },
 
-      model: {}
+      rules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
+          { pattern: Peace.validate.pattern.chinese, message: '角色名称仅支持输入中文', trigger: 'blur' }
+        ]
+      }
     }
   },
 
@@ -149,14 +128,65 @@ export default {
     }
   },
 
+  created() {
+    this.setPropsToModel()
+
+    this.getMenuList()
+
+    if (this.model.id) {
+      this.getRoleMenuList()
+    }
+  },
+
   methods: {
+    setPropsToModel() {
+      this.model = Object.assign({}, this.model, this.data)
+    },
+
+    getMenuList() {
+      Service.getMenuList().then((res) => {
+        // 标识 virtual
+        res.data.list.forEach((menu) => {
+          menu.menuName = menu.virtual ? menu.menuName + '(*)' : menu.menuName
+        })
+
+        this.menuTree = Peace.util.arrayToTree(res.data.list, 'id', 'parentId', 'children')
+      })
+    },
+
+    getRoleMenuList() {
+      const params = {
+        roleId: this.model.id
+      }
+
+      Service.getRoleMenuList(params).then((res) => {
+        this.defaultChecked = res.data.menuList
+      })
+    },
+
     filterNode(value, data) {
       if (!value) return true
-      return data.label.indexOf(value) !== -1
+      return data.menuName.indexOf(value) !== -1
     },
 
     save() {
-      this.$emit('save')
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          const request = this.model.id ? Service.editRole : Service.addRole
+          const params = this.model
+
+          // 取全选
+          params.menuList = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())
+          // 取半选
+          params.menuListHalf = this.$refs.tree.getHalfCheckedKeys()
+
+          request(params).then((res) => {
+            Peace.util.success(res.msg)
+
+            this.$emit('save')
+          })
+        }
+      })
     },
 
     cancel() {

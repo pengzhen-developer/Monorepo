@@ -15,26 +15,28 @@
               v-bind:indent="24"
               v-bind:tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 
-      <el-table-column label="菜单名"
-                       min-width="180px"
+      <el-table-column show-overflow-tooltip
+                       label="菜单名"
+                       min-width="220px"
                        prop="menuName"
                        align="left">
         <template slot-scope="scope">
-          <template v-if="scope.row.children">
-            {{ scope.row.menuName }}
-          </template>
-          <template v-else>
-            <div style="display: inline-block;
-                        width: 20px;
-                        line-height: 20px;
-                        height: 20px;
-                        text-align: center;
-                        margin-right: 3px;">
-              <i class="el-icon-document"></i>
-            </div>
-            {{ scope.row.menuName }}
-          </template>
-
+          {{ scope.row.menuName }}
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip
+                       label="ID"
+                       align="left"
+                       width="60px"
+                       prop="id"></el-table-column>
+      <el-table-column show-overflow-tooltip
+                       label="Virtual"
+                       align="center"
+                       width="70px"
+                       prop="virtual">
+        <template slot-scope="scope">
+          <i v-if="scope.row.virtual"
+             class="el-icon-check"></i>
         </template>
       </el-table-column>
       <el-table-column label="图标"
@@ -45,29 +47,34 @@
           <i v-bind:class="scope.row.menuIcon"></i>
         </template>
       </el-table-column>
-      <el-table-column label="排序"
-                       width="60px"
-                       align="center"
-                       prop="sort">
-      </el-table-column>
-      <el-table-column label="路由地址"
+      <el-table-column show-overflow-tooltip
+                       label="别名"
                        align="left"
-                       min-width="240px"
+                       width="120px"
+                       prop="menuAlias"></el-table-column>
+      <el-table-column show-overflow-tooltip
+                       label="路由地址"
+                       align="left"
+                       min-width="200px"
                        prop="menuRoute"></el-table-column>
-      <el-table-column label="实际地址"
+      <el-table-column show-overflow-tooltip
+                       label="实际地址"
                        align="left"
                        min-width="240px"
                        prop="menuPath"></el-table-column>
       <el-table-column label="操作"
                        align="center"
                        fixed="right"
-                       width="220px">
+                       width="140px">
         <template slot-scope="scope">
-          <el-button type="text"
-                     v-on:click="showAdd(scope.row)">新增</el-button>
-          <el-button type="text"
+          <el-button class="q-px-none"
+                     type="text"
+                     v-on:click="showAdd(scope.row)">添加</el-button>
+          <el-button class="q-px-none"
+                     type="text"
                      v-on:click="showEdit(scope.row)">编辑</el-button>
-          <el-button type="text"
+          <el-button class="q-px-none"
+                     type="text"
                      v-on:click="showRemove(scope.row)">删除</el-button>
         </template>
       </el-table-column>

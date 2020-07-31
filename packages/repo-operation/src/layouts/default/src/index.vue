@@ -41,6 +41,7 @@
 
 <script>
 import Peace from '@src/library'
+import Util from '@src/util'
 
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
@@ -124,8 +125,8 @@ export default {
   methods: {
     getMenu() {
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
-      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList.filter((item) => !item.virtual)
+      const menuTreeSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList.filter((item) => !item.virtual)
 
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
@@ -140,9 +141,9 @@ export default {
     },
 
     getTab(index) {
-      const nihilityNavMenu = Peace.util.deepClone(this.configuration.routes.nihilityNavMenu)
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList
 
-      const currentMenu = nihilityNavMenu.find((menu) => menu.id === index)
+      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
 
       return currentMenu
     },
@@ -155,7 +156,7 @@ export default {
     },
 
     parentMenuSelect(index) {
-      const currentMenu = this.menuTree.find((menu) => menu.id === index)
+      const currentMenu = this.menuTree.find((menu) => menu.id.toString() === index)
 
       this.$nextTick(() => {
         // 当前为功能菜单，点击跳转功能
@@ -178,7 +179,7 @@ export default {
     },
 
     menuSelect(index) {
-      const currentMenu = this.menuList.find((menu) => menu.id === index)
+      const currentMenu = this.menuList.find((menu) => menu.id.toString() === index)
 
       // 新增到当前 tab
       this.$store.commit('tabs/addTab', currentMenu)
@@ -202,7 +203,7 @@ export default {
       const router = this.$route?.meta
       const rootRouter = this.deepQueryRoot(this.menuList, router)
 
-      this.defaultHeanderNavActive = rootRouter?.id ?? router?.id
+      this.defaultHeanderNavActive = rootRouter?.id.toString() ?? router?.id.toString()
     },
 
     resetDrawerNavSource() {
@@ -216,7 +217,7 @@ export default {
     resetDrawerNavActive() {
       const router = this.$route?.meta
 
-      this.defaultDrawerNavActive = router?.id
+      this.defaultDrawerNavActive = router?.id.toString()
     },
 
     resetTabActive() {
@@ -243,7 +244,7 @@ export default {
 
       find(list, node)
 
-      return arr.find((item) => item.parentId === null)
+      return arr.find((item) => item.parentId === 0)
     }
   }
 }

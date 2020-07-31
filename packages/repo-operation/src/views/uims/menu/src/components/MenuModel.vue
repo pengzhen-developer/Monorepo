@@ -103,6 +103,7 @@
                     <p class="text-subtitle2 q-mb-sm">前端相对路径</p>
                     <p>## 相对于 views/</p>
                     <p>## 以 src/views/xxx/index.js 形式加载</p>
+                    <p>## 支持 {env} 模板变量，.e.g {site}/home</p>
                   </div>
                   <i class="el-input__icon el-icon-warning"></i>
                 </el-tooltip>
@@ -124,7 +125,6 @@
                     <p class="text-subtitle2 q-mb-sm">唯一不重复值</p>
                     <p>## 既表示 vue route path， 实现 router.push({ path: '' })</p>
                     <p>## 也表示 url path，显示在 url 链接上</p>
-                    <p>## 支持 {env} 模板变量，.e.g {site}/home</p>
                   </div>
                   <i class="el-input__icon el-icon-warning"></i>
                 </el-tooltip>
@@ -308,7 +308,7 @@ export default {
 
     filterNode(value, data) {
       if (!value) return true
-      return data.label.indexOf(value) !== -1
+      return data.menuName.indexOf(value) !== -1
     },
 
     nodeClick(node) {
@@ -350,5 +350,9 @@ export default {
   width: 4em;
   text-align: justify;
   text-align-last: justify;
+}
+
+::v-deep .el-input--suffix .el-input__inner {
+  padding-right: 30px;
 }
 </style>

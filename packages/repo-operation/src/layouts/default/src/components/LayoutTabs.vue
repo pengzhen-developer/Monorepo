@@ -5,10 +5,10 @@
              v-on:tab-click="tabClick"
              v-on:tab-remove="tabRemove">
       <el-tab-pane v-for="tab in tabs"
-                   v-bind:key="tab.id"
-                   v-bind:name="tab.id"
+                   v-bind:key="tab.id.toString()"
+                   v-bind:name="tab.id.toString()"
                    v-bind:label="tab.menuName"
-                   v-bind:closable="tabs.length > 1 && tab.closable">
+                   v-bind:closable="tabs.length > 1 && !!tab.closable">
 
       </el-tab-pane>
 
@@ -58,7 +58,7 @@ export default {
 
     activeTab() {
       // 选中 tab
-      this.active = this.activeTab.id
+      this.active = this.activeTab.id.toString()
 
       // 更改 route
       this.changeRoute(this.activeTab)
@@ -74,7 +74,7 @@ export default {
 
   methods: {
     changeRoute(tab) {
-      const routePath = '/layout/' + tab.menuRoute
+      const routePath = tab.menuRoute
 
       if (this.$route.path !== routePath) {
         this.$router.push(routePath).then((route) => {
@@ -90,18 +90,18 @@ export default {
     },
 
     tabClick(tab) {
-      if (tab.name === this.activeTab.id) {
+      if (tab.name.toString() === this.activeTab.id.toString()) {
         // 重复点击
         return
       }
 
-      const currentTab = this.tabs.find((item) => item.id === tab.name)
+      const currentTab = this.tabs.find((item) => item.id.toString() === tab.name.toString())
       this.$store.commit('tabs/selectTab', currentTab)
     },
 
     tabRemove(id) {
       // 删除当前 tab
-      const currentTab = this.tabs.find((item) => item.id === id)
+      const currentTab = this.tabs.find((item) => item.id.toString() === id.toString())
       this.$store.commit('tabs/removeTab', currentTab)
 
       // 选中最后 tab

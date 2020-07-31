@@ -1,5 +1,3 @@
-import '@src/assets/css/ui-fix.scss'
-
 const hexToRGBA = function hexToRgbA(hex, opacity) {
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     let c = hex.substring(1).split('')
@@ -17,6 +15,8 @@ const hexToRGBA = function hexToRgbA(hex, opacity) {
 // async is optional
 
 export default async ({ configuration }) => {
+  require(`@src/assets/css/ui-fix.scss`)
+
   const styleConfig = new Map([
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],

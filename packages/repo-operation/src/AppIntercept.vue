@@ -1,66 +1,42 @@
 /** 
  * 应用程序拦截器
- * 一般作为 '/' 根路由
- * 控制访问权限与链接跳转
+ * 当作为 '/' 根路由
+ * 可控制其所有 children 的访问权限
+
+ * 场景 ：
+ * 从 /router/a 跳转 /router/b
+ * 触发 beforeRouteEnter
+ * 验证 to 是否可访问
+ * 跳转 next() 或者 next(vm => vm.$router.push('/redirect'))
  */
 
 <template>
-  <div>
-    <div class="fixed-center"
-         v-if="processing">
-      <q-spinner color="primary"
-                 size="4em"
-                 v-bind:thickness="2" />
-    </div>
-
-    <router-view v-else></router-view>
-  </div>
+  <router-view />
 </template>
 
 <script>
 import Util from '@src/util'
 
 export default {
-  data() {
-    return {
-      processing: true
-    }
-  },
+  beforeRouteEnter(to, from, next) {
+    console.log('AppIntercept beforeRouteEnter')
 
-  watch: {
-    '$route.path'() {
-      if (this.$route.path === '/') {
-        this.authentication()
+    // 验证身份
+    if (Util.user.isSignIn()) {
+      if (to.fullPath === '/') {
+        next('/layout')
+      } else {
+        next()
       }
+    } else {
+      next('/login')
     }
   },
 
-  created() {
-    this.authentication()
-  },
+  beforeRouteUpdate(to, from, next) {
+    console.log('AppIntercept beforeRouteUpdate')
 
-  methods: {
-    authentication() {
-      this.processing = true
-
-      this.dosomething()
-        .then(() => {
-          if (Util.user.isSignIn()) {
-            if (this.$route.path === '/') {
-              this.$router.push('/layout')
-            }
-          } else {
-            this.$router.push('/login')
-          }
-        })
-        .finally(() => {
-          this.processing = false
-        })
-    },
-
-    dosomething() {
-      return Promise.resolve()
-    }
+    next()
   }
 }
 </script>

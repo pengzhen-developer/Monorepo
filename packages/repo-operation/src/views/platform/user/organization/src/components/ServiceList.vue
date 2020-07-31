@@ -170,9 +170,9 @@ export default {
     },
     serviceDetail(params) {
       const configMap = [
-        { serviceName: '互联网医院管理端', serviceType: 1, tagName: '999-1' },
+        { serviceName: '互联网医院管理端', serviceType: 1, tagName: '10524' },
         { serviceName: '处方管理医院端', serviceType: 3, tagName: '999-3' },
-        { serviceName: '合理用药管理', serviceType: 2, tagName: '22-1' },
+        { serviceName: '合理用药管理', serviceType: 2, tagName: '10528' },
         { serviceName: '药品供应管理端', serviceType: 4, tagName: '999-4' }
       ]
       const tagName = configMap.find((item) => item.serviceType == params.serviceType).tagName

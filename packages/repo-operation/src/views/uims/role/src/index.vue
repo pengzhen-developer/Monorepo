@@ -6,7 +6,7 @@
              v-on:keyup.enter.native="fetch"
              v-on:submit.native.prevent>
       <el-form-item label="角色名称：">
-        <el-input v-model.trim="model.account"></el-input>
+        <el-input v-model.trim="model.roleName"></el-input>
       </el-form-item>
 
       <el-form-item label=" ">
@@ -20,36 +20,42 @@
     </el-form>
 
     <peace-table ref="table"
-                 pagination
-                 v-bind:data="[{},{},{}]">
+                 pagination>
       <el-table-column label="序号"
                        prop="index"
                        align="center"
                        width="60px">
       </el-table-column>
-      <el-table-column label="角色名称"></el-table-column>
-      <el-table-column label="角色备注"></el-table-column>
+      <el-table-column label="角色名称"
+                       prop="roleName"></el-table-column>
+      <el-table-column label="角色备注"
+                       prop="remark"></el-table-column>
       <el-table-column label="使用状态"
                        align="center"
                        width="120px">
         <template slot-scope="scope">
           <span class="q-mr-sm">{{ scope.row.status ? '已启用' : '已禁用' }}</span>
-          <el-switch v-model="scope.row.status"></el-switch>
+          <el-switch v-on:change="changeStatus(scope.row)"
+                     v-model="scope.row.status"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="创建时间"
-                       prop="createTime"
+                       prop="createdTime"
                        align="center"
                        width="160px"></el-table-column>
       <el-table-column label="操作"
                        align="center"
                        width="80px">
-        <el-button type="text"
-                   v-on:click="showEdit">修改</el-button>
+        <template slot-scope="scope">
+          <el-button type="text"
+                     v-on:click="showEdit(scope.row)">修改</el-button>
+        </template>
+
       </el-table-column>
     </peace-table>
 
     <peace-dialog width="400px"
+                  v-if="dialog.visible"
                   v-bind:title="dialog.title"
                   v-bind:visible.sync="dialog.visible">
       <RoleModel v-bind:data="dialog.data"
@@ -60,6 +66,9 @@
 </template>
 
 <script>
+import Peace from '@src/library'
+import Service from './service'
+
 import RoleModel from './components/RoleModel'
 
 export default {
@@ -71,7 +80,9 @@ export default {
 
   data() {
     return {
-      model: {},
+      model: {
+        roleName: ''
+      },
 
       dialog: {
         title: '',
@@ -89,7 +100,10 @@ export default {
 
   methods: {
     fetch() {
-      // this.$refs.table.reloadData({ /** fetch, params */ })
+      const fetch = Service.getRoleList
+      const params = this.model
+
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     showAdd() {
@@ -98,12 +112,18 @@ export default {
       this.dialog.data = {}
     },
 
-    showEdit() {
+    showEdit(row) {
       this.dialog.title = '修改角色'
       this.dialog.visible = true
-      this.dialog.data = {
-        id: 1
-      }
+      this.dialog.data = row
+    },
+
+    changeStatus(row) {
+      Service.editRole(row).then((res) => {
+        Peace.util.success(res.msg)
+
+        this.fetch()
+      })
     },
 
     save() {

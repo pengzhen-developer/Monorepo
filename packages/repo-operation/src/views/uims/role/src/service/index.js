@@ -42,15 +42,15 @@ export default {
   },
 
   /**
-   * 编辑菜单
+   * 编辑角色
    *
    * @param {*} params
    * @returns
    */
-  editMenu(params) {
+  editRole(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/editMenu'
+    const apiPath = 'operate/permission/editRole'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -62,15 +62,35 @@ export default {
   },
 
   /**
-   * 删除菜单
+   * 获取菜单列表
    *
    * @param {*} params
-   * @returns
+   * @returns {Object}
    */
-  delMenu(params) {
+  getMenuList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/delMenu'
+    const apiPath = 'operate/permission/getMenuList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取角色菜单列表
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  getRoleMenuList(params) {
+    const isMock = false
+
+    const apiPath = 'operate/permission/getRoleMenuList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
