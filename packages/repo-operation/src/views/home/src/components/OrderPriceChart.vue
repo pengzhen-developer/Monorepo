@@ -52,7 +52,7 @@ export default {
         legend: {
           orient: 'vertical',
           right: 6,
-          height: 80,
+          height: 70,
           itemWidth: 10,
           itemHeight: 10,
           icon: 'circle',

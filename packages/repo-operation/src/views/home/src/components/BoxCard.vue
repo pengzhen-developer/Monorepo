@@ -35,7 +35,7 @@ export default {}
 .box-border {
   position: relative;
   border: 2px solid rgba(26, 63, 129, 1);
-  box-shadow: 0px 0px 20px 14px #052058 inset;
+  box-shadow: 0px 0px 14px 10px #052058 inset;
   .box-tri {
     position: absolute;
     width: 20px;

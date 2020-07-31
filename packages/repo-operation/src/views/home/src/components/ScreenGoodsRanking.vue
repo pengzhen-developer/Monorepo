@@ -95,7 +95,7 @@ export default {
                 fontSize: 12
               },
               formatter: (value) => {
-                return value.length > 4 ? value.substring(0, 4) + '...' : value
+                return value.length > 6 ? value.substring(0, 6) + '...' : value
               }
             }
           },

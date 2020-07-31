@@ -33,8 +33,8 @@ export default {
         grid: {
           top: 10,
           left: 40,
-          right: 20,
-          bottom: 30
+          right: 10,
+          bottom: 20
         },
         tooltip: {
           trigger: 'axis',
@@ -71,7 +71,7 @@ export default {
           },
           axisTick: {
             lineStyle: {
-              color: ''
+              color: '#5092C1'
             }
           },
           data: []
