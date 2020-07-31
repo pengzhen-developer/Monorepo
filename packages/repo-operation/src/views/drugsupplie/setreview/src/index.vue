@@ -128,7 +128,7 @@ export default {
     },
     //跳转审方方案
     redirect(row) {
-      const tab = Peace.util.deepClone(this.getTab('44-1'))
+      const tab = Peace.util.deepClone(this.getTab('10527'))
 
       tab.menuPath = tab.menuPath + '?hospitalCode=' + row.SourceHospitalCode + '&hospitalName=' + row.SourceHospitalName
       tab.menuName = row.SourceHospitalName

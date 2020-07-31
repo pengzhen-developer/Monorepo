@@ -1,13 +1,3 @@
-import configuration_nav_home from './configuration_nav_home'
-import configuration_nav_platform from './configuration_nav_platform'
-import configuration_nav_nethospital from './configuration_nav_nethospital'
-import configuration_nav_rationaldruguse from './configuration_nav_rationaldruguse'
-import configuration_nav_prescription from './configuration_nav_prescription'
-import configuration_nav_drugsupplie from './configuration_nav_drugsupplie'
-
-// 功能内部跳转，不依赖导航
-import configuration_nav_nihility from './configuration_nav_nihility'
-
 export default {
   /**
    * 应用程序设定
@@ -48,23 +38,13 @@ export default {
      *
      */
     layoutNavMenu: [
-      /** 首页路由 */
-      ...configuration_nav_home,
-
-      /** 平台管理路由 */
-      ...configuration_nav_platform,
-
-      /** 互医管理路由 */
-      ...configuration_nav_nethospital,
-
-      /** 合理用药管理路由 */
-      ...configuration_nav_rationaldruguse,
-
-      /** 处方共享管理路由 */
-      ...configuration_nav_prescription,
-
-      /** 药品供应管理路由 */
-      ...configuration_nav_drugsupplie
+      // .e.g
+      // {
+      //   title: 'title',
+      //   menuRouteName: 'route name',
+      //   menuRoute: 'health/pacs',
+      //   menuPath: 'views/health/pacs'
+      // }
     ],
 
     /**
@@ -89,7 +69,13 @@ export default {
       /** nihility 路由 */
       /** 该路由不会暴露在 nav 上，但可通过调用 addTab 显示在 LayoutTabs.vue 组件上*/
       /** 同样遵循 iframe or not iframe 规则 */
-      ...configuration_nav_nihility
+      // .e.g
+      // {
+      //   title: 'title',
+      //   menuRouteName: 'route name',
+      //   menuRoute: 'health/pacs',
+      //   menuPath: 'views/hybrid/health/pacs'
+      // }
     ]
   }
 }

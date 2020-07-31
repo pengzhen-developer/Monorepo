@@ -20,9 +20,9 @@
                      v-bind:default-active="defaultActive"
                      v-on:select="parentMenuSelect">
               <el-menu-item v-for="menu in menuTree"
-                            v-bind:key="menu.id"
-                            v-bind:index="menu.id"
-                            v-bind:router="menu.id"
+                            v-bind:key="menu.id.toString()"
+                            v-bind:index="menu.id.toString()"
+                            v-bind:router="menu.id.toString()"
                             v-bind:disabled="menu.enable === false">
                 <label class="text-subtitle2 cursor-pointer"
                        slot="title">{{ menu.menuName }}
@@ -82,15 +82,11 @@ export default {
     return {
       configuration: window.configuration,
 
-      user: undefined
+      user: Util.user.getUserInfo()
     }
   },
 
   computed: {
-    username() {
-      return this.user.username ? this.user.username.substr(0, 1).toUpperCase() : ''
-    },
-
     parentMenuSelect() {
       return this.provdeParentMenuSelect
     },
@@ -98,10 +94,6 @@ export default {
     menuTree() {
       return this.provideMenuTree()
     }
-  },
-
-  created() {
-    this.user = Util.user.getUserInfo() ?? {}
   },
 
   methods: {

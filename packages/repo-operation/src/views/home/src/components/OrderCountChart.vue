@@ -74,7 +74,7 @@ export default {
             showMaxLabel: false
           },
           splitNumber: 2,
-          max: function(value) {
+          max: function (value) {
             return value.max * 1.2
           },
           //改变坐标轴和文本的样式
@@ -96,7 +96,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: function(params) {
+          formatter: function (params) {
             const val = params.data
             return val.value
           }
@@ -106,6 +106,13 @@ export default {
             name: '销量',
             type: 'bar',
             data: [],
+            label: {
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#999999'
+              }
+            },
             barWidth: 16, //柱子宽度
             itemStyle: {
               //柱样式

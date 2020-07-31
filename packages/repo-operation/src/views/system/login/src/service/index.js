@@ -18,5 +18,24 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取角色权限信息
+   *
+   * @param {*} params
+   */
+  getAccountMenuList(params) {
+    const isMock = false
+
+    const apiPath = 'operate/permission/getAccountMenuList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

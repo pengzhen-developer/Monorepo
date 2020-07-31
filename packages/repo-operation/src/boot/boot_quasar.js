@@ -5,13 +5,13 @@
  * Reference: https://quasar.dev/
  **/
 
-import 'quasar/dist/quasar.css'
-import '@quasar/extras/material-icons/material-icons.css'
-
 import langDe from 'quasar/lang/zh-hans'
 import { Quasar, LoadingBar, Notify, LocalStorage, SessionStorage, Cookies } from 'quasar'
 
 export default ({ Vue, configuration }) => {
+  require('quasar/dist/quasar.css')
+  require('@quasar/extras/material-icons/material-icons.css')
+
   Vue.use(Quasar, {
     lang: langDe,
 

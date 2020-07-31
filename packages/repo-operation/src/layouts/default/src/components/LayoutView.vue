@@ -4,7 +4,6 @@
                  v-bind:style="scrollAreaStyle">
     <div v-bind:style="routerViewStyle">
       <template v-if="isIFrame">
-
         <transition appear
                     mode="out-in"
                     name="el-fade-in-linear">
@@ -13,13 +12,15 @@
                        v-bind:style="routerViewIframeStyle"></router-view>
         </transition>
       </template>
-      <template v-if="!isIFrame">
+      <template v-show="!isIFrame">
         <transition appear
                     mode="out-in"
                     name="el-fade-in-linear">
-          <router-view class="router-view bg-white q-pa-md"
-                       v-bind:key="$route.fullPath"
-                       v-bind:style="routerViewStyle"></router-view>
+          <keep-alive>
+            <router-view class="router-view bg-white q-pa-md"
+                         v-bind:key="$route.fullPath"
+                         v-bind:style="routerViewStyle"></router-view>
+          </keep-alive>
         </transition>
       </template>
     </div>

@@ -107,7 +107,7 @@
                      v-on:click="check(scope.row)">审核</el-button>
           <el-button type="text"
                      v-if="canShowDetail(scope.row)"
-                     v-on:click="detail(scope.row)">详情</el-button>
+                     v-on:click="detail(scope.row)">查看详情</el-button>
           <span v-if="!canShowCheck(scope.row) && !canShowDetail(scope.row)">——</span>
         </template>
       </el-table-column>
@@ -133,7 +133,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function(value, ENUM) {
+    getEnumLabel: function (value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
@@ -160,10 +160,7 @@ export default {
       endPickerOptions: {
         disabledDate: (time) => {
           if (this.model.startTime) {
-            return (
-              time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) ||
-              time.getTime() > Date.now()
-            )
+            return time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) || time.getTime() > Date.now()
           } else {
             return time.getTime() > Date.now()
           }
@@ -210,7 +207,7 @@ export default {
     },
 
     canShowDetail(row) {
-      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过
+      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过 || row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.已通过
     },
 
     check(row) {
@@ -220,7 +217,7 @@ export default {
     },
 
     detail(row) {
-      this.checkDialog.title = '审核详情'
+      this.checkDialog.title = '审核'
       this.checkDialog.visible = true
       this.checkDialog.data = row
     },

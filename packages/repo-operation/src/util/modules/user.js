@@ -3,6 +3,7 @@ import Peace from '@src/library'
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
 const USER_CD_KEY = 'user_cd_key'
+const ACCOUNT_MENU_LIST = 'account_menu_list'
 
 /**
  * 缓存用户 cdkey
@@ -31,6 +32,31 @@ export const removeUserCDKey = () => {
 }
 
 /**
+ * 缓存账户菜单信息
+ *
+ * @param {*} accountMenuList 账户菜单信息
+ * @returns
+ */
+export const setAccountMenuList = (accountMenuList) => {
+  return Peace.cache.localStorage.set(ACCOUNT_MENU_LIST, accountMenuList)
+}
+/**
+ * 获取账户菜单信息（缓存）
+ *
+ * @returns
+ */
+export const getAccountMenuList = () => {
+  return Peace.cache.localStorage.get(ACCOUNT_MENU_LIST)
+}
+/**
+ * 清空账户菜单信息（缓存）
+ *
+ */
+export const removeAccountMenuList = () => {
+  Peace.cache.localStorage.remove(ACCOUNT_MENU_LIST)
+}
+
+/**
  * 缓存用户信息
  *
  * @param {*} userInfo 用户信息
@@ -55,6 +81,7 @@ export const removeUserInfo = () => {
   Peace.cache.sessionStorage.clear()
   Peace.cache.localStorage.remove(USER_INFO)
   Peace.cache.localStorage.remove(USER_CD_KEY)
+  Peace.cache.localStorage.remove(ACCOUNT_MENU_LIST)
 }
 
 /**
@@ -86,6 +113,10 @@ export default {
   setUserInfo,
   getUserCDKey,
   removeUserCDKey,
+
+  setAccountMenuList,
+  getAccountMenuList,
+  removeAccountMenuList,
 
   setUserCDKey,
   getUserInfo,

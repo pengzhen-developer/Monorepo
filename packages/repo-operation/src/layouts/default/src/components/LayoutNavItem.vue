@@ -2,53 +2,30 @@
   <div>
     <!-- 存在多层节点 -->
     <template v-if="data.children">
-      <el-submenu v-bind:index="data.id"
-                  v-bind:router="data.id"
+      <el-submenu v-bind:index="data.id.toString()"
+                  v-bind:router="data.id.toString()"
                   v-bind:disabled="data.enable === false">
 
         <template slot="title">
-          <template v-if="data.iconType === 'Local Icons'">
-            <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-          </template>
-
-          <template v-else-if="data.iconType === 'Material Icons'">
-            <q-icon v-bind:name="data.menuIcon"
-                    class="q-mr-md text-h6 text-weight-bolder text-grey-7"></q-icon>
-          </template>
-
-          <template v-else-if="data.iconType === 'Element-UI Icons'">
-            <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-          </template>
-
+          <i v-bind:class="{[data.menuIcon]: true }"
+             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
           <label class="text-black text-subtitle2"
                  slot="title">{{ data.menuName }}</label>
         </template>
 
         <LayoutNavItem v-for="menu in data.children"
-                       v-bind:key="menu.id"
+                       v-bind:key="menu.id.toString()"
                        v-bind:data="menu"></LayoutNavItem>
       </el-submenu>
     </template>
 
     <!-- 只有一层节点 -->
     <template v-else>
-      <el-menu-item v-bind:key="data.id"
-                    v-bind:index="data.id"
-                    v-bind:router="data.id"
+      <el-menu-item v-bind:key="data.id.toString()"
+                    v-bind:index="data.id.toString()"
+                    v-bind:router="data.id.toString()"
                     v-bind:disabled="data.enable === false">
-        <template v-if="data.iconType === 'Local Icons'">
-          <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-        </template>
-
-        <template v-else-if="data.iconType === 'Material Icons'">
-          <q-icon v-bind:name="data.menuIcon"
-                  class="q-mr-md text-h6 text-weight-bolder text-grey-7"></q-icon>
-        </template>
-
-        <template v-else-if="data.iconType === 'Element-UI Icons'">
+        <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
         </template>

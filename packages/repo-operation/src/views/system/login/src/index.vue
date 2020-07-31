@@ -9,7 +9,7 @@
 
       <el-form v-bind:model="model"
                v-bind:rules="rules"
-               v-on:keyup.enter.native="login"
+               v-on:keyup.enter.native="doLogin"
                ref="form">
         <el-form-item class="q-mb-md"
                       prop="username">
@@ -45,7 +45,7 @@
                  label="登 录"
                  v-bind:ripple="false"
                  v-bind:loading="isLoading"
-                 v-on:click="login">
+                 v-on:click="doLogin">
           </q-btn>
         </el-form-item>
       </el-form>
@@ -87,21 +87,13 @@ export default {
   },
 
   methods: {
-    login() {
+    doLogin() {
       this.validateForm().then(() => {
         this.isLoading = true
 
-        Service.doLogin(this.model)
-          .then((res) => {
-            // 储存用户信息
-            Util.user.setUserInfo(res.data)
-
-            // 缓存
-            this.$store.commit('user/setUserInfo', res.data)
-
-            // 登陆后跳转
-            this.$router.push('/layout')
-          })
+        this.login()
+          .then(this.getAccountMenuList)
+          .then(this.redirectToHome)
           .finally(() => {
             this.isLoading = false
           })
@@ -116,6 +108,38 @@ export default {
           }
         })
       })
+    },
+
+    login() {
+      return Service.doLogin(this.model).then((res) => {
+        Util.user.setUserInfo(res.data)
+
+        return Promise.resolve()
+      })
+    },
+
+    getAccountMenuList() {
+      return Service.getAccountMenuList().then((res) => {
+        const regx1 = /.*{|}.*/g
+        const regx2 = /\{(.+?)\}/g
+
+        res.data.menuList.forEach((menu) => {
+          // 处理 env
+          const envKey = menu.menuPath?.replace(regx1, '')
+          menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
+
+          // 处理 route route
+          menu.menuRoute = '/' + menu.menuRoute
+        })
+
+        Util.user.setAccountMenuList(res.data)
+
+        return Promise.resolve()
+      })
+    },
+
+    redirectToHome() {
+      window.location.href = '/layout'
     }
   }
 }
