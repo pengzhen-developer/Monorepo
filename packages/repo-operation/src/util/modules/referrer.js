@@ -31,7 +31,7 @@ export const removeReferrer = () => {
 }
 
 /**
- * 重定向到来源站点
+ * 重定向到来源站点或者首页
  *
  * @param {string} [referrer=''] 重定向地址
  * @returns
@@ -40,7 +40,7 @@ export const replaceToReferrer = (referrer = getReferrer()) => {
   if (Peace.validate.isUrl(referrer)) {
     window.location.href = referrer
   } else {
-    window.location.href = process.env.VUE_APP_WEB_SITE
+    window.location.href = process.env.VUE_APP_RELEASE_FLODER_PATH
   }
 }
 
@@ -49,5 +49,5 @@ export default {
   getReferrer,
   removeReferrer,
 
-  replaceToReferrer,
+  replaceToReferrer
 }
