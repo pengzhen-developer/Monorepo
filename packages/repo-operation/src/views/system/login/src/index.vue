@@ -139,7 +139,7 @@ export default {
     },
 
     redirectToHome() {
-      window.location.href = '/layout'
+      Util.referrer.replaceToReferrer()
     }
   }
 }
