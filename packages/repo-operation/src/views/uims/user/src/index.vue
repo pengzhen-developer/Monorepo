@@ -9,17 +9,24 @@
         <el-input v-model.trim="model.account"></el-input>
       </el-form-item>
       <el-form-item label="用户姓名：">
-        <el-input v-model.trim="model.name"></el-input>
+        <el-input v-model.trim="model.realName"></el-input>
       </el-form-item>
       <el-form-item label="所在部门：">
-        <el-select v-model.trim="model.department"></el-select>
+        <el-select v-model.trim="model.sectorId">
+          <el-option v-for="item in options"
+                     :key="item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="创建日期：">
         <el-date-picker style="width: 220px;"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        v-bind:default-time="['00:00:00', '23:59:59']"
                         format="yyyy-MM-dd"
                         type="daterange"
-                        v-model.trim="model.startDate"></el-date-picker>
+                        v-model.trim="model.dateValue"></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
         <el-button style="width: 80px;"
@@ -32,34 +39,40 @@
     </el-form>
 
     <peace-table ref="table"
-                 pagination
-                 v-bind:data="[{},{}]">
+                 pagination>
       <el-table-column label="序号"
                        prop="index"
                        align="center"
-                       width="60px">
+                       width="80px">
       </el-table-column>
-      <el-table-column label="账号"></el-table-column>
-      <el-table-column label="所在部门"></el-table-column>
-      <el-table-column label="姓名"></el-table-column>
-      <el-table-column label="角色"></el-table-column>
+      <el-table-column label="账号"
+                       prop="account"></el-table-column>
+      <el-table-column label="所在部门"
+                       prop="sector"></el-table-column>
+      <el-table-column label="姓名"
+                       prop="realName"></el-table-column>
+      <el-table-column label="角色"
+                       prop="role"></el-table-column>
       <el-table-column label="账号状态"
                        align="center"
                        width="120px">
         <template slot-scope="scope">
           <span class="q-mr-sm">{{ scope.row.status ? '已启用' : '已禁用' }}</span>
-          <el-switch v-model="scope.row.status"></el-switch>
+          <el-switch v-model="scope.row.status"
+                     v-on:change="changeStatus(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="创建时间"
-                       prop="createTime"
+                       prop="createdTime"
                        align="center"
                        width="160px"></el-table-column>
       <el-table-column label="操作"
                        align="center"
                        width="80px">
-        <el-button type="text"
-                   v-on:click="showEdit">修改</el-button>
+        <template slot-scope="scope">
+          <el-button type="text"
+                     v-on:click="showEdit(scope.row)">修改</el-button>
+        </template>
       </el-table-column>
     </peace-table>
 
@@ -76,6 +89,8 @@
 
 <script>
 import UserModel from './components/UserModel'
+import Service from './service/index'
+import Peace from '@src/library'
 
 export default {
   name: 'User',
@@ -86,8 +101,15 @@ export default {
 
   data() {
     return {
-      model: {},
-
+      model: {
+        account: '',
+        realName: '',
+        sectorId: '',
+        startTime: '',
+        endTime: '',
+        dateValue: []
+      },
+      options: [],
       dialog: {
         title: '',
         visible: false,
@@ -96,15 +118,43 @@ export default {
     }
   },
 
+  computed: {
+    dateValueList() {
+      return this.model.dateValue
+    }
+  },
+
+  watch: {
+    dateValueList(newValue, oldValue) {
+      if (newValue != oldValue) {
+        const [startValue, endValue] = newValue
+        this.model.startTime = startValue
+        this.model.endTime = endValue
+      }
+    }
+  },
+
   mounted() {
     this.$nextTick().then(() => {
+      this.sectorDictionary()
       this.fetch()
     })
   },
 
   methods: {
+    sectorDictionary() {
+      const params = { tag: 'sector' }
+      Service.getQueryDictionary(params).then((res) => {
+        this.options = res.data.list || []
+      })
+    },
+
     fetch() {
-      // this.$refs.table.reloadData({ /** fetch, params */ })
+      const fetch = Service.getUseAccountList
+      const params = Object.assign({}, this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        return res
+      })
     },
 
     showAdd() {
@@ -113,12 +163,11 @@ export default {
       this.dialog.data = {}
     },
 
-    showEdit(row) {
+    showEdit(params) {
       this.dialog.title = '修改账号'
       this.dialog.visible = true
       this.dialog.data = {
-        ...row,
-        id: 'test'
+        ...params
       }
     },
 
@@ -131,6 +180,15 @@ export default {
       this.dialog.title = ''
       this.dialog.visible = false
       this.dialog.data = {}
+    },
+
+    changeStatus(row) {
+      const params = {
+        ...row
+      }
+      Service.editUseAccount(params).then((res) => {
+        Peace.util.success(res.msg)
+      })
     }
   }
 }

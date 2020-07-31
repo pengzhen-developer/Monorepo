@@ -8,7 +8,7 @@
                v-on:keyup.enter.native="save"
                v-on:submit.native.prevent>
 
-        <el-form-item v-bind:prop="model.id ? null : '__账号名称'">
+        <el-form-item v-bind:prop="model.id ? null : 'account'">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">账号名称</span>
@@ -16,10 +16,11 @@
           </div>
 
           <el-input v-bind:disabled="!!model.id"
-                    v-model.trim="model.__账号名称"></el-input>
+                    v-model.trim="model.account"
+                    maxlength="20"></el-input>
         </el-form-item>
 
-        <el-form-item prop="__密码">
+        <el-form-item prop="password">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">密码</span>
@@ -28,19 +29,21 @@
 
           <el-input type="password"
                     show-password
-                    v-model.trim="model.__密码"></el-input>
+                    maxlength="20"
+                    v-model.trim="model.password"></el-input>
         </el-form-item>
 
-        <el-form-item prop="__姓名">
+        <el-form-item prop="realName">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">姓名</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
-          <el-input v-model.trim="model.__姓名"></el-input>
+          <el-input v-model.trim="model.realName"
+                    maxlength="10"></el-input>
         </el-form-item>
 
-        <el-form-item prop="__角色">
+        <el-form-item prop="roleId">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">角色</span>
@@ -49,16 +52,16 @@
 
           <div class="flex">
             <el-select class=" col"
-                       v-model.trim="model.__角色">
-              <el-option v-for="item in source.__角色"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
+                       v-model.trim="model.roleId">
+              <el-option v-for="item in source.roles"
+                         v-bind:key="item.id"
+                         v-bind:label="item.name"
+                         v-bind:value="item.id"></el-option>
             </el-select>
           </div>
         </el-form-item>
 
-        <el-form-item prop="__所属部门">
+        <el-form-item prop="sectorId">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">所属部门</span>
@@ -67,23 +70,23 @@
 
           <div class="flex">
             <el-select class="col"
-                       v-model.trim="model.__所属部门">
-              <el-option v-for="item in source.__所属部门"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
+                       v-model.trim="model.sectorId">
+              <el-option v-for="item in source.options"
+                         v-bind:key="item.id"
+                         v-bind:label="item.name"
+                         v-bind:value="item.id"></el-option>
             </el-select>
           </div>
         </el-form-item>
 
-        <el-form-item prop="__账号状态">
+        <el-form-item prop="status">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">账号状态</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
 
-          <el-radio-group v-model="model.__账号状态">
+          <el-radio-group v-model="model.status">
             <el-radio v-bind:label="true">启用</el-radio>
             <el-radio v-bind:label="false">禁用</el-radio>
           </el-radio-group>
@@ -102,6 +105,8 @@
 </template>
 
 <script>
+import Service from '../service/index'
+import Peace from '@src/library'
 export default {
   props: {
     data: Object
@@ -111,32 +116,55 @@ export default {
     return {
       model: {
         id: null,
-        __账号名称: '',
-        __密码: '',
-        __姓名: '',
-        __角色: '',
-        __所属部门: '',
-        __账号状态: true
+        account: '',
+        password: '',
+        realName: '',
+        roleId: '',
+        sectorId: '',
+        status: true
       },
 
-      rules: {
-        __账号名称: [{ required: true, message: '请输入账号名称', trigger: 'blur' }],
-        __密码: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        __姓名: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        __角色: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        __所属部门: [{ required: true, message: '请选择部门', trigger: 'change' }],
-        __账号状态: [{ required: true, message: '请选择状态', trigger: 'change' }]
+      rulesAdd: {
+        account: [{ required: true, message: '请输入账号名称', trigger: 'blur' }],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        ],
+        realName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        sectorId: [{ required: true, message: '请选择部门', trigger: 'change' }],
+        status: [{ required: true, message: '请选择状态', trigger: 'change' }]
+      },
+
+      rulesEdit: {
+        account: [{ required: true, message: '请输入账号名称', trigger: 'blur' }],
+        password: [
+          { required: false, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        ],
+        realName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        sectorId: [{ required: true, message: '请选择部门', trigger: 'change' }],
+        status: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
 
       source: {
-        __角色: [{ label: '角色', value: 1 }],
-        __所属部门: [{ label: '部门', value: 1 }]
+        roles: [],
+        options: []
       }
     }
   },
 
   created() {
+    this.sectorDictionary()
+    this.roleDictionary()
     this.setPropsToModel()
+  },
+
+  computed: {
+    rules() {
+      return Peace.validate.isEmpty(this.model.id) ? this.rulesAdd : this.rulesEdit
+    }
   },
 
   methods: {
@@ -144,17 +172,29 @@ export default {
       this.model = Object.assign({}, this.model, this.data)
     },
 
+    sectorDictionary() {
+      const params = { tag: 'sector' }
+      Service.getQueryDictionary(params).then((res) => {
+        this.source.options = res.data.list || []
+      })
+    },
+
+    roleDictionary() {
+      const params = { tag: 'role' }
+      Service.getQueryDictionary(params).then((res) => {
+        this.source.roles = res.data.list || []
+      })
+    },
+
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          // const request = this.model.id ? Service.edit : Service.add
-          // const params = this.model
-          // request(params).then((res) => {
-          //   Peace.util.success(res.msg)
-          //   this.$emit('save')
-          // })
-
-          this.$emit('save')
+          const request = Peace.validate.isEmpty(this.model.id) ? Service.addUseAccount : Service.editUseAccount
+          const params = this.model
+          request(params).then((res) => {
+            Peace.util.success(res.msg)
+            this.$emit('save')
+          })
         } else {
           return false
         }
