@@ -7,9 +7,9 @@
       </div>
       <div class="item-content">
         <div class="item-child">
-          <p class="child-key">用户名</p>
+          <p class="child-key">登录账号</p>
           <p>：</p>
-          <p class="child-value">{{ accountInfo.username }}</p>
+          <p class="child-value">{{ accountInfo.tel }}</p>
         </div>
         <div class="item-child">
           <p class="child-key">联系人</p>
@@ -58,16 +58,16 @@
           <p>：</p>
           <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
         </div>
+        <div class="item-child">
+          <p class="child-key">详细地址</p>
+          <p>：</p>
+          <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
+        </div>
         <div class="item-child"
              v-if="hosInfo.level">
           <p class="child-key">医院等级</p>
           <p>：</p>
           <p class="child-value">{{ hosInfo.level }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">详细地址</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
         </div>
         <div class="item-child-line"
              v-if="canShowCertificate">
@@ -115,12 +115,7 @@ export default {
   },
   computed: {
     canShowCertificate() {
-      return this.hosInfo?.license ||
-        this.hosInfo?.structureLicense ||
-        this.hosInfo?.certificate ||
-        this.hosInfo?.hospitalLicense
-        ? true
-        : false
+      return this.hosInfo?.license || this.hosInfo?.structureLicense || this.hosInfo?.certificate || this.hosInfo?.hospitalLicense ? true : false
     }
   },
   methods: {
@@ -167,19 +162,17 @@ p {
   font-size: 16px;
 }
 .item-content {
-  margin: 10px 14px;
+  margin: 0px 14px 10px 14px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-direction: column;
 }
 .item-child {
-  width: 33%;
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
 }
 .item-child-line {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
 }
 .child-key {
@@ -210,5 +203,7 @@ p {
   width: 130px;
   height: 130px;
   margin-right: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(238, 238, 238, 1);
 }
 </style>

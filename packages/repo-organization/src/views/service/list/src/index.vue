@@ -30,7 +30,6 @@
     </el-form>
 
     <div>
-
       <PeaceTable ref="table"
                   style="width: 100%"
                   pagination
@@ -39,18 +38,15 @@
                          fixed
                          align="center"
                          label="序号"
-                         width="50">
+                         width="60">
         </el-table-column>
         <el-table-column prop="serviceName"
-                         align="center"
                          label="服务名称">
         </el-table-column>
         <el-table-column prop="applyTime"
-                         align="center"
                          label="提交时间">
         </el-table-column>
-        <el-table-column label="状态"
-                         align="center">
+        <el-table-column label="状态">
           <template slot-scope="scope">
             <div class="status-item">
               <div v-bind:class="getClassForCode(scope.row.checkStatus)"></div>
@@ -62,30 +58,37 @@
           </template>
         </el-table-column>
         <el-table-column prop="checkTime"
-                         align="center"
                          label="审核时间">
         </el-table-column>
-        <el-table-column width="300"
+        <el-table-column min-width="180px"
                          align="center"
-                         label="备注">
+                         fixed="right"
+                         label="操作">
           <template slot-scope="scope">
-            <span>
-              {{ getReason(scope.row.failureReason) }}
-            </span>
+            <el-button type="text"
+                       v-on:click="toDetail(scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
     </div>
-
+    <el-dialog v-if="detailDialog.visible"
+               width="344px"
+               v-bind:visible.sync="detailDialog.visible"
+               title="申请开通详情">
+      <ServiceDetail v-bind:data="detailDialog.data"></ServiceDetail>
+    </el-dialog>
   </div>
 
 </template>
 
 <script>
 import Service from './service'
-import Peace from '@src/library'
+import ServiceDetail from './components/ServiceDetail'
 
 export default {
+  components: {
+    ServiceDetail
+  },
   data() {
     return {
       model: {
@@ -94,7 +97,6 @@ export default {
         endTime: '',
         checkStatus: ''
       },
-
       options: [
         {
           value: '1',
@@ -111,7 +113,11 @@ export default {
           label: '已通过',
           class: 'statusColor3'
         }
-      ]
+      ],
+      detailDialog: {
+        visible: false,
+        data: {}
+      }
     }
   },
 
@@ -140,11 +146,9 @@ export default {
     getClassForCode(code) {
       return this.options.find((item) => item.value == code).class
     },
-    getReason(reason) {
-      if (Peace.validate.isEmpty(reason)) {
-        return '—'
-      }
-      return reason
+    toDetail(row) {
+      this.detailDialog.visible = true
+      this.detailDialog.data = row
     }
   }
 }
@@ -153,7 +157,6 @@ export default {
 <style scoped>
 .status-item {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
