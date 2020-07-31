@@ -10,7 +10,7 @@ import 'dragon-echarts-wordcloud'
 
 // 随机颜色
 let randcolor = () => {
-  let a = Math.ceil(Math.random() * (10 - 3) + 3) / 10
+  let a = Math.ceil(Math.random() * (10 - 2) + 2) / 10
   return `rgba(2, 217, 253, ${a})`
 }
 
@@ -52,10 +52,10 @@ export default {
         series: [
           {
             type: 'wordCloud',
-            gridSize: 20,
-            sizeRange: [12, 50],
+            gridSize: 24,
+            sizeRange: [12, 20],
             rotationRange: [0, 0],
-            shape: 'rect',
+            shape: 'circle ',
             textStyle: {
               normal: {
                 color: () => {

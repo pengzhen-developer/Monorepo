@@ -6,13 +6,15 @@
         <div class="col-4"
              v-for="item in list"
              v-bind:key="item.id">
-          <div class="q-pa-sm row">
-            <el-image class="q-mr-md data-icon"
-                      v-bind:src="item.icon"> </el-image>
+          <div class="q-pa-sm row border-out">
+            <div class="q-pa-sm row border-inner">
+              <el-image class="q-mr-md data-icon"
+                        v-bind:src="item.icon"> </el-image>
 
-            <div class="flex column justify-center">
-              <div>{{ item.title }}</div>
-              <div>{{ item.count }}</div>
+              <div class="flex column justify-center">
+                <div>{{ item.title }}</div>
+                <div>{{ item.count }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -123,7 +125,12 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            return params.name + ' : ' + params.value[2]
+            const { name, value } = params
+            return `
+                    ${name} <br/>
+                    云仓：${value[2]} <br/>
+                    药店：${value[3]} <br/>
+                `
           }
         },
         geo: {
@@ -181,6 +188,18 @@ export default {
 .data-icon {
   width: 40px;
   height: 40px;
+}
+
+.border-out {
+  clip-path: polygon(0% 8px, 8px 0%, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(0100% - 8px));
+  background: #1a3f81;
+  padding: 1px;
+}
+.border-inner {
+  padding: 4% 6%;
+  clip-path: polygon(0% 8px, 8px 0%, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(0100% - 8px));
+  background: #000a3b;
+  flex: 1;
 }
 
 .echarts {

@@ -7,7 +7,7 @@
     <div class="flex column full-width full-height q-pa-sm q-px-md">
 
       <div class="screen-header q-pa-md">
-        <div class="text-center screen-title">智药云数据大屏</div>
+        <div class="text-center screen-title gradient-title">智药云数据大屏</div>
       </div>
 
       <div class="col">
@@ -16,29 +16,33 @@
           <div class="col-3">
             <div class="flex column q-col-gutter-y-md full-width full-height">
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日处方量统计</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日处方量统计</span>
                   <ScreenPrescriptionCountChart :data="preCountOfSevenDays"
                                                 slot="default"></ScreenPrescriptionCountChart>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日机构订单排名</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日机构订单排名</span>
                   <ScreenOrderList :data="orderSortOfSevenDays"
                                    slot="default"></ScreenOrderList>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日机构处方排名</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日机构处方排名</span>
                   <ScreenHosptailList :data="PreSortOfSevenDays"
                                       slot="default"></ScreenHosptailList>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日订单完成率</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日订单完成率</span>
                   <ScreenPrescriptionComplite :data="orderRateOfSevenDays"
                                               slot="default"></ScreenPrescriptionComplite>
                 </BoxCard>
@@ -66,29 +70,33 @@
           <div class="col-3">
             <div class="flex column q-col-gutter-y-md full-width full-height">
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日处方诊断关键字</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日处方诊断关键字</span>
                   <WordcloudChart :data="PreDiagnosisKeyOfSevenDays"
                                   slot="default"></WordcloudChart>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近7日订单价格区间</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近7日订单价格区间</span>
                   <OrderPriceChart :data="orderPriceOfSevenDays"
                                    slot="default"></OrderPriceChart>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近半年商品数量排名</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近半年商品数量排名</span>
                   <ScreenGoodsRanking :data="goodsOfHalfYear"
                                       slot="default"></ScreenGoodsRanking>
                 </BoxCard>
               </div>
               <div class="col-3">
-                <BoxCard class="full-width full-height q-pa-sm">
-                  <span slot="title">近半年订单销售额</span>
+                <BoxCard class="full-width full-height q-pa-md">
+                  <span slot="title"
+                        class="gradient-title">近半年订单销售额</span>
                   <OrderSalesChart :data="orderSaleOfHalfYear"
                                    slot="default"></OrderSalesChart>
                 </BoxCard>
@@ -327,7 +335,7 @@ export default {
         .then((res) => {
           let data = res.data.list.map((item) => {
             return {
-              name: item.name.length > 6 ? item.name.substring(0, 6) + '...' : item.name,
+              name: item.name.length > 8 ? item.name.substring(0, 8) + '...' : item.name,
               value: item.count
             }
           })
@@ -348,6 +356,7 @@ export default {
 .screen-header {
   background: url('../assets/img/sreen_title_bg.png') no-repeat;
   background-size: 100% 100%;
+  padding: 1%;
 }
 .screen-title {
   margin: 0 auto;
@@ -355,8 +364,11 @@ export default {
   font-weight: bold;
   color: rgba(1, 196, 247, 1);
   line-height: 28px;
-  // background: linear-gradient(0deg, rgba(4, 119, 213, 1) 0%, rgba(1, 217, 254, 1) 100%);
+}
+
+.gradient-title {
+  background: linear-gradient(0deg, rgba(4, 119, 213, 1) 0%, rgba(1, 217, 254, 1) 50%);
   -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 </style>

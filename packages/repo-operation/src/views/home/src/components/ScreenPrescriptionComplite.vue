@@ -75,7 +75,7 @@ export default {
             name: '',
             type: 'pie',
             clockWise: false,
-            radius: [34, 36],
+            radius: [30, 32],
             hoverAnimation: false,
             center: ['50%', '40%'],
             labelLine: {
@@ -147,7 +147,7 @@ export default {
             name: '',
             type: 'pie',
             clockWise: false,
-            radius: [34, 36],
+            radius: [30, 32],
             hoverAnimation: false,
             center: ['50%', '40%'],
             labelLine: {
