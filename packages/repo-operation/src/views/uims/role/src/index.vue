@@ -119,11 +119,15 @@ export default {
     },
 
     changeStatus(row) {
-      Service.editRole(row).then((res) => {
-        Peace.util.success(res.msg)
+      Service.editRoleStatus(row)
+        .then((res) => {
+          Peace.util.success(res.msg)
 
-        this.fetch()
-      })
+          this.fetch()
+        })
+        .catch(() => {
+          row.status = !row.status
+        })
     },
 
     save() {

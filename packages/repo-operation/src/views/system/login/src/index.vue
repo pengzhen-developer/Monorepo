@@ -125,6 +125,7 @@ export default {
 
         res.data.menuList.forEach((menu) => {
           // 处理 env
+          // {env} => process.env.env
           const envKey = menu.menuPath?.replace(regx1, '')
           menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
 

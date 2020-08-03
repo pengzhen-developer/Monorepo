@@ -62,6 +62,26 @@ export default {
   },
 
   /**
+   * 编辑角色状态
+   *
+   * @param {*} params
+   * @returns
+   */
+  editRoleStatus(params) {
+    const isMock = false
+
+    const apiPath = 'operate/permission/editRoleStatus'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 获取菜单列表
    *
    * @param {*} params
