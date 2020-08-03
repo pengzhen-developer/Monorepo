@@ -324,6 +324,7 @@ export default {
   }
   .el-input-group__prepend {
     background: #fff;
+    border: none;
   }
 
   .el-form-item__error {
