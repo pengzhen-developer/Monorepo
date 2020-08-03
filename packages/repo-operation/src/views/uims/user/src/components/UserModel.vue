@@ -51,7 +51,8 @@
           </div>
 
           <div class="flex">
-            <el-select class=" col"
+            <el-select class="col"
+                       clearable
                        v-model.trim="model.roleId">
               <el-option v-for="item in source.roles"
                          v-bind:key="item.id"
@@ -70,6 +71,7 @@
 
           <div class="flex">
             <el-select class="col"
+                       clearable
                        v-model.trim="model.sectorId">
               <el-option v-for="item in source.options"
                          v-bind:key="item.id"

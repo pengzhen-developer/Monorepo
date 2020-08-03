@@ -12,7 +12,8 @@
           <div class="info-content">
             <el-form-item label="机构类型"
                           prop="role">
-              <el-select v-model="model.role"
+              <el-select clearable
+                         v-model="model.role"
                          placeholder="请选择"
                          style="width: 100%;"
                          class="org-type"
@@ -45,7 +46,8 @@
                 <el-form-item class="inline-item"
                               label-width="0px"
                               prop="hospitalLabel">
-                  <el-select v-model="model.hospitalLabel"
+                  <el-select clearable
+                             v-model="model.hospitalLabel"
                              placeholder="请选择"
                              style="width: 100%;">
                     <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_LABEL"
@@ -57,7 +59,8 @@
                 <el-form-item class="inline-item"
                               label-width="0px"
                               prop="hospitalTypeLabel">
-                  <el-select v-model="model.hospitalTypeLabel"
+                  <el-select clearable
+                             v-model="model.hospitalTypeLabel"
                              placeholder="请选择"
                              style="width: 100%;">
                     <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_TYPE_LABEL"
@@ -105,7 +108,8 @@
             <el-form-item label="医院等级"
                           prop="hospitalLevel"
                           v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
-              <el-select v-model="model.hospitalLevel"
+              <el-select clearable
+                         v-model="model.hospitalLevel"
                          placeholder="请选择"
                          style="width: 100%;">
                 <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_LEVEL"

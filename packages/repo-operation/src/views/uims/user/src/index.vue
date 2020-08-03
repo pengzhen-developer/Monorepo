@@ -12,7 +12,8 @@
         <el-input v-model.trim="model.realName"></el-input>
       </el-form-item>
       <el-form-item label="所在部门：">
-        <el-select v-model.trim="model.sectorId">
+        <el-select clearable
+                   v-model.trim="model.sectorId">
           <el-option v-for="item in options"
                      :key="item.id"
                      :label="item.name"
