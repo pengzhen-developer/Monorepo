@@ -51,7 +51,8 @@ export default {
         backgroundColor: 'transparent',
         legend: {
           orient: 'vertical',
-          right: 6,
+          top: 'middle',
+          right: 8,
           height: 70,
           itemWidth: 10,
           itemHeight: 10,

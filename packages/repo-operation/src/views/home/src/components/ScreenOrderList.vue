@@ -61,7 +61,7 @@ export default {
               fontSize: 10
             },
             interval: 0,
-            rotate: 50,
+            // rotate: 50,
             formatter: (value) => {
               return value.length > 4 ? value.substring(0, 4) + '...' : value
             }

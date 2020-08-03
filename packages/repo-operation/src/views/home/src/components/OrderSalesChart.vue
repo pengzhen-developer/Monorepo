@@ -42,7 +42,6 @@ export default {
             type: 'none'
           },
           formatter: function (params) {
-            console.log(params)
             return (
               params[0].name +
               '月<br/>' +

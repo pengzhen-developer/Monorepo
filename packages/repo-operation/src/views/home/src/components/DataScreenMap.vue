@@ -2,7 +2,7 @@
   <div class="column full-width full-height">
 
     <div class="q-pa-xs">
-      <div class="row q-col-gutter-md">
+      <div class="row q-col-gutter-sm">
         <div class="col-4"
              v-for="item in list"
              v-bind:key="item.id">
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="col full-width">
+    <div class="col full-width q-pa-sm">
       <v-chart :options="polar"
                :autoresize="true" />
     </div>
