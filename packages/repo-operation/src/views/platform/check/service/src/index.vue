@@ -217,7 +217,7 @@ export default {
     },
 
     detail(row) {
-      this.checkDialog.title = '审核'
+      this.checkDialog.title = '审核详情'
       this.checkDialog.visible = true
       this.checkDialog.data = row
     },
