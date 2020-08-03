@@ -62,5 +62,12 @@
 export default {}
 </script>
 
-<style>
+<style scoped>
+.about-lists .content-item span {
+  color: var(--q-color-primary-light-3);
+}
+.about-lists .content-item {
+  border-left: 1px solid #deebf5;
+  border-bottom: 1px solid #deebf5;
+}
 </style>

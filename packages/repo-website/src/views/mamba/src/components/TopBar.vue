@@ -6,15 +6,18 @@
         <div class=" role">
           <el-button class="role-content"
                      @click="gotoPharmacistWorkbench">
-            <i class="role-img zyy-icon zyy-icon_yaoshi"></i>
-            <span style="line-height:nomal;">我是药师</span>
+            <div>
+              <i class="role-img zyy-icon zyy-icon_yaoshi"></i>
+              <span style="line-height:nomal;">我是药师</span>
+            </div>
 
           </el-button>
           <el-button class="role-content"
                      @click="gotoDoctorWorkbench">
-            <i class="role-img zyy-icon zyy-icon_yisheng"></i>
-
-            <span style="line-height:nomal;">我是医生</span>
+            <div>
+              <i class="role-img zyy-icon zyy-icon_yisheng"></i>
+              <span style="line-height:nomal;">我是医生</span>
+            </div>
           </el-button>
         </div>
 
@@ -38,7 +41,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .role {
   display: flex;
 }
@@ -53,6 +56,11 @@ export default {
   align-items: center;
   width: 140px;
   border-radius: 30px;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
 }
 .role-img {
   margin-right: 5px;

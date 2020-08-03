@@ -64,16 +64,19 @@ section {
   padding-bottom: 30px;
 }
 
+.section-title h2 {
+  color: #012e33;
+}
+
 .footer-bottom {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 .line {
-  width: 1px;
   margin: 0px 120px;
   height: 210px;
-  background: #d9d9d9;
+  border: #d9d9d9 1px dashed;
 }
 .bottom-item {
   font-size: 24px;

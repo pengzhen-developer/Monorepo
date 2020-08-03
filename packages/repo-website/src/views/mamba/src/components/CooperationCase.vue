@@ -79,5 +79,11 @@
 export default {}
 </script>
 
-<style>
+<style scoped>
+.services .title::after {
+  background: var(--q-color-primary);
+}
+.section-title h2 {
+  color: #012e33;
+}
 </style>

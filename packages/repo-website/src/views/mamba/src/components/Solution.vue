@@ -91,4 +91,8 @@ export default {}
 .img {
   width: 100%;
 }
+
+.section-title h2 {
+  color: #012e33;
+}
 </style>

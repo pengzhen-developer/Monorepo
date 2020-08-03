@@ -27,7 +27,7 @@
           </el-dropdown>
         </template>
         <template v-else>
-          <div>
+          <div class="login-button">
             <el-button class="button"
                        type="primary"
                        @click="goLogin"
@@ -131,6 +131,15 @@ export default {
   margin-left: 30px;
   line-height: 45px;
 }
+
+.el-dropdown {
+  float: right;
+}
+
+.login-button {
+  float: right;
+}
+
 .button {
   height: 30px;
   width: 80px;
@@ -140,5 +149,14 @@ button:active {
 }
 .console-btn {
   width: 80px;
+}
+
+.nav-menu a:hover,
+.nav-menu .active > a,
+.nav-menu li:hover > a {
+  color: var(--q-color-primary);
+}
+.nav-menu a {
+  color: var(--q-color-grey-333);
 }
 </style>
