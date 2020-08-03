@@ -186,9 +186,13 @@ export default {
       const params = {
         ...row
       }
-      Service.editUseAccount(params).then((res) => {
-        Peace.util.success(res.msg)
-      })
+      Service.editUseAccount(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+        })
+        .catch(() => {
+          row.status = !row.status
+        })
     }
   }
 }

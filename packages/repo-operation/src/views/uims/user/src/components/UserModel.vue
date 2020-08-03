@@ -173,14 +173,14 @@ export default {
     },
 
     sectorDictionary() {
-      const params = { tag: 'sector' }
+      const params = Peace.validate.isEmpty(this.data.id) ? { tag: 'sector' } : { tag: 'sector', adminId: this.data.id }
       Service.getQueryDictionary(params).then((res) => {
         this.source.options = res.data.list || []
       })
     },
 
     roleDictionary() {
-      const params = { tag: 'role' }
+      const params = Peace.validate.isEmpty(this.data.id) ? { tag: 'role' } : { tag: 'role', adminId: this.data.id }
       Service.getQueryDictionary(params).then((res) => {
         this.source.roles = res.data.list || []
       })

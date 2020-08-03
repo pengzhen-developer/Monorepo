@@ -2,7 +2,7 @@
   <div class="card-style q-pa-md">
     <div class="card-title">待办事项</div>
     <div class="list-container">
-      <p class="text-style"
+      <p class="text-style cursor-pointer"
          v-for="(item,index) in dataList"
          v-bind:key="index">
         {{ item }}
