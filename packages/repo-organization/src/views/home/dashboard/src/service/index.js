@@ -55,5 +55,23 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 检查该角色是否能开通此服务V0.4.0
+   *
+   * @param {*} params
+   */
+  checkServiceType(params) {
+    const isMock = false
+
+    const apiPath = 'console/Service/checkServiceType'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
