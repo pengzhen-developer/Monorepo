@@ -127,15 +127,22 @@ export default {
       },
 
       rulesAdd: {
-        account: [{ required: true, message: '请输入账号名称', trigger: 'blur' }],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+        account: [
+          { required: true, message: '请输入账号名称' },
+          { pattern: Peace.validate.pattern.username, message: '支持输入字母、数字，6-20位字符' }
         ],
-        realName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        sectorId: [{ required: true, message: '请选择部门', trigger: 'change' }],
-        status: [{ required: true, message: '请选择状态', trigger: 'change' }]
+        password: [
+          { required: true, message: '请输入密码' },
+          { pattern: Peace.validate.pattern.password, message: '支持输入字母、数字、下划线，6-20位字符' }
+        ],
+        realName: [
+          { required: true, message: '请输入姓名' },
+          { pattern: Peace.validate.pattern.chinese, message: '仅支持输入中文' },
+          { max: 10, message: '最长限制10个字符' }
+        ],
+        roleId: [{ required: true, message: '请选择角色' }],
+        sectorId: [{ required: true, message: '请选择部门' }],
+        status: [{ required: true, message: '请选择状态' }]
       },
 
       rulesEdit: {

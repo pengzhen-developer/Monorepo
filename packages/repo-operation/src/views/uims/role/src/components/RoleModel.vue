@@ -116,7 +116,7 @@ export default {
       rules: {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
-          { pattern: Peace.validate.pattern.chinese, message: '角色名称仅支持输入中文', trigger: 'blur' }
+          { pattern: Peace.validate.pattern.chinese, message: '仅支持输入中文', trigger: 'blur' }
         ]
       }
     }
