@@ -119,11 +119,19 @@ export default {
     },
 
     changeStatus(row) {
-      Service.editRoleStatus(row)
-        .then((res) => {
-          Peace.util.success(res.msg)
+      const message = row.status ? '确定启用吗？' : '确定禁用吗？'
 
-          this.fetch()
+      this.$confirm(message, '提示')
+        .then(() => {
+          Service.editRoleStatus(row)
+            .then((res) => {
+              Peace.util.success(res.msg)
+
+              this.fetch()
+            })
+            .catch(() => {
+              row.status = !row.status
+            })
         })
         .catch(() => {
           row.status = !row.status
