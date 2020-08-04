@@ -359,42 +359,42 @@ export default [
     iconType: null,
     enable: true,
     closable: true
-  },
-  /**设置 */
-  {
-    id: '3-11',
-    parentId: null,
-    menuRoute: null,
-    menuRouteName: null,
-    menuName: '设置',
-    menuPath: null,
-    menuIcon: 'settings',
-    iconType: 'Material Icons',
-    enable: true,
-    closable: true
-  },
-  {
-    id: '3-11-1',
-    parentId: '3-11',
-    menuRoute: 'setup/config',
-    menuRouteName: 'setup/config',
-    menuName: '服务设置',
-    menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'setup/config',
-    menuIcon: null,
-    iconType: null,
-    enable: true,
-    closable: true
-  },
-  {
-    id: '3-11-2',
-    parentId: '3-11',
-    menuRoute: 'setup/index',
-    menuRouteName: 'setup/index',
-    menuName: '系统设置',
-    menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'setup/index',
-    menuIcon: null,
-    iconType: null,
-    enable: true,
-    closable: true
   }
+  // /**设置 */
+  // {
+  //   id: '3-11',
+  //   parentId: null,
+  //   menuRoute: null,
+  //   menuRouteName: null,
+  //   menuName: '设置',
+  //   menuPath: null,
+  //   menuIcon: 'settings',
+  //   iconType: 'Material Icons',
+  //   enable: true,
+  //   closable: true
+  // }
+  // {
+  //   id: '3-11-1',
+  //   parentId: '3-11',
+  //   menuRoute: 'setup/config',
+  //   menuRouteName: 'setup/config',
+  //   menuName: '服务设置',
+  //   menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'setup/config',
+  //   menuIcon: null,
+  //   iconType: null,
+  //   enable: true,
+  //   closable: true
+  // }
+  // {
+  //   id: '3-11-2',
+  //   parentId: '3-11',
+  //   menuRoute: 'setup/index',
+  //   menuRouteName: 'setup/index',
+  //   menuName: '系统设置',
+  //   menuPath: process.env.VUE_APP_ORGANIZATION_SITE + 'setup/index',
+  //   menuIcon: null,
+  //   iconType: null,
+  //   enable: true,
+  //   closable: true
+  // }
 ]

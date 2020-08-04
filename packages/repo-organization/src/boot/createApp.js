@@ -25,7 +25,7 @@ export default async function(configuration) {
   const serviceId = Peace.cache.localStorage.get('serviceId')
   const params = { serviceId }
   if (serviceId) {
-    Peace.cache.localStorage.remove('serviceId')
+    // Peace.cache.localStorage.remove('serviceId')
 
     const configurationByService = await getConfiguration(params)
 
