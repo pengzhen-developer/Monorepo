@@ -23,20 +23,16 @@ const getConfiguration = (params) => {
  */
 export default async function(configuration) {
   const serviceId = Peace.cache.localStorage.get('serviceId')
-  const isSecondSystem = Peace.util.queryUrlParam('configuration') ? true : false
+  const isSecondSystem = window.sessionStorage.getItem('ORIGINAL_HREF') ? true : false
   const params = { serviceId }
   if (serviceId && isSecondSystem) {
-    // Peace.cache.localStorage.remove('serviceId')
-
     const configurationByService = await getConfiguration(params)
 
     const reg = /[^{}]*{(.*)}[^}]*/
     configurationByService.data.menuArr.map((value) => {
-      console.log(value)
       const route = value.menuPath && value.menuPath.replace(reg, '$1')
       value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
       value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
-      console.log(value)
     })
     configuration.routes.layoutNavMenu = configurationByService.data.menuArr
   }
