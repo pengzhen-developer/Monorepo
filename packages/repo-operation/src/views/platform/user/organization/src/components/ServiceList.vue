@@ -51,7 +51,7 @@
               <div v-if="item.serviceContentArr && item.serviceContentArr.length > 0"
                    class="row q-mb-xs">
                 <span class="level-title-style">服务内容：</span>
-                <el-checkbox v-for="service in serviceAccessModeArr1(item.serviceContentArr)"
+                <el-checkbox v-for="service in serviceAccessModeArr(item.serviceContentArr)"
                              size="mini"
                              v-model="service.checked"
                              :true-label="1"
@@ -159,12 +159,6 @@ export default {
     serviceAccessModeArr(list) {
       const tmp = list.filter(function (item) {
         return item.checked === 1
-      })
-      return tmp
-    },
-    serviceAccessModeArr1(list) {
-      const tmp = list.filter(function (item) {
-        return item.checked !== 5
       })
       return tmp
     },
