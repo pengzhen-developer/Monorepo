@@ -47,7 +47,6 @@
                node-key="DrugStoreKeyId"
                ref="tree"
                show-checkbox
-               v-bind:check-strictly="true"
                v-bind:data="storeList"
                v-bind:default-checked-keys="checkList"
                v-bind:default-expand-all="false"
@@ -169,18 +168,22 @@ export default {
         const pharmacy = new IPharmacyModel()
 
         // set pharmacy
-        pharmacy.RuleFlag = this.pharmacyRule.value
-        pharmacy.ConfType = this.pharmacyConf.value
-        pharmacy.CustCode = ''
-        pharmacy.CustomerType = 10
-        pharmacy.DrugStoreId = node.DrugStoreKeyId
-        pharmacy.DisplayName = node.Name || node.SonName
-        pharmacy.DisplayImg = node.DrugStoreLogo
+        // 只需要加载子结构
 
-        this.data.push(pharmacy)
-        this.pharmacyList.push(pharmacy)
+        if (node.SonName) {
+          pharmacy.RuleFlag = this.pharmacyRule.value
+          pharmacy.ConfType = this.pharmacyConf.value
+          pharmacy.CustCode = ''
+          pharmacy.CustomerType = 10
+          pharmacy.DrugStoreId = node.DrugStoreKeyId
+          pharmacy.DisplayName = node.SonName
+          pharmacy.DisplayImg = node.DrugStoreLogo
 
-        this.checkList.push(pharmacy.DrugStoreId)
+          this.data.push(pharmacy)
+          this.pharmacyList.push(pharmacy)
+
+          this.checkList.push(pharmacy.DrugStoreId)
+        }
       })
 
       this.dialog.visible = false
