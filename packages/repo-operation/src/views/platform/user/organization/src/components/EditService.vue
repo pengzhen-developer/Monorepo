@@ -31,7 +31,7 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="服务类容"
+      <el-form-item label="服务内容"
                     v-if="data.serviceType === 3 && showServiceSelect"
                     prop="serviceContent">
         <el-radio-group v-model="model.radioServiceContent">
@@ -41,7 +41,7 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="服务类容"
+      <el-form-item label="服务内容"
                     v-else-if="data.serviceType != 3 && showServiceSelect"
                     prop="serviceContent">
         <el-checkbox-group v-model="model.serviceContent">
