@@ -192,28 +192,28 @@ export default {
   text-align-last: justify;
 }
 
-::v-deep .el-table th > .cell {
+/deep/ .el-table th > .cell {
   font-weight: 500;
   color: #999;
   font-size: 12px;
 }
 
-::v-deep .el-table td,
-::v-deep .el-table th.is-leaf {
+/deep/ .el-table td,
+/deep/ .el-table th.is-leaf {
   border: 0;
 }
 
-::v-deep .el-table--enable-row-hover .el-table__body tr:hover > td {
+/deep/ .el-table--enable-row-hover .el-table__body tr:hover > td {
   background: #fff;
 }
 
-::v-deep .el-table .cell {
+/deep/ .el-table .cell {
   font-weight: 700;
 }
 
-::v-deep .el-table--border::after,
-::v-deep .el-table--group::after,
-::v-deep .el-table::before {
+/deep/ .el-table--border::after,
+/deep/ .el-table--group::after,
+/deep/ .el-table::before {
   background: transparent;
 }
 </style>

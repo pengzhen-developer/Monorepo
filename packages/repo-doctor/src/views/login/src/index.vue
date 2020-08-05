@@ -213,10 +213,10 @@ export default {
 
 <style lang="scss" scoped>
 /* Change the white to any color ;) */
-::v-deep input:-webkit-autofill,
-::v-deep input:-webkit-autofill:hover,
-::v-deep input:-webkit-autofill:focus,
-::v-deep input:-webkit-autofill:active {
+/deep/ input:-webkit-autofill,
+/deep/ input:-webkit-autofill:hover,
+/deep/ input:-webkit-autofill:focus,
+/deep/ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #fff inset !important;
 }
 
@@ -229,12 +229,12 @@ export default {
     opacity: 0.6;
   }
 
-  ::v-deep .el-form-item.is-error,
-  ::v-deep .el-input__inner {
+  /deep/ .el-form-item.is-error,
+  /deep/ .el-input__inner {
     border-color: transparent !important;
   }
 
-  ::v-deep .el-form-item__error {
+  /deep/ .el-form-item__error {
     display: flex;
     align-items: center;
 
@@ -266,20 +266,20 @@ export default {
     }
   }
 
-  ::v-deep .el-input__suffix {
+  /deep/ .el-input__suffix {
     display: flex;
     align-items: center;
     padding: 0 8px 0 0;
   }
 
-  ::v-deep .el-input-group__prepend {
+  /deep/ .el-input-group__prepend {
     padding: 0 16px;
     border: 0;
     background: $--color-primary;
     border-color: $--color-primary;
   }
 
-  ::v-deep .el-input__inner {
+  /deep/ .el-input__inner {
     min-width: 250px;
     height: 48px;
     line-height: 48px;

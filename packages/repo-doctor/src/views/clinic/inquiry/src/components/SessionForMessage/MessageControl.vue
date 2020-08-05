@@ -296,7 +296,7 @@ export default {
   .content {
     height: 100%;
 
-    ::v-deep .q-editor__toolbars-container {
+    /deep/ .q-editor__toolbars-container {
       height: 32px;
       border-top: 1px solid #fbfbfb;
 
@@ -311,18 +311,18 @@ export default {
       }
     }
 
-    ::v-deep .q-editor__content {
+    /deep/ .q-editor__content {
       flex: 1;
       width: 100%;
       padding: 10px 0;
       word-break: break-all;
     }
 
-    ::v-deep .el-upload-list__item {
+    /deep/ .el-upload-list__item {
       display: none;
     }
 
-    ::v-deep .session-detail-input {
+    /deep/ .session-detail-input {
       .el-textarea {
         height: 100%;
       }

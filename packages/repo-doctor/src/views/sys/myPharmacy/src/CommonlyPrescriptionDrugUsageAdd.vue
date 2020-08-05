@@ -187,13 +187,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .durg-select-form {
+/deep/ .durg-select-form {
   .el-form-item--mini.el-form-item {
     margin-bottom: 8px;
   }
 }
 
-::v-deep .el-autocomplete {
+/deep/ .el-autocomplete {
   .el-input--mini .el-input__inner {
     border: 0;
     height: 56px;
@@ -201,7 +201,7 @@ export default {
   }
 }
 
-::v-deep .el-input-number .el-input__inner {
+/deep/ .el-input-number .el-input__inner {
   text-align: left;
 }
 </style>

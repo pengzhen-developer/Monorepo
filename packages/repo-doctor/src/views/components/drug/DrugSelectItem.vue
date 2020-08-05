@@ -234,36 +234,36 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-::v-deep .el-card__header,
-::v-deep .el-card__body {
+/deep/ .el-card__header,
+/deep/ .el-card__body {
   padding: 8px;
 }
 
-::v-deep .durg-select-form {
+/deep/ .durg-select-form {
   .el-form-item--mini.el-form-item {
     margin-bottom: 8px;
   }
 }
 
-::v-deep .el-autocomplete {
+/deep/ .el-autocomplete {
   .el-input--mini .el-input__inner {
     border: 0;
     padding: 16px 8px;
   }
 }
 
-::v-deep .el-input-number .el-input__inner,
-::v-deep .el-select .el-input__inner {
+/deep/ .el-input-number .el-input__inner,
+/deep/ .el-select .el-input__inner {
   text-align: left;
   padding: 0 8px !important;
 }
 
-::v-deep .el-form-item__label {
+/deep/ .el-form-item__label {
   padding: 0 4px 0 0;
 }
 
-::v-deep .el-input-number--mini .el-input-number__decrease,
-::v-deep .el-input-number--mini .el-input-number__increase {
+/deep/ .el-input-number--mini .el-input-number__decrease,
+/deep/ .el-input-number--mini .el-input-number__increase {
   width: 24px;
 }
 </style>
