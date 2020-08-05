@@ -160,7 +160,7 @@ export default {
     }
   }
 
-  ::v-depp .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
+  /deep/ .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
   .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label:before {
     content: '';
     margin: 0;

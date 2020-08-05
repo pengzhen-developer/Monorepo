@@ -112,7 +112,7 @@ export default {
   .list {
     margin: 0 15px;
   }
-  ::v-depp .no-data {
+  /deep/ .no-data {
     min-height: 280px !important;
   }
 }

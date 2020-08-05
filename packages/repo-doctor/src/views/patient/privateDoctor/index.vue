@@ -2,202 +2,144 @@
   <div class="private-doctor">
     <div class="header">
       <el-button-group>
-        <el-button :type="view.model.type === source.state['待接单'] ? 'primary' : '' "
-                   @click="changeActive('待接单')">待接单</el-button>
-        <el-button :type="view.model.type === source.state['服务中'] ? 'primary' : '' "
-                   @click="changeActive('服务中')">服务中</el-button>
-        <el-button :type="view.model.type === source.state['接单记录'] ? 'primary' : '' "
-                   @click="changeActive('接单记录')">接单记录</el-button>
+        <el-button :type="view.model.type === source.state['待接单'] ? 'primary' : '' " @click="changeActive('待接单')">待接单</el-button>
+        <el-button :type="view.model.type === source.state['服务中'] ? 'primary' : '' " @click="changeActive('服务中')">服务中</el-button>
+        <el-button :type="view.model.type === source.state['接单记录'] ? 'primary' : '' " @click="changeActive('接单记录')">接单记录</el-button>
       </el-button-group>
     </div>
 
-    <div class="body"
-         key="待接单"
-         v-if="view.model.type === source.state['待接单']">
-      <el-form :model="view.model"
-               inline>
+    <div class="body" key="待接单" v-if="view.model.type === source.state['待接单']">
+      <el-form :model="view.model" inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStartForReceive"
-                          placeholder
-                          v-model="view.modelForReceive.startTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker
+            :picker-options="view.rules.pickerOptionsStartForReceive"
+            placeholder
+            v-model="view.modelForReceive.startTime"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEndForReceive"
-                          placeholder
-                          v-model="view.modelForReceive.endTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :picker-options="view.rules.pickerOptionsEndForReceive" placeholder v-model="view.modelForReceive.endTime" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label=" ">
-          <el-button @click="get"
-                     type="primary">查询</el-button>
+          <el-button @click="get" type="primary">查询</el-button>
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
+      <peace-table pagination ref="table">
         <peace-table-column label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
         </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        <peace-table-column label="性别" prop="patientSex"></peace-table-column>
+        <peace-table-column label="年龄" prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
         </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"></peace-table-column>
+        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
+        <peace-table-column label="购买时间" prop="purchaseTime"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="showReceiveDialog(scope.row)"
-                       type="text">查看详情</el-button>
+            <el-button @click="showReceiveDialog(scope.row)" type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <div class="body"
-         key="服务中"
-         v-if="view.model.type === source.state['服务中']">
-      <el-form :model="view.model"
-               inline>
+    <div class="body" key="服务中" v-if="view.model.type === source.state['服务中']">
+      <el-form :model="view.model" inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStartForService"
-                          placeholder
-                          v-model="view.modelForService.startTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker
+            :picker-options="view.rules.pickerOptionsStartForService"
+            placeholder
+            v-model="view.modelForService.startTime"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEndForService"
-                          placeholder
-                          v-model="view.modelForService.endTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :picker-options="view.rules.pickerOptionsEndForService" placeholder v-model="view.modelForService.endTime" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label=" ">
-          <el-button @click="get"
-                     type="primary">查询</el-button>
+          <el-button @click="get" type="primary">查询</el-button>
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
+      <peace-table pagination ref="table">
         <peace-table-column label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
         </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        <peace-table-column label="性别" prop="patientSex"></peace-table-column>
+        <peace-table-column label="年龄" prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
         </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="到期时间"
-                            prop="validityTime"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="接单时间"
-                            prop="acceptTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="服务期间问诊次数"
-                            prop="inquiryCount"
-                            width="80"></peace-table-column>
+        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
+        <peace-table-column label="到期时间" prop="validityTime"></peace-table-column>
+        <peace-table-column label="购买时间" prop="purchaseTime" width="160px"></peace-table-column>
+        <peace-table-column label="接单时间" prop="acceptTime" width="160px"></peace-table-column>
+        <peace-table-column label="服务期间问诊次数" prop="inquiryCount" width="80"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="showPatientDetail(scope.row)"
-                       type="text">查看详情</el-button>
+            <el-button @click="showPatientDetail(scope.row)" type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <div class="body"
-         key="接单记录"
-         v-if="view.model.type === source.state['接单记录']">
-      <el-form :model="view.modelForRecord"
-               inline>
+    <div class="body" key="接单记录" v-if="view.model.type === source.state['接单记录']">
+      <el-form :model="view.modelForRecord" inline>
         <el-form-item label="姓名">
-          <el-input placeholder
-                    v-model="view.modelForRecord.patientName"></el-input>
+          <el-input placeholder v-model="view.modelForRecord.patientName"></el-input>
         </el-form-item>
         <el-form-item label="接单状态">
-          <el-select clearable
-                     placeholder="请选择"
-                     v-model="view.modelForRecord.orderStatus">
-            <el-option :value="0"
-                       label="全部"></el-option>
-            <el-option :value="3"
-                       label="已接单"></el-option>
-            <el-option :value="4"
-                       label="已拒绝 "></el-option>
-            <el-option :value="6"
-                       label="已退单"></el-option>
+          <el-select clearable placeholder="请选择" v-model="view.modelForRecord.orderStatus">
+            <el-option :value="0" label="全部"></el-option>
+            <el-option :value="3" label="已接单"></el-option>
+            <el-option :value="4" label="已拒绝 "></el-option>
+            <el-option :value="6" label="已退单"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label=" ">
-          <el-button @click="get"
-                     type="primary">查询</el-button>
+          <el-button @click="get" type="primary">查询</el-button>
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
+      <peace-table pagination ref="table">
         <peace-table-column label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
         </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        <peace-table-column label="性别" prop="patientSex"></peace-table-column>
+        <peace-table-column label="年龄" prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
         </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value"
-                            label="接单状态"
-                            prop="orderStatus"
-                            width="100px"></peace-table-column>
-        <peace-table-column label="操作时间"
-                            prop="acceptTime"
-                            width="160px"></peace-table-column>
+        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value" label="服务类型" prop="type"></peace-table-column>
+        <peace-table-column label="购买时间" prop="purchaseTime" width="160px"></peace-table-column>
+        <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value" label="接单状态" prop="orderStatus" width="100px"></peace-table-column>
+        <peace-table-column label="操作时间" prop="acceptTime" width="160px"></peace-table-column>
         <peace-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="showReceiveDialog(scope.row)"
-                       type="text">查看详情</el-button>
+            <el-button @click="showReceiveDialog(scope.row)" type="text">查看详情</el-button>
           </template>
         </peace-table-column>
       </peace-table>
     </div>
 
-    <peace-dialog :visible.sync="receiveDialog.visible"
-                  class="receive-dialog"
-                  title="接单意见">
-      <el-form :model="receiveDialog.data"
-               inline
-               label-width="90px">
+    <peace-dialog :visible.sync="receiveDialog.visible" class="receive-dialog" title="接单意见">
+      <el-form :model="receiveDialog.data" inline label-width="90px">
         <el-form-item label="患者信息：">
-          <img :src="receiveDialog.data.patientPhoto"
-               style="margin: 0 10px 0 0;" />
-          <span style="margin: 0 20px 0 0; font-size: 16px;">{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
+          <img :src="receiveDialog.data.patientPhoto" style="margin: 0 10px 0 0;" />
+          <span
+            style="margin: 0 20px 0 0; font-size: 16px;"
+          >{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
           <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientSex }}</span>
           <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientAge && receiveDialog.data.patientAge + '岁' }}</span>
-          <el-tag :type="receiveDialog.data.orderStatus === 3 ? 'primary' : receiveDialog.data.orderStatus === 4 ? 'danger' : 'info' "
-                  size="large"
-                  style="position: absolute; left: 370px; border-radius: 60px; width:68px; text-align: center;"
-                  v-if="source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus)">{{ source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus).value }}</el-tag>
+          <el-tag
+            :type="receiveDialog.data.orderStatus === 3 ? 'primary' : receiveDialog.data.orderStatus === 4 ? 'danger' : 'info' "
+            size="large"
+            style="position: absolute; left: 370px; border-radius: 60px; width:68px; text-align: center;"
+            v-if="source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus)"
+          >{{ source.orderStatus.find(item=> item.key === receiveDialog.data.orderStatus).value }}</el-tag>
         </el-form-item>
 
         <hr class="character-dashad" />
@@ -257,21 +199,21 @@
               <el-radio :label="2">拒绝</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="拒绝原因："
-                        v-if="receiveDialog.model.acceptOpinion === 2">
-            <el-input :rows="2"
-                      maxlength="255"
-                      placeholder="请输入拒绝原因（必填）"
-                      show-word-limit
-                      style="width: 420px;"
-                      type="textarea"
-                      v-model="receiveDialog.model.refuseReason"></el-input>
+          <el-form-item label="拒绝原因：" v-if="receiveDialog.model.acceptOpinion === 2">
+            <el-input
+              :rows="2"
+              maxlength="255"
+              placeholder="请输入拒绝原因（必填）"
+              show-word-limit
+              style="width: 420px;"
+              type="textarea"
+              v-model="receiveDialog.model.refuseReason"
+            ></el-input>
           </el-form-item>
 
           <div style="text-align: center; margin: 20px 0 0 0;">
             <el-button @click="receiveDialog.visible = false">取消</el-button>
-            <el-button @click="confirmReceipt"
-                       type="primary">确定</el-button>
+            <el-button @click="confirmReceipt" type="primary">确定</el-button>
           </div>
         </template>
       </el-form>
@@ -307,7 +249,7 @@ export default {
 
         rules: {
           pickerOptionsStartForReceive: {
-            disabledDate: (time) => {
+            disabledDate: time => {
               if (this.view.modelForReceive.endTime) {
                 return time.getTime() > this.view.modelForReceive.endTime.toDate().getTime() || time.getTime() > Date.now()
               } else {
@@ -317,7 +259,7 @@ export default {
           },
 
           pickerOptionsEndForReceive: {
-            disabledDate: (time) => {
+            disabledDate: time => {
               if (this.view.modelForReceive.startTime) {
                 return time.getTime() < this.view.modelForReceive.startTime.toDate().getTime() || time.getTime() > Date.now()
               } else {
@@ -327,7 +269,7 @@ export default {
           },
 
           pickerOptionsStartForService: {
-            disabledDate: (time) => {
+            disabledDate: time => {
               if (this.view.modelForService.endTime) {
                 return time.getTime() > this.view.modelForService.endTime.toDate().getTime() || time.getTime() > Date.now()
               } else {
@@ -337,7 +279,7 @@ export default {
           },
 
           pickerOptionsEndForService: {
-            disabledDate: (time) => {
+            disabledDate: time => {
               if (this.view.modelForService.startTime) {
                 return time.getTime() < this.view.modelForService.startTime.toDate().getTime() || time.getTime() >= Date.now()
               } else {
@@ -364,11 +306,7 @@ export default {
           接单记录: 3
         },
 
-        orderStatus: [
-          { key: 3, value: '已接单' },
-          { key: 4, value: '已拒绝' },
-          { key: 6, value: '已退单' }
-        ],
+        orderStatus: [{ key: 3, value: '已接单' }, { key: 4, value: '已拒绝' }, { key: 6, value: '已退单' }],
 
         type: [
           { key: 1, value: '周卡/7天' },
@@ -390,7 +328,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -400,7 +338,7 @@ export default {
       if (this.view.model.type !== this.source.state[type]) {
         this.view.model.type = this.source.state[type]
 
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           this.get()
         })
       }
@@ -451,7 +389,7 @@ export default {
         orderId: row.orderId
       }
 
-      peace.service.privateDoctor.privateDoctorOrderInfo(params).then((res) => {
+      peace.service.privateDoctor.privateDoctorOrderInfo(params).then(res => {
         this.receiveDialog.data = res.data.info
       })
     },
@@ -469,7 +407,7 @@ export default {
         refuseReason: this.receiveDialog.model.acceptOpinion === 1 ? '' : this.receiveDialog.model.refuseReason
       }
 
-      peace.service.privateDoctor.confirmReceipt(params).then((res) => {
+      peace.service.privateDoctor.confirmReceipt(params).then(res => {
         this.receiveDialog.visible = false
         this.get()
 
@@ -522,7 +460,7 @@ export default {
     color: #c1c1c1;
   }
 
-  ::v-depp .receive-dialog {
+  /deep/ .receive-dialog {
     .character-dashad {
       margin: 15px 0;
       border-top: 1px dashed #bfbfbf;

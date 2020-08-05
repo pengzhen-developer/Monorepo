@@ -116,9 +116,9 @@ export default {
     get() {
       const params = this.extraUploadData
 
-      peace.service.personalCenter.getDoctorInfo(params).then((res) => {
+      peace.service.personalCenter.getDoctorInfo(params).then(res => {
         res.data.cert_file = JSON.parse(res.data.cert_file)
-        res.data.cert_file = res.data.cert_file.map((item) => {
+        res.data.cert_file = res.data.cert_file.map(item => {
           return {
             url: item.img
           }
@@ -152,7 +152,7 @@ export default {
     save() {
       const cert_file = []
 
-      this.view.model.cert_file.forEach((item) => {
+      this.view.model.cert_file.forEach(item => {
         cert_file.push({
           img: item.url
         })
@@ -170,7 +170,7 @@ export default {
         cert_file: cert_file
       }
 
-      peace.service.personalCenter.upDoctorInfo(params).then((res) => {
+      peace.service.personalCenter.upDoctorInfo(params).then(res => {
         peace.util.alert(res.msg)
 
         this.get()
@@ -183,16 +183,16 @@ export default {
 <style lang="scss" scoped>
 .about {
   .el-form {
-    ::v-depp .el-form-item {
+    /deep/ .el-form-item {
       display: flex;
       align-items: center;
     }
 
-    ::v-depp .el-form-item__content {
+    /deep/ .el-form-item__content {
       margin: 0 !important;
     }
 
-    ::v-depp .el-upload-list--picture-card .el-upload-list__item {
+    /deep/ .el-upload-list--picture-card .el-upload-list__item {
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -207,7 +207,7 @@ export default {
     .upload {
       display: inline-block;
 
-      ::v-depp .el-upload-list {
+      /deep/ .el-upload-list {
         display: none;
       }
 
@@ -221,12 +221,12 @@ export default {
 
     .upload-list {
       &.hideUploadIcon {
-        ::v-depp .el-upload--picture-card {
+        /deep/ .el-upload--picture-card {
           display: none;
         }
       }
 
-      ::v-depp .el-upload-list--picture-card {
+      /deep/ .el-upload-list--picture-card {
         display: inline-flex;
       }
     }

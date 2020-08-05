@@ -265,7 +265,7 @@ export default {
     }
   }
 
-  ::v-depp .header-right {
+  /deep/ .header-right {
     display: flex;
 
     .el-badge {

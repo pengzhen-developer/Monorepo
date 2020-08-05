@@ -157,7 +157,7 @@
       background-color: #f7f7f7;
       padding: 16px;
     }
-    ::v-depp.van-field__button {
+    /deep/.van-field__button {
       padding-left: 10px;
       .van-button {
         height: 38px;
@@ -165,12 +165,12 @@
         font-size: 16px;
       }
     }
-    ::v-depp.van-field__left-icon {
+    /deep/.van-field__left-icon {
       display: flex;
       justify-content: center;
       margin-right: 10px;
     }
-    ::v-depp.van-field__control {
+    /deep/.van-field__control {
       line-height: 20px;
       padding: 7px 8px;
       border-radius: 3px;
@@ -196,11 +196,11 @@
     }
   }
 
-  ::v-depp .van-image-preview__index {
+  /deep/ .van-image-preview__index {
     top: 24px;
   }
 
-  ::v-depp .van-image-preview__cover {
+  /deep/ .van-image-preview__cover {
     position: absolute;
     top: 24px;
     left: 24px;

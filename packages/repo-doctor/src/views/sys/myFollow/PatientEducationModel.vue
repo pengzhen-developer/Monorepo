@@ -5,9 +5,7 @@
         <span>患教标题</span>
       </div>
       <div class="info-row-content">
-        <el-input maxlength="25"
-                  placeholder="请输入患教标题"
-                  v-model="article.title"></el-input>
+        <el-input maxlength="25" placeholder="请输入患教标题" v-model="article.title"></el-input>
       </div>
     </div>
     <div class="info-row">
@@ -15,31 +13,20 @@
         <span>疾病</span>
       </div>
       <div class="info-row-content">
-        <el-input :maxlength="25"
-                  placeholder="请输入疾病标签（疾病名称），最多25个字符"
-                  v-model="article.diseaseTag"></el-input>
+        <el-input :maxlength="25" placeholder="请输入疾病标签（疾病名称），最多25个字符" v-model="article.diseaseTag"></el-input>
       </div>
     </div>
     <div class="info-row">
       <div class="info-row-label">
         <span>详细内容</span>
       </div>
-      <div class="info-row-content"
-           style="width: 500px; height: 446px;">
-        <quill-editor :options="editorOption"
-                      class="is-editor"
-                      ref="Editor"
-                      style="height: 400px;"
-                      v-model="article.content"></quill-editor>
+      <div class="info-row-content" style="width: 500px; height: 446px;">
+        <quill-editor :options="editorOption" class="is-editor" ref="Editor" style="height: 400px;" v-model="article.content"></quill-editor>
       </div>
     </div>
     <div class="inline-center">
-      <el-button @click="cancel"
-                 plain
-                 type="primary">取消</el-button>
-      <el-button :disabled="!article.content || !article.diseaseTag"
-                 @click="submit"
-                 type="primary">确定</el-button>
+      <el-button @click="cancel" plain type="primary">取消</el-button>
+      <el-button :disabled="!article.content || !article.diseaseTag" @click="submit" type="primary">确定</el-button>
     </div>
   </div>
 </template>
@@ -90,7 +77,7 @@ export default {
     getTitle(content) {
       // IE、Firfox 不支持 ?<= 前置断言
       // return content.match(/(?<=<(\w+)>).*(?=<\/\1>)/g)[0]
-      const parseToDom = (content) => {
+      const parseToDom = content => {
         const element = document.createElement('div')
         element.innerHTML = content
         return element
@@ -101,7 +88,7 @@ export default {
 
     // 删除内容中被提取的标题
     removeTitleInContent(title, content) {
-      const parseToDom = (content) => {
+      const parseToDom = content => {
         const element = document.createElement('div')
         element.innerHTML = content
         return element
@@ -144,7 +131,7 @@ export default {
     // base64 转换为
     replaceImageToLinks(content) {
       return formatImgSrc(content, peace.service.patient.uploadImage)
-        .then((res) => {
+        .then(res => {
           return Promise.resolve(res)
         })
         .catch(() => {
@@ -162,7 +149,7 @@ export default {
         content
       }
 
-      this.replaceImageToLinks(content).then((res) => {
+      this.replaceImageToLinks(content).then(res => {
         content = res
 
         if (!title) {
@@ -225,7 +212,7 @@ export default {
   text-align: center;
 }
 .is-editor {
-  ::v-depp img {
+  /deep/ img {
     max-width: 100% !important;
   }
 }

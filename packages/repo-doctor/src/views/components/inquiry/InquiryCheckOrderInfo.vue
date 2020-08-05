@@ -219,7 +219,7 @@ export default {
       }
     }
 
-    ::v-depp .el-form-item--mini.el-form-item {
+    /deep/ .el-form-item--mini.el-form-item {
       margin: 0;
 
       .el-form-item__content {
@@ -229,7 +229,7 @@ export default {
       }
     }
 
-    ::v-depp .el-form-item--mini .el-form-item__label {
+    /deep/ .el-form-item--mini .el-form-item__label {
       &::after {
         content: '：';
       }
@@ -245,8 +245,8 @@ export default {
       padding: 0 4px 0 0;
     }
 
-    ::v-depp .el-form-item--mini .el-form-item__label,
-    ::v-depp .el-form-item--mini .el-form-item__content {
+    /deep/ .el-form-item--mini .el-form-item__label,
+    /deep/ .el-form-item--mini .el-form-item__content {
       line-height: 24px;
     }
   }

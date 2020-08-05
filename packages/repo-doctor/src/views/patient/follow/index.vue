@@ -120,7 +120,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-depp .tag {
+/deep/ .tag {
   border: 0;
   margin: 0 5px 5px 0;
 }

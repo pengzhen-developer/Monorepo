@@ -176,7 +176,13 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
+              return (
+                time.getTime() <
+                new Date()
+                  .formatDate('yyyy-MM-dd 00:00:00')
+                  .toDate()
+                  .getTime()
+              )
             }
           },
 
@@ -202,7 +208,7 @@ export default {
     const paramsForCase = {
       inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
     }
-    peace.service.inquiry.getCase(paramsForCase).then((res) => {
+    peace.service.inquiry.getCase(paramsForCase).then(res => {
       this.view.model.diagnose = res.data.diagnose
     })
   },
@@ -224,7 +230,7 @@ export default {
     choseTransfer() {
       this.dialog.visible = true
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -238,10 +244,13 @@ export default {
     },
 
     sendTransfer() {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           // 验证转诊时间
-          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+          if (
+            dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <=
+            new Date()
+          ) {
             $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
@@ -295,7 +304,7 @@ export default {
 
 
 <style lang="scss">
-::v-depp .el-message-box--center .el-message-box__status {
+/deep/ .el-message-box--center .el-message-box__status {
   padding-right: 15px;
   padding-top: 2px;
 }
@@ -313,8 +322,8 @@ export default {
 }
 
 .transfer-doctor {
-  ::v-depp .el-form-item--mini .el-form-item__label,
-  ::v-depp .el-form-item--mini .el-form-item__content {
+  /deep/ .el-form-item--mini .el-form-item__label,
+  /deep/ .el-form-item--mini .el-form-item__content {
     line-height: 40px;
   }
 

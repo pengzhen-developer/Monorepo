@@ -127,7 +127,7 @@ export default {
     }
   },
   created() {
-    peace.service.patient.IllnessList().then((res) => {
+    peace.service.patient.IllnessList().then(res => {
       this.diagnoseDialog.source.IllnessList = res.data.list
     })
   },
@@ -144,7 +144,7 @@ export default {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
 
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        peace.service.patient.getDiseaseInfo(params).then(res => {
           this.diagnoseDialog.source.present_history = res.data.list
         })
       } else {
@@ -159,7 +159,9 @@ export default {
         }
       }
 
-      const index = this.diagnoseDialog.chooseData.findIndex((existItem) => existItem.id === item.id && existItem.name === item.name)
+      const index = this.diagnoseDialog.chooseData.findIndex(
+        existItem => existItem.id === item.id && existItem.name === item.name
+      )
 
       if (index === -1) {
         this.diagnoseDialog.chooseData.push(item)
@@ -171,7 +173,7 @@ export default {
     },
 
     closeItem(item) {
-      const index = this.diagnoseDialog.chooseData.findIndex((existItem) => existItem === item)
+      const index = this.diagnoseDialog.chooseData.findIndex(existItem => existItem === item)
 
       if (index !== -1) {
         this.diagnoseDialog.chooseData.splice(index, 1)
@@ -190,7 +192,7 @@ export default {
 
         const params = {
           consultNo: this.consultNo || this.$store.getters['consultation/consultInfo'].consultNo,
-          consultDiagnose: diagnose.map((v) => v.name),
+          consultDiagnose: diagnose.map(v => v.name),
           consultFind: this.model.consultFind,
           consultSuggest: this.model.consultSuggest
         }
@@ -210,7 +212,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-depp .el-textarea .el-input__count {
+/deep/ .el-textarea .el-input__count {
   background: transparent;
   bottom: -30px;
 }

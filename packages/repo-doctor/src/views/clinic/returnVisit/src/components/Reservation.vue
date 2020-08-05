@@ -75,15 +75,15 @@ export default {
     border-top: none;
   }
 
-  ::v-depp .el-collapse-item__header {
+  /deep/ .el-collapse-item__header {
     border-bottom: 1px solid #f2f2f2;
   }
 
-  ::v-depp .el-icon-arrow-right {
+  /deep/ .el-icon-arrow-right {
     display: none;
   }
 
-  ::v-depp .el-collapse-item__wrap {
+  /deep/ .el-collapse-item__wrap {
     border-bottom: none;
   }
 }

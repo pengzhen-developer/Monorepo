@@ -226,7 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-depp .el-form-item__label {
+/deep/ .el-form-item__label {
   &::after {
     content: '：';
   }

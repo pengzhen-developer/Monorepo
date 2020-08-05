@@ -831,11 +831,11 @@ export default {
 
 <style lang="scss" scoped>
 .video {
-  ::v-depp .el-dialog__wrapper {
+  /deep/ .el-dialog__wrapper {
     // position: unset !important;
   }
 
-  ::v-depp .video-dialog {
+  /deep/ .video-dialog {
     // position: absolute;
     // z-index: 2001;
     top: 50%;

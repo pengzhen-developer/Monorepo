@@ -10,9 +10,6 @@ module.exports = {
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
 
-  // https://cli.vuejs.org/config/#productionSourceMap
-  productionSourceMap: false,
-
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
     config.resolve.alias
@@ -26,8 +23,8 @@ module.exports = {
   configureWebpack: {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
     externals: {
-      '@public/static/IM/NIM_Web_NIM_v7.0.0': 'NIM',
-      '@public/static/IM/NIM_Web_WebRTC_v7.0.0': 'WebRTC'
+      '/public/static/IM/NIM_Web_NIM_v7.0.0': 'NIM',
+      '/public/static/IM/NIM_Web_WebRTC_v7.0.0': 'WebRTC'
     },
     plugins: [
       new webpack.ProvidePlugin({

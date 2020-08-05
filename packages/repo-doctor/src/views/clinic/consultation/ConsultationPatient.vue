@@ -598,18 +598,18 @@ $--header-height: 50px;
               }
             }
 
-            ::v-depp .el-timeline-item__node--normal {
+            /deep/ .el-timeline-item__node--normal {
               width: 8px;
               height: 8px;
               top: 2px;
             }
 
-            ::v-depp .el-timeline-item__tail {
+            /deep/ .el-timeline-item__tail {
               left: 2px;
               top: 2px;
             }
 
-            ::v-depp .el-timeline-item__wrapper {
+            /deep/ .el-timeline-item__wrapper {
               padding-left: 16px;
 
               .el-timeline-item__timestamp.is-top {
