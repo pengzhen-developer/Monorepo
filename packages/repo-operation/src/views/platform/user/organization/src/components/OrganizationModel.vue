@@ -619,8 +619,8 @@ export default {
 
         if (this.model.accountId) {
           Service.editOrganization(params)
-            .then((res) => {
-              Peace.util.success(res.msg)
+            .then(() => {
+              Peace.util.success('保存成功')
               this.$emit('close', { type: 'edit' })
               this.$emit('refresh')
               this.isLoading = false
@@ -630,8 +630,8 @@ export default {
             })
         } else {
           Service.addOrganization(params)
-            .then((res) => {
-              Peace.util.success(res.msg)
+            .then(() => {
+              Peace.util.success('保存成功')
               this.$emit('close', { type: 'add' })
               this.$emit('refresh')
               this.isLoading = false

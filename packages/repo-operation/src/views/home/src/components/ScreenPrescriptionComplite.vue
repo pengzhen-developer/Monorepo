@@ -31,11 +31,11 @@ export default {
   watch: {
     data: {
       handler(val) {
-        this.opComplete.series[0].data[1].value = val.complete * 100
-        this.opComplete.series[0].data[0].value = 100 - val.complete * 100
+        this.opComplete.series[0].data[1].value = (val.complete * 100).toFixed(0)
+        this.opComplete.series[0].data[0].value = (100 - val.complete * 100).toFixed(0)
 
-        this.opUncomplete.series[0].data[1].value = val.incomplete * 100
-        this.opUncomplete.series[0].data[0].value = 100 - val.incomplete * 100
+        this.opUncomplete.series[0].data[1].value = (val.incomplete * 100).toFixed(0)
+        this.opUncomplete.series[0].data[0].value = (100 - val.incomplete * 100).toFixed(0)
       },
       immediate: true,
       deep: true
@@ -54,21 +54,22 @@ export default {
           }
         ],
         tooltip: {
-          trigger: 'item',
-          axisPointer: {
-            type: 'none'
-          },
-          formatter: function (params) {
-            return (
-              "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
-              params.color +
-              ";'></span>" +
-              params.name +
-              ' : ' +
-              params.value +
-              '%'
-            )
-          }
+          show: false
+          // trigger: 'item',
+          // axisPointer: {
+          //   type: 'none'
+          // },
+          // formatter: function (params) {
+          //   return (
+          //     "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
+          //     params.color +
+          //     ";'></span>" +
+          //     params.name +
+          //     ' : ' +
+          //     params.value +
+          //     '%'
+          //   )
+          // }
         },
         series: [
           {
@@ -126,21 +127,22 @@ export default {
           textStyle: { fontWeight: 'normal', fontSize: '12', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }
         },
         tooltip: {
-          trigger: 'item',
-          axisPointer: {
-            type: 'none'
-          },
-          formatter: function (params) {
-            return (
-              "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
-              params.color +
-              ";'></span>" +
-              params.name +
-              ' : ' +
-              params.value +
-              '%'
-            )
-          }
+          show: false
+          // trigger: 'item',
+          // axisPointer: {
+          //   type: 'none'
+          // },
+          // formatter: function (params) {
+          //   return (
+          //     "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" +
+          //     params.color +
+          //     ";'></span>" +
+          //     params.name +
+          //     ' : ' +
+          //     params.value +
+          //     '%'
+          //   )
+          // }
         },
         series: [
           {

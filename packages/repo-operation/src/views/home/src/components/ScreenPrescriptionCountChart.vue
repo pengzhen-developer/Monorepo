@@ -42,7 +42,7 @@ export default {
     return {
       polar: {
         grid: {
-          top: 0,
+          top: 2,
           left: 6,
           right: 6,
           bottom: 0,
@@ -111,7 +111,7 @@ export default {
         },
         series: [
           {
-            name: '销量',
+            name: '处方量',
             type: 'bar',
             data: [],
             barWidth: 14, //柱子宽度

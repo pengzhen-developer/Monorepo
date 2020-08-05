@@ -56,20 +56,20 @@ export default function generateRoutes(/** configuration */) {
     {
       path: '/dataScreen',
       name: '/dataScreen',
-      component: () => import('@src/views/home/src/components/DataScreen'),
-      beforeEnter: (to, from, next) => {
-        if (!Util.user.isSignIn()) {
-          return next('*')
-        }
-
-        return next()
-      }
+      component: () => import('@src/views/home/src/components/DataScreen')
     },
 
     {
       path: '*',
       name: 'not-found',
-      component: () => import('@src/views/exception/404')
+      component: () => import('@src/views/exception/404'),
+      beforeEnter: (to, from, next) => {
+        if (Util.user.isSignIn()) {
+          return next()
+        } else {
+          return next('/login')
+        }
+      }
     }
   ]
 

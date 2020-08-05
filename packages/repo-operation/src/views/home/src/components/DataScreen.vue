@@ -2,7 +2,8 @@
 
 
 <template>
-  <div class="fullscreen screen-bg-style">
+  <div class="fullscreen screen-bg-style"
+       style="z-index: 0;">
 
     <div class="flex column full-width full-height q-pa-sm q-px-md">
 
@@ -127,8 +128,12 @@ import OrderPriceChart from './OrderPriceChart'
 import ScreenGoodsRanking from './ScreenGoodsRanking'
 import OrderSalesChart from './OrderSalesChart'
 
+import Axios from 'axios'
 import Service from '../service/data'
 import CONSTANT from '../constant'
+
+import Peace from '@src/library'
+import LibraryUtil from '@src/util'
 
 export default {
   name: 'data-screen',
@@ -204,144 +209,143 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.getPrescriptionCountOfAll()
-      this.getDrugCount()
-      this.getMedicalAndWarehouse()
-      this.getMapData()
-      this.getData()
-      this.getPreCountOfSevenDays()
-      this.getPreSortOfSevenDays()
-      this.getPreDiagnosisKeyOfSevenDays()
+      let httpMap = [
+        this.getPrescriptionCountOfAll(),
+        this.getDrugCount(),
+        this.getMedicalAndWarehouse(),
+        this.getMapData(),
+        this.getData(),
+        this.getPreCountOfSevenDays(),
+        this.getPreSortOfSevenDays(),
+        this.getPreDiagnosisKeyOfSevenDays()
+      ]
+      Axios.all(httpMap).catch((err) => {
+        if (err.data.code === 201) {
+          Peace.util.warning(err.data.msg)
+        } else if (err.data.code === 403) {
+          Peace.util.warning(err.data.msg)
+          LibraryUtil.user.removeUserInfo()
+          setTimeout(() => {
+            LibraryUtil.user.replaceToLogin()
+          }, 1000)
+        } else {
+          Peace.util.warning('服务器异常，请稍后再试')
+        }
+      })
     })
   },
   methods: {
     // 平台所有处方数
     getPrescriptionCountOfAll() {
-      Service.getPrescriptionCountOfAll()
-        .then((res) => {
-          this.countOfAllData.prescription = res.data
-        })
-        .finally(() => {})
+      return Service.getPrescriptionCountOfAll().then((res) => {
+        this.countOfAllData.prescription = res.data
+      })
     },
     // 药品总数
     getDrugCount() {
-      Service.getDrugCount()
-        .then((res) => {
-          this.countOfAllData.drug = res.data
-        })
-        .finally(() => {})
+      return Service.getDrugCount().then((res) => {
+        this.countOfAllData.drug = res.data
+      })
     },
     // 获取医疗机构、仓配机构数量
     getMedicalAndWarehouse() {
-      Service.getMedicalAndWarehouse()
-        .then((res) => {
-          this.countOfAllData.medical = res.data.HospitalNum
-          this.countOfAllData.warehouse = res.data.DrugCloudStoreNum
-        })
-        .finally(() => {})
+      return Service.getMedicalAndWarehouse().then((res) => {
+        this.countOfAllData.medical = res.data.HospitalNum
+        this.countOfAllData.warehouse = res.data.DrugCloudStoreNum
+      })
     },
     // 获取地图数据
     getMapData() {
-      Service.getMapData()
-        .then((res) => {
-          let list = res.data
-          let result = []
-          for (let i = 0; i < list.length; i++) {
-            let item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, list[i])
-            let points = CONSTANT.cityData.find((city) => city.name == item.City)
-            if (points) {
-              result.push({
-                name: item.City,
-                value: [points.lng, points.lat, item.CloudStoreNum, item.DrugStoreNum]
-              })
-            }
+      return Service.getMapData().then((res) => {
+        let list = res.data
+        let result = []
+        for (let i = 0; i < list.length; i++) {
+          let item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, list[i])
+          let points = CONSTANT.cityData.find((city) => city.name == item.City)
+          if (points) {
+            result.push({
+              name: item.City,
+              value: [points.lng, points.lat, item.CloudStoreNum, item.DrugStoreNum]
+            })
           }
-          this.mapData = result
-        })
-        .finally(() => {})
+        }
+        this.mapData = result
+      })
     },
     // 订单总量、店配机构、近7日机构订单排名、近7日订单完成率、订单列表、近7日订单价格区间、近半年商品数量排名、近半年订单销售额
     getData() {
-      Service.getData()
-        .then((res) => {
-          let data = res.data.list
+      return Service.getData().then((res) => {
+        let data = res.data.list
 
-          this.countOfAllData.order = data.orderTotal
-          this.countOfAllData.store = data.drugStoreTotal
+        this.countOfAllData.order = data.orderTotal
+        this.countOfAllData.store = data.drugStoreTotal
 
-          this.orderSortOfSevenDays = {
-            xAxis: data.custOrderSorts.map((item) => item.custName),
-            data: data.custOrderSorts.map((item) => item.orderNum)
-          }
+        this.orderSortOfSevenDays = {
+          xAxis: data.custOrderSorts.map((item) => item.custName),
+          data: data.custOrderSorts.map((item) => item.orderNum)
+        }
 
-          this.orderRateOfSevenDays = {
-            complete: data.orderCompletion.completion,
-            incomplete: data.orderCompletion.incomplete
-          }
+        this.orderRateOfSevenDays = {
+          complete: data.orderCompletion.completion,
+          incomplete: data.orderCompletion.incomplete
+        }
 
-          this.orderList = data.orderLists
+        this.orderList = data.orderLists
 
-          this.orderPriceOfSevenDays = {
-            xAxis: data.orderPriceSections.map((item) => item.sectionType),
-            data: data.orderPriceSections.map((item) => {
-              return {
-                name: item.sectionType,
-                value: item.sectionNum
-              }
-            })
-          }
+        this.orderPriceOfSevenDays = {
+          xAxis: data.orderPriceSections.map((item) => item.sectionType),
+          data: data.orderPriceSections.map((item) => {
+            return {
+              name: item.sectionType,
+              value: item.sectionNum
+            }
+          })
+        }
 
-          this.goodsOfHalfYear = {
-            xAxis: data.orderGoodsSorts.map((item) => item.goodsName),
-            data: data.orderGoodsSorts.map((item) => item.goodsNum)
-          }
+        this.goodsOfHalfYear = {
+          xAxis: data.orderGoodsSorts.map((item) => item.goodsName),
+          data: data.orderGoodsSorts.map((item) => item.goodsNum)
+        }
 
-          this.orderSaleOfHalfYear = {
-            xAxis: data.orderSales.map((item) => item.month),
-            data: data.orderSales.map((item) => item.priceTotal)
-          }
-        })
-        .finally(() => {})
+        this.orderSaleOfHalfYear = {
+          xAxis: data.orderSales.map((item) => item.month),
+          data: data.orderSales.map((item) => item.priceTotal)
+        }
+      })
     },
     // 近7天处方量统计
     getPreCountOfSevenDays() {
-      Service.getPreCountOfSevenDays()
-        .then((res) => {
-          let xAxis = res.data.list.map((item) => item.date)
-          let data = res.data.list.map((item) => item.count)
-          this.preCountOfSevenDays = {
-            xAxis,
-            data
-          }
-        })
-        .finally(() => {})
+      return Service.getPreCountOfSevenDays().then((res) => {
+        let xAxis = res.data.list.map((item) => item.date)
+        let data = res.data.list.map((item) => item.count)
+        this.preCountOfSevenDays = {
+          xAxis,
+          data
+        }
+      })
     },
     // 近7天机构处方排名
     getPreSortOfSevenDays() {
-      Service.getPreSortOfSevenDays()
-        .then((res) => {
-          let xAxis = res.data.list.map((item) => item.name)
-          let data = res.data.list.map((item) => item.count)
-          this.PreSortOfSevenDays = {
-            xAxis,
-            data
-          }
-        })
-        .finally(() => {})
+      return Service.getPreSortOfSevenDays().then((res) => {
+        let xAxis = res.data.list.map((item) => item.name)
+        let data = res.data.list.map((item) => item.count)
+        this.PreSortOfSevenDays = {
+          xAxis,
+          data
+        }
+      })
     },
     // 近7天处方诊断关键词
     getPreDiagnosisKeyOfSevenDays() {
-      Service.getPreDiagnosisKeyOfSevenDays()
-        .then((res) => {
-          let data = res.data.list.map((item) => {
-            return {
-              name: item.name.length > 8 ? item.name.substring(0, 8) + '...' : item.name,
-              value: item.count
-            }
-          })
-          this.PreDiagnosisKeyOfSevenDays = data
+      return Service.getPreDiagnosisKeyOfSevenDays().then((res) => {
+        let data = res.data.list.map((item) => {
+          return {
+            name: item.name.length > 8 ? item.name.substring(0, 8) + '...' : item.name,
+            value: item.count
+          }
         })
-        .finally(() => {})
+        this.PreDiagnosisKeyOfSevenDays = data
+      })
     }
   }
 }

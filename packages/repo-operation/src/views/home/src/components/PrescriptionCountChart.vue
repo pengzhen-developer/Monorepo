@@ -9,20 +9,8 @@
 </template>
 
 <script>
-// const data = []
-
-// const xAxiosData = data.map((item) => item.date)
-// const yAxiosData = data.map((item) => item.count)
-// 只有3根分割线，替换最值分割线的颜色为背景色隐藏
 const ySplitLineColors = ['#F6F6F6', '#F6F6F6', '#fff']
-// 如果分割线数量根据数据来如下替换
-// (function() {
-//   const tmp = data.map((_) => '#F6F6F6')
-//   tmp[tmp.length] = '#fff'
-//   return tmp
-// })()
 import ECharts from 'vue-echarts'
-import Service from '../service'
 
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts/lib/chart/bar'
@@ -36,9 +24,25 @@ export default {
     'v-chart': ECharts
   },
 
+  props: {
+    data: {
+      type: Object
+    }
+  },
+
+  watch: {
+    data: {
+      handler(val) {
+        this.polar.xAxis.data = val.xAxis
+        this.polar.series[0].data = val.data
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
   data() {
     return {
-      listData: [],
       polar: {
         grid: {
           top: '15%',
@@ -57,6 +61,9 @@ export default {
             textStyle: {
               color: '#999',
               fontSize: 12
+            },
+            formatter: (value) => {
+              return value.split('-').splice(1, 2).join('-')
             }
           },
           //改变坐标轴和文本的样式
@@ -160,24 +167,6 @@ export default {
           }
         ]
       }
-    }
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      this.get()
-    })
-  },
-
-  methods: {
-    get() {
-      Service.preCountOfSevenDays()
-        .then((res) => {
-          this.listData = res.data.list
-          this.polar.xAxis.data = this.listData.map((item) => item.date.substring(item.date.length - 5))
-          this.polar.series[0].data = this.listData.map((item) => item.count)
-        })
-        .finally(() => {})
     }
   }
 }

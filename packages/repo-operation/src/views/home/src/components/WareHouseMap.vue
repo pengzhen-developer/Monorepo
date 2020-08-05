@@ -13,8 +13,6 @@
 
 <script>
 import ECharts from 'vue-echarts'
-import Service from '../service'
-import CONSTANT from '../constant'
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
@@ -26,6 +24,35 @@ export default {
 
   components: {
     'v-chart': ECharts
+  },
+
+  props: {
+    count: {
+      type: Object,
+      default: () => {}
+    },
+    map: {
+      type: Array,
+      default: () => []
+    }
+  },
+
+  watch: {
+    count: {
+      handler(val) {
+        this.shopCount = val.store
+        this.warehouse = val.warehouse
+      },
+      immediate: true,
+      deep: true
+    },
+    map: {
+      handler(val) {
+        this.polar.series[0].data = val
+      },
+      immediate: true,
+      deep: true
+    }
   },
 
   data() {
@@ -67,7 +94,7 @@ export default {
         },
         series: [
           {
-            name: 'pm2.5',
+            name: '多店云仓',
             type: 'scatter',
             coordinateSystem: 'geo',
             data: [],
@@ -93,47 +120,6 @@ export default {
   computed: {
     mapTitle() {
       return `门店：${this.shopCount}家  云仓：${this.warehouse}个`
-    }
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      this.get()
-      this.getOverview()
-    })
-  },
-
-  methods: {
-    get() {
-      Service.getDrugStoreList()
-        .then((res) => {
-          this.polar.series[0].data = this.convertData(res.data)
-        })
-        .finally(() => {})
-    },
-
-    getOverview() {
-      Service.getOverview()
-        .then((res) => {
-          this.shopCount = res.data.DrugShopNum
-          this.warehouse = res.data.DrugCloudStoreNum
-        })
-        .finally(() => {})
-    },
-
-    convertData(data) {
-      const res = []
-      for (let i = 0; i < data.length; i++) {
-        const item = Object.assign({ City: '', CloudStoreNum: 0, DrugStoreNum: 0, FirstLonLat: '' }, data[i])
-        const points = CONSTANT.cityData.find((city) => city.name == item.City)
-        if (points) {
-          res.push({
-            name: item.City,
-            value: [points.lng, points.lat, item.CloudStoreNum, item.DrugStoreNum]
-          })
-        }
-      }
-      return res
     }
   }
 }

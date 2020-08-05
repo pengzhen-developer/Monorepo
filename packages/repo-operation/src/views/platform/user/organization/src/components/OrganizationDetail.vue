@@ -1,154 +1,134 @@
 <template>
   <div>
-    <el-dialog width="520px"
-               v-bind:visible.sync="visible"
-               title="基本信息">
-      <el-form v-if="!editVisible"
-               class="base-info"
-               label-width="90px"
-               label-suffix>
-        <div class="edit-btn"
-             v-if="!editVisible"
-             @click="editOrg"><i class="el-icon-edit"></i></div>
-        <div class="info-list">
-          <div class="info-item">
-            <div class="info-title">机构信息</div>
-            <div class="info-content">
-              <el-form-item label="机构类型">
-                <span>{{ data.role }}</span>
-              </el-form-item>
-              <el-form-item label="机构名称">
-                <span>{{ data.hospitalName }}</span>
-              </el-form-item>
-              <el-form-item label="统一社会信用代码"
-                            label-width="150px">
-                <span>{{ data.socialCreditCode }}</span>
-              </el-form-item>
-              <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel"
-                            label="医院属性">
-                <span>{{ data.hospitalLabel }} {{ data.hospitalTypeLabel }}</span>
-              </el-form-item>
-              <el-form-item label="详细地址">
-                <span>{{ data.addressStr }}</span>
-              </el-form-item>
-              <el-form-item v-if="data.hospitalLevel"
-                            label="医院等级">
-                <span>{{ data.hospitalLevel }}</span>
-              </el-form-item>
-              <el-form-item v-if="imgList.length > 0"
-                            label="资质证明">
-                <span>
-                  <el-image v-if="data.medicalStructureLicense"
-                            class="info-img"
-                            fit="contain"
-                            :src="data.medicalStructureLicense"
-                            :preview-src-list="imgList">
-                    <div slot="error"
-                         class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <el-image v-if="data.internetHospitalLicense"
-                            class="info-img"
-                            fit="contain"
-                            :src="data.internetHospitalLicense"
-                            :preview-src-list="imgList">
-                    <div slot="error"
-                         class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <el-image v-if="data.businessLicense"
-                            class="info-img"
-                            fit="contain"
-                            :src="data.businessLicense"
-                            :preview-src-list="imgList">
-                    <div slot="error"
-                         class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <el-image v-if="data.managementLicense"
-                            class="info-img"
-                            fit="contain"
-                            :src="data.managementLicense"
-                            :preview-src-list="imgList">
-                    <div slot="error"
-                         class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                </span>
-              </el-form-item>
-            </div>
+    <el-form v-if="!editVisible"
+             class="base-info"
+             label-width="90px"
+             label-suffix>
+      <div class="edit-btn"
+           v-if="!editVisible"
+           @click="editOrg"><i class="el-icon-edit"></i></div>
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-title">机构信息</div>
+          <div class="info-content">
+            <el-form-item label="机构类型">
+              <span>{{ data.role | getEnumLabel(CONSTANT.ENUM_ORGANIZATION_TYPE) }}</span>
+            </el-form-item>
+            <el-form-item label="机构名称">
+              <span>{{ data.hospitalName }}</span>
+            </el-form-item>
+            <el-form-item label="统一社会信用代码"
+                          label-width="150px">
+              <span>{{ data.socialCreditCode }}</span>
+            </el-form-item>
+            <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel"
+                          label="医院属性">
+              <span>{{ data.hospitalLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_LABEL) }} {{ data.hospitalTypeLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_TYPE_LABEL) }}</span>
+            </el-form-item>
+            <el-form-item label="详细地址">
+              <span>{{ data.provinceName }}{{ data.cityName }}{{ data.areaName }}{{ data.address }}</span>
+            </el-form-item>
+            <el-form-item v-if="data.hospitalLevel"
+                          label="医院等级">
+              <span>{{ data.hospitalLevel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_LEVEL) }}</span>
+            </el-form-item>
+            <el-form-item v-if="imgList.length > 0"
+                          label="资质证明">
+              <span>
+                <el-image v-if="data.medicalStructureLicense"
+                          class="info-img"
+                          fit="contain"
+                          :src="data.medicalStructureLicense"
+                          :preview-src-list="imgList">
+                  <div slot="error"
+                       class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+                <el-image v-if="data.internetHospitalLicense"
+                          class="info-img"
+                          fit="contain"
+                          :src="data.internetHospitalLicense"
+                          :preview-src-list="imgList">
+                  <div slot="error"
+                       class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+                <el-image v-if="data.businessLicense"
+                          class="info-img"
+                          fit="contain"
+                          :src="data.businessLicense"
+                          :preview-src-list="imgList">
+                  <div slot="error"
+                       class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+                <el-image v-if="data.managementLicense"
+                          class="info-img"
+                          fit="contain"
+                          :src="data.managementLicense"
+                          :preview-src-list="imgList">
+                  <div slot="error"
+                       class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+              </span>
+            </el-form-item>
           </div>
-
-          <div class="info-item">
-            <div class="info-title">账号信息</div>
-            <div class="info-content">
-              <el-form-item label="联系人">
-                <span>{{ data.linkman }}</span>
-              </el-form-item>
-              <el-form-item label="手机号码">
-                <span>{{ data.hideTel }}</span>
-              </el-form-item>
-              <el-form-item label="邮箱">
-                <span>{{ data.hideEmail }}</span>
-              </el-form-item>
-            </div>
-          </div>
-
-          <!-- <div class="info-item">
-            <div class="info-title">审核信息</div>
-            <div class="info-content">
-              <el-form-item class="inline-half" label="审核结果">
-                <span>{{ data.checkStatus }}</span>
-              </el-form-item>
-              <el-form-item class="inline-half" :label="data.reasonsFailure ? '备注':''">
-                <span>{{ data.reasonsFailure }}</span>
-              </el-form-item>
-              <el-form-item class="inline-half" label="申请时间">
-                <span>{{ data.applyTime }}</span>
-              </el-form-item>
-              <el-form-item class="inline-half" label="审核时间">
-                <span>{{ data.checkTime }}</span>
-              </el-form-item>
-            </div>
-          </div>-->
         </div>
-      </el-form>
 
-      <OrganizationModel v-if="editVisible"
-                         ref="editOrg"
-                         v-on:close="close"
-                         v-on:refresh="refresh"></OrganizationModel>
-    </el-dialog>
+        <div class="info-item">
+          <div class="info-title">账号信息</div>
+          <div class="info-content">
+            <el-form-item label="联系人">
+              <span>{{ data.linkman }}</span>
+            </el-form-item>
+            <el-form-item label="手机号码">
+              <span>{{ data.tel }}</span>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <span>{{ data.email }}</span>
+            </el-form-item>
+          </div>
+        </div>
+      </div>
+    </el-form>
+
+    <OrganizationModel v-if="editVisible"
+                       ref="editOrg"
+                       v-on:close="close"
+                       v-on:refresh="refresh"></OrganizationModel>
   </div>
 </template>
 
 <script>
 import OrganizationModel from './OrganizationModel'
 
+import CONSTANT from '../constant'
+// import Peace from '@src/library'
+import Service from '../service'
+
 export default {
   components: {
     OrganizationModel
   },
 
-  props: {
-    value: {
-      required: true,
-      type: Boolean
-    },
-
-    data: Object
+  filters: {
+    getEnumLabel: function (value, ENUM) {
+      return Object.keys(ENUM).find((key) => ENUM[key] === value)
+    }
   },
-
-  filters: {},
 
   data() {
     return {
+      CONSTANT,
+
       isLoading: false,
-      visible: this.value,
+      id: '',
+      data: {},
 
       editVisible: false
     }
@@ -177,30 +157,24 @@ export default {
     }
   },
 
-  watch: {
-    value(value) {
-      this.visible = value
-      this.editVisible = false
-    },
-
-    visible(value) {
-      this.$emit('input', value)
-    }
-  },
-
   methods: {
+    init(id) {
+      this.id = id || 0
+      this.$nextTick(() => {
+        Service.getOrganizationInfo({ accountId: this.id }).then((res) => {
+          this.data = res.data
+        })
+      })
+    },
     editOrg() {
       this.editVisible = true
       this.$nextTick(() => {
-        this.$refs.editOrg.init(this.data.id)
+        this.$refs.editOrg.init(this.data.accountId)
       })
     },
-    close(params) {
-      if (params.type) {
-        this.$emit('close')
-      } else {
-        this.editVisible = false
-      }
+    close() {
+      this.init(this.data.accountId)
+      this.editVisible = false
     },
     refresh() {
       this.$emit('refresh')

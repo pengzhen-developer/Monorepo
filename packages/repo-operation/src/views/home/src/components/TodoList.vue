@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import Service from '../service'
-
 export default {
   name: 'todo-list',
   data() {
@@ -26,19 +24,19 @@ export default {
     }
   },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      this.get()
-    })
+  props: {
+    data: {
+      type: Array
+    }
   },
 
-  methods: {
-    get() {
-      Service.getSchedule()
-        .then((res) => {
-          this.dataList = res.data
-        })
-        .finally(() => {})
+  watch: {
+    data: {
+      handler(val) {
+        this.dataList = val
+      },
+      immediate: true,
+      deep: true
     }
   }
 }

@@ -105,10 +105,14 @@
       </PeaceTable>
 
       <!-- 机构基本信息 -->
-      <OrganizationDetail v-model="detailDialog.visible"
-                          v-bind:data="detailDialog.data"
-                          v-on:close="detailDialog.visible = false"
-                          v-on:refresh="get"></OrganizationDetail>
+      <el-dialog width="520px"
+                 v-bind:visible.sync="detailDialog.visible"
+                 title="基本信息">
+        <OrganizationDetail v-if="detailDialog.visible"
+                            ref="orgDetail"
+                            v-on:close="detailDialog.visible = false"
+                            v-on:refresh="get"></OrganizationDetail>
+      </el-dialog>
 
       <!-- 新增机构 -->
       <el-dialog width="520px"
@@ -201,7 +205,9 @@ export default {
     // 基本信息
     toDetail(row) {
       this.detailDialog.visible = true
-      this.detailDialog.data = row
+      this.$nextTick(() => {
+        this.$refs.orgDetail.init(row.id)
+      })
     },
 
     // 已选服务

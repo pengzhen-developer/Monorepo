@@ -14,7 +14,7 @@
                   v-bind:src="require('../assets/img/prescriptionCount.png')"> </el-image>
         <div>
           <p class="title-label">处方量</p>
-          <p class="count-label">{{ rpData }}</p>
+          <p class="count-label">{{ overView.prescription }}</p>
         </div>
       </div>
 
@@ -23,7 +23,7 @@
                   v-bind:src="require('../assets/img/orderCount.png')"> </el-image>
         <div>
           <p class="title-label">订单量</p>
-          <p class="count-label">{{ data.OrderNum }}</p>
+          <p class="count-label">{{ overView.order }}</p>
         </div>
       </div>
 
@@ -32,7 +32,7 @@
                   v-bind:src="require('../assets/img/hosptailCount.png')"> </el-image>
         <div>
           <p class="title-label">医疗机构</p>
-          <p class="count-label">{{ data.HospitalNum }}</p>
+          <p class="count-label">{{ overView.medical }}</p>
         </div>
       </div>
 
@@ -41,7 +41,7 @@
                   v-bind:src="require('../assets/img/drugRoomCount.png')"> </el-image>
         <div>
           <p class="title-label">药品供应机构</p>
-          <p class="count-label">{{ data.DrugSupplyNum }}</p>
+          <p class="count-label">{{ overView.drugSupply }}</p>
         </div>
       </div>
     </div>
@@ -49,44 +49,41 @@
 </template>
 
 <script>
-import Service from '../service'
-
 export default {
   name: 'data-overview',
 
-  data() {
-    return {
-      data: {},
-      rpData: ''
+  props: {
+    data: {
+      type: Object
     }
   },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      this.get()
-      this.prescriptionCountOfAll()
-    })
+  watch: {
+    data: {
+      handler(val) {
+        this.overView.prescription = val.prescription
+        this.overView.order = val.order
+        this.overView.medical = val.medical
+        this.overView.drugSupply = val.drugSupply
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
+  data() {
+    return {
+      overView: {
+        prescription: 0, // 处方量
+        order: 0, // 订单量
+        medical: 0, // 医疗机构
+        drugSupply: 0 // 药品供应机构
+      }
+    }
   },
 
   methods: {
-    get() {
-      Service.getOverview()
-        .then((res) => {
-          this.data = res.data
-        })
-        .finally(() => {})
-    },
-
-    prescriptionCountOfAll() {
-      Service.prescriptionCountOfAll()
-        .then((res) => {
-          this.rpData = res.data
-        })
-        .finally(() => {})
-    },
-
     showDataScreen() {
-      // this.$parent.toggleDataScreen()
       const url = process.env.VUE_APP_RELEASE_FLODER_PATH + 'dataScreen'
       window.open(url)
     }

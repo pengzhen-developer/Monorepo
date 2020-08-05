@@ -1,4 +1,4 @@
-import Peace from '@src/library'
+import http from './http'
 
 export default {
   /**
@@ -15,7 +15,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi, params).then((res) => {
+    return http.get(requestApi, params).then((res) => {
       return res
     })
   },
@@ -34,7 +34,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi, params).then((res) => {
+    return http.get(requestApi, params).then((res) => {
       return res
     })
   },
@@ -52,7 +52,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -70,7 +70,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -88,7 +88,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi, {}).then((res) => {
+    return http.get(requestApi, {}).then((res) => {
       return res
     })
   },
@@ -106,7 +106,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return http.post(requestApi, params).then((res) => {
       return res
     })
   }
