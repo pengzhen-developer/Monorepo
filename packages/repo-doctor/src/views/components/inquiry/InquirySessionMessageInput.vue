@@ -312,7 +312,7 @@ export default {
     border-top: 1px solid #efefef;
     background: rgba(251, 251, 251, 1);
 
-    /deep/ .el-button {
+    ::v-depp .el-button {
       color: rgba(153, 153, 153, 1);
 
       span {
@@ -326,7 +326,7 @@ export default {
       }
     }
 
-    /deep/ .el-upload-list__item {
+    ::v-depp .el-upload-list__item {
       display: none;
     }
 
@@ -336,7 +336,7 @@ export default {
   }
 
   .input-text {
-    /deep/ .el-textarea__inner {
+    ::v-depp .el-textarea__inner {
       padding: 5px 10px;
       border-radius: 0;
       border-top: 1px solid rgba(251, 251, 251, 1);

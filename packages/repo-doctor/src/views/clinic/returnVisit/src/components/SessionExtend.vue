@@ -71,15 +71,15 @@ export default {
   flex: 1;
 }
 
-/deep/ .el-tabs__active-bar {
+::v-depp .el-tabs__active-bar {
   display: none;
 }
 
-/deep/ .el-tabs__nav {
+::v-depp .el-tabs__nav {
   width: 100%;
 }
 
-/deep/ .el-tabs__item {
+::v-depp .el-tabs__item {
   width: 50%;
   padding: 0;
   text-align: center;
@@ -89,7 +89,7 @@ export default {
   }
 }
 
-/deep/ {
+::v-depp {
   .el-tabs__nav-wrap::after {
     display: none;
   }

@@ -197,7 +197,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.injectConsultInfo = res.data.info
       })
     }
@@ -268,7 +268,7 @@ export default {
   .el-timeline {
     padding: 0;
 
-    /deep/.el-timeline-item__node--normal {
+    ::v-depp.el-timeline-item__node--normal {
       left: 2px;
       width: 6px;
       height: 6px;

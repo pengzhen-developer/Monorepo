@@ -292,7 +292,7 @@ export default {
         accepted: true,
         beCalledInfo: this.beCalledInfo,
         sessionConfig: this.sessionConfig
-      }).catch(function(callObject) {
+      }).catch(function (callObject) {
         console.warn('【 WebRTC 】【 response - accepted 】', new Date(), callObject)
       })
     },
@@ -869,7 +869,7 @@ export default {
 
 <style lang="scss" scoped>
 .video {
-  /deep/ .el-dialog__wrapper {
+  ::v-depp .el-dialog__wrapper {
     position: unset !important;
 
     .el-dialog {

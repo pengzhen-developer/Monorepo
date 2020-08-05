@@ -262,7 +262,7 @@ export default {
       this.invitedDialog.chooseList = []
       this.invitedDialog.chooseListForCheckBox = []
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.getInvitedDoctor()
       })
     },
@@ -323,14 +323,14 @@ export default {
           const consultNo = this.$store.getters['consultation/consultInfo'].consultNo
 
           // 强制解散 （仅为了通知相关人）
-          const dissolveHandler = function() {
+          const dissolveHandler = function () {
             const params = { consultNo: consultNo, action: 'dissolve' }
 
             return peace.service.video.processConsult(params)
           }
 
           // 结束视频会诊
-          const overHandler = function() {
+          const overHandler = function () {
             const params = { consultNo: consultNo, action: 'over' }
 
             return peace.service.video.processConsult(params)
@@ -451,7 +451,7 @@ export default {
     border-top: 1px solid #efefef;
     background: rgba(251, 251, 251, 1);
 
-    /deep/ .el-button {
+    ::v-depp .el-button {
       color: rgba(153, 153, 153, 1);
 
       span {
@@ -465,7 +465,7 @@ export default {
       }
     }
 
-    /deep/ .el-upload-list__item {
+    ::v-depp .el-upload-list__item {
       display: none;
     }
 
@@ -475,7 +475,7 @@ export default {
   }
 
   .input-text {
-    /deep/ .el-textarea__inner {
+    ::v-depp .el-textarea__inner {
       padding: 5px 10px;
       border-radius: 0;
       border-top: 1px solid rgba(251, 251, 251, 1);
@@ -499,7 +499,7 @@ export default {
 }
 
 .invited-dialog {
-  /deep/ .el-checkbox__label {
+  ::v-depp .el-checkbox__label {
     display: none;
   }
 }

@@ -226,7 +226,7 @@ $--header-height: 50px;
       .inquiry-last-message {
         margin: 0 0 15px 0;
 
-        /deep/ * {
+        ::v-depp * {
           font-size: 12px;
           line-height: 22px;
           overflow: hidden;

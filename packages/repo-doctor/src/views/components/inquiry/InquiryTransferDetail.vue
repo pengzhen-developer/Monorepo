@@ -248,7 +248,7 @@ export default {
         referral_suggest: this.view.model.referral_suggest
       }
 
-      peace.service.inquiry.receiveReferralPc(params).then(res => {
+      peace.service.inquiry.receiveReferralPc(params).then((res) => {
         $peace.util.alert(res.msg)
 
         this.$emit('close')
@@ -315,7 +315,7 @@ export default {
       }
     }
 
-    /deep/ .el-form-item--mini.el-form-item {
+    ::v-depp .el-form-item--mini.el-form-item {
       margin: 0;
 
       .el-form-item__content {
@@ -325,7 +325,7 @@ export default {
       }
     }
 
-    /deep/ .el-form-item--mini .el-form-item__label {
+    ::v-depp .el-form-item--mini .el-form-item__label {
       &::after {
         content: '：';
       }
@@ -341,8 +341,8 @@ export default {
       padding: 0 4px 0 0;
     }
 
-    /deep/ .el-form-item--mini .el-form-item__label,
-    /deep/ .el-form-item--mini .el-form-item__content {
+    ::v-depp .el-form-item--mini .el-form-item__label,
+    ::v-depp .el-form-item--mini .el-form-item__content {
       line-height: 24px;
     }
   }

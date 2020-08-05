@@ -1,7 +1,12 @@
 <template>
-  <el-menu :collapse="true" :default-active="$store.state.layout.currentTab" @select="menuSelect" class="nav-menu">
+  <el-menu :collapse="true"
+           :default-active="$store.state.layout.currentTab"
+           @select="menuSelect"
+           class="nav-menu">
     <template v-for="menu in menuListTree">
-      <el-submenu :index="menu.path" :key="menu.path" v-if="menu.children && menu.children.length > 0">
+      <el-submenu :index="menu.path"
+                  :key="menu.path"
+                  v-if="menu.children && menu.children.length > 0">
         <template slot="title">
           <div class="nav-submenu">
             <i :class="menu.icon"></i>
@@ -9,12 +14,17 @@
           </div>
         </template>
 
-        <el-menu-item :index="menuChildren.path" :key="menuChildren.path" v-for="menuChildren in menu.children">
+        <el-menu-item :index="menuChildren.path"
+                      :key="menuChildren.path"
+                      v-for="menuChildren in menu.children">
           <label>{{ menuChildren.name }}</label>
         </el-menu-item>
       </el-submenu>
 
-      <el-menu-item :closable="menu.closable" :index="menu.path" :key="menu.path" v-else>
+      <el-menu-item :closable="menu.closable"
+                    :index="menu.path"
+                    :key="menu.path"
+                    v-else>
         <div class="nav-submenu">
           <i :class="menu.icon"></i>
           <label>{{ menu.name }}</label>
@@ -42,7 +52,7 @@ export default {
 
   methods: {
     menuSelect(path) {
-      const currentMenu = this.menuList.find(item => item.path === path)
+      const currentMenu = this.menuList.find((item) => item.path === path)
 
       // 将当前选中的项，添加到 tab
       this.$store.commit('layout/pushTab', currentMenu)
@@ -63,7 +73,7 @@ export default {
   min-width: 50px;
   padding: 0;
 
-  /deep/ .el-menu-item {
+  ::v-depp .el-menu-item {
     height: 40px;
     line-height: 40px;
 
@@ -84,9 +94,9 @@ export default {
   border-left: none;
 }
 
-/deep/ .el-submenu,
-/deep/ .el-submenu__title,
-/deep/ .el-menu-item {
+::v-depp .el-submenu,
+::v-depp .el-submenu__title,
+::v-depp .el-menu-item {
   line-height: 1;
   margin: 10px 0 20px 0;
 

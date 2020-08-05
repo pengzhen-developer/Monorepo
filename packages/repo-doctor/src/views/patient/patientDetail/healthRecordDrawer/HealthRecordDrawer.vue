@@ -103,7 +103,7 @@ export default {
 
       this.drawer = true
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         setTimeout(() => {
           this.clearFocus()
         }, 60)
@@ -171,7 +171,7 @@ export default {
   margin-left: 34px;
 }
 
-/deep/ .el-drawer {
+::v-depp .el-drawer {
   outline: none;
 }
 
@@ -181,7 +181,7 @@ export default {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
 
-  /deep/ .el-drawer__header {
+  ::v-depp .el-drawer__header {
     margin-bottom: 20px;
 
     .el-drawer__close-btn {
@@ -189,7 +189,7 @@ export default {
     }
   }
 
-  /deep/ .el-drawer__body {
+  ::v-depp .el-drawer__body {
     height: calc(100% - 66px);
   }
 }

@@ -50,8 +50,7 @@
                 <div>
                   <img :src="view.model.doctorInfo.photoDoc"
                        style="width: 40px; height: 40px; border-radius: 50%;" />
-                  <span
-                        style="font-size:16px; font-weight:700;">{{ view.model.doctorInfo.name }}</span>
+                  <span style="font-size:16px; font-weight:700;">{{ view.model.doctorInfo.name }}</span>
                   <span>{{ view.model.doctorInfo.doctor_title }}</span>
                 </div>
                 <div>
@@ -253,13 +252,7 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return (
-                time.getTime() <
-                new Date()
-                  .formatDate('yyyy-MM-dd 00:00:00')
-                  .toDate()
-                  .getTime()
-              )
+              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
             }
           },
 
@@ -319,7 +312,7 @@ export default {
     choseTransfer() {
       this.dialog.visible = true
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -332,7 +325,7 @@ export default {
     changeDialog() {
       this.choseDiagnose()
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.dialog.chooseData = [...this.view.model.diagnose]
       })
     },
@@ -445,7 +438,7 @@ export default {
     }
   }
 
-  /deep/ .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
+  ::v-depp .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
   .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label:before {
     content: '';
     margin: 0;

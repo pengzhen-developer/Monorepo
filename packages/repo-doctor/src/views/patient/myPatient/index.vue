@@ -1,64 +1,75 @@
 <template>
   <div>
-    <el-form :model="view.model" inline>
+    <el-form :model="view.model"
+             inline>
       <el-form-item label="患者姓名">
-        <el-input placeholder v-model="view.model.name"></el-input>
+        <el-input placeholder
+                  v-model="view.model.name"></el-input>
       </el-form-item>
       <el-form-item label="患者来源">
-        <el-select clearable placeholder="全部" v-model="view.model.source">
-          <el-option
-            :key="item.key"
-            :label="item.source"
-            :value="item.key"
-            v-for="item in source.group_name"
-          ></el-option>
+        <el-select clearable
+                   placeholder="全部"
+                   v-model="view.model.source">
+          <el-option :key="item.key"
+                     :label="item.source"
+                     :value="item.key"
+                     v-for="item in source.group_name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button @click="updateList" round type="primary">查询</el-button>
+        <el-button @click="updateList"
+                   round
+                   type="primary">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-button @click="addPatient" type="primary" icon="el-icon-circle-plus-outline"
-      >添加患者</el-button
-    >
+    <el-button @click="addPatient"
+               type="primary"
+               icon="el-icon-circle-plus-outline">添加患者</el-button>
     <hr />
 
-    <peace-table pagination ref="table">
-      <peace-table-column label="患者姓名" prop="name" width="140"></peace-table-column>
-      <peace-table-column label="基本信息" width="140">
+    <peace-table pagination
+                 ref="table">
+      <peace-table-column label="患者姓名"
+                          prop="name"
+                          width="140"></peace-table-column>
+      <peace-table-column label="基本信息"
+                          width="140">
         <template slot-scope="scope">
           <span>{{ `${scope.row.sex} , ${scope.row.age}岁` }}</span>
         </template>
       </peace-table-column>
-      <peace-table-column label="手机号码" prop="tel" width="120"></peace-table-column>
-      <peace-table-column label="疾病标签" min-width="340" show-overflow-tooltip>
+      <peace-table-column label="手机号码"
+                          prop="tel"
+                          width="120"></peace-table-column>
+      <peace-table-column label="疾病标签"
+                          min-width="340"
+                          show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
         </template>
       </peace-table-column>
-      <peace-table-column
-        :formatter="
+      <peace-table-column :formatter="
           (r, c, v) => {
             return this.source.group_name.find(item => item.key === v).source
           }
         "
-        label="患者来源"
-        prop="source"
-      ></peace-table-column>
+                          label="患者来源"
+                          prop="source"></peace-table-column>
       <peace-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
+          <el-button @click="showDetail(scope.row)"
+                     type="text">查看详情</el-button>
         </template>
       </peace-table-column>
     </peace-table>
 
-    <peace-dialog
-      :before-close="handleClose"
-      :visible.sync="addPatientDialog.visible"
-      width="387px"
-      title="添加患者"
-    >
-      <AddPatient ref="checkInput" @handleClose="handleClose" v-on:updateList="updateList">
+    <peace-dialog :before-close="handleClose"
+                  :visible.sync="addPatientDialog.visible"
+                  width="387px"
+                  title="添加患者">
+      <AddPatient ref="checkInput"
+                  @handleClose="handleClose"
+                  v-on:updateList="updateList">
       </AddPatient>
     </peace-dialog>
   </div>
@@ -90,7 +101,7 @@ export default {
   },
 
   created() {
-    peace.service.patient.getSource().then(res => {
+    peace.service.patient.getSource().then((res) => {
       this.source.group_name = res.data
     })
   },
@@ -182,7 +193,7 @@ export default {
 .el-form-item {
   margin-right: 40px;
 
-  /deep/ .el-input {
+  ::v-depp .el-input {
     width: 140px;
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
     border-radius: 3px;

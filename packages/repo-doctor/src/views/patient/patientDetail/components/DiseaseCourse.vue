@@ -96,7 +96,7 @@ export default {
         sort: this.titleTabsCctive === '最新病程置顶' ? 'desc' : 'asc'
       }
 
-      peace.service.follow.getDiseaseCourse(params).then(res => {
+      peace.service.follow.getDiseaseCourse(params).then((res) => {
         this.data = res.data
       })
     },
@@ -136,7 +136,7 @@ export default {
     }
   }
 
-  /deep/ .el-form-item__label {
+  ::v-depp .el-form-item__label {
     width: 4.5rem;
     text-align-last: justify;
     text-align: justify;

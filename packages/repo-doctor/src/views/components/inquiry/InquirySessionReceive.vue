@@ -97,7 +97,7 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
       }
 
-      peace.service.inquiry.receiveInquiry(params).then(res => {
+      peace.service.inquiry.receiveInquiry(params).then((res) => {
         peace.util.alert(res.msg)
       })
     },
@@ -120,7 +120,7 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
         overCause: this.over.description == '其他' ? this.over.otherDescription : this.over.description
       }
-      peace.service.inquiry.quitInquiry(params).then(res => {
+      peace.service.inquiry.quitInquiry(params).then((res) => {
         peace.util.alert(res.msg)
       })
     }
@@ -165,11 +165,11 @@ export default {
 }
 
 .over-dialog {
-  /deep/ .el-dialog__header {
+  ::v-depp .el-dialog__header {
     display: none;
   }
 
-  /deep/ .el-dialog__body {
+  ::v-depp .el-dialog__body {
     padding: 20px;
   }
 }

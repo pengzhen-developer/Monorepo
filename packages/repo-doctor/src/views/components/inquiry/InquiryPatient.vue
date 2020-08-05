@@ -8,7 +8,8 @@
     <div class="body">
       <el-scrollbar class="body-scrollbar">
         <el-tabs class="content">
-          <el-tab-pane class="health" label="健康档案">
+          <el-tab-pane class="health"
+                       label="健康档案">
             <div class="health-item">
               <div class="health-item-title">
                 <img src="~@src/assets/images/inquiry/archives_icon_marry.png" />
@@ -116,7 +117,7 @@ export default {
         ) {
           const params = { familyId: newValue.content.patientInfo.familyId }
 
-          peace.service.health.getOneHealth(params).then(res => {
+          peace.service.health.getOneHealth(params).then((res) => {
             this.healthRecord = res.data.personalInfo
           })
         }
@@ -155,15 +156,15 @@ $--header-height: 50px;
     }
 
     .content {
-      /deep/ .el-tabs__active-bar {
+      ::v-depp .el-tabs__active-bar {
         display: none;
       }
 
-      /deep/ .el-tabs__nav {
+      ::v-depp .el-tabs__nav {
         width: 100%;
       }
 
-      /deep/ .el-tabs__item {
+      ::v-depp .el-tabs__item {
         width: 50%;
         padding: 0;
         text-align: center;
@@ -173,7 +174,7 @@ $--header-height: 50px;
         }
       }
 
-      /deep/ {
+      ::v-depp {
         .el-tabs__nav-wrap::after {
           display: none;
         }

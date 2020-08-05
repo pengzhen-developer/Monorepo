@@ -374,14 +374,14 @@ export default {
 .newCaseDetail {
   font-size: 12px;
   padding: 0 20px;
-  /deep/ .tabList {
+  ::v-depp .tabList {
     margin-top: 15px;
 
-    /deep/ .el-tabs__item.is-active {
+    ::v-depp .el-tabs__item.is-active {
       color: #000;
       font-weight: bold;
     }
-    /deep/ .el-tabs__active-bar {
+    ::v-depp .el-tabs__active-bar {
       background-color: #000;
     }
   }

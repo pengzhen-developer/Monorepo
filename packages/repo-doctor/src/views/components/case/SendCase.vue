@@ -615,7 +615,7 @@ export default {
     changeDialog(title) {
       this.showDialog(title)
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         if (title === '过敏史') {
           this.dialog.chooseData = [...this.medical.model.allergy_history]
         } else if (title === '既往史') {
@@ -738,7 +738,7 @@ export default {
       border-bottom: 1px solid #d6d6d6;
       border-left: none;
 
-      /deep/ .el-input__inner {
+      ::v-depp .el-input__inner {
         border: none;
         padding: 0 10px;
       }

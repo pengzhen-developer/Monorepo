@@ -1,6 +1,13 @@
 <template>
-  <el-tabs @tab-click="tabClick" @tab-remove="tabRemove" class="tabs" v-model="$store.state.layout.currentTab">
-    <el-tab-pane :closable="tab.closable" :key="tab.path" :label="tab.title" :name="tab.path" v-for="tab in $store.state.layout.tabList"></el-tab-pane>
+  <el-tabs @tab-click="tabClick"
+           @tab-remove="tabRemove"
+           class="tabs"
+           v-model="$store.state.layout.currentTab">
+    <el-tab-pane :closable="tab.closable"
+                 :key="tab.path"
+                 :label="tab.title"
+                 :name="tab.path"
+                 v-for="tab in $store.state.layout.tabList"></el-tab-pane>
   </el-tabs>
 </template>
 
@@ -16,7 +23,7 @@ export default {
     },
 
     tabRemove(name) {
-      const index = this.$store.state.layout.tabList.findIndex(item => item.path === name)
+      const index = this.$store.state.layout.tabList.findIndex((item) => item.path === name)
 
       if (name === this.$store.state.layout.currentTab) {
         const nextTab = Object.assign({}, this.$store.state.layout.tabList[index - 1])
@@ -36,11 +43,11 @@ export default {
   height: 40px;
   background: rgba(255, 255, 255, 1);
 
-  /deep/ .el-tabs__item {
+  ::v-depp .el-tabs__item {
     font-size: 14px;
     padding: 0 20px !important;
 
-    /deep/ .el-icon-close {
+    ::v-depp .el-icon-close {
       font-size: 10px;
       color: #d1d1d1;
       position: relative;
@@ -49,16 +56,16 @@ export default {
     }
   }
 
-  /deep/ .el-tabs__nav-next,
-  /deep/ .el-tabs__nav-prev {
+  ::v-depp .el-tabs__nav-next,
+  ::v-depp .el-tabs__nav-prev {
     line-height: 40px;
   }
 
-  /deep/ .el-tabs__active-bar {
+  ::v-depp .el-tabs__active-bar {
     display: none;
   }
 
-  /deep/ .el-tabs__item::after {
+  ::v-depp .el-tabs__item::after {
     content: '';
     position: absolute;
     right: 0;
@@ -70,7 +77,7 @@ export default {
     z-index: 1;
   }
 
-  /deep/ .el-tabs__nav-wrap::after {
+  ::v-depp .el-tabs__nav-wrap::after {
     height: 1px;
   }
 }

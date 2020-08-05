@@ -60,11 +60,11 @@ export default {
 
 <style lang="scss" scoped>
 .no-header {
-  /deep/ .el-dialog__header {
+  ::v-depp .el-dialog__header {
     display: none;
   }
 
-  /deep/ .el-dialog__body {
+  ::v-depp .el-dialog__body {
     padding: 20px;
   }
 }
