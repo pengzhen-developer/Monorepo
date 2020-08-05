@@ -23,8 +23,9 @@ const getConfiguration = (params) => {
  */
 export default async function(configuration) {
   const serviceId = Peace.cache.localStorage.get('serviceId')
+  const isSecondSystem = Peace.util.queryUrlParam('configuration') ? true : false
   const params = { serviceId }
-  if (serviceId) {
+  if (serviceId && isSecondSystem) {
     // Peace.cache.localStorage.remove('serviceId')
 
     const configurationByService = await getConfiguration(params)

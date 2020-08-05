@@ -29,7 +29,7 @@
                dense
                icon="keyboard_arrow_down"
                color="grey-7">
-          <q-popup-proxy v-if="showSignOut">
+          <q-popup-proxy>
             <q-list dense
                     bordered
                     padding
