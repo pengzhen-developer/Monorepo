@@ -1,6 +1,6 @@
 import Peace from '@src/library'
-import RouterPath from '@src/router/generateRoutes'
-import Router from '@src/router'
+import { path } from '@src/router/generateRoutes'
+// import Router from '@src/router'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
@@ -81,10 +81,10 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  return Router.router.push({
-    name: RouterPath.system.LOGIN,
+  return $peace.$router.push({
+    name: path.LOGIN,
     query: {
-      referrer: referrer || Router.router.history.current.fullPath
+      referrer: referrer || $peace.$router.history.current.fullPath
     }
   })
 }
