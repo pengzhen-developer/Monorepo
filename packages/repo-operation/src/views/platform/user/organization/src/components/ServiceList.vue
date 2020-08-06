@@ -48,7 +48,7 @@
                              :key="access.id">{{access.name}}</el-checkbox>
               </div>
 
-              <div v-if="item.serviceContentArr && item.serviceContentArr.length > 0"
+              <div v-if="serviceAccessModeArr(item.serviceContentArr).length > 0"
                    class="row q-mb-xs">
                 <span class="level-title-style">服务内容：</span>
                 <el-checkbox v-for="service in serviceAccessModeArr(item.serviceContentArr)"
