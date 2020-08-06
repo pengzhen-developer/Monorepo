@@ -1,5 +1,5 @@
 <template>
-  <div class="q-ma-md">
+  <div>
     <PatientUserAgreement v-if="isPatient">
 
     </PatientUserAgreement>
@@ -29,29 +29,5 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-p {
-  margin: 10px 0;
-}
-
-.agreement-title {
-  color: var(--q-color-grey-333);
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.agreement-subtitle {
-  color: var(--q-color-grey-333);
-  font-size: 15px;
-  font-weight: 500;
-  text-align: left;
-}
-
-.agreement-paragraph {
-  color: var(--q-color-grey-333);
-  font-size: 12px;
-  font-weight: 400;
-  text-align: justify;
-}
+<style >
 </style>
