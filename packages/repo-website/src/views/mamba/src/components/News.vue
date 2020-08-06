@@ -13,7 +13,7 @@
 
       <div class="row">
 
-        <div class="col-xl-3 col-lg-3 col-md-6"
+        <div class="col-xl-3 col-lg-4 col-md-6"
              data-aos="fade-up">
           <div class="member">
             <div class="pic"><img src="../assets/img/my/pic01.png"
