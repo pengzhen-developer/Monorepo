@@ -29,6 +29,20 @@ export default {
   /**
    * hybrid
    *
+   * 获取 platform
+   *
+   * @returns
+   */
+  getPlatform() {
+    // $peace  is global
+    const platform = $peace?.$route?.params?.platform
+
+    return platform
+  },
+
+  /**
+   * hybrid
+   *
    * 根据 platform 获取 uri 前缀
    *
    * @returns

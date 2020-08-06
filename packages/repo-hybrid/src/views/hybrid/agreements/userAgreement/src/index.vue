@@ -1,16 +1,13 @@
 <template>
-  <div>
-    <PatientUserAgreement v-if="isPatient">
-
-    </PatientUserAgreement>
-
-    <DoctorUserAgreement v-else>
-
-    </DoctorUserAgreement>
+  <div class="q-ma-md">
+    <PatientUserAgreement v-if="isPatient"></PatientUserAgreement>
+    <DoctorUserAgreement v-else></DoctorUserAgreement>
   </div>
 </template>
 
 <script>
+import Util from '@src/util'
+
 import DoctorUserAgreement from './components/DoctorUserAgreement'
 import PatientUserAgreement from './components/PatientUserAgreement'
 
@@ -22,7 +19,7 @@ export default {
 
   computed: {
     isPatient() {
-      return this.$route.params.platform === 'H5' || this.$route.params.platform === 'Wechat'
+      return Util.hybrid.getPlatform() === Util.hybrid.platformMap.H5 || Util.hybrid.getPlatform() === Util.hybrid.platformMap.Wechat
     }
   }
 }
