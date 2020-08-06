@@ -109,14 +109,14 @@ export default {
               textStyle: {
                 color: '#ffffff',
                 fontSize: '12'
-              },
-              formatter: function (value) {
-                if (value >= 10000) {
-                  return (value / 10000).toLocaleString() + '万'
-                } else {
-                  return value.toLocaleString()
-                }
               }
+              // formatter: function (value) {
+              //   if (value >= 10000) {
+              //     return (value / 10000).toLocaleString() + '万'
+              //   } else {
+              //     return value.toLocaleString()
+              //   }
+              // }
             },
             data: []
           }

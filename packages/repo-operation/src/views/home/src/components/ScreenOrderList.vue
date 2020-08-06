@@ -30,6 +30,7 @@ export default {
       handler(val) {
         this.polar.xAxis.data = val.xAxis
         this.polar.series[0].data = val.data
+        // this.polar.title.show = val.data.length ? false : true
       },
       immediate: true,
       deep: true
@@ -39,6 +40,16 @@ export default {
   data() {
     return {
       polar: {
+        // title: {
+        //   show: false,
+        //   textStyle: {
+        //     color: 'grey',
+        //     fontSize: 20
+        //   },
+        //   text: '暂无数据',
+        //   left: 'center',
+        //   top: 'center'
+        // },
         grid: {
           top: 10,
           left: 6,

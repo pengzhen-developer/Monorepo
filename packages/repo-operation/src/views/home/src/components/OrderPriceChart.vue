@@ -7,6 +7,15 @@
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/pie'
 
+const COLOR_MAP = [
+  ['#ffab61', '#ff4f42'],
+  ['#3ed3bf', '#35ffe0'],
+  ['#28b1ff', '#00ffff'],
+  ['#ff6600', '#ffb400'],
+  ['#e23af5', '#bc42ef'],
+  ['#68a9fa', '#2b8aff']
+]
+
 export default {
   name: 'screen-order-list',
 
@@ -47,7 +56,6 @@ export default {
   data() {
     return {
       polar: {
-        color: ['#FF5F47', '#E4B427', '#0FE7FE', '#C641F0', '#2DA1FF'],
         backgroundColor: 'transparent',
         legend: {
           orient: 'vertical',
@@ -68,14 +76,33 @@ export default {
         },
         series: [
           {
-            name: '',
+            name: '订单价格',
             type: 'pie',
             radius: ['35%', '90%'],
             center: ['30%', '50%'],
             roseType: 'radius',
             itemStyle: {
-              borderWidth: 3,
-              borderColor: '#000a3b'
+              borderWidth: 2,
+              borderColor: '#000a3b',
+              color: (params) => {
+                return {
+                  type: 'radial',
+                  x: 0,
+                  y: 1,
+                  r: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: COLOR_MAP[params.dataIndex][0] // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: COLOR_MAP[params.dataIndex][1] // 100% 处的颜色
+                    }
+                  ],
+                  global: false // 缺省为 false
+                }
+              }
             },
             label: {
               normal: {
