@@ -129,7 +129,7 @@ export default {
       rulesAdd: {
         account: [
           { required: true, message: '请输入账号名称' },
-          { pattern: Peace.validate.pattern.username, message: '支持输入字母、数字，6-20位字符' }
+          { pattern: Peace.validate.pattern.username, message: '支持输入字母、数字，最长限制20位字符' }
         ],
         password: [
           { required: true, message: '请输入密码' },
