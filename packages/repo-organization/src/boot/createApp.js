@@ -31,9 +31,12 @@ export default async function(configuration) {
     const reg = /[^{}]*{(.*)}[^}]*/
     configurationByService.data.menuArr.map((value) => {
       const route = value.menuPath && value.menuPath.replace(reg, '$1')
-      value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
-      value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
+      if (process.env[route] !== undefined) {
+        value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
+        value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
+      }
     })
+    console.log(configurationByService.data.menuArr)
     configuration.routes.layoutNavMenu = configurationByService.data.menuArr
   }
 
