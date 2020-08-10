@@ -4,7 +4,7 @@
     <div class="title">{{title}}</div>
     <div class="msg">
       <template>因<span>{{message}}</span>,</template>
-      您的资料审核未通过。如有疑问，请联系客服人员 027-88888888
+      您的资料审核未通过。如有疑问，请联系客服人员 15827147188
     </div>
     <el-button v-on:click='reSubmit'>重新提交</el-button>
   </div>
