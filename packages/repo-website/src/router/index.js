@@ -9,7 +9,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import generateRoutes from './generateRoutes'
-
+import { path } from './generateRoutes'
+import Util from '@src/util'
 export default function({ configuration }) {
   Vue.use(VueRouter)
 
@@ -25,7 +26,12 @@ export default function({ configuration }) {
   router.beforeEach((to, from, next) => {
     // set title
     document.title = to.meta?.title ?? window.configuration.application.title
-
+    //当前路由需要登录
+    if (to.meta?.auth == true) {
+      if (!Util.user.isSignIn()) {
+        next(path.LOGIN)
+      }
+    }
     next()
   })
 

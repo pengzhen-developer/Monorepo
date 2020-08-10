@@ -123,7 +123,34 @@ export const redirectTOPharmacistWorkbench = () => {
 export const isSignIn = () => {
   return !!Peace.cache.localStorage.get(USER_INFO)
 }
-
+/**
+ * 机构入驻跳转
+ *
+ */
+export const replaceToCompliteInfo = (status) => {
+  const checkStatus = {
+    未申请: 1,
+    待审核: 2,
+    已通过: 3,
+    未通过: 4
+  }
+  status = status || getUserInfo()?.checkStatus
+  switch (status) {
+    case checkStatus.待审核:
+      $peace.$router.replace(path.CHECKWAITING)
+      break
+    case checkStatus.未通过:
+      $peace.$router.replace(path.CHECKFAILURE)
+      break
+    case checkStatus.未申请:
+      $peace.$router.replace(path.ORGREGISTER)
+      break
+    default:
+      $peace.$router.replace(path.HOME)
+      redirectToConsole()
+      break
+  }
+}
 export default {
   getUserInfo,
   setUserInfo,
@@ -138,5 +165,6 @@ export default {
   replaceToLogin,
   redirectToConsole,
   redirectToDoctorWorkbench,
-  redirectTOPharmacistWorkbench
+  redirectTOPharmacistWorkbench,
+  replaceToCompliteInfo
 }

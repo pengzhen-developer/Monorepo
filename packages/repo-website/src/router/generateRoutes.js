@@ -9,8 +9,12 @@ export const path = {
   REDIRECT: '/',
   /** 首页 */
   HOME: '/home',
-  /** 完善信息 */
-  INFORMMATION: '/information',
+  /** 完善信息-机构注册 */
+  ORGREGISTER: '/compliteInfo/OrgRegister',
+  /** 完善信息-等待审核 */
+  CHECKWAITING: '/compliteInfo/CheckWaiting',
+  /** 完善信息-审核失败 */
+  CHECKFAILURE: '/compliteInfo/CheckFailure',
   /** 注册 */
   REGISTER: '/register',
   /** 登录 */
@@ -40,9 +44,28 @@ export default function generateRoutes() {
       component: () => import('@src/views/system/redirect')
     },
     {
-      path: path.INFORMMATION,
-      name: path.INFORMMATION,
-      component: () => import('@src/views/system/information')
+      path: path.ORGREGISTER,
+      name: path.ORGREGISTER,
+      meta: {
+        auth: true
+      },
+      component: () => import('@src/views/compliteInfo/orgRegister')
+    },
+    {
+      path: path.CHECKWAITING,
+      name: path.CHECKWAITING,
+      meta: {
+        auth: true
+      },
+      component: () => import('@src/views/compliteInfo/orgCheckWaiting')
+    },
+    {
+      path: path.CHECKFAILURE,
+      name: path.CHECKFAILURE,
+      meta: {
+        auth: true
+      },
+      component: () => import('@src/views/compliteInfo/orgChackFailure')
     },
     {
       path: path.REGISTER,

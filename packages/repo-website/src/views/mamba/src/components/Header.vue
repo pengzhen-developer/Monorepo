@@ -71,7 +71,6 @@
 import { path } from '@src/router/generateRoutes'
 import Util from '@src/util/index'
 import Service from '../service'
-import Constant from '../constant'
 
 export default {
   methods: {
@@ -88,14 +87,7 @@ export default {
       //跳转前刷新一次checkStatus
       Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
-
-        if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(path.INFORMMATION)
-        } else {
-          this.$router.replace(path.HOME)
-
-          Util.user.redirectToConsole()
-        }
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     },
     handleCommand(command) {

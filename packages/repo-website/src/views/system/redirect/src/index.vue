@@ -7,7 +7,7 @@ import Util from '@src/util'
 
 import Service from './service'
 import { path } from '@src/router/generateRoutes'
-import Constant from './constant'
+// import Constant from './constant'
 export default {
   data() {
     return {
@@ -22,11 +22,12 @@ export default {
 
       Service.getBaseInfo(params)
         .then((res) => {
-          if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-            this.$router.replace(path.INFORMMATION)
-          } else {
-            this.$router.replace(path.HOME)
-          }
+          Util.user.replaceToCompliteInfo(res.data.checkStatus)
+          // if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
+          //   this.$router.replace(path.INFORMMATION)
+          // } else {
+          //   this.$router.replace(path.HOME)
+          // }
         })
         .catch(() => {
           Util.user.removeUserInfo()

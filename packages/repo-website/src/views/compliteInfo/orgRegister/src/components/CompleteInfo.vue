@@ -454,6 +454,7 @@ export default {
       &.sec-item {
         flex: 1;
         margin-right: 20px;
+        margin-bottom: 0;
         &:last-child {
           margin-right: 0;
         }
@@ -462,6 +463,9 @@ export default {
         .el-form-item {
           &:first-child {
             margin-bottom: 16px;
+          }
+          &:last-child {
+            margin-bottom: 0;
           }
         }
       }
@@ -515,7 +519,7 @@ export default {
   .form-botton {
     display: flex;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 40px;
     .el-button {
       width: 120px;
       font-size: 14px;

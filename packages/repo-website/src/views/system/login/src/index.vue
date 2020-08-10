@@ -86,7 +86,7 @@ export default {
     .logo {
       width: 140px;
       height: 40px;
-      margin: 0 20px 0 30px;
+      margin: 0 20px 0 20px;
       overflow: hidden;
     }
 

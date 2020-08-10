@@ -160,7 +160,7 @@ import Util from '@src/util'
 import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
 import Service from './service'
-import Constant from './constant'
+// import Constant from './constant'
 
 export default {
   data() {
@@ -301,10 +301,7 @@ export default {
     completeInfomation() {
       Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
-
-        if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(path.INFORMMATION)
-        }
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     },
     validateForm() {
@@ -342,7 +339,7 @@ export default {
     .logo {
       width: 140px;
       height: 40px;
-      margin: 0 20px 0 30px;
+      margin: 0 20px 0 20px;
       overflow: hidden;
     }
 

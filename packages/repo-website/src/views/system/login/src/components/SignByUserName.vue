@@ -23,6 +23,7 @@
 
     <el-form v-bind:model="model"
              v-bind:rules="rules"
+             v-on:keyup.enter.native="login"
              size="mini"
              ref="form">
 
@@ -147,14 +148,7 @@ export default {
     completeInfomation() {
       Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
-
-        if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          this.$router.replace(path.INFORMMATION)
-        } else {
-          this.$router.replace(path.HOME)
-
-          Util.user.redirectToConsole()
-        }
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     },
     validateForm() {
