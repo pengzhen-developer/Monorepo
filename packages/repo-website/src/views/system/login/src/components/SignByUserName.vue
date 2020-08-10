@@ -40,7 +40,7 @@
       <el-form-item prop="password">
         <el-input v-model="model.password"
                   show-password
-                  placeholder="6-20位字母和数字的组合">
+                  placeholder="请输入密码">
           <div slot="prepend">
             <i class="zyy-icon zyy-mima"></i>
           </div>
