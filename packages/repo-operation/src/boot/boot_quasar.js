@@ -9,6 +9,7 @@ import langDe from 'quasar/lang/zh-hans'
 import { Quasar, LoadingBar, Notify, LocalStorage, SessionStorage, Cookies } from 'quasar'
 
 export default ({ Vue, configuration }) => {
+  // 异步引入 ui css
   require('quasar/dist/quasar.css')
   require('@quasar/extras/material-icons/material-icons.css')
 

@@ -32,14 +32,14 @@ const install = async () => {
     // Library
     boot_Library,
 
+    // Framework
+    boot_Quasar,
+
     // UI
     boot_UI,
 
     //global style
-    boot_styles,
-
-    // Framework
-    boot_Quasar
+    boot_styles
   ]
 
   for (const boot of boots) {

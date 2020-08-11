@@ -27,6 +27,7 @@
 import ElementUI from 'element-ui'
 
 export default ({ Vue, configuration }) => {
+  // 异步引入 ui css
   require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
 
   Vue.use(ElementUI, { size: 'mini' })

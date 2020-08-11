@@ -11,12 +11,7 @@ const hexToRGBA = function hexToRgbA(hex, opacity) {
   throw new Error('Bad Hex')
 }
 
-// export boot install function
-// async is optional
-
-export default async ({ configuration }) => {
-  require(`@src/assets/css/ui-fix.scss`)
-
+const createStyleConfig = (configuration) => {
   const styleConfig = new Map([
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],
@@ -33,19 +28,48 @@ export default async ({ configuration }) => {
     ['grey-999', '#999999']
   ])
 
-  const style = document.createElement('style')
-  style.type = 'text/css'
-  style.appendChild(document.createTextNode('/* This is boot_styles auto generate */'))
+  return styleConfig
+}
 
+const generateStylesheet = (configuration) => {
+  const styleConfig = createStyleConfig(configuration)
+
+  // 生成 <stylesheet> 元素
+  const stylesheet = document.createElement('style')
+  stylesheet.type = 'text/css'
+
+  // 写入说明
+  stylesheet.appendChild(document.createTextNode('/* This is boot_styles auto generate */'))
+
+  // 根据 config ，循环写入样式
   for (let [key, value] of styleConfig) {
+    // 设定全局可访问变量
+    // 使用 var(--q-color-xx) 访问
     document.body.style.setProperty('--q-color-' + key, value)
+
+    // 设定全局样式
     const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ color: ${value}; }`
+
+    // 写入 TextNode
     const styleSheetTextNode = document.createTextNode(styleSheetNode)
-    style.appendChild(styleSheetTextNode)
+
+    // 写入 stylesheet
+    stylesheet.appendChild(styleSheetTextNode)
   }
 
-  // 将 <style> 元素加到页面中
-  document.head.appendChild(style)
+  // 将 <stylesheet> 元素加到页面中
+  document.head.appendChild(stylesheet)
+}
+
+// export boot install function
+// async is optional
+
+export default async ({ configuration }) => {
+  // 异步引入全局 css
+  require(`@src/assets/css/index.scss`)
+
+  // 基于配置生成 stylesheet, 写入 document.head
+  generateStylesheet(configuration)
 
   console.log(
     `%c ${'Styles'} %c N/A %c`,
