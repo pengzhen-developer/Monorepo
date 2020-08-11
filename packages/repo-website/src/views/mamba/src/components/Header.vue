@@ -120,7 +120,6 @@ export default {
   height: 45px;
   float: right;
   width: 200px;
-  margin-left: 30px;
   line-height: 45px;
 }
 
@@ -142,7 +141,9 @@ button:active {
 .console-btn {
   width: 80px;
 }
-
+.nav-menu {
+  margin: 0 20px;
+}
 .nav-menu a:hover,
 .nav-menu .active > a,
 .nav-menu li:hover > a {
@@ -150,5 +151,21 @@ button:active {
 }
 .nav-menu a {
   color: var(--q-color-grey-333);
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+  .nav-menu {
+    margin: 0 10px;
+  }
+  .nav-menu a {
+    padding: 12px;
+  }
+  .login {
+    width: 20%;
+  }
+}
+@media (max-width: 992px) {
+  .login {
+    margin-right: 20px;
+  }
 }
 </style>

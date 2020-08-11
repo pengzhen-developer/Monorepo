@@ -21,7 +21,7 @@
                             style="width: 242px; height: 75px;"
                             :src="require('@src/assets/img/logo2_white.png')">
                   </el-image>
-                  <p class="animate__animated animate__fadeInUp banner-mid">互联网云医院 | 处方共享服务 | 合理用药服务 | 药品供应服务</p>
+                  <p class="animate__animated animate__fadeInUp banner-mid">互联网云医院 | 处方共享服务 | 合理用药管理 | 药品供应服务</p>
                   <a href="#about-lists"
                      class="btn-get-started animate__animated animate__fadeInUp scrollto banner-bottom">查看更多</a>
                 </div>
@@ -56,6 +56,9 @@
 export default {}
 </script>
 <style  scoped>
+#hero .carousel-item::before {
+  background-color: transparent;
+}
 .banner-mid {
   width: 100% !important;
   font-size: 32px;

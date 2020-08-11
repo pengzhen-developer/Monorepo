@@ -69,5 +69,15 @@ export default {}
 .about-lists .content-item {
   border-left: 1px solid #deebf5;
   border-bottom: 1px solid #deebf5;
+  margin: -2px;
+}
+
+@media (min-width: 425px) and (max-width: 768px) {
+  .about-lists .content-item:nth-child(2n-1) {
+    padding-right: 40px;
+  }
+  .about-lists .content-item:nth-child(2n) {
+    padding-left: 40px;
+  }
 }
 </style>

@@ -10,27 +10,27 @@
       </div>
       <div class="footer-bottom row">
 
-        <div class="bottom-item col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+        <div class="bottom-item col-12 col-sm-12 col-md col-lg col-xl">
           <p>扫码体验</p>
           <div class="qr-code-list row">
             <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
               <img src="../assets/img/my/iOS.png" />
-              医生工作台iOS
+              <span>医生工作台iOS</span>
             </div>
             <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
               <img src="../assets/img/my/android.png" />
-              医生工作台安卓
+              <span>医生工作台安卓</span>
             </div>
             <div class="qr-code-content col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
               <img src="../assets/img/my/web.png" />
-              患者应用小程序
+              <span>患者应用小程序</span>
             </div>
           </div>
         </div>
 
-        <div class="line d-none d-lg-block"></div>
+        <div class="line d-none d-lg-block "></div>
 
-        <div class="bottom-item col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+        <div class="bottom-item col-12 col-sm-12 col-md col-lg col-xl">
           <p>联系我们</p>
           <!-- <div class="information">
             <i class=" zyy-icon zyy-icon_dianhua"
@@ -46,8 +46,7 @@
       </div>
     </div>
 
-    <div class="bottom">
-      <div class="bottom-line "></div>
+    <div class="bottom container">
       Copyright &copy; 全息云通健康科技（武汉）有限公司
     </div>
 
@@ -69,20 +68,17 @@ section {
 }
 
 .footer-bottom {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  width: calc(100% + 30px);
 }
 .line {
-  margin: 0px 120px;
-  height: 210px;
-  border: #d9d9d9 1px dashed;
+  margin: 0px 12%;
+  height: inherit;
+  border: 1px dashed #d9d9d9;
 }
 .bottom-item {
   font-size: 24px;
   color: var(--q-color-grey-333);
   display: flex;
-  margin-bottom: 20px;
   flex-direction: column;
 }
 .qr-code-list {
@@ -94,16 +90,20 @@ section {
   font-size: 13px;
   align-items: center;
   flex-direction: column;
+  padding: 0 11px;
 }
 
 .qr-code-content img {
   width: 100%;
 }
+.qr-code-content span {
+  margin-top: 12px;
+}
 
 .information {
   color: var(--q-color-grey-333);
   font-size: 20px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .information i {
   width: 24px;
@@ -111,16 +111,23 @@ section {
 }
 .bottom {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: var(--q-color-grey-999);
   font-size: 12px;
+  border-top: 1px solid #d9d9d9;
+  padding-top: 30px;
+  margin-top: 63px;
 }
-.bottom-line {
-  height: 1px;
-  margin-top: 60px;
-  margin-bottom: 30px;
-  background: #cccccc;
+
+@media (max-width: 1024px) {
+  .qr-code-content span {
+    margin-bottom: 16px;
+  }
+}
+@media (max-width: 425px) {
+  .footer-bottom {
+    width: calc(100% + 30px);
+  }
 }
 </style>

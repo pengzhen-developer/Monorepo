@@ -85,4 +85,9 @@ export default {
     color: #fff;
   }
 }
+@media (max-width: 992px) {
+  .right {
+    margin-right: 40px;
+  }
+}
 </style>
