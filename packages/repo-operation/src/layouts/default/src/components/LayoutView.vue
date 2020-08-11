@@ -20,7 +20,7 @@
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
-        <keep-alive>
+        <keep-alive v-bind:include="keepAliveInclude">
           <router-view class="router-view bg-white q-pa-md"
                        v-bind:key="$route.fullPath"
                        v-bind:style="routerViewStyle"></router-view>
@@ -49,6 +49,14 @@ export default {
       routerViewIframeStyle: {},
 
       isIFrame: undefined
+    }
+  },
+
+  computed: {
+    keepAliveInclude() {
+      // 基于 layout - tabs 实现标签页的缓存
+      // ** 请注意， component name 与 menuAlias 必须保持一致
+      return this.$store.state.tabs.tabs.map((item) => item.menuAlias)
     }
   },
 
@@ -83,13 +91,16 @@ export default {
     },
 
     setRouterViewStyle() {
-      // 存在 300 ms 的 router-view 切换特效
+      // dom.offset 是 quasar 提供的工具类
+      // 自行了解相关 api 文档
       const offset = dom.offset(this?.$el)
 
+      // 内部 vue 设定最小高度，由 vue 组件控制滚动
       this.routerViewStyle = {
         ['min-height']: `${document.body.clientHeight - offset?.top - 16}px`
       }
 
+      // 外部 iframe 设定高度，由 iframe 具体功能控制滚动
       this.routerViewIframeStyle = {
         ['height']: `${document.body.clientHeight - offset?.top - 16}px`
       }
