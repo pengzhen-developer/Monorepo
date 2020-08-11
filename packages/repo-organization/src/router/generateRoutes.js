@@ -1,5 +1,10 @@
 import Peace from '@src/library'
 
+const getConfiguration = (params) => {
+  const url = process.env.VUE_APP_BASE_API + '/console/Service/getServiceSettingMenu'
+  return Peace.http.post(url, params)
+}
+
 export default function generateRoutes(configuration) {
   const dynamicLayoutNavRoutes = []
 
@@ -46,6 +51,8 @@ export default function generateRoutes(configuration) {
     }
   ]
 
+  getRouterList(configuration)
+
   configuration.routes.layoutNavMenu.forEach((item) => {
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
       let component = null
@@ -74,4 +81,23 @@ export default function generateRoutes(configuration) {
   })
 
   return rootRoutes
+}
+
+async function getRouterList(configuration) {
+  const serviceId = Peace.cache.localStorage.get('serviceId')
+  const isSecondSystem = window.sessionStorage.getItem('ORIGINAL_HREF') ? true : false
+  const params = { serviceId }
+  if (serviceId && isSecondSystem) {
+    const configurationByService = await getConfiguration(params)
+
+    const reg = /[^{}]*{(.*)}[^}]*/
+    configurationByService.data.menuArr.map((value) => {
+      const route = value.menuPath && value.menuPath.replace(reg, '$1')
+      if (process.env[route] !== undefined) {
+        value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
+        value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
+      }
+    })
+    configuration.routes.layoutNavMenu = configurationByService.data.menuArr
+  }
 }

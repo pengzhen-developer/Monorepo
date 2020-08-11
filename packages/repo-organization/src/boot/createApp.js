@@ -9,12 +9,7 @@ import App from '@src/App.vue'
 
 import CreateRouter from '@src/router'
 import CreateStore from '@src/store'
-import Peace from '@src/library'
 
-const getConfiguration = (params) => {
-  const url = process.env.VUE_APP_BASE_API + '/console/Service/getServiceSettingMenu'
-  return Peace.http.post(url, params)
-}
 /**
  * Create Vue App
  *
@@ -22,24 +17,6 @@ const getConfiguration = (params) => {
  * @returns
  */
 export default async function(configuration) {
-  const serviceId = Peace.cache.localStorage.get('serviceId')
-  const isSecondSystem = window.sessionStorage.getItem('ORIGINAL_HREF') ? true : false
-  const params = { serviceId }
-  if (serviceId && isSecondSystem) {
-    const configurationByService = await getConfiguration(params)
-
-    const reg = /[^{}]*{(.*)}[^}]*/
-    configurationByService.data.menuArr.map((value) => {
-      const route = value.menuPath && value.menuPath.replace(reg, '$1')
-      if (process.env[route] !== undefined) {
-        value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
-        value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
-      }
-    })
-    console.log(configurationByService.data.menuArr)
-    configuration.routes.layoutNavMenu = configurationByService.data.menuArr
-  }
-
   // Create store and router instances
   const store = await CreateStore({ Vue, configuration })
   const router = await CreateRouter({ Vue, store, configuration })
