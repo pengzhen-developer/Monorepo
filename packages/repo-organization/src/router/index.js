@@ -10,10 +10,10 @@ import VueRouter from 'vue-router'
 
 import generateRoutes from './generateRoutes'
 
-export default function({ configuration }) {
+export default async function({ configuration }) {
   Vue.use(VueRouter)
 
-  const routes = generateRoutes(configuration)
+  const routes = await generateRoutes(configuration)
 
   const router = new VueRouter({
     mode: 'history',

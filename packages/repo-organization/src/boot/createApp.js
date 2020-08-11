@@ -21,6 +21,8 @@ export default async function(configuration) {
   const store = await CreateStore({ Vue, configuration })
   const router = await CreateRouter({ Vue, store, configuration })
 
+  console.log(router)
+
   // Make router instance available in store
   store.$router = router
 

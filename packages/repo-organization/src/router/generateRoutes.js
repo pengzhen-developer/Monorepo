@@ -1,12 +1,42 @@
 import Peace from '@src/library'
+import configuration_nav_console from '@src/boot/boot_configuration/configuration_nav_console'
 
 const getConfiguration = (params) => {
   const url = process.env.VUE_APP_BASE_API + '/console/Service/getServiceSettingMenu'
   return Peace.http.post(url, params)
 }
 
-export default function generateRoutes(configuration) {
+export default async function generateRoutes(configuration) {
   const dynamicLayoutNavRoutes = []
+
+  await getRouterList(configuration)
+
+  configuration.routes.layoutNavMenu.forEach((item) => {
+    if (item.menuPath && item.menuRoute && item.menuRouteName) {
+      let component = null
+
+      if (Peace.validate.isUrl(item.menuPath)) {
+        component = () => import(`@src/views/iframe/index.js`)
+      } else {
+        component = () => import(`@src/${item.menuPath}/index.js`)
+      }
+
+      dynamicLayoutNavRoutes.push({
+        path: item.menuRoute,
+        name: item.menuRouteName,
+        meta: item,
+        component: component
+      })
+    } else {
+      const notFound = () => import(`@src/views/exception/404`)
+
+      dynamicLayoutNavRoutes.push({
+        path: 'not-found',
+        name: 'not-found',
+        component: notFound
+      })
+    }
+  })
 
   const rootRoutes = [
     {
@@ -51,35 +81,6 @@ export default function generateRoutes(configuration) {
     }
   ]
 
-  getRouterList(configuration)
-
-  configuration.routes.layoutNavMenu.forEach((item) => {
-    if (item.menuPath && item.menuRoute && item.menuRouteName) {
-      let component = null
-
-      if (Peace.validate.isUrl(item.menuPath)) {
-        component = () => import(`@src/views/iframe/index.js`)
-      } else {
-        component = () => import(`@src/${item.menuPath}/index.js`)
-      }
-
-      dynamicLayoutNavRoutes.push({
-        path: item.menuRoute,
-        name: item.menuRouteName,
-        meta: item,
-        component: component
-      })
-    } else {
-      const notFound = () => import(`@src/views/exception/404`)
-
-      dynamicLayoutNavRoutes.push({
-        path: 'not-found',
-        name: 'not-found',
-        component: notFound
-      })
-    }
-  })
-
   return rootRoutes
 }
 
@@ -99,5 +100,7 @@ async function getRouterList(configuration) {
       }
     })
     configuration.routes.layoutNavMenu = configurationByService.data.menuArr
+  } else {
+    configuration.routes.layoutNavMenu = configuration_nav_console
   }
 }

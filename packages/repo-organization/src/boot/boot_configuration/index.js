@@ -1,11 +1,5 @@
 import Peace from '@src/library'
 
-import configuration_nav_console from './configuration_nav_console'
-import configuration_nav_organization from './configuration_nav_organization'
-import configuration_nav_prescription from './configuration_nav_prescription'
-import configuration_nav_rationaldruguse from './configuration_nav_rationaldruguse'
-import configuration_nav_drugsupplie from './configuration_nav_drugsupplie'
-
 /** 控制台 - 加载子系统 */
 /** 思路： */
 /** 通过 url 参数加载子系统配置文件 */
@@ -29,27 +23,10 @@ const dynamicTitle = () => {
   return title ?? '智药云控制台'
 }
 
-/** 动态配置 */
-const dynimicRoutes = () => {
-  const configuration = Peace.util.queryUrlParam('configuration', window.sessionStorage.getItem('ORIGINAL_HREF'))
-
-  switch (configuration) {
-    case 'prescription':
-      return configuration_nav_prescription
-
-    case 'organization':
-      return configuration_nav_organization
-
-    case 'rationaldruguse':
-      return configuration_nav_rationaldruguse
-
-    case 'drugsupplie':
-      return configuration_nav_drugsupplie
-
-    default:
-      return configuration_nav_console
-  }
-}
+// /** 动态配置 */
+// const dynimicRoutes = () => {
+//   return configuration_nav_console
+// }
 
 export default {
   /**
@@ -57,7 +34,7 @@ export default {
    *
    */
   application: {
-    title: dynamicTitle(),
+    title: dynamicTitle()
   },
 
   /**
@@ -66,7 +43,7 @@ export default {
    * 可选： #00C6AE / #3099A6
    */
   theme: {
-    primary: '#3099A6',
+    primary: '#3099A6'
   },
 
   /**
@@ -92,7 +69,7 @@ export default {
      */
     layoutNavMenu: [
       /** 动态路由 */
-      ...dynimicRoutes(),
+      // ...dynimicRoutes()
     ],
 
     /**
@@ -107,6 +84,6 @@ export default {
       //   menuRoute: 'health/pacs',
       //   menuPath: 'views/hybrid/health/pacs'
       // }
-    ],
-  },
+    ]
+  }
 }
