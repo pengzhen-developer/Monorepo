@@ -88,10 +88,24 @@ export default {
 
   .el-menu-item {
     padding-left: 64px !important;
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.25rem;
+      letter-spacing: 0.03333em;
+    }
   }
 }
 
 .el-menu-item {
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.375rem;
+    letter-spacing: 0.00714em;
+  }
+
   &:hover {
     color: var(--q-color-primary);
   }

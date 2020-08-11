@@ -1,0 +1,26 @@
+@import './Fix.Element-UI.scss';
+@import './Fix.Quasar.scss';
+
+/* UI - layout
+ ------------------------- */
+
+@for $i from 1 through 10 {
+  /* 
+   * .e.g 
+   * .em-4
+   */
+  .em-#{$i} {
+    width: #{$i}em !important;
+  }
+
+  /* 
+   * .e.g 
+   * .em-4-justify
+   */
+  .em-#{$i}-justify {
+    display: inline-block;
+    text-align: justify;
+    text-align-last: justify;
+    width: #{$i}em !important;
+  }
+}

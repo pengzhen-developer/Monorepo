@@ -46,16 +46,15 @@ const install = async () => {
     try {
       await boot({
         Vue,
-        app,
-        store,
-        router,
         configuration
       })
     } catch (error) {
       console.error('[Library] boot error:', error)
     }
   }
-  const { app, store, router } = await CreateApp(configuration)
+
+  const { app } = await CreateApp(configuration)
+
   return new Vue(app)
 }
 
