@@ -8,7 +8,7 @@
 $--form-width-default: 195px;
 
 /* Element - Form
--------------------------- */
+ -------------------------- */
 .el-form {
   &.el-form--inline {
     .el-form-item {
@@ -40,7 +40,7 @@ $--form-width-default: 195px;
 }
 
 /* Element - Table
--------------------------- */
+ -------------------------- */
 .el-table {
   &.el-table--mini {
     font-size: 14px;
@@ -51,11 +51,17 @@ $--form-width-default: 195px;
     color: #000;
 
     > .cell {
-      padding: 6px 12px;
+      padding: 4px 12px;
     }
   }
 
   tr td {
-    padding: 12px 0;
+    padding: 16px 0;
+  }
+
+  .el-button--mini,
+  .el-button--mini.is-round {
+    font-size: 14px;
+    padding: 4px 0px;
   }
 }
