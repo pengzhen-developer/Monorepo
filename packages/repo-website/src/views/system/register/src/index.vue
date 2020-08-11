@@ -270,13 +270,10 @@ export default {
         smsType: 'register'
       }
 
-      Service.sendCode(params)
-        .then((res) => {
-          Peace.util.success(res.msg)
-        })
-        .finally(() => {
-          this.countdownTime = this.countdownInterval
-        })
+      Service.sendCode(params).then((res) => {
+        Peace.util.success(res.msg)
+        this.countdownTime = this.countdownInterval
+      })
     },
 
     register() {
