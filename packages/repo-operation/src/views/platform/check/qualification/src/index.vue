@@ -113,12 +113,14 @@ import Service from './service'
 import CONSTANT from './constant'
 
 export default {
+  name: 'Qualification',
+
   components: {
     AduitDetail
   },
 
   filters: {
-    getEnumLabel: function(value, ENUM) {
+    getEnumLabel: function (value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
@@ -169,9 +171,7 @@ export default {
     },
 
     canShowDetail(row) {
-      return (
-        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 || row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
-      )
+      return row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 || row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
     },
 
     aduit(row) {

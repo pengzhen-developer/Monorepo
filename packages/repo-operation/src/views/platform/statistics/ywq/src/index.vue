@@ -45,22 +45,9 @@
       </el-form-item> -->
 
       <el-form-item label="操作日期：">
-        <div class="row items-center">
-          <el-date-picker type="date"
-                          placeholder="开始时间"
-                          v-model="model.startTime"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          :pickerOptions="startPickerOptions"
-                          style="width: 180px;"></el-date-picker>
-          <div class="q-mx-md mid-line"></div>
-          <el-date-picker placeholder="结束时间"
-                          v-model="model.endTime"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          :pickerOptions="endPickerOptions"
-                          style="width: 180px;"></el-date-picker>
-        </div>
+        <el-date-picker type="daterange"
+                        value-format="yyyy-MM-dd"
+                        v-model="model.timeRange"></el-date-picker>
       </el-form-item>
 
       <el-form-item class="q-ml-md">
@@ -117,30 +104,9 @@ export default {
         ambient: '',
         signer: '',
         prescriptionNo: '',
+        timeRange: [],
         startTime: '',
         endTime: ''
-      },
-
-      startPickerOptions: {
-        disabledDate: (time) => {
-          if (this.model.endTime) {
-            return time.getTime() > new Date(this.model.endTime).getTime()
-          } else {
-            return time.getTime() > Date.now()
-          }
-        }
-      },
-      endPickerOptions: {
-        disabledDate: (time) => {
-          if (this.model.startTime) {
-            return (
-              time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) ||
-              time.getTime() > Date.now()
-            )
-          } else {
-            return time.getTime() > Date.now()
-          }
-        }
       },
 
       source: {
@@ -154,6 +120,13 @@ export default {
     this.$nextTick().then(() => {
       this.get()
     })
+  },
+
+  watch: {
+    'model.timeRange'(timeRange) {
+      this.model.startTime = timeRange?.[0] ?? ''
+      this.model.endTime = timeRange?.[1] ?? ''
+    }
   },
 
   methods: {

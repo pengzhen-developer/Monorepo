@@ -9,7 +9,7 @@
         <template slot="title">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-          <label class="text-black text-subtitle2"
+          <label class="text-black"
                  slot="title">{{ data.menuName }}</label>
         </template>
 
@@ -27,9 +27,8 @@
                     v-bind:disabled="!data.enable">
         <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
+             class="q-mr-md text-weight-bolder text-grey-7"></i>
         </template>
-
         <label class="text-black text-caption cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
     </template>
@@ -65,10 +64,24 @@ export default {
 
   .el-menu-item {
     padding-left: 64px !important;
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.25rem;
+      letter-spacing: 0.03333em;
+    }
   }
 }
 
 .el-menu-item {
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.375rem;
+    letter-spacing: 0.00714em;
+  }
+
   &:hover {
     color: var(--q-color-primary);
   }

@@ -34,24 +34,11 @@
                      v-bind:value="value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="申请时间：">
-        <div class="date-wrap">
-          <el-date-picker v-model="model.startTime"
-                          type="date"
-                          placeholder="开始日期"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          :pickerOptions="startPickerOptions"
-                          style="width: 130px;"></el-date-picker>
-          <div class="date-separator"></div>
-          <el-date-picker v-model="model.endTime"
-                          type="date"
-                          placeholder="结束时间"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          :pickerOptions="endPickerOptions"
-                          style="width: 130px;"></el-date-picker>
-        </div>
+      <el-form-item l-form-item
+                    label="申请时间：">
+        <el-date-picker type="daterange"
+                        value-format="yyyy-MM-dd"
+                        v-model="model.timeRange"></el-date-picker>
       </el-form-item>
       <el-form-item label
                     label-width="0">
@@ -128,6 +115,8 @@ import Service from './service'
 import CONSTANT from './constant'
 
 export default {
+  name: 'Service',
+
   components: {
     CheckDetail
   },
@@ -144,27 +133,9 @@ export default {
         hospitalName: '',
         role: '',
         checkStatus: '',
+        timeRange: [],
         startTime: '',
         endTime: ''
-      },
-
-      startPickerOptions: {
-        disabledDate: (time) => {
-          if (this.model.endTime) {
-            return time.getTime() > new Date(this.model.endTime).getTime()
-          } else {
-            return time.getTime() > Date.now()
-          }
-        }
-      },
-      endPickerOptions: {
-        disabledDate: (time) => {
-          if (this.model.startTime) {
-            return time.getTime() < new Date(this.model.startTime).setDate(new Date(this.model.startTime).getDate() - 1) || time.getTime() > Date.now()
-          } else {
-            return time.getTime() > Date.now()
-          }
-        }
       },
 
       checkDialog: {
@@ -177,6 +148,13 @@ export default {
         ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE,
         ENUM_APPLY_STATUS: CONSTANT.ENUM_APPLY_STATUS
       }
+    }
+  },
+
+  watch: {
+    'model.timeRange'(timeRange) {
+      this.model.startTime = timeRange?.[0] ?? ''
+      this.model.endTime = timeRange?.[1] ?? ''
     }
   },
 
@@ -261,6 +239,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
   .date-separator {
     width: 20px;
     margin: 0 10px;
