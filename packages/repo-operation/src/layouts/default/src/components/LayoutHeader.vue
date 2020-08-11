@@ -55,6 +55,14 @@
 
               <q-item clickable
                       v-ripple
+                      v-on:click="goUserCenter">
+                <q-item-section>
+                  个人中心
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable
+                      v-ripple
                       v-on:click="signOut">
                 <q-item-section>
                   退出登录
@@ -97,6 +105,10 @@ export default {
   },
 
   methods: {
+    goUserCenter() {
+      this.$router.push('/user-center')
+    },
+
     signOut() {
       Util.user.removeUserInfo()
 

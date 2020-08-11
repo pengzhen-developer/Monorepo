@@ -22,8 +22,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="创建日期：">
-        <el-date-picker style="width: 220px;"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+        <el-date-picker value-format="yyyy-MM-dd HH:mm:ss"
                         v-bind:default-time="['00:00:00', '23:59:59']"
                         format="yyyy-MM-dd"
                         type="daterange"

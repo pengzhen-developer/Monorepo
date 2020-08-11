@@ -141,6 +141,8 @@ import Service from './service'
 import CONSTANT from './constant'
 
 export default {
+  name: 'Organization',
+
   components: {
     OrganizationDetail,
     ServiceList,
