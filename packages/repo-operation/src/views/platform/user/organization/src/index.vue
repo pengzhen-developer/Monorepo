@@ -3,47 +3,52 @@
     <div v-show="!serviceDialog.visible">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
+               label-width="auto"
                label-position="right"
                label-suffix
                size="mini">
-        <el-form-item label="联系人：">
-          <el-input v-model.trim="model.linkman"
-                    placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号码：">
-          <el-input v-model.trim="model.tel"
-                    placeholder="请输入"></el-input>
-        </el-form-item>
+
         <el-form-item label="机构名称：">
           <el-input v-model.trim="model.hospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="账号状态：">
-          <el-select v-model="model.isOpen"
-                     placeholder
-                     clearable>
-            <el-option label="全部"
-                       value></el-option>
-            <el-option v-for="(value, label) in source.ENUM_IS_OPEN"
-                       v-bind:key="value"
-                       v-bind:label="label"
-                       v-bind:value="value"></el-option>
+        <el-form-item label="机构类型：">
+          <el-input v-model.trim="model.hospitalName"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item label="使用中的服务：">
+          <el-select clearable
+                     multiple
+                     v-model.trim="model.hospital">
+            <el-option label="111111111"
+                       value="1"></el-option>
+            <el-option label="22222222"
+                       value="2"></el-option>
+            <el-option label="3333333333"
+                       value="3"></el-option>
+            <el-option label="444444444"
+                       value="4"></el-option>
+            <el-option label="5"
+                       value="6"></el-option>
+            <el-option label="7"
+                       value="7"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label
-                      label-width="0">
+
+        <el-form-item label="">
           <el-button type="primary"
                      v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
 
-      <el-button style="margin-bottom: 18px;"
-                 type="primary"
-                 icon="el-icon-plus"
-                 v-on:click="addOrganization">新增</el-button>
+      <div class="q-mb-md">
+        <el-button type="primary"
+                   icon="el-icon-plus"
+                   v-on:click="addOrganization">新增</el-button>
+      </div>
 
-      <PeaceTable ref="table"
+      <PeaceTable class="element-ui-default"
+                  ref="table"
                   size="mini"
                   pagination>
         <el-table-column type="index"
@@ -52,7 +57,7 @@
                          align="center"
                          :index="indexMethod"></el-table-column>
         <el-table-column min-width="180px"
-                         align="center"
+                         align="left"
                          label="机构名称"
                          prop="hospitalName"></el-table-column>
         <el-table-column min-width="120px"
@@ -60,36 +65,23 @@
                          prop="role"
                          align="center"></el-table-column>
         <el-table-column min-width="100px"
-                         align="center"
-                         label="联系人"
-                         prop="linkman"></el-table-column>
-        <el-table-column width="120px"
-                         label="手机号码"
-                         prop="tel"
-                         align="center"></el-table-column>
-        <el-table-column min-width="100px"
                          label="入驻方式"
                          align="center"
                          prop="source"></el-table-column>
-        <el-table-column min-width="100px"
-                         label="账号状态"
+        <el-table-column min-width="160px"
+                         label="使用中的服务"
                          align="center"
-                         prop="isOpen">
-          <template slot-scope="scope">{{
-            scope.row.isOpen | getEnumLabel(source.ENUM_IS_OPEN)
-          }}</template>
-        </el-table-column>
-        <el-table-column width="160px"
+                         prop="source"></el-table-column>
+        <el-table-column min-width="160px"
                          label="认证时间"
                          align="center"
                          prop="checkTime">
-          <template slot-scope="scope">{{
-            scope.row.source == '运营添加'
-              ? scope.row.createdTime
-              : scope.row.source == '机构注册'
-              ? scope.row.checkTime
-              : '——'
-          }}</template>
+          <template slot-scope="scope">
+            {{ 
+              scope.row.source == '运营添加' ? scope.row.createdTime : 
+              scope.row.source == '机构注册' ? scope.row.checkTime : '——'
+            }}
+          </template>
         </el-table-column>
         <el-table-column width="200px"
                          align="center"
@@ -161,7 +153,8 @@ export default {
         linkman: '',
         tel: '',
         hospitalName: '',
-        isOpen: ''
+        isOpen: '',
+        hospital: []
       },
 
       detailDialog: {

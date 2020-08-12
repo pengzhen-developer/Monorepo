@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form ref="form"
+    <el-form class="element-ui-default"
+             ref="form"
              label-position="right"
              label-width="150px"
              label-suffix="："

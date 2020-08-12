@@ -1,5 +1,5 @@
 <template>
-  <div class="el-form">
+  <div class="el-form element-ui-default">
     <div :class="[ formSize ? 'el-form-item--' + formSize : '',
       !defaultText ? 'mb-none' : '' ]"
          class="el-form-item">

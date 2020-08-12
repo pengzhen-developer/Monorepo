@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="control">
-      <el-form inline
+      <el-form class="element-ui-default"
+               inline
                label-width="100px">
         <el-form-item label="所属辖区"
                       class="is-required">
