@@ -61,6 +61,23 @@ export default {
   },
 
   /**
+   * new
+   * 数据总览     获取医疗机构，仓配机构数量
+   */
+  getMechanismCount(params) {
+    const isMock = false
+
+    const apiPath = 'operate/index/getMechanismCount'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return http.get(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
    *  药店列表 获取地图数据
    *
    * @param {*} params

@@ -212,7 +212,7 @@ export default {
       let httpMap = [
         this.getPrescriptionCountOfAll(),
         this.getDrugCount(),
-        this.getMedicalAndWarehouse(),
+        this.getMechanismCount(),
         this.getMapData(),
         this.getData(),
         this.getPreCountOfSevenDays(),
@@ -248,10 +248,10 @@ export default {
       })
     },
     // 获取医疗机构、仓配机构数量
-    getMedicalAndWarehouse() {
-      return Service.getMedicalAndWarehouse().then((res) => {
-        this.countOfAllData.medical = res.data.HospitalNum
-        this.countOfAllData.warehouse = res.data.DrugCloudStoreNum
+    getMechanismCount() {
+      return Service.getMechanismCount().then((res) => {
+        this.countOfAllData.medical = res.data.medicalInstitutionCount
+        this.countOfAllData.warehouse = res.data.warehouseInstitutionCount
       })
     },
     // 获取地图数据
