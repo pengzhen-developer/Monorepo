@@ -254,7 +254,6 @@ export default {
           Peace.util.success(res.msg)
         })
         .finally(() => {
-          debugger
           this.countdownTime = this.countdownInterval
         })
     },
@@ -287,7 +286,6 @@ export default {
       })
     },
     onCountdownEnd() {
-      debugger
       this.countdownTime = 0
     },
     hidTips() {

@@ -34,11 +34,13 @@ export default {
       }
     }
   },
-
+  props: {
+    defaultActive: String
+  },
   computed: {
-    defaultActive() {
-      return this.$store.state.tabs?.activeTab?.id
-    },
+    // defaultActive() {
+    //   return this.$store.state.tabs?.activeTab?.id
+    // },
 
     menuSelect() {
       return this.provdeMenuSelect
@@ -49,31 +51,12 @@ export default {
     }
   },
 
-  watch: {
-    // 路由更新，还原 nav
-    '$route.path'() {
-      this.$nextTick().then(() => {
-        this.resetNavSelect()
-      })
-    },
-
-    // 菜单更新，还原 nav
-    childrenMenuTree() {
-      this.$nextTick().then(() => {
-        this.resetNavSelect()
-      })
-    }
-  },
-
   created() {},
 
   mounted() {
     this.$nextTick().then(() => {
       // 设定滚动区域样式
       this.setScrollAreaStyle()
-
-      // 设定导航选中
-      this.resetNavSelect()
     })
   },
 
@@ -81,22 +64,6 @@ export default {
     setScrollAreaStyle() {
       this.scrollAreaStyle = {
         height: `${document.body.clientHeight - 64}px`
-      }
-    },
-
-    resetNavSelect() {
-      // 初始化进入？ 默认选中第一项
-      if (this.$route.path === '/layout') {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
-
-        firstMenuNode?.click()
-      }
-
-      // 页面被刷新？ 恢复菜单选中
-      else if (this.$route.path && this.$route.name) {
-        const currentMenuNode = this.$el.querySelector(`li[router="${this.$route.name}"]`)
-
-        currentMenuNode?.click()
       }
     }
   }

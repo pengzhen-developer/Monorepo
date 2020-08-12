@@ -21,27 +21,64 @@
 import Peace from '@src/library'
 import Util from '@src/util'
 
+const Service = {
+  /**
+   * 认证授权
+   *
+   * @param {*} params 参数列表
+   * @returns
+   */
+  auth(params) {
+    const isMock = false
+
+    const apiPath = 'console/Account/auth'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  }
+}
+
+// 1, 拦截
+// 1.1 拦截 '/'，跳转 layout / 验证身份 (初始化)
+// 1.2 拦截 '/xx/xx ...' ，跳转 xx/xx / login (刷新时)
+
 export default {
-  data() {
-    return {
-      processing: true,
+  // 1, 拦截
+  beforeRouteEnter(to, from, next) {
+    console.log('AppIntercept beforeRouteEnter')
 
-      cdKey: undefined,
-      referrerSite: undefined
-    }
-  },
-
-  watch: {
-    '$route.path'() {
-      if (this.$route.path === '/') {
-        this.authentication()
+    if (to.path === '/') {
+      if (Util.user.isSignIn()) {
+        next('/layout')
+      } else {
+        next((vm) => {
+          vm.setData()
+          vm.authentication()
+        })
+      }
+    } else {
+      if (Util.user.isSignIn()) {
+        next()
+      } else {
+        next((vm) => {
+          vm.cdKeyError()
+        })
       }
     }
   },
 
-  created() {
-    this.setData()
-    this.authentication()
+  data() {
+    return {
+      processing: undefined,
+
+      cdKey: undefined,
+      referrerSite: undefined
+    }
   },
 
   methods: {
@@ -55,49 +92,29 @@ export default {
     },
 
     authentication() {
-      this.processing = true
+      if (!Util.user.isSignIn()) {
+        this.processing = true
 
-      const param = { cdkey: this.cdKey }
+        const param = { cdkey: this.cdKey }
 
-      this.auth(param)
-        .then(res => {
-          Util.user.setUserCDKey(this.cdKey)
-          Util.user.setUserInfo(res.data)
+        Service.auth(param)
+          .then((res) => {
+            Util.user.setUserCDKey(this.cdKey)
+            Util.user.setUserInfo(res.data)
 
-          this.$router.push('/layout')
-        })
-        .catch(res => {
-          this.cdKeyError(res.msg)
-        })
-        .finally(() => {
-          this.processing = false
-        })
+            this.$router.push('/layout')
+          })
+          .catch(() => {
+            this.cdKeyError()
+          })
+          .finally(() => {
+            this.processing = false
+          })
+      }
     },
 
-    /**
-     * 认证授权
-     *
-     * @param {*} params 参数列表
-     * @returns
-     */
-    auth(params) {
-      const isMock = false
-
-      const apiPath = 'console/Account/auth'
-      const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-      const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-      const requestApi = isMock ? mockPath : serverPath
-
-      return Peace.http.post(requestApi, params).then(res => {
-        return res
-      })
-    },
-
-    cdKeyError(reason) {
+    cdKeyError() {
       Peace.util.warning('为保障你的数据安全，请重新登录后使用')
-
-      this.tips = reason
 
       setTimeout(() => {
         Util.referrer.redirectToReferrer()

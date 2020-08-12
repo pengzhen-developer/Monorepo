@@ -12,7 +12,7 @@
               v-bind:width="240"
               v-bind:breakpoint="0"
               v-model="showDrawerModel">
-      <LayoutNav></LayoutNav>
+      <LayoutNav v-bind:defaultActive="defaultActive"></LayoutNav>
 
       <div class="q-mini-drawer-hide absolute-center"
            style="left: unset; right: -24px;"
@@ -70,21 +70,35 @@ export default {
       provideMenuTree: () => this.menuTree
     }
   },
-
+  watch: {
+    // 路由更新，还原 nav
+    '$route.path'() {
+      this.$nextTick().then(() => {
+        this.resetNavSelect()
+      })
+    }
+  },
   data() {
     return {
       configuration: window.configuration,
       menuList: [],
       menuTree: [],
 
-      showDrawerModel: true
+      showDrawerModel: true,
+      defaultActive: ''
     }
   },
 
   created() {
     this.getMenu()
   },
-
+  mounted() {
+    this.$nextTick(() => {
+      if (this.$route.path !== 'layout') {
+        this.resetNavSelect()
+      }
+    })
+  },
   methods: {
     getMenu() {
       // 避免浅拷贝导致数据源被污染
@@ -112,6 +126,29 @@ export default {
         // 选中当前 tab
         this.$store.commit('tabs/selectTab', currentMenu)
       }, 1000)
+    },
+
+    resetNavSelect() {
+      // 初始化进入？ 默认选中第一项
+      if (this.$route.path === '/layout') {
+        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+
+        firstMenuNode?.click()
+      }
+
+      // 页面被刷新？ 恢复菜单选中
+      else if (this.$route.path && this.$route.name) {
+        this.resetActive()
+      }
+    },
+    resetActive() {
+      const router = this.$route?.meta
+
+      //还原 nav active
+      this.defaultActive = router?.id.toString()
+
+      //还原 tabs active
+      this.$store.commit('tabs/selectTab', router)
     }
   }
 }
