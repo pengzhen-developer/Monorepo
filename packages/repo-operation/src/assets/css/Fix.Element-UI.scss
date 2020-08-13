@@ -12,31 +12,41 @@ $--form-width-default: 195px;
 .el-form {
   &:not(.element-ui-default) {
     &.el-form--inline {
-      .el-form-item {
-        margin-right: 24px;
-        margin-bottom: 16px;
+      > .el-form-item {
+        > .el-form-item__content > .el-input {
+          width: $--form-width-default;
+        }
       }
 
-      .el-input__inner {
+      .el-select,
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
         width: $--form-width-default;
+      }
+
+      .el-input--suffix .el-input__inner {
+        padding-right: 15px;
+      }
+
+      .el-date-editor .el-range__close-icon {
+        position: relative;
+        right: -5px;
+      }
+      .el-date-editor .el-range-separator {
+        display: inline-flex;
+        justify-content: center;
+      }
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
+        &:not(.element-ui-default) {
+          width: $--form-width-default;
+        }
       }
     }
 
     .el-form-item {
-      margin-bottom: 16px;
-    }
-
-    .el-date-editor .el-range__close-icon {
-      position: relative;
-      right: -5px;
-    }
-    .el-date-editor .el-range-separator {
-      display: inline-flex;
-      justify-content: center;
-    }
-    .el-date-editor.el-input,
-    .el-date-editor.el-input__inner {
-      width: $--form-width-default;
+      margin-right: 20px;
+      margin-bottom: 20px;
     }
   }
 }

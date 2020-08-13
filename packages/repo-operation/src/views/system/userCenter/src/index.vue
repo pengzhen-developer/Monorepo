@@ -70,7 +70,7 @@
                     v-model="dialog.model.oldPwd"></el-input>
         </el-form-item>
 
-        <el-form-item prop="newPassword">
+        <el-form-item prop="newPwd">
           <div class="flex inline"
                slot="label">
             <span class="text-justify em-4">新密码</span>
@@ -127,6 +127,7 @@ export default {
 
           newPwd: [
             { required: true, message: '请输入新密码' },
+            { min: 6, max: 20, message: '长度在 6 到 20 个字符' },
             { pattern: Peace.validate.pattern.password, message: '支持输入字母、数字、下划线' }
           ]
         }

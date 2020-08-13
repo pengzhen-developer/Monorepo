@@ -8,30 +8,45 @@
                label-suffix
                size="mini">
 
-        <el-form-item label="机构名称：">
+        <el-form-item>
+          <template slot="label">
+            <span class="em-6-justify">机构名称</span>
+            <span>：</span>
+          </template>
           <el-input v-model.trim="model.hospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="机构类型：">
-          <el-input v-model.trim="model.hospitalName"
-                    placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="使用中的服务：">
+
+        <el-form-item>
+          <template slot="label">
+            <span class="em-6-justify">机构类型</span>
+            <span>：</span>
+          </template>
+
           <el-select clearable
+                     v-model.trim="model.orgType"
+                     placeholder="请输入">
+            <el-option v-for="item in source.orgType"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+
+          <template slot="label">
+            <span class="em-6-justify">使用中的服务</span>
+            <span>：</span>
+          </template>
+
+          <el-select style="width: 520px;"
+                     clearable
                      multiple
-                     v-model.trim="model.hospital">
-            <el-option label="111111111"
-                       value="1"></el-option>
-            <el-option label="22222222"
-                       value="2"></el-option>
-            <el-option label="3333333333"
-                       value="3"></el-option>
-            <el-option label="444444444"
-                       value="4"></el-option>
-            <el-option label="5"
-                       value="6"></el-option>
-            <el-option label="7"
-                       value="7"></el-option>
+                     v-model.trim="model.serviceType">
+            <el-option v-for="item in source.serviceType"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
 
@@ -47,8 +62,7 @@
                    v-on:click="addOrganization">新增</el-button>
       </div>
 
-      <PeaceTable class="element-ui-default"
-                  ref="table"
+      <PeaceTable ref="table"
                   size="mini"
                   pagination>
         <el-table-column type="index"
@@ -71,7 +85,11 @@
         <el-table-column min-width="160px"
                          label="使用中的服务"
                          align="center"
-                         prop="source"></el-table-column>
+                         prop="source">
+          <template slot-scope="scope">
+            <div v-html="formatServiceName(scope.row)"></div>
+          </template>
+        </el-table-column>
         <el-table-column min-width="160px"
                          label="认证时间"
                          align="center"
@@ -130,7 +148,6 @@ import OrganizationModel from './components/OrganizationModel'
 
 import Peace from '@src/library'
 import Service from './service'
-import CONSTANT from './constant'
 
 export default {
   name: 'Organization',
@@ -150,11 +167,23 @@ export default {
   data() {
     return {
       model: {
-        linkman: '',
-        tel: '',
         hospitalName: '',
-        isOpen: '',
-        hospital: []
+        orgType: '',
+        serviceType: []
+      },
+
+      source: {
+        orgType: [
+          { label: '医疗机构', value: 1 },
+          { label: '店配机构', value: 2 },
+          { label: '仓配机构', value: 3 }
+        ],
+        serviceType: [
+          { label: '互联网云医院', value: 1 },
+          { label: '合理用药管理', value: 2 },
+          { label: '处方共享服务', value: 3 },
+          { label: '药品供应服务', value: 4 }
+        ]
       },
 
       detailDialog: {
@@ -169,11 +198,6 @@ export default {
 
       addDialog: {
         visible: false
-      },
-
-      source: {
-        ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS,
-        ENUM_IS_OPEN: CONSTANT.ENUM_IS_OPEN
       }
     }
   },
@@ -224,6 +248,10 @@ export default {
     indexMethod(index) {
       const { internalCurrentPage, internalPageSize } = this.$refs.table.Pagination
       return index + (internalCurrentPage - 1) * internalPageSize + 1
+    },
+
+    formatServiceName(row) {
+      return row.serviceNames.join('<br/>')
     }
   }
 }
