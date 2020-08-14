@@ -100,7 +100,6 @@ export default {
 
   methods: {
     getInfo() {
-      console.log('我被触发了')
       Service.getInfo().then((res) => {
         if (res.data.list !== null) {
           this.ishasWare = true
@@ -192,10 +191,4 @@ p {
   font-size: 14px;
   color: var(--q-color-grey-666);
 }
-// .account-content {
-//   padding-top: 26px;
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// }
 </style>
