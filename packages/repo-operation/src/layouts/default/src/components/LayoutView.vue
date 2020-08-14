@@ -1,5 +1,5 @@
 <template>
-  <q-scroll-area class="bg-grey-2 q-pt-md q-pr-md q-pb-none q-pl-md"
+  <q-scroll-area class="bg-grey-2"
                  v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
 
@@ -21,7 +21,7 @@
                   mode="out-in"
                   name="el-fade-in-linear">
         <keep-alive v-bind:include="keepAliveInclude">
-          <router-view class="router-view bg-white q-pa-md"
+          <router-view class="router-view"
                        v-bind:key="$route.fullPath"
                        v-bind:style="routerViewStyle"></router-view>
         </keep-alive>
@@ -97,12 +97,12 @@ export default {
 
       // 内部 vue 设定最小高度，由 vue 组件控制滚动
       this.routerViewStyle = {
-        ['min-height']: `${document.body.clientHeight - offset?.top - 16}px`
+        ['min-height']: `${document.body.clientHeight - offset?.top}px`
       }
 
       // 外部 iframe 设定高度，由 iframe 具体功能控制滚动
       this.routerViewIframeStyle = {
-        ['height']: `${document.body.clientHeight - offset?.top - 16}px`
+        ['height']: `${document.body.clientHeight - offset?.top}px`
       }
     }
   }

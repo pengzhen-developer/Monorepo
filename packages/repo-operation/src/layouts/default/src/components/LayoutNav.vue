@@ -14,6 +14,7 @@
 
 <script>
 import LayoutNavItem from './LayoutNavItem'
+import { dom } from 'quasar'
 
 export default {
   components: {
@@ -58,8 +59,12 @@ export default {
 
   methods: {
     setScrollAreaStyle() {
+      // dom.offset 是 quasar 提供的工具类
+      // 自行了解相关 api 文档
+      const offset = dom.offset(this?.$el)
+
       this.scrollAreaStyle = {
-        height: `${document.body.clientHeight - 64}px`
+        height: `${document.body.clientHeight - offset?.top}px`
       }
     }
   }

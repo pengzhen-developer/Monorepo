@@ -100,7 +100,7 @@
                    height="400px"
                    class="q-mb-lg"
                    v-bind:data="cloudStoreList">
-        <el-table-column label=" "
+        <el-table-column label=""
                          align="center"
                          width="80px">
           <template slot-scope="scope">
@@ -265,17 +265,17 @@ export default {
     },
 
     async getBase64(file) {
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let reader = new FileReader()
         let imgResult = ''
         reader.readAsDataURL(file)
-        reader.onload = function() {
+        reader.onload = function () {
           imgResult = reader.result
         }
-        reader.onerror = function(error) {
+        reader.onerror = function (error) {
           reject(error)
         }
-        reader.onloadend = function() {
+        reader.onloadend = function () {
           resolve(imgResult)
         }
       })

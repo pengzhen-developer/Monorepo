@@ -1,49 +1,53 @@
 <template>
   <div>
-    <el-form v-bind:model="model"
-             inline="inline"
-             label-width="85px"
-             label-position="right"
-             label-suffix=""
-             size="mini">
-      <el-form-item label="机构名称：">
-        <el-input v-model.trim="model.custName"
-                  placeholder="请输入机构名称"></el-input>
-      </el-form-item>
+    <div class="card card-search q-mb-md">
+      <el-form v-bind:model="model"
+               inline="inline"
+               label-width="85px"
+               label-position="right"
+               label-suffix=""
+               size="mini">
+        <el-form-item label="机构名称：">
+          <el-input v-model.trim="model.custName"
+                    placeholder="请输入机构名称"></el-input>
+        </el-form-item>
 
-      <el-form-item label=" ">
-        <el-button type="primary"
-                   icon="el-icon-search"
-                   v-on:click="fetch">查询</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="">
+          <el-button type="primary"
+                     icon="el-icon-search"
+                     v-on:click="fetch">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <PeaceTable ref="table"
-                pagination
-                size="mini">
-      <el-table-column label=""
-                       type="index"></el-table-column>
-      <el-table-column label="机构名称"
-                       prop="Name"></el-table-column>
-      <el-table-column label="已配置药品供应方"
-                       prop="ConfSupplyNum">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-on:click="goDetailView(scope.row)">{{ scope.row.ConfSupplyNum }}</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="机构认证时间"
-                       prop="CreateTime"></el-table-column>
-      <el-table-column label="配置更新时间"
-                       prop="LastConfTime"></el-table-column>
-      <peace-table-column label="操作"
-                          prop="">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-on:click="goEditView(scope.row)">编辑</el-button>
-        </template>
-      </peace-table-column>
-    </PeaceTable>
+    <div class="card">
+      <PeaceTable ref="table"
+                  pagination
+                  size="mini">
+        <el-table-column label=""
+                         type="index"></el-table-column>
+        <el-table-column label="机构名称"
+                         prop="Name"></el-table-column>
+        <el-table-column label="已配置药品供应方"
+                         prop="ConfSupplyNum">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="goDetailView(scope.row)">{{ scope.row.ConfSupplyNum }}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="机构认证时间"
+                         prop="CreateTime"></el-table-column>
+        <el-table-column label="配置更新时间"
+                         prop="LastConfTime"></el-table-column>
+        <peace-table-column label="操作"
+                            prop="">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="goEditView(scope.row)">编辑</el-button>
+          </template>
+        </peace-table-column>
+      </PeaceTable>
+    </div>
   </div>
 </template>
 

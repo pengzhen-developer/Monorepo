@@ -1,17 +1,23 @@
 <template>
-  <q-toolbar style="height: 64px;">
-    <div class="full-width full-height flex justify-between items-center">
-      <div class="full-height flex items-center q-ml-md">
-        <q-img class="q-mr-xl cursor-pointer"
-               style="width: 160px;"
+  <q-toolbar class="q-px-none"
+             style="height: 80px;">
+    <div class="full-width full-height flex justify-between items-center bg-primary">
+      <div style="width: 240px; background: #2c8d98; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);"
+           class="full-height flex column items-center justify-center">
+        <q-img class="cursor-pointer inline"
+               style="width: 140px; height: 40px;"
+               contain
                v-bind:src="require('@src/assets/logo.png')"></q-img>
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span class="gt-md q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
+          <span class="gt-xl inline text-subtitle1 text-grey-3 animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>
+      </div>
+
+      <div class="col">
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
@@ -24,7 +30,7 @@
                             v-bind:index="menu.id.toString()"
                             v-bind:router="menu.id.toString()"
                             v-bind:disabled="menu.enable === false">
-                <label class="text-subtitle2 cursor-pointer"
+                <label class="cursor-pointer"
                        slot="title">{{ menu.menuName }}
                 </label>
               </el-menu-item>
@@ -46,7 +52,7 @@
                round
                dense
                icon="keyboard_arrow_down"
-               color="grey-7">
+               color="white">
           <q-popup-proxy>
             <q-list dense
                     bordered
@@ -119,18 +125,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-menu--horizontal {
+.el-menu--horizontal {
   border: none;
   margin: 0 10px 0 0;
+  background: var(--q-color-primary);
 }
-::v-deep .el-menu--horizontal > .el-menu-item {
+.el-menu--horizontal > .el-menu-item {
   &.is-active {
     color: var(--q-color-primary);
   }
 
+  color: #e5e5e5;
+  height: 80px;
+  line-height: 80px;
   padding: 0;
   margin: 0 20px;
+  font-size: 16px;
+  transition: none;
 }
+
+.el-menu--horizontal > .el-menu-item.is-active {
+  color: #fff;
+  border-bottom: 3px solid #fff;
+}
+
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
+.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
+  color: #fff;
+  background: transparent;
+}
+
 .user-avatar {
   width: 32px;
   height: 32px;

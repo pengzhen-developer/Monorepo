@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-route">
     <!-- 返回列表 -->
     <div class="q-mb-lg"
          v-if="displayView === '编辑' || displayView === '详情'">

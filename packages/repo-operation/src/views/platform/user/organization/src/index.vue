@@ -1,118 +1,123 @@
 <template>
-  <div>
+  <div class="layout-route">
     <div v-show="!serviceDialog.visible">
-      <el-form v-bind:model="model"
-               inline="inline"
-               label-width="auto"
-               label-position="right"
-               label-suffix
-               size="mini">
+      <div class="card card-search q-mb-md">
+        <el-form v-bind:model="model"
+                 inline="inline"
+                 label-width="auto"
+                 label-position="right"
+                 label-suffix
+                 size="mini">
 
-        <el-form-item>
-          <template slot="label">
-            <span class="em-6-justify">机构名称</span>
-            <span>：</span>
-          </template>
-          <el-input v-model.trim="model.hospitalName"
-                    placeholder="请输入"></el-input>
-        </el-form-item>
+          <el-form-item>
+            <template slot="label">
+              <span class="em-6-justify">机构名称</span>
+              <span>：</span>
+            </template>
+            <el-input v-model.trim="model.hospitalName"
+                      placeholder="请输入"></el-input>
+          </el-form-item>
 
-        <el-form-item>
-          <template slot="label">
-            <span class="em-6-justify">机构类型</span>
-            <span>：</span>
-          </template>
+          <el-form-item>
+            <template slot="label">
+              <span class="em-6-justify">机构类型</span>
+              <span>：</span>
+            </template>
 
-          <el-select clearable
-                     v-model.trim="model.orgType"
-                     placeholder="请输入">
-            <el-option v-for="item in source.orgType"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
+            <el-select clearable
+                       v-model.trim="model.orgType"
+                       placeholder="请输入">
+              <el-option v-for="item in source.orgType"
+                         v-bind:key="item.value"
+                         v-bind:label="item.label"
+                         v-bind:value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
 
-          <template slot="label">
-            <span class="em-6-justify">使用中的服务</span>
-            <span>：</span>
-          </template>
+            <template slot="label">
+              <span class="em-6-justify">使用中的服务</span>
+              <span>：</span>
+            </template>
 
-          <el-select style="width: 520px;"
-                     clearable
-                     multiple
-                     v-model.trim="model.serviceType">
-            <el-option v-for="item in source.serviceType"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
+            <el-select style="width: 510px;"
+                       clearable
+                       multiple
+                       v-model.trim="model.serviceType">
+              <el-option v-for="item in source.serviceType"
+                         v-bind:key="item.value"
+                         v-bind:label="item.label"
+                         v-bind:value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item label="">
-          <el-button type="primary"
-                     v-on:click="get">查询</el-button>
-        </el-form-item>
-      </el-form>
-
-      <div class="q-mb-md">
-        <el-button type="primary"
-                   icon="el-icon-plus"
-                   v-on:click="addOrganization">新增</el-button>
+          <el-form-item label="">
+            <el-button type="primary"
+                       v-on:click="get">查询</el-button>
+          </el-form-item>
+        </el-form>
       </div>
 
-      <PeaceTable ref="table"
-                  size="mini"
-                  pagination>
-        <el-table-column type="index"
-                         width="60px"
-                         label="序号"
-                         align="center"
-                         :index="indexMethod"></el-table-column>
-        <el-table-column min-width="180px"
-                         align="left"
-                         label="机构名称"
-                         prop="hospitalName"></el-table-column>
-        <el-table-column min-width="120px"
-                         label="机构类型"
-                         prop="role"
-                         align="center"></el-table-column>
-        <el-table-column min-width="100px"
-                         label="入驻方式"
-                         align="center"
-                         prop="source"></el-table-column>
-        <el-table-column min-width="160px"
-                         label="使用中的服务"
-                         align="center"
-                         prop="source">
-          <template slot-scope="scope">
-            <div v-html="formatServiceName(scope.row)"></div>
-          </template>
-        </el-table-column>
-        <el-table-column min-width="160px"
-                         label="认证时间"
-                         align="center"
-                         prop="checkTime">
-          <template slot-scope="scope">
-            {{ 
+      <div class="card">
+        <div class="q-mb-lg">
+          <el-button type="primary"
+                     icon="el-icon-plus"
+                     v-on:click="addOrganization">新增</el-button>
+        </div>
+
+        <PeaceTable ref="table"
+                    size="mini"
+                    v-bind:page-size="5"
+                    pagination>
+          <el-table-column type="index"
+                           width="60px"
+                           label="序号"
+                           align="center"
+                           :index="indexMethod"></el-table-column>
+          <el-table-column min-width="180px"
+                           align="left"
+                           label="机构名称"
+                           prop="hospitalName"></el-table-column>
+          <el-table-column min-width="120px"
+                           label="机构类型"
+                           prop="role"
+                           align="center"></el-table-column>
+          <el-table-column min-width="100px"
+                           label="入驻方式"
+                           align="center"
+                           prop="source"></el-table-column>
+          <el-table-column min-width="160px"
+                           label="使用中的服务"
+                           align="center"
+                           prop="source">
+            <template slot-scope="scope">
+              <div v-html="formatServiceName(scope.row)"></div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="160px"
+                           label="认证时间"
+                           align="center"
+                           prop="checkTime">
+            <template slot-scope="scope">
+              {{ 
               scope.row.source == '运营添加' ? scope.row.createdTime : 
               scope.row.source == '机构注册' ? scope.row.checkTime : '——'
             }}
-          </template>
-        </el-table-column>
-        <el-table-column width="200px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="toDetail(scope.row)">基本信息</el-button>
-            <el-button type="text"
-                       v-on:click="toService(scope.row)">服务管理</el-button>
-          </template>
-        </el-table-column>
-      </PeaceTable>
+            </template>
+          </el-table-column>
+          <el-table-column width="200px"
+                           align="center"
+                           fixed="right"
+                           label="操作">
+            <template slot-scope="scope">
+              <el-button type="text"
+                         v-on:click="toDetail(scope.row)">基本信息</el-button>
+              <el-button type="text"
+                         v-on:click="toService(scope.row)">服务管理</el-button>
+            </template>
+          </el-table-column>
+        </PeaceTable>
+      </div>
 
       <!-- 机构基本信息 -->
       <el-dialog width="520px"

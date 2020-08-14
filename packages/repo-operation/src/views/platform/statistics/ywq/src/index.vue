@@ -1,92 +1,96 @@
 <template>
-  <div>
-    <el-form v-bind:model="model"
-             inline="inline"
-             label-width="auto"
-             label-position="right"
-             label-suffix=""
-             size="mini">
+  <div class="layout-route">
+    <div class="card card-search q-mb-md">
+      <el-form v-bind:model="model"
+               inline="inline"
+               label-width="auto"
+               label-position="right"
+               label-suffix=""
+               size="mini">
 
-      <el-form-item label="调用来源：">
-        <el-select v-model="model.source"
-                   placeholder="全部"
-                   clearable>
-          <el-option v-for="(value, label) in source.ENUM_DATA_SOURCE"
-                     v-bind:key="value"
-                     v-bind:label="label"
-                     v-bind:value="value"></el-option>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="调用来源：">
+          <el-select v-model="model.source"
+                     placeholder="全部"
+                     clearable>
+            <el-option v-for="(value, label) in source.ENUM_DATA_SOURCE"
+                       v-bind:key="value"
+                       v-bind:label="label"
+                       v-bind:value="value"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="调用环境：">
-        <el-select v-model="model.ambient"
-                   placeholder="全部"
-                   clearable>
-          <el-option v-for="(value, label) in source.ENUM_DATA_BACKGROUND"
-                     v-bind:key="value"
-                     v-bind:label="label"
-                     v-bind:value="value"></el-option>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="调用环境：">
+          <el-select v-model="model.ambient"
+                     placeholder="全部"
+                     clearable>
+            <el-option v-for="(value, label) in source.ENUM_DATA_BACKGROUND"
+                       v-bind:key="value"
+                       v-bind:label="label"
+                       v-bind:value="value"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="签名人：">
-        <el-input v-model="model.signer"
-                  placeholder="请输入"></el-input>
-      </el-form-item>
+        <el-form-item label="签名人：">
+          <el-input v-model="model.signer"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
 
-      <el-form-item label="处方编号：">
-        <el-input v-model="model.prescriptionNo"
-                  placeholder="请输入"></el-input>
-      </el-form-item>
+        <el-form-item label="处方编号：">
+          <el-input v-model="model.prescriptionNo"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
 
-      <!-- <el-form-item label="业务主键值：">
+        <!-- <el-form-item label="业务主键值：">
         <el-input v-model="model.primaryKey"
                   placeholder="请输入"></el-input>
       </el-form-item> -->
 
-      <el-form-item label="操作日期：">
-        <el-date-picker type="daterange"
-                        value-format="yyyy-MM-dd"
-                        v-model="model.timeRange"></el-date-picker>
-      </el-form-item>
+        <el-form-item label="操作日期：">
+          <el-date-picker type="daterange"
+                          value-format="yyyy-MM-dd"
+                          v-model="model.timeRange"></el-date-picker>
+        </el-form-item>
 
-      <el-form-item class="q-ml-md">
-        <el-button type="primary"
-                   v-on:click="get">搜索</el-button>
+        <el-form-item class="q-ml-md">
+          <el-button type="primary"
+                     v-on:click="get">搜索</el-button>
 
-      </el-form-item>
-    </el-form>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <PeaceTable ref="table"
-                size="mini"
-                pagination>
-      <el-table-column min-width="100px"
-                       width="100px"
-                       label="序号"
-                       align="center"
-                       type="index"></el-table-column>
-      <el-table-column min-width="150px"
-                       align="center"
-                       label="调用来源"
-                       prop="source"></el-table-column>
-      <el-table-column min-width="150px"
-                       align="center"
-                       label="调用环境"
-                       prop="ambient"></el-table-column>
-      <el-table-column min-width="150px"
-                       align="center"
-                       label="签名人"
-                       prop="signer"></el-table-column>
-      <el-table-column min-width="150px"
-                       align="center"
-                       label="处方编号"
-                       prop="prescriptionNo"></el-table-column>
-      <el-table-column min-width="150px"
-                       align="center"
-                       label="调用时间"
-                       prop="callTime"></el-table-column>
+    <div class="card">
+      <PeaceTable ref="table"
+                  size="mini"
+                  pagination>
+        <el-table-column min-width="100px"
+                         width="100px"
+                         label="序号"
+                         align="center"
+                         type="index"></el-table-column>
+        <el-table-column min-width="150px"
+                         align="center"
+                         label="调用来源"
+                         prop="source"></el-table-column>
+        <el-table-column min-width="150px"
+                         align="center"
+                         label="调用环境"
+                         prop="ambient"></el-table-column>
+        <el-table-column min-width="150px"
+                         align="center"
+                         label="签名人"
+                         prop="signer"></el-table-column>
+        <el-table-column min-width="150px"
+                         align="center"
+                         label="处方编号"
+                         prop="prescriptionNo"></el-table-column>
+        <el-table-column min-width="150px"
+                         align="center"
+                         label="调用时间"
+                         prop="callTime"></el-table-column>
 
-    </PeaceTable>
+      </PeaceTable>
+    </div>
 
   </div>
 </template>

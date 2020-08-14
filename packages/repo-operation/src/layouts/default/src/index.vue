@@ -2,7 +2,7 @@
   <q-layout class="layout"
             view="hHh lpR lFf">
 
-    <q-header class="layout-header bg-white text-grey-7 q-mb-xs">
+    <q-header class="layout-header ">
       <LayoutHeader v-bind:defaultActive="defaultHeanderNavActive"></LayoutHeader>
     </q-header>
 

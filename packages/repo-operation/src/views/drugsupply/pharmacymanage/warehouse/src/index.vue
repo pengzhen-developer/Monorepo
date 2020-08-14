@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-route">
     <!-- 云仓详情 -->
     <div v-if="visible">
       <el-button type="primary"

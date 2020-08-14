@@ -1,58 +1,67 @@
 <template>
-  <div>
-    <el-form inline
-             label-width="auto"
-             v-bind:model="model"
-             v-on:keyup.enter.native="fetch"
-             v-on:submit.native.prevent>
-      <el-form-item label="角色名称：">
-        <el-input v-model.trim="model.roleName"></el-input>
-      </el-form-item>
+  <div class="layout-route">
 
-      <el-form-item label=" ">
-        <el-button style="width: 80px;"
-                   type="primary"
-                   v-on:click="fetch">查询</el-button>
+    <div class="card card-search q-mb-md">
+      <el-form inline
+               label-width="auto"
+               v-bind:model="model"
+               v-on:keyup.enter.native="fetch"
+               v-on:submit.native.prevent>
+        <el-form-item label="角色名称：">
+          <el-input v-model.trim="model.roleName"></el-input>
+        </el-form-item>
+
+        <el-form-item label="">
+          <el-button style="width: 80px;"
+                     type="primary"
+                     v-on:click="fetch">查询</el-button>
+
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <div class="card">
+      <div class="q-mb-lg">
         <el-button style="width: 80px;"
                    type="primary"
                    v-on:click="showAdd">新增</el-button>
-      </el-form-item>
-    </el-form>
+      </div>
 
-    <peace-table ref="table"
-                 pagination>
-      <el-table-column label="序号"
-                       prop="index"
-                       align="center"
-                       width="60px">
-      </el-table-column>
-      <el-table-column label="角色名称"
-                       prop="roleName"></el-table-column>
-      <el-table-column label="角色备注"
-                       prop="remark"></el-table-column>
-      <el-table-column label="使用状态"
-                       align="center"
-                       width="120px">
-        <template slot-scope="scope">
-          <span class="q-mr-sm">{{ scope.row.status ? '已启用' : '已禁用' }}</span>
-          <el-switch v-on:change="changeStatus(scope.row)"
-                     v-model="scope.row.status"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间"
-                       prop="createdTime"
-                       align="center"
-                       width="160px"></el-table-column>
-      <el-table-column label="操作"
-                       align="center"
-                       width="80px">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-on:click="showEdit(scope.row)">修改</el-button>
-        </template>
+      <peace-table ref="table"
+                   pagination>
+        <el-table-column label="序号"
+                         prop="index"
+                         align="center"
+                         width="60px">
+        </el-table-column>
+        <el-table-column label="角色名称"
+                         prop="roleName"></el-table-column>
+        <el-table-column label="角色备注"
+                         prop="remark"></el-table-column>
+        <el-table-column label="使用状态"
+                         align="center"
+                         width="120px">
+          <template slot-scope="scope">
+            <span class="q-mr-sm">{{ scope.row.status ? '已启用' : '已禁用' }}</span>
+            <el-switch v-on:change="changeStatus(scope.row)"
+                       v-model="scope.row.status"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间"
+                         prop="createdTime"
+                         align="center"
+                         width="160px"></el-table-column>
+        <el-table-column label="操作"
+                         align="center"
+                         width="80px">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="showEdit(scope.row)">修改</el-button>
+          </template>
 
-      </el-table-column>
-    </peace-table>
+        </el-table-column>
+      </peace-table>
+    </div>
 
     <peace-dialog width="400px"
                   v-if="dialog.visible"

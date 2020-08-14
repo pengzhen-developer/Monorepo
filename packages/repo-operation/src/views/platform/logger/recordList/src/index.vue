@@ -1,69 +1,74 @@
 <template>
-  <div>
-    <el-form inline
-             label-width="auto"
-             v-bind:model="model">
-      <el-form-item label="业务模块：">
-        <el-input v-model="model.businessModule"
-                  placeholder="请输入"></el-input>
-      </el-form-item>
+  <div class="layout-route">
 
-      <el-form-item label="操作类型：">
-        <el-select v-model="model.operationType"
-                   placeholder="全部"
-                   clearable>
-          <el-option v-for="(value, label) in source.ENUM_ACTIONTYPE_STATUS"
-                     v-bind:key="value"
-                     v-bind:label="label"
-                     v-bind:value="value"></el-option>
-        </el-select>
-      </el-form-item>
+    <div class="card card-search q-mb-md">
+      <el-form inline
+               label-width="auto"
+               v-bind:model="model">
+        <el-form-item label="业务模块：">
+          <el-input v-model="model.businessModule"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
 
-      <el-form-item label="操作日期：">
-        <el-date-picker type="daterange"
-                        value-format="yyyy-MM-dd"
-                        v-model="model.timeRange"></el-date-picker>
-      </el-form-item>
+        <el-form-item label="操作类型：">
+          <el-select v-model="model.operationType"
+                     placeholder="全部"
+                     clearable>
+            <el-option v-for="(value, label) in source.ENUM_ACTIONTYPE_STATUS"
+                       v-bind:key="value"
+                       v-bind:label="label"
+                       v-bind:value="value"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="">
-        <el-button type="primary"
-                   v-on:click="get">查询</el-button>
+        <el-form-item label="操作日期：">
+          <el-date-picker type="daterange"
+                          value-format="yyyy-MM-dd"
+                          v-model="model.timeRange"></el-date-picker>
+        </el-form-item>
 
-        <el-button type="primary"
-                   plain
-                   v-on:click="reset">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="">
+          <el-button type="primary"
+                     v-on:click="get">查询</el-button>
 
-    <PeaceTable ref="table"
-                size="mini"
-                pagination>
-      <el-table-column width="60px"
-                       label="序号"
-                       align="center"
-                       type="index"
-                       :index="indexMethod"></el-table-column>
-      <el-table-column width="200px"
-                       align="center"
-                       label="业务模块"
-                       prop="businessModule"></el-table-column>
-      <el-table-column width="160px"
-                       align="center"
-                       label="操作类型"
-                       prop="operationType"></el-table-column>
-      <el-table-column width="160px"
-                       align="center"
-                       label="操作人"
-                       prop="operator"></el-table-column>
-      <el-table-column width="160px"
-                       align="center"
-                       label="操作时间"
-                       prop="operationTime"></el-table-column>
-      <el-table-column min-width="130px"
-                       label="备注"
-                       align="center"
-                       prop="remarks"></el-table-column>
-    </PeaceTable>
+          <el-button type="primary"
+                     plain
+                     v-on:click="reset">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <div class="card">
+      <PeaceTable ref="table"
+                  size="mini"
+                  pagination>
+        <el-table-column width="60px"
+                         label="序号"
+                         align="center"
+                         type="index"
+                         :index="indexMethod"></el-table-column>
+        <el-table-column width="200px"
+                         align="center"
+                         label="业务模块"
+                         prop="businessModule"></el-table-column>
+        <el-table-column width="160px"
+                         align="center"
+                         label="操作类型"
+                         prop="operationType"></el-table-column>
+        <el-table-column width="160px"
+                         align="center"
+                         label="操作人"
+                         prop="operator"></el-table-column>
+        <el-table-column width="160px"
+                         align="center"
+                         label="操作时间"
+                         prop="operationTime"></el-table-column>
+        <el-table-column min-width="130px"
+                         label="备注"
+                         align="center"
+                         prop="remarks"></el-table-column>
+      </PeaceTable>
+    </div>
 
   </div>
 </template>
