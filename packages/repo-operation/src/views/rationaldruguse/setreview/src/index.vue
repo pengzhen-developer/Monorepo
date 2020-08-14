@@ -72,6 +72,7 @@ import Service from './service'
 import Peace from '@src/library'
 
 export default {
+  name: 'Setreview',
   inject: ['provideAddTab', 'provideGetTab'],
   components: {
     ReviewDetail

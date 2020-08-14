@@ -1,0 +1,125 @@
+<template>
+  <div>
+    <el-form inline
+             label-width="auto"
+             v-bind:model="model"
+             v-on:keyup.enter.native="fetch"
+             v-on:submit.native.prevent>
+      <el-form-item label="云仓名称：">
+        <el-input v-model.trim="model.CloudName"></el-input>
+      </el-form-item>
+      <el-form-item label="所属机构：">
+        <el-input v-model.trim="model.CustName"></el-input>
+      </el-form-item>
+      <el-form-item label="启用状态：">
+        <el-select clearable
+                   v-model.trim="model.EnableStatus">
+          <el-option v-for="(value,label) in source.ORGANIZATION_STATUS"
+                     :key="value"
+                     :label="label"
+                     :value="value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="创建日期：">
+        <el-date-picker style="width: 220px;"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        v-bind:default-time="['00:00:00', '23:59:59']"
+                        format="yyyy-MM-dd"
+                        type="daterange"
+                        v-model.trim="DateValue"></el-date-picker>
+      </el-form-item>
+      <el-form-item label=" ">
+        <el-button style="width: 80px;"
+                   type="primary"
+                   v-on:click="fetch">查询</el-button>
+      </el-form-item>
+    </el-form>
+
+    <peace-table ref="table"
+                 pagination>
+      <el-table-column label="序号"
+                       type="index"
+                       align="center"
+                       width="80px">
+      </el-table-column>
+      <el-table-column label="云仓名称"
+                       prop="CloudName"></el-table-column>
+      <el-table-column label="所属机构"
+                       prop="CustName"></el-table-column>
+      <el-table-column label="创建时间"
+                       prop="CreateTime"
+                       width="160px"></el-table-column>
+      <el-table-column label="启用状态"
+                       prop="EnableStatus">
+        <template slot-scope="scope">
+          {{ scope.row.EnableStatus == 0 ? '已启用' : '已禁用' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作"
+                       align="center"
+                       width="140px">
+        <template slot-scope="scope">
+          <el-button type="text"
+                     v-on:click="showDetail(scope.row)">云仓详情</el-button>
+        </template>
+      </el-table-column>
+    </peace-table>
+
+  </div>
+</template>
+
+<script>
+import Service from '../service/index'
+import CONSTANT from '../constant'
+
+export default {
+  name: 'User',
+
+  data() {
+    return {
+      DateValue: [],
+      source: {
+        ORGANIZATION_STATUS: CONSTANT.ORGANIZATION_STATUS
+      },
+      model: {
+        CloudName: '',
+        CustName: '',
+        StartTime: '',
+        EndTime: '',
+        EnableStatus: ''
+      }
+    }
+  },
+
+  watch: {
+    DateValue(value) {
+      this.model.StartTime = value?.[0] ?? ''
+      this.model.EndTime = value?.[1] ?? ''
+    }
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
+  methods: {
+    fetch() {
+      const fetch = Service.getWarehouseList
+      const params = Object.assign({}, this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        return res
+      })
+    },
+
+    showDetail(row) {
+      this.$emit('onShowDetail', row.CustCode)
+    }
+  }
+}
+</script>
+
+<style>
+</style>
