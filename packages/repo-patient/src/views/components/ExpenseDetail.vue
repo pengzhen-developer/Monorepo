@@ -22,7 +22,6 @@
     <div class="cost-footer">
       <van-button class="cost-submit"
                   type="primary"
-                  round
                   @click="pay">立即支付</van-button>
     </div>
     <!-- <div class="cost-tip">支付安全由中国人民财产保险股份有限公司承保</div> -->
@@ -237,7 +236,7 @@ export default {
     left: 0;
     bottom: 0;
     height: 68px;
-    background-color: #fff;
+    background-color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;

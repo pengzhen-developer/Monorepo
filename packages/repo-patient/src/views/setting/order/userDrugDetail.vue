@@ -1,6 +1,6 @@
 <template>
   <div class="user-drug-bg"
-       :style="{'padding-bottom':canShowBtnBox &&'60px'}"
+       :style="{'padding-bottom':canShowBtnBox &&canShowCountDown?'96px':'60px'}"
        v-if="order">
     <div class="warn-tip"
          v-if="order&&order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货||order.OrderStatus==ENUM.ORDER_STATUS.待下单">
@@ -869,7 +869,7 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-image: url('~@src/assets/images/ic_wenhao.png');
 }
