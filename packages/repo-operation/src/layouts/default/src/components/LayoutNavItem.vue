@@ -8,8 +8,8 @@
 
         <template slot="title">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-bolder text-grey-7"></i>
-          <label class="text-black"
+             class="q-mr-md text-h6 text-grey-7"></i>
+          <label class="text-black text-subtitle2"
                  slot="title">{{ data.menuName }}</label>
         </template>
 
@@ -27,7 +27,7 @@
                     v-bind:disabled="!data.enable">
         <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-weight-bolder text-grey-7"></i>
+             class="q-mr-md text-h6 text-grey-7"></i>
         </template>
         <label class="text-black text-caption cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
