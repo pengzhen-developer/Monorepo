@@ -7,14 +7,17 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
         <el-form-item label="云仓名称：">
-          <el-input v-model.trim="model.CloudName"></el-input>
+          <el-input v-model.trim="model.CloudName"
+                    placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="所属机构：">
-          <el-input v-model.trim="model.CustName"></el-input>
+          <el-input v-model.trim="model.CustName"
+                    placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="启用状态：">
           <el-select clearable
-                     v-model.trim="model.EnableStatus">
+                     v-model.trim="model.EnableStatus"
+                     placeholder="请输入">
             <el-option v-for="(value,label) in source.ORGANIZATION_STATUS"
                        :key="value"
                        :label="label"
@@ -56,7 +59,7 @@
         <el-table-column label="启用状态"
                          prop="EnableStatus">
           <template slot-scope="scope">
-            {{ scope.row.EnableStatus == 0 ? '已启用' : '已禁用' }}
+            {{ scope.row.EnableStatus == 0 ? '已启用' : '已停用' }}
           </template>
         </el-table-column>
         <el-table-column label="操作"
