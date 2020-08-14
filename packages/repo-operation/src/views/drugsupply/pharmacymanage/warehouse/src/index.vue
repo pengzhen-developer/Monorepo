@@ -4,7 +4,8 @@
     <div v-if="visible">
       <el-button type="primary"
                  class="q-mb-lg"
-                 v-on:click="back">
+                 v-on:click="back"
+                 style="margin-bottom:24px">
         <div class="q-px-md q-py-sm">
           <i class="el-icon-arrow-left"></i>
           <span>返回上一页</span>
