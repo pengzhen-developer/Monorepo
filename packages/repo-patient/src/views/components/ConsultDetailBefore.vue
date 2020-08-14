@@ -28,6 +28,9 @@
           </div>
           <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
         </div>
+        <!-- 咨询类别 -->
+        <div class="inquriyStyle"
+             :class="inquriyStyle">{{inquiryText}}</div>
       </div>
       <!--订单内容-->
       <div class="module order">
@@ -126,22 +129,48 @@
         </div>
       </div>
 
-      <div class="module">
-        <div class="brief right">
-          订单费用
-          <div class="money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
+      <div class="module info">
+        <div class="brief order-money">
+          <div class="brief-left">订单费用:</div>
+          <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
           </div>
         </div>
+        <template v-if="canShowMoreDiscount">
+          <div class="brief">
+            <div class="brief-left">优惠金额:</div>
+            <div class="brief-right">暂无可用
+            </div>
+          </div>
+          <!-- <div class="brief">
+            <div class="brief-left">使用医保卡:</div>
+            <div class="brief-right">暂无可用
+            </div>
+          </div>
+          <div class="brief">
+            <div class="brief-left">商保权益抵扣:</div>
+            <div class="brief-right">暂无可用
+            </div>
+          </div> -->
+          <div class="brief pay-omney">
+            <div class="brief-left">应付金额:</div>
+            <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
+            </div>
+          </div>
+        </template>
+
       </div>
+      <!-- 预售订单 - 非当日-->
+
+      <div class="tipStyle"
+           v-if="canShowTip">*请在复诊当天上线报道并支付费用</div>
+
     </div>
-    <template>
-      <!-- 预售订单 -->
-      <div class="footer fixedBottom">
-        <div class="footer-btn chat-btn"
-             @click="apply">
-          提交订单</div>
-      </div>
-    </template>
+
+    <div class="footer ">
+      <van-button @click="apply"
+                  type="primary"
+                  size="large">提交订单</van-button>
+    </div>
 
     <van-image-preview v-model="imagePreview.visible"
                        :start-position="imagePreview.position"
@@ -178,6 +207,11 @@ const ENUM = {
     已退诊: 4,
     已完成: 5,
     已取消: 6
+  },
+  INQUIRY_TXET_MAP: {
+    image: '图文咨询',
+    video: '视频咨询',
+    returnVisit: '复诊'
   }
 }
 export default {
@@ -209,6 +243,29 @@ export default {
     }
   },
   computed: {
+    canShowMoreDiscount() {
+      return false
+    },
+    canShowTip() {
+      //报道  复诊且预约日期大于今日
+      const canReportTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000)
+      const canReport = new Date(this.params.appointmentDate) >= canReportTime ? true : false
+      if (this.params.serviceType == 'returnVisit' && canReport) {
+        return true
+      } else {
+        return false
+      }
+    },
+    inquiryText() {
+      return ENUM.INQUIRY_TXET_MAP[this.params.consultingType]
+    },
+    inquriyStyle() {
+      if (this.params.serviceType == 'returnVisit') {
+        return 'returnVisit'
+      } else {
+        return 'inquiry'
+      }
+    },
     appointmentTime() {
       return this.params.appointmentDate.replace(/-/g, '/') + ' ' + this.params.appointmentStartTime + '-' + this.params.appointmentEndTime
     },
@@ -334,7 +391,13 @@ export default {
       this.params = peace.util.decode(this.$route.params.json)
       const params = {
         familyId: this.params.familyId,
-        doctorId: this.params.doctorId
+        doctorId: this.params.doctorId,
+        consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊续方
+        orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.咨询 2.复诊 3.购药
+        appointmentDate: this.params.appointmentDate, //预约时间
+        appointmentStartTime: this.params.appointmentStartTime, //预约开始时间
+        appointmentEndTime: this.params.appointmentEndTime, //预约结束时间
+        sourceCode: this.params.sourceCode //预约号源编码
       }
       peace.service.inquiry.getFamilyDoctorInfo(params).then((res) => {
         this.internalData = res.data
@@ -350,6 +413,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.inquriyStyle {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  border-radius: 20px 20px 0px 20px;
+  color: #fff;
+  font-size: 12px;
+  line-height: normal;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  padding: 2px 9px;
+  justify-content: center;
+  &.returnVisit {
+    background: #fa8c16;
+  }
+  &.inquiry {
+    background: $primary;
+  }
+}
 /deep/ .van-image-preview__index {
   top: 24px;
 }
@@ -378,134 +461,20 @@ export default {
     }
   }
 }
-.report,
-.footer,
-.pay {
-  &.fixedBottom {
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-  }
-}
-.h64 {
-  height: 64px;
-}
-.report {
-  flex-wrap: wrap;
-  padding: 14px 16px;
-  .cancel-btn {
-    width: 32%;
-    margin-right: 4%;
-    color: #999;
-    height: 45px;
-    border-radius: 23px;
-  }
-  .report-btn {
-    width: 64%;
-    background-color: #00c6ae;
-    color: #fff;
-    height: 45px;
-    border-radius: 23px;
-  }
-  .report-tip {
-    margin-top: 14px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    line-height: 1;
-    color: #999;
-    font-size: 13px;
-    img {
-      width: 13px;
-      height: 13px;
-      display: block;
-      margin-right: 5px;
-    }
-  }
-}
+
 .footer {
-  height: 64px;
+  width: 100%;
+  padding: 15px 15px;
+  height: 77px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  // background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
 
-  .footer-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 343px;
-    height: 45px;
-    border-radius: 40px;
-    &.chat-btn {
-      color: #fff;
-      background: rgba(0, 202, 173, 1);
-      border: 1px solid rgba(0, 198, 174, 1);
-    }
-    &.wait-btn {
-      color: #999;
-      border: 1px solid #ccc;
-    }
-  }
-}
-.h115 {
-  height: 115px;
-}
-.pay {
-  height: 115px;
-  padding: 10px 15px;
-  flex-direction: column;
-  justify-content: space-around;
-  .pay-item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &:first-child {
-      padding-bottom: 5px;
-    }
-    .count-down {
-      display: flex;
-      align-items: center;
-      color: #999;
-      span {
-        margin-right: 5px;
-      }
-    }
-    .right {
-      color: #000;
-      font-size: 13px;
-      span {
-        color: #f2223b;
-        font-size: 18px;
-        font-weight: 600;
-      }
-    }
-    .pay-btn {
-      height: 45px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 30px;
-    }
-    .btn-cancel {
-      color: #999;
-      border: 1px solid #ccc;
-      width: 32%;
-    }
-    .btn-pay {
-      color: #fff;
-      background: #00c6ae;
-      width: 64%;
-    }
-  }
-}
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   &:last-child {
@@ -527,8 +496,7 @@ export default {
   min-height: 100%;
   padding: 5px 10px 70px;
   box-sizing: border-box;
-  .module,
-  .brief {
+  .module {
     border-radius: 3px;
   }
   .module {
@@ -538,6 +506,9 @@ export default {
     padding: 10px;
     &:last-child {
       margin-bottom: 5px;
+    }
+    &.info {
+      padding: 0;
     }
     &.top {
       padding-top: 12px;
@@ -703,9 +674,7 @@ export default {
     display: flex;
     align-items: center;
   }
-  .module .brief {
-    font-size: 13px;
-  }
+
   .module .small {
     font-size: 15px;
     padding: 10px 15px;
@@ -737,6 +706,7 @@ export default {
   .card {
     background: #fff;
     padding: 10px 15px;
+    position: relative;
   }
   .b {
     display: block;
@@ -789,5 +759,39 @@ export default {
     vertical-align: text-top;
     margin-top: 2px;
   }
+}
+.brief {
+  font-size: 13px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12.5px 0;
+  margin: 0 15px;
+  border-top: 1px solid #eee;
+  &.order-money {
+    border-top: 1px solid #fff;
+    color: #000;
+    padding: 12.5px 10px;
+    margin: 0;
+    .money {
+      font-size: 14px;
+      color: #000;
+    }
+  }
+  &.pay-omney {
+    color: #000;
+    padding: 11px 0;
+    font-size: 14px;
+    .money {
+      font-size: 20px;
+      color: #ff344d;
+    }
+  }
+}
+.tipStyle {
+  color: #ff344d;
+  padding-left: 10px;
+  font-size: 12px;
 }
 </style>

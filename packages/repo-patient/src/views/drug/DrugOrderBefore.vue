@@ -92,19 +92,34 @@
       </div>
       <div class="module str">
         <div class="dl-packet">
-          <div class="dt">药品金额 ：</div>
-          <div class="dd">￥{{order.TotalAmount}}
+          <div class="dt">订单总价 ：</div>
+          <div class="dd money">￥{{order.TotalAmount}}
           </div>
         </div>
         <div class="dl-packet"
              v-if="page.tabIndex == '1'">
           <div class="dt">配送费 ：</div>
-          <div class="dd">￥{{order.Freight.toFixed(2)}}</div>
+          <div class="dd money">￥{{order.Freight.toFixed(2)}}</div>
         </div>
-        <div class="dl-packet">
+        <!-- <div class="dl-packet">
           <div class="dt">优惠金额 ：</div>
           <div class="dd">-￥{{order.PromotionsCut.toFixed(2)}}</div>
+        </div> -->
+        <div class="line"></div>
+        <div class="dl-packet">
+          <div class="dt">优惠金额 ：</div>
+          <div class="dd">{{PromotionsCut}}</div>
         </div>
+        <!-- <div class="line"></div>
+        <div class="dl-packet">
+          <div class="dt">使用医保卡 ：</div>
+          <div class="dd">暂无可用</div>
+        </div>
+        <div class="line"></div>
+        <div class="dl-packet">
+          <div class="dt">商保权益抵扣 ：</div>
+          <div class="dd">暂无可用</div>
+        </div> -->
         <div class="line"></div>
         <div class="dl-packet">
           <div class="dt money">应付金额 ：</div>
@@ -151,11 +166,11 @@
         <div class="pop-subtitle">支付方式</div>
         <div class="pop-list">
           <div class="pop-tag"
-               :class="{'active':!item.disabled&&json.payIndex==item.index,'disabled':item.disabled}"
+               :class="{'active':item.checked=='1'&&json.payIndex==item.key,'disabled':item.checked=='0'}"
                v-for="(item,index) in payList"
                :key="index"
                @click="selectPay(item)">
-            {{item.name}}
+            {{item.value}}
           </div>
 
         </div>
@@ -187,11 +202,7 @@ export default {
   name: 'DrugOrderBefore',
   data() {
     return {
-      payList: [
-        { index: 0, name: '在线支付', disabled: false },
-        { index: 1, name: '到店支付', disabled: true },
-        { index: 2, name: '货到付款', disabled: true }
-      ],
+      payList: [],
       showPopup: false,
       colseIcon: require('@src/assets/images/ic_close@2x.png'),
       hasSubmitOrder: false,
@@ -204,7 +215,8 @@ export default {
         json: {},
         tabIndex: '',
         payIndex: '',
-        canSubmit: false
+        canSubmit: false,
+        cardno: ''
       },
       json: {
         tabIndex: '',
@@ -212,7 +224,9 @@ export default {
       },
       userAddr: {},
       order: null,
-      CustomerType: ''
+      CustomerType: '',
+      chooseSB: false,
+      chooseYB: false
     }
   },
 
@@ -233,8 +247,15 @@ export default {
     this.initData(this.$route.params.json)
   },
   computed: {
+    PromotionsCut() {
+      if (this.order.PromotionsCut > 0) {
+        return this.order.PromotionsCut.toFixed(2)
+      } else {
+        return '暂无可用'
+      }
+    },
     payName() {
-      return this.payList.find((item) => item.index == this.page.payIndex)?.name
+      return this.payList.find((item) => item.key == this.page.payIndex)?.value
     },
     tabList() {
       let list = [
@@ -244,13 +265,82 @@ export default {
       const ShippingMethod = this.page.json.ShippingMethod
       if (ShippingMethod == '0' || ShippingMethod == '1') {
         list.map((item) => (item.disabled = true))
-        let item = list.find((item) => item.index == ShippingMethod)
-        item.disabled = false
+        list.find((item) => item.index == ShippingMethod).disabled = false
       }
       return list
     }
   },
   methods: {
+    changeShippingMethod(tabIndex) {
+      //选择支付方式 则重置系统配置得支付方式
+      const ShippingMethod = this.page?.json?.ShippingMethod
+      if (ShippingMethod == 2) {
+        switch (tabIndex) {
+          //1.在线支付 支持 配送到家，到店取药
+          case '1':
+            this.tabList.map((item) => (item.disabled = false))
+            break
+          //2.到店支付 支持 到店取药
+          case '2':
+            this.tabList.map((item) => (item.disabled = true))
+            this.tabList.find((item) => item.index == 0).disabled = false
+            this.json.tabIndex = 0
+            break
+          //3.货到付款 支持 配送到家
+          case '3':
+            this.tabList.map((item) => (item.disabled = true))
+            this.tabList.find((item) => item.index == 1).disabled = false
+            this.json.tabIndex = 1
+            break
+
+          default:
+            break
+        }
+      }
+      /** 0 到店取药  不支持 货到付款 若货到付款可选 则 配送方式为2*/
+      //1 在线支付  2 到店支付  3 货到付款
+      else if (ShippingMethod == 0) {
+        this.payList.map((item) => {
+          if (item.key == 3 && item.checked == 1) {
+            this.json.tabIndex = 2
+          }
+        })
+      }
+      /**  1 配送到家 不支持 到店支付 若到店支付可选 则 配送方式为2*/
+      //1 在线支付  2 到店支付  3 货到付款
+      else if (ShippingMethod == 1) {
+        this.payList.map((item) => {
+          if (item.key == 2 && item.checked == 1) {
+            this.json.tabIndex = 2
+          }
+        })
+      }
+    },
+    cahngePaymentWay(ShippingMethod) {
+      // if (this.page?.json?.ShippingMethod != 2) {
+      //   return
+      // }
+      let tabIndex = ShippingMethod || this.json.tabIndex
+      //1 在线支付  2 到店支付  3 货到付款
+      //配送到家 - 到店支付不可用
+      if (tabIndex == 1) {
+        this.payList.map((item) => {
+          item.checked = 1
+          if (item.key == 2) {
+            item.checked = 0
+          }
+        })
+      }
+      //到店取药 - 货到付款不可用
+      else if (tabIndex == 0) {
+        this.payList.map((item) => {
+          item.checked = 1
+          if (item.key == 3) {
+            item.checked = 0
+          }
+        })
+      }
+    },
     selectAddressCallback(json) {
       if (json) {
         this.initData(json)
@@ -262,7 +352,6 @@ export default {
       /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
       /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
       this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
-      this.page.payIndex = '0'
       this.page.json = params
       this.CustomerType = params.CustomerType
       this.Detailed = params.Detailed
@@ -278,6 +367,7 @@ export default {
       } else {
         this.json.payIndex = this.page.payIndex
         this.json.tabIndex = this.page.tabIndex
+        this.cahngePaymentWay()
       }
     },
     goDrugPhaHomePage() {
@@ -318,6 +408,23 @@ export default {
      *                                       默认：wxpay（微信）
      */
     submitOrder(paymentType = 'wxpay') {
+      //若未选择支付方式，不能提交订单
+      if (this.page.payIndex < 1) {
+        peace.util.alert('请选择支付方式')
+        return
+      }
+      //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
+      //1 在线支付  2 到店支付  3 货到付款
+      const paymentTypeMap = {
+        1: 'wxpay',
+        2: 'shoppay',
+        3: 'deliverypay'
+      }
+      paymentType = paymentTypeMap[this.page.payIndex]
+      const shangbao = this.chooseSB ? ',shangbao' : ''
+      const yibao = this.chooseYB ? ',yibaopay' : ''
+      paymentType = paymentType + shangbao + yibao
+
       this.hasSubmitOrder = true
       let canSubmit = this.page.tabIndex == 0 ? true : this.userAddr && this.userAddr.detailAddress ? true : false
       if (!canSubmit) {
@@ -328,6 +435,7 @@ export default {
         peace.util.alert('请勿重复提交')
         return
       }
+
       this.showBtn = false
       let params = {
         formId: '',
@@ -345,8 +453,11 @@ export default {
           : this.order.Province + ',' + this.order.City + ',' + this.order.County,
         UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
-        TargetPlatformCodes: this.order.TargetPlatformCodes
+        TargetPlatformCodes: this.order.TargetPlatformCodes,
+        PayMode: this.page.payIndex,
+        cardno: this.page.cardno
       }
+      // return
       peace.service.patient
         .submitOrder(params)
         .then((res) => {
@@ -356,7 +467,8 @@ export default {
           let money = this.page.tabIndex == '1' ? this.order.OrderMoney : this.order.pickOrderMoney
           let params = { orderNo, orderType, money }
 
-          if (paymentType === 'yibaopay') {
+          // if (paymentType === 'yibaopay') {
+          if (paymentType === 'shoppay' || paymentType === 'deliverypay') {
             this.payCallback()
           } else {
             const json = peace.util.encode(params)
@@ -381,14 +493,15 @@ export default {
     },
 
     selectPay(item) {
-      if (item.disabled) {
+      if (item.checked == 0) {
         return
       }
-      if (item.index == this.json.payIndex) {
+      if (item.key == this.json.payIndex) {
         return
       }
-      this.json.payIndex = item.index
+      this.json.payIndex = item.key
       this.json.payName = item.name
+      this.changeShippingMethod(item.key)
     },
     changeTab(index, disabled) {
       if (index == this.json.tabIndex) {
@@ -406,15 +519,17 @@ export default {
       //   return
       // }
       this.json.tabIndex = index
+      this.cahngePaymentWay()
     },
 
     getPhaOrder() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.patient.getOrderBefore(params).then((res) => {
-        //防止 Freight  PromotionsCut 无此字段
-        res.data.Freight = res.data.Freight || 0
-        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
+        this.payList = peace.util.deepClone(res.data.paymentTypeArr)
+        this.payList.map((item) => (item.disabled = false))
+
+        this.page.payIndex = this.payList.find((item) => item.checked == 1)?.key
       })
     },
 
@@ -528,7 +643,7 @@ export default {
     .line {
       height: 0.5px;
       background: #eee;
-      margin-top: 8px;
+      margin: 4px 0;
     }
   }
 }
@@ -660,6 +775,7 @@ export default {
 }
 .intro .dl-packet .dt {
   font-size: 13px;
+  line-height: 1;
   padding: 2px 0;
 }
 .intro .dl-packet .dd {
@@ -689,10 +805,14 @@ export default {
   }
 }
 .str .dd {
-  font-size: 12px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  color: #999;
+  &.money {
+    color: #4e4e4e;
+  }
 }
 .strong {
   color: #ff344d;
