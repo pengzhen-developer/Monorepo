@@ -47,48 +47,57 @@
     </el-form>
 
     <peace-dialog title="修改密码"
-                  width="360px"
+                  width="470px"
                   v-if="dialog.visible"
                   v-bind:visible.sync="dialog.visible">
       <el-form ref="form"
-               inline
+               size="larger"
                label-width="auto"
                v-bind:model="dialog.model"
                v-bind:rules="dialog.rules">
 
         <el-form-item prop="oldPwd">
-          <div class="flex inline"
+          <div class="flex inline label-color"
                slot="label">
             <span class="text-justify em-4">原密码</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
 
-          <el-input type="password"
+          <el-input type="text"
                     minlength="6"
                     maxlength="20"
-                    show-password
-                    v-model="dialog.model.oldPwd"></el-input>
+                    placeholder="请输入原密码"
+                    v-model="dialog.model.oldPwd">
+          </el-input>
         </el-form-item>
 
         <el-form-item prop="newPwd">
-          <div class="flex inline"
+          <div class="flex inline label-color"
                slot="label">
             <span class="text-justify em-4">新密码</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
 
-          <el-input type="newPwd"
+          <el-input :type="dialog.showNewPwd ? 'text':'password'"
                     minlength="6"
                     maxlength="20"
-                    show-password
-                    v-model="dialog.model.newPwd"></el-input>
+                    placeholder="请输入新密码"
+                    @focus="dialog.showNewPwdIcon = true"
+                    @blur="dialog.showNewPwdIcon = false"
+                    v-model="dialog.model.newPwd">
+            <i v-show="dialog.showNewPwdIcon || dialog.model.newPwd"
+               @click="dialog.showNewPwd = !dialog.showNewPwd"
+               slot="suffix"
+               :class="{'zyy-icon': true, 'zyy-xianshimima text-primary': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i></el-input>
         </el-form-item>
 
         <div class="text-center q-pt-md">
-          <el-button style="min-width: 80px;"
+          <el-button style="min-width: 140px;margin-right: 30px;"
+                     size="large"
                      type="primary"
                      v-on:click="save">确定</el-button>
-          <el-button style="min-width: 80px;"
+          <el-button style="min-width: 140px;"
+                     size="large"
                      v-on:click="cancelDialog">取消</el-button>
         </div>
 
@@ -117,6 +126,9 @@ export default {
           oldPwd: '',
           newPwd: ''
         },
+
+        showNewPwdIcon: false,
+        showNewPwd: false,
 
         rules: {
           oldPwd: [
@@ -180,6 +192,10 @@ export default {
 
 
 <style lang="scss" scoped>
+.label-color {
+  color: #333;
+}
+
 .text-justify {
   text-align: justify;
   text-align-last: justify;
