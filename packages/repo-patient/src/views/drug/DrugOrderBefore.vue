@@ -92,7 +92,7 @@
       </div>
       <div class="module str">
         <div class="dl-packet">
-          <div class="dt">订单总价 ：</div>
+          <div class="dt">药品金额 ：</div>
           <div class="dd money">￥{{order.TotalAmount}}
           </div>
         </div>
@@ -101,16 +101,17 @@
           <div class="dt">配送费 ：</div>
           <div class="dd money">￥{{order.Freight.toFixed(2)}}</div>
         </div>
-        <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt">优惠金额 ：</div>
-          <div class="dd">-￥{{order.PromotionsCut.toFixed(2)}}</div>
-        </div>
         <!-- <div class="line"></div>
         <div class="dl-packet">
           <div class="dt">优惠金额 ：</div>
-          <div class="dd">{{PromotionsCut}}</div>
+          <div class="dd">-￥{{order.PromotionsCut.toFixed(2)}}</div>
         </div> -->
+        <div class="line"></div>
+        <div class="dl-packet">
+          <div class="dt">优惠金额 ：</div>
+          <div class="dd"
+               :class="PromotionsCut>0&&'money'">{{PromotionsCut}}</div>
+        </div>
         <!-- <div class="line"></div>
         <div class="dl-packet">
           <div class="dt">使用医保卡 ：</div>
@@ -136,22 +137,11 @@
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
       </div>
       <div class="bottom">
-        <div class="strong">￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
-        <div style="display: flex; justify-content: flex-end; align-items: center;width:50%;">
-          <!-- 购药暂时屏蔽医保支付  2020-05-29-->
-          <!-- <van-button v-on:click="submitOrder('yibaopay')"
-                    v-bind:disabled="!page.canSubmit || hasSubmitOrder"
-                    size="small"
-                    style="margin: 0 12px 0 0"
-                    round
-                    type="primary">医保支付</van-button> -->
-          <van-button v-on:click="submitOrder('wxpay')"
-                      size="small"
-                      round
-                      type="primary">提交订单</van-button>
-
-        </div>
+        <van-button v-on:click="submitOrder('wxpay')"
+                    size="large"
+                    type="primary">提交订单</van-button>
       </div>
+
     </div>
 
     <van-popup v-model="showPopup"
@@ -825,16 +815,14 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px;
-  padding: 0 15px;
-  background-color: #fff;
+  height: 77px;
+  padding: 15px;
+  background-color: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.bottom .van-button {
-  width: 75px;
-}
+
 .tips-bottom {
   margin-bottom: 60px;
   text-align: center;
