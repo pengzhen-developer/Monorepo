@@ -244,7 +244,7 @@ export default {
   },
   computed: {
     canShowMoreDiscount() {
-      return false
+      return true
     },
     canShowTip() {
       //报道  复诊且预约日期大于今日
