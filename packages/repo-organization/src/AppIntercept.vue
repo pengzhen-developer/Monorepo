@@ -54,7 +54,17 @@ export default {
 
     if (to.path === '/') {
       if (Util.user.isSignIn()) {
-        next('/layout')
+        const cdKeyInUrl = Peace.util.queryUrlParam('cdkey')
+        const cdKeyInStorage = Util.user.getUserCDKey()
+        //当前url中的cdkey!==缓存中的cdkey 则说明 用户更换了账号进入控制台 需重新auto获取信息
+        if (cdKeyInUrl !== cdKeyInStorage) {
+          next((vm) => {
+            vm.setData()
+            vm.authentication()
+          })
+        } else {
+          next('/layout')
+        }
       } else {
         next((vm) => {
           vm.setData()
@@ -92,25 +102,23 @@ export default {
     },
 
     authentication() {
-      if (!Util.user.isSignIn()) {
-        this.processing = true
+      this.processing = true
 
-        const param = { cdkey: this.cdKey }
+      const param = { cdkey: this.cdKey }
 
-        Service.auth(param)
-          .then((res) => {
-            Util.user.setUserCDKey(this.cdKey)
-            Util.user.setUserInfo(res.data)
+      Service.auth(param)
+        .then((res) => {
+          Util.user.setUserCDKey(this.cdKey)
+          Util.user.setUserInfo(res.data)
 
-            this.$router.push('/layout')
-          })
-          .catch(() => {
-            this.cdKeyError()
-          })
-          .finally(() => {
-            this.processing = false
-          })
-      }
+          this.$router.push('/layout')
+        })
+        .catch(() => {
+          this.cdKeyError()
+        })
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     cdKeyError() {
