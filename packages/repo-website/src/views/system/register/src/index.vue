@@ -319,7 +319,9 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  background-color: #fafafa;
+  // background-color: #fafafa;
+  background: url('./assets/img/login_regist_bgd.png') no-repeat;
+  background-size: cover;
   padding: 0;
   display: flex;
   flex-direction: column;
