@@ -33,17 +33,24 @@
                   v-bind:maxlength="11"
                   placeholder="请输入手机号">
           <div slot="prepend">
-            <i class="zyy-icon zyy-shoujihao"></i>
+            <i class="zyy-icon zyy-shouji"></i>
           </div>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
         <el-input v-model="model.password"
-                  show-password
+                  :type="this.showPassword ? 'text' : 'password'"
                   placeholder="请输入密码">
           <div slot="prepend">
             <i class="zyy-icon zyy-mima"></i>
+          </div>
+          <div slot="suffix"
+               v-on:click="changePasswordStatus">
+            <i v-if="this.showPassword"
+               class="eyes zyy-icon zyy-xianshimima"></i>
+            <i v-else
+               class="eyes zyy-icon zyy-yincangmima"></i>
           </div>
         </el-input>
       </el-form-item>
@@ -159,6 +166,10 @@ export default {
           }
         })
       })
+    },
+
+    changePasswordStatus() {
+      this.showPassword = !this.showPassword
     }
   }
 }
@@ -261,12 +272,20 @@ export default {
     height: 40px;
   }
   .el-input-group__prepend {
-    background: #fff;
     border: none;
   }
 
   .el-form-item__error {
     margin: 5px 0 0 0;
+  }
+
+  .el-input__suffix {
+    border: none;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   input {
@@ -280,5 +299,8 @@ export default {
   i {
     color: #c0c4cc;
   }
+}
+.eyes {
+  cursor: pointer;
 }
 </style>

@@ -51,7 +51,7 @@
                         v-bind:maxlength="11"
                         placeholder="请输入手机号">
                 <div slot="prepend">
-                  <i class="zyy-icon zyy-shoujihao"></i>
+                  <i class="zyy-icon zyy-shouji"></i>
                 </div>
               </el-input>
             </el-form-item>
@@ -87,10 +87,17 @@
 
             <el-form-item prop="password">
               <el-input v-model="model.password"
-                        show-password
+                        :type="this.showPassword ? 'text' : 'password'"
                         placeholder="6-20位字母和数字的组合">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-mima"></i>
+                </div>
+                <div slot="suffix"
+                     v-on:click="changePasswordStatus">
+                  <i v-if="this.showPassword"
+                     class="eyes zyy-icon zyy-xianshimima"></i>
+                  <i v-else
+                     class="eyes zyy-icon zyy-yincangmima"></i>
                 </div>
               </el-input>
               <!-- <template slot>
@@ -109,7 +116,7 @@
                         v-bind:maxlength="10"
                         placeholder="请输入联系人姓名">
                 <div slot="prepend">
-                  <i class="zyy-icon zyy-yonghu"></i>
+                  <i class="zyy-icon zyy-zhanghao"></i>
                 </div>
               </el-input>
             </el-form-item>
@@ -118,7 +125,7 @@
               <el-input v-model="model.email"
                         placeholder="请输入邮箱">
                 <div slot="prepend">
-                  <i class="zyy-icon zyy-icon_youxiang2"></i>
+                  <i class="zyy-icon zyy-youxiang"></i>
                 </div>
               </el-input>
             </el-form-item>
@@ -312,6 +319,9 @@ export default {
           }
         })
       })
+    },
+    changePasswordStatus() {
+      this.showPassword = !this.showPassword
     }
   }
 }
@@ -462,8 +472,16 @@ export default {
     height: 40px;
   }
   .el-input-group__prepend {
-    background: #fff;
     border: none;
+  }
+
+  .el-input__suffix {
+    border: none;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .el-form-item__error {
@@ -511,5 +529,8 @@ export default {
       }
     }
   }
+}
+.eyes {
+  cursor: pointer;
 }
 </style>
