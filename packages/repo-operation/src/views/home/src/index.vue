@@ -29,6 +29,7 @@ import WareHouseMap from './components/WareHouseMap'
 
 import Axios from 'axios'
 import Service from './service/index'
+import OtherSerice from './service/data'
 import CONSTANT from './constant'
 
 import Peace from '@src/library'
@@ -78,6 +79,7 @@ export default {
         this.getPreCountOfSevenDays(),
         this.get7DaysOrderNum(),
         this.getOverview(),
+        this.getMedicalNum(),
         this.getPrescriptionCountOfAll(),
         this.getDrugStoreList()
       ]
@@ -121,14 +123,21 @@ export default {
         this.orderNumOfSevenDays.data = data.map((item) => item.Num)
       })
     },
-    // 获取数据 订单量、医疗机构、药品供应机构、店配机构、仓配机构
+    // 获取数据 订单量、药品供应机构、店配机构
     getOverview() {
       return Service.getOverview().then((res) => {
         this.overViewData.order = res.data.OrderNum
-        this.overViewData.medical = res.data.HospitalNum
+        // this.overViewData.medical = res.data.HospitalNum
         this.overViewData.drugSupply = res.data.DrugSupplyNum
         this.overViewData.store = res.data.DrugShopNum
         this.overViewData.warehouse = res.data.DrugCloudStoreNum
+      })
+    },
+    // 获取数据  医疗机构、仓配机构
+    getMedicalNum() {
+      return OtherSerice.getMechanismCount().then((res) => {
+        this.overViewData.medical = res.data.medicalInstitutionCount
+        // this.overViewData.warehouse = res.data.warehouseInstitutionCount
       })
     },
     // 获取处方量
