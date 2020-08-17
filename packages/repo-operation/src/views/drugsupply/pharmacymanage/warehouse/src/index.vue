@@ -1,7 +1,8 @@
 <template>
   <div class="layout-route">
     <!-- 云仓详情 -->
-    <div v-if="visible">
+    <div v-if="visible"
+         class="bg-white full-height q-pa-lg">
       <el-button type="primary"
                  class="q-mb-lg"
                  v-on:click="back"
@@ -82,6 +83,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.q-pa-lg {
+  padding: 30px;
+}
 p {
   margin: 0;
   padding: 0;
