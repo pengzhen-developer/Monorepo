@@ -459,7 +459,7 @@ export default {
           let params = { orderNo, orderType, money }
 
           // if (paymentType === 'yibaopay') {
-          if (paymentType === 'shoppay' || paymentType === 'deliverypay') {
+          if (this.page.payIndex > 1) {
             this.payCallback()
           } else {
             const json = peace.util.encode(params)
