@@ -136,12 +136,12 @@
           </div>
         </div>
         <template v-if="canShowMoreDiscount">
-          <div class="brief">
+          <!-- <div class="brief">
             <div class="brief-left">优惠金额:</div>
             <div class="brief-right">暂无可用
             </div>
           </div>
-          <!-- <div class="brief">
+          <div class="brief">
             <div class="brief-left">使用医保卡:</div>
             <div class="brief-right">暂无可用
             </div>

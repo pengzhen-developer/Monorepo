@@ -196,10 +196,10 @@
           <div class="message-item-left">订单费用</div>
           <div class="message-item-right">¥{{ internalData.orderInfo.orderMoney }}</div>
         </div>
-        <div class="message-item">
+        <!-- <div class="message-item">
           <div class="message-item-left">优惠券</div>
           <div class="message-item-right">-¥0.00</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="module"
