@@ -38,7 +38,7 @@
             电话：072-4592888
           </div> -->
           <div class="information">
-            <i class=" zyy-icon zyy-icon_youxiang2"
+            <i class=" zyy-icon zyy-youxiangdizhi"
                style="color: #707070;"></i>
             邮箱：xiej@jk.com
           </div>
