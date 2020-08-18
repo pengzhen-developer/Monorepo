@@ -71,7 +71,7 @@
           <div slot="suffix"
                v-on:click="changePasswordStatus">
             <i v-if="this.showPassword"
-               class="eyes zyy-icon zyy-xianshimima"></i>
+               class="eyes zyy-icon zyy-xianshimima1"></i>
             <i v-else
                class="eyes zyy-icon zyy-yincangmima"></i>
           </div>
