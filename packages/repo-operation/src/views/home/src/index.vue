@@ -63,7 +63,7 @@ export default {
         prescription: 0, // 处方量
         order: 0, // 订单量
         medical: 0, // 医疗机构
-        drugSupply: 0, // 药品供应机构
+        drugSupply: this.drugSupply, // 药品供应机构
         store: 0, // 店配机构
         warehouse: 0 //仓配机构
       },
@@ -71,7 +71,6 @@ export default {
       mapData: []
     }
   },
-
   mounted() {
     this.$nextTick(() => {
       let httpMap = [
@@ -83,20 +82,25 @@ export default {
         this.getPrescriptionCountOfAll(),
         this.getDrugStoreList()
       ]
-      Axios.all(httpMap).catch((err) => {
-        console.log('asdasda', err)
-        if (err.data.code === 201) {
-          Peace.util.warning(err.data.msg)
-        } else if (err.data.code === 403) {
-          Peace.util.warning(err.data.msg)
-          LibraryUtil.user.removeUserInfo()
-          setTimeout(() => {
-            LibraryUtil.user.replaceToLogin()
-          }, 1000)
-        } else {
-          Peace.util.warning('服务器异常，请稍后再试')
-        }
-      })
+      Axios.all(httpMap)
+        .then(() => {
+          //warehouse 云仓-智药云统计；store 门店-处方平台统计 ；故  drugSupply 药品供应机构 = warehouse + store
+          this.overViewData.drugSupply = this.overViewData.warehouse + this.overViewData.store
+        })
+        .catch((err) => {
+          console.log('asdasda', err)
+          if (err.data.code === 201) {
+            Peace.util.warning(err.data.msg)
+          } else if (err.data.code === 403) {
+            Peace.util.warning(err.data.msg)
+            LibraryUtil.user.removeUserInfo()
+            setTimeout(() => {
+              LibraryUtil.user.replaceToLogin()
+            }, 1000)
+          } else {
+            Peace.util.warning('服务器异常，请稍后再试')
+          }
+        })
     })
   },
 
@@ -128,16 +132,16 @@ export default {
       return Service.getOverview().then((res) => {
         this.overViewData.order = res.data.OrderNum
         // this.overViewData.medical = res.data.HospitalNum
-        this.overViewData.drugSupply = res.data.DrugSupplyNum
+        // this.overViewData.drugSupply = res.data.DrugSupplyNum
         this.overViewData.store = res.data.DrugShopNum
-        this.overViewData.warehouse = res.data.DrugCloudStoreNum
+        // this.overViewData.warehouse = res.data.DrugCloudStoreNum
       })
     },
     // 获取数据  医疗机构、仓配机构
     getMedicalNum() {
       return OtherSerice.getMechanismCount().then((res) => {
         this.overViewData.medical = res.data.medicalInstitutionCount
-        // this.overViewData.warehouse = res.data.warehouseInstitutionCount
+        this.overViewData.warehouse = res.data.warehouseInstitutionCount
       })
     },
     // 获取处方量
