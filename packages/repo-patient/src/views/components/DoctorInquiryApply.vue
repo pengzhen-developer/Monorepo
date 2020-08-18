@@ -980,6 +980,7 @@ export default {
           })
         }
         this.model.price = serviceMoney
+        serviceMoney = serviceMoney.toString().toFixed(2)
         doctor.doctorInfo = Object.assign({}, doctor.doctorInfo, { serviceName, serviceMoney })
         this.doctor = doctor
       })
