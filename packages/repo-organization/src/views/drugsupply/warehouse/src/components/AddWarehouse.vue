@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"
              label-position="right"
-             label-width="92px"
+             label-width="94px"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
