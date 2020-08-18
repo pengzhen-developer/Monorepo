@@ -134,12 +134,9 @@ export default {
   },
 
   watch: {
-    dateValueList(newValue, oldValue) {
-      if (newValue != oldValue && newValue.length === 2) {
-        const [startValue, endValue] = newValue
-        this.model.startTime = startValue
-        this.model.endTime = endValue
-      }
+    dateValueList(value) {
+      this.model.startTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
     }
   },
 
