@@ -26,7 +26,7 @@
 
             <el-select clearable
                        v-model.trim="model.orgType"
-                       placeholder="请输入">
+                       placeholder="请选择">
               <el-option v-for="item in source.orgType"
                          v-bind:key="item.value"
                          v-bind:label="item.label"
@@ -179,6 +179,7 @@ export default {
 
       source: {
         orgType: [
+          { label: '全部', value: '' },
           { label: '医疗机构', value: 1 },
           { label: '店配机构', value: 2 },
           { label: '仓配机构', value: 3 }
