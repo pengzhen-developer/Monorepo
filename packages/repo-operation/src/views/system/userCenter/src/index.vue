@@ -88,7 +88,7 @@
             <i v-show="dialog.showNewPwdIcon || dialog.model.newPwd"
                @click="dialog.showNewPwd = !dialog.showNewPwd"
                slot="suffix"
-               :class="{'zyy-icon': true, 'zyy-xianshimima text-primary': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i></el-input>
+               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i></el-input>
         </el-form-item>
 
         <div class="text-center q-pt-md">
@@ -122,13 +122,13 @@ export default {
       dialog: {
         visible: false,
 
+        showNewPwdIcon: false,
+        showNewPwd: false,
+
         model: {
           oldPwd: '',
           newPwd: ''
         },
-
-        showNewPwdIcon: false,
-        showNewPwd: false,
 
         rules: {
           oldPwd: [
