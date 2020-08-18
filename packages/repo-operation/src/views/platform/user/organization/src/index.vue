@@ -100,9 +100,9 @@
                            prop="checkTime">
             <template slot-scope="scope">
               {{ 
-              scope.row.source == '运营添加' ? scope.row.createdTime : 
-              scope.row.source == '机构注册' ? scope.row.checkTime : '——'
-            }}
+                scope.row.source == '运营添加' ? scope.row.createdTime : 
+                scope.row.source == '机构注册' ? scope.row.checkTime : '——'
+              }}
             </template>
           </el-table-column>
           <el-table-column width="200px"

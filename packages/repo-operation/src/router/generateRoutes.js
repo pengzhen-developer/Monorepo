@@ -9,6 +9,22 @@ const getDynamicRoutes = () => {
     // 获取缓存的权限菜单
     const accountMenuList = Util.user.getAccountMenuList()
 
+    // 写入固定 route
+    accountMenuList.menuList.push(
+      // 个人中心
+      {
+        id: new Date().getTime(),
+        parentId: 0,
+        menuName: '个人中心',
+        menuRoute: '/user-center',
+        menuPath: 'views/system/userCenter',
+        menuAlias: 'UserCenter',
+        enable: 1,
+        virtual: 1,
+        closable: 1
+      }
+    )
+
     // 验证菜单
     // 声明 layout root route
     dynamicLayoutRootRoutes = [
