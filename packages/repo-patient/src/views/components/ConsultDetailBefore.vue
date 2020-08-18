@@ -162,7 +162,7 @@
       <!-- 预售订单 - 非当日-->
 
       <div class="tipStyle"
-           v-if="canShowTip">*请在复诊当天上线报道并支付费用</div>
+           v-if="canShowTip">*请在复诊当天上线报到并支付费用</div>
 
     </div>
 
