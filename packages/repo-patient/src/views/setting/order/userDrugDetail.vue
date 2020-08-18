@@ -162,7 +162,7 @@
           <div class="dd">¥{{order.Freight.toString().toFixed(2)}}</div>
         </div>
         <div class="dl-packet">
-          <div class="dt">优惠券</div>
+          <div class="dt">优惠金额</div>
           <div class="dd">-¥{{order.PromotionsCut.toString().toFixed(2)}}</div>
         </div>
       </div>

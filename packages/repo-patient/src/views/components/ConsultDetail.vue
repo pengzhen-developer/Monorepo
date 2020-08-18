@@ -197,7 +197,7 @@
           <div class="message-item-right">¥{{ internalData.orderInfo.orderMoney }}</div>
         </div>
         <!-- <div class="message-item">
-          <div class="message-item-left">优惠券</div>
+          <div class="message-item-left">优惠金额</div>
           <div class="message-item-right">-¥0.00</div>
         </div> -->
       </div>
