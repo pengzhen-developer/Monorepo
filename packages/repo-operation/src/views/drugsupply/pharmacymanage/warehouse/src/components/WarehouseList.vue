@@ -50,14 +50,17 @@
                          width="80px">
         </el-table-column>
         <el-table-column label="云仓名称"
-                         prop="CloudName"></el-table-column>
+                         prop="CloudName"
+                         min-width="180px"></el-table-column>
         <el-table-column label="所属机构"
-                         prop="CustName"></el-table-column>
+                         prop="CustName"
+                         min-width="180px"></el-table-column>
         <el-table-column label="创建时间"
                          prop="CreateTime"
-                         width="160px"></el-table-column>
+                         min-width="160px"></el-table-column>
         <el-table-column label="启用状态"
-                         prop="EnableStatus">
+                         prop="EnableStatus"
+                         min-width="100px">
           <template slot-scope="scope">
             {{ scope.row.EnableStatus == 0 ? '已启用' : '已停用' }}
           </template>
