@@ -69,7 +69,7 @@ export default {
         this.orderStatus = data.orderStatus
         this.payee = data.payee
         this.orderNo = data.orderNo
-        this.money = data.orderMoney
+        this.money = data.orderMoney.toString().toFixed(2)
         this.inquiryId = data.inquiryId
       })
     },

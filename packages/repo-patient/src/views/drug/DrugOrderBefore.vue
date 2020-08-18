@@ -93,7 +93,7 @@
       <div class="module str">
         <div class="dl-packet">
           <div class="dt">药品金额 ：</div>
-          <div class="dd money">￥{{order.TotalAmount}}
+          <div class="dd money">￥{{order.TotalAmount.toFixed(2)}}
           </div>
         </div>
         <div class="dl-packet"
@@ -127,7 +127,7 @@
           <div class="dt money">应付金额 ：</div>
           <div class="dd">
             <div class="strong">
-              ￥{{page.tabIndex == '1'?order.OrderMoney :order.pickOrderMoney}}</div>
+              ￥{{page.tabIndex == '1'?order.OrderMoney.toFixed(2):order.pickOrderMoney.toFixed(2)}}</div>
             <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
           </div>

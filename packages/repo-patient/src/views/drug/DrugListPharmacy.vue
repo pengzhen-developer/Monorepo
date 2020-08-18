@@ -130,7 +130,6 @@ export default {
 
     // this.key = config.MAP.key;
     let paramsRoute = peace.util.decode(this.$route.params.json)
-    // console.log('route', paramsRoute)
 
     if (paramsRoute.addr) {
       //从地图页面返回
@@ -183,29 +182,29 @@ export default {
         Longitude: this.userLocation.lng,
         JZTClaimNo
       }
-      // let params = {
-      //     Latitude: 114.21772,
-      //     Longitude: 30.55473,
-      //     JZTClaimNo: '3O5NM0-201909231108290161-2019092341983315'
-      // }
-      // params.Latitude = 114.21772;
-      // params.Longitude = 30.55473;
       peace.service.patient.getStoresList(params).then((res) => {
-        if (res.data.Type == '1') {
-          this.phaList = res.data.JoinJnt
+        if (res.data == null) {
+          this.phaList = []
           this.phaAddrList = []
           this.isGet = true
+        } else {
+          if (res.data.Type == '1') {
+            this.phaList = res.data.JoinJnt
+            this.phaAddrList = []
+            this.isGet = true
 
-          // 仅存在一个药房符合条件时，直接跳转订单确认页面
-          // if (this.phaList.length === 1) {
-          //   this.goDrugOrderBeforePage(0)
-          // }
+            // 仅存在一个药房符合条件时，直接跳转订单确认页面
+            // if (this.phaList.length === 1) {
+            //   this.goDrugOrderBeforePage(0)
+            // }
+          }
+          if (res.data.Type == '2') {
+            this.phaList = []
+            this.phaAddrList = res.data.OutJnt
+            this.isGet = true
+          }
         }
-        if (res.data.Type == '2') {
-          this.phaList = []
-          this.phaAddrList = res.data.OutJnt
-          this.isGet = true
-        }
+
         this.messageOn = true
         this.mapDistance()
       })
@@ -219,7 +218,6 @@ export default {
       })
       this.phaList.map((item) => {
         item.distance = this.getDistance(item.Latitude, item.Longitude, userLoc.lat, userLoc.lng)
-        //console.log('item',item.distance)
       })
     },
     bds: function(d) {
@@ -248,7 +246,6 @@ export default {
     goDrugOrderBeforePage: function(index) {
       let item = this.phaList[index]
       const params = peace.util.decode(this.$route.params.json)
-      // console.log(params);
       let JZTClaimNo = params.claimNo || params.JZTClaimNo
       let familyId = params.familyId
       let json = {
@@ -265,7 +262,6 @@ export default {
       }
       json = peace.util.encode(json)
       this.$router.replace(`/drug/drugOrderBefore/${json}`)
-      // app.$env.fn.goMenuPage('/drug/order/drugOrderBefore', json)
     }
   }
 }
