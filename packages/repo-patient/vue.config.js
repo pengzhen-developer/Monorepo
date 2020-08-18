@@ -2,9 +2,9 @@
 
 const path = require('path')
 // webpack plugins
-const ZopfliPlugin = require("zopfli-webpack-plugin"); // zopfli lib Gzip 压缩
+const ZopfliPlugin = require('zopfli-webpack-plugin') // zopfli lib Gzip 压缩
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
-const { GenerateSW } = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin')
 
 const IS_EXPORT_REPORT = process.env.npm_config_report || false // 打包分析: npm run build --report
 
@@ -17,8 +17,11 @@ module.exports = {
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
 
+  // https://cli.vuejs.org/config/#productionSourceMap
+  productionSourceMap: false,
+
   // https://cli.vuejs.org/config/#chainwebpack
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias
       .set('@public', path.join(__dirname, 'public'))
       .set('@src', path.join(__dirname, 'src'))
@@ -27,7 +30,7 @@ module.exports = {
   },
 
   // https://cli.vuejs.org/zh/config/#configurewebpack
-  configureWebpack: config => {
+  configureWebpack: (config) => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
     config.externals = {
       '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
@@ -45,8 +48,8 @@ module.exports = {
     if (process.env.NODE_ENV === 'production') {
       plugins.push(
         new ZopfliPlugin({
-          asset: "[path].gz[query]",
-          algorithm: "zopfli",
+          asset: '[path].gz[query]',
+          algorithm: 'zopfli',
           test: productionGzipExtensions,
           threshold: 10240,
           minRatio: 0.8
@@ -57,7 +60,7 @@ module.exports = {
           new BundleAnalyzerPlugin({
             analyzerMode: 'static',
             reportFilename: 'bundle-report.html',
-            openAnalyzer: false,
+            openAnalyzer: false
           })
         )
       }
