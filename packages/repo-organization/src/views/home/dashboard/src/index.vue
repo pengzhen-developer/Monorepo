@@ -1,79 +1,82 @@
 <template>
-  <div class="bg-grey-2">
+  <div class="layout-route">
+    <div class="bg-grey-2 q-pa-md">
 
-    <div class="empty-view q-mb-lg"
-         v-if="isEmpty">
-      <img src="./image/ic_empty.png"
-           style="width:137px;height:150px;"
-           alt="">
-      <div>暂无产品可使用，可选择下方服务申请开通哦~</div>
-    </div>
-    <div class="q-mb-md"
-         v-else>
-      <h4>使用中的产品</h4>
-      <div class="row q-col-gutter-md">
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
-             v-for="product in productList"
-             v-bind:key="product.id">
-          <ProductItem v-bind:serviceName="product.serviceName"
-                       v-bind:img="product.img"
-                       v-bind:url="product.url"
-                       v-on:click.native="isExistService(product)">
-          </ProductItem>
+      <div class="empty-view q-mb-lg"
+           v-if="isEmpty">
+        <img src="./image/ic_empty.png"
+             style="width:137px;height:150px;"
+             alt="">
+        <div>暂无产品可使用，可选择下方服务申请开通哦~</div>
+      </div>
+      <div class="q-mb-md"
+           v-else>
+        <h4>使用中的产品</h4>
+        <div class="row q-col-gutter-md">
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
+               v-for="product in productList"
+               v-bind:key="product.id">
+            <ProductItem v-bind:serviceName="product.serviceName"
+                         v-bind:img="product.img"
+                         v-bind:url="product.url"
+                         v-on:click.native="isExistService(product)">
+            </ProductItem>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="q-mb-md">
-      <h4>平台SaaS服务</h4>
-      <div class="row q-col-gutter-md">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
-             v-for="service in serviceList"
-             v-bind:key="service.id">
-          <ServiceItem v-bind:serviceName="service.serviceName"
-                       v-bind:isPass="service.isPass"
-                       v-bind:isPassText="service.isPassText"
-                       v-bind:checkStatus="service.checkStatus"
-                       v-bind:checkStatusText="service.checkStatusText"
-                       v-bind:isOpenStatus="service.isOpenStatus"
-                       v-bind:features="service.item"
-                       v-on:openService="onOpenService(service)">
-          </ServiceItem>
+      <div class="q-mb-md">
+        <h4>平台SaaS服务</h4>
+        <div class="row q-col-gutter-md">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+               v-for="service in serviceList"
+               v-bind:key="service.id">
+            <ServiceItem v-bind:serviceName="service.serviceName"
+                         v-bind:isPass="service.isPass"
+                         v-bind:isPassText="service.isPassText"
+                         v-bind:checkStatus="service.checkStatus"
+                         v-bind:checkStatusText="service.checkStatusText"
+                         v-bind:isOpenStatus="service.isOpenStatus"
+                         v-bind:features="service.item"
+                         v-on:openService="onOpenService(service)">
+            </ServiceItem>
+          </div>
         </div>
       </div>
+
+      <!-- 合理用药弹框 -->
+      <el-dialog :visible.sync="useDrugDialog"
+                 v-if="useDrugDialog"
+                 width="334px"
+                 title="申请开通">
+        <UseDrugDialog v-bind:service="serviceDialogBean"
+                       v-on:onCancel="useDrugDialog = false"
+                       v-on:onSuccess=" useDrugSuccess" />
+      </el-dialog>
+
+      <!-- 处方共享管理 -->
+      <el-dialog :visible.sync="rpShareDialog"
+                 v-if="rpShareDialog"
+                 width="334px"
+                 title="申请开通">
+        <RpShareManagementDialog v-bind:service="serviceDialogBean"
+                                 v-on:onCancel="rpShareDialog = false"
+                                 v-on:onSuccess="rpShareSuccess" />
+      </el-dialog>
+
+      <!-- 药品供应管理 -->
+      <el-dialog :visible.sync="medicineSupplyDialog"
+                 v-if="medicineSupplyDialog"
+                 width="334px"
+                 title="申请开通">
+        <MedicineSupplyDialog v-bind:service="serviceDialogBean"
+                              v-on:onCancel="medicineSupplyDialog = false"
+                              v-on:onSuccess="medicineSupplySuccess" />
+      </el-dialog>
+
     </div>
-
-    <!-- 合理用药弹框 -->
-    <el-dialog :visible.sync="useDrugDialog"
-               v-if="useDrugDialog"
-               width="334px"
-               title="申请开通">
-      <UseDrugDialog v-bind:service="serviceDialogBean"
-                     v-on:onCancel="useDrugDialog = false"
-                     v-on:onSuccess=" useDrugSuccess" />
-    </el-dialog>
-
-    <!-- 处方共享管理 -->
-    <el-dialog :visible.sync="rpShareDialog"
-               v-if="rpShareDialog"
-               width="334px"
-               title="申请开通">
-      <RpShareManagementDialog v-bind:service="serviceDialogBean"
-                               v-on:onCancel="rpShareDialog = false"
-                               v-on:onSuccess="rpShareSuccess" />
-    </el-dialog>
-
-    <!-- 药品供应管理 -->
-    <el-dialog :visible.sync="medicineSupplyDialog"
-               v-if="medicineSupplyDialog"
-               width="334px"
-               title="申请开通">
-      <MedicineSupplyDialog v-bind:service="serviceDialogBean"
-                            v-on:onCancel="medicineSupplyDialog = false"
-                            v-on:onSuccess="medicineSupplySuccess" />
-    </el-dialog>
-
   </div>
+
 </template>
 
 <script>
@@ -217,9 +220,7 @@ export default {
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
 
       Peace.cache.localStorage.set('serviceId', product.serviceId)
-      window.open(
-        `${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`
-      )
+      window.open(`${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}`)
     },
 
     //申请开通用药建议成功后的方法

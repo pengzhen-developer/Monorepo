@@ -1,34 +1,45 @@
 <template>
-  <div class="q-pa-lg">
-    <el-form inline=""
-             label-width="100px"
-             label-position="right">
-      <el-form-item label="提交时间：">
-        <el-date-picker type="daterange"
-                        v-model="model.pickDate"
-                        value-format="yyyy-MM-dd"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="状态：">
+  <div class=" layout-route">
+    <div class="card card-search q-mb-md">
+      <el-form inline=""
+               label-width="auto"
+               label-position="left">
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span class="text-justify em-4">提交时间</span>
+            <span class="text-center q-ml-sm">：</span>
+          </div>
+          <el-date-picker type="daterange"
+                          v-model="model.pickDate"
+                          value-format="yyyy-MM-dd"
+                          start-placeholder="开始日期"
+                          end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span class="text-justify em-4">状态</span>
+            <span class="text-center q-ml-sm">：</span>
+          </div>
+          <el-select v-model="model.checkStatus"
+                     placeholder="请选择">
+            <el-option v-for="item in options"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label=" ">
+          <el-button type="primary"
+                     v-on:click="get">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-        <el-select v-model="model.checkStatus"
-                   placeholder="请选择">
-          <el-option v-for="item in options"
-                     v-bind:key="item.value"
-                     v-bind:label="item.label"
-                     v-bind:value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label=" ">
-        <el-button type="primary"
-                   v-on:click="get">查询</el-button>
-      </el-form-item>
-    </el-form>
-
-    <div>
+    <div class="card">
       <PeaceTable ref="table"
                   style="width: 100%"
                   pagination
@@ -180,5 +191,14 @@ export default {
   height: 6px;
   border-radius: 8px;
   background: var(--q-color-primary);
+}
+
+.text-justify {
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.em-4 {
+  width: 4em;
 }
 </style>

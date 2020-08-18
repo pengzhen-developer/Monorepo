@@ -1,98 +1,100 @@
 <template>
-  <div class="q-pa-lg">
-    <div class="content-item">
-      <div class="item-title">
-        <div class="title-left"></div>
-        <p class="title">账号信息</p>
+  <div class="layout-route">
+    <div class="q-pa-lg bg-white full-height">
+      <div class="content-item">
+        <div class="item-title">
+          <div class="title-left"></div>
+          <p class="title">账号信息</p>
+        </div>
+        <div class="item-content">
+          <div class="item-child">
+            <p class="child-key">登录账号</p>
+            <p>：</p>
+            <p class="child-value">{{ accountInfo.tel }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">联系人</p>
+            <p>：</p>
+            <p class="child-value">{{ accountInfo.linkman }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">手机号码</p>
+            <p>：</p>
+            <p class="child-value">{{ accountInfo.tel }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">邮箱</p>
+            <p>：</p>
+            <p class="child-value">{{ accountInfo.email }}</p>
+          </div>
+        </div>
       </div>
-      <div class="item-content">
-        <div class="item-child">
-          <p class="child-key">登录账号</p>
-          <p>：</p>
-          <p class="child-value">{{ accountInfo.tel }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">联系人</p>
-          <p>：</p>
-          <p class="child-value">{{ accountInfo.linkman }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">手机号码</p>
-          <p>：</p>
-          <p class="child-value">{{ accountInfo.tel }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">邮箱</p>
-          <p>：</p>
-          <p class="child-value">{{ accountInfo.email }}</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="line"></div>
+      <div class="line"></div>
 
-    <div class="content-item">
-      <div class="item-title">
-        <div class="title-left"></div>
-        <p class="title"> 机构信息</p>
-      </div>
-      <div class="item-content">
-        <div class="item-child">
-          <p class="child-key">机构类型</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.role }}</p>
+      <div class="content-item">
+        <div class="item-title">
+          <div class="title-left"></div>
+          <p class="title"> 机构信息</p>
         </div>
-        <div class="item-child">
-          <p class="child-key">机构名称</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.hospitalName }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key-other">统一社会信用代码</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
-        </div>
-        <div class="item-child"
-             v-if="hosInfo.hospitalAttribute">
-          <p class="child-key">医院属性</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">详细地址</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
-        </div>
-        <div class="item-child"
-             v-if="hosInfo.level">
-          <p class="child-key">医院等级</p>
-          <p>：</p>
-          <p class="child-value">{{ hosInfo.level }}</p>
-        </div>
-        <div class="item-child-line"
-             v-if="canShowCertificate">
-          <p class="child-key">资质证明</p>
-          <p>：</p>
-          <el-image class="img"
-                    v-if="hosInfo.license"
-                    :src="hosInfo.license"
-                    :preview-src-list="hosInfo.licenseList"
-                    fit='fill'></el-image>
-          <el-image class="img"
-                    v-if="hosInfo.structureLicense"
-                    :preview-src-list="hosInfo.structureLicenseList"
-                    :src="hosInfo.structureLicense"
-                    fit='fill'></el-image>
-          <el-image class="img"
-                    v-if="hosInfo.certificate"
-                    :preview-src-list="hosInfo.certificateList"
-                    :src="hosInfo.certificate"
-                    fit='fill'></el-image>
-          <el-image class="img"
-                    v-if="hosInfo.hospitalLicense"
-                    :preview-src-list="hosInfo.hospitalLicenseList"
-                    :src="hosInfo.hospitalLicense"
-                    fit='fill'></el-image>
+        <div class="item-content">
+          <div class="item-child">
+            <p class="child-key">机构类型</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.role }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">机构名称</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.hospitalName }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key-other">统一社会信用代码</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
+          </div>
+          <div class="item-child"
+               v-if="hosInfo.hospitalAttribute">
+            <p class="child-key">医院属性</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.hospitalAttribute }}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">详细地址</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.hospitalAddres }}</p>
+          </div>
+          <div class="item-child"
+               v-if="hosInfo.level">
+            <p class="child-key">医院等级</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.level }}</p>
+          </div>
+          <div class="item-child-line"
+               v-if="canShowCertificate">
+            <p class="child-key">资质证明</p>
+            <p>：</p>
+            <el-image class="img"
+                      v-if="hosInfo.license"
+                      :src="hosInfo.license"
+                      :preview-src-list="hosInfo.licenseList"
+                      fit='fill'></el-image>
+            <el-image class="img"
+                      v-if="hosInfo.structureLicense"
+                      :preview-src-list="hosInfo.structureLicenseList"
+                      :src="hosInfo.structureLicense"
+                      fit='fill'></el-image>
+            <el-image class="img"
+                      v-if="hosInfo.certificate"
+                      :preview-src-list="hosInfo.certificateList"
+                      :src="hosInfo.certificate"
+                      fit='fill'></el-image>
+            <el-image class="img"
+                      v-if="hosInfo.hospitalLicense"
+                      :preview-src-list="hosInfo.hospitalLicenseList"
+                      :src="hosInfo.hospitalLicense"
+                      fit='fill'></el-image>
+          </div>
         </div>
       </div>
     </div>
