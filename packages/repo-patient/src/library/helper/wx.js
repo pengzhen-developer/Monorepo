@@ -51,9 +51,12 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
     })
     .catch((res) => {
       if (res.data) {
-        console.warn('订单异常时响应', res.data)
-        if (orderExp) {
-          orderExp(res)
+        if (res.data.code == 204) {
+          console.warn('订单金额为0：', res.data)
+          paySuc && paySuc()
+        } else {
+          console.warn('订单异常时响应', res.data)
+          orderExp && orderExp(res)
         }
       }
     })
@@ -69,5 +72,5 @@ export default {
   pay,
   payInvoke,
   auth,
-  share,
+  share
 }

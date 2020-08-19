@@ -817,7 +817,7 @@ export default {
   width: 100%;
   height: 77px;
   padding: 15px;
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: space-between;

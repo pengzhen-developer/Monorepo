@@ -116,11 +116,11 @@
           <div class="dd">
             {{ order.paymentTypeStr }}</div>
         </div>
-        <template v-if="order.payStatus>ENUM.PAY_STASUS.已取消">
+        <template v-if="canShowPayway">
           <div class="dl-packet">
             <div class="dt">支付时间：</div>
             <div class="dd">
-              {{ order.payTime }}</div>
+              {{ order.payTime||'--' }}</div>
           </div>
         </template>
         <!-- 医保支付-支付时间补丁 -->
@@ -171,11 +171,11 @@
            v-if="canShowPayMoney">
         <div class="dl-packet">
           <div class="dt">
-            {{canShowPayway?'应付金额:':'实付金额:'}}
+            {{canShowPayway?'实付金额:':'应付金额:'}}
           </div>
           <div class="dd">
             <div class="strong">
-              ¥{{canShowPayway ?curPayMoney:order.payMoney.toString().toFixed(2)}}
+              ¥{{canShowPayway ?order.payMoney.toString().toFixed(2) : curPayMoney}}
               <span class="refunded"
                     v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
             </div>
@@ -345,7 +345,7 @@ export default {
     //是否显示应付金额  微信支付 ： 待支付为应付 其他的为实付
     //payStatus 1：待支付 2：已取消 3：已付款  4：退款中  5：已退款
     canShowPayway() {
-      return this.order && this.order.payStatus < ENUM.PAY_STASUS.已付款
+      return (this.order && this.order.payStatus >= ENUM.PAY_STASUS.已付款) || this.order.payTime
     },
     //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
     showByYiBao() {

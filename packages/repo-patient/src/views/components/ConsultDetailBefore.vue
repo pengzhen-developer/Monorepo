@@ -469,7 +469,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
   position: fixed;
   bottom: 0;
   left: 0;

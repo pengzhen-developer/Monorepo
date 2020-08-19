@@ -76,15 +76,13 @@ export default {
     pay() {
       let params = { orderNo: this.orderNo }
       let orderExp = null
-      orderExp = this.orderExp()
+      if (this.type !== 'drug') {
+        orderExp = this.orderExp()
+      }
       peace.wx.pay(params, orderExp, this.payCallback, this.payCallback)
     },
     orderExp(res) {
       if (res && res.data) {
-        if (res.data.code == 204) {
-          this.payCallback
-          return
-        }
         return Dialog.confirm({
           title: '提示',
           message: res.data.msg,
