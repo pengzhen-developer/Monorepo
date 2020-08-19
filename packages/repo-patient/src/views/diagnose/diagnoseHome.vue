@@ -53,6 +53,7 @@
       <div class="panel-head">
         <div class="head-tit">推荐医生</div>
         <div class="head-more"
+             v-show="!params.nethospitalid"
              @click="showCityDicFn">{{checkCity || '选择城市'}}</div>
         <van-action-sheet v-model="showCityDic"
                           :actions="cityDic"
@@ -165,7 +166,7 @@ export default {
     getBodySymptomDetail() {
       peace.service.diagnose[this.params.link == 'diagnoseGroup' ? 'diseaseInfo' : 'getBodySymptomDetail']({
         code: this.params.id
-      }).then(res => {
+      }).then((res) => {
         this.data = res.data
         this.txt = this.delHtml(this.data.info[this.checkedData])
       })
@@ -195,11 +196,11 @@ export default {
           nethospitalid: this.params.nethospitalid,
           diseaseCode: this.params.symptomCode ? '' : this.params.id,
           symptomCode: this.params.symptomCode,
-          city: this.checkCity,
+          city: this.params.nethospitalid ? '' : this.checkCity,
           p: this.p,
           size: this.size
         })
-        .then(res => {
+        .then((res) => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
 
           this.doctorList = this.doctorList.concat(res.data.list)
@@ -207,7 +208,8 @@ export default {
           if (!this.showLoadingType && this.doctorList.length == 0) {
             this.nodata = true
           }
-          if (this.p * this.size >= res.data.total) {
+
+          if (res.data.list.length==0 || this.p * this.size >= res.data.total) {
             this.finished = true
           }
         })
