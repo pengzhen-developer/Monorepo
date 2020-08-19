@@ -15,6 +15,7 @@
 import Header from '@src/views/compliteInfo/header'
 import CheckFailure from './components/CheckFailure'
 import { path } from '@src/router/generateRoutes'
+import Peace from '@src/library'
 import Util from '@src/util'
 export default {
   name: 'org-check-failure',
@@ -31,6 +32,7 @@ export default {
   methods: {
     reSubmit(flag) {
       if (flag) {
+        Peace.cache.sessionStorage.set('resubmit', true)
         this.$router.replace(path.ORGREGISTER)
       }
     }

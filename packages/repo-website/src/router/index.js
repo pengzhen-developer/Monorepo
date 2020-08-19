@@ -11,6 +11,7 @@ import VueRouter from 'vue-router'
 import generateRoutes from './generateRoutes'
 import { path } from './generateRoutes'
 import Util from '@src/util'
+import Peace from '@/src/library'
 export default function({ configuration }) {
   Vue.use(VueRouter)
 
@@ -22,8 +23,13 @@ export default function({ configuration }) {
     routes: routes,
     scrollBehavior: () => ({ x: 0, y: 0 })
   })
-
-  router.beforeEach((to, from, next) => {
+  const checkStatusArr = {
+    未申请: 1,
+    待审核: 2,
+    已通过: 3,
+    未通过: 4
+  }
+  router.beforeEach(async (to, from, next) => {
     // set title
     document.title = to.meta?.title ?? window.configuration.application.title
     //当前路由需要登录
@@ -33,7 +39,48 @@ export default function({ configuration }) {
       }
     }
     next()
+    //机构注册-如果审核状态为已通过，则回到首页
+    //重新提交则不跳转
+    const resubmit = Peace.cache.sessionStorage.get('resubmit') ?? false
+
+    if (to.name.indexOf('/compliteInfo') != -1) {
+      const info = await getAccountInfo()
+      const checkStatus = info?.data?.checkStatus
+      switch (checkStatus) {
+        case checkStatusArr.待审核:
+          next(path.CHECKWAITING)
+          break
+        case checkStatusArr.未通过:
+          if (!resubmit) {
+            next(path.CHECKFAILURE)
+          } else {
+            Peace.cache.sessionStorage.remove('resubmit')
+          }
+          break
+        case checkStatusArr.未申请:
+          next(path.ORGREGISTER)
+          break
+        default:
+          Util.user.redirectToConsole()
+          next(path.HOME)
+          break
+      }
+    }
   })
 
   return router
+}
+
+const getAccountInfo = (params) => {
+  const isMock = false
+
+  const apiPath = 'hospital/Account/getAccountInfo'
+  const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+  const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+  const requestApi = isMock ? mockPath : serverPath
+
+  return Peace.http.post(requestApi, params).then((res) => {
+    return res
+  })
 }

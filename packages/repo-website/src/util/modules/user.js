@@ -135,19 +135,26 @@ export const replaceToCompliteInfo = (status) => {
     未通过: 4
   }
   status = status || getUserInfo()?.checkStatus
+  //重新提交则不跳转
+  const resubmit = Peace.cache.sessionStorage.get('resubmit') ?? false
+
   switch (status) {
     case checkStatus.待审核:
       $peace.$router.replace(path.CHECKWAITING)
       break
     case checkStatus.未通过:
-      $peace.$router.replace(path.CHECKFAILURE)
+      if (!resubmit) {
+        $peace.$router.replace(path.CHECKFAILURE)
+      } else {
+        Peace.cache.sessionStorage.remove('resubmit')
+      }
       break
     case checkStatus.未申请:
       $peace.$router.replace(path.ORGREGISTER)
       break
     default:
-      $peace.$router.replace(path.HOME)
       redirectToConsole()
+      $peace.$router.replace(path.HOME)
       break
   }
 }
