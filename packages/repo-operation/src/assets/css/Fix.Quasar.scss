@@ -11,62 +11,29 @@
   text-align-last: justify;
 }
 
-/*
- *  q-[p|m][t|r|b|l|a|x|y]-[none|auto|xs|sm|md|lg|xl]-[lt|gt]-[1...10]
- *T       D                   S                       C        V
-
- *T - type
- *- values: p (padding), m (margin)
-
- *D - direction
- *- values:
- *  t (top), r (right), b (bottom), l (left),
- *a (all), x (both left & right), y (both top & bottom)
-
- *S - size
- *- values:
- *  none,
- *  auto (ONLY for specific margins: q-ml-*, q-mr-*, q-mx-*),
- *xs (extra small),
- *sm (small),
- *md (medium),
- *lg (large),
- *xl (extra large)
-
- *C -  calculate:
- *- values:
- *lt (-)
- *gt (+)
+/* Quasar - margin、padding
+ ----------------------------------
  *
- *V - value:
- *- values:
- *    [1...10]
+ * syntax:
+ *  q-[p|m]-[t|r|b|l|a|x|y]- [2...48]
+ *     T        D              V
+ *
+ *  T - type
+ *    - values: p (padding), m (margin)
+ *
+ *  D - direction
+ *    - values:
+ *      t (top), r (right), b (bottom), l (left),
+ *      a (all), x (both left & right), y (both top & bottom)
+ *
+ *  V - value:
+ *    - values:
+ *      margin 和 padding 以2为步进值填充 2--48
  *
  */
 $QUASAR_TYPE: p, m;
 $QUASAR_DIRECTION: a, t, r, b, l, x, y;
-$QUASAR_SIZE: (
-    type: 'xs',
-    value: 4
-  ),
-  (
-    type: 'sm',
-    value: 8
-  ),
-  (
-    type: 'md',
-    value: 16
-  ),
-  (
-    type: 'lg',
-    value: 24
-  ),
-  (
-    type: 'xl',
-    value: 48
-  );
-$QUASAR_CALCULATE: lt, gt;
-$QUASAR_CONST: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
+$QUASAR_SPACE: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48;
 
 @mixin margin($top, $right, $bottom, $left) {
   margin: $top $right $bottom $left;
@@ -78,50 +45,41 @@ $QUASAR_CONST: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
 
 @each $type in $QUASAR_TYPE {
   @each $direction in $QUASAR_DIRECTION {
-    @each $size in $QUASAR_SIZE {
-      @each $calculate in $QUASAR_CALCULATE {
-        @each $const in $QUASAR_CONST {
-          $value: 0px;
-          @if $calculate == lt {
-            $value: #{map-get($size, value) - $const}px;
-          } @else {
-            $value: #{map-get($size, value) + $const}px;
-          }
+    @each $space in $QUASAR_SPACE {
+      $value: #{$space}px;
 
-          .q-#{$type}#{$direction}-#{map-get($size, type)}-#{$calculate}-#{$const} {
-            @if $type == p {
-              @if $direction == a {
-                @include margin($value, $value, $value, $value);
-              } @else if $direction == t {
-                @include margin($value, 0, 0, 0);
-              } @else if $direction == r {
-                @include margin(0, $value, 0, 0);
-              } @else if $direction == b {
-                @include margin(0, 0, $value, 0);
-              } @else if $direction == l {
-                @include margin(0, 0, 0, $value);
-              } @else if $direction == x {
-                @include margin($value, 0, $value, 0);
-              } @else if $direction == y {
-                @include margin(0, $value, 0, $value);
-              }
-            } @else {
-              @if $direction == a {
-                @include padding($value, $value, $value, $value);
-              } @else if $direction == t {
-                @include padding($value, 0, 0, 0);
-              } @else if $direction == r {
-                @include padding(0, $value, 0, 0);
-              } @else if $direction == b {
-                @include padding(0, 0, $value, 0);
-              } @else if $direction == l {
-                @include padding(0, 0, 0, $value);
-              } @else if $direction == x {
-                @include padding($value, 0, $value, 0);
-              } @else if $direction == y {
-                @include padding(0, $value, 0, $value);
-              }
-            }
+      .q-#{$type}#{$direction}-#{$space} {
+        @if $type == m {
+          @if $direction == a {
+            @include margin($value, $value, $value, $value);
+          } @else if $direction == t {
+            @include margin($value, 0, 0, 0);
+          } @else if $direction == r {
+            @include margin(0, $value, 0, 0);
+          } @else if $direction == b {
+            @include margin(0, 0, $value, 0);
+          } @else if $direction == l {
+            @include margin(0, 0, 0, $value);
+          } @else if $direction == x {
+            @include margin($value, 0, $value, 0);
+          } @else if $direction == y {
+            @include margin(0, $value, 0, $value);
+          }
+        } @else {
+          @if $direction == a {
+            @include padding($value, $value, $value, $value);
+          } @else if $direction == t {
+            @include padding($value, 0, 0, 0);
+          } @else if $direction == r {
+            @include padding(0, $value, 0, 0);
+          } @else if $direction == b {
+            @include padding(0, 0, $value, 0);
+          } @else if $direction == l {
+            @include padding(0, 0, 0, $value);
+          } @else if $direction == x {
+            @include padding($value, 0, $value, 0);
+          } @else if $direction == y {
+            @include padding(0, $value, 0, $value);
           }
         }
       }
