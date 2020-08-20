@@ -469,7 +469,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -494,7 +494,7 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 5px 10px 70px;
+  padding: 5px 10px 77px;
   box-sizing: border-box;
   .module {
     border-radius: 3px;
