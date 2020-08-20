@@ -63,7 +63,7 @@ export default {
         prescription: 0, // 处方量
         order: 0, // 订单量
         medical: 0, // 医疗机构
-        drugSupply: this.drugSupply, // 药品供应机构
+        drugSupply: 0, // 药品供应机构
         store: 0, // 店配机构
         warehouse: 0 //仓配机构
       },
@@ -88,7 +88,6 @@ export default {
           this.overViewData.drugSupply = this.overViewData.warehouse + this.overViewData.store
         })
         .catch((err) => {
-          console.log('asdasda', err)
           if (err.data.code === 201) {
             Peace.util.warning(err.data.msg)
           } else if (err.data.code === 403) {
