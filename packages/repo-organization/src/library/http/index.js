@@ -48,6 +48,9 @@ Axios.interceptors.response.use(
     // Auth fail
     else if (response?.data?.code === 403) {
       Util.warning(response.data.msg)
+      //Auth fail 返回官网
+      LibraryUtil.user.removeUserInfo()
+      LibraryUtil.referrer.redirectToReferrer()
 
       return Promise.reject(response)
     }
