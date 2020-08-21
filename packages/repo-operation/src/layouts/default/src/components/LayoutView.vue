@@ -97,9 +97,7 @@ export default {
 
       // 内部 vue 设定最小高度，由 vue 组件控制滚动
       this.routerViewStyle = {
-        ['min-height']: `${document.body.clientHeight - offset?.top}px`,
-        // see https://stackoverflow.com/a/21836870
-        ['height']: `1px`
+        ['min-height']: `${document.body.clientHeight - offset?.top}px`
       }
 
       // 外部 iframe 设定高度，由 iframe 具体功能控制滚动

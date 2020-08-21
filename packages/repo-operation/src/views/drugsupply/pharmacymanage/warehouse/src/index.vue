@@ -1,48 +1,50 @@
 <template>
-  <div class="layout-route">
-    <!-- 云仓详情 -->
-    <div v-if="visible"
-         class="bg-white full-height q-pa-lg">
-      <el-button type="primary"
-                 class="q-mb-lg"
-                 v-on:click="back"
-                 style="margin-bottom:24px">
-        <div class="q-px-md q-py-sm">
-          <i class="el-icon-arrow-left"></i>
-          <span>返回上一页</span>
+  <div class="flex full-width">
+    <div class="layout-route full-width">
+      <!-- 云仓详情 -->
+      <div v-if="visible"
+           class="bg-white full-height q-pa-lg">
+        <el-button type="primary"
+                   class="q-mb-lg"
+                   v-on:click="back"
+                   style="margin-bottom:24px">
+          <div class="q-px-md q-py-sm">
+            <i class="el-icon-arrow-left"></i>
+            <span>返回上一页</span>
+          </div>
+        </el-button>
+        <div class="item-content">
+          <div class="item-title">
+            <div class="title-left"></div>
+            <p class="title">云仓信息</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">云仓名称</p>
+            <p>：</p>
+            <p class="child-value">{{warehoseInfo.Name}}</p>
+          </div>
+          <div class="item-child">
+            <p class="child-key">branchid</p>
+            <p>：</p>
+            <p class="child-value">{{warehoseInfo.BranchId}}</p>
+          </div>
         </div>
-      </el-button>
-      <div class="item-content">
-        <div class="item-title">
-          <div class="title-left"></div>
-          <p class="title">云仓信息</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">云仓名称</p>
-          <p>：</p>
-          <p class="child-value">{{warehoseInfo.Name}}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">branchid</p>
-          <p>：</p>
-          <p class="child-value">{{warehoseInfo.BranchId}}</p>
+        <div class="line"></div>
+        <div class="item-content">
+          <div class="item-title">
+            <div class="title-left"></div>
+            <p class="title">机构开户信息</p>
+          </div>
+          <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"></AccountDetail>
         </div>
       </div>
-      <div class="line"></div>
-      <div class="item-content">
-        <div class="item-title">
-          <div class="title-left"></div>
-          <p class="title">机构开户信息</p>
-        </div>
-        <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"></AccountDetail>
-      </div>
+
+      <template v-else>
+        <!-- 云仓列表 -->
+        <WarehouseList v-on:onShowDetail="goDetail"></WarehouseList>
+      </template>
+
     </div>
-
-    <template v-else>
-      <!-- 云仓列表 -->
-      <WarehouseList v-on:onShowDetail="goDetail"></WarehouseList>
-    </template>
-
   </div>
 </template>
 
