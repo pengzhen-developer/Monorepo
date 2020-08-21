@@ -48,6 +48,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.zyy-icon {
+  font-size: 20px;
+}
+
 .el-submenu {
   &.is-opened {
     background: linear-gradient(#ffffff, #f9f9f9);
