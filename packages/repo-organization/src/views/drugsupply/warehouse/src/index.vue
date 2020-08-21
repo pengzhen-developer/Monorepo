@@ -1,58 +1,60 @@
 <template>
-  <div class="layout-route">
-    <div class="q-pa-lg  bg-white full-height">
-      <div class="item-content">
-        <div class="item-title">
-          <div class="title-left"></div>
-          <p class="title">云仓信息</p>
-        </div>
-        <div v-if="!ishasWare">
-          <el-button type="primary"
-                     icon="el-icon-plus"
-                     v-on:click="bulidWarehouse">新增云仓</el-button>
-          <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
-        </div>
-        <div v-else>
-          <div class="item-child">
-            <p class="child-key">云仓名称</p>
-            <p>：</p>
-            <p class="child-value">{{warehoseInfo.Name}}</p>
+  <div class="flex full-width">
+    <div class="layout-route full-width">
+      <div class="q-pa-lg  bg-white full-height">
+        <div class="item-content">
+          <div class="item-title">
+            <div class="title-left"></div>
+            <p class="title">云仓信息</p>
           </div>
-          <div class="item-child">
-            <p class="child-key">branchid</p>
-            <p>：</p>
-            <p class="child-value">{{warehoseInfo.BranchId}}</p>
+          <div v-if="!ishasWare">
+            <el-button type="primary"
+                       icon="el-icon-plus"
+                       v-on:click="bulidWarehouse">新增云仓</el-button>
+            <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
+          </div>
+          <div v-else>
+            <div class="item-child">
+              <p class="child-key">云仓名称</p>
+              <p>：</p>
+              <p class="child-value">{{warehoseInfo.Name}}</p>
+            </div>
+            <div class="item-child">
+              <p class="child-key">branchid</p>
+              <p>：</p>
+              <p class="child-value">{{warehoseInfo.BranchId}}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="line"></div>
-      <div class="item-content">
-        <div class="item-title">
-          <div class="title-left"></div>
-          <p class="title">机构开户信息</p>
+        <div class="line"></div>
+        <div class="item-content">
+          <div class="item-title">
+            <div class="title-left"></div>
+            <p class="title">机构开户信息</p>
+          </div>
+          <div v-if="ishasWare">
+            <el-button type="primary"
+                       icon="el-icon-plus"
+                       v-on:click="bulidOrgan">新增开户机构</el-button>
+          </div>
+          <p class="noInfo"
+             v-if="!ishasOrgan">暂无机构开户信息</p>
+          <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"
+                         v-on:on-updateOrgan="updateOrgan"></AccountDetail>
+          <el-dialog v-if="wareVisible"
+                     width="470px"
+                     v-bind:visible.sync="wareVisible"
+                     title="新建云仓">
+            <AddWarehouse v-on:onCloseWare="oncloseWare"></AddWarehouse>
+          </el-dialog>
+          <el-dialog v-if="oragnVisible"
+                     width="516px"
+                     v-bind:visible.sync="oragnVisible"
+                     title="新增机构">
+            <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
+                      v-bind:data="custItem"></AddOrgan>
+          </el-dialog>
         </div>
-        <div v-if="ishasWare">
-          <el-button type="primary"
-                     icon="el-icon-plus"
-                     v-on:click="bulidOrgan">新增开户机构</el-button>
-        </div>
-        <p class="noInfo"
-           v-if="!ishasOrgan">暂无机构开户信息</p>
-        <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"
-                       v-on:on-updateOrgan="updateOrgan"></AccountDetail>
-        <el-dialog v-if="wareVisible"
-                   width="470px"
-                   v-bind:visible.sync="wareVisible"
-                   title="新建云仓">
-          <AddWarehouse v-on:onCloseWare="oncloseWare"></AddWarehouse>
-        </el-dialog>
-        <el-dialog v-if="oragnVisible"
-                   width="516px"
-                   v-bind:visible.sync="oragnVisible"
-                   title="新增机构">
-          <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
-                    v-bind:data="custItem"></AddOrgan>
-        </el-dialog>
       </div>
     </div>
   </div>
