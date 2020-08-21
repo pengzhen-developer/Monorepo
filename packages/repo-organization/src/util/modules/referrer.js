@@ -57,6 +57,9 @@ export const redirectToReferrer = (type = '_self') => {
     case '_blank':
       window.open(process.env.VUE_APP_WEB_SITE)
       break
+    case 'login':
+      window.location.href = process.env.VUE_APP_WEB_SITE + process.env.VUE_APP_WEB_SITE_LOGIN
+      break
     default:
       break
   }
@@ -67,5 +70,5 @@ export default {
   removeReferrer,
 
   replaceToReferrer,
-  redirectToReferrer,
+  redirectToReferrer
 }

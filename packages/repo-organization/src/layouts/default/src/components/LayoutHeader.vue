@@ -83,7 +83,7 @@ export default {
   methods: {
     signOut() {
       Util.user.removeUserInfo()
-      Util.referrer.redirectToReferrer()
+      Util.referrer.redirectToReferrer('login')
     },
 
     goWebSite() {
