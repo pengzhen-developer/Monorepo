@@ -1,6 +1,15 @@
 <template>
   <div style="width: 100%; height: 100%;">
-    <iframe class="iframe"
+
+    <div v-show="loading"
+         class="flex full-width full-height justify-center items-center">
+      <q-spinner-tail size="40"
+                      color="grey-5"></q-spinner-tail>
+    </div>
+
+    <iframe v-show="!loading"
+            class="iframe"
+            ref="iframe"
             v-bind:src="src"
             width="100%"
             height="100%"
@@ -18,9 +27,12 @@ import Util from '@src/util'
 export default {
   data() {
     return {
+      loading: true,
+
       src: ''
     }
   },
+
   created() {
     this.src = this.$route.meta.menuPath
 
@@ -29,6 +41,26 @@ export default {
     } else {
       this.src = this.src + '&sso=true&&cdkey=' + Util.user.getUserCDKey()
     }
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      const iframe = this.$refs.iframe
+
+      if (iframe.attachEvent) {
+        iframe.attachEvent('onload', () => {
+          // alert('Local iframe is now loaded.')
+
+          this.loading = false
+        })
+      } else {
+        iframe.onload = () => {
+          // alert('Local iframe is now loaded.')
+
+          this.loading = false
+        }
+      }
+    })
   }
 }
 </script>
