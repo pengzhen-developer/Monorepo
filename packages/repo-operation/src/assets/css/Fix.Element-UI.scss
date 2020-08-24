@@ -5,6 +5,8 @@
 
 /* Element - variable 
  ------------------------- */
+
+/** inline-form 设置 195px 为组件默认宽度，正好兼容时间区间选择(datepicker) */
 $--form-width-default: 195px;
 
 /* Element - Form
@@ -16,6 +18,9 @@ $--form-width-default: 195px;
         > .el-form-item__content > .el-input {
           width: $--form-width-default;
         }
+
+        margin-right: 20px;
+        margin-bottom: 20px;
       }
 
       .el-select,
@@ -76,6 +81,30 @@ $--form-width-default: 195px;
     .el-button--mini.is-round {
       font-size: 14px;
       padding: 4px 0px;
+    }
+  }
+}
+
+/** Element - Tab
+ -------------------------- */
+.el-tabs {
+  &:not(.element-ui-default) {
+    .el-tabs__item {
+      text-align: center;
+    }
+
+    &.el-tabs--bottom .el-tabs__item.is-bottom:last-child,
+    &.el-tabs--bottom .el-tabs__item.is-top:last-child,
+    &.el-tabs--top .el-tabs__item.is-bottom:last-child,
+    &.el-tabs--top .el-tabs__item.is-top:last-child {
+      padding: 0 20px;
+    }
+
+    &.el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2),
+    &.el-tabs--bottom .el-tabs__item.is-top:nth-child(2),
+    &.el-tabs--top .el-tabs__item.is-bottom:nth-child(2),
+    &.el-tabs--top .el-tabs__item.is-top:nth-child(2) {
+      padding: 0 20px;
     }
   }
 }
