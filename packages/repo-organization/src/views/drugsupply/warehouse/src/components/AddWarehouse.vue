@@ -36,8 +36,13 @@ import Peace from '@src/library'
 import Service from '../service'
 
 export default {
+  name: 'add-ware-house',
   components: {},
-
+  props: {
+    data: {
+      type: Object
+    }
+  },
   data() {
     return {
       saveing: false,
@@ -72,21 +77,55 @@ export default {
 
   computed: {},
 
+  watch: {
+    data: {
+      handler(val) {
+        if (val) {
+          this.model.Name = this.data.Name
+          this.model.CodeIn3PartPlatform = this.data.BranchId
+        }
+      },
+      immediate: true
+    }
+  },
+
   methods: {
     save() {
       this.validateForm().then(() => {
         this.saveing = true
-        const params = Peace.util.deepClone(this.model)
-        params.NameIn3PartPlatform = params.Name
-        Service.InsertCircconfig(params)
-          .then(() => {
-            Peace.util.alert('新建成功')
-            this.cancelDialog()
-          })
-          .finally(() => {
-            this.saveing = false
-          })
+        if (this.data?.Id) {
+          this.update()
+        } else {
+          this.create()
+        }
       })
+    },
+    create() {
+      const params = Peace.util.deepClone(this.model)
+      params.NameIn3PartPlatform = params.Name
+      Service.InsertCircconfig(params)
+        .then(() => {
+          Peace.util.success('新建成功')
+          this.cancelDialog()
+        })
+        .finally(() => {
+          this.saveing = false
+        })
+    },
+    update() {
+      const params = {
+        id: this.data.Id,
+        name: this.model.Name,
+        codeIn3PartPlatform: this.model.CodeIn3PartPlatform
+      }
+      Service.updateWarehouseInfo(params)
+        .then(() => {
+          Peace.util.success('修改云仓信息成功')
+          this.cancelDialog()
+        })
+        .finally(() => {
+          this.saveing = false
+        })
     },
     validateForm() {
       return new Promise((resolve) => {

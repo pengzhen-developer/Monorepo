@@ -18,6 +18,8 @@
               <p class="child-key">云仓名称</p>
               <p>：</p>
               <p class="child-value">{{warehoseInfo.Name}}</p>
+              <el-image :src="require('./assets/img/zyy-icon-xiugai.png')"
+                        v-on:click="bulidWarehouse"></el-image>
             </div>
             <div class="item-child">
               <p class="child-key">branchid</p>
@@ -40,12 +42,13 @@
           <p class="noInfo"
              v-if="!ishasOrgan">暂无机构开户信息</p>
           <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"
-                         v-on:on-updateOrgan="updateOrgan"></AccountDetail>
+                         v-on:onUpdateOrgan="updateOrgan"></AccountDetail>
           <el-dialog v-if="wareVisible"
                      width="470px"
                      v-bind:visible.sync="wareVisible"
-                     title="新建云仓">
-            <AddWarehouse v-on:onCloseWare="oncloseWare"></AddWarehouse>
+                     :title="ishasWare?'修改云仓信息':'新建云仓'">
+            <AddWarehouse v-on:onCloseWare="oncloseWare"
+                          v-bind:data="warehoseInfo"></AddWarehouse>
           </el-dialog>
           <el-dialog v-if="oragnVisible"
                      width="516px"
@@ -180,7 +183,14 @@ p {
 .item-child {
   margin-bottom: 20px;
   display: flex;
+  align-items: center;
+  .el-image {
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
+  }
 }
+
 .item-child:last-child {
   margin-bottom: 0;
 }

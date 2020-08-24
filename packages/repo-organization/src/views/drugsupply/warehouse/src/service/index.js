@@ -59,6 +59,25 @@ export default {
   },
 
   /**
+   * 修改云仓信息
+   *
+   * @param {*} params
+   */
+  updateWarehouseInfo(params) {
+    const isMock = false
+
+    const apiPath = 'mds/openapi/psd/CircConfig/Update'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 加载机构下拉框
    *
    * @param {*} params

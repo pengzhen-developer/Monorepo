@@ -67,7 +67,7 @@ export default {
     },
     oncloseOrgan() {
       this.oragnVisible = false
-      this.$emit('on-updateOrgan')
+      this.$emit('onUpdateOrgan')
     }
   }
 }
