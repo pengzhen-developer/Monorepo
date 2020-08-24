@@ -35,14 +35,6 @@ $QUASAR_TYPE: p, m;
 $QUASAR_DIRECTION: a, t, r, b, l, x, y;
 $QUASAR_SPACE: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48;
 
-@mixin margin($top, $right, $bottom, $left) {
-  margin: $top $right $bottom $left;
-}
-
-@mixin padding($top, $right, $bottom, $left) {
-  padding: $top $right $bottom $left;
-}
-
 @each $type in $QUASAR_TYPE {
   @each $direction in $QUASAR_DIRECTION {
     @each $space in $QUASAR_SPACE {
@@ -51,35 +43,39 @@ $QUASAR_SPACE: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 3
       .q-#{$type}#{$direction}-#{$space} {
         @if $type == m {
           @if $direction == a {
-            @include margin($value, $value, $value, $value);
+            margin: $value;
           } @else if $direction == t {
-            @include margin($value, 0, 0, 0);
+            margin-top: $value;
           } @else if $direction == r {
-            @include margin(0, $value, 0, 0);
+            margin-right: $value;
           } @else if $direction == b {
-            @include margin(0, 0, $value, 0);
+            margin-bottom: $value;
           } @else if $direction == l {
-            @include margin(0, 0, 0, $value);
+            margin-left: $value;
           } @else if $direction == x {
-            @include margin($value, 0, $value, 0);
+            margin-left: $value;
+            margin-right: $value;
           } @else if $direction == y {
-            @include margin(0, $value, 0, $value);
+            margin-top: $value;
+            margin-bottom: $value;
           }
         } @else {
           @if $direction == a {
-            @include padding($value, $value, $value, $value);
+            padding: $value;
           } @else if $direction == t {
-            @include padding($value, 0, 0, 0);
+            padding-top: $value;
           } @else if $direction == r {
-            @include padding(0, $value, 0, 0);
+            padding-right: $value;
           } @else if $direction == b {
-            @include padding(0, 0, $value, 0);
+            padding-bottom: $value;
           } @else if $direction == l {
-            @include padding(0, 0, 0, $value);
+            padding-left: $value;
           } @else if $direction == x {
-            @include padding($value, 0, $value, 0);
+            padding-left: $value;
+            padding-right: $value;
           } @else if $direction == y {
-            @include padding(0, $value, 0, $value);
+            padding-top: $value;
+            padding-bottom: $value;
           }
         }
       }
