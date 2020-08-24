@@ -3,10 +3,82 @@
  *
  */
 
-/* Quasar - text 
+/* Quasar - text
  ------------------------- */
 
 .text-justify {
   text-align: justify;
   text-align-last: justify;
+}
+
+/* Quasar - margin、padding
+ ----------------------------------
+ *
+ * syntax:
+ *  q-[p|m]-[t|r|b|l|a|x|y]- [2...48]
+ *     T        D              V
+ *
+ *  T - type
+ *    - values: p (padding), m (margin)
+ *
+ *  D - direction
+ *    - values:
+ *      t (top), r (right), b (bottom), l (left),
+ *      a (all), x (both left & right), y (both top & bottom)
+ *
+ *  V - value:
+ *    - values:
+ *      margin 和 padding 以2为步进值填充 2--48
+ *
+ */
+$QUASAR_TYPE: p, m;
+$QUASAR_DIRECTION: a, t, r, b, l, x, y;
+$QUASAR_SPACE: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48;
+
+@each $type in $QUASAR_TYPE {
+  @each $direction in $QUASAR_DIRECTION {
+    @each $space in $QUASAR_SPACE {
+      $value: #{$space}px;
+
+      .q-#{$type}#{$direction}-#{$space} {
+        @if $type == m {
+          @if $direction == a {
+            margin: $value;
+          } @else if $direction == t {
+            margin-top: $value;
+          } @else if $direction == r {
+            margin-right: $value;
+          } @else if $direction == b {
+            margin-bottom: $value;
+          } @else if $direction == l {
+            margin-left: $value;
+          } @else if $direction == x {
+            margin-left: $value;
+            margin-right: $value;
+          } @else if $direction == y {
+            margin-top: $value;
+            margin-bottom: $value;
+          }
+        } @else {
+          @if $direction == a {
+            padding: $value;
+          } @else if $direction == t {
+            padding-top: $value;
+          } @else if $direction == r {
+            padding-right: $value;
+          } @else if $direction == b {
+            padding-bottom: $value;
+          } @else if $direction == l {
+            padding-left: $value;
+          } @else if $direction == x {
+            padding-left: $value;
+            padding-right: $value;
+          } @else if $direction == y {
+            padding-top: $value;
+            padding-bottom: $value;
+          }
+        }
+      }
+    }
+  }
 }
