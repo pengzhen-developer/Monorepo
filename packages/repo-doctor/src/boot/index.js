@@ -19,6 +19,7 @@ import CreateApp from './createApp'
 import boot_FrameworkQuasar from './boot_framework_quasar'
 import boot_Library from './boot_library'
 import boot_UI from './boot_ui'
+import boot_Styles from './boot_styles'
 import boot_Version from './boot_version'
 
 // css
@@ -40,7 +41,10 @@ const install = async () => {
     boot_Library,
 
     // UI
-    boot_UI
+    boot_UI,
+
+    // Styles
+    boot_Styles
   ]
 
   boots.forEach(async (boot) => {

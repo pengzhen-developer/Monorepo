@@ -157,6 +157,7 @@ export default {
       this.model.drugNum = this.data.drugNum ?? undefined
       this.model.singleDose = this.data.singleDose ?? undefined
       this.model.useDrugDays = this.data.useDrugDays ?? undefined
+      this.model.drugQuantityUnit = this.data.drugQuantityUnit ?? undefined
     },
 
     drugRouteChange(id) {

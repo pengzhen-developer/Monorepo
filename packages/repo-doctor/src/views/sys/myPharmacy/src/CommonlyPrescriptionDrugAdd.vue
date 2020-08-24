@@ -137,7 +137,6 @@ export default {
 
   methods: {
     search(item) {
-      debugger
       this.showHistory = false
       this.prescriptionDrugList = []
       this.queryString = item || this.queryString

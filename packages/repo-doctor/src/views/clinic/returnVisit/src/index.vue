@@ -2,18 +2,15 @@
   <div class="inquiry flex">
     <!-- 复诊续方会话列表 -->
     <SessionList class="session-list">
-
       <!-- 预约挂号 -->
       <Reservation slot="reservation"></Reservation>
     </SessionList>
 
     <!-- 复诊续方会话详情 -->
-    <SessionDetail v-if="canShowDetail"
-                   class="session-detail"></SessionDetail>
+    <SessionDetail v-if="canShowDetail" class="session-detail"></SessionDetail>
 
     <!-- 复诊续方患者详情 -->
-    <SessionExtend v-if="canShowExtend"
-                   class="session-extend"></SessionExtend>
+    <SessionExtend v-if="canShowExtend" class="session-extend"></SessionExtend>
   </div>
 </template>
 

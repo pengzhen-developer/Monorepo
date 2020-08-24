@@ -57,6 +57,51 @@
         </span>
       </div>
     </el-card>
+    <!-- 首诊信息 -->
+    <el-card class="q-mb-lg bg-grey-2 no-shadow">
+      <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
+        <span>首诊信息</span>
+        <el-button type="text"
+                   style="color: #666; font-size:12px;"
+                   v-show="showMoreButton"
+                   v-on:click="showHealthRecode">查看更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      </div>
+
+      <div class="row  items-baseline">
+
+        <div class="row q-mr-20"
+             v-for="item in firstOptionInfo"
+             v-bind:key="item.key">
+
+          <div class="time-line column q-mr-14 q-pl-20">
+            <span class="time-line-title">07-20</span>
+            <span class="time-line-subtitle">2020</span>
+          </div>
+
+          <div class="case-bg"
+               v-on:click="showCaseInfo">
+            <div class="row cursor-pointer">
+              <img src="~@src/assets/images/inquiry/ic_medical record.png"
+                   class="q-mr-10" />
+              <div class="q-ml-10">
+                <p class="case-title">门诊病历</p>
+                <p class="case-subtitle">上医云馆 | 呼吸科</p>
+              </div>
+            </div>
+
+            <div class="q-mt-14 q-mb-2"
+                 v-show="item.key == 1">
+              <q-separator />
+              <p class="text-primary q-mt-8"
+                 style="line-height:18px; font-size:13px;">上呼吸道感染</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </el-card>
 
     <el-card class="q-mb-lg bg-grey-2 no-shadow">
       <div class="q-mb-sm text-subtitle1 text-bold">
@@ -119,11 +164,34 @@
         <div class="col">{{ inquiryOrderInfo.allergicHistory }}</div>
       </div>
     </el-card>
+
+    <peace-dialog :visible.sync="caseDialog.visible"
+                  append-to-body
+                  title="病历详情">
+      <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
+
 export default {
+  data() {
+    return {
+      caseDialog: {
+        visible: false,
+        data: undefined
+      },
+      items: [{ key: 1 }, { key: 2 }, { key: 3 }]
+    }
+  },
+
+  components: {
+    InquiryNewCaseDetail
+  },
+
   computed: {
     inquiryOrderInfo() {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryOrderInfo ?? {}
@@ -139,6 +207,32 @@ export default {
 
     showAdditionalInfo() {
       return this.inquiryOrderInfo.aImages?.length > 0 || this.inquiryOrderInfo.allergicHistory || this.inquiryOrderInfo.pregnancyText
+    },
+
+    firstOptionInfo() {
+      return this.items.length > 2 ? this.items.slice(0, 2) : this.items
+    },
+
+    showMoreButton() {
+      return this.items.length > 2
+    }
+  },
+
+  methods: {
+    get() {
+      const params = { dataNo: this.data.dataNo }
+      // const params = { inquiryNo: 'WZ2722845337239667' }
+      peace.service.inquiry.getHealthCase(params).then((res) => {
+        this.caseDialog.visible = true
+        this.caseDialog.data = res.data
+        // console.log(this.caseDialog.data)
+      })
+    },
+    showHealthRecode() {
+      peace.util.alert('health record')
+    },
+    showCaseInfo() {
+      peace.util.alert('showCaseInfo')
     }
   }
 }
@@ -161,5 +255,49 @@ export default {
   width: 5em;
   text-align: justify;
   text-align-last: justify;
+}
+
+.time-line {
+  &::before {
+    content: '';
+    position: relative;
+    left: -15px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--q-color-primary);
+  }
+
+  .time-line-title {
+    line-height: 20px;
+    color: #333333 !important;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .time-line-subtitle {
+    line-height: 17px;
+    color: #999999 !important;
+    font-size: 12px;
+  }
+}
+
+.case-bg {
+  padding: 14px;
+  border-radius: 4px;
+  background-color: white;
+
+  .case-title {
+    font-size: 16px;
+    color: #333 !important;
+    line-height: 22px;
+  }
+
+  .case-subtitle {
+    font-size: 13px;
+    color: #999 !important;
+    line-height: 18px;
+  }
 }
 </style>

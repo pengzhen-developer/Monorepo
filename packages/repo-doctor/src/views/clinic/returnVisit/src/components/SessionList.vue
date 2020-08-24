@@ -68,7 +68,6 @@ export default {
       const sessions = this.$store.state.inquiry?.sessions ?? []
       const filterSessions = sessions.filter((session) => session?.content?.inquiryInfo?.inquiryType === 'returnVisit')
       const cloneSessions = Peace.util.deepClone(filterSessions)
-
       return cloneSessions
     },
 
