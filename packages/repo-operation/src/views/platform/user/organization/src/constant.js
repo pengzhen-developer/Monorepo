@@ -1,11 +1,10 @@
 export default {
-
   /**
    * 禁用状态字典
    */
   ENUM_IS_OPEN: {
     已启用: 1,
-    已禁用: 2,
+    已禁用: 2
   },
 
   /**
@@ -14,7 +13,7 @@ export default {
   ENUM_ORGANIZATION_TYPE: {
     医疗机构: 1,
     店配机构: 2,
-    仓配机构: 3,
+    仓配机构: 3
   },
 
   /**
@@ -22,7 +21,7 @@ export default {
    */
   ENUM_ORGANIZATION_SOURCE: {
     机构注册: 1,
-    运营添加: 2,
+    运营添加: 2
   },
 
   /**
@@ -30,7 +29,7 @@ export default {
    */
   ENUM_HOSPITAL_LABEL: {
     公立医院: 0,
-    私立医院: 1,
+    私立医院: 1
   },
 
   /**
@@ -45,7 +44,7 @@ export default {
     骨伤医院: 5,
     肿瘤医院: 6,
     血管瘤医院: 7,
-    心血管病医院: 8,
+    心血管病医院: 8
   },
 
   /**
@@ -62,7 +61,22 @@ export default {
     一级甲等: 8,
     一级乙等: 9,
     一级丙等: 10,
-    其他: 11,
+    其他: 11
   },
 
+  /**
+   * 商保配置
+   */
+  ENUM_COMMERICAL_CONFIG: {
+    犇思: '1',
+    珮文: '2'
+  },
+
+  /**
+   * 医保配置
+   */
+  ENUM_MEDICAL_CONFIG: {
+    统筹医保: '1',
+    个人医保: '2'
+  }
 }

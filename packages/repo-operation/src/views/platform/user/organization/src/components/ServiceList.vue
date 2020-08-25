@@ -86,39 +86,48 @@
         <i class="el-icon-s-unfold"></i>
         支付服务
       </div>
-      <el-button v-if="!isEdit"
-                 type="primary"
-                 @click="isEdit = true">编辑</el-button>
-      <el-button v-else
-                 type="primary"
-                 :loading="payLoading"
-                 @click="updatePaymentService">保存</el-button>
+
       <div class="row service-table">
 
         <div class="row col-12 service-table-header">
           <div class="row col-3 service-table-cell">服务名称</div>
-          <div class="row col-9 service-table-cell">配置</div>
+          <div class="row col-9 service-table-cell">
+            <div class="col-11 offset-1 text-left">配置</div>
+          </div>
         </div>
 
         <div class="row col-12 service-table-col">
           <div class="col-3 service-table-cell">商保</div>
           <div class="col-9 service-table-cell">
             <div class="row payment-info">
-              <div class="col-6">
+              <div class="col-3 offset-1 text-left">
                 状态：
-                <el-switch :disabled="!isEdit"
+                <el-switch v-show="commercialEdit"
+                           :active-value="1"
+                           :inactive-value="0"
                            v-model="commercialInsurance.checked"></el-switch>
                 {{commercialInsurance.checked ? '使用':'未使用'}}
               </div>
               <div class="col-6 payment-config">
                 <div>已选：</div>
-                <div>
-                  <el-checkbox-group :disabled="!isEdit"
-                                     v-model="commercialInsurance.selected">
-                    <el-checkbox label="bensi">犇思</el-checkbox>
-                    <el-checkbox label="peiwen">佩文</el-checkbox>
+                <div v-show="commercialEdit">
+                  <el-checkbox-group v-model="commercialInsurance.selected">
+                    <el-checkbox v-for="(value, label) in CONSTANT.ENUM_COMMERICAL_CONFIG"
+                                 v-bind:key="value"
+                                 v-bind:label="value">{{label}}</el-checkbox>
                   </el-checkbox-group>
                 </div>
+                <div v-show="!commercialEdit">{{commercialText}}</div>
+              </div>
+              <div class="col-2">
+                <el-button v-show="!commercialEdit"
+                           type="primary"
+                           plain
+                           @click="commercialEdit = true">编辑</el-button>
+                <el-button v-show="commercialEdit"
+                           type="primary"
+                           :loading="commercialLoading"
+                           @click="updateCommercialInsuranceConfig">保存</el-button>
               </div>
             </div>
           </div>
@@ -128,21 +137,34 @@
           <div class="col-3 service-table-cell">医保</div>
           <div class="col-9 service-table-cell">
             <div class="row payment-info">
-              <div class="col-6">
+              <div class="col-3 offset-1 text-left">
                 状态：
-                <el-switch :disabled="!isEdit"
+                <el-switch v-show="medicalEdit"
+                           :active-value="1"
+                           :inactive-value="0"
                            v-model="medicalInsurance.checked"></el-switch>
                 {{medicalInsurance.checked ? '使用':'未使用'}}
               </div>
               <div class="col-6 payment-config">
                 <div>已选：</div>
-                <div>
-                  <el-checkbox-group :disabled="!isEdit"
-                                     v-model="medicalInsurance.selected">
-                    <el-checkbox label="tongchou">统筹医保</el-checkbox>
-                    <el-checkbox label="geren">个人医保</el-checkbox>
+                <div v-show="medicalEdit">
+                  <el-checkbox-group v-model="medicalInsurance.selected">
+                    <el-checkbox v-for="(value, label) in CONSTANT.ENUM_MEDICAL_CONFIG"
+                                 v-bind:key="value"
+                                 v-bind:label="value">{{label}}</el-checkbox>
                   </el-checkbox-group>
                 </div>
+                <div v-show="!medicalEdit">{{medicalText}}</div>
+              </div>
+              <div class="col-2">
+                <el-button v-show="!medicalEdit"
+                           type="primary"
+                           plain
+                           @click="medicalEdit = true">编辑</el-button>
+                <el-button v-show="medicalEdit"
+                           type="primary"
+                           :loading="medicalLoading"
+                           @click="updateMedicalInsuranceConfig">保存</el-button>
               </div>
             </div>
           </div>
@@ -158,6 +180,7 @@
 </template>
 
 <script>
+import CONSTANT from '../constant'
 import Service from './../service'
 import EditService from './EditService'
 
@@ -177,6 +200,7 @@ export default {
   mounted() {
     this.$nextTick().then(() => {
       this.getService()
+      this.getPaymentConfig()
     })
   },
 
@@ -191,29 +215,44 @@ export default {
 
     isEmpty() {
       return this.list.length === 0 && !this.isLoading
+    },
+    commercialText() {
+      let arr = this.commercialInsurance.selected.map((item) => {
+        return Object.keys(CONSTANT.ENUM_COMMERICAL_CONFIG).find((key) => CONSTANT.ENUM_COMMERICAL_CONFIG[key] === item)
+      })
+      return arr.length > 0 ? arr.join('，') : '——'
+    },
+    medicalText() {
+      let arr = this.medicalInsurance.selected.map((item) => {
+        return Object.keys(CONSTANT.ENUM_MEDICAL_CONFIG).find((key) => CONSTANT.ENUM_MEDICAL_CONFIG[key] === item)
+      })
+      return arr.length > 0 ? arr.join('，') : '——'
     }
   },
   data() {
     return {
+      CONSTANT,
+
       isLoading: true,
       list: [],
-      // 保存loading
-      payLoading: false,
-      // 支付服务是否可编辑
-      isEdit: false,
-      // 商保配置
-      commercialInsurance: {
-        checked: false,
-        selected: []
-      },
-      // 医保配置
-      medicalInsurance: {
-        checked: false,
-        selected: []
-      },
       dialog: {
         visible: false,
         data: {}
+      },
+
+      // 商保配置
+      commercialLoading: false,
+      commercialEdit: false,
+      commercialInsurance: {
+        checked: 0,
+        selected: []
+      },
+      // 医保配置
+      medicalLoading: false,
+      medicalEdit: false,
+      medicalInsurance: {
+        checked: 0,
+        selected: []
       }
     }
   },
@@ -287,34 +326,77 @@ export default {
         ...item
       }
     },
-    // 更新支付服务配置
-    updatePaymentService() {
-      this.payLoading = true
-
-      let errMsg = ''
-      if (this.commercialInsurance.checked && this.commercialInsurance.selected.length === 0) {
-        errMsg = '商保服务必须选择一个'
-      } else if (this.medicalInsurance.checked && this.medicalInsurance.selected.length === 0) {
-        errMsg = '医保服务必须选择一个'
-      }
-
-      if (errMsg !== '') {
-        this.$message.error(errMsg)
-        this.payLoading = false
-        return false
-      }
-
+    // 获取支付服务配置
+    getPaymentConfig(type = 'all') {
       let params = {
         accountId: this.data.id
       }
+      Service.getPaymentConfig(params)
+        .then((res) => {
+          if (type === 'all' || type === 'commercial') {
+            this.commercialInsurance.checked = res.data.commercialInsuranceConfig.status ? res.data.commercialInsuranceConfig.status : 0
+            this.commercialInsurance.selected = res.data.commercialInsuranceConfig.insuranceType
+              ? res.data.commercialInsuranceConfig.insuranceType.split(',')
+              : []
+          }
 
-      Service.getService(params)
+          if (type === 'all' || type === 'medical') {
+            this.medicalInsurance.checked = res.data.medicalInsuranceConfig.status ? res.data.medicalInsuranceConfig.status : 0
+            this.medicalInsurance.selected = res.data.medicalInsuranceConfig.insuranceType.split(',')
+              ? res.data.medicalInsuranceConfig.insuranceType.split(',')
+              : []
+          }
+        })
+        .finally(() => {})
+    },
+    // 更新商保配置
+    updateCommercialInsuranceConfig() {
+      if (this.commercialInsurance.checked && this.commercialInsurance.selected.length === 0) {
+        this.$message.warning('必须选择一个商保服务')
+        return false
+      }
+
+      this.commercialLoading = true
+
+      let params = {
+        accountId: this.data.id,
+        status: this.commercialInsurance.checked, // 0未使用 1使用
+        insuranceType: this.commercialInsurance.selected.join(',') //1犇思 2珮文，多选逗号隔开
+      }
+
+      Service.updateCommercialInsuranceConfig(params)
         .then((res) => {
           this.$message.success(res.msg)
         })
         .finally(() => {
-          this.isEdit = false
-          this.payLoading = false
+          this.getPaymentConfig('commercial')
+          this.commercialEdit = false
+          this.commercialLoading = false
+        })
+    },
+    // 更新医保配置
+    updateMedicalInsuranceConfig() {
+      if (this.medicalInsurance.checked && this.medicalInsurance.selected.length === 0) {
+        this.$message.warning('必须选择一个医保服务')
+        return false
+      }
+
+      this.medicalLoading = true
+
+      let params = {
+        accountId: this.data.id,
+        status: this.medicalInsurance.checked, // 0未使用 1使用
+        insuranceType: this.medicalInsurance.selected.join(',') // 1统筹医保 2个人医保，多选逗号隔开
+      }
+
+      Service.updateMedicalInsuranceConfig(params)
+        .then((res) => {
+          this.$message.success(res.msg)
+        })
+        .finally(() => {
+          this.getPaymentConfig('medical')
+          this.medicalEdit = false
+          this.medicalLoading = false
         })
     },
     back() {
@@ -400,6 +482,9 @@ export default {
     .el-checkbox {
       width: 90px;
       text-align: left;
+      ::v-deep .el-checkbox__label {
+        font-size: 16px;
+      }
     }
   }
 }
@@ -410,7 +495,9 @@ export default {
   border-left: 1px solid #e8e8e8;
   &-header {
     height: 54px;
-    font-weight: 600;
+    .service-table-cell {
+      font-weight: 600;
+    }
   }
   &-col {
     height: 132px;
@@ -425,6 +512,9 @@ export default {
     font-weight: 400;
     color: #333;
     text-align: center;
+    &.justify-start {
+      justify-content: flex-start;
+    }
   }
 }
 </style>

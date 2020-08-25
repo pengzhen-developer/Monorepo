@@ -154,5 +154,62 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取机构支付服务配置
+   *
+   * @param {*} params
+   */
+  getPaymentConfig(params) {
+    const isMock = false
+
+    const apiPath = 'operate/Service/getInsuranceConfig'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 更新医保配置
+   *
+   * @param {*} params
+   */
+  updateMedicalInsuranceConfig(params) {
+    const isMock = false
+
+    const apiPath = 'operate/Service/medicalInsuranceConfig'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 更新商保配置
+   *
+   * @param {*} params
+   */
+  updateCommercialInsuranceConfig(params) {
+    const isMock = false
+
+    const apiPath = 'operate/Service/commercialInsuranceConfig'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
