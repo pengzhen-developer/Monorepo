@@ -152,7 +152,7 @@ export default {
     },
     async submit() {
       if (!this.checked) {
-        this.$emit('onSuccess', { checked: this.checked })
+        this.$emit('onSuccess', { checked: this.checked, yibaoInfo: { divisionId: '' } })
         setTimeout(() => {
           this.selected = true
         }, 500)
