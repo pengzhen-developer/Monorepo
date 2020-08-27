@@ -135,7 +135,7 @@ export default {
     color: var(--q-color-primary);
   }
 
-  color: #e5e5e5;
+  color: #ffffffb3;
   height: 80px;
   line-height: 80px;
   padding: 0;
@@ -146,6 +146,7 @@ export default {
 
 .el-menu--horizontal > .el-menu-item.is-active {
   color: #fff;
+  font-weight: bold;
   border-bottom: 3px solid #fff;
 }
 
