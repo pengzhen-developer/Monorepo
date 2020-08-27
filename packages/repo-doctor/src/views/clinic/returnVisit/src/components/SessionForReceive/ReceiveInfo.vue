@@ -14,8 +14,10 @@
     </div>
 
     <el-card class="q-mb-lg bg-grey-2 no-shadow">
-      <div class="q-mb-sm text-subtitle1 text-bold">
+      <div class="q-mb-sm text-subtitle1 text-bold row items-center">
         <span>个人信息</span>
+        <span v-if="showHealthCareTag"
+              class="tag-style">{{'职工医保'}}</span>
       </div>
 
       <div class="q-mb-xs row">
@@ -89,12 +91,13 @@
               </div>
             </div>
 
-            <div class="q-mt-14 q-mb-2"
+            <!-- 暂时没有诊断信息 后期会添加 -->
+            <!-- <div class="q-mt-14 q-mb-2"
                  v-show="item.key == 1">
               <q-separator />
               <p class="text-primary q-mt-8"
                  style="line-height:18px; font-size:13px;">上呼吸道感染</p>
-            </div>
+            </div> -->
           </div>
 
         </div>
@@ -170,12 +173,20 @@
                   title="病历详情">
       <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
     </peace-dialog>
+
+    <peace-dialog :visible.sync="optionDialog.visible"
+                  append-to-body
+                  title="首诊记录">
+      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
+    </peace-dialog>
+
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
+import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 
 export default {
   data() {
@@ -184,12 +195,17 @@ export default {
         visible: false,
         data: undefined
       },
+      optionDialog: {
+        visible: false,
+        data: undefined
+      },
       items: [{ key: 1 }, { key: 2 }, { key: 3 }]
     }
   },
 
   components: {
-    InquiryNewCaseDetail
+    InquiryNewCaseDetail,
+    InquiryOptionRecord
   },
 
   computed: {
@@ -215,6 +231,10 @@ export default {
 
     showMoreButton() {
       return this.items.length > 2
+    },
+
+    showHealthCareTag() {
+      return true
     }
   },
 
@@ -229,11 +249,9 @@ export default {
       })
     },
     showHealthRecode() {
-      peace.util.alert('health record')
+      this.optionDialog.visible = true
     },
-    showCaseInfo() {
-      peace.util.alert('showCaseInfo')
-    }
+    showCaseInfo() {}
   }
 }
 </script>
@@ -255,6 +273,16 @@ export default {
   width: 5em;
   text-align: justify;
   text-align-last: justify;
+}
+
+.tag-style {
+  background: rgba(2, 167, 240, 1);
+  border-radius: 19px;
+  font-size: 11px;
+  color: white;
+  padding: 1px 10px;
+  margin-left: 9px;
+  line-height: 16px;
 }
 
 .time-line {

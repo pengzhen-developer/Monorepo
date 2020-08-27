@@ -1,21 +1,11 @@
 <template>
   <div>
-    <MessageCheckCard :checkOrderTxt="checkOrderTxt"
-                      @onClickDetail="onClickDetail"></MessageCheckCard>
-    <peace-dialog :visible.sync="checkOrder.visible"
-                  v-if="checkOrder.visible"
-                  append-to-body
-                  title="首诊详情">
-      <InquiryCheckOrderInfo :data="checkOrder.data"
-                             @close="() => checkOrder.visible = false"></InquiryCheckOrderInfo>
-    </peace-dialog>
+    <MessageFirstOptionCard :firstInfo="firstInfo"></MessageFirstOptionCard>
   </div>
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageFirstOptionCard from './MessageFirstOptionCard'
-import InquiryCheckOrderInfo from '@src/views/components/inquiry/InquiryCheckOrderInfo'
 
 export default {
   props: {
@@ -25,12 +15,15 @@ export default {
     }
   },
   components: {
-    MessageFirstOptionCard,
-    InquiryCheckOrderInfo
+    MessageFirstOptionCard
   },
   computed: {
-    checkOrderTxt() {
-      return 'this.message.content.data.checkOrderInfo && this.message.content.data.checkOrderInfo.checkOrderTxt'
+    firstInfo() {
+      return {
+        familyId: 'mqbijvrkoq', //家人ID
+        hospitalId: '23232', //机构ID
+        hospitalName: '北辰医院' //机构名称
+      }
     }
   },
   data() {
@@ -43,14 +36,13 @@ export default {
   },
   methods: {
     onClickDetail() {
-      const params = {
-        checkOrderNo: this.message.content.data.checkOrderInfo.checkOrderNo
-      }
-
-      peace.service.inquiry.getOrderDetail(params).then((res) => {
-        this.checkOrder.visible = true
-        this.checkOrder.data = res.data.info
-      })
+      // const params = {
+      //   checkOrderNo: this.message.content.data.checkOrderInfo.checkOrderNo
+      // }
+      // peace.service.inquiry.getOrderDetail(params).then((res) => {
+      //   this.checkOrder.visible = true
+      //   this.checkOrder.data = res.data.info
+      // })
     }
   }
 }

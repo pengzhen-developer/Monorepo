@@ -59,6 +59,54 @@
              style="padding: 0">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
+
+      <!-- 首诊信息 -->
+      <div class="module-item">
+        <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
+          <div class="b">首诊信息</div>
+          <el-button type="text"
+                     style="color: #666; font-size:12px;"
+                     v-show="showMoreButton"
+                     v-on:click="showHealthRecode">查看更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+        </div>
+
+        <div class="row items-baseline no-wrap">
+
+          <div class="row q-mr-18 q-mb-10"
+               v-for="item in firstOptionInfo"
+               v-bind:key="item.key">
+
+            <div class="time-line column q-mr-10 q-pl-20">
+              <span class="time-line-title">07-20</span>
+              <span class="time-line-subtitle">2020</span>
+            </div>
+
+            <div class="case-bg"
+                 v-on:click="showCaseInfo">
+              <div class="row cursor-pointer">
+                <img src="~@src/assets/images/inquiry/ic_medical record.png"
+                     class="q-mr-10" />
+                <div>
+                  <p class="case-title">门诊病历</p>
+                  <p class="case-subtitle">上医云馆 | 呼吸科</p>
+                </div>
+              </div>
+
+              <!-- 暂时没有诊断信息 后期会添加 -->
+              <!-- <div class="q-mt-14 q-mb-2"
+                 v-show="item.key == 1">
+              <q-separator />
+              <p class="text-primary q-mt-8"
+                 style="line-height:18px; font-size:13px;">上呼吸道感染</p>
+            </div> -->
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
       <div class="module-item"
            v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain">
         <div>
@@ -127,10 +175,17 @@
         </div>
       </div>
     </div>
+
+    <peace-dialog :visible.sync="optionDialog.visible"
+                  append-to-body
+                  title="首诊记录">
+      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {
   props: {
     data: Object
@@ -138,11 +193,40 @@ export default {
 
   data() {
     return {
-      internalData: null
+      internalData: null,
+      items: [{ key: 1 }, { key: 2 }, { key: 3 }],
+      optionDialog: {
+        visible: false,
+        data: undefined
+      }
     }
   },
+
+  components: {
+    InquiryOptionRecord
+  },
+
   mounted() {
     this.internalData = this.data
+  },
+  computed: {
+    firstOptionInfo() {
+      return this.items.length > 2 ? this.items.slice(0, 2) : this.items
+    },
+
+    showMoreButton() {
+      return this.items.length > 2
+    },
+
+    showHealthCareTag() {
+      return true
+    }
+  },
+  methods: {
+    showHealthRecode() {
+      this.optionDialog.visible = true
+    },
+    showCaseInfo() {}
   }
 }
 </script>
@@ -373,6 +457,52 @@ export default {
     border-color: #504c4f;
     vertical-align: text-top;
     margin-top: 2px;
+  }
+}
+
+.time-line {
+  &::before {
+    content: '';
+    position: relative;
+    left: -15px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--q-color-primary);
+  }
+
+  .time-line-title {
+    line-height: 20px;
+    color: #333333 !important;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .time-line-subtitle {
+    line-height: 17px;
+    color: #999999 !important;
+    font-size: 12px;
+  }
+}
+
+.case-bg {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
+  border-radius: 4px;
+
+  .case-title {
+    font-size: 16px;
+    color: #333 !important;
+    line-height: 22px;
+  }
+
+  .case-subtitle {
+    font-size: 13px;
+    color: #999 !important;
+    line-height: 18px;
   }
 }
 </style>

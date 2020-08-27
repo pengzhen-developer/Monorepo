@@ -57,6 +57,7 @@ import MessageRecipeCardContent from './MessageRecipeCardContent'
 import MessageReferralCardContent from './MessageReferralCardContent'
 import MessageCheckCardContent from './MessageCheckCardContent'
 import MessageVideoContent from './MessageVideoContent'
+import MessageFirstOptionCardContent from './MessageFirstOptionCardContent.vue'
 export default {
   components: {
     MessageTextContent,
@@ -174,6 +175,7 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.会诊单]: MessageConsultationCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.转诊单]: MessageReferralCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.转诊卡片]: MessageReferralCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.首诊卡片]: MessageFirstOptionCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检查单]: MessageCheckCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频通话]: MessageVideoContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频异常]: MessageVideoContent
