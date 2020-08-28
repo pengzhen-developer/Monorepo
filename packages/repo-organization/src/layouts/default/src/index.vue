@@ -64,6 +64,9 @@ export default {
       provideToggleDrawer: this.toggleDrawer,
       provdeMenuSelect: this.menuSelect,
 
+      provideGetTab: this.getTab,
+      provideAddTab: this.addTab,
+
       // provide property
       // provide function for computed
       provideMenuList: () => this.menuList,
@@ -92,6 +95,7 @@ export default {
   created() {
     this.getMenu()
   },
+
   mounted() {
     this.$nextTick(() => {
       if (this.$route.path !== 'layout') {
@@ -99,11 +103,12 @@ export default {
       }
     })
   },
+
   methods: {
     getMenu() {
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
-      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
+      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => item.virtual !== true)
+      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => item.virtual !== true)
 
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
@@ -117,15 +122,28 @@ export default {
       }
     },
 
+    getTab(index) {
+      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
+
+      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
+
+      return currentMenu
+    },
+
+    addTab(tab) {
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', tab)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', tab)
+    },
+
     menuSelect(index) {
       const currentMenu = this.menuList.find((menu) => menu.id === index)
 
-      setImmediate(() => {
-        // 新增到当前 tab
-        this.$store.commit('tabs/addTab', currentMenu)
-        // 选中当前 tab
-        this.$store.commit('tabs/selectTab', currentMenu)
-      }, 1000)
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', currentMenu)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', currentMenu)
     },
 
     resetNavSelect() {
@@ -141,6 +159,7 @@ export default {
         this.resetActive()
       }
     },
+
     resetActive() {
       const router = this.$route?.meta
 
