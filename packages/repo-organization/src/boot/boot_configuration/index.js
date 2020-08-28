@@ -17,7 +17,7 @@ if (Peace.util.queryUrlParam('configuration')) {
   window.sessionStorage.setItem('ORIGINAL_HREF', ORIGINAL_HREF || window.location.href)
 }
 
-/** 动态菜单 */
+/** 动态标题 */
 const dynamicTitle = () => {
   const title = Peace.util.queryUrlParam('title', window.sessionStorage.getItem('ORIGINAL_HREF'))
   return title ?? '智药云控制台'

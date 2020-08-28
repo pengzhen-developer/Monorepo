@@ -85,10 +85,16 @@ export default async function generateRoutes(configuration) {
 }
 
 async function getRouterList(configuration) {
-  const serviceId = Peace.cache.localStorage.get('serviceId')
-  const isSecondSystem = window.sessionStorage.getItem('ORIGINAL_HREF') ? true : false
-  const params = { serviceId }
+  const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
+
+  const isSecondSystem = ORIGINAL_HREF ? true : false
+  const serviceId = Peace.util.queryUrlParam('serviceId', ORIGINAL_HREF)
+
   if (serviceId && isSecondSystem) {
+    const params = {
+      serviceId
+    }
+
     const configurationByService = await getConfiguration(params)
 
     const reg = /[^{}]*{(.*)}[^}]*/
@@ -99,6 +105,7 @@ async function getRouterList(configuration) {
         value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
       }
     })
+
     configuration.routes.layoutNavMenu = configurationByService.data.menuArr
   } else {
     configuration.routes.layoutNavMenu = configuration_nav_console
