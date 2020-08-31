@@ -16,7 +16,8 @@ import Header from '@src/views/compliteInfo/header'
 import CheckFailure from './components/CheckFailure'
 import { path } from '@src/router/generateRoutes'
 import Peace from '@src/library'
-import Util from '@src/util'
+import Service from './service'
+
 export default {
   name: 'org-check-failure',
   components: {
@@ -24,12 +25,23 @@ export default {
     CheckFailure
   },
 
-  computed: {
-    message() {
-      return Util.user?.getUserInfo()?.reasonsFailure
+  data() {
+    return {
+      message: ''
     }
   },
+
+  mounted() {
+    this.getAccountInfo()
+  },
+
   methods: {
+    getAccountInfo() {
+      Service.getAccountInfo().then((res) => {
+        this.message = res.data.reasonsFailure
+      })
+    },
+
     reSubmit(flag) {
       if (flag) {
         Peace.cache.sessionStorage.set('resubmit', true)
