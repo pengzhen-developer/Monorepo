@@ -234,6 +234,7 @@ export default {
   isPInterger,
   isNInterger,
   isMobile,
+  isEmail,
   isTelephone,
   isIDCard,
   isRange
