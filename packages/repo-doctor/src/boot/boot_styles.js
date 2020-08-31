@@ -48,7 +48,7 @@ const generateStylesheet = (configuration) => {
     document.body.style.setProperty('--q-color-' + key, value)
 
     // 设定全局样式
-    const styleSheetNode = `.text-${key}{ color: ${value} !important;} .bg-${key}{ color: ${value} !important; }`
+    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ color: ${value}; }`
 
     // 写入 TextNode
     const styleSheetTextNode = document.createTextNode(styleSheetNode)
@@ -66,7 +66,7 @@ const generateStylesheet = (configuration) => {
 
 export default async ({ configuration }) => {
   // 异步引入全局 css
-  require(`@src/assets/css/Fix.Quasar.scss`)
+  require(`@src/assets/css/index.scss`)
 
   // 基于配置生成 stylesheet, 写入 document.head
   generateStylesheet(configuration)

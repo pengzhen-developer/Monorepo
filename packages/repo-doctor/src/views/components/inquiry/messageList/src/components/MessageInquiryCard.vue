@@ -1,6 +1,6 @@
 <template>
   <!-- 消息内容 -->
-  <div class="message-body message-card"
+  <div class="message-body message-card cursor-pointer"
        @click="onClickContent()">
     <div class="message-header">
       <el-image style="width:20px;height:17px;"

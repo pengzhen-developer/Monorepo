@@ -1,17 +1,15 @@
 <template>
   <!-- 消息内容 -->
-  <div class="message-body message-check"
+  <div class="message-body message-check cursor-pointer"
        @click="onClickDetail()">
-    <!-- <div class="message-header">
-      <el-image style="width:17px;height:17px;"
-                :src="require('../assets/images/ic_check.png')" /> <span>检查单</span>
-    </div> -->
     <div class="message-content row">
       <el-image style="width:35px;height:35px;"
+                :src="require('../assets/images/ic_firstOption_Order.png')"
                 class="q-mr-16"></el-image>
       <div class="column">
         <span class="text-grey-333">首诊卡片</span>
-        <span class="text-grey-999">{{ firstInfo.hospitalName }}</span>
+        <span class="text-grey-999"
+              style="font-size:12px;">{{ firstInfo.hospitalName }}</span>
       </div>
     </div>
   </div>

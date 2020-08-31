@@ -1,29 +1,24 @@
 /**
- * THIS FILE IS GENERATED AUTOMATICALLY.
- * DO NOT EDIT.
- *
- * You are probably looking on adding startup/initialization code.
- * Use "quasar new boot <name>" and add it there.
- * One boot file per concern. Then reference the file(s) in quasar.conf.js > boot:
- * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
  **/
 
 import Vue from 'vue'
 
+import CreateConfiguration from './createConfiguration'
 import CreateApp from './createApp'
+
+import boot_Library from './boot_library'
 
 // Quasar is required
 // Some libraries depend on it
-import boot_FrameworkQuasar from './boot_framework_quasar'
-import boot_Library from './boot_library'
-import boot_UI from './boot_ui'
-import boot_Styles from './boot_styles'
-import boot_Version from './boot_version'
+import boot_Quasar from './boot_quasar'
 
-// css
-import './boot_ui_css/index.scss'
+// UI Library
+import boot_UI from './boot_ui'
+
+//global style
+import boot_styles from './boot_styles'
 
 /**
  * Boot install
@@ -31,42 +26,36 @@ import './boot_ui_css/index.scss'
  * @returns vue app instance
  */
 const install = async () => {
-  const { app, store, router } = await CreateApp()
+  const { configuration } = await CreateConfiguration()
 
   const boots = [
-    // Framework
-    boot_FrameworkQuasar,
-
     // Library
     boot_Library,
+
+    // Framework
+    boot_Quasar,
 
     // UI
     boot_UI,
 
-    // Styles
-    boot_Styles
+    //global style
+    boot_styles
   ]
 
-  boots.forEach(async (boot) => {
+  for (const boot of boots) {
     try {
       await boot({
         Vue,
-        app,
-        store,
-        router
+        configuration
       })
     } catch (error) {
       console.error('[Library] boot error:', error)
-
-      return
     }
-  })
-
-  // 初始化成功后
-  // 检查版本信息
-  if (boot_Version.validVersion()) {
-    return new Vue(app)
   }
+
+  const { app } = await CreateApp(configuration)
+
+  return new Vue(app)
 }
 
 export default {

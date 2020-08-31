@@ -16,10 +16,10 @@ import CreateStore from '@src/store'
  * @export { app, router, store}
  * @returns
  */
-export default async function() {
+export default async function(configuration) {
   // Create store and router instances
-  const store = await CreateStore({ Vue })
-  const router = await CreateRouter({ Vue, store })
+  const store = await CreateStore({ Vue, configuration })
+  const router = await CreateRouter({ Vue, store, configuration })
 
   // Make router instance available in store
   store.$router = router

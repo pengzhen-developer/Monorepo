@@ -6,7 +6,7 @@
 /**
  * ElementUI 作为 main UI，全量加载即可
  *
- * 要实现按需加载，请参考:
+ * 要实现按需加载，请参考（无法动态改变主题）:
  *
  * step 1, Add dependencies
  *         ``` bash
@@ -23,27 +23,19 @@
  *          ],
  *
  */
-// ElementUI
+
 import ElementUI from 'element-ui'
-import './boot_ui_element-theme/default/theme/index.css'
-import './boot_ui_element-theme/default/theme/element-fix.scss'
 
-// Viewer
-import 'viewerjs/dist/viewer.css'
-import Viewer from 'v-viewer'
+export default ({ Vue, configuration }) => {
+  // 异步引入 ui css
+  require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
 
-export default ({ Vue }) => {
   Vue.use(ElementUI, { size: 'mini' })
 
-  Vue.use(Viewer, {
-    defaultOptions: {
-      zIndex: 9999
-    }
-  })
-
   console.log(
-    `%c ${'UI'} %c`,
+    `%c ${'ElementUI'} %c ${ElementUI.version} %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
+    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'
   )
 }

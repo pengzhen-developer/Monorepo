@@ -50,13 +50,13 @@ const install = function(Vue) {
 
   // 注册 component
   const components = [Table, Dialog, Countdown]
-  components.map(component => {
+  components.map((component) => {
     Vue.use(component)
   })
 
   // 注册 directive
   const directive = [drag, focus]
-  directive.map(directive => {
+  directive.map((directive) => {
     Vue.directive(directive.name, directive)
   })
 }

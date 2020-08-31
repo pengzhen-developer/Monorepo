@@ -70,35 +70,33 @@
                      v-on:click="showHealthRecode">查看更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
         </div>
 
-        <div class="row items-baseline no-wrap">
+        <div class="row items-baseline q-mb-sm">
 
-          <div class="row q-mr-18 q-mb-10"
+          <div class="row q-mr-20 col"
                v-for="item in firstOptionInfo"
-               v-bind:key="item.key">
+               v-bind:key="item.hisPatientId">
 
-            <div class="time-line column q-mr-10 q-pl-20">
-              <span class="time-line-title">07-20</span>
-              <span class="time-line-subtitle">2020</span>
+            <div class="time-line column q-mr-14 q-pl-20">
+              <span class="time-line-title">{{ item.createdTime.substring(0, 4) }}</span>
+              <span class="time-line-subtitle">{{ item.createdTime.substring(5, 10) }}</span>
             </div>
 
-            <div class="case-bg"
+            <div class="case-bg col cursor-pointer"
                  v-on:click="showCaseInfo">
-              <div class="row cursor-pointer">
+              <div class="row  q-mb-14">
                 <img src="~@src/assets/images/inquiry/ic_medical record.png"
                      class="q-mr-10" />
                 <div>
-                  <p class="case-title">门诊病历</p>
-                  <p class="case-subtitle">上医云馆 | 呼吸科</p>
+                  <p class="case-title">{{ item.title }}</p>
+                  <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>
                 </div>
               </div>
 
-              <!-- 暂时没有诊断信息 后期会添加 -->
-              <!-- <div class="q-mt-14 q-mb-2"
-                 v-show="item.key == 1">
-              <q-separator />
-              <p class="text-primary q-mt-8"
-                 style="line-height:18px; font-size:13px;">上呼吸道感染</p>
-            </div> -->
+              <div v-if="item.diagnosis">
+                <q-separator />
+                <p class="text-primary q-mt-8"
+                   style="line-height:18px; font-size:13px;">{{ item.diagnosis || '' }}</p>
+              </div>
             </div>
 
           </div>
@@ -185,6 +183,7 @@
 </template>
 
 <script>
+import peace from '@src/library'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {
   props: {
@@ -194,7 +193,7 @@ export default {
   data() {
     return {
       internalData: null,
-      items: [{ key: 1 }, { key: 2 }, { key: 3 }],
+      items: [],
       optionDialog: {
         visible: false,
         data: undefined
@@ -206,9 +205,14 @@ export default {
     InquiryOptionRecord
   },
 
+  beforeMount() {
+    this.getOptionList()
+  },
+
   mounted() {
     this.internalData = this.data
   },
+
   computed: {
     firstOptionInfo() {
       return this.items.length > 2 ? this.items.slice(0, 2) : this.items
@@ -222,16 +226,36 @@ export default {
       return true
     }
   },
+
   methods: {
+    getOptionList() {
+      peace.service.inquiry.getFirstOptionList().then((res) => {
+        const tmpTimes = []
+        const tmp = res.data.firstOptionList.map(function (item) {
+          const tmpTime = item.createdTime.substring(0, 10)
+          if (tmpTimes.includes(tmpTime)) {
+            item.showTimeLabel = false
+          } else {
+            tmpTimes.push(tmpTime)
+            item.showTimeLabel = true
+          }
+          return item
+        })
+        this.items = tmp
+      })
+    },
+
     showHealthRecode() {
       this.optionDialog.visible = true
+      this.optionDialog.data = peace.util.deepClone(this.items)
     },
+
     showCaseInfo() {}
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   margin: 0 0 5px 0;
@@ -487,11 +511,11 @@ export default {
 }
 
 .case-bg {
-  padding: 10px;
+  max-width: 230px !important;
+  padding: 12px 14px;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
-  border-radius: 4px;
 
   .case-title {
     font-size: 16px;

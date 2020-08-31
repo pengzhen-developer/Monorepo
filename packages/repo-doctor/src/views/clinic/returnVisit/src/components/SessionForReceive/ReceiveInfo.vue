@@ -73,11 +73,11 @@
 
         <div class="row q-mr-20"
              v-for="item in firstOptionInfo"
-             v-bind:key="item.key">
+             v-bind:key="item.hisPatientId">
 
           <div class="time-line column q-mr-14 q-pl-20">
-            <span class="time-line-title">07-20</span>
-            <span class="time-line-subtitle">2020</span>
+            <span class="time-line-title">{{ item.createdTime.substring(0, 4) }}</span>
+            <span class="time-line-subtitle">{{ item.createdTime.substring(5, 10) }}</span>
           </div>
 
           <div class="case-bg"
@@ -86,18 +86,17 @@
               <img src="~@src/assets/images/inquiry/ic_medical record.png"
                    class="q-mr-10" />
               <div class="q-ml-10">
-                <p class="case-title">门诊病历</p>
-                <p class="case-subtitle">上医云馆 | 呼吸科</p>
+                <p class="case-title">{{ item.title }}</p>
+                <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>
               </div>
             </div>
 
-            <!-- 暂时没有诊断信息 后期会添加 -->
-            <!-- <div class="q-mt-14 q-mb-2"
-                 v-show="item.key == 1">
+            <div class="q-mt-14 q-mb-2"
+                 v-if="item.diagnosis">
               <q-separator />
               <p class="text-primary q-mt-8"
-                 style="line-height:18px; font-size:13px;">上呼吸道感染</p>
-            </div> -->
+                 style="line-height:18px; font-size:13px;">{{ item.diagnosis || '' }}</p>
+            </div>
           </div>
 
         </div>
@@ -199,7 +198,7 @@ export default {
         visible: false,
         data: undefined
       },
-      items: [{ key: 1 }, { key: 2 }, { key: 3 }]
+      items: []
     }
   },
 
@@ -248,10 +247,31 @@ export default {
         // console.log(this.caseDialog.data)
       })
     },
+    getOptionList() {
+      peace.service.inquiry.getFirstOptionList().then((res) => {
+        const tmpTimes = []
+        const tmp = res.data.firstOptionList.map(function (item) {
+          const tmpTime = item.createdTime.substring(0, 10)
+          if (tmpTimes.includes(tmpTime)) {
+            item.showTimeLabel = false
+          } else {
+            tmpTimes.push(tmpTime)
+            item.showTimeLabel = true
+          }
+          return item
+        })
+        this.items = tmp
+      })
+    },
     showHealthRecode() {
       this.optionDialog.visible = true
+      this.optionDialog.data = peace.util.deepClone(this.items)
     },
     showCaseInfo() {}
+  },
+
+  beforeMount() {
+    this.getOptionList()
   }
 }
 </script>
@@ -312,7 +332,7 @@ export default {
 }
 
 .case-bg {
-  padding: 14px;
+  padding: 10px 14px;
   border-radius: 4px;
   background-color: white;
 

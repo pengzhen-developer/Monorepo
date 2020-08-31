@@ -1,59 +1,49 @@
 <template>
 
   <el-timeline class="q-mt-30 q-ml-46">
-    <el-timeline-item v-for="item in items"
-                      v-bind:key="item.key"
-                      timestamp="07-20"
+    <el-timeline-item v-for="item in data"
+                      v-bind:key="item.hisPatientId"
+                      :timestamp="item.createdTime.substring(5, 10)"
+                      :hide-timestamp="!item.showTimeLabel"
                       placement="top"
                       color="rgba(0,198,174,1)">
-      <div class="year-label">2020</div>
-      <div class="case-bg"
-           v-on:click="showCaseInfo">
-        <div class="row cursor-pointer">
+      <div v-if="item.showTimeLabel"
+           class="year-label">{{ item.createdTime.substring(0, 4) }}</div>
+      <div class="case-bg cursor-pointer">
+
+        <div class="row q-mb-14">
+
           <img src="~@src/assets/images/inquiry/ic_medical record.png"
                class="q-mr-10" />
           <div class="q-ml-10">
-            <p class="case-title">门诊病历</p>
-            <p class="case-subtitle">上医云馆 | 呼吸科</p>
+            <p class="case-title">{{ item.title }}</p>
+            <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>
           </div>
         </div>
+
+        <div class="q-mb-2"
+             v-if="item.diagnosis">
+          <q-separator />
+          <p class="text-primary q-mt-8"
+             style="line-height:18px; font-size:13px;">{{ item.diagnosis || '' }}</p>
+        </div>
       </div>
+
     </el-timeline-item>
   </el-timeline>
-
-  <!-- <div class="column  items-baseline">
-
-    <div class="row q-mb-20"
-         v-for="item in items"
-         v-bind:key="item.key">
-
-      <div class="time-line column q-mr-40 q-pl-20">
-        <span class="time-line-title">07-20</span>
-        <span class="time-line-subtitle">2020</span>
-      </div>
-
-      <div class="case-bg"
-           v-on:click="showCaseInfo">
-        <div class="row cursor-pointer">
-          <img src="~@src/assets/images/inquiry/ic_medical record.png"
-               class="q-mr-10" />
-          <div class="q-ml-10">
-            <p class="case-title">门诊病历</p>
-            <p class="case-subtitle">上医云馆 | 呼吸科</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div> -->
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      items: [{ key: 1 }, { key: 2 }, { key: 3 }]
+  props: {
+    /*
+     * 首诊记录列表
+     */
+    data: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   }
 }
@@ -66,14 +56,14 @@ export default {
 
 /deep/ .el-timeline-item__timestamp {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: rgba(51, 51, 51, 1);
   line-height: 10px;
 }
 
 .year-label {
   position: absolute;
-  top: -21px;
+  top: -22px;
   left: -80px;
   font-size: 12px;
 
@@ -86,7 +76,7 @@ export default {
   position: relative;
   left: 90px;
   top: -26px;
-  padding: 14px;
+  padding: 10px 14px;
   border-radius: 4px;
   background-color: white;
   max-width: 307px;
