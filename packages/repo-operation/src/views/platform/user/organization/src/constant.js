@@ -68,7 +68,7 @@ export default {
    * 商保配置
    */
   ENUM_COMMERICAL_CONFIG: {
-    犇思: '1',
+    '犇思（药事链）': '1',
     珮文: '2'
   },
 

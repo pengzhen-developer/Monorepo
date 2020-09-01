@@ -480,7 +480,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     .el-checkbox {
-      width: 90px;
+      width: 120px;
       text-align: left;
       ::v-deep .el-checkbox__label {
         font-size: 16px;
