@@ -38,6 +38,8 @@ const getDynamicRoutes = () => {
 
     // 遍历权限菜单，声明 dynamic route
     accountMenuList.menuList.forEach((menu) => {
+      menu = Peace.util.deepClone(menu)
+
       if (menu.menuPath && menu.menuRoute) {
         const component = Peace.validate.isUrl(menu.menuPath) ? () => import(`@src/views/iframe/index.js`) : () => import(`@src/${menu.menuPath}/index.js`)
 
