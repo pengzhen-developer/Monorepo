@@ -12,6 +12,8 @@ export default async function generateRoutes(configuration) {
   await getRouterList(configuration)
 
   configuration.routes.layoutNavMenu.forEach((item) => {
+    item = Peace.util.deepClone(item)
+
     if (item.menuPath && item.menuRoute && item.menuRouteName) {
       let component = null
 

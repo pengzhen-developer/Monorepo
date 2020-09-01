@@ -107,8 +107,8 @@ export default {
   methods: {
     getMenu() {
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => item.virtual !== true)
-      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => item.virtual !== true)
+      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
+      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
 
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')

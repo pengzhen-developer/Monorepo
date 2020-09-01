@@ -73,11 +73,19 @@ export default {
   },
 
   methods: {
-    changeRoute(menu) {
-      const routePath = '/layout/' + menu.menuRoute
+    changeRoute(tab) {
+      const routePath = '/layout/' + tab.menuRoute
 
       if (this.$route.path !== routePath) {
-        this.$router.push(routePath)
+        this.$router.push(routePath).then((route) => {
+          /** 动态修改 route meta */
+          /* eslint-disable */
+          for (const key in route.meta) {
+            if (route.meta.hasOwnProperty(key)) {
+              route.meta[key] = tab[key]
+            }
+          }
+        })
       }
     },
 
