@@ -13,8 +13,8 @@
 
         <div class="row q-mb-14">
 
-          <img src="~@src/assets/images/inquiry/ic_medical record.png"
-               class="q-mr-10" />
+          <img src="@src/assets/images/inquiry/ic_option_record.png"
+               style="width: 40px; height:40px" />
           <div class="q-ml-10">
             <p class="case-title">{{ item.title }}</p>
             <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>

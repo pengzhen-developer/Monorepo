@@ -63,6 +63,13 @@ export const INQUIRY = {
     视频: 'video'
   },
 
+  /** 问诊支付类型 */
+  INQUIRY_PAY_TYPE: {
+    自费: 1,
+    医保: 2,
+    商保: 3
+  },
+
   /** 是否发送病历 */
   ISSEND_CASE: {
     未发送病历: 0,
@@ -200,7 +207,8 @@ export const HEALTH = {
     病历: 'case',
     处方: 'prescribe',
     转诊: 'referral',
-    会诊: 'consult'
+    会诊: 'consult',
+    首诊记录: 'firstRecord'
   },
 
   TYPE: {

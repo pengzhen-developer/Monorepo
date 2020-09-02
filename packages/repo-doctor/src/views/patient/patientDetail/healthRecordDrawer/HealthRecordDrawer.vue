@@ -103,7 +103,7 @@ export default {
 
       this.drawer = true
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         setTimeout(() => {
           this.clearFocus()
         }, 60)

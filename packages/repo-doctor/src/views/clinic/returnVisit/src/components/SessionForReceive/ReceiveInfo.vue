@@ -16,8 +16,8 @@
     <el-card class="q-mb-lg bg-grey-2 no-shadow">
       <div class="q-mb-sm text-subtitle1 text-bold row items-center">
         <span>个人信息</span>
-        <span v-if="showHealthCareTag"
-              class="tag-style">{{'职工医保'}}</span>
+        <span v-if="showPayType"
+              class="tag-style">{{ payTypeText }}</span>
       </div>
 
       <div class="q-mb-xs row">
@@ -60,7 +60,8 @@
       </div>
     </el-card>
     <!-- 首诊信息 -->
-    <el-card class="q-mb-lg bg-grey-2 no-shadow">
+    <el-card class="q-mb-lg bg-grey-2 no-shadow"
+             v-if="firstOptionInfo.length > 0">
       <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
         <span>首诊信息</span>
         <el-button type="text"
@@ -83,7 +84,8 @@
           <div class="case-bg"
                v-on:click="showCaseInfo">
             <div class="row cursor-pointer">
-              <img src="~@src/assets/images/inquiry/ic_medical record.png"
+              <img src="~@src/assets/images/inquiry/ic_option_record.png"
+                   style="width: 40px; height:40px"
                    class="q-mr-10" />
               <div class="q-ml-10">
                 <p class="case-title">{{ item.title }}</p>
@@ -186,6 +188,7 @@
 import peace from '@src/library'
 import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
+import Type from '@src/type'
 
 export default {
   data() {
@@ -212,6 +215,14 @@ export default {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryOrderInfo ?? {}
     },
 
+    showPayType() {
+      return this.inquiryOrderInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryOrderInfo.paymentType)
+    },
+
     showImages() {
       return this.inquiryOrderInfo.imgs?.length === 0
     },
@@ -230,10 +241,6 @@ export default {
 
     showMoreButton() {
       return this.items.length > 2
-    },
-
-    showHealthCareTag() {
-      return true
     }
   },
 
@@ -248,7 +255,8 @@ export default {
       })
     },
     getOptionList() {
-      peace.service.inquiry.getFirstOptionList().then((res) => {
+      const params = { inquiryNo: this.inquiryOrderInfo.inquiryNo }
+      peace.service.inquiry.getFirstOptionList(params).then((res) => {
         const tmpTimes = []
         const tmp = res.data.firstOptionList.map(function (item) {
           const tmpTime = item.createdTime.substring(0, 10)

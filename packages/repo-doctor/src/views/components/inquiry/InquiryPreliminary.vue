@@ -12,7 +12,9 @@
       </div>
 
       <div class="module-item">
+
         <div class="b">个人信息</div>
+
         <el-row>
           <el-col :span="12"
                   class="form-dl">
@@ -29,17 +31,15 @@
             <div class="form-dd">{{internalData.inquiryOrderInfo.age + "岁"}}</div>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="12"
-                  class="form-dl">
+        <el-row class="row">
+          <el-col class="form-dl col">
             <div class="form-dt"><span>性别</span></div>
             <span class="form-dt"
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-dd">{{internalData.inquiryOrderInfo.sex}}
             </div>
           </el-col>
-          <el-col :span="12"
-                  class="form-dl"
+          <el-col class="form-dl col"
                   v-if="internalData.inquiryOrderInfo.guardianName">
             <div class="form-dt"><span>监护人</span></div>
             <span class="form-dt"
@@ -48,6 +48,18 @@
               {{internalData.inquiryOrderInfo.guardianName}} |
               {{internalData.inquiryOrderInfo.guardianAge}} |
               {{internalData.inquiryOrderInfo.guardianSex}}
+            </div>
+          </el-col>
+
+          <el-col class="form-dl col"
+                  v-if="showPayType">
+            <div class="form-dt">
+              <span>费用</span>
+            </div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">
+              {{ payTypeText }}
             </div>
           </el-col>
         </el-row>
@@ -61,7 +73,8 @@
       </div>
 
       <!-- 首诊信息 -->
-      <div class="module-item">
+      <div class="module-item"
+           v-if="firstOptionInfo.length > 0">
         <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
           <div class="b">首诊信息</div>
           <el-button type="text"
@@ -84,7 +97,8 @@
             <div class="case-bg col cursor-pointer"
                  v-on:click="showCaseInfo">
               <div class="row  q-mb-14">
-                <img src="~@src/assets/images/inquiry/ic_medical record.png"
+                <img src="@src/assets/images/inquiry/ic_option_record.png"
+                     style="width: 40px; height:40px"
                      class="q-mr-10" />
                 <div>
                   <p class="case-title">{{ item.title }}</p>
@@ -184,6 +198,7 @@
 
 <script>
 import peace from '@src/library'
+import Type from '@src/type'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {
   props: {
@@ -224,12 +239,22 @@ export default {
 
     showHealthCareTag() {
       return true
+    },
+
+    showPayType() {
+      return this.data.inquiryOrderInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      const text = Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.data.inquiryOrderInfo.paymentType)
+      return text
     }
   },
 
   methods: {
     getOptionList() {
-      peace.service.inquiry.getFirstOptionList().then((res) => {
+      const params = { inquiryNo: this.data.inquiryInfo.inquiryNo }
+      peace.service.inquiry.getFirstOptionList(params).then((res) => {
         const tmpTimes = []
         const tmp = res.data.firstOptionList.map(function (item) {
           const tmpTime = item.createdTime.substring(0, 10)

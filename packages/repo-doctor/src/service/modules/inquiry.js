@@ -272,7 +272,7 @@ export function getOrderDetail(params) {
  * @param {*} params
  * @returns
  */
-export function getFirstOptionList() {
+export function getFirstOptionList(params) {
   const isMock = true
   const apiPath = 'webapp/his/v060/record/getFirstOptionList'
 
@@ -282,7 +282,7 @@ export function getFirstOptionList() {
 
   const requestApi = isMock ? mockPath : serverPath
 
-  return peace.http.post(requestApi, {})
+  return peace.http.post(requestApi, params)
 }
 
 export default {

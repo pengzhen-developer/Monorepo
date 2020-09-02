@@ -17,30 +17,36 @@
         <p class="text-h5">普通处方笺</p>
       </div>
 
-      <div class="row q-mb-sm">
-        <div class="col-3">
+      <div class="row q-mb-md">
+        <div class="col">
           <span class="text-grey-7">姓名</span>
           <span class="q-mx-sm">：</span>
           <span>{{ caseInfo.patient_name }}</span>
         </div>
-        <div class="col-3">
+        <div class="col">
           <span class="text-grey-7">性别</span>
           <span class="q-mx-sm">：</span>
           <span>{{ caseInfo.sex }}</span>
         </div>
-        <div class="col-3">
+        <div class="col">
           <span class="text-grey-7">年龄</span>
           <span class="q-mx-sm">：</span>
           <span>{{ caseInfo.age + ' 岁' }}</span>
         </div>
-        <div class="col-3">
+        <div class="col">
           <span class="text-grey-7">科别</span>
           <span class="q-mx-sm">：</span>
           <span>{{ caseInfo.netdept_child }}</span>
         </div>
+        <div class="col"
+             v-if="showPayType">
+          <span class="text-grey-7">费用</span>
+          <span class="q-mx-sm">：</span>
+          <span>{{ payTypeText }}</span>
+        </div>
       </div>
 
-      <div class="row q-mb-sm">
+      <div class="row q-mb-md">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">体重</span>
@@ -61,7 +67,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-sm">
+      <div class="row q-mb-md">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">初步诊断</span>
@@ -70,7 +76,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-sm">
+      <div class="row q-mb-md">
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">过敏史</span>
@@ -117,7 +123,7 @@
 <script>
 import Peace from '@src/library'
 import Service from './service'
-
+import Type from '@src/type'
 import RecipeAudit from './RecipeAudit'
 import DrugSelect from '@src/views/components/drug/DrugSelect'
 
@@ -159,6 +165,14 @@ export default {
 
     inquiryNo() {
       return this.session?.content?.inquiryInfo?.inquiryNo
+    },
+
+    showPayType() {
+      return this.session?.content?.inquiryInfo?.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.session?.content?.inquiryInfo?.paymentType)
     },
 
     consultNo() {

@@ -4,7 +4,7 @@
        @click="onClickDetail()">
     <div class="message-content row">
       <el-image style="width:35px;height:35px;"
-                :src="require('../assets/images/ic_firstOption_Order.png')"
+                :src="require('@src/assets/images/inquiry/ic_option_record.png')"
                 class="q-mr-16"></el-image>
       <div class="column">
         <span class="text-grey-333">首诊卡片</span>
