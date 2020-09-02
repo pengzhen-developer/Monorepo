@@ -123,7 +123,7 @@
                 <el-button v-show="!commercialEdit"
                            type="primary"
                            plain
-                           @click="commercialEdit = true">编辑</el-button>
+                           @click="openCommercialEdit">编辑</el-button>
                 <el-button v-show="commercialEdit"
                            type="primary"
                            :loading="commercialLoading"
@@ -160,7 +160,7 @@
                 <el-button v-show="!medicalEdit"
                            type="primary"
                            plain
-                           @click="medicalEdit = true">编辑</el-button>
+                           @click="openMedicalEdit">编辑</el-button>
                 <el-button v-show="medicalEdit"
                            type="primary"
                            :loading="medicalLoading"
@@ -349,8 +349,26 @@ export default {
         })
         .finally(() => {})
     },
+    // 打开商保编辑
+    openCommercialEdit() {
+      if (this.medicalEdit) {
+        this.$message.warning('请先完成医保操作')
+        return false
+      }
+
+      if (!this.medicalInsurance.checked) {
+        this.commercialEdit = true
+      } else {
+        this.$message.warning('目前商保、医保只支持同时开通一个')
+      }
+    },
     // 更新商保配置
     updateCommercialInsuranceConfig() {
+      if (this.medicalInsurance.checked) {
+        this.$message.warning('目前商保、医保只支持同时开通一个')
+        return false
+      }
+
       if (this.commercialInsurance.checked && this.commercialInsurance.selected.length === 0) {
         this.$message.warning('必须选择一个商保服务')
         return false
@@ -374,8 +392,26 @@ export default {
           this.commercialLoading = false
         })
     },
+    // 打开医保编辑
+    openMedicalEdit() {
+      if (this.commercialEdit) {
+        this.$message.warning('请先完成商保操作')
+        return false
+      }
+
+      if (!this.commercialInsurance.checked) {
+        this.medicalEdit = true
+      } else {
+        this.$message.warning('目前商保、医保只支持同时开通一个')
+      }
+    },
     // 更新医保配置
     updateMedicalInsuranceConfig() {
+      if (this.commercialInsurance.checked) {
+        this.$message.warning('目前商保、医保只支持同时开通一个')
+        return false
+      }
+
       if (this.medicalInsurance.checked && this.medicalInsurance.selected.length === 0) {
         this.$message.warning('必须选择一个医保服务')
         return false
