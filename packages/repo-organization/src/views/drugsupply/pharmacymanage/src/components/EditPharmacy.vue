@@ -62,7 +62,7 @@
             </el-form-item>
           </div>
         </div>
-        <div class="info-item">
+        <div class="info-item q-pb-8">
           <div class="info-title">药房联系方式</div>
           <div class="info-content">
             <el-form-item label="联系人姓名"
@@ -91,7 +91,7 @@
 
           </div>
         </div>
-        <div class="info-item">
+        <div class="info-item q-pb-8">
           <div class="info-title">药房运营信息</div>
           <div class="info-content">
             <el-form-item label="营业时间"
@@ -105,7 +105,7 @@
                                 selectableRange: `00:00:00 - ${model.BusinessEndDate+':00'}||23:59:59`
                               }">
               </el-time-picker>
-              <span style="color:#ddd;margin:0 10px;">一</span>
+              <span class="label-styles">一</span>
               <el-time-picker v-model="model.BusinessEndDate"
                               style="width:154px"
                               placeholder="结束时间"
@@ -156,10 +156,10 @@
                              :show-file-list="false"
                              :before-upload="beforeUpload"
                              class="el-upload">
-                    <img v-if="model.logoUrl"
+                    <img v-show="model.logoUrl"
                          :src="model.logoUrl"
                          class="upload-img" />
-                    <img v-else
+                    <img v-show="!model.logoUrl"
                          class="icon-add"
                          :src='require("../assets/img/add.png")'>
                   </el-upload>
@@ -171,10 +171,10 @@
                              :show-file-list="false"
                              :before-upload="beforeUpload"
                              class="el-upload">
-                    <img v-if="model.BusinesslicenseUrl"
+                    <img v-show="model.BusinesslicenseUrl"
                          :src="model.BusinesslicenseUrl"
                          class="upload-img" />
-                    <img v-else
+                    <img v-show="!model.BusinesslicenseUrl"
                          class="icon-add"
                          :src='require("../assets/img/add.png")'>
                   </el-upload>
@@ -186,10 +186,10 @@
                              :show-file-list="false"
                              :before-upload="beforeUpload"
                              class="el-upload">
-                    <img v-if="model.DrugManagementlicenseUrl"
+                    <img v-show="model.DrugManagementlicenseUrl"
                          :src="model.DrugManagementlicenseUrl"
                          class="upload-img" />
-                    <img v-else
+                    <img v-show="!model.DrugManagementlicenseUrl"
                          class="icon-add"
                          :src='require("../assets/img/add.png")'>
                   </el-upload>
@@ -201,10 +201,10 @@
                              :show-file-list="false"
                              :before-upload="beforeUpload"
                              class="el-upload">
-                    <img v-if="model.GSPCertificationUrl"
+                    <img v-show="model.GSPCertificationUrl"
                          :src="model.GSPCertificationUrl"
                          class="upload-img" />
-                    <img v-else
+                    <img v-show="!model.GSPCertificationUrl"
                          class="icon-add"
                          :src='require("../assets/img/add.png")'>
                   </el-upload>
@@ -697,5 +697,9 @@ export default {
       margin-left: 40px;
     }
   }
+}
+.label-styles {
+  color: #ddd;
+  margin: 0 10px;
 }
 </style>

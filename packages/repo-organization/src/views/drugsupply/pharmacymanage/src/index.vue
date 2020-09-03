@@ -100,7 +100,8 @@
                          class="no-padding">编辑</el-button>
               <el-button type="text"
                          v-if="scope.row.ExamineStatus==15?true:false"
-                         class="no-padding">商品管理</el-button>
+                         class="no-padding"
+                         v-on:click="commodityManage(scope.row)">商品管理</el-button>
               <el-button type="text"
                          v-if="scope.row.ExamineStatus==15?true:false"
                          v-on:click="operationEnable(scope.row)"
@@ -139,6 +140,7 @@ import EditPharmacy from './components/EditPharmacy'
 import PharmacyDetail from './components/PharmacyDetail'
 export default {
   name: 'Pharmacymanage',
+  inject: ['provideAddTab', 'provideGetTab'],
   components: {
     EditPharmacy,
     PharmacyDetail
@@ -154,7 +156,7 @@ export default {
         ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS
       },
       saveing: false,
-      visible: true,
+      visible: false,
       editVisible: false,
       listVisible: false,
       reasonVisible: false,
@@ -250,6 +252,11 @@ export default {
       this.listVisible = false
       this.editVisible = true
       this.id = row.UserID
+    },
+    commodityManage(row) {
+      const menu = Peace.util.deepClone(this.provideGetTab('4-4-2'))
+      menu.menuPath = menu.menuPath + '?custcode=' + row.Code
+      this.provideAddTab(menu)
     },
     back() {
       this.fetch()

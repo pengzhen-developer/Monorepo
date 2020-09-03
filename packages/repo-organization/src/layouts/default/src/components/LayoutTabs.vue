@@ -90,17 +90,13 @@ export default {
     },
 
     tabClick(tab) {
-      if (tab.name === this.activeTab.id) {
+      if (tab.name.toString() === this.activeTab.id.toString()) {
         // 重复点击
         return
       }
 
-      // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu)
-
-      // 选中最后 tab
-      const currentMenu = menuListSource.find((menu) => menu.id === tab.name)
-      this.$store.commit('tabs/selectTab', currentMenu)
+      const currentTab = this.tabs.find((item) => item.id.toString() === tab.name.toString())
+      this.$store.commit('tabs/selectTab', currentTab)
     },
 
     tabRemove(name) {
