@@ -1,131 +1,42 @@
 /** 
  * 应用程序拦截器
- * 一般作为 '/' 根路由
- * 控制访问权限与链接跳转
+ * 当作为 '/' 根路由
+ * 可控制其所有 children 的访问权限
+
+ * 场景 ：
+ * 从 /router/a 跳转 /router/b
+ * 触发 beforeRouteEnter
+ * 验证 to 是否可访问
+ * 跳转 next() 或者 next(vm => vm.$router.push('/redirect'))
  */
 
 <template>
-  <div>
-    <div class="fixed-center"
-         v-if="processing">
-      <q-spinner color="primary"
-                 size="4em"
-                 v-bind:thickness="2" />
-    </div>
-
-    <router-view v-else></router-view>
-  </div>
+  <router-view />
 </template>
 
 <script>
-import Peace from '@src/library'
 import Util from '@src/util'
 
-const Service = {
-  /**
-   * 认证授权
-   *
-   * @param {*} params 参数列表
-   * @returns
-   */
-  auth(params) {
-    const isMock = false
-
-    const apiPath = 'console/Account/auth'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  }
-}
-
-// 1, 拦截
-// 1.1 拦截 '/'，跳转 layout / 验证身份 (初始化)
-// 1.2 拦截 '/xx/xx ...' ，跳转 xx/xx / login (刷新时)
-
 export default {
-  // 1, 拦截
   beforeRouteEnter(to, from, next) {
-    if (to.path === '/') {
-      if (Util.user.isSignIn()) {
-        const cdKeyInUrl = Peace.util.queryUrlParam('cdkey')
-        const cdKeyInStorage = Util.user.getUserCDKey()
-        //当前url中的cdkey!==缓存中的cdkey 则说明 用户更换了账号进入控制台 需重新auto获取信息
-        if (cdKeyInUrl !== cdKeyInStorage) {
-          next((vm) => {
-            vm.setData()
-            vm.authentication()
-          })
-        } else {
-          next('/layout')
-        }
+    console.log('AppIntercept beforeRouteEnter')
+
+    // 验证身份
+    if (Util.user.isSignIn()) {
+      if (to.path === '/') {
+        next('/layout')
       } else {
-        next((vm) => {
-          vm.setData()
-          vm.authentication()
-        })
+        next()
       }
     } else {
-      if (Util.user.isSignIn()) {
-        next()
-      } else {
-        next((vm) => {
-          vm.cdKeyError()
-        })
-      }
+      next(`/login`)
     }
   },
 
-  data() {
-    return {
-      processing: undefined,
+  beforeRouteUpdate(to, from, next) {
+    console.log('AppIntercept beforeRouteUpdate')
 
-      cdKey: undefined,
-      referrerSite: undefined
-    }
-  },
-
-  methods: {
-    setData() {
-      /** 获取 cdkey */
-      this.cdKey = Peace.util.queryUrlParam('cdkey') || Util.user.getUserCDKey()
-      /** 获取来源站点 */
-      this.referrerSite = document.referrer
-
-      Util.referrer.setReferrer(this.referrerSite)
-    },
-
-    authentication() {
-      this.processing = true
-
-      const param = { cdkey: this.cdKey }
-
-      Service.auth(param)
-        .then((res) => {
-          Util.user.setUserCDKey(this.cdKey)
-          Util.user.setUserInfo(res.data)
-
-          this.$router.push('/layout')
-        })
-        .catch(() => {
-          this.cdKeyError()
-        })
-        .finally(() => {
-          this.processing = false
-        })
-    },
-
-    cdKeyError() {
-      Peace.util.warning('为保障你的数据安全，请重新登录后使用')
-
-      setTimeout(() => {
-        Util.referrer.redirectToReferrer()
-      }, 3000)
-    }
+    next()
   }
 }
 </script>

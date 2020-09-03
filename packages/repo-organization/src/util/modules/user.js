@@ -3,6 +3,7 @@ import Peace from '@src/library'
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
 const USER_CD_KEY = 'user_cd_key'
+const ACCOUNT_MENU_LIST = 'account_menu_list'
 
 /**
  * 缓存用户 cdkey
@@ -58,32 +59,42 @@ export const removeUserInfo = () => {
   // 请查看 boot/boot_configuration/index.js
 
   // window.open() 会传递 session
-  // 在退出登陆时，清除 ORIGINAL_HREF，确保下次进入的是控制台
-  window.sessionStorage.removeItem('ORIGINAL_HREF')
+  // 在退出登陆时，清除 original-href，确保下次进入的是控制台
+  window.sessionStorage.removeItem('original-href')
 }
+
+/**
+ * 缓存账户菜单信息
+ *
+ * @param {*} accountMenuList 账户菜单信息
+ * @returns
+ */
+export const setAccountMenuList = (accountMenuList) => {
+  return Peace.cache.sessionStorage.set(ACCOUNT_MENU_LIST, accountMenuList)
+}
+/**
+ * 获取账户菜单信息（缓存）
+ *
+ * @returns
+ */
+export const getAccountMenuList = () => {
+  return Peace.cache.sessionStorage.get(ACCOUNT_MENU_LIST)
+}
+/**
+ * 清空账户菜单信息（缓存）
+ *
+ */
+export const removeAccountMenuList = () => {
+  Peace.cache.sessionStorage.remove(ACCOUNT_MENU_LIST)
+}
+
 /**
  * 清除站点缓存（缓存）
  *
  * @returns
  */
 export const removeOriginalHref = () => {
-  window.sessionStorage.removeItem('ORIGINAL_HREF')
-}
-/**
- * 重定向到登录页，并且记录当前页面地址
- * 请注意，此方法只记录 url 参数
- * 如需做更多自定义操作，请自行记录参数
- *
- * @param {string} [referrer=''] 重定向地址
- * @returns
- */
-export const replaceToLogin = (referrer = '') => {
-  return $peace.$router.push({
-    name: '/login',
-    query: {
-      referrer: referrer || $peace.$router.history.current.fullPath
-    }
-  })
+  window.sessionStorage.removeItem('original-href')
 }
 
 /**
@@ -91,19 +102,21 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const isSignIn = () => {
-  return !!Peace.cache.localStorage.get(USER_INFO)
+  return !!getUserInfo() && !!getAccountMenuList()
 }
 
 export default {
   setUserInfo,
+  getUserInfo,
+  removeUserInfo,
+
+  setUserCDKey,
   getUserCDKey,
   removeUserCDKey,
 
-  setUserCDKey,
-  getUserInfo,
-  removeUserInfo,
-  isSignIn,
+  setAccountMenuList,
+  getAccountMenuList,
+  removeAccountMenuList,
 
-  replaceToLogin,
-  removeOriginalHref
+  isSignIn
 }

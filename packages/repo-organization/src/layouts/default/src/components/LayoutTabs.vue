@@ -27,6 +27,7 @@
 
 <script>
 import Peace from '@src/library'
+import Util from '@src/util'
 
 export default {
   data() {
@@ -74,7 +75,7 @@ export default {
 
   methods: {
     changeRoute(tab) {
-      const routePath = '/layout/' + tab.menuRoute
+      const routePath = tab.menuRoute
 
       if (this.$route.path !== routePath) {
         this.$router.push(routePath).then((route) => {
@@ -95,13 +96,17 @@ export default {
         return
       }
 
-      const currentTab = this.tabs.find((item) => item.id.toString() === tab.name.toString())
-      this.$store.commit('tabs/selectTab', currentTab)
+      // 避免浅拷贝导致数据源被污染
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList())
+
+      // 选中最后 tab
+      const currentMenu = menuListSource.find((menu) => menu.id === tab.name)
+      this.$store.commit('tabs/selectTab', currentMenu)
     },
 
     tabRemove(name) {
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu)
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList())
 
       // 删除当前 tab
       const currentMenu = menuListSource.find((menu) => menu.id === name)

@@ -1,40 +1,10 @@
-import Peace from '@src/library'
-
-/** 控制台 - 加载子系统 */
-/** 思路： */
-/** 通过 url 参数加载子系统配置文件 */
-/** 通过 url 是否传递了 configuration 决定缓存策略 */
-
-if (Peace.util.queryUrlParam('configuration')) {
-  const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
-
-  /** 子站，首次进入 */
-  // 清理必要信息
-  if (ORIGINAL_HREF === null) {
-    window.sessionStorage.clear()
-  }
-
-  window.sessionStorage.setItem('ORIGINAL_HREF', ORIGINAL_HREF || window.location.href)
-}
-
-/** 动态标题 */
-const dynamicTitle = () => {
-  const title = Peace.util.queryUrlParam('title', window.sessionStorage.getItem('ORIGINAL_HREF'))
-  return title ?? '智药云控制台'
-}
-
-// /** 动态配置 */
-// const dynimicRoutes = () => {
-//   return configuration_nav_console
-// }
-
 export default {
   /**
    * 应用程序设定
    *
    */
   application: {
-    title: dynamicTitle()
+    title: '智药云控制台'
   },
 
   /**
@@ -47,7 +17,7 @@ export default {
   },
 
   /**
-   * 路由设定
+   * 路由配置
    *
    * webpack 要求明确的后缀文件，以支持 xxx-loader 解析
    * 本项目默认使用 index.js 作为组件入口文件
@@ -62,28 +32,5 @@ export default {
    * export default index
    *
    */
-  routes: {
-    /**
-     * layout nav 导航配置
-     *
-     */
-    layoutNavMenu: [
-      /** 动态路由 */
-      // ...dynimicRoutes()
-    ],
-
-    /**
-     * hybrid nav 导航配置
-     *
-     */
-    hybridNavMenu: [
-      // .e.g
-      // {
-      //   title: 'title',
-      //   menuRouteName: 'route name',
-      //   menuRoute: 'health/pacs',
-      //   menuPath: 'views/hybrid/health/pacs'
-      // }
-    ]
-  }
+  routes: {}
 }

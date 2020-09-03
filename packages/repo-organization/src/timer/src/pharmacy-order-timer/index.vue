@@ -11,8 +11,8 @@ const duration = 10000
 
 export default {
   created() {
-    const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
-    const configuration = Peace.util.queryUrlParam('configuration', ORIGINAL_HREF)
+    const original = Peace.cache.sessionStorage.get('original-href')
+    const configuration = Peace.util.queryUrlParam('configuration', original)
 
     if (configuration === 'drugsupplie') {
       setTimeout(() => {
@@ -57,7 +57,7 @@ export default {
     gotoPharmacyOrderList() {
       this.notifyObejct?.close()
 
-      this.$router.push('/layout/pharmacy-order-list')
+      this.$router.push('/pharmacy-order-list')
     }
   },
 

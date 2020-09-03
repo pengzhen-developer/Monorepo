@@ -1,115 +1,66 @@
 import Peace from '@src/library'
-import configuration_nav_console from '@src/boot/boot_configuration/configuration_nav_console'
+import Util from '@src/util'
 
-const getConfiguration = (params) => {
-  const url = process.env.VUE_APP_BASE_API + 'console/Service/getServiceSettingMenu'
-  return Peace.http.post(url, params)
+const getDynamicRoutes = () => {
+  let dynamicLayoutRootRoutes = []
+  let dynamicLayoutRoutes = []
+
+  if (Util.user.isSignIn()) {
+    // 获取缓存的权限菜单
+    const accountMenuList = Util.user.getAccountMenuList()
+
+    // 验证菜单
+    // 声明 layout root route
+    dynamicLayoutRootRoutes = [
+      {
+        path: '/layout',
+        name: '/layout',
+        component: () => import('@src/layouts/default'),
+        children: dynamicLayoutRoutes
+      }
+    ]
+
+    // 遍历权限菜单，声明 dynamic route
+    accountMenuList.forEach((menu) => {
+      menu = Peace.util.deepClone(menu)
+
+      if (menu.menuPath && menu.menuRoute) {
+        const component = Peace.validate.isUrl(menu.menuPath) ? () => import(`@src/views/iframe/index.js`) : () => import(`@src/${menu.menuPath}/index.js`)
+
+        dynamicLayoutRoutes.push({
+          path: menu.menuRoute,
+          name: menu.menuAlias || menu.menuRoute,
+          meta: menu,
+          component
+        })
+      }
+    })
+  }
+
+  return dynamicLayoutRootRoutes
 }
 
-export default async function generateRoutes(configuration) {
-  const dynamicLayoutNavRoutes = []
-
-  await getRouterList(configuration)
-
-  configuration.routes.layoutNavMenu.forEach((item) => {
-    item = Peace.util.deepClone(item)
-
-    if (item.menuPath && item.menuRoute && item.menuRouteName) {
-      let component = null
-
-      if (Peace.validate.isUrl(item.menuPath)) {
-        component = () => import(`@src/views/iframe/index.js`)
-      } else {
-        component = () => import(`@src/${item.menuPath}/index.js`)
-      }
-
-      dynamicLayoutNavRoutes.push({
-        path: item.menuRoute,
-        name: item.menuRouteName,
-        meta: item,
-        component: component
-      })
-    } else {
-      const notFound = () => import(`@src/views/exception/404`)
-
-      dynamicLayoutNavRoutes.push({
-        path: 'not-found',
-        name: 'not-found',
-        component: notFound
-      })
-    }
-  })
-
+export default function generateRoutes(/** configuration */) {
   const rootRoutes = [
     {
       path: '/',
       name: '/',
       component: () => import('@src/AppIntercept'),
-
-      children: [
-        // hybrid is empty route
-        // you can use '/[dynamicHybridNavRoutes]'
-        // .e.g
-        // {
-        //   path: '',
-        //   name: '',
-        //   component: () => import('@src/layouts/hybrid'),
-
-        //   // hybrid Nav
-        //   children: dynamicHybridNavRoutes
-        // },
-
-        {
-          path: 'layout',
-          name: 'layout',
-          component: () => import('@src/layouts/default'),
-
-          // layout Nav
-          children: dynamicLayoutNavRoutes
-        }
-      ]
+      children: getDynamicRoutes()
     },
 
-    // 控制台没有登录 (￣▽￣)""
-    // {
-    //   path: '/login',
-    //   name: '/login',
-    //   component: () => import('@src/views/system/login')
-    // },
+    {
+      path: '/login',
+      name: '/login',
+      component: () => import('@src/views/system/login')
+    },
 
     {
       path: '*',
+      name: 'not-found',
       component: () => import('@src/views/exception/404')
     }
   ]
 
   return rootRoutes
-}
-
-async function getRouterList(configuration) {
-  const ORIGINAL_HREF = window.sessionStorage.getItem('ORIGINAL_HREF')
-
-  const isSecondSystem = ORIGINAL_HREF ? true : false
-  const serviceId = Peace.util.queryUrlParam('serviceId', ORIGINAL_HREF)
-
-  if (serviceId && isSecondSystem) {
-    const params = {
-      serviceId
-    }
-
-    const configurationByService = await getConfiguration(params)
-
-    const reg = /[^{}]*{(.*)}[^}]*/
-    configurationByService.data.menuArr.map((value) => {
-      const route = value.menuPath && value.menuPath.replace(reg, '$1')
-      if (process.env[route] !== undefined) {
-        value.menuPath = value.menuPath && value.menuPath.replace('{' + route + '}', '')
-        value.menuPath = value.menuPath && route && process.env[route] + value.menuPath
-      }
-    })
-
-    configuration.routes.layoutNavMenu = configurationByService.data.menuArr
-  } else {
-    configuration.routes.layoutNavMenu = configuration_nav_console
-  }
 }

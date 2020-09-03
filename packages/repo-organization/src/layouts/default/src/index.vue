@@ -40,6 +40,7 @@
 
 <script>
 import Peace from '@src/library'
+import Util from '@src/util'
 
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
@@ -97,9 +98,13 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
-      if (this.$route.path !== 'layout') {
-        this.resetNavSelect()
+    this.$nextTick().then(() => {
+      if (this.$route.fullPath !== '/layout') {
+        this.resetActive()
+      } else {
+        // 默认选中第一个
+        const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
+        firstMenuNode?.click()
       }
     })
   },
@@ -107,8 +112,8 @@ export default {
   methods: {
     getMenu() {
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
-      const menuTreeSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList()).filter((item) => !item.virtual)
+      const menuTreeSource = Peace.util.deepClone(Util.user.getAccountMenuList()).filter((item) => !item.virtual)
 
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
@@ -123,7 +128,7 @@ export default {
     },
 
     getTab(index) {
-      const menuListSource = Peace.util.deepClone(this.configuration.routes.layoutNavMenu)
+      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList())
 
       const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
 

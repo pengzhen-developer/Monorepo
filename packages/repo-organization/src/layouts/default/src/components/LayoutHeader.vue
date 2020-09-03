@@ -68,11 +68,13 @@ export default {
     toggleDrawer() {
       return this.provideToggleDrawer
     },
+
     tel() {
       return this.user?.tel
     },
+
     showSignOut() {
-      return !window.sessionStorage.getItem('ORIGINAL_HREF')
+      return !window.sessionStorage.getItem('original-href')
     }
   },
 
@@ -83,13 +85,10 @@ export default {
   methods: {
     signOut() {
       Util.user.removeUserInfo()
-      Util.referrer.redirectToReferrer('login')
+      Util.referer.redirectToReferer('login')
     },
 
-    goWebSite() {
-      Util.user.removeOriginalHref()
-      Util.referrer.redirectToReferrer('_blank')
-    }
+    goWebSite() {}
   }
 }
 </script>
