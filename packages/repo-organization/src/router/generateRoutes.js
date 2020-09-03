@@ -2,7 +2,7 @@ import Peace from '@src/library'
 import configuration_nav_console from '@src/boot/boot_configuration/configuration_nav_console'
 
 const getConfiguration = (params) => {
-  const url = process.env.VUE_APP_BASE_API + '/console/Service/getServiceSettingMenu'
+  const url = process.env.VUE_APP_BASE_API + 'console/Service/getServiceSettingMenu'
   return Peace.http.post(url, params)
 }
 

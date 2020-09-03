@@ -5,44 +5,58 @@
 
 /* Element - variable 
  ------------------------- */
+
+/** inline-form 设置 195px 为组件默认宽度，正好兼容时间区间选择(datepicker) */
 $--form-width-default: 195px;
 
 /* Element - Form
-  -------------------------- */
+ -------------------------- */
 .el-form {
   &:not(.element-ui-default) {
     &.el-form--inline {
-      .el-form-item {
-        margin-right: 24px;
-        margin-bottom: 16px;
+      > .el-form-item {
+        > .el-form-item__content > .el-input {
+          width: $--form-width-default;
+        }
+
+        margin-right: 20px;
+        margin-bottom: 20px;
       }
 
-      .el-input__inner {
+      .el-select,
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
         width: $--form-width-default;
       }
-    }
 
-    .el-form-item {
-      margin-bottom: 16px;
-    }
+      .el-input--suffix .el-input__inner {
+        padding-right: 15px;
+      }
 
-    .el-date-editor .el-range__close-icon {
-      position: relative;
-      right: -5px;
-    }
-    .el-date-editor .el-range-separator {
-      display: inline-flex;
-      justify-content: center;
-    }
-    .el-date-editor.el-input,
-    .el-date-editor.el-input__inner {
-      width: $--form-width-default;
+      .el-date-editor .el-range__close-icon {
+        position: relative;
+        right: -5px;
+      }
+      .el-date-editor .el-range-separator {
+        display: inline-flex;
+        justify-content: center;
+      }
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
+        &:not(.element-ui-default) {
+          width: $--form-width-default;
+        }
+      }
+
+      .el-button {
+        min-width: 80px;
+      }
     }
   }
 }
 
 /* Element - Table
-  -------------------------- */
+ -------------------------- */
 .el-table {
   &:not(.element-ui-default) {
     &.el-table--mini {
@@ -68,5 +82,66 @@ $--form-width-default: 195px;
       font-size: 14px;
       padding: 4px 0px;
     }
+  }
+}
+
+/** Element - Tab
+ -------------------------- */
+.el-tabs {
+  &:not(.element-ui-default) {
+    .el-tabs__item {
+      text-align: center;
+    }
+
+    &.el-tabs--bottom .el-tabs__item.is-bottom:last-child,
+    &.el-tabs--bottom .el-tabs__item.is-top:last-child,
+    &.el-tabs--top .el-tabs__item.is-bottom:last-child,
+    &.el-tabs--top .el-tabs__item.is-top:last-child {
+      padding: 0 20px;
+    }
+
+    &.el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2),
+    &.el-tabs--bottom .el-tabs__item.is-top:nth-child(2),
+    &.el-tabs--top .el-tabs__item.is-bottom:nth-child(2),
+    &.el-tabs--top .el-tabs__item.is-top:nth-child(2) {
+      padding: 0 20px;
+    }
+  }
+}
+
+/** Element - Message-Box 
+ -------------------------- */
+.el-message-box {
+  &:not(.element-ui-default) {
+    &.el-message-box-text {
+      width: auto;
+      padding: 24px 32px;
+
+      .el-message-box__container {
+        margin: 12px 0 32px 0;
+      }
+
+      .el-button {
+        min-width: 120px;
+      }
+
+      .el-message-box__btns button:nth-child(2) {
+        margin-left: 32px;
+      }
+    }
+    &.el-message-box-no-header {
+      .el-message-box__header {
+        display: none;
+      }
+    }
+  }
+}
+
+/** Element - Notification
+ -------------------------- */
+.el-notification {
+  &:not(.element-ui-default) {
+    min-width: 330px;
+    width: auto;
   }
 }

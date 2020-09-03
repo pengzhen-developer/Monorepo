@@ -50,8 +50,6 @@ const Service = {
 export default {
   // 1, 拦截
   beforeRouteEnter(to, from, next) {
-    console.log('AppIntercept beforeRouteEnter')
-
     if (to.path === '/') {
       if (Util.user.isSignIn()) {
         const cdKeyInUrl = Peace.util.queryUrlParam('cdkey')

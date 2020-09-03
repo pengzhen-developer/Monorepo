@@ -166,7 +166,6 @@ export default {
           { required: true, message: '请输入验证码', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
-              console.log(value)
               if (value.length !== 6) {
                 cb(new Error('请输入6位验证码'))
               }
@@ -179,7 +178,6 @@ export default {
           { required: true, message: '请输入手机号', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
-              console.log(value)
               if (!Peace.validate.isMobile(value)) {
                 cb(new Error('请输入正确的手机号码'))
               }
@@ -192,7 +190,6 @@ export default {
           { required: true, message: '请输入验证码', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
-              console.log(value)
               if (value.length !== 6) {
                 cb(new Error('请输入6位验证码'))
               }

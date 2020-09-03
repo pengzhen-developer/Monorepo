@@ -1,24 +1,32 @@
 <template>
-  <q-scroll-area v-bind:thumb-style="thumbStyle"
+  <q-scroll-area class="bg-grey-2"
+                 v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-    <template v-if="isIFrame">
+
+    <div v-if="isIFrame"
+         v-bind:style="routerViewStyle">
+
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
-        <router-view class="iframe-router-view "
-                     v-bind:key="$route.fullPath"
+        <router-view class="router-view iframe-router-view"
+                     v-bind:key="$route.meta.menuPath"
                      v-bind:style="routerViewIframeStyle"></router-view>
       </transition>
-    </template>
-    <template v-else>
+    </div>
+
+    <div v-show="!isIFrame"
+         v-bind:style="routerViewStyle">
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
-        <router-view class="router-view"
-                     v-bind:key="$route.fullPath"
-                     v-bind:style="routerViewStyle"></router-view>
+        <keep-alive v-bind:include="keepAliveInclude">
+          <router-view class="router-view"
+                       v-bind:key="$route.fullPath"
+                       v-bind:style="routerViewStyle"></router-view>
+        </keep-alive>
       </transition>
-    </template>
+    </div>
   </q-scroll-area>
 </template>
 
@@ -38,20 +46,30 @@ export default {
       },
       scrollAreaStyle: {},
       routerViewStyle: {},
-      routerViewIframeStyle: {}
+      routerViewIframeStyle: {},
+
+      isIFrame: undefined
     }
   },
 
   computed: {
-    isIFrame() {
-      return Peace.validate.isUrl(this.$route.meta.menuPath)
+    keepAliveInclude() {
+      // 基于 layout - tabs 实现标签页的缓存
+      // ** 请注意， component name 与 menuRouteName 必须保持一致
+      return this.$store.state.tabs.tabs.map((item) => item.menuRouteName)
     }
   },
 
   watch: {
     $route() {
+      this.isIFrame = Peace.validate.isUrl(this.$route.meta.menuPath)
+
       this.setRouterViewStyle()
     }
+  },
+
+  created() {
+    this.isIFrame = Peace.validate.isUrl(this.$route.meta.menuPath)
   },
 
   mounted() {
@@ -66,6 +84,7 @@ export default {
   methods: {
     setScrollAreaStyle() {
       const offset = dom.offset(this?.$el)
+
       this.scrollAreaStyle = {
         height: `${document.body.clientHeight - offset?.top}px`
       }

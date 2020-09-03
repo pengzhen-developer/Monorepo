@@ -142,7 +142,6 @@ export default {
       } else {
         this.$emit('openService')
       }
-      console.log(service)
       //检查是否可以弹框
       this.checkPermis(service)
     },
@@ -190,9 +189,7 @@ export default {
         .then(() => {
           this.doApply(service)
         })
-        .catch(() => {
-          console.log('取消申请服务')
-        })
+        .catch(() => {})
     },
 
     doApply(service) {

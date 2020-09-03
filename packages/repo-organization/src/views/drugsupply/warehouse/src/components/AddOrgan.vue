@@ -124,7 +124,6 @@ export default {
         this.loading = true
         const params = Peace.util.deepClone(this.internalData)
         params.NameIn3PartPlatform = params.Name
-        console.log(params.Id)
         if (params.Id == 0) {
           Service.InsertCircconfig(params)
             .then(() => {

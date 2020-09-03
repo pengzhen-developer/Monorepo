@@ -1,0 +1,79 @@
+import Peace from '@src/library'
+
+export default {
+  /**
+   * 获取接单列表
+   *
+   * @param {*} params
+   */
+  getReceiveOrderList(params) {
+    const isMock = false
+
+    const apiPath = 'mds/openapi/psd/ReceiveOrder/List'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取待处理数量
+   *
+   * @param {*} params
+   */
+  getBubbleInfo(params) {
+    const isMock = false
+
+    const apiPath = 'mds/openapi/psd/ReceiveOrder/GetBubbleInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 更新订单信息
+   *
+   * @param {*} params
+   */
+  UpdateOrderStatus(params) {
+    const isMock = false
+
+    const apiPath = 'mds/openapi/psd/ReceiveOrder/UpdateOrderStatus'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 更新快递信息
+   *
+   * @param {*} params
+   */
+  UpdateOrderExpressInfo(params) {
+    const isMock = false
+
+    const apiPath = 'mds/openapi/psd/ReceiveOrder/UpdateOrderExpressInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  }
+}

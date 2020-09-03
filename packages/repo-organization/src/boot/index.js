@@ -17,7 +17,7 @@ import boot_Quasar from './boot_quasar'
 // UI Library
 import boot_UI from './boot_ui'
 
-//global style
+// global style
 import boot_styles from './boot_styles'
 
 /**
@@ -38,7 +38,7 @@ const install = async () => {
     // UI
     boot_UI,
 
-    //global style
+    // global style
     boot_styles
   ]
 
