@@ -3,13 +3,13 @@
     <div class="content-item">
       <div class="item-title">
         <div class="title-left"></div>
-        <p class="title">药房基本信息</p>
+        <p class="title ">药房基本信息</p>
       </div>
       <div class="item-content">
         <div class="item-child">
           <p class="child-key">药房编码</p>
           <p>：</p>
-          <p class="child-value">{{detailData.CustCode}}</p>
+          <p class="child-value">{{detailData.SuborganizationCode}}</p>
         </div>
         <div class="item-child">
           <p class="child-key">药房名称</p>
@@ -19,7 +19,7 @@
         <div class="item-child">
           <p class="child-key">药房地址</p>
           <p>：</p>
-          <p class="child-value">{{detailData.CustAddress}}</p>
+          <p class="child-value">{{detailData.Address?detailData.Province+detailData.City+detailData.Area+detailData.Address:""}}</p>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
         <div class="item-child">
           <p class="child-key-other">联系人邮箱</p>
           <p>：</p>
-          <p class="child-value">{{detailData.Email}}</p>
+          <p class="child-value">{{detailData.UserMail}}</p>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
         <div class="item-child">
           <p class="child-key">营业时间</p>
           <p>：</p>
-          <p class="child-value">{{detailData.BusinessDate}}</p>
+          <p class="child-value">{{detailData.BusinessStartDate&&detailData.BusinessEndDate?detailData.BusinessStartDate+" 至 "+ detailData.BusinessEndDate:"-"}}</p>
         </div>
         <div class="item-child">
           <p class="child-key">药房电话</p>
@@ -106,7 +106,6 @@
       <div class="item-content"
            style="margin-left:0">
         <div class="item-child-line">
-
           <div class="box"
                v-if="detailData.logoUrl">
             <el-image class="img"
@@ -143,92 +142,33 @@
         </div>
       </div>
     </div>
-    <div class="line"></div>
-    <div class="content-item">
-      <div class="item-title">
-        <div class="title-left"></div>
-        <p class="title">审核信息</p>
-      </div>
-      <div class="item-content"
-           v-if="data.statu==10?true:false">
-        <el-form ref="form"
-                 label-width="72px"
-                 class="q-pt-10"
-                 v-bind:rules="rules"
-                 v-bind:model="model">
-          <div>
-            <div>
-              <p class="child-key  key-styles">审核结果</p>
-              <p class="key-styles">：</p>
-            </div>
-            <el-form-item label=""
-                          prop="ExamineStatus">
-              <el-radio-group v-model="model.ExamineStatus"
-                              v-on:change="changeRadio">
-                <el-radio v-for="(item) in  auditList"
-                          :label="item.code"
-                          :key="item.code">{{item.name}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </div>
-          <div>
-            <div style="">
-              <p class="child-key"
-                 style="float:left">备注</p>
-              <p style="float:left">：</p>
-            </div>
-            <el-form-item label=""
-                          prop="Reason">
-
-              <el-input type="textarea"
-                        placeholder="请输入内容"
-                        v-model="model.Reason"
-                        maxlength="200"
-                        show-word-limit
-                        resize="none" />
-            </el-form-item>
-          </div>
-        </el-form>
-      </div>
-      <div class="item-content"
-           v-else>
-        <div class="item-child">
-          <p class="child-key">审核结果</p>
-          <p>：</p>
-          <p class="child-value">{{detailData.ExamineStatus | getEnumLabel(source.CERTIFICATION_STATUS)}}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">备注</p>
-          <p>：</p>
-          <p class="child-value">{{detailData.RejectReason}}</p>
-        </div>
-        <div class="item-child">
-          <p class="child-key">审核时间</p>
-          <p>：</p>
-          <p class="child-value">{{detailData.CommitExamineDateTime}}</p>
-        </div>
-      </div>
-    </div>
-    <div class="text-center "
-         v-if="data.statu==10?true:false">
-      <el-button type="primary"
-                 class="large hasmargin "
-                 v-bind:disabled="saveing"
-                 v-on:click="save">提 交</el-button>
-      <el-button class="large"
-                 v-on:click="cancelDialog">取 消</el-button>
-    </div>
   </div>
 </template>
 
 <script>
-import CONSTANT from '../constant'
-import Peace from '@src/library'
-import Service from './../service'
-
+import Service from '../service'
 export default {
   props: {
-    data: Object
+    data: String
+  },
+  data() {
+    return {
+      detailData: {},
+
+      DistributionList: [
+        { code: 0, name: '自提' },
+        { code: 1, name: '配送' }
+      ],
+      PayList: [
+        { code: 1, name: '在线支付' },
+        { code: 2, name: '到店支付' },
+        { code: 3, name: '货到付款' }
+      ]
+    }
+  },
+
+  created() {
+    this.fetch()
   },
   computed: {
     canShowImg() {
@@ -240,119 +180,22 @@ export default {
         : false
     }
   },
-  filters: {
-    getEnumLabel: function (value, ENUM) {
-      return Object.keys(ENUM).find((key) => ENUM[key] === value)
-    }
-  },
-  data() {
-    let ExamineStatusFun = (rule, value, callback) => {
-      if (!value || value == '') {
-        callback(new Error())
-      } else {
-        callback()
-      }
-    }
-    return {
-      saveing: false,
-      detailData: {},
-      model: {
-        ExamineStatus: '',
-        Reason: ''
-      },
-      rules: {
-        ExamineStatus: [
-          {
-            validator: ExamineStatusFun,
-            required: true,
-            message: '请选择审核结果',
-            trigger: 'change'
-          }
-        ],
-        Reason: [
-          {
-            required: true,
-            message: '请输入内容',
-            trigger: 'blur'
-          }
-        ]
-      },
-      DistributionList: [
-        { code: 0, name: '自提' },
-        { code: 1, name: '配送' }
-      ],
-      PayList: [
-        { code: 1, name: '在线支付' },
-        { code: 2, name: '到店支付' },
-        { code: 3, name: '货到付款' }
-      ],
-      auditList: [
-        { code: 15, name: '通过' },
-        { code: 20, name: '驳回' }
-      ],
-      source: {
-        CERTIFICATION_STATUS: CONSTANT.CERTIFICATION_STATUS
-      }
-    }
-  },
-
-  created() {
-    this.get()
-  },
-
   methods: {
-    get() {
-      const fetch = Service.detail
-      const params = { Id: this.data.id }
-      return fetch(params).then((res) => {
+    fetch() {
+      const params = { UserID: this.data }
+      Service.detail(params).then((res) => {
         this.detailData = res.data.list
         this.detailData.logoUrlList = [res.data.list.logoUrl]
         this.detailData.BusinesslicenseUrlList = [res.data.list.BusinesslicenseUrl]
         this.detailData.DrugManagementlicenseUrlList = [res.data.list.DrugManagementlicenseUrl]
         this.detailData.GSPCertificationUrlList = [res.data.list.GSPCertificationUrl]
       })
-    },
-    changeRadio() {
-      if (this.model.ExamineStatus == 15) {
-        this.rules.Reason[0].required = false
-        this.$refs.form.validate('Reason')
-      } else {
-        this.rules.Reason[0].required = true
-      }
-    },
-    cancelDialog() {
-      this.$emit('onClose')
-    },
-    save() {
-      this.validateForm().then(() => {
-        this.saveing = true
-        const params = Peace.util.deepClone(this.model)
-        params.ID = this.data.id
-        Service.UpdateExamineStatus(params)
-          .then(() => {
-            Peace.util.alert('操作成功')
-
-            this.cancelDialog()
-          })
-          .finally(() => {
-            this.saveing = false
-          })
-      })
-    },
-    validateForm() {
-      return new Promise((resolve) => {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            resolve()
-          }
-        })
-      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 p {
   margin: 0;
   padding: 0;
@@ -370,14 +213,6 @@ p {
 ::v-deep .el-checkbox__input.is-disabled .el-checkbox__inner {
   background-color: #fff !important;
   border-color: #eee !important;
-}
-.large {
-  width: 120px;
-  height: 34px;
-}
-
-.hasmargin {
-  margin-right: 40px;
 }
 .content-item {
   display: flex;
@@ -402,7 +237,7 @@ p {
   font-size: 16px;
 }
 .item-content {
-  margin: 0px 0px 10px 0px;
+  margin: 0px 14px 10px 14px;
   display: flex;
   flex-direction: column;
 }
@@ -425,8 +260,6 @@ p {
 .child-value {
   font-size: 14px;
   color: var(--q-color-grey-666);
-  min-width: 0;
-  flex: 1;
 }
 .child-key-other {
   width: 5em;
@@ -459,9 +292,5 @@ p {
   line-height: 20px;
   font-size: 14px;
   margin-top: 10px;
-}
-.key-styles {
-  float: left;
-  line-height: 28px;
 }
 </style>
