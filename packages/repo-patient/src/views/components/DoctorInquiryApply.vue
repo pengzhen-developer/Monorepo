@@ -1094,13 +1094,12 @@ export default {
                     message: res.data.msg,
                     confirmButtonText: '去看看'
                   }).then(() => {
-                    const params = {
+                    const params = peace.util.encode({
                       inquiryId: res.data.data.inquiryId,
                       familyId: familyId
-                    }
-                    let json = peace.util.encode(params)
+                    })
                     //跳转订单详情
-                    this.$router.replace(`/setting/userConsultDetail/${json}`)
+                    this.$router.replace(`/setting/userConsultDetail/${params}`)
                   })
 
                   break
@@ -1128,14 +1127,13 @@ export default {
                 default:
                   peace.util.alert(res.data.msg)
               }
-            } else if (res.data.code == 204) {
+            } else {
               Dialog.confirm({
                 title: '温馨提示',
                 message: res.data.msg,
                 confirmButtonText: '确认',
                 // confirmButtonText: '重新选择就诊人',
-                showCancelButton: false,
-                className: 'reSelect'
+                showCancelButton: false
               })
             }
           })
@@ -1187,11 +1185,30 @@ export default {
           // 检查健康卡
           this.selectFamilyStatus = false
           if (resultData.code == 200) {
-            if (this.model.consultingType == 'returnVisit' && resultData?.data?.isFirstOptionRecord === 1) {
-              this.questionList = [].concat(INQUIRY_QUESTION_LISI)
+            if (this.model.consultingType == 'returnVisit') {
+              //机构是否接收上传有首诊记录的复诊患者
+              // `isAffirmFirstClinicalVisit` tinyint(1) DEFAULT '1' COMMENT '接收系统确认在本院有首诊记录的复诊患者（1、关闭 2、开启）',
+              // `isUploadFirstClinicalVisit` tinyint(1) DEFAULT '2' COMMENT '接收上传有首诊记录的复诊患者（1、关闭 2、开启）',
+              const isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
+              //是否有his首诊记录
+              const isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
+              if (isFirstOptionRecord === 1) {
+                this.questionList = [].concat(INQUIRY_QUESTION_LISI)
 
-              // 重新设置问题列表后，更新家人列表至问题列表
-              this.getFamilyList()
+                // 重新设置问题列表后，更新家人列表至问题列表
+                this.getFamilyList()
+              } else {
+                if (!isAcceptNotHasFirstOptionRecord) {
+                  Dialog.confirm({
+                    title: '温馨提示',
+                    message: '该就诊人无在本院首诊的资料，不可进行在线复诊',
+                    confirmButtonText: '确认',
+                    // confirmButtonText: '重新选择就诊人',
+                    showCancelButton: false
+                  })
+                  return false
+                }
+              }
             }
 
             answer = params[0].label + '，' + params[0].sex + '，' + params[0].age + '岁'

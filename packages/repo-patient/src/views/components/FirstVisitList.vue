@@ -93,8 +93,8 @@ export default {
   display: flex;
 
   .case-card-time {
-    padding: 8px 30px 0 0;
-    min-width: 85px;
+    padding: 8px 15px 0 0;
+    min-width: 70px;
     position: relative;
     text-align: right;
     font-family: monospace;
