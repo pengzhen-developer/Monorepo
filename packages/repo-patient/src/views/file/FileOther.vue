@@ -15,37 +15,18 @@
           <div class="text">
             <div v-for="item in value"
                  :key="item.healthType + item.id">
-              <!-- 转诊单 -->
-              <template v-if="item.healthType === 'referral'">
-                <div class="note card case"
-                     @click="util.goDetail('转诊单', item)">
+              <!-- 首诊 -->
+              <template v-if="item.healthType === 'firstRecord'">
+                <!-- @click="util.goDetail('首诊', item)" -->
+                <div class="note card case">
                   <div class="case-left">
                     <van-image width="35px"
                                height="35px"
-                               :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
+                               :src="require('@src/assets/images/file/ic_medical record.png')" />
                   </div>
                   <div class="case-right">
                     <p style="font-size: 16px; color: #333333; line-height: 32px;">
-                      转诊单
-                    </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
-                      {{ item.netHospitalName }} | {{ item.netDeptName }}
-                    </p>
-                  </div>
-                </div>
-              </template>
-              <!-- 会诊单 -->
-              <template v-if="item.healthType === 'consult'">
-                <div class="note card case"
-                     @click="util.goDetail('会诊单', item)">
-                  <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
-                               :src="require('@src/assets/images/file/ic_huizhen.png')" />
-                  </div>
-                  <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
-                      会诊单
+                      {{item.title}}
                     </p>
                     <p style="font-size: 12px; color: #999999; line-height: 24px;">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
@@ -115,15 +96,15 @@ export default {
         p: this.p,
         size: this.size
       }
-      peace.service.health.allHealthList(param).then(res => {
+      peace.service.health.allHealthList(param).then((res) => {
         const temp = {}
 
         // 遍历时间
-        const timeList = new Set(res.data.list.map(item => item.measureTime))
+        const timeList = new Set(res.data.list.map((item) => item.measureTime))
 
         if (timeList.size) {
-          timeList.forEach(time => {
-            temp[time] = res.data.list.filter(item => item.measureTime === time)
+          timeList.forEach((time) => {
+            temp[time] = res.data.list.filter((item) => item.measureTime === time)
           })
           if (typeof this.data == 'undefined') {
             this.data = temp

@@ -101,33 +101,37 @@
           <div class="dt">配送费 ：</div>
           <div class="dd money">￥{{order.Freight.toFixed(2)}}</div>
         </div>
-        <!-- <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt">优惠金额 ：</div>
-          <div class="dd">-￥{{order.PromotionsCut.toFixed(2)}}</div>
-        </div> -->
-        <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt">优惠金额 ：</div>
-          <div class="dd"
-               :class="PromotionsCut>0&&'money'">{{PromotionsCut}}</div>
-        </div>
-        <!-- <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt">使用医保卡 ：</div>
-          <div class="dd">暂无可用</div>
-        </div>
-        <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt">商保权益抵扣 ：</div>
-          <div class="dd">暂无可用</div>
-        </div> -->
+        <template v-if="canShowDiscount">
+          <div class="line"></div>
+          <div class="dl-packet">
+            <div class="dt">优惠金额 ：</div>
+            <div class="dd"
+                 :class="{'money':PromotionsCut>0}">{{PromotionsCut}}</div>
+          </div>
+        </template>
+        <template v-if="canShowYibao">
+          <div class="line"></div>
+          <div class="dl-packet">
+            <div class="dt">使用医保卡 ：</div>
+            <div class="dd"
+                 :class="{'money':yibaoChecked}"
+                 @click="chooseYibao">{{yibaoText||'暂无可用'}}</div>
+          </div>
+        </template>
+        <template v-if="canShowShangbao">
+          <div class="line"></div>
+          <div class="dl-packet">
+            <div class="dt">商保权益抵扣 ：</div>
+            <div class="dd">暂无可用</div>
+          </div>
+        </template>
+
         <div class="line"></div>
         <div class="dl-packet">
           <div class="dt money">应付金额 ：</div>
           <div class="dd">
             <div class="strong">
-              ￥{{page.tabIndex == '1'?order.OrderMoney.toFixed(2):order.pickOrderMoney.toFixed(2)}}</div>
+              ￥{{payPrice}}</div>
             <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
 
           </div>
@@ -183,14 +187,24 @@
                   @click="changeShowPopup"
                   size="large">确认</van-button>
     </van-popup>
+    <!-- 医保 -->
+    <template v-if="order!=null">
+      <YibaoCaedSelect v-model="showCard"
+                       ref='yibaoCardSelect'
+                       :info="info"
+                       @onSuccess="onSuccess"></YibaoCaedSelect>
+
+    </template>
   </div>
 </template>
 
 <script>
+import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import peace from '@src/library'
 
 export default {
   name: 'DrugOrderBefore',
+  components: { YibaoCaedSelect },
   data() {
     return {
       payList: [],
@@ -216,8 +230,11 @@ export default {
       userAddr: {},
       order: null,
       CustomerType: '',
-      chooseSB: false,
-      chooseYB: false
+      showCard: false,
+      yibaoText: '',
+      yibaoChecked: false,
+      shangbaoChecked: false,
+      yibaoInfo: {}
     }
   },
 
@@ -238,6 +255,36 @@ export default {
     this.initData(this.$route.params.json)
   },
   computed: {
+    payPrice() {
+      if (this.yibaoInfo?.totalAmount) {
+        return this.page.tabIndex == '1'
+          ? (this.order?.OrderMoney - this.yibaoInfo?.totalAmount).toFixed(2)
+          : (this.order?.pickOrderMoney - this.yibaoInfo?.totalAmount).toFixed(2)
+      } else {
+        return this.page.tabIndex == '1' ? this.order?.OrderMoney.toFixed(2) : this.order?.pickOrderMoney.toFixed(2)
+      }
+    },
+    info() {
+      return {
+        familyName: this.page?.json?.familyName,
+        familyId: this.page?.json?.familyId,
+        serviceType: 'drug',
+        jntPrescriptionNo: this.page?.json?.JZTClaimNo
+      }
+    },
+    canShowYibao() {
+      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page?.payIndex == 1 ? true : false
+    },
+    canShowShangbao() {
+      //H5暂无商保对接
+      // return this.order?.insuranceConfig?.commercialInsuranceConfig != null ? true : false
+      return false
+    },
+    canShowDiscount() {
+      //当前迭代暂无优惠活动
+      // return this.order?.PromotionsCut > 0 ?true : false
+      return false
+    },
     PromotionsCut() {
       if (this.order.PromotionsCut > 0) {
         return '-￥' + this.order.PromotionsCut.toFixed(2)
@@ -262,6 +309,27 @@ export default {
     }
   },
   methods: {
+    onReset() {
+      /** 重置医保相关信息*/
+      this.$refs.yibaoCardSelect.selected = false
+      this.$refs.yibaoCardSelect.checked = false
+      this.$refs.yibaoInfo = {}
+      this.yibaoText = ''
+      this.yibaoInfo = {}
+      this.yibaoChecked = false
+    },
+    onSuccess(result) {
+      if (result.checked == false) {
+        this.yibaoText = '不使用医保卡'
+      } else {
+        this.yibaoText = `-￥${result.yibaoInfo.totalAmount}`
+      }
+      this.yibaoChecked = true
+      this.yibaoInfo = result.yibaoInfo
+    },
+    chooseYibao() {
+      this.showCard = true
+    },
     changeShippingMethod(tabIndex) {
       //选择支付方式 则重置系统配置得支付方式
       const ShippingMethod = this.page?.json?.ShippingMethod
@@ -353,6 +421,11 @@ export default {
       }
       this.showPopup = !this.showPopup
       if (!this.showPopup) {
+        //仅 在线支付可用医保抵扣
+        //故 重置选择医保
+        if (this.page.payIndex != this.json.payIndex || this.page.tabIndex != this.json.tabIndex) {
+          this.onReset()
+        }
         this.page.payIndex = this.json.payIndex
         this.page.tabIndex = this.json.tabIndex
       } else {
@@ -391,7 +464,6 @@ export default {
 
       this.$router.push(`/setting/SelectAddressManger/${param}`)
     },
-
     /**
      * 创建购药订单，并根据支付类型调起支付
      * @param {string} [paymentType='wxpay'] 支付类型
@@ -411,9 +483,12 @@ export default {
         2: 'shoppay',
         3: 'deliverypay'
       }
-      paymentType = paymentTypeMap[this.page.payIndex]
-      const shangbao = this.chooseSB ? ',shangbao' : ''
-      const yibao = this.chooseYB ? ',yibaopay' : ''
+      if (this.payPrice > 0) {
+        paymentType = paymentTypeMap[this.page.payIndex]
+      }
+
+      const shangbao = this.shangbaoChecked ? ',shangbao' : ''
+      const yibao = this.yibaoChecked ? ',yibaopay' : ''
       paymentType = paymentType + shangbao + yibao
 
       this.hasSubmitOrder = true
@@ -446,7 +521,8 @@ export default {
         UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
         TargetPlatformCodes: this.order.TargetPlatformCodes,
         PayMode: this.page.payIndex,
-        cardno: this.page.cardno
+        cardno: this.page.cardno,
+        divisionId: this.yibaoInfo.divisionId
       }
       // return
       peace.service.patient
@@ -877,7 +953,7 @@ export default {
   display: block;
   top: 50%;
   transform: translateY(-50%);
-  right: 12px;
+  right: 15px;
   width: 6px;
   height: 10px;
   background-size: cover;
@@ -901,13 +977,15 @@ export default {
   content: '';
   width: 12px;
   height: 12px;
-  display: block;
+  // display: block;
+  display: inline-block;
+  vertical-align: middle;
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  margin-bottom: 3px;
-  margin-left: 2px;
+  // margin-bottom: 3px;
+  // margin-left: 2px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url('~@src/assets/images/ic_wenhao.png');

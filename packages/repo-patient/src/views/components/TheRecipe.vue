@@ -190,7 +190,8 @@ export default {
         //去配药页面
         let claimNo = data.claimNo
         let familyId = data.familyId
-        let json = peace.util.encode({ claimNo, familyId })
+        let familyName = data.patientName
+        let json = peace.util.encode({ claimNo, familyId, familyName })
         this.$router.push(`/drug/list/${json}`)
         return
       }

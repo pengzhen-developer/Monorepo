@@ -100,7 +100,7 @@
           <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="retrunVisitBlock">
+             v-if="hasReturnVisitInfo">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img"
@@ -127,6 +127,52 @@
               </div>
             </div>
           </div>
+        </div>
+        <!-- 首诊记录 -->
+        <div class="module-item"
+             v-if="hasFirstVisitInfo">
+          <div class="module-item-title">
+            <div class="b">首诊记录</div>
+            <div class="module-item-more"
+                 @click="seeMoreCase"
+                 v-if="canSeeMoreCase">查看更多>></div>
+          </div>
+          <template>
+            <div class="case-card"
+                 v-for="(value, key) in firstVisitData"
+                 :key="key">
+              <div class="case-card-time">
+                <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
+                <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
+              </div>
+              <div class="case-box">
+                <!-- @click="gotoCaseDetail(item.dataNo)" -->
+                <div class="case-card-note"
+                     v-for="(item,index) in value"
+                     :key="index">
+                  <div class="case-card-note-content">
+                    <div class="case-left">
+                      <van-image width="35px"
+                                 height="35px"
+                                 :src="require('@src/assets/images/file/ic_medical record.png')" />
+                    </div>
+                    <div class="case-right">
+                      <p class="title">
+                        {{item.title}}
+                      </p>
+                      <p class="name">
+                        {{ item.hospitalName }} | {{ item.deptName }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="case-diagnosis"
+                       v-if="item.diagnosis">{{item.diagnosis}}</div>
+                </div>
+              </div>
+
+            </div>
+          </template>
+
         </div>
         <div class="module-item"
              v-if="canShowSupplementaryInfo">
@@ -200,6 +246,15 @@
           <div class="message-item-left">优惠金额</div>
           <div class="message-item-right">-¥0.00</div>
         </div> -->
+        <!-- <div class="message-item">
+          <div class="message-item-left">商保权益抵扣</div>
+          <div class="message-item-right">-¥0.00</div>
+        </div> -->
+        <div class="message-item"
+             v-if="canShowYibao">
+          <div class="message-item-left">医保划扣</div>
+          <div class="message-item-right">-¥{{ internalData.orderInfo.medicalMoney }}</div>
+        </div>
       </div>
 
       <div class="module"
@@ -365,7 +420,10 @@ export default {
     return {
       ENUM: ENUM,
       internalData: {},
-
+      firstVisitData: null,
+      canSeeMoreCase: false,
+      firstLoad: false,
+      hasFirstVisitInfo: false,
       caseDetail: {
         visible: false,
         data: {}
@@ -411,10 +469,17 @@ export default {
       return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
     },
     retrunVisitBlock() {
-      return this.internalData && this.internalData.inquiryInfo && this.internalData.inquiryInfo.isAgain.toString() === '1'
+      return this.internalData?.inquiryInfo?.isAgain.toString() === '1'
+    },
+    hasReturnVisitInfo() {
+      return this.internalData?.illInfo?.confirmIllness
+    },
+    canShowYibao() {
+      return this.internalData?.orderInfo?.medicalMoney
     },
     canShowInfo() {
       return (
+        this.firstLoad &&
         this.internalData &&
         this.internalData.inquiryInfo &&
         this.internalData.doctorInfo &&
@@ -492,6 +557,21 @@ export default {
   },
 
   methods: {
+    gotoCaseDetail(dataNo) {
+      const json = peace.util.encode({
+        dataNo
+      })
+      this.$router.push(`/file/fileAllDetail/${json}`)
+    },
+    seeMoreCase() {
+      // peace.cache.set('familyId', this.internalData?.familyInfo?.familyId)
+      // this.$router.push(`/file/index/`)
+      const json = peace.util.encode({
+        familyId: this.internalData?.familyInfo?.familyId,
+        inquiryNo: this.inquiryInfo?.inquiryNo
+      })
+      this.$router.push(`/components/FirstVisitList/${json}`)
+    },
     get() {
       this.getConsultDetail()
     },
@@ -541,16 +621,46 @@ export default {
 
     getConsultDetail() {
       let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
-      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then((res) => {
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(async (res) => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
         this.internalData = res.data
+        if (res.data.inquiryInfo.serviceType == 'returnVisit') {
+          await this.getFirstOptionList()
+        }
+
+        this.firstLoad = true
       })
     },
-
+    getFirstOptionList() {
+      const params = {
+        familyId: this.internalData?.inquiryInfo?.familyInfo?.familyId,
+        inquiryNo: this.internalData?.inquiryInfo?.inquiryNo
+      }
+      peace.service.yibao.GetFirstOptionList(params).then((res) => {
+        let list = []
+        if (res.data.firstOptionList.length > 2) {
+          this.canSeeMoreCase = true
+          list = res.data.firstOptionList.slice(0, 2)
+        } else {
+          this.canSeeMoreCase = false
+          list = res.data.firstOptionList
+        }
+        const temp = {}
+        // 遍历时间
+        const timeList = new Set(list.map((item) => item.createdTime))
+        if (timeList.size) {
+          timeList.forEach((time) => {
+            temp[time] = list.filter((item) => item.createdTime === time)
+          })
+        }
+        this.firstVisitData = temp
+        this.hasFirstVisitInfo = res.data.firstOptionList.length > 0 ? true : false
+      })
+    },
     getInquiryText(status) {
       const dic = {
         '1':
@@ -646,6 +756,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.case-card {
+  display: flex;
+
+  .case-card-time {
+    padding: 8px 30px 0 0;
+    min-width: 85px;
+    position: relative;
+    text-align: right;
+    font-family: monospace;
+    .y {
+      font-size: 12px;
+      color: #999999;
+    }
+    .m {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333333;
+    }
+  }
+  .case-box {
+    flex: 1;
+    width: 0;
+  }
+  .case-card-note {
+    width: 100%;
+    min-height: 50px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
+    border-radius: 4px;
+    margin: 0 0 15px 0;
+    .case-card-note-content {
+      display: flex;
+      align-items: center;
+      padding: 6px 0px 6px 16px;
+    }
+    .case-left {
+      width: 50px;
+      text-align: left;
+      position: relative;
+    }
+    .case-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      width: 0;
+      .title {
+        color: #333;
+        font-size: 14px;
+      }
+      .name {
+        font-size: 12px;
+        color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 98%;
+      }
+    }
+    .case-diagnosis {
+      padding-left: 16px;
+      height: 25px;
+      line-height: 25px;
+      border-top: 1px solid #e8e8e8;
+      color: $primary;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
 /deep/ .van-image-preview__index {
   top: 24px;
 }
@@ -806,6 +988,17 @@ export default {
 }
 .module-item {
   border-bottom: 1px solid #e8e8e8;
+  .module-item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .module-item-more {
+      color: #999;
+      font-weight: normal;
+      padding-top: 10px;
+    }
+  }
   &:last-child {
     border-bottom: 0;
   }

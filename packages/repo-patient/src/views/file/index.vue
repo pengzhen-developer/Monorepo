@@ -107,13 +107,13 @@
                         :familyId="familyId"></FileRecord>
           </van-tab>
           <van-tab title="其    他">
-            <div class="none-page">
+            <!-- <div class="none-page">
               <div class="icon icon_none_source"></div>
               <div class="none-text">暂无数据</div>
-            </div>
-            <!-- <FileOther v-if="active === 5"
+            </div> -->
+            <FileOther v-if="active === 6"
                        :key="familyId"
-                       :familyId="familyId"></FileOther> -->
+                       :familyId="familyId"></FileOther>
           </van-tab>
         </van-tabs>
       </div>
@@ -128,13 +128,13 @@ import util from './util'
 import FileAll from './FileAll'
 import FileDay from './FileDay'
 import FileCase from './FileCase'
-// import FileOther from './FileOther'
+import FileOther from './FileOther'
 import FileRecord from './FileRecord'
 export default {
   components: {
     FileAll,
     FileDay,
-    // FileOther,
+    FileOther,
     FileCase,
     FileRecord
   },
@@ -179,7 +179,7 @@ export default {
       } else {
         this.familyId = ''
       }
-      peace.service.health.familyLists().then(res => {
+      peace.service.health.familyLists().then((res) => {
         this.myFamilyList = res.data.list
         res.data.list.map((item, index) => {
           if (item.sex === '1') {

@@ -248,6 +248,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       let JZTClaimNo = params.claimNo || params.JZTClaimNo
       let familyId = params.familyId
+      let familyName = params.familyName
       let json = {
         JZTClaimNo,
         DrugStoreId: item.DrugStoreId,
@@ -257,6 +258,7 @@ export default {
         Detailed: item.Detailed, // 地址
         ProvincialCity: item.Province + ',' + item.City + ',' + item.County,
         familyId,
+        familyName,
         IsMergeStore: item.IsMergeStore,
         MergeStoreInfo: item.MergeStoreInfo
       }

@@ -69,7 +69,7 @@
           <div class="span">{{ params.illnessDescribe }}</div>
         </div>
         <div class="module-item"
-             v-if="retrunVisitBlock">
+             v-if="hasReturnVisitInfo">
           <div>
             <div class="b">复诊信息</div>
             <div class="form-dl img"
@@ -96,6 +96,52 @@
               </div>
             </div>
           </div>
+        </div>
+        <!-- 首诊记录 -->
+        <div class="module-item"
+             v-if="hasFirstVisitInfo">
+          <div class="module-item-title">
+            <div class="b">首诊记录</div>
+            <div class="module-item-more"
+                 @click="seeMoreCase"
+                 v-if="canSeeMoreCase">查看更多>></div>
+          </div>
+          <template>
+            <div class="case-card"
+                 v-for="(value, key) in firstVisitData"
+                 :key="key">
+              <div class="case-card-time">
+                <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
+                <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
+              </div>
+              <div class="case-box">
+                <!-- @click="gotoCaseDetail(item.dataNo)" -->
+                <div class="case-card-note"
+                     v-for="(item,index) in value"
+                     :key="index">
+                  <div class="case-card-note-content">
+                    <div class="case-left">
+                      <van-image width="35px"
+                                 height="35px"
+                                 :src="require('@src/assets/images/file/ic_medical record.png')" />
+                    </div>
+                    <div class="case-right">
+                      <p class="title">
+                        {{item.title}}
+                      </p>
+                      <p class="name">
+                        {{ item.hospitalName }} | {{ item.deptName }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="case-diagnosis"
+                       v-if="item.diagnosis">{{item.diagnosis}}</div>
+                </div>
+              </div>
+
+            </div>
+          </template>
+
         </div>
         <div class="module-item"
              v-if="canShowSupplementaryInfo">
@@ -135,28 +181,31 @@
           <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
           </div>
         </div>
-        <template v-if="canShowMoreDiscount">
-          <!-- <div class="brief">
-            <div class="brief-left">优惠金额:</div>
-            <div class="brief-right">暂无可用
-            </div>
+        <div class="brief"
+             v-if="canShowDiscount">
+          <div class="brief-left">优惠金额:</div>
+          <div class="brief-right">暂无可用
           </div>
-          <div class="brief">
-            <div class="brief-left">使用医保卡:</div>
-            <div class="brief-right">暂无可用
-            </div>
+        </div>
+        <div class="brief"
+             v-if="canShowYibao">
+          <div class="brief-left">使用医保卡:</div>
+          <div class="brief-right"
+               :class="{'checked':yibaoChecked}"
+               @click="chooseYibao">{{yibaoText||'暂无可用'}}
           </div>
-          <div class="brief">
-            <div class="brief-left">商保权益抵扣:</div>
-            <div class="brief-right">暂无可用
-            </div>
-          </div> -->
-          <div class="brief pay-omney">
-            <div class="brief-left">应付金额:</div>
-            <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
-            </div>
+        </div>
+        <div class="brief"
+             v-if="canShowShangbao">
+          <div class="brief-left">商保权益抵扣:</div>
+          <div class="brief-right">暂无可用
           </div>
-        </template>
+        </div>
+        <div class="brief pay-omney">
+          <div class="brief-left">应付金额:</div>
+          <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
+          </div>
+        </div>
 
       </div>
       <!-- 预售订单 - 非当日-->
@@ -182,10 +231,19 @@
                     @click="imagePreview.visible = false" />
       </template>
     </van-image-preview>
+    <!-- 医保 -->
+    <template v-if="canShowInfo">
+      <YibaoCaedSelect v-model="showCard"
+                       :info="info"
+                       @onSuccess="onSuccess"></YibaoCaedSelect>
+
+    </template>
+
   </div>
 </template>
 
 <script>
+import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
@@ -216,7 +274,8 @@ const ENUM = {
 }
 export default {
   components: {
-    [Dialog.Component.name]: Dialog.Component
+    [Dialog.Component.name]: Dialog.Component,
+    YibaoCaedSelect
   },
 
   props: {
@@ -239,12 +298,31 @@ export default {
         images: []
       },
       params: {},
-      sending: false
+      sending: false,
+      firstVisitData: null,
+      canSeeMoreCase: false,
+      showCard: false,
+      hasFirstVisitInfo: false,
+      yibaoText: '',
+      yibaoChecked: false,
+      yibaoInfo: {}
     }
   },
   computed: {
-    canShowMoreDiscount() {
-      return true
+    info() {
+      return {
+        familyName: this.params?.familyName,
+        familyId: this.params?.familyId,
+        serviceType: 'inquiry',
+        doctorId: this.internalData?.doctorInfo?.doctorId,
+        netdeptChildId: this.internalData?.doctorInfo?.netdeptChildId,
+        appointmentDate: this.params?.appointmentDate,
+        appointmentStartTime: this.params?.appointmentStartTime,
+        appointmentEndTime: this.params?.appointmentEndTime,
+        AMPM: this.params?.AMPM,
+        sourceCode: this.params?.sourceCode,
+        sourceItemCode: this.params?.sourceItemCode
+      }
     },
     canShowTip() {
       //报道  复诊且预约日期大于今日
@@ -272,23 +350,68 @@ export default {
     retrunVisitBlock() {
       return this.params?.isAgain.toString() === '1'
     },
+    hasReturnVisitInfo() {
+      return this.params?.confirmIllness
+    },
+
     canShowInfo() {
       return this.internalData && this.params && this.internalData.doctorInfo && this.internalData.familyInfo
     },
     canShowSupplementaryInfo() {
       return this.params && (this.params.affectedImages.length > 0 || this.params.pregnancyText || this.params.allergicHistory)
+    },
+    canShowYibao() {
+      return this.params?.serviceType == 'returnVisit' && this.internalData?.insuranceConfig?.medicalInsuranceConfig != null ? true : false
+    },
+    canShowShangbao() {
+      //H5暂无商保对接
+      // return this.internalData?.insuranceConfig?.commercialInsuranceConfig!=null ? true : false
+      return false
+    },
+    canShowDiscount() {
+      //咨询暂无优惠活动
+      return false
     }
   },
 
   activated() {
     this.getFamilyDoctorInfo()
+    if (this.params?.serviceType == 'returnVisit') {
+      this.getFirstOptionList()
+    }
   },
 
   methods: {
+    onSuccess(result) {
+      if (result.checked == false) {
+        this.yibaoText = '不使用医保卡'
+      } else {
+        this.yibaoText = `-￥${result.yibaoInfo.totalAmount}`
+      }
+      this.yibaoChecked = true
+      this.yibaoInfo = result.yibaoInfo
+    },
+    chooseYibao() {
+      this.showCard = true
+    },
+    gotoCaseDetail(dataNo) {
+      const json = peace.util.encode({
+        dataNo
+      })
+      this.$router.push(`/file/fileAllDetail/${json}`)
+    },
+    seeMoreCase() {
+      // peace.cache.set('familyId', this.internalData?.familyInfo?.familyId)
+      // this.$router.push(`/file/index/`)
+      const json = peace.util.encode({
+        familyId: this.params?.familyId
+      })
+      this.$router.push(`/components/FirstVisitList/${json}`)
+    },
     apply() {
       this.sending = true
       const params = peace.util.deepClone(this.params)
-
+      params.divisionId = this.yibaoInfo.divisionId
       peace.service.inquiry
         .apply(params)
         .then((res) => {
@@ -403,6 +526,31 @@ export default {
         this.internalData = res.data
       })
     },
+    getFirstOptionList() {
+      const params = {
+        familyId: this.params?.familyId
+      }
+      peace.service.yibao.GetFirstOptionList(params).then((res) => {
+        let list = []
+        if (res.data.firstOptionList.length > 2) {
+          this.canSeeMoreCase = true
+          list = res.data.firstOptionList.slice(0, 2)
+        } else {
+          this.canSeeMoreCase = false
+          list = res.data.firstOptionList
+        }
+        const temp = {}
+        // 遍历时间
+        const timeList = new Set(list.map((item) => item.createdTime))
+        if (timeList.size) {
+          timeList.forEach((time) => {
+            temp[time] = list.filter((item) => item.createdTime === time)
+          })
+        }
+        this.firstVisitData = temp
+        this.hasFirstVisitInfo = res.data.firstOptionList.length > 0 ? true : false
+      })
+    },
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
@@ -413,6 +561,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.case-card {
+  display: flex;
+
+  .case-card-time {
+    padding: 8px 30px 0 0;
+    min-width: 85px;
+    position: relative;
+    text-align: right;
+    font-family: monospace;
+    .y {
+      font-size: 12px;
+      color: #999999;
+    }
+    .m {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333333;
+    }
+  }
+  .case-box {
+    flex: 1;
+    width: 0;
+  }
+  .case-card-note {
+    width: 100%;
+    min-height: 50px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
+    border-radius: 4px;
+    margin: 0 0 15px 0;
+    .case-card-note-content {
+      display: flex;
+      align-items: center;
+      padding: 6px 0px 6px 16px;
+    }
+    .case-left {
+      width: 50px;
+      text-align: left;
+      position: relative;
+    }
+    .case-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      width: 0;
+      .title {
+        color: #333;
+        font-size: 14px;
+      }
+      .name {
+        font-size: 12px;
+        color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 98%;
+      }
+    }
+    .case-diagnosis {
+      padding-left: 16px;
+      height: 25px;
+      line-height: 25px;
+      border-top: 1px solid #e8e8e8;
+      color: $primary;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
 .inquriyStyle {
   position: absolute;
   top: 12px;
@@ -477,11 +697,24 @@ export default {
 
 .module-item {
   border-bottom: 1px solid #e8e8e8;
+  .module-item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .module-item-more {
+      color: #999;
+      font-weight: normal;
+      padding-top: 10px;
+    }
+  }
   &:last-child {
     border-bottom: 0;
   }
 }
-
+.brief-right.checked {
+  color: #333;
+}
 .bb {
   height: 1px;
   background: #e8e8e8;

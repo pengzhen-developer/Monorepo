@@ -942,7 +942,7 @@ export default {
       this.model.sourceItemCode = params.sourceItemCode || ''
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
       this.model.price = params.price
-
+      this.model.AMPM = params.AMPM || ''
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
@@ -1077,54 +1077,66 @@ export default {
       return new Promise((resolve) => {
         peace.service.patient
           .inquiryStatus(this.model.doctorId, familyId, this.model.consultingType, this.model.serviceType)
-          .then(() => {
+          .then((res) => {
             //0没有问诊过 1待支付 2待接诊 3问诊中 7随访中 8没有签名
-            resolve(true)
+
+            resolve(res)
           })
           .catch((res) => {
-            resolve(false)
-            let param = {}
-            switch (res.data.data.inquiryStatus) {
-              case 1:
-              case 2:
-                Dialog.confirm({
-                  title: '温馨提示',
-                  message: res.data.msg,
-                  confirmButtonText: '去看看'
-                }).then(() => {
-                  const params = {
-                    inquiryId: res.data.data.inquiryId,
-                    familyId: familyId
-                  }
-                  let json = peace.util.encode(params)
-                  //跳转订单详情
-                  this.$router.replace(`/setting/userConsultDetail/${json}`)
-                })
-
-                break
-              case 3:
-              case 7:
-                Dialog.confirm({
-                  title: '温馨提示',
-                  message: res.data.msg,
-                  confirmButtonText: '去看看'
-                }).then(() => {
-                  param = peace.util.encode({
-                    id: 'p2p-' + this.doctor.doctorInfo.doctorId,
-                    scene: 'p2p',
-                    beginTime: res.data.data.createTime.toDate().getTime(),
-                    to: this.doctor.doctorInfo.doctorId,
-                    familyId: familyId
+            resolve(res)
+            if (res.data.code == 202) {
+              let param = {}
+              switch (res.data.data.inquiryStatus) {
+                case 1:
+                case 2:
+                  Dialog.confirm({
+                    title: '温馨提示',
+                    message: res.data.msg,
+                    confirmButtonText: '去看看'
+                  }).then(() => {
+                    const params = {
+                      inquiryId: res.data.data.inquiryId,
+                      familyId: familyId
+                    }
+                    let json = peace.util.encode(params)
+                    //跳转订单详情
+                    this.$router.replace(`/setting/userConsultDetail/${json}`)
                   })
-                  // 清除聊天记录
-                  peace.service.IM.resetInquirySessionMessages()
-                  // 跳转聊天详情
-                  this.$router.replace(`/components/messageList/${param}`)
-                })
 
-                break
-              default:
-                peace.util.alert(res.data.msg)
+                  break
+                case 3:
+                case 7:
+                  Dialog.confirm({
+                    title: '温馨提示',
+                    message: res.data.msg,
+                    confirmButtonText: '去看看'
+                  }).then(() => {
+                    param = peace.util.encode({
+                      id: 'p2p-' + this.doctor.doctorInfo.doctorId,
+                      scene: 'p2p',
+                      beginTime: res.data.data.createTime.toDate().getTime(),
+                      to: this.doctor.doctorInfo.doctorId,
+                      familyId: familyId
+                    })
+                    // 清除聊天记录
+                    peace.service.IM.resetInquirySessionMessages()
+                    // 跳转聊天详情
+                    this.$router.replace(`/components/messageList/${param}`)
+                  })
+
+                  break
+                default:
+                  peace.util.alert(res.data.msg)
+              }
+            } else if (res.data.code == 204) {
+              Dialog.confirm({
+                title: '温馨提示',
+                message: res.data.msg,
+                confirmButtonText: '确认',
+                // confirmButtonText: '重新选择就诊人',
+                showCancelButton: false,
+                className: 'reSelect'
+              })
             }
           })
       })
@@ -1170,11 +1182,19 @@ export default {
         this.selectFamilyStatus = true
         if (params[0].value) {
           // 判断该家人与当前医生是否有进行中的问诊
-          let flag = await this.FamilyInquriyStatus(params[0].value)
+
+          let resultData = await this.FamilyInquriyStatus(params[0].value)
           // 检查健康卡
           this.selectFamilyStatus = false
-          if (flag) {
-            answer = params[0].label
+          if (resultData.code == 200) {
+            if (this.model.consultingType == 'returnVisit' && resultData?.data?.isFirstOptionRecord === 1) {
+              this.questionList = [].concat(INQUIRY_QUESTION_LISI)
+
+              // 重新设置问题列表后，更新家人列表至问题列表
+              this.getFamilyList()
+            }
+
+            answer = params[0].label + '，' + params[0].sex + '，' + params[0].age + '岁'
             this.model.familyName = params[0].label
             this.model.familyId = params[0].value
             const data = this.supplementaryList.find((item) => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
@@ -1599,6 +1619,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.reSelect {
+  &.van-dialog.van-button {
+    width: 50%;
+    background: $primary;
+    color: #fff;
+    border-radius: 5px;
+  }
+}
 /deep/.van-field__body {
   input::-webkit-input-placeholder {
     /*WebKit browsers*/

@@ -1,6 +1,44 @@
 <template>
   <div class="container">
-    <template v-if="isEdit">
+
+    <template v-if="loading">
+      <!-- 身份证 -->
+      <template>
+        <div class="id-card">
+          <div class="edit"
+               v-if="!isNationExist">
+            <van-icon name="edit"
+                      size="15px"
+                      color="#00C6AE"
+                      @click="updataInfo" />
+          </div>
+          <van-image class="id-card-logo"
+                     :src="require('@src/assets/images/ic_idcard_logo.png')"></van-image>
+          <div class="id-card-content">
+            <div class="id-card-content-item">
+              <div class="key"><span>姓名</span>:</div>
+              <div class="value">{{model.name}}</div>
+            </div>
+            <div class="id-card-content-item">
+              <div class="key"><span>关系</span>:</div>
+              <div class="value">{{model.relation}}</div>
+            </div>
+            <div class="id-card-content-item">
+              <div class="key"><span>性别</span>:</div>
+              <div class="value">{{model.sex}}</div>
+            </div>
+            <div class="id-card-content-item">
+              <div class="key"><span>民族</span>:</div>
+              <div class="value">{{model.nationName}}</div>
+            </div>
+            <div class="id-card-content-item">
+              <div class="key"><span>身份证</span>:</div>
+              <div class="value">{{model.idcard}}</div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- 电子健康卡 -->
       <!--       <div class="card-name">{{cardName}}</div>-->
       <div class="card-title">电子健康卡</div>
       <div class="card"
@@ -18,6 +56,31 @@
       <div claas="card-list-content">
         <div class="item"></div>
       </div>
+      <!-- 医保卡 -->
+      <div class="card-title yiyao">
+        医保卡
+        <span @click="addYiBaoCard"
+              v-if="!hasYiBaoCard">填写医保卡</span>
+      </div>
+      <template v-if="hasYiBaoCard">
+        <div class="yiyao-card"
+             v-for="item in yibaoCardList"
+             @click="updateYiBaoCard(item)"
+             :key="item.id">
+          <div class="delete"
+               @click.stop="delYibaoCard(item.id)">
+            <van-icon name="delete"
+                      size="15px"
+                      color="#fff" />
+          </div>
+          <van-image :src="require('@src/assets/images/ic_yibao_logo.png')"></van-image>
+          <div>
+            <div class="name">{{item.region}}市医保卡</div>
+            <div class="idcard">{{item.medCardNo}}</div>
+          </div>
+        </div>
+      </template>
+
       <!--      <div class="jz-card-title">就诊卡</div>-->
       <!--      <div class="jz-card-list">-->
       <!--        <div class="item" @click="goToDetail()">-->
@@ -34,72 +97,15 @@
       <!--        </div>-->
       <!--      </div>-->
 
-      <div class="form form-for-family"
-           v-if="!model.isExistCard">
-        <van-field :disabled="isEdit"
-                   label="姓名"
-                   placeholder="请输入姓名"
-                   v-model="model.name" />
-        <van-field :disabled="isEdit"
-                   label="身份证"
-                   placeholder="请输入身份证号"
-                   v-model="model.idcard" />
-        <van-field :disabled="isEdit"
-                   label="关系"
-                   placeholder="请选择"
-                   readonly
-                   v-model="model.relation" />
-        <van-field :disabled="isEdit"
-                   label="性别"
-                   placeholder="请选择"
-                   readonly
-                   v-model="model.sex" />
-        <van-field :disabled="isEdit"
-                   label="生日"
-                   placeholder="请输入"
-                   readonly
-                   v-model="model.birthday" />
-        <template v-if="isNationExist">
-          <van-field :disabled="isEdit"
-                     label="民族"
-                     readonly
-                     v-model="model.nationName" />
-        </template>
-        <template v-else>
-          <van-field :disabled="isEdit"
-                     @click="showPopupNations"
-                     label="民族"
-                     placeholder="请输入"
-                     required
-                     right-icon="arrow"
-                     v-model="model.nationName" />
-        </template>
-        <template v-if="model.isGuardian">
-          <van-field :disabled="isEdit"
-                     label="监护人姓名"
-                     placeholder="请输入姓名"
-                     v-model="model.guardianName" />
-          <van-field :disabled="isEdit"
-                     label="监护人身份证号"
-                     placeholder="请输入身份证号"
-                     v-model="model.guardianIdCard" />
-        </template>
-        <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
-        <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" class="wid"  placeholder="请选择" readonly right-icon="arrow" />-->
-        <!--        <peace-dialog :visible.sync="showAllergicHistory">-->
-        <!--          <AddAllergicHistory @onSave="showAllergicHistory = false" v-model="model.allergic_history"></AddAllergicHistory>-->
-        <!--        </peace-dialog>-->
-        <!--        <peace-dialog :visible.sync="showFoodAllergy">-->
-        <!--          <AddFoodAllergy @onSave="showFoodAllergy = false" v-model="model.foodAllergy"></AddFoodAllergy>-->
-        <!--        </peace-dialog>-->
-      </div>
       <div class="bottom">
         <van-button @click="deleted"
+                    class="bottom-del"
                     plain>删除家人</van-button>
-        <van-button @click="submit"
-                    type="primary"
-                    v-if="!isNationExist">完善资料</van-button>
       </div>
+      <YibaoCardAdd v-model="showCard"
+                    :familyInfo="model"
+                    :cardInfo="currentYibaoCard"
+                    @onSuccess="onSuccess"></YibaoCardAdd>
     </template>
 
     <template v-if="from == 'add'">
@@ -150,8 +156,6 @@
                     :value="gardianId"
                     v-if="gardianId" />
         </van-cell-group>
-        <!--        <van-field :value="model.allergic_history" @click="showAllergicHistory= true" clickable label="药物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
-        <!--        <van-field :value="model.foodAllergy" @click="showFoodAllergy= true" clickable label="食物/接触物过敏" placeholder="请选择" readonly right-icon="arrow" />-->
         <peace-dialog :visible.sync="showAllergicHistory">
           <AddAllergicHistory @onSave="showAllergicHistory = false"
                               v-model="model.allergic_history"></AddAllergicHistory>
@@ -209,6 +213,68 @@
                   show-toolbar />
     </van-popup>
 
+    <!-- 修改家人信息 -->
+    <van-popup position="bottom"
+               closeable
+               round
+               class="popup-info"
+               :close-icon="require('@src/assets/images/ic_close@2x.png')"
+               v-model="showUpdateInfo">
+      <div class="form form-for-family">
+        <van-field :disabled="isEdit"
+                   label="姓名"
+                   placeholder="请输入姓名"
+                   v-model="model.name" />
+        <van-field :disabled="isEdit"
+                   label="身份证"
+                   placeholder="请输入身份证号"
+                   v-model="model.idcard" />
+        <van-field :disabled="isEdit"
+                   label="关系"
+                   placeholder="请选择"
+                   readonly
+                   v-model="model.relation" />
+        <van-field :disabled="isEdit"
+                   label="性别"
+                   placeholder="请选择"
+                   readonly
+                   v-model="model.sex" />
+        <van-field :disabled="isEdit"
+                   label="生日"
+                   placeholder="请输入"
+                   readonly
+                   v-model="model.birthday" />
+        <template v-if="isNationExist">
+          <van-field :disabled="isEdit"
+                     label="民族"
+                     readonly
+                     v-model="model.nationName" />
+        </template>
+        <template v-else>
+          <van-field :disabled="isEdit"
+                     @click="showPopupNations"
+                     label="民族"
+                     placeholder="请输入"
+                     required
+                     right-icon="arrow"
+                     v-model="model.nationName" />
+        </template>
+        <template v-if="model.isGuardian">
+          <van-field :disabled="isEdit"
+                     label="监护人姓名"
+                     placeholder="请输入姓名"
+                     v-model="model.guardianName" />
+          <van-field :disabled="isEdit"
+                     label="监护人身份证号"
+                     placeholder="请输入身份证号"
+                     v-model="model.guardianIdCard" />
+        </template>
+        <van-button @click="submit"
+                    size="large"
+                    type="primary">保存</van-button>
+      </div>
+    </van-popup>
+
   </div>
 </template>
 <script>
@@ -217,40 +283,25 @@ import peace from '@src/library'
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
 import GuardianList from '../setting/GuardianList'
+import YibaoCardAdd from '@src/views/components/YibaoCardAdd'
+
 import { Dialog } from 'vant'
+
 export default {
   components: {
     GuardianList,
     AddAllergicHistory,
-    AddFoodAllergy
-  },
-
-  props: {
-    // data: {
-    //   type: Object,
-    //   default: () => {
-    //     return {
-    //       name: '',
-    //       idcard: '',
-    //       relation: '',
-    //       sex: '',
-    //       birthday: '',
-    //       allergic_history: '',
-    //       foodAllergy: ''
-    //     }
-    //   }
-    // },
-    // canShowSelf: {
-    //   type: Boolean,
-    //   default() {
-    //     return true
-    //   }
-    // }
+    AddFoodAllergy,
+    YibaoCardAdd
   },
 
   data() {
     return {
-      // isFromHospital: false,
+      yibaoCardList: [],
+      cardList: [],
+      currentYibaoCard: {},
+      showCard: false,
+      showUpdateInfo: false,
       cardName: '',
       from: '',
       model: {
@@ -276,8 +327,6 @@ export default {
         title: '选择监护人',
         visible: false
       },
-      firstLoad: false,
-      cardList: [],
       nationName: '',
       relations: ['本人', '父母', '爱人', '孩子', '挚友'],
       sexs: ['男', '女'],
@@ -295,13 +344,17 @@ export default {
       showNations: false,
       addGardian: false,
       childInfo: {},
-      canShowSelf: true
+      canShowSelf: true,
+      loading: false
     }
   },
 
   computed: {
     isEdit() {
       return !!this.familyId
+    },
+    hasYiBaoCard() {
+      return this.yibaoCardList.length > 0
     }
   },
 
@@ -359,23 +412,66 @@ export default {
   },
 
   methods: {
-    getFamilyInfo() {
-      let params = peace.util.decode(this.$route.params.json)
-      peace.service.patient.getFamilyInfo(params).then(res => {
+    updataInfo() {
+      this.showUpdateInfo = true
+      this.currentYibaoCard = {}
+    },
+    onSuccess() {
+      this.getFamilyInfo()
+    },
+    addYiBaoCard() {
+      this.showCard = true
+    },
+    updateYiBaoCard(item) {
+      this.showCard = true
+      this.currentYibaoCard = item
+    },
+    delYibaoCard(id) {
+      Dialog.confirm({
+        title: '温馨提示',
+        message: '是否家人删除医保卡信息'
+      }).then(() => {
+        const params = { id }
+        peace.service.yibao.DelMedicareCard(params).then(() => {
+          this.getMedicareCardList()
+        })
+      })
+    },
+    getMedicareCardList() {
+      return new Promise((resolve) => {
+        const params = {
+          familyId: this.familyId,
+          region: '天津'
+        }
+        peace.service.yibao
+          .GetMedicareCardList(params)
+          .then((res) => {
+            this.yibaoCardList = res.data.list
+          })
+          .finally(() => {
+            resolve(true)
+          })
+      })
+    },
+    getFamilyInfo(params) {
+      if (!params?.id) {
+        params = peace.util.decode(this.$route.params.json)
+      }
+
+      peace.service.patient.getFamilyInfo(params).then((res) => {
         this.model = res.data
         this.familyId = res.data.id
         if (this.model) {
           this.isNationExist = this.model.nationCode && this.model.nationName
           this.cardName = this.model.name
           this.getNationList()
-          this.getCardList()
+          Promise.all([this.getCardList(), this.getMedicareCardList()]).then(() => {
+            this.loading = true
+          })
         }
-        // this.dialog.data = res.data
-        // this.dialog.data.familyId = item.familyId
-        // this.dialog.title = '家人信息'
-        // this.dialog.visible = true
       })
     },
+
     setGardianInfo(item) {
       if (item.idCard) {
         this.gardianId = item.idCard
@@ -423,18 +519,14 @@ export default {
         strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
       }
       if (len == 15) {
-        strBirthday =
-          '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
+        strBirthday = '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
       }
       //时间字符串里，必须是“/”
       var birthDate = new Date(strBirthday)
       var nowDateTime = new Date()
       var age = nowDateTime.getFullYear() - birthDate.getFullYear()
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
-      if (
-        nowDateTime.getMonth() < birthDate.getMonth() ||
-        (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())
-      ) {
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
         age--
       }
       return age
@@ -446,27 +538,35 @@ export default {
       this.gDialog.visible = true
     },
     getCardList() {
-      if (this.model.isExistCard) {
-        let familyId = this.model.id
-        let params = { familyId }
-        peace.service.patient.getCardList(params).then(res => {
-          this.cardList = res.data.list
-          this.firstLoad = true
-        })
-      }
+      return new Promise((resolve) => {
+        if (this.model.isExistCard) {
+          let familyId = this.model.id
+          let params = { familyId }
+          peace.service.patient
+            .getCardList(params)
+            .then((res) => {
+              this.cardList = res.data.list
+            })
+            .finally(() => {
+              resolve(true)
+            })
+        } else {
+          resolve(true)
+        }
+      })
     },
     getNationList() {
-      peace.service.patient.getNationList().then(res => {
+      peace.service.patient.getNationList().then((res) => {
         let nations = res.data.list
         this.nationsMap = nations
-        this.nations = nations.map(item => {
+        this.nations = nations.map((item) => {
           return item.name
         })
       })
     },
     getNationCodeByName(name) {
       let code = ''
-      this.nationsMap.map(item => {
+      this.nationsMap.map((item) => {
         if (item.name == name) {
           code = item.code
         }
@@ -564,7 +664,7 @@ export default {
             allergic_history: this.model.allergic_history,
             foodAllergy: this.model.foodAllergy
           }
-          peace.service.patient.upbindFamily(params).then(res => {
+          peace.service.patient.upbindFamily(params).then((res) => {
             peace.util.alert(res.msg)
             this.$emit('onComplete')
           })
@@ -586,7 +686,7 @@ export default {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
-      peace.service.patient.bindFamily(params).then(res => {
+      peace.service.patient.bindFamily(params).then((res) => {
         const params = peace.util.decode(this.$route.params.json)
         if (params.emit) {
           $peace.$emit(params.emit, res)
@@ -598,7 +698,6 @@ export default {
           for (let i in this.childInfo) {
             this.model[i] = this.childInfo[i]
           }
-          // this.gDialog.visible = true
           this.gDialog.visible = false
           this.addGardian = false
           this.gardianSet = true
@@ -607,7 +706,9 @@ export default {
           peace.util.alert(res.msg)
           //新增家人后断连接IM
           peace.service.IM.initNIMS({ type: 'add', ...res.data })
-          this.$router.go(-1)
+          this.familyId = res.data.accid
+          this.getFamilyInfo({ id: res.data.accid, source: 2 })
+          this.from = ''
         }
       })
     },
@@ -616,9 +717,9 @@ export default {
       let nationCode = this.model.nationCode
       let nationName = this.model.nationName
       let params = { familyId, nationCode, nationName }
-      peace.service.patient.perfectInfo(params).then(res => {
+      peace.service.patient.perfectInfo(params).then((res) => {
         peace.util.alert(res.msg)
-        this.$router.go(-1)
+        this.showUpdateInfo = false
       })
     },
     // 删除
@@ -631,7 +732,7 @@ export default {
           familyId: this.model.id
         }
 
-        peace.service.patient.DelFamily(params).then(res => {
+        peace.service.patient.DelFamily(params).then((res) => {
           peace.util.alert(res.msg)
           //删除家人后断联该家人IM
           peace.service.IM.initNIMS({ type: 'delete', accid: this.model.id })
@@ -646,6 +747,68 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding-top: 10px;
+  .id-card {
+    width: 343px;
+    display: flex;
+    height: 160px;
+    align-items: center;
+    padding: 20px;
+    margin: 0 auto 0;
+    background-color: rgb(245, 245, 245);
+    position: relative;
+    .edit {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 198, 174, 0.06);
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      border-radius: 50%;
+    }
+    .id-card-logo {
+      width: 105px;
+      height: 99px;
+      margin-right: 20px;
+    }
+    .id-card-content-item {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      padding-bottom: 10px;
+      .key {
+        width: 4.3em;
+        display: flex;
+        align-items: center;
+        height: 13px;
+        line-height: 13px;
+        span {
+          line-height: 13px;
+          height: 13px;
+          width: 3.4em;
+          text-align: justify;
+          text-align-last: justify;
+          display: inline-block;
+          margin-right: 0.2em;
+          &::after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+            height: 0px;
+          }
+        }
+      }
+      .value {
+        color: #666;
+        line-height: 13px;
+        height: 13px;
+      }
+    }
+  }
   .card-name {
     height: 50px;
     display: flex;
@@ -664,6 +827,52 @@ export default {
     background-size: 25px 20px;
     background-position: 15px 15px;
     padding-left: 55px;
+  }
+  .card-title.yiyao {
+    background: url('~@src/assets/images/ic_yibao_icon.png') no-repeat;
+    background-size: 25px 20px;
+    background-position: 15px 15px;
+    padding-left: 55px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 16px;
+    span {
+      text-align: right;
+      color: $primary;
+      font-weight: normal;
+    }
+  }
+  .yiyao-card {
+    width: 343px;
+    height: 94px;
+    margin: 0 auto;
+    background: url('~@src/assets/images/ic_yibao_bg.png') no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: #fff;
+    position: relative;
+    .delete {
+      position: absolute;
+      width: 27px;
+      height: 27px;
+      padding: 6px;
+
+      right: 6px;
+      top: 6px;
+    }
+    .van-image {
+      width: 56px;
+      height: 40px;
+      margin-right: 10px;
+    }
+    .name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
   }
   .parent {
     .van-cell__title {
@@ -750,8 +959,10 @@ export default {
     .van-button {
       flex: 1;
     }
-    .van-button + .van-button {
-      margin-left: 10px;
+    .bottom-del {
+      background: #fff;
+      color: $primary;
+      border: 1px solid $primary;
     }
   }
   /deep/ .van-cell__title {
@@ -772,5 +983,20 @@ export default {
   color: #f00;
   font-size: 14px;
   margin-left: 3px;
+}
+
+.popup-info {
+  padding: 50px 16px 10px;
+  /deep/.van-cell {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /deep/.van-field__control:disabled {
+    color: #333 !important;
+    -webkit-text-fill-color: #333;
+  }
+  .van-button {
+    margin-top: 50px;
+  }
 }
 </style>

@@ -1113,6 +1113,15 @@ const routers = [
       auth: false
     },
     component: () => import('@src/views/components/CommentList.vue')
+  },
+  /** 首诊记录 */
+  {
+    path: '/components/FirstVisitList/:json',
+    name: '/components/FirstVisitList',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/FirstVisitList.vue')
   }
 ]
 

@@ -19,7 +19,7 @@ import appoint from './modules/appoint'
 import diagnose from './modules/diagnose'
 import purchasedrug from './modules/purchasedrug'
 import group from './modules/group'
-
+import yibao from './modules/yibao'
 export default {
   IM,
   inquiry,
@@ -34,5 +34,6 @@ export default {
   appoint,
   diagnose,
   purchasedrug,
-  group
+  group,
+  yibao
 }

@@ -719,7 +719,8 @@ export default {
           sourceDisType: 0,
           sourceCode: this.dialog.data.sourceCode,
           sourceItemCode: this.dialog.data.sourceItemCode,
-          price: this.dialog.data.unitPrice
+          price: this.dialog.data.unitPrice,
+          AMPM: this.dialog.data.AMPM
         })
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }

@@ -124,12 +124,12 @@
           </div>
         </template>
         <!-- 医保支付-支付时间补丁 -->
-        <template v-if="showByYiBao">
+        <!-- <template v-if="showByYiBao">
           <div class="dl-packet">
             <div class="dt">支付时间:</div>
             <div class="dd">线下药店支付</div>
           </div>
-        </template>
+        </template> -->
 
         <template v-for="(item,index) in order.ords">
           <div class="dl-packet"
@@ -161,9 +161,20 @@
           <div class="dt">配送费</div>
           <div class="dd">¥{{order.Freight.toString().toFixed(2)}}</div>
         </div>
-        <div class="dl-packet">
+        <div class="dl-packet"
+             v-if="canShowDiscount">
           <div class="dt">优惠金额</div>
           <div class="dd">-¥{{order.PromotionsCut.toString().toFixed(2)}}</div>
+        </div>
+        <div class="dl-packet"
+             v-if="canShowShangbao">
+          <div class="dt">商保权益抵扣</div>
+          <div class="dd">-¥0.00</div>
+        </div>
+        <div class="dl-packet"
+             v-if="canShowYibao">
+          <div class="dt">医保划扣</div>
+          <div class="dd">-¥{{order.medicalMoney.toString().toFixed(2)}}</div>
         </div>
       </div>
 
@@ -347,16 +358,36 @@ export default {
     canShowPayway() {
       return (this.order && this.order.payStatus >= ENUM.PAY_STASUS.已付款) || this.order.payTime
     },
+    //医保划扣
+    canShowYibao() {
+      return this.order?.medicalMoney ? true : false
+    },
+    // 商保划扣
+    canShowShangbao() {
+      //H5暂无商保对接
+      return false
+    },
+    // 优惠
+    canShowDiscount() {
+      //当前迭代暂无优惠活动
+      // return this.order?.PromotionsCut > 0 ?true : false
+      return false
+    },
     //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
     showByYiBao() {
-      return this.order && this.order.paymentType == ENUM.PAYMENT_TYPE.医保支付 && this.order.payTime == '' && this.order.OrderStatus > ENUM.ORDER_STATUS.待下单
+      return (
+        this.order &&
+        // this.order.paymentType == ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.payTime == '' &&
+        this.order.OrderStatus > ENUM.ORDER_STATUS.待下单
+      )
     },
 
     // 是否显示取消订单
     canShowCancel() {
       return (
         this.order &&
-        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
           this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
@@ -367,7 +398,7 @@ export default {
     canShowCancelTop() {
       return (
         this.order &&
-        this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) &&
         this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
@@ -375,12 +406,17 @@ export default {
     },
     // 是否显示继续支付
     canShowPay() {
-      return this.order && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 && this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
+      return (
+        this.order &&
+        //  this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
+      )
     },
 
     // 是否显示倒计时
     canShowCountDown() {
-      return this.order && this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
+      return this.order && this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
+      // && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
     },
 
     // 是否显示应付金额

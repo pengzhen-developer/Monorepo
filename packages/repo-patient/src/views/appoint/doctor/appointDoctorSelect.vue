@@ -49,7 +49,8 @@
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
-              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']"
+                   v-if="!item.isExpire">
                 剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -69,7 +70,8 @@
             <div :class="['content',(item.isExpire || !item.number) ? 'disabled' : '']">
               <div class="inline">{{item.startTime}}-{{item.endTime}}</div>
               <div class="inline red">￥{{Number(item.unitPrice).toFixed(2)}}</div>
-              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']">
+              <div :class="['label', item.number ? item.number == 1 ? 'label-red' : 'label-blue' : '']"
+                   v-if="!item.isExpire">
                 剩余{{item.number}}</div>
             </div>
             <div class="right">
@@ -230,7 +232,8 @@ export default {
           sourceDisType: 0,
           sourceCode: item.sourceCode,
           sourceItemCode: item.sourceItemCode,
-          price: item.unitPrice
+          price: item.unitPrice,
+          AMPM: obj.type
         }
         if (!this.params.isAgain) {
           const json = peace.util.encode(temp)
