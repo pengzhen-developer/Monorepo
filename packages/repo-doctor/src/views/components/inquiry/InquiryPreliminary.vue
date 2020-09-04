@@ -96,7 +96,7 @@
 
             <div class="case-bg col cursor-pointer"
                  v-on:click="showCaseInfo">
-              <div class="row  q-mb-14">
+              <div class="row q-mb-14">
                 <img src="@src/assets/images/inquiry/ic_option_record.png"
                      style="width: 40px; height:40px"
                      class="q-mr-10" />
@@ -266,7 +266,7 @@ export default {
           }
           return item
         })
-        this.items = tmp
+        this.items = tmp.concat(tmp)
       })
     },
 
@@ -537,7 +537,7 @@ export default {
 
 .case-bg {
   max-width: 230px !important;
-  padding: 12px 14px;
+  padding: 12px;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);

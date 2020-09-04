@@ -31,7 +31,10 @@
       <div class="flex items-center text-grey text-caption">
         <q-icon class="q-mr-xs"
                 v-bind:name="`img:${inquiryTypeImage}`"></q-icon>
-        <span>{{ inquiryTypeText }}</span>
+        <span>{{ inquiryTypeText }} </span>
+
+        <span v-if="showPayType"
+              class="tag-style q-ml-10">{{ payTypeText }}</span>
       </div>
 
       <div class="text-grey text-caption">
@@ -81,14 +84,22 @@ export default {
       return this.session?.content?.patientInfo ?? {}
     },
 
+    showPayType() {
+      return this.inquiryInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryInfo?.paymentType)
+    },
+
     inquiryTypeText() {
       return Object.keys(Type.INQUIRY.INQUIRY_TYPE).find((key) => Type.INQUIRY.INQUIRY_TYPE[key] === this.inquiryInfo?.inquiryType)
     },
 
     inquiryTypeImage() {
-      if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.图文问诊) {
+      if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.图文) {
         return require('./../assets/img/chat_icon_pic@2x.png')
-      } else if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+      } else if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.视频) {
         return require('./../assets/img/chat_icon_video@2x.png')
       }
 
@@ -171,5 +182,15 @@ export default {
   &.active {
     background: #f4f4f4;
   }
+}
+
+.tag-style {
+  background: rgba(2, 167, 240, 1);
+  border-radius: 19px;
+  font-size: 11px;
+  color: white;
+  padding: 0 10px;
+  line-height: 16px;
+  height: 16px;
 }
 </style>

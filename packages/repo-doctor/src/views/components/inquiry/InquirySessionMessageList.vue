@@ -360,6 +360,7 @@
     </peace-dialog>
     <peace-dialog :visible.sync="consultation.visible"
                   v-if="consultation.visible"
+                  width="500"
                   append-to-body
                   title="会诊详情">
       <InquiryConsultationDetail :data="consultation.data"

@@ -273,8 +273,8 @@ export function getOrderDetail(params) {
  * @returns
  */
 export function getFirstOptionList(params) {
-  const isMock = true
-  const apiPath = 'webapp/his/v060/record/getFirstOptionList'
+  const isMock = false
+  const apiPath = 'client/his/v060/record/getFirstOptionList'
 
   const mockPath = process.env.VUE_APP_MOCK_API + apiPath
 
