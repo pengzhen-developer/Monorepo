@@ -210,7 +210,19 @@ export default {
     InquiryOptionRecord
   },
 
+  watch: {
+    inquiryNo(val) {
+      if (val && val.length > 0) {
+        this.getOptionList(val)
+      }
+    }
+  },
+
   computed: {
+    inquiryNo() {
+      return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryInfo.inquiryNo ?? ''
+    },
+
     inquiryOrderInfo() {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryOrderInfo ?? {}
     },
@@ -254,8 +266,13 @@ export default {
         // console.log(this.caseDialog.data)
       })
     },
-    getOptionList() {
-      const params = { inquiryNo: this.inquiryOrderInfo.inquiryNo }
+    getOptionList(val) {
+      if (peace.validate.isEmpty(val)) {
+        return
+      }
+
+      const params = { inquiryNo: val }
+
       peace.service.inquiry.getFirstOptionList(params).then((res) => {
         const tmpTimes = []
         const tmp = res.data.firstOptionList.map(function (item) {
@@ -276,10 +293,6 @@ export default {
       this.optionDialog.data = peace.util.deepClone(this.items)
     },
     showCaseInfo() {}
-  },
-
-  beforeMount() {
-    this.getOptionList()
   }
 }
 </script>
