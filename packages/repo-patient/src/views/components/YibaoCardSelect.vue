@@ -158,6 +158,7 @@ export default {
       } else {
         await this.addCard()
       }
+
       try {
         let priceData = null
         //咨询-医保划扣
@@ -198,8 +199,9 @@ export default {
         medCardNo: this.cardInfo.medCardNo,
         familyId: this.familyId
       }
-      peace.service.yibao.AddMedicareCard(params).catch(() => {
+      peace.service.yibao.AddMedicareCard(params).finally(() => {
         this.loading = false
+        this.getMedicareCardList()
       })
     },
     updateCard() {
@@ -207,8 +209,9 @@ export default {
         medCardNo: this.cardInfo.medCardNo,
         id: this.cardInfo.id
       }
-      peace.service.yibao.UpdateMedicareCard(params).catch(() => {
+      peace.service.yibao.UpdateMedicareCard(params).finally(() => {
         this.loading = false
+        this.getMedicareCardList()
       })
     },
     getMedicareCardList() {

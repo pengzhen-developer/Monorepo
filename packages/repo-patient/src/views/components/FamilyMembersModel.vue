@@ -846,7 +846,7 @@ export default {
   .yiyao-card {
     width: 343px;
     height: 94px;
-    margin: 0 auto;
+    margin: 0 auto 10px;
     background: url('~@src/assets/images/ic_yibao_bg.png') no-repeat;
     background-size: cover;
     display: flex;
