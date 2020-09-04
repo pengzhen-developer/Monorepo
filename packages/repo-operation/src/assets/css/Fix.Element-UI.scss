@@ -55,6 +55,19 @@ $--form-width-default: 195px;
   }
 }
 
+/* Element - RangeEditor
+ -------------------------- */
+.el-range-editor.el-input__inner {
+  &:not(.element-ui-default) {
+    padding: 2px 10px;
+
+    &.el-range-editor--mini .el-range__icon {
+      position: relative;
+      top: 1px;
+    }
+  }
+}
+
 /* Element - Table
  -------------------------- */
 .el-table {

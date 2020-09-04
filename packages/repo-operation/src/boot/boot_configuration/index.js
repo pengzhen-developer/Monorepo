@@ -32,50 +32,5 @@ export default {
    * export default index
    *
    */
-  routes: {
-    /**
-     * layout nav 导航配置
-     *
-     */
-    layoutNavMenu: [
-      // .e.g
-      // {
-      //   title: 'title',
-      //   menuRouteName: 'route name',
-      //   menuRoute: 'health/pacs',
-      //   menuPath: 'views/health/pacs'
-      // }
-    ],
-
-    /**
-     * hybrid nav 导航配置
-     *
-     */
-    hybridNavMenu: [
-      // .e.g
-      // {
-      //   title: 'title',
-      //   menuRouteName: 'route name',
-      //   menuRoute: 'health/pacs',
-      //   menuPath: 'views/hybrid/health/pacs'
-      // }
-    ],
-
-    /**
-     * nihility nav 导航配置
-     *
-     */
-    nihilityNavMenu: [
-      /** nihility 路由 */
-      /** 该路由不会暴露在 nav 上，但可通过调用 addTab 显示在 LayoutTabs.vue 组件上*/
-      /** 同样遵循 iframe or not iframe 规则 */
-      // .e.g
-      // {
-      //   title: 'title',
-      //   menuRouteName: 'route name',
-      //   menuRoute: 'health/pacs',
-      //   menuPath: 'views/hybrid/health/pacs'
-      // }
-    ]
-  }
+  routes: {}
 }

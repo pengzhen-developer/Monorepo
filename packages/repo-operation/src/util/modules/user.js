@@ -89,14 +89,14 @@ export const removeUserInfo = () => {
  * 请注意，此方法只记录 url 参数
  * 如需做更多自定义操作，请自行记录参数
  *
- * @param {string} [referrer=''] 重定向地址
+ * @param {string} [referer=''] 重定向地址
  * @returns
  */
-export const replaceToLogin = (referrer = '') => {
+export const replaceToLogin = (referer = '') => {
   return $peace.$router.push({
     name: '/login',
     query: {
-      referrer: referrer || $peace.$router.history.current.fullPath
+      referer: referer || $peace.$router.history.current.fullPath
     }
   })
 }
@@ -106,11 +106,15 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const isSignIn = () => {
-  return !!(Peace.cache.localStorage.get(USER_INFO) && Peace.cache.localStorage.get(ACCOUNT_MENU_LIST))
+  return !!getUserInfo() && !!getAccountMenuList()
 }
 
 export default {
   setUserInfo,
+  getUserInfo,
+  removeUserInfo,
+
+  setUserCDKey,
   getUserCDKey,
   removeUserCDKey,
 
@@ -118,9 +122,6 @@ export default {
   getAccountMenuList,
   removeAccountMenuList,
 
-  setUserCDKey,
-  getUserInfo,
-  removeUserInfo,
   isSignIn,
 
   replaceToLogin

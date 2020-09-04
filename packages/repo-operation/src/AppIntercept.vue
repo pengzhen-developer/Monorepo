@@ -23,7 +23,7 @@ export default {
 
     // 验证身份
     if (Util.user.isSignIn()) {
-      if (to.fullPath === '/') {
+      if (to.path === '/') {
         next('/layout')
       } else {
         next()
