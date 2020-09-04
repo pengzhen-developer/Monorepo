@@ -13,7 +13,7 @@
                     v-bind:value="item.unprocessCount"
                     v-bind:hidden="item.unprocessCount === 0">
             <span style="min-width: 80px;"
-                  class="inline block">{{ item.label }}</span>
+                  class="inline block text-center">{{ item.label }}</span>
           </el-badge>
         </el-tab-pane>
       </el-tabs>
@@ -29,7 +29,7 @@
                       v-bind:value="item.unprocessCount"
                       v-bind:hidden="item.unprocessCount === 0">
               <span style="min-width: 80px;"
-                    class="inline block">{{ item.label }}</span>
+                    class="inline block text-center">{{ item.label }}</span>
             </el-badge>
           </el-tab-pane>
         </el-tabs>

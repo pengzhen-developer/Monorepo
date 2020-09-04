@@ -1,6 +1,15 @@
 
 //  定时任务 - 药品供应服务 - 药房接单
 
+<template>
+  <div>
+    <audio id="ding">
+      <source v-bind:src="require('./assets/ding.mp3')"
+              type="audio/mp3">
+    </audio>
+  </div>
+</template>
+
 <script>
 import Peace from '@src/library'
 import Service from './service'
@@ -50,8 +59,16 @@ export default {
               </div>
             )
           })
+
+          this.playDing()
         }
       })
+    },
+
+    playDing() {
+      var ding = this.$el.querySelector('#ding')
+
+      ding?.play()
     },
 
     gotoPharmacyOrderList() {
