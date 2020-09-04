@@ -13,7 +13,7 @@
                    v-on:click="getCommonlyPrescriptionList">查询</el-button>
       </el-form-item>
 
-      <br>
+      <br />
 
       <el-form-item label="">
         <el-button type="primary"
@@ -22,7 +22,7 @@
       </el-form-item>
     </el-form>
 
-    <hr>
+    <hr />
 
     <peace-table pagination
                  ref="table"
@@ -33,33 +33,21 @@
                           prop="diagnosis"></peace-table-column>
 
       <peace-table-column label="性别"
+                          align="left"
                           prop="sex"></peace-table-column>
+
       <peace-table-column label="年龄"
                           width="200px"
                           prop="age"></peace-table-column>
+
       <peace-table-column align="left"
                           label="处方药品"
-                          min-width="300px"
-                          prop="drugjson">
+                          min-width="200px">
         <template slot-scope="scope">
-          <div v-for="drug in scope.row.drugList"
-               v-bind:key="drug.durgId"
-               class="q-mb-sm">
-            <div>
-              <el-tag class="q-mr-sm"
-                      effect="dark"
-                      type="warning"
-                      v-if="drug.drugStatus === 'disable'">停用</el-tag>
-              <span class="text-weight-bold">{{ drug.drugName }}</span>
-            </div>
-            <span>用法用量：</span>
-            <span>每次{{ drug.singleDose }}{{ drug.drugUnit }}</span>
-            <span>，{{ drug.drugFrequency }}</span>
-            <span>，{{ drug.drugRoute }}</span>
-            <span v-if="drug.useDrugDays">，{{ drug.useDrugDays }}天</span>
-          </div>
+          <span>{{ getDrugInfos(scope.row) }}</span>
         </template>
       </peace-table-column>
+
       <peace-table-column :show-overflow-tooltip="false"
                           fixed="right"
                           label="操作"
@@ -126,10 +114,13 @@ export default {
   },
 
   methods: {
+    getDrugInfos(row) {
+      return row.drugList.map((drug) => drug.drugName)?.join(', ')
+    },
+
     getCommonlyPrescriptionList() {
       const fetch = Service.getCommonlyPrescriptionList
       const params = this.model
-
       this.$refs.table.loadData({ fetch, params })
     },
 
@@ -173,5 +164,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

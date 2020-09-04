@@ -87,13 +87,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="100px"
-                         v-if="!detailedly">
+        <el-table-column width="100px">
           <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="changeCommonlyPrescriptionDrugUsage(scope.row)">修改</el-button>
-            <el-button type="text"
-                       v-on:click="removeCommonlyPrescriptionDrugUsage(scope.row)">删除</el-button>
+            <div class="column items-end q-pa-none justify-space-between">
+              <span class="text-grey-333 text-weight-bold">x{{ scope.row.drugNum }}{{ scope.row.drugQuantityUnit }}</span>
+              <br>
+              <div v-if="!detailedly">
+                <el-button type="text"
+                           v-on:click="changeCommonlyPrescriptionDrugUsage(scope.row)">修改</el-button>
+                <el-button type="text"
+                           v-on:click="removeCommonlyPrescriptionDrugUsage(scope.row)">删除</el-button>
+              </div>
+              <br v-else>
+            </div>
           </template>
         </el-table-column>
       </el-table>

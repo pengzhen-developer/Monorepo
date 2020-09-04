@@ -156,17 +156,7 @@ export function offlineAddCase({
  * @param {*} params
  * @returns
  */
-export function addCase({
-  inquiry_no,
-  allergy_history,
-  diagnose,
-  base_illness,
-  present_history,
-  past_history,
-  Inspection_index,
-  summary,
-  templateId
-}) {
+export function addCase({ inquiry_no, allergy_history, diagnose, base_illness, present_history, past_history, Inspection_index, summary, templateId }) {
   const params = {
     inquiryNo: inquiry_no,
     allergyHistory: allergy_history,
@@ -275,6 +265,26 @@ export function getOrderDetail(params) {
   return peace.http.post(getOrderDetail, params)
 }
 
+/**
+ * 获取首诊记录列表
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getFirstOptionList(params) {
+  const isMock = false
+  const apiPath = 'client/his/v060/record/getFirstOptionList'
+
+  const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+
+  const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+  const requestApi = isMock ? mockPath : serverPath
+
+  return peace.http.post(requestApi, params)
+}
+
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -312,5 +322,7 @@ export default {
   /** 获取转诊详情 */
   referralDocPc,
   /** 提交转诊意见 */
-  receiveReferralPc
+  receiveReferralPc,
+  /** 获取首诊记录列表 */
+  getFirstOptionList
 }

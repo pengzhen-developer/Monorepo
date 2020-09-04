@@ -129,6 +129,7 @@ axios.interceptors.response.use(
 
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === 601) {
+        debugger
         // 提示鉴权失败消息
         $peace.util.alert(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
         // 清空用户缓存

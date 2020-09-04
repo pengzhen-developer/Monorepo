@@ -12,7 +12,9 @@
       </div>
 
       <div class="module-item">
+
         <div class="b">个人信息</div>
+
         <el-row>
           <el-col :span="12"
                   class="form-dl">
@@ -29,17 +31,15 @@
             <div class="form-dd">{{internalData.inquiryOrderInfo.age + "岁"}}</div>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="12"
-                  class="form-dl">
+        <el-row class="row">
+          <el-col class="form-dl col">
             <div class="form-dt"><span>性别</span></div>
             <span class="form-dt"
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-dd">{{internalData.inquiryOrderInfo.sex}}
             </div>
           </el-col>
-          <el-col :span="12"
-                  class="form-dl"
+          <el-col class="form-dl col"
                   v-if="internalData.inquiryOrderInfo.guardianName">
             <div class="form-dt"><span>监护人</span></div>
             <span class="form-dt"
@@ -48,6 +48,18 @@
               {{internalData.inquiryOrderInfo.guardianName}} |
               {{internalData.inquiryOrderInfo.guardianAge}} |
               {{internalData.inquiryOrderInfo.guardianSex}}
+            </div>
+          </el-col>
+
+          <el-col class="form-dl col"
+                  v-if="showPayType">
+            <div class="form-dt">
+              <span>费用</span>
+            </div>
+            <span class="form-dt"
+                  style="min-width: unset; margin: 0 10px 0 0;">:</span>
+            <div class="form-dd">
+              {{ payTypeText }}
             </div>
           </el-col>
         </el-row>
@@ -59,6 +71,54 @@
              style="padding: 0">{{ internalData.inquiryOrderInfo.describe}}</div>
 
       </div>
+
+      <!-- 首诊信息 -->
+      <div class="module-item"
+           v-if="firstOptionInfo.length > 0">
+        <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
+          <div class="b">首诊信息</div>
+          <el-button type="text"
+                     style="color: #666; font-size:12px;"
+                     v-show="showMoreButton"
+                     v-on:click="showHealthRecode">查看更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+        </div>
+
+        <div class="row items-baseline q-mb-sm">
+
+          <div class="row q-mr-20 col"
+               v-for="item in firstOptionInfo"
+               v-bind:key="item.hisPatientId">
+
+            <div class="time-line column q-mr-14 q-pl-20">
+              <span class="time-line-title">{{ item.createdTime.substring(0, 4) }}</span>
+              <span class="time-line-subtitle">{{ item.createdTime.substring(5, 10) }}</span>
+            </div>
+
+            <div class="case-bg col cursor-pointer"
+                 v-on:click="showCaseInfo">
+              <div class="row q-mb-14">
+                <img src="@src/assets/images/inquiry/ic_option_record.png"
+                     style="width: 40px; height:40px"
+                     class="q-mr-10" />
+                <div>
+                  <p class="case-title">{{ item.title }}</p>
+                  <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>
+                </div>
+              </div>
+
+              <div v-if="item.diagnosis">
+                <q-separator />
+                <p class="text-primary q-mt-8"
+                   style="line-height:18px; font-size:13px;">{{ item.diagnosis || '' }}</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
       <div class="module-item"
            v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain">
         <div>
@@ -127,10 +187,19 @@
         </div>
       </div>
     </div>
+
+    <peace-dialog :visible.sync="optionDialog.visible"
+                  append-to-body
+                  title="首诊记录">
+      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
+import Type from '@src/type'
+import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {
   props: {
     data: Object
@@ -138,16 +207,80 @@ export default {
 
   data() {
     return {
-      internalData: null
+      internalData: null,
+      items: [],
+      optionDialog: {
+        visible: false,
+        data: undefined
+      }
     }
   },
+
+  components: {
+    InquiryOptionRecord
+  },
+
+  beforeMount() {
+    this.getOptionList()
+  },
+
   mounted() {
     this.internalData = this.data
+  },
+
+  computed: {
+    firstOptionInfo() {
+      return this.items.length > 2 ? this.items.slice(0, 2) : this.items
+    },
+
+    showMoreButton() {
+      return this.items.length > 2
+    },
+
+    showHealthCareTag() {
+      return true
+    },
+
+    showPayType() {
+      return this.data.inquiryOrderInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      const text = Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.data.inquiryOrderInfo.paymentType)
+      return text
+    }
+  },
+
+  methods: {
+    getOptionList() {
+      const params = { inquiryNo: this.data.inquiryInfo.inquiryNo }
+      peace.service.inquiry.getFirstOptionList(params).then((res) => {
+        const tmpTimes = []
+        const tmp = res.data.firstOptionList.map(function (item) {
+          const tmpTime = item.createdTime.substring(0, 10)
+          if (tmpTimes.includes(tmpTime)) {
+            item.showTimeLabel = false
+          } else {
+            tmpTimes.push(tmpTime)
+            item.showTimeLabel = true
+          }
+          return item
+        })
+        this.items = tmp.concat(tmp)
+      })
+    },
+
+    showHealthRecode() {
+      this.optionDialog.visible = true
+      this.optionDialog.data = peace.util.deepClone(this.items)
+    },
+
+    showCaseInfo() {}
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .module-item {
   border-bottom: 1px solid #e8e8e8;
   margin: 0 0 5px 0;
@@ -373,6 +506,52 @@ export default {
     border-color: #504c4f;
     vertical-align: text-top;
     margin-top: 2px;
+  }
+}
+
+.time-line {
+  &::before {
+    content: '';
+    position: relative;
+    left: -15px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--q-color-primary);
+  }
+
+  .time-line-title {
+    line-height: 20px;
+    color: #333333 !important;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .time-line-subtitle {
+    line-height: 17px;
+    color: #999999 !important;
+    font-size: 12px;
+  }
+}
+
+.case-bg {
+  max-width: 230px !important;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
+
+  .case-title {
+    font-size: 16px;
+    color: #333 !important;
+    line-height: 22px;
+  }
+
+  .case-subtitle {
+    font-size: 13px;
+    color: #999 !important;
+    line-height: 18px;
   }
 }
 </style>

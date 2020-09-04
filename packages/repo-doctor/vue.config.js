@@ -43,7 +43,7 @@ module.exports = {
       sass: {
         // @/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
-        data: `@import "@src/boot/boot_ui_css/variable.scss";`
+        data: `@import "@src/assets/css/variable.scss";`
       }
     }
   },

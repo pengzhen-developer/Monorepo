@@ -165,7 +165,33 @@
 
       <!-- 其它 -->
       <template v-else-if="type === '6'">
-        <NoData type="health"></NoData>
+
+        <div :key="health.timeLine"
+             class="time-line"
+             v-for="health in healthInfo">
+          <div class="time-line-header">
+            <span class="time-line-node"></span>
+            <span class="time-line-time">{{ health.timeLine }}</span>
+          </div>
+
+          <div class="time-line-content">
+            <el-row :gutter="15"
+                    type="flex"
+                    style="flex-wrap: wrap;">
+              <el-col :key="healthItem.id"
+                      :span="8"
+                      v-for="healthItem in health.list">
+                <!--                {{healthItem.healthType}}-->
+                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.首诊记录">
+                  <div class="time-line-content-card">
+                    <RecordFirstOption :data="healthItem"
+                                       :type="type"></RecordFirstOption>
+                  </div>
+                </template>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
       </template>
     </template>
 
@@ -188,6 +214,7 @@ import RecordConsult from './RecordConsult'
 import RecordReferral from './RecordReferral'
 import RecordInspection from './RecordInspection'
 import RecordPACS from './RecordPACS'
+import RecordFirstOption from './RecordFirstOption'
 
 import NoData from '@src/views/components/NoData'
 
@@ -208,6 +235,7 @@ export default {
     RecordReferral,
     RecordInspection,
     RecordPACS,
+    RecordFirstOption,
     NoData
   },
 
@@ -226,7 +254,7 @@ export default {
       const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
       peace.service.health.allHealthList(params).then((res) => {
         // 格式化时间线
-        if (this.type === '1' || this.type === '3') {
+        if (this.type === '1' || this.type === '3' || this.type === '6') {
           const data = []
 
           const time = Array.from(new Set(res.data.list.map((item) => item.measureTime)))

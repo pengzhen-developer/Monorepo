@@ -1,6 +1,6 @@
 <template>
   <!-- 消息内容 -->
-  <div class="message-body message-check"
+  <div class="message-body message-check cursor-pointer"
        @click="onClickDetail()">
     <div class="message-header">
       <el-image style="width:17px;height:17px;"

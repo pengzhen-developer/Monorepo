@@ -20,6 +20,7 @@ export const INQUIRY_MESSAGE_TYPE = {
   检查单: '793',
   问诊卡片: '794',
   转诊卡片: '795',
+  首诊卡片: '796'
 }
 /** 问诊状态 */
 export const INQUIRY_STATUS = {
@@ -28,9 +29,9 @@ export const INQUIRY_STATUS = {
   问诊中: 3,
   已退诊: 4,
   已完成: 5,
-  已取消: 6,
+  已取消: 6
 }
 export default {
   INQUIRY_MESSAGE_TYPE,
-  INQUIRY_STATUS,
+  INQUIRY_STATUS
 }

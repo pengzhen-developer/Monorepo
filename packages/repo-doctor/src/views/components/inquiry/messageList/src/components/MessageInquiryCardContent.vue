@@ -6,10 +6,12 @@
                         :isAgain="isAgain"
                         :confirmIllness="confirmIllness"
                         :describe="describe"
+                        :paymentType="paymentType"
                         @onClickMore="onClickMore"
                         @onClickContent="onClickContent"></MessageInquiryCard>
     <peace-dialog :visible.sync="preliminary.visible"
                   v-if="preliminary.visible"
+                  width="500"
                   append-to-body
                   title="问诊单详情">
       <InquiryPreliminary :data="preliminary.data"
@@ -52,6 +54,9 @@ export default {
     },
     describe() {
       return this.message.content.data.inquiryOrderInfo && this.message.content.data.inquiryOrderInfo.describe
+    },
+    paymentType() {
+      return this.message.content.data.inquiryOrderInfo.paymentType || 1
     }
   },
   data() {

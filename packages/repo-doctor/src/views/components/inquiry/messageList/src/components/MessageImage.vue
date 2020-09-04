@@ -1,6 +1,7 @@
 <template>
   <!-- 消息内容 -->
-  <div v-viewer>
+  <div v-viewer
+       class="cursor-pointer">
     <img :src="imgUrl"
          style="max-width: 400px; max-height: 600px; "
          title="查看大图" />

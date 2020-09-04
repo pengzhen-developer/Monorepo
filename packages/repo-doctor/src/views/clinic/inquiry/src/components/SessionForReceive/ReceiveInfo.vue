@@ -15,8 +15,10 @@
     </div>
 
     <el-card class="q-mb-lg bg-grey-2 no-shadow">
-      <div class="q-mb-sm text-subtitle1 text-bold">
+      <div class="q-mb-sm text-subtitle1 text-bold row items-center">
         <span>个人信息</span>
+        <span v-if="showPayType"
+              class="tag-style">{{ payTypeText }}</span>
       </div>
 
       <div class="q-mb-xs row">
@@ -62,6 +64,7 @@
 </template>
 
 <script>
+import Type from '@src/type'
 export default {
   computed: {
     inquiryOrderInfo() {
@@ -78,6 +81,14 @@ export default {
 
     showAdditionalInfo() {
       return this.inquiryOrderInfo.aImages?.length > 0 || this.inquiryOrderInfo.allergicHistory || this.inquiryOrderInfo.pregnancyText
+    },
+
+    showPayType() {
+      return this.inquiryOrderInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryOrderInfo.paymentType)
     }
   }
 }
@@ -100,5 +111,15 @@ export default {
   width: 5em;
   text-align: justify;
   text-align-last: justify;
+}
+
+.tag-style {
+  background: rgba(2, 167, 240, 1);
+  border-radius: 19px;
+  font-size: 11px;
+  color: white;
+  padding: 1px 10px;
+  margin-left: 9px;
+  line-height: 16px;
 }
 </style>

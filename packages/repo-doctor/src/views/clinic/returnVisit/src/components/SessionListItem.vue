@@ -26,15 +26,10 @@
          style="max-height: 24px;">
       <span v-html="lastMessage"></span>
     </div>
-    <div class="text-right footer">
-      <!-- 复诊续方没有图标和类型 -->
-      <!-- 
-      <div class="flex items-center text-grey text-caption">
-        <q-icon class="q-mr-xs"
-                v-bind:name="`img:${inquiryTypeImage}`"></q-icon>
-        <span>{{ inquiryTypeText }}</span>
-      </div> 
-      -->
+    <div class="row justify-between items-center">
+      <span v-if="showPayType"
+            class="tag-style">{{ payTypeText }}</span>
+      <div v-else></div>
       <div class="text-grey text-caption">
         <PeaceCountdown v-bind:time="1000 * 60 * 60 * 24 * 365">
           <template slot-scope="props">
@@ -80,6 +75,14 @@ export default {
 
     patientInfo() {
       return this.session?.content?.patientInfo ?? {}
+    },
+
+    showPayType() {
+      return this.inquiryInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryInfo?.paymentType)
     },
 
     inquiryTypeText() {
@@ -172,5 +175,15 @@ export default {
   &.active {
     background: #f4f4f4;
   }
+}
+
+.tag-style {
+  background: rgba(2, 167, 240, 1);
+  border-radius: 19px;
+  font-size: 11px;
+  color: white;
+  padding: 0 10px;
+  line-height: 16px;
+  height: 16px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <!-- 消息内容 -->
-  <div class="message-body message-card"
+  <div class="message-body message-card cursor-pointer"
        @click="onClickContent()">
     <div class="message-header">
       <el-image style="width:20px;height:17px;"
@@ -11,6 +11,9 @@
       <span>|</span>
       <span v-text="familyAge"></span>
       <span>岁</span>
+
+      <span v-if="paymentType != 1"
+            class="tag-style">{{ payTypeText }}</span>
       <!-- <span>
         {{ familyName }} |
         {{ familySex }} |
@@ -41,6 +44,7 @@
 </template>
 
 <script>
+import Type from '@src/type'
 export default {
   props: {
     /*
@@ -84,6 +88,19 @@ export default {
     describe: {
       type: String,
       required: true
+    },
+    /*
+     * 支付方式
+     */
+    paymentType: {
+      type: Number,
+      required: true
+    }
+  },
+
+  computed: {
+    payTypeText() {
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.paymentType)
     }
   },
 
@@ -98,3 +115,14 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.tag-style {
+  background: rgba(2, 167, 240, 1);
+  border-radius: 19px;
+  font-size: 11px;
+  color: white;
+  padding: 0 10px;
+  line-height: 16px;
+  height: 16px;
+}
+</style>

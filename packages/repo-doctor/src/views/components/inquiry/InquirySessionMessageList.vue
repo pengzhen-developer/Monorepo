@@ -360,12 +360,14 @@
     </peace-dialog>
     <peace-dialog :visible.sync="consultation.visible"
                   v-if="consultation.visible"
+                  width="500"
                   append-to-body
                   title="会诊详情">
       <InquiryConsultationDetail :data="consultation.data"
                                  @close="() => consultation.visible = false">
       </InquiryConsultationDetail>
     </peace-dialog>
+
     <peace-dialog :visible.sync="preliminary.visible"
                   v-if="preliminary.visible"
                   append-to-body
@@ -373,6 +375,7 @@
       <InquiryPreliminary :data="preliminary.data"
                           @close="() => preliminary.visible = false"></InquiryPreliminary>
     </peace-dialog>
+
     <peace-dialog :visible.sync="checkOrder.visible"
                   v-if="checkOrder.visible"
                   append-to-body
@@ -507,7 +510,7 @@ export default {
 
   methods: {
     scrollMessageToBottom() {
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {
