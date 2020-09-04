@@ -400,7 +400,6 @@ export default {
       }
 
       .body {
-        border-top: 1px solid #f5f5f5;
         padding: 20px 80px 40px;
         .el-form-item {
           border-radius: 4px;
