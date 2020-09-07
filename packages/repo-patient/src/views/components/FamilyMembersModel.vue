@@ -416,8 +416,11 @@ export default {
       this.showUpdateInfo = true
       this.currentYibaoCard = {}
     },
-    onSuccess() {
-      this.getFamilyInfo()
+    onSuccess(result) {
+      if (result) {
+        const params = { id: this.familyId, source: 2 }
+        this.getFamilyInfo(params)
+      }
     },
     addYiBaoCard() {
       this.showCard = true
@@ -434,6 +437,7 @@ export default {
         const params = { id }
         peace.service.yibao.DelMedicareCard(params).then(() => {
           this.getMedicareCardList()
+          this.currentYibaoCard = {}
         })
       })
     },

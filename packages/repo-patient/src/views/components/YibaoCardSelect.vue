@@ -13,12 +13,16 @@
               class="switch-out"
               :class="{'disabled':selected}"
               title="是否使用医保卡">
-      <template #right-icon>
+      <template #right-icon
+                v-if="!selected">
         <van-switch v-model="checked"
-                    :disabled="selected"
                     active-color="#00C6AE"
                     inactive-color="#cccccc"
                     size="20" />
+      </template>
+      <template v-else>
+        <!-- :class="{'disabled':!checked}" class="text" -->
+        <div>{{checked?'使用':'不使用'}}</div>
       </template>
     </van-cell>
     <template v-if="!selected">
@@ -40,9 +44,12 @@
       </div>
       <van-field v-model.trim="cardInfo.medCardNo"
                  :disabled="!checked"
-                 type="number"
+                 pattern="\d*"
+                 type="digit"
                  maxlength="19"
                  minlength="19"
+                 @input="formateNumber"
+                 @blur="formateNumber"
                  class="input" />
 
     </template>
@@ -128,6 +135,9 @@ export default {
     }
   },
   methods: {
+    formateNumber() {
+      this.cardInfo.medCardNo = this.cardInfo.medCardNo.replace(/[^\d]/g, '')
+    },
     assemblyCard(str) {
       //1234567-->1234 567
       return str
@@ -263,16 +273,22 @@ export default {
   .switch-out {
     padding-left: 0;
     padding-right: 0;
+    > div {
+      color: #333;
+    }
     &.disabled {
-      .van-switch--disabled {
-        opacity: 1;
-      }
       &::after {
         border-width: 0;
       }
     }
     &::after {
       left: 0;
+    }
+    .text {
+      color: $primary;
+      &.disabled {
+        color: #999;
+      }
     }
   }
 

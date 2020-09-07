@@ -20,9 +20,12 @@
       <span>(上图红框位置数字)</span>
     </div>
     <van-field v-model.trim="medCardNo"
-               type="number"
+               pattern="\d*"
+               type="digit"
                maxlength="19"
                minlength="19"
+               @input="formateNumber"
+               @blur="formateNumber"
                class="input" />
     <van-button type="primary"
                 @click="submit"
@@ -55,6 +58,9 @@ export default {
     }
   },
   computed: {
+    // type(){
+    //   return this.cardInfo?.id?'update':'create'
+    // },
     name() {
       return this.familyInfo?.name
     },
@@ -88,12 +94,17 @@ export default {
       handler(val) {
         if (val) {
           this.medCardNo = val
+        } else {
+          this.medCardNo = ''
         }
       },
       immediate: true
     }
   },
   methods: {
+    formateNumber() {
+      this.medCardNo = this.medCardNo.replace(/[^\d]/g, '')
+    },
     changeFlag() {
       this.show = false
       this.$emit('changeFlag', false)

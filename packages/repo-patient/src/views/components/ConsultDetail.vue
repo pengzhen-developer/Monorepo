@@ -641,6 +641,9 @@ export default {
         inquiryNo: this.internalData?.inquiryInfo?.inquiryNo
       }
       peace.service.yibao.GetFirstOptionList(params).then((res) => {
+        if (res.data == null || !res.data.firstOptionList) {
+          return
+        }
         let list = []
         if (res.data.firstOptionList.length > 2) {
           this.canSeeMoreCase = true
