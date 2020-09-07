@@ -266,7 +266,7 @@ export default {
           }
           return item
         })
-        this.items = tmp.concat(tmp)
+        this.items = tmp
       })
     },
 
