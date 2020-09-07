@@ -688,7 +688,7 @@ export default {
           })
           .catch((err) => {
             peace.util.alert(err.data.msg)
-            this.getDoctorInfo()
+            this.getDoctorInfo('refuresh')
           })
       }
     },
@@ -726,8 +726,12 @@ export default {
         this.$router.push(`/components/doctorInquiryApply/${json}`)
       }
     },
-    getDoctorInfo() {
-      this.isLoading = true
+    //type refuresh 刷新 firstInit初次进入
+    getDoctorInfo(type = 'firstInit') {
+      if (type == 'firstInit') {
+        this.isLoading = true
+      }
+
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.doctor

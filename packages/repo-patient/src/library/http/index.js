@@ -123,7 +123,11 @@ axios.interceptors.response.use(
         return response.data
       }
 
-      if ((response.data && parseInt(response.data.code) === 202) || (response.data && parseInt(response.data.code) === 204)) {
+      if (
+        (response.data && parseInt(response.data.code) === 202) ||
+        (response.data && parseInt(response.data.code) === 203) ||
+        (response.data && parseInt(response.data.code) === 204)
+      ) {
         return Promise.reject(response)
       }
 

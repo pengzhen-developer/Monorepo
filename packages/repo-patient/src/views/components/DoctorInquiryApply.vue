@@ -1494,19 +1494,24 @@ export default {
         .then(() => {
           this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         })
-        .catch(() => {
-          return Dialog.confirm({
-            title: '提示',
-            message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
-            onfirmButtonText: '确定'
-          })
-            .then(() => {
-              //重新选择号源
-              this.goToReSelectSource()
+        .catch((res) => {
+          if (res.data.code == '202') {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.data.msg,
+              onfirmButtonText: '确定'
             })
-            .finally(() => {
-              this.sending = false
-            })
+              .then(() => {
+                //重新选择号源
+                this.goToReSelectSource()
+              })
+              .finally(() => {
+                this.sending = false
+              })
+          } else {
+            peace.util.alert(res.data.msg)
+            this.sending = false
+          }
         })
       // return peace.service.inquiry
       //   .apply(params)

@@ -455,15 +455,15 @@ export default {
           }
         })
         .catch((res) => {
-          //203  号源不足
+          //203  号源不足 或 号源过期
           if (res.data.code == '203') {
             return Dialog.confirm({
               title: '提示',
-              message: '您所选时间段医生的复诊号源已被抢光',
+              message: res.data.msg,
               confirmButtonText: '确定'
             })
           } else {
-            peace.util.alert(res.data.message)
+            peace.util.alert(res.data.msg)
           }
         })
         .finally(() => {

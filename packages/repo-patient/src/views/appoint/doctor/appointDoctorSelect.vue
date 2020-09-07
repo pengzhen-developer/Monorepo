@@ -262,7 +262,7 @@ export default {
         .then(() => {
           this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         })
-        .catch(() => {
+        .catch((res) => {
           //重新选择号源
           const param = Object.assign(item, {
             year: this.dateList[this.activeIndex].year,
@@ -272,7 +272,7 @@ export default {
 
           return Dialog.confirm({
             title: '提示',
-            message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
+            message: res.data.msg,
             onfirmButtonText: '确定'
           })
         })
