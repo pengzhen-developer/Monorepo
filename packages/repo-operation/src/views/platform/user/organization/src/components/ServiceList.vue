@@ -342,9 +342,7 @@ export default {
 
           if (type === 'all' || type === 'medical') {
             this.medicalInsurance.checked = res.data.medicalInsuranceConfig.status ? res.data.medicalInsuranceConfig.status : 0
-            this.medicalInsurance.selected = res.data.medicalInsuranceConfig.insuranceType.split(',')
-              ? res.data.medicalInsuranceConfig.insuranceType.split(',')
-              : []
+            this.medicalInsurance.selected = res.data.medicalInsuranceConfig.insuranceType ? res.data.medicalInsuranceConfig.insuranceType.split(',') : []
           }
         })
         .finally(() => {})
