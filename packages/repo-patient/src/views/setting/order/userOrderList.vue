@@ -43,9 +43,9 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
-                       :class="item.orderInfo.orderMoney==0||item.orderInfo.orderMoney == null?'price-free':'price'"
+                       :class="item.orderInfo.totalMoney==0||item.orderInfo.totalMoney == null?'price-free':'price'"
                        v-if="item.orderInfo">
-                    {{item.orderInfo.orderMoney == 0||item.orderInfo.orderMoney == null ? '免费' : '￥'+ item.orderInfo.orderMoney }}
+                    {{item.orderInfo.totalMoney == 0||item.orderInfo.totalMoney == null ? '免费' : '￥'+ item.orderInfo.totalMoney }}
                     <span v-if="item.orderInfo.refundTime">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
                   </div>
                 </div>
@@ -119,8 +119,8 @@
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
                   <div class="small-item-val"
-                       :class="item.orderMoney==0||item.orderMoney == null?'price-free':'price'">
-                    {{item.orderMoney == 0||item.orderMoney == null ? '免费' : '￥'+ item.orderMoney }}
+                       :class="item.totalMoney==0||item.totalMoney == null?'price-free':'price'">
+                    {{item.totalMoney == 0||item.totalMoney == null ? '免费' : '￥'+ item.totalMoney }}
                   </div>
                 </div>
                 <div class="small-item">

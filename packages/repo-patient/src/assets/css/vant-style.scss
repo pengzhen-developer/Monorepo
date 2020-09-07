@@ -3,9 +3,14 @@
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #eeeeee;
 }
-.van-picker__confirm {
+.van-picker__confirm,
+.van-picker__confirm:active {
   color: $primary;
 }
-.van-dialog__confirm {
+.van-dialog__confirm,
+.van-dialog__confirm:active {
   color: $primary;
+}
+.van-tag--plain::before {
+  border: none;
 }

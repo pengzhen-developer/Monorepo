@@ -687,7 +687,8 @@ export default {
             this.dialog.visible = true
           })
           .catch((err) => {
-            console.log(err)
+            peace.util.alert(err.data.msg)
+            this.getDoctorInfo()
           })
       }
     },
