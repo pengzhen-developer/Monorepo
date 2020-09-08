@@ -25,6 +25,11 @@
 
             <div class="q-mb-md">
               <span class="text-h6 text-weight-bold">{{ model.OrderStatus | formatDictionary(source.OrderStatus) }}</span>
+              <span class="q-ml-lg"
+                    v-if="showPickUpCode()">
+                <span>取件码：</span>
+                <span class="text-red text-subtitle1">{{ model.PickUpCode }}</span>
+              </span>
             </div>
 
             <div style="width: 166px">
@@ -294,6 +299,10 @@ export default {
 
         this.model = res.data.list
       })
+    },
+
+    showPickUpCode() {
+      return this.model.OrderStatus === this.source.OrderStatus.find((item) => item.label === '已备药')?.value
     },
 
     setDataToTimeline(model) {
