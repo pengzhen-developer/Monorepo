@@ -120,7 +120,7 @@
       </div>
 
       <div class="module-item"
-           v-if="internalData.inquiryOrderInfo && internalData.inquiryOrderInfo.isAgain">
+           v-if="internalData.inquiryOrderInfo.confirmIllness && internalData.inquiryOrderInfo.isAgain">
         <div>
           <div class="b">复诊信息</div>
           <div class="form-dl img"

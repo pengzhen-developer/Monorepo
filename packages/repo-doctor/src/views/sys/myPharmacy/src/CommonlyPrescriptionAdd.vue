@@ -77,9 +77,9 @@
             </div>
             <div>
               <span>用法用量：</span>
-              <span>每次{{ scope.row.singleDose }}{{ scope.row.drugUnit }}</span>
+              <span>{{ scope.row.drugRoute }}</span>
+              <span>，每次{{ scope.row.singleDose }}{{ scope.row.drugUnit }}</span>
               <span>，{{ scope.row.drugFrequency }}</span>
-              <span>，{{ scope.row.drugRoute }}</span>
               <span v-if="scope.row.useDrugDays">
                 ，{{ scope.row.useDrugDays }} 天
               </span>
