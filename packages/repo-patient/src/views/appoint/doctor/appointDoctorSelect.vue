@@ -204,13 +204,19 @@ export default {
       try {
         await peace.service.inquiry.checkSource(params)
       } catch (err) {
-        peace.util.alert(err.data.msg)
-        const param = Object.assign(item, {
-          year: this.dateList[this.activeIndex].year,
-          date: this.dateList[this.activeIndex].date
+        return Dialog.confirm({
+          title: '温馨提示',
+          message: err.data.msg,
+          onfirmButtonText: '确定',
+          showCancelButton: false
+        }).finally(() => {
+          const param = Object.assign(item, {
+            year: this.dateList[this.activeIndex].year,
+            date: this.dateList[this.activeIndex].date
+          })
+
+          this.getSourceData(param)
         })
-        this.getSourceData(param)
-        return
       }
 
       let json = {}
@@ -271,9 +277,10 @@ export default {
           this.getSourceData(param)
 
           return Dialog.confirm({
-            title: '提示',
+            title: '温馨提示',
             message: res.data.msg,
-            onfirmButtonText: '确定'
+            onfirmButtonText: '确定',
+            showCancelButton: false
           })
         })
     },

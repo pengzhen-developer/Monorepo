@@ -1374,7 +1374,7 @@ export default {
       peace.service.patient.isExistCardRelation(params).then((res) => {
         if (!res.data.result) {
           Dialog.confirm({
-            title: '提示',
+            title: '温馨提示',
             message: '该就诊人还没有电子健康卡，是否现在领取？',
             confirmButtonText: '现在领取'
           }).then(() => {
@@ -1388,7 +1388,7 @@ export default {
               .catch((res) => {
                 if (res.data.code === 202) {
                   Dialog.confirm({
-                    title: '提示',
+                    title: '温馨提示',
                     message: '该就诊人尚未完善资料，请前去完善！',
                     confirmButtonText: '去完善'
                   }).then(() => {
@@ -1497,7 +1497,7 @@ export default {
         .catch((res) => {
           if (res.data.code == '202') {
             return Dialog.confirm({
-              title: '提示',
+              title: '温馨提示',
               message: res.data.msg,
               onfirmButtonText: '确定'
             })
@@ -1541,7 +1541,7 @@ export default {
       //     // errorState:1 存在未支付订单， 跳转订单
       //     if (res.data.errorState === 1) {
       //       return Dialog.confirm({
-      //         title: '提示',
+      //         title: '温馨提示',
       //         message: res.msg,
       //         confirmButtonText: '去看看'
       //       }).then(() => {
@@ -1552,7 +1552,7 @@ export default {
       //     // errorState:2 存在未结束订单，跳转咨询
       //     if (res.data.errorState === 2) {
       //       return Dialog.confirm({
-      //         title: '提示',
+      //         title: '温馨提示',
       //         message: res.msg,
       //         confirmButtonText: '继续咨询'
       //       }).then(() => {
@@ -1565,7 +1565,7 @@ export default {
       //     //203  号源不足
       //     if (res.data.code == '203') {
       //       return Dialog.confirm({
-      //         title: '提示',
+      //         title: '温馨提示',
       //         // message: res.data.msg,
       //         message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
       //         confirmButtonText: '确定'

@@ -544,7 +544,7 @@
 import AddPatientMsg from '@src/views/components/AddPatientMsg'
 import peace from '@src/library'
 import Vue from 'vue'
-import { Rate } from 'vant'
+import { Dialog, Rate } from 'vant'
 
 Vue.use(Rate)
 export default {
@@ -686,9 +686,15 @@ export default {
           .then(() => {
             this.dialog.visible = true
           })
-          .catch((err) => {
-            peace.util.alert(err.data.msg)
-            this.getDoctorInfo('refuresh')
+          .catch((res) => {
+            return Dialog.confirm({
+              title: '温馨提示',
+              message: res.data.msg,
+              onfirmButtonText: '确定',
+              showCancelButton: false
+            }).finally(() => {
+              this.getDoctorInfo('refuresh')
+            })
           })
       }
     },
