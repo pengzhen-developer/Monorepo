@@ -12,6 +12,7 @@
 
 <script>
 import Peace from '@src/library'
+import Util from '@src/util'
 import Service from './service'
 
 const generalDelay = 30000
@@ -24,11 +25,11 @@ export default {
     const configuration = Peace.util.queryUrlParam('configuration', original)
 
     if (configuration === 'drugsupplie') {
-      setTimeout(() => {
+      this.initialDelayId = setTimeout(() => {
         this.notify()
       }, initialDelay)
 
-      setInterval(() => {
+      this.generalDelayId = setInterval(() => {
         this.notify()
       }, generalDelay)
     }
@@ -36,8 +37,19 @@ export default {
 
   methods: {
     notify() {
-      Service.HasWaitReceiveOrder().then((res) => {
-        if (res.data.list) {
+      const params = {
+        tel: Util.user.getUserInfo().tel
+      }
+
+      Service.HasWaitReceiveOrder(params).then((res) => {
+        // 非系统接单才能进行提示
+        if (res.data.list.IsSysReceive) {
+          window.clearInterval(this.generalDelayId)
+
+          return
+        }
+
+        if (res.data.list.HasWaitOrder) {
           this.notifyObejct = this.$notify({
             duration: duration,
             title: '',
