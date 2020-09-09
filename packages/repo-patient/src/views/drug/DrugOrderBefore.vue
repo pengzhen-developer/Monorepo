@@ -513,7 +513,7 @@ export default {
         IsMergeStore: this.page.json.IsMergeStore,
         MergeStoreInfo: this.page.json.MergeStoreInfo,
         ShippingMethod: +this.page.tabIndex, // 0 自提 1配送
-        Detailed: +this.page.tabIndex ? this.userAddr.detailAddress : this.order.Detailed,
+        Detailed: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
         ProvincialCity: +this.page.tabIndex
           ? this.userAddr.province + ',' + this.userAddr.city + ',' + this.userAddr.district
           : this.order.Province + ',' + this.order.City + ',' + this.order.County,
