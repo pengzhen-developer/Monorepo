@@ -58,9 +58,6 @@ export default {
     }
   },
   computed: {
-    // type(){
-    //   return this.cardInfo?.id?'update':'create'
-    // },
     name() {
       return this.familyInfo?.name
     },
@@ -92,6 +89,7 @@ export default {
     },
     code: {
       handler(val) {
+        console.log('val', val)
         if (val) {
           this.medCardNo = val
         } else {
@@ -107,6 +105,7 @@ export default {
     },
     changeFlag() {
       this.show = false
+      // this.medCardNo = ''
       this.$emit('changeFlag', false)
     },
     submit() {
@@ -131,6 +130,7 @@ export default {
         .then((res) => {
           peace.util.alert(res.msg)
           this.changeFlag()
+          this.medCardNo = ''
           this.$emit('onSuccess', true)
         })
         .finally(() => {
@@ -147,6 +147,7 @@ export default {
         .then((res) => {
           peace.util.alert(res.msg)
           this.changeFlag()
+          this.medCardNo = ''
           this.$emit('onSuccess', true)
         })
         .finally(() => {
