@@ -48,7 +48,7 @@
         <div class="q-mb-lg">
           <el-button type="primary"
                      icon="el-icon-plus"
-                     v-on:click="addPharmacy">新增</el-button>
+                     v-on:click="addPharmacy">新增药房</el-button>
         </div>
 
         <peace-table ref="table"

@@ -604,7 +604,7 @@ export default {
     padding-left: 14px;
     margin-bottom: 20px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
     &::before {
