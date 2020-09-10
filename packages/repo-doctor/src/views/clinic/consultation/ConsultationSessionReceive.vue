@@ -55,7 +55,21 @@ export default {
         })
       }
 
-      receiveHandler().then(receiveMessage)
+      receiveHandler().then(() => {
+        const session = this.$store.state.consultation.session
+        const params = {
+          consultNo: session.content.consultInfo.consultNo,
+          toDoctorId:
+            session.content.consultInfo.receiveDoctor[0].doctorId === this.$store.state.user.userInfo.list.docInfo.doctor_id
+              ? session.content.consultInfo.startDoctor[0].doctorId
+              : session.content.consultInfo.receiveDoctor[0].doctorId
+        }
+        peace.service.consult.doctorStatus(params).then((res) => {
+          if (res.data.fromDoctorConsultStatus !== 1 && res.data.toDoctorConsultStatus !== 1) {
+            receiveMessage()
+          }
+        })
+      })
     },
 
     // 拒绝
