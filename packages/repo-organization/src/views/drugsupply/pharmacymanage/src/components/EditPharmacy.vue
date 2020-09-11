@@ -86,7 +86,8 @@
                           label-width="100px">
               <el-input v-model.trim="model.UserMail"
                         placeholder="请输入邮箱"
-                        class="input-Width "></el-input>
+                        class="input-Width "
+                        maxlength="50"></el-input>
             </el-form-item>
 
           </div>
