@@ -115,8 +115,8 @@
                 <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
               </div>
               <div class="case-box">
-                <!-- @click="gotoCaseDetail(item.dataNo)" -->
                 <div class="case-card-note"
+                     @click="gotoCaseDetail(item.dataNo)"
                      v-for="(item,index) in value"
                      :key="index">
                   <div class="case-card-note-content">
@@ -395,10 +395,12 @@ export default {
       this.showCard = true
     },
     gotoCaseDetail(dataNo) {
+      const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
+      const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
       const json = peace.util.encode({
-        dataNo
+        url
       })
-      this.$router.push(`/file/fileAllDetail/${json}`)
+      this.$router.push(`/components/mainIframe/${json}`)
     },
     seeMoreCase() {
       // peace.cache.set('familyId', this.internalData?.familyInfo?.familyId)

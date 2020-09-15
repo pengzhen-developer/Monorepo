@@ -7,13 +7,13 @@
         <div class="id-card">
           <div class="edit"
                v-if="!isNationExist">
-            <van-icon name="edit"
+            <van-icon :name="require('@src/assets/images/ic_edit.png')"
                       size="15px"
                       color="#00C6AE"
                       @click="updataInfo" />
           </div>
           <van-image class="id-card-logo"
-                     :src="require('@src/assets/images/ic_idcard_logo.png')"></van-image>
+                     :src="model.sex=='男'?require('@src/assets/images/avatar_boy.png'):require('@src/assets/images/avatar_girl.png')"></van-image>
           <div class="id-card-content">
             <div class="id-card-content-item">
               <div class="key"><span>姓名</span>:</div>

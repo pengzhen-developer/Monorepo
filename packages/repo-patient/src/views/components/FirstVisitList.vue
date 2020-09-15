@@ -11,8 +11,8 @@
           <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
         </div>
         <div class="case-box">
-          <!-- @click="gotoCaseDetail(item.dataNo)" -->
           <div class="case-card-note"
+               @click="gotoCaseDetail(item.dataNo)"
                v-for="(item,index) in value"
                :key="index">
             <div class="case-card-note-content">
@@ -54,6 +54,14 @@ export default {
     this.getFirstOptionList()
   },
   methods: {
+    gotoCaseDetail(dataNo) {
+      const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
+      const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
+      const json = peace.util.encode({
+        url
+      })
+      this.$router.push(`/components/mainIframe/${json}`)
+    },
     getFirstOptionList() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.yibao
@@ -63,13 +71,7 @@ export default {
             return
           }
           let list = []
-          if (res.data.firstOptionList.length > 2) {
-            this.canSeeMoreCase = true
-            list = res.data.firstOptionList.slice(0, 2)
-          } else {
-            this.canSeeMoreCase = false
-            list = res.data.firstOptionList
-          }
+          list = res.data.firstOptionList
           const temp = {}
           // 遍历时间
           const timeList = new Set(list.map((item) => item.createdTime))

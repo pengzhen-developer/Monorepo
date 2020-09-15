@@ -13,7 +13,7 @@
       <div class="file-bg"></div>
 
       <div class="file-famliy">
-        <van-swipe :loop="false"
+        <van-swipe :loop="true"
                    :width="swipeWidth"
                    @change="onSwipeChange"
                    :initial-swipe="index"
@@ -211,6 +211,7 @@ export default {
     changeSwipeTrack(index) {
       this.index = index
       if (this.$refs.swipe) {
+        console.log(this.$refs.swipe)
         if (this.myFamilyList) {
           this.familyId = this.myFamilyList[index].familyId
           this.idCard = this.myFamilyList[index].idCard
@@ -321,9 +322,9 @@ export default {
 
       height: 100%;
 
-      .van-tab {
-        flex-basis: 20% !important;
-      }
+      // .van-tab {
+      // flex-basis: 20% !important;
+      // }
       .van-tab--active {
         color: $-color--primary;
       }

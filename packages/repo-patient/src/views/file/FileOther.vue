@@ -13,12 +13,12 @@
             <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
           </div>
           <div class="text">
-            <div v-for="item in value"
-                 :key="item.healthType + item.id">
+            <div v-for="(item,index) in value"
+                 :key="item.healthType + item.id + index">
               <!-- 首诊 -->
               <template v-if="item.healthType === 'firstRecord'">
-                <!-- @click="util.goDetail('首诊', item)" -->
-                <div class="note card case">
+                <div class="note card case"
+                     @click="util.goDetail('首诊', item)">
                   <div class="case-left">
                     <van-image width="35px"
                                height="35px"

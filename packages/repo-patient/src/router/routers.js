@@ -1099,6 +1099,14 @@ const routers = [
     component: () => import('@src/views/components/agreement.vue')
   },
   {
+    path: '/components/mainIframe/:json',
+    name: '/components/mainIframe',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/MainIframe.vue')
+  },
+  {
     path: '/components/CommentForDoctor/:json',
     name: '/components/CommentForDoctor',
     meta: {

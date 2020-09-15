@@ -14,3 +14,6 @@
 .van-tag--plain::before {
   border: none;
 }
+.van-sidebar-item--select::before {
+  background: $primary;
+}
