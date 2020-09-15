@@ -3,7 +3,7 @@
 
     <div class="text-center q-ma-md">
       <div>{{detail.hospitalName}}</div>
-      <div>处方笺</div>
+      <div class="h-title">处方笺</div>
     </div>
     <div class="text-grey-666 q-mx-md q-mb-sm">开具日期：{{detail.inputTime}}</div>
 
@@ -114,6 +114,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.h-title {
+  font-size: 20px;
+}
 .section-line {
   height: 16px;
   background: #f9f9f9;
