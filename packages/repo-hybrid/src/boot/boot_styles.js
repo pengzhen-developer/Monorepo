@@ -45,6 +45,9 @@ export default async ({ configuration }) => {
   // 将 <style> 元素加到页面中
   document.head.appendChild(style)
 
+  // 异步引入全局 css
+  require(`@src/assets/css/Fix.Quasar.scss`)
+
   console.log(
     `%c ${'Styles'} %c N/A %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
