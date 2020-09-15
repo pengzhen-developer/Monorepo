@@ -467,8 +467,6 @@ export default {
       model?.Stream.forEach((item) => {
         item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
         item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
-
-        console.log(item)
       })
 
       return model
