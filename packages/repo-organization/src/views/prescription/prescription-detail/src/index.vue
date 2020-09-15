@@ -111,7 +111,7 @@
         <!-- 审核 -->
         <div class="q-mb-md">
           <div class="row q-mb-xs">
-            <div class="row col-6">
+            <div class="row col-6 items-center">
               <span class="text-justify"
                     style="width: 4em;">医师</span>
               <span class="q-mx-xs">：</span>
@@ -119,12 +119,16 @@
                 {{ data.DoctorName }}
               </span>
             </div>
-            <div class="row col-6">
+            <div class="row col-6 items-center">
               <span class="text-justify"
                     style="width: 4em;">审方药师</span>
               <span class="q-mx-xs">：</span>
               <span class="col text-weight-bold">
-                {{ data.PrescriptionPharmacistName }}
+                <el-image style="width: 56px;"
+                          fit="contain"
+                          v-bind:title="data.PrescriptionPharmacistName"
+                          v-bind:src="data.base64uniqueImage"
+                          v-bind:preview-src-list="[data.base64uniqueImage]"></el-image>
               </span>
             </div>
           </div>
