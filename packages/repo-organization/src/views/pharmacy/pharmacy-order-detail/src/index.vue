@@ -54,7 +54,7 @@
                                                }"
                            v-bind:style="{ height: '120px' }">
               <div class="q-mb-xs"
-                   v-for="timeline in model.timeline"
+                   v-for="timeline in model.Timeline"
                    v-bind:key="timeline.key">
                 <span class="text-grey-666 q-mr-lg">{{ timeline.time }}</span>
                 <span class="text-grey-333">{{ timeline.label }}</span>
@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card q-mb-md">
       <div class="card-title flex justify-between">
         <div>
           <span class="title text-subtitle1">订单详情</span>
@@ -187,10 +187,60 @@
         </div>
       </div>
     </div>
+
+    <div class="card q-mb-lg"
+         v-if="LogisticsTimeline.Number">
+      <div class="card-title flex justify-between">
+        <span class="title text-subtitle1">物流信息</span>
+      </div>
+
+      <div class="q-mb-32">
+        <span class="text-grey-7">物流配送方式：</span>
+        <span class="text-grey-7 q-mr-xl">快递公司配送</span>
+        <span class="text-grey-7">物流公司名称：</span>
+        <span class="text-grey-7 q-mr-xl">{{ LogisticsTimeline.Name }}</span>
+        <span class="text-grey-7">物流单号：</span>
+        <span class="text-grey-7">{{ LogisticsTimeline.Number }}</span>
+      </div>
+
+      <ul class="el-timeline">
+        <li class="el-timeline-item"
+            v-for="(timeline, index) in LogisticsTimeline.Stream"
+            v-bind:key="timeline.Time">
+          <div class="el-timeline-title">
+            <div class="text-subtitle2">{{ timeline.MonthVisible }}</div>
+            <div class="text-caption text-grey-5">{{ timeline.TimeVisible }}</div>
+          </div>
+          <div class="el-timeline-item__tail">
+          </div>
+          <div v-show="index !== 0"
+               class="el-timeline-item__node el-timeline-item__node--large">
+            <!-- <i class="el-timeline-item__icon el-icon-more"></i> -->
+          </div>
+          <div v-show="index === 0"
+               class="el-timeline-item__node el-timeline-item__node--large el-timeline-item__node--primary">
+            <i v-if="LogisticsTimeline.State === 3"
+               class="el-timeline-item__icon el-icon-circle-check"></i>
+            <i v-else
+               class="el-timeline-item__icon el-icon-more"></i>
+          </div>
+          <!---->
+          <div class="el-timeline-item__wrapper">
+            <!---->
+            <div class="el-timeline-item__content text-subtitle1"> {{ timeline.Status }} </div>
+            <div class="el-timeline-item__timestamp text-grey-6 text-caption is-bottom">
+              {{ timeline.Content }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import { date } from 'quasar'
+
 import PharmacyOrderControl from './../../pharmacy-order-control'
 
 import Peace from '@src/library'
@@ -234,7 +284,13 @@ export default {
         DrugStoreName: '',
         ShippingMethod: '',
 
-        timeline: []
+        Timeline: []
+      },
+
+      LogisticsTimeline: {
+        Number: '',
+        Name: '',
+        Stream: []
       },
 
       source: {
@@ -294,11 +350,25 @@ export default {
         Id
       }
 
-      Service.getOrderInfo(params).then((res) => {
-        res.data.list.timeline = this.setDataToTimeline(res.data.list)
+      Service.getOrderInfo(params)
+        .then((res) => {
+          res.data.list.Timeline = this.setDataToTimeline(res.data.list)
 
-        this.model = res.data.list
-      })
+          this.model = res.data.list
+
+          return res
+        })
+        .then((res) => {
+          const params = {
+            orderId: res.data.list.OrderId
+          }
+
+          Service.GQuery(params).then((res) => {
+            if (res.data.list) {
+              this.LogisticsTimeline = this.setDataToLogisticsTimeline(res.data.list)
+            }
+          })
+        })
     },
 
     showPickUpCode() {
@@ -393,6 +463,17 @@ export default {
       return timelineList
     },
 
+    setDataToLogisticsTimeline(model) {
+      model?.Stream.forEach((item) => {
+        item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
+        item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
+
+        console.log(item)
+      })
+
+      return model
+    },
+
     gotoPrescriptionDetail() {
       // TODO
       // 带优化项，参数应该使用 route/:id 形式传递，因标签页问题，暂时使用缓存处理
@@ -427,6 +508,34 @@ export default {
   }
 }
 
-.card-content {
+.el-timeline {
+  padding: 0 0 0 60px;
+
+  .el-timeline-title {
+    position: absolute;
+    top: -2px;
+    margin: 0 0 0 -48px;
+  }
+
+  .el-timeline-item__tail {
+    left: 9px;
+    margin: 0 0 0 16px;
+  }
+
+  .el-timeline-item__node--large,
+  .el-timeline-item__node--normal {
+    margin: 0 0 0 16px;
+
+    width: 24px;
+    height: 24px;
+
+    .el-timeline-item__icon {
+      font-size: 24px;
+    }
+  }
+
+  .el-timeline-item__wrapper {
+    margin: 0 0 0 48px;
+  }
 }
 </style>
