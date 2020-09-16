@@ -1,0 +1,52 @@
+{
+  "name": "authority",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run serve",
+    "serve": "vue-cli-service serve",
+    "build:dev": "vue-cli-service build --mode dev",
+    "deploy:dev": "vue-cli-service build --mode dev && cross-env NODE_ENV=dev node ./deploy",
+    "build:test": "vue-cli-service build --mode test",
+    "deploy:test": "vue-cli-service build --mode test && cross-env NODE_ENV=test node ./deploy",
+    "build:pre": "vue-cli-service build --mode pre",
+    "deploy:pre": "vue-cli-service build --mode pre && cross-env NODE_ENV=pre node ./deploy",
+    "build:prod": "vue-cli-service build --mode prod",
+    "deploy:prod": "vue-cli-service build --mode prod && cross-env NODE_ENV=prod node ./deploy",
+    "build": "vue-cli-service build --mode prod",
+    "deploy": "vue-cli-service build --mode prod && cross-env NODE_ENV=prod node ./deploy",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@jiaminghi/data-view": "^2.9.4",
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "cross-env": "^7.0.2",
+    "crypto-js": "^4.0.0",
+    "dragon-echarts-wordcloud": "^1.0.1",
+    "echarts": "^4.8.0",
+    "element-ui": "^2.13.1",
+    "jsonschema": "^1.2.6",
+    "quasar": "^1.0.0",
+    "scp2": "^0.5.0",
+    "vue": "^2.6.11",
+    "vue-echarts": "^5.0.0-beta.0",
+    "vue-router": "^3.1.6",
+    "vue-seamless-scroll": "^1.1.21",
+    "vuex": "^3.3.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.3.0",
+    "@vue/cli-plugin-eslint": "^4.3.0",
+    "@vue/cli-service": "^4.3.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-imports": "1.5.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.26.3",
+    "sass-loader": "^7.0.0",
+    "vue-cli-plugin-quasar": "^2.0.0",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
