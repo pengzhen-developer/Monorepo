@@ -28,11 +28,7 @@ export default {
   },
   computed: {
     firstInfo() {
-      return {
-        familyId: 'mqbijvrkoq', //家人ID
-        hospitalId: '23232', //机构ID
-        hospitalName: '北辰医院' //机构名称
-      }
+      return this.message.content.data.firstInfo
     }
   },
   data() {

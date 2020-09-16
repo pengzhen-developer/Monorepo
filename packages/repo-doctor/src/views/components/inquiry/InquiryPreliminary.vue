@@ -139,6 +139,12 @@
               </viewer>
             </div>
           </div>
+
+          <div v-else>
+            <span class="form-dt text-grey-999 q-mr-md">复诊凭证:</span>
+            <span class="text-grey-333">确认遗失</span>
+          </div>
+
           <div class="form-dl">
             <div class="form-dt">初诊诊断</div>
             <span class="form-dt"
