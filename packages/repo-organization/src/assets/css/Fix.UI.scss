@@ -31,9 +31,12 @@
   .card {
     background: #fff;
     padding: 24px 32px;
+    border-radius: 2px;
 
     &.card-search {
       padding: 24px 32px 4px 32px;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
     }
   }
 }
