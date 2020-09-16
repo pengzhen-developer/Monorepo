@@ -32,7 +32,7 @@ export default {
 
   methods: {
     onClickDetail() {
-      // this.$emit('onClickDetail')
+      this.$emit('onClickDetail')
     }
   }
 }

@@ -87,7 +87,7 @@
 
           <div class="row q-mr-20 col"
                v-for="item in firstOptionInfo"
-               v-bind:key="item.hisPatientId">
+               v-bind:key="item.dataNo">
 
             <div class="time-line column q-mr-14 q-pl-20">
               <span class="time-line-title">{{ item.createdTime.substring(0, 4) }}</span>
@@ -95,7 +95,7 @@
             </div>
 
             <div class="case-bg col cursor-pointer"
-                 v-on:click="showCaseInfo">
+                 v-on:click="showCaseInfo(item)">
               <div class="row q-mb-14">
                 <img src="@src/assets/images/inquiry/ic_option_record.png"
                      style="width: 40px; height:40px"
@@ -193,6 +193,14 @@
                   title="首诊记录">
       <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
     </peace-dialog>
+
+    <peace-dialog v-if="dialog.visible"
+                  :visible.sync="dialog.visible"
+                  append-to-body
+                  title="首诊详情">
+      <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -200,6 +208,7 @@
 import peace from '@src/library'
 import Type from '@src/type'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
 export default {
   props: {
     data: Object
@@ -212,12 +221,17 @@ export default {
       optionDialog: {
         visible: false,
         data: undefined
+      },
+      dialog: {
+        visible: false,
+        data: undefined
       }
     }
   },
 
   components: {
-    InquiryOptionRecord
+    InquiryOptionRecord,
+    FirstOptionDetail
   },
 
   beforeMount() {
@@ -275,7 +289,10 @@ export default {
       this.optionDialog.data = peace.util.deepClone(this.items)
     },
 
-    showCaseInfo() {}
+    showCaseInfo(info) {
+      this.dialog.visible = true
+      this.dialog.data = info.dataNo
+    }
   }
 }
 </script>

@@ -1,12 +1,20 @@
 <template>
   <div>
-    <MessageFirstOptionCard :firstInfo="firstInfo"></MessageFirstOptionCard>
+    <MessageFirstOptionCard :firstInfo="firstInfo"
+                            @onClickDetail="onClickDetail"></MessageFirstOptionCard>
+
+    <peace-dialog :visible.sync="optionDialog.visible"
+                  append-to-body
+                  title="首诊记录">
+      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import peace from '@src/library'
 import MessageFirstOptionCard from './MessageFirstOptionCard'
-
+import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {
   props: {
     message: {
@@ -15,7 +23,8 @@ export default {
     }
   },
   components: {
-    MessageFirstOptionCard
+    MessageFirstOptionCard,
+    InquiryOptionRecord
   },
   computed: {
     firstInfo() {
@@ -31,18 +40,43 @@ export default {
       checkOrder: {
         visible: false,
         data: {}
-      }
+      },
+      optionDialog: {
+        visible: false,
+        data: undefined
+      },
+      items: []
     }
   },
   methods: {
     onClickDetail() {
-      // const params = {
-      //   checkOrderNo: this.message.content.data.checkOrderInfo.checkOrderNo
-      // }
-      // peace.service.inquiry.getOrderDetail(params).then((res) => {
-      //   this.checkOrder.visible = true
-      //   this.checkOrder.data = res.data.info
-      // })
+      if (this.items && this.items.length > 0) {
+        this.showHealthRecode()
+        return
+      }
+
+      const params = {
+        inquiryNo: this.message.content.data.inquiryInfo.inquiryNo
+      }
+      peace.service.inquiry.getFirstOptionList(params).then((res) => {
+        const tmpTimes = []
+        const tmp = res.data.firstOptionList.map(function (item) {
+          const tmpTime = item.createdTime.substring(0, 10)
+          if (tmpTimes.includes(tmpTime)) {
+            item.showTimeLabel = false
+          } else {
+            tmpTimes.push(tmpTime)
+            item.showTimeLabel = true
+          }
+          return item
+        })
+        this.items = tmp
+        this.showHealthRecode()
+      })
+    },
+    showHealthRecode() {
+      this.optionDialog.visible = true
+      this.optionDialog.data = peace.util.deepClone(this.items)
     }
   }
 }

@@ -285,6 +285,26 @@ export function getFirstOptionList(params) {
   return peace.http.post(requestApi, params)
 }
 
+/**
+ * 获取首诊记录详情
+ *
+ * @export
+ * @param {*} params
+ * @returns
+ */
+export function getFirstOptionDetail(params) {
+  const isMock = false
+  const apiPath = 'client/his/v060/record/getFirstOptionDetail'
+
+  const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+
+  const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+  const requestApi = isMock ? mockPath : serverPath
+
+  return peace.http.post(requestApi, params)
+}
+
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -324,5 +344,7 @@ export default {
   /** 提交转诊意见 */
   receiveReferralPc,
   /** 获取首诊记录列表 */
-  getFirstOptionList
+  getFirstOptionList,
+  /** 获取首诊记录详情 */
+  getFirstOptionDetail
 }

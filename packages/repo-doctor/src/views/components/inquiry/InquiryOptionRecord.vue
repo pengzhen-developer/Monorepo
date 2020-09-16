@@ -1,12 +1,13 @@
 <template>
 
   <el-timeline class="q-mt-30 q-ml-46">
-    <el-timeline-item v-for="item in data"
-                      v-bind:key="item.hisPatientId"
-                      :timestamp="item.createdTime.substring(5, 10)"
-                      :hide-timestamp="!item.showTimeLabel"
-                      placement="top"
-                      color="rgba(0,198,174,1)">
+    <el-timeline-item placement="top"
+                      color="rgba(0,198,174,1)"
+                      v-for="item in data"
+                      v-bind:timestamp="item.createdTime.substring(5, 10)"
+                      v-bind:hide-timestamp="!item.showTimeLabel"
+                      v-bind:key="item.dataNo"
+                      v-on:click.native="showDetail(item.dataNo)">
       <div v-if="item.showTimeLabel"
            class="year-label">{{ item.createdTime.substring(0, 4) }}</div>
       <div class="case-bg cursor-pointer">
@@ -30,10 +31,19 @@
       </div>
 
     </el-timeline-item>
+
+    <peace-dialog v-if="optionDialog.visible"
+                  :visible.sync="optionDialog.visible"
+                  append-to-body
+                  title="首诊详情">
+      <FirstOptionDetail :prescriptionCode="optionDialog.data"></FirstOptionDetail>
+    </peace-dialog>
+
   </el-timeline>
 </template>
 
 <script>
+import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
 export default {
   props: {
     /*
@@ -44,6 +54,24 @@ export default {
       default() {
         return []
       }
+    }
+  },
+  data() {
+    return {
+      optionDialog: {
+        visible: false,
+        data: undefined
+      }
+    }
+  },
+  components: {
+    FirstOptionDetail
+  },
+
+  methods: {
+    showDetail(info) {
+      this.optionDialog.visible = true
+      this.optionDialog.data = info
     }
   }
 }
