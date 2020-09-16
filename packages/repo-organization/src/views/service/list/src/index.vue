@@ -1,204 +1,62 @@
 <template>
-  <div class=" layout-route">
-    <div class="card card-search q-mb-md">
-      <el-form inline=""
-               label-width="auto"
-               label-position="left">
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify em-4">提交时间</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-          <el-date-picker type="daterange"
-                          v-model="model.pickDate"
-                          value-format="yyyy-MM-dd"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify em-4">状态</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-          <el-select v-model="model.checkStatus"
-                     placeholder="请选择">
-            <el-option v-for="item in options"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label=" ">
-          <el-button type="primary"
-                     v-on:click="get">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <div class="card">
-      <PeaceTable ref="table"
-                  style="width: 100%"
-                  pagination
-                  max-height="600">
-        <el-table-column type="index"
-                         fixed
-                         align="center"
-                         label="序号"
-                         width="60">
-        </el-table-column>
-        <el-table-column prop="serviceName"
-                         label="服务名称">
-        </el-table-column>
-        <el-table-column prop="applyTime"
-                         label="提交时间">
-        </el-table-column>
-        <el-table-column label="状态">
-          <template slot-scope="scope">
-            <div class="status-item">
-              <div v-bind:class="getClassForCode(scope.row.checkStatus)"></div>
-              <span>
-                {{ getStatusForCode(scope.row.checkStatus) }}
-              </span>
-            </div>
-
-          </template>
-        </el-table-column>
-        <el-table-column prop="checkTime"
-                         label="审核时间">
-        </el-table-column>
-        <el-table-column min-width="180px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="toDetail(scope.row)">查看详情</el-button>
-          </template>
-        </el-table-column>
-      </PeaceTable>
-    </div>
-    <el-dialog v-if="detailDialog.visible"
-               width="344px"
-               v-bind:visible.sync="detailDialog.visible"
-               title="申请开通详情">
-      <ServiceDetail v-bind:data="detailDialog.data"></ServiceDetail>
-    </el-dialog>
+  <div class="layout-route">
+    <el-tabs class="tab-header-1 bg-grey-2"
+             type="card"
+             v-model="active">
+      <el-tab-pane lazy
+                   label="已开通的服务"
+                   name="已开通的服务">
+        <el-collapse-transition>
+          <ServiceList></ServiceList>
+        </el-collapse-transition>
+      </el-tab-pane>
+      <el-tab-pane lazy
+                   label="申请记录"
+                   name="申请记录">
+        <RecordList></RecordList>
+      </el-tab-pane>
+    </el-tabs>
   </div>
-
 </template>
 
 <script>
-import Service from './service'
-import ServiceDetail from './components/ServiceDetail'
+import ServiceList from './components/ServiceList'
+import RecordList from './components/RecordList'
 
 export default {
   components: {
-    ServiceDetail
+    ServiceList,
+    RecordList
   },
+
   data() {
     return {
-      model: {
-        pickDate: [],
-        startTime: '',
-        endTime: '',
-        checkStatus: ''
-      },
-      options: [
-        {
-          value: '1',
-          label: '待审核',
-          class: 'statusColor1'
-        },
-        {
-          value: '2',
-          label: '未通过',
-          class: 'statusColor2'
-        },
-        {
-          value: '3',
-          label: '已通过',
-          class: 'statusColor3'
-        }
-      ],
-      detailDialog: {
-        visible: false,
-        data: {}
-      }
-    }
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      this.get()
-    })
-  },
-
-  methods: {
-    get() {
-      const fetch = Service.getMyServiceList
-      const params = this.model
-      if (this.model.pickDate == null) {
-        this.model.pickDate = ['', '']
-      }
-      const [start, end] = this.model.pickDate
-      params.startTime = start
-      params.endTime = end
-      this.$refs.table.loadData({ fetch, params })
-    },
-
-    getStatusForCode(code) {
-      return this.options.find((item) => item.value == code).label
-    },
-    getClassForCode(code) {
-      return this.options.find((item) => item.value == code).class
-    },
-    toDetail(row) {
-      this.detailDialog.visible = true
-      this.detailDialog.data = row
+      active: '已开通的服务'
     }
   }
 }
 </script>
 
-<style scoped>
-.status-item {
-  display: flex;
-  align-items: center;
-}
+<style lang="scss" scoped>
+::v-deep .tab-header-1.el-tabs {
+  .el-tabs__header {
+    margin: 0;
+  }
 
-.statusColor1 {
-  width: 6px;
-  height: 6px;
-  border-radius: 8px;
-  margin-right: 8px;
-  background: #faad14;
-}
-.statusColor2 {
-  width: 6px;
-  width: 6px;
-  margin-right: 8px;
-  height: 6px;
-  border-radius: 8px;
-  background: #dddddd;
-}
-.statusColor3 {
-  width: 6px;
-  margin-right: 8px;
-  height: 6px;
-  border-radius: 8px;
-  background: var(--q-color-primary);
-}
+  &.el-tabs--card > .el-tabs__header .el-tabs__item {
+    border: 1px solid #fafafa;
+    background: #fafafa;
+    margin: 0 8px 0 0;
+    border-radius: 8px 8px 0 0;
+  }
 
-.text-justify {
-  text-align: justify;
-  text-align-last: justify;
-}
+  &.el-tabs--card > .el-tabs__header .el-tabs__nav {
+    border: 0;
+  }
 
-.em-4 {
-  width: 4em;
+  &.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+    border: 1px solid #fff;
+    background: #fff;
+  }
 }
 </style>

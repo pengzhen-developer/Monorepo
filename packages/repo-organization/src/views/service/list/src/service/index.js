@@ -18,5 +18,24 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取我的服务列表卡片接口
+   *
+   * @param {*} params
+   */
+  getMyServiceCard(params) {
+    const isMock = false
+
+    const apiPath = 'console/Service/getServiceExistList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
