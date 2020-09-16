@@ -124,7 +124,7 @@ export default {
   height: 100%;
   background: #ebfbf9;
   border-radius: 10px;
-  opacity: 0.3;
+  opacity: 0.8;
   position: relative;
 
   display: flex;
@@ -148,7 +148,7 @@ export default {
   height: 42px;
   left: 8px;
   top: 8px;
-  opacity: 0.5;
+  opacity: 0.9;
 }
 
 .assistive-touch span {

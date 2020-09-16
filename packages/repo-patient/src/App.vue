@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <ActiveHome v-show="canShowActiveHome"></ActiveHome> -->
+    <ActiveHome v-show="canShowActiveHome"></ActiveHome>
 
     <div class="layout">
       <!-- 中部功能 keepAlive router  -->
@@ -67,16 +67,16 @@ import peace from '@src/library'
 import Vconsole from 'vconsole'
 
 // Active home
-// import ActiveHome from '@src/views/components/ActiveHome'
+import ActiveHome from '@src/views/components/ActiveHome'
 
 //微信sdk
 import wx from 'weixin-js-sdk'
 export default {
   name: 'app',
 
-  // components: {
-  //   ActiveHome
-  // },
+  components: {
+    ActiveHome
+  },
 
   data() {
     return {
@@ -132,16 +132,8 @@ export default {
           this.active = key
         }
 
-        const showActiveHomePathMap = [
-          '/home/index',
-          '/message/index',
-          '/file/index',
-          '/setting/index',
-          '/login',
-          '/WXAuth',
-          '/redirect'
-        ]
-        const index = showActiveHomePathMap.findIndex(item => item == this.$route.path)
+        const showActiveHomePathMap = ['/home/index', '/message/index', '/file/index', '/setting/index', '/login', '/WXAuth', '/redirect']
+        const index = showActiveHomePathMap.findIndex((item) => item == this.$route.path)
         this.canShowActiveHome = index > -1 ? false : true
       },
       immediate: true
@@ -186,7 +178,7 @@ export default {
   methods: {
     initShareConfig() {
       let url = location.href.split('#')[0]
-      peace.service.index.getWXSign({ url: url }).then(res => {
+      peace.service.index.getWXSign({ url: url }).then((res) => {
         for (let i in res.data) {
           if (i !== 'url') {
             this.config[i] = res.data[i]
