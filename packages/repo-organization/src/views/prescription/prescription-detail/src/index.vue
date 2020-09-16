@@ -126,6 +126,7 @@
               <span class="col text-weight-bold">
                 <el-image style="width: 56px;"
                           fit="contain"
+                          v-if="data.base64uniqueImage"
                           v-bind:title="data.PrescriptionPharmacistName"
                           v-bind:src="data.base64uniqueImage"
                           v-bind:preview-src-list="[data.base64uniqueImage]"></el-image>
