@@ -175,7 +175,7 @@
                      v-if="scope.row.ShippingMethod === 1">
                   <span>收件人：{{ scope.row.UserName }}</span>
                   <span>电话：{{ scope.row.UserPhone }}</span>
-                  <span>收件地址：{{ scope.row.Detailed }}</span>
+                  <span>收件地址：{{ scope.row.ReceiverState  + scope.row.ReceiverCity + scope.row.ReceiverDistrict + scope.row.Detailed }}</span>
                 </div>
 
                 <!-- 操作 -->
@@ -202,20 +202,25 @@
                   <span>{{ scope.row.DrugStoreName }}</span>
                 </div>
                 <div>
-                  <span class="q-mr-xl">共 {{ scope.row.TotalNumber }} 件商品</span>
-                  <span class="q-mr-xl">商品价格 ￥{{ scope.row.TotalAmount }}</span>
+                  <span class="q-mr-xl">
+                    共 {{ scope.row.TotalNumber }} 件商品
+                  </span>
+                  <span class="q-mr-xl">
+                    商品价格 ￥{{ scope.row.TotalAmount }}
+                  </span>
                   <span class="q-mr-xl text-red"
                         v-if="scope.row.YbDetails && scope.row.YbDetails.length > 0">
-                    医保抵扣 -￥{{ scope.row.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
+                    医保抵扣 -￥{{ scope.row.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+                  </span>
                   <span class="q-mr-xl text-red"
                         v-if="scope.row.SbDetails && scope.row.SbDetails.length > 0">
-                    商保抵扣 -￥{{ scope.row.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
+                    商保抵扣 -￥{{ scope.row.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+                  </span>
                   <span class="text-weight-bold text-subtitle1">
-                    {{ getPayAmountText(scope.row) }} ￥{{ scope.row.PayAmount }}
+                    {{ scope.row.IsPay ? '实付金额' : '应付金额' }} ￥{{ scope.row.PayAmount }}
                   </span>
                 </div>
               </div>
-
             </div>
           </template>
         </el-table-column>
@@ -389,22 +394,6 @@ export default {
       }
 
       return orderStatusTextClassMap[orderStatus]
-    },
-
-    getPayAmountText(row) {
-      const OrderStatusText = this.source.OrderStatus.find((item) => item.value === row.OrderStatus)?.label
-
-      if (row.ShippingMethod === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value) {
-        if (OrderStatusText === '已自提' || OrderStatusText === '已签收' || OrderStatusText === '已完成') {
-          return '实付金额'
-        } else {
-          return '应付金额'
-        }
-      }
-      // 配送订单全部显示【实付金额】
-      else if (row.ShippingMethod === this.source.ShippingMethod.find((item) => item.label === '配送订单')?.value) {
-        return '实付金额'
-      }
     },
 
     gotoPharmacyOrderDetail(row) {
