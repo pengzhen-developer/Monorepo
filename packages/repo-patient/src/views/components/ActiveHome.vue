@@ -1,19 +1,11 @@
 <template>
-  <!-- <div id="assistive-block"
-       class="assistive-wrap"
-       @click="home">
-    <div class="assistive-touch">
-      <van-image class="assistive-touch-icon"
-                 :src="require('@src/assets/images/activeHome.png')"></van-image>
-      <span>万家云医</span>
-    </div>
-  </div> -->
+
   <div id="assistive-block"
        class="assistive-wrap"
        @click="home">
     <div class="assistive-touch">
-      <van-icon class="assistive-touch-icon"
-                name="like-o"></van-icon>
+      <van-icon class="assistive-touch-icon icon"
+                :name="require('@src/assets/images/ic_back_home.png')"></van-icon>
     </div>
   </div>
 </template>
@@ -97,18 +89,6 @@ export default {
 
 
 <style lang="scss" scoped>
-// .assistive-wrap {
-//   width: 92px;
-//   height: 25px;
-//   position: fixed;
-//   top: 50%;
-//   margin-top: -12.5px;
-//   right: -8px;
-//   z-index: 5000;
-//   background: #ebfbf9;
-//   border-radius: 100px;
-//   color: $-color--primary;
-// }
 .assistive-wrap {
   width: 58px;
   height: 58px;
@@ -122,57 +102,18 @@ export default {
 .assistive-touch {
   width: 100%;
   height: 100%;
-  background: #ebfbf9;
-  border-radius: 10px;
-  opacity: 0.8;
   position: relative;
-
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.assistive-touch:before,
-.assistive-touch:after,
-.assistive-touch span {
-  content: '';
-  position: absolute;
-  border-radius: 100%;
-  box-shadow: 0 0 2px rgba(30, 30, 30, 0.5);
-  display: block;
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.assistive-touch:before {
-  width: 42px;
-  height: 42px;
-  left: 8px;
-  top: 8px;
-  opacity: 0.9;
-}
-
-.assistive-touch span {
-  // width: 34px;
-  // height: 34px;
-  // left: 12px;
-  // top: 12px;
-  font-size: 12px;
-  line-height: normal;
-  margin-left: 4px;
-}
-
-.assistive-touch:after {
-  width: 26px;
-  height: 26px;
-  left: 16px;
-  top: 16px;
-  background: #fff;
+  // box-shadow: 0 0 2px rgba(1, 198, 174, 0.5);
+  border-radius: 50%;
 }
 
 .assistive-touch-icon {
-  width: 12px;
-  height: 12px;
-  font-size: 12px;
+  width: 58px;
+  height: 58px;
+  font-size: 58px;
   font-weight: bold;
   color: $-color--primary;
 
