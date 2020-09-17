@@ -1,6 +1,5 @@
 import Peace from '@src/library'
-
-// import qs from 'qs'
+import qs from 'qs'
 
 export default {
   /**
@@ -9,14 +8,28 @@ export default {
    * @param {*} params
    */
   login(params) {
-    // params = qs.stringify(params)
-    params.grant_type = 'password'
+    let user = Peace.util.encryption({
+      data: params,
+      key: 'sksksksksksksksk',
+      param: ['password']
+    })
+    let dataObj = qs.stringify({ username: user.username, password: user.password })
+    let grant_type = 'password'
     const apiPath = 'auth/oauth/token'
     const serverPath = process.env.VUE_APP_SERVER_API
     const requestApi = serverPath + apiPath
-    //upms
-    // const grant_type = 'password'
-    return Peace.http.get(requestApi, { params })
+    return Peace.http({
+      url: requestApi,
+      headers: {
+        isToken: false,
+        'TENANT-ID': '1',
+        Authorization: 'Basic dXBtczp1cG1z=',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      method: 'post',
+      params: { grant_type },
+      data: dataObj
+    })
   },
 
   /**

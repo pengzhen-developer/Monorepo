@@ -92,10 +92,6 @@ export default {
     doLogin() {
       this.validateForm().then(() => {
         this.isLoading = true
-        // this.login().finally(() => {
-        //   this.redirectToHome()
-        //   this.isLoading = false
-        // })
         this.login()
           .then(this.getAccountMenuList)
           .then(this.redirectToHome)
@@ -117,9 +113,7 @@ export default {
     },
 
     login() {
-      //upms
-      const params = Peace.util.deepClone(this.model)
-      // params.password = Peace.util.aesEncrypt(params.password)
+      let params = Peace.util.deepClone(this.model)
       return Service.login(params).then((res) => {
         Util.user.setUserInfo(res)
         return Promise.resolve()

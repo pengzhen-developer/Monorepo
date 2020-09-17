@@ -22,13 +22,6 @@ Axios.interceptors.request.use(
     if (userInfo?.access_token) {
       config.headers.Authorization = 'Bearer ' + userInfo?.access_token
     }
-    //未登录 Authorization='Basic '+ client_id +client_secret（base64加密）
-    else {
-      // const client_id = 'upms'
-      // config.headers.Authorization = 'Basic ' + Util.encode(client_id)
-      config.headers.Authorization = 'Basic dXBtczp1cG1z'
-    }
-
     return config
   },
 
