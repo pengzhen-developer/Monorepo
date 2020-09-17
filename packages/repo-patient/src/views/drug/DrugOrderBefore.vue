@@ -684,7 +684,7 @@ export default {
 }
 .drug-from {
   background: #f9f9f9;
-  padding: 10px;
+  padding: 10px 10px 60px 10px;
   min-height: 100%;
   > .module {
     border-radius: 3px;
