@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dictList.length>0">
+  <div>
     <el-form ref="form"
              label-position="right"
              label-width="140px"
@@ -7,19 +7,26 @@
              v-bind:model="query"
              v-bind:rules="rules">
       <div class="info-content">
-        <el-form-item label="产品名称"
-                      prop="productName">
-          <el-input v-model.trim="query.productName"
-                    placeholder="请输入产品名称"></el-input>
+        <el-form-item label="菜单名称"
+                      prop="name">
+          <el-input v-model.trim="query.name"
+                    placeholder="请输入菜单名称"></el-input>
         </el-form-item>
-        <el-form-item label="产品编码"
-                      prop="productCode">
-          <el-select v-model="query.productCode"
-                     placeholder="请选择产品编码">
-            <el-option v-for="item in dictList"
-                       :key="item.name"
-                       :label="item.name"
-                       :value="item.code">
+        <el-form-item label="图标字体">
+          <el-input v-model.trim="query.icon"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input v-model.trim="query.sort"
+                    type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="菜单类型"
+                      prop="type">
+          <el-select v-model="query.type"
+                     placeholder="请选择菜单类型">
+            <el-option v-for="item in menuTypes"
+                       :key="item.value"
+                       :label="item.value"
+                       :value="item.key">
             </el-option>
           </el-select>
         </el-form-item>
@@ -39,35 +46,44 @@
 <script>
 import Peace from '@src/library'
 import Service from '../service'
+import Contant from '../contant'
 export default {
-  name: 'ProduceModel',
+  name: 'MenuModel',
   props: {
     info: Object
   },
   data() {
     return {
+      menuTypes: Contant.menuTypes,
       query: {
-        //编号
+        //菜单父id(根菜单约定为-1)
+        parentId: -1,
+        //终端id
         clientId: '',
-        //终端名称
-        productName: '',
+        //菜单名称
+        name: '',
         //产品编码
-        productCode: ''
+        productCode: '',
+        //菜单图标
+        icon: '',
+        //排序值 	integer($int32)
+        sort: '',
+        //菜单类型,0:菜单 1:按钮 2:顶菜单
+        type: ''
       },
-      dictList: [],
       loading: false,
       rules: {
-        productName: [
+        name: [
           {
             required: true,
-            message: '请输入输入产品名称',
+            message: '请输入菜单名称',
             trigger: 'blur'
           }
         ],
-        productCode: [
+        type: [
           {
             required: true,
-            message: '请输入选择产品编码',
+            message: '请选择菜单类型',
             trigger: 'blur'
           }
         ]
@@ -76,37 +92,46 @@ export default {
   },
 
   mounted() {
-    this.query = Object.assign({}, this.query, this.info)
-    this.getDict()
+    if (this.info?.mode !== 'update') {
+      const info = {
+        parentId: this.info.parentId,
+        clientId: this.info.clientId,
+        productCode: this.info.productCode
+      }
+      this.query = Object.assign({}, this.query, info)
+    } else {
+      this.query = Object.assign({}, this.query, this.info)
+    }
   },
   methods: {
-    getDict() {
-      Service.product()
-        .getDict()
-        .then((res) => {
-          this.dictList = res.data
-        })
-    },
     save() {
       this.validateForm().then(() => {
         this.loading = true
         const params = Peace.util.deepClone(this.query)
-        if (!this.info?.productId) {
-          Service.product()
+        if (this.info?.mode != 'update') {
+          Service.menu()
             .post(params)
             .then(() => {
               Peace.util.success('新建成功')
-              this.cancelDialog()
+
+              this.$nextTick(() => {
+                this.$refs.form.resetFields()
+                this.cancelDialog()
+              })
             })
             .finally(() => {
               this.loading = false
             })
         } else {
-          Service.product()
+          Service.menu()
             .put(params)
             .then(() => {
               Peace.util.success('修改成功')
-              this.cancelDialog()
+
+              this.$nextTick(() => {
+                this.$refs.form.resetFields()
+                this.cancelDialog()
+              })
             })
             .finally(() => {
               this.loading = false

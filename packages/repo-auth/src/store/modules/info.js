@@ -23,7 +23,6 @@ const mutations = {
     state.user = data
   },
   setMenuInfo(state, data) {
-    console.log(data)
     state.menu = data
   },
   setRoleInfo(state, data) {

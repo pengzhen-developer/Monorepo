@@ -3,17 +3,20 @@
     <div class="card q-mb-md">
       <el-button style="width: 80px;"
                  type="primary"
-                 v-on:click="onOpenTerminalModel('create',{})">新增</el-button>
+                 v-on:click="onOpenMenuModel('create',{})">新增</el-button>
     </div>
     <div class="card">
-      <PeaceTable ref="table"
-                  size="mini">
+      <el-table row-key="id"
+                default-expand-all
+                v-bind:tree-props="{children: 'children', hasChildren: 'hasChildrens'}"
+                v-bind:data='list'
+                size="mini">
 
-        <el-table-column show-overflow-tooltip
-                         label="菜单名称"
-                         min-width="220px"
+        <el-table-column label="菜单名称"
+                         min-width="140px"
                          prop="name"
                          align="left">
+
         </el-table-column>
         <el-table-column label="图标"
                          align="center"
@@ -29,26 +32,33 @@
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
-                       v-on:click="onOpenTerminalModel('update',scope.row)">新增菜单</el-button>
+                       v-on:click="onOpenMenuModel('child',scope.row)">新增菜单</el-button>
             <el-button class="q-px-none"
                        type="text"
-                       v-on:click="onOpenTerminalModel('update',scope.row)">路由管理</el-button>
+                       v-on:click="onOpenMenuRouteModel(scope.row)">路由管理</el-button>
             <el-button class="q-px-none"
                        type="text"
-                       v-on:click="onOpenTerminalModel('update',scope.row)">编辑</el-button>
+                       v-on:click="onOpenMenuModel('update',scope.row)">修改</el-button>
             <el-button class="q-px-none"
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
-      </PeaceTable>
+      </el-table>
     </div>
-    <el-dialog v-if="dialog.visible"
+    <el-dialog v-if="dialogMenu.visible"
                width="450px"
-               v-bind:visible.sync="dialog.visible"
-               :title="dialog.type=='create'?'新建产品':'修改产品'">
+               v-bind:visible.sync="dialogMenu.visible"
+               :title="dialogMenu.type!=='update'?'新建菜单':'编辑菜单'">
       <MenuModel v-on:onClose="onClose"
-                 v-bind:info="dialog.data"></MenuModel>
+                 v-bind:info="dialogMenu.data"></MenuModel>
+    </el-dialog>
+    <el-dialog v-if="dialogMenuRoute.visible"
+               width="900px"
+               v-bind:visible.sync="dialogMenuRoute.visible"
+               title="路由管理">
+      <MenuRouteModel v-on:onClose="onClose"
+                      v-bind:info="dialogMenuRoute.data"></MenuRouteModel>
     </el-dialog>
   </div>
 
@@ -57,13 +67,20 @@
 <script>
 import Service from '../service'
 import MenuModel from './MenuModel'
+import MenuRouteModel from './MenuRouteModel'
 import Peace from '@src/library'
 export default {
   name: 'MenuMain',
-  components: { MenuModel },
+  components: { MenuModel, MenuRouteModel },
   data() {
     return {
-      dialog: {
+      list: [],
+      dialogMenu: {
+        type: 'create',
+        visible: false,
+        data: {}
+      },
+      dialogMenuRoute: {
         type: 'create',
         visible: false,
         data: {}
@@ -83,23 +100,44 @@ export default {
 
   methods: {
     getList() {
-      const params = { productId: this.$store.state.info.menu.productId }
-      const fetch = Service.menu().getList
-      this.$refs.table.reloadData({ fetch, params })
+      const params = { clientId: this.$store.state.info.menu.clientId, productCode: this.$store.state.info.menu.productCode }
+      Service.menu()
+        .getList(params)
+        .then((res) => {
+          this.list = res.data
+        })
     },
-    onOpenTerminalModel(type, data) {
-      this.dialog.visible = true
-      this.dialog.type = type
+    onOpenMenuModel(type, data) {
+      this.dialogMenu.visible = true
+      this.dialogMenu.type = type
       data.clientId = this.$store.state.info.menu.clientId
-      data.productId = this.$store.state.info.menu.productId
-      this.dialog.data = data
+      data.productCode = this.$store.state.info.menu.productCode
+      switch (type) {
+        case 'create':
+          data.parentId = -1
+          break
+        case 'child':
+          data.parentId = data.id
+          break
+        default:
+          break
+      }
+
+      data.mode = type
+      data.menuId = data.id
+      this.dialogMenu.data = data
     },
     onClose() {
-      this.dialog.visible = false
+      this.dialogMenu.visible = false
+      this.dialogMenuRoute.visible = false
       this.getList()
     },
+    onOpenMenuRouteModel(data) {
+      this.dialogMenuRoute.visible = true
+      this.dialogMenuRoute.data = data
+    },
     deleteItem(data) {
-      const params = { productId: data.productId }
+      const params = { id: data.id }
       this.$confirm('确定删除吗？').then(() => {
         Service.menu()
           .delete(params)
