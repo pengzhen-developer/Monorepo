@@ -96,7 +96,7 @@ export default {
           .then(this.getAccountMenuList)
           .then(this.redirectToHome)
           .finally(() => {
-            Peace.util.alert('登录成功！')
+            // Peace.util.alert('登录成功！')
             this.isLoading = false
           })
       })

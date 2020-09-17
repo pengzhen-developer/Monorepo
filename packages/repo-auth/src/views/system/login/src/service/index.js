@@ -18,15 +18,15 @@ export default {
     const apiPath = 'auth/oauth/token'
     const serverPath = process.env.VUE_APP_SERVER_API
     const requestApi = serverPath + apiPath
-    return Peace.http({
+    return Peace.http.request({
+      method: 'post',
       url: requestApi,
       headers: {
-        isToken: false,
-        'TENANT-ID': '1',
-        Authorization: 'Basic dXBtczp1cG1z=',
+        //未登录 Authorization='Basic '+ client_id:client_secret（base64加密）
+        // upms:upms
+        Authorization: `Basic ${Peace.util.encode('upms:upms')}`,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      method: 'post',
       params: { grant_type },
       data: dataObj
     })

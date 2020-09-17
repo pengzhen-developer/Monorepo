@@ -10,8 +10,26 @@ import Axios from 'axios'
 import Download from './download'
 import Retry from './retry'
 
+const errorCode = {
+  '000': '操作太频繁，请勿重复请求',
+  '401': '当前操作没有权限',
+  '403': '当前操作没有权限',
+  '404': '资源不存在',
+  '417': '未绑定登录账号，请使用密码登录后绑定',
+  '423': '演示环境不能操作，如需了解联系我们',
+  '426': '用户名不存在或密码错误',
+  '428': '验证码错误,请重新输入',
+  '429': '请求过频繁',
+  '479': '演示环境，没有权限操作',
+  default: '系统未知错误,请反馈给管理员'
+}
+
 Axios.download = Download
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
+// 返回其他状态码
+Axios.defaults.validateStatus = function(status) {
+  return status >= 200 && status <= 500 // 默认的
+}
 
 // Request interceptor
 Axios.interceptors.request.use(
@@ -34,38 +52,39 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   function(response) {
     // Success
-    //swagger登录接口结构不一致。。。
+    const status = Number(response.status) || 200
+    const message = response.data.msg || errorCode[status] || errorCode['default']
 
-    if (response?.status == 200 && !response?.data?.code) {
-      return response.data
-    }
-    if (response?.data?.code === 200) {
-      return response.data
-    }
-
-    // Error
-    if (response?.data?.code === 201) {
-      Util.warning(response.data.msg)
-
-      return Promise.reject(response)
-    }
-
-    // Auth fail
-    else if (response?.data?.code === 401) {
-      Util.warning(response.data.msg)
-
+    if (status === 200) {
+      if (response?.data?.code === 200 || !response.code) {
+        return response.data
+      }
+      if (response?.data?.code === 201) {
+        // Error
+        Util.warning(message)
+        return Promise.reject(response)
+      } else if (response?.data?.code === 401) {
+        // Auth fail
+        Util.warning(message)
+        LibraryUtil.user.removeUserInfo()
+        setTimeout(() => {
+          LibraryUtil.user.replaceToLogin()
+        }, 1000)
+        return Promise.reject(response)
+      } else {
+        // Unknown
+        Util.warning(message)
+        return Promise.reject(response.data)
+      }
+    } else if (status === 401) {
+      Util.warning(message)
       LibraryUtil.user.removeUserInfo()
       setTimeout(() => {
         LibraryUtil.user.replaceToLogin()
       }, 1000)
-
       return Promise.reject(response)
-    }
-
-    // Unknown
-    else {
-      Util.warning(response.data.msg)
-
+    } else {
+      Util.warning(message)
       return Promise.reject(response.data)
     }
   },
