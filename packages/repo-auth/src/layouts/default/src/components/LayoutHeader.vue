@@ -53,20 +53,32 @@
         </q-btn>
       </div>
     </div>
+    <peace-dialog title="修改密码"
+                  width="470px"
+                  append-to-body
+                  v-if="dialog.visible"
+                  v-bind:visible.sync="dialog.visible">
+      <ChangePassword @onClose="onClose"></ChangePassword>
+    </peace-dialog>
   </q-toolbar>
 </template>
 
 <script>
 import Util from '@src/util'
-
+import ChangePassword from '@src/views/components/changePassword'
 export default {
+  components: { ChangePassword },
   inject: ['provideToggleDrawer'],
 
   data() {
     return {
       configuration: window.configuration,
 
-      user: undefined
+      user: undefined,
+
+      dialog: {
+        visible: false
+      }
     }
   },
 
@@ -90,7 +102,10 @@ export default {
 
   methods: {
     changePassword() {
-      this.$router.push('/user-center')
+      this.dialog.visible = true
+    },
+    onClose() {
+      this.dialog.visible = false
     },
     signOut() {
       Util.user.removeUserInfo()

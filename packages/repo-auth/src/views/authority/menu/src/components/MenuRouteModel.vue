@@ -31,8 +31,8 @@
             <span class="text-center q-ml-sm">：</span>
           </div>
           <el-switch v-model.trim="query.routeType"
-                     active-value="1"
-                     inactive-value="2"></el-switch>
+                     :active-value="1"
+                     :inactive-value="2"></el-switch>
 
         </el-form-item>
         <el-form-item class="tow-col">
@@ -42,7 +42,9 @@
             <span class="text-center q-ml-sm">：</span>
           </div>
 
-          <el-switch v-model.trim="query.enable"></el-switch>
+          <el-switch v-model.trim="query.enable"
+                     active-value="1"
+                     inactive-value="0"></el-switch>
 
         </el-form-item>
         <el-form-item class="tow-col">
@@ -51,7 +53,9 @@
             <span class="text-justify">是否可关闭</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
-          <el-switch v-model.trim="query.closable"></el-switch>
+          <el-switch v-model.trim="query.closable"
+                     active-value="1"
+                     inactive-value="0"></el-switch>
         </el-form-item>
       </div>
       <div class="text-center">
@@ -59,6 +63,10 @@
                    class="large hasmargin "
                    v-bind:disabled="loading"
                    v-on:click="save">确 定</el-button>
+        <el-button type="default"
+                   class="large hasmargin "
+                   v-bind:disabled="loading"
+                   v-on:click="cancel">取 消</el-button>
       </div>
     </el-form>
     <div class="list q-mt-md">
@@ -67,8 +75,7 @@
                          align="left"
                          min-width="100px"
                          prop="routeType">
-          <template slot-scope="scope"
-                    name="routeType">
+          <template slot-scope="scope">
             {{scope.row.routeType==1?'主路由':'子路由'}}
           </template>
         </el-table-column>
@@ -90,12 +97,14 @@
         <el-table-column label="操作"
                          align="center"
                          min-width="100px">
-          <el-button class="q-px-none"
-                     type="text"
-                     v-on:click="updateSubRoute(item)">修改</el-button>
-          <el-button class="q-px-none"
-                     type="text"
-                     v-on:click="deleteSubRoute(item)">删除</el-button>
+          <template slot-scope="scope">
+            <el-button class="q-px-none"
+                       type="text"
+                       v-on:click="updateSubRoute(scope.row)">修改</el-button>
+            <el-button class="q-px-none"
+                       type="text"
+                       v-on:click="deleteSubRoute(scope.row)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
@@ -115,10 +124,10 @@ export default {
     return {
       menuRoutes: [],
       query: {
-        //标签页状态-是否可关闭
-        closable: '',
-        //标签页状态-是否可启用
-        enable: '',
+        //标签页状态-是否可关闭 0 1
+        closable: '1',
+        //标签页状态-是否可启用 0 1
+        enable: '1',
         //菜单id
         menuId: '',
         //组件名称
@@ -130,9 +139,10 @@ export default {
         //路由地址
         routePath: '',
         //路由类型（1：主路由，2：子路由）
-        routeType: ''
+        routeType: 1
       },
       loading: false,
+      type: 'create',
       rules: {
         routeName: [
           {
@@ -171,11 +181,14 @@ export default {
     this.getMenuRoute()
   },
   methods: {
+    cancel() {
+      this.$refs.form.resetFields()
+    },
     save() {
       this.validateForm().then(() => {
         this.loading = true
         const params = Peace.util.deepClone(this.query)
-        if (!this.query.menuId) {
+        if (this.type == 'create') {
           Service.menuRoute()
             .post(params)
             .then(() => {
@@ -207,6 +220,7 @@ export default {
       })
     },
     updateSubRoute(data) {
+      this.type = 'update'
       this.query = Object.assign({}, this.query, data)
     },
     deleteSubRoute(data) {

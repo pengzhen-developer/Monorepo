@@ -91,6 +91,21 @@ export default {
       sort: 0
     },
     {
+      index: 16,
+      id: '100016',
+      parentId: 10001,
+      menuName: '动态路由',
+      menuIcon: '',
+      menuRoute: '/authority/route',
+      menuPath: 'views/authority/route',
+      menuAlias: '',
+      enable: 0,
+      virtual: 0,
+      closable: 1,
+      deep: 2,
+      sort: 0
+    },
+    {
       index: 2,
       id: '10002',
       parentId: null,
