@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center"
        style="padding-top: 10vh">
-    <el-form v-bind:model="model"
+    <!-- <el-form v-bind:model="model"
              label-width="auto">
       <el-form-item>
         <div class="flex inline"
@@ -44,7 +44,7 @@
         <i class="cursor-pointer el-icon-edit text-primary text-weight-bold"
            v-on:click="openDialog"></i>
       </el-form-item>
-    </el-form>
+    </el-form> -->
 
     <peace-dialog title="修改密码"
                   width="470px"
@@ -88,7 +88,8 @@
             <i v-show="dialog.showNewPwdIcon || dialog.model.newPwd"
                @click="dialog.showNewPwd = !dialog.showNewPwd"
                slot="suffix"
-               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i></el-input>
+               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i>
+          </el-input>
         </el-form-item>
 
         <div class="text-center q-pt-md">
@@ -109,6 +110,7 @@
 <script>
 import Peace from '@src/library'
 import Service from './service'
+import Util from '@src/util'
 
 export default {
   data() {
@@ -158,9 +160,14 @@ export default {
     },
 
     getPersonBaseInfo() {
-      Service.getPersonBaseInfo().then((res) => {
-        this.model = Object.assign({}, this.model, res.data)
-      })
+      const params = {
+        id: Util?.user?.getUserInfo()?.id
+      }
+      Service.user()
+        .get(params)
+        .then((res) => {
+          this.model = Object.assign({}, this.model, res.data)
+        })
     },
 
     openDialog() {

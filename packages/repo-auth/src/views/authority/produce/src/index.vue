@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import ProduceMain from './compenents/ProduceMain'
-import ProduceAside from './compenents/ProduceAside'
+import ProduceMain from './components/ProduceMain'
+import ProduceAside from './components/ProduceAside'
 export default {
   name: 'Produce',
   components: { ProduceMain, ProduceAside }

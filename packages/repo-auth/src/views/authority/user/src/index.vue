@@ -1,12 +1,27 @@
 <template>
-  <div>
-    用户管理
+  <div class="layout-route ">
+    <div class="full-width flex no-wrap bg-white">
+      <UserAside class="aside"></UserAside>
+      <UserMain class="main "></UserMain>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+import UserMain from './components/UserMain'
+import UserAside from './components/UserAside'
+export default {
+  name: 'User',
+  components: { UserMain, UserAside }
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
+.aside {
+  min-width: 200px;
+  margin-top: 20px;
+}
+.main {
+  flex: 1;
+}
 </style>

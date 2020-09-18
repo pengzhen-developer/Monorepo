@@ -1,0 +1,102 @@
+<template>
+  <div>
+    <div class="card">
+      <el-form inline
+               :model="query">
+        <el-form-item label="登录账号">
+          <el-input v-model="query.username"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="width: 80px;"
+                     type="primary"
+                     v-on:click="search">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="width: 80px;"
+                     type="default"
+                     v-on:click="clear">清空</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="card">
+      <PeaceTable ref="table"
+                  size="mini"
+                  v-bind:page-size="5"
+                  pagination>
+        <el-table-column show-overflow-tooltip
+                         type="index"
+                         label="序号"
+                         min-width="70px"
+                         align="center">
+
+        </el-table-column>
+        <el-table-column show-overflow-tooltip
+                         label="登录账号"
+                         min-width="220px"
+                         prop="productName"
+                         align="left">
+
+        </el-table-column>
+        <el-table-column show-overflow-tooltip
+                         label="角色"
+                         min-width="220px"
+                         prop="productName"
+                         align="center">
+
+        </el-table-column>
+        <el-table-column show-overflow-tooltip
+                         label="所属终端"
+                         min-width="220px"
+                         prop="productName"
+                         align="center">
+
+        </el-table-column>
+        <el-table-column label="创建时间"
+                         align="center"
+                         min-width="220px"
+                         prop="createTime"></el-table-column>
+      </PeaceTable>
+    </div>
+  </div>
+
+</template>
+
+<script>
+import Service from '../service'
+// import Peace from '@src/library'
+export default {
+  name: 'UserMain',
+  data() {
+    return {
+      query: {
+        username: '',
+        clientId: ''
+      }
+    }
+  },
+  watch: {
+    '$store.state.info.user.clientId'() {
+      this.query.clientId = this.$store.state.info.user.clientId
+      this.getList()
+    }
+  },
+
+  methods: {
+    search() {
+      this.getList()
+    },
+    clear() {
+      this.query.username = ''
+    },
+    getList() {
+      const params = this.query
+      const fetch = Service.user().getList
+      this.$refs.table.reloadData({ fetch, params })
+    }
+  }
+}
+</script>
+
+<style>
+</style>

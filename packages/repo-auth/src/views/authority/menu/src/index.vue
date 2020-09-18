@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import MenuMain from './compenents/MenuMain'
-import MenuAside from './compenents/MenuAside'
+import MenuMain from './components/MenuMain'
+import MenuAside from './components/MenuAside'
 export default {
   name: 'Menu',
   components: { MenuMain, MenuAside }

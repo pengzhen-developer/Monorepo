@@ -34,7 +34,13 @@
                     bordered
                     padding
                     class="rounded-borders">
-
+              <q-item clickable
+                      v-ripple
+                      v-on:click="changePassword">
+                <q-item-section>
+                  修改密码
+                </q-item-section>
+              </q-item>
               <q-item clickable
                       v-ripple
                       v-on:click="signOut">
@@ -83,6 +89,9 @@ export default {
   },
 
   methods: {
+    changePassword() {
+      this.$router.push('/user-center')
+    },
     signOut() {
       Util.user.removeUserInfo()
       Util.route.replaceToLogin()

@@ -31,7 +31,6 @@
             <span class="text-center q-ml-sm">：</span>
           </div>
           <el-switch v-model.trim="query.routeType"
-                     v-bind:disabled="hasMainRoute"
                      active-value="1"
                      inactive-value="2"></el-switch>
 
@@ -164,11 +163,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  computed: {
-    hasMainRoute() {
-      return this.menuRoutes.find((item) => item.routeType == 1) ? true : false
     }
   },
   mounted() {

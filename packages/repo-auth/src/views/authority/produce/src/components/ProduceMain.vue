@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card q-mb-md">
+    <div class="card">
       <el-button style="width: 80px;"
                  type="primary"
                  v-on:click="onOpenTerminalModel('create',{})">新增</el-button>
