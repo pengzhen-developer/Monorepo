@@ -34,7 +34,6 @@ export default {
    * @param {*} params
    */
   loginByMobile(params) {
-    let dataObj = qs.stringify({ mobile: params.mobile, code: params.code })
     let grant_type = 'mobile'
     let authorization = `Basic ${Peace.util.encode(params.client_id + ':' + params.client_secret)}`
     const apiPath = 'auth/mobile/token/sms'
@@ -48,8 +47,7 @@ export default {
         Authorization: authorization,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      params: { grant_type },
-      data: dataObj
+      params: { mobile: params.mobile, code: params.code, grant_type }
     })
   }
 }

@@ -26,7 +26,7 @@ export default {
 
     try {
       params = Peace.util.queryUrlParam('params')
-      data = JSON.parse(params)
+      data = JSON.parse(decodeURIComponent(params))
     } catch (err) {
       console.log(err)
       this.errBack('参数解析错误！')
@@ -103,7 +103,7 @@ export default {
       )
     },
     redirect(result) {
-      let url = this.redirect_url + '?result=' + JSON.stringify(result) + '&params=' + JSON.stringify(this.params)
+      let url = this.redirect_url + '?result=' + encodeURIComponent(JSON.stringify(result)) + '&params=' + encodeURIComponent(JSON.stringify(this.params))
       window.location.href = url
     },
     errBack(message) {
