@@ -151,7 +151,7 @@ export default {
     },
 
     redirectToHome() {
-      Util.referer.replaceToReferer()
+      //Util.referer.replaceToReferer()
     }
   }
 }

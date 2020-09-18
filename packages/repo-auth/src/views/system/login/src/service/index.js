@@ -1,4 +1,6 @@
 import Peace from '@src/library'
+import Util from '@src/util'
+import http from './http'
 import qs from 'qs'
 
 export default {
@@ -8,7 +10,7 @@ export default {
    * @param {*} params
    */
   login(params) {
-    let user = Peace.util.encryption({
+    let user = Util.encryption({
       data: params,
       key: 'sksksksksksksksk',
       param: ['password']
@@ -18,7 +20,7 @@ export default {
     const apiPath = 'auth/oauth/token'
     const serverPath = process.env.VUE_APP_SERVER_API
     const requestApi = serverPath + apiPath
-    return Peace.http.request({
+    return http.request({
       method: 'post',
       url: requestApi,
       headers: {

@@ -70,6 +70,11 @@ export default function generateRoutes(/** configuration */) {
       component: () => import('@src/views/system/login')
     },
     {
+      path: '/auth',
+      name: '/auth',
+      component: () => import('@src/views/system/auth')
+    },
+    {
       path: '/layout/home',
       name: '/layout/home',
       component: () => import('@src/views/home')

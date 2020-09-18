@@ -1,6 +1,7 @@
 import user from './modules/user'
 import referer from './modules/referer'
 import route from './modules/route'
+import { encryption } from './modules/encryption'
 
 export default {
   /** 用户工具类 */
@@ -10,5 +11,8 @@ export default {
   referer,
 
   /** 路由工具类 */
-  route
+  route,
+
+  /** 加密 */
+  encryption
 }
