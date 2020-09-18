@@ -189,6 +189,13 @@ export default {
   },
 
   methods: {
+    seeMoreCase() {
+      const json = peace.util.encode({
+        familyId: this.internalData?.patientInfo?.familyId,
+        inquiryNo: this.internalData?.inquiryInfo?.inquiryNo
+      })
+      this.$router.push(`/components/FirstVisitList/${json}`)
+    },
     async get() {
       this.internalData = peace.util.decode(this.$route.params.json).InquiryOrder
       if (this.internalData != null) {
