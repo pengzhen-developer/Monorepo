@@ -13,8 +13,8 @@
 // url params 决定所属系统和所属用户
 // .e.g
 // host:port?[original-href=encodeURIComponent(original-href)]
-// original-href => decodeURIComponent => [cdkey=cdkey]&[title=title]&[configuration=configuration]&[serviceId=serviceId]
-// [cdkey] 身份识别码
+// original-href => decodeURIComponent => [token=token]&[title=title]&[configuration=configuration]&[serviceId=serviceId]
+// [token] 身份识别码
 // [title] 子系统名称
 // [configuration] 配置文件
 // [serviceId] 服务 ID
@@ -60,19 +60,18 @@ export default {
     },
 
     login() {
-      const cdkey = Peace.util.queryUrlParam('cdkey', this.original)
+      const token = Peace.util.queryUrlParam('token', this.original)
 
-      if (cdkey) {
-        const params = { cdkey }
+      if (token) {
+        Util.user.setUserToken(token)
 
-        return Service.doLogin(params).then((res) => {
-          Util.user.setUserCDKey(cdkey)
+        return Service.doLogin().then((res) => {
           Util.user.setUserInfo(res.data)
 
           return Promise.resolve()
         })
       } else {
-        return Promise.reject('缺少必要参数【cdkey】，请重新登录。')
+        return Promise.reject('缺少必要参数【token】，请重新登录。')
       }
     },
 

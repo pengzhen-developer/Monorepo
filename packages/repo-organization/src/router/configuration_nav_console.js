@@ -87,5 +87,44 @@ export default [
     iconType: null,
     enable: true,
     closable: true
+  },
+
+  {
+    id: '4',
+    parentId: null,
+    menuRouteName: null,
+    menuRoute: null,
+    menuName: '权限管理',
+    menuPath: null,
+    menuIcon: 'zyy-quanxianguanli',
+    iconType: 'Zyy Icons',
+    enable: null,
+    closable: null
+  },
+
+  {
+    id: '4-1',
+    parentId: '4',
+    menuRouteName: 'account/management',
+    menuRoute: '/account/management',
+    menuName: '账号管理',
+    menuPath: 'views/console/authorize/account',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
+  },
+
+  {
+    id: '4-2',
+    parentId: '4',
+    menuRouteName: 'role/management',
+    menuRoute: '/role/management',
+    menuName: '角色管理',
+    menuPath: 'views/console/authorize/role',
+    menuIcon: null,
+    iconType: null,
+    enable: true,
+    closable: true
   }
 ]

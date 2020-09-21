@@ -37,9 +37,9 @@ export default {
     this.src = this.$route.meta.menuPath
 
     if (this.src.indexOf('?') === -1) {
-      this.src = this.src + '?sso=true&cdkey=' + Util.user.getUserCDKey()
+      this.src = this.src + '?sso=true&token=' + Util.user.getUserToken()
     } else {
-      this.src = this.src + '&sso=true&&cdkey=' + Util.user.getUserCDKey()
+      this.src = this.src + '&sso=true&token=' + Util.user.getUserToken()
     }
   },
 

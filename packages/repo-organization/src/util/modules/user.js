@@ -2,33 +2,33 @@ import Peace from '@src/library'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
-const USER_CD_KEY = 'user_cd_key'
+const USER_TOKEN = 'user_token'
 const ACCOUNT_MENU_LIST = 'account_menu_list'
 
 /**
- * 缓存用户 cdkey
+ * 缓存用户 token
  *
- * @param {*} userInfo cdkey
+ * @param {*} token
  * @returns
  */
-export const setUserCDKey = (cdkey) => {
-  return Peace.cache.localStorage.set(USER_CD_KEY, cdkey)
+export const setUserToken = (token) => {
+  return Peace.cache.localStorage.set(USER_TOKEN, token)
 }
 /**
- * 获取用户 cdkey
+ * 获取用户 token
  *
  * @returns
  */
-export const getUserCDKey = () => {
-  return Peace.cache.localStorage.get(USER_CD_KEY)
+export const getUserToken = () => {
+  return Peace.cache.localStorage.get(USER_TOKEN)
 }
 
 /**
- * 清空用户 cdkey
+ * 清空用户 token
  *
  */
-export const removeUserCDKey = () => {
-  return Peace.cache.localStorage.remove(USER_CD_KEY)
+export const removeUserToken = () => {
+  return Peace.cache.localStorage.remove(USER_TOKEN)
 }
 
 /**
@@ -54,7 +54,7 @@ export const getUserInfo = () => {
  */
 export const removeUserInfo = () => {
   Peace.cache.localStorage.remove(USER_INFO)
-  Peace.cache.localStorage.remove(USER_CD_KEY)
+  Peace.cache.localStorage.remove(USER_TOKEN)
 
   // 请查看 boot/boot_configuration/index.js
 
@@ -110,9 +110,9 @@ export default {
   getUserInfo,
   removeUserInfo,
 
-  setUserCDKey,
-  getUserCDKey,
-  removeUserCDKey,
+  setUserToken,
+  getUserToken,
+  removeUserToken,
 
   setAccountMenuList,
   getAccountMenuList,

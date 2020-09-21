@@ -11,15 +11,15 @@ import Download from './download'
 import Retry from './retry'
 
 Axios.download = Download
-Axios.defaults.headers.post['Content-Type'] = 'agreements/json'
+Axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // Request interceptor
 Axios.interceptors.request.use(
   function(config) {
     // Set Authority
-    const userInfo = LibraryUtil.user.getUserInfo()
-    if (userInfo?.token) {
-      config.headers.Token = userInfo?.token
+    const token = LibraryUtil.user.getUserToken()
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token
     }
 
     return config

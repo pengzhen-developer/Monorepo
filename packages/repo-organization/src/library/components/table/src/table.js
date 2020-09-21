@@ -135,6 +135,7 @@ export default {
       // 获取当前的分页信息
       if (this.Pagination) {
         this.config.params.p = this.Pagination.internalCurrentPage
+        this.config.params.current = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
       }
 

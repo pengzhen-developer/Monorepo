@@ -1,0 +1,242 @@
+<template>
+  <div>
+    <el-form ref="form"
+             label-width="96px"
+             v-bind:model="model"
+             v-bind:rules="model.id ? editRules : addRules">
+      <el-form-item :prop="model.id ? '' : 'account'">
+        <span slot="label"
+              class="form-label">账号</span>
+        <el-input v-model.trim="model.account"
+                  :disabled="model.id ? true : false"
+                  maxlength="10"
+                  placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <span slot="label"
+              class="form-label">密码</span>
+        <el-input v-model.trim="model.password"
+                  show-password
+                  minlength="6"
+                  maxlength="20"
+                  placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item prop="name">
+        <span slot="label"
+              class="form-label">姓名</span>
+        <el-input v-model.trim="model.name"
+                  placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item prop="role">
+        <span slot="label"
+              class="form-label">角色</span>
+        <el-select v-model="model.role"
+                   placeholder="请选择"
+                   style="width: 100%;">
+          <el-option v-for="(value, label) in CONSTANT.ENUM_ACCOUNT_STATUS"
+                     v-bind:key="value"
+                     v-bind:label="label"
+                     v-bind:value="value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-show="!model.id"
+                    prop="status">
+        <span slot="label"
+              class="form-label">账号状态</span>
+        <el-radio-group v-model="model.status">
+          <el-radio :label="1">启用</el-radio>
+          <el-radio :label="2">禁用</el-radio>
+          <!-- <el-radio v-for="(item, index) in CONSTANT.ENUM_ACCOUNT_STATUS"
+                    :label="item"
+                    :key="item">{{index}}</el-radio> -->
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label=" ">
+        <el-button type="primary"
+                   v-bind:loading="isLoading"
+                   v-on:click="submit">提 交</el-button>
+        <el-button v-on:click="close">取 消</el-button>
+      </el-form-item>
+    </el-form>
+
+  </div>
+</template>
+
+<script>
+import CONSTANT from '../constant'
+import Peace from '@src/library'
+import Service from '../service'
+
+export default {
+  filters: {
+    getEnumLabel: function (value, ENUM) {
+      return Object.keys(ENUM).find((key) => ENUM[key] === value)
+    }
+  },
+
+  data() {
+    // 校验数字和字母
+    let validateNumberCharacter = (rule, value, callback) => {
+      let pattern = /^[a-zA-Z0-9]*$/
+      if (pattern.test(value)) {
+        callback()
+      } else {
+        return callback(new Error())
+      }
+    }
+    // 校验中英文
+    let validateChineseEnglish = (rule, value, callback) => {
+      let pattern = /^[\u4e00-\u9fa5_a-zA-Z]*$/
+      if (pattern.test(value)) {
+        callback()
+      } else {
+        return callback(new Error())
+      }
+    }
+    // 校验电话
+    let validateTel = (rule, value, callback) => {
+      if (Peace.validate.isMobile(value)) {
+        callback()
+      } else {
+        return callback(new Error())
+      }
+    }
+    return {
+      CONSTANT,
+      isLoading: false,
+      model: {
+        id: '',
+        account: '',
+        password: '',
+        name: '',
+        role: '',
+        status: ''
+      },
+
+      addRules: {
+        account: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: validateTel, message: '请输入正确的手机号', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
+          { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
+        ],
+        name: [
+          { required: true, message: '请填写姓名', trigger: 'blur' },
+          { min: 1, max: 10, message: '姓名长度为1 - 10位', trigger: 'blur' },
+          { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
+        ],
+        role: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        status: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
+      },
+      editRules: {
+        account: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: validateTel, message: '请输入正确的手机号', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
+          { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
+        ],
+        name: [
+          { required: true, message: '请填写姓名', trigger: 'blur' },
+          { min: 1, max: 10, message: '姓名长度为1 - 10位', trigger: 'blur' },
+          { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
+        ],
+        role: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        status: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
+      }
+    }
+  },
+
+  computed: {},
+
+  methods: {
+    init(id) {
+      this.model.id = id || 0
+      this.$nextTick(() => {
+        this.$refs.form.resetFields()
+
+        if (this.model.id) {
+          Service.getAccountInfo({ accountId: this.model.id }).then((res) => {
+            this.model = res.data
+          })
+        }
+      })
+    },
+
+    submit() {
+      this.validateForm().then(() => {
+        this.isLoading = true
+
+        const params = Peace.util.deepClone(this.model)
+
+        if (this.model.id) {
+          Service.editAccount(params)
+            .then(() => {
+              Peace.util.success('保存成功')
+              this.$emit('close')
+              this.$emit('refresh')
+              this.isLoading = false
+            })
+            .catch(() => {
+              this.isLoading = false
+            })
+        } else {
+          Service.addAccount(params)
+            .then(() => {
+              Peace.util.success('保存成功')
+              this.$emit('close')
+              this.$emit('refresh')
+              this.isLoading = false
+            })
+            .catch(() => {
+              this.isLoading = false
+            })
+        }
+      })
+    },
+
+    close() {
+      this.$emit('close')
+    },
+
+    validateForm() {
+      return new Promise((resolve) => {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            resolve()
+          }
+        })
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+::v-deep .el-input.is-disabled .el-input__inner {
+  background-color: #fafafa;
+  border-color: #dcdfe6;
+  color: #333333;
+  opacity: 1 !important;
+}
+
+.form-label {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  padding-right: 12px;
+  text-align: justify;
+  text-align-last: justify;
+  &::after {
+    content: '：';
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+</style>

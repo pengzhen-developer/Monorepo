@@ -6,7 +6,7 @@ export default {
    *
    * @param {*} params
    */
-  doLogin(params) {
+  doLogin() {
     const isMock = false
 
     const apiPath = 'console/Account/auth'
@@ -15,7 +15,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.post(requestApi).then((res) => {
       return res
     })
   },

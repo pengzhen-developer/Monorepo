@@ -206,7 +206,7 @@ export default {
       })
     },
     redirectSerivceSite(product) {
-      const cdKey = Util.user.getUserCDKey()
+      const token = Util.user.getUserToken()
       const configMap = [
         { serviceName: '互联网医院管理端', serviceType: 1, config: 'organization' },
         { serviceName: '处方管理医院端', serviceType: 3, config: 'prescription' },
@@ -216,7 +216,7 @@ export default {
       const config = configMap.find((item) => item.serviceType == product.serviceType).config
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
 
-      window.open(`${window.location.origin}${FLODER_PATH}?cdkey=${cdKey}&configuration=${config}&title=${product.serviceName}&serviceId=${product.serviceId}`)
+      window.open(`${window.location.origin}${FLODER_PATH}?token=${token}&configuration=${config}&title=${product.serviceName}&serviceId=${product.serviceId}`)
     },
 
     //申请开通用药建议成功后的方法

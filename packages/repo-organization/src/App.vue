@@ -25,9 +25,9 @@ export default {
     // set title
     window.configuration.application.title = title || window.configuration.application.title
 
-    const cdkey = Peace.util.queryUrlParam('cdkey')
+    const token = Peace.util.queryUrlParam('token')
 
-    if (cdkey) {
+    if (token) {
       if (original !== window.location.href) {
         // 清理 session
         Peace.cache.sessionStorage.clear()
