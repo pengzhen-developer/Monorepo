@@ -28,12 +28,19 @@ Http.interceptors.response.use(
   },
 
   function(error) {
-    console.log(error)
-    return Promise.reject({
-      code: 500,
-      data: error,
-      msg: '网络请求错误'
-    })
+    let result = {}
+    if (error?.response?.status) {
+      if (error.response.status > 200 && error.response.status < 500) {
+        result = error.response.data
+      } else {
+        result = {
+          code: 500,
+          data: null,
+          msg: '服务器异常，请稍后再试'
+        }
+      }
+    }
+    return Promise.reject(result)
   }
 )
 
