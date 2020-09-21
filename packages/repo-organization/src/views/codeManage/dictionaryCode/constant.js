@@ -2,7 +2,7 @@ export default {
   /**
    * 外链链接
    */
-  IFRAME_URL: {
+  IFRAME_SRC_MAP: {
     给药途径: {
       left: '/DrugsAttrMapping/RouteNameMapping',
       right: '/DrugsAttrMapping/RouteNameMappingExamine'

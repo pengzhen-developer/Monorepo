@@ -1,11 +1,11 @@
 <template>
   <div class="layout-route">
     <div class="tab-menu row">
-      <div v-bind:class="{ active: activeName === '给药途径', normal: activeName !== '给药途径' }"
+      <div v-bind:class="{ active: activeName === '给药途径', normal: activeName !== '给药途径'}"
            v-on:click="handleClick('给药途径')">给药途径</div>
-      <div v-bind:class="{ active: activeName === '用药频次', normal: activeName !== '用药频次' }"
+      <div v-bind:class="{ active: activeName === '用药频次', normal: activeName !== '用药频次'}"
            v-on:click="handleClick('用药频次')">用药频次</div>
-      <div v-bind:class="{ active: activeName === '用药单位', normal: activeName !== '用药单位' }"
+      <div v-bind:class="{ active: activeName === '用药单位', normal: activeName !== '用药单位'}"
            v-on:click="handleClick('用药单位')">用药单位</div>
     </div>
     <div class="card card-search text-center">
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       loading: true,
-      activeName: '基本药物',
+      activeName: '给药途径',
       tabPosition: 'left',
       model: {
         words: '',
@@ -54,8 +54,7 @@ export default {
         checkStatus: ''
       },
       source: {
-        CODEMANAGER_STATUS: CONSTANT.CODEMANAGER_STATUS,
-        CHECK_STATUS: CONSTANT.CHECK_STATUS
+        IFRAME_SRC_MAP: CONSTANT.IFRAME_SRC_MAP
       },
       routerViewIframeStyle: {}
     }
@@ -84,7 +83,7 @@ export default {
 
   computed: {
     iframeSrc() {
-      const url = CONSTANT.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
+      const url = this.source.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
       if (url) {
         return process.env.VUE_APP_PRESCRIPTION_SITE + url + '?sso=true&cdkey=' + Util.user.getUserCDKey()
       } else {

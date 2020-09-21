@@ -6,10 +6,10 @@ export default {
    *
    * @param {*} params
    */
-  getAccountDetailInfo(params) {
+  getDrugList(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/getAccountDetailInfo'
+    const apiPath = 'mds/openapi/custdict/drugAttrDict/monitorDrugListPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -18,7 +18,7 @@
         </el-form-item>
 
         <el-form-item label="厂家：">
-          <el-input v-model.trim="model.drugFactory"
+          <el-input v-model.trim="model.enterpriseName"
                     placeholder="请输入厂家"></el-input>
         </el-form-item>
 
@@ -28,6 +28,7 @@
         </el-form-item>
       </el-form>
     </div>
+
     <div class="card">
       <peace-table ref="table"
                    pagination
@@ -35,38 +36,62 @@
         <el-table-column label="编号"
                          type="index"
                          align="center"
-                         width="80px">
-        </el-table-column>
+                         width="80px"></el-table-column>
+
         <el-table-column label="药品名称"
-                         prop="StoreName"
+                         prop="productname"
                          min-width="180px"></el-table-column>
+
         <el-table-column label="规格"
-                         prop="CustomerType"
+                         prop="drugspecifications"
+                         min-width="80px"></el-table-column>
+
+        <el-table-column label="厂家"
+                         prop="enterprisename"
+                         min-width="80px"></el-table-column>
+
+        <el-table-column label="贵重药品"
+                         prop="iscostly"
                          min-width="80px">
           <template slot-scope="scope">
-            {{ scope.row.CustomerType == 0 ? '院内药房' : '门店' }}
+            <span>{{ scope.row.iscostly === 1 ? '√' : '' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="厂家"
-                         prop="CustName"
-                         min-width="80px"></el-table-column>
-        <el-table-column label="贵重药品"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+
         <el-table-column label="毒性药品"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="istoxic"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.istoxic === 1 ? '√' : '' }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="生物制剂"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="isbiological"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.isbiological === 1 ? '√' : '' }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="易制毒药品"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="isprecursor"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.isprecursor === 1 ? '√' : '' }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="医保特药"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="ismedicarespecial"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.ismedicarespecial === 1 ? '√' : '' }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="更新时间"
-                         prop="CustName1"
+                         prop="lastmodifytime"
                          min-width="80px"></el-table-column>
       </peace-table>
     </div>
@@ -74,14 +99,33 @@
 </template>
 
 <script>
+import Service from './service'
 export default {
   data() {
     return {
       model: {
         drugName: '',
         drugCode: '',
-        drugFactory: ''
+        enterpriseName: ''
       }
+    }
+  },
+
+  beforeMount() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
+  methods: {
+    fetch() {
+      const fetch = Service.getDrugList
+      const params = Object.assign({}, this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        if (res.data.rows !== null) {
+          return res.data.rows
+        }
+      })
     }
   }
 }

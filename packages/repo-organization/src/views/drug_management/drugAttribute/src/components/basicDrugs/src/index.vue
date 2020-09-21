@@ -18,7 +18,7 @@
         </el-form-item>
 
         <el-form-item label="厂家：">
-          <el-input v-model.trim="model.drugFactory"
+          <el-input v-model.trim="model.enterpriseName"
                     placeholder="请输入厂家"></el-input>
         </el-form-item>
 
@@ -38,23 +38,19 @@
                          width="80px">
         </el-table-column>
         <el-table-column label="药品名称"
-                         prop="StoreName"
+                         prop="productname"
                          min-width="180px"></el-table-column>
         <el-table-column label="规格"
-                         prop="CustomerType"
-                         min-width="80px">
-          <template slot-scope="scope">
-            {{ scope.row.CustomerType == 0 ? '院内药房' : '门店' }}
-          </template>
-        </el-table-column>
+                         prop="drugspecifications"
+                         min-width="80px"></el-table-column>
         <el-table-column label="厂家"
-                         prop="CustName"
+                         prop="enterprisename"
                          min-width="80px"></el-table-column>
         <el-table-column label="批准文号"
-                         prop="CustName1"
+                         prop="approvalnumber"
                          min-width="80px"></el-table-column>
         <el-table-column label="更新日期"
-                         prop="CustName1"
+                         prop="lastmodifytime"
                          min-width="80px"></el-table-column>
       </peace-table>
     </div>
@@ -62,14 +58,34 @@
 </template>
 
 <script>
+import Service from './service'
+
 export default {
   data() {
     return {
       model: {
         drugName: '',
         drugCode: '',
-        drugFactory: ''
+        enterpriseName: ''
       }
+    }
+  },
+
+  beforeMount() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
+  methods: {
+    fetch() {
+      const fetch = Service.getDrugList
+      const params = Object.assign({}, this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        if (res.data.rows !== null) {
+          return res.data.rows
+        }
+      })
     }
   }
 }

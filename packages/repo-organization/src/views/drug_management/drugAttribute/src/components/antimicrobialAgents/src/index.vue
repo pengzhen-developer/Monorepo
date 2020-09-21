@@ -18,12 +18,12 @@
         </el-form-item>
 
         <el-form-item label="厂家：">
-          <el-input v-model.trim="model.drugFactory"
+          <el-input v-model.trim="model.enterpriseName"
                     placeholder="请输入厂家"></el-input>
         </el-form-item>
 
         <el-form-item label="抗菌药物级别：">
-          <el-select v-model="model.drugLevel"
+          <el-select v-model="model.antiLevel"
                      placeholder="全部"
                      style="width: 100%;"
                      class="org-type">
@@ -44,44 +44,67 @@
       <peace-table ref="table"
                    pagination
                    size="mini">
+
         <el-table-column label="编号"
                          type="index"
                          align="center"
                          width="80px">
         </el-table-column>
+
         <el-table-column label="药品名称"
-                         prop="StoreName"
+                         prop="productname"
                          min-width="180px"></el-table-column>
+
         <el-table-column label="规格"
-                         prop="CustomerType"
+                         prop="drugspecifications"
                          min-width="80px">
           <template slot-scope="scope">
             {{ scope.row.CustomerType == 0 ? '院内药房' : '门店' }}
           </template>
         </el-table-column>
+
         <el-table-column label="厂家"
-                         prop="CustName"
+                         prop="enterprisename"
                          min-width="80px"></el-table-column>
+
         <el-table-column label="非限制使用"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="antilevel"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.antilevel === source.ANTIMICROBIAL_LEVEL.非限制使用 ? '√' : ''}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="限制使用"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="antilevel"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.antilevel === source.ANTIMICROBIAL_LEVEL.限制使用 ? '√' : ''}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="特殊使用"
-                         prop="CustName1"
-                         min-width="80px"></el-table-column>
+                         prop="antilevel"
+                         min-width="80px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.antilevel === source.ANTIMICROBIAL_LEVEL.特殊使用 ? '√' : ''}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="给药途径"
-                         prop="CustName1"
+                         prop="drugusage"
                          min-width="80px"></el-table-column>
+
         <el-table-column label="限定日剂量(DDD)"
-                         prop="CustName1"
+                         prop="ddd"
                          min-width="80px"></el-table-column>
+
         <el-table-column label="剂量单位"
-                         prop="CustName1"
+                         prop="dddunit"
                          min-width="80px"></el-table-column>
+
         <el-table-column label="更新时间"
-                         prop="CustName1"
+                         prop="lastmodifytime"
                          min-width="80px"></el-table-column>
 
       </peace-table>
@@ -90,6 +113,7 @@
 </template>
 
 <script>
+import Service from './service'
 import CONSTANT from '../constant'
 export default {
   data() {
@@ -97,12 +121,30 @@ export default {
       model: {
         drugName: '',
         drugCode: '',
-        drugFactory: '',
-        drugLevel: -1
+        enterpriseName: '',
+        antiLevel: -1
       },
       source: {
         ANTIMICROBIAL_LEVEL: CONSTANT.ANTIMICROBIAL_LEVEL
       }
+    }
+  },
+
+  beforeMount() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
+  methods: {
+    fetch() {
+      const fetch = Service.getDrugList
+      const params = Object.assign({}, this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        if (res.data.rows !== null) {
+          return res.data.rows
+        }
+      })
     }
   }
 }

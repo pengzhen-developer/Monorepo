@@ -2,14 +2,14 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 获取基础服务
+   * 获取基础药品
    *otherAttributes
    * @param {*}
    */
-  getAccountDetailInfo(params) {
+  getDrugList(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/getAccountDetailInfo'
+    const apiPath = 'mds/openapi/custdict/drugAttrDict/baseDrugListPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
