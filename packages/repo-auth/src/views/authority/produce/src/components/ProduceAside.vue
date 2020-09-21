@@ -30,12 +30,14 @@ export default {
     },
     getList() {
       const params = { isChild: true }
-      Service.getClientList(params).then((res) => {
-        this.list = res.data
-        if (this.list.length > 0) {
-          this.setInfo(this.list[0])
-        }
-      })
+      Service.client()
+        .getList(params)
+        .then((res) => {
+          this.list = res.data
+          if (this.list.length > 0) {
+            this.setInfo(this.list[0])
+          }
+        })
     }
   }
 }

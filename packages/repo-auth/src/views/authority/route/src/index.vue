@@ -47,7 +47,7 @@ export default {
           }
         }
         this.json = result
-        if (!type) {
+        if (type == 'refresh') {
           Peace.util.success('更新成功')
         }
       })

@@ -15,10 +15,10 @@ export const urlFormat = (url, param) => {
   if (url.indexOf('{') === -1 || url.indexOf('{') === -1) {
     return url
   }
-  let keys = Object.keys(param)
-  for (let key in keys) {
-    url = url.repalce(new RegExp('\\{' + key + '\\}', 'g'), param[key])
-  }
+  Object.keys(param).map((key) => {
+    url = url.replace(new RegExp('\\{' + key + '\\}', 'g'), param[key])
+  })
+
   return url
 }
 export default {
