@@ -1,7 +1,7 @@
 <template>
   <div class="the-recipe"
        v-if="internalData">
-    <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : true }"
+    <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : canShowPrescriptionStatus }"
          class="prescript icon-status">
       <div class="prescript-no">No.{{internalData.prescriptionNo}}</div>
       <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
@@ -149,10 +149,15 @@ export default {
 
   data() {
     return {
-      internalData: undefined
+      internalData: undefined,
+      fromDrugDetail: false
     }
   },
-
+  computed: {
+    canShowPrescriptionStatus() {
+      return $peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false && this.internalData?.prescriptionStatus?.key
+    }
+  },
   watch: {
     $route() {
       // 页面回退，需要刷新
