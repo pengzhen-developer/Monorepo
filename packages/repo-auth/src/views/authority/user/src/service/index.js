@@ -18,6 +18,20 @@ export default {
     }
   },
   /**
+   * product
+   */
+  product() {
+    return {
+      //获取产品字典列表
+      getDict() {
+        let apiPath = `admin/product/dict`
+        const serverPath = process.env.VUE_APP_SERVER_API
+        let requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      }
+    }
+  },
+  /**
    * 用户管理模块
    */
   user() {

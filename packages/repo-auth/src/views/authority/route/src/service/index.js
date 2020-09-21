@@ -4,7 +4,7 @@ export default {
   //获取路由
   getRoute() {
     let apiPath = `admin/route`
-    apiPath = Util.service.urlFormat(apiPath)
+    apiPath = Util.service.RSETfulFormat(apiPath)
     const serverPath = process.env.VUE_APP_SERVER_API
     let requestApi = serverPath + apiPath
     return Peace.http.get(requestApi)
@@ -12,7 +12,7 @@ export default {
   //修改路由
   editRoute(params) {
     let apiPath = `admin/route`
-    apiPath = Util.service.urlFormat(apiPath, params)
+    apiPath = Util.service.RSETfulFormat(apiPath, params)
     const serverPath = process.env.VUE_APP_SERVER_API
     let requestApi = serverPath + apiPath
     return Peace.http.put(requestApi, params)

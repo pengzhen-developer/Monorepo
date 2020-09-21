@@ -27,31 +27,34 @@
         <el-table-column show-overflow-tooltip
                          type="index"
                          label="序号"
-                         min-width="70px"
+                         width="60"
                          align="center">
 
         </el-table-column>
         <el-table-column show-overflow-tooltip
                          label="登录账号"
-                         min-width="220px"
-                         prop="productName"
+                         min-width="120px"
+                         prop="username"
                          align="left">
 
         </el-table-column>
         <el-table-column show-overflow-tooltip
                          label="角色"
                          min-width="220px"
-                         prop="productName"
+                         prop="roleList"
                          align="center">
-
+          <template slot-scope="scope">
+            <span>{{getRoleNames(scope.row.roleList)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="所属终端"
+        <el-table-column label="手机号"
+                         align="center"
                          min-width="220px"
-                         prop="productName"
-                         align="center">
-
-        </el-table-column>
+                         prop="phone"></el-table-column>
+        <el-table-column label="密码"
+                         align="center"
+                         min-width="220px"
+                         prop="password"></el-table-column>
         <el-table-column label="创建时间"
                          align="center"
                          min-width="220px"
@@ -69,9 +72,11 @@ export default {
   name: 'UserMain',
   data() {
     return {
+      dictList: [],
       query: {
         username: '',
-        clientId: ''
+        clientId: '',
+        queryAdmin: true
       }
     }
   },
@@ -88,6 +93,9 @@ export default {
     },
     clear() {
       this.query.username = ''
+    },
+    getRoleNames(list) {
+      return list.map((item) => item.roleName).join(';')
     },
     getList() {
       const params = this.query

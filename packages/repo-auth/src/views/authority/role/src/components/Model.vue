@@ -15,7 +15,7 @@
                   placeholder="请输入"></el-input>
 
       </el-form-item>
-      <el-form-item prop="roleDesc">
+      <!-- <el-form-item prop="roleDesc">
         <span slot="label"
               class="form-label">角色标识</span>
         <div v-if="type === 'detail'">{{model.roleCode}}</div>
@@ -24,7 +24,7 @@
                   minlength="3"
                   maxlength="20"
                   placeholder="请输入"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="roleDesc">
         <span slot="label"
               class="form-label">角色描述</span>

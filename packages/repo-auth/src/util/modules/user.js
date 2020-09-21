@@ -114,8 +114,7 @@ export const replaceToLogin = (referer = '') => {
  *
  */
 export const isSignIn = () => {
-  // return !!getUserInfo() && !!getAccountMenuList()
-  return !!getAllUserInfo()
+  return !!getUserInfo() && !!getAccountMenuList()
 }
 
 export default {

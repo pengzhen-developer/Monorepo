@@ -62,7 +62,7 @@
 import Util from '@src/util'
 import Peace from '@src/library'
 import Service from './service'
-import Constant from './constant'
+// import Constant from './constant'
 export default {
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
 
   created() {
     this.configuration = window.configuration
-    // Util.user.removeUserInfo()
+    Util.user.removeUserInfo()
   },
 
   methods: {
@@ -128,22 +128,35 @@ export default {
         .get()
         .then((res) => {
           console.log(res)
-          // const regx1 = /.*{|}.*/g
-          // const regx2 = /\{(.+?)\}/g
-          // const menuList=res.data.menuList
-          const menuList = Constant.menuList
+          // const menuList = Constant.menuList
+          // Util.user.setAccountMenuList(menuList)
+          const regx1 = /.*{|}.*/g
+          const regx2 = /\{(.+?)\}/g
+          const menuList = res.data
 
-          // menuList.forEach((menu) => {
-          //   // 处理 env
-          //   // {env} => process.env.env
-          //   const envKey = menu.menuPath?.replace(regx1, '')
-          //   menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
+          menuList.forEach((item) => {
+            const menu = item.menuRoutes.find((item) => item.routeType == 1)
 
-          //   // 处理 route route
-          //   menu.menuRoute = '/' + menu.menuRoute
-          // })
-          // Util.user.setAccountMenuList(res.data)
+            //适配当前框架 menu
+            item.menuName = menu.routeName
+            item.menuRoute = menu.routePath
+            item.menuPath = menu.realPath
+            item.enable = menu.enable == 1 ? true : false
+            item.id = menu.menuId.toString()
+            item.closable = menu.closable
+            item.menuIcon = item.icon
 
+            // 处理 env
+            // {env} => process.env.env
+            const envKey = item.menuRoute?.replace(regx1, '')
+            item.menuRoute = item.menuRoute?.replace(regx2, process.env[envKey])
+
+            // 处理 route route
+            item.menuRoute = item.menuRoute !== '/' ? '/' + menu.realPath : ''
+          })
+          menuList.sort((a, b) => {
+            return a.sort - b.sort
+          })
           Util.user.setAccountMenuList(menuList)
 
           return Promise.resolve()
