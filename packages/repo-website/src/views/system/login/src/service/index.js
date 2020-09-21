@@ -7,17 +7,20 @@ export default {
    * @param {*} params
    */
   sendCode(params) {
+    params = {
+      mobile: params.tel,
+      clientId: process.env.VUE_APP_CLIENT_ID
+    }
+
     const isMock = false
 
-    const apiPath = 'hospital/Account/sendCode'
+    const apiPath = `admin/mobile`
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_AUTH_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+    return Peace.http.get(requestApi, { params })
   },
 
   /**
@@ -38,45 +41,6 @@ export default {
       return res
     })
   },
-
-  /**
-   * 账号密码登录
-   *
-   * @param {*} params
-   */
-  doLogin(params) {
-    const isMock = false
-
-    const apiPath = 'hospital/Account/doLogin'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 手机号码 & 验证码登录
-   *
-   * @param {*} params
-   * @returns
-   */
-  telLogin(params) {
-    const isMock = false
-
-    const apiPath = 'hospital/Account/telLogin'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
   /**
    * 获取用户信息
    *
@@ -86,7 +50,7 @@ export default {
   getAccountInfo(params) {
     const isMock = false
 
-    const apiPath = 'hospital/Account/getAccountInfo'
+    const apiPath = 'hospital/v070/Account/getAccountInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -95,5 +59,5 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
-  },
+  }
 }

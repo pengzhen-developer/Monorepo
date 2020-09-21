@@ -2,7 +2,7 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 验证 CD Key 是否有效
+   * 验证 token 是否有效
    *
    * @param {*} params
    * @returns
@@ -19,5 +19,5 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
-  },
+  }
 }

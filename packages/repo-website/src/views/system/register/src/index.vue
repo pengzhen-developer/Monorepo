@@ -294,21 +294,17 @@ export default {
         const params = Peace.util.deepClone(this.model)
 
         Service.register(params)
-          .then((res) => {
-            Util.user.setUserCDKey(res.data.cdkey)
-            Util.user.setUserInfo(res.data)
+          .then(() => {
+            let data = {
+              username: this.model.tel,
+              password: this.model.password
+            }
 
-            this.completeInfomation()
+            Util.auth.authByPassword(data)
           })
           .finally(() => {
             this.isRegistering = false
           })
-      })
-    },
-    completeInfomation() {
-      Service.getAccountInfo().then((res) => {
-        Util.user.updateUserInfo(res.data)
-        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     },
     validateForm() {

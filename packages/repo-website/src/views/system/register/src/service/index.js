@@ -10,7 +10,7 @@ export default {
   register(params) {
     const isMock = false
 
-    const apiPath = 'hospital/Account/register'
+    const apiPath = 'hospital/v070/Account/register'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -29,7 +29,7 @@ export default {
   sendCode(params) {
     const isMock = false
 
-    const apiPath = 'hospital/Account/sendCode'
+    const apiPath = 'hospital/v070/Account/sendCode'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -48,7 +48,7 @@ export default {
   getAccountInfo(params) {
     const isMock = false
 
-    const apiPath = 'hospital/Account/getAccountInfo'
+    const apiPath = 'hospital/v070/Account/getAccountInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -57,5 +57,5 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
-  },
+  }
 }

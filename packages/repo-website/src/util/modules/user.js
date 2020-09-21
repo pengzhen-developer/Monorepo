@@ -1,36 +1,10 @@
 import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
 // import Router from '@src/router'
+import usertoken from './token'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
-const USER_CD_KEY = 'user_cd_key'
-
-/**
- * 缓存用户 cdkey
- *
- * @param {*} userInfo cdkey
- * @returns
- */
-export const setUserCDKey = (cdkey) => {
-  return Peace.cache.localStorage.set(USER_CD_KEY, cdkey)
-}
-/**
- * 获取用户 cdkey
- *
- * @returns
- */
-export const getUserCDKey = () => {
-  return Peace.cache.localStorage.get(USER_CD_KEY)
-}
-
-/**
- * 清空用户 cdkey
- *
- */
-export const removeUserCDKey = () => {
-  return Peace.cache.localStorage.remove(USER_CD_KEY)
-}
 
 /**
  * 缓存用户信息
@@ -69,7 +43,7 @@ export const getUserInfo = () => {
  */
 export const removeUserInfo = () => {
   Peace.cache.localStorage.remove(USER_INFO)
-  Peace.cache.localStorage.remove(USER_CD_KEY)
+  usertoken.removeToken()
 }
 
 /**
@@ -94,7 +68,8 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const redirectToConsole = () => {
-  const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?cdkey=' + getUserCDKey()
+  let token = usertoken.getToken()
+  const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?token=' + token.access_token
 
   window.open(CONSOLE_SITE_PATH)
 }
@@ -164,10 +139,6 @@ export default {
   updateUserInfo,
   removeUserInfo,
   isSignIn,
-
-  getUserCDKey,
-  setUserCDKey,
-  removeUserCDKey,
 
   replaceToLogin,
   redirectToConsole,

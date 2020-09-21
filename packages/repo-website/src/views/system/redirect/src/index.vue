@@ -15,23 +15,17 @@ export default {
     }
   },
   created() {
-    const cdKey = Util.user.getUserCDKey()
+    const token = Util.token.getToken()
 
-    if (cdKey) {
-      const params = { cdkey: cdKey }
+    if (token) {
+      const params = { token: token }
 
       Service.getBaseInfo(params)
         .then((res) => {
           Util.user.replaceToCompliteInfo(res.data.checkStatus)
-          // if (res.data.checkStatus !== Constant.ENUM_CHECK_STATUS.已通过) {
-          //   this.$router.replace(path.INFORMMATION)
-          // } else {
-          //   this.$router.replace(path.HOME)
-          // }
         })
         .catch(() => {
           Util.user.removeUserInfo()
-
           Util.user.replaceToLogin()
         })
     } else {

@@ -9,7 +9,7 @@ export default {
   getAccountInfo(params) {
     const isMock = false
 
-    const apiPath = 'hospital/Account/getAccountInfo'
+    const apiPath = 'hospital/v070/Account/getAccountInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

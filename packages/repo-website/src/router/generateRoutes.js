@@ -19,6 +19,8 @@ export const path = {
   REGISTER: '/register',
   /** 登录 */
   LOGIN: '/login',
+  /** 授权 */
+  AUTH: '/AUTH',
   /** 服务条款 */
   TERMS: '/terms',
   /** 隐私权政策 */
@@ -37,6 +39,11 @@ export default function generateRoutes() {
       path: path.LOGIN,
       name: path.LOGIN,
       component: () => import('@src/views/system/login')
+    },
+    {
+      path: path.AUTH,
+      name: path.AUTH,
+      component: () => import('@src/views/system/auth')
     },
     {
       path: path.REDIRECT,

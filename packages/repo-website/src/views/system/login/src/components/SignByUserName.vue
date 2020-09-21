@@ -82,7 +82,6 @@
 import Util from '@src/util'
 import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
-import Service from '../service'
 import Constant from '../constant'
 
 export default {
@@ -138,24 +137,16 @@ export default {
       this.validateForm().then(() => {
         this.isLoging = true
 
-        const params = Peace.util.deepClone(this.model)
+        let params = {
+          username: this.model.tel,
+          password: this.model.password
+        }
 
-        Service.doLogin(params)
-          .then((res) => {
-            Util.user.setUserCDKey(res.data.cdkey)
-            Util.user.setUserInfo(res.data)
+        Util.auth.authByPassword(params)
 
-            this.completeInfomation()
-          })
-          .finally(() => {
-            this.isLoging = false
-          })
-      })
-    },
-    completeInfomation() {
-      Service.getAccountInfo().then((res) => {
-        Util.user.updateUserInfo(res.data)
-        Util.user.replaceToCompliteInfo(res.data.checkStatus)
+        setTimeout(() => {
+          this.isLoging = false
+        }, 2000)
       })
     },
     validateForm() {
