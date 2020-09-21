@@ -1,5 +1,9 @@
 <template>
-  <div class="auth">{{tips}}</div>
+  <div class="fixed-center">
+    <q-spinner color="primary"
+               size="4em"
+               v-bind:thickness="2" />
+  </div>
 </template>
 
 <script>
@@ -8,7 +12,6 @@ import Service from './service'
 export default {
   data() {
     return {
-      tips: 'Loading ...',
       params: {},
       redirect_url: '',
       client_id: '',
@@ -117,12 +120,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.auth {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100vw;
-  height: 100vh;
-}
 </style>
