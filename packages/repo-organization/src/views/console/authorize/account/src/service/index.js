@@ -2,114 +2,50 @@ import Peace from '@src/library'
 
 export default {
   /**
-   * 获取账号列表
-   *
-   * @param {*} params
+   * 用户
    */
-  getAccountList(params) {
-    const isMock = false
-
-    const apiPath = 'console/Service/getMyServiceList'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      res.data.list = [
-        {
-          id: 1,
-          account: 'qwer123456',
-          password: '123456',
-          name: '李新元',
-          role: '开发者',
-          status: 1,
-          createTime: '2020-09-15 12:00:00'
-        },
-        {
-          id: 2,
-          account: 'qwer123456',
-          password: '123456',
-          name: '李新元',
-          role: '开发者',
-          status: 1,
-          createTime: '2020-09-15 12:00:00'
-        },
-        {
-          id: 3,
-          account: 'qwer123456',
-          password: '123456',
-          name: '李新元',
-          role: '开发者',
-          status: 1,
-          createTime: '2020-09-15 12:00:00'
-        }
-      ]
-      return res
-    })
-  },
-  /**
-   * 获取账号信息
-   *
-   * @param {*} params
-   */
-  getAccountInfo(params) {
-    const isMock = false
-
-    const apiPath = 'console/Service/getMyServiceList'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      res.data = {
-        id: 1,
-        account: 'qwer123456',
-        password: '123456',
-        name: '李新元',
-        role: '开发者',
-        status: 1,
-        createTime: '2020-09-15 12:00:00'
+  user() {
+    let apiPath = `admin/user`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    let requestApi = serverPath + apiPath
+    return {
+      //获取用户byID
+      get(params) {
+        apiPath = `admin/user/${params.id}`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      },
+      //添加
+      add(params) {
+        return Peace.http.post(requestApi, params)
+      },
+      //编辑
+      edit(params) {
+        return Peace.http.put(requestApi, params)
+      },
+      //分页获取用户列表
+      page(params) {
+        apiPath = `admin/user/page`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi, { params })
       }
-      return res
-    })
-  },
-  /**
-   * 新增
-   *
-   * @param {*} params
-   */
-  addAccount(params) {
-    const isMock = false
-
-    const apiPath = 'console/Service/getMyServiceList'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+    }
   },
 
   /**
-   * 修改
-   *
-   * @param {*} params
+   * 角色
    */
-  editAccount(params) {
-    const isMock = false
-
-    const apiPath = 'console/Service/getMyServiceList'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+  role() {
+    let apiPath = `admin/role`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    let requestApi = serverPath + apiPath
+    return {
+      //获取角色列表
+      list(params) {
+        apiPath = `admin/role/list`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi, { params })
+      }
+    }
   }
 }

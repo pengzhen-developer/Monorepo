@@ -27,21 +27,9 @@ export default {
         requestApi = serverPath + apiPath
         return Peace.http.put(requestApi, params)
       },
-      //删除
-      delete(params) {
-        apiPath = `admin/role/${params.id}`
-        requestApi = serverPath + apiPath
-        return Peace.http.delete(requestApi)
-      },
       //分页获取角色列表
       page(params) {
         apiPath = `admin/role/page`
-        requestApi = serverPath + apiPath
-        return Peace.http.get(requestApi, { params })
-      },
-      //获取角色类型字典列表
-      dict(params) {
-        apiPath = `admin/role/dict`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
       }

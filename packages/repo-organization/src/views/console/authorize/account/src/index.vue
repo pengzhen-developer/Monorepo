@@ -55,19 +55,23 @@
                          align="center"
                          label=" "
                          width="60"></el-table-column>
-        <el-table-column prop="account"
+        <el-table-column prop="username"
                          label="账号"></el-table-column>
         <el-table-column prop="name"
                          label="姓名"></el-table-column>
-        <el-table-column prop="role"
-                         label="角色"></el-table-column>
+        <el-table-column prop="roleList"
+                         label="角色">
+          <template slot-scope="scope">
+            <span>{{scope.row.roleList | getRoleNames}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="账号状态">
           <template slot-scope="scope">
             <div class="table-status">
-              <div class="table-status-text">{{scope.row.status | getEnumLabel(CONSTANT.ENUM_ACCOUNT_STATUS)}}</div>
-              <el-switch v-model="scope.row.status"
-                         :active-value="1"
-                         :inactive-value="0"
+              <div class="table-status-text">{{scope.row.lockFlag | getEnumLabel(CONSTANT.ENUM_ACCOUNT_STATUS)}}</div>
+              <el-switch v-model="scope.row.lockFlag"
+                         active-value="0"
+                         inactive-value="1"
                          @change="changeStatus(scope.row)"></el-switch>
             </div>
           </template>
@@ -90,7 +94,7 @@
     <!-- 账号 -->
     <el-dialog width="360px"
                v-bind:visible.sync="accountDialog.visible"
-               :title="`${accountDialog.data.id ? '修改':'新建'}账号`">
+               :title="`${accountDialog.data.userId ? '修改':'新建'}账号`">
       <AccountModel v-if="accountDialog.visible"
                     ref="accountModel"
                     v-on:close="accountDialog.visible = false"
@@ -106,6 +110,7 @@ import AccountModel from './components/AccountModel'
 
 import Peace from '@src/library'
 import Service from './service'
+import Util from '@src/util'
 import CONSTANT from './constant'
 
 export default {
@@ -117,7 +122,9 @@ export default {
     return {
       CONSTANT,
       model: {
-        account: '',
+        clientId: Util.user.getUserInfo().clientId,
+        organCode: Util.user.getUserInfo().custCode,
+        username: '',
         name: '',
         pickDate: [],
         startTime: '',
@@ -133,6 +140,9 @@ export default {
   filters: {
     getEnumLabel: function (value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
+    },
+    getRoleNames: function (roleList) {
+      return roleList.map((item) => item.roleName).join('，')
     }
   },
 
@@ -144,7 +154,7 @@ export default {
 
   methods: {
     get() {
-      const fetch = Service.getAccountList
+      const fetch = Service.user().page
       const params = Peace.util.deepClone(this.model)
       if (params.pickDate == null) {
         params.pickDate = ['', '']
@@ -152,31 +162,31 @@ export default {
       const [start, end] = params.pickDate
       params.startTime = start
       params.endTime = end
+      console.log(fetch, params)
       this.$refs.table.loadData({ fetch, params })
     },
     changeStatus(row) {
-      const message = row.status === 1 ? '确定启用该账号？' : '确定禁用该账号？'
+      const message = row.lockFlag == '0' ? '确定启用该账号？' : '确定禁用该账号？'
 
       this.$confirm(message, '提示')
         .then(() => {
-          const params = {
-            accountId: row.id,
-            status: row.status
-          }
-          Service.editAccount(params).then((res) => {
-            Peace.util.success(res.msg)
-            this.get()
-          })
+          const params = row
+          Service.user()
+            .edit(params)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.get()
+            })
         })
         .catch(() => {
-          row.status = row.status === 1 ? 2 : 1
+          row.lockFlag = row.lockFlag == '1' ? '0' : '1'
         })
     },
     toAccount(row) {
       this.accountDialog.visible = true
       this.accountDialog.data = row ? row : {}
       this.$nextTick(() => {
-        this.$refs.accountModel.init(row ? row.id : '')
+        this.$refs.accountModel.init(row ? row.userId : '')
       })
     }
   }

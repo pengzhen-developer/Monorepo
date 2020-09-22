@@ -3,16 +3,17 @@
     <el-form ref="form"
              label-width="96px"
              v-bind:model="model"
-             v-bind:rules="model.id ? editRules : addRules">
-      <el-form-item :prop="model.id ? '' : 'account'">
+             v-bind:rules="model.userId ? editRules : addRules">
+      <el-form-item :prop="model.userId ? '' : 'username'">
         <span slot="label"
               class="form-label">账号</span>
-        <el-input v-model.trim="model.account"
-                  :disabled="model.id ? true : false"
-                  maxlength="10"
+        <el-input v-model.trim="model.username"
+                  :disabled="model.userId ? true : false"
+                  maxlength="11"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item v-if="!model.userId"
+                    prop="password">
         <span slot="label"
               class="form-label">密码</span>
         <el-input v-model.trim="model.password"
@@ -30,25 +31,25 @@
       <el-form-item prop="role">
         <span slot="label"
               class="form-label">角色</span>
+        <!-- 重新render $forceUpdate() -->
         <el-select v-model="model.role"
+                   @change="$forceUpdate()"
+                   multiple
                    placeholder="请选择"
                    style="width: 100%;">
-          <el-option v-for="(value, label) in CONSTANT.ENUM_ACCOUNT_STATUS"
-                     v-bind:key="value"
-                     v-bind:label="label"
-                     v-bind:value="value"></el-option>
+          <el-option v-for="item in roleList"
+                     v-bind:key="item.roleId"
+                     v-bind:label="item.roleName"
+                     v-bind:value="item.roleId"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-show="!model.id"
-                    prop="status">
+      <el-form-item v-if="!model.userId"
+                    prop="lockFlag">
         <span slot="label"
               class="form-label">账号状态</span>
-        <el-radio-group v-model="model.status">
-          <el-radio :label="1">启用</el-radio>
-          <el-radio :label="2">禁用</el-radio>
-          <!-- <el-radio v-for="(item, index) in CONSTANT.ENUM_ACCOUNT_STATUS"
-                    :label="item"
-                    :key="item">{{index}}</el-radio> -->
+        <el-radio-group v-model="model.lockFlag">
+          <el-radio label="0">启用</el-radio>
+          <el-radio label="1">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label=" ">
@@ -65,6 +66,7 @@
 <script>
 import CONSTANT from '../constant'
 import Peace from '@src/library'
+import Util from '@src/util'
 import Service from '../service'
 
 export default {
@@ -104,17 +106,22 @@ export default {
     return {
       CONSTANT,
       isLoading: false,
+
+      roleList: [],
+
       model: {
-        id: '',
-        account: '',
+        clientId: Util.user.getUserInfo().clientId,
+        organCode: Util.user.getUserInfo().custCode,
+        userId: '',
+        username: '',
         password: '',
         name: '',
-        role: '',
-        status: ''
+        role: [],
+        lockFlag: ''
       },
 
       addRules: {
-        account: [
+        username: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: validateTel, message: '请输入正确的手机号', trigger: 'blur' }
         ],
@@ -129,25 +136,20 @@ export default {
           { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
         ],
         role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        status: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
+        lockFlag: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
       },
       editRules: {
-        account: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { validator: validateTel, message: '请输入正确的手机号', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请填写密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
-          { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
-        ],
+        // password: [
+        //   { required: true, message: '请填写密码', trigger: 'blur' },
+        //   { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
+        //   { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
+        // ],
         name: [
           { required: true, message: '请填写姓名', trigger: 'blur' },
           { min: 1, max: 10, message: '姓名长度为1 - 10位', trigger: 'blur' },
           { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
         ],
-        role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        status: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
+        role: [{ required: true, message: '请选择角色', trigger: 'change' }]
       }
     }
   },
@@ -155,17 +157,33 @@ export default {
   computed: {},
 
   methods: {
-    init(id) {
-      this.model.id = id || 0
+    init(userId) {
+      this.model.userId = userId || ''
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-
-        if (this.model.id) {
-          Service.getAccountInfo({ accountId: this.model.id }).then((res) => {
-            this.model = res.data
-          })
-        }
+        this.getRoleList().then(() => {
+          if (this.model.userId) {
+            Service.user()
+              .get({ id: this.model.userId })
+              .then((res) => {
+                this.model = res.data
+                this.model.role = res.data.roleList.map((item) => item.roleId)
+              })
+          }
+        })
       })
+    },
+
+    getRoleList() {
+      let params = {
+        clientId: Util.user.getUserInfo().clientId,
+        organCode: Util.user.getUserInfo().custCode
+      }
+      return Service.role()
+        .list(params)
+        .then((res) => {
+          this.roleList = res.data
+        })
     },
 
     submit() {
@@ -174,8 +192,9 @@ export default {
 
         const params = Peace.util.deepClone(this.model)
 
-        if (this.model.id) {
-          Service.editAccount(params)
+        if (this.model.userId) {
+          Service.user()
+            .edit(params)
             .then(() => {
               Peace.util.success('保存成功')
               this.$emit('close')
@@ -186,7 +205,8 @@ export default {
               this.isLoading = false
             })
         } else {
-          Service.addAccount(params)
+          Service.user()
+            .add(params)
             .then(() => {
               Peace.util.success('保存成功')
               this.$emit('close')
