@@ -5,7 +5,7 @@
   <div class="drug-select">
     <!-- 未选择药品 -->
     <el-card v-if="!data.drugName"
-             style="min-height: 250px"
+             style="min-height: 270px"
              shadow="never">
       <el-autocomplete class="full-width"
                        style="height: 40px;"
@@ -23,7 +23,10 @@
                       type="warning"
                       v-if="item.drugStatus === 'disable'">停用</el-tag>{{ item.drugName }}
             </div>
-            <div class="text-caption text-grey-6">{{ item.companyName }}</div>
+            <div class="text-caption text-grey-6">
+              <span>{{ item.specification }}</span>
+              <span>{{ item.companyName }}</span>
+            </div>
           </div>
         </template>
       </el-autocomplete>
@@ -46,6 +49,9 @@
                      type="text"
                      class="text-red"
                      v-on:click="remove"></el-button>
+        </div>
+        <div class="flex justify-between items-center full-width">
+          <span class="text-caption">{{ data.specification }}</span>
         </div>
       </div>
 
@@ -229,7 +235,9 @@ export default {
 
 <style lang="scss">
 .auto-width {
-  width: 400px;
+  width: auto !important;
+  min-width: 200px !important;
+  max-width: 800px !important;
 }
 </style>
 

@@ -18,7 +18,7 @@
       <div class="col-4"
            v-for="(drug, index) in drugList"
            v-bind:key="index">
-        <DrugSelectItem v-bind:data.sync="drug"
+        <DrugSelectItem v-bind:data="drug"
                         v-on:remove="onRemoveDrug"></DrugSelectItem>
       </div>
 
