@@ -10,7 +10,7 @@
             <span>账号</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
-          <el-input v-model="model.account"
+          <el-input v-model="model.username"
                     placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item>
@@ -162,7 +162,6 @@ export default {
       const [start, end] = params.pickDate
       params.startTime = start
       params.endTime = end
-      console.log(fetch, params)
       this.$refs.table.loadData({ fetch, params })
     },
     changeStatus(row) {
@@ -170,9 +169,12 @@ export default {
 
       this.$confirm(message, '提示')
         .then(() => {
-          const params = row
+          const params = {
+            userId: row.userId,
+            lockFlag: row.lockFlag
+          }
           Service.user()
-            .edit(params)
+            .lockFlag(params)
             .then((res) => {
               Peace.util.success(res.msg)
               this.get()

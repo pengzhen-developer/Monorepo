@@ -23,6 +23,12 @@ export default {
       edit(params) {
         return Peace.http.put(requestApi, params)
       },
+      // 更新账号状态
+      lockFlag(params) {
+        apiPath = `admin/user/lockFlag`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi, params)
+      },
       //分页获取用户列表
       page(params) {
         apiPath = `admin/user/page`

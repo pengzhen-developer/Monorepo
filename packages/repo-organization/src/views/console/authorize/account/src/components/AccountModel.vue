@@ -31,9 +31,7 @@
       <el-form-item prop="role">
         <span slot="label"
               class="form-label">角色</span>
-        <!-- 重新render $forceUpdate() -->
         <el-select v-model="model.role"
-                   @change="$forceUpdate()"
                    multiple
                    placeholder="请选择"
                    style="width: 100%;">
@@ -159,6 +157,7 @@ export default {
   methods: {
     init(userId) {
       this.model.userId = userId || ''
+
       this.$nextTick(() => {
         this.$refs.form.resetFields()
         this.getRoleList().then(() => {
@@ -166,8 +165,14 @@ export default {
             Service.user()
               .get({ id: this.model.userId })
               .then((res) => {
-                this.model = res.data
+                this.model.clientId = res.data.clientId
+                this.model.organCode = res.data.organCode
+                this.model.userId = res.data.userId
+                this.model.username = res.data.username
+                this.model.name = res.data.name
+                this.model.password = ''
                 this.model.role = res.data.roleList.map((item) => item.roleId)
+                this.model.lockFlag = res.data.lockFlag
               })
           }
         })

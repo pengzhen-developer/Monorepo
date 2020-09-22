@@ -1,6 +1,7 @@
 <template>
   <div class="product-item">
-    <div class="header">
+    <div class="header"
+         :class="{bg1: serviceType == 1, bg2: serviceType == 2, bg3: serviceType == 3, bg4: serviceType == 4}">
       <el-image v-bind:src="img"></el-image>
     </div>
     <div class="footer">
@@ -15,6 +16,10 @@ export default {
     serviceName: {
       type: String,
       required: true
+    },
+
+    serviceType: {
+      type: Number
     },
 
     img: {
@@ -45,6 +50,18 @@ export default {
 
     padding: 48px 0;
     background: var(--q-color-primary);
+    &.bg1 {
+      background: linear-gradient(90deg, #65e5b8 0%, #1dccb6 100%);
+    }
+    &.bg2 {
+      background: linear-gradient(90deg, #f2c94e 0%, #f6b570 100%);
+    }
+    &.bg3 {
+      background: linear-gradient(90deg, #a399f8 0%, #737ef7 100%);
+    }
+    &.bg4 {
+      background: linear-gradient(90deg, #fba189 0%, #ff7d7f 100%);
+    }
 
     .el-image {
       width: 60px;

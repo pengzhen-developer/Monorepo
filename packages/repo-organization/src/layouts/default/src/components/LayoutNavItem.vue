@@ -7,22 +7,9 @@
                   v-bind:disabled="data.enable === false">
 
         <template slot="title">
-          <template v-if="data.iconType === 'Zyy Icons'">
-            <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-regular text-grey-7 zyy-icon"></i>
-          </template>
-
-          <template v-else-if="data.iconType === 'Material Icons'">
-            <q-icon v-bind:name="data.menuIcon"
-                    class="q-mr-md text-h6 text-weight-regular text-grey-7"></q-icon>
-          </template>
-
-          <template v-else-if="data.iconType === 'Element-UI Icons'">
-            <i v-bind:class="{[data.menuIcon]: true }"
-               class="q-mr-md text-h6 text-weight-regular text-grey-7"></i>
-          </template>
-
-          <label class="text-black text-subtitle2"
+          <i v-bind:class="{[data.menuIcon]: true }"
+             class="q-mr-md menu-icon"></i>
+          <label class="menu-name"
                  slot="title">{{ data.menuName }}</label>
         </template>
 
@@ -38,22 +25,11 @@
                     v-bind:index="data.id"
                     v-bind:router="data.id"
                     v-bind:disabled="data.enable === false">
-        <template v-if="data.iconType === 'Zyy Icons'">
+        <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-regular text-grey-7  zyy-icon"></i>
+             class="q-mr-md menu-icon"></i>
         </template>
-
-        <template v-else-if="data.iconType === 'Material Icons'">
-          <q-icon v-bind:name="data.menuIcon"
-                  class="q-mr-md text-h6 text-weight-regular text-grey-7"></q-icon>
-        </template>
-
-        <template v-else-if="data.iconType === 'Element-UI Icons'">
-          <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md text-h6 text-weight-regular text-grey-7"></i>
-        </template>
-
-        <label class="text-black text-caption cursor-pointer">{{ data.menuName }}</label>
+        <label class="menu-name cursor-pointer">{{ data.menuName }}</label>
       </el-menu-item>
     </template>
 
@@ -72,6 +48,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep {
+  .el-submenu__title {
+    padding-left: 32px !important;
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .el-icon-arrow-down {
+    color: #555555;
+  }
+}
+
+.menu-icon {
+  display: inline-block;
+  width: 28px;
+  font-size: 24px;
+  color: #555555;
+}
+
+.menu-name {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333330;
+  line-height: 24px;
+}
+
 .el-submenu {
   &.is-opened {
     background: linear-gradient(#ffffff, #f9f9f9);
@@ -81,30 +83,29 @@ export default {
     }
   }
 
-  i {
-    width: 28px;
-    display: inline-block;
-  }
-
   .el-menu-item {
-    padding-left: 64px !important;
+    padding-left: 76px !important;
+    height: 50px;
+    line-height: 50px;
 
-    label {
-      font-size: 0.75rem;
-      font-weight: 400;
-      line-height: 1.25rem;
-      letter-spacing: 0.03333em;
+    .menu-name {
+      font-size: 14px;
+      color: #333330;
+      line-height: 28px;
+    }
+
+    &.is-active {
+      .menu-name {
+        color: var(--q-color-primary);
+      }
     }
   }
 }
 
 .el-menu-item {
-  label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.375rem;
-    letter-spacing: 0.00714em;
-  }
+  padding-left: 34px !important;
+  height: 60px;
+  line-height: 60px;
 
   &:hover {
     color: var(--q-color-primary);
@@ -113,22 +114,23 @@ export default {
   &.is-active {
     background: rgba(0, 166, 206, 0.1) !important;
 
+    .menu-icon {
+      color: var(--q-color-primary);
+    }
+
+    .menu-name {
+      color: var(--q-color-primary);
+    }
+
     &::before {
       content: '';
       position: absolute;
       left: 0;
-
       display: inline-block;
       height: 100%;
       width: 4px;
-
       background: var(--q-color-primary);
     }
-  }
-
-  i {
-    width: 28px;
-    display: inline-block;
   }
 }
 </style>

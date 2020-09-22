@@ -1,25 +1,35 @@
 <template>
-  <q-toolbar style="height: 64px;">
-    <div class="full-width full-height flex justify-between items-center">
-      <div class="full-height flex items-center q-ml-md">
-        <q-img class="q-mr-xl cursor-pointer"
-               style="width: 160px;"
-               v-bind:src="require('@src/assets/logo.png')"
-               v-on:click="goWebSite"></q-img>
+  <q-toolbar class="q-px-none"
+             style="height: 80px;">
+    <div class="full-width full-height flex justify-between items-center bg-primary">
+      <div class="full-height flex items-center justify-center">
+        <div style="width: 240px; background: #2c8d98; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);"
+             class="full-height flex items-center justify-center">
+          <q-img class="cursor-pointer"
+                 style="width: 160px;"
+                 v-bind:src="require('@src/assets/logo.png')"
+                 v-on:click="goWebSite"></q-img>
+        </div>
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span class="gt-xs q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
-            {{ configuration.application.title }}
-          </span>
+          <div class="q-ml-lg flex column justify-center flex-start animated jump-down">
+            <div class="text-h6">
+              {{ configuration.application.title }}
+            </div>
+            <div class="text-subtitle2">
+              {{ user.hospitalName }}
+            </div>
+          </div>
         </transition>
+
       </div>
 
       <div class="flex items-center">
 
         <!-- 用户名称 -->
         <span class="q-mr-sm">
-          {{ user.tel }}
+          {{ user.username }}
         </span>
 
         <!-- 用户控制 -->
@@ -27,8 +37,7 @@
                flat
                round
                dense
-               icon="keyboard_arrow_down"
-               color="grey-7">
+               icon="arrow_drop_down">
           <q-popup-proxy v-if="showSignOut">
             <q-list dense
                     bordered
@@ -104,5 +113,9 @@ export default {
   height: 32px;
   border-radius: 50%;
   line-height: 1;
+}
+
+.text-white {
+  color: #fff;
 }
 </style>

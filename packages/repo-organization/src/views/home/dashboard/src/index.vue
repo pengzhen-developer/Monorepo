@@ -17,6 +17,7 @@
                v-for="product in productList"
                v-bind:key="product.id">
             <ProductItem v-bind:serviceName="product.serviceName"
+                         v-bind:serviceType="product.serviceType"
                          v-bind:img="product.img"
                          v-bind:url="product.url"
                          v-on:click.native="isExistService(product)">
