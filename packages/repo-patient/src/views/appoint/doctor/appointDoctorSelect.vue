@@ -404,7 +404,7 @@ export default {
 
 .g-two .left {
   flex: 0 0 auto;
-  width: 1.33333rem;
+  width: 3em;
   color: #333;
   font-size: 0.45333rem;
   text-align: center;
@@ -481,7 +481,7 @@ export default {
 }
 .right > .btn {
   font-size: 14px;
-  width: 65px;
+  width: 4.5em;
   line-height: 20px;
   margin: 0;
   margin-right: 15px;
