@@ -216,7 +216,9 @@ export default {
       const config = configMap.find((item) => item.serviceType == product.serviceType).config
       const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
 
-      window.open(`${window.location.origin}${FLODER_PATH}?token=${token}&configuration=${config}&title=${product.serviceName}&serviceId=${product.serviceId}`)
+      window.open(
+        `${window.location.origin}${FLODER_PATH}?token=${token}&configuration=${config}&title=${product.serviceName}&serviceId=${product.serviceId}&productId=${product.productId}`
+      )
     },
 
     //申请开通用药建议成功后的方法

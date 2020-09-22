@@ -32,5 +32,17 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 获取角色权限信息
+   *
+   * @param {*} params
+   */
+  userMenuOfList(params) {
+    const apiPath = `admin/menu/userMenuOfList`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    const requestApi = serverPath + apiPath
+
+    return Peace.http.get(requestApi, { params })
   }
 }
