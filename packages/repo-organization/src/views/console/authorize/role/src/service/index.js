@@ -33,9 +33,9 @@ export default {
         requestApi = serverPath + apiPath
         return Peace.http.delete(requestApi)
       },
-      //获取角色列表
-      list(params) {
-        apiPath = `admin/role/list`
+      //分页获取角色列表
+      page(params) {
+        apiPath = `admin/role/page`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
       },
@@ -44,35 +44,23 @@ export default {
         apiPath = `admin/role/dict`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
-      },
-      // 更新角色菜单
-      updateMenu(params) {
-        apiPath = `admin/role/menu`
-        requestApi = serverPath + apiPath
-        return Peace.http.put(requestApi, params)
       }
     }
   },
 
   /**
-   * 产品
+   * 菜单
    */
-  product() {
-    let apiPath = `admin/product`
+  menu() {
+    let apiPath = `admin/menu`
     const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
-      //获取产品列表
-      list(params) {
-        apiPath = `admin/product/list`
+      // 查询树形菜单
+      menuTree(params) {
+        apiPath = `admin/menu/tree`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
-      },
-      // 获取产品字典列表
-      dict() {
-        apiPath = `admin/product/dict`
-        requestApi = serverPath + apiPath
-        return Peace.http.get(requestApi)
       }
     }
   }

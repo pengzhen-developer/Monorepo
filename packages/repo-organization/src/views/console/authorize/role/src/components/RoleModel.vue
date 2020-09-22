@@ -3,31 +3,38 @@
     <el-form ref="form"
              label-width="96px"
              v-bind:model="model"
-             v-bind:rules="rules">
+             v-bind:rules="type === 'detail' ? {}:rules">
       <el-form-item prop="roleName">
         <span slot="label"
               class="form-label">角色名称</span>
-        <el-input v-model.trim="model.roleName"
+        <div v-if="type === 'detail'">{{model.roleName}}</div>
+        <el-input v-else
+                  v-model.trim="model.roleName"
                   maxlength="10"
                   placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item prop="roleDesc">
         <span slot="label"
               class="form-label">备注</span>
-        <el-input v-model.trim="model.roleDesc"
+        <div v-if="type === 'detail'">{{model.roleDesc}}</div>
+        <el-input v-else
+                  v-model.trim="model.roleDesc"
                   maxlength="10"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item prop="service">
+      <el-form-item prop="productCode">
         <span slot="label"
               class="form-label">产品名称</span>
-        <el-select v-model="model.service"
+        <div v-if="type === 'detail'">{{model.productCode | formatProduct(productDict)}}</div>
+        <el-select v-else
+                   v-model="model.productCode"
+                   @change="getMenuList"
                    placeholder="请选择"
                    style="width: 100%;">
           <el-option v-for="item in productDict"
-                     v-bind:key="item.code"
-                     v-bind:label="item.name"
-                     v-bind:value="item.code"></el-option>
+                     v-bind:key="item.productId"
+                     v-bind:label="item.productName"
+                     v-bind:value="item.productId"></el-option>
         </el-select>
       </el-form-item>
       <div class="select-menu">
@@ -41,12 +48,13 @@
                      default-expand-all
                      highlight-current
                      v-bind:default-checked-keys="roleMenu"
-                     v-bind:data="allMenu">
+                     v-bind:data="menuTree">
             </el-tree>
           </q-scroll-area>
         </div>
       </div>
-      <el-form-item label=" ">
+      <el-form-item v-if="type !== 'detail'"
+                    label=" ">
         <el-button type="primary"
                    v-bind:loading="isLoading"
                    v-on:click="submit">提 交</el-button>
@@ -58,18 +66,11 @@
 </template>
 
 <script>
-import CONSTANT from '../constant'
 import Peace from '@src/library'
 import Util from '@src/util'
 import Service from '../service'
 
 export default {
-  filters: {
-    getEnumLabel: function (value, ENUM) {
-      return Object.keys(ENUM).find((key) => ENUM[key] === value)
-    }
-  },
-
   data() {
     // 校验中文
     let validateChinese = (rule, value, callback) => {
@@ -81,8 +82,8 @@ export default {
       }
     }
     return {
-      CONSTANT,
       isLoading: false,
+      type: '',
 
       thumbStyle: {
         right: '0px',
@@ -96,13 +97,10 @@ export default {
       },
 
       menuTree: [],
-      defaultChecked: [],
-
-      allMenu: [],
       roleMenu: [],
 
       // 产品字典
-      productDict: [],
+      productDict: Util.user.getUserInfo().productNameList,
 
       model: {
         clientId: Util.user.getUserInfo().clientId,
@@ -128,60 +126,124 @@ export default {
     }
   },
 
-  computed: {},
-
-  created() {
-    this.getProductDict()
-    this.getMenuList()
+  filters: {
+    formatProduct(type, dictList) {
+      return dictList.find((item) => item.productId == type)?.productName
+    }
   },
 
   methods: {
-    init(id) {
-      this.model.id = id || 0
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
+    init(type, roleId) {
+      this.type = type
+      this.model.roleId = roleId || ''
 
-        if (this.model.id) {
-          Service.getRoleInfo({ accountId: this.model.id }).then((res) => {
-            this.model = res.data
-          })
+      this.$nextTick(() => {
+        if (this.type !== 'detail') {
+          this.$refs.form.resetFields()
+        }
+        if (this.model.roleId) {
+          Service.role()
+            .get({ id: this.model.roleId })
+            .then((res) => {
+              this.model = res.data
+              this.model.menuIds = res.data.menuIds ? res.data.menuIds.split(',') : []
+
+              this.getMenuList().then(() => {
+                if (this.type !== 'detail') {
+                  let checked = this.resolveAllEunuchNodeId(this.menuTree, this.model.menuIds, [])
+                  this.roleMenu = checked
+                } else {
+                  let selected = this.resolveAllSelectNodeId(this.menuTree, this.model.menuIds, [])
+                  console.log('selected', selected)
+                  this.menuTree = selected
+                  this.roleMenu = Peace.util.deepClone(this.model.menuIds)
+                }
+              })
+            })
         }
       })
     },
-    // 获取产品字典列表
-    getProductDict() {
-      return Service.product()
-        .dict()
+    // 获取产品对应菜单
+    getMenuList() {
+      let params = {
+        lazy: false,
+        clientId: this.model.roleId ? this.model.clientId : Util.user.getUserInfo().clientId,
+        productCode: this.model.productCode
+      }
+      return Service.menu()
+        .menuTree(params)
         .then((res) => {
-          this.productDict = res.data
+          this.menuTree = res.data
+          this.roleMenu = []
         })
     },
 
-    getMenuList() {
-      let res = []
-      // Service.getMenuList().then((res) => {
-      // 标识 virtual
-      res.data.list.forEach((menu) => {
-        menu.menuName = menu.virtual ? menu.menuName + '(*)' : menu.menuName
-      })
-
-      this.menuTree = Peace.util.arrayToTree(res.data.list, 'id', 'parentId', 'children')
-      // })
+    /**
+     * 解析出所有的太监节点id
+     * @param json 待解析的json串
+     * @param idArr 原始节点数组
+     * @param temp 临时存放节点id的数组
+     * @return 太监节点id数组
+     */
+    resolveAllEunuchNodeId(json, idArr, temp) {
+      for (let i = 0; i < json.length; i++) {
+        const item = json[i]
+        // 存在子节点，递归遍历;不存在子节点，将json的id添加到临时数组中
+        if (item.children && item.children.length !== 0) {
+          this.resolveAllEunuchNodeId(item.children, idArr, temp)
+        } else {
+          temp.push(idArr.filter((id) => id == item.id))
+        }
+      }
+      return temp
     },
 
-    filterNode(value, data) {
-      if (!value) return true
-      return data.menuName.indexOf(value) !== -1
+    /**
+     * 解析出已选节点树
+     * @param data 待解析节点树
+     * @param idArr 原始节点数组
+     * @param temp 临时存放节点id的数组
+     * @return 已选节点树
+     */
+    resolveAllSelectNodeId(data, idArr, temp = []) {
+      if (Array.isArray(data) && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          let item = data[i]
+          if (idArr.find((n) => n == item.id)) {
+            item.disabled = true
+            if (item.children && item.children.length !== 0) {
+              let arr = []
+              let subItem = this.resolveAllSelectNodeId(item.children, idArr, arr)
+              item.children = subItem
+            }
+            temp.push(item)
+          }
+        }
+      }
+      return temp
     },
 
     submit() {
       this.validateForm().then(() => {
         this.isLoading = true
 
+        // 取全选
+        let menuList = this.$refs.tree.getCheckedKeys()
+        // 取半选
+        let menuListHalf = this.$refs.tree.getHalfCheckedKeys()
+        this.model.menuIds = menuList.concat(menuListHalf).join(',')
+
         const params = Peace.util.deepClone(this.model)
 
-        if (this.model.id) {
-          Service.editRole(params)
+        if (!params.menuIds) {
+          Peace.util.warning('请选择菜单')
+          this.isLoading = false
+          return false
+        }
+
+        if (this.model.roleId) {
+          Service.role()
+            .edit(params)
             .then(() => {
               Peace.util.success('保存成功')
               this.$emit('close')
@@ -192,7 +254,8 @@ export default {
               this.isLoading = false
             })
         } else {
-          Service.addRole(params)
+          Service.role()
+            .add(params)
             .then(() => {
               Peace.util.success('保存成功')
               this.$emit('close')
