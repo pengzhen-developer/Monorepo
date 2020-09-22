@@ -72,7 +72,7 @@
 
       <div class="row  items-baseline">
 
-        <div class="row q-mr-20"
+        <div class="row q-mr-20 q-mb-10"
              v-for="item in firstOptionInfo"
              v-bind:key="item.hisPatientId">
 
@@ -81,13 +81,13 @@
             <span class="time-line-subtitle">{{ item.createdTime.substring(5, 10) }}</span>
           </div>
 
-          <div class="case-bg"
-               v-on:click="showCaseInfo">
+          <div class="case-bg cursor-pointer"
+               v-on:click="showCaseInfo(item)">
             <div class="row cursor-pointer">
               <img src="~@src/assets/images/inquiry/ic_option_record.png"
                    style="width: 40px; height:40px"
                    class="q-mr-10" />
-              <div class="q-ml-10">
+              <div>
                 <p class="case-title">{{ item.title }}</p>
                 <p class="case-subtitle">{{ item.hospitalName }} | {{ item.deptName }}</p>
               </div>
@@ -182,6 +182,13 @@
       <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
     </peace-dialog>
 
+    <peace-dialog v-if="dialog.visible"
+                  :visible.sync="dialog.visible"
+                  append-to-body
+                  title="首诊详情">
+      <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -189,6 +196,7 @@
 import peace from '@src/library'
 import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
 import Type from '@src/type'
 
 export default {
@@ -202,13 +210,18 @@ export default {
         visible: false,
         data: undefined
       },
+      dialog: {
+        visible: false,
+        data: undefined
+      },
       items: []
     }
   },
 
   components: {
     InquiryNewCaseDetail,
-    InquiryOptionRecord
+    InquiryOptionRecord,
+    FirstOptionDetail
   },
 
   watch: {
@@ -289,11 +302,16 @@ export default {
         this.items = tmp
       })
     },
+
     showHealthRecode() {
       this.optionDialog.visible = true
       this.optionDialog.data = peace.util.deepClone(this.items)
     },
-    showCaseInfo() {}
+
+    showCaseInfo(info) {
+      this.dialog.visible = true
+      this.dialog.data = info.dataNo
+    }
   }
 }
 </script>
@@ -357,7 +375,6 @@ export default {
   padding: 10px 14px;
   border-radius: 4px;
   background-color: white;
-
   .case-title {
     font-size: 16px;
     color: #333 !important;
