@@ -2,7 +2,6 @@ import Peace from '@src/library'
 
 export default {
   /**
-<<<<<<< HEAD
    * 获取给药途径列表
    *
    * @param {*} params
@@ -86,16 +85,6 @@ export default {
     const isMock = false
 
     const apiPath = 'mds/openapi/psd/dictionary/OrganICD10Info/getICD10Info'
-=======
-   * 获取基础服务
-   *
-   * @param {*} params
-   */
-  getAccountDetailInfo(params) {
-    const isMock = false
-
-    const apiPath = 'console/bank/getAccountDetailInfo'
->>>>>>> 药品属性UI目录结构
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
