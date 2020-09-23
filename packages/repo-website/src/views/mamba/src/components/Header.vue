@@ -92,8 +92,10 @@ export default {
     },
     handleCommand(command) {
       if (command == 'loginOut') {
+        // Util.user.logout().then(() => {
         Util.user.removeUserInfo()
         window.location.reload()
+        // })
       }
     }
   },

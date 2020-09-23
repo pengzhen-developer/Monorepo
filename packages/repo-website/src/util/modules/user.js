@@ -133,6 +133,17 @@ export const replaceToCompliteInfo = (status) => {
       break
   }
 }
+
+/**
+ * logout
+ */
+export const logout = () => {
+  let apiPath = `auth/token/logout`
+  const serverPath = process.env.VUE_APP_AUTH_API
+  let requestApi = serverPath + apiPath
+  return Peace.http.delete(requestApi)
+}
+
 export default {
   getUserInfo,
   setUserInfo,
@@ -144,5 +155,7 @@ export default {
   redirectToConsole,
   redirectToDoctorWorkbench,
   redirectTOPharmacistWorkbench,
-  replaceToCompliteInfo
+  replaceToCompliteInfo,
+
+  logout
 }

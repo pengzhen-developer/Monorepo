@@ -87,8 +87,10 @@ export default {
   methods: {
     handleCommand(command) {
       if (command == 'loginOut') {
+        // Util.user.logout().then(() => {
         Util.user.removeUserInfo()
         this.$router.replace(path.LOGIN)
+        // })
       }
     },
     backHome() {
