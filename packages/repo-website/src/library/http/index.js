@@ -85,6 +85,15 @@ Axios.interceptors.response.use(
     // 未知错误
     else if (error?.response?.status) {
       switch (error.response.status) {
+        //Auth fail
+        case 401:
+          Util.warning('用户凭证已过期')
+
+          LibraryUtil.user.removeUserInfo()
+          setTimeout(() => {
+            LibraryUtil.user.replaceToLogin()
+          }, 1000)
+          break
         default:
           Util.error('服务器异常，请稍后再试', '提示', 'error')
           break
