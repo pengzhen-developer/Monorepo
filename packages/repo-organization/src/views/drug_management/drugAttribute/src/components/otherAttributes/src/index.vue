@@ -31,6 +31,7 @@
 
     <div class="card">
       <peace-table ref="table"
+                   stripe
                    pagination
                    size="mini">
         <el-table-column label="编号"
@@ -40,18 +41,22 @@
 
         <el-table-column label="药品名称"
                          prop="productname"
-                         min-width="180px"></el-table-column>
+                         align="center"
+                         min-width="80px"></el-table-column>
 
         <el-table-column label="规格"
                          prop="drugspecifications"
+                         align="center"
                          min-width="80px"></el-table-column>
 
         <el-table-column label="厂家"
                          prop="enterprisename"
+                         align="center"
                          min-width="80px"></el-table-column>
 
         <el-table-column label="贵重药品"
                          prop="iscostly"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.iscostly === 1 ? '√' : '' }}</span>
@@ -60,6 +65,7 @@
 
         <el-table-column label="毒性药品"
                          prop="istoxic"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.istoxic === 1 ? '√' : '' }}</span>
@@ -68,6 +74,7 @@
 
         <el-table-column label="生物制剂"
                          prop="isbiological"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.isbiological === 1 ? '√' : '' }}</span>
@@ -76,6 +83,7 @@
 
         <el-table-column label="易制毒药品"
                          prop="isprecursor"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.isprecursor === 1 ? '√' : '' }}</span>
@@ -84,6 +92,7 @@
 
         <el-table-column label="医保特药"
                          prop="ismedicarespecial"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.ismedicarespecial === 1 ? '√' : '' }}</span>
@@ -92,6 +101,7 @@
 
         <el-table-column label="更新时间"
                          prop="lastmodifytime"
+                         align="center"
                          min-width="80px"></el-table-column>
       </peace-table>
     </div>
@@ -121,11 +131,7 @@ export default {
     fetch() {
       const fetch = Service.getDrugList
       const params = Object.assign({}, this.model)
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
-        if (res.data.rows !== null) {
-          return res.data.rows
-        }
-      })
+      this.$refs.table.reloadData({ fetch, params })
     }
   }
 }

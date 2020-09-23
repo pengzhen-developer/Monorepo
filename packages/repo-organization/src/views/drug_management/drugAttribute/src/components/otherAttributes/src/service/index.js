@@ -16,6 +16,9 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
+      if (res.data.rows !== null) {
+        res.data.list = res.data.rows
+      }
       return res
     })
   }

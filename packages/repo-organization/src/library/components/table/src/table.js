@@ -4,6 +4,15 @@ import { Table } from 'element-ui'
 import Pagination from './pagination'
 
 const ExtendPaginationProp = {
+  pageProp: {
+    type: Object,
+    default() {
+      return {
+        pageIndex: 'p',
+        pageSize: 'size'
+      }
+    }
+  },
   pageSize: {
     type: Number,
     default() {
@@ -134,9 +143,14 @@ export default {
     _generateConfig(config) {
       // 获取当前的分页信息
       if (this.Pagination) {
+<<<<<<< HEAD
         this.config.params.p = this.Pagination.internalCurrentPage
         this.config.params.current = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
+=======
+        this.config.params[this.pageProp.pageIndex] = this.Pagination.internalCurrentPage
+        this.config.params[this.pageProp.pageSize] = this.Pagination.internalPageSize
+>>>>>>> 完成药品属性
       }
 
       // 扩展当前的请求参数
@@ -146,7 +160,8 @@ export default {
           api: config.api || this.config.api,
           method: config.method || this.config.method,
           fetch: config.fetch || this.config.fetch,
-          params: Object.assign({}, this.config.params, config.params)
+          params: Object.assign({}, this.config.params, config.params),
+          filter: config.filter
         }
       )
 
@@ -203,7 +218,14 @@ export default {
 
       // 传递了加载方法，使用加载方法加载
       if (this.config.fetch) {
-        return this.config.fetch(this.config.params).then(fetchThenFunction)
+        if (this.config.filter) {
+          return this.config
+            .fetch(this.config.params)
+            .then(this.config.filter)
+            .then(fetchThenFunction)
+        } else {
+          return this.config.fetch(this.config.params).then(fetchThenFunction)
+        }
       }
 
       // 传递了远端api， 使用 api 加载

@@ -30,6 +30,7 @@
     </div>
     <div class="card">
       <peace-table ref="table"
+                   stripe
                    pagination
                    size="mini">
         <el-table-column label="编号"
@@ -39,18 +40,22 @@
 
         <el-table-column label="药品名称"
                          prop="productname"
-                         min-width="180px"></el-table-column>
+                         align="center"
+                         min-width="80px"></el-table-column>
 
         <el-table-column label="规格"
                          prop="drugspecifications"
+                         align="center"
                          min-width="80px"></el-table-column>
 
         <el-table-column label="厂家"
                          prop="enterprisename"
+                         align="center"
                          min-width="80px"></el-table-column>
 
         <el-table-column label="麻醉药物"
                          prop="isanesthetic"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.isanesthetic === 1 ? '√' : ''}}</span>
@@ -59,6 +64,7 @@
 
         <el-table-column label="一精药物"
                          prop="ispsychotropic"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.ispsychotropic === 1 ? '√' : ''}}</span>
@@ -67,6 +73,7 @@
 
         <el-table-column label="二精药物"
                          prop="ispsychotropic"
+                         align="center"
                          min-width="80px">
           <template slot-scope="scope">
             <span>{{ scope.row.ispsychotropic === 2 ? '√' : ''}}</span>
@@ -75,6 +82,7 @@
 
         <el-table-column label="更新时间"
                          prop="lastmodifytime"
+                         align="center"
                          min-width="80px"></el-table-column>
       </peace-table>
     </div>
@@ -104,11 +112,7 @@ export default {
     fetch() {
       const fetch = Service.getDrugList
       const params = Object.assign({}, this.model)
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
-        if (res.data.rows !== null) {
-          return res.data.rows
-        }
-      })
+      this.$refs.table.reloadData({ fetch, params })
     }
   }
 }
