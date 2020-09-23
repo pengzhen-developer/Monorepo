@@ -143,14 +143,9 @@ export default {
     _generateConfig(config) {
       // 获取当前的分页信息
       if (this.Pagination) {
-<<<<<<< HEAD
         this.config.params.p = this.Pagination.internalCurrentPage
         this.config.params.current = this.Pagination.internalCurrentPage
         this.config.params.size = this.Pagination.internalPageSize
-=======
-        this.config.params[this.pageProp.pageIndex] = this.Pagination.internalCurrentPage
-        this.config.params[this.pageProp.pageSize] = this.Pagination.internalPageSize
->>>>>>> 完成药品属性
       }
 
       // 扩展当前的请求参数
@@ -230,7 +225,11 @@ export default {
 
       // 传递了远端api， 使用 api 加载
       else if (this.config.api) {
-        console.warn('【 Components 】【 PeaceTable 】', new Date(), 'api 请求形式已过期，请使用 fetch 定义数据加载方式')
+        console.warn(
+          '【 Components 】【 PeaceTable 】',
+          new Date(),
+          'api 请求形式已过期，请使用 fetch 定义数据加载方式'
+        )
         return $peace.http[this.config.method](this.config.api, this.config.params).then(fetchThenFunction)
       }
 
