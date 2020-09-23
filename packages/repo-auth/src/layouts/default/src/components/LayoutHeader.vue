@@ -9,7 +9,7 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span class="gt-xs q-mt-sm q-mr-lg text-h6 text-grey-7 text-weight-bold animated jump-down">
+          <span class="gt-xs q-mt-sm q-mr-lg text-h6 text-white  text-weight-bold animated jump-down">
             {{ configuration.application.title }}
           </span>
         </transition>
@@ -18,17 +18,17 @@
       <div class="flex items-center">
 
         <!-- 用户名称 -->
-        <span class="q-mr-sm">
+        <span class="q-mr-sm text-white ">
           {{ name }}
         </span>
 
         <!-- 用户控制 -->
-        <q-btn class="q-mr-sm"
+        <q-btn class="q-mr-sm text-white "
                flat
                round
                dense
                icon="keyboard_arrow_down"
-               color="grey-7">
+               color="text-white">
           <q-popup-proxy v-if="showSignOut">
             <q-list dense
                     bordered
