@@ -55,7 +55,8 @@
                         effect="dark"
                         type="warning"
                         v-if="drug.drugStatus === 'disable'">停用</el-tag>
-                <span class="text-weight-bold">{{ drug.drugName }}</span>
+                <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
+                <span class="text-caption">{{ drug.specification }}</span>
               </div>
               <span>用法用量：</span>
               <span>每次{{ drug.singleDose }}{{ drug.drugUnit }}</span>
