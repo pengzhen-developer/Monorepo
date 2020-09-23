@@ -6,7 +6,7 @@ export default {
    */
   client() {
     let apiPath = `admin/client`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //获取终端列表-侧边栏
@@ -22,7 +22,7 @@ export default {
    */
   menu() {
     let apiPath = `admin/menu`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //获取终端byID
@@ -59,7 +59,7 @@ export default {
    */
   menuRoute() {
     let apiPath = `admin/menuRoute`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //添加

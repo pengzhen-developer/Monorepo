@@ -18,7 +18,7 @@ export default {
     let dataObj = qs.stringify({ username: user.username, password: user.password })
     let grant_type = 'password'
     const apiPath = 'auth/oauth/token'
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     const requestApi = serverPath + apiPath
     return http.request({
       method: 'post',
@@ -41,7 +41,7 @@ export default {
    */
   userMenuOfList(params) {
     const apiPath = `admin/menu/userMenuOfList`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     const requestApi = serverPath + apiPath
     return {
       get() {

@@ -5,7 +5,7 @@ export default {
   getRoute() {
     let apiPath = `admin/route`
     apiPath = Util.service.RSETfulFormat(apiPath)
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return Peace.http.get(requestApi)
   },
@@ -13,7 +13,7 @@ export default {
   editRoute(params) {
     let apiPath = `admin/route`
     apiPath = Util.service.RSETfulFormat(apiPath, params)
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return Peace.http.put(requestApi, params)
   }

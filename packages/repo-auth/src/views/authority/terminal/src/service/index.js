@@ -6,7 +6,7 @@ export default {
    */
   client() {
     let apiPath = `admin/client`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //获取终端byID

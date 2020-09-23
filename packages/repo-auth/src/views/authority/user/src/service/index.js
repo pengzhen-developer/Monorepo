@@ -6,7 +6,7 @@ export default {
    */
   client() {
     let apiPath = `admin/client`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //获取终端列表-侧边栏
@@ -25,7 +25,7 @@ export default {
       //获取产品字典列表
       getDict() {
         let apiPath = `admin/product/dict`
-        const serverPath = process.env.VUE_APP_SERVER_API
+        const serverPath = process.env.VUE_APP_AUTH_API
         let requestApi = serverPath + apiPath
         return Peace.http.get(requestApi)
       }
@@ -36,7 +36,7 @@ export default {
    */
   user() {
     let apiPath = `admin/user`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //通过ID查询用户信息

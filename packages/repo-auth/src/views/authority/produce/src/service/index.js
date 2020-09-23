@@ -10,7 +10,7 @@ export default {
       getList(params) {
         let apiPath = 'admin/client/list'
         apiPath = Util.service.RSETfulFormat(apiPath, params)
-        const serverPath = process.env.VUE_APP_SERVER_API
+        const serverPath = process.env.VUE_APP_AUTH_API
         let requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
       }
@@ -46,7 +46,7 @@ export default {
 
   product() {
     let apiPath = `admin/product`
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     let requestApi = serverPath + apiPath
     return {
       //获取终端byID

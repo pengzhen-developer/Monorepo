@@ -13,7 +13,7 @@ export default {
     let grant_type = 'password'
     let authorization = `Basic ${Peace.util.encode(params.client_id + ':' + params.client_secret)}`
     const apiPath = 'auth/oauth/token'
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     const requestApi = serverPath + apiPath
     return http.request({
       method: 'post',
@@ -37,7 +37,7 @@ export default {
     let grant_type = 'mobile'
     let authorization = `Basic ${Peace.util.encode(params.client_id + ':' + params.client_secret)}`
     const apiPath = 'auth/mobile/token/sms'
-    const serverPath = process.env.VUE_APP_SERVER_API
+    const serverPath = process.env.VUE_APP_AUTH_API
     const requestApi = serverPath + apiPath
     return http.request({
       method: 'post',

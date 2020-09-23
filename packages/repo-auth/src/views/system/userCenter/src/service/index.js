@@ -9,13 +9,13 @@ export default {
       //修改个人信息
       edit(params) {
         let apiPath = `admin/user/edit`
-        const serverPath = process.env.VUE_APP_SERVER_API
+        const serverPath = process.env.VUE_APP_AUTH_API
         let requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, params)
       },
       get(params) {
         let apiPath = `admin/user/${params.id}`
-        const serverPath = process.env.VUE_APP_SERVER_API
+        const serverPath = process.env.VUE_APP_AUTH_API
         let requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, params)
       }
