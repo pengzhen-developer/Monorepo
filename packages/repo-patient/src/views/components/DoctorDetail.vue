@@ -219,7 +219,7 @@
                  v-for="(item,index) in returnVisitList"
                  :key='index'>
               <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
-              <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
+              <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}} <span>号源{{index+1}}</span></div>
               <div class="flex between"
                    style="width:100%;">
                 <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
@@ -1255,8 +1255,8 @@ export default {
         .fz-card {
           align-items: flex-start;
           flex: none;
-          // width: 142px;
-          width: calc(50% - 5px);
+          width: 142px;
+          // width: calc(50% - 5px);
           height: 102px;
           background: rgba(249, 249, 249, 1);
           border-radius: 7px;
@@ -1274,6 +1274,11 @@ export default {
           .fz-card-tag {
             color: #999;
             font-size: 13px;
+            margin-bottom: 8px;
+            span {
+              font-size: 12px;
+              margin-left: 5px;
+            }
           }
           .fz-card-price {
             flex: 1;

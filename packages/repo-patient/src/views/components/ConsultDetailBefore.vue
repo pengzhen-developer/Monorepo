@@ -37,7 +37,11 @@
         <div class="module-item"
              v-if="retrunVisitBlock">
           <div class="b">复诊时间</div>
-          <div class="span">{{appointmentTime}}</div>
+          <div class="span"
+               @click="changeSource">
+            {{appointmentTime}}
+            <van-image :src="require('@src/assets/images/tit-more.jpg')"></van-image>
+          </div>
         </div>
         <div class="module-item">
           <div class="b">个人信息</div>
@@ -380,8 +384,39 @@ export default {
       this.getFirstOptionList()
     }
   },
-
+  created() {
+    this.params = peace.util.decode(this.$route.params.json)
+    this.onEmits()
+  },
+  destroyed() {
+    this.offEmits()
+  },
   methods: {
+    onEmits() {
+      $peace.$on('SelectSourceAgain', this.selectSourceCallback)
+    },
+
+    offEmits() {
+      $peace.$off('SelectSourceAgain')
+    },
+    selectSourceCallback(res) {
+      if (res) {
+        this.params = Object.assign({}, this.params, res)
+      }
+    },
+    //修改号源
+    changeSource() {
+      let json = peace.util.encode({
+        doctorId: this.internalData.doctorInfo.doctorId,
+        hospitalCode: this.internalData.doctorInfo.nethospitalId,
+        time: this.params.appointmentDate.substring(5),
+        date: new Date(),
+        from: true,
+        isAgain: true,
+        emit: 'SelectSourceAgain'
+      })
+      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
+    },
     onSuccess(result) {
       if (result.checked == false) {
         this.yibaoText = '不使用医保卡'
@@ -513,7 +548,6 @@ export default {
     },
 
     getFamilyDoctorInfo() {
-      this.params = peace.util.decode(this.$route.params.json)
       const params = {
         familyId: this.params.familyId,
         doctorId: this.params.doctorId,
@@ -965,7 +999,14 @@ export default {
     padding: 10px 15px 0 15px;
   }
   .span {
-    padding: 10px 15px 10px 0;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .van-image {
+      width: 8px;
+      height: 13px;
+    }
   }
 
   .right {

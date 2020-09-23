@@ -245,8 +245,13 @@ export default {
           const json = peace.util.encode(temp)
           this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {
-          this.params.model = Object.assign(this.params.model, temp)
-          this.apply(item)
+          if (!this.params.emit) {
+            this.params.model = Object.assign(this.params.model, temp)
+            this.apply(item)
+          } else {
+            $peace.$emit(this.params.emit, temp)
+            this.$router.go(-1)
+          }
         }
       } else {
         this.$router.push(`/appoint/order/appointOrderSubmit/${json}`)
