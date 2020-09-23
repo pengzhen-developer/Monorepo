@@ -83,6 +83,13 @@ Axios.interceptors.response.use(
     // 未知错误
     else if (error?.response?.status) {
       switch (error.response.status) {
+        //Auth fail
+        case 401:
+          // Auth fail 返回官网登录页
+          Util.warning('用户凭证已过期')
+          LibraryUtil.user.removeUserInfo()
+          LibraryUtil.referer.redirectToReferer('login')
+          break
         default:
           Util.error('服务器异常，请稍后再试', '提示', 'error')
           break
