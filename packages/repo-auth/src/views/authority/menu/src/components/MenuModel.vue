@@ -7,18 +7,6 @@
              v-bind:model="query"
              v-bind:rules="rules">
       <div class="info-content">
-        <el-form-item label="菜单名称"
-                      prop="name">
-          <el-input v-model.trim="query.name"
-                    placeholder="请输入菜单名称"></el-input>
-        </el-form-item>
-        <el-form-item label="图标字体">
-          <el-input v-model.trim="query.icon"></el-input>
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input v-model.trim="query.sort"
-                    type="number"></el-input>
-        </el-form-item>
         <el-form-item label="菜单类型"
                       prop="type">
           <el-select v-model="query.type"
@@ -29,6 +17,23 @@
                        :value="item.key">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="菜单名称"
+                      prop="name">
+          <el-input v-model.trim="query.name"
+                    placeholder="请输入菜单名称"></el-input>
+        </el-form-item>
+        <el-form-item label="图标字体">
+          <el-input v-model="query.icon"></el-input>
+        </el-form-item>
+        <el-form-item label="菜单权限标识"
+                      prop="permission"
+                      v-if="query.type=='1'">
+          <el-input v-model.trim="query.permission"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input v-model.trim="query.sort"
+                    type="number"></el-input>
         </el-form-item>
       </div>
       <div class="text-center">
@@ -84,6 +89,13 @@ export default {
           {
             required: true,
             message: '请选择菜单类型',
+            trigger: 'blur'
+          }
+        ],
+        permission: [
+          {
+            required: true,
+            message: '菜单权限标识',
             trigger: 'blur'
           }
         ]
