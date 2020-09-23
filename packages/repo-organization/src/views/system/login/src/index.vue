@@ -86,26 +86,27 @@ export default {
         const regx2 = /\{(.+?)\}/g
         const menuList = res.data
 
-        menuList.forEach((item) => {
-          const menu = item.menuRoutes.find((item) => item.routeType == 1)
+        menuList.forEach((menu) => {
+          const route = menu.menuRoutes.find((route) => route.routeType == 1)
 
           //适配当前框架 menu
-          item.menuName = menu.routeName
-          item.menuRoute = menu.routePath
-          item.menuPath = menu.realPath
-          item.enable = menu.enable == 1 ? true : false
-          item.id = menu.menuId.toString()
-          item.closable = menu.closable == 1 ? true : false
-          item.menuIcon = item.icon
+          menu.menuName = menu.name
+          menu.menuIcon = menu.icon
+          menu.menuRoute = route.routePath
+          menu.menuPath = route.realPath
+          menu.id = route.menuId.toString()
+          menu.enable = route.enable == 1 ? true : false
+          menu.closable = route.closable == 1 ? true : false
 
           // 处理 env
           // {env} => process.env.env
-          const envKey = item.menuPath?.replace(regx1, '')
-          item.menuPath = item.menuPath?.replace(regx2, process.env[envKey])
+          const envKey = menu.menuPath?.replace(regx1, '')
+          menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
         })
         menuList.sort((a, b) => {
           return a.sort - b.sort
         })
+
         Util.user.setAccountMenuList(res.data)
 
         return Promise.resolve()
