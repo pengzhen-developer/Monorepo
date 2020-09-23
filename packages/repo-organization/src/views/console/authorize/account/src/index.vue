@@ -86,6 +86,8 @@
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="toAccount(scope.row)">修改</el-button>
+            <el-button type="text"
+                       v-on:click="resetPassword(scope.row)">重置密码</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
@@ -174,7 +176,24 @@ export default {
             lockFlag: row.lockFlag
           }
           Service.user()
-            .lockFlag(params)
+            .updateUser(params)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.get()
+            })
+        })
+        .catch(() => {
+          row.lockFlag = row.lockFlag == '1' ? '0' : '1'
+        })
+    },
+    resetPassword(row) {
+      this.$confirm('确定重置密码？', '提示')
+        .then(() => {
+          const params = {
+            userId: row.userId
+          }
+          Service.user()
+            .resetPassword(params)
             .then((res) => {
               Peace.util.success(res.msg)
               this.get()

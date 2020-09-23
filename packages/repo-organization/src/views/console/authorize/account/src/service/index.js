@@ -24,8 +24,14 @@ export default {
         return Peace.http.put(requestApi, params)
       },
       // 更新账号状态
-      lockFlag(params) {
-        apiPath = `admin/user/lockFlag`
+      updateUser(params) {
+        apiPath = `admin/user/updateUser`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi, params)
+      },
+      // 重置密码
+      resetPassword(params) {
+        apiPath = `admin/user/resetPassword`
         requestApi = serverPath + apiPath
         return Peace.http.put(requestApi, params)
       },

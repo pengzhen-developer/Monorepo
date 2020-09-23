@@ -95,16 +95,13 @@ export default {
           item.menuPath = menu.realPath
           item.enable = menu.enable == 1 ? true : false
           item.id = menu.menuId.toString()
-          item.closable = menu.closable
+          item.closable = menu.closable == 1 ? true : false
           item.menuIcon = item.icon
 
           // 处理 env
           // {env} => process.env.env
-          const envKey = item.menuRoute?.replace(regx1, '')
-          item.menuRoute = item.menuRoute?.replace(regx2, process.env[envKey])
-
-          // 处理 route route
-          item.menuRoute = item.menuRoute !== '/' ? '/' + menu.realPath : ''
+          const envKey = item.menuPath?.replace(regx1, '')
+          item.menuPath = item.menuPath?.replace(regx2, process.env[envKey])
         })
         menuList.sort((a, b) => {
           return a.sort - b.sort

@@ -12,7 +12,7 @@
                   maxlength="11"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item v-if="!model.userId"
+      <!-- <el-form-item v-if="!model.userId"
                     prop="password">
         <span slot="label"
               class="form-label">密码</span>
@@ -21,7 +21,7 @@
                   minlength="6"
                   maxlength="20"
                   placeholder="请输入"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="name">
         <span slot="label"
               class="form-label">姓名</span>
@@ -76,14 +76,14 @@ export default {
 
   data() {
     // 校验数字和字母
-    let validateNumberCharacter = (rule, value, callback) => {
-      let pattern = /^[a-zA-Z0-9]*$/
-      if (pattern.test(value)) {
-        callback()
-      } else {
-        return callback(new Error())
-      }
-    }
+    // let validateNumberCharacter = (rule, value, callback) => {
+    //   let pattern = /^[a-zA-Z0-9]*$/
+    //   if (pattern.test(value)) {
+    //     callback()
+    //   } else {
+    //     return callback(new Error())
+    //   }
+    // }
     // 校验中英文
     let validateChineseEnglish = (rule, value, callback) => {
       let pattern = /^[\u4e00-\u9fa5_a-zA-Z]*$/
@@ -123,11 +123,11 @@ export default {
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: validateTel, message: '请输入正确的手机号', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '请填写密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
-          { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
-        ],
+        // password: [
+        //   { required: true, message: '请填写密码', trigger: 'blur' },
+        //   { min: 6, max: 20, message: '密码长度为6 - 20位', trigger: 'blur' },
+        //   { validator: validateNumberCharacter, message: '密码仅支持字母、数字组合', trigger: 'blur' }
+        // ],
         name: [
           { required: true, message: '请填写姓名', trigger: 'blur' },
           { min: 1, max: 10, message: '姓名长度为1 - 10位', trigger: 'blur' },

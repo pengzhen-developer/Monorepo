@@ -93,8 +93,10 @@ export default {
 
   methods: {
     signOut() {
+      // Util.user.logout().then(() => {
       Util.user.removeUserInfo()
       Util.referer.redirectToReferer('login')
+      // })
     },
 
     goWebSite() {}
