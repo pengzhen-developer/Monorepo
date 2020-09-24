@@ -138,12 +138,14 @@ export default {
 
 .active {
   background: white;
+  border: 1px solid #fff;
   color: var(--q-color-primary);
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
 
 .normal {
+  border: 1px solid #f5f5f5;
   background: #efefef;
   border: none;
 }
