@@ -75,7 +75,7 @@ export default {
     iframeSrc() {
       const url = CONSTANT.IFRAME_URL[this.activeName][this.tabPosition]
       if (url) {
-        return process.env.VUE_APP_PRESCRIPTION_SITE + url + '?sso=true&cdkey=' + Util.user.getUserCDKey()
+        return process.env.VUE_APP_PRESCRIPTION_SITE + url + '?sso=true&token=' + Util.user.getUserToken()
       } else {
         return ''
       }
