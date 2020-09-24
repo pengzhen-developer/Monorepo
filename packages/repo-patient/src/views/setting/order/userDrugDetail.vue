@@ -203,9 +203,9 @@
       </div>
 
       <div class='bottom-1'
-           :class="order.OrderStatus !== 0&&'other'"
+           :class="order.OrderStatus !== ENUM.ORDER_STATUS.待下单&&'other'"
            v-if="canShowBtnBox">
-        <template v-if="order.OrderStatus !== 0">
+        <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
           <div @click="submitOrder"
                class="btn block btn-blue"
                v-if="canShowReceive">
@@ -219,7 +219,8 @@
           </div>
         </template>
         <template v-else>
-          <div class="left"><span class="money">¥{{ curPayMoney }}</span></div>
+          <div class="left">
+            应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
           <div class="right">
             <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
               待药店联系您进行医保支付
@@ -421,10 +422,11 @@ export default {
 
     // 是否显示应付金额
     canShowPayMoney() {
-      return this.order
-      // &&
-      // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
-      // this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
+      return (
+        this.order &&
+        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
+      )
     },
     canShowBtnBox() {
       return (
@@ -954,6 +956,15 @@ export default {
   .money {
     font-size: 20px;
     color: rgba(255, 52, 77, 1);
+  }
+  .left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    .money {
+      margin-left: 5px;
+      font-weight: bold;
+    }
   }
   .right {
     display: flex;
