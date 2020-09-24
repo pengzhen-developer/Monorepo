@@ -116,9 +116,35 @@ export default {
       const menuTreeSource = Peace.util.deepClone(Util.user.getAccountMenuList()).filter((item) => !item.virtual)
 
       this.menuList = menuListSource
-      this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
+      const tree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
+      this.menuTree = this.filterMenuTree(tree)
     },
-
+    filterMenuTree(tree) {
+      //临时处理运营端服务设置控制菜单
+      const menuSettingMap = {
+        处方审核: '处方管理',
+        处方点评: '处方点评',
+        审方引擎: '',
+        系统对接: '',
+        非系统对接: '药房接单'
+      }
+      const accountMenuList = Util.user.getUserInfo()?.accountMenuList
+      const menuBefore = []
+      accountMenuList.map((menu) => {
+        if (!menu.status && menu.title) {
+          menuBefore.push(menuSettingMap[menu.title])
+        }
+      })
+      menuBefore.map((temp) => {
+        tree.map((menu, index) => {
+          if (temp == menu.menuName) {
+            tree.splice(index, 1)
+          }
+        })
+      })
+      console.log(tree)
+      return tree
+    },
     toggleDrawer(state) {
       if (Peace.util.type(state).isBoolean) {
         this.showDrawerModel = state

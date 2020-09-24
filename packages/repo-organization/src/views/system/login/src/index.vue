@@ -87,22 +87,31 @@ export default {
         const menuList = res.data
 
         menuList.forEach((menu) => {
-          const route = menu.menuRoutes.find((route) => route.routeType == 1)
+          //处理菜单未配置路由
+          if (menu.menuRoutes.length == 0) {
+            menu.menuName = menu.name
+            menu.id = menu.menuId.toString()
+            menu.menuRoute = 'not-found'
+            menu.menuRoute = 'not-found'
+          } else {
+            const route = menu.menuRoutes.find((route) => route.routeType == 1)
 
-          //适配当前框架 menu
-          menu.menuName = menu.name
-          menu.menuIcon = menu.icon
-          menu.menuRoute = route.routePath
-          menu.menuPath = route.realPath
-          menu.id = route.menuId.toString()
-          menu.enable = route.enable == 1 ? true : false
-          menu.closable = route.closable == 1 ? true : false
+            //适配当前框架 menu
+            menu.menuName = menu.name
+            menu.menuIcon = menu.icon
+            menu.menuRoute = route.routePath
+            menu.menuPath = route.realPath
+            menu.id = route.menuId.toString()
+            menu.enable = route.enable == 1 ? true : false
+            menu.closable = route.closable == 1 ? true : false
 
-          // 处理 env
-          // {env} => process.env.env
-          const envKey = menu.menuPath?.replace(regx1, '')
-          menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
+            // 处理 env
+            // {env} => process.env.env
+            const envKey = menu.menuPath?.replace(regx1, '')
+            menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
+          }
         })
+        //sort排序
         menuList.sort((a, b) => {
           return a.sort - b.sort
         })
