@@ -26,9 +26,9 @@ export default {
    */
   addDrugChannel(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/custdict/CustDrugAttr/createDrugRoute'
+    const apiPath = 'custdict/CustDrugAttr/createDrugRoute'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -62,9 +62,9 @@ export default {
    */
   createDrugFrequency(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/custdict/CustDrugAttr/createDrugFrequency'
+    const apiPath = 'custdict/CustDrugAttr/createDrugFrequency'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
