@@ -10,11 +10,13 @@
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md menu-icon"></i>
           <label class="menu-name"
+                 v-bind:class="{'sub-name':league>0}"
                  slot="title">{{ data.menuName }}</label>
         </template>
 
         <LayoutNavItem v-for="menu in data.children"
                        v-bind:key="menu.id"
+                       v-bind:league="currentLeague"
                        v-bind:data="menu"></LayoutNavItem>
       </el-submenu>
     </template>
@@ -24,7 +26,9 @@
       <el-menu-item v-bind:key="data.id"
                     v-bind:index="data.id"
                     v-bind:router="data.id"
-                    v-bind:disabled="data.enable === false">
+                    v-bind:disabled="data.enable === false"
+                    v-bind:style="{'padding-left':paddingLeft}"
+                    v-bind:class="{'sub-item':league>1}">
         <template v-if="data.menuIcon">
           <i v-bind:class="{[data.menuIcon]: true }"
              class="q-mr-md menu-icon"></i>
@@ -42,7 +46,22 @@ export default {
   name: 'LayoutNavItem',
 
   props: {
-    data: Object
+    data: Object,
+    league: {
+      type: Number,
+      default: () => {
+        return 0
+      }
+    }
+  },
+  computed: {
+    currentLeague() {
+      let league = this.league
+      return (league += 1)
+    },
+    paddingLeft() {
+      return this.league > 0 ? 20 * this.league + 56 + 'px!important' : '0'
+    }
   }
 }
 </script>
@@ -72,6 +91,9 @@ export default {
   font-weight: 400;
   color: #333330;
   line-height: 24px;
+  &.sub-name {
+    font-size: 14px;
+  }
 }
 
 .el-submenu {
@@ -80,6 +102,9 @@ export default {
 
     .el-menu-item {
       background: #f9f9f9;
+      &.sub-item {
+        background: #f1f1f1;
+      }
     }
   }
 

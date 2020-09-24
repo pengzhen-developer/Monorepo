@@ -142,7 +142,6 @@ export default {
           }
         })
       })
-      console.log(tree)
       return tree
     },
     toggleDrawer(state) {
