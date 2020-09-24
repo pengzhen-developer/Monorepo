@@ -510,6 +510,7 @@ export default {
   padding: 0 0 0 60px;
 
   .el-timeline-title {
+    text-align: right;
     position: absolute;
     top: -2px;
     margin: 0 0 0 -48px;

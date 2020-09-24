@@ -33,6 +33,11 @@ Axios.interceptors.request.use(
 // Response interceptor
 Axios.interceptors.response.use(
   function(response) {
+    // 基于 downloadFile ，直接返回成功请求，由 download.js 接管
+    if (response.config.isDownload) {
+      return response
+    }
+
     // Success
     if (response?.data?.code === 200) {
       return response.data
@@ -47,10 +52,13 @@ Axios.interceptors.response.use(
 
     // Auth fail
     else if (response?.data?.code === 403) {
-      Util.warning(response.data.msg)
       // Auth fail 返回官网登录页
-      LibraryUtil.user.removeUserInfo()
-      LibraryUtil.referer.redirectToReferer('login')
+      Util.warning(response.data.msg)
+
+      setTimeout(() => {
+        LibraryUtil.user.removeUserInfo()
+        LibraryUtil.referer.redirectToReferer('login')
+      }, 3000)
 
       return Promise.reject(response)
     }

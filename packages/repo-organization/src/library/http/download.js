@@ -43,7 +43,7 @@ export default (url, param, method = 'get') => {
       url: `${url}?${qs.stringify(param, { arrayFormat: 'repeat' })}`,
       method: 'GET',
       responseType: 'blob',
-      isDownload: true,
+      isDownload: true
     }).then(downloadFile)
   }
 
@@ -53,7 +53,7 @@ export default (url, param, method = 'get') => {
       url,
       method: 'POST',
       data: param,
-      responseType: 'blob',
+      responseType: 'blob'
     }).then(downloadFile)
   }
 }
