@@ -9,9 +9,9 @@ export default {
   DrugRoutePaging(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/CustDrug/DrugRoutePaging'
+    const apiPath = 'psd/CustDrug/DrugRoutePaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -45,9 +45,9 @@ export default {
   DrugFrequencyPaging(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/CustDrug/DrugFrequencyPaging'
+    const apiPath = 'psd/CustDrug/DrugFrequencyPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -81,9 +81,9 @@ export default {
   DrugUnitPaging(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/CustDrug/DrugUnitPaging'
+    const apiPath = 'psd/CustDrug/DrugUnitPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -99,9 +99,9 @@ export default {
    */
   createDrugUnit(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/custdict/CustDrugAttr/createDrugUnit'
+    const apiPath = 'custdict/CustDrugAttr/createDrugUnit'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -118,9 +118,9 @@ export default {
   getICD10Info(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/jztdurengine/OrganICD10Info/getICD10InfoPaging'
+    const apiPath = 'jztdurengine/OrganICD10Info/getICD10InfoPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
