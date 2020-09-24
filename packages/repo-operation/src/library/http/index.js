@@ -33,6 +33,11 @@ Axios.interceptors.request.use(
 // Response interceptor
 Axios.interceptors.response.use(
   function(response) {
+    // 基于 downloadFile ，直接返回成功请求，由 download.js 接管
+    if (response.config.isDownload) {
+      return response
+    }
+
     // Success
     if (response?.data?.code === 200) {
       return response.data
