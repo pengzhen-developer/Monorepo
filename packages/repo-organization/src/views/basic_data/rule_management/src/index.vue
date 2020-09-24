@@ -51,10 +51,13 @@ export default {
   }
 
   &.el-tabs--card > .el-tabs__header .el-tabs__item {
-    border: 1px solid #fafafa;
-    background: #fafafa;
+    padding-left: 42px !important;
+    padding-right: 42px !important;
+    background: #efefef;
+    border: 1px solid #f5f5f5;
     margin: 0 8px 0 0;
-    border-radius: 8px 8px 0 0;
+    border-radius: 4px 4px 0 0;
+    font-weight: 400;
   }
 
   &.el-tabs--card > .el-tabs__header .el-tabs__nav {
