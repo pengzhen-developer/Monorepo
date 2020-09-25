@@ -22,7 +22,8 @@
               {{ tel }}<i class="el-icon-s-operation gary-color"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
+              <el-dropdown-item command="loginOut"
+                                class="menu-out">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -169,5 +170,9 @@ button:active {
   .login {
     margin-right: 20px;
   }
+}
+
+.menu-out {
+  padding: 5px 20px;
 }
 </style>

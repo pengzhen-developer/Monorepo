@@ -33,7 +33,7 @@
                   v-bind:maxlength="11"
                   placeholder="请输入手机号">
           <div slot="prepend">
-            <i class="zyy-icon zyy-shoujihao"></i>
+            <i class="zyy-icon zyy-shouji"></i>
           </div>
         </el-input>
       </el-form-item>
