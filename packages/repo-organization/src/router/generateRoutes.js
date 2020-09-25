@@ -19,21 +19,34 @@ const getDynamicRoutes = () => {
         children: dynamicLayoutRoutes
       }
     ]
-
+    const regx1 = /.*{|}.*/g
+    const regx2 = /\{(.+?)\}/g
     // 遍历权限菜单，声明 dynamic route
     accountMenuList.forEach((menu) => {
-      menu = Peace.util.deepClone(menu)
+      menu.menuRoutes.forEach((route) => {
+        route.id = route.routeId.toString()
+        route.menuName = route.name
+        route.menuIcon = route.icon || ''
+        route.menuRoute = route.routePath
+        route.menuPath = route.realPath
+        route.enable = route.enable == 1 ? true : false
+        route.closable = route.closable == 1 ? true : false
+        // 处理 env
+        // {env} => process.env.env
+        const envKey = route.menuPath?.replace(regx1, '')
+        route.menuPath = route.menuPath?.replace(regx2, process.env[envKey])
 
-      if (menu.menuPath && menu.menuRoute) {
-        const component = Peace.validate.isUrl(menu.menuPath) ? () => import(`@src/views/iframe/index.js`) : () => import(`@src/${menu.menuPath}/index.js`)
+        const component = Peace.validate.isUrl(route.menuPath) ? () => import(`@src/views/iframe/index.js`) : () => import(`@src/${route.menuPath}/index.js`)
 
-        dynamicLayoutRoutes.push({
-          path: menu.menuRoute,
-          name: menu.menuAlias || menu.menuRoute,
-          meta: menu,
-          component
-        })
-      }
+        if (route.routePath && (route.routePath !== 'null' || route.routePath !== '/')) {
+          dynamicLayoutRoutes.push({
+            path: route.routePath,
+            name: route.routeName || route.name,
+            meta: route,
+            component
+          })
+        }
+      })
     })
   }
 
