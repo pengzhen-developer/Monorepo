@@ -54,6 +54,7 @@
                  v-bind:info="dialogMenu.data"></MenuModel>
     </el-dialog>
     <el-dialog v-if="dialogMenuRoute.visible"
+               :close-on-click-modal="false"
                width="900px"
                v-bind:visible.sync="dialogMenuRoute.visible"
                title="路由管理">

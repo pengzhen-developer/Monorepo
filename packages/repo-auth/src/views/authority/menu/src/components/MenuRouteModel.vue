@@ -7,10 +7,16 @@
              v-bind:model="query"
              v-bind:rules="rules">
       <div class="info-content">
+
         <el-form-item label="路由名称"
                       class="tow-col"
                       prop="routeName">
           <el-input v-model.trim="query.routeName"></el-input>
+        </el-form-item>
+        <el-form-item label="标签名称"
+                      class="tow-col"
+                      prop="name">
+          <el-input v-model.trim="query.name"></el-input>
         </el-form-item>
         <el-form-item label="路由地址"
                       class="tow-col"
@@ -23,7 +29,7 @@
           <el-input v-model.trim="query.realPath"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item class="tow-col"
+        <el-form-item class="three-col"
                       prop="routeType">
           <div class="flex inline"
                slot="label">
@@ -35,7 +41,7 @@
                      :inactive-value="2"></el-switch>
 
         </el-form-item>
-        <el-form-item class="tow-col">
+        <el-form-item class="three-col">
           <div class="flex inline"
                slot="label">
             <span class="text-justify">是否启用</span>
@@ -47,7 +53,7 @@
                      inactive-value="0"></el-switch>
 
         </el-form-item>
-        <el-form-item class="tow-col">
+        <el-form-item class="three-col">
           <div class="flex inline"
                slot="label">
             <span class="text-justify">是否可关闭</span>
@@ -83,6 +89,11 @@
                          align="left"
                          min-width="100px"
                          prop="routeName">
+        </el-table-column>
+        <el-table-column label="标签名称"
+                         align="left"
+                         min-width="100px"
+                         prop="name">
         </el-table-column>
         <el-table-column label="路由地址"
                          align="left"
@@ -144,6 +155,13 @@ export default {
       loading: false,
       type: 'create',
       rules: {
+        name: [
+          {
+            required: true,
+            message: '请输入标签名称',
+            trigger: 'blur'
+          }
+        ],
         routeName: [
           {
             required: true,
@@ -176,7 +194,6 @@ export default {
     }
   },
   mounted() {
-    this.query.name = this.info.name
     this.query.menuId = this.info.id
     this.getMenuRoute()
   },
@@ -261,6 +278,9 @@ export default {
   width: 100%;
   &.tow-col {
     width: 50%;
+  }
+  &.three-col {
+    width: 33.33333333%;
   }
 }
 .el-select {
