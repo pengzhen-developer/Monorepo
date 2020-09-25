@@ -164,9 +164,9 @@
               </div>
             </div>
             <div class="form-dl"
-                 v-if="params.pregnancyText">
+                 v-if="pregnancyText">
               <div class="form-dt">特殊时期 :</div>
-              <div class="form-dd">{{params.pregnancyText}}</div>
+              <div class="form-dd">{{pregnancyText}}</div>
             </div>
             <div class="form-dl"
                  v-if="params.allergicHistory">
@@ -274,6 +274,12 @@ const ENUM = {
     image: '图文咨询',
     video: '视频咨询',
     returnVisit: '复诊'
+  },
+  WOMAN_TYPE_TEXT_MAP: {
+    1: '不在特殊时期',
+    2: '备孕期',
+    3: '怀孕期',
+    4: '哺乳期'
   }
 }
 export default {
@@ -313,6 +319,9 @@ export default {
     }
   },
   computed: {
+    pregnancyText() {
+      return this.ENUM.WOMAN_TYPE_TEXT_MAP[this.params.isPregnancy]
+    },
     info() {
       return {
         familyName: this.params?.familyName,
@@ -362,7 +371,7 @@ export default {
       return this.internalData && this.params && this.internalData.doctorInfo && this.internalData.familyInfo
     },
     canShowSupplementaryInfo() {
-      return this.params && (this.params.affectedImages.length > 0 || this.params.pregnancyText || this.params.allergicHistory)
+      return this.params && (this.params.affectedImages.length > 0 || this.pregnancyText || this.params.allergicHistory)
     },
     canShowYibao() {
       return this.params?.serviceType == 'returnVisit' && this.internalData?.insuranceConfig?.medicalInsuranceConfig != null ? true : false
