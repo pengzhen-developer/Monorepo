@@ -199,9 +199,7 @@ export default {
               this.get()
             })
         })
-        .catch(() => {
-          row.lockFlag = row.lockFlag == '1' ? '0' : '1'
-        })
+        .catch(() => {})
     },
     toAccount(row) {
       this.accountDialog.visible = true

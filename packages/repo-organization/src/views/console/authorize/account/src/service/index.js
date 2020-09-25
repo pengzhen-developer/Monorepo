@@ -31,9 +31,9 @@ export default {
       },
       // 重置密码
       resetPassword(params) {
-        apiPath = `admin/user/resetPassword`
+        apiPath = `admin/user/resetPassword?userId=${params.userId}`
         requestApi = serverPath + apiPath
-        return Peace.http.put(requestApi, params)
+        return Peace.http.put(requestApi)
       },
       //分页获取用户列表
       page(params) {
