@@ -255,7 +255,7 @@ export default {
       this.id = row.UserID
     },
     commodityManage(row) {
-      const menu = Peace.util.deepClone(this.provideGetTab('4-4-2'))
+      const menu = Peace.util.deepClone(this.provideGetTab('商品管理'))
       menu.menuPath = menu.menuPath + '?custcode=' + row.Code
       this.provideAddTab(menu)
     },
