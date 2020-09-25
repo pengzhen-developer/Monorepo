@@ -69,14 +69,13 @@
         </div>
       </section>
       <section class="functions">
-        <div class="item"
+        <div class="item "
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
           <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:智能导诊 8:中药寄送 -->
           <div class="img">
-            <img
-                 :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
+            <img :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
             <img class="wait"
                  v-if="item.isOpen!=1"
                  src="@src/assets/images/ic_wait open.png" />
@@ -122,8 +121,8 @@
             <div class="item">
 
               <img src="@src/assets/images/ic_tag.png"
-                   v-if="item.isAttention==1" />>
-
+                   v-if="item.isAttention==1" />
+              <span class="tranparent">></span>
               <span class="name">{{ item.doctorName }}</span>
               <div class="jd">
                 <div>{{ item.netdeptName + " " + item.doctorTitle }}</div>
@@ -212,7 +211,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       const channelId = peace.cache.get(peace.type.SYSTEM.CHANNELID)
-      peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then(res => {
+      peace.service.hospital.getHospitalInfo({ nethospitalId: nethospitalId }).then((res) => {
         this.isLoading = false
         this.hospitalInfo = res.data
         let obj = {
@@ -222,12 +221,7 @@ export default {
           imgUrl: this.hospitalInfo.nethospitalInfo.icon
         }
         if (channelId) {
-          obj.url =
-            peace.config.api.base +
-            'h5/redirect?redirect=home&netHospitalId=' +
-            nethospitalId +
-            '&channelId=' +
-            channelId
+          obj.url = peace.config.api.base + 'h5/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId
         }
         peace.wx.share.share(obj)
       })
@@ -589,6 +583,7 @@ export default {
     background: #fff;
     margin-top: 8px;
     padding-bottom: 18px;
+
     .item {
       width: 25%;
       display: flex;
@@ -597,6 +592,7 @@ export default {
       align-items: center;
       margin-top: 18px;
       position: relative;
+
       .img {
         width: 30px;
         height: 30px;
@@ -711,6 +707,9 @@ export default {
             top: -2px;
             height: 14px;
             width: 33px;
+          }
+          .tranparent {
+            color: transparent;
           }
           .name {
             font-size: 14px;
