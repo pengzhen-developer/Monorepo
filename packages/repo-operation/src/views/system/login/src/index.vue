@@ -7,7 +7,8 @@
         {{ configuration.application.title }}
       </p>
 
-      <el-form v-bind:model="model"
+      <el-form label-width="auto"
+               v-bind:model="model"
                v-bind:rules="rules"
                v-on:keyup.enter.native="doLogin"
                ref="form">

@@ -70,7 +70,6 @@
             </div>
 
             <el-button type="text"
-                       v-show="showSerice(item)"
                        class="service-detail-button"
                        v-on:click="serviceDetail(item)">服务详情<i class="el-icon-arrow-right el-icon--right"></i></el-button>
 
@@ -182,6 +181,7 @@
 <script>
 import CONSTANT from '../constant'
 import Service from './../service'
+import Peace from '@src/library'
 import EditService from './EditService'
 
 export default {
@@ -258,13 +258,6 @@ export default {
   },
 
   methods: {
-    showSerice(item) {
-      if (item.serviceType == 1 || item.serviceType == 2) {
-        return true
-      } else {
-        return false
-      }
-    },
     getService() {
       this.isLoading = true
       const params = {
@@ -297,9 +290,9 @@ export default {
     serviceDetail(params) {
       const configMap = [
         { serviceName: '互联网医院管理端', serviceType: 1, tagName: '10524' },
-        { serviceName: '处方管理医院端', serviceType: 3, tagName: '999-3' },
+        { serviceName: '处方管理医院端', serviceType: 3, tagName: '10533' },
         { serviceName: '合理用药管理', serviceType: 2, tagName: '10528' },
-        { serviceName: '药品供应管理端', serviceType: 4, tagName: '999-4' }
+        { serviceName: '药品供应管理端', serviceType: 4, tagName: '10534' }
       ]
       const tagName = configMap.find((item) => item.serviceType == params.serviceType).tagName
 
@@ -313,6 +306,15 @@ export default {
         case 2:
           tab.menuPath = tab.menuPath + `?hospitalCode=${params.custCode}&hospitalName=${params.hospitalName}`
 
+          this.addTab(tab)
+          break
+        case 3:
+          Peace.cache.sessionStorage.set('10533-custcode', params.custCode)
+          this.addTab(tab)
+          break
+        case 4:
+          Peace.cache.sessionStorage.set('10534-custcode', params.custCode)
+          Peace.cache.sessionStorage.set('10534-role', params.role)
           this.addTab(tab)
           break
         default:
@@ -334,15 +336,13 @@ export default {
       Service.getPaymentConfig(params)
         .then((res) => {
           if (type === 'all' || type === 'commercial') {
-            this.commercialInsurance.checked = res.data.commercialInsuranceConfig.status ? res.data.commercialInsuranceConfig.status : 0
-            this.commercialInsurance.selected = res.data.commercialInsuranceConfig.insuranceType
-              ? res.data.commercialInsuranceConfig.insuranceType.split(',')
-              : []
+            this.commercialInsurance.checked = res.data.commercialInsuranceConfig?.status ?? 0
+            this.commercialInsurance.selected = res.data.commercialInsuranceConfig?.insuranceType?.split(',') ?? []
           }
 
           if (type === 'all' || type === 'medical') {
-            this.medicalInsurance.checked = res.data.medicalInsuranceConfig.status ? res.data.medicalInsuranceConfig.status : 0
-            this.medicalInsurance.selected = res.data.medicalInsuranceConfig.insuranceType ? res.data.medicalInsuranceConfig.insuranceType.split(',') : []
+            this.medicalInsurance.checked = res.data.medicalInsuranceConfig?.status ?? 0
+            this.medicalInsurance.selected = res.data.medicalInsuranceConfig?.insuranceType?.split(',') ?? []
           }
         })
         .finally(() => {})
