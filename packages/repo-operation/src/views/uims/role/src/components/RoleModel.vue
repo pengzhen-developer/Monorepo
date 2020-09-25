@@ -41,33 +41,28 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify em-4">可选菜单</span>
-            <span class="text-center q-ml-sm">：</span>
+        <div class="select-menu">
+          <div class="title">可选菜单</div>
+          <div class="menu-tree">
+            <el-input size="larger"
+                      placeholder="输入关键字进行过滤"
+                      v-model="filterText">
+            </el-input>
+            <q-scroll-area v-bind:thumb-style="thumbStyle"
+                           v-bind:style="scrollAreaStyle">
+              <el-tree ref="tree"
+                       node-key="id"
+                       show-checkbox
+                       default-expand-all
+                       highlight-current
+                       v-bind:default-checked-keys="defaultChecked"
+                       v-bind:filter-node-method="filterNode"
+                       v-bind:props="{ children: 'children', label: 'menuName' }"
+                       v-bind:data="menuTree">
+              </el-tree>
+            </q-scroll-area>
           </div>
-
-          <el-input class="q-mb-sm"
-                    placeholder="输入关键字进行过滤"
-                    v-model="filterText">
-          </el-input>
-
-          <q-scroll-area v-bind:thumb-style="thumbStyle"
-                         v-bind:style="scrollAreaStyle">
-            <el-tree ref="tree"
-                     node-key="id"
-                     show-checkbox
-                     default-expand-all
-                     highlight-current
-                     v-bind:default-checked-keys="defaultChecked"
-                     v-bind:filter-node-method="filterNode"
-                     v-bind:props="{ children: 'children', label: 'menuName' }"
-                     v-bind:data="menuTree">
-            </el-tree>
-          </q-scroll-area>
-
-        </el-form-item>
+        </div>
       </el-form>
     </div>
 
@@ -196,5 +191,37 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.select-menu {
+  width: 360px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  .title {
+    padding: 12px 14px;
+    height: 48px;
+    background: #f5f5f5;
+    border-radius: 4px 4px 0px 0px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 24px;
+  }
+}
+
+::v-deep {
+  .el-tree-node__content {
+    height: 50px;
+  }
+
+  .el-tree-node__content > label.el-checkbox {
+    margin-right: 24px;
+  }
+
+  .el-tree-node__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+  }
+}
 </style>
