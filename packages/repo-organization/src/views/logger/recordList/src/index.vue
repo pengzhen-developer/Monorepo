@@ -79,6 +79,8 @@
 <script>
 import CONSTANT from './constant'
 export default {
+  name: 'LoggerRecordList',
+
   data() {
     return {
       timeRange: [],

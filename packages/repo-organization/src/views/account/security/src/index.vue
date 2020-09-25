@@ -43,6 +43,8 @@ import ChangePassword from './components/ChangePassword'
 import ChangePhone from './components/ChangePhone'
 
 export default {
+  name: 'AccountSecurity',
+
   data() {
     return {
       changePasswordDialogVisible: false,

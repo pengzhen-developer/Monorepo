@@ -105,6 +105,8 @@
 import Service from './service'
 
 export default {
+  name: 'AccountBase',
+
   data() {
     return {
       accountInfo: {},

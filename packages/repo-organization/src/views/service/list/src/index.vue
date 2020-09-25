@@ -24,6 +24,8 @@ import ServiceList from './components/ServiceList'
 import RecordList from './components/RecordList'
 
 export default {
+  name: 'ServiceListBoard',
+
   components: {
     ServiceList,
     RecordList

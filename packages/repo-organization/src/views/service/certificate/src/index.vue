@@ -57,6 +57,8 @@
 import Service from './service'
 
 export default {
+  name: 'ServiceCertificate',
+
   data() {
     return {
       tableData: []

@@ -92,6 +92,7 @@ import RpShareManagementDialog from './components/RpShareManagementDialog'
 import MedicineSupplyDialog from './components/RpShareManagementDialog'
 
 export default {
+  name: 'HomeDashboard',
   components: {
     ServiceItem,
     ProductItem,
