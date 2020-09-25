@@ -116,7 +116,8 @@ import Util from '@src/util'
 import CONSTANT from './constant'
 
 export default {
-  name: 'account-management',
+  name: 'AccountManager',
+
   components: {
     AccountModel
   },

@@ -2,28 +2,14 @@
   <q-scroll-area class="bg-grey-2"
                  v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-
-    <div v-if="isIFrame"
-         v-bind:style="routerViewStyle">
-
-      <transition appear
-                  mode="out-in"
-                  name="el-fade-in-linear">
-        <router-view class="router-view iframe-router-view"
-                     v-bind:key="$route.meta.menuPath"
-                     v-bind:style="routerViewIframeStyle"></router-view>
-      </transition>
-    </div>
-
-    <div v-show="!isIFrame"
-         v-bind:style="routerViewStyle">
+    <div v-bind:style="routerViewStyle">
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
         <keep-alive v-bind:include="keepAliveInclude">
           <router-view class="router-view"
                        v-bind:key="$route.fullPath"
-                       v-bind:style="routerViewStyle"></router-view>
+                       v-bind:style="isIFrame ? routerViewIframeStyle : routerViewStyle"></router-view>
         </keep-alive>
       </transition>
     </div>
@@ -56,7 +42,7 @@ export default {
     keepAliveInclude() {
       // 基于 layout - tabs 实现标签页的缓存
       // ** 请注意， component name 与 menuRouteName 必须保持一致
-      return this.$store.state.tabs.tabs.map((item) => item.menuRouteName)
+      return this.$store.state.tabs.tabs.map((item) => item.menuAlias)
     }
   },
 

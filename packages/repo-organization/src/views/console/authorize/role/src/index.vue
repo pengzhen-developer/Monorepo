@@ -79,7 +79,6 @@
                  v-on:close="roleDialog.visible = false"
                  v-on:refresh="get"></RoleModel>
     </el-dialog>
-
   </div>
 
 </template>
@@ -93,7 +92,7 @@ import Service from './service'
 import CONSTANT from './constant'
 
 export default {
-  name: 'role-management',
+  name: 'RoleManagement',
   components: {
     RoleModel
   },

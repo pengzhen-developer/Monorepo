@@ -84,39 +84,41 @@ export default {
       return Service.userMenuOfList(params).then((res) => {
         const regx1 = /.*{|}.*/g
         const regx2 = /\{(.+?)\}/g
-        const menuList = res.data
+        const adpaterMenuList = []
 
-        menuList.forEach((menu) => {
-          //处理菜单未配置路由
-          if (menu.menuRoutes.length == 0) {
-            menu.menuName = menu.name
-            menu.id = menu.menuId.toString()
-            menu.menuRoute = 'not-found'
-            menu.menuRoute = 'not-found'
-          } else {
-            const route = menu.menuRoutes.find((route) => route.routeType == 1)
-
-            //适配当前框架 menu
-            menu.menuName = menu.name
-            menu.menuIcon = menu.icon
-            menu.menuRoute = route.routePath
-            menu.menuPath = route.realPath
-            menu.id = route.menuId.toString()
-            menu.enable = route.enable == 1 ? true : false
-            menu.closable = route.closable == 1 ? true : false
+        res?.data?.forEach((menu) => {
+          menu?.menuRoutes?.forEach((route) => {
+            const menuStruct = {}
 
             // 处理 env
             // {env} => process.env.env
-            const envKey = menu.menuPath?.replace(regx1, '')
-            menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
-          }
+            const envKey = route.realPath?.replace(regx1, '')
+            route.realPath = route.realPath?.replace(regx2, process.env[envKey])
+
+            menuStruct.menuIcon = menu.icon
+            menuStruct.menuName = route.routeType === 1 ? menu.name : route.routeName
+            menuStruct.id = route.routeType === 1 ? menu.menuId.toString() : route.routeId.toString()
+            menuStruct.parentId = menu.parentId.toString()
+            menuStruct.sort = menu.sort
+
+            menuStruct.closable = route.closable == 1 ? true : false
+            menuStruct.enable = route.enable == 1 ? true : false
+            menuStruct.menuAlias = route.routeName
+            menuStruct.menuPath = route.realPath
+            menuStruct.menuRoute = route.routePath
+
+            menuStruct.virtual = route.routeType === 1 ? 0 : 1
+
+            adpaterMenuList.push(menuStruct)
+          })
         })
+
         //sort排序
-        menuList.sort((a, b) => {
+        adpaterMenuList.sort((a, b) => {
           return a.sort - b.sort
         })
 
-        Util.user.setAccountMenuList(res.data)
+        Util.user.setAccountMenuList(adpaterMenuList)
 
         return Promise.resolve()
       })
