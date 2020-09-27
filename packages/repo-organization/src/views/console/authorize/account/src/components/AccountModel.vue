@@ -170,7 +170,6 @@ export default {
                 this.model.userId = res.data.userId
                 this.model.username = res.data.username
                 this.model.name = res.data.name
-                this.model.password = ''
                 this.model.role = res.data.roleList.map((item) => item.roleId)
                 this.model.lockFlag = res.data.lockFlag
               })

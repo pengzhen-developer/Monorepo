@@ -208,19 +208,26 @@ export default {
       })
     },
     redirectSerivceSite(product) {
+      const userInfo = Util.user.getUserInfo()
       const token = Util.user.getUserToken()
       const configMap = [
-        { serviceName: '互联网医院管理端', serviceType: 1, config: 'organization' },
-        { serviceName: '处方管理医院端', serviceType: 3, config: 'prescription' },
-        { serviceName: '合理用药管理', serviceType: 2, config: 'rationaldruguse' },
-        { serviceName: '药品供应管理端', serviceType: 4, config: 'drugsupplie' }
+        { serviceName: '互联网医院管理端', serviceType: 1, config: 'organization', code: 'hlwyy' },
+        { serviceName: '处方管理医院端', serviceType: 3, config: 'prescription', code: 'cfgxfw' },
+        { serviceName: '合理用药管理', serviceType: 2, config: 'rationaldruguse', code: 'hlyygl' },
+        { serviceName: '药品供应管理端', serviceType: 4, config: 'drugsupplie', code: 'ypgyfw' }
       ]
-      const config = configMap.find((item) => item.serviceType == product.serviceType).config
-      const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
 
-      window.open(
-        `${window.location.origin}${FLODER_PATH}?token=${token}&configuration=${config}&title=${product.serviceName}&serviceId=${product.serviceId}&productId=${product.productId}`
-      )
+      const currentProduct = configMap.find((item) => item.serviceType == product.serviceType)
+
+      if (userInfo.productCodes.find((item) => item == currentProduct.code)) {
+        const FLODER_PATH = process.env.VUE_APP_RELEASE_FLODER_PATH
+
+        window.open(
+          `${window.location.origin}${FLODER_PATH}?token=${token}&configuration=${currentProduct.config}&title=${product.serviceName}&serviceId=${product.serviceId}&productId=${product.productId}`
+        )
+      } else {
+        Peace.util.warning('账号没有该服务的菜单权限，请联系管理员开通')
+      }
     },
 
     //申请开通用药建议成功后的方法
