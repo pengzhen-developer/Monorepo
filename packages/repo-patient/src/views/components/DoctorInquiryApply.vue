@@ -603,7 +603,12 @@ export default {
 
       offsetTop: 0,
       isFixed: false,
-      selectFamilyStatus: false
+      selectFamilyStatus: false,
+
+      debounceParam: {
+        wait: 1000,
+        start: ''
+      }
     }
   },
 
@@ -711,6 +716,9 @@ export default {
     },
 
     onClickSupplementaryAnswerButton(mode, value = null) {
+      if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
+        return
+      }
       const typeActionMap = {
         allergies: this.typeActionAllergies,
         woman: this.typeActionWoman,
@@ -723,6 +731,7 @@ export default {
       } else {
         throw new Error('Type error!')
       }
+      this.debounceParam.time = new Date().getTime()
     },
 
     onAfterSupplementaryAnswer(mode) {
@@ -808,7 +817,6 @@ export default {
     },
 
     typeActionWoman(period) {
-      // console.log(period)
       this.model.isPregnancy = period
       const context = this.WOMAN_TYPE_TEXT_MAP[period]
       this.pushToChatList({ context })
@@ -1140,12 +1148,16 @@ export default {
       })
     },
     async answer() {
+      if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
+        return
+      }
       let result = await this.setAnswer(arguments)
       if (result) {
         this.beginNextQuestion()
 
         this.resetCurrentQuestion()
       }
+      this.debounceParam.time = new Date().getTime()
     },
 
     async setAnswer(params) {
@@ -1581,7 +1593,6 @@ export default {
     },
 
     goToPay(data) {
-      // console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
         typeName: this.doctor.doctorInfo.serviceName,
