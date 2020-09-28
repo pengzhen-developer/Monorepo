@@ -22,7 +22,7 @@
           <el-input v-model=" model.dieaseName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-
+        <!-- 
         <el-form-item>
           <span slot="label">
             <span>匹配状态</span>
@@ -35,7 +35,7 @@
                        :value="item.value"
                        v-for="item in source.ENUM_MATCH_CODE"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label=" ">
           <el-button type="primary"
@@ -65,16 +65,20 @@
         </el-table-column>
         <el-table-column align="center"
                          label="附加编码">
-          <p> {{ addCode==null ?"---" : addCode  }}</p>
+          <template slot-scope="scope">
+            <span>
+              {{ showAddCode(scope.row.addCode) }}
+            </span>
+          </template>
         </el-table-column>
         <el-table-column prop="organName"
                          align="center"
                          label="机构名称">
         </el-table-column>
-        <el-table-column align="center"
+        <!-- <el-table-column align="center"
                          label="匹配状态">
           <p>---</p>
-        </el-table-column>
+        </el-table-column> -->
 
       </PeaceTable>
     </div>
@@ -111,6 +115,9 @@ export default {
       const fetch = Service.getICD10Info
       const params = this.model
       this.$refs.table.loadData({ fetch, params })
+    },
+    showAddCode(addCode) {
+      return addCode == null ? '---' : addCode
     }
   }
 }
