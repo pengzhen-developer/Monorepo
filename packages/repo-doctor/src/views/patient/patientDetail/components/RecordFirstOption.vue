@@ -13,18 +13,18 @@
       <p class="record-case-right-title">首诊记录</p>
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
-
-    <!-- <peace-dialog :visible.sync="caseDialog.visible"
+    <peace-dialog v-if="dialog.visible"
+                  :visible.sync="dialog.visible"
                   append-to-body
-                  title="病历详情">
-      <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
-    </peace-dialog> -->
+                  title="首诊详情">
+      <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
+    </peace-dialog>
   </div>
 </template>
 
 <script>
 // import peace from '@src/library'
-// import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
 
 export default {
   props: {
@@ -32,12 +32,12 @@ export default {
   },
 
   components: {
-    // InquiryNewCaseDetail
+    FirstOptionDetail
   },
 
   data() {
     return {
-      caseDialog: {
+      dialog: {
         visible: false,
         data: undefined
       }
@@ -53,6 +53,8 @@ export default {
       //   this.caseDialog.data = res.data
       //   // console.log(this.caseDialog.data)
       // })
+      this.dialog.visible = true
+      this.dialog.data = this.data.dataNo
     }
   }
 }
