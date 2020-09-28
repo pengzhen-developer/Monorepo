@@ -1,6 +1,7 @@
 /*
  * 诊疗记录
-*/
+ * 在健康档案叫'处方'
+ */
 
 <template>
   <div @click="get"
@@ -10,7 +11,7 @@
            style="width: 40px; height:40px" />
     </div>
     <div class="record-case-right">
-      <p class="record-case-right-title">诊疗记录</p>
+      <p class="record-case-right-title">处方</p>
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
     <peace-dialog v-if="dialog.visible"
