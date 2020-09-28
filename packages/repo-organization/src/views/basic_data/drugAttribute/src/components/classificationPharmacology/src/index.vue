@@ -12,9 +12,9 @@
                     placeholder="请输入药品名称"></el-input>
         </el-form-item>
 
-        <el-form-item label="编码：">
+        <el-form-item label="编号：">
           <el-input v-model.trim="model.drugCode"
-                    placeholder="请输入编码"></el-input>
+                    placeholder="请输入编号"></el-input>
         </el-form-item>
 
         <el-form-item label="厂家：">
@@ -50,9 +50,9 @@
                    pagination
                    size="mini">
         <el-table-column label="编号"
-                         type="index"
+                         prop="custdrugscode"
                          align="center"
-                         width="80px"></el-table-column>
+                         min-width="80px"></el-table-column>
 
         <el-table-column label="药品名称"
                          prop="productname"
