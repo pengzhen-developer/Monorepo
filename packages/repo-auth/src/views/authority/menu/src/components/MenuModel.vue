@@ -24,7 +24,16 @@
                     placeholder="请输入菜单名称"></el-input>
         </el-form-item>
         <el-form-item label="图标字体">
-          <el-input v-model="query.icon"></el-input>
+          <el-input v-model="query.icon">
+            <el-tooltip slot="suffix"
+                        placement="top">
+              <div slot="content">
+                <p class="text-subtitle2 q-mb-sm">目前只支持iconfont字体图标</p>
+                <p>##eg 实际iconfont : icon-home ; 需填写 zyy-cion icon-home</p>
+              </div>
+              <i class="el-input__icon el-icon-warning"></i>
+            </el-tooltip>
+          </el-input>
         </el-form-item>
         <el-form-item label="菜单权限标识"
                       prop="permission"

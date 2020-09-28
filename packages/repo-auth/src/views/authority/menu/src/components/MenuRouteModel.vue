@@ -11,7 +11,17 @@
         <el-form-item label="路由名称"
                       class="tow-col"
                       prop="routeName">
-          <el-input v-model.trim="query.routeName"></el-input>
+          <el-input v-model.trim="query.routeName">
+            <el-tooltip slot="suffix"
+                        placement="top">
+              <div slot="content">
+                <p class="text-subtitle2 q-mb-sm">唯一不重复值</p>
+                <p class="text-subtitle2 q-mb-sm">如需实现按标签页缓存，component name 必须和该值保持一致</p>
+                <p>## 也表示 component name，实现按标签页的条件缓存（参考 keep-alive 的 include）</p>
+              </div>
+              <i class="el-input__icon el-icon-warning"></i>
+            </el-tooltip>
+          </el-input>
         </el-form-item>
         <el-form-item label="标签名称"
                       class="tow-col"
@@ -39,7 +49,6 @@
           <el-switch v-model.trim="query.routeType"
                      :active-value="1"
                      :inactive-value="2"></el-switch>
-
         </el-form-item>
         <el-form-item class="three-col">
           <div class="flex inline"
