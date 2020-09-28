@@ -266,7 +266,7 @@ export function getOrderDetail(params) {
 }
 
 /**
- * 获取首诊记录列表
+ * 获取诊疗记录列表
  *
  * @export
  * @param {*} params
@@ -286,7 +286,7 @@ export function getFirstOptionList(params) {
 }
 
 /**
- * 获取首诊记录详情
+ * 获取诊疗记录详情
  *
  * @export
  * @param {*} params
@@ -343,8 +343,8 @@ export default {
   referralDocPc,
   /** 提交转诊意见 */
   receiveReferralPc,
-  /** 获取首诊记录列表 */
+  /** 获取诊疗记录列表 */
   getFirstOptionList,
-  /** 获取首诊记录详情 */
+  /** 获取诊疗记录详情 */
   getFirstOptionDetail
 }

@@ -1,5 +1,5 @@
 /*
- * 首诊记录
+ * 诊疗记录
 */
 
 <template>
@@ -10,7 +10,7 @@
            style="width: 40px; height:40px" />
     </div>
     <div class="record-case-right">
-      <p class="record-case-right-title">首诊记录</p>
+      <p class="record-case-right-title">诊疗记录</p>
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
     <peace-dialog v-if="dialog.visible"

@@ -178,7 +178,7 @@
 
     <peace-dialog :visible.sync="optionDialog.visible"
                   append-to-body
-                  title="首诊记录">
+                  title="诊疗记录">
       <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
     </peace-dialog>
 

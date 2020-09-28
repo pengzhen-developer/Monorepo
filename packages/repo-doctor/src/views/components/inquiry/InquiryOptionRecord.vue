@@ -47,7 +47,7 @@ import FirstOptionDetail from '@src/views/patient/patientDetail/components/Firts
 export default {
   props: {
     /*
-     * 首诊记录列表
+     * 诊疗记录列表
      */
     data: {
       type: Array,

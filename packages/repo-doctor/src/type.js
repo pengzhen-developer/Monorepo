@@ -208,7 +208,7 @@ export const HEALTH = {
     处方: 'prescribe',
     转诊: 'referral',
     会诊: 'consult',
-    首诊记录: 'firstRecord'
+    诊疗记录: 'firstRecord'
   },
 
   TYPE: {

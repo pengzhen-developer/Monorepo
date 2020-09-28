@@ -182,7 +182,7 @@
                       :span="8"
                       v-for="healthItem in health.list">
                 <!--                {{healthItem.healthType}}-->
-                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.首诊记录">
+                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.诊疗记录">
                   <div class="time-line-content-card">
                     <RecordFirstOption :data="healthItem"
                                        :type="type"></RecordFirstOption>
