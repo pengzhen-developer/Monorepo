@@ -50,7 +50,7 @@ export function GetMedicareCardList(params) {
   return peace.http.post(Lists, params)
 }
 /**
- * 查询首诊记录列表
+ * 查询诊疗记录列表
  *
  * @export
  * @param {*} params 参数列表
@@ -102,7 +102,7 @@ export default {
   DelMedicareCard,
   /**新增医保卡 */
   GetMedicareCardList,
-  /** 查询首诊记录列表 */
+  /** 查询诊疗记录列表 */
   GetFirstOptionList,
   /** 复诊选择医保划价 */
   GetPriceByRegistration,

@@ -128,11 +128,11 @@
             </div>
           </div>
         </div>
-        <!-- 首诊记录 -->
+        <!-- 诊疗记录 -->
         <div class="module-item"
              v-if="hasFirstVisitInfo">
           <div class="module-item-title">
-            <div class="b">首诊记录</div>
+            <div class="b">诊疗记录</div>
             <div class="module-item-more"
                  @click="seeMoreCase"
                  v-if="canSeeMoreCase">查看更多>></div>

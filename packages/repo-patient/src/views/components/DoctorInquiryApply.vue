@@ -1198,11 +1198,11 @@ export default {
           this.selectFamilyStatus = false
           if (resultData.code == 200) {
             if (this.model.consultingType == 'returnVisit') {
-              //机构是否接收上传有首诊记录的复诊患者
-              // `isAffirmFirstClinicalVisit` tinyint(1) DEFAULT '1' COMMENT '接收系统确认在本院有首诊记录的复诊患者（1、关闭 2、开启）',
-              // `isUploadFirstClinicalVisit` tinyint(1) DEFAULT '2' COMMENT '接收上传有首诊记录的复诊患者（1、关闭 2、开启）',
+              //机构是否接收上传有诊疗记录的复诊患者
+              // `isAffirmFirstClinicalVisit` tinyint(1) DEFAULT '1' COMMENT '接收系统确认在本院有诊疗记录的复诊患者（1、关闭 2、开启）',
+              // `isUploadFirstClinicalVisit` tinyint(1) DEFAULT '2' COMMENT '接收上传有诊疗记录的复诊患者（1、关闭 2、开启）',
               const isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
-              //是否有his首诊记录
+              //是否有his诊疗记录
               const isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
               if (isFirstOptionRecord === 1) {
                 this.questionList = [].concat(INQUIRY_QUESTION_LISI)

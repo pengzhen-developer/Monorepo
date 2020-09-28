@@ -1122,7 +1122,7 @@ const routers = [
     },
     component: () => import('@src/views/components/CommentList.vue')
   },
-  /** 首诊记录 */
+  /** 诊疗记录 */
   {
     path: '/components/FirstVisitList/:json',
     name: '/components/FirstVisitList',
