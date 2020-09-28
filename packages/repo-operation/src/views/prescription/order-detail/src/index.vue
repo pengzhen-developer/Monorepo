@@ -214,7 +214,8 @@
     <el-divider></el-divider>
 
     <!-- 物流信息 -->
-    <div class="q-mb-lg">
+    <div class="q-mb-lg"
+         v-if="data.LogisticsInfo">
       <div class="title q-mb-md">
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">物流信息</span>
       </div>
