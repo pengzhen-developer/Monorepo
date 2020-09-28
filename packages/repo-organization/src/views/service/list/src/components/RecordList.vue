@@ -25,7 +25,7 @@
             <span class="text-center q-ml-sm">：</span>
           </div>
           <el-select v-model="model.checkStatus"
-                     placeholder="请选择"
+                     placeholder="全部"
                      clearable>
             <el-option v-for="item in options"
                        v-bind:key="item.value"
