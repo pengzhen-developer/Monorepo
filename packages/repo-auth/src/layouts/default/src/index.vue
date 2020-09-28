@@ -130,7 +130,7 @@ export default {
     getTab(index) {
       const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList())
 
-      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
+      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
 
       return currentMenu
     },
