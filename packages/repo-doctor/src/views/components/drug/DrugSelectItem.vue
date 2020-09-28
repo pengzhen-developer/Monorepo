@@ -24,7 +24,7 @@
                       v-if="item.drugStatus === 'disable'">停用</el-tag>{{ item.drugName }}
             </div>
             <div class="text-caption text-grey-6">
-              <span>{{ item.specification }}</span>
+              <span class="q-mr-sm">{{ item.specification }}</span>
               <span>{{ item.companyName }}</span>
             </div>
           </div>
