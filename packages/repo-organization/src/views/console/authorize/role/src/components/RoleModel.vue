@@ -24,7 +24,7 @@
       </el-form-item>
       <el-form-item prop="productCode">
         <span slot="label"
-              class="form-label">产品名称</span>
+              class="form-label">服务名称</span>
         <div v-if="type === 'detail'">{{model.productCode | formatProduct(productDict)}}</div>
         <el-select v-else
                    v-model="model.productCode"
@@ -120,7 +120,7 @@ export default {
           { validator: validateChinese, message: '角色名称仅支持中文字符', trigger: 'blur' }
         ],
         roleDesc: [{ min: 0, max: 10, message: '备注最多输入10个字符', trigger: 'blur' }],
-        productCode: [{ required: true, message: '请选择产品', trigger: 'change' }],
+        productCode: [{ required: true, message: '请选择服务', trigger: 'change' }],
         menuIds: [{ required: true, message: '请选择菜单', trigger: 'change' }]
       }
     }
