@@ -3,7 +3,8 @@
             view="hHh lpR lFf">
 
     <q-header class="layout-header ">
-      <LayoutHeader v-bind:defaultActive="defaultHeanderNavActive"></LayoutHeader>
+      <LayoutHeader class="layout-header-content"
+                    v-bind:defaultActive="defaultHeanderNavActive"></LayoutHeader>
     </q-header>
 
     <q-drawer class="layout-drawer"
@@ -253,11 +254,17 @@ export default {
 <style lang="scss" scoped>
 .layout {
   position: relative;
-  max-width: 1920px;
+  max-width: 2560px;
   margin: 0 auto;
 
   .layout-header {
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+
+    .layout-header-content {
+      position: relative;
+      max-width: 2560px;
+      margin: 0 auto;
+    }
   }
 
   .layout-drawer {
