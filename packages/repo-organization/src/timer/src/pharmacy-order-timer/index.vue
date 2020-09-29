@@ -86,7 +86,7 @@ export default {
     gotoPharmacyOrderList() {
       this.notifyObejct?.close()
 
-      this.$router.push('/pharmacy-order-list')
+      this.$router.push('/pharmacy/pharmacy-order-list')
     }
   },
 

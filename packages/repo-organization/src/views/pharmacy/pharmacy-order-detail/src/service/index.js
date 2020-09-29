@@ -9,9 +9,9 @@ export default {
   getOrderInfo(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/OrderInfo'
+    const apiPath = 'psd/ReceiveOrder/OrderInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -28,9 +28,9 @@ export default {
   GQuery(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Logistics/GQuery'
+    const apiPath = 'psd/Logistics/GQuery'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

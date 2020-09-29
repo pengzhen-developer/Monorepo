@@ -8,9 +8,9 @@ export default {
    */
   GetDrugListPaing(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/Hospital/DrugListPaging'
+    const apiPath = 'psd/Hospital/DrugListPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -24,9 +24,9 @@ export default {
    */
   SaveDrugList(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/Hospital/SaveDrugList'
+    const apiPath = 'psd/Hospital/SaveDrugList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res

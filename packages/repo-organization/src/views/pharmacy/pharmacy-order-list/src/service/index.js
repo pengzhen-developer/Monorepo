@@ -9,9 +9,9 @@ export default {
   getReceiveOrderList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/List'
+    const apiPath = 'psd/ReceiveOrder/List'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -28,9 +28,9 @@ export default {
   getBubbleInfo(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/GetBubbleInfo'
+    const apiPath = 'psd/ReceiveOrder/GetBubbleInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -47,9 +47,9 @@ export default {
   UpdateOrderStatus(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/UpdateOrderStatus'
+    const apiPath = 'psd/ReceiveOrder/UpdateOrderStatus'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -66,9 +66,9 @@ export default {
   UpdateOrderExpressInfo(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/UpdateOrderExpressInfo'
+    const apiPath = 'psd/ReceiveOrder/UpdateOrderExpressInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

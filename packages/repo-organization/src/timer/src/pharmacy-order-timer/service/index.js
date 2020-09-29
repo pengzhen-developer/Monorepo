@@ -9,9 +9,9 @@ export default {
   HasWaitReceiveOrder(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/ReceiveOrder/HasWaitReceiveOrder'
+    const apiPath = 'psd/ReceiveOrder/HasWaitReceiveOrder'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

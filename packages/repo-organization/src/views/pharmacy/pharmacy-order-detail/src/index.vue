@@ -477,7 +477,7 @@ export default {
       // 带优化项，参数应该使用 route/:id 形式传递，因标签页问题，暂时使用缓存处理
       Peace.cache.sessionStorage.set('6-6-99-JZTClaimNo', this.model.JZTClaimNo)
 
-      const menu = this.provideGetTab('6-6-99')
+      const menu = this.provideGetTab('处方详情')
       this.provideAddTab(menu)
     }
   }
