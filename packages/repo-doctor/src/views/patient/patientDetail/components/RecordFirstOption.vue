@@ -17,7 +17,7 @@
     <peace-dialog v-if="dialog.visible"
                   :visible.sync="dialog.visible"
                   append-to-body
-                  title="首诊详情">
+                  title="处方详情">
       <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
     </peace-dialog>
   </div>

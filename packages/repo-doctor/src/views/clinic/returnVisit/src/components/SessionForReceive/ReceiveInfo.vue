@@ -59,11 +59,11 @@
         </span>
       </div>
     </el-card>
-    <!-- 首诊信息 -->
+    <!-- 诊疗信息 -->
     <el-card class="q-mb-lg bg-grey-2 no-shadow"
              v-if="firstOptionInfo.length > 0">
       <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
-        <span>首诊信息</span>
+        <span>诊疗信息</span>
         <el-button type="text"
                    style="color: #666; font-size:12px;"
                    v-show="showMoreButton"
@@ -185,7 +185,7 @@
     <peace-dialog v-if="dialog.visible"
                   :visible.sync="dialog.visible"
                   append-to-body
-                  title="首诊详情">
+                  title="处方详情">
       <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
     </peace-dialog>
 

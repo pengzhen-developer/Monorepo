@@ -19,7 +19,7 @@
 export default {
   props: {
     /*
-     * 首诊信息
+     * 诊疗信息
      *     'familyId'=>'mqbijvrkoq',//家人ID
      *     'hospitalId'=>'23232',//机构ID
      *     'hospitalName'=>'北辰医院',//机构名称
