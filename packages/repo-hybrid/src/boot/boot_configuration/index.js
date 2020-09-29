@@ -119,9 +119,9 @@ export default {
         menuPath: 'views/hybrid/health/inspection'
       },
 
-      // 健康档案首诊记录
+      // 健康档案处方记录
       {
-        title: '首诊记录',
+        title: '处方记录',
         menuRouteName: 'inspection',
         menuRoute: 'health/firstOption/:platform/:token/:prescriptionCode',
         menuPath: 'views/hybrid/health/firstOption'
