@@ -177,7 +177,7 @@ export default {
     getRegion() {
       return new Promise((resolve) => {
         Service.getRegion().then((res) => {
-          this.region = res.data.list
+          this.region = res.data
           resolve(this.region)
         })
       })

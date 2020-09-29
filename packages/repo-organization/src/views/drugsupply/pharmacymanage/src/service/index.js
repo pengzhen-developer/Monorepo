@@ -10,9 +10,9 @@ export default {
   getStoreList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/DrugStore/BranchStoreListByZYY'
+    const apiPath = 'psd/DrugStore/BranchStoreListByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -28,9 +28,9 @@ export default {
   getRegion(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Dict/AreaDictList'
+    const apiPath = 'psd/Dict/AreaDictList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -46,19 +46,15 @@ export default {
   uploadImage(formData) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Upload/Image'
+    const apiPath = 'psd/Upload/Image'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http
-      .post(requestApi, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      .then((res) => {
-        return res
-      })
+    return Peace.http.post(requestApi, formData).then((res) => {
+      return res
+    })
   },
   /**
    * 启用、停用
@@ -69,9 +65,9 @@ export default {
   updateEnableStatus(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Cust/UpdateEnableStatusByZYY'
+    const apiPath = 'psd/Cust/UpdateEnableStatusByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -88,9 +84,9 @@ export default {
   getDetails(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/GetDetailsByZYY'
+    const apiPath = 'webapi/api/Customer/GetDetailsByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -107,9 +103,9 @@ export default {
   registerForProve(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/RegisterForProveByZYY'
+    const apiPath = 'webapi/api/Customer/RegisterForProveByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
