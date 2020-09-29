@@ -4,7 +4,7 @@
              class="dialog-content"
              :model="form"
              :rules="rules"
-             label-width="120px">
+             label-width="150px">
 
       <el-form-item label="给药频次编码："
                     prop="attrCode">
