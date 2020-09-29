@@ -128,6 +128,7 @@ export default {
 
 .el-dropdown {
   float: right;
+  font-size: 12px;
 }
 
 .login-button {
@@ -142,7 +143,8 @@ button:active {
   border: none;
 }
 .console-btn {
-  width: 80px;
+  width: 42px;
+  padding: 0 !important;
 }
 .nav-menu {
   margin: 0 20px;
