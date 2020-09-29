@@ -40,22 +40,25 @@
       </template>
       <!-- 电子健康卡 -->
       <!--       <div class="card-name">{{cardName}}</div>-->
-      <div class="card-title">电子健康卡</div>
-      <div class="card"
-           v-for="(cardItem, index) in cardList"
-           :key="'item' + index"
-           @click="goToDetail(cardItem)">
-        <div class="qrcode"
-             id="qrcode"
-             :style="{backgroundImage:'url(data:image/png;base64,'+ cardItem.base64 + ')'}"></div>
-        <div class="name">{{cardItem.name}}</div>
-        <div class="idcard">{{cardItem.idcard}}</div>
-      </div>
-      <div class="card no-card"
-           v-if="!model.isExistCard"></div>
-      <div claas="card-list-content">
-        <div class="item"></div>
-      </div>
+      <template v-if="cardList.length>0">
+
+        <div class="card-title">电子健康卡</div>
+        <div class="card"
+             v-for="(cardItem, index) in cardList"
+             :key="'item' + index"
+             @click="goToDetail(cardItem)">
+          <div class="qrcode"
+               id="qrcode"
+               :style="{backgroundImage:'url(data:image/png;base64,'+ cardItem.base64 + ')'}"></div>
+          <div class="name">{{cardItem.name}}</div>
+          <div class="idcard">{{cardItem.idcard}}</div>
+        </div>
+        <div class="card no-card"
+             v-if="!model.isExistCard"></div>
+        <div claas="card-list-content">
+          <div class="item"></div>
+        </div>
+      </template>
       <!-- 医保卡 -->
       <div class="card-title yiyao">
         医保卡
