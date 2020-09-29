@@ -97,7 +97,7 @@ export default {
 
             menuStruct.menuIcon = menu.icon
             menuStruct.menuName = route.routeType === 1 ? menu.name : route.routeName
-            menuStruct.id = route.routeType === 1 ? menu.menuId.toString() : route.routeId.toString()
+            menuStruct.id = route.routeType === 1 ? menu.menuId.toString() : (menu.menuId + '-' + route.routeId).toString()
             menuStruct.parentId = menu.parentId.toString()
             menuStruct.sort = menu.sort
 
@@ -117,7 +117,6 @@ export default {
         adpaterMenuList.sort((a, b) => {
           return a.sort - b.sort
         })
-
         Util.user.setAccountMenuList(adpaterMenuList)
 
         return Promise.resolve()
