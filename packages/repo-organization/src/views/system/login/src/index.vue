@@ -51,7 +51,8 @@ export default {
         .then(this.getAccountMenuList)
         .then(this.redirectToOriginal)
         .catch((error) => {
-          Peace.util.error(error)
+          // Peace.util.error(error)
+          console.log(error)
         })
         .finally(() => {
           this.isLoading = false
