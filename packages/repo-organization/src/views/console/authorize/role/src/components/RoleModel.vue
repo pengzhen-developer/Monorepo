@@ -173,9 +173,34 @@ export default {
       return Service.menu()
         .menuTree(params)
         .then((res) => {
-          this.menuTree = res.data
+          this.menuTree = this.filterMenuTree(res.data)
           this.roleMenu = []
         })
+    },
+    filterMenuTree(tree) {
+      //临时处理运营端服务设置控制菜单
+      const menuSettingMap = {
+        处方审核: '处方管理',
+        处方点评: '处方点评',
+        审方引擎: '',
+        系统对接: '',
+        非系统对接: '药房接单'
+      }
+      const accountMenuList = Util.user.getUserInfo()?.accountMenuList
+      const menuBefore = []
+      accountMenuList.map((menu) => {
+        if (!menu.status && menu.title) {
+          menuBefore.push(menuSettingMap[menu.title])
+        }
+      })
+      menuBefore.map((temp) => {
+        tree.map((menu, index) => {
+          if (temp == menu.name) {
+            tree.splice(index, 1)
+          }
+        })
+      })
+      return tree
     },
 
     /**
