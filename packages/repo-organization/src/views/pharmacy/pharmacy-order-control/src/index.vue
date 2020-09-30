@@ -323,7 +323,7 @@ export default {
           }
 
           Service.UpdateOrderStatus(params).then((res) => {
-            Peace.util.success(res.msg)
+            Peace.util.success('成功')
 
             this.$emit('success', res)
           })
@@ -350,7 +350,7 @@ export default {
           }
 
           Service.UpdateOrderStatus(params).then((res) => {
-            Peace.util.success(res.msg)
+            Peace.util.success('成功')
 
             this.$emit('success', res)
           })
@@ -378,7 +378,7 @@ export default {
           }
 
           Service.UpdateOrderStatus(params).then((res) => {
-            Peace.util.success(res.msg)
+            Peace.util.success('成功')
 
             this.$emit('success', res)
           })
@@ -411,7 +411,7 @@ export default {
         }
 
         Service.UpdateOrderStatus(params).then((res) => {
-          Peace.util.success(res.msg)
+          Peace.util.success('成功')
 
           this.closeDialog()
 
@@ -431,7 +431,7 @@ export default {
       this.dialog2.visible = true
     },
 
-    // 谈款确认修改快递单号
+    // 弹框确认修改快递单号
     // DATA - FLOW
     // 已发货 => 已发货
     editPickUpCodeAgain() {
@@ -446,7 +446,7 @@ export default {
         }
 
         Service.UpdateOrderExpressInfo(params).then((res) => {
-          Peace.util.success(res.msg)
+          Peace.util.success('成功')
 
           this.closeDialog2()
 
@@ -474,7 +474,7 @@ export default {
           }
 
           Service.UpdateOrderStatus(params).then((res) => {
-            Peace.util.success(res.msg)
+            Peace.util.success('成功')
 
             this.$emit('success', res)
           })
