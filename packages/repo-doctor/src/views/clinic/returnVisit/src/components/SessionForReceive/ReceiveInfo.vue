@@ -59,11 +59,11 @@
         </span>
       </div>
     </el-card>
-    <!-- 诊疗信息 -->
+    <!-- 诊疗记录 -->
     <el-card class="q-mb-lg bg-grey-2 no-shadow"
              v-if="firstOptionInfo.length > 0">
       <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
-        <span>诊疗信息</span>
+        <span>诊疗记录</span>
         <el-button type="text"
                    style="color: #666; font-size:12px;"
                    v-show="showMoreButton"
