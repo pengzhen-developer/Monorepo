@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white q-pa-lg">
     <div class="item-content">
-      <h2 class="cust-Name ">{{warehoseInfo.Name}}</h2>
+      <h2 class="cust-Name ">{{warehoseInfo.CustName}}</h2>
       <div class="item-title">
         <div class="title-left"></div>
         <p class="title">云仓信息</p>
