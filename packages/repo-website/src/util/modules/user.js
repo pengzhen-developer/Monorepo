@@ -68,15 +68,10 @@ export const replaceToLogin = (referrer = '') => {
  *
  */
 export const redirectToConsole = () => {
-  let userInfo = getUserInfo()
-  if (userInfo.productCodes.find((item) => item == 'kzt')) {
-    let token = usertoken.getToken()
-    const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?token=' + token.access_token
+  let token = usertoken.getToken()
+  const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?token=' + token.access_token
 
-    window.open(CONSOLE_SITE_PATH)
-  } else {
-    Peace.util.warning('账号没有该服务的菜单权限，请联系管理员开通')
-  }
+  window.open(CONSOLE_SITE_PATH)
 }
 /**
  * 跳转医生工作台
