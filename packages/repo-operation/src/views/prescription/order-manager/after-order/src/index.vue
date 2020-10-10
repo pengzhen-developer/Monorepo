@@ -43,14 +43,14 @@
         </el-form-item>
 
         <el-button type="primary"
-                   style="min-width: 80px;"
+                   style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
       </el-form>
     </div>
 
     <div class="card">
       <div class="q-mb-md">
-        <el-button style="min-width: 80px;"
+        <el-button style="width: 80px;"
                    v-on:click="exportFile">导出</el-button>
       </div>
 

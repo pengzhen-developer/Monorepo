@@ -14,7 +14,7 @@
 
         <el-form-item label="">
           <el-button type="primary"
-                     icon="el-icon-search"
+                     style="width: 80px;"
                      v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>

@@ -29,9 +29,11 @@
 
         <el-form-item label="">
           <el-button type="primary"
+                     style="width: 80px;"
                      v-on:click="get">查询</el-button>
 
           <el-button type="primary"
+                     style="width: 80px;"
                      plain
                      v-on:click="reset">重置</el-button>
         </el-form-item>

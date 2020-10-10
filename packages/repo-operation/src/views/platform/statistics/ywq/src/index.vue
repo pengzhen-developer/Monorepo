@@ -53,7 +53,8 @@
 
         <el-form-item class="q-ml-md">
           <el-button type="primary"
-                     v-on:click="get">搜索</el-button>
+                     style="width: 80px;"
+                     v-on:click="get">查询</el-button>
 
         </el-form-item>
       </el-form>
