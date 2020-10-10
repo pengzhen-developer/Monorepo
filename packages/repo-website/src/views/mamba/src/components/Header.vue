@@ -11,16 +11,16 @@
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="./assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
-      <div class="login d-none d-sm-block">
-
+      <div class="login">
         <template v-if="hasLogin">
           <el-button type="text"
                      class="console-btn"
                      v-on:click="goConsole">控制台</el-button>
           <el-dropdown @command="handleCommand">
-            <span class="el-dropdown-link gary-color">
-              {{ username }} <i class="el-icon-s-operation gary-color"></i>
-            </span>
+            <div>
+              <span class="username">{{username}}</span>
+              <i class="el-icon-s-operation"></i>
+            </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="loginOut"
                                 class="menu-out">退出登录</el-dropdown-item>
@@ -120,15 +120,24 @@ export default {
 
 <style scoped>
 .login {
+  display: flex;
+  justify-content: flex-end;
+  width: 200px;
   height: 45px;
   float: right;
-  width: 200px;
   line-height: 45px;
 }
 
 .el-dropdown {
-  float: right;
   font-size: 12px;
+}
+
+.username {
+  padding: 0 8px 0 16px;
+}
+
+.el-icon-s-operation {
+  color: var(--q-color-primary);
 }
 
 .login-button {
