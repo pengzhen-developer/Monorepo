@@ -127,14 +127,28 @@ export default {
       return Service.userMenuOfList(params)
         .get()
         .then((res) => {
-          console.log(res)
-          // const menuList = Constant.menuList
-          // Util.user.setAccountMenuList(menuList)
           const regx1 = /.*{|}.*/g
           const regx2 = /\{(.+?)\}/g
           const adpaterMenuList = []
 
           res?.data?.forEach((menu) => {
+            if (menu?.menuRoutes.length == 0) {
+              const menuStruct = {}
+              menuStruct.menuIcon = menu.icon
+              menuStruct.menuName = menu.name
+              menuStruct.id = menu.menuId.toString()
+              menuStruct.parentId = menu.parentId.toString()
+              menuStruct.sort = menu.sort
+
+              menuStruct.closable = true
+              menuStruct.enable = true
+              menuStruct.menuAlias = menu.name
+              menuStruct.menuPath = ''
+              menuStruct.menuRoute = ''
+
+              menuStruct.virtual = 0
+              adpaterMenuList.push(menuStruct)
+            }
             menu?.menuRoutes?.forEach((route) => {
               const menuStruct = {}
 
@@ -164,6 +178,7 @@ export default {
           adpaterMenuList.sort((a, b) => {
             return a.sort - b.sort
           })
+          console.log(adpaterMenuList)
           Util.user.setAccountMenuList(adpaterMenuList)
 
           return Promise.resolve()
