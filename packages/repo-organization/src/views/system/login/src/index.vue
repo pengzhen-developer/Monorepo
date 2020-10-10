@@ -88,6 +88,23 @@ export default {
         const adpaterMenuList = []
 
         res?.data?.forEach((menu) => {
+          if (menu?.menuRoutes.length == 0) {
+            const menuStruct = {}
+            menuStruct.menuIcon = menu.icon
+            menuStruct.menuName = menu.name
+            menuStruct.id = menu.menuId.toString()
+            menuStruct.parentId = menu.parentId.toString()
+            menuStruct.sort = menu.sort
+
+            menuStruct.closable = true
+            menuStruct.enable = true
+            menuStruct.menuAlias = menu.name
+            menuStruct.menuPath = ''
+            menuStruct.menuRoute = ''
+
+            menuStruct.virtual = 0
+            adpaterMenuList.push(menuStruct)
+          }
           menu?.menuRoutes?.forEach((route) => {
             const menuStruct = {}
 
