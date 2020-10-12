@@ -15,10 +15,11 @@
       <div class="cost-code">订单编号： {{orderNo}}</div>
 
     </div>
-    <div class="cost-platform">
+    <!-- tapd 【ID1001496】  暂时屏蔽收款方 -->
+    <!-- <div class="cost-platform">
       <div class="cost-platform-label">收款方</div>
       <div class="cost-platform-content">{{payee}}</div>
-    </div>
+    </div> -->
     <div class="cost-footer">
       <van-button class="cost-submit"
                   type="primary"
@@ -225,9 +226,7 @@ export default {
       color: #666;
     }
     .cost-platform-content {
-      //tapd 【ID1001496】  暂时屏蔽收款方
-      // color: #000;
-      color: transparent;
+      color: #000;
     }
   }
   .cost-footer {
