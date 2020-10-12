@@ -67,8 +67,10 @@ export default {
 
     handleCommand(command) {
       if (command == 'loginOut') {
-        Util.user.removeUserInfo()
-        window.location.reload()
+        this.peace.identity.auth.logout().then(() => {
+          Util.user.removeUserInfo()
+          window.location.reload()
+        })
       }
     },
     changMode(mode) {

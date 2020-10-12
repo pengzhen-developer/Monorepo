@@ -296,11 +296,23 @@ export default {
         Service.register(params)
           .then(() => {
             let data = {
+              grant_type: 'password',
+              client_id: process.env.VUE_APP_CLIENT_ID,
+              client_secret: process.env.VUE_APP_CLIENT_SECRET,
               username: this.model.tel,
-              password: this.model.password
+              password: this.model.password,
+              encryption_key: 'sksksksksksksksk'
             }
 
-            Util.auth.authByPassword(data)
+            this.peace.identity.auth
+              .login(data)
+              .then((res) => {
+                Util.token.setToken(res.data)
+                this.completeInfomation()
+              })
+              .catch((err) => {
+                this.peace.util.error(err.msg)
+              })
           })
           .finally(() => {
             this.isRegistering = false
@@ -314,6 +326,12 @@ export default {
             resolve()
           }
         })
+      })
+    },
+    completeInfomation() {
+      Service.getAccountInfo().then((res) => {
+        Util.user.updateUserInfo(res.data)
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     },
     changePasswordStatus() {

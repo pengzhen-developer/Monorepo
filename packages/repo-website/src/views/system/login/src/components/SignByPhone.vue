@@ -88,7 +88,6 @@
 
 <script>
 import Util from '@src/util'
-import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
 import Service from '../service'
 import Constant from '../constant'
@@ -109,7 +108,7 @@ export default {
         tel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           {
-            pattern: Peace.validate.pattern.mobile,
+            pattern: this.peace.validate.pattern.mobile,
             message: '请输入正确的手机号码',
             trigger: 'blur'
           }
@@ -136,7 +135,7 @@ export default {
 
   computed: {
     isVerifyPhone() {
-      return !Peace.validate.isMobile(this.model.tel)
+      return !this.peace.validate.isMobile(this.model.tel)
     },
 
     showCountdown() {
@@ -173,7 +172,7 @@ export default {
 
       Service.sendCode(params)
         .then((res) => {
-          Peace.util.success(res.msg)
+          this.peace.util.success(res.msg)
         })
         .finally(() => {
           this.countdownTime = this.countdownInterval
@@ -185,15 +184,25 @@ export default {
         this.isLoging = true
 
         let params = {
+          grant_type: 'mobile',
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          client_secret: process.env.VUE_APP_CLIENT_SECRET,
           mobile: 'SMS@' + this.model.tel,
           code: this.model.verificationCode
         }
 
-        Util.auth.authByMobile(params)
-
-        setTimeout(() => {
-          this.isLoging = false
-        }, 2000)
+        this.peace.identity.auth
+          .login(params)
+          .then((res) => {
+            Util.token.setToken(res.data)
+            this.completeInfomation()
+          })
+          .catch((err) => {
+            this.peace.util.error(err.msg)
+          })
+          .finally(() => {
+            this.isLoging = false
+          })
       })
     },
     validateForm() {
@@ -203,6 +212,12 @@ export default {
             resolve()
           }
         })
+      })
+    },
+    completeInfomation() {
+      Service.getAccountInfo().then((res) => {
+        Util.user.updateUserInfo(res.data)
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
       })
     }
   }

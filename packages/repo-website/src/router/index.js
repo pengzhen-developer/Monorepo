@@ -37,6 +37,10 @@ export default function({ configuration }) {
       if (!Util.user.isSignIn()) {
         next(path.LOGIN)
       }
+    } else {
+      if (to.path === path.LOGIN && Util.user.isSignIn()) {
+        next(path.HOME)
+      }
     }
     next()
     //机构注册-如果审核状态为已通过，则回到首页

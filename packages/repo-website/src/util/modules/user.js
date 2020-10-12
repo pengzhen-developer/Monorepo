@@ -71,7 +71,7 @@ export const redirectToConsole = () => {
   let token = usertoken.getToken()
   const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?token=' + token.access_token
 
-  window.open(CONSOLE_SITE_PATH)
+  window.location.href = CONSOLE_SITE_PATH
 }
 /**
  * 跳转医生工作台
@@ -129,19 +129,8 @@ export const replaceToCompliteInfo = (status) => {
       break
     default:
       redirectToConsole()
-      $peace.$router.replace(path.HOME)
       break
   }
-}
-
-/**
- * logout
- */
-export const logout = () => {
-  let apiPath = `auth/token/logout`
-  const serverPath = process.env.VUE_APP_AUTH_API
-  let requestApi = serverPath + apiPath
-  return Peace.http.delete(requestApi)
 }
 
 export default {
@@ -155,7 +144,5 @@ export default {
   redirectToConsole,
   redirectToDoctorWorkbench,
   redirectTOPharmacistWorkbench,
-  replaceToCompliteInfo,
-
-  logout
+  replaceToCompliteInfo
 }

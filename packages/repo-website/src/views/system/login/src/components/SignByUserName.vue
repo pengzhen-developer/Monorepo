@@ -79,8 +79,8 @@
 </template>
 
 <script>
+import Service from '../service/index'
 import Util from '@src/util'
-import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
 import Constant from '../constant'
 
@@ -98,7 +98,7 @@ export default {
         tel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           {
-            pattern: Peace.validate.pattern.mobile,
+            pattern: this.peace.validate.pattern.mobile,
             message: '请输入正确的手机号码',
             trigger: 'blur'
           }
@@ -107,7 +107,7 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           {
-            pattern: Peace.validate.pattern.password,
+            pattern: this.peace.validate.pattern.password,
             message: '请输入6-20位数字字母的组合',
             trigger: 'blur'
           }
@@ -138,15 +138,26 @@ export default {
         this.isLoging = true
 
         let params = {
+          grant_type: 'password',
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          client_secret: process.env.VUE_APP_CLIENT_SECRET,
           username: this.model.tel,
-          password: this.model.password
+          password: this.model.password,
+          encryption_key: 'sksksksksksksksk'
         }
 
-        Util.auth.authByPassword(params)
-
-        setTimeout(() => {
-          this.isLoging = false
-        }, 2000)
+        this.peace.identity.auth
+          .login(params)
+          .then((res) => {
+            Util.token.setToken(res.data)
+            this.completeInfomation()
+          })
+          .catch((err) => {
+            this.peace.util.error(err.msg)
+          })
+          .finally(() => {
+            this.isLoging = false
+          })
       })
     },
     validateForm() {
@@ -158,7 +169,12 @@ export default {
         })
       })
     },
-
+    completeInfomation() {
+      Service.getAccountInfo().then((res) => {
+        Util.user.updateUserInfo(res.data)
+        Util.user.replaceToCompliteInfo(res.data.checkStatus)
+      })
+    },
     changePasswordStatus() {
       this.showPassword = !this.showPassword
     }

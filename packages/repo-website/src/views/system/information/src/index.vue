@@ -13,7 +13,7 @@
           <template v-if="hasLogin">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link gary-color">
-                {{info&&info.tel}}<i class="el-icon-s-operation gary-color"></i>
+                {{info&&info.username}}<i class="el-icon-s-operation gary-color"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
@@ -87,10 +87,10 @@ export default {
   methods: {
     handleCommand(command) {
       if (command == 'loginOut') {
-        // Util.user.logout().then(() => {
-        Util.user.removeUserInfo()
-        this.$router.replace(path.LOGIN)
-        // })
+        this.peace.identity.auth.logout().then(() => {
+          Util.user.removeUserInfo()
+          this.$router.replace(path.LOGIN)
+        })
       }
     },
     backHome() {

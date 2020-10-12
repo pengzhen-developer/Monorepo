@@ -1,7 +1,6 @@
 import user from './modules/user'
 import referrer from './modules/referrer'
 import route from './modules/route'
-import auth from './modules/auth'
 import token from './modules/token'
 
 export default {
@@ -13,9 +12,6 @@ export default {
 
   /** 路由工具类 */
   route,
-
-  /** 授权工具类 */
-  auth,
 
   /** token */
   token
