@@ -225,7 +225,9 @@ export default {
       color: #666;
     }
     .cost-platform-content {
-      color: #000;
+      //tapd 【ID1001496】  暂时屏蔽收款方
+      // color: #000;
+      color: transparent;
     }
   }
   .cost-footer {
