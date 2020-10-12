@@ -83,29 +83,37 @@
                            prop="EnableStatus"
                            min-width="100px">
             <template slot-scope="scope">
+
               {{ scope.row.EnableStatus == 0 ? '已启用' : '未启用' }}
+
+              <el-switch v-model="scope.row.EnableStatus"
+                         v-if="scope.row.ExamineStatus==15?true:false"
+                         v-bind:active-value="0"
+                         v-bind:inactive-value="10"
+                         v-on:change="operationEnable(scope.row)"></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="操作"
                            align="left"
-                           width="200px"
+                           width="240px"
                            fixed="right">
             <template slot-scope="scope">
-              <el-button type="text"
-                         v-on:click="viewPharmacy(scope.row)"
-                         class="no-padding">药房详情</el-button>
-              <el-button type="text"
-                         v-if="scope.row.ExamineStatus==20?true:false"
-                         v-on:click="editPharmacys(scope.row)"
-                         class="no-padding">编辑</el-button>
               <el-button type="text"
                          v-if="scope.row.ExamineStatus==15?true:false"
                          class="no-padding"
                          v-on:click="commodityManage(scope.row)">商品管理</el-button>
               <el-button type="text"
+                         v-on:click="viewPharmacy(scope.row)"
+                         class="no-padding">药房详情</el-button>
+              <el-button type="text"
+                         v-if="scope.row.ExamineStatus==20||scope.row.ExamineStatus==15?true:false"
+                         v-on:click="editPharmacys(scope.row)"
+                         class="no-padding">修改</el-button>
+
+              <!-- <el-button type="text"
                          v-if="scope.row.ExamineStatus==15?true:false"
                          v-on:click="operationEnable(scope.row)"
-                         class="no-padding">{{scope.row.EnableStatus == 0 ? '停用' : '启用'}}</el-button>
+                         class="no-padding">{{scope.row.EnableStatus == 0 ? '停用' : '启用'}}</el-button> -->
             </template>
           </el-table-column>
         </peace-table>
@@ -116,7 +124,7 @@
                  title="未通过提示">
         <span>{{reasonText}}</span>
       </el-dialog>
-      <el-dialog v-if="enableVisible"
+      <!-- <el-dialog v-if="enableVisible"
                  width="344px"
                  v-bind:visible.sync="enableVisible"
                  title="提示">
@@ -127,7 +135,7 @@
                      v-bind:disabled="saveing">确 定</el-button>
           <el-button v-on:click="cancelUpdate">取 消</el-button>
         </div>
-      </el-dialog>
+      </el-dialog> -->
     </div>
   </div>
 </template>
@@ -160,7 +168,7 @@ export default {
       editVisible: false,
       listVisible: false,
       reasonVisible: false,
-      enableVisible: false,
+      //enableVisible: false,
       detailVisible: false,
       statuVule: {
         custId: '',
@@ -218,8 +226,7 @@ export default {
       this.reasonText = row.RejectReason
     },
     operationEnable(row) {
-      this.enableVisible = true
-      if (row.EnableStatus == 0) {
+      if (row.EnableStatus == 10) {
         this.showText = '停用药房后，将无法正常接收订单，确认停用?'
         this.statuVule.status = 10
       } else {
@@ -227,23 +234,46 @@ export default {
         this.statuVule.status = 0
       }
       this.statuVule.custId = row.ID
-    },
-    confirmUpdate() {
-      this.saveing = true
-      const params = this.statuVule
-      Service.updateEnableStatus(params)
+
+      this.$confirm(this.showText, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
         .then(() => {
-          Peace.util.alert('操作成功')
-          this.fetch()
-          this.cancelUpdate()
+          this.saveing = true
+          const params = this.statuVule
+          Service.updateEnableStatus(params)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '操作成功!'
+              })
+              this.fetch()
+            })
+            .finally(() => {
+              this.saveing = false
+            })
         })
-        .finally(() => {
-          this.saveing = false
+        .catch(() => {
+          row.EnableStatus = row.EnableStatus === 0 ? 10 : 0
         })
     },
-    cancelUpdate() {
-      this.enableVisible = false
-    },
+    // confirmUpdate() {
+    //   this.saveing = true
+    //   const params = this.statuVule
+    //   Service.updateEnableStatus(params)
+    //     .then(() => {
+    //       Peace.util.alert('操作成功')
+    //       this.fetch()
+    //       this.cancelUpdate()
+    //     })
+    //     .finally(() => {
+    //       this.saveing = false
+    //     })
+    // },
+    // cancelUpdate() {
+    //   this.enableVisible = false
+    // },
     viewPharmacy(row) {
       this.detailVisible = true
       this.listVisible = false

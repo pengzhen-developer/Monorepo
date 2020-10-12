@@ -11,6 +11,13 @@
         <div class="info-item">
           <div class="info-title">药房基本信息</div>
           <div class="info-content">
+            <el-form-item label="药房类型"
+                          prop="type">
+              <el-radio-group v-model="model.type">
+                <el-radio label="线下实体药房"></el-radio>
+                <el-radio label="线上电商平台"></el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="药房编码"
                           prop="SuborganizationCode">
               <el-col class="input-Width"
@@ -124,24 +131,42 @@
                         placeholder="请输入药房电话"
                         class="input-Width "></el-input>
             </el-form-item>
-            <el-form-item label="配送方式"
-                          prop="DistributionMode">
-              <el-checkbox-group v-model="model.DistributionMode"
-                                 @change="handleCheckedDistribution">
-                <el-checkbox v-for="(item) in  DistributionList"
-                             :label="item.code"
-                             :key="item.code">{{item.name}}</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="支付方式"
-                          prop="PayMode">
-              <el-checkbox-group v-model="model.PayMode"
-                                 @change="handleCheckedPay">
-                <el-checkbox v-for="(item) in  PayList"
-                             :label="item.code"
-                             :key="item.code">{{item.name}}</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
+            <div style="display:flex;">
+              <div style="width:240px;">
+                <el-form-item label="配送方式"
+                              prop="DistributionMode">
+                  <el-checkbox-group v-model="model.DistributionMode"
+                                     @change="handleCheckedDistribution">
+                    <el-checkbox v-for="(item) in  DistributionList"
+                                 :label="item.code"
+                                 :key="item.code"
+                                 style="display:block;">{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
+              <div style="width:300px;">
+                <el-form-item label="支付方式"
+                              prop="PayMode">
+                  <el-checkbox-group v-model="model.PayMode"
+                                     @change="handleCheckedPay"
+                                     style="height:28px">
+                    <el-checkbox v-for="(item) in  PayList"
+                                 :label="item.code"
+                                 :key="item.code">{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="支付方式"
+                              prop="PayMode2">
+                  <el-checkbox-group v-model="model.PayMode2"
+                                     style="height:28px">
+                    <el-checkbox v-for="(item) in  PayList2"
+                                 :label="item.code"
+                                 :key="item.code">{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
+
+            </div>
           </div>
         </div>
         <div class="info-item">
@@ -251,10 +276,12 @@ export default {
     }
     // 校验email
     let validateEmail = (rule, value, callback) => {
-      if (Peace.validate.isEmail(value)) {
-        callback()
-      } else {
-        return callback(new Error())
+      if (value || value !== '') {
+        if (Peace.validate.isEmail(value)) {
+          callback()
+        } else {
+          return callback(new Error())
+        }
       }
     }
     // 校验电话
@@ -307,14 +334,18 @@ export default {
       ],
       PayList: [
         { code: 1, name: '在线支付' },
-        { code: 2, name: '到店支付' },
-        { code: 3, name: '货到付款' }
+        { code: 2, name: '到店支付' }
+      ],
+      PayList2: [
+        { code: 1, name: '在线支付' },
+        { code: 2, name: '货到付款' }
       ],
       startTime: '',
       endTime: '',
       model: {
         ID: 0,
         UserID: '',
+        type: '线下实体药房',
         SuborganizationCode: '',
         CustName: '',
         AreaCode: '',
@@ -332,12 +363,20 @@ export default {
         ContactNumber: '',
         DistributionMode: [],
         PayMode: [],
+        PayMode2: [],
         logoUrl: '',
         BusinesslicenseUrl: '',
         DrugManagementlicenseUrl: '',
         GSPCertificationUrl: ''
       },
       rules: {
+        type: [
+          {
+            required: true,
+            message: '请选择药房类型',
+            trigger: 'change'
+          }
+        ],
         imgList: [
           {
             required: true,
@@ -395,7 +434,7 @@ export default {
         ],
         UserMail: [
           {
-            required: true,
+            required: false,
             message: '请输入邮箱',
             trigger: 'blur'
           },
@@ -416,6 +455,13 @@ export default {
         PayMode: [
           {
             validator: PayModeFun,
+            required: true,
+            message: '请选择支付方式',
+            trigger: 'change'
+          }
+        ],
+        PayMode2: [
+          {
             required: true,
             message: '请选择支付方式',
             trigger: 'change'
@@ -589,9 +635,9 @@ export default {
 .input-Width {
   width: 440px;
 }
-.el-checkbox-group {
-  height: 28px;
-}
+// .el-checkbox-group {
+//   height: 28px;
+// }
 .info {
   &-item {
     border-bottom: 1px solid #e9e9e9;
