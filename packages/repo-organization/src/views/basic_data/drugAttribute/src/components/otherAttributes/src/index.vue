@@ -34,7 +34,7 @@
                    stripe
                    pagination
                    size="mini">
-        <el-table-column label="编号"
+       <el-table-column label="编号"
                          prop="custdrugscode"
                          align="center"
                          min-width="80px"></el-table-column>

@@ -5,7 +5,7 @@
       <div>{{ service.serviceName }}</div>
     </div>
 
-    <div class="name">
+    <!-- <div class="name">
       <div class="title">对接方式：</div>
 
       <el-radio-group v-model="checkData">
@@ -15,7 +15,7 @@
                   :key="index">{{ item.name }}</el-radio>
       </el-radio-group>
 
-    </div>
+    </div> -->
 
     <div class="bottom">
       <el-button type="primary"
@@ -46,15 +46,15 @@ export default {
     },
 
     onInput() {
-      if (this.checkData.id == undefined) {
-        Peace.util.warning('请先选择一种对接方式')
-        return
-      }
+      // if (this.checkData.id == undefined) {
+      //   Peace.util.warning('请先选择一种对接方式')
+      //   return
+      // }
       this.doApply()
     },
 
     doApply() {
-      const params = { serviceId: this.service.id, accessMode: this.checkData.id }
+      const params = { serviceId: this.service.id, accessMode: '3' }
       Service.doApply(params).then((res) => {
         Peace.util.success(res.msg)
         this.$emit('onSuccess')
