@@ -566,11 +566,9 @@ export default {
       this.$router.push(`/components/mainIframe/${json}`)
     },
     seeMoreCase() {
-      // peace.cache.set('familyId', this.internalData?.familyInfo?.familyId)
-      // this.$router.push(`/file/index/`)
       const json = peace.util.encode({
         familyId: this.internalData?.familyInfo?.familyId,
-        inquiryNo: this.inquiryInfo?.inquiryNo
+        doctorId: this.internalData?.doctorInfo?.doctorId
       })
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
@@ -639,8 +637,8 @@ export default {
     },
     getFirstOptionList() {
       const params = {
-        familyId: this.internalData?.inquiryInfo?.familyInfo?.familyId,
-        inquiryNo: this.internalData?.inquiryInfo?.inquiryNo
+        familyId: this.internalData?.familyInfo?.familyId,
+        doctorId: this.internalData?.doctorInfo?.doctorId
       }
       peace.service.yibao.GetFirstOptionList(params).then((res) => {
         if (res.data == null || !res.data.firstOptionList) {
