@@ -128,7 +128,8 @@ export default {
         系统对接: '',
         非系统对接: '药房接单'
       }
-      const accountMenuList = Util.user.getUserInfo()?.accountMenuList
+      console.log(Util.user.getUserInfo())
+      const accountMenuList = Util.user.getAccountMenuList()
       const menuBefore = []
       accountMenuList.map((menu) => {
         if (!menu.status && menu.title) {
