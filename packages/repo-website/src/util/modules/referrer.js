@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 /** 站点常量 */
 const REFERRER_SITE = 'referrer_site'
 
@@ -49,5 +47,5 @@ export default {
   getReferrer,
   removeReferrer,
 
-  replaceToReferrer,
+  replaceToReferrer
 }

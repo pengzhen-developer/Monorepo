@@ -1,4 +1,3 @@
-import Peace from '@src/library'
 import { path } from '@src/router/generateRoutes'
 // import Router from '@src/router'
 import usertoken from './token'

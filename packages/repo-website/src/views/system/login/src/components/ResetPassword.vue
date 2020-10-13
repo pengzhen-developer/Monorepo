@@ -100,7 +100,7 @@
 
 <script>
 import Util from '@src/util'
-import Peace from '@src/library'
+
 import { path } from '@src/router/generateRoutes'
 import Service from '../service'
 import Constant from '../constant'

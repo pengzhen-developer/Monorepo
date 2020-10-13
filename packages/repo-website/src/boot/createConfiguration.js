@@ -2,7 +2,7 @@
 import localConfiguration from './boot_configuration'
 
 // Get configuration from server
-// import Peace from '@src/library'
+//
 // const getConfiguration = () => {
 //   return Peace.http.get('api/configuration')
 // }

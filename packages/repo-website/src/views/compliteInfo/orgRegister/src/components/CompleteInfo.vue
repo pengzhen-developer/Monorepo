@@ -169,7 +169,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from '../../service'
 import Constant from '../../constant'
 import RegionSelector from './RegionSelector'

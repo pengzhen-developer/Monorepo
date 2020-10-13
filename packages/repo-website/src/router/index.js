@@ -11,7 +11,6 @@ import VueRouter from 'vue-router'
 import generateRoutes from './generateRoutes'
 import { path } from './generateRoutes'
 import Util from '@src/util'
-import Peace from '@/src/library'
 export default function({ configuration }) {
   Vue.use(VueRouter)
 

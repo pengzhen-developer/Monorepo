@@ -10,10 +10,6 @@ import CreateApp from './createApp'
 
 import boot_Library from './boot_library'
 
-import boot_npm_Library from './boot_npm_library'
-
-import boot_Identity from './boot_identity'
-
 // Quasar is required
 // Some libraries depend on it
 import boot_Quasar from './boot_quasar'
@@ -36,11 +32,6 @@ const install = async () => {
   const boots = [
     // Library
     boot_Library,
-
-    boot_npm_Library,
-
-    // Identity
-    boot_Identity,
 
     // Framework
     boot_Quasar,

@@ -15,7 +15,7 @@
 import Header from '@src/views/compliteInfo/header'
 import CheckFailure from './components/CheckFailure'
 import { path } from '@src/router/generateRoutes'
-import Peace from '@src/library'
+
 import Service from './service'
 
 export default {
