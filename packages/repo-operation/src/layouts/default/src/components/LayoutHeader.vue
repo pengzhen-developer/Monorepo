@@ -11,7 +11,11 @@
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
-          <span class="gt-xl inline text-subtitle1 text-grey-3 animated jump-down">
+          <span class="gt-xl inline text-subtitle1 animated jump-down"
+                style="min-width: 140px;
+                       display: inline-block;
+                       text-align: justify;
+                       text-align-last: justify;">
             {{ configuration.application.title }}
           </span>
         </transition>
