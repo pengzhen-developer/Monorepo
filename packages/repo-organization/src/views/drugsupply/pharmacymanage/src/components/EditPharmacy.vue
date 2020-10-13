@@ -12,10 +12,11 @@
           <div class="info-title">药房基本信息</div>
           <div class="info-content">
             <el-form-item label="药房类型"
-                          prop="type">
-              <el-radio-group v-model="model.type">
-                <el-radio label="线下实体药房"></el-radio>
-                <el-radio label="线上电商平台"></el-radio>
+                          prop="custType"
+                          required="">
+              <el-radio-group v-model="model.custType">
+                <el-radio v-bind:label=10>线下实体药房</el-radio>
+                <el-radio v-bind:label=80>线上电商平台</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="药房编码"
@@ -99,7 +100,7 @@
 
           </div>
         </div>
-        <div class="info-item q-pb-8">
+        <div class="info-item ">
           <div class="info-title">药房运营信息</div>
           <div class="info-content">
             <el-form-item label="营业时间"
@@ -131,42 +132,58 @@
                         placeholder="请输入药房电话"
                         class="input-Width "></el-input>
             </el-form-item>
-            <div style="display:flex;">
-              <div style="width:240px;">
-                <el-form-item label="配送方式"
-                              prop="DistributionMode">
-                  <el-checkbox-group v-model="model.DistributionMode"
-                                     @change="handleCheckedDistribution">
-                    <el-checkbox v-for="(item) in  DistributionList"
-                                 :label="item.code"
-                                 :key="item.code"
-                                 style="display:block;">{{item.name}}</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </div>
-              <div style="width:300px;">
-                <el-form-item label="支付方式"
-                              prop="PayMode">
-                  <el-checkbox-group v-model="model.PayMode"
-                                     @change="handleCheckedPay"
-                                     style="height:28px">
-                    <el-checkbox v-for="(item) in  PayList"
+
+            <el-form-item required
+                          label="配送方式"
+                          prop="DistributionMode">
+              <!-- 自提 -->
+              <div class="row payMode"
+                   v-if="model.custType==10">
+                <el-form-item>
+                  <el-checkbox-group class="q-mr-xl"
+                                     v-model="DistributSelfMode">
+                    <el-checkbox v-for="(item) in  DistributSelfList"
                                  :label="item.code"
                                  :key="item.code">{{item.name}}</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-                <el-form-item label="支付方式"
-                              prop="PayMode2">
-                  <el-checkbox-group v-model="model.PayMode2"
-                                     style="height:28px">
-                    <el-checkbox v-for="(item) in  PayList2"
+
+                <el-form-item v-if="DistributSelfMode.length > 0"
+                              required
+                              label="支付方式"
+                              prop="payModeSelf">
+                  <el-checkbox-group v-model="model.payModeSelf"
+                                     @change="handleCheckedPay">
+                    <el-checkbox v-for="(item) in  PayselfList"
                                  :label="item.code"
                                  :key="item.code">{{item.name}}</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </div>
 
-            </div>
+              <!-- 配送 -->
+              <div class="row payMode">
+                <el-form-item>
+                  <el-checkbox-group class="q-mr-xl"
+                                     v-model="DistributMode">
+                    <el-checkbox v-for="(item) in  DistributionList"
+                                 :label="item.code"
+                                 :key="item.code">{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+
+                <el-form-item v-if="DistributMode.length>0"
+                              label="支付方式"
+                              prop="payMode"
+                              required="">
+                  <el-checkbox-group v-model="model.payMode">
+                    <el-checkbox v-for="(item) in  PayList"
+                                 :label="item.code"
+                                 :key="item.code">{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
+            </el-form-item>
           </div>
         </div>
         <div class="info-item">
@@ -292,22 +309,6 @@ export default {
         return callback(new Error())
       }
     }
-    //校验配送方式
-    let DistributionModeFun = (rule, value, callback) => {
-      if (!value || value == '') {
-        callback(new Error())
-      } else {
-        callback()
-      }
-    }
-    //校验支付方式
-    let PayModeFun = (rule, value, callback) => {
-      if (!value || value == '') {
-        callback(new Error())
-      } else {
-        callback()
-      }
-    }
     //校验营业时间
     let inputTimeFun = (rule, value, callback) => {
       if (!this.model.BusinessStartDate || this.model.BusinessStartDate == '' || !this.model.BusinessEndDate || this.model.BusinessEndDate == '') {
@@ -328,24 +329,24 @@ export default {
     return {
       isLoading: false,
       lock: false,
-      DistributionList: [
-        { code: 0, name: '自提' },
-        { code: 1, name: '配送' }
-      ],
-      PayList: [
+      DistributionList: [{ code: 1, name: '配送' }],
+      DistributSelfList: [{ code: 0, name: '自提' }],
+      DistributSelfMode: [],
+      DistributMode: [],
+      PayselfList: [
         { code: 1, name: '在线支付' },
         { code: 2, name: '到店支付' }
       ],
-      PayList2: [
-        { code: 1, name: '在线支付' },
-        { code: 2, name: '货到付款' }
+      PayList: [
+        { code: 3, name: '在线支付' },
+        { code: 4, name: '货到付款' }
       ],
       startTime: '',
       endTime: '',
       model: {
         ID: 0,
         UserID: '',
-        type: '线下实体药房',
+        custType: 10,
         SuborganizationCode: '',
         CustName: '',
         AreaCode: '',
@@ -362,8 +363,8 @@ export default {
         BusinessEndDate: '',
         ContactNumber: '',
         DistributionMode: [],
-        PayMode: [],
-        PayMode2: [],
+        payMode: [],
+        payModeSelf: [],
         logoUrl: '',
         BusinesslicenseUrl: '',
         DrugManagementlicenseUrl: '',
@@ -446,25 +447,30 @@ export default {
         ],
         DistributionMode: [
           {
-            validator: DistributionModeFun,
-            required: true,
-            message: '请选择配送方式',
-            trigger: 'change'
+            validator: (rule, value, callback) => {
+              if (this.DistributSelfMode.length === 0 && this.DistributMode.length === 0) {
+                callback(new Error('必须选一个!'))
+              }
+            },
+            trigger: ['blur', 'change']
           }
         ],
-        PayMode: [
+        payModeSelf: [
           {
-            validator: PayModeFun,
-            required: true,
-            message: '请选择支付方式',
-            trigger: 'change'
+            validator: (rule, value, callback) => {
+              if (this.model.payModeSelf.length === 0) {
+                callback(new Error('必须选一个!!!!!'))
+              }
+            }
           }
         ],
-        PayMode2: [
+        payMode: [
           {
-            required: true,
-            message: '请选择支付方式',
-            trigger: 'change'
+            validator: (rule, value, callback) => {
+              if (this.model.payMode.length === 0) {
+                callback(new Error('必须选一个!!!!!!!!!!!!!!!!!!!!'))
+              }
+            }
           }
         ],
         ContactNumber: [
@@ -495,7 +501,19 @@ export default {
       return [this.model.ProvinceCode, this.model.CityCode, this.model.AreaCode]
     }
   },
-  watch: {},
+
+  watch: {
+    DistributSelfMode() {
+      this.model.DistributionMode = this.DistributSelfMode.concat(this.DistributMode)
+    },
+    DistributMode() {
+      this.model.DistributionMode = this.DistributSelfMode.concat(this.DistributMode)
+    },
+    'model.DistributionMode'() {
+      this.$refs.drugForm.validateField('DistributionMode')
+    }
+  },
+
   created() {
     if (this.data !== '') {
       const params = { UserID: this.data }
@@ -594,6 +612,7 @@ export default {
         this.model.City = this.$refs.regionSelector.getSelectedCityName()
         this.model.Area = this.$refs.regionSelector.getSelectedAreaName()
         const params = Peace.util.deepClone(this.model)
+        console.log(params)
         Service.registerForProve(params)
           .then((res) => {
             console.log(res)
@@ -622,22 +641,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.payMode {
+  .el-form-item {
+    margin-bottom: 14px;
+  }
+}
 ::v-deep .el-form-item__label {
   padding: 0 !important;
-}
-.el-form-item {
-  margin-bottom: 16px;
-
-  &.is-error {
-    margin-bottom: 24px;
-  }
 }
 .input-Width {
   width: 440px;
 }
-// .el-checkbox-group {
-//   height: 28px;
-// }
+.el-checkbox-group {
+  height: 28px;
+}
 .info {
   &-item {
     border-bottom: 1px solid #e9e9e9;

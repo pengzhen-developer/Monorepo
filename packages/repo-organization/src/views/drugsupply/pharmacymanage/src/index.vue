@@ -17,6 +17,7 @@
       <div class="bg-white full-height q-pa-lg"
            v-if="editVisible">
         <el-button type="primary"
+                   plain
                    class="icon-back"
                    style="margin-bottom:24px"
                    v-on:click="back">
@@ -32,6 +33,7 @@
       <div class="bg-white full-height q-pa-lg"
            v-if="detailVisible">
         <el-button type="primary"
+                   plain
                    class="icon-back"
                    style="margin-bottom:24px"
                    v-on:click="back">
@@ -42,6 +44,22 @@
         </el-button>
         <PharmacyDetail v-bind:data="id"></PharmacyDetail>
       </div>
+      <!--运营管理-->
+      <div class="bg-white full-height q-pa-lg"
+           v-if="operationVisible">
+        <el-button type="primary"
+                   plain
+                   class="icon-back"
+                   style="margin-bottom:24px"
+                   v-on:click="back">
+          <div class="q-px-md q-py-sm">
+            <i class="el-icon-arrow-left"></i>
+            <span>返回上一页</span>
+          </div>
+        </el-button>
+        <OperationManage></OperationManage>
+      </div>
+
       <!-- 药房列表 -->
       <div class="card"
            v-show="listVisible">
@@ -95,9 +113,13 @@
           </el-table-column>
           <el-table-column label="操作"
                            align="left"
-                           width="240px"
+                           width="270px"
                            fixed="right">
             <template slot-scope="scope">
+              <el-button type="text"
+                         v-if="scope.row.ExamineStatus==15?true:false"
+                         class="no-padding"
+                         v-on:click="operationManage(scope.row)">运营管理</el-button>
               <el-button type="text"
                          v-if="scope.row.ExamineStatus==15?true:false"
                          class="no-padding"
@@ -146,12 +168,14 @@ import CONSTANT from './constant'
 import Peace from '@src/library'
 import EditPharmacy from './components/EditPharmacy'
 import PharmacyDetail from './components/PharmacyDetail'
+import OperationManage from './components/OperationManage'
 export default {
   name: 'Pharmacymanage',
   inject: ['provideAddTab', 'provideGetTab'],
   components: {
     EditPharmacy,
-    PharmacyDetail
+    PharmacyDetail,
+    OperationManage
   },
   filters: {
     getEnumLabel: function (value, ENUM) {
@@ -170,6 +194,7 @@ export default {
       reasonVisible: false,
       //enableVisible: false,
       detailVisible: false,
+      operationVisible: false,
       statuVule: {
         custId: '',
         status: 0
@@ -198,12 +223,14 @@ export default {
           this.listVisible = true
           this.editVisible = false
           this.detailVisible = false
+          this.operationVisible = false
           return res.data.list
         } else {
           this.visible = true
           this.listVisible = false
           this.editVisible = false
           this.detailVisible = false
+          this.operationVisible = false
         }
       })
     },
@@ -288,6 +315,10 @@ export default {
       const menu = Peace.util.deepClone(this.provideGetTab('商品管理'))
       menu.menuPath = menu.menuPath + '?custcode=' + row.Code
       this.provideAddTab(menu)
+    },
+    operationManage() {
+      this.listVisible = false
+      this.operationVisible = true
     },
     back() {
       this.fetch()
