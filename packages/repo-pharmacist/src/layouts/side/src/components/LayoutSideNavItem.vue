@@ -20,8 +20,7 @@
       </el-submenu>
 
       <el-menu-item v-else
-                    v-bind:index="menu.id"
-                    v-bind:menu="menu">
+                    v-bind:index="menu.id">
         <template v-if="level === 0">
           <i v-bind:class="`q-mr-md menu-icon ${menu.menuIcon}`"></i>
         </template>
@@ -71,7 +70,7 @@ export default {
 
 ::v-deep {
   .el-submenu__title {
-    padding-left: 32px !important;
+    padding-left: 34px !important;
     height: 60px;
     line-height: 60px;
   }
