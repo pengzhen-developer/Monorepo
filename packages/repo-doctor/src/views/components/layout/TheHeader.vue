@@ -50,7 +50,7 @@
           </el-badge>
           <span>欢迎您，</span>
           <span>{{ docInfo.name }}</span>
-          <i class="el-icon-arrow-down el-icon--right"></i>
+          <i class="el-icon-arrow-down el-icon--right q-mr-md"></i>
         </div>
 
         <el-dropdown-menu class="header-right-title-dropdown"
@@ -227,7 +227,6 @@ export default {
 
 <style lang="scss" scoped>
 .header-container {
-  width: 1200px;
   height: 100%;
   background: #00c6ae;
   margin: 0 auto;
@@ -249,10 +248,10 @@ export default {
       &:before {
         content: '';
         margin: 0 16px 0 4px;
-        width: 31px;
-        height: 31px;
+        width: 100px;
+        height: 33px;
         background-image: url('~@src/assets/images/logo.png');
-        background-size: cover;
+        background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
         display: inline-block;

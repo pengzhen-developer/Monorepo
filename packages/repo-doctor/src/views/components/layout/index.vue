@@ -63,7 +63,7 @@ export default {
   watch: {
     '$route.path': {
       handler() {
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           if (this.$store.state.layout.tabList.length === 0) {
             // 将首页加载到 tab list
             this.pushTab('/home')
@@ -121,7 +121,6 @@ $--layout-body-right-tab-height: 40px;
   }
 
   .layout-body {
-    width: 1200px;
     height: calc(100vh - #{$--layout-header-height});
     margin: 0 auto;
     box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
@@ -135,7 +134,6 @@ $--layout-body-right-tab-height: 40px;
 
     .layout-body-right {
       flex: 1;
-      width: calc(1200px - 63px);
       background: #f9f9f9;
 
       .layout-body-right-tab {
