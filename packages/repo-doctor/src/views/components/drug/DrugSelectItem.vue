@@ -94,8 +94,8 @@
             <div class="flex">
               <el-input-number class="col inline-block"
                                controls-position="right"
-                               v-bind:min="1"
-                               v-bind:precision="2"
+                               v-bind:min="0"
+                               v-bind:precision="3"
                                v-model="data.singleDose">
               </el-input-number>
               <div class="flex items-center bg-grey-2 q-px-xs"
@@ -109,8 +109,8 @@
                         required>
             <el-input-number class="full-width inline-block"
                              controls-position="right"
-                             v-bind:min="1"
-                             v-bind:precision="0"
+                             v-bind:min="0"
+                             v-bind:precision="3"
                              v-model="data.drugNum">
             </el-input-number>
           </el-form-item>
