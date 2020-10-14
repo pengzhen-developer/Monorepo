@@ -568,7 +568,8 @@ export default {
     seeMoreCase() {
       const json = peace.util.encode({
         familyId: this.internalData?.familyInfo?.familyId,
-        doctorId: this.internalData?.doctorInfo?.doctorId
+        doctorId: this.internalData?.doctorInfo?.doctorId,
+        inquiryNo: this.inquiryInfo?.inquiryNo
       })
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
@@ -638,7 +639,8 @@ export default {
     getFirstOptionList() {
       const params = {
         familyId: this.internalData?.familyInfo?.familyId,
-        doctorId: this.internalData?.doctorInfo?.doctorId
+        doctorId: this.internalData?.doctorInfo?.doctorId,
+        inquiryNo: this.inquiryInfo?.inquiryNo
       }
       peace.service.yibao.GetFirstOptionList(params).then((res) => {
         if (res.data == null || !res.data.firstOptionList) {
