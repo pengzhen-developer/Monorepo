@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 处方共享管理详情

@@ -53,13 +53,13 @@
               </span>
             </div>
           </el-upload>
-          <el-dialog fullscreen
-                     style="background: transparent;"
-                     v-bind:visible.sync="dialogVisible">
+          <PeaceDialog fullscreen
+                       style="background: transparent;"
+                       v-bind:visible.sync="dialogVisible">
             <img width="100%"
                  v-bind:src="dialogImageUrl"
                  alt="">
-          </el-dialog>
+          </PeaceDialog>
 
           <q-separator />
 
@@ -133,7 +133,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './../service'
 
 import { IPharmacyModel } from './../model/IPharmacyModel'

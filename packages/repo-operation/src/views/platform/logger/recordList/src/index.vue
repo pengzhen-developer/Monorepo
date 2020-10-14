@@ -22,9 +22,9 @@
         </el-form-item>
 
         <el-form-item label="操作日期：">
-          <el-date-picker type="daterange"
-                          value-format="yyyy-MM-dd"
-                          v-model="model.timeRange"></el-date-picker>
+          <peace-date-picker type="daterange"
+                             value-format="yyyy-MM-dd"
+                             v-model="model.timeRange"></peace-date-picker>
         </el-form-item>
 
         <el-form-item label="">
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 import CONSTANT from './constant'
 

@@ -132,7 +132,6 @@ import Axios from 'axios'
 import Service from '../service/data'
 import CONSTANT from '../constant'
 
-import Peace from '@src/library'
 import LibraryUtil from '@src/util'
 
 export default {

@@ -36,7 +36,7 @@
 <script>
 import OrderStatistic from './components/OrderStatistic'
 import DrugFlowView from './components/DrugFlowView'
-import Peace from '@src/library'
+
 import Service from './service/index'
 export default {
   components: {

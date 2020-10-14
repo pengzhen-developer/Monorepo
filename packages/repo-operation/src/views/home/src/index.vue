@@ -32,7 +32,6 @@ import Service from './service/index'
 import OtherSerice from './service/data'
 import CONSTANT from './constant'
 
-import Peace from '@src/library'
 import LibraryUtil from '@src/util'
 
 export default {

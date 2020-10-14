@@ -236,21 +236,21 @@
       </div>
     </el-form>
 
-    <el-dialog :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               :visible.sync="mapDialogVisible"
-               append-to-body
-               title="地图"
-               width="800px">
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="mapDialogVisible"
+                 append-to-body
+                 title="地图"
+                 width="800px">
       <TMap :defaultDetail="defaultDetail"
             @getAddressData="getAddressData"></TMap>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import CONSTANT from '../constant'
-import Peace from '@src/library'
+
 import Service from '../service'
 
 import TMap from './Map'

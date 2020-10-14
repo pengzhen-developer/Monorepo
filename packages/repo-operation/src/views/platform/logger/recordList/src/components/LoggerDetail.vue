@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog width="780px"
-               v-bind:visible.sync="visible"
-               v-bind:title="title">
+    <PeaceDialog width="780px"
+                 v-bind:visible.sync="visible"
+                 v-bind:title="title">
       <div>日志类型：更新</div>
       <el-table :data="data"
                 style="width: 100%">
@@ -27,13 +27,13 @@
                          width="150">
         </el-table-column>
       </el-table>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import CONSTANT from './../constant'
-import Peace from '@src/library'
+
 import Service from './../service'
 
 export default {
@@ -49,8 +49,8 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function(value, ENUM) {
-      return Object.keys(ENUM).find(key => ENUM[key] === value)
+    getEnumLabel: function (value, ENUM) {
+      return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
 
@@ -98,7 +98,7 @@ export default {
         params.accountId = this.data.id
 
         Service.doCheck(params)
-          .then(res => {
+          .then((res) => {
             Peace.util.success(res.msg)
 
             this.isLoading = false
@@ -111,8 +111,8 @@ export default {
     },
 
     validateForm() {
-      return new Promise(resolve => {
-        this.$refs.form.validate(valid => {
+      return new Promise((resolve) => {
+        this.$refs.form.validate((valid) => {
           if (valid) {
             resolve()
           }

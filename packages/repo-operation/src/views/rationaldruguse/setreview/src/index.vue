@@ -62,20 +62,19 @@
       </PeaceTable>
     </div>
 
-    <el-dialog v-if="detailDialog.visible"
-               width="480px"
-               v-bind:visible.sync="detailDialog.visible"
-               title="审方团队配置">
+    <PeaceDialog v-if="detailDialog.visible"
+                 width="480px"
+                 v-bind:visible.sync="detailDialog.visible"
+                 title="审方团队配置">
       <ReviewDetail v-bind:data="detailDialog.data"
                     v-on:on-close="onClose"></ReviewDetail>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import ReviewDetail from './components/ReviewDetail'
 import Service from './service'
-import Peace from '@src/library'
 
 export default {
   name: 'Setreview',

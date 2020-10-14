@@ -37,9 +37,9 @@
         </el-form-item>
         <el-form-item l-form-item
                       label="申请时间：">
-          <el-date-picker type="daterange"
-                          value-format="yyyy-MM-dd"
-                          v-model="model.timeRange"></el-date-picker>
+          <PeaceDatePicker type="daterange"
+                           value-format="yyyy-MM-dd"
+                           v-model="model.timeRange"></PeaceDatePicker>
         </el-form-item>
         <el-form-item label
                       label-width="0">
@@ -115,7 +115,6 @@
 <script>
 import CheckDetail from './components/CheckDetail'
 
-import Peace from '@src/library'
 import Service from './service'
 import CONSTANT from './constant'
 

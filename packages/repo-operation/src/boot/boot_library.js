@@ -1,10 +1,32 @@
+import { name, version } from '@/package.json'
+
+import libraryUtil from '@src/util'
+
 // import library plugin
-import Peace from '@src/library'
+import Peace from '@jk998/library'
 
 // export boot install function
 // async is optional
 export default async ({ Vue }) => {
-  Vue.use(Peace.install)
+  Vue.use(Peace.install, {
+    config: {
+      appName: name,
+      appVersion: version
+    },
+    http: {
+      interceptors: {
+        requestInterceptor: {
+          then(config) {
+            if (libraryUtil.user.getUserInfo()) {
+              config.headers.token = libraryUtil.user.getUserInfo().token
+            }
+
+            return config
+          }
+        }
+      }
+    }
+  })
 
   console.log(
     `%c ${'Library'} %c ${Peace.version} %c`,

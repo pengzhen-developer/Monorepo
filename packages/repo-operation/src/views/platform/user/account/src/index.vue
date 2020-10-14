@@ -129,7 +129,6 @@
 <script>
 import AduitDetail from './components/AduitDetail'
 
-import Peace from '@src/library'
 import Service from './service'
 import CONSTANT from './constant'
 

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import WareHouseInfo from './components/WareHouseInfo'
 import PharmacyList from './components/PharmacyList'
 import PharmacyDetail from './components/PharmacyDetail'

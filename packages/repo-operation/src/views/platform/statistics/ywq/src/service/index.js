@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 医网签调用记录

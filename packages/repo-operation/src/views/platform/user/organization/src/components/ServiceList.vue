@@ -181,7 +181,7 @@
 <script>
 import CONSTANT from '../constant'
 import Service from './../service'
-import Peace from '@src/library'
+
 import EditService from './EditService'
 
 export default {

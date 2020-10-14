@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 账号密码登录
@@ -16,6 +14,10 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
+      //登录成功设置请求头
+      Peace.http.defaults.headers.common = {
+        token: res?.data?.token
+      }
       return res
     })
   },

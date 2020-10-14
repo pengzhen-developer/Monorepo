@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
-
 export default {
   data() {
     return {

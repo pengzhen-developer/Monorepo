@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 
 import RoleModel from './components/RoleModel'

@@ -88,7 +88,8 @@
             <i v-show="dialog.showNewPwdIcon || dialog.model.newPwd"
                @click="dialog.showNewPwd = !dialog.showNewPwd"
                slot="suffix"
-               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i></el-input>
+               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i>
+          </el-input>
         </el-form-item>
 
         <div class="text-center q-pt-md">
@@ -107,7 +108,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 
 export default {

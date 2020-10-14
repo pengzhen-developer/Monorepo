@@ -42,18 +42,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="申请时间：">
-          <el-date-picker value-format="yyyy-MM-dd HH:mm:ss"
-                          v-bind:default-time="['00:00:00', '23:59:59']"
-                          format="yyyy-MM-dd"
-                          type="daterange"
-                          v-model.trim="DateValue"></el-date-picker>
+          <PeaceDatePicker value-format="yyyy-MM-dd HH:mm:ss"
+                           v-bind:default-time="['00:00:00', '23:59:59']"
+                           format="yyyy-MM-dd"
+                           type="daterange"
+                           v-model.trim="DateValue"></PeaceDatePicker>
         </el-form-item>
         <el-form-item label="审核时间：">
-          <el-date-picker value-format="yyyy-MM-dd HH:mm:ss"
-                          v-bind:default-time="['00:00:00', '23:59:59']"
-                          format="yyyy-MM-dd"
-                          type="daterange"
-                          v-model.trim="DateValue2"></el-date-picker>
+          <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
+                             v-bind:default-time="['00:00:00', '23:59:59']"
+                             format="yyyy-MM-dd"
+                             type="daterange"
+                             v-model.trim="DateValue2"></peace-date-picker>
         </el-form-item>
         <el-form-item label-width="0">
           <el-button type="primary"
@@ -116,20 +116,20 @@
         </el-table-column>
       </peace-table>
     </div>
-    <el-dialog v-if="detailDialog.visible"
-               width="618px"
-               v-bind:visible.sync="detailDialog.visible"
-               title="药店审核">
+    <PeaceDialog v-if="detailDialog.visible"
+                 width="618px"
+                 v-bind:visible.sync="detailDialog.visible"
+                 title="药店审核">
       <ReviewPharmacy v-bind:data="detailDialog.data"
                       v-on:onClose="onClose"></ReviewPharmacy>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import CONSTANT from './constant'
 import Service from './service/index'
-import Peace from '@src/library'
+
 import ReviewPharmacy from './components/ReviewPharmacy'
 
 export default {

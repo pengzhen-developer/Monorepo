@@ -121,24 +121,24 @@
       </div>
 
       <!-- 机构基本信息 -->
-      <el-dialog width="520px"
-                 v-bind:visible.sync="detailDialog.visible"
-                 title="基本信息">
+      <PeaceDialog width="520px"
+                   v-bind:visible.sync="detailDialog.visible"
+                   title="基本信息">
         <OrganizationDetail v-if="detailDialog.visible"
                             ref="orgDetail"
                             v-on:close="detailDialog.visible = false"
                             v-on:refresh="get"></OrganizationDetail>
-      </el-dialog>
+      </PeaceDialog>
 
       <!-- 新增机构 -->
-      <el-dialog width="520px"
-                 v-bind:visible.sync="addDialog.visible"
-                 title="新增机构">
+      <PeaceDialog width="520px"
+                   v-bind:visible.sync="addDialog.visible"
+                   title="新增机构">
         <OrganizationModel v-if="addDialog.visible"
                            ref="addOrg"
                            v-on:close="addDialog.visible = false"
                            v-on:refresh="get"></OrganizationModel>
-      </el-dialog>
+      </PeaceDialog>
     </div>
 
     <!-- 已选服务 -->
@@ -152,7 +152,6 @@ import OrganizationDetail from './components/OrganizationDetail'
 import ServiceList from './components/ServiceList'
 import OrganizationModel from './components/OrganizationModel'
 
-import Peace from '@src/library'
 import Service from './service'
 
 export default {

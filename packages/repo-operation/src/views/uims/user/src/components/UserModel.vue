@@ -108,7 +108,7 @@
 
 <script>
 import Service from '../service/index'
-import Peace from '@src/library'
+
 export default {
   props: {
     data: Object

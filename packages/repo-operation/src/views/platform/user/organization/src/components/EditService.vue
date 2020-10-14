@@ -1,8 +1,8 @@
 <template>
-  <el-dialog title="服务设置"
-             v-bind:visible.sync="visible"
-             width="480px"
-             center>
+  <PeaceDialog title="服务设置"
+               v-bind:visible.sync="visible"
+               width="480px"
+               center>
     <el-form ref="form"
              label-position="right"
              label-width="150px"
@@ -61,11 +61,10 @@
       <el-button v-on:click="visible = false"
                  style="width:120px;">取 消</el-button>
     </span>
-  </el-dialog>
+  </PeaceDialog>
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './../service'
 
 export default {

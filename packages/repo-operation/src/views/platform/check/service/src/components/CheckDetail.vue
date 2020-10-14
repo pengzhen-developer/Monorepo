@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog width="500px"
-               v-bind:visible.sync="visible"
-               v-bind:title="title">
+    <PeaceDialog width="500px"
+                 v-bind:visible.sync="visible"
+                 v-bind:title="title">
       <el-form ref="form"
                label-width="90px"
                v-bind:model="model"
@@ -90,13 +90,13 @@
           </el-form-item>
         </template>
       </el-form>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import CONSTANT from './../constant'
-import Peace from '@src/library'
+
 import Service from './../service'
 
 export default {

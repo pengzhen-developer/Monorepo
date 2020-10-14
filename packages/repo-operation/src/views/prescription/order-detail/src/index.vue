@@ -266,8 +266,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
-
 export default {
   props: {
     data: {

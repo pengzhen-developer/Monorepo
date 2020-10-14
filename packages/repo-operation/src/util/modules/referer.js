@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 /** 站点常量 */
 const REFERER_SITE = 'referer_site'
 

@@ -11,9 +11,9 @@
         </el-form-item>
 
         <el-form-item label="申请取消日期">
-          <el-date-picker type="daterange"
-                          value-format="yyyy-MM-dd"
-                          v-model="model.TimeRange"></el-date-picker>
+          <peace-date-picker type="daterange"
+                             value-format="yyyy-MM-dd"
+                             v-model="model.TimeRange"></peace-date-picker>
         </el-form-item>
 
         <el-form-item label="药房">
