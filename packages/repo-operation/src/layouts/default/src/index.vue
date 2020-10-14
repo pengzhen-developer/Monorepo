@@ -254,7 +254,6 @@ export default {
 <style lang="scss" scoped>
 .layout {
   position: relative;
-  max-width: 2560px;
   margin: 0 auto;
 
   .layout-header {
@@ -262,7 +261,6 @@ export default {
 
     .layout-header-content {
       position: relative;
-      max-width: 2560px;
       margin: 0 auto;
     }
   }
