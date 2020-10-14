@@ -93,7 +93,7 @@ export default {
         dangerouslyUseHTMLString: true,
         type: 'info'
       }).then(() => {
-        const url = `${process.env.VUE_APP_MDS_API}psd/Template/DrugListTemplate.xlsx`
+        const url = `${process.env.VUE_APP_MDS_API}psd/Template/UpdateBatchOrderCodeTemplate.xlsx`
         window.open(url, '_blank')
         this.$alert(`若无法正常下载,请复制链接至其他浏览器重试${url}`, '药品批量导入模板获取成功！', {
           confirmButtonText: '确定'
@@ -113,7 +113,7 @@ export default {
         let param = {
           Format: format,
           Basic64: dataURL,
-          billType: 4
+          billType: 14
         }
         Service.ImportExcelByZYY(param)
           .then((res) => {

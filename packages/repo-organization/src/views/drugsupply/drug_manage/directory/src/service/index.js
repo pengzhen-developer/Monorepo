@@ -32,6 +32,37 @@ export default {
       return res
     })
   },
+
+  /**
+   * 获取机构药品图片
+   *
+   * @param {*} params
+   */
+  GetImagesByCustDrug(params) {
+    const isMock = false
+    const apiPath = 'psd/CustDrug/GetImagesByCustDrug'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 图片上传
+   *
+   * @param {*} params
+   */
+  uploadImage(params) {
+    const isMock = false
+    const apiPath = 'psd/Upload/Image2'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
   /**
    * 批量导入药品接口
    *
@@ -40,6 +71,21 @@ export default {
   ImportExcelByZYY(params) {
     const isMock = false
     const apiPath = 'psd/Excel/ImportExcelByZYY'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 图片地址保存
+   *
+   * @param {*} params
+   */
+  SaveImagesByCustDrug(params) {
+    const isMock = false
+    const apiPath = 'psd/CustDrug/SaveImagesByCustDrug'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_MDS_API + apiPath
     const requestApi = isMock ? mockPath : serverPath

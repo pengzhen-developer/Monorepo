@@ -11,7 +11,7 @@
             <span>药品编号</span>
             <span>：</span>
           </span>
-          <el-input v-model=" model.CustDrugsCode"
+          <el-input v-model.trim=" model.CustDrugsCode"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -20,7 +20,7 @@
             <span>药品名称</span>
             <span>：</span>
           </span>
-          <el-input v-model=" model.ProductName"
+          <el-input v-model.trim=" model.ProductName"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -29,7 +29,7 @@
             <span>批准文号</span>
             <span>：</span>
           </span>
-          <el-input v-model=" model.ApprovalNumber"
+          <el-input v-model.trim=" model.ApprovalNumber"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -38,53 +38,8 @@
             <span>生产厂家</span>
             <span>：</span>
           </span>
-          <el-input v-model=" model.EnterpriseName"
+          <el-input v-model.trim=" model.EnterpriseName"
                     placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item prop="source">
-          <span slot="label">
-            <span>外流</span>
-            <span>：</span>
-          </span>
-          <el-select v-model="model.Circulate"
-                     clearable
-                     placeholder="请选择">
-            <el-option :key="item.label"
-                       :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_CIRCULATE"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item prop="source">
-          <span slot="label">
-            <span>配码状态</span>
-            <span>：</span>
-          </span>
-          <el-select v-model="model.MappingStatus"
-                     clearable
-                     placeholder="请选择">
-            <el-option :key="item.label"
-                       :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_MATCH_CODE"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item prop="source">
-          <span slot="label">
-            <span>审核状态</span>
-            <span>：</span>
-          </span>
-          <el-select v-model="model.MappingExamineStatus"
-                     clearable
-                     placeholder="请选择">
-            <el-option :key="item.label"
-                       :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_REVIEW_STATUS"></el-option>
-          </el-select>
         </el-form-item>
 
         <el-form-item label=" ">
@@ -99,10 +54,11 @@
 
       <div class="top-menu">
         <el-button type="primary"
-                   @click="addDrug()">新增</el-button>
+                   @click="addDrug">新增</el-button>
         <el-button type="primary"
                    @click="openImportDialog">批量新增</el-button>
-
+        <el-button type="primary"
+                   @click="openImportDrugCodeDialog">批量修改编码</el-button>
       </div>
 
       <PeaceTable ref="table"
@@ -120,7 +76,6 @@
                          label="药品规格">
         </el-table-column>
         <el-table-column prop="PackUnit"
-                         width="100px"
                          label="包装单位">
         </el-table-column>
         <el-table-column prop="EnterpriseName"
@@ -129,37 +84,9 @@
         <el-table-column prop="ApprovalNumber"
                          label="批准文号">
         </el-table-column>
-        <el-table-column label="外流"
-                         width="80px">
 
-          <template slot-scope="scope">
-            <span>
-              {{ getCirculateForCode(scope.row.Circulate) }}
-            </span>
-          </template>
-
-        </el-table-column>
         <el-table-column prop="CreateTime"
                          label="创建时间">
-        </el-table-column>
-
-        <el-table-column label="配码状态"
-                         width="100px">
-          <template slot-scope="scope">
-            <span>
-              {{ getMappingStatus(scope.row.MappingStatus) }}
-            </span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="审核状态"
-                         align="center"
-                         width="100px">
-          <template slot-scope="scope">
-            <span>
-              {{ getMappingExamineStatus(scope.row.MappingExamineStatus) }}
-            </span>
-          </template>
         </el-table-column>
 
         <el-table-column align="center"
@@ -167,12 +94,15 @@
                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
+                       v-on:click="openChangeImageDialog(scope.row)">图片维护</el-button>
+            <el-button type="text"
                        v-on:click="toDetail(scope.row)">修改</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
     </div>
 
+    <!-- 药品详情 -->
     <el-dialog v-if="detailDialog.visible"
                width="644px"
                :close-on-click-modal="false"
@@ -197,27 +127,50 @@
                    @success="get()" />
     </el-dialog>
 
+    <!-- 导入药品编码 -->
+    <el-dialog :before-close="close"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               :visible.sync="importDrugCodeDialogVisible"
+               title="批量修改药品编码"
+               v-if="importDrugCodeDialogVisible"
+               append-to-body
+               width="500px">
+      <DrugsCodeImport @close="closeImportDrugCodeDialog"
+                       @success="get()" />
+    </el-dialog>
+
+    <!-- 图片维护 -->
+    <el-dialog v-if="imageDataDialog.visible"
+               width="644px"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               v-bind:visible.sync="imageDataDialog.visible"
+               title="图片维护">
+      <ImageDataChangeDialog :drugId="imageDataDialog.drugId"
+                             v-on:onSucess="changeImageSuccess"
+                             v-on:onCancel="imageDataDialog.visible = false"></ImageDataChangeDialog>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import CONSTANT from './constant'
 import Service from './service'
 import DrugDetail from './components/DrugDetail'
 import DrugsImport from './components/DrugsImport'
+import DrugsCodeImport from './components/DrugsCodeImport'
+import ImageDataChangeDialog from './components/ImageDataChangeDialog'
 
 export default {
   components: {
     DrugDetail,
-    DrugsImport
+    DrugsImport,
+    DrugsCodeImport,
+    ImageDataChangeDialog
   },
   data() {
     return {
-      source: {
-        ENUM_CIRCULATE: CONSTANT.ENUM_CIRCULATE,
-        ENUM_MATCH_CODE: CONSTANT.ENUM_MATCH_CODE,
-        ENUM_REVIEW_STATUS: CONSTANT.ENUM_REVIEW_STATUS
-      },
       model: {
         CustDrugsCode: '',
         ProductName: '',
@@ -233,7 +186,12 @@ export default {
         dialogTitle: '',
         drugInfo: {}
       },
-      importDialogVisible: false
+      importDialogVisible: false,
+      imageDataDialog: {
+        visible: false,
+        drugId: ''
+      },
+      importDrugCodeDialogVisible: false
     }
   },
 
@@ -249,10 +207,6 @@ export default {
       const params = this.model
 
       this.$refs.table.loadData({ fetch, params })
-    },
-
-    getCirculateForCode(code) {
-      return this.source.ENUM_CIRCULATE.find((item) => item.value == code).label
     },
 
     addDrug() {
@@ -280,17 +234,24 @@ export default {
       this.get()
       done()
     },
-    getMappingStatus(code) {
-      return this.source.ENUM_MATCH_CODE.find((item) => item.value == code).label
-    },
-
-    getMappingExamineStatus(code) {
-      return this.source.ENUM_REVIEW_STATUS.find((item) => item.value == code).label
-    },
 
     addDrugSuccess() {
       this.detailDialog.visible = false
       this.get()
+    },
+
+    openChangeImageDialog(data) {
+      this.imageDataDialog.drugId = data.ID
+      this.imageDataDialog.visible = true
+    },
+    changeImageSuccess() {
+      this.imageDataDialog.visible = false
+    },
+    openImportDrugCodeDialog() {
+      this.importDrugCodeDialogVisible = true
+    },
+    closeImportDrugCodeDialog() {
+      this.importDrugCodeDialogVisible = false
     }
   }
 }
