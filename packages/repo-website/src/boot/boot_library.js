@@ -5,6 +5,8 @@ import Peace from '@jk998/library'
 
 import Identity from '@jk998/identity'
 
+import { requestInterceptor, responseInterceptor } from '../library/http/interceptors'
+
 // export boot install function
 // async is optional
 export default async ({ Vue }) => {
@@ -12,6 +14,15 @@ export default async ({ Vue }) => {
     config: {
       appName: name,
       appVersion: version
+    },
+    http: {
+      // .e.g
+      // requestInterceptor: { then: function() {}, catch: function() {} }
+      // responseInterceptor: { then: function() {}, catch: function() {} }
+      interceptors: {
+        requestInterceptor: requestInterceptor,
+        responseInterceptor: responseInterceptor
+      }
     }
   })
 
