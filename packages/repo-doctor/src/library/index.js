@@ -11,11 +11,6 @@ import './prototype/string'
 
 import dayjs from 'dayjs'
 
-// components
-import Countdown from './components/countdown'
-import Table from './components/table'
-import Dialog from './components/dialog'
-
 // directive
 import drag from './directive/drag'
 import focus from './directive/focus'
@@ -47,12 +42,6 @@ const install = function(Vue) {
   // 挂载到 Vue
   Vue.prototype.http = http
   Vue.prototype.$peace = peace
-
-  // 注册 component
-  const components = [Table, Dialog, Countdown]
-  components.map((component) => {
-    Vue.use(component)
-  })
 
   // 注册 directive
   const directive = [drag, focus]

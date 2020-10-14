@@ -81,7 +81,7 @@
 
     <!-- 检查单明细信息 -->
     <div class="q-mb-md">
-      <el-table v-bind:data="resultInfoItems">
+      <PeaceTable v-bind:data="resultInfoItems">
         <el-table-column label="项目名称"
                          prop="itemName"></el-table-column>
         <el-table-column label="量化结果"
@@ -90,7 +90,7 @@
                          prop="itemReference"></el-table-column>
         <el-table-column label="单位"
                          prop="itemUnit"></el-table-column>
-      </el-table>
+      </PeaceTable>
     </div>
 
     <div class="q-mb-md"

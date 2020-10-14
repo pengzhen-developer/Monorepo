@@ -1,7 +1,7 @@
 // 药品说明书列表
 
 <template>
-  <el-table v-bind:data="data">
+  <PeaceTable v-bind:data="data">
     <el-table-column label="药品名称"
                      prop="name"></el-table-column>
     <el-table-column label="生产厂家"
@@ -18,7 +18,7 @@
                    type="text">查看说明书</el-button>
       </template>
     </el-table-column>
-  </el-table>
+  </PeaceTable>
 </template>
 <script>
 export default {

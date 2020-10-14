@@ -59,10 +59,9 @@
     </div>
 
     <div class="q-mb-md">
-      <el-table style="min-height: 200px"
-                empty-text="暂无药品"
-                v-bind:data="prescriptionDrugList"
-                v-bind:show-header="false">
+      <PeaceTable style="min-height: 200px"
+                  v-bind:data="prescriptionDrugList"
+                  v-bind:show-header="false">
         <el-table-column>
           <template slot-scope="scope">
             <div class="q-mb-sm">
@@ -102,7 +101,7 @@
             </div>
           </template>
         </el-table-column>
-      </el-table>
+      </PeaceTable>
     </div>
 
     <div class="text-center"
