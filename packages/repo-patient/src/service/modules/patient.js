@@ -396,6 +396,18 @@ export function getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo, IsMergeStor
     }
   )
 }
+/**
+ * 获取处方信息电子版本
+ *
+ * @export
+ * @param {*prescriptionId} params
+ * @returns
+ */
+export function getPrescriptionImage(prescriptionId) {
+  const getPrescriptionImage = 'wap/v1/checklist/getPrescriptionImage'
+
+  return peace.http.post(getPrescriptionImage, { prescriptionId })
+}
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -462,5 +474,7 @@ export default {
 
   inquiryStatus,
   /** 获取药店信息 **/
-  getDrugStoreApi
+  getDrugStoreApi,
+  /** 获取处方信息电子版本 **/
+  getPrescriptionImage
 }

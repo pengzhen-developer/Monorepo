@@ -3,7 +3,12 @@
        v-if="internalData">
     <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : canShowPrescriptionStatus }"
          class="prescript icon-status">
-      <div class="prescript-no">No.{{internalData.prescriptionNo}}</div>
+      <div class="prescript-no">
+        <span class="prescript-btn"
+              @click="seeOriginalPrescription"
+              v-if="dialog.data.pngUrl">原始处方</span>
+        No.{{internalData.prescriptionNo}}
+      </div>
       <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
       <div class="prescript-h4">处方笺</div>
       <div class="prescript-line">
@@ -124,13 +129,26 @@
         <div class="dd"></div>
       </div>
     </div>
-    <div class="bt">注意：仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，3日内处方有效。</div>
+    <div class="bt">注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
     <div class="bottom"
          v-if="internalData.prescriptionStatus && ($peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false)">
       <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
            :data-type="internalData.prescriptionStatus.key"
            @click="goMenuPage(internalData)"
            class="btn btn-blue block">{{ internalData.prescriptionStatus.msg }}</div>
+    </div>
+
+    <div class="shadow"
+         v-show="dialog.visible"
+         @click="dialog.visible = false">
+      <div class="content">
+        <van-image class="close"
+                   @click="dialog.visible = false"
+                   :src="require('@src/assets/images/ic_cha.png')"></van-image>
+        <div class="content-auto">
+          <van-image :src="dialog.data.pngUrl"></van-image>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -150,7 +168,13 @@ export default {
   data() {
     return {
       internalData: undefined,
-      fromDrugDetail: false
+      fromDrugDetail: false,
+      dialog: {
+        visible: false,
+        data: {
+          pngUrl: ''
+        }
+      }
     }
   },
   computed: {
@@ -182,13 +206,16 @@ export default {
 
   methods: {
     get() {
+      this.getPrescripInfo()
+      this.getPrescriptionImage()
+    },
+    getPrescripInfo() {
       const params = peace.util.decode(this.$route.params.json)
 
       peace.service.patient.getPrescripInfo(params).then((res) => {
         this.internalData = res.data
       })
     },
-
     goMenuPage: function(data) {
       let key = data.prescriptionStatus.key
       if (key == '2') {
@@ -206,18 +233,86 @@ export default {
         return
       }
       return
+    },
+    seeOriginalPrescription() {
+      this.dialog.visible = true
+    },
+    getPrescriptionImage() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.patient.getPrescriptionImage(params.prescribeId).then((res) => {
+        this.dialog.data = res.data
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.bottom {
+  padding: 1px;
+  background: #fff;
+  .btn {
+    margin: 10px 15px;
+  }
+}
+.shadow {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  .content {
+    height: 315px;
+    width: 85%;
+    border-radius: 7px;
+    overflow-y: auto;
+    background: #ffffff;
+    padding: 42px 0 15px 0;
+    position: relative;
+    .close {
+      right: 12px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      position: absolute;
+    }
+    .content-auto {
+      padding: 0px 12px 0 12px;
+      height: 100%;
+      overflow-y: auto;
+      .van-image {
+        width: 100%;
+        min-height: 100%;
+      }
+    }
+  }
+}
 .prescript {
   background: #fff;
   padding: 5px 15px;
   margin-bottom: 7.5px;
 }
-
+.prescript-no {
+  display: flex;
+  align-items: center;
+}
+.prescript-btn {
+  padding: 0 4px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: normal;
+  font-size: 10px;
+  margin-right: 4px;
+}
 .prescript .prescript-no,
 .prescript .prescript-line {
   color: #999;
@@ -367,7 +462,7 @@ export default {
     }
   }
   .bt {
-    padding: 0 15px;
+    padding: 0 15px 8px 28.5px;
     font-size: 11px;
     color: #999;
   }
