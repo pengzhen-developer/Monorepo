@@ -81,7 +81,7 @@
                          width="120px"
                          v-bind:formatter="formatSponsor"></el-table-column>
         <el-table-column prop="CreateTime"
-                         label="申请取消日期"
+                         label="发起取消时间"
                          width="180px"></el-table-column>
         <el-table-column prop="Result"
                          label="取消结果"
@@ -231,8 +231,8 @@ export default {
     },
     formatResult(row) {
       const map = [
-        { label: '未取消', value: 0 },
-        { label: '已取消', value: 1 }
+        { label: '失败', value: 0 },
+        { label: '成功', value: 1 }
       ]
 
       return map.find((item) => item.value === row.Result)?.label
