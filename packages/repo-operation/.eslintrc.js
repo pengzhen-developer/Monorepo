@@ -11,8 +11,12 @@ module.exports = {
   // 尽量避免使用全局变量
   globals: {
     // 框架
+    $Window: true,
+    $window: true,
+    $Peace: true,
     $peace: true,
-    Peace: true
+    Peace: true,
+    peace: true
   },
   parserOptions: {
     parser: 'babel-eslint'

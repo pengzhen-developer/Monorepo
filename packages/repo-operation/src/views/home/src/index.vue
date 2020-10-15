@@ -32,7 +32,7 @@ import Service from './service/index'
 import OtherSerice from './service/data'
 import CONSTANT from './constant'
 
-import LibraryUtil from '@src/util'
+// import LibraryUtil from '@src/util'
 
 export default {
   components: {
@@ -90,11 +90,12 @@ export default {
           if (err.data.code === 201) {
             Peace.util.warning(err.data.msg)
           } else if (err.data.code === 403) {
-            Peace.util.warning(err.data.msg)
-            LibraryUtil.user.removeUserInfo()
-            setTimeout(() => {
-              LibraryUtil.user.replaceToLogin()
-            }, 1000)
+            // Peace.util.warning(err.data.msg)
+            // LibraryUtil.user.removeUserInfo()
+            // setTimeout(() => {
+            //   LibraryUtil.user.replaceToLogin()
+            // }, 1000)
+            this.$router.push('/401')
           } else {
             Peace.util.warning('服务器异常，请稍后再试')
           }

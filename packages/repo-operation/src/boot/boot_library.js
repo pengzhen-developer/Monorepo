@@ -1,6 +1,6 @@
 import { name, version } from '@/package.json'
 
-import libraryUtil from '@src/util'
+import LibraryUtil from '@src/util'
 
 // import library plugin
 import Peace from '@jk998/library'
@@ -17,8 +17,8 @@ export default async ({ Vue }) => {
       interceptors: {
         requestInterceptor: {
           then(config) {
-            if (libraryUtil.user.getUserInfo()) {
-              config.headers.token = libraryUtil.user.getUserInfo().token
+            if (LibraryUtil.user.getUserInfo()) {
+              config.headers.token = LibraryUtil.user.getUserInfo().token
             }
 
             return config
