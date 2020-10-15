@@ -1,52 +1,143 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="container-header">
+      <div class="logo">
+        <el-image v-bind:src="logoImage">
+        </el-image>
+      </div>
+      <div class="title text-grey-333">
+        欢迎您登录
+      </div>
+    </div>
 
-    <PeaceButton type="primary"
-                 v-on:click="login">Login</PeaceButton>
+    <div class="layout">
+      <div class="layout-top">
+
+        <SignByPwd></SignByPwd>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <el-form :inline="true">
+        <el-form-item>
+          <div class="bottom-top-item">
+            <img src="./assets/img/ic_zhyxh.svg"
+                 style="width:28px; height:28px;margin-right:5px"
+                 alt="">
+            中华医学会临床药学分会
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <div class="bottom-top-item">
+            <img src="./assets/img/ic_gjgcsys.svg"
+                 style="width:28px; height:28px;margin-right:5px"
+                 alt="">
+            互联网医疗系统与应用国家工程实验室
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <div class="bottom-top-item">
+            <img src="./assets/img/ic_qxyt.png"
+                 style="width:60px;height:25px;margin-right:5px"
+                 alt="">
+            全息云通健康科技(武汉)有限公司
+          </div>
+        </el-form-item>
+
+      </el-form>
+
+      <div class="container-bottom">
+        <div class="bottom-top-item">
+          鄂公网安备 42010502001064号
+          <img src="./assets/img/ba.png"
+               style="width:20px; height:20px;margin-left:5px"
+               alt="">
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
 
 <script>
+import SignByPwd from './components/SignByPwd'
+
 export default {
-  methods: {
-    login() {
-      const params = {
-        // 登录模式 password:密码  mobile:手机
-        grant_type: 'password',
-        // 终端id
-        client_id: process.env.VUE_APP_AUTH_CLIENT_ID,
-        // 终端secret
-        client_secret: process.env.VUE_APP_AUTH_CLIENT_SECRET,
-        // 用户名（grant_type=password 时必填）
-        username: '17512121212',
-        // 密码（grant_type=password 时必填）
-        password: '12345678',
-        // 加密key（grant_type=password 时必填）
-        encryption_key: process.env.VUE_APP_AUTH_ENCRYPTION_KEY,
-        // 产品编码
-        productCode: '',
-        // 菜单类型 left：左菜单, top：顶菜单, button：按钮, 默认
-        type: 'left',
-        // 环境变量
-        processEnv: process.env
-      }
+  components: {
+    SignByPwd
+  },
 
-      Peace.identity.auth
-        .workFlowAuth(params)
-        .then(() => {
-          this.$router.replace('/').then(() => window.location.reload())
-        })
-        .catch((error) => {
-          Peace.util.error(error?.msg ?? '登录失败')
-        })
-    },
+  data() {
+    return {
+      logoImage: require('./assets/img/logo.png')
+    }
+  },
+  methods: {}
+}
+</script>
+<style lang="scss" scoped>
+.container {
+  background-image: url('./assets/img/login_regist_bgd.png');
+  background-size: cover;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 100vw;
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  .container-header {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    .logo {
+      width: 161px;
+      height: 44px;
+      margin: 0 25px;
+      overflow: hidden;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 25px;
+    }
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
+    margin: 64px 0 0 0;
+    .layout-top {
+      background: #fff;
+    }
+  }
+  .bottom {
+    background: white;
+    width: 100%;
+    display: flex;
+    padding: 25px 25px;
+    justify-content: center;
+    color: var(--q-color-grey-333);
+    font-size: 14px;
+    flex-direction: column;
+    align-items: center;
 
-    redirectToHome() {
-      window.location.href = window.location.origin
+    .bottom-top-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .container-bottom {
+      color: var(--q-color-grey-999);
+      font-size: 12px;
     }
   }
 }
-</script>
-
+</style>
 
