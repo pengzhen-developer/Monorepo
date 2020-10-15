@@ -19,7 +19,7 @@
                   v-bind:maxlength="11"
                   placeholder="请输入手机号">
           <div slot="prepend">
-            <i class="zyy-icon zyy-shouji"></i>
+            <i class="zyy-icon zyy-yonghuming"></i>
           </div>
         </el-input>
       </el-form-item>
