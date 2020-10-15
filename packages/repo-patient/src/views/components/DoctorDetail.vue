@@ -645,7 +645,8 @@ export default {
           timeSharing: this.dialog.data.timeSharing,
           sourceCode: this.dialog.data.sourceCode,
           bookingStart: this.dialog.data.startTime,
-          bookingEnd: this.dialog.data.endTime
+          bookingEnd: this.dialog.data.endTime,
+          sourceDisType: 0
         }
         peace.service.inquiry
           .checkSource(params)

@@ -1499,7 +1499,8 @@ export default {
         timeSharing: json.appointmentDate,
         sourceCode: json.sourceCode,
         bookingStart: json.appointmentStartTime,
-        bookingEnd: json.appointmentEndTime
+        bookingEnd: json.appointmentEndTime,
+        sourceDisType: 0
       }
       return peace.service.inquiry
         .checkSource(params)

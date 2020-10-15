@@ -208,21 +208,21 @@ export default {
       json.source = item
       json.source.type = obj.type
       json.date = this.dateList[this.activeIndex]
-      json = peace.util.encode(json)
 
-      /**复诊续方*/
-      if (this.params.from) {
-        const params = {
-          doctorId: this.doctorInfo.doctorId,
-          timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
-          sourceCode: item.sourceCode,
-          bookingStart: item.startTime,
-          bookingEnd: item.endTime
-        }
-        //校验号源是否可用
-        try {
-          await peace.service.inquiry.checkSource(params)
-        } catch (err) {
+      json = peace.util.encode(json)
+      const params = {
+        doctorId: this.doctorInfo.doctorId,
+        timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+        sourceCode: item.sourceCode,
+        bookingStart: item.startTime,
+        bookingEnd: item.endTime,
+        sourceDisType: this.params.from ? 0 : 1
+      }
+      //校验号源是否可用
+      try {
+        await peace.service.inquiry.checkSource(params)
+      } catch (err) {
+        if (err.data.code == '202') {
           return Dialog.confirm({
             title: '温馨提示',
             message: err.data.msg,
@@ -237,6 +237,9 @@ export default {
             this.getSourceData(param)
           })
         }
+      }
+      /**复诊续方*/
+      if (this.params.from) {
         const temp = {
           doctorId: this.doctorInfo.doctorId,
           consultingType: 'returnVisit',
