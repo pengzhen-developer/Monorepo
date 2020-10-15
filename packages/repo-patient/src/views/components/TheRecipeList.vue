@@ -18,7 +18,7 @@
                 <div class="title">{{item.patientName}}的处方</div>
                 <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
                      class="label label-default"
-                     v-if="item.prescriptionStatus">{{item.prescriptionStatus.prescriptionStatus}}
+                     v-if="item.prescriptionStatus&&item.orderDrugStatus">{{item.orderDrugStatus}}
                 </div>
               </div>
               <div class="word-inline">
@@ -41,9 +41,9 @@
         <div class="tips-bottom"
              v-if="internalData && internalData.length">
           <div>为确保广大患者的用药安全，请注意：</div>
-          <div>1. 医生开具处方之后，会有专业药师团队对处方进行审核。审核通过的处方方能进行购药。</div>
-          <div>2. 处方开具3日内有效。</div>
-          <div>3. 处方仅限平台认证的药店配药，自行下载处方去其他药店购药，药品安全平台不做担保。</div>
+          <div>1. 医生开具处方，药师进行审核，审核通过的处方才可以购药。</div>
+          <div>2. 处方24小时有效，处方失效后不可作为购药凭证购药。</div>
+          <div>3. 仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
         </div>
         <div class="none-page"
              v-if="loaded && internalData.length == 0">
