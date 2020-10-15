@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;">
+  <div style="min-height: 100%;">
     <template v-if="$peace.cache.get($peace.type.USER.INFO)">
       <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
         <div :data-index="index"
@@ -181,7 +181,7 @@ export default {
     top: 35px;
     position: absolute;
     display: block;
-    background: #f5f5f5;
+    background: #f0f0f0;
     box-shadow: 1px 0 0 #dedede inset;
   }
   .word-list.new::before {
@@ -238,7 +238,7 @@ export default {
     flex: initial;
     width: 50px;
     height: 22px;
-    margin-right: 35px;
+    margin-right: 8px;
     border: 0;
     border-radius: 2px;
     text-align: center;
