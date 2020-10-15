@@ -89,8 +89,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import InquirySessionCaseDetail from './InquirySessionCaseDetail'
 
 export default {

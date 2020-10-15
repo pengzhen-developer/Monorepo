@@ -202,8 +202,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import RecordCase from './RecordCase'
 import RecordPrescribe from './RecordPrescribe'
 import RecordBloodPressure from './RecordBloodPressure'

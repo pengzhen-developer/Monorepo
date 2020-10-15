@@ -391,8 +391,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import InquiryPreliminaryForReceive from './InquiryPreliminaryForReceive'
 
 import InquiryConsultationDetail from './InquiryConsultationDetail'

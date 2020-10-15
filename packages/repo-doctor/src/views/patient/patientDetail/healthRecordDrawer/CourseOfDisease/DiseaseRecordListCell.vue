@@ -15,15 +15,13 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   name: 'DiseaseRecordListCell',
   props: {
     item: {
       type: Object,
       require: true,
-      default: function() {
+      default: function () {
         return {
           id: '',
           courseType: '',

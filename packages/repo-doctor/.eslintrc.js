@@ -11,7 +11,10 @@ module.exports = {
   },
   globals: {
     // 尽量避免使用全局变量
+    $Peace: true,
     $peace: true,
+    Peace: true,
+    peace: true,
     dayjs: true
   },
   parserOptions: {

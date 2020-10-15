@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /** 用户信息常量 */
 const USER_INFO = 'userInfo'
 
@@ -9,7 +7,7 @@ const USER_INFO = 'userInfo'
  * @returns
  */
 export const getUserInfo = () => {
-  return peace.cache.get(USER_INFO)
+  return peace.cache.localStorage.get(USER_INFO)
 }
 
 /**
@@ -19,7 +17,7 @@ export const getUserInfo = () => {
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  peace.cache.set(USER_INFO, userInfo)
+  peace.cache.localStorage.set(USER_INFO, userInfo)
 }
 
 /**
@@ -98,7 +96,7 @@ export const replaceToRoot = () => {
  *
  */
 export const isSignIn = () => {
-  return !!peace.cache.get(USER_INFO)
+  return !!peace.cache.localStorage.get(USER_INFO)
 }
 
 export default {

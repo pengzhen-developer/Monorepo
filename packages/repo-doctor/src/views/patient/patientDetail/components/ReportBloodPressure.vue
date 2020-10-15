@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import reportChatOption from './reportChatOption'
 
 import Vue from 'vue'
@@ -153,7 +152,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.get()
     })
   },
@@ -162,7 +161,7 @@ export default {
     changeActive(activeName) {
       this.view.active = activeName
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -189,10 +188,10 @@ export default {
         dataId: this.$route.params.dataId,
         type: this.$route.params.type
       }
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const options = peace.util.deepClone(reportChatOption)
 
-        options.formatter = function(params) {
+        options.formatter = function (params) {
           return `<span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血压：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.value}/${params[1].data.value}mmHg</span>
                   <br/>
@@ -207,7 +206,7 @@ export default {
                    `
         }
 
-        res.data.downInfo.bloodPressureData.forEach(item => {
+        res.data.downInfo.bloodPressureData.forEach((item) => {
           options.xAxis.data.push(item.measureTime)
           options.series[0].data.push({ name: '舒张压', value: item.diastolicPressure, ...item })
           options.series[1].data.push({ name: '收缩压', value: item.systolicPressure, ...item })
@@ -241,7 +240,7 @@ export default {
 
     openReport(row) {
       const params = { reportId: row.id, idCard: this.$route.params.idCard }
-      peace.service.health.getWeekDetail(params).then(res => {
+      peace.service.health.getWeekDetail(params).then((res) => {
         var win = window.open()
         win.document.write(res.data.message)
         win.document.close()

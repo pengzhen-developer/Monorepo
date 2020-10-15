@@ -13,6 +13,7 @@
     <peace-table pagination
                  ref="table">
       <peace-table-column type="index"
+                          width="60px"
                           label="序号"></peace-table-column>
       <peace-table-column width="60px"
                           align="center">
@@ -70,7 +71,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './../service'
 
 import CommonlyDrugAdd from './CommonlyDrugAdd'

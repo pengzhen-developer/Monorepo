@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageCaseCard from './MessageCaseCard'
 import InquirySessionCaseDetail from '@src/views/components/inquiry/InquirySessionCaseDetail'
 export default {

@@ -100,8 +100,7 @@
                      class="sort-Text"
                      v-on:click="ascDisease">
             <div class="flex justify-center items-center">
-              <span
-                    class="text-weight-regular q-mr-xs">{{ action.isAsc ? '最新病程优先' : '最早病程优先' }}</span>
+              <span class="text-weight-regular q-mr-xs">{{ action.isAsc ? '最新病程优先' : '最早病程优先' }}</span>
               <el-image class="asc-image"
                         v-bind:class="[action.isAsc ? 'ascTran' : 'descTran']"
                         v-bind:src="ascImage" />
@@ -237,7 +236,7 @@
 
 <script>
 import RecordList from '../RecordList'
-import peace from '@src/library'
+
 import DiseaseRecordListCell from './DiseaseRecordListCell'
 
 export default {

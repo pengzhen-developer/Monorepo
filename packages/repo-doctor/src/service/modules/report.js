@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 获取检验
  *

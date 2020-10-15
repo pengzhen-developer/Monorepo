@@ -176,8 +176,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import ConsultationSessionMessageList from '@src/views/clinic/consultation/ConsultationSessionMessageList'
 

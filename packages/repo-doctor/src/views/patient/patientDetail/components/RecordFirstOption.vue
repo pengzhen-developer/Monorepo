@@ -24,7 +24,7 @@
 </template>
 
 <script>
-// import peace from '@src/library'
+//
 import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
 
 export default {

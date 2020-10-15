@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import util from '@src/util'
 import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import SignNotice from '../SignNotice'

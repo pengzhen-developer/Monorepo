@@ -113,7 +113,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import util from '@src/util'
 
 import InquirySessionReceive from './InquirySessionReceive'

@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 export function getList(params) {
   const getList = 'client/v1/session/getList'
 

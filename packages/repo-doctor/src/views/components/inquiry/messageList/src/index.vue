@@ -31,7 +31,7 @@
 
 </template>
 <script>
-// import peace from '@src/library'
+//
 import Constant from './constant'
 
 import InquiryPreliminaryForReceive from '@src/views/components/inquiry/InquiryPreliminaryForReceive'
@@ -139,7 +139,7 @@ export default {
 
   methods: {
     scrollMessageToBottom() {
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {

@@ -91,8 +91,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import ConsultationSessionCase from './ConsultationSessionCase'
 import ConsultationSessionRecipe from './ConsultationSessionRecipe'
 import ConsultationSessionReceive from './ConsultationSessionReceive'

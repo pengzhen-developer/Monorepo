@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import RecordPACSDetail from './RecordPACSDetail'
 
 export default {

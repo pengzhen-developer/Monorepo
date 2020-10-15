@@ -137,8 +137,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import ConsultationSessionSuggest from './ConsultationSessionSuggest'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 
@@ -262,7 +260,7 @@ export default {
       this.invitedDialog.chooseList = []
       this.invitedDialog.chooseListForCheckBox = []
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.getInvitedDoctor()
       })
     },
@@ -323,14 +321,14 @@ export default {
           const consultNo = this.$store.getters['consultation/consultInfo'].consultNo
 
           // 强制解散 （仅为了通知相关人）
-          const dissolveHandler = function() {
+          const dissolveHandler = function () {
             const params = { consultNo: consultNo, action: 'dissolve' }
 
             return peace.service.video.processConsult(params)
           }
 
           // 结束视频会诊
-          const overHandler = function() {
+          const overHandler = function () {
             const params = { consultNo: consultNo, action: 'over' }
 
             return peace.service.video.processConsult(params)

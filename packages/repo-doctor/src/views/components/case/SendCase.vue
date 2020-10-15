@@ -347,8 +347,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -462,12 +460,12 @@ export default {
     handleChangeType(val) {
       if (!val) return
       const templateKey = 'templateChangeTips'
-      const currentTemplate = peace.cache.get(templateKey)
+      const currentTemplate = peace.cache.localStorage.get(templateKey)
       if (currentTemplate !== val) {
         this.$alert('肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)', '提示', {
           confirmButtonText: '知道了'
         })
-        peace.cache.set(templateKey, val)
+        peace.cache.localStorage.set(templateKey, val)
       }
     },
 
@@ -615,7 +613,7 @@ export default {
     changeDialog(title) {
       this.showDialog(title)
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         if (title === '过敏史') {
           this.dialog.chooseData = [...this.medical.model.allergy_history]
         } else if (title === '既往史') {

@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 // initial state
 const state = {
   tabList: [],
@@ -10,7 +8,7 @@ const state = {
 // mutations
 const mutations = {
   restoreTab(state) {
-    state.tabList = peace.cache.get(peace.type.USER.TAB_LIST, peace.type.SYSTEM.CACHE.SESSION_STORAGE) || []
+    state.tabList = peace.cache.sessionStorage.get(peace.type.USER.TAB_LIST) || []
   },
 
   /**

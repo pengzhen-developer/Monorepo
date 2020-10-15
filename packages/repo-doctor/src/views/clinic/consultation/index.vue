@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import ConsultationSessions from './ConsultationSessions'
 import ConsultationSession from './ConsultationSession'
 import ConsultationPatient from './ConsultationPatient'
@@ -44,13 +42,13 @@ export default {
     '$store.state.consultation.sessions': {
       handler(sessions) {
         // 清理已存在的 sessions interval
-        this.intervalList.forEach(intervalObject => window.clearInterval(intervalObject.intervalValue))
+        this.intervalList.forEach((intervalObject) => window.clearInterval(intervalObject.intervalValue))
         this.intervalList = []
 
         // 清理 loading
         this.loading && this.loading.close()
 
-        sessions.forEach(session => {
+        sessions.forEach((session) => {
           const intervalObject = {
             id: session.id,
             value: undefined,
@@ -138,20 +136,18 @@ export default {
 
     getConsultStatus() {
       return Object.keys(peace.type.CONSULTATION.CONSULTATION_STATUS).find(
-        key =>
-          peace.type.CONSULTATION.CONSULTATION_STATUS[key] ===
-          this.$store.getters['consultation/consultInfo'].consultStatus
+        (key) => peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
       )
     },
 
     // 定时器 - 获取会诊时间
     getIntervalValue(session) {
-      return session && this.intervalList.find(intervalObject => intervalObject.id === session.id).value
+      return session && this.intervalList.find((intervalObject) => intervalObject.id === session.id).value
     },
 
     // 定时器 - 获取会诊状态
     getIntervalStatus(session) {
-      return session && this.intervalList.find(intervalObject => intervalObject.id === session.id).status
+      return session && this.intervalList.find((intervalObject) => intervalObject.id === session.id).status
     }
   }
 }

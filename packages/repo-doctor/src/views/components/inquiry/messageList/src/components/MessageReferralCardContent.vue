@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageReferralCard from './MessageReferralCard'
 import InquiryTransferDetail from '@src/views/components/inquiry/InquiryTransferDetail'
 export default {

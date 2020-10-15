@@ -8,7 +8,8 @@
     <div class="body">
       <el-scrollbar class="body-scrollbar">
         <el-tabs class="content">
-          <el-tab-pane class="health" label="健康档案">
+          <el-tab-pane class="health"
+                       label="健康档案">
             <div class="health-item">
               <div class="health-item-title">
                 <img src="~@src/assets/images/inquiry/archives_icon_marry.png" />
@@ -85,7 +86,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import NoData from '@src/views/components/NoData'
 
 export default {
@@ -116,7 +116,7 @@ export default {
         ) {
           const params = { familyId: newValue.content.patientInfo.familyId }
 
-          peace.service.health.getOneHealth(params).then(res => {
+          peace.service.health.getOneHealth(params).then((res) => {
             this.healthRecord = res.data.personalInfo
           })
         }

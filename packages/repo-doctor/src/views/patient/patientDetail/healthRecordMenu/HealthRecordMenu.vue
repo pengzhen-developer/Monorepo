@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 export default {
   mounted() {
     this.$nextTick().then(() => {

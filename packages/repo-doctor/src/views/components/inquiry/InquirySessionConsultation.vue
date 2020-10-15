@@ -149,8 +149,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -179,13 +177,7 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return (
-                time.getTime() <
-                new Date()
-                  .formatDate('yyyy-MM-dd 00:00:00')
-                  .toDate()
-                  .getTime()
-              )
+              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
             }
           },
 
@@ -211,7 +203,7 @@ export default {
     const paramsForCase = {
       inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
     }
-    peace.service.inquiry.getCase(paramsForCase).then(res => {
+    peace.service.inquiry.getCase(paramsForCase).then((res) => {
       this.view.model.diagnose = res.data.diagnose
     })
   },
@@ -233,7 +225,7 @@ export default {
     choseConsultaltion() {
       this.dialog.visible = true
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -247,7 +239,7 @@ export default {
     },
 
     sendConsultaltion() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证会诊时间
           if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {

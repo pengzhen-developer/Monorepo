@@ -113,7 +113,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './../../service'
 
 import CaseDetail from '@src/views/components/case/CaseDetail'

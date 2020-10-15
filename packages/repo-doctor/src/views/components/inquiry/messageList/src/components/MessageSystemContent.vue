@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageSystem from './MessageSystem'
 
 export default {

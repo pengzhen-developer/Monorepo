@@ -33,8 +33,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -44,7 +42,7 @@ export default {
   },
 
   created() {
-    const version = Peace.cache.get('version', 'sessionStorage')
+    const version = Peace.cache.sessionStorage.get('version')
 
     this.androidQRCode = version.data.androidQRCode
     this.iOSQRCode = version.data.iOSQRCode

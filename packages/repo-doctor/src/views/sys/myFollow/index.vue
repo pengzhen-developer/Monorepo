@@ -1,28 +1,49 @@
 <template>
   <div>
     <div>
-      <el-button @click="openDialog()" style="width: 120px;" type="primary">新增</el-button>
+      <el-button @click="openDialog()"
+                 style="width: 120px;"
+                 type="primary">新增</el-button>
     </div>
 
     <hr />
 
-    <peace-table pagination ref="table">
-      <el-table-column align="left" label="患教标题" prop="title"></el-table-column>
-      <el-table-column align="left" label="疾病" prop="diseaseTag" width="200"></el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+    <peace-table pagination
+                 ref="table">
+      <el-table-column align="left"
+                       label="患教标题"
+                       prop="title"></el-table-column>
+      <el-table-column align="left"
+                       label="疾病"
+                       prop="diseaseTag"
+                       width="200"></el-table-column>
+      <el-table-column align="center"
+                       label="操作"
+                       width="200">
         <template slot-scope="scope">
-          <el-button @click="showDetail(scope.row)" type="text">查看详情</el-button>
-          <el-button @click="openDialog(scope.row)" type="text">修改</el-button>
-          <el-button @click="remove(scope.row)" type="text">删除</el-button>
+          <el-button @click="showDetail(scope.row)"
+                     type="text">查看详情</el-button>
+          <el-button @click="openDialog(scope.row)"
+                     type="text">修改</el-button>
+          <el-button @click="remove(scope.row)"
+                     type="text">删除</el-button>
         </template>
       </el-table-column>
     </peace-table>
 
-    <peace-dialog :title="dialog.title" :visible.sync="dialog.visible" v-if="dialog.visible">
-      <PatientEducationModel :data="dialog.data" @close="closeDialog" @edit="edit" @submit="submit" />
+    <peace-dialog :title="dialog.title"
+                  :visible.sync="dialog.visible"
+                  v-if="dialog.visible">
+      <PatientEducationModel :data="dialog.data"
+                             @close="closeDialog"
+                             @edit="edit"
+                             @submit="submit" />
     </peace-dialog>
 
-    <peace-dialog :visible.sync="previewDialog.visible" title="患教详情" v-if="previewDialog.visible" width="375px">
+    <peace-dialog :visible.sync="previewDialog.visible"
+                  title="患教详情"
+                  v-if="previewDialog.visible"
+                  width="375px">
       <PatientEducationPreview :data="previewDialog.data" />
       <!-- <iframe :src="previewDialog.data.detailUrl" class="iframe" frameborder="0"></iframe> -->
     </peace-dialog>
@@ -30,7 +51,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import PatientEducationModel from './PatientEducationModel'
 import PatientEducationPreview from './PatientEducationPreview'
 
@@ -114,7 +134,7 @@ export default {
           id: row.id
         }
 
-        peace.service.patient.delInstruction(params).then(res => {
+        peace.service.patient.delInstruction(params).then((res) => {
           peace.util.alert(res.msg)
 
           this.get()

@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 获取待办事项
  *
@@ -225,7 +223,7 @@ export function uploadImage(image) {
 
 /**
  * 民族
- * 
+ *
  */
 export function getNationList() {
   const nationList = '/client/v1/Patient/getNationList'

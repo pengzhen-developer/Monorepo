@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 处理会诊视频
  *

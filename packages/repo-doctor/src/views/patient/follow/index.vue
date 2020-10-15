@@ -80,8 +80,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import DiseaseCourse from './../patientDetail/components/DiseaseCourse'
 
 export default {
@@ -120,7 +118,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.get()
     })
   },

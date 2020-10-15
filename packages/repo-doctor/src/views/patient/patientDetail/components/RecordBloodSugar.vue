@@ -49,8 +49,7 @@
           <div class="row">
             <span class="content-label">测量状态</span>
             <span class="content-divider">:</span>
-            <span
-                  class="content-value">{{ data.measureState === '1' ? '空腹' : data.measureState === '2' ? '餐后' : '- -' }}</span>
+            <span class="content-value">{{ data.measureState === '1' ? '空腹' : data.measureState === '2' ? '餐后' : '- -' }}</span>
           </div>
           <div class="row space-between">
             <span class="content-time">{{ data.createdTime }}</span>
@@ -65,8 +64,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   props: {
     data: {

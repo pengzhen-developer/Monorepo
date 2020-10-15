@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import RecordList from '../RecordList'
 import ReferralRecordCell from './ReferralRecordListCell'
 

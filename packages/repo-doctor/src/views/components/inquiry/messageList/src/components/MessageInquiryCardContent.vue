@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// import peace from '@src/library'
+//
 import MessageInquiryCard from './MessageInquiryCard'
 import InquiryPreliminary from '@src/views/components/inquiry/InquiryPreliminary'
 

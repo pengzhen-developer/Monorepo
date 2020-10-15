@@ -149,8 +149,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -179,13 +177,7 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return (
-                time.getTime() <
-                new Date()
-                  .formatDate('yyyy-MM-dd 00:00:00')
-                  .toDate()
-                  .getTime()
-              )
+              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
             }
           },
 
@@ -233,7 +225,7 @@ export default {
     choseConsultaltion() {
       this.dialog.visible = true
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },

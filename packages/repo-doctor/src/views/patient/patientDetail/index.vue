@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import HealthRecordDrawer from './healthRecordDrawer/HealthRecordDrawer'
 import HealthRecordMenu from './healthRecordMenu/HealthRecordMenu'
 

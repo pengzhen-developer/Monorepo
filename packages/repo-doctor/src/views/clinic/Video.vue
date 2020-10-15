@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
@@ -292,7 +291,7 @@ export default {
         accepted: true,
         beCalledInfo: this.beCalledInfo,
         sessionConfig: this.sessionConfig
-      }).catch(function(callObject) {
+      }).catch(function (callObject) {
         console.warn('【 WebRTC 】【 response - accepted 】', new Date(), callObject)
       })
     },

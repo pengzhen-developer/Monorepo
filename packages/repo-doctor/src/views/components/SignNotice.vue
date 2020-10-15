@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
-
 export default {
   name: 'SignNotice',
   props: {
@@ -64,7 +62,7 @@ export default {
   },
 
   created() {
-    const version = Peace.cache.get('version', 'sessionStorage')
+    const version = Peace.cache.sessionStorage.get('version')
 
     this.androidQRCode = version.data.androidQRCode
     this.iOSQRCode = version.data.iOSQRCode

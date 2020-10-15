@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageFirstOptionCard from './MessageFirstOptionCard'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 export default {

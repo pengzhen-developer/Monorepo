@@ -211,7 +211,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import Type from '@src/type'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
 import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'

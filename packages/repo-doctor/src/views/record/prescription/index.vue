@@ -66,8 +66,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 
 export default {

@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageRecipeCard from './MessageRecipeCard'
 import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 

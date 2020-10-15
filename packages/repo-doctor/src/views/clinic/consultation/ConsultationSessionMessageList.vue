@@ -198,7 +198,6 @@
   </div>
 </template>
 <script>
-import peace from '@src/library'
 import ConsultationSessionReceiveDetail from './ConsultationSessionReceiveDetail'
 
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
@@ -344,7 +343,7 @@ export default {
     },
 
     scrollMessageToBottom() {
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {

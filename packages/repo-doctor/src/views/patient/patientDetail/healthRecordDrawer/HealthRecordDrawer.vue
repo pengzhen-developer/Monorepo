@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import InquiryRecord from './Inquiry/InquiryRecord'
 import DiseaseRecord from './CourseOfDisease/DiseaseRecord'
 import AddDiseaseRecord from './CourseOfDisease/AddDiseaseRecord'

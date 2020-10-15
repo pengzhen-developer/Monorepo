@@ -212,8 +212,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   props: {
     // 最多可选择药品

@@ -2,14 +2,16 @@
 import { version, name } from './../../package.json'
 import Peace from '@jk998/library'
 
+import util from '@src/util'
+
 // prototype
-import '@src/library/prototype/date'
-import '@src/library/prototype/number'
-import '@src/library/prototype/string'
+import '@src/library.back/prototype/date'
+import '@src/library.back/prototype/number'
+import '@src/library.back/prototype/string'
 
 // directive
-import drag from '@src/library/directive/drag'
-import focus from '@src/library/directive/focus'
+import drag from '@src/library.back/directive/drag'
+import focus from '@src/library.back/directive/focus'
 
 // type
 import config from '@src/config'
@@ -25,6 +27,24 @@ export default async ({ Vue }) => {
     config: {
       appName: name,
       appVersion: version
+    },
+
+    http: {
+      interceptors: {
+        requestInterceptor: {
+          then(request) {
+            const userInfo = util.user.getUserInfo()
+            request.headers.accesstoken = userInfo?.list?.loginInfo?.token
+
+            const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
+            if (!isUrl.test(request.url)) {
+              request.url = $peace.config.api.base + request.url
+            }
+
+            return request
+          }
+        }
+      }
     }
   })
 

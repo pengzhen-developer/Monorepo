@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import peace from '@src/library'
 import util from '@src/util'
 
 export default function() {

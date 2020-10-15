@@ -41,8 +41,6 @@ import TheTab from './TheTab'
 
 import TheVideo from './TheVideo'
 
-import peace from '@src/library'
-
 export default {
   name: 'layout',
 
@@ -85,7 +83,7 @@ export default {
 
     '$store.state.layout.tabList': {
       handler() {
-        peace.cache.set(peace.type.USER.TAB_LIST, this.$store.state.layout.tabList, peace.type.SYSTEM.CACHE.SESSION_STORAGE)
+        peace.cache.sessionStorage.set(peace.type.USER.TAB_LIST, this.$store.state.layout.tabList)
       },
 
       immediate: true
@@ -121,6 +119,7 @@ $--layout-body-right-tab-height: 40px;
   }
 
   .layout-body {
+    min-width: 1200px;
     height: calc(100vh - #{$--layout-header-height});
     margin: 0 auto;
     box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
@@ -133,8 +132,10 @@ $--layout-body-right-tab-height: 40px;
     }
 
     .layout-body-right {
+      min-width: calc(1200px - 63px);
       flex: 1;
       background: #f9f9f9;
+      overflow: auto;
 
       .layout-body-right-tab {
         display: flex;

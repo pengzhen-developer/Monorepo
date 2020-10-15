@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Serivce from './../../service'
 
 export default {

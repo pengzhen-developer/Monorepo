@@ -121,7 +121,6 @@
 
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 import Type from '@src/type'
 import RecipeAudit from './RecipeAudit'
@@ -194,11 +193,11 @@ export default {
         drugList: drugList
       }
 
-      Peace.cache.set(this.inquiryNo, params, 'sessionStorage')
+      Peace.cache.sessionStorage.set(this.inquiryNo, params)
     },
 
     resetModel() {
-      const recipeCache = Peace.cache.get(this.inquiryNo, 'sessionStorage')
+      const recipeCache = Peace.cache.sessionStorage.get(this.inquiryNo)
 
       if (recipeCache) {
         this.weight = recipeCache.weight

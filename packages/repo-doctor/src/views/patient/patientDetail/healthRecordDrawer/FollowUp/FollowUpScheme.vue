@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import RecordList from '../RecordList'
 import FollowUpSchemeCell from './FollowUpSchemeCell'
 import AddNewScheme from './AddNewScheme'

@@ -59,8 +59,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -97,7 +95,7 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
       }
 
-      peace.service.inquiry.receiveInquiry(params).then(res => {
+      peace.service.inquiry.receiveInquiry(params).then((res) => {
         peace.util.alert(res.msg)
       })
     },
@@ -120,7 +118,7 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
         overCause: this.over.description == '其他' ? this.over.otherDescription : this.over.description
       }
-      peace.service.inquiry.quitInquiry(params).then(res => {
+      peace.service.inquiry.quitInquiry(params).then((res) => {
         peace.util.alert(res.msg)
       })
     }

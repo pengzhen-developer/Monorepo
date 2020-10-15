@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import AddPatient from './components/AddPatient'
 export default {
   components: {

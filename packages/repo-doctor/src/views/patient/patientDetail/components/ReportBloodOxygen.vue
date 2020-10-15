@@ -93,7 +93,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import reportChatOption from './reportChatOption'
 
 import Vue from 'vue'
@@ -127,7 +126,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.get()
     })
   },
@@ -136,7 +135,7 @@ export default {
     changeActive(activeName) {
       this.view.active = activeName
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -163,10 +162,10 @@ export default {
         dataId: this.$route.params.dataId,
         type: this.$route.params.type
       }
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const options = peace.util.deepClone(reportChatOption)
 
-        options.tooltip.formatter = function(params) {
+        options.tooltip.formatter = function (params) {
           return `<span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血氧浓度：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.bloodOxygen}%</span>
                   <br/>
@@ -181,7 +180,7 @@ export default {
                    `
         }
 
-        res.data.downInfo.bloodOxygenData.forEach(item => {
+        res.data.downInfo.bloodOxygenData.forEach((item) => {
           options.xAxis.data.push(item.measureTime)
           options.series[0].data.push({ name: '血氧', value: item.bloodOxygen, ...item })
         })
@@ -214,7 +213,7 @@ export default {
 
     openReport(row) {
       const params = { reportId: row.id, idCard: this.$route.params.idCard }
-      peace.service.health.getWeekDetail(params).then(res => {
+      peace.service.health.getWeekDetail(params).then((res) => {
         var win = window.open()
         win.document.write(res.message)
         win.document.close()

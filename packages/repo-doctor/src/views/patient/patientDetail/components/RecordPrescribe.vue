@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import InquirySessionRecipeDetail from '@src/views/components/inquiry/InquirySessionRecipeDetail'
 
 export default {

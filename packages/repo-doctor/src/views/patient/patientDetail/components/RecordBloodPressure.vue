@@ -65,8 +65,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   props: {
     data: {

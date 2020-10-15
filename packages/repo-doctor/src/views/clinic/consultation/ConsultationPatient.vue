@@ -297,8 +297,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 // import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
 import InquirySessionMessageList from '@src/views/components/inquiry/messageList/index'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'

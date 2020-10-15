@@ -62,7 +62,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
 export default {
   name: 'InquiryRecordListCell',
@@ -70,7 +69,7 @@ export default {
     item: {
       type: Object,
       require: true,
-      default: function() {
+      default: function () {
         return {
           updatedTime: '',
           inquiryWay: '',

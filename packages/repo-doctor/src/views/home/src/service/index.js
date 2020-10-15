@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 获取待办事项统计

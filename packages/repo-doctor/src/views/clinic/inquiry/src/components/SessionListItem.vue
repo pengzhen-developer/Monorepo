@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Type from '@src/type'
 
 export default {

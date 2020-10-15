@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 获取会诊 session 状态
  *

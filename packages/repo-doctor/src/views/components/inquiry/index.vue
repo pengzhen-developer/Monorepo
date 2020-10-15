@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import InquirySessions from './InquirySessions'
 import InquirySession from './InquirySession'
 import InquiryPatient from './InquiryPatient'

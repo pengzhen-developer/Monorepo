@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 私人医生订单列表
  *

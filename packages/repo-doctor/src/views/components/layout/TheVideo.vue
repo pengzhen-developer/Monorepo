@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import WebRTC from '@public/static/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {

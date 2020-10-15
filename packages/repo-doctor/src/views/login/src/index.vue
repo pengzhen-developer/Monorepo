@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import util from '@src/util'
 import service from './service'
 
@@ -106,7 +105,7 @@ export default {
       passwordImage: 'img:' + require('./assets/img/pwd.png'),
 
       model: {
-        tel: peace.cache.get(peace.type.USER.PHONE) ?? '',
+        tel: peace.cache.localStorage.get(peace.type.USER.PHONE) ?? '',
         smsCode: ''
       },
 
@@ -172,7 +171,7 @@ export default {
             util.user.setUserInfo(userInfo)
 
             // 储存登录手机号
-            peace.cache.set(peace.type.USER.PHONE, userInfo.list.docInfo.tel)
+            peace.cache.localStorage.set(peace.type.USER.PHONE, userInfo.list.docInfo.tel)
 
             // 更新 vuex
             this.$store.commit('user/setUserInfo', res.data)

@@ -1,4 +1,3 @@
-import peace from '@src/library'
 import util from '@src/util'
 
 import NIM from '@public/static/IM/NIM_Web_NIM_v7.0.0'

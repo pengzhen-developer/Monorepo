@@ -149,8 +149,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import TheTransferDetail from './TheTransferDetail'
 
 export default {
@@ -197,7 +195,7 @@ export default {
   },
 
   created() {
-    peace.service.inquiry.getRefferStatus().then(res => {
+    peace.service.inquiry.getRefferStatus().then((res) => {
       this.source.transfer_status = res.data
     })
   },
@@ -213,7 +211,7 @@ export default {
       if (this.view.model.referral_type !== this.source.state[action]) {
         this.view.model.referral_type = this.source.state[action]
 
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.get()
         })
       }
@@ -235,7 +233,7 @@ export default {
         referral_type: this.view.model.referral_type
       }
 
-      peace.service.inquiry.referralDocPc(params).then(res => {
+      peace.service.inquiry.referralDocPc(params).then((res) => {
         this.dialog.data = res.data
       })
     },
@@ -247,7 +245,7 @@ export default {
     },
 
     formatter(r, c, v) {
-      const temp = this.source.transfer_status.find(item => item.key === v)
+      const temp = this.source.transfer_status.find((item) => item.key === v)
 
       return temp && temp.refferStatus
     }

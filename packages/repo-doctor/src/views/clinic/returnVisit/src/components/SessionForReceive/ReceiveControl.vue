@@ -46,7 +46,7 @@
 import RefuseInquiry from './RefuseInquiry'
 
 import Type from '@src/type'
-import Peace from '@src/library'
+
 import Service from './../../service'
 
 export default {

@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Util from '@src/util'
 
 import SessionListItem from './SessionListItem'

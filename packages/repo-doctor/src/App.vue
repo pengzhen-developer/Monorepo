@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import util from '@src/util'
 
 export default {

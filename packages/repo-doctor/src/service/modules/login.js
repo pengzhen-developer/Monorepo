@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 发送验证码
  *

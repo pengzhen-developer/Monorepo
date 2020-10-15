@@ -46,8 +46,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import { getReferralStatus, getReferralStatusTextBorderColor, getReferralStatusBgColor } from '@src/views/filters/index'
 
 import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'

@@ -198,8 +198,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 export default {
   props: {
     data: {
@@ -248,7 +246,7 @@ export default {
         referral_suggest: this.view.model.referral_suggest
       }
 
-      peace.service.inquiry.receiveReferralPc(params).then(res => {
+      peace.service.inquiry.receiveReferralPc(params).then((res) => {
         $peace.util.alert(res.msg)
 
         this.$emit('close')

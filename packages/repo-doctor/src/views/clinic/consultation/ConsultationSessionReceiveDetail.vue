@@ -171,8 +171,6 @@
   </div>
 </template>
 <script>
-import peace from '@src/library'
-
 export default {
   data() {
     return {
@@ -197,7 +195,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then(res => {
+      peace.service.consult.getConsultInfo(params).then((res) => {
         this.injectConsultInfo = res.data.info
       })
     }

@@ -92,8 +92,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
-
 import MessageList from '@src/views/components/inquiry/messageList/index'
 
 export default {
@@ -151,7 +149,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.get()
     })
   },

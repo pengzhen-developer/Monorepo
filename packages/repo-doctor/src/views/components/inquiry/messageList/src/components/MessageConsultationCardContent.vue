@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageConsultationCard from './MessageConsultationCard'
 import InquiryConsultationDetail from '@src/views/components/inquiry/InquiryConsultationDetail'
 

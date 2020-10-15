@@ -93,7 +93,6 @@
 <script>
 const UniqueKey = 'ADD_COMMONLY_PRESCRIPTION_DRUG'
 
-import Peace from '@src/library'
 import Service from './../service'
 
 import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd'
@@ -205,7 +204,7 @@ export default {
     },
 
     getCacheHistory() {
-      return Peace.cache.get(UniqueKey) ?? []
+      return Peace.cache.localStorage.get(UniqueKey) ?? []
     },
 
     addCacheHistory(queryString) {
@@ -213,7 +212,7 @@ export default {
 
       this.historyList = [...new Set(this.historyList)]
 
-      Peace.cache.set(UniqueKey, this.historyList)
+      Peace.cache.localStorage.set(UniqueKey, this.historyList)
     },
 
     removeCacheHistory() {

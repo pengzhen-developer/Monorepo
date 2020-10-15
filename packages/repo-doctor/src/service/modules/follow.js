@@ -1,5 +1,3 @@
-import peace from '@src/library'
-
 /**
  * 获取病程管理列表信息接口
  *

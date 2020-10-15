@@ -137,7 +137,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import reportChatOption from './reportChatOption'
 
 import Vue from 'vue'
@@ -177,7 +176,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.get()
     })
   },
@@ -186,7 +185,7 @@ export default {
     changeActive(activeName) {
       this.view.active = activeName
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -194,7 +193,7 @@ export default {
     changeActiveForFilter(activeForFilterName) {
       this.view.activeForFilter = activeForFilterName
 
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.get()
       })
     },
@@ -221,10 +220,10 @@ export default {
         dataId: this.$route.params.dataId,
         type: this.$route.params.type
       }
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const options = peace.util.deepClone(reportChatOption)
 
-        options.tooltip.formatter = function(params) {
+        options.tooltip.formatter = function (params) {
           return `<span style="width: 5rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血糖值：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.bloodSugar}mmol/L</span>
                   <br/>
@@ -240,14 +239,14 @@ export default {
         }
 
         if (this.view.activeForFilter === this.source.activeForFilter.空腹) {
-          res.data.downInfo.bloodSugarDataBefore.forEach(item => {
+          res.data.downInfo.bloodSugarDataBefore.forEach((item) => {
             options.xAxis.data.push(item.measureTime)
             options.series[0].data.push({ name: '血糖', value: item.bloodSugar, ...item })
           })
         }
 
         if (this.view.activeForFilter === this.source.activeForFilter.餐后) {
-          res.data.downInfo.bloodSugarDataAfter.forEach(item => {
+          res.data.downInfo.bloodSugarDataAfter.forEach((item) => {
             options.xAxis.data.push(item.measureTime)
             options.series[0].data.push({ name: '血糖', value: item.bloodSugar, ...item })
           })
@@ -281,7 +280,7 @@ export default {
 
     openReport(row) {
       const params = { reportId: row.id, idCard: this.$route.params.idCard }
-      peace.service.health.getWeekDetail(params).then(res => {
+      peace.service.health.getWeekDetail(params).then((res) => {
         var win = window.open()
         win.document.write(res.data.message)
         win.document.close()

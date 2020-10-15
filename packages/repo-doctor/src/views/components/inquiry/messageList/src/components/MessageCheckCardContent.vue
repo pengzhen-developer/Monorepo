@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import peace from '@src/library'
 import MessageCheckCard from './MessageCheckCard'
 import InquiryCheckOrderInfo from '@src/views/components/inquiry/InquiryCheckOrderInfo'
 

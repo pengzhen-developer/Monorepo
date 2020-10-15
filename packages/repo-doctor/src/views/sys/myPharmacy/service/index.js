@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 获取药品列表(根据关键字，查询药品基础库所有药品)
