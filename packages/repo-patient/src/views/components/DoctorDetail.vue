@@ -110,6 +110,46 @@
           </div>
         </div>
 
+        <!-- 复诊续方 -->
+        <div class="body-card"
+             v-if="returnVisitList.length>0">
+          <div class="row flex column">
+            <div class="row flex">
+              <van-image width="30px"
+                         height="30px"
+                         :src="require('@src/assets/images/ic_consultation.png')" />
+              <h4 class="body-card-title">复诊续方</h4>
+              <div class=" flex flex-1 end"
+                   @click="gotoAppointPage(returnVisitList[0].timeSharing)">
+                <span class="see-more">查看更多</span>
+                <van-image width="13px"
+                           height="13px"
+                           :src="require('@src/assets/images/ic_more_right.png')" />
+              </div>
+            </div>
+            <div class="row body-card-tip">
+              可以在线开具处方、开药、开检查化验
+            </div>
+          </div>
+          <div class="row flex fz-card-list">
+            <div class="fz-card flex column row"
+                 @click="gotoAppointPage(item.timeSharing)"
+                 v-for="(item,index) in returnVisitList"
+                 :key='index'>
+              <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
+              <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
+              <div class="flex between"
+                   style="width:100%;">
+                <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
+                <!-- @click.stop="showDialog(item,'returnVisit')" -->
+                <van-button round
+                            size="small"
+                            type="primary">预约</van-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 问诊服务 -->
         <div class="body-card">
           <div class="row flex column">
@@ -193,44 +233,7 @@
             </div>
           </div>
         </div>
-        <!-- 复诊续方 -->
-        <div class="body-card"
-             v-if="returnVisitList.length>0">
-          <div class="row flex column">
-            <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
-                         :src="require('@src/assets/images/ic_consultation.png')" />
-              <h4 class="body-card-title">复诊续方</h4>
-              <div class=" flex flex-1 end"
-                   @click="gotoAppointPage">
-                <span class="see-more">查看更多</span>
-                <van-image width="13px"
-                           height="13px"
-                           :src="require('@src/assets/images/ic_more_right.png')" />
-              </div>
-            </div>
-            <div class="row body-card-tip">
-              可以在线开具处方、开药、开检查化验
-            </div>
-          </div>
-          <div class="row flex fz-card-list">
-            <div class="fz-card flex column row"
-                 v-for="(item,index) in returnVisitList"
-                 :key='index'>
-              <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
-              <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}} <span>号源{{index+1}}</span></div>
-              <div class="flex between"
-                   style="width:100%;">
-                <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
-                <van-button round
-                            @click.stop="showDialog(item,'returnVisit')"
-                            size="small"
-                            type="primary">预约</van-button>
-              </div>
-            </div>
-          </div>
-        </div>
+
         <!-- 挂号服务 -->
         <div class="body-card"
              v-if="doctor.registerData&&doctor.registerData.length > 0">
@@ -243,43 +246,45 @@
             </div>
             <div>
               <van-icon name="arrow"
-                        @click="goRegisterList" />
+                        @click="goRegisterList(doctor.registerData[0].timeSharing)" />
             </div>
           </div>
+          <template v-for="(registerItem, index) in doctor.registerData">
 
-          <div class="service row flex"
-               v-for="(registerItem, index) in doctor.registerData"
-               :key="index">
-            <div class="service-consult-content">
-              <div class="row flex"
-                   style="margin: 0 0 4px 0;">
-                <span class="service-consult-content-name">
-                  {{ registerItem.timeSharing }}
-                  {{ registerItem.AMPM == "AM" ? "上午" : "下午" }}
-                </span>
-                <van-tag style="margin: 0 12px; font-size: 12px;"
+            <div class="service row flex"
+                 @click="goRegisterList(registerItem.timeSharing)"
+                 v-if="index<2"
+                 :key="index">
+              <div class="service-consult-content">
+                <div class="row flex"
+                     style="margin: 0 0 4px 0;">
+                  <span class="service-consult-content-name">
+                    {{ registerItem.timeSharing }}
+                    {{ registerItem.AMPM == "AM" ? "上午" : "下午" }}
+                  </span>
+                  <!-- <van-tag style="margin: 0 12px; font-size: 12px;"
                          color="#f1f1f1"
                          text-color="#999999">
                   {{ index === 0 ? "号源一" : index === 1 ? "号源二" : "" }}
-                </van-tag>
-              </div>
-              <div>
-                <span>
-                  <span class="service-consult-content-description"
-                        style="font-size: 13px; margin: 0 10px 0 0;">{{
+                </van-tag> -->
+                </div>
+                <div>
+                  <span>
+                    <span class="service-consult-content-description"
+                          style="font-size: 13px; margin: 0 10px 0 0;">{{
                     registerItem.sourceLevelType == 1 ? "普通门诊" : "专家号"
                   }}</span>
-                  <span class="service-consult-content-fee"
-                        style="font-size: 13px;">￥{{ registerItem.unitPrice }}</span>
-                </span>
+                    <span class="service-consult-content-fee"
+                          style="font-size: 13px;">￥{{Number(registerItem.unitPrice).toFixed(2)}}</span>
+                  </span>
+                </div>
               </div>
+              <!-- @click="goRegisterDetail(registerItem)" -->
+              <van-button round
+                          size="small"
+                          type="primary">预约</van-button>
             </div>
-
-            <van-button round
-                        size="small"
-                        type="primary"
-                        @click="goRegisterDetail(registerItem)">预约</van-button>
-          </div>
+          </template>
         </div>
 
         <!-- 健康服务 -->
@@ -511,7 +516,7 @@
 
     </template>
     <!-- 咨询提示 ,复诊提示-->
-    <div class="shadow"
+    <!-- <div class="shadow"
          v-if="dialog.visible"
          @click="closeDialog"></div>
     <div class="dialog"
@@ -535,20 +540,24 @@
                   size="large"
                   type="primary"
                   @click.stop="gotoInquiryApplyPage">{{dialog.data.btn}}</van-button>
-    </div>
+    </div> -->
+    <UserServiceNotice v-model="dialog.visible"
+                       v-bind:info="dialog.data"
+                       @onSucces="gotoInquiryApplyPage"></UserServiceNotice>
   </div>
 
 </template>
 
 <script>
 import AddPatientMsg from '@src/views/components/AddPatientMsg'
+import UserServiceNotice from '@src/views/components/UserServiceNotice'
 import peace from '@src/library'
 import Vue from 'vue'
 import { Dialog, Rate } from 'vant'
 
 Vue.use(Rate)
 export default {
-  components: { AddPatientMsg },
+  components: { AddPatientMsg, UserServiceNotice },
   data() {
     return {
       fold: true,
@@ -576,26 +585,26 @@ export default {
       common: {},
       showFamily: false, //判断是否弹出弹框
       isEwm: 0,
-      consult: {
-        title: '温馨提示',
-        list: [],
-        content: '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
-        message: '咨询时间：<br>8:00 - 17:00请在对应时间段内咨询',
-        btn: '确认'
-      },
-      subsequent: {
-        title: '用户服务须知',
-        list: [
-          '急重症问题请您线下进行就医，以免耽误病情。',
-          '全额预缴诊疗费用，医生接诊时进行结算，就诊日医生未接诊将全额退款。',
-          '医生对复诊患者可开具检査检验，给出进一步诊疗建议，符合条件的患者可开具处方。',
-          '急重症问题请您线下进行就医，以免耽误病情医生给出结论后手动结束复诊。',
-          '药品配送到家，因药品为特殊商品，经发出不得退换。'
-        ],
-        content: '',
-        message: '',
-        btn: '同意'
-      },
+      // consult: {
+      //   title: '温馨提示',
+      //   list: [],
+      //   content: '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
+      //   message: '咨询时间：<br>8:00 - 17:00请在对应时间段内咨询',
+      //   btn: '确认'
+      // },
+      // subsequent: {
+      //   title: '用户服务须知',
+      //   list: [
+      //     '急重症问题请您线下进行就医，以免耽误病情。',
+      //     '全额预缴诊疗费用，医生接诊时进行结算，就诊日医生未接诊将全额退款。',
+      //     '医生对复诊患者可开具检査检验，给出进一步诊疗建议，符合条件的患者可开具处方。',
+      //     '急重症问题请您线下进行就医，以免耽误病情医生给出结论后手动结束复诊。',
+      //     '药品配送到家，因药品为特殊商品，经发出不得退换。'
+      //   ],
+      //   content: '',
+      //   message: '',
+      //   btn: '同意'
+      // },
       dialog: {
         visible: false,
         data: undefined
@@ -643,11 +652,11 @@ export default {
       }
     },
     //复诊续方查看更多
-    gotoAppointPage() {
+    gotoAppointPage(time) {
       let json = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
-        time: this.doctor.doctorInfo.service.returnVisit[0].timeSharing.substring(5),
+        time: time.substring(5),
         date: new Date(),
         from: true
       })
@@ -670,10 +679,10 @@ export default {
         if (!serviceInfo.status) {
           return peace.util.alert('暂未开通')
         }
-        this.dialog.data = Object.assign({}, this.consult, serviceInfo, { type: type })
+        this.dialog.data = Object.assign({}, serviceInfo, { type: type })
         this.dialog.visible = true
       } else if (type === 'returnVisit') {
-        this.dialog.data = Object.assign({}, this.subsequent, serviceInfo, { type: type })
+        this.dialog.data = Object.assign({}, serviceInfo, { type: type })
         const params = {
           doctorId: this.doctor.doctorInfo.doctorId,
           timeSharing: this.dialog.data.timeSharing,
@@ -833,10 +842,11 @@ export default {
       }
     },
 
-    goRegisterList() {
+    goRegisterList(time) {
       const params = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
-        hospitalCode: this.doctor.doctorInfo.nethospitalid
+        hospitalCode: this.doctor.doctorInfo.nethospitalid,
+        time: time.substring(5)
       })
 
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${params}`)

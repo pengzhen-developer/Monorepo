@@ -90,16 +90,22 @@
         </div>
       </div>
     </div>
+
+    <UserServiceNotice v-model="dialog.visible"
+                       v-bind:info="dialog.data"
+                       @onSucces="gotoInquiryApplyPage"></UserServiceNotice>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
 import { Dialog } from 'vant'
+import UserServiceNotice from '@src/views/components/UserServiceNotice'
 export default {
   props: {},
   components: {
-    [Dialog.Component.name]: Dialog.Component
+    [Dialog.Component.name]: Dialog.Component,
+    UserServiceNotice
   },
   data() {
     return {
@@ -125,7 +131,11 @@ export default {
       // ],
       dateList: [],
       AM: [],
-      PM: []
+      PM: [],
+      dialog: {
+        visible: false,
+        data: undefined
+      }
     }
   },
   created() {
@@ -193,32 +203,6 @@ export default {
         return
       }
 
-      const params = {
-        doctorId: this.doctorInfo.doctorId,
-        timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
-        sourceCode: item.sourceCode,
-        bookingStart: item.startTime,
-        bookingEnd: item.endTime
-      }
-
-      try {
-        await peace.service.inquiry.checkSource(params)
-      } catch (err) {
-        return Dialog.confirm({
-          title: '温馨提示',
-          message: err.data.msg,
-          onfirmButtonText: '确定',
-          showCancelButton: false
-        }).finally(() => {
-          const param = Object.assign(item, {
-            year: this.dateList[this.activeIndex].year,
-            date: this.dateList[this.activeIndex].date
-          })
-
-          this.getSourceData(param)
-        })
-      }
-
       let json = {}
       json.doctorInfo = this.doctorInfo
       json.source = item
@@ -228,6 +212,31 @@ export default {
 
       /**复诊续方*/
       if (this.params.from) {
+        const params = {
+          doctorId: this.doctorInfo.doctorId,
+          timeSharing: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+          sourceCode: item.sourceCode,
+          bookingStart: item.startTime,
+          bookingEnd: item.endTime
+        }
+        //校验号源是否可用
+        try {
+          await peace.service.inquiry.checkSource(params)
+        } catch (err) {
+          return Dialog.confirm({
+            title: '温馨提示',
+            message: err.data.msg,
+            onfirmButtonText: '确定',
+            showCancelButton: false
+          }).finally(() => {
+            const param = Object.assign(item, {
+              year: this.dateList[this.activeIndex].year,
+              date: this.dateList[this.activeIndex].date
+            })
+
+            this.getSourceData(param)
+          })
+        }
         const temp = {
           doctorId: this.doctorInfo.doctorId,
           consultingType: 'returnVisit',
@@ -242,8 +251,10 @@ export default {
           AMPM: obj.type
         }
         if (!this.params.isAgain) {
-          const json = peace.util.encode(temp)
-          this.$router.push(`/components/doctorInquiryApply/${json}`)
+          this.dialog.visible = true
+          this.dialog.data = Object.assign({}, temp, { type: 'returnVisit' })
+          // const json = peace.util.encode(temp)
+          // this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {
           if (!this.params.emit) {
             this.params.model = Object.assign(this.params.model, temp)
@@ -289,7 +300,22 @@ export default {
           })
         })
     },
-
+    gotoInquiryApplyPage() {
+      const json = peace.util.encode({
+        doctorId: this.dialog.data.doctorId,
+        consultingType: 'returnVisit',
+        serviceType: 'returnVisit',
+        appointmentDate: this.dialog.data.appointmentDate,
+        appointmentStartTime: this.dialog.data.appointmentStartTime,
+        appointmentEndTime: this.dialog.data.appointmentEndTime,
+        sourceDisType: 0,
+        sourceCode: this.dialog.data.sourceCode,
+        sourceItemCode: this.dialog.data.sourceItemCode,
+        price: this.dialog.data.price,
+        AMPM: this.dialog.data.AMPM
+      })
+      this.$router.push(`/components/doctorInquiryApply/${json}`)
+    },
     goToPay(data) {
       // console.log(data)
       const json = peace.util.encode({

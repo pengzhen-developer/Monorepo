@@ -949,7 +949,7 @@ export default {
       this.model.sourceCode = params.sourceCode || ''
       this.model.sourceItemCode = params.sourceItemCode || ''
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
-      this.model.price = params.price
+      this.model.price = Number(params.price)
       this.model.AMPM = params.AMPM || ''
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
