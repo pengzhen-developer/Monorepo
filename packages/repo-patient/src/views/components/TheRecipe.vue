@@ -109,15 +109,17 @@
       <div class="namelist-dl npd">
         <div class="dt justify"><span>医师</span> ：</div>
         <div class="dd">
-          <img :src="internalData.doctorSignImage"
-               v-if="internalData.doctorSignImage" />
+          <!-- <img :src="internalData.doctorSignImage"
+               v-if="internalData.doctorSignImage" /> -->
+          {{internalData.doctorName}}
         </div>
       </div>
       <div class="namelist-dl npd">
         <div class="dt">审核药师：</div>
         <div class="dd">
-          <img :src="internalData.prescriptionSign"
-               v-if="internalData.prescriptionSign" />
+          <!-- <img :src="internalData.prescriptionSign"
+               v-if="internalData.prescriptionSign" /> -->
+          {{internalData.prescriptionPharmacistName}}
         </div>
       </div>
       <div class="namelist-dl">
