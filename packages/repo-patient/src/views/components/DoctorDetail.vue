@@ -133,7 +133,6 @@
           </div>
           <div class="row flex fz-card-list">
             <div class="fz-card flex column row"
-                 @click="gotoAppointPage(item.timeSharing)"
                  v-for="(item,index) in returnVisitList"
                  :key='index'>
               <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
@@ -143,6 +142,7 @@
                 <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
                 <!-- @click.stop="showDialog(item,'returnVisit')" -->
                 <van-button round
+                            @click="gotoAppointPage(item.timeSharing)"
                             size="small"
                             type="primary">预约</van-button>
               </div>
@@ -164,7 +164,7 @@
             </div>
           </div>
           <div class="row flex col-two ">
-            <!-- 图文咨询  @click="goApply(serviceImageInfo, 'image')"-->
+            <!-- 图文咨询-->
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'image')">
               <van-image width="27px"
@@ -197,7 +197,7 @@
               </div>
             </div>
 
-            <!-- 视频咨询 @click="goApply(serviceVideoInfo, 'video')"-->
+            <!-- 视频咨询-->
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'video')">
               <!-- 视频咨询尚未开通 -->
@@ -252,7 +252,6 @@
           <template v-for="(registerItem, index) in doctor.registerData">
 
             <div class="service row flex"
-                 @click="goRegisterList(registerItem.timeSharing)"
                  v-if="index<2"
                  :key="index">
               <div class="service-consult-content">
@@ -281,6 +280,7 @@
               </div>
               <!-- @click="goRegisterDetail(registerItem)" -->
               <van-button round
+                          @click="goRegisterList(registerItem.timeSharing)"
                           size="small"
                           type="primary">预约</van-button>
             </div>
@@ -507,6 +507,7 @@
         <div class="none-text">医生暂时将不能为您提供服务</div>
       </div>
     </template>
+
     <!-- loading -->
     <template v-if="isLoading">
       <van-row type="flex"
@@ -515,32 +516,8 @@
       </van-row>
 
     </template>
+
     <!-- 咨询提示 ,复诊提示-->
-    <!-- <div class="shadow"
-         v-if="dialog.visible"
-         @click="closeDialog"></div>
-    <div class="dialog"
-         v-if="dialog.visible">
-      <img :src="require('@src/assets/images/ic_cha.png')"
-           @click="closeDialog">
-      <div class="dialog-title">{{dialog.data.title}}</div>
-      <div class="dialog-content">
-        <template v-if="dialog.data.list&&dialog.data.list.length>0">
-          <span v-for="(item,index) in dialog.data.list"
-                :key="index">{{item}}</span>
-        </template>
-        <template v-else>
-          {{dialog.data.content}}
-        </template>
-      </div>
-      <div class="dialog-message"
-           v-if="dialog.data.message"
-           v-html="dialog.data.message"></div>
-      <van-button round
-                  size="large"
-                  type="primary"
-                  @click.stop="gotoInquiryApplyPage">{{dialog.data.btn}}</van-button>
-    </div> -->
     <UserServiceNotice v-model="dialog.visible"
                        v-bind:info="dialog.data"
                        @onSucces="gotoInquiryApplyPage"></UserServiceNotice>
@@ -585,26 +562,6 @@ export default {
       common: {},
       showFamily: false, //判断是否弹出弹框
       isEwm: 0,
-      // consult: {
-      //   title: '温馨提示',
-      //   list: [],
-      //   content: '医生基于患者自述病情所发表的言论，仅作为健康咨询类建议，不能作为诊断、治疗、处方等诊疗性依据。若是急、重症患者，请务必及时前往医院就诊。',
-      //   message: '咨询时间：<br>8:00 - 17:00请在对应时间段内咨询',
-      //   btn: '确认'
-      // },
-      // subsequent: {
-      //   title: '用户服务须知',
-      //   list: [
-      //     '急重症问题请您线下进行就医，以免耽误病情。',
-      //     '全额预缴诊疗费用，医生接诊时进行结算，就诊日医生未接诊将全额退款。',
-      //     '医生对复诊患者可开具检査检验，给出进一步诊疗建议，符合条件的患者可开具处方。',
-      //     '急重症问题请您线下进行就医，以免耽误病情医生给出结论后手动结束复诊。',
-      //     '药品配送到家，因药品为特殊商品，经发出不得退换。'
-      //   ],
-      //   content: '',
-      //   message: '',
-      //   btn: '同意'
-      // },
       dialog: {
         visible: false,
         data: undefined
