@@ -108,7 +108,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           {
             pattern: this.peace.validate.pattern.password,
-            message: '请输入6-20位数字字母的组合',
+            message: '请输入6-20位数字或字母',
             trigger: 'blur'
           }
         ]
