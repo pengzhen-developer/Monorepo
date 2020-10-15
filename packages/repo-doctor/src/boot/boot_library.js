@@ -9,6 +9,9 @@ import '@src/library.back/prototype/date'
 import '@src/library.back/prototype/number'
 import '@src/library.back/prototype/string'
 
+// helper
+import { formatDuration, getDuration } from '@src/library.back/helper/util'
+
 // directive
 import drag from '@src/library.back/directive/drag'
 import focus from '@src/library.back/directive/focus'
@@ -58,6 +61,8 @@ export default async ({ Vue }) => {
   peace.config = config
   peace.type = type
   peace.service = service
+  peace.util.formatDuration = formatDuration
+  peace.util.getDuration = getDuration
 
   console.log(
     `%c ${'Library'} %c ${Peace.version} %c`,
