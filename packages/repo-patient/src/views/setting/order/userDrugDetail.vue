@@ -436,16 +436,12 @@ export default {
     },
     // 是否显示确认取药
     canShowReceive() {
-      return (
-        this.order &&
-        this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 &&
-        (this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货 || this.order.OrderStatus == ENUM.ORDER_STATUS.已接单)
-      )
+      return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 && this.order.OrderStatus == ENUM.ORDER_STATUS.已自提_已签收
     },
 
     // 是否显示确认签收
     canShowSign() {
-      return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus == ENUM.ORDER_STATUS.已备药_已发货
+      return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus == ENUM.ORDER_STATUS.已自提_已签收
     },
 
     curPayMoney() {
