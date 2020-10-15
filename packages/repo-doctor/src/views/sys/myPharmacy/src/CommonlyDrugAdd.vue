@@ -145,7 +145,7 @@ export default {
 
     removeCacheHistory() {
       this.historyList = []
-      Peace.cache.remove(UniqueKey)
+      Peace.cache.localStorage.remove(UniqueKey)
     }
   }
 }

@@ -263,7 +263,7 @@ export default {
                 this.audit.data = res.data.result
                 this.audit.prescriptionNo = res.data.result.prescriptionNo
               } else {
-                Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+                Peace.cache.sessionStorage.remove(this.inquiryNo)
                 Peace.util.alert(res.msg)
 
                 this.$emit('close')
@@ -281,7 +281,7 @@ export default {
                 this.audit.data = res.data.result
                 this.audit.prescriptionNo = res.data.result.prescriptionNo
               } else {
-                Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+                Peace.cache.sessionStorage.remove(this.inquiryNo)
                 Peace.util.alert(res.msg)
 
                 this.$emit('close')
@@ -312,7 +312,7 @@ export default {
 
       Service.confirmSend(params)
         .then((res) => {
-          Peace.cache.remove(this.inquiryNo, 'sessionStorage')
+          Peace.cache.sessionStorage.remove(this.inquiryNo)
           Peace.util.success(res.msg)
 
           this.$emit('close')

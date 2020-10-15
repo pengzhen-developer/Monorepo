@@ -27,7 +27,7 @@ export const setUserInfo = (userInfo) => {
 export const removeUserInfo = () => {
   $peace.$store.commit('user/removeUserInfo')
 
-  peace.cache.remove(USER_INFO)
+  peace.cache.localStorage.remove(USER_INFO)
 }
 
 /**
