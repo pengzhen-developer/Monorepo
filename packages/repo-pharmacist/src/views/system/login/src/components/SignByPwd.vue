@@ -2,7 +2,7 @@
   <div class="body">
     <div class="title">
       <div class="center">
-        <span>药师工作台</span>
+        <span>{{ $window.configuration.application.title }}</span>
       </div>
     </div>
 

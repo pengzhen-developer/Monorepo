@@ -4,7 +4,7 @@ export default {
    *
    */
   application: {
-    title: '智药云药师端'
+    title: '药师工作台'
   },
 
   /**
