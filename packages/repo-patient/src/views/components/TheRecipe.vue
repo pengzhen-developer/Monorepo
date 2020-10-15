@@ -415,8 +415,8 @@ export default {
 
   .outline {
     margin: 0 0 7.5px 0;
-    padding-left: 19px;
-    padding-right: 19px;
+    padding-left: 18px;
+    padding-right: 18px;
   }
   .outline .outline-header {
     margin: 10px 0;
@@ -432,7 +432,7 @@ export default {
       margin: 0;
     }
     > .inline {
-      padding-left: 15px;
+      padding-left: 12px;
     }
   }
   .outline-tit {
@@ -464,7 +464,7 @@ export default {
     }
   }
   .bt {
-    padding: 0 15px 8px 28.5px;
+    padding: 0 15px 8px 30px;
     font-size: 11px;
     color: #999;
   }
