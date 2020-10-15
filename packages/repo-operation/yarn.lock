@@ -891,10 +891,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@jk998/library@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.14.tgz#39fe484ec4f24f328df3ac65facd9c637353e2cb"
-  integrity sha512-ctXW5gUYncoGT2H4+lYTvJv0f/jibIB5M+5Z+WqT0FZz+xmbNX74ZeZ5xOJ0kxaAOZ7C0WipSTVLLSQVAxX3Bg==
+"@jk998/library@^0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
+  integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
