@@ -257,7 +257,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .status-item {
   display: flex;
   align-items: center;
