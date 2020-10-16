@@ -112,7 +112,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 460px;
-    margin: 64px 0 0 0;
+
     .layout-top {
       background: #fff;
     }
