@@ -31,8 +31,7 @@
         <el-input v-model.trim="drug.EnterpriseName"
                   placeholder="请输入生产厂家"></el-input>
       </el-form-item>
-      <el-form-item label="批准文号："
-                    prop="ApprovalNumber">
+      <el-form-item label="批准文号：">
         <el-input v-model.trim="drug.ApprovalNumber"
                   placeholder="请输入批准文号"></el-input>
       </el-form-item>
@@ -108,13 +107,6 @@ export default {
           {
             required: true,
             message: '请输入生产厂家',
-            trigger: 'blur'
-          }
-        ],
-        ApprovalNumber: [
-          {
-            required: true,
-            message: '请输入批准文号',
             trigger: 'blur'
           }
         ]
