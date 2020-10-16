@@ -49,10 +49,10 @@
       修改单号
     </el-button>
 
-    <el-dialog title="确认发货"
-               width="400px"
-               v-if="dialog.visible"
-               v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="确认发货"
+                 width="400px"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
       <el-form ref="form"
                label-width="120px"
                v-bind:model="dialog.model"
@@ -127,12 +127,12 @@
         <el-button style="min-width: 120px;"
                    v-on:click="closeDialog">取消</el-button>
       </div>
-    </el-dialog>
+    </PeaceDialog>
 
-    <el-dialog title="修改单号"
-               width="400px"
-               v-if="dialog2.visible"
-               v-bind:visible.sync="dialog2.visible">
+    <PeaceDialog title="修改单号"
+                 width="400px"
+                 v-if="dialog2.visible"
+                 v-bind:visible.sync="dialog2.visible">
       <el-form ref="form"
                label-width="100px"
                v-bind:model="dialog2.model"
@@ -154,13 +154,12 @@
         <el-button style="min-width: 120px;"
                    v-on:click="closeDialog2">取消</el-button>
       </div>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 
 export default {

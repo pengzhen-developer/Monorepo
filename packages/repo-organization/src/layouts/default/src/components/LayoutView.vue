@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import { dom } from 'quasar'
 
 export default {

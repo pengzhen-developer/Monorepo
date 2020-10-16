@@ -232,7 +232,6 @@
 <script>
 import PharmacyOrderControl from './../../pharmacy-order-control'
 
-import Peace from '@src/library'
 import Service from './service'
 
 export default {

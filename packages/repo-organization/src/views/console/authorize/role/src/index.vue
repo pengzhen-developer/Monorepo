@@ -71,14 +71,14 @@
     </div>
 
     <!-- 账号 -->
-    <el-dialog width="360px"
-               v-bind:visible.sync="roleDialog.visible"
-               :title="roleDialog.title">
+    <PeaceDialog width="360px"
+                 v-bind:visible.sync="roleDialog.visible"
+                 :title="roleDialog.title">
       <RoleModel v-if="roleDialog.visible"
                  ref="roleModel"
                  v-on:close="roleDialog.visible = false"
                  v-on:refresh="get"></RoleModel>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 
 </template>
@@ -86,7 +86,6 @@
 <script>
 import RoleModel from './components/RoleModel'
 
-import Peace from '@src/library'
 import Util from '@src/util'
 import Service from './service'
 import CONSTANT from './constant'

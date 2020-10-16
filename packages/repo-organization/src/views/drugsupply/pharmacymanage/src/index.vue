@@ -57,7 +57,8 @@
             <span>返回上一页</span>
           </div>
         </el-button>
-        <OperationManage></OperationManage>
+        <OperationManage v-bind:data="CustID"
+                         v-on:goBack="back"></OperationManage>
       </div>
 
       <!-- 药房列表 -->
@@ -131,33 +132,16 @@
                          v-if="scope.row.ExamineStatus==20||scope.row.ExamineStatus==15?true:false"
                          v-on:click="editPharmacys(scope.row)"
                          class="no-padding">修改</el-button>
-
-              <!-- <el-button type="text"
-                         v-if="scope.row.ExamineStatus==15?true:false"
-                         v-on:click="operationEnable(scope.row)"
-                         class="no-padding">{{scope.row.EnableStatus == 0 ? '停用' : '启用'}}</el-button> -->
             </template>
           </el-table-column>
         </peace-table>
       </div>
-      <el-dialog v-if="reasonVisible"
-                 width="344px"
-                 v-bind:visible.sync="reasonVisible"
-                 title="未通过提示">
+      <PeaceDialog v-if="reasonVisible"
+                   width="344px"
+                   v-bind:visible.sync="reasonVisible"
+                   title="未通过提示">
         <span>{{reasonText}}</span>
-      </el-dialog>
-      <!-- <el-dialog v-if="enableVisible"
-                 width="344px"
-                 v-bind:visible.sync="enableVisible"
-                 title="提示">
-        <span>{{showText}}</span>
-        <div class="info-btn">
-          <el-button type="primary"
-                     v-on:click="confirmUpdate"
-                     v-bind:disabled="saveing">确 定</el-button>
-          <el-button v-on:click="cancelUpdate">取 消</el-button>
-        </div>
-      </el-dialog> -->
+      </PeaceDialog>
     </div>
   </div>
 </template>
@@ -165,7 +149,7 @@
 <script>
 import Service from './service'
 import CONSTANT from './constant'
-import Peace from '@src/library'
+
 import EditPharmacy from './components/EditPharmacy'
 import PharmacyDetail from './components/PharmacyDetail'
 import OperationManage from './components/OperationManage'
@@ -192,7 +176,6 @@ export default {
       editVisible: false,
       listVisible: false,
       reasonVisible: false,
-      //enableVisible: false,
       detailVisible: false,
       operationVisible: false,
       statuVule: {
@@ -201,7 +184,8 @@ export default {
       },
       showText: '',
       reasonText: '',
-      id: ''
+      id: '',
+      CustID: ''
     }
   },
 
@@ -285,22 +269,6 @@ export default {
           row.EnableStatus = row.EnableStatus === 0 ? 10 : 0
         })
     },
-    // confirmUpdate() {
-    //   this.saveing = true
-    //   const params = this.statuVule
-    //   Service.updateEnableStatus(params)
-    //     .then(() => {
-    //       Peace.util.alert('操作成功')
-    //       this.fetch()
-    //       this.cancelUpdate()
-    //     })
-    //     .finally(() => {
-    //       this.saveing = false
-    //     })
-    // },
-    // cancelUpdate() {
-    //   this.enableVisible = false
-    // },
     viewPharmacy(row) {
       this.detailVisible = true
       this.listVisible = false
@@ -316,9 +284,10 @@ export default {
       menu.menuPath = menu.menuPath + '?custcode=' + row.Code
       this.provideAddTab(menu)
     },
-    operationManage() {
+    operationManage(row) {
       this.listVisible = false
       this.operationVisible = true
+      this.CustID = row.ID
     },
     back() {
       this.fetch()

@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Util from '@src/util'
 
 /** 布局 - 顶部 */

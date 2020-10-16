@@ -1,51 +1,13 @@
 export default {
   /**
-   * 获取接单列表
+   * 处方列表
    *
    * @param {*} params
    */
-  getReceiveOrderList(params) {
+  PrescriptionList(params) {
     const isMock = false
 
-    const apiPath = 'psd/ReceiveOrder/List'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.get(requestApi, { params }).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 获取待处理数量
-   *
-   * @param {*} params
-   */
-  getBubbleInfo(params) {
-    const isMock = false
-
-    const apiPath = 'psd/ReceiveOrder/GetBubbleInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.get(requestApi, { params }).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 更新订单信息
-   *
-   * @param {*} params
-   */
-  UpdateOrderStatus(params) {
-    const isMock = false
-
-    const apiPath = 'psd/ReceiveOrder/UpdateOrderStatus'
+    const apiPath = 'webapi/api/CustPrescription/SmartPrescriptionList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_MDS_API + apiPath
 
@@ -57,14 +19,32 @@ export default {
   },
 
   /**
-   * 更新快递信息
+   * 获取科室列表
    *
    * @param {*} params
    */
-  UpdateOrderExpressInfo(params) {
+  GetDepartment(params) {
     const isMock = false
 
-    const apiPath = 'psd/ReceiveOrder/UpdateOrderExpressInfo'
+    const apiPath = 'webapi/api/ApothecaryPrescription/GetDepartment'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 处方统计
+   *
+   * @param {*} params
+   */
+  PrescriptionStatistics(params) {
+    const isMock = false
+
+    const apiPath = 'webapi/api/CustPrescription/SmartPrescriptionStatistics'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_MDS_API + apiPath
 

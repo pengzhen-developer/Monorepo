@@ -43,20 +43,20 @@
              v-if="!ishasOrgan">暂无机构开户信息</p>
           <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"
                          v-on:onUpdateOrgan="updateOrgan"></AccountDetail>
-          <el-dialog v-if="wareVisible"
-                     width="470px"
-                     v-bind:visible.sync="wareVisible"
-                     :title="ishasWare?'修改云仓信息':'新建云仓'">
+          <PeaceDialog v-if="wareVisible"
+                       width="470px"
+                       v-bind:visible.sync="wareVisible"
+                       :title="ishasWare?'修改云仓信息':'新建云仓'">
             <AddWarehouse v-on:onCloseWare="oncloseWare"
                           v-bind:data="warehoseInfo"></AddWarehouse>
-          </el-dialog>
-          <el-dialog v-if="oragnVisible"
-                     width="516px"
-                     v-bind:visible.sync="oragnVisible"
-                     title="新增机构">
+          </PeaceDialog>
+          <PeaceDialog v-if="oragnVisible"
+                       width="516px"
+                       v-bind:visible.sync="oragnVisible"
+                       title="新增机构">
             <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
                       v-bind:data="custItem"></AddOrgan>
-          </el-dialog>
+          </PeaceDialog>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-//import Peace from '@src/library'
+//
 import Service from './service'
 
 import AccountDetail from './components/AccountDetail'

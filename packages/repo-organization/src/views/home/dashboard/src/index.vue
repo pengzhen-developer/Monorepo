@@ -46,34 +46,34 @@
       </div>
 
       <!-- 合理用药弹框 -->
-      <el-dialog :visible.sync="useDrugDialog"
-                 v-if="useDrugDialog"
-                 width="334px"
-                 title="申请开通">
+      <PeaceDialog :visible.sync="useDrugDialog"
+                   v-if="useDrugDialog"
+                   width="334px"
+                   title="申请开通">
         <UseDrugDialog v-bind:service="serviceDialogBean"
                        v-on:onCancel="useDrugDialog = false"
                        v-on:onSuccess=" useDrugSuccess" />
-      </el-dialog>
+      </PeaceDialog>
 
       <!-- 处方共享管理 -->
-      <el-dialog :visible.sync="rpShareDialog"
-                 v-if="rpShareDialog"
-                 width="334px"
-                 title="申请开通">
+      <PeaceDialog :visible.sync="rpShareDialog"
+                   v-if="rpShareDialog"
+                   width="334px"
+                   title="申请开通">
         <RpShareManagementDialog v-bind:service="serviceDialogBean"
                                  v-on:onCancel="rpShareDialog = false"
                                  v-on:onSuccess="rpShareSuccess" />
-      </el-dialog>
+      </PeaceDialog>
 
       <!-- 药品供应管理 -->
-      <el-dialog :visible.sync="medicineSupplyDialog"
-                 v-if="medicineSupplyDialog"
-                 width="334px"
-                 title="申请开通">
+      <PeaceDialog :visible.sync="medicineSupplyDialog"
+                   v-if="medicineSupplyDialog"
+                   width="334px"
+                   title="申请开通">
         <MedicineSupplyDialog v-bind:service="serviceDialogBean"
                               v-on:onCancel="medicineSupplyDialog = false"
                               v-on:onSuccess="medicineSupplySuccess" />
-      </el-dialog>
+      </PeaceDialog>
 
     </div>
   </div>
@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Util from '@src/util'
 import Service from './service'
 
