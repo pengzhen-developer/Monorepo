@@ -881,10 +881,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/library@^0.1.16":
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.16.tgz#317c406d79517bcc3f8ebca6f1acbffb49391ba8"
-  integrity sha512-NJy58MIaH0YSPaM2Nslb/HXF9Dpb/cUPqXCseiLzUvHAIrpWyWxRu6YBeyukhan85MaBl9DO/8f5qHbgNpj1NQ==
+"@jk998/library@^0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
+  integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
