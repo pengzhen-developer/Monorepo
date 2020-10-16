@@ -15,8 +15,11 @@
 
       <el-form-item prop="username">
         <el-input v-model="model.username"
+                  v-bind:class="{ 'active' : usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
+                  v-on:focus="usernameFocus"
+                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="zyy-icon zyy-yonghuming"></i>
@@ -26,8 +29,11 @@
 
       <el-form-item prop="password">
         <el-input v-model="model.password"
-                  minlength="6"
-                  maxlength="20"
+                  v-on:focus="passwordFocus"
+                  v-on:blur="passwordBlur"
+                  v-bind:class="{ 'active' : passwordActive }"
+                  v-bind:minlength="6"
+                  v-bind:maxlength="20"
                   type="password"
                   placeholder="请输入密码">
           <div slot="prepend">
@@ -52,11 +58,15 @@
 export default {
   data() {
     return {
+      isLoging: false,
+      usernameActive: false,
+      passwordActive: false,
+
       model: {
         username: '',
         password: ''
       },
-      isLoging: false,
+
       rules: {
         username: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
@@ -80,6 +90,22 @@ export default {
   },
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
+
     login() {
       this.isLoging = true
 
@@ -225,7 +251,7 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 0 16px;
     line-height: 40px;
     height: 40px;
     border-radius: 0 4px 4px 0;
@@ -258,6 +284,20 @@ export default {
   }
   i {
     color: #c0c4cc;
+  }
+
+  .el-input {
+    padding: 1px;
+
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
+      }
+    }
   }
 }
 .eyes {

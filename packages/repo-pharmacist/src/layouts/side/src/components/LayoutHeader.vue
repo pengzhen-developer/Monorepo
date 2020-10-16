@@ -26,7 +26,7 @@
                     leave-active-class="animated jump-up">
           <div class="col q-ml-lg flex column justify-center flex-start animated jump-down">
             <div class="text-h6">
-              医院名称
+              {{ custName }}
             </div>
           </div>
         </transition>
@@ -67,15 +67,19 @@
 </template>
 
 <script>
+import Service from './../service'
+
 export default {
   data() {
     return {
-      accountInfo: {}
+      accountInfo: {},
+      custName: ''
     }
   },
 
   async beforeCreate() {
     this.accountInfo = await Peace.identity.auth.getAccountInfo()
+    this.custName = (await Service.getCustName()).data.list
   },
 
   methods: {
