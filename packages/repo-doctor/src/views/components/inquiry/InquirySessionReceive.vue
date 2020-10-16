@@ -96,7 +96,7 @@ export default {
       }
 
       peace.service.inquiry.receiveInquiry(params).then((res) => {
-        peace.util.alert(res.msg)
+        peace.util.success(res.msg)
       })
     },
 
@@ -119,7 +119,7 @@ export default {
         overCause: this.over.description == '其他' ? this.over.otherDescription : this.over.description
       }
       peace.service.inquiry.quitInquiry(params).then((res) => {
-        peace.util.alert(res.msg)
+        peace.util.success(res.msg)
       })
     }
   }

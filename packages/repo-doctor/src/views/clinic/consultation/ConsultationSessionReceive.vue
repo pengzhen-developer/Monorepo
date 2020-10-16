@@ -81,7 +81,7 @@ export default {
           if (value) {
             confirmCallback(value)
           } else {
-            peace.util.alert('请输入退诊原因')
+            peace.util.success('请输入退诊原因')
           }
         })
       }

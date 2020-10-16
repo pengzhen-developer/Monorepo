@@ -264,7 +264,7 @@ export default {
                 this.audit.prescriptionNo = res.data.result.prescriptionNo
               } else {
                 Peace.cache.sessionStorage.remove(this.inquiryNo)
-                Peace.util.alert(res.msg)
+                Peace.util.success(res.msg)
 
                 this.$emit('close')
               }
@@ -282,7 +282,7 @@ export default {
                 this.audit.prescriptionNo = res.data.result.prescriptionNo
               } else {
                 Peace.cache.sessionStorage.remove(this.inquiryNo)
-                Peace.util.alert(res.msg)
+                Peace.util.success(res.msg)
 
                 this.$emit('close')
               }

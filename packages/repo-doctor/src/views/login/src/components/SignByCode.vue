@@ -15,8 +15,11 @@
 
       <el-form-item prop="tel">
         <el-input v-model="model.tel"
+                  v-bind:class="{ 'active': usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
+                  v-on:focus="usernameFocus"
+                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="zyy-icon zyy-shouji"></i>
@@ -24,12 +27,15 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="smsCode">
         <el-input ref="smsCode"
                   v-model="model.smsCode"
-                  placeholder="请输入验证码"
-                  maxlength="6"
-                  minlength="6">
+                  v-bind:class="{ 'active': passwordActive }"
+                  v-bind:maxlength="6"
+                  v-bind:minlength="6"
+                  v-on:focus="passwordFocus"
+                  v-on:blur="passwordBlur"
+                  placeholder="请输入验证码">
           <div slot="prepend">
             <i class="zyy-icon zyy-mima"></i>
           </div>
@@ -77,6 +83,8 @@ export default {
       countdownTime: 0,
       countdownInterval: 60 * 1000,
       isLoging: false,
+      usernameActive: false,
+      passwordActive: false,
 
       model: {
         tel: Peace.cache.localStorage.get(peace.type.USER.PHONE) ?? '',
@@ -115,6 +123,22 @@ export default {
   },
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
+
     onCountdownEnd() {
       this.countdownTime = 0
     },
@@ -272,7 +296,7 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 2px 16px;
     line-height: 40px;
     height: 40px;
     border-radius: 0 4px 4px 0;
@@ -303,8 +327,22 @@ export default {
       font-size: 12px;
     }
   }
+
   i {
     color: #c0c4cc;
+  }
+
+  .el-input {
+    padding: 1px;
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
+      }
+    }
   }
 }
 .eyes {

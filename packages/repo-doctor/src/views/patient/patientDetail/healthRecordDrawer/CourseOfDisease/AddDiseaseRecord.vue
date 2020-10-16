@@ -111,7 +111,7 @@ export default {
 
           peace.service.follow.addEditCourse(params).then((res) => {
             $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程 })
-            peace.util.alert(res.msg)
+            peace.util.success(res.msg)
           })
         } else {
           return false

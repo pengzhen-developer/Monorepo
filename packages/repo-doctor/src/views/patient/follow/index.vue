@@ -139,7 +139,7 @@ export default {
         this.dialog.visible = true
         this.dialog.id = row.familyId
       } else {
-        peace.util.alert('暂无病程管理')
+        peace.util.success('暂无病程管理')
       }
     },
 

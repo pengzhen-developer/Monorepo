@@ -588,13 +588,13 @@ export default {
           // 兼容会诊和问诊
           if (this.inquiryNo) {
             peace.service.inquiry.addCase(params).then((res) => {
-              $peace.util.alert(res.msg)
+              $peace.util.success(res.msg)
 
               this.$emit('close')
             })
           } else if (this.consultNo) {
             peace.service.inquiry.offlineAddCase(params).then((res) => {
-              $peace.util.alert(res.msg)
+              $peace.util.success(res.msg)
 
               this.$emit('close')
             })

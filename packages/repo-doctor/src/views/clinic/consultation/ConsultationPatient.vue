@@ -397,7 +397,7 @@ export default {
 
     showDetail() {
       if (this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成) {
-        return peace.util.alert('问诊尚未结束，无法查看记录')
+        return peace.util.success('问诊尚未结束，无法查看记录')
       }
 
       const params = {

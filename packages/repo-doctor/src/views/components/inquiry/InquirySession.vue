@@ -234,7 +234,7 @@ export default {
               peace.service.inquiry
                 .quitInquiry(params)
                 .then((res) => {
-                  peace.util.alert(res.msg)
+                  peace.util.success(res.msg)
 
                   util.IM.inquiryHelper.resetInquirySession()
                   util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -259,7 +259,7 @@ export default {
             peace.service.inquiry
               .overInquiry(params)
               .then((res) => {
-                peace.util.alert(res.msg)
+                peace.util.success(res.msg)
 
                 util.IM.inquiryHelper.resetInquirySession()
                 util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -284,7 +284,7 @@ export default {
           peace.service.inquiry
             .quitInquiry(params)
             .then((res) => {
-              peace.util.alert(res.msg)
+              peace.util.success(res.msg)
 
               util.IM.inquiryHelper.resetInquirySession()
               util.IM.inquiryHelper.resetInquirySessionMessages()

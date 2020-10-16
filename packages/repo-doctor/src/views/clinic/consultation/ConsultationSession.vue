@@ -177,7 +177,7 @@ export default {
           }
 
           peace.service.consult.overConsult(params).then(() => {
-            $peace.util.alert('会诊已完成，感谢您的辛苦付出')
+            $peace.util.success('会诊已完成，感谢您的辛苦付出')
           })
         })
       }

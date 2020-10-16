@@ -74,7 +74,7 @@ export default {
     menuSelect(index) {
       const tmp = this.menuList[parseInt(index) - 1]
       if (tmp.disable) {
-        $peace.util.alert('暂未开放')
+        $peace.util.success('暂未开放')
         return
       }
       this.selectIndex = index

@@ -124,7 +124,7 @@ export default {
         }
 
         Service.addCommonlyDrug(params).then((res) => {
-          Peace.util.alert(res.msg)
+          Peace.util.success(res.msg)
 
           this.$emit('success')
         })

@@ -127,7 +127,7 @@ export default {
     },
 
     uploadAvatarSuccess(res) {
-      peace.util.alert(res.msg)
+      peace.util.success(res.msg)
 
       this.get()
     },
@@ -169,7 +169,7 @@ export default {
       }
 
       peace.service.personalCenter.upDoctorInfo(params).then((res) => {
-        peace.util.alert(res.msg)
+        peace.util.success(res.msg)
 
         this.get()
       })

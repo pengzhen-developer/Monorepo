@@ -135,7 +135,7 @@ export default {
         }
 
         peace.service.patient.delInstruction(params).then((res) => {
-          peace.util.alert(res.msg)
+          peace.util.success(res.msg)
 
           this.get()
         })

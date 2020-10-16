@@ -471,7 +471,7 @@ export default {
         this.receiveDialog.visible = false
         this.get()
 
-        peace.util.alert(res.msg)
+        peace.util.success(res.msg)
       })
     },
 

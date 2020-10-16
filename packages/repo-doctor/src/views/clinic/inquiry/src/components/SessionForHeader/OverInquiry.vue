@@ -121,7 +121,7 @@ export default {
             Peace.util.confirm(message, undefined, confirmOption, () => {
               Service.quitInquiry(params)
                 .then((res) => {
-                  Peace.util.alert(res.msg)
+                  Peace.util.success(res.msg)
 
                   Util.IM.inquiryHelper.resetInquirySession()
                   Util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -145,7 +145,7 @@ export default {
           else if (res.data.caseStatus === 2 && res.data.status === 2) {
             Service.overInquiry(params)
               .then((res) => {
-                Peace.util.alert(res.msg)
+                Peace.util.success(res.msg)
 
                 Util.IM.inquiryHelper.resetInquirySession()
                 Util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -169,7 +169,7 @@ export default {
         Peace.util.confirm(message, undefined, confirmOption, () => {
           Service.quitInquiry(params)
             .then((res) => {
-              Peace.util.alert(res.msg)
+              Peace.util.success(res.msg)
 
               Util.IM.inquiryHelper.resetInquirySession()
               Util.IM.inquiryHelper.resetInquirySessionMessages()

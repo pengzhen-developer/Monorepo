@@ -230,7 +230,7 @@ export default {
         peace.cache.localStorage.set('familyId', familyId)
         $peace.$router.push(`/file/index/`)
       } else {
-        $peace.util.alert('该就诊人已从您的家人列表移除，不可查看其健康档案')
+        $peace.util.success('该就诊人已从您的家人列表移除，不可查看其健康档案')
       }
     }
   }

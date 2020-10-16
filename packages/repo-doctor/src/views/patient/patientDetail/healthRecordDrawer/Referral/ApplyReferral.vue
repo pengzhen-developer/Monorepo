@@ -382,7 +382,7 @@ export default {
             peace.service.health.offlineAddReferral(params).then(() => {
               $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.转诊 })
 
-              peace.util.alert('发起转诊成功')
+              peace.util.success('发起转诊成功')
             })
           }
         }

@@ -223,7 +223,7 @@ export default {
      */
     call(session, type) {
       if (this.beCallState !== '') {
-        return peace.util.alert('当前正在通话中')
+        return peace.util.success('当前正在通话中')
       }
 
       // 当前为主叫

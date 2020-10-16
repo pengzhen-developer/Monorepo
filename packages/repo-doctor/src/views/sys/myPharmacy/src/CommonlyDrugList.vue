@@ -164,7 +164,7 @@ export default {
         }
 
         Service.removeCommonlyDrug(params).then((res) => {
-          Peace.util.alert(res.msg)
+          Peace.util.success(res.msg)
 
           this.getCommonlyDrugList()
         })

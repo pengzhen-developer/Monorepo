@@ -81,7 +81,7 @@ export default {
       }
 
       peace.service.personalCenter.upDoctorIntroduce(params).then((res) => {
-        peace.util.alert(res.msg)
+        peace.util.success(res.msg)
 
         this.get()
       })

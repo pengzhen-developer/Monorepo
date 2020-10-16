@@ -309,7 +309,7 @@ export default {
 
     sendConsultSuggest() {
       if (this.$store.getters['consultation/consultInfo'].isCommit) {
-        return peace.util.alert('您已填写会诊意见')
+        return peace.util.success('您已填写会诊意见')
       }
 
       // 验证当前频道信息
@@ -392,7 +392,7 @@ export default {
       }
 
       peace.service.consult.chooseInviteDoctor(params).then((res) => {
-        $peace.util.alert(res.msg)
+        $peace.util.success(res.msg)
 
         this.invitedDialog.visible = false
       })
@@ -410,12 +410,12 @@ export default {
         }
 
         peace.service.consult.submitSuggest(params).then(() => {
-          // $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
+          // $peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.consultSuggestDialog.visible = false
         })
       } else {
-        $peace.util.alert('请完整填写会诊所见、疾病诊断、建议')
+        $peace.util.success('请完整填写会诊所见、疾病诊断、建议')
       }
     },
 

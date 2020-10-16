@@ -106,7 +106,7 @@ export default {
       }
 
       Service.receiveInquiry(params).then((res) => {
-        Peace.util.alert(res.msg)
+        Peace.util.success(res.msg)
       })
     }
   }

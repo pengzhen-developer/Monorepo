@@ -194,13 +194,13 @@ export default {
         }
 
         peace.service.consult.submitSuggest(params).then(() => {
-          // $peace.util.alert('提交成功，会诊已完成，感谢您的辛苦付出')
+          // $peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.$emit('close')
           this.visible = false
         })
       } else {
-        $peace.util.alert('请完整填写会诊所见、目前疾病诊断、建议')
+        $peace.util.success('请完整填写会诊所见、目前疾病诊断、建议')
       }
     }
   }

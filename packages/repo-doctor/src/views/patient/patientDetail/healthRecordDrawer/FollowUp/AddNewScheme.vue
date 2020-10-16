@@ -167,7 +167,7 @@ export default {
             content: tmpMap
           }
           peace.service.health.AddFollowUpScheme(params).then(() => {
-            peace.util.alert('新建自定义方案成功')
+            peace.util.success('新建自定义方案成功')
             this.isSave = true
             this.closeMenu()
             this.$emit('updateList')

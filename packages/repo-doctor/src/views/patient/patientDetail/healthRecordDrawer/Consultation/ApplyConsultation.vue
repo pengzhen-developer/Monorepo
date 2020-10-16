@@ -383,7 +383,7 @@ export default {
             peace.service.health.offlineAddConsult(params).then(() => {
               $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊 })
 
-              peace.util.alert('发起会诊成功')
+              peace.util.success('发起会诊成功')
             })
           }
         }
