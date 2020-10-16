@@ -7,6 +7,11 @@
       </div>
       <div class="item-content">
         <div class="item-child">
+          <p class="child-key">药房类型</p>
+          <p>：</p>
+          <p class="child-value">{{detailData.CustomerType==10?"线下实体药房":"线上电商平台"}}</p>
+        </div>
+        <div class="item-child">
           <p class="child-key">药房编码</p>
           <p>：</p>
           <p class="child-value">{{detailData.SuborganizationCode}}</p>
@@ -71,27 +76,55 @@
         <div class="item-child">
           <p class="child-key">配送方式</p>
           <p>：</p>
-
-          <el-checkbox-group v-model="detailData.DistributionMode">
-            <el-checkbox v-for="(item) in  DistributionList"
-                         :label="item.code"
-                         :key="item.code"
-                         disabled>{{item.name}}</el-checkbox>
-          </el-checkbox-group>
-
+          <div>
+            <div class="row"
+                 v-if="detailData.CustomerType==10">
+              <el-checkbox-group v-model="DistributSelfMode"
+                                 class="q-mb-10">
+                <el-checkbox v-for="(item) in  DistributSelfList"
+                             :label="item.code"
+                             :key="item.code"
+                             disabled>{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+              <div class="q-ml-xl">
+                <div class="row"
+                     v-if="DistributSelfMode.length > 0">
+                  <p class="child-key">支付方式</p>
+                  <p>：</p>
+                  <el-checkbox-group v-model="detailData.PayModeSelf"
+                                     class="q-mb-10">
+                    <el-checkbox v-for="(item) in  PayselfList"
+                                 :label="item.code"
+                                 :key="item.code"
+                                 disabled>{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <el-checkbox-group v-model="DistributMode">
+                <el-checkbox v-for="(item) in  DistributionList"
+                             :label="item.code"
+                             :key="item.code"
+                             disabled>{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+              <div class="q-ml-xl">
+                <div class="row"
+                     v-if="DistributMode.length>0">
+                  <p class="child-key">支付方式</p>
+                  <p>：</p>
+                  <el-checkbox-group v-model="detailData.PayMode">
+                    <el-checkbox v-for="(item) in  PayList"
+                                 :label="item.code"
+                                 :key="item.code"
+                                 disabled>{{item.name}}</el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="item-child">
-          <p class="child-key">支付方式</p>
-          <p>：</p>
-          <p class="child-value">
-            <el-checkbox-group v-model="detailData.PayMode">
-              <el-checkbox v-for="(item) in  PayList"
-                           :label="item.code"
-                           :key="item.code"
-                           disabled>{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </p>
-        </div>
+
       </div>
     </div>
 
@@ -154,14 +187,16 @@ export default {
   data() {
     return {
       detailData: {},
-
-      DistributionList: [
-        { code: 0, name: '自提' },
-        { code: 1, name: '配送' }
+      DistributSelfList: [{ code: 0, name: '自提' }],
+      DistributionList: [{ code: 1, name: '配送' }],
+      DistributSelfMode: [],
+      DistributMode: [],
+      PayselfList: [
+        { code: 4, name: '在线支付' },
+        { code: 2, name: '到店支付' }
       ],
       PayList: [
         { code: 1, name: '在线支付' },
-        { code: 2, name: '到店支付' },
         { code: 3, name: '货到付款' }
       ]
     }
@@ -185,6 +220,8 @@ export default {
       const params = { UserID: this.data }
       Service.detail(params).then((res) => {
         this.detailData = res.data.list
+        this.DistributSelfMode = res.data.list.DistributionMode.filter((item) => item === 0)
+        this.DistributMode = res.data.list.DistributionMode.filter((item) => item === 1)
         this.detailData.logoUrlList = [res.data.list.logoUrl]
         this.detailData.BusinesslicenseUrlList = [res.data.list.BusinesslicenseUrl]
         this.detailData.DrugManagementlicenseUrlList = [res.data.list.DrugManagementlicenseUrl]
