@@ -44,21 +44,6 @@
 
         <el-form-item prop="source">
           <span slot="label">
-            <span>外流</span>
-            <span>：</span>
-          </span>
-          <el-select v-model="model.Circulate"
-                     clearable
-                     placeholder="请选择">
-            <el-option :key="item.label"
-                       :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_CIRCULATE"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item prop="source">
-          <span slot="label">
             <span>配码状态</span>
             <span>：</span>
           </span>
@@ -129,16 +114,7 @@
         <el-table-column prop="ApprovalNumber"
                          label="批准文号">
         </el-table-column>
-        <el-table-column label="外流"
-                         width="80px">
 
-          <template slot-scope="scope">
-            <span>
-              {{ getCirculateForCode(scope.row.Circulate) }}
-            </span>
-          </template>
-
-        </el-table-column>
         <el-table-column prop="CreateTime"
                          label="创建时间">
         </el-table-column>
@@ -214,7 +190,6 @@ export default {
   data() {
     return {
       source: {
-        ENUM_CIRCULATE: CONSTANT.ENUM_CIRCULATE,
         ENUM_MATCH_CODE: CONSTANT.ENUM_MATCH_CODE,
         ENUM_REVIEW_STATUS: CONSTANT.ENUM_REVIEW_STATUS
       },
@@ -223,7 +198,6 @@ export default {
         ProductName: '',
         ApprovalNumber: '',
         EnterpriseName: '',
-        Circulate: '',
         MappingStatus: '',
         MappingExamineStatus: ''
       },
@@ -249,10 +223,6 @@ export default {
       const params = this.model
 
       this.$refs.table.loadData({ fetch, params })
-    },
-
-    getCirculateForCode(code) {
-      return this.source.ENUM_CIRCULATE.find((item) => item.value == code).label
     },
 
     addDrug() {

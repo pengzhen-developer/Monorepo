@@ -37,19 +37,6 @@
                   placeholder="请输入批准文号"></el-input>
       </el-form-item>
 
-      <el-form-item prop="source">
-        <span slot="label">
-          <span>外流：</span>
-        </span>
-        <el-select v-model="drug.Circulate"
-                   placeholder="请选择">
-          <el-option :key="item.label"
-                     :label="item.label"
-                     :value="item.value"
-                     v-for="item in source.ENUM_CIRCULATE"></el-option>
-        </el-select>
-      </el-form-item>
-
     </el-form>
 
     <div class="bottom">
@@ -60,7 +47,6 @@
   </div>
 </template>
 <script>
-import CONSTANT from '../constant'
 import Service from '../service'
 import Peace from '@src/library'
 
@@ -74,7 +60,6 @@ export default {
       handler() {
         if (this.drugInfo != null) {
           this.drug = Object.assign(this.drug, this.drugInfo)
-          this.drug.Circulate = this.drugInfo.Circulate + ''
         }
       },
       immediate: true
@@ -82,18 +67,13 @@ export default {
   },
   data() {
     return {
-      source: {
-        ENUM_CIRCULATE: CONSTANT.ENUM_CIRCULATE2
-      },
-
       drug: {
         CustDrugsCode: '',
         ProductName: '',
         DrugSpecifications: '',
         PackUnit: '',
         EnterpriseName: '',
-        ApprovalNumber: '',
-        Circulate: '0'
+        ApprovalNumber: ''
       },
       rules: {
         CustDrugsCode: [
