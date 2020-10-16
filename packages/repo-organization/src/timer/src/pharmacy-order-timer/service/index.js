@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 是否有待接订单

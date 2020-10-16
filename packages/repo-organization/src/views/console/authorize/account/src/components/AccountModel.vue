@@ -63,7 +63,7 @@
 
 <script>
 import CONSTANT from '../constant'
-import Peace from '@src/library'
+
 import Util from '@src/util'
 import Service from '../service'
 

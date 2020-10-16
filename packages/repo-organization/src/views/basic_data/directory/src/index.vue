@@ -173,29 +173,29 @@
       </PeaceTable>
     </div>
 
-    <el-dialog v-if="detailDialog.visible"
-               width="644px"
-               :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               v-bind:visible.sync="detailDialog.visible"
-               :title="detailDialog.dialogTitle">
+    <PeaceDialog v-if="detailDialog.visible"
+                 width="644px"
+                 :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 v-bind:visible.sync="detailDialog.visible"
+                 :title="detailDialog.dialogTitle">
       <DrugDetail :drugInfo="detailDialog.drugInfo"
                   v-on:onSucess="addDrugSuccess"
                   v-on:onCancel="detailDialog.visible = false"></DrugDetail>
-    </el-dialog>
+    </PeaceDialog>
 
     <!-- 导入药品 -->
-    <el-dialog :before-close="close"
-               :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               :visible.sync="importDialogVisible"
-               title="批量新增药品"
-               v-if="importDialogVisible"
-               append-to-body
-               width="500px">
+    <PeaceDialog :before-close="close"
+                 :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="importDialogVisible"
+                 title="批量新增药品"
+                 v-if="importDialogVisible"
+                 append-to-body
+                 width="500px">
       <DrugsImport @close="closeImportDialog"
                    @success="get()" />
-    </el-dialog>
+    </PeaceDialog>
 
   </div>
 </template>

@@ -76,7 +76,7 @@
 
 <script>
 import Service from '../service'
-import Peace from '@src/library'
+
 export default {
   props: {
     data: Number

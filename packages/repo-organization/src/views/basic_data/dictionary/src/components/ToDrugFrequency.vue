@@ -117,13 +117,13 @@
       </PeaceTable>
     </div>
 
-    <el-dialog :visible.sync="detailDialog.visible"
-               v-if="detailDialog.visible"
-               width="554px"
-               title="新增给药频次">
+    <PeaceDialog :visible.sync="detailDialog.visible"
+                 v-if="detailDialog.visible"
+                 width="554px"
+                 title="新增给药频次">
       <AddDrugFrequency v-on:onSucess="addChannelSuccess"
                         v-on:onCancel="detailDialog.visible = false" />
-    </el-dialog>
+    </PeaceDialog>
 
   </div>
 </template>
@@ -166,10 +166,7 @@ export default {
       endPickerOptions: {
         disabledDate: (time) => {
           if (this.model.BeginTime) {
-            return (
-              time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) ||
-              time.getTime() > Date.now()
-            )
+            return time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) || time.getTime() > Date.now()
           } else {
             return time.getTime() > Date.now() || time.getTime() < new Date('2019-02-28').getTime()
           }

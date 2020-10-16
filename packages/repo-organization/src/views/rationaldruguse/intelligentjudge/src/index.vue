@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import Peace from '@src/library'
 import Service from './service'
 import CONSTANT from './constant'
 export default {

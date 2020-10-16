@@ -94,14 +94,14 @@
     </div>
 
     <!-- 账号 -->
-    <el-dialog width="360px"
-               v-bind:visible.sync="accountDialog.visible"
-               :title="`${accountDialog.data.userId ? '修改':'新建'}账号`">
+    <PeaceDialog width="360px"
+                 v-bind:visible.sync="accountDialog.visible"
+                 :title="`${accountDialog.data.userId ? '修改':'新建'}账号`">
       <AccountModel v-if="accountDialog.visible"
                     ref="accountModel"
                     v-on:close="accountDialog.visible = false"
                     v-on:refresh="get"></AccountModel>
-    </el-dialog>
+    </PeaceDialog>
 
   </div>
 
@@ -110,7 +110,6 @@
 <script>
 import AccountModel from './components/AccountModel'
 
-import Peace from '@src/library'
 import Service from './service'
 import Util from '@src/util'
 import CONSTANT from './constant'

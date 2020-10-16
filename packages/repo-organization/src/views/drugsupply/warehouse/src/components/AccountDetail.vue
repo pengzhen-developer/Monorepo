@@ -28,13 +28,13 @@
              v-on:click="updateOrgan(item)" />
       </div>
     </div>
-    <el-dialog v-if="oragnVisible"
-               width="516px"
-               v-bind:visible.sync="oragnVisible"
-               title="修改机构">
+    <PeaceDialog v-if="oragnVisible"
+                 width="516px"
+                 v-bind:visible.sync="oragnVisible"
+                 title="修改机构">
       <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
                 v-bind:data="custItem"></AddOrgan>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -61,7 +61,7 @@
 
 <script>
 import CONSTANT from '../constant'
-import Peace from '@src/library'
+
 import Service from '../service'
 
 export default {

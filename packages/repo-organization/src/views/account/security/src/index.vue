@@ -19,13 +19,13 @@
              @click="gotoChangePhonePath()">修改</p>
         </div>
 
-        <el-dialog :visible.sync="changePasswordDialogVisible"
-                   v-if="changePasswordDialogVisible"
-                   width="554px"
-                   title="修改密码">
+        <PeaceDialog :visible.sync="changePasswordDialogVisible"
+                     v-if="changePasswordDialogVisible"
+                     width="554px"
+                     title="修改密码">
           <ChangePassword v-on:onSucess="changePasswordDialogVisible = false"
                           v-on:onCancel="changePasswordDialogVisible = false" />
-        </el-dialog>
+        </PeaceDialog>
       </div>
 
       <div v-if="changePhoneVisible">

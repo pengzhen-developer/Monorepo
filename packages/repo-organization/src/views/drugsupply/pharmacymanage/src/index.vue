@@ -136,12 +136,12 @@
           </el-table-column>
         </peace-table>
       </div>
-      <el-dialog v-if="reasonVisible"
-                 width="344px"
-                 v-bind:visible.sync="reasonVisible"
-                 title="未通过提示">
+      <PeaceDialog v-if="reasonVisible"
+                   width="344px"
+                   v-bind:visible.sync="reasonVisible"
+                   title="未通过提示">
         <span>{{reasonText}}</span>
-      </el-dialog>
+      </PeaceDialog>
     </div>
   </div>
 </template>
@@ -149,7 +149,7 @@
 <script>
 import Service from './service'
 import CONSTANT from './constant'
-import Peace from '@src/library'
+
 import EditPharmacy from './components/EditPharmacy'
 import PharmacyDetail from './components/PharmacyDetail'
 import OperationManage from './components/OperationManage'

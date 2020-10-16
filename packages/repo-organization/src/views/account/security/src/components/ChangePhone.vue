@@ -128,7 +128,6 @@
 <script>
 import Steps from './steps'
 import Service from '.././service'
-import Peace from '@src/library'
 
 export default {
   components: { Steps },

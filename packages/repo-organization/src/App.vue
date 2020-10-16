@@ -10,8 +10,6 @@
 // 定时任务
 import Timer from './timer'
 
-import Peace from '@src/library'
-
 export default {
   components: {
     Timer

@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 获取给药途径列表

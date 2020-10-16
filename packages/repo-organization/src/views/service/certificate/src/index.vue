@@ -1,9 +1,9 @@
 <template>
   <div class="layout-route">
     <div class="q-pa-lg bg-white">
-      <el-table :data="tableData"
-                style="width: 100%"
-                max-height="600">
+      <PeaceTable :data="tableData"
+                  style="width: 100%"
+                  max-height="600">
         <el-table-column fixed
                          prop="serviceName"
                          width="300"
@@ -47,7 +47,7 @@
             </el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </PeaceTable>
     </div>
   </div>
 

@@ -62,7 +62,6 @@
 <script>
 import CONSTANT from '../constant'
 import Service from '../service'
-import Peace from '@src/library'
 
 export default {
   name: 'DrugDetail',

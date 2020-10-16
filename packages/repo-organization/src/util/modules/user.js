@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
 const USER_TOKEN = 'user_token'

@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 获取我的服务列表接口
