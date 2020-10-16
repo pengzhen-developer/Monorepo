@@ -5,17 +5,29 @@
         <div class="title-left"></div>
         <p class="title">配送服务</p>
       </div>
-      <el-radio-group v-model="resource">
-        <el-radio label="1">免费配送</el-radio>
-        <el-radio label="2">
-          收费配送，配送费<el-input placeholder="请输入"
-                    maxlength="5"></el-input>元
+      <el-radio-group v-model="model.Shipping">
+        <el-radio v-bind:label=1>免费配送</el-radio>
+        <el-radio v-bind:label=2>
+          收费配送，配送费 <el-input-number placeholder="请输入"
+                           v-bind:min="0"
+                           v-bind:max="99.99"
+                           v-bind:precision="2"
+                           v-bind:controls="false"
+                           v-model="model.ShippingFee"></el-input-number>元
         </el-radio>
-        <el-radio label="3">
-          满<el-input placeholder="请输入"
-                    maxlength="5"></el-input>元免配送费，否则收配送费
-          <el-input placeholder="请输入"
-                    maxlength="5"></el-input>元
+        <el-radio v-bind:label=3>
+          满<el-input-number placeholder="请输入"
+                           v-bind:min="0"
+                           v-bind:max="99999"
+                           v-bind:precision="2"
+                           v-bind:controls="false"
+                           v-model="model.ShippingFull"></el-input-number>元免配送费，否则收配送费
+          <el-input-number placeholder="请输入"
+                           v-bind:min="0"
+                           v-bind:max="99.99"
+                           v-bind:precision="2"
+                           v-bind:controls="false"
+                           v-model="model.ShippingFeeByFull"></el-input-number>元
         </el-radio>
       </el-radio-group>
     </div>
@@ -25,13 +37,21 @@
         <div class="title-left"></div>
         <p class="title">优惠活动</p>
       </div>
-      <el-radio-group v-model="resource2">
-        <el-radio label="1">没有优惠活动</el-radio>
-        <el-radio label="2">
-          满减活动，满<el-input placeholder="请输入"
-                    maxlength="5"></el-input>元减
-          <el-input placeholder="请输入"
-                    maxlength="5"></el-input>元
+      <el-radio-group v-model="model.Promotions">
+        <el-radio v-bind:label=0>没有优惠活动</el-radio>
+        <el-radio v-bind:label=1>
+          满减活动，满<el-input-number placeholder="请输入"
+                           :min="0"
+                           v-bind:max="99999"
+                           v-bind:precision="2"
+                           v-bind:controls='false'
+                           v-model="model.PromotionsFull"></el-input-number>元减
+          <el-input-number placeholder="请输入"
+                           :min="0"
+                           v-bind:max="99.99"
+                           v-bind:precision="2"
+                           v-bind:controls='false'
+                           v-model="model.PromotionsCut"></el-input-number>元
         </el-radio>
       </el-radio-group>
     </div>
@@ -41,25 +61,74 @@
         <div class="title-left"></div>
         <p class="title">标签设置</p>
       </div>
-      <el-checkbox-group v-model="checkboxGroup1"
+      <el-checkbox-group v-model="model.Tags"
                          class="q-mb-48">
-        <el-checkbox-button v-for="city in cities"
-                            :label="city"
-                            :key="city">{{city}}</el-checkbox-button>
+        <el-checkbox-button v-for="item in tagList"
+                            :label="item"
+                            :key="item">{{item}}</el-checkbox-button>
       </el-checkbox-group>
     </div>
-    <el-button type="primary">保存</el-button>
+    <el-button type="primary"
+               v-on:click="save"
+               v-bind:loading="isLoading">保存</el-button>
   </div>
 </template>
 
 <script>
+import Service from '../service'
+import Peace from '@src/library'
 export default {
+  props: {
+    data: Number
+  },
   data() {
     return {
-      resource: '',
-      resource2: '',
-      checkboxGroup1: [],
-      cities: ['政府监督', '正品保证', '到店医保', '到店有礼']
+      model: {
+        ID: 0,
+        Shipping: 1,
+        Promotions: 0,
+        ShippingFull: '',
+        ShippingFee: '',
+        PromotionsFull: '',
+        ShippingFeeByFull: '',
+        PromotionsCut: '',
+        Tags: []
+      },
+      tagList: ['政府监督', '正品保证', '到店医保', '到店有礼'],
+      isLoading: false
+    }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
+  methods: {
+    fetch() {
+      const params = { CustID: this.data }
+      let _this = this
+      Service.GetOperationInfoByZYY(params).then((res) => {
+        const data = res.data.list
+        Object.keys(_this.model).forEach((key) => {
+          _this.model[key] = data[key]
+        })
+        _this.model.Tags = data.Tags !== null ? data.Tags.split(',') : []
+      })
+    },
+    save() {
+      this.isLoading = true
+      const params = Peace.util.deepClone(this.model)
+      params.CustID = this.data
+      params.Tags = params.Tags.length > 0 ? params.Tags.join(',') : ''
+      Service.SaveOperationInfoByZYY(params)
+        .then(() => {
+          Peace.util.success('保存成功')
+          this.$emit('goBack')
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     }
   }
 }
@@ -110,9 +179,12 @@ p {
 ::v-deep .el-radio__input.is-checked + .el-radio__label {
   color: #999 !important;
 }
-::v-deep .el-input {
+::v-deep .el-input-number--mini {
   width: 140px !important;
   margin: 0 8px;
+}
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
 }
 ::v-deep .el-checkbox-button__inner {
   margin-right: 10px;

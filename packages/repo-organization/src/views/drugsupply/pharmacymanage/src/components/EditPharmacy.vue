@@ -12,9 +12,10 @@
           <div class="info-title">药房基本信息</div>
           <div class="info-content">
             <el-form-item label="药房类型"
-                          prop="custType"
+                          prop="CustomerType"
                           required="">
-              <el-radio-group v-model="model.custType">
+              <el-radio-group v-on:change="changeCustomerType"
+                              v-model="model.CustomerType">
                 <el-radio v-bind:label=10>线下实体药房</el-radio>
                 <el-radio v-bind:label=80>线上电商平台</el-radio>
               </el-radio-group>
@@ -90,6 +91,7 @@
                         class="input-Width "></el-input>
             </el-form-item>
             <el-form-item label="联系人邮箱"
+                          class="email"
                           prop="UserMail"
                           label-width="100px">
               <el-input v-model.trim="model.UserMail"
@@ -138,7 +140,7 @@
                           prop="DistributionMode">
               <!-- 自提 -->
               <div class="row payMode"
-                   v-if="model.custType==10">
+                   v-if="model.CustomerType==10">
                 <el-form-item>
                   <el-checkbox-group class="q-mr-xl"
                                      v-model="DistributSelfMode">
@@ -151,9 +153,8 @@
                 <el-form-item v-if="DistributSelfMode.length > 0"
                               required
                               label="支付方式"
-                              prop="payModeSelf">
-                  <el-checkbox-group v-model="model.payModeSelf"
-                                     @change="handleCheckedPay">
+                              prop="PayModeSelf">
+                  <el-checkbox-group v-model="model.PayModeSelf">
                     <el-checkbox v-for="(item) in  PayselfList"
                                  :label="item.code"
                                  :key="item.code">{{item.name}}</el-checkbox>
@@ -174,9 +175,9 @@
 
                 <el-form-item v-if="DistributMode.length>0"
                               label="支付方式"
-                              prop="payMode"
+                              prop="PayMode"
                               required="">
-                  <el-checkbox-group v-model="model.payMode">
+                  <el-checkbox-group v-model="model.PayMode">
                     <el-checkbox v-for="(item) in  PayList"
                                  :label="item.code"
                                  :key="item.code">{{item.name}}</el-checkbox>
@@ -299,6 +300,8 @@ export default {
         } else {
           return callback(new Error())
         }
+      } else {
+        callback()
       }
     }
     // 校验电话
@@ -329,24 +332,25 @@ export default {
     return {
       isLoading: false,
       lock: false,
-      DistributionList: [{ code: 1, name: '配送' }],
+      dataBack: {},
       DistributSelfList: [{ code: 0, name: '自提' }],
+      DistributionList: [{ code: 1, name: '配送' }],
       DistributSelfMode: [],
       DistributMode: [],
       PayselfList: [
-        { code: 1, name: '在线支付' },
+        { code: 4, name: '在线支付' },
         { code: 2, name: '到店支付' }
       ],
       PayList: [
-        { code: 3, name: '在线支付' },
-        { code: 4, name: '货到付款' }
+        { code: 1, name: '在线支付' },
+        { code: 3, name: '货到付款' }
       ],
       startTime: '',
       endTime: '',
       model: {
         ID: 0,
         UserID: '',
-        custType: 10,
+        CustomerType: 10,
         SuborganizationCode: '',
         CustName: '',
         AreaCode: '',
@@ -363,8 +367,8 @@ export default {
         BusinessEndDate: '',
         ContactNumber: '',
         DistributionMode: [],
-        payMode: [],
-        payModeSelf: [],
+        PayMode: [],
+        PayModeSelf: [],
         logoUrl: '',
         BusinesslicenseUrl: '',
         DrugManagementlicenseUrl: '',
@@ -449,27 +453,30 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (this.DistributSelfMode.length === 0 && this.DistributMode.length === 0) {
-                callback(new Error('必须选一个!'))
+                callback(new Error('请选择配送方式'))
               }
-            },
-            trigger: ['blur', 'change']
-          }
-        ],
-        payModeSelf: [
-          {
-            validator: (rule, value, callback) => {
-              if (this.model.payModeSelf.length === 0) {
-                callback(new Error('必须选一个!!!!!'))
-              }
+
+              callback()
             }
           }
         ],
-        payMode: [
+        PayModeSelf: [
           {
             validator: (rule, value, callback) => {
-              if (this.model.payMode.length === 0) {
-                callback(new Error('必须选一个!!!!!!!!!!!!!!!!!!!!'))
+              if (this.model.PayModeSelf.length === 0) {
+                callback(new Error('请选择支付方式'))
               }
+              callback()
+            }
+          }
+        ],
+        PayMode: [
+          {
+            validator: (rule, value, callback) => {
+              if (this.model.PayMode.length === 0) {
+                callback(new Error('请选择支付方式'))
+              }
+              callback()
             }
           }
         ],
@@ -517,17 +524,42 @@ export default {
   created() {
     if (this.data !== '') {
       const params = { UserID: this.data }
-      let _this = this
       Service.getDetails(params).then((res) => {
         let resData = res.data.list
-        Object.keys(_this.model).forEach((key) => {
-          _this.model[key] = resData[key]
+        this.dataBack = Peace.util.deepClone(res.data.list)
+
+        Object.keys(this.model).forEach((key) => {
+          this.model[key] = resData[key]
         })
-        _this.model.UserID = _this.data
+        this.DistributSelfMode = this.model.DistributionMode.filter((item) => item === 0)
+        this.DistributMode = this.model.DistributionMode.filter((item) => item === 1)
+        this.model.UserID = this.data
       })
     }
   },
   methods: {
+    changeCustomerType(value) {
+      // 自提
+      this.model.PayModeSelf = []
+      this.DistributSelfMode = []
+      // 配送
+      this.model.PayMode = []
+      this.DistributMode = []
+
+      // 还原选择
+      if (this.dataBack.CustomerType === value) {
+        this.DistributSelfMode = this.dataBack.DistributionMode.filter((item) => item === 0)
+        this.DistributMode = this.dataBack.DistributionMode.filter((item) => item === 1)
+        this.model.PayModeSelf = this.dataBack.PayModeSelf
+        this.model.PayMode = this.dataBack.PayMode
+      }
+
+      // 清除验证
+      setImmediate(() => {
+        this.$refs.drugForm.clearValidate('DistributionMode')
+      })
+    },
+
     handleProvinceChange(val) {
       if (val != this.model.ProvinceCode) {
         this.model.ProvinceCode = val
@@ -598,25 +630,18 @@ export default {
           .finally(() => {})
       }
     },
-    handleCheckedDistribution(value) {
-      this.model.DistributionMode = value
-    },
-    handleCheckedPay(value) {
-      this.model.PayMode = value
-    },
-
     submit() {
       this.validateForm().then(() => {
         this.isLoading = true
         this.model.Province = this.$refs.regionSelector.getSelectedProvinceName()
         this.model.City = this.$refs.regionSelector.getSelectedCityName()
         this.model.Area = this.$refs.regionSelector.getSelectedAreaName()
+
         const params = Peace.util.deepClone(this.model)
-        console.log(params)
         Service.registerForProve(params)
           .then((res) => {
             console.log(res)
-            Peace.util.alert('提交成功')
+            Peace.util.success('提交成功')
             this.$emit('goBack')
           })
           .finally(() => {
@@ -641,6 +666,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .email {
+  .el-form-item__label {
+    &::before {
+      content: '*';
+      margin-right: 4px;
+      color: transparent;
+    }
+  }
+}
 .payMode {
   .el-form-item {
     margin-bottom: 14px;
@@ -706,7 +740,6 @@ export default {
 .upload-list {
   display: flex;
 }
-
 ::v-deep .upload-item {
   flex: none;
   width: 130px;

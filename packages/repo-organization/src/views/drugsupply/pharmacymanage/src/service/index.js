@@ -112,5 +112,43 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 获取药房运营信息
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  GetOperationInfoByZYY(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Pharmacy/GetOperationInfoByZYY'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 保存药房运营信息
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  SaveOperationInfoByZYY(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Pharmacy/SaveOperationInfoByZYY'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
