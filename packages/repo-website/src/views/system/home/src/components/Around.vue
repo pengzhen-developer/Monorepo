@@ -51,9 +51,9 @@
         </div>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogVisibleFlag"
-               center
-               width="980px">
+    <PeaceDialog :visible.sync="dialogVisibleFlag"
+                 center
+                 width="980px">
       <el-image :src="require('../assets/images/job_'+dialogVisibleData.logo)"
                 v-if="dialogVisibleData.logo"
                 lazy></el-image>
@@ -61,7 +61,7 @@
       <p class="size-main"
          v-html="dialogVisibleData.content"></p>
 
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -155,16 +155,16 @@
       </el-form>
 
     </div>
-    <el-dialog :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               :visible.sync="mapDialogVisible"
-               append-to-body
-               title="地图"
-               width="800px">
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="mapDialogVisible"
+                 append-to-body
+                 title="地图"
+                 width="800px">
       <TMap :defaultDetail="defaultDetail"
             v-if="mapDialogVisible"
             @getAddressData="getAddressData"></TMap>
-    </el-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

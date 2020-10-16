@@ -33,6 +33,7 @@ export const responseInterceptor = {
     else if (response?.data?.code === 403) {
       Peace.util.warning(response.data.msg)
 
+      Peace.identity.auth.removeAll()
       LibraryUtil.user.removeUserInfo()
       setTimeout(() => {
         LibraryUtil.user.replaceToLogin()
@@ -64,6 +65,7 @@ export const responseInterceptor = {
         case 401:
           Peace.util.warning('用户凭证已过期')
 
+          Peace.identity.auth.removeAll()
           LibraryUtil.user.removeUserInfo()
           setTimeout(() => {
             LibraryUtil.user.replaceToLogin()
