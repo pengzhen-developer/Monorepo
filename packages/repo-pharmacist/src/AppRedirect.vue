@@ -15,7 +15,7 @@
 <script>
 export default {
   mounted() {
-    if (Peace.identity.auth.isLogin) {
+    if (Peace.identity.auth.isLogin()) {
       this.$router.push({ name: 'AppIntercept' })
     } else {
       this.$router.push({ name: 'Login' })

@@ -64,7 +64,7 @@ const getDynamicRoutes = (accountMenu) => {
 }
 
 export default async function() {
-  if (Peace.identity.auth.isLogin) {
+  if (Peace.identity.auth.isLogin()) {
     const accountMenu = await getAccountMenu()
     const dynamicRoutes = await getDynamicRoutes(accountMenu)
 

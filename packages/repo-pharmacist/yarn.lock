@@ -902,28 +902,28 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/identity@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.1.9.tgz#212c7765f48683313757da87ef4cecf4a90abb29"
-  integrity sha512-c2q2Bz03Cr5+KpJyvqO665duP4U9c2b3lcoe5S2akb96MRTeTgQLIXOzqkG/5k5I4dKaRBFvvM8tXGgSl4Cdlg==
+"@jk998/identity@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.1.13.tgz#3b4ffac4fa9e98353a1a85e907f27dcde04d303d"
+  integrity sha512-Cek7Q2UpjanaAJVfL+Xut6ipf0rcPef5tYqf6QekvUzBYMAN7K0JP6u0escK7vP887JQVl2IExmoWKXEqu0/9w==
   dependencies:
-    "@jk998/library" "^0.1.12"
+    "@jk998/library" "^0.1.16"
     crypto-js "^4.0.0"
 
-"@jk998/library@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.12.tgz#f0d878387dd497cabdd68adb5a8ad9040127fcf3"
-  integrity sha512-Lj8Kvy9KoV/7DinMb3sRxaTTwfyNkGBwglO2TgBhVUZAjgoekNLIah1Hu+hEUNXm1Q2q9DNVa2StWR7axuwSpA==
+"@jk998/library@^0.1.14":
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.14.tgz#39fe484ec4f24f328df3ac65facd9c637353e2cb"
+  integrity sha512-ctXW5gUYncoGT2H4+lYTvJv0f/jibIB5M+5Z+WqT0FZz+xmbNX74ZeZ5xOJ0kxaAOZ7C0WipSTVLLSQVAxX3Bg==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.14.tgz#39fe484ec4f24f328df3ac65facd9c637353e2cb"
-  integrity sha512-ctXW5gUYncoGT2H4+lYTvJv0f/jibIB5M+5Z+WqT0FZz+xmbNX74ZeZ5xOJ0kxaAOZ7C0WipSTVLLSQVAxX3Bg==
+"@jk998/library@^0.1.16":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
+  integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"

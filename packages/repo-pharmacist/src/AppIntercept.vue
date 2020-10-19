@@ -18,7 +18,7 @@
 <script>
 export default {
   beforeRouteEnter(to, from, next) {
-    if (Peace.identity.auth.isLogin) {
+    if (Peace.identity.auth.isLogin()) {
       if (to.path === '/AppIntercept') {
         next((vm) => vm.$router.replace({ name: 'Layout' }))
       } else {
