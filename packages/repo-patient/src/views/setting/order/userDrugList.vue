@@ -104,11 +104,11 @@
                      @click="goDrugLogiPage(item)">查看物流
                 </div>
                 <div class="label blue"
-                     v-if="item.OrderStatus == '3' && item.ShippingMethod != '0'"
+                     v-if="item.OrderStatus == '4' && item.ShippingMethod != '0'"
                      @click="submitOrder(item)">确认收货
                 </div>
                 <div class="label blue"
-                     v-if="(item.OrderStatus == '3' || item.OrderStatus == '2') && item.ShippingMethod == '0'"
+                     v-if="item.OrderStatus == '4' && item.ShippingMethod == '0'"
                      @click="submitOrder(item)">确认取药
                 </div>
               </div>
