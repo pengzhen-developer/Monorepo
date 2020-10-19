@@ -902,12 +902,12 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/identity@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.1.13.tgz#3b4ffac4fa9e98353a1a85e907f27dcde04d303d"
-  integrity sha512-Cek7Q2UpjanaAJVfL+Xut6ipf0rcPef5tYqf6QekvUzBYMAN7K0JP6u0escK7vP887JQVl2IExmoWKXEqu0/9w==
+"@jk998/identity@^0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.1.17.tgz#8efb570653190127f8b4661c0ba320a014dcce71"
+  integrity sha512-rfkYxnTPKXg/4ADniv9dsvXOLEEg69Nt7mZbiNMTDsEkEDA4nM7JaP6TO/A0V0FWND9Lviy6UuM2iqfm/vAIjg==
   dependencies:
-    "@jk998/library" "^0.1.16"
+    "@jk998/library" "^0.1.17"
     crypto-js "^4.0.0"
 
 "@jk998/library@^0.1.14":
@@ -920,7 +920,7 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.16":
+"@jk998/library@^0.1.17":
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
   integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
