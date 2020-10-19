@@ -5,7 +5,8 @@
       <div>{{ service.serviceName }}</div>
     </div>
 
-    <!-- <div class="name">
+    <div class="name"
+         v-if="showDockingWay()">
       <div class="title">对接方式：</div>
 
       <el-radio-group v-model="checkData">
@@ -15,7 +16,7 @@
                   :key="index">{{ item.name }}</el-radio>
       </el-radio-group>
 
-    </div> -->
+    </div>
 
     <div class="bottom">
       <el-button type="primary"
@@ -27,6 +28,7 @@
 
 <script>
 import Service from '../service'
+import util from '@src/util'
 
 export default {
   data() {
@@ -45,19 +47,30 @@ export default {
     },
 
     onInput() {
-      // if (this.checkData.id == undefined) {
-      //   Peace.util.warning('请先选择一种对接方式')
-      //   return
-      // }
+      if (this.showDockingWay()) {
+        // 仓配机构默认对接方式
+        this.checkData.id = 3
+      }
+
+      if (this.checkData.id == undefined) {
+        Peace.util.warning('请先选择一种对接方式')
+        return
+      }
       this.doApply()
     },
 
     doApply() {
-      const params = { serviceId: this.service.id, accessMode: '3' }
+      const params = { serviceId: this.service.id, accessMode: this.checkData.id }
       Service.doApply(params).then((res) => {
         Peace.util.success(res.msg)
         this.$emit('onSuccess')
       })
+    },
+
+    showDockingWay() {
+      // 1医疗机构 2店配机构 3仓配机构
+      const { role } = util.user.getUserInfo()
+      return role != 3
     }
   }
 }
