@@ -103,16 +103,6 @@ export const isSignIn = () => {
   return !!getUserInfo() && !!getAccountMenuList()
 }
 
-/**
- * logout
- */
-export const logout = () => {
-  let apiPath = `auth/token/logout`
-  const serverPath = process.env.VUE_APP_AUTH_API
-  let requestApi = serverPath + apiPath
-  return Peace.http.delete(requestApi)
-}
-
 export default {
   setUserInfo,
   getUserInfo,
@@ -126,6 +116,5 @@ export default {
   getAccountMenuList,
   removeAccountMenuList,
 
-  isSignIn,
-  logout
+  isSignIn
 }

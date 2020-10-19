@@ -29,7 +29,7 @@ export default {
         next()
       }
     } else {
-      next(`/login`)
+      Util.login()
     }
   },
 
