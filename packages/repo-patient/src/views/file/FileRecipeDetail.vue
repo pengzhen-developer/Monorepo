@@ -45,7 +45,8 @@
           <div class="row-header-title weight">
             <div class="row-header-title-span weight">
               体重
-              <span>{{data.list[current].weight}}kg</span></div>
+              <span>{{data.list[current].weight}}kg</span>
+            </div>
           </div>
         </div>
       </div>
@@ -120,14 +121,20 @@
           <div class="flex"
                style="flex: 1;">
             <span class="justify row-dd"><span>医师</span> ：</span>
-            <span class="row-img"><img :src="data.list[current].doctorSignImage"
-                   v-if="data.list[current].doctorSignImage" /></span>
+            <span class="row-img">
+              {{data.list[current].doctorName}}
+              <!-- <img :src="data.list[current].doctorSignImage"
+                   v-if="data.list[current].doctorSignImage" /> -->
+            </span>
           </div>
           <div class="flex"
                style="flex: 1;">
             <span class="row-dd">审核药师：</span>
-            <span class="row-img"><img :src="data.list[current].prescriptionSign"
-                   v-if="data.list[current].prescriptionSign" /></span>
+            <span class="row-img">
+              {{data.list[current].prescriptionPharmacistName}}
+              <!-- <img :src="data.list[current].prescriptionSign"
+                   v-if="data.list[current].prescriptionSign" /> -->
+            </span>
           </div>
         </div>
         <div class="flex between">
@@ -145,7 +152,7 @@
       </div>
 
       <div class="footer">
-        <span>注意：仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，3日内处方有效。</span>
+        <span>注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</span>
       </div>
     </template>
   </div>
