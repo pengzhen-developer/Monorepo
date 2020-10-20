@@ -318,9 +318,9 @@ export default {
         AMPM: this.dialog.data.AMPM
       })
       this.$router.push(`/components/doctorInquiryApply/${json}`)
+      this.dialog.visible = false
     },
     goToPay(data) {
-      // console.log(data)
       const json = peace.util.encode({
         money: data.orderMoney,
         typeName: this.doctor.doctorInfo.serviceName,
