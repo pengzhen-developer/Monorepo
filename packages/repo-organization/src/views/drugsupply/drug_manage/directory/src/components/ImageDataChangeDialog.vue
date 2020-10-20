@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>药品图片上传药品图片，最多可上传9张，尺寸700*700px，图片大小1M以内</p>
+    <p>上传药品图片，最多可上传9张，支持jpg 、jpeg 、bmp 、gif 、png格式图片，大小不超过2M</p>
     <div class="content-img">
 
       <el-upload class="avatar-uploader content-img-item"
@@ -42,7 +42,8 @@ export default {
   },
   data() {
     return {
-      imageList: []
+      imageList: [],
+      imageUpdataList: []
     }
   },
 
@@ -62,7 +63,10 @@ export default {
     get() {
       const params = { ID: this.drugId }
       Service.GetImagesByCustDrug(params).then((res) => {
-        if (res.data.list != '') this.imageList = res.data.list.split(',')
+        if (res.data.list != '') {
+          this.imageList = res.data.list.split(',')
+          this.imageUpdataList = res.data.list.split(',')
+        }
       })
     },
 
@@ -82,6 +86,7 @@ export default {
         Service.uploadImage(param)
           .then((res) => {
             _this.imageList.push(res.data.SignUrl)
+            _this.imageUpdataList.push(res.data.Url)
             Peace.util.success(res.msg)
           })
           .finally(() => {})
@@ -89,15 +94,24 @@ export default {
     },
 
     beforeAvatarUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
+      let isJPG =
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg' ||
+        file.type === 'image/bmp' ||
+        file.type === 'image/png' ||
+        file.type === 'image/gif'
 
-      if (!isLt1M) {
-        this.$message.error('上传头像图片大小不能超过 1MB!')
+      const isLt1M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传图片支持jpg、jpeg、bmp、gif、png 格式')
+      } else if (!isLt1M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isLt1M
     },
     deleteOne(index) {
       this.imageList.splice(index, 1)
+      this.imageUpdataList.splice(index, 1)
     },
 
     onCancel() {
@@ -105,7 +119,7 @@ export default {
     },
 
     onSave() {
-      const params = { ID: this.drugId, DrugImages: this.imageList.join(',') }
+      const params = { ID: this.drugId, DrugImages: this.imageUpdataList.join(',') }
       Service.SaveImagesByCustDrug(params).then((res) => {
         this.$emit('onSucess')
         Peace.util.success(res.msg)
