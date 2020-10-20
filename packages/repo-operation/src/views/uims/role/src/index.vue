@@ -129,7 +129,7 @@ export default {
     changeStatus(row) {
       const message = row.status ? '确定启用吗？' : '确定禁用吗？'
 
-      this.$confirm(message, '提示')
+      this.$confirm(message, '提示', { closeOnClickModal: false, closeOnPressEscape: false })
         .then(() => {
           Service.editRoleStatus(row)
             .then((res) => {

@@ -211,7 +211,7 @@ export default {
     changeOpenState(row) {
       const message = row.isOpen === 1 ? '确定启用该账号？' : '确定禁用该账号？'
 
-      this.$confirm(message, '提示')
+      this.$confirm(message, '提示', { closeOnClickModal: false, closeOnPressEscape: false })
         .then(() => {
           const params = {
             accountId: row.id,

@@ -149,7 +149,7 @@ export default {
     },
 
     showRemove(row) {
-      this.$confirm('确定删除吗？').then(() => {
+      this.$confirm('确定删除吗？', { closeOnClickModal: false, closeOnPressEscape: false }).then(() => {
         Service.delMenu(row).then((res) => {
           Peace.util.success(res.msg)
 
