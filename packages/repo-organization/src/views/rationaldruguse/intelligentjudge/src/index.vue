@@ -155,8 +155,8 @@ export default {
   },
   watch: {
     DateValue(value) {
-      this.model.StarDate = value?.[0] ?? ''
-      this.model.EndDate = value?.[1] ?? ''
+      this.model.startTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
     }
   },
   mounted() {
