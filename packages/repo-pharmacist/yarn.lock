@@ -910,16 +910,6 @@
     "@jk998/library" "^0.1.17"
     crypto-js "^4.0.0"
 
-"@jk998/library@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.14.tgz#39fe484ec4f24f328df3ac65facd9c637353e2cb"
-  integrity sha512-ctXW5gUYncoGT2H4+lYTvJv0f/jibIB5M+5Z+WqT0FZz+xmbNX74ZeZ5xOJ0kxaAOZ7C0WipSTVLLSQVAxX3Bg==
-  dependencies:
-    axios "^0.20.0"
-    dayjs "^1.8.35"
-    js-base64 "^3.5.2"
-    numeral "^2.0.6"
-
 "@jk998/library@^0.1.17":
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
@@ -930,10 +920,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.1.tgz#68ce6c54c8678fc005b86742df5ebfeeded4725b"
-  integrity sha512-iKC/L3C/ZH68+Kh22i9N/J7DzvvtCaxnMvWpL2bzPexeYy6vWRsgocDQYn8l9GJzOPebolxFuQ1Zqtj2+rhBkA==
+"@jk998/peace-element-ui@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.5.tgz#80fa704142ba13719bdbd09b73c783a89a0452bf"
+  integrity sha512-RwDTGJ7SJlb3BQoNc2YMzey2GJ+ZmgCQP6fBaxXHbEkm2nsiM9tx4w9LdwykwigDkLY0NGTd6UuYPGOUmkZTHA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

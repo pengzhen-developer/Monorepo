@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Observable from './../observable'
+import Observable_Layout from './../observable'
 
 export default {
   data() {
@@ -25,14 +25,14 @@ export default {
   },
 
   computed: {
-    tabs: () => Observable.state.tabs,
-    tab: () => Observable.state.tab
+    tabs: () => Observable_Layout.state.tabs,
+    tab: () => Observable_Layout.state.tab
   },
 
   watch: {
     '$route.path'() {
       if (this.$route.meta && this.$route.meta.id !== this.tab.id) {
-        Observable.mutations.setTab(this.$route.meta)
+        Observable_Layout.mutations.setTab(this.$route.meta)
       }
     },
 
@@ -69,15 +69,15 @@ export default {
     tabClick(tabComponent) {
       const tab = this.tabs.find((item) => item.id === tabComponent.name)
 
-      Observable.mutations.setTab(tab)
+      Observable_Layout.mutations.setTab(tab)
     },
 
     tabRemove(id) {
       const tab = this.tabs.find((item) => item.id === id)
-      Observable.mutations.removeTab(tab)
+      Observable_Layout.mutations.removeTab(tab)
 
       const lastTab = this.tabs[this.tabs.length - 1]
-      Observable.mutations.setTab(lastTab)
+      Observable_Layout.mutations.setTab(lastTab)
     }
   }
 }

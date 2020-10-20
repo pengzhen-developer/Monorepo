@@ -10,7 +10,7 @@
 
 <script>
 import { dom } from 'quasar'
-import Observable from './../observable'
+import Observable_Layout from './../observable'
 
 import LayoutSideNavItem from './LayoutSideNavItem'
 
@@ -39,8 +39,8 @@ export default {
   },
 
   computed: {
-    tab: () => Observable.state.tab,
-    tabs: () => Observable.state.tabs
+    tab: () => Observable_Layout.state.tab,
+    tabs: () => Observable_Layout.state.tabs
   },
 
   watch: {
@@ -69,8 +69,8 @@ export default {
         // 当 tabs 缓存不存在
         // 默认选中菜单第一项
         if (this.tabs.length === 0 || this.tab.id === undefined) {
-          Observable.mutations.setTabs([])
-          Observable.mutations.setTab({})
+          Observable_Layout.mutations.setTabs([])
+          Observable_Layout.mutations.setTab({})
 
           document.body.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)?.click()
         }
@@ -90,8 +90,8 @@ export default {
     selectMenu(id) {
       const menu = this.menuList.find((item) => item.id === id)
 
-      Observable.mutations.addTab(menu)
-      Observable.mutations.setTab(menu)
+      Observable_Layout.mutations.addTab(menu)
+      Observable_Layout.mutations.setTab(menu)
     }
   }
 }

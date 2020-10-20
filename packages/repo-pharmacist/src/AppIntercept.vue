@@ -12,11 +12,34 @@
  */
 
 <template>
-  <router-view />
+  <div class="window-width window-height overflow-hidden">
+    <q-spinner v-if="showLoading"
+               class="absolute-center"
+               size="24"
+               color="primary"></q-spinner>
+
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      showLoading: false
+    }
+  },
+
+  watch: {
+    '$route.path'() {
+      if (this.$route.name === 'AppIntercept') {
+        this.showLoading = true
+      } else {
+        this.showLoading = false
+      }
+    }
+  },
+
   beforeRouteEnter(to, from, next) {
     if (Peace.identity.auth.isLogin()) {
       if (to.path === '/AppIntercept') {
@@ -25,8 +48,12 @@ export default {
         next()
       }
     } else {
-      next((vm) => vm.$router.replace({ name: 'Login' }))
+      if (to.path !== '/login') {
+        next((vm) => vm.$router.replace({ name: 'Login' }))
+      }
     }
+
+    next()
   },
 
   beforeRouteUpdate(to, from, next) {

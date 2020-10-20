@@ -16,7 +16,7 @@
 
 <script>
 import { dom } from 'quasar'
-import Observable from './../observable'
+import Observable_Layout from './../observable'
 
 export default {
   data() {
@@ -37,7 +37,7 @@ export default {
     keepAliveInclude() {
       // 基于 layout - tabs 实现标签页的缓存
       // ** 请注意， component name 与 menuAlias 必须保持一致
-      return Observable.state.tabs.map((item) => item.menuAlias)
+      return Observable_Layout.state.tabs.map((item) => item.menuAlias)
     }
   },
 

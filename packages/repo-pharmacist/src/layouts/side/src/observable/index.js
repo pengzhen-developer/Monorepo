@@ -1,7 +1,25 @@
 import Vue from 'vue'
 
+const CONSTANT = {
+  /**
+   * 所有标签页
+   */
+  LAYOUT_TABS: 'layout-tabs',
+  /**
+   * 当前标签页
+   */
+  LAYOUT_TAB: 'layout-tab'
+}
+
 const state = Vue.observable({
+  /**
+   * 所有标签页
+   */
   tabs: [],
+
+  /**
+   * 当前标签页
+   */
   tab: {}
 })
 
@@ -20,7 +38,7 @@ const mutations = {
       state.tabs[index] = tab
     }
 
-    Peace.cache.sessionStorage.set('layout-tabs', state.tabs)
+    Peace.cache.sessionStorage.set(CONSTANT.LAYOUT_TABS, state.tabs)
   },
 
   /**
@@ -31,7 +49,7 @@ const mutations = {
   setTab(tab) {
     state.tab = tab
 
-    Peace.cache.sessionStorage.set('layout-tab', tab)
+    Peace.cache.sessionStorage.set(CONSTANT.LAYOUT_TAB, tab)
   },
 
   /**
@@ -45,6 +63,8 @@ const mutations = {
     if (index !== -1) {
       state.tabs.splice(index, 1)
     }
+
+    this.setTabs(state.tabs)
   },
 
   /**
@@ -55,7 +75,7 @@ const mutations = {
   setTabs(tabs) {
     state.tabs = tabs
 
-    Peace.cache.sessionStorage.set('layout-tabs', tabs)
+    Peace.cache.sessionStorage.set(CONSTANT.LAYOUT_TABS, tabs)
   },
 
   /**
@@ -63,7 +83,7 @@ const mutations = {
    *
    */
   restoreTabs() {
-    state.tabs = Peace.cache.sessionStorage.get('layout-tabs') || []
+    state.tabs = Peace.cache.sessionStorage.get(CONSTANT.LAYOUT_TABS) || []
   },
 
   /**
@@ -71,7 +91,7 @@ const mutations = {
    *
    */
   restoreTab() {
-    state.tab = Peace.cache.sessionStorage.get('layout-tab') || {}
+    state.tab = Peace.cache.sessionStorage.get(CONSTANT.LAYOUT_TAB) || {}
   },
 
   /**
@@ -81,7 +101,7 @@ const mutations = {
   clearTabs() {
     state.tabs = []
 
-    Peace.cache.sessionStorage.remove('layout-tabs')
+    Peace.cache.sessionStorage.remove(CONSTANT.LAYOUT_TABS)
   },
 
   /**
@@ -91,7 +111,7 @@ const mutations = {
   clearTab() {
     state.tab = {}
 
-    Peace.cache.sessionStorage.remove('layout-tab')
+    Peace.cache.sessionStorage.remove(CONSTANT.LAYOUT_TAB)
   }
 }
 
