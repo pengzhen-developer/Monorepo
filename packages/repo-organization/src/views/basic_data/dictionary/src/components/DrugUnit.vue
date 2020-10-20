@@ -166,7 +166,10 @@ export default {
       endPickerOptions: {
         disabledDate: (time) => {
           if (this.model.BeginTime) {
-            return time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) || time.getTime() > Date.now()
+            return (
+              time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) ||
+              time.getTime() > Date.now()
+            )
           } else {
             return time.getTime() > Date.now() || time.getTime() < new Date('2019-02-28').getTime()
           }
@@ -185,7 +188,7 @@ export default {
     get() {
       const fetch = Service.DrugUnitPaging
       const params = this.model
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
     addItem() {
       this.detailDialog.visible = true

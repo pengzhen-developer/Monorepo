@@ -855,10 +855,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.npm.taobao.org/@jk998/peace-element-ui/download/@jk998/peace-element-ui-0.1.3.tgz#867b033b0f0c6b82a242c45dfbc01244b42d84e9"
-  integrity sha1-hnsDOw8Ma4KiQsRd+8ASRLQthOk=
+"@jk998/peace-element-ui@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.4.tgz#d3318ae0a95034d662b82040e0b61d491bae3772"
+  integrity sha512-3PVFeXLz3Z547zAYDhJijOjPLB5dWqEdzI5XaXXnAVGKkL7wQVe0xhbIVB3TQPo7zntrEod0qOColJodmWm4sQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

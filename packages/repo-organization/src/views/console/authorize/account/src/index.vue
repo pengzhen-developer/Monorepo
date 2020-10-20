@@ -164,7 +164,7 @@ export default {
       const [start, end] = params.pickDate
       params.startTime = start
       params.endTime = end
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
     changeStatus(row) {
       const message = row.lockFlag == '0' ? '确定启用该账号？' : '确定禁用该账号？'

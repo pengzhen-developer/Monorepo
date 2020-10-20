@@ -114,7 +114,7 @@ export default {
     get() {
       const fetch = Service.getICD10Info
       const params = this.model
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
     showAddCode(addCode) {
       return addCode == null ? '---' : addCode

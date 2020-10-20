@@ -92,6 +92,7 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
+                  stripe
                   pagination
                   max-height="600">
         <el-table-column prop="CustDrugsCode"
@@ -220,9 +221,8 @@ export default {
   methods: {
     get() {
       const fetch = Service.GetDrugListPaing
-      const params = this.model
-
-      this.$refs.table.loadData({ fetch, params })
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     addDrug() {

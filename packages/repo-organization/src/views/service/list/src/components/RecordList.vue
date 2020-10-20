@@ -155,7 +155,7 @@ export default {
       const [start, end] = this.model.pickDate
       params.startTime = start
       params.endTime = end
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     getStatusForCode(code) {

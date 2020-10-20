@@ -206,7 +206,7 @@ export default {
       const fetch = Service.GetDrugListPaing
       const params = this.model
 
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     addDrug() {

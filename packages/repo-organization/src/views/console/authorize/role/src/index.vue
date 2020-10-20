@@ -128,7 +128,7 @@ export default {
     get() {
       const fetch = Service.role().page
       const params = Peace.util.deepClone(this.model)
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params })
     },
     changeStatus(row) {
       const message = row.enable == '0' ? '确定启用该角色？' : '确定禁用该角色？'
