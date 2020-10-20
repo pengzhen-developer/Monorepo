@@ -55,11 +55,11 @@
         </el-form-item>
         <el-form-item label="处方审核时间："
                       label-width="110px">
-          <el-date-picker value-format="yyyy-MM-dd HH:mm:ss"
-                          v-bind:default-time="['00:00:00', '23:59:59']"
-                          format="yyyy-MM-dd"
-                          type="daterange"
-                          v-model.trim="DateValue"></el-date-picker>
+          <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
+                             v-bind:default-time="['00:00:00', '23:59:59']"
+                             format="yyyy-MM-dd"
+                             type="daterange"
+                             v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
         <el-form-item label
                       label-width="0">
