@@ -132,12 +132,17 @@
       </div>
     </div>
     <div class="bt">注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
-    <div class="bottom"
+    <!-- <div class="bottom"
          v-if="internalData.prescriptionStatus && ($peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false)">
       <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
-           :data-type="internalData.prescriptionStatus.key"
            @click="goMenuPage(internalData)"
            class="btn btn-blue block">{{ internalData.prescriptionStatus.msg }}</div>
+    </div> -->
+    <div class="bottom"
+         v-if="canShowBottomBlock">
+      <div :class="BottomBlockBackClass"
+           @click="goMenuPage(internalData)"
+           class="btn btn-blue block">{{ OrderDrugStatusText[internalData.orderDrugStatus] }}</div>
     </div>
 
     <div class="shadow"
@@ -157,6 +162,27 @@
 
 <script>
 import peace from '@src/library'
+const OrderDrugStatus = {
+  待购药: 1,
+  已下单: 2,
+  已购药: 3,
+  已失效: 4
+}
+const OrderDrugStatusText = {
+  1: '去购药',
+  2: '药品已预约，查看详情',
+  3: '药品已预约，查看详情',
+  4: '已失效处方不可购药'
+}
+// prescription_status  新处方状态   0."已预审",1."待审核", 2."质疑中", 3."未通过", 4."已作废",5."已通过"
+const PrescriptionStatus = {
+  已预审: 0,
+  待审核: 1,
+  质疑中: 2,
+  未通过: 3,
+  已作废: 4,
+  已通过: 5
+}
 export default {
   props: {
     data: {
@@ -169,6 +195,9 @@ export default {
 
   data() {
     return {
+      OrderDrugStatus: OrderDrugStatus,
+      OrderDrugStatusText: OrderDrugStatusText,
+      PrescriptionStatus: PrescriptionStatus,
       internalData: undefined,
       fromDrugDetail: false,
       dialog: {
@@ -182,6 +211,18 @@ export default {
   computed: {
     canShowPrescriptionStatus() {
       return $peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false && this.internalData?.prescriptionStatus?.key
+    },
+    canShowBottomBlock() {
+      return (
+        this.internalData.prescription == this.PrescriptionStatus.已通过 &&
+        $peace.$route.params.json &&
+        $peace.util.decode($peace.$route.params.json).showDetailButton !== false
+      )
+    },
+    BottomBlockBackClass() {
+      return this.internalData.prescription == this.PrescriptionStatus.已通过 && this.internalData.orderDrugStatus != this.OrderDrugStatus.已失效
+        ? 'btn-blue'
+        : 'btn-default'
     }
   },
   watch: {
@@ -218,9 +259,9 @@ export default {
         this.internalData = res.data
       })
     },
-    goMenuPage: function(data) {
-      let key = data.prescriptionStatus.key
-      if (key == '2') {
+    goMenuPage(data) {
+      const key = data.orderDrugStatus
+      if (key == OrderDrugStatus.待购药) {
         //去配药页面
         let claimNo = data.claimNo
         let familyId = data.familyId
@@ -229,7 +270,7 @@ export default {
         this.$router.push(`/drug/list/${json}`)
         return
       }
-      if (key == '5' || key == '6') {
+      if (key == OrderDrugStatus.已下单 || key == OrderDrugStatus.已购药) {
         const json = peace.util.encode({ OrderId: data.orderId })
         this.$router.push(`/order/userDrugDetail/${json}`)
         return
@@ -386,31 +427,32 @@ export default {
     height: 98px;
     background-size: cover;
   }
-  /* 1、审核中  2、待取药  3、已作废  4、已失效 5、已配药  6、已取药*/
 
+  //新处方戳状态 1.'审核中'2.'已通过'3'已作废'
+
+  .icon-status.icon-status-0::after {
+    content: '';
+    background-image: url('../../assets/images/icon-status-1.png');
+  }
   .icon-status.icon-status-1::after {
     content: '';
-    background-image: url('../../assets/images/icon-status-1.jpg');
+    background-image: url('../../assets/images/icon-status-1.png');
   }
   .icon-status.icon-status-2::after {
     content: '';
-    background-image: url('../../assets/images/icon-status-2.jpg');
+    background-image: url('../../assets/images/icon-status-1.png');
   }
   .icon-status.icon-status-3::after {
     content: '';
-    background-image: url('../../assets/images/icon-status-3.jpg');
+    background-image: url('../../assets/images/icon-status-3.png');
   }
   .icon-status.icon-status-4::after {
     content: '';
-    background-image: url('../../assets/images/icon-status-4.jpg');
+    background-image: url('../../assets/images/icon-status-3.png');
   }
   .icon-status.icon-status-5::after {
     content: '';
-    background-image: url('../../assets/images/icon-status-5.jpg');
-  }
-  .icon-status.icon-status-6::after {
-    content: '';
-    background-image: url('../../assets/images/icon-status-6.jpg');
+    background-image: url('../../assets/images/icon-status-2.png');
   }
 
   .outline {
