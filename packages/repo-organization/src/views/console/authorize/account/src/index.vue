@@ -28,11 +28,11 @@
             <span>创建日期</span>
             <span class="text-center q-ml-sm">：</span>
           </div>
-          <el-date-picker type="daterange"
-                          v-model="model.pickDate"
-                          value-format="yyyy-MM-dd"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期"></el-date-picker>
+          <peace-date-picker type="daterange"
+                             v-model="model.pickDate"
+                             value-format="yyyy-MM-dd"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期"></peace-date-picker>
         </el-form-item>
         <el-form-item label=" ">
           <el-button type="primary"

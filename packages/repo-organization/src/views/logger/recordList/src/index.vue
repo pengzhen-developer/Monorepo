@@ -30,9 +30,9 @@
         </el-form-item>
 
         <el-form-item label="操作日期：">
-          <el-date-picker type="daterange"
-                          v-model="model.timeRange"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <peace-date-picker type="daterange"
+                             v-model="model.timeRange"
+                             value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
 
         <el-form-item label="">

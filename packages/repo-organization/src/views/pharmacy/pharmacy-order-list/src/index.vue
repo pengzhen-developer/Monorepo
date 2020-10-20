@@ -82,10 +82,10 @@
             <span>：</span>
           </span>
 
-          <el-date-picker type="daterange"
-                          value-format="yyyy-MM-dd"
-                          placeholder=""
-                          v-model="TimeRange"></el-date-picker>
+          <peace-date-picker type="daterange"
+                             value-format="yyyy-MM-dd"
+                             placeholder=""
+                             v-model="TimeRange"></peace-date-picker>
         </el-form-item>
 
         <el-form-item>
