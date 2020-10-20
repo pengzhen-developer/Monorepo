@@ -15,7 +15,7 @@ export default async ({ Vue }) => {
   })
 
   Vue.use(Identity, {
-    baseApi: 'https://devauth.imedcloud.jk.com/'
+    baseApi: process.env.VUE_APP_API_BASE
   })
 
   console.log(
