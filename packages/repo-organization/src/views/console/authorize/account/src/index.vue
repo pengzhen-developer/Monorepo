@@ -169,7 +169,7 @@ export default {
     changeStatus(row) {
       const message = row.lockFlag == '0' ? '确定启用该账号？' : '确定禁用该账号？'
 
-      this.$confirm(message, '提示')
+      this.$confirm(message, '提示', { closeOnClickModal: false })
         .then(() => {
           const params = {
             userId: row.userId,
@@ -187,7 +187,7 @@ export default {
         })
     },
     resetPassword(row) {
-      this.$confirm('确定重置密码？', '提示')
+      this.$confirm('确定重置密码？', '提示', { closeOnClickModal: false })
         .then(() => {
           const params = {
             userId: row.userId

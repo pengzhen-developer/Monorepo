@@ -185,7 +185,8 @@ export default {
         customClass: 'service-item-confirm',
         cancelButtonClass: 'service-item-confirm-cancel',
         confirmButtonClass: 'service-item-confirm-confirm',
-        center: true
+        center: true,
+        closeOnClickModal: false
       })
         .then(() => {
           this.doApply(service)

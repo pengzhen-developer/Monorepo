@@ -133,7 +133,7 @@ export default {
     changeStatus(row) {
       const message = row.enable == '0' ? '确定启用该角色？' : '确定禁用该角色？'
 
-      this.$confirm(message, '提示')
+      this.$confirm(message, '提示', { closeOnClickModal: false })
         .then(() => {
           const params = row
           Service.role()

@@ -248,7 +248,8 @@ export default {
 
       this.$confirm(this.showText, '提示', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
+        closeOnClickModal: false
       })
         .then(() => {
           this.saveing = true

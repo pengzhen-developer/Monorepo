@@ -91,7 +91,8 @@ export default {
     download() {
       this.$confirm('下载 <strong>药品批量修改编码模板<strong> ？', '文件下载', {
         dangerouslyUseHTMLString: true,
-        type: 'info'
+        type: 'info',
+        closeOnClickModal: false
       }).then(() => {
         const url = `${process.env.VUE_APP_PSD_API}Template/UpdateBatchOrderCodeTemplate.xls`
         window.open(url, '_blank')
