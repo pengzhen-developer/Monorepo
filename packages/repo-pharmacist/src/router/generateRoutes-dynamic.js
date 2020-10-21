@@ -35,7 +35,7 @@ const getAccountMenu = () => {
 const getDynamicRoutes = (accountMenu) => {
   const routeDynamic = [
     {
-      path: '/AppIntercept',
+      path: '/app-intercept',
       name: 'AppIntercept',
       component: () => import('@src/AppIntercept'),
       children: [
