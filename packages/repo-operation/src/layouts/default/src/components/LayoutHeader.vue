@@ -21,7 +21,7 @@
         </transition>
       </div>
 
-      <div class="col">
+      <div class="col q-pt-sm">
 
         <transition enter-active-class="animated jump-out"
                     leave-active-class="animated jump-up">
@@ -43,7 +43,7 @@
         </transition>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center q-pt-sm">
 
         <!-- 用户名称 -->
         <span class="q-mr-sm">
@@ -140,8 +140,8 @@ export default {
   }
 
   color: #ffffffb3;
-  height: 80px;
-  line-height: 80px;
+  height: 72px;
+  line-height: 72px;
   padding: 0;
   margin: 0 20px;
   font-size: 16px;
