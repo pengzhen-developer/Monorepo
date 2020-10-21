@@ -49,6 +49,10 @@
       <PeaceTable ref="table"
                   style="width: 100%"
                   pagination
+                  :tableProps="{
+                    pageIndex: 'current',
+                    pageSize: 'size'
+                  }"
                   max-height="600">
         <el-table-column type="index"
                          fixed
