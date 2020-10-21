@@ -214,6 +214,9 @@ export default {
     drugSelect(drug) {
       const drugObject = Peace.util.deepClone(drug)
 
+      // 选择药品时，单次剂量不能带入
+      drugObject.singleDose = undefined
+
       if (drugObject.drugStatus !== 'disable') {
         this.$emit('add', drugObject)
       } else {
