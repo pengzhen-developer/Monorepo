@@ -24,7 +24,7 @@
     "vuex": "^3.3.0",
     "@jk998/library": "^0.1.17",
     "@jk998/identity": "^0.1.17",
-    "@jk998/peace-element-ui": "^0.1.4"
+    "@jk998/peace-element-ui": "^0.1.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.0",

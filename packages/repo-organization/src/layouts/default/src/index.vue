@@ -145,7 +145,7 @@ export default {
       return tree
     },
     toggleDrawer(state) {
-      if (Peace.util.type(state).isBoolean) {
+      if (Peace.util.isType(state).isBoolean) {
         this.showDrawerModel = state
       } else {
         this.showDrawerModel = !this.showDrawerModel
