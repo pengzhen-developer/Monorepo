@@ -5,33 +5,27 @@
       <div style="width: 240px; background: #2c8d98; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);"
            class="full-height flex column items-center justify-center">
         <q-img class="cursor-pointer inline"
-               style="width: 140px; height: 40px;"
+               style="width: 160px; "
                contain
                v-bind:src="require('@src/assets/logo.png')"></q-img>
-
-        <transition enter-active-class="animated jump-out"
-                    leave-active-class="animated jump-up">
-          <span class="gt-xl inline text-subtitle1 animated jump-down"
-                style="min-width: 140px;
-                         display: inline-block;
-                         text-align: justify;
-                         text-align-last: justify;">
-            {{ configuration.application.title }}
-          </span>
-        </transition>
       </div>
 
       <transition enter-active-class="animated jump-out"
                   leave-active-class="animated jump-up">
-        <div class="col q-ml-lg flex column justify-center flex-start animated jump-down">
+        <div class="full-height col q-ml-lg q-pt-sm flex column justify-center flex-start animated jump-down">
 
-          <div class="text-h6">
+          <div class="text-h6 text-weight-bold"
+               style="line-height: 1; letter-spacing: 1px; margin: 0 0 3px 0;">
+            {{ configuration.application.title }}
+          </div>
+          <div class="text-subtitle1"
+               style="line-height: 1; letter-spacing: 1px;">
             {{ user.hospitalName }}
           </div>
         </div>
       </transition>
 
-      <div class="flex items-center">
+      <div class="full-height flex items-center q-pt-sm ">
 
         <!-- 用户名称 -->
         <span class="q-mr-sm">
