@@ -36,11 +36,11 @@ export default {
 
   mounted() {
     if (Peace.identity.auth.isLogin()) {
-      if (this.$route.path !== '/AppIntercept') {
+      if (this.$route.name !== 'AppIntercept') {
         this.$router.push({ name: 'AppIntercept' })
       }
     } else {
-      if (this.$route.path !== '/login') {
+      if (this.$route.name !== 'Login') {
         this.$router.push({ name: 'Login' })
       }
     }

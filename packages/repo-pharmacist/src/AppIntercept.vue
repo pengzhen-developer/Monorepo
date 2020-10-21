@@ -42,13 +42,13 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     if (Peace.identity.auth.isLogin()) {
-      if (to.path === '/AppIntercept') {
+      if (to.name === 'AppIntercept') {
         next((vm) => vm.$router.replace({ name: 'Layout' }))
       } else {
         next()
       }
     } else {
-      if (to.path !== '/login') {
+      if (to.name !== 'Login') {
         next((vm) => vm.$router.replace({ name: 'Login' }))
       }
     }
