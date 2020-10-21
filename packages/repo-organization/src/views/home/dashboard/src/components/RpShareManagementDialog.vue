@@ -47,7 +47,7 @@ export default {
     },
 
     onInput() {
-      if (this.showDockingWay()) {
+      if (!this.showDockingWay()) {
         // 仓配机构默认对接方式
         this.checkData.id = 3
       }
