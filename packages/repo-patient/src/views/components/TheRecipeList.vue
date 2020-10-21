@@ -16,7 +16,7 @@
             <div class="word-body">
               <div class="word-title">
                 <div class="title">{{item.patientName}}的处方</div>
-                <div :class="{ [`label-${item.prescriptionStatus.key}`] : true }"
+                <div :class="{ [`label-${item.prescriptionStatus.key}${item.orderDrugStatuskey?item.orderDrugStatuskey:''}`] : true }"
                      class="label label-default"
                      v-if="item.prescriptionStatus&&item.orderDrugStatus">{{item.orderDrugStatus}}
                 </div>
@@ -309,21 +309,29 @@ export default {
     width: 75px;
     text-align: right;
   }
+  /* 处方状态 0."已预审",1."待审核", 2."质疑中", 3."未通过", 4."已作废",5."已通过"
+处方购药状态 1."待购药",2."已下单", 3."已购药", 4."已失效" */
   .label-default,
-  .label-1,
+  .label-2,
   .label-3,
-  .label-4 {
+  .label-4,
+  .label-54 {
     background: #e5e5e5;
     color: #999;
   }
+
   .label-red,
-  .label-2 {
+  .label-51 {
     background: #f2223b;
     color: #fff;
   }
+
   .label-blue,
-  .label-5,
-  .label-6 {
+  .label-0,
+  .label-1,
+  .label-2,
+  .label-52,
+  .label-53 {
     background: #00c6ae;
     color: #fff;
   }
