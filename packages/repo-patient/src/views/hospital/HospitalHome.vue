@@ -76,9 +76,9 @@
           <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:智能导诊 8:中药寄送 -->
           <div class="img">
             <img :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
-            <img class="wait"
+            <!-- <img class="wait"
                  v-if="item.isOpen!=1"
-                 src="@src/assets/images/ic_wait open.png" />
+                 src="@src/assets/images/ic_wait open.png" /> -->
           </div>
           <span class="name">{{ item.serviceName }}</span>
 
@@ -300,10 +300,10 @@ export default {
 
       let json = undefined
 
-      if (item.isOpen !== 1) {
-        // peace.util.alert('暂未开放，敬请期待')
-        return
-      }
+      // if (item.isOpen !== 1) {
+      //   // peace.util.alert('暂未开放，敬请期待')
+      //   return
+      // }
       if (item.isExist !== 1) {
         return peace.util.alert('该功能正在建设中，敬请期待')
       }
