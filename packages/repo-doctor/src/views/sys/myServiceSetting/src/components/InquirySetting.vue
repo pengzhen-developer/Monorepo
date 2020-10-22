@@ -148,11 +148,13 @@ export default {
         status: this.imageInquiryStatus ? 1 : 2
       }
 
-      Service.setInquiryStatus(params).then((res) => {
-        Peace.util.success(res.msg)
-
-        this.$emit('success')
-      })
+      Service.setInquiryStatus(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+        })
+        .finally(() => {
+          this.$emit('success')
+        })
     },
 
     // 改变【在线咨询 - 视频咨询】状态
@@ -162,11 +164,13 @@ export default {
         status: this.videoInquiryStatus ? 1 : 2
       }
 
-      Service.setInquiryStatus(params).then((res) => {
-        Peace.util.success(res.msg)
-
-        this.$emit('success')
-      })
+      Service.setInquiryStatus(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+        })
+        .finally(() => {
+          this.$emit('success')
+        })
     },
 
     // 改变【在线咨询 - 图文咨询】费用
@@ -176,11 +180,13 @@ export default {
         price: this.imageInquiryFee
       }
 
-      Service.setInquiryPrice(params).then((res) => {
-        Peace.util.success(res.msg)
-
-        this.$emit('success')
-      })
+      Service.setInquiryPrice(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+        })
+        .finally(() => {
+          this.$emit('success')
+        })
     },
 
     // 改变【在线咨询 - 视频咨询】费用
@@ -190,11 +196,13 @@ export default {
         price: this.videoInquiryFee
       }
 
-      Service.setInquiryPrice(params).then((res) => {
-        Peace.util.success(res.msg)
-
-        this.$emit('success')
-      })
+      Service.setInquiryPrice(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+        })
+        .finally(() => {
+          this.$emit('success')
+        })
     }
   }
 }
