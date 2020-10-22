@@ -14,7 +14,7 @@
              ref="form">
 
       <el-form-item prop="username">
-        <el-input v-model="model.username"
+        <el-input v-model.trim="model.username"
                   v-bind:class="{ 'active' : usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
@@ -28,7 +28,7 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input v-model="model.password"
+        <el-input v-model.trim="model.password"
                   v-on:focus="passwordFocus"
                   v-on:blur="passwordBlur"
                   v-bind:class="{ 'active' : passwordActive }"
