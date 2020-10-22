@@ -105,9 +105,9 @@ export default {
       if (!isJPG) {
         this.$message.error('上传图片支持jpg、jpeg、bmp、gif、png 格式')
       } else if (!isLt1M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error('上传图片大小不能超过 2MB!')
       }
-      return isLt1M
+      return isLt1M && isJPG
     },
     deleteOne(index) {
       this.imageList.splice(index, 1)
