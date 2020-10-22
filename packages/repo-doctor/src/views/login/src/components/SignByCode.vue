@@ -14,7 +14,7 @@
              ref="form">
 
       <el-form-item prop="tel">
-        <el-input v-model="model.tel"
+        <el-input v-model.trim="model.tel"
                   v-bind:class="{ 'active': usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
@@ -29,7 +29,7 @@
 
       <el-form-item prop="smsCode">
         <el-input ref="smsCode"
-                  v-model="model.smsCode"
+                  v-model.trim="model.smsCode"
                   v-bind:class="{ 'active': passwordActive }"
                   v-bind:maxlength="6"
                   v-bind:minlength="6"
