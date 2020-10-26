@@ -243,13 +243,13 @@ export default {
     payOrder(item) {
       let orderNo = item.OrderId
       this.currentOrderId = item.OrderId
-      // let params = { orderNo }
-      // peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
-      let orderType = 'drug'
-      let money = item.OrderMoney
-      let params = { orderNo, orderType, money }
-      const json = peace.util.encode(params)
-      this.$router.replace(`/components/ExpenseDetail/${json}`)
+      let params = { orderNo }
+      peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
+      // let orderType = 'drug'
+      // let money = item.OrderMoney
+      // let params = { orderNo, orderType, money }
+      // const json = peace.util.encode(params)
+      // this.$router.replace(`/components/ExpenseDetail/${json}`)
     },
     payCallback() {
       let orderId = ''

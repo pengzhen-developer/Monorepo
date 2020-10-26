@@ -1,33 +1,36 @@
 <template>
-  <div class="cost">
-    <div class="header"
-         v-if="orderStatus==1">
-      <span>请在</span>
-      <van-count-down millisecond
-                      @finish="finishHander"
-                      :time="time"
-                      format="mm:ss" />
-      <span>后内完成支付，超时订单自动取消</span>
-    </div>
-    <div class="cost-content">
-      <div>自费金额</div>
-      <div class="cost-money"><span>￥</span>{{money}}</div>
-      <div class="cost-code">订单编号： {{orderNo}}</div>
+  <van-popup position="bottom"
+             round
+             style="min-height:30%;"
+             :close-on-click-overlay="false"
+             v-model="show">
 
+    <div class="cost">
+      <van-image class="close"
+                 @click="changeFlag('cancel')"
+                 :src="require('@src/assets/images/ic_close@2x.png')"></van-image>
+      <div class="cost-content">
+        <template v-if="moneyRecord&&moneyRecord.length>1">
+          <div class="cost-platform"
+               v-for="(item,index) in moneyRecord"
+               v-bind:key="index">
+            <div class="cost-platform-label">{{item.name}}</div>
+            <div class="cost-platform-content">{{item.value}}</div>
+          </div>
+        </template>
+        <div class="cost-platform selfpay">
+          <div class="cost-platform-label">自费支付:</div>
+          <div class="cost-platform-content">￥{{selfPayMoney}}</div>
+        </div>
+      </div>
+      <div class="cost-footer">
+        <van-button class="cost-submit"
+                    round
+                    type="primary"
+                    @click="pay">确认支付</van-button>
+      </div>
     </div>
-    <!-- tapd 【ID1001496】  暂时屏蔽收款方 -->
-    <!-- <div class="cost-platform">
-      <div class="cost-platform-label">收款方</div>
-      <div class="cost-platform-content">{{payee}}</div>
-    </div> -->
-    <div class="cost-footer">
-      <van-button class="cost-submit"
-                  type="primary"
-                  @click="pay">立即支付</van-button>
-    </div>
-    <!-- <div class="cost-tip">支付安全由中国人民财产保险股份有限公司承保</div> -->
-
-  </div>
+  </van-popup>
 </template>
 
 <script>
@@ -38,41 +41,59 @@ Vue.use(Dialog)
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 export default {
+  name: 'ExpenseDetail',
+  model: {
+    prop: 'showCard',
+    event: 'changeFlag'
+  },
+  props: {
+    showCard: Boolean,
+    info: Object
+  },
   data() {
     return {
-      type: '',
-      orderNo: '',
-      money: '',
-      time: 0,
+      show: false,
       createdTime: '',
       interval: null,
       orderStatus: '',
-      payee: '',
-      inquiryId: ''
+      payee: ''
     }
   },
-  activated() {
-    const json = peace.util.decode(this.$route.params.json)
-    this.type = json.orderType || json.type
-    this.orderNo = json.orderNo
-    this.money = json.money.toString().toFixed(2)
-    this.getOrderInfo()
+  computed: {
+    inquiryId() {
+      return this.info.inquiryId
+    },
+    selfPayMoney() {
+      return this.info.money
+    },
+    moneyRecord() {
+      return this.info.moneyRecord
+    },
+    orderNo() {
+      return this.info.orderNo
+    },
+    type() {
+      return this.info.orderType
+    }
   },
-  methods: {
-    getOrderInfo() {
-      let orderNo = this.orderNo
-      peace.service.index.getOrderInfo({ orderNo }).then((res) => {
-        let data = res.data
-        this.createdTime = data.createdTime
-        if (data.expireTime > data.currentTime) {
-          this.time = (data.expireTime - data.currentTime) * 1000
+  watch: {
+    showCard: {
+      handler(val) {
+        if (val) {
+          this.show = val
         }
-        this.orderStatus = data.orderStatus
-        this.payee = data.payee
-        this.orderNo = data.orderNo
-        this.money = data.orderMoney.toString().toFixed(2)
-        this.inquiryId = data.inquiryId
-      })
+      },
+      immediate: true
+    }
+  },
+
+  methods: {
+    changeFlag(type) {
+      this.show = false
+      this.$emit('changeFlag', false)
+      if (type == 'cancel') {
+        this.payCallback()
+      }
     },
     pay() {
       let params = { orderNo: this.orderNo }
@@ -187,16 +208,24 @@ export default {
     color: #f96a0e;
   }
 }
+.close {
+  margin: 0;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  z-index: 2003;
+}
 .cost {
   min-height: 100%;
   width: 100%;
-  background-color: #f5f5f5;
   position: relative;
   .cost-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 25px 0 50px;
+    padding: 50px 15px 70px;
     width: 100%;
     background-color: #fff;
     .cost-code {
@@ -207,26 +236,45 @@ export default {
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 8px;
+      color: $red;
       span {
         font-size: 12px;
         font-weight: normal;
       }
     }
+    .line {
+      width: 100%;
+      height: 1px;
+      background: #f5f5f5;
+      margin: 5px auto 15px;
+    }
   }
   .cost-platform {
-    height: 60px;
     width: 100%;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 10px;
-    padding: 0 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
     .cost-platform-label {
       color: #666;
+      font-size: 16px;
     }
     .cost-platform-content {
-      color: #000;
+      color: #999;
+      font-size: 15px;
+    }
+    &.selfpay {
+      margin-top: 10px;
+      border-bottom: 0;
+      .cost-platform-label {
+        color: #333;
+      }
+      .cost-platform-content {
+        color: #ff344d;
+        font-size: 20px;
+      }
     }
   }
   .cost-footer {
@@ -235,7 +283,7 @@ export default {
     left: 0;
     bottom: 0;
     height: 68px;
-    background-color: #f5f5f5;
+    // background-color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;

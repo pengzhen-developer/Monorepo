@@ -220,7 +220,10 @@ export default {
       loaded: false,
       finish: false,
       loading: false,
-      timer: null
+      timer: null,
+      orderType: '',
+      orderNo: '',
+      inquiryId: ''
     }
   },
   activated() {
@@ -276,29 +279,46 @@ export default {
         const countDown = this.$refs[type + index][0]
         countDown.pause()
       }
-      let typeName = '',
-        orderNo = '',
-        money = '',
-        orderType = '',
-        json = {}
-      let doctorId = data.doctorInfo.doctorId
-      let doctorName = data.doctorInfo.name
-      orderType = data.orderType
-      typeName = data.inquiryType
+      // let orderNo = ''
+      // let typeName = '',
+      //   orderNo = '',
+      //   money = '',
+      //   orderType = '',
+      //   json = {}
+      // let doctorId = data.doctorInfo.doctorId
+      // let doctorName = data.doctorInfo.name
+      // orderType = data.orderType
+      // typeName = data.inquiryType
       if (data.orderType == 'register') {
-        orderNo = data.orderNo
-        money = data.orderMoney
-        json = { money, typeName, doctorName, orderNo, doctorId, orderType }
+        this.orderNo = data.orderNo
+        // money = data.orderMoney
+        // json = { money, typeName, doctorName, orderNo, doctorId, orderType }
       } else if (data.orderType == 'inquiry') {
-        orderNo = data.orderInfo.orderNo
-        money = data.orderInfo.orderMoney
-        let inquiryId = data.inquiryInfo.inquiryId
-        json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
+        this.orderNo = data.orderInfo.orderNo
+        // money = data.orderInfo.orderMoney
+        this.inquiryId = data.inquiryInfo.inquiryId
+        // json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       }
-      json = peace.util.encode(json)
-
-      // this.$router.push(`/components/doctorInquiryPay/${json}`)
-      this.$router.push(`/components/ExpenseDetail/${json}`)
+      // json = peace.util.encode(json)
+      this.orderType = data.orderType
+      peace.wx.pay({ orderNo: this.orderNo }, null, this.payCallback, this.payCallback)
+    },
+    payCallback() {
+      if (this.orderType == 'register') {
+        this.registerPayCallback()
+      } else if (this.orderType == 'inquiry') {
+        this.inquiryPayCallback()
+      }
+    },
+    registerPayCallback() {
+      let json = peace.util.encode({ orderInfo: { orderNo: this.orderNo, orderType: this.orderType } })
+      this.$router.replace(`/setting/order/userOrderDetail/${json}`)
+    },
+    inquiryPayCallback() {
+      let json = peace.util.encode({
+        inquiryId: this.inquiryId
+      })
+      this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
     get() {
       if (!this.timer) {

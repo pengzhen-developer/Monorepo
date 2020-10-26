@@ -115,27 +115,25 @@
             <div class="dt">使用医保卡 ：</div>
             <div class="dd"
                  :class="{'money':yibaoChecked}"
-                 @click="chooseYibao">{{yibaoText||'暂无可用'}}</div>
+                 @click="chooseYibao">{{yibaoText||'请选择'}}</div>
           </div>
         </template>
         <template v-if="canShowShangbao">
           <div class="line"></div>
           <div class="dl-packet">
             <div class="dt">商保权益抵扣 ：</div>
-            <div class="dd">暂无可用</div>
+            <div class="dd">请选择</div>
           </div>
         </template>
 
-        <div class="line"></div>
+        <!-- <div class="line"></div>
         <div class="dl-packet">
           <div class="dt money">应付金额 ：</div>
           <div class="dd">
             <div class="strong">
               ￥{{payPrice}}</div>
-            <!-- {{page.tabIndex == '0' ? '(价格以实际到店为准)' : ''}} -->
-
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="tips-bottom">
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -195,16 +193,20 @@
                        @onSuccess="onSuccess"></YibaoCaedSelect>
 
     </template>
+    <!-- 确认支付弹框 -->
+    <ExpenseDetail v-model="dialog.visible"
+                   :info="dialog.data"></ExpenseDetail>
   </div>
 </template>
 
 <script>
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import peace from '@src/library'
 
 export default {
   name: 'DrugOrderBefore',
-  components: { YibaoCaedSelect },
+  components: { YibaoCaedSelect, ExpenseDetail },
   data() {
     return {
       payList: [],
@@ -234,7 +236,11 @@ export default {
       yibaoText: '',
       yibaoChecked: false,
       shangbaoChecked: false,
-      yibaoInfo: {}
+      yibaoInfo: {},
+      dialog: {
+        visible: false,
+        data: {}
+      }
     }
   },
 
@@ -319,12 +325,8 @@ export default {
       this.yibaoChecked = false
     },
     onSuccess(result) {
-      if (result.checked == false) {
-        this.yibaoText = '不使用医保卡'
-      } else {
-        this.yibaoText = `-￥${result.yibaoInfo.totalAmount}`
-      }
-      this.yibaoChecked = true
+      this.yibaoChecked = result.checked
+      this.yibaoText = result.yibaoInfo.medCardNo
       this.yibaoInfo = result.yibaoInfo
     },
     chooseYibao() {
@@ -522,7 +524,7 @@ export default {
         TargetPlatformCodes: this.order.TargetPlatformCodes,
         PayMode: this.page.payIndex,
         cardno: this.page.cardno,
-        divisionId: this.yibaoInfo.divisionId
+        medCardNo: this.yibaoInfo.medCardNo || ''
       }
       // return
       peace.service.patient
@@ -532,14 +534,17 @@ export default {
           this.orderId = res.data.OrderId
           let orderType = 'drug'
           let money = this.page.tabIndex == '1' ? this.order.OrderMoney : this.order.pickOrderMoney
-          let params = { orderNo, orderType, money }
+          let moneyRecord = res.data.moneyRecord //费用明细
+          let params = { orderNo, orderType, money, moneyRecord }
 
           // if (paymentType === 'yibaopay') {
           if (this.page.payIndex > 1) {
             this.payCallback()
           } else {
-            const json = peace.util.encode(params)
-            this.$router.replace(`/components/ExpenseDetail/${json}`)
+            this.dialog.visible = true
+            this.dialog.data = params
+            // const json = peace.util.encode(params)
+            // this.$router.replace(`/components/ExpenseDetail/${json}`)
           }
         })
         .finally(() => {

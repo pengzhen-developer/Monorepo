@@ -196,20 +196,20 @@
           <div class="brief-left">使用医保卡:</div>
           <div class="brief-right"
                :class="{'checked':yibaoChecked}"
-               @click="chooseYibao">{{yibaoText||'暂无可用'}}
+               @click="chooseYibao">{{yibaoText||'请选择'}}
           </div>
         </div>
         <div class="brief"
              v-if="canShowShangbao">
           <div class="brief-left">商保权益抵扣:</div>
-          <div class="brief-right">暂无可用
+          <div class="brief-right">请选择
           </div>
         </div>
-        <div class="brief pay-omney">
+        <!-- <div class="brief pay-omney">
           <div class="brief-left">应付金额:</div>
           <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
           </div>
-        </div>
+        </div> -->
 
       </div>
       <!-- 预售订单 - 非当日-->
@@ -242,12 +242,15 @@
                        @onSuccess="onSuccess"></YibaoCaedSelect>
 
     </template>
-
+    <!-- 确认支付弹框 -->
+    <ExpenseDetail v-model="dialog.visible"
+                   :info="dialog.data"></ExpenseDetail>
   </div>
 </template>
 
 <script>
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
@@ -285,7 +288,8 @@ const ENUM = {
 export default {
   components: {
     [Dialog.Component.name]: Dialog.Component,
-    YibaoCaedSelect
+    YibaoCaedSelect,
+    ExpenseDetail
   },
 
   props: {
@@ -315,7 +319,11 @@ export default {
       hasFirstVisitInfo: false,
       yibaoText: '',
       yibaoChecked: false,
-      yibaoInfo: {}
+      yibaoInfo: {},
+      dialog: {
+        visible: false,
+        data: {}
+      }
     }
   },
   computed: {
@@ -427,12 +435,8 @@ export default {
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
     onSuccess(result) {
-      if (result.checked == false) {
-        this.yibaoText = '不使用医保卡'
-      } else {
-        this.yibaoText = `-￥${result.yibaoInfo.totalAmount}`
-      }
-      this.yibaoChecked = true
+      this.yibaoChecked = result.checked
+      this.yibaoText = result.yibaoInfo.medCardNo
       this.yibaoInfo = result.yibaoInfo
     },
     chooseYibao() {
@@ -456,11 +460,12 @@ export default {
     apply() {
       this.sending = true
       const params = peace.util.deepClone(this.params)
-      params.divisionId = this.yibaoInfo.divisionId
+      params.medCardNo = this.yibaoInfo.medCardNo || ''
       peace.service.inquiry
         .apply(params)
         .then((res) => {
           // 订单提交成功
+          debugger
           if (res.data.errorState === 0) {
             // 需要支付，跳转支付
             if (res.data.inquiryStatus === 1) {
@@ -536,23 +541,19 @@ export default {
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
     gotoExpenseDetailPage(data) {
-      if (data.orderMoney == 0) {
-        const json = peace.util.encode({
-          inquiryId: data.inquiryId
-        })
-        this.$router.replace(`/setting/userConsultDetail/${json}`)
-        return
-      }
-      const json = peace.util.encode({
-        money: data.orderMoney,
+      const json = {
+        money: data.orderMoney, //总金额
+        moneyRecord: data.moneyRecord, //费用明细
         typeName: this.params.serviceName,
         doctorId: data.doctorId,
         doctorName: data.doctorName,
         orderNo: data.orderNo,
         inquiryId: data.inquiryId,
         orderType: 'inquiry'
-      })
-      this.$router.replace(`/components/ExpenseDetail/${json}`)
+      }
+      this.dialog.visible = true
+      this.dialog.data = json
+      // this.$router.replace(`/components/ExpenseDetail/${json}`)
     },
 
     getFamilyDoctorInfo() {

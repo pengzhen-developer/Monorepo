@@ -262,7 +262,8 @@ import QRCode from '@src/views/components/QRCode'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
-
+import { Dialog } from 'vant'
+Vue.use(Dialog)
 const ENUM = {
   SHIPPING_METHOD: {
     到店取药: 0,
@@ -482,13 +483,42 @@ export default {
     },
     payOrder(order) {
       let orderNo = order.OrderId
-      this.orderId = order.OrderId
-      let orderType = 'drug'
-      let money = this.curPayMoney
-      let params = { orderNo, orderType, money }
+      // this.orderId = order.OrderId
+      // let orderType = 'drug'
+      // let money = this.curPayMoney
+      // let params = { orderNo, orderType, money }
 
-      const json = peace.util.encode(params)
-      this.$router.push(`/components/ExpenseDetail/${json}`)
+      // const json = peace.util.encode(params)
+      // this.$router.push(`/components/ExpenseDetail/${json}`)
+      peace.wx.pay({ orderNo }, this.orderExp, this.payCallback, this.payCallback)
+    },
+    orderExp(res) {
+      if (res && res.data) {
+        return Dialog.confirm({
+          title: '提示',
+          message: res.data.msg,
+          confirmButtonText: '去看看'
+        }).then(() => {
+          if (res.data.code == 202) {
+            //只有在202时才可进入catch流程
+            let inquiryId = res.data.data.inquiryId
+            const params = {
+              inquiryId
+            }
+            if (inquiryId != '') {
+              // 去咨询界面
+              let json = peace.util.encode(params)
+              this.$router.replace(`/setting/userConsultDetail/${json}`)
+            } else {
+              // 去挂号界面
+              let orderNo = res.data.data.orderNo
+              let orderType = 'register'
+              let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
+              this.$router.replace(`/setting/order/userOrderDetail/${json}`)
+            }
+          }
+        })
+      }
     },
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)

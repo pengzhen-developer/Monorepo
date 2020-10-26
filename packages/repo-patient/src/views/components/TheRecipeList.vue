@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="word-bottom"
-               v-if="item.prescriptionStatus.reminderTxt">
+               v-if="item.prescriptionStatus&&item.prescriptionStatus.reminderTxt">
             <van-image width="14px"
                        height="14px"
                        :src="require('@src/assets/images/warn.png')"></van-image>

@@ -1,33 +1,44 @@
 <template>
 
   <van-popup v-model="show"
+             class="popup"
              :class="{'selected':selected}"
              @click-overlay="changeFlag"
              round
              :position="position">
-    <van-image class="close"
-               @click="changeFlag"
-               :src="require('@src/assets/images/ic_close@2x.png')"></van-image>
-    <div class="header">请选择本单是否使用医保卡</div>
+
+    <div class="header">
+      请选择本单是否使用医保卡
+      <van-image class="close"
+                 @click="changeFlag"
+                 :src="require('@src/assets/images/ic_close@2x.png')"></van-image>
+    </div>
     <van-cell center
               class="switch-out"
               :class="{'disabled':selected}"
-              title="是否使用医保卡">
+              title="使用医保卡">
       <template #right-icon
                 v-if="!selected">
-        <van-switch v-model="checked"
+        <!-- <van-switch v-model="checked"
                     active-color="#00C6AE"
                     inactive-color="#cccccc"
-                    size="20" />
+                    size="20" /> -->
+        <van-image class="choose"
+                   v-if="checked"
+                   @click="checked=!checked"
+                   :src="require('@src/assets/images/ic_choose.png')"></van-image>
+        <van-image class="choose"
+                   v-else
+                   @click="checked=!checked"
+                   :src="require('@src/assets/images/ic_choose_not.png')"></van-image>
       </template>
-      <template v-else>
-        <!-- :class="{'disabled':!checked}" class="text" -->
+      <!-- <template v-else>
         <div>{{checked?'使用':'不使用'}}</div>
-      </template>
+      </template> -->
     </van-cell>
     <template v-if="!selected">
       <div class="tip"
-           :class="{'selected':checked}">*当前仅支持北辰医院天津市医保卡结算</div>
+           :class="{'selected':checked}">*请绑定xxx的最新医保信息，否则无法使用医保卡支付</div>
       <div class="banner-bg">
         <div class="banner-title"
              :class="{'selected':checked}">天津市人力资源和社会保障局</div>
@@ -70,11 +81,12 @@
     <div class="tip submit"
          :class="{'mb14':!selected}">*确认后不可更改</div>
     <van-button type="primary"
+                round
                 v-show="!selected"
                 @click="submit"
                 :disabled="loading"
                 :loading="loading"
-                size="large">保存</van-button>
+                size="large">确认</van-button>
   </van-popup>
 </template>
 
@@ -152,10 +164,11 @@ export default {
     },
     async submit() {
       if (!this.checked) {
-        this.$emit('onSuccess', { checked: this.checked, yibaoInfo: { divisionId: '' } })
-        setTimeout(() => {
-          this.selected = true
-        }, 500)
+        this.$emit('onSuccess', { checked: this.checked, yibaoInfo: { medCardNo: '' } })
+        // setTimeout(() => {
+        //   //zzy_v0.8.1 选择医保卡不提前抵扣 故可以反复选择医保卡
+        //    this.selected = true
+        // }, 500)
         this.changeFlag()
         return
       }
@@ -170,39 +183,31 @@ export default {
       }
 
       try {
-        let priceData = null
-        //咨询-医保划扣
-        if (this.info.serviceType == 'inquiry') {
-          priceData = await this.getPriceByRegistration()
-        }
-        //购药-医药划扣
-        else {
-          priceData = await this.getPriceByPayDrug()
-        }
+        //zzy_v0.8.1 医保支付-医保划扣不再前置划扣；选择医保之后页面只显示医保卡号
+        // let priceData = null
+        // //咨询-医保划扣
+        // if (this.info.serviceType == 'inquiry') {
+        //   priceData = await this.getPriceByRegistration()
+        // }
+        // //购药-医药划扣
+        // else {
+        //   priceData = await this.getPriceByPayDrug()
+        // }
         this.yibaoInfo = {
-          medCardNo: this.cardInfo.medCardNo,
-          totalAmount: this.toFixed2(priceData?.data?.feeResult?.insurePay),
-          poolingFundAmount: '',
-          personalAccountAmount: '',
-          divisionId: priceData?.data?.feeResult?.divisionId
+          medCardNo: this.cardInfo.medCardNo
         }
         this.$emit('onSuccess', { checked: this.checked, yibaoInfo: this.yibaoInfo })
         this.changeFlag()
-        setTimeout(() => {
-          this.selected = true
-        }, 500)
+        // setTimeout(() => {
+        //   //zzy_v0.8.1 选择医保卡不提前抵扣 故可以反复选择医保卡
+        //    this.selected = true
+        // }, 500)
       } catch (error) {
         console.log(error)
       }
       this.loading = false
     },
-    toFixed2(num) {
-      if (num == 0) {
-        return '0.00'
-      } else {
-        return num.toString().toFixed(2)
-      }
-    },
+    //添加医保卡
     addCard() {
       const params = {
         region: '天津',
@@ -214,6 +219,7 @@ export default {
         this.getMedicareCardList()
       })
     },
+    //更新医保卡
     updateCard() {
       const params = {
         medCardNo: this.cardInfo.medCardNo,
@@ -224,6 +230,7 @@ export default {
         this.getMedicareCardList()
       })
     },
+    //获取医保卡
     getMedicareCardList() {
       const params = {
         familyId: this.familyId,
@@ -235,10 +242,12 @@ export default {
         }
       })
     },
+    // 医保划扣-咨询
     getPriceByRegistration() {
       const params = { medCardNo: this.cardInfo.medCardNo, ...this.info }
       return peace.service.yibao.GetPriceByRegistration(params)
     },
+    // 医保划扣-购药
     getPriceByPayDrug() {
       const params = { medCardNo: this.cardInfo.medCardNo, ...this.info }
       return peace.service.yibao.GetPriceByPayDrug(params)
@@ -251,9 +260,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.van-popup {
+.van-popup.popup {
   width: 100%;
-  padding: 15px 16px 20px 16px;
+  padding: 14px 16px 20px 16px;
   background: #fff;
   &.selected {
     width: calc(100% - 56px);
@@ -263,9 +272,12 @@ export default {
   }
   .header {
     font-size: 16px;
-    color: #333;
+    // color: #333;
+    color: transparent;
     font-weight: bold;
     font-family: PingFangSC-Medium, PingFang SC;
+    position: relative;
+    width: 100%;
     span {
       color: $primary;
     }
@@ -283,6 +295,7 @@ export default {
     }
     &::after {
       left: 0;
+      border-bottom-color: #e8e8e8;
     }
     .text {
       color: $primary;
@@ -293,7 +306,7 @@ export default {
   }
 
   .tip {
-    color: #ccc;
+    color: #999;
     font-size: 11px;
     line-height: 16px;
     margin-top: 13px;
@@ -343,12 +356,16 @@ export default {
   .close {
     margin: 0;
     position: absolute;
-    top: 11px;
-    right: 16px;
+    top: 0px;
+    right: 4px;
     width: 20px;
     height: 20px;
   }
-
+  .choose {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
   .title {
     padding-top: 5px;
     color: #ccc;

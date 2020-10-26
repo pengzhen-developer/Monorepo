@@ -240,7 +240,7 @@
       <div class="module message">
         <div class="message-item">
           <div class="message-item-left">订单费用</div>
-          <div class="message-item-right">¥{{ internalData.orderInfo.orderMoney }}</div>
+          <div class="message-item-right">¥{{ internalData.orderInfo.totalMoney }}</div>
         </div>
         <!-- <div class="message-item">
           <div class="message-item-left">优惠金额</div>
@@ -597,29 +597,15 @@ export default {
       })
     },
     goToPay(data) {
-      let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo
       let money = order.orderMoney
-      let typeName = ''
       if (!Number(money)) {
         this.getConsultDetail()
         return
       }
-      if (data.inquiryInfo.serviceType == 'returnVisit') {
-        typeName = '复诊续方'
-      } else {
-        typeName = order.inquiryType == 'image' ? '图文咨询' : '视频咨询'
-      }
-      let doctorName = data.doctorInfo.name
       let orderNo = order.orderNo
-      let inquiryId = data.inquiryInfo.inquiryId
-      let orderType = 'inquiry'
-      let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
-      json = peace.util.encode(json)
-      // this.$router.push(`/components/doctorInquiryPay/${json}`)
-      this.$router.push(`/components/ExpenseDetail/${json}`)
+      peace.wx.pay({ orderNo }, null, this.getConsultDetail, this.getConsultDetail)
     },
-
     getConsultDetail() {
       let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
       peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(async (res) => {
