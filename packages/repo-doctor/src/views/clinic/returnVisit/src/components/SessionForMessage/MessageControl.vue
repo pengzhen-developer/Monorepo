@@ -212,7 +212,7 @@ export default {
       // 检查是否为有效会话
       Service.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法发送病历。')
+          return Peace.util.warning('当前为无效会话，暂时无法发送病历。请先与患者进行病情沟通')
         } else if (res.data.caseStatus === 1) {
           this.$emit('control', '发病历')
         } else {
@@ -233,7 +233,7 @@ export default {
       Service.checkOverInquiry(params).then((res) => {
         // 非有效会话
         if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法发处方。')
+          return Peace.util.warning('当前为无效会话，暂时无法发处方。请先与患者进行病情沟通')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
@@ -261,7 +261,7 @@ export default {
       Service.checkOverInquiry(params).then((res) => {
         // 非有效会话
         if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法申请转诊。')
+          return Peace.util.warning('当前为无效会话，暂时无法申请转诊。请先与患者进行病情沟通')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
@@ -289,7 +289,7 @@ export default {
       Service.checkOverInquiry(params).then((res) => {
         // 非有效会话
         if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法申请会诊。')
+          return Peace.util.warning('当前为无效会话，暂时无法申请会诊。请先与患者进行病情沟通')
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {

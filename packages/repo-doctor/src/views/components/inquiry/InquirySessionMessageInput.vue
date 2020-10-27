@@ -191,7 +191,7 @@ export default {
             if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
               message = '您与患者尚未进行视频通话，暂时无法发送病历。'
             } else {
-              message = '当前为无效会话，暂时无效会话，暂时无法发送病历。'
+              message = '当前为无效会话，暂时无法发送病历。请先与患者进行病情沟通'
             }
 
             $peace.util.warning(message)
@@ -226,7 +226,7 @@ export default {
           if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行转诊。'
           } else {
-            message = '当前为无效会话，暂时无法进行转诊。'
+            message = '当前为无效会话，暂时无法进行转诊。请先与患者进行病情沟通'
           }
 
           $peace.util.warning(message)
@@ -262,7 +262,7 @@ export default {
           if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行会诊。'
           } else {
-            message = '当前为无效会话，暂时无法进行会诊。'
+            message = '当前为无效会话，暂时无法进行会诊。请先与患者进行病情沟通'
           }
 
           $peace.util.warning(message)
