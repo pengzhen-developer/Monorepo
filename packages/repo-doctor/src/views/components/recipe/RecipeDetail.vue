@@ -2,18 +2,21 @@
 
 <template>
   <div class="q-px-lg p-py-md">
-    <div class="text-grey-6">
-      <span>No.</span>
-      <span>{{ data.PrescriptionNo }}</span>
+    <div class="text-grey-6 row items-center justify-between">
+      <span>No.{{ data.PrescriptionNo }}</span>
+      <el-button v-if="data.pngUrl"
+                 type="text"
+                 v-on:click="showOriginInfo">查看原始处方</el-button>
     </div>
+    <img-viewer ref="viewer" />
 
     <!-- 处方标题 -->
     <div class="relative-position text-center q-mb-lg">
       <p class="text-h5 text-weight-bolder">{{ data.MedicalInstitutionName }}</p>
       <p class="text-h5 text-weight-bolder">处方笺</p>
-
-      <img v-if="data.DoctorSignImage"
-           v-bind:src="`./static/images/inquiry/${data.Prescription}.png`"
+      <!-- 处方状态图片 -->
+      <img v-if="data.stampUrl"
+           v-bind:src="data.stampUrl"
            class="absolute"
            style="width: 72px; height: 72px; right: 36px; bottom: -10px;"
            alt="医师签名" />
@@ -146,10 +149,11 @@
                   style="width: 4em;">医师</span>
             <span class="q-mx-xs">：</span>
             <span class="col text-weight-bold">
-              <img v-if="data.DoctorSignImage"
+              {{data.DoctorName}}
+              <!-- <img v-if="data.DoctorSignImage"
                    v-bind:src="data.DoctorSignImage"
                    style="max-height: 16px;"
-                   alt="医师签名" />
+                   alt="医师签名" /> -->
             </span>
           </div>
           <div class="row col-6">
@@ -157,10 +161,11 @@
                   style="width: 4em;">审方药师</span>
             <span class="q-mx-xs">：</span>
             <span class="col text-weight-bold">
-              <img v-if="data.PrescriptionSign"
+              {{data.PrescriptionPharmacistName}}
+              <!-- <img v-if="data.PrescriptionSign"
                    v-bind:src="data.PrescriptionSign"
                    style="max-height: 16px;"
-                   alt="审方药师签名" />
+                   alt="审方药师签名" /> -->
             </span>
           </div>
         </div>
@@ -216,11 +221,23 @@
                   append-to-body>
       <RecipeAudit v-bind:data="audit"></RecipeAudit>
     </peace-dialog>
+
+    <peace-dialog title="原始处方"
+                  v-bind:visible.sync="originVisible"
+                  append-to-body>
+      <img v-if="data.pngUrl"
+           v-bind:src="data.pngUrl"
+           class="full-width"
+           alt="原始处方" />
+    </peace-dialog>
   </div>
 </template>
 
 <script>
+import util from '@src/library.back/helper/util'
+import { isEmpty } from '@src/library.back/helper/validate'
 import RecipeAudit from './RecipeAudit'
+import ImgViewer from './components/ImageViewer'
 
 const adiutThemeMap = {
   /** 通过 */
@@ -235,7 +252,8 @@ const adiutThemeMap = {
 
 export default {
   components: {
-    RecipeAudit
+    RecipeAudit,
+    ImgViewer
   },
 
   props: {
@@ -244,7 +262,8 @@ export default {
 
   data() {
     return {
-      visible: false
+      visible: false,
+      originVisible: false
     }
   },
 
@@ -272,6 +291,14 @@ export default {
 
     showAudit() {
       this.visible = true
+    },
+
+    showOriginInfo() {
+      if (this.data && isEmpty(this.data.pngUrl)) {
+        util.error({ msg: 'PDF地址不存在' })
+      }
+      // this.originVisible = true
+      this.$refs.viewer.show([{ thumbnail: this.data.pngUrl, source: this.data.pngUrl }])
     }
   }
 }

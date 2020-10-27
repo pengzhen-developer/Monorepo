@@ -16,7 +16,11 @@ import Viewer from 'v-viewer'
 const install = async () => {
   Vue.use(Viewer, {
     defaultOptions: {
-      zIndex: 9999
+      zIndex: 9999,
+      navbar: false,
+      title: false,
+      toolbar: false,
+      tooltip: false
     }
   })
   const vueAppInstance = await Boot.install()

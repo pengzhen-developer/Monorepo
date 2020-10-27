@@ -365,7 +365,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证转诊时间
-          if (dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+          if (peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
             $peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
