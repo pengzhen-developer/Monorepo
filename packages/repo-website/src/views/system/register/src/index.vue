@@ -14,8 +14,8 @@
                   v-on:click="goHome">
         </el-image>
       </div>
-      <div class="title">
-        <span>智药云平台</span>
+      <div v-on:click="goHome">
+        返回首页
       </div>
     </div>
     <div class="layout">
@@ -45,10 +45,14 @@
                         placeholder="4-30位字母数字的组合"></el-input>
             </el-form-item> -->
 
-            <el-form-item prop="tel">
-              <el-input v-model="model.tel"
+            <el-form-item prop="tel"
+                          class="el-form-phone">
+              <el-input v-model.trim="model.tel"
                         v-bind:minlength="11"
                         v-bind:maxlength="11"
+                        v-bind:class="{ 'active' : usernameActive }"
+                        v-on:focus="usernameFocus"
+                        v-on:blur="usernameBlur"
                         placeholder="请输入手机号">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-shouji"></i>
@@ -58,9 +62,12 @@
 
             <el-form-item class="code"
                           prop="verificationCode">
-              <el-input v-model="model.verificationCode"
+              <el-input v-model.trim="model.verificationCode"
                         v-bind:minlength="6"
                         v-bind:maxlength="6"
+                        v-on:focus="codeFocus"
+                        v-on:blur="codeBlur"
+                        v-bind:class="{ 'active' : codeActive }"
                         placeholder="请输入验证码">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-yanzhengma"></i>
@@ -85,9 +92,13 @@
 
             </el-form-item>
 
-            <el-form-item prop="password">
-              <el-input v-model="model.password"
+            <el-form-item prop="password"
+                          class="el-form-phone">
+              <el-input v-model.trim="model.password"
                         :type="this.showPassword ? 'text' : 'password'"
+                        v-on:focus="passwordFocus"
+                        v-on:blur="passwordBlur"
+                        v-bind:class="{ 'active' : passwordActive }"
                         placeholder="6-20位字母和数字的组合">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-mima"></i>
@@ -111,9 +122,13 @@
               </template> -->
             </el-form-item>
 
-            <el-form-item prop="linkman">
-              <el-input v-model="model.linkman"
+            <el-form-item prop="linkman"
+                          class="el-form-phone">
+              <el-input v-model.trim="model.linkman"
                         v-bind:maxlength="10"
+                        v-on:focus="nameFocus"
+                        v-on:blur="nameBlur"
+                        v-bind:class="{ 'active' : nameActive }"
                         placeholder="请输入联系人姓名">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-zhanghao"></i>
@@ -121,8 +136,12 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item prop="email">
-              <el-input v-model="model.email"
+            <el-form-item prop="email"
+                          class="el-form-phone">
+              <el-input v-model.trim="model.email"
+                        v-on:focus="emailFocus"
+                        v-on:blur="emailBlur"
+                        v-bind:class="{ 'active' : emailActive }"
                         placeholder="请输入邮箱">
                 <div slot="prepend">
                   <i class="zyy-icon zyy-youxiang"></i>
@@ -157,7 +176,7 @@
       </div>
     </div>
     <div class="container-bottom">
-      Copyright &copy; 全息云通健康科技（武汉）有限公司
+      Copyright &copy; 2020 九州通智药云平台出品
     </div>
   </div>
 </template>
@@ -177,6 +196,11 @@ export default {
       isAgree: true,
       isRegistering: false,
       showPassword: false,
+      usernameActive: false,
+      passwordActive: false,
+      codeActive: false,
+      nameActive: false,
+      emailActive: false,
       model: {
         username: '',
         tel: '',
@@ -234,7 +258,7 @@ export default {
         ]
       },
 
-      logoImage: require('@src/assets/img/logo_white.png')
+      logoImage: require('@src/assets/img/logo_login.png')
     }
   },
 
@@ -249,6 +273,44 @@ export default {
   },
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
+
+    codeFocus() {
+      this.codeActive = true
+    },
+
+    codeBlur() {
+      this.codeActive = false
+    },
+    nameFocus() {
+      this.nameActive = true
+    },
+
+    nameBlur() {
+      this.nameActive = false
+    },
+    emailFocus() {
+      this.emailActive = true
+    },
+
+    emailBlur() {
+      this.emailActive = false
+    },
+
     changeShowPassword() {
       this.showPassword = !this.showPassword
     },
@@ -355,17 +417,21 @@ export default {
   min-height: 100vh;
   width: 100%;
   height: 100%;
+
   .container-header {
     display: flex;
     width: 100%;
     height: 64px;
     min-height: 64px;
     align-items: center;
-    background-color: var(--q-color-primary);
+    background-color: white;
+    color: var(--q-color-grey-333);
+    justify-content: space-between;
+    padding: 0 20px 0 0;
     .logo {
-      width: 140px;
-      height: 40px;
-      margin: 0 20px 0 20px;
+      width: 161px;
+      height: 44px;
+      margin: 0 25px;
       overflow: hidden;
     }
 
@@ -381,11 +447,9 @@ export default {
 
     width: 460px;
 
-    margin: 64px 0 0 0;
-
     .layout-top {
       background: #fff;
-      border-radius: 8px;
+      border: 6px solid rgba(14, 136, 150, 0.3);
 
       .title {
         display: flex;
@@ -415,6 +479,7 @@ export default {
 
       .body {
         padding: 20px 80px 40px;
+
         .el-form-item {
           border-radius: 4px;
           border: 1px solid rgba(217, 217, 217, 1);
@@ -457,17 +522,19 @@ export default {
     text-align: center;
     color: rgba(0, 0, 0, 0.45);
     font-size: 12px;
+    width: 100%;
+    background-color: white;
     padding: 20px 0;
   }
 }
-
-::v-deep .el-form-item {
-  border-bottom: 1px solid #e8e8e8;
-  margin: 0 0 25px 0;
-
+.el-form-phone {
   &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
+    border: 1px solid var(--q-color-primary) !important;
+    box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
   }
+}
+::v-deep .el-form-item {
+  margin: 0 0 25px 0;
 
   .el-form-item__label {
     padding: 0;
@@ -480,12 +547,13 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 0 16px;
     line-height: 40px;
     height: 40px;
   }
   .el-input-group__prepend {
     border: none;
+    padding: 0 15px;
   }
 
   .el-input__suffix {
@@ -525,13 +593,18 @@ export default {
     }
 
     .el-input {
-      width: 70%;
+      width: 65%;
       border: 1px solid #d9d9d9;
       border-radius: 4px;
+
+      &:focus-within {
+        border: 1px solid var(--q-color-primary);
+        box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
+      }
     }
     .btnCode {
       margin-left: 15px;
-      width: 30%;
+      width: 35%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -539,6 +612,20 @@ export default {
       background: #f5f5f5;
       button {
         height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  .el-input {
+    padding: 1px;
+
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
       }
     }
   }

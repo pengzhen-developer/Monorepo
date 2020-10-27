@@ -14,8 +14,8 @@
                   v-on:click="goHome">
         </el-image>
       </div>
-      <div class="title">
-        <span>智药云平台</span>
+      <div v-on:click="goHome">
+        返回首页
       </div>
     </div>
     <div class="layout">
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="container-bottom">
-      Copyright &copy; 全息云通健康科技（武汉）有限公司
+      Copyright &copy; 2020 九州通智药云平台出品
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
     return {
       mode: Constant.action.SIGN_BY_USERNAME,
       isPasswordILogin: true,
-      logoImage: require('@src/assets/img/logo_white.png')
+      logoImage: require('@src/assets/img/logo_login.png')
     }
   },
 
@@ -83,28 +83,23 @@ export default {
     height: 64px;
     min-height: 64px;
     align-items: center;
-    background-color: var(--q-color-primary);
+    color: var(--q-color-grey-333);
+    padding: 0 20px 0 0;
+    background-color: white;
+    justify-content: space-between;
     .logo {
-      width: 140px;
-      height: 40px;
-      margin: 0 20px 0 20px;
+      width: 161px;
+      height: 44px;
+      margin: 0 25px;
       overflow: hidden;
-    }
-
-    .title {
-      font-size: 18px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.85);
     }
   }
   .layout {
     display: flex;
     flex-direction: column;
     width: 460px;
-    margin: 64px 0 0 0;
     .layout-top {
       background: #fff;
-      border-radius: 8px;
     }
   }
   .container-bottom {
@@ -112,6 +107,8 @@ export default {
     color: rgba(0, 0, 0, 0.45);
     font-size: 12px;
     padding: 20px 0;
+    width: 100%;
+    background-color: white;
   }
 }
 </style>

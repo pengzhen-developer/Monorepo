@@ -28,9 +28,12 @@
              ref="form">
 
       <el-form-item prop="tel">
-        <el-input v-model="model.tel"
+        <el-input v-model.trim="model.tel"
+                  v-bind:class="{ 'active' : usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
+                  v-on:focus="usernameFocus"
+                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="zyy-icon zyy-shouji"></i>
@@ -39,8 +42,13 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input v-model="model.password"
+        <el-input v-model.trim="model.password"
                   :type="this.showPassword ? 'text' : 'password'"
+                  v-on:focus="passwordFocus"
+                  v-on:blur="passwordBlur"
+                  v-bind:minlength="6"
+                  v-bind:maxlength="20"
+                  v-bind:class="{ 'active' : passwordActive }"
                   placeholder="请输入密码">
           <div slot="prepend">
             <i class="zyy-icon zyy-mima"></i>
@@ -90,6 +98,8 @@ export default {
       isLoging: false,
       isRegistering: false,
       showPassword: false,
+      usernameActive: false,
+      passwordActive: false,
       model: {
         tel: '',
         password: ''
@@ -121,6 +131,21 @@ export default {
   computed: {},
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
     goSignByPhone() {
       this.$parent.changeMode(Constant.action.SIGN_BY_PHONE)
     },
@@ -185,6 +210,8 @@ export default {
 <style lang="scss" scoped>
 .body {
   padding: 20px 80px 40px;
+  border: 6px solid rgba(14, 136, 150, 0.3);
+
   .el-form-item {
     border-radius: 4px;
     border: 1px solid rgba(217, 217, 217, 1);
@@ -237,7 +264,6 @@ export default {
 
     .center {
       text-align: center;
-
       font-size: 24px;
       font-weight: 600;
       color: rgba(51, 51, 51, 1);
@@ -259,7 +285,8 @@ export default {
   margin: 0 0 25px 0;
 
   &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
+    border: 1px solid var(--q-color-primary);
+    box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
   }
 
   .el-form-item__label {
@@ -273,12 +300,14 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 0 16px;
     line-height: 40px;
     height: 40px;
+    border-radius: 0 4px 4px 0;
   }
   .el-input-group__prepend {
     border: none;
+    padding: 0 15px;
   }
 
   .el-form-item__error {
@@ -304,6 +333,20 @@ export default {
   }
   i {
     color: #c0c4cc;
+  }
+
+  .el-input {
+    padding: 1px;
+
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
+      }
+    }
   }
 }
 .eyes {

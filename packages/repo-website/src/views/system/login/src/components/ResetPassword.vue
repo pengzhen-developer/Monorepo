@@ -22,10 +22,14 @@
              size="mini"
              ref="form">
 
-      <el-form-item prop="tel">
-        <el-input v-model="model.tel"
+      <el-form-item prop="tel"
+                    class="el-form-phone">
+        <el-input v-model.trim="model.tel"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
+                  v-bind:class="{ 'active' : usernameActive }"
+                  v-on:focus="usernameFocus"
+                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="zyy-icon zyy-shouji"></i>
@@ -35,9 +39,12 @@
 
       <el-form-item class="code"
                     prop="verificationCode">
-        <el-input v-model="model.verificationCode"
+        <el-input v-model.trim="model.verificationCode"
                   v-bind:minlength="6"
                   v-bind:maxlength="6"
+                  v-on:focus="codeFocus"
+                  v-on:blur="codeBlur"
+                  v-bind:class="{ 'active' : codeActive }"
                   placeholder="请输入验证码">
           <div slot="prepend">
             <i class="zyy-icon zyy-yanzhengma"></i>
@@ -61,9 +68,13 @@
         </div>
 
       </el-form-item>
-      <el-form-item prop="password">
-        <el-input v-model="model.password"
+      <el-form-item prop="password"
+                    class="el-form-phone">
+        <el-input v-model.trim="model.password"
                   :type="this.showPassword ? 'text' : 'password'"
+                  v-on:focus="passwordFocus"
+                  v-on:blur="passwordBlur"
+                  v-bind:class="{ 'active' : passwordActive }"
                   placeholder="6-20位字母和数字的组合">
           <div slot="prepend">
             <i class="zyy-icon zyy-mima"></i>
@@ -113,6 +124,9 @@ export default {
       isReseting: false,
       isRegistering: false,
       showPassword: false,
+      usernameActive: false,
+      passwordActive: false,
+      codeActive: false,
       model: {
         tel: '',
         password: '',
@@ -165,6 +179,30 @@ export default {
   },
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
+
+    codeFocus() {
+      this.codeActive = true
+    },
+
+    codeBlur() {
+      this.codeActive = false
+    },
+
     goSignByPhone() {
       this.$parent.changeMode(Constant.action.SIGN_BY_PHONE)
     },
@@ -243,6 +281,8 @@ export default {
 <style lang="scss" scoped>
 .body {
   padding: 20px 80px 40px;
+  border: 6px solid rgba(14, 136, 150, 0.3);
+
   .el-form-item {
     border-radius: 4px;
     border: 1px solid rgba(217, 217, 217, 1);
@@ -253,7 +293,6 @@ export default {
       width: 100%;
     }
   }
-
   .title {
     display: flex;
     align-items: center;
@@ -302,14 +341,14 @@ export default {
     }
   }
 }
-
-::v-deep .el-form-item {
-  border-bottom: 1px solid #e8e8e8;
-  margin: 0 0 25px 0;
-
+.el-form-phone {
   &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
+    border: 1px solid var(--q-color-primary);
+    box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
   }
+}
+::v-deep .el-form-item {
+  margin: 0 0 25px 0;
 
   .el-form-item__label {
     padding: 0;
@@ -322,12 +361,13 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 0 16px;
     line-height: 40px;
     height: 40px;
   }
   .el-input-group__prepend {
     border: none;
+    padding: 0 15px;
   }
 
   .el-input__suffix {
@@ -366,13 +406,18 @@ export default {
     }
 
     .el-input {
-      width: 70%;
+      width: 65%;
       border: 1px solid #d9d9d9;
       border-radius: 4px;
+
+      &:focus-within {
+        border: 1px solid var(--q-color-primary);
+        box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
+      }
     }
     .btnCode {
       margin-left: 15px;
-      width: 30%;
+      width: 35%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -380,6 +425,20 @@ export default {
       background: #f5f5f5;
       button {
         height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  .el-input {
+    padding: 1px;
+
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
       }
     }
   }

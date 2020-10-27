@@ -27,10 +27,14 @@
              size="mini"
              ref="form">
 
-      <el-form-item prop="tel">
-        <el-input v-model="model.tel"
+      <el-form-item prop="tel"
+                    class="el-form-phone">
+        <el-input v-model.trim="model.tel"
+                  v-bind:class="{ 'active' : usernameActive }"
                   v-bind:minlength="11"
                   v-bind:maxlength="11"
+                  v-on:focus="usernameFocus"
+                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="zyy-icon zyy-shouji"></i>
@@ -40,15 +44,17 @@
 
       <el-form-item class="code"
                     prop="verificationCode">
-        <el-input v-model="model.verificationCode"
+        <el-input v-model.trim="model.verificationCode"
                   v-bind:minlength="6"
+                  v-on:focus="passwordFocus"
+                  v-on:blur="passwordBlur"
+                  v-bind:class="{ 'active' : passwordActive }"
                   v-bind:maxlength="6"
                   placeholder="请输入验证码">
           <div slot="prepend">
             <i class="zyy-icon zyy-yanzhengma"></i>
           </div>
         </el-input>
-
         <div class="btnCode">
           <template v-if="showCountdown">
             <PeaceCountdown v-bind:time="countdownTime"
@@ -100,6 +106,8 @@ export default {
       isLoging: false,
       isRegistering: false,
       showPassword: false,
+      usernameActive: false,
+      passwordActive: false,
       model: {
         tel: '',
         verificationCode: ''
@@ -144,6 +152,21 @@ export default {
   },
 
   methods: {
+    passwordFocus() {
+      this.passwordActive = true
+    },
+
+    passwordBlur() {
+      this.passwordActive = false
+    },
+
+    usernameFocus() {
+      this.usernameActive = true
+    },
+
+    usernameBlur() {
+      this.usernameActive = false
+    },
     goSignByPhone() {
       this.$parent.changeMode(Constant.action.SIGN_BY_PHONE)
     },
@@ -227,6 +250,8 @@ export default {
 <style lang="scss" scoped>
 .body {
   padding: 20px 80px 40px;
+  border: 6px solid rgba(14, 136, 150, 0.3);
+
   .el-form-item {
     border-radius: 4px;
     border: 1px solid rgba(217, 217, 217, 1);
@@ -300,14 +325,16 @@ export default {
     }
   }
 }
+.el-form-phone {
+  &:focus-within {
+    border: 1px solid var(--q-color-primary);
+    box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
+  }
+}
 
 ::v-deep .el-form-item {
   border-bottom: 1px solid #e8e8e8;
   margin: 0 0 25px 0;
-
-  &:focus-within {
-    border-bottom: 1px solid var(--q-color-primary);
-  }
 
   .el-form-item__label {
     padding: 0;
@@ -320,13 +347,13 @@ export default {
   .el-input__inner {
     border-radius: 0;
     border: 0;
-    padding: 0;
+    padding: 0 16px;
     line-height: 40px;
     height: 40px;
   }
   .el-input-group__prepend {
-    background: #fff;
     border: none;
+    padding: 0 15px;
   }
 
   .el-form-item__error {
@@ -356,20 +383,40 @@ export default {
     }
 
     .el-input {
-      width: 70%;
+      width: 65%;
       border: 1px solid #d9d9d9;
       border-radius: 4px;
+
+      &:focus-within {
+        border: 1px solid var(--q-color-primary);
+        box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
+      }
     }
     .btnCode {
-      margin-left: 15px;
-      width: 30%;
+      width: 35%;
       display: flex;
+      margin-left: 10px;
       justify-content: center;
       align-items: center;
       border-radius: 4px;
       background: #f5f5f5;
       button {
         height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .el-input {
+    padding: 1px;
+
+    &.active {
+      .el-input-group__prepend {
+        background: var(--q-color-primary-light-2) !important;
+      }
+
+      i {
+        color: var(--q-color-primary) !important;
       }
     }
   }
