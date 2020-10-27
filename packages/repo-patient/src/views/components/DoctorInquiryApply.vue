@@ -1238,8 +1238,8 @@ export default {
             this.model.affectedImages = []
             this.supplementaryList.map((item) => (item.hasAnswer = false))
             this.chatList = []
-
-            this.checkHealthCard()
+            //电子健康卡检验仅适用于五莲县人民医院，故屏蔽
+            // this.checkHealthCard()
           } else {
             return false
           }
