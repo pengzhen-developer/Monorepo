@@ -236,27 +236,24 @@
           <div class="message-item-right">{{ internalData.orderInfo.refundTime }}</div>
         </div>
       </div>
+
       <!-- 订单收费明细 -->
-      <div class="module message">
+      <div class="module message"
+           v-if="internalData.orderInfo.moneyRecord&&internalData.orderInfo.moneyRecord.length>0">
+        <div class="message-item"
+             v-for="(item,index) in internalData.orderInfo.moneyRecord"
+             :key="index">
+          <div class="message-item-left">{{item.name}}</div>
+          <div class="message-item-right">{{item.value}}</div>
+        </div>
+      </div>
+      <div class="module message"
+           v-else>
         <div class="message-item">
           <div class="message-item-left">订单费用</div>
           <div class="message-item-right">¥{{ internalData.orderInfo.totalMoney }}</div>
         </div>
-        <!-- <div class="message-item">
-          <div class="message-item-left">优惠金额</div>
-          <div class="message-item-right">-¥0.00</div>
-        </div> -->
-        <!-- <div class="message-item">
-          <div class="message-item-left">商保权益抵扣</div>
-          <div class="message-item-right">-¥0.00</div>
-        </div> -->
-        <div class="message-item"
-             v-if="canShowYibao">
-          <div class="message-item-left">医保划扣</div>
-          <div class="message-item-right">-¥{{ internalData.orderInfo.medicalMoney }}</div>
-        </div>
       </div>
-
       <div class="module"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
         <!-- 取消订单的状态 -->
@@ -366,6 +363,11 @@
                     @click="imagePreview.visible = false" />
       </template>
     </van-image-preview>
+
+    <!-- 确认支付弹框 -->
+    <ExpenseDetail v-model="dialog.visible"
+                   @changeFlag="changeFlag"
+                   :info="dialog.data"></ExpenseDetail>
   </div>
 </template>
 
@@ -378,6 +380,7 @@ Vue.use(CountDown)
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
+import ExpenseDetail from '@src/views/components//ExpenseDetail'
 const ENUM = {
   // 支付类型
   // wxpay（微信）
@@ -403,6 +406,7 @@ export default {
     TheCase,
     TheRecipeList,
     MessageList,
+    ExpenseDetail,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -437,6 +441,10 @@ export default {
       chatingPage: {
         visible: false,
         data: []
+      },
+      dialog: {
+        visible: false,
+        data: {}
       },
       imagePreview: {
         visible: false,
@@ -557,6 +565,10 @@ export default {
   },
 
   methods: {
+    changeFlag() {
+      this.dialog.visible = false
+      this.get()
+    },
     gotoCaseDetail(dataNo) {
       const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
       const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
@@ -592,14 +604,25 @@ export default {
     },
     report(data) {
       const params = { inquiryNo: data.inquiryInfo.inquiryNo }
-      peace.service.patient.report(params).then(() => {
-        this.goToPay(data)
+      peace.service.patient.report(params).then((res) => {
+        // this.goToPay(data)
+        const data = res.data
+        const json = {
+          money: data.orderMoney, //总金额
+          moneyRecord: data.moneyRecord, //费用明细
+          orderNo: data.orderNo,
+          inquiryId: data.inquiryId,
+          orderType: 'inquiry',
+          isReport: true
+        }
+        this.dialog.visible = true
+        this.dialog.data = json
       })
     },
     goToPay(data) {
       let order = data.orderInfo
-      let money = order.orderMoney
-      if (!Number(money)) {
+      let totalMoney = order.totalMoney
+      if (!Number(totalMoney)) {
         this.getConsultDetail()
         return
       }

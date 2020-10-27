@@ -465,7 +465,6 @@ export default {
         .apply(params)
         .then((res) => {
           // 订单提交成功
-          debugger
           if (res.data.errorState === 0) {
             // 需要支付，跳转支付
             if (res.data.inquiryStatus === 1) {
@@ -542,7 +541,7 @@ export default {
     },
     gotoExpenseDetailPage(data) {
       const json = {
-        money: data.orderMoney, //总金额
+        money: data.orderMoney, //自费金额
         moneyRecord: data.moneyRecord, //费用明细
         typeName: this.params.serviceName,
         doctorId: data.doctorId,

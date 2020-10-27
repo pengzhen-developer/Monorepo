@@ -148,15 +148,26 @@
             {{ order.refundTime }}</div>
         </div>
       </div>
-
-      <div class="module intro">
+      <div class="module intro"
+           v-if="order.moneyRecord&&order.moneyRecord.length>0">
+        <div class="dl-packet"
+             v-for="(item,index) in order.moneyRecord"
+             :key="index">
+          <div class="dt">{{item.name}}</div>
+          <div class="dd">
+            {{item.value}}
+          </div>
+        </div>
+      </div>
+      <div class="module intro"
+           v-else>
         <div class="dl-packet">
           <div class="dt">药品金额</div>
           <div class="dd">
             ¥{{order.TotalAmount}}
           </div>
         </div>
-        <div class="dl-packet"
+        <!-- <div class="dl-packet"
              v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
           <div class="dt">配送费</div>
           <div class="dd">¥{{order.Freight.toString().toFixed(2)}}</div>
@@ -175,7 +186,7 @@
              v-if="canShowYibao">
           <div class="dt">医保划扣</div>
           <div class="dd">-¥{{order.medicalMoney.toString().toFixed(2)}}</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="module str"

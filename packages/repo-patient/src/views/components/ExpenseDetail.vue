@@ -132,6 +132,10 @@ export default {
       }
     },
     payCallback() {
+      if (this.info?.isReport) {
+        this.changeFlag()
+        return
+      }
       if (this.type == 'register') {
         this.registerPayCallback()
       } else if (this.type == 'inquiry') {
