@@ -511,6 +511,17 @@ export default {
               message: res.data.msg,
               confirmButtonText: '确定'
             })
+          }
+          //205 医保不可用
+          else if (res.data.code == '205') {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.data.msg,
+              confirmButtonText: '确定',
+              showCancelButton: false
+            }).then(() => {
+              this.goToConsultDetail(res.data.data)
+            })
           } else {
             peace.util.alert(res.data.msg)
           }

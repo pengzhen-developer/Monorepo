@@ -165,10 +165,6 @@ export default {
     async submit() {
       if (!this.checked) {
         this.$emit('onSuccess', { checked: this.checked, yibaoInfo: { medCardNo: '' } })
-        // setTimeout(() => {
-        //   //zzy_v0.8.1 选择医保卡不提前抵扣 故可以反复选择医保卡
-        //    this.selected = true
-        // }, 500)
         this.changeFlag()
         return
       }
@@ -176,35 +172,22 @@ export default {
         return peace.util.warning('请输入19位医保卡号')
       }
       this.loading = true
-      if (this.cardInfo.id) {
-        await this.updateCard()
-      } else {
-        await this.addCard()
-      }
 
       try {
-        //zzy_v0.8.1 医保支付-医保划扣不再前置划扣；选择医保之后页面只显示医保卡号
-        // let priceData = null
-        // //咨询-医保划扣
-        // if (this.info.serviceType == 'inquiry') {
-        //   priceData = await this.getPriceByRegistration()
-        // }
-        // //购药-医药划扣
-        // else {
-        //   priceData = await this.getPriceByPayDrug()
-        // }
-        this.yibaoInfo = {
-          medCardNo: this.cardInfo.medCardNo
+        if (this.cardInfo.id) {
+          await this.updateCard()
+        } else {
+          await this.addCard()
         }
-        this.$emit('onSuccess', { checked: this.checked, yibaoInfo: this.yibaoInfo })
-        this.changeFlag()
-        // setTimeout(() => {
-        //   //zzy_v0.8.1 选择医保卡不提前抵扣 故可以反复选择医保卡
-        //    this.selected = true
-        // }, 500)
       } catch (error) {
-        console.log(error)
+        console.log('error', error)
+        return
       }
+      this.yibaoInfo = {
+        medCardNo: this.cardInfo.medCardNo
+      }
+      this.$emit('onSuccess', { checked: this.checked, yibaoInfo: this.yibaoInfo })
+      this.changeFlag()
       this.loading = false
     },
     //添加医保卡
@@ -214,10 +197,14 @@ export default {
         medCardNo: this.cardInfo.medCardNo,
         familyId: this.familyId
       }
-      peace.service.yibao.AddMedicareCard(params).finally(() => {
-        this.loading = false
-        this.getMedicareCardList()
-      })
+      return peace.service.yibao
+        .AddMedicareCard(params)
+        .then(() => {
+          this.getMedicareCardList()
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     //更新医保卡
     updateCard() {
@@ -225,10 +212,14 @@ export default {
         medCardNo: this.cardInfo.medCardNo,
         id: this.cardInfo.id
       }
-      peace.service.yibao.UpdateMedicareCard(params).finally(() => {
-        this.loading = false
-        this.getMedicareCardList()
-      })
+      return peace.service.yibao
+        .UpdateMedicareCard(params)
+        .then(() => {
+          this.getMedicareCardList()
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     //获取医保卡
     getMedicareCardList() {
@@ -241,16 +232,6 @@ export default {
           this.cardInfo = res.data.list[0]
         }
       })
-    },
-    // 医保划扣-咨询
-    getPriceByRegistration() {
-      const params = { medCardNo: this.cardInfo.medCardNo, ...this.info }
-      return peace.service.yibao.GetPriceByRegistration(params)
-    },
-    // 医保划扣-购药
-    getPriceByPayDrug() {
-      const params = { medCardNo: this.cardInfo.medCardNo, ...this.info }
-      return peace.service.yibao.GetPriceByPayDrug(params)
     }
   },
   created() {
