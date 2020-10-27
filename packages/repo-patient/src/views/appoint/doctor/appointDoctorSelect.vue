@@ -110,25 +110,10 @@ export default {
   data() {
     return {
       loaded: false,
-      // doctorInfo: {
-      //     doctorName:'张三',
-      //     doctorTitle:'教授',
-      //     deptName:'临床医学',
-      //     specialSkill:'啦啦啦啦啦啦啦啦绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿绿'
-      // },
       doctorInfo: {},
       params: {},
       activeIndex: 0,
       activeDate: '',
-      // dateList: [
-      //     { time: '01-07', week: '周一', index: 0 },
-      //     { time: '01-08', week: '周二', index: 1},
-      //     { time: '01-09', week: '周三', index: 2, disabled: true },
-      //     { time: '01-10', week: '周四', index: 3},
-      //     { time: '01-11', week: '周五', index: 4},
-      //     { time: '01-12', week: '周六', index: 5},
-      //     { time: '01-13', week: '周日', index: 6}
-      // ],
       dateList: [],
       AM: [],
       PM: [],
@@ -464,7 +449,7 @@ export default {
 }
 .f-two .content {
   flex: 1;
-  padding: 20px 10px 20px 15px;
+  padding: 20px 0 20px 15px;
   display: flex;
   align-items: center;
 }
@@ -485,8 +470,8 @@ export default {
     font-family: monospace;
   }
   &:nth-child(2) {
-    min-width: 60px;
-    margin-left: 18px;
+    min-width: 4.4em;
+    margin-left: 1.3em;
   }
 }
 .content.disabled .inline {
@@ -515,12 +500,12 @@ export default {
 }
 .right > .btn {
   font-size: 14px;
-  width: 4.5em;
+  width: 4em;
   line-height: 20px;
   margin: 0;
-  margin-right: 15px;
+  margin-right: 1em;
   text-align: center;
-  padding: 2.5px 7.5px;
+  padding: 0.2em 0;
   border-radius: 4px;
 }
 .content.disabled + .right > .btn {
