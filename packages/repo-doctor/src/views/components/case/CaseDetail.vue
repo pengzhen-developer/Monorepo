@@ -21,7 +21,7 @@
         <div class="info-row-label">
           <span>年龄</span>
         </div>
-        <div class="info-row-content">{{ internalData.age }}岁</div>
+        <div class="info-row-content">{{ internalData.age }}</div>
         <div class="info-row-label">
           <span>科别</span>
         </div>

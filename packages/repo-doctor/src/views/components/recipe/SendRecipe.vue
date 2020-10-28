@@ -31,7 +31,7 @@
         <div class="col">
           <span class="text-grey-7">年龄</span>
           <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.age + ' 岁' }}</span>
+          <span>{{ caseInfo.age }}</span>
         </div>
         <div class="col">
           <span class="text-grey-7">科别</span>

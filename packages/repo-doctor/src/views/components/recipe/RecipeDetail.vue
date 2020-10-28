@@ -27,7 +27,7 @@
 
     <!-- 处方基础信息 -->
     <div class="q-mb-md">
-      <div class="row q-mb-xs">
+      <div class="q-mb-xs row q-col-gutter-md">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">姓名</span>
@@ -42,12 +42,12 @@
         </div>
       </div>
 
-      <div class="row q-mb-xs">
+      <div class="q-mb-xs row q-col-gutter-md">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">年龄</span>
           <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.Age }}岁</span>
+          <span class="col text-weight-bold">{{ data.Age }}</span>
         </div>
         <div class="row col-6">
           <span class="text-justify"
@@ -56,7 +56,7 @@
           <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
         </div>
       </div>
-      <div class="row q-mb-xs">
+      <div class="q-mb-xs row q-col-gutter-md">
         <div class="row col-6"
              v-if="data.weight">
           <span class="text-justify"
@@ -66,7 +66,7 @@
         </div>
       </div>
 
-      <div class="row q-mb-xs">
+      <div class="q-mb-xs row q-col-gutter-md">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">开具时间</span>
@@ -81,15 +81,17 @@
         </div>
       </div>
 
-      <div class="row q-mb-xs">
-        <span class="text-justify"
-              style="width: 4em;">疾病诊断</span>
-        <span class="q-mx-xs">：</span>
-        <span class="col text-weight-bold"
-              v-for="diagnosis in data.DiagnosisInfos"
-              v-bind:key="diagnosis.DiagnosisName">
-          {{ diagnosis.DiagnosisName }}
-        </span>
+      <div class="q-mb-xs row q-col-gutter-md">
+        <div class="row col-12">
+          <span class="text-justify"
+                style="width: 4em;">疾病诊断</span>
+          <span class="q-mx-xs">：</span>
+          <span class="col text-weight-bold"
+                v-for="diagnosis in data.DiagnosisInfos"
+                v-bind:key="diagnosis.DiagnosisName">
+            {{ diagnosis.DiagnosisName }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -143,7 +145,7 @@
 
       <!-- 审核 -->
       <div class="q-mb-md">
-        <div class="row q-mb-xs">
+        <div class="q-mb-xs row q-col-gutter-md">
           <div class="row col-6">
             <span class="text-justify"
                   style="width: 4em;">医师</span>
@@ -169,7 +171,7 @@
             </span>
           </div>
         </div>
-        <div class="row q-mb-xs">
+        <div class="q-mb-xs row q-col-gutter-md">
           <div class="row col-6">
             <span class="text-justify"
                   style="width: 4em;">调配药师</span>
@@ -195,7 +197,7 @@
 
     <!-- 处方审核信息 -->
     <div class="q-mb-md">
-      <div class="row q-mb-xs">
+      <div class="row q-mb-xs q-col-gutter-x-md">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 6em;">药师审方结果</span>
@@ -204,7 +206,7 @@
             {{ data.PrescriptionExamMemo }}
           </span>
         </div>
-        <div class="row col-6">
+        <div class="col-6">
           <span class="text-justify"
                 style="width: 6em;">系统审方结果</span>
           <span class="q-mx-xs">：</span>
