@@ -29,6 +29,10 @@ import 'vant/lib/index.less'
 Vue.use(Lazyload)
 Vue.use(Vant)
 
+//peaceButton
+import PeaceButton from '@src/views/components/PeaceButton'
+Vue.use(PeaceButton)
+
 // css
 import '@src/assets/css/index.scss'
 
@@ -37,10 +41,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js')
-      .then(registration => {
+      .then((registration) => {
         console.log('SW registered: ', registration)
       })
-      .catch(registrationError => {
+      .catch((registrationError) => {
         console.log('SW registration failed: ', registrationError)
       })
   })
@@ -48,7 +52,7 @@ if ('serviceWorker' in navigator) {
 
 // initial
 const vueAppInstance = new Vue({
-  render: h => h(App),
+  render: (h) => h(App),
   router,
   store
 }).$mount('#app')

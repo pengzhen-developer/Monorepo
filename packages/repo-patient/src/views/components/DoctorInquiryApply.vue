@@ -223,62 +223,113 @@
                        v-model.trim="current.answer"
                        class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
-              <van-button @click="answer"
+              <!-- <van-button @click="answer"
                           slot="button"
                           round
-                          type="primary">发送</van-button>
+                          type="primary">发送</van-button> -->
+              <peace-button round
+                            slot="button"
+                            throttle
+                            :throttleTime="1000"
+                            type="primary"
+                            @click="answer">发送</peace-button>
             </van-field>
           </template>
 
           <!-- Q2: 家人 -->
           <template v-if="current.field === ANSWER_FIELD.FAMILY">
-            <van-button v-for="item in current.answerList"
+            <!-- <van-button v-for="item in current.answerList"
                         round
                         :key="item.value"
-                        @click="answer(item)">{{ item.label }}</van-button>
+                        @click="answer(item)">{{ item.label }}</van-button> -->
+            <peace-button v-for="item in current.answerList"
+                          round
+                          :key="item.value"
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer(item)">{{ item.label }}</peace-button>
             <br>
-            <van-button round
-                        @click="answer('')">添加新的就诊人</van-button>
+            <!-- <van-button round 
+                        @click="answer('')">添加新的就诊人</van-button> -->
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer('')">添加新的就诊人</peace-button>
           </template>
 
           <!-- Q3: 是否复诊 -->
           <template v-if="current.field === ANSWER_FIELD.IS_AGAIN">
-            <van-button round
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer('是')">是</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer('否')">否</peace-button>
+            <!-- <van-button round
                         @click="answer('是')">是</van-button>
             <van-button round
-                        @click="answer('否')">否</van-button>
+                        @click="answer('否')">否</van-button> -->
           </template>
 
           <!-- Q4: 是否确认非复诊 -->
           <template v-if="current.field === ANSWER_FIELD.IS_AGAIN_CONFIRM">
-            <van-button round
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          @click="answer('继续咨询')">继续咨询</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer('我要复诊')">我要复诊</peace-button>
+            <!-- <van-button round
                         type="primary"
                         @click="answer('继续咨询')">继续咨询</van-button>
             <van-button round
-                        @click="answer('我要复诊')">我要复诊</van-button>
+                        @click="answer('我要复诊')">我要复诊</van-button> -->
           </template>
 
           <!-- Q5 & Q6: 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
-            <van-button @click="answer('上传')"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          @click="answer('上传')">上传凭证</peace-button>
+            <!-- <van-button @click="answer('上传')"
                         type="primary"
-                        round>上传凭证</van-button>
+                        round>上传凭证</van-button> -->
 
             <template v-if="current.mode === ANSWER_MODE.FILE">
-              <van-button @click="answer('我已遗失')"
-                          round>我已遗失</van-button>
+              <peace-button round
+                            throttle
+                            :throttleTime="1000"
+                            @click="answer('我已遗失')">我已遗失</peace-button>
+              <!-- <van-button @click="answer('我已遗失')"
+                          round>我已遗失</van-button> -->
             </template>
             <template v-if="current.mode === ANSWER_MODE.FILE_CONFIRM">
-              <van-button @click="answer('确认遗失')"
-                          round>确认遗失</van-button>
+              <peace-button round
+                            throttle
+                            :throttleTime="1000"
+                            @click="answer('确认遗失')">确认遗失</peace-button>
+              <!-- <van-button @click="answer('确认遗失')"
+                          round>确认遗失</van-button> -->
             </template>
           </template>
 
           <!-- Q7 初步诊断 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_CONFIRM">
-            <van-button @click="answer('点击选择初诊诊断')"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          @click="answer('点击选择初诊诊断')">点击选择初诊诊断</peace-button>
+            <!-- <van-button @click="answer('点击选择初诊诊断')"
                         type="primary"
-                        round>点击选择初诊诊断</van-button>
+                        round>点击选择初诊诊断</van-button> -->
           </template>
         </div>
       </transition>
@@ -291,19 +342,54 @@
 
           <div class="allergies-button-area"
                v-if="supplementaryMode === SUPPLEMENTARY_MODE.ALLERGIES">
-            <van-button @click="onClickSupplementaryAnswerButton('allergies', true)"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          slot="button"
+                          @click="onClickSupplementaryAnswerButton('allergies', true)">选择过敏史</peace-button>
+            <!-- <van-button @click="onClickSupplementaryAnswerButton('allergies', true)"
                         slot="button"
                         round
-                        type="primary">选择过敏史</van-button>
+                        type="primary">选择过敏史</van-button> -->
             <div class="button-space"></div>
-            <van-button @click="onClickSupplementaryAnswerButton('allergies', false)"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          @click="onClickSupplementaryAnswerButton('allergies', false)">暂无过敏史</peace-button>
+            <!-- <van-button @click="onClickSupplementaryAnswerButton('allergies', false)"
                         slot="button"
                         round
-                        type="default">暂无过敏史</van-button>
+                        type="default">暂无过敏史</van-button> -->
           </div>
           <div class=""
                v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
-            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          type="default"
+                          @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)">备孕期</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          type="default"
+                          @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PREGNANCY)">怀孕期</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          type="default"
+                          @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.LACTATION)">哺乳期</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          type="default"
+                          @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)">不在特殊时期</peace-button>
+            <!-- <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
                         slot="button"
                         round
                         type="default">备孕期</van-button>
@@ -318,15 +404,21 @@
             <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)"
                         slot="button"
                         round
-                        type="default">不在特殊时期</van-button>
+                        type="default">不在特殊时期</van-button> -->
           </div>
 
           <div class="images-button-area"
                v-if="supplementaryMode === SUPPLEMENTARY_MODE.IMAGES">
-            <van-button @click="onClickSupplementaryAnswerButton('images')"
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          slot="button"
+                          type="primary"
+                          @click="onClickSupplementaryAnswerButton('images')">上传患处图片</peace-button>
+            <!-- <van-button @click="onClickSupplementaryAnswerButton('images')"
                         slot="button"
                         round
-                        type="primary">上传患处图片</van-button>
+                        type="primary">上传患处图片</van-button> -->
           </div>
         </div>
       </transition>
@@ -716,9 +808,7 @@ export default {
     },
 
     onClickSupplementaryAnswerButton(mode, value = null) {
-      if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
-        return
-      }
+      console.log(new Date().getTime())
       const typeActionMap = {
         allergies: this.typeActionAllergies,
         woman: this.typeActionWoman,
@@ -731,7 +821,6 @@ export default {
       } else {
         throw new Error('Type error!')
       }
-      this.debounceParam.time = new Date().getTime()
     },
 
     onAfterSupplementaryAnswer(mode) {
@@ -1148,16 +1237,17 @@ export default {
       })
     },
     async answer() {
-      if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
-        return
-      }
+      console.log(new Date().getTime())
+      // if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
+      //   return
+      // }
       let result = await this.setAnswer(arguments)
       if (result) {
         this.beginNextQuestion()
 
         this.resetCurrentQuestion()
       }
-      this.debounceParam.time = new Date().getTime()
+      // this.debounceParam.time = new Date().getTime()
     },
 
     async setAnswer(params) {
