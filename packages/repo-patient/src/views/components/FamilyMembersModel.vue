@@ -273,6 +273,8 @@
                      v-model="model.guardianIdCard" />
         </template>
         <van-button @click="submit"
+                    :disabled="hasClick"
+                    :loading="hasClick"
                     size="large"
                     type="primary">保存</van-button>
       </div>
@@ -348,7 +350,8 @@ export default {
       addGardian: false,
       childInfo: {},
       canShowSelf: true,
-      loading: false
+      loading: false,
+      hasClick: false
     }
   },
 
@@ -663,6 +666,10 @@ export default {
         }
       }
 
+      if (this.hasClick) {
+        return
+      }
+      this.hasClick = true
       if (this.isEdit) {
         if (this.isNationExist) {
           // 存在民族情况，此时为删除
@@ -693,41 +700,51 @@ export default {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
-      peace.service.patient.bindFamily(params).then((res) => {
-        const params = peace.util.decode(this.$route.params.json)
-        if (params.emit) {
-          $peace.$emit(params.emit, res)
-        }
-
-        if (this.addGardian) {
-          this.gardianName = this.model.name
-          this.gardianId = this.model.idcard
-          for (let i in this.childInfo) {
-            this.model[i] = this.childInfo[i]
+      peace.service.patient
+        .bindFamily(params)
+        .then((res) => {
+          const params = peace.util.decode(this.$route.params.json)
+          if (params.emit) {
+            $peace.$emit(params.emit, res)
           }
-          this.gDialog.visible = false
-          this.addGardian = false
-          this.gardianSet = true
-          this.submit()
-        } else {
-          peace.util.alert(res.msg)
-          //新增家人后断连接IM
-          peace.service.IM.initNIMS({ type: 'add', ...res.data })
-          this.familyId = res.data.accid
-          this.getFamilyInfo({ id: res.data.accid, source: 2 })
-          this.from = ''
-        }
-      })
+
+          if (this.addGardian) {
+            this.gardianName = this.model.name
+            this.gardianId = this.model.idcard
+            for (let i in this.childInfo) {
+              this.model[i] = this.childInfo[i]
+            }
+            this.gDialog.visible = false
+            this.addGardian = false
+            this.gardianSet = true
+            this.submit()
+          } else {
+            peace.util.alert(res.msg)
+            //新增家人后断连接IM
+            peace.service.IM.initNIMS({ type: 'add', ...res.data })
+            this.familyId = res.data.accid
+            this.getFamilyInfo({ id: res.data.accid, source: 2 })
+            this.from = ''
+          }
+        })
+        .finally(() => {
+          this.hasClick = false
+        })
     },
     perfectInfo() {
       let familyId = this.model.id
       let nationCode = this.model.nationCode
       let nationName = this.model.nationName
       let params = { familyId, nationCode, nationName }
-      peace.service.patient.perfectInfo(params).then((res) => {
-        peace.util.alert(res.msg)
-        this.showUpdateInfo = false
-      })
+      peace.service.patient
+        .perfectInfo(params)
+        .then((res) => {
+          peace.util.alert(res.msg)
+          this.showUpdateInfo = false
+        })
+        .finally(() => {
+          this.hasClick = false
+        })
     },
     // 删除
     deleted() {
