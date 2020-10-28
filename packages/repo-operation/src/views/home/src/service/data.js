@@ -11,7 +11,7 @@ export default {
   getPrescriptionCountOfAll(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/prescriptionCountOfAll'
+    const apiPath = 'prescription/statisticalAnalysis/prescriptionCountOfAll'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -30,7 +30,7 @@ export default {
   getDrugCount(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/custdict/jntDrug/getJntDrugCount'
+    const apiPath = 'custdict/jntDrug/getJntDrugCount'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -49,7 +49,7 @@ export default {
   getMedicalAndWarehouse(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/stat/overview'
+    const apiPath = 'psd/stat/overview'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -67,7 +67,7 @@ export default {
   getMechanismCount(params) {
     const isMock = false
 
-    const apiPath = 'operate/index/getMechanismCount'
+    const apiPath = 'zyyoperate/operate/index/getMechanismCount'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -84,7 +84,7 @@ export default {
    */
   getMapData() {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/Stat/GetCityDrugStoreNum'
+    const apiPath = 'psd/Stat/GetCityDrugStoreNum'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -102,7 +102,7 @@ export default {
    */
   getData() {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/Order/ReportData '
+    const apiPath = 'psd/Order/ReportData '
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -121,7 +121,7 @@ export default {
   getPreCountOfSevenDays(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/preCountOfSevenDays'
+    const apiPath = 'prescription/statisticalAnalysis/preCountOfSevenDays'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -140,7 +140,7 @@ export default {
   getPreSortOfSevenDays(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/preSortOfSevenDays'
+    const apiPath = 'prescription/statisticalAnalysis/preSortOfSevenDays'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -159,7 +159,7 @@ export default {
   getPreDiagnosisKeyOfSevenDays(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/preDiagnosisKeyOfSevenDays'
+    const apiPath = 'prescription/statisticalAnalysis/preDiagnosisKeyOfSevenDays'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

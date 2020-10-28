@@ -8,7 +8,7 @@ export default {
   HosConfigDatas(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/HosConf/HosConfigDatas'
+    const apiPath = 'psd/HosConf/HosConfigDatas'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

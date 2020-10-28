@@ -8,7 +8,7 @@ export default {
   getRoleList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getRoleList'
+    const apiPath = 'zyyoperate/operate/permission/getRoleList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   addRole(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/addRole'
+    const apiPath = 'zyyoperate/operate/permission/addRole'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -48,7 +48,7 @@ export default {
   editRole(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/editRole'
+    const apiPath = 'zyyoperate/operate/permission/editRole'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -68,7 +68,7 @@ export default {
   editRoleStatus(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/editRoleStatus'
+    const apiPath = 'zyyoperate/operate/permission/editRoleStatus'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -88,7 +88,7 @@ export default {
   getMenuList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getMenuList'
+    const apiPath = 'zyyoperate/operate/permission/getMenuList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -108,7 +108,7 @@ export default {
   getRoleMenuList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getRoleMenuList'
+    const apiPath = 'zyyoperate/operate/permission/getRoleMenuList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

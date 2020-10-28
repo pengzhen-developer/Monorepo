@@ -88,7 +88,6 @@
 
 <script>
 import Util from '@src/util'
-
 export default {
   inject: ['provdeParentMenuSelect', 'provideMenuTree'],
 
@@ -100,7 +99,7 @@ export default {
     return {
       configuration: window.configuration,
 
-      user: Util.user.getUserInfo()
+      user: {}
     }
   },
 
@@ -113,16 +112,20 @@ export default {
       return this.provideMenuTree()
     }
   },
-
+  async mounted() {
+    this.user = await Peace.identity.auth.getAccountInfo()
+  },
   methods: {
     goUserCenter() {
       this.$router.push('/user-center')
     },
 
     signOut() {
-      Util.user.removeUserInfo()
-
-      this.$router.push({ name: '/login' })
+      Peace.identity.auth.logout().then(() => {
+        Peace.identity.auth.removeAll()
+        Util.user.removeUserInfo()
+        this.$router.push({ name: 'Login' })
+      })
     }
   }
 }

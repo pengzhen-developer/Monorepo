@@ -8,7 +8,7 @@ export default {
   getMenuList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getMenuList'
+    const apiPath = 'zyyoperate/operate/permission/getMenuList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   addMenu(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/addMenu'
+    const apiPath = 'zyyoperate/operate/permission/addMenu'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -48,7 +48,7 @@ export default {
   editMenu(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/editMenu'
+    const apiPath = 'zyyoperate/operate/permission/editMenu'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -68,7 +68,7 @@ export default {
   delMenu(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/delMenu'
+    const apiPath = 'zyyoperate/operate/permission/delMenu'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -1,5 +1,3 @@
-
-
 export default {
   /**
    * 订单概览
@@ -10,7 +8,7 @@ export default {
   GetOrderInformation(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Order/GetOrderInformation'
+    const apiPath = 'psd/Order/GetOrderInformation'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -29,7 +27,7 @@ export default {
   exportFile(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Excel/OOrderInformation'
+    const apiPath = 'psd/Excel/OOrderInformation'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -7,7 +7,7 @@ export default {
   getList(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/getList'
+    const apiPath = 'zyyoperate/operate/account/getList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -26,7 +26,7 @@ export default {
   doCheck(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/doCheck'
+    const apiPath = 'zyyoperate/operate/account/doCheck'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -45,7 +45,7 @@ export default {
   updateAccountStatus(params) {
     const isMock = false
 
-    const apiPath = 'operate/Account/updateAccountStatus'
+    const apiPath = 'zyyoperate/operate/Account/updateAccountStatus'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

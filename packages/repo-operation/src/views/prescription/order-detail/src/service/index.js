@@ -8,7 +8,7 @@ export default {
   getOrderInfo(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Order/GetOrderInfo'
+    const apiPath = 'psd/Order/GetOrderInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

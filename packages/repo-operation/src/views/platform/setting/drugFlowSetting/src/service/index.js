@@ -7,7 +7,7 @@ export default {
   getList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/HospitalConf/List'
+    const apiPath = 'psd/HospitalConf/List'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -21,7 +21,7 @@ export default {
   getDetail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/HospitalConf/Detail'
+    const apiPath = 'psd/HospitalConf/Detail'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -35,7 +35,7 @@ export default {
   save(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/HospitalConf/ConfSave'
+    const apiPath = 'psd/HospitalConf/ConfSave'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -49,7 +49,7 @@ export default {
   upload(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Upload/Image2'
+    const apiPath = 'psd/Upload/Image2'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -63,7 +63,7 @@ export default {
   CloudStoreList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/DrugStore/CloudStoreList'
+    const apiPath = 'psd/DrugStore/CloudStoreList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -77,7 +77,7 @@ export default {
   SimpleStoreList2(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/DrugStore/SimpleStoreList2'
+    const apiPath = 'psd/DrugStore/SimpleStoreList2'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

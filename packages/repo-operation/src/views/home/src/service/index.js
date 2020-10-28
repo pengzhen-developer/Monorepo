@@ -9,7 +9,7 @@ export default {
   getOverview(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/stat/overview'
+    const apiPath = 'psd/stat/overview'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   get7DaysOrderNum(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Stat/Get7DaysOrderNum'
+    const apiPath = 'psd/Stat/Get7DaysOrderNum'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -46,7 +46,7 @@ export default {
    */
   getSchedule(params) {
     const isMock = false
-    const apiPath = 'operate/indexpage/schedule'
+    const apiPath = 'zyyoperate/operate/indexpage/schedule'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -64,7 +64,7 @@ export default {
    */
   preCountOfSevenDays(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/preCountOfSevenDays'
+    const apiPath = 'prescription/statisticalAnalysis/preCountOfSevenDays'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -82,7 +82,7 @@ export default {
    */
   getDrugStoreList() {
     const isMock = false
-    const apiPath = 'mds/openapi/psd/Stat/GetCityDrugStoreNum'
+    const apiPath = 'psd/Stat/GetCityDrugStoreNum'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -100,7 +100,7 @@ export default {
    */
   prescriptionCountOfAll(params) {
     const isMock = false
-    const apiPath = 'mds/openapi/prescription/statisticalAnalysis/prescriptionCountOfAll'
+    const apiPath = 'prescription/statisticalAnalysis/prescriptionCountOfAll'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

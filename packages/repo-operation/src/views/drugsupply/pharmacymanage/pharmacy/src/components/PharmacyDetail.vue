@@ -219,13 +219,13 @@ export default {
     fetch() {
       const params = { UserID: this.data }
       Service.detail(params).then((res) => {
-        this.detailData = res.data.list
-        this.DistributSelfMode = res.data.list.DistributionMode.filter((item) => item === 0)
-        this.DistributMode = res.data.list.DistributionMode.filter((item) => item === 1)
-        this.detailData.logoUrlList = [res.data.list.logoUrl]
-        this.detailData.BusinesslicenseUrlList = [res.data.list.BusinesslicenseUrl]
-        this.detailData.DrugManagementlicenseUrlList = [res.data.list.DrugManagementlicenseUrl]
-        this.detailData.GSPCertificationUrlList = [res.data.list.GSPCertificationUrl]
+        this.detailData = res.data
+        this.DistributSelfMode = res.data.DistributionMode.filter((item) => item === 0)
+        this.DistributMode = res.data.DistributionMode.filter((item) => item === 1)
+        this.detailData.logoUrlList = [res.data.logoUrl]
+        this.detailData.BusinesslicenseUrlList = [res.data.BusinesslicenseUrl]
+        this.detailData.DrugManagementlicenseUrlList = [res.data.DrugManagementlicenseUrl]
+        this.detailData.GSPCertificationUrlList = [res.data.GSPCertificationUrl]
       })
     }
   }

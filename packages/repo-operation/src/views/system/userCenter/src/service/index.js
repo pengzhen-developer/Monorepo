@@ -8,7 +8,7 @@ export default {
   getPersonBaseInfo(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/getPersonBaseInfo'
+    const apiPath = 'zyyoperate/operate/account/getPersonBaseInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   modifyPass(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/modifyPass'
+    const apiPath = 'zyyoperate/operate/account/modifyPass'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

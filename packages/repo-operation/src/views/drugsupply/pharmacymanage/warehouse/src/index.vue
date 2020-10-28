@@ -73,7 +73,7 @@ export default {
     goDetail(code) {
       this.visible = true
       Service.getDetail({ code: code }).then((res) => {
-        this.warehoseInfo = res.data.list
+        this.warehoseInfo = res.data
       })
     },
     back() {

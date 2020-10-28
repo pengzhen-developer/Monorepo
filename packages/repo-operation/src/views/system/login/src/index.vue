@@ -61,7 +61,7 @@
 
 <script>
 import Util from '@src/util'
-import Service from './service'
+// import Service from './service'
 
 export default {
   data() {
@@ -91,10 +91,35 @@ export default {
     doLogin() {
       this.validateForm().then(() => {
         this.isLoading = true
+        const params = {
+          // 登录模式 password:密码  mobile:手机
+          grant_type: 'password',
+          // 终端id
+          client_id: process.env.VUE_APP_AUTH_CLIENT_ID,
+          // 终端secret
+          client_secret: process.env.VUE_APP_AUTH_CLIENT_SECRET,
+          // 用户名（grant_type=password 时必填）
+          username: this.model.username,
+          // 密码（grant_type=password 时必填）
+          password: this.model.password,
+          // 加密key（grant_type=password 时必填）
+          encryption_key: process.env.VUE_APP_AUTH_ENCRYPTION_KEY,
+          // 产品编码
+          productCode: '',
+          // 菜单类型 left：左菜单, top：顶菜单, button：按钮, 默认
+          type: 'left',
+          // 环境变量
+          processEnv: process.env
+        }
 
-        this.login()
-          .then(this.getAccountMenuList)
-          .then(this.redirectToHome)
+        Peace.identity.auth
+          .workFlowAuth(params)
+          .then(() => {
+            this.$router.replace('/').then(() => window.location.reload())
+          })
+          .catch((error) => {
+            Peace.util.error(error?.msg ?? '登录失败')
+          })
           .finally(() => {
             this.isLoading = false
           })
@@ -109,39 +134,6 @@ export default {
           }
         })
       })
-    },
-
-    login() {
-      return Service.doLogin(this.model).then((res) => {
-        Util.user.setUserInfo(res.data)
-
-        return Promise.resolve()
-      })
-    },
-
-    getAccountMenuList() {
-      return Service.getAccountMenuList().then((res) => {
-        const regx1 = /.*{|}.*/g
-        const regx2 = /\{(.+?)\}/g
-
-        res.data.menuList.forEach((menu) => {
-          // 处理 env
-          // {env} => process.env.env
-          const envKey = menu.menuPath?.replace(regx1, '')
-          menu.menuPath = menu.menuPath?.replace(regx2, process.env[envKey])
-
-          // 处理 route route
-          menu.menuRoute = '/' + menu.menuRoute
-        })
-
-        Util.user.setAccountMenuList(res.data)
-
-        return Promise.resolve()
-      })
-    },
-
-    redirectToHome() {
-      Util.referer.replaceToReferer()
     }
   }
 }

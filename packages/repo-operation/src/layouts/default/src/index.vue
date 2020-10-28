@@ -41,8 +41,6 @@
 </template>
 
 <script>
-import Util from '@src/util'
-
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
 /** 布局 - 左侧导航 */
@@ -102,6 +100,7 @@ export default {
 
   computed: {
     hasNavMenu() {
+      console.log('childrenMenuTree', this.childrenMenuTree)
       return this.childrenMenuTree?.length > 0
     }
   },
@@ -123,10 +122,11 @@ export default {
   },
 
   methods: {
-    getMenu() {
+    async getMenu() {
+      const accountMenu = (await Peace.identity.auth.getAccountMenu()).filter((item) => !item.virtual)
       // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList.filter((item) => !item.virtual)
-      const menuTreeSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList.filter((item) => !item.virtual)
+      const menuListSource = Peace.util.deepClone(accountMenu)
+      const menuTreeSource = Peace.util.deepClone(accountMenu)
 
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
@@ -140,8 +140,8 @@ export default {
       }
     },
 
-    getTab(index) {
-      const menuListSource = Peace.util.deepClone(Util.user.getAccountMenuList()).menuList
+    async getTab(index) {
+      const menuListSource = Peace.util.deepClone(await Peace.identity.auth.getAccountMenu())
 
       const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
 
@@ -169,7 +169,6 @@ export default {
         // 并且默认加载第一个有效的功能
         else {
           this.childrenMenuTree = currentMenu.children
-
           this.$nextTick().then(() => {
             const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
             firstMenuNode?.click()
@@ -244,7 +243,7 @@ export default {
 
       find(list, node)
 
-      return arr.find((item) => item.parentId === 0)
+      return arr.find((item) => item.parentId === '-1')
     }
   }
 }

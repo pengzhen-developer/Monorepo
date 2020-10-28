@@ -87,9 +87,9 @@ export default {
           this.overViewData.drugSupply = this.overViewData.warehouse + this.overViewData.store
         })
         .catch((err) => {
-          if (err.data.code === 201) {
+          if (err?.data?.code === 201) {
             Peace.util.warning(err.data.msg)
-          } else if (err.data.code === 403) {
+          } else if (err?.data?.code === 403) {
             // Peace.util.warning(err.data.msg)
             // LibraryUtil.user.removeUserInfo()
             // setTimeout(() => {

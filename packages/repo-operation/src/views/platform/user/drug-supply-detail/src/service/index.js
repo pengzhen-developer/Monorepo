@@ -8,7 +8,7 @@ export default {
   geDrugsCustomerList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/DrugStore/DrugsCustomerList'
+    const apiPath = 'psd/DrugStore/DrugsCustomerList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -27,7 +27,7 @@ export default {
   GetGoodsDetails(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Pharmacy/GetGoodsDetails'
+    const apiPath = 'psd/Pharmacy/GetGoodsDetails'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -46,7 +46,7 @@ export default {
   getDetail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/CircConfig/GetCustIn3PartByOperate'
+    const apiPath = 'psd/CircConfig/GetCustIn3PartByOperate'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -65,7 +65,7 @@ export default {
   detail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/GetDetailsByZYY'
+    const apiPath = 'webapi/api/Customer/GetDetailsByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

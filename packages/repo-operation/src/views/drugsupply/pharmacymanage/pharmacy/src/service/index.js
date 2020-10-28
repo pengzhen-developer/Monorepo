@@ -8,7 +8,7 @@ export default {
   AllBranchStore(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/DrugStore/AllBranchStoreByZYY'
+    const apiPath = 'psd/DrugStore/AllBranchStoreByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -27,7 +27,7 @@ export default {
   detail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/GetDetailsByZYY'
+    const apiPath = 'webapi/api/Customer/GetDetailsByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -7,7 +7,7 @@ export default {
   doLogin(params) {
     const isMock = false
 
-    const apiPath = 'operate/index/doLogin'
+    const apiPath = 'zyyoperate/operate/index/doLogin'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -30,7 +30,7 @@ export default {
   getAccountMenuList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getAccountMenuList'
+    const apiPath = 'zyyoperate/operate/permission/getAccountMenuList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

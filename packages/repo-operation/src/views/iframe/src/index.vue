@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import md5 from './util/md5'
-import Util from '@src/util'
+// import md5 from './util/md5'
 
 export default {
   data() {
@@ -34,14 +33,14 @@ export default {
     }
   },
 
-  created() {
-    const user = Util.user.getUserInfo()
+  async created() {
+    const auth = await Peace.identity.auth.getAuth()
 
     this.src = this.$route.meta.menuPath
     if (this.src.indexOf('?') === -1) {
-      this.src = this.src + `?sso=true&cdkey=${user.username}:${md5(user.id)}`
+      this.src = this.src + `?sso=true&token=${auth.access_token}`
     } else {
-      this.src = this.src + `&sso=true&cdkey=${user.username}:${md5(user.id)}`
+      this.src = this.src + `&sso=true&token=${auth.access_token}`
     }
   },
 

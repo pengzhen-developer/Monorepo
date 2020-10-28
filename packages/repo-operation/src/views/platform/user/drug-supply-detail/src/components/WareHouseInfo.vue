@@ -59,8 +59,8 @@ export default {
   methods: {
     fetch() {
       Service.getDetail({ code: this.data.custcode }).then((res) => {
-        if (res.data.list !== null) {
-          this.warehoseInfo = res.data.list
+        if (res.data !== null) {
+          this.warehoseInfo = res.data
         }
       })
     }

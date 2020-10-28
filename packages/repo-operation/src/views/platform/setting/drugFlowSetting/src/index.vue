@@ -175,7 +175,7 @@ export default {
 
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
-        this.data = res.data.List
+        this.data = res.data
       })
     },
 
@@ -189,7 +189,7 @@ export default {
 
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
-        this.data = res.data.List
+        this.data = res.data
       })
     }
   }

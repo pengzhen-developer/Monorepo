@@ -17,7 +17,9 @@
 <script >
 export default {
   name: 'Error404',
-
+  created() {
+    Peace.identity.auth.logout()
+  },
   methods: {
     back() {
       // 清除登录信息

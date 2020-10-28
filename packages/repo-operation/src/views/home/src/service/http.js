@@ -1,4 +1,4 @@
-import LibraryUtil from '@src/util'
+// import LibraryUtil from '@src/util'
 import Axios from 'axios'
 
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -7,17 +7,16 @@ let Http = Axios.create({})
 
 // Request interceptor
 Http.interceptors.request.use(
-  function(config) {
+  async (config) => {
     // Set Authority
-    const userInfo = LibraryUtil.user.getUserInfo()
-    if (userInfo?.token) {
-      config.headers.Token = userInfo?.token
+    let userInfo = await Peace.identity.auth.getAuth()
+    if (userInfo?.access_token) {
+      config.headers.Authorization = 'Bearer ' + userInfo?.access_token
     }
-
     return config
   },
 
-  function(error) {
+  (error) => {
     return Promise.reject(error)
   }
 )

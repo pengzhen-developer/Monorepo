@@ -7,7 +7,7 @@ export default {
   getList(params) {
     const isMock = false
 
-    const apiPath = 'operate/Account/organizationList'
+    const apiPath = 'zyyoperate/operate/Account/organizationList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -26,7 +26,7 @@ export default {
   getOrganizationInfo(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/getOneOrgInfo'
+    const apiPath = 'zyyoperate/operate/account/getOneOrgInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -45,7 +45,7 @@ export default {
   addOrganization(params) {
     const isMock = false
 
-    const apiPath = 'operate/Account/addOrganization'
+    const apiPath = 'zyyoperate/operate/Account/addOrganization'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -64,7 +64,7 @@ export default {
   editOrganization(params) {
     const isMock = false
 
-    const apiPath = 'operate/account/editOperateOrg'
+    const apiPath = 'zyyoperate/operate/account/editOperateOrg'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -83,7 +83,7 @@ export default {
   uploadImage(formData) {
     const isMock = false
 
-    const apiPath = 'operate/Account/uploadImage'
+    const apiPath = 'zyyoperate/operate/Account/uploadImage'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -105,7 +105,7 @@ export default {
    */
   getService(params) {
     const isMock = false
-    const apiPath = 'operate/service/chooseService'
+    const apiPath = 'zyyoperate/operate/service/chooseService'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -124,7 +124,7 @@ export default {
   getRegion(params) {
     const isMock = false
 
-    const apiPath = 'operate/Area/list'
+    const apiPath = 'zyyoperate/operate/Area/list'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -143,7 +143,7 @@ export default {
   operateService(params) {
     const isMock = false
 
-    const apiPath = 'operate/service/operateService'
+    const apiPath = 'zyyoperate/operate/service/operateService'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -162,7 +162,7 @@ export default {
   getPaymentConfig(params) {
     const isMock = false
 
-    const apiPath = 'operate/Service/getInsuranceConfig'
+    const apiPath = 'zyyoperate/operate/Service/getInsuranceConfig'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -181,7 +181,7 @@ export default {
   updateMedicalInsuranceConfig(params) {
     const isMock = false
 
-    const apiPath = 'operate/Service/medicalInsuranceConfig'
+    const apiPath = 'zyyoperate/operate/Service/medicalInsuranceConfig'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -200,7 +200,7 @@ export default {
   updateCommercialInsuranceConfig(params) {
     const isMock = false
 
-    const apiPath = 'operate/Service/commercialInsuranceConfig'
+    const apiPath = 'zyyoperate/operate/Service/commercialInsuranceConfig'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

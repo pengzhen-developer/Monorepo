@@ -6,7 +6,7 @@ export default {
   getLogListByYwq(params) {
     const isMock = false
 
-    const apiPath = 'operate/Log/getLogListByYwq'
+    const apiPath = 'zyyoperate/operate/Log/getLogListByYwq'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -8,7 +8,7 @@ export default {
   getUseAccountList(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/getAdminList'
+    const apiPath = 'zyyoperate/operate/permission/getAdminList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   getQueryDictionary(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/dictionary'
+    const apiPath = 'zyyoperate/operate/permission/dictionary'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -48,7 +48,7 @@ export default {
   addUseAccount(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/addAdmin'
+    const apiPath = 'zyyoperate/operate/permission/addAdmin'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -68,7 +68,7 @@ export default {
   editUseAccount(params) {
     const isMock = false
 
-    const apiPath = 'operate/permission/editAdmin'
+    const apiPath = 'zyyoperate/operate/permission/editAdmin'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

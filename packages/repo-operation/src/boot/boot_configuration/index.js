@@ -17,6 +17,15 @@ export default {
   },
 
   /**
+   * 布局设定
+   *
+   * 可选： side / top-side
+   */
+  layout: {
+    type: 'default'
+  },
+
+  /**
    * 路由设定
    *
    * webpack 要求明确的后缀文件，以支持 xxx-loader 解析

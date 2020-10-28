@@ -8,7 +8,7 @@ export default {
   getOrderCancelApplyList(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Order/OrderCancelApplyList'
+    const apiPath = 'psd/Order/OrderCancelApplyList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -28,7 +28,7 @@ export default {
   getOrderCancelRecord(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Order/OrderCancelRecord'
+    const apiPath = 'psd/Order/OrderCancelRecord'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -48,7 +48,7 @@ export default {
   getOrderInfo(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Order/GetOrderInfo'
+    const apiPath = 'psd/Order/GetOrderInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -62,7 +62,7 @@ export default {
   exportFile(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/psd/Excel/OOrderCancelAllField'
+    const apiPath = 'psd/Excel/OOrderCancelAllField'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

@@ -8,7 +8,7 @@ export default {
   listForReview(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/PharmacyManage/ListForReviewByZYY'
+    const apiPath = 'webapi/api/PharmacyManage/ListForReviewByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -27,7 +27,7 @@ export default {
   detail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/Details'
+    const apiPath = 'webapi/api/Customer/Details'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -46,7 +46,7 @@ export default {
   UpdateExamineStatus(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/UpdateExamineStatus'
+    const apiPath = 'webapi/api/Customer/UpdateExamineStatus'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
