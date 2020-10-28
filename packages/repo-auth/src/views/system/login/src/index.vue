@@ -1,52 +1,107 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="container-header">
+      <div class="logo">
+        <el-image v-bind:src="logoImage">
+        </el-image>
+      </div>
+      <div class="title text-grey-333">
+        欢迎您登录
+      </div>
+    </div>
 
-    <PeaceButton type="primary"
-                 v-on:click="login">Login</PeaceButton>
+    <div class="layout">
+      <div class="layout-top">
+
+        <SignByPwd></SignByPwd>
+      </div>
+    </div>
+
+    <div class="bottom">
+    </div>
 
   </div>
 </template>
 
 <script>
+import SignByPwd from './components/SignByPwd'
+
 export default {
-  methods: {
-    login() {
-      const params = {
-        // 登录模式 password:密码  mobile:手机
-        grant_type: 'password',
-        // 终端id
-        client_id: 'console',
-        // 终端secret
-        client_secret: 'console',
-        // 用户名（grant_type=password 时必填）
-        username: '13999999999',
-        // 密码（grant_type=password 时必填）
-        password: '123456',
-        // 加密key（grant_type=password 时必填）
-        encryption_key: 'sksksksksksksksk',
-        // 产品编码
-        productCode: 'kzt',
-        // 菜单类型 left：左菜单, top：顶菜单, button：按钮, 默认
-        type: 'left',
-        // 环境变量
-        processEnv: process.env
-      }
+  components: {
+    SignByPwd
+  },
 
-      Peace.identity.auth
-        .workFlowAuth(params)
-        .then(() => {
-          this.$router.replace('/').then(() => window.location.reload())
-        })
-        .catch((error) => {
-          Peace.util.error(error?.msg ?? '登录失败')
-        })
-    },
+  data() {
+    return {
+      logoImage: require('./assets/img/logo.png')
+    }
+  },
+  methods: {}
+}
+</script>
+<style lang="scss" scoped>
+.container {
+  background-image: url('./assets/img/login_regist_bgd.png');
+  background-size: cover;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 100vw;
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  .container-header {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    .logo {
+      width: 161px;
+      height: 44px;
+      margin: 0 25px;
+      overflow: hidden;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 25px;
+    }
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
 
-    redirectToHome() {
-      window.location.href = window.location.origin
+    .layout-top {
+      background: #fff;
+    }
+  }
+  .bottom {
+    background: white;
+    width: 100%;
+    display: flex;
+    padding: 25px 25px;
+    justify-content: center;
+    color: var(--q-color-grey-333);
+    font-size: 14px;
+    flex-direction: column;
+    align-items: center;
+
+    .bottom-top-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .container-bottom {
+      color: var(--q-color-grey-999);
+      font-size: 12px;
     }
   }
 }
-</script>
-
+</style>
 

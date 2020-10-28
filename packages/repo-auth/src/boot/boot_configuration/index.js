@@ -4,7 +4,7 @@ export default {
    *
    */
   application: {
-    title: 'vue-cli-template'
+    title: '集中权限认证'
   },
 
   /**

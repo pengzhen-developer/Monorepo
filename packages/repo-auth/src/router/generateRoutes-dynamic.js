@@ -1,7 +1,5 @@
 const getAccountMenu = () => {
   const params = {
-    // 产品编码
-    productCode: 'kzt',
     // 菜单类型 left：左菜单, top：顶菜单, button：按钮, 默认
     type: 'left',
     // 环境变量
@@ -21,7 +19,7 @@ const getAccountMenu = () => {
     //
     // 但 generateRoutes-dynamic 在 new vue() 前，router 未生成
     // 因此自行处理 401 错误
-    if (error.response.status === 401 || error.response.status === 403 || error.response.data.code === 401 || error.response.data.code === 403) {
+    if (error?.response?.status === 401 || error?.response?.status === 403 || error?.response?.data?.code === 401 || error?.response?.data?.code === 403) {
       // 清理账户信息
       Peace.identity.auth.removeAuth()
       Peace.identity.auth.removeAccountInfo()

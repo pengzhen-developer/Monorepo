@@ -15,11 +15,11 @@
           <div class="col q-ml-lg q-pt-sm flex column justify-center flex-start animated jump-down">
             <div class="text-h6 text-weight-bold"
                  style="line-height: 1; letter-spacing: 1px; margin: 0 0 3px 0;">
-              系统名称
+              {{ title1 }}
             </div>
             <div class="text-subtitle1"
                  style="line-height: 1; letter-spacing: 1px;">
-              医院名称
+              {{ title2 }}
             </div>
           </div>
         </transition>
@@ -30,7 +30,7 @@
 
         <!-- 账户名称 -->
         <span class="q-mr-sm">
-          账户名称
+          {{ username }}
         </span>
 
         <!-- 账户名称 -->
@@ -63,7 +63,15 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      username: '',
+      title1: '智药云解决方案',
+      title2: window.configuration.application.title
+    }
+  },
+
+  async mounted() {
+    this.username = (await Peace.identity.auth.getAccountInfo())?.username
   },
 
   methods: {
