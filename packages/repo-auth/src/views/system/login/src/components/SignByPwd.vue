@@ -20,7 +20,7 @@
                   v-bind:maxlength="20"
                   v-on:focus="usernameFocus"
                   v-on:blur="usernameBlur"
-                  placeholder="请输入手机号">
+                  placeholder="">
           <div slot="prepend">
             <i class="zyy-icon zyy-yonghuming"></i>
           </div>

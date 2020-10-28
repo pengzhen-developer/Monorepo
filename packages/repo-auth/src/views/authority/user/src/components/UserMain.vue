@@ -47,7 +47,7 @@
             <span>{{getRoleNames(scope.row.roleList)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="手机号"
+        <el-table-column label=""
                          align="center"
                          min-width="220px"
                          prop="phone"></el-table-column>
