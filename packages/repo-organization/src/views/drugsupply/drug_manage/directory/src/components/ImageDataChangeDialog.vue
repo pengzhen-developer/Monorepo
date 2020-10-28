@@ -63,9 +63,9 @@ export default {
     get() {
       const params = { ID: this.drugId }
       Service.GetImagesByCustDrug(params).then((res) => {
-        if (res.data.list != '') {
-          this.imageList = res.data.list.split(',')
-          this.imageUpdataList = res.data.list.split(',')
+        if (res.data != '') {
+          this.imageList = res.data.split(',')
+          this.imageUpdataList = res.data.split(',')
         }
       })
     },
@@ -94,12 +94,7 @@ export default {
     },
 
     beforeAvatarUpload(file) {
-      let isJPG =
-        file.type === 'image/jpg' ||
-        file.type === 'image/jpeg' ||
-        file.type === 'image/bmp' ||
-        file.type === 'image/png' ||
-        file.type === 'image/gif'
+      let isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/bmp' || file.type === 'image/png' || file.type === 'image/gif'
 
       const isLt1M = file.size / 1024 / 1024 < 2
       if (!isJPG) {

@@ -109,7 +109,7 @@ export default {
       const params = { CustID: this.data }
       let _this = this
       Service.GetOperationInfoByZYY(params).then((res) => {
-        const data = res.data.list
+        const data = res.data
         Object.keys(_this.model).forEach((key) => {
           _this.model[key] = data[key]
         })

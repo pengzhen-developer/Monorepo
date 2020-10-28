@@ -524,8 +524,8 @@ export default {
     if (this.data !== '') {
       const params = { UserID: this.data }
       Service.getDetails(params).then((res) => {
-        let resData = res.data.list
-        this.dataBack = Peace.util.deepClone(res.data.list)
+        let resData = res.data
+        this.dataBack = Peace.util.deepClone(res.data)
 
         Object.keys(this.model).forEach((key) => {
           this.model[key] = resData[key]
@@ -621,7 +621,7 @@ export default {
         }
         Service.uploadImage(param)
           .then((res) => {
-            _this.model[title] = res.data.list.SignUrl
+            _this.model[title] = res.data.SignUrl
 
             _this.$refs['drugForm'].validateField('imgList')
             Peace.util.success(res.msg)

@@ -194,7 +194,7 @@ export default {
       }
 
       Service.getPrescriptionInfo(params).then((res) => {
-        this.data = res.data.list
+        this.data = res.data
       })
     }
   }

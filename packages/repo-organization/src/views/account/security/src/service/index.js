@@ -7,7 +7,7 @@ export default {
   getAccountDetailInfo(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/getAccountDetailInfo'
+    const apiPath = 'zyyconsole/console/bank/getAccountDetailInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -25,7 +25,7 @@ export default {
   changePwd(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/modifyPass'
+    const apiPath = 'zyyconsole/console/bank/modifyPass'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -44,7 +44,7 @@ export default {
   sendCode(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/sendCode'
+    const apiPath = 'zyyconsole/console/bank/sendCode'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -63,7 +63,7 @@ export default {
   checkOldCode(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/checkOldCode'
+    const apiPath = 'zyyconsole/console/bank/checkOldCode'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -82,7 +82,7 @@ export default {
   changeModifyTel(params) {
     const isMock = false
 
-    const apiPath = 'console/bank/modifyTel'
+    const apiPath = 'zyyconsole/console/bank/modifyTel'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

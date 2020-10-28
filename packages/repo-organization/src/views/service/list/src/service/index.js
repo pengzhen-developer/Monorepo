@@ -7,7 +7,7 @@ export default {
   getMyServiceList(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/getMyServiceList'
+    const apiPath = 'zyyconsole/console/Service/getMyServiceList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -26,7 +26,7 @@ export default {
   getMyServiceCard(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/getServiceExistList'
+    const apiPath = 'zyyconsole/console/Service/getServiceExistList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

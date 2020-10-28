@@ -42,13 +42,13 @@ export default {
 
       Service.HasWaitReceiveOrder(params).then((res) => {
         // 非系统接单才能进行提示
-        if (res.data.list.IsSysReceive) {
+        if (res.data.IsSysReceive) {
           window.clearInterval(this.generalDelayId)
 
           return
         }
 
-        if (res.data.list.HasWaitOrder) {
+        if (res.data.HasWaitOrder) {
           this.notifyObejct = this.$notify({
             duration: duration,
             title: '',

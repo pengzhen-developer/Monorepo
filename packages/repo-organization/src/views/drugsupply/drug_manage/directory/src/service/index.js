@@ -8,7 +8,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/Hospital/DrugListPaging'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -24,7 +24,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/Hospital/SaveDrugList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -40,7 +40,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/CustDrug/GetImagesByCustDrug'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -55,7 +55,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/Upload/Image2'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -70,7 +70,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/Excel/ImportExcelByZYY'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
@@ -85,7 +85,7 @@ export default {
     const isMock = false
     const apiPath = 'psd/CustDrug/SaveImagesByCustDrug'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const serverPath = process.env.VUE_APP_BASE_API + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res

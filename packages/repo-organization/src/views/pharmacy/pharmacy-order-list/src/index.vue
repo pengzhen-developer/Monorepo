@@ -360,10 +360,10 @@ export default {
         this.source.ShippingMethod.forEach((item) => {
           switch (item.label) {
             case '自提订单':
-              item.unprocessCount = res.data.list.StorePickupCount
+              item.unprocessCount = res.data.StorePickupCount
               break
             case '配送订单':
-              item.unprocessCount = res.data.list.DeliveryCount
+              item.unprocessCount = res.data.DeliveryCount
               break
           }
         })
@@ -371,14 +371,14 @@ export default {
         this.source.OrderStatus.forEach((item) => {
           switch (item.label) {
             case '等待接单':
-              item.unprocessCount = res.data.list.WaitCount
+              item.unprocessCount = res.data.WaitCount
               break
             case '已接单':
-              item.unprocessCount = res.data.list.ReceiveCount
+              item.unprocessCount = res.data.ReceiveCount
               break
             case '已备药':
             case '已发货':
-              item.unprocessCount = res.data.list.PrepareCount
+              item.unprocessCount = res.data.PrepareCount
               break
           }
         })

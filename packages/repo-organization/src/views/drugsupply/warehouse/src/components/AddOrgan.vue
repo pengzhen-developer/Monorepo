@@ -117,7 +117,7 @@ export default {
   methods: {
     getCust() {
       Service.getCustlist().then((res) => {
-        this.custList = res.data.list
+        this.custList = res.data
       })
     },
     save() {

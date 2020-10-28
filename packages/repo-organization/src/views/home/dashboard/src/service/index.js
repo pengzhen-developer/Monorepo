@@ -7,7 +7,7 @@ export default {
   getBaseInfo(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/getBaseInfo'
+    const apiPath = 'zyyconsole/console/Service/getBaseInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -26,7 +26,7 @@ export default {
   doApply(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/doApply'
+    const apiPath = 'zyyconsole/console/Service/doApply'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -44,7 +44,7 @@ export default {
   isExistService(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/isExistService'
+    const apiPath = 'zyyconsole/console/Service/isExistService'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 
@@ -62,7 +62,7 @@ export default {
   checkServiceType(params) {
     const isMock = false
 
-    const apiPath = 'console/Service/checkServiceType'
+    const apiPath = 'zyyconsole/console/Service/checkServiceType'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_BASE_API + apiPath
 

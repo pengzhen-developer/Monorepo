@@ -351,20 +351,20 @@ export default {
 
       Service.getOrderInfo(params)
         .then((res) => {
-          res.data.list.Timeline = this.setDataToTimeline(res.data.list)
+          res.data.Timeline = this.setDataToTimeline(res.data)
 
-          this.model = res.data.list
+          this.model = res.data
 
           return res
         })
         .then((res) => {
           const params = {
-            orderId: res.data.list.OrderId
+            orderId: res.data.OrderId
           }
 
           Service.GQuery(params).then((res) => {
-            if (res.data.list) {
-              this.LogisticsTimeline = this.setDataToLogisticsTimeline(res.data.list)
+            if (res.data) {
+              this.LogisticsTimeline = this.setDataToLogisticsTimeline(res.data)
             }
           })
         })

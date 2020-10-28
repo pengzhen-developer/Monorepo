@@ -94,7 +94,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_PSD_API}Template/UpdateBatchOrderCodeTemplate.xls`
+        const url = `${process.env.VUE_APP_BASE_API}Template/UpdateBatchOrderCodeTemplate.xls`
         window.open(url, '_blank')
         this.$alert('', '药品批量修改编码模板获取成功！', {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>

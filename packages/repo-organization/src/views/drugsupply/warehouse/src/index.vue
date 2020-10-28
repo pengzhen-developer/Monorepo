@@ -108,11 +108,11 @@ export default {
   methods: {
     getInfo() {
       Service.getInfo().then((res) => {
-        if (res.data.list !== null) {
+        if (res.data !== null) {
           this.ishasWare = true
-          this.warehoseInfo = res.data.list
-          this.ishasOrgan = res.data.list.PrentCustList.length > 0 ? true : false
-          this.custItem.PrentId = res.data.list.Id
+          this.warehoseInfo = res.data
+          this.ishasOrgan = res.data.PrentCustList.length > 0 ? true : false
+          this.custItem.PrentId = res.data.Id
         }
       })
     },
