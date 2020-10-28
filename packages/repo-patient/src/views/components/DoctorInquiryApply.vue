@@ -267,10 +267,6 @@
                           throttle
                           :throttleTime="1000"
                           @click="answer('否')">否</peace-button>
-            <!-- <van-button round
-                        @click="answer('是')">是</van-button>
-            <van-button round
-                        @click="answer('否')">否</van-button> -->
           </template>
 
           <!-- Q4: 是否确认非复诊 -->
@@ -284,11 +280,6 @@
                           throttle
                           :throttleTime="1000"
                           @click="answer('我要复诊')">我要复诊</peace-button>
-            <!-- <van-button round
-                        type="primary"
-                        @click="answer('继续咨询')">继续咨询</van-button>
-            <van-button round
-                        @click="answer('我要复诊')">我要复诊</van-button> -->
           </template>
 
           <!-- Q5 & Q6: 附件与确认遗失 -->
@@ -298,25 +289,18 @@
                           :throttleTime="1000"
                           type="primary"
                           @click="answer('上传')">上传凭证</peace-button>
-            <!-- <van-button @click="answer('上传')"
-                        type="primary"
-                        round>上传凭证</van-button> -->
 
             <template v-if="current.mode === ANSWER_MODE.FILE">
               <peace-button round
                             throttle
                             :throttleTime="1000"
                             @click="answer('我已遗失')">我已遗失</peace-button>
-              <!-- <van-button @click="answer('我已遗失')"
-                          round>我已遗失</van-button> -->
             </template>
             <template v-if="current.mode === ANSWER_MODE.FILE_CONFIRM">
               <peace-button round
                             throttle
                             :throttleTime="1000"
                             @click="answer('确认遗失')">确认遗失</peace-button>
-              <!-- <van-button @click="answer('确认遗失')"
-                          round>确认遗失</van-button> -->
             </template>
           </template>
 
@@ -327,9 +311,6 @@
                           :throttleTime="1000"
                           type="primary"
                           @click="answer('点击选择初诊诊断')">点击选择初诊诊断</peace-button>
-            <!-- <van-button @click="answer('点击选择初诊诊断')"
-                        type="primary"
-                        round>点击选择初诊诊断</van-button> -->
           </template>
         </div>
       </transition>
@@ -348,20 +329,12 @@
                           type="primary"
                           slot="button"
                           @click="onClickSupplementaryAnswerButton('allergies', true)">选择过敏史</peace-button>
-            <!-- <van-button @click="onClickSupplementaryAnswerButton('allergies', true)"
-                        slot="button"
-                        round
-                        type="primary">选择过敏史</van-button> -->
             <div class="button-space"></div>
             <peace-button round
                           throttle
                           :throttleTime="1000"
                           slot="button"
                           @click="onClickSupplementaryAnswerButton('allergies', false)">暂无过敏史</peace-button>
-            <!-- <van-button @click="onClickSupplementaryAnswerButton('allergies', false)"
-                        slot="button"
-                        round
-                        type="default">暂无过敏史</van-button> -->
           </div>
           <div class=""
                v-if="supplementaryMode === SUPPLEMENTARY_MODE.WOMAN">
@@ -389,22 +362,6 @@
                           slot="button"
                           type="default"
                           @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)">不在特殊时期</peace-button>
-            <!-- <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PRE_PREGNANCY)"
-                        slot="button"
-                        round
-                        type="default">备孕期</van-button>
-            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.PREGNANCY)"
-                        slot="button"
-                        round
-                        type="default">怀孕期</van-button>
-            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.LACTATION)"
-                        slot="button"
-                        round
-                        type="default">哺乳期</van-button>
-            <van-button @click="onClickSupplementaryAnswerButton('woman', WOMAN_TYPE.NORMAL)"
-                        slot="button"
-                        round
-                        type="default">不在特殊时期</van-button> -->
           </div>
 
           <div class="images-button-area"
@@ -415,10 +372,6 @@
                           slot="button"
                           type="primary"
                           @click="onClickSupplementaryAnswerButton('images')">上传患处图片</peace-button>
-            <!-- <van-button @click="onClickSupplementaryAnswerButton('images')"
-                        slot="button"
-                        round
-                        type="primary">上传患处图片</van-button> -->
           </div>
         </div>
       </transition>
@@ -808,7 +761,6 @@ export default {
     },
 
     onClickSupplementaryAnswerButton(mode, value = null) {
-      console.log(new Date().getTime())
       const typeActionMap = {
         allergies: this.typeActionAllergies,
         woman: this.typeActionWoman,
@@ -1237,17 +1189,12 @@ export default {
       })
     },
     async answer() {
-      console.log(new Date().getTime())
-      // if (this.debounceParam.time && new Date().getTime() - this.debounceParam.time < this.debounceParam.wait) {
-      //   return
-      // }
       let result = await this.setAnswer(arguments)
       if (result) {
         this.beginNextQuestion()
 
         this.resetCurrentQuestion()
       }
-      // this.debounceParam.time = new Date().getTime()
     },
 
     async setAnswer(params) {
@@ -1616,71 +1563,6 @@ export default {
             this.sending = false
           }
         })
-      // return peace.service.inquiry
-      //   .apply(params)
-      //   .then((res) => {
-      //     // 订单提交成功
-      //     if (res.data.errorState === 0) {
-      //       // 需要支付，跳转支付
-      //       if (res.data.inquiryStatus === 1) {
-      //         //复诊非当日不调支付
-      //         // if (res.data.inquiryType == 'returnVisit' && res.data.isCurrentDate == 2) {
-      //         //   this.goToConsultDetail(res.data)
-      //         // } else {
-      //         //   this.goToPay(res.data)
-      //         // }
-      //         const json = peace.util.decode({
-      //           isPreSale: true
-      //         })
-      //         this.$router.replace(`/components/ConsultDetailBefore/${json}`)
-      //       }
-      //       // 不需要支付，跳转订单
-      //       else {
-      //         this.goToConsultDetail(res.data)
-      //       }
-      //     }
-
-      //     // 订单提交失败
-      //     // errorState:1 存在未支付订单， 跳转订单
-      //     if (res.data.errorState === 1) {
-      //       return Dialog.confirm({
-      //         title: '温馨提示',
-      //         message: res.msg,
-      //         confirmButtonText: '去看看'
-      //       }).then(() => {
-      //         this.goToConsultDetail(res.data)
-      //       })
-      //     }
-
-      //     // errorState:2 存在未结束订单，跳转咨询
-      //     if (res.data.errorState === 2) {
-      //       return Dialog.confirm({
-      //         title: '温馨提示',
-      //         message: res.msg,
-      //         confirmButtonText: '继续咨询'
-      //       }).then(() => {
-      //         this.goToMessage(res.data)
-      //       })
-      //     }
-      //   })
-      //   .catch((res) => {
-      //     console.log(res)
-      //     //203  号源不足
-      //     if (res.data.code == '203') {
-      //       return Dialog.confirm({
-      //         title: '温馨提示',
-      //         // message: res.data.msg,
-      //         message: '您所选时间段医生的复诊号源已被抢光，是否重新预约复诊时间？',
-      //         confirmButtonText: '确定'
-      //       }).then(() => {
-      //         //重新选择号源
-      //         this.goToReSelectSource()
-      //       })
-      //     } else {
-      //       peace.util.alert(res.data.message)
-      //     }
-      //     this.sending = false
-      //   })
     },
 
     goToPay(data) {
