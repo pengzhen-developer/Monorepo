@@ -38,7 +38,7 @@ const install = async () => {
     // UI
     boot_UI,
 
-    //global style
+    // global style
     boot_styles
   ]
 

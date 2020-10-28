@@ -1,10 +1,22 @@
 // import library plugin
-import Peace from '@src/library'
+import { version, name } from '@/package'
+
+import Peace from '@jk998/library'
+import Identity from '@jk998/identity'
 
 // export boot install function
 // async is optional
 export default async ({ Vue }) => {
-  Vue.use(Peace.install)
+  Vue.use(Peace, {
+    config: {
+      appName: name,
+      appVersion: version
+    }
+  })
+
+  Vue.use(Identity, {
+    baseApi: 'https://devauth.imedcloud.jk.com/'
+  })
 
   console.log(
     `%c ${'Library'} %c ${Peace.version} %c`,

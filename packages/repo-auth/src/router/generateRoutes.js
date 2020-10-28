@@ -1,97 +1,24 @@
-import Peace from '@src/library'
-import Util from '@src/util'
+/**
+ * 按规则生成路由
+ *
+ * 一般情况下，只需要关注 generateRoutes-dynamic.js
+ *
+ * generateRoutes-dynamic 属于权限功能，访问需要认证和授权，因此挂载到 “AppIntercept” 组件下拦截鉴权
+ * generateRoutes-static 属于系统级别功能，类似【登录】、【登出】、【欢迎页】，因此挂载到 “/”
+ * generateRoutes-exception 属于错误分类功能，例如 【401】、【403】、【404】、【500】，因此挂载到 “/”
+ *
+ **/
 
-const getDynamicRoutes = () => {
-  let dynamicLayoutRootRoutes = []
-  let dynamicLayoutRoutes = []
+import generateRoutesDynamic from './generateRoutes-dynamic'
+import generateRoutesStatic from './generateRoutes-static'
+import generateRoutesException from './generateRoutes-exception'
 
-  if (Util.user.isSignIn()) {
-    // 获取缓存的权限菜单
-    const accountMenuList = Util.user.getAccountMenuList()
-    // 写入固定 route
-    accountMenuList.push(
-      // 个人中心
-      {
-        id: new Date().getTime(),
-        parentId: 0,
-        menuName: '个人中心',
-        menuRoute: '/user-center',
-        menuPath: 'views/system/userCenter',
-        menuAlias: 'UserCenter',
-        enable: 1,
-        virtual: 1,
-        closable: 1
-      }
-    )
+export default async function generateRoutes() {
+  const routesDynamic = await generateRoutesDynamic()
+  const routesStatic = await generateRoutesStatic()
+  const routesException = await generateRoutesException()
 
-    // 验证菜单
-    // 声明 layout root route
-    dynamicLayoutRootRoutes = [
-      {
-        path: '/layout',
-        name: '/layout',
-        component: () => import('@src/layouts/default'),
-        children: dynamicLayoutRoutes
-      }
-    ]
+  const routes = routesDynamic.concat(routesStatic).concat(routesException)
 
-    // 遍历权限菜单，声明 dynamic route
-    accountMenuList.forEach((menu) => {
-      menu = Peace.util.deepClone(menu)
-
-      if (menu.menuPath && menu.menuRoute) {
-        const component = Peace.validate.isUrl(menu.menuPath) ? () => import(`@src/views/iframe/index.js`) : () => import(`@src/${menu.menuPath}/index.js`)
-
-        dynamicLayoutRoutes.push({
-          path: menu.menuRoute,
-          name: menu.menuAlias || menu.menuRoute,
-          meta: menu,
-          component
-        })
-      }
-    })
-  }
-
-  return dynamicLayoutRootRoutes
-}
-
-export default function generateRoutes(/** configuration */) {
-  const rootRoutes = [
-    {
-      path: '/',
-      name: '/',
-      component: () => import('@src/AppIntercept'),
-      children: getDynamicRoutes()
-    },
-
-    {
-      path: '/login',
-      name: '/login',
-      component: () => import('@src/views/system/login')
-    },
-    {
-      path: '/auth',
-      name: '/auth',
-      component: () => import('@src/views/system/auth')
-    },
-    {
-      path: '/layout/home',
-      name: '/layout/home',
-      component: () => import('@src/views/home')
-    },
-    {
-      path: '*',
-      name: 'not-found',
-      component: () => import('@src/views/exception/404'),
-      beforeEnter: (to, from, next) => {
-        if (Util.user.isSignIn()) {
-          return next()
-        } else {
-          return next('/login')
-        }
-      }
-    }
-  ]
-
-  return rootRoutes
+  return routes
 }

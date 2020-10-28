@@ -4,7 +4,7 @@ export default {
    *
    */
   application: {
-    title: '智药云权限管理系统'
+    title: 'vue-cli-template'
   },
 
   /**
@@ -17,7 +17,16 @@ export default {
   },
 
   /**
-   * 路由设定
+   * 布局设定
+   *
+   * 可选： side / top-side
+   */
+  layout: {
+    type: 'side'
+  },
+
+  /**
+   * 路由配置
    *
    * webpack 要求明确的后缀文件，以支持 xxx-loader 解析
    * 本项目默认使用 index.js 作为组件入口文件

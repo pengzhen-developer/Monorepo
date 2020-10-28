@@ -10,7 +10,7 @@ module.exports = {
   assetsDir: 'static',
 
   // https://cli.vuejs.org/config/#productionSourceMap
-  productionSourceMap: false,
+  productionSourceMap: true,
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
@@ -35,12 +35,11 @@ module.exports = {
       // e.g.
       // ['vue']: 'Vue',
       // ['element-ui']: 'ELEMENT',
-      ['vue']: 'Vue',
-      ['element-ui']: 'ELEMENT',
-      ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
-      ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
+      // ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
+      // ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
     }
   },
+
   css: {
     loaderOptions: {
       sass: {

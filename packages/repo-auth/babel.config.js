@@ -11,10 +11,10 @@ module.exports = {
       {
         quasar: {
           transform: 'quasar/dist/babel-transforms/imports.js',
-          preventFullImport: true,
-        },
-      },
-    ],
+          preventFullImport: true
+        }
+      }
+    ]
 
     /**
      * ElementUI 按需加载
@@ -27,5 +27,5 @@ module.exports = {
     //     styleLibraryName: '~src/boot/boot-element-ui-theme',
     //   },
     // ],
-  ],
+  ]
 }
