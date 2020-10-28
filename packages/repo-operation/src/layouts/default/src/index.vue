@@ -143,7 +143,7 @@ export default {
     async getTab(index) {
       const menuListSource = Peace.util.deepClone(await Peace.identity.auth.getAccountMenu())
 
-      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString())
+      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
 
       return currentMenu
     },

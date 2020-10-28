@@ -47,7 +47,7 @@ export default {
   created() {},
   methods: {
     goOrderList(type) {
-      const tab = this.getTab('10522')
+      const tab = this.getTab('订单明细')
       tab.menuPath = tab.menuPath + `?name=${this.name}&type=${type}`
       this.addTab(tab)
     }

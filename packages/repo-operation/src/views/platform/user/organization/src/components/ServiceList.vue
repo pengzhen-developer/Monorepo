@@ -289,10 +289,10 @@ export default {
     },
     serviceDetail(params) {
       const configMap = [
-        { serviceName: '互联网医院管理端', serviceType: 1, tagName: '10524' },
-        { serviceName: '处方管理医院端', serviceType: 3, tagName: '10533' },
-        { serviceName: '合理用药管理', serviceType: 2, tagName: '10528' },
-        { serviceName: '药品供应管理端', serviceType: 4, tagName: '10534' }
+        { serviceName: '互联网医院管理端', serviceType: 1, tagName: 'OrganizationDetails' },
+        { serviceName: '处方管理医院端', serviceType: 3, tagName: 'PrescripShareDetail' },
+        { serviceName: '合理用药管理', serviceType: 2, tagName: 'HospitalIndex' },
+        { serviceName: '药品供应管理端', serviceType: 4, tagName: 'DrugSupplyDetail' }
       ]
       const tagName = configMap.find((item) => item.serviceType == params.serviceType).tagName
 
