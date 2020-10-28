@@ -64,7 +64,7 @@ export default {
       return this.info.inquiryId
     },
     selfPayMoney() {
-      return this.info.money
+      return this.info.money && (this.info.money - 0).toFixed(2)
     },
     moneyRecord() {
       return this.info.moneyRecord
