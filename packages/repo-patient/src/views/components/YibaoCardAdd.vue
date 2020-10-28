@@ -64,9 +64,6 @@ export default {
     familyId() {
       return this.familyInfo?.id
     },
-    code() {
-      return this.cardInfo?.medCardNo
-    },
     id() {
       return this.cardInfo?.id
     }
@@ -83,17 +80,7 @@ export default {
       handler(val) {
         if (val) {
           this.show = val
-        }
-      },
-      immediate: true
-    },
-    code: {
-      handler(val) {
-        console.log('val', val)
-        if (val) {
-          this.medCardNo = val
-        } else {
-          this.medCardNo = ''
+          this.medCardNo = this.cardInfo.medCardNo
         }
       },
       immediate: true
@@ -105,19 +92,26 @@ export default {
     },
     changeFlag() {
       this.show = false
-      // this.medCardNo = ''
       this.$emit('changeFlag', false)
     },
-    submit() {
+    async submit() {
       if (this.medCardNo.length !== 19) {
         return peace.util.warning('请输入19位医保卡号')
       }
       this.loading = true
-      if (this.id) {
-        this.updateCard()
-      } else {
-        this.addCard()
+      try {
+        if (this.cardInfo.id) {
+          await this.updateCard()
+        } else {
+          await this.addCard()
+        }
+      } catch (error) {
+        console.log('error', error)
+        return
       }
+      this.$emit('onSuccess', true)
+      this.changeFlag()
+      this.loading = false
     },
     addCard() {
       const params = {
@@ -125,13 +119,10 @@ export default {
         medCardNo: this.medCardNo,
         familyId: this.familyId
       }
-      peace.service.yibao
+      return peace.service.yibao
         .AddMedicareCard(params)
         .then((res) => {
           peace.util.alert(res.msg)
-          this.changeFlag()
-          this.medCardNo = ''
-          this.$emit('onSuccess', true)
         })
         .finally(() => {
           this.loading = false
@@ -142,13 +133,10 @@ export default {
         medCardNo: this.medCardNo,
         id: this.id
       }
-      peace.service.yibao
+      return peace.service.yibao
         .UpdateMedicareCard(params)
         .then((res) => {
           peace.util.alert(res.msg)
-          this.changeFlag()
-          this.medCardNo = ''
-          this.$emit('onSuccess', true)
         })
         .finally(() => {
           this.loading = false
