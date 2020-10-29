@@ -846,6 +846,9 @@ export default {
 .dl-packet .dt {
   padding: 3px 0;
 }
+.intro .dl-packet .dt {
+  min-width: 50%;
+}
 .dl-packet .dt {
   min-width: 70px;
   font-size: 12px;

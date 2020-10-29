@@ -538,7 +538,7 @@ export default {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let orderType = 'drug'
-          let money = this.page.tabIndex == '1' ? this.order.OrderMoney : this.order.pickOrderMoney
+          let money = this.page.tabIndex == '1' ? res.data.orderMoney : this.order.pickOrderMoney
           let moneyRecord = res.data.moneyRecord //费用明细
           let params = { orderNo, orderType, money, moneyRecord }
 
