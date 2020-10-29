@@ -112,14 +112,14 @@ export default {
 
         Peace.identity.auth
           .workFlowAuth(params)
-          .then(() => {
+          .then(async () => {
+            Util.user.setUserInfo(await Peace.identity.auth.getAccountInfo())
             this.$router.replace('/').then(() => window.location.reload())
           })
           .catch((error) => {
             Peace.util.error(error?.msg ?? '登录失败')
           })
-          .finally(async () => {
-            Util.user.setUserInfo(await Peace.identity.auth.getAccountInfo())
+          .finally(() => {
             this.isLoading = false
           })
       })

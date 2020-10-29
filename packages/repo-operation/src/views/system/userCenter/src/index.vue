@@ -23,7 +23,7 @@
         <span>{{ model.realName }}</span>
       </el-form-item>
 
-      <el-form-item>
+      <!-- <el-form-item>
         <div class="flex inline"
              slot="label">
           <span class="text-justify em-4">所属部门</span>
@@ -31,7 +31,7 @@
         </div>
 
         <span>{{ model.sectorName }}</span>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item>
         <div class="flex inline"
@@ -56,7 +56,7 @@
                v-bind:model="dialog.model"
                v-bind:rules="dialog.rules">
 
-        <el-form-item prop="oldPwd">
+        <el-form-item prop="password">
           <div class="flex inline label-color"
                slot="label">
             <span class="text-justify em-4">原密码</span>
@@ -67,11 +67,11 @@
                     minlength="6"
                     maxlength="20"
                     placeholder="请输入原密码"
-                    v-model="dialog.model.oldPwd">
+                    v-model="dialog.model.password">
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="newPwd">
+        <el-form-item prop="newpassword1">
           <div class="flex inline label-color"
                slot="label">
             <span class="text-justify em-4">新密码</span>
@@ -84,11 +84,11 @@
                     placeholder="请输入新密码"
                     @focus="dialog.showNewPwdIcon = true"
                     @blur="dialog.showNewPwdIcon = false"
-                    v-model="dialog.model.newPwd">
-            <i v-show="dialog.showNewPwdIcon || dialog.model.newPwd"
+                    v-model="dialog.model.newpassword1">
+            <i v-show="dialog.showNewPwdIcon || dialog.model.newpassword1"
                @click="dialog.showNewPwd = !dialog.showNewPwd"
                slot="suffix"
-               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newPwd, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newPwd}"></i>
+               :class="{'zyy-icon': true, 'zyy-xianshimima1': dialog.showNewPwd && dialog.model.newpassword1, 'zyy-yincangmima': !dialog.showNewPwd && dialog.model.newpassword1}"></i>
           </el-input>
         </el-form-item>
 
@@ -109,7 +109,7 @@
 
 <script>
 import Service from './service'
-
+import Util from '@src/util'
 export default {
   data() {
     return {
@@ -126,18 +126,20 @@ export default {
         showNewPwd: false,
 
         model: {
-          oldPwd: '',
-          newPwd: ''
+          password: '',
+          newpassword1: '',
+          clientId: Util.user.getUserInfo().clientId,
+          userId: Util.user.getUserInfo().id
         },
 
         rules: {
-          oldPwd: [
+          password: [
             { required: true, message: '请输入原密码' },
             { min: 6, max: 20, message: '长度在 6 到 20 个字符' },
             { pattern: Peace.validate.pattern.password, message: '支持输入字母、数字、下划线' }
           ],
 
-          newPwd: [
+          newpassword1: [
             { required: true, message: '请输入新密码' },
             { min: 6, max: 20, message: '长度在 6 到 20 个字符' },
             { pattern: Peace.validate.pattern.password, message: '支持输入字母、数字、下划线' }
@@ -158,9 +160,16 @@ export default {
     },
 
     getPersonBaseInfo() {
-      Service.getPersonBaseInfo().then((res) => {
-        this.model = Object.assign({}, this.model, res.data)
-      })
+      const params = {
+        id: Util.user.getUserInfo()?.id
+      }
+      Service.user()
+        .get(params)
+        .then((res) => {
+          const data = res.data
+          this.model.userName = data.username
+          this.model.realName = data.name
+        })
     },
 
     openDialog() {
@@ -178,11 +187,12 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          Service.modifyPass(this.dialog.model).then((res) => {
-            Peace.util.success(res.msg)
-
-            this.cancelDialog()
-          })
+          Service.user()
+            .edit(this.dialog.model)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.cancelDialog()
+            })
         }
       })
     }

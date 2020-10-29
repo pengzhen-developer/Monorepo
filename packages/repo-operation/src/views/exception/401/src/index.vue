@@ -15,6 +15,7 @@
 </template>
 
 <script >
+import Util from '@src/util'
 export default {
   name: 'Error404',
   created() {
@@ -28,7 +29,8 @@ export default {
 
       Peace.cache.sessionStorage.clear()
       Peace.cache.localStorage.clear()
-
+      Peace.identity.auth.removeAll()
+      Util.user.removeUserInfo()
       this.$router.push('/').then(() => window.location.reload())
     }
   }

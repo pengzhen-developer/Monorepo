@@ -1,41 +1,43 @@
 export default {
-  /**
-   * 获取用户基本信息
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  getPersonBaseInfo(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/account/getPersonBaseInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 修改个人账户密码
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  modifyPass(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/account/modifyPass'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+  user() {
+    let apiPath = `admin/user`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    let requestApi = serverPath + apiPath
+    return {
+      //获取用户byID
+      get(params) {
+        apiPath = `admin/user/${params.id}`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      },
+      //添加
+      add(params) {
+        return Peace.http.post(requestApi, params)
+      },
+      //编辑
+      edit(params) {
+        apiPath = `admin/user/edit`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi, params)
+      },
+      // 更新账号状态
+      updateUser(params) {
+        apiPath = `admin/user/updateUser`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi, params)
+      },
+      // 重置密码
+      resetPassword(params) {
+        apiPath = `admin/user/resetPassword?userId=${params.userId}`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi)
+      },
+      //分页获取用户列表
+      page(params) {
+        apiPath = `admin/user/page`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi, { params })
+      }
+    }
   }
 }

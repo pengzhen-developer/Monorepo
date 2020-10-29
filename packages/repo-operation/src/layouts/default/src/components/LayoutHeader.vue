@@ -65,7 +65,8 @@
 
               <q-item clickable
                       v-ripple
-                      v-on:click="goUserCenter">
+                      v-on:click="goUserCenter"
+                      v-if="canShowUserCenter">
                 <q-item-section>
                   个人中心
                 </q-item-section>
@@ -99,7 +100,9 @@ export default {
     return {
       configuration: window.configuration,
 
-      user: Util.user.getUserInfo()
+      user: Util.user.getUserInfo(),
+
+      canShowUserCenter: null
     }
   },
 
@@ -111,6 +114,10 @@ export default {
     menuTree() {
       return this.provideMenuTree()
     }
+  },
+  async created() {
+    const result = (await Peace.identity.auth.getAccountMenu()).find((item) => item.menuAlias == '个人中心')
+    this.canShowUserCenter = result ? true : false
   },
   methods: {
     goUserCenter() {
