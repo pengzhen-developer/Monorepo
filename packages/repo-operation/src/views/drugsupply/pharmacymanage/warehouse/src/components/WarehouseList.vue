@@ -55,6 +55,9 @@
         <el-table-column label="所属机构"
                          prop="CustName"
                          min-width="180px"></el-table-column>
+        <el-table-column label="系统名称"
+                         prop="SystemName"
+                         min-width="80px"></el-table-column>
         <el-table-column label="创建时间"
                          prop="CreateTime"
                          min-width="160px"></el-table-column>

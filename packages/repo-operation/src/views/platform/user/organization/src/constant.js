@@ -21,7 +21,8 @@ export default {
    */
   ENUM_ORGANIZATION_SOURCE: {
     机构注册: 1,
-    运营添加: 2
+    运营添加: 2,
+    系统同步: 3
   },
 
   /**

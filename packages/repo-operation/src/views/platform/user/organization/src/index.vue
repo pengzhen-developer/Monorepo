@@ -26,13 +26,30 @@
 
             <el-select clearable
                        v-model.trim="model.orgType"
-                       placeholder="请选择">
-              <el-option v-for="item in source.orgType"
+                       placeholder="全部">
+              <el-option v-for="item in source.serviceType"
                          v-bind:key="item.value"
                          v-bind:label="item.label"
                          v-bind:value="item.value"></el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item>
+            <template slot="label">
+              <span class="em-6-justify">对接系统</span>
+              <span>：</span>
+            </template>
+
+            <el-select v-model="model.DockingSystem"
+                       placeholder="全部"
+                       clearable>
+              <el-option v-for="item in source.serviceType"
+                         v-bind:key="item.value"
+                         v-bind:label="item.label"
+                         v-bind:value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+
           <el-form-item>
 
             <template slot="label">
@@ -87,6 +104,14 @@
                            label="入驻方式"
                            align="center"
                            prop="source"></el-table-column>
+          <el-table-column min-width="100px"
+                           label="对接系统"
+                           align="center"
+                           prop="DockingSystem"></el-table-column>
+          <el-table-column min-width="100px"
+                           label="系统属性"
+                           align="center"
+                           prop="SystemAttribute"></el-table-column>
           <el-table-column min-width="160px"
                            label="使用中的服务"
                            align="center"
@@ -106,7 +131,7 @@
               }}
             </template>
           </el-table-column>
-          <el-table-column width="200px"
+          <el-table-column width="240px"
                            align="center"
                            fixed="right"
                            label="操作">
@@ -115,6 +140,8 @@
                          v-on:click="toDetail(scope.row)">基本信息</el-button>
               <el-button type="text"
                          v-on:click="toService(scope.row)">服务管理</el-button>
+              <el-button type="text"
+                         v-on:click="dockingConfig(scope.row)">对接配置</el-button>
             </template>
           </el-table-column>
         </PeaceTable>
@@ -128,6 +155,16 @@
                             ref="orgDetail"
                             v-on:close="detailDialog.visible = false"
                             v-on:refresh="get"></OrganizationDetail>
+      </PeaceDialog>
+
+      <!-- 对接配置 -->
+      <PeaceDialog width="370px"
+                   v-bind:visible.sync="dockingDialog.visible"
+                   title="对接配置">
+        <DockingConfig v-if="dockingDialog.visible"
+                       ref="dockingConfig"
+                       v-on:close="dockingDialog.visible = false"
+                       v-on:refresh="get"></DockingConfig>
       </PeaceDialog>
 
       <!-- 新增机构 -->
@@ -151,6 +188,7 @@
 import OrganizationDetail from './components/OrganizationDetail'
 import ServiceList from './components/ServiceList'
 import OrganizationModel from './components/OrganizationModel'
+import DockingConfig from './components/DockingConfig'
 
 import Service from './service'
 
@@ -160,7 +198,8 @@ export default {
   components: {
     OrganizationDetail,
     ServiceList,
-    OrganizationModel
+    OrganizationModel,
+    DockingConfig
   },
 
   filters: {
@@ -174,7 +213,8 @@ export default {
       model: {
         hospitalName: '',
         orgType: '',
-        serviceType: []
+        serviceType: [],
+        DockingSystem: ''
       },
 
       source: {
@@ -202,6 +242,11 @@ export default {
         data: {}
       },
 
+      dockingDialog: {
+        visible: false,
+        data: {}
+      },
+
       addDialog: {
         visible: false
       }
@@ -222,6 +267,8 @@ export default {
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         res?.data?.list?.forEach((row) => {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName) ? '——' : row.hospitalName
+          row.DockingSystem = Peace.validate.isEmpty(row.DockingSystem) ? '——' : row.DockingSystem
+          row.SystemAttribute = Peace.validate.isEmpty(row.SystemAttribute) ? '——' : row.SystemAttribute
         })
         return res
       })
@@ -239,6 +286,14 @@ export default {
     toService(row) {
       this.serviceDialog.visible = true
       this.serviceDialog.data = row
+    },
+
+    // 对接配置
+    dockingConfig(row) {
+      this.dockingDialog.visible = true
+      this.$nextTick(() => {
+        this.$refs.dockingConfig.init(row.id)
+      })
     },
 
     // 新增机构

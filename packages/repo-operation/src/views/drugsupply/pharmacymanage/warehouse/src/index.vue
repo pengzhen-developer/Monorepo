@@ -110,7 +110,7 @@ p {
 }
 .title {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--q-color-grey-333);
   line-height: 24px;
   margin-left: 10px;
   height: 24px;
