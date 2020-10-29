@@ -1,164 +1,181 @@
 <template>
-  <div class="layout-route">
-
+  <div class=" layout-route">
     <div class="card card-search q-mb-md">
-      <el-form inline
+      <el-form inline=""
                label-width="auto"
-               v-bind:model="model"
-               v-on:keyup.enter.native="fetch"
-               v-on:submit.native.prevent>
-        <el-form-item label="角色名称：">
-          <el-input v-model.trim="model.roleName"></el-input>
+               label-position="left">
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span>角色名称</span>
+            <span class="text-center q-ml-sm">：</span>
+          </div>
+          <el-input v-model="model.roleName"
+                    placeholder="请输入"></el-input>
         </el-form-item>
-
-        <el-form-item label="">
-          <el-button style="width: 80px;"
-                     type="primary"
-                     v-on:click="fetch">查询</el-button>
-
+        <el-form-item label=" ">
+          <el-button type="primary"
+                     v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <div class="card">
-      <div class="q-mb-lg">
-        <el-button style="width: 80px;"
-                   type="primary"
-                   v-on:click="showAdd">新增</el-button>
-      </div>
-
-      <peace-table ref="table"
-                   pagination>
-        <el-table-column label="序号"
-                         prop="index"
+      <el-button type="primary"
+                 icon="el-icon-plus"
+                 style="margin-bottom: 20px;"
+                 v-on:click="toRole('add', {})">新增</el-button>
+      <PeaceTable ref="table"
+                  style="width: 100%"
+                  pagination
+                  :tableProps="{
+                    pageIndex: 'current',
+                    pageSize: 'size'
+                  }"
+                  max-height="600">
+        <el-table-column type="index"
+                         fixed
                          align="center"
-                         width="60px">
-        </el-table-column>
-        <el-table-column label="角色名称"
-                         prop="roleName"></el-table-column>
-        <el-table-column label="角色备注"
-                         prop="remark"></el-table-column>
-        <el-table-column label="使用状态"
-                         align="center"
-                         width="120px">
+                         label=" "
+                         width="60"></el-table-column>
+        <el-table-column prop="roleName"
+                         label="角色名称"></el-table-column>
+        <el-table-column prop="roleDesc"
+                         label="备注">
           <template slot-scope="scope">
-            <span class="q-mr-sm">{{ scope.row.status ? '已启用' : '已禁用' }}</span>
-            <el-switch v-on:change="changeStatus(scope.row)"
-                       v-model="scope.row.status"></el-switch>
+            {{scope.row.roleDesc}}
           </template>
         </el-table-column>
-        <el-table-column label="创建时间"
-                         prop="createdTime"
+        <el-table-column label="使用状态">
+          <template slot-scope="scope">
+            <div class="table-status">
+              <div class="table-status-text">{{scope.row.enable | getEnumLabel(CONSTANT.ENUM_ROLE_STATUS)}}</div>
+              <el-switch v-model="scope.row.enable"
+                         active-value="0"
+                         inactive-value="1"
+                         @change="changeStatus(scope.row)"></el-switch>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime"
+                         label="创建时间">
+        </el-table-column>
+        <el-table-column min-width="100px"
                          align="center"
-                         width="160px"></el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         width="80px">
+                         fixed="right"
+                         label="操作">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="showEdit(scope.row)">修改</el-button>
+                       v-on:click="toRole('detail', scope.row)">查看详情</el-button>
+            <el-button type="text"
+                       v-on:click="toRole('edit', scope.row)">修改</el-button>
           </template>
-
         </el-table-column>
-      </peace-table>
+      </PeaceTable>
     </div>
 
-    <peace-dialog width="400px"
-                  v-if="dialog.visible"
-                  v-bind:title="dialog.title"
-                  v-bind:visible.sync="dialog.visible">
-      <RoleModel v-bind:data="dialog.data"
-                 v-on:save="save"
-                 v-on:cancel="cancel"></RoleModel>
-    </peace-dialog>
+    <!-- 账号 -->
+    <PeaceDialog width="360px"
+                 v-bind:visible.sync="roleDialog.visible"
+                 :title="roleDialog.title">
+      <RoleModel v-if="roleDialog.visible"
+                 ref="roleModel"
+                 v-on:close="roleDialog.visible = false"
+                 v-on:refresh="get"></RoleModel>
+    </PeaceDialog>
   </div>
+
 </template>
 
 <script>
-import Service from './service'
-
 import RoleModel from './components/RoleModel'
 
-export default {
-  name: 'Role',
+import Util from '@src/util'
+import Service from './service'
+import CONSTANT from './constant'
 
+export default {
+  name: 'RoleManagement',
   components: {
     RoleModel
   },
-
   data() {
     return {
+      CONSTANT,
       model: {
+        clientId: Util.user.getUserInfo().clientId,
+        organCode: Util.user.getUserInfo().custCode,
         roleName: ''
       },
-
-      dialog: {
-        title: '',
+      roleDialog: {
         visible: false,
+        type: '',
+        title: '',
         data: {}
       }
     }
   },
 
+  filters: {
+    getEnumLabel: function (value, ENUM) {
+      return Object.keys(ENUM).find((key) => ENUM[key] === value)
+    }
+  },
+
   mounted() {
-    this.$nextTick().then(() => {
-      this.fetch()
+    this.$nextTick(() => {
+      this.get()
     })
   },
 
   methods: {
-    fetch() {
-      const fetch = Service.getRoleList
-      const params = this.model
-
+    get() {
+      const fetch = Service.role().page
+      const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
     },
-
-    showAdd() {
-      this.dialog.title = '新增角色'
-      this.dialog.visible = true
-      this.dialog.data = {}
-    },
-
-    showEdit(row) {
-      this.dialog.title = '修改角色'
-      this.dialog.visible = true
-      this.dialog.data = row
-    },
-
     changeStatus(row) {
-      const message = row.status ? '确定启用吗？' : '确定禁用吗？'
+      const message = row.enable == '0' ? '确定启用该角色？' : '确定禁用该角色？'
 
-      this.$confirm(message, '提示', { closeOnClickModal: false, closeOnPressEscape: false })
+      this.$confirm(message, '提示', { closeOnClickModal: false })
         .then(() => {
-          Service.editRoleStatus(row)
+          const params = row
+          Service.role()
+            .edit(params)
             .then((res) => {
               Peace.util.success(res.msg)
-
-              this.fetch()
-            })
-            .catch(() => {
-              row.status = !row.status
+              this.get()
             })
         })
         .catch(() => {
-          row.status = !row.status
+          row.enable = row.enable == '1' ? '0' : '1'
         })
     },
-
-    save() {
-      this.cancel()
-      this.fetch()
-    },
-
-    cancel() {
-      this.dialog.title = ''
-      this.dialog.visible = false
-      this.dialog.data = {}
+    toRole(type, row) {
+      this.roleDialog.visible = true
+      this.roleDialog.type = type
+      this.roleDialog.data = row ? row : {}
+      if (type === 'detail') {
+        this.roleDialog.title = '查看详情'
+      } else {
+        this.roleDialog.title = type === 'edit' ? '修改角色' : '新建角色'
+      }
+      this.$nextTick(() => {
+        this.$refs.roleModel.init(type, row ? row.roleId : '')
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.table-status {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.table-status-text {
+  margin-right: 10px;
+}
 </style>

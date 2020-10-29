@@ -160,7 +160,6 @@ export default {
     get() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         res?.data?.list?.forEach((row) => {
           row.hospitalName = Peace.validate.isEmpty(row.hospitalName) ? '——' : row.hospitalName

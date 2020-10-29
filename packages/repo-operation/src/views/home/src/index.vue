@@ -121,7 +121,7 @@ export default {
     // 获取近7日订单量趋势
     get7DaysOrderNum() {
       return Service.get7DaysOrderNum().then((res) => {
-        let data = res.data
+        let data = res.data.list
         this.orderNumOfSevenDays.xAxis = data.map((item) => item.Date)
         this.orderNumOfSevenDays.data = data.map((item) => item.Num)
       })

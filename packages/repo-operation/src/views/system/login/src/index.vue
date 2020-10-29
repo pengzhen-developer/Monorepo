@@ -104,8 +104,6 @@ export default {
           password: this.model.password,
           // 加密key（grant_type=password 时必填）
           encryption_key: process.env.VUE_APP_AUTH_ENCRYPTION_KEY,
-          // 产品编码
-          productCode: '',
           // 菜单类型 left：左菜单, top：顶菜单, button：按钮, 默认
           type: 'left',
           // 环境变量
@@ -120,7 +118,8 @@ export default {
           .catch((error) => {
             Peace.util.error(error?.msg ?? '登录失败')
           })
-          .finally(() => {
+          .finally(async () => {
+            Util.user.setUserInfo(await Peace.identity.auth.getAccountInfo())
             this.isLoading = false
           })
       })

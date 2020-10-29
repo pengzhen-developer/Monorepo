@@ -1,81 +1,61 @@
 export default {
   /**
-   * 获取用户列表
-   *
-   * @param {*} params
-   * @returns {Object}
+   * 用户
    */
-  getUseAccountList(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/permission/getAdminList'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+  user() {
+    let apiPath = `admin/user`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    let requestApi = serverPath + apiPath
+    return {
+      //获取用户byID
+      get(params) {
+        apiPath = `admin/user/${params.id}`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      },
+      //添加
+      add(params) {
+        return Peace.http.post(requestApi, params)
+      },
+      //编辑
+      edit(params) {
+        return Peace.http.put(requestApi, params)
+      },
+      // 更新账号状态
+      updateUser(params) {
+        apiPath = `admin/user/updateUser`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi, params)
+      },
+      // 重置密码
+      resetPassword(params) {
+        apiPath = `admin/user/resetPassword?userId=${params.userId}`
+        requestApi = serverPath + apiPath
+        return Peace.http.put(requestApi)
+      },
+      //分页获取用户列表
+      page(params) {
+        apiPath = `admin/user/page`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi, { params })
+      }
+    }
   },
 
   /**
-   * 获取部门字典
-   *
-   * @param {*} params
-   * @returns {Object}
+   * 角色
    */
-  getQueryDictionary(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/permission/dictionary'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 添加角色
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  addUseAccount(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/permission/addAdmin'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 编辑角色
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  editUseAccount(params) {
-    const isMock = false
-
-    const apiPath = 'zyyoperate/operate/permission/editAdmin'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
+  role() {
+    let apiPath = `admin/role`
+    const serverPath = process.env.VUE_APP_AUTH_API
+    let requestApi = serverPath + apiPath
+    return {
+      //获取角色列表
+      list(params) {
+        apiPath = `admin/role/list`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi, { params })
+      }
+    }
   }
 }

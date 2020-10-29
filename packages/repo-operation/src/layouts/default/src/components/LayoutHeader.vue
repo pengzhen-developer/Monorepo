@@ -99,7 +99,7 @@ export default {
     return {
       configuration: window.configuration,
 
-      user: {}
+      user: Util.user.getUserInfo()
     }
   },
 
@@ -111,9 +111,6 @@ export default {
     menuTree() {
       return this.provideMenuTree()
     }
-  },
-  async mounted() {
-    this.user = await Peace.identity.auth.getAccountInfo()
   },
   methods: {
     goUserCenter() {

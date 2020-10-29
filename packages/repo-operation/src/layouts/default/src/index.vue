@@ -100,7 +100,6 @@ export default {
 
   computed: {
     hasNavMenu() {
-      console.log('childrenMenuTree', this.childrenMenuTree)
       return this.childrenMenuTree?.length > 0
     }
   },
