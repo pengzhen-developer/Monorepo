@@ -114,8 +114,8 @@
           <div class="dl-packet">
             <div class="dt">使用医保卡 ：</div>
             <div class="dd"
-                 :class="{'money':yibaoChecked}"
-                 @click="chooseYibao">{{yibaoText||'请选择'}}</div>
+                 :class="{'money':yibaoChecked||order.medicalCardNo}"
+                 @click="chooseYibao">{{ order.medicalCardNo || yibaoText }}</div>
           </div>
         </template>
         <template v-if="canShowShangbao">
@@ -233,7 +233,7 @@ export default {
       order: null,
       CustomerType: '',
       showCard: false,
-      yibaoText: '',
+      yibaoText: '请选择',
       yibaoChecked: false,
       shangbaoChecked: false,
       yibaoInfo: {},
@@ -279,7 +279,7 @@ export default {
       }
     },
     canShowYibao() {
-      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page?.payIndex == 1 ? true : false
+      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page?.payIndex == 1 && this.order?.medicalCardNo ? true : false
     },
     canShowShangbao() {
       //H5暂无商保对接
@@ -330,7 +330,9 @@ export default {
       this.yibaoInfo = result.yibaoInfo
     },
     chooseYibao() {
-      this.showCard = true
+      if (!this.order.medicalCardNo) {
+        this.showCard = true
+      }
     },
     changeShippingMethod(tabIndex) {
       //选择支付方式 则重置系统配置得支付方式
@@ -473,6 +475,9 @@ export default {
      *                                       默认：wxpay（微信）
      */
     submitOrder(paymentType = 'wxpay') {
+      if (this.canShowYibao) {
+        this.yibaoInfo.medCardNo = this.order.medicalCardNo
+      }
       //若未选择支付方式，不能提交订单
       if (this.page.payIndex < 1) {
         peace.util.alert('请选择支付方式')

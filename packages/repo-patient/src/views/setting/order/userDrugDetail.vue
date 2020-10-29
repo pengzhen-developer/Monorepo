@@ -847,7 +847,7 @@ export default {
   padding: 3px 0;
 }
 .dl-packet .dt {
-  width: 70px;
+  min-width: 70px;
   font-size: 12px;
 }
 .dl-packet .dd {

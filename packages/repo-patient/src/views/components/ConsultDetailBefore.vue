@@ -1065,8 +1065,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12.5px 0;
-  margin: 0 15px;
+  padding: 12.5px 15px;
   border-top: 1px solid #eee;
   &.order-money {
     border-top: 1px solid #fff;
