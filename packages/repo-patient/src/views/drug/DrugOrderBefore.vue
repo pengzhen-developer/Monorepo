@@ -279,7 +279,7 @@ export default {
       }
     },
     canShowYibao() {
-      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page?.payIndex == 1 && this.order?.medicalCardNo ? true : false
+      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.medicalCardNo ? true : false
     },
     canShowShangbao() {
       //H5暂无商保对接
@@ -538,7 +538,8 @@ export default {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let orderType = 'drug'
-          let money = this.page.tabIndex == '1' ? res.data.orderMoney : this.order.pickOrderMoney
+          // let money = this.page.tabIndex == '1' ? res.data.orderMoney : this.order.pickOrderMoney
+          let money = res.data.orderMoney
           let moneyRecord = res.data.moneyRecord //费用明细
           let params = { orderNo, orderType, money, moneyRecord }
 
