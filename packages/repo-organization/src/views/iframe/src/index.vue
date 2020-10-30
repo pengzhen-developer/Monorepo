@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import Util from '@src/util'
-
 export default {
   data() {
     return {
@@ -33,13 +31,15 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     this.src = this.$route.meta.menuPath
 
+    const token = (await Peace.identity.auth.getAuth()).access_token
+
     if (this.src.indexOf('?') === -1) {
-      this.src = this.src + '?sso=true&token=' + Util.user.getUserToken()
+      this.src = this.src + '?sso=true&token=' + token
     } else {
-      this.src = this.src + '&sso=true&token=' + Util.user.getUserToken()
+      this.src = this.src + '&sso=true&token=' + token
     }
   },
 

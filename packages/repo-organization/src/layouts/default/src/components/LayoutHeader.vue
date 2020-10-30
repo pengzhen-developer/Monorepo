@@ -7,7 +7,8 @@
         <q-img class="cursor-pointer inline"
                style="width: 160px; "
                contain
-               v-bind:src="require('@src/assets/logo.png')"></q-img>
+               v-bind:src="require('@src/assets/logo.png')"
+               v-on:click="goWebSite"></q-img>
       </div>
 
       <transition enter-active-class="animated jump-out"
@@ -99,7 +100,9 @@ export default {
       })
     },
 
-    goWebSite() {}
+    goWebSite() {
+      Util.referer.redirectToReferer()
+    }
   }
 }
 </script>

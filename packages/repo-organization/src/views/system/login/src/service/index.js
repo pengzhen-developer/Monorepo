@@ -8,8 +8,8 @@ export default {
     const isMock = false
 
     const apiPath = 'zyyconsole/console/Account/auth'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -22,8 +22,8 @@ export default {
     const isMock = false
 
     const apiPath = 'zyyconsole/console/Service/getServiceSettingMenu'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -38,7 +38,7 @@ export default {
    */
   userMenuOfList(params) {
     const apiPath = `admin/menu/userMenuOfList`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     const requestApi = serverPath + apiPath
 
     return Peace.http.get(requestApi, { params })

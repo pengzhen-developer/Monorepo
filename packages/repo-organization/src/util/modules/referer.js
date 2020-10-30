@@ -7,13 +7,13 @@
 export const redirectToReferer = (type = '_self') => {
   switch (type) {
     case '_self':
-      window.location.href = process.env.VUE_APP_WEB_SITE
+      window.location.href = process.env.VUE_APP_SITE_OFFCIAL
       break
     case '_blank':
-      window.open(process.env.VUE_APP_WEB_SITE)
+      window.open(process.env.VUE_APP_SITE_OFFCIAL)
       break
     case 'login':
-      window.location.href = process.env.VUE_APP_WEB_SITE + process.env.VUE_APP_WEB_SITE_LOGIN
+      window.location.href = process.env.VUE_APP_SITE_OFFCIAL + process.env.VUE_APP_SITE_OFFCIAL_LOGIN
       break
     default:
       break

@@ -37,7 +37,9 @@ export default {
   created() {
     // session cache to data
     this.original = Peace.cache.sessionStorage.get('original-href')
+  },
 
+  mounted() {
     // 静默登录
     this.doLogin()
   },
@@ -49,9 +51,8 @@ export default {
       this.login()
         .then(this.getAccountMenuList)
         .then(this.redirectToOriginal)
-        .catch((error) => {
-          // Peace.util.error(error)
-          console.log(error)
+        .catch(() => {
+          Util.referer.redirectToReferer()
         })
         .finally(() => {
           this.isLoading = false
@@ -66,8 +67,6 @@ export default {
           access_token: token
         })
         Peace.identity.auth.setHeaderAfterAuth(token)
-
-        Util.user.setUserToken(token)
 
         return Service.doLogin().then((res) => {
           Util.user.setUserInfo(res.data)

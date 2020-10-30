@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import Util from '@src/util'
 import Service from './service'
 
 import ServiceItem from './components/ServiceItem'
@@ -207,8 +206,8 @@ export default {
         this.redirectSerivceSite(product)
       })
     },
-    redirectSerivceSite(product) {
-      const token = Util.user.getUserToken()
+    async redirectSerivceSite(product) {
+      const token = (await Peace.identity.auth.getAuth()).access_token
       const configMap = [
         { serviceName: '互联网医院管理端', serviceType: 1, config: 'organization', code: 'hlwyy' },
         { serviceName: '处方管理医院端', serviceType: 3, config: 'prescription', code: 'cfgxfw' },

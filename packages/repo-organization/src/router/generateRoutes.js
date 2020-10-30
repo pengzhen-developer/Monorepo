@@ -50,7 +50,7 @@ export default function generateRoutes(/** configuration */) {
 
     {
       path: '/login',
-      name: '/login',
+      name: 'Login',
       component: () => import('@src/views/system/login')
     },
 

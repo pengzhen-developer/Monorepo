@@ -8,8 +8,8 @@ export default {
     const isMock = false
 
     const apiPath = 'custdict/drugAttrDict/baseDrugListPaging'
-    const mockPath = process.env.VUE_APP_BASE_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_BASE + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

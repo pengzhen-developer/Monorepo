@@ -19,8 +19,6 @@ import Util from '@src/util'
 
 export default {
   beforeRouteEnter(to, from, next) {
-    console.log('AppIntercept beforeRouteEnter')
-
     // 验证身份
     if (Util.user.isSignIn()) {
       if (to.path === '/') {
@@ -29,13 +27,11 @@ export default {
         next()
       }
     } else {
-      Util.login()
+      next((vm) => vm.$router.replace({ name: 'Login' }))
     }
   },
 
   beforeRouteUpdate(to, from, next) {
-    console.log('AppIntercept beforeRouteUpdate')
-
     next()
   }
 }

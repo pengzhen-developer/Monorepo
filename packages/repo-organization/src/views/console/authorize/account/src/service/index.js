@@ -4,7 +4,7 @@ export default {
    */
   user() {
     let apiPath = `admin/user`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
       //获取用户byID
@@ -47,7 +47,7 @@ export default {
    */
   role() {
     let apiPath = `admin/role`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
       //获取角色列表

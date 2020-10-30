@@ -40,11 +40,11 @@
 <script>
 import CONSTANT from './../constant'
 import { dom } from 'quasar'
-import Util from '@src/util'
 
 export default {
   data() {
     return {
+      iframeSrc: '',
       loading: true,
       activeName: '给药途径',
       tabPosition: 'left',
@@ -61,7 +61,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick().then(() => {
+    this.$nextTick().then(async () => {
       // 设定滚动区域样式
       this.setScrollAreaStyle()
       // 设定路由区域样式
@@ -78,18 +78,15 @@ export default {
           this.loading = false
         }
       }
-    })
-  },
 
-  computed: {
-    iframeSrc() {
       const url = this.source.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
+      const token = (await Peace.identity.auth.getAuth()).access_token
       if (url) {
-        return process.env.VUE_APP_PRESCRIPTION_SITE + url + '?sso=true&token=' + Util.user.getUserToken()
+        this.iframeSrc = process.env.VUE_APP_SITE_PRESCRIPTION + url + '?sso=true&token=' + token
       } else {
-        return ''
+        this.iframeSrc = ''
       }
-    }
+    })
   },
 
   watch: {

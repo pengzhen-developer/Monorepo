@@ -4,7 +4,7 @@ export default {
    */
   role() {
     let apiPath = `admin/role`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
       //获取角色byID
@@ -39,7 +39,7 @@ export default {
    */
   menu() {
     let apiPath = `admin/menu`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
       // 查询树形菜单

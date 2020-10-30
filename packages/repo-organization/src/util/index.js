@@ -1,11 +1,8 @@
-import { login } from './modules/login/index'
 import user from './modules/user'
 import referer from './modules/referer'
 import route from './modules/route'
 
 export default {
-  login,
-
   /** 用户工具类 */
   user,
 
