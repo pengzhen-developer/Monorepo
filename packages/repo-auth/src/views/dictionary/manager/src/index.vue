@@ -1,104 +1,130 @@
 <template>
   <div class="layout-route">
-    <div class="card card-search q-mb-md">
-      <el-form inline
-               label-width="auto"
-               v-bind:model="dictModel">
-        <el-form-item label="字典类型">
-          <el-input v-model="dictModel.type"
-                    placeholder=""></el-input>
-        </el-form-item>
 
-        <el-form-item label="字典描述">
-          <el-input v-model="dictModel.description"
-                    placeholder=""></el-input>
-        </el-form-item>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <div class="card card-search">
+          <el-form inline
+                   label-width="auto"
+                   v-bind:model="dictTypeModel">
+            <el-form-item label="字典类型">
+              <el-input v-model="dictTypeModel.type"
+                        placeholder=""></el-input>
+            </el-form-item>
 
-        <el-form-item label="">
-          <el-button type="primary"
-                     v-on:click="fetchDict">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+            <el-form-item label="字典描述">
+              <el-input v-model="dictTypeModel.description"
+                        placeholder=""></el-input>
+            </el-form-item>
 
-    <div class="card q-mb-md">
-      <div class="q-mb-sm">
-        <el-button style="min-width: 80px;"
-                   v-on:click="addDict">新增</el-button>
-      </div>
+            <el-form-item label="">
+              <el-button type="primary"
+                         v-on:click="fetchDictType">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
-      <PeaceTable ref="dictTable"
-                  pagination
-                  v-bind:data="[{}]">
-        <PeaceTableColumn label="dictId"
-                          prop="id"
-                          width="80px"></PeaceTableColumn>
-        <PeaceTableColumn label="字典类型"></PeaceTableColumn>
-        <PeaceTableColumn label="字典描述"></PeaceTableColumn>
-        <PeaceTableColumn label="备注"></PeaceTableColumn>
-        <PeaceTableColumn label="操作"
-                          width="120px">
-          <template>
-            <el-button type="text"
-                       v-on:click="editDict">编辑</el-button>
-            <el-button type="text"
-                       v-on:click="showDictItem">详情</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
-    </div>
+        <div class="card q-mb-md">
+          <div class="q-mb-sm">
+            <el-button style="min-width: 80px;"
+                       type="primary"
+                       v-on:click="addDictType">新增</el-button>
+          </div>
 
-    <div class="card q-mb-md"
-         v-if="dictItemModel.visible">
-      <div class="q-mb-sm">
-        <el-button style="min-width: 80px;"
-                   v-on:click="addDictItem">新增</el-button>
-      </div>
+          <PeaceTable ref="dictTypeTable"
+                      v-bind:tableProps="{ pageIndex: 'current', pageSize: 'size' }"
+                      @row-click="selectDict"
+                      highlight-current-row
+                      pagination>
+            <PeaceTableColumn label="ID"
+                              prop="id"
+                              width="50px"></PeaceTableColumn>
+            <PeaceTableColumn label="字典类型"
+                              prop="type"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="字典描述"
+                              prop="description"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="备注"
+                              prop="remarks"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="操作"
+                              width="100px">
+              <template slot-scope="scope">
+                <el-button type="text"
+                           v-on:click="editDictType(scope.row)">编辑</el-button>
+              </template>
+            </PeaceTableColumn>
+          </PeaceTable>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="card q-mb-md"
+             v-if="!dictItemList.visible">
+          <div class="text-subtitle1">点击字典类型查看对应字典项</div>
+        </div>
+        <div class="card q-mb-md"
+             v-else>
+          <div class="q-mb-sm">
+            <el-button style="min-width: 80px;"
+                       type="primary"
+                       v-on:click="addDictItem">新增</el-button>
+          </div>
 
-      <PeaceTable ref="dictItemTable"
-                  pagination
-                  v-bind:data="[{}, {}, {}]">
-        <PeaceTableColumn label="dictId"
-                          prop="dictId"
-                          width="80px"></PeaceTableColumn>
-        <PeaceTableColumn label="label"></PeaceTableColumn>
-        <PeaceTableColumn label="value"></PeaceTableColumn>
-        <PeaceTableColumn label="字典描述"></PeaceTableColumn>
-        <PeaceTableColumn label="备注"></PeaceTableColumn>
-        <PeaceTableColumn label="操作"
-                          width="120px">
-          <template>
-            <el-button type="text"
-                       v-on:click="editDictItem">编辑</el-button>
-            <el-button type="text"
-                       v-on:click="deleteDictItem">删除</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
-    </div>
+          <PeaceTable ref="dictItemTable"
+                      v-bind:tableProps="{ pageIndex: 'current', pageSize: 'size' }"
+                      pagination>
+            <PeaceTableColumn label="ID"
+                              prop="id"
+                              width="50px"></PeaceTableColumn>
+            <PeaceTableColumn label="label"
+                              prop="label"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="value"
+                              prop="value"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="字典描述"
+                              prop="description"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="备注"
+                              prop="remarks"
+                              min-width="80px"></PeaceTableColumn>
+            <PeaceTableColumn label="操作"
+                              width="100px">
+              <template slot-scope="scope">
+                <el-button type="text"
+                           v-on:click="editDictItem(scope.row)">编辑</el-button>
+                <el-button type="text"
+                           v-on:click="deleteDictItem(scope.row)">删除</el-button>
+              </template>
+            </PeaceTableColumn>
+          </PeaceTable>
+        </div>
+      </el-col>
+    </el-row>
 
-    <PeaceDialog title="字典维护"
+    <PeaceDialog title="字典类型维护"
                  width="360px"
-                 v-if="dictDialog.visible"
-                 v-bind:visible.sync="dictDialog.visible">
-      <el-form ref="dictForm"
+                 v-if="dictTypeDialog.visible"
+                 v-bind:visible.sync="dictTypeDialog.visible">
+      <el-form ref="dictTypeForm"
                label-width="auto"
-               v-bind:model="dictDialog.model"
-               v-bind:rules="dictDialog.rules">
+               v-bind:model="dictTypeDialog.model"
+               v-bind:rules="dictTypeDialog.rules">
         <el-form-item label="字典类型"
                       prop="type">
-          <el-input v-model="dictDialog.model.type"
-                    placeholder=""></el-input>
+          <el-input v-model="dictTypeDialog.model.type"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="字典描述"
                       prop="description">
-          <el-input v-model="dictDialog.model.description"
-                    placeholder=""></el-input>
+          <el-input v-model="dictTypeDialog.model.description"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="备注">
-          <el-input v-model="dictDialog.model.remarks"
+          <el-input v-model="dictTypeDialog.model.remarks"
                     placeholder=""></el-input>
         </el-form-item>
       </el-form>
@@ -106,10 +132,10 @@
       <div slot="footer">
         <el-button style="min-width: 80px"
                    type=""
-                   v-on:click="closeDictDialog">取消</el-button>
+                   v-on:click="closeDictTypeDialog">取消</el-button>
         <el-button style="min-width: 80px"
                    type="primary"
-                   v-on:click="saveDict">保存</el-button>
+                   v-on:click="saveDictType">保存</el-button>
       </div>
     </PeaceDialog>
 
@@ -117,7 +143,7 @@
                  width="360px"
                  v-if="dictItemDialog.visible"
                  v-bind:visible.sync="dictItemDialog.visible">
-      <el-form ref="dictFormItem"
+      <el-form ref="dictItemForm"
                label-width="auto"
                v-bind:model="dictItemDialog.model"
                v-bind:rules="dictItemDialog.rules">
@@ -158,27 +184,28 @@
 </template>
 
 <script>
+import Service from './service/index'
+
 export default {
   name: 'DictionaryManager',
 
   data() {
     return {
-      showDetail: false,
-
-      dictModel: {
+      dictTypeModel: {
         type: '',
         description: ''
       },
 
-      dictItemModel: {
-        visible: false
+      dictItemList: {
+        visible: false,
+        dictId: ''
       },
 
-      dictDialog: {
+      dictTypeDialog: {
         visible: false,
 
         model: {
-          id: '',
+          id: 0,
           type: '',
           description: '',
           remarks: ''
@@ -194,7 +221,7 @@ export default {
         visible: false,
 
         model: {
-          id: '',
+          id: 0,
           dictId: '',
           label: '',
           value: '',
@@ -212,87 +239,171 @@ export default {
   },
 
   mounted() {
-    this.$nextTick().then(() => this.fetchDict())
+    this.$nextTick(() => {
+      this.fetchDictType()
+    })
   },
 
   methods: {
-    fetchDict() {
+    // 查询字典类型
+    fetchDictType() {
       // 查询字典类型时，隐藏字典项
-      this.dictItemModel.visible = false
+      this.dictItemList.visible = false
 
-      const fetch = () => Peace.http.get('mock')
-      const params = this.model
+      const params = this.dictTypeModel
+      const fetch = Service.dict().pageType
 
-      this.$refs.dictTable.reloadData({ fetch, params })
+      this.$refs.dictTypeTable.reloadData({ fetch, params })
     },
-
-    fetchDictItem() {
-      const fetch = () => Peace.http.get('mock')
-      const params = this.model
+    // 查询
+    fetchDictItem(dictId) {
+      const fetch = Service.dict().pageItem
+      const params = { dictId: dictId }
 
       this.$refs.dictItemTable.reloadData({ fetch, params })
     },
 
-    addDict() {
-      this.showDictDialog()
+    addDictType() {
+      this.showDictTypeDialog()
     },
 
-    editDict() {
-      this.showDictDialog()
+    editDictType(item) {
+      this.showDictTypeDialog(item)
     },
 
-    saveDict() {
-      this.$refs.dictForm.validate(() => {
-        if (this.dictDialog.model.id) {
-          // edit
+    showDictTypeDialog(item) {
+      if (item && item.id) {
+        this.dictTypeDialog.model = item
+      } else {
+        this.resetDictTypeDialog()
+      }
+
+      this.dictTypeDialog.visible = true
+    },
+
+    resetDictTypeDialog() {
+      this.dictTypeDialog.model = {
+        id: 0,
+        type: '',
+        description: '',
+        remarks: ''
+      }
+    },
+
+    closeDictTypeDialog() {
+      this.dictTypeDialog.visible = false
+      this.resetDictTypeDialog()
+    },
+
+    saveDictType() {
+      this.$refs.dictTypeForm.validate((valid) => {
+        if (valid) {
+          if (this.dictTypeDialog.model.id) {
+            Service.dict()
+              .editType(this.dictTypeDialog.model)
+              .then((res) => {
+                Peace.util.success(res.msg)
+                this.closeDictTypeDialog()
+                this.fetchDictType()
+              })
+          } else {
+            Service.dict()
+              .addType(this.dictTypeDialog.model)
+              .then((res) => {
+                Peace.util.success(res.msg)
+                this.closeDictTypeDialog()
+                this.fetchDictType()
+              })
+          }
         } else {
-          // add
+          return false
         }
       })
     },
 
-    showDictDialog() {
-      this.dictDialog.visible = true
+    showDictItemList(item) {
+      this.dictItemList.visible = true
+      this.dictItemList.dictId = item.id
+
+      this.$nextTick().then(() => this.fetchDictItem(item.id))
     },
 
-    closeDictDialog() {
-      this.dictDialog.visible = false
-    },
+    selectDict(row) {
+      this.dictItemList.visible = true
+      this.dictItemList.dictId = row.id
 
-    showDictItem() {
-      this.dictItemModel.visible = true
-
-      this.$nextTick().then(() => this.fetchDictItem())
+      this.$nextTick().then(() => this.fetchDictItem(row.id))
     },
 
     addDictItem() {
       this.showDictItemDialog()
     },
 
-    editDictItem() {
-      this.showDictItemDialog()
+    editDictItem(item) {
+      this.showDictItemDialog(item)
     },
 
-    deleteDictItem() {},
+    showDictItemDialog(item) {
+      if (item && item.id) {
+        this.dictItemDialog.model = item
+      } else {
+        this.resetDictItemDialog()
+      }
 
-    saveDictItem() {
-      this.$refs.dictFormItem.validate((valid) => {
-        if (valid) {
-          if (this.dictItemDialog.model.id) {
-            // edit
-          } else {
-            // add
-          }
-        }
-      })
-    },
-
-    showDictItemDialog() {
       this.dictItemDialog.visible = true
+    },
+
+    resetDictItemDialog() {
+      this.dictItemDialog.model = {
+        id: 0,
+        dictId: this.dictItemList.dictId || '',
+        label: '',
+        value: '',
+        description: '',
+        remarks: ''
+      }
     },
 
     closeDictItemDialog() {
       this.dictItemDialog.visible = false
+      this.resetDictItemDialog()
+    },
+    deleteDictItem(item) {
+      const params = { id: item.id }
+      this.$confirm('确定删除吗？').then(() => {
+        Service.dict()
+          .deleteItem(params)
+          .then((res) => {
+            Peace.util.success(res.msg)
+            this.fetchDictItem(this.dictItemList.dictId)
+          })
+      })
+    },
+
+    saveDictItem() {
+      this.$refs.dictItemForm.validate((valid) => {
+        if (valid) {
+          if (this.dictItemDialog.model.id) {
+            Service.dict()
+              .editItem(this.dictItemDialog.model)
+              .then((res) => {
+                Peace.util.success(res.msg)
+                this.closeDictItemDialog()
+                this.fetchDictItem(this.dictItemList.dictId)
+              })
+          } else {
+            Service.dict()
+              .addItem(this.dictItemDialog.model)
+              .then((res) => {
+                Peace.util.success(res.msg)
+                this.closeDictItemDialog()
+                this.fetchDictItem(this.dictItemList.dictId)
+              })
+          }
+        } else {
+          return false
+        }
+      })
     }
   }
 }
