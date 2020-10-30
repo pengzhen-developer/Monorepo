@@ -229,6 +229,8 @@ export default {
     $route() {
       // 页面回退，需要刷新
       if (this.$route.name === '/components/theRecipe/:json' && this.$route.params['stack-key-dir'] === 'back') {
+        // 初始化处方数据（处理按钮显示的问题）
+        this.internalData = undefined
         this.get()
       }
     },
