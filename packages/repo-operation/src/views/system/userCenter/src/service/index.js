@@ -1,7 +1,7 @@
 export default {
   user() {
     let apiPath = `admin/user`
-    const serverPath = process.env.VUE_APP_AUTH_API
+    const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
       //获取用户byID

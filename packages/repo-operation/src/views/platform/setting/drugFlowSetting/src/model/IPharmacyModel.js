@@ -21,7 +21,7 @@ export class IPharmacyModel {
   /** 药店 ID 、仓库 ID */
   DrugStoreId = ''
   /** 显示图片 */
-  DisplayImg = process.env.VUE_APP_OPERATION_SITE + 'Images/drug-flow-default.png'
+  DisplayImg = process.env.VUE_APP_SITE_OPERATION + 'Images/drug-flow-default.png'
   /** 显示名称 */
   DisplayName = ''
 }
