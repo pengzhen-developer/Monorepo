@@ -4,16 +4,16 @@
  * 请注意，此方法只记录 url 参数
  * 如需做更多自定义操作，请自行记录参数
  *
- * @param {string} [referrer=''] 重定向地址
+ * @param {string} [referer=''] 重定向地址
  * @returns
  */
-export const replaceToLogin = (referrer = '') => {
+export const replaceToLogin = (referer = '') => {
   const $router = $peace.$router
 
   return $router.push({
     name: 'login',
     query: {
-      referrer: referrer || $router.history.current.fullPath
+      referer: referer || $router.history.current.fullPath
     }
   })
 }
@@ -26,7 +26,7 @@ export const replaceToLogin = (referrer = '') => {
 export const replaceToReffer = () => {
   const $route = $peace.$route
   const $router = $peace.$router
-  const reffer = $route?.query?.referrer
+  const reffer = $route?.query?.referer
 
   if (reffer) {
     return $router.replace(reffer)
@@ -66,7 +66,7 @@ export const replaceToRoot = () => {
  *
  */
 export const redirectToDoctorWorkbench = () => {
-  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_DOCTOR_WORKBENCH_SITE
+  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_SITE_DOCTOR_WORKBENCH
 
   window.open(CONSOLE_DOCTOR_WORKBENCH_PATH)
 }
@@ -75,7 +75,7 @@ export const redirectToDoctorWorkbench = () => {
  *
  */
 export const redirectTOPharmacistWorkbench = () => {
-  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_PHARMACIST_WORKBENCH_SITE
+  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_SITE_PHARMACIST_WORKBENCH
 
   window.open(CONSOLE_PHARMACIST_WORKBENCH_PATH)
 }

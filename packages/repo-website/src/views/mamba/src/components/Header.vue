@@ -133,10 +133,12 @@ export default {
 }
 
 .username {
+  font-size: 14px;
   padding: 0 8px 0 16px;
 }
 
 .el-icon-s-operation {
+  font-size: 14px;
   color: var(--q-color-primary);
 }
 
@@ -152,6 +154,7 @@ button:active {
   border: none;
 }
 .console-btn {
+  font-size: 14px;
   width: 42px;
   padding: 0 !important;
 }

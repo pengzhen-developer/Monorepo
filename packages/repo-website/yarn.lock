@@ -837,10 +837,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/identity@^0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.1.17.tgz#8efb570653190127f8b4661c0ba320a014dcce71"
-  integrity sha512-rfkYxnTPKXg/4ADniv9dsvXOLEEg69Nt7mZbiNMTDsEkEDA4nM7JaP6TO/A0V0FWND9Lviy6UuM2iqfm/vAIjg==
+"@jk998/identity@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.0.tgz#78942f2cf0f2c65b946b741ca7555eaf2b8d162a"
+  integrity sha512-isdvjjK6DJohuAaIbMfhcOIN6D7cD9V0DhCeWruwZw5EuCLPhMD4M5HydAI11UkIoTK+cBlMqhXJqE+yvGnIQg==
   dependencies:
     "@jk998/library" "^0.1.17"
     crypto-js "^4.0.0"
@@ -855,7 +855,7 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.5":
+"@jk998/peace-element-ui@^0.1.6":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.6.tgz#33c18f5106e20368d2be339f305f4be5d1d27cc0"
   integrity sha512-5fHb5G6DI3gvbo1GmpXWXHSI5b6dwcYtUJu6ODTUy9O8YrUDU29F342oyjVM9x8XdAApoqCaIZuo0unjTFUf8g==

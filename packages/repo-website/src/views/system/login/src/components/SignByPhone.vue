@@ -208,16 +208,15 @@ export default {
 
         let params = {
           grant_type: 'mobile',
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          client_secret: process.env.VUE_APP_CLIENT_SECRET,
+          client_id: process.env.VUE_APP_AUTH_CLIENT_ID,
+          client_secret: process.env.VUE_APP_AUTH_CLIENT_SECRET,
           mobile: 'SMS@' + this.model.tel,
           code: this.model.verificationCode
         }
 
         this.peace.identity.auth
           .login(params)
-          .then((res) => {
-            Util.token.setToken(res.data)
+          .then(() => {
             this.completeInfomation()
           })
           .catch((err) => {

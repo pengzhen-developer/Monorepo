@@ -1,6 +1,4 @@
 import { path } from '@src/router/generateRoutes'
-// import Router from '@src/router'
-import usertoken from './token'
 
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
@@ -41,8 +39,9 @@ export const getUserInfo = () => {
  *
  */
 export const removeUserInfo = () => {
+  Peace.identity.auth.removeAll()
   Peace.cache.localStorage.remove(USER_INFO)
-  usertoken.removeToken()
+  Peace.cache.sessionStorage.clear()
 }
 
 /**
@@ -66,9 +65,9 @@ export const replaceToLogin = (referrer = '') => {
  * 跳转控制台
  *
  */
-export const redirectToConsole = () => {
-  let token = usertoken.getToken()
-  const CONSOLE_SITE_PATH = process.env.VUE_APP_CONSOLE_SITE + '?token=' + token.access_token
+export const redirectToConsole = async () => {
+  let token = (await Peace.identity.auth.getAuth()).access_token
+  const CONSOLE_SITE_PATH = process.env.VUE_APP_SITE_CONSOLE + '?token=' + token
 
   window.location.href = CONSOLE_SITE_PATH
 }
@@ -77,7 +76,7 @@ export const redirectToConsole = () => {
  *
  */
 export const redirectToDoctorWorkbench = () => {
-  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_DOCTOR_WORKBENCH_SITE
+  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_SITE_DOCTOR_WORKBENCH
 
   window.open(CONSOLE_DOCTOR_WORKBENCH_PATH)
 }
@@ -86,7 +85,7 @@ export const redirectToDoctorWorkbench = () => {
  *
  */
 export const redirectTOPharmacistWorkbench = () => {
-  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_PHARMACIST_WORKBENCH_SITE
+  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_SITE_PHARMACIST_WORKBENCH
 
   window.open(CONSOLE_PHARMACIST_WORKBENCH_PATH)
 }

@@ -1,5 +1,5 @@
 /** 站点常量 */
-const REFERRER_SITE = 'referrer_site'
+const REFERRER_SITE = 'referer_site'
 
 /**
  * 缓存来源站点信息
@@ -29,16 +29,21 @@ export const removeReferrer = () => {
 }
 
 /**
- * 重定向到来源站点
+ * 回到官网
  *
- * @param {string} [referrer=''] 重定向地址
+ * @param {string} [type=''] 回到官网打开方式
  * @returns
  */
-export const replaceToReferrer = (referrer = getReferrer()) => {
-  if (Peace.validate.isUrl(referrer)) {
-    window.location.href = referrer
-  } else {
-    window.location.href = process.env.VUE_APP_WEB_SITE
+export const redirectToReferer = (type = '_self') => {
+  switch (type) {
+    case '_self':
+      window.location.href = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH
+      break
+    case 'login':
+      window.location.href = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH + 'login'
+      break
+    default:
+      break
   }
 }
 
@@ -47,5 +52,5 @@ export default {
   getReferrer,
   removeReferrer,
 
-  replaceToReferrer
+  redirectToReferer
 }

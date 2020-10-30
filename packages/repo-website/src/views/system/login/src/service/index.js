@@ -7,14 +7,14 @@ export default {
   sendCode(params) {
     params = {
       mobile: params.tel,
-      clientId: process.env.VUE_APP_CLIENT_ID
+      clientId: process.env.VUE_APP_AUTH_CLIENT_ID
     }
 
     const isMock = false
 
     const apiPath = `admin/mobile`
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_AUTH_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_AUTH + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -30,8 +30,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/Account/resetPwd'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -49,8 +49,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/v070/Account/getAccountInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

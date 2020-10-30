@@ -359,17 +359,16 @@ export default {
           .then(() => {
             let data = {
               grant_type: 'password',
-              client_id: process.env.VUE_APP_CLIENT_ID,
-              client_secret: process.env.VUE_APP_CLIENT_SECRET,
+              client_id: process.env.VUE_APP_AUTH_CLIENT_ID,
+              client_secret: process.env.VUE_APP_AUTH_CLIENT_SECRET,
               username: this.model.tel,
               password: this.model.password,
-              encryption_key: 'sksksksksksksksk'
+              encryption_key: process.env.VUE_APP_AUTH_ENCRYPTION_KEY
             }
 
             this.peace.identity.auth
               .login(data)
-              .then((res) => {
-                Util.token.setToken(res.data)
+              .then(() => {
                 this.completeInfomation()
               })
               .catch((err) => {

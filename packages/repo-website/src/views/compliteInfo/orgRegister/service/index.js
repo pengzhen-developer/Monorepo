@@ -8,8 +8,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/v070/Account/updateBaseInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -27,8 +27,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/v070/Account/getAccountInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -45,8 +45,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/Account/uploadImage'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -67,8 +67,8 @@ export default {
     const isMock = false
 
     const apiPath = 'hospital/Area/list'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
