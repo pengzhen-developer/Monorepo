@@ -148,10 +148,7 @@ export default {
             })
         } else {
           //roleId无则为新增，获取当前终端全量菜单
-          this.getMenuList().then(() => {
-            let checked = this.resolveAllEunuchNodeId(this.menuTree, this.model.menuIds, [])
-            this.roleMenu = checked
-          })
+          this.getMenuList()
         }
       })
     },
