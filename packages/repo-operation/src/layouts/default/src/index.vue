@@ -80,6 +80,7 @@ export default {
       configuration: window.configuration,
       menuList: [],
       menuTree: [],
+      allMenuList: [],
       childrenMenuTree: [],
 
       defaultHeanderNavActive: '',
@@ -122,11 +123,13 @@ export default {
 
   methods: {
     async getMenu() {
-      const accountMenu = (await Peace.identity.auth.getAccountMenu()).filter((item) => !item.virtual)
+      const menu = await Peace.identity.auth.getAccountMenu()
+      const accountMenu = menu.filter((item) => !item.virtual)
       // 避免浅拷贝导致数据源被污染
       const menuListSource = Peace.util.deepClone(accountMenu)
       const menuTreeSource = Peace.util.deepClone(accountMenu)
 
+      this.allMenuList = menu
       this.menuList = menuListSource
       this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
     },
@@ -139,10 +142,8 @@ export default {
       }
     },
 
-    async getTab(index) {
-      const menuListSource = Peace.util.deepClone(await Peace.identity.auth.getAccountMenu())
-
-      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
+    getTab(index) {
+      const currentMenu = this.allMenuList.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
 
       return currentMenu
     },
