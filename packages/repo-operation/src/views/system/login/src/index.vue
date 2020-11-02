@@ -60,9 +60,6 @@
 </template>
 
 <script>
-import Util from '@src/util'
-// import Service from './service'
-
 export default {
   data() {
     return {
@@ -72,7 +69,7 @@ export default {
       passwordImage: 'img:' + require('./assets/img/pwd.png'),
 
       model: {
-        username: Util.user.getUserInfo()?.username ?? '',
+        username: '',
         password: ''
       },
 
@@ -113,7 +110,6 @@ export default {
         Peace.identity.auth
           .workFlowAuth(params)
           .then(async () => {
-            Util.user.setUserInfo(await Peace.identity.auth.getAccountInfo())
             this.$router.replace('/').then(() => window.location.reload())
           })
           .catch((error) => {

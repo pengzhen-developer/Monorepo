@@ -90,7 +90,6 @@
 <script>
 import RoleModel from './components/RoleModel'
 
-import Util from '@src/util'
 import Service from './service'
 import CONSTANT from './constant'
 
@@ -103,8 +102,7 @@ export default {
     return {
       CONSTANT,
       model: {
-        clientId: Util.user.getUserInfo().clientId,
-        organCode: Util.user.getUserInfo().custCode,
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
         roleName: ''
       },
       roleDialog: {

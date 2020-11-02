@@ -27,10 +27,8 @@ export default {
       // 清除缓存
       // 重定向到 /
 
-      Peace.cache.sessionStorage.clear()
-      Peace.cache.localStorage.clear()
-      Peace.identity.auth.removeAll()
       Util.user.removeUserInfo()
+
       this.$router.push('/').then(() => window.location.reload())
     }
   }

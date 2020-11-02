@@ -109,7 +109,7 @@
 
 <script>
 import Service from './service'
-import Util from '@src/util'
+
 export default {
   data() {
     return {
@@ -128,8 +128,7 @@ export default {
         model: {
           password: '',
           newpassword1: '',
-          clientId: Util.user.getUserInfo().clientId,
-          userId: Util.user.getUserInfo().id
+          clientId: process.env.VUE_APP_AUTH_CLIENT_ID
         },
 
         rules: {
@@ -159,10 +158,11 @@ export default {
       this._$data = Peace.util.deepClone(this.$data)
     },
 
-    getPersonBaseInfo() {
+    async getPersonBaseInfo() {
       const params = {
-        id: Util.user.getUserInfo()?.id
+        id: await Peace.identity.auth.getAccountInfo()?.id
       }
+
       Service.user()
         .get(params)
         .then((res) => {

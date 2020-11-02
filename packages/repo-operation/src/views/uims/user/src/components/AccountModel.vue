@@ -63,8 +63,6 @@
 
 <script>
 import CONSTANT from '../constant'
-
-import Util from '@src/util'
 import Service from '../service'
 
 export default {
@@ -108,8 +106,7 @@ export default {
       roleList: [],
 
       model: {
-        clientId: Util.user.getUserInfo().clientId,
-        organCode: Util.user.getUserInfo().custCode,
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
         userId: '',
         username: '',
         password: '',
@@ -167,7 +164,6 @@ export default {
               .get({ id: this.model.userId })
               .then((res) => {
                 this.model.clientId = res.data.clientId
-                this.model.organCode = res.data.organCode
                 this.model.userId = res.data.userId
                 this.model.username = res.data.username
                 this.model.name = res.data.name
@@ -181,8 +177,7 @@ export default {
 
     getRoleList() {
       let params = {
-        clientId: Util.user.getUserInfo().clientId,
-        organCode: Util.user.getUserInfo().custCode
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID
       }
       return Service.role()
         .list(params)

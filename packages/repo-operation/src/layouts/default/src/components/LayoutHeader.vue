@@ -100,7 +100,7 @@ export default {
     return {
       configuration: window.configuration,
 
-      user: Util.user.getUserInfo(),
+      user: {},
 
       canShowUserCenter: null
     }
@@ -115,10 +115,14 @@ export default {
       return this.provideMenuTree()
     }
   },
+
   async created() {
+    this.user = await Peace.identity.auth.getAccountInfo()
+
     const result = (await Peace.identity.auth.getAccountMenu()).find((item) => item.menuAlias == '个人中心')
     this.canShowUserCenter = result ? true : false
   },
+
   methods: {
     goUserCenter() {
       this.$router.push('/user-center')
@@ -126,9 +130,9 @@ export default {
 
     signOut() {
       Peace.identity.auth.logout().then(() => {
-        Peace.identity.auth.removeAll()
         Util.user.removeUserInfo()
-        this.$router.push({ name: 'Login' })
+
+        this.$router.push({ name: 'Login' }).then(() => window.location.reload())
       })
     }
   }

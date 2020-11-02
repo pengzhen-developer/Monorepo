@@ -115,7 +115,6 @@
 import AccountModel from './components/AccountModel'
 
 import Service from './service'
-import Util from '@src/util'
 import CONSTANT from './constant'
 
 export default {
@@ -128,7 +127,7 @@ export default {
     return {
       CONSTANT,
       model: {
-        clientId: Util.user.getUserInfo().clientId,
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
         username: '',
         name: '',
         pickDate: [],

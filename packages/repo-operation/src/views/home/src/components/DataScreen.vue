@@ -224,9 +224,8 @@ export default {
         } else if (err.data.code === 403) {
           Peace.util.warning(err.data.msg)
           LibraryUtil.user.removeUserInfo()
-          setTimeout(() => {
-            LibraryUtil.user.replaceToLogin()
-          }, 1000)
+
+          this.$router.push('/').then(() => window.location.reload())
         } else {
           Peace.util.warning('服务器异常，请稍后再试')
         }

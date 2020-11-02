@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import Util from '@src/util'
 import Service from '../service'
 
 export default {
@@ -93,7 +92,7 @@ export default {
       filterText: '',
 
       model: {
-        clientId: Util.user.getUserInfo().clientId,
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
         roleId: '',
         roleName: '',
         roleDesc: '',
@@ -165,7 +164,7 @@ export default {
     getMenuList() {
       let params = {
         lazy: false,
-        clientId: Util.user.getUserInfo().clientId
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID
       }
       return Service.menu()
         .menuTree(params)
