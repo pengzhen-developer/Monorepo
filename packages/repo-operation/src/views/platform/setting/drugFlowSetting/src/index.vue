@@ -109,7 +109,7 @@ export default {
       return Service.SimpleStoreList2().then((res) => {
         const formatData = []
 
-        res.data.forEach((item) => {
+        res.data.list.forEach((item) => {
           item.label = item.Name + ' ' + (item.Address ?? '')
           item.value = item.DrugStoreKeyId
 
@@ -175,7 +175,7 @@ export default {
 
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
-        this.data = res.data
+        this.data = res.data.List
       })
     },
 
@@ -189,7 +189,7 @@ export default {
 
       Service.getDetail({ custCode: custCode }).then((res) => {
         this.pharmacyRule.RuleFlag = res.data.RuleFlag
-        this.data = res.data
+        this.data = res.data.List
       })
     }
   }
