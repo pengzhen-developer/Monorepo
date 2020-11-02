@@ -32,8 +32,6 @@ import Service from './service/index'
 import OtherSerice from './service/data'
 import CONSTANT from './constant'
 
-// import LibraryUtil from '@src/util'
-
 export default {
   components: {
     WareHouseMap,
@@ -90,7 +88,6 @@ export default {
           if (err?.data?.code === 201) {
             Peace.util.warning(err.data.msg)
           } else if (err?.data?.code === 403) {
-            // Peace.util.warning(err.data.msg)
             this.$router.push('/401')
           } else {
             Peace.util.warning('服务器异常，请稍后再试')
@@ -126,10 +123,7 @@ export default {
     getOverview() {
       return Service.getOverview().then((res) => {
         this.overViewData.order = res.data.OrderNum
-        // this.overViewData.medical = res.data.HospitalNum
-        // this.overViewData.drugSupply = res.data.DrugSupplyNum
         this.overViewData.store = res.data.DrugShopNum
-        // this.overViewData.warehouse = res.data.DrugCloudStoreNum
       })
     },
     // 获取数据  医疗机构、仓配机构
@@ -148,7 +142,7 @@ export default {
     // 获取多店云仓
     getDrugStoreList() {
       return Service.getDrugStoreList().then((res) => {
-        this.mapData = this.convertData(res.data)
+        this.mapData = this.convertData(res.data.list)
       })
     },
     convertData(data) {

@@ -44,6 +44,12 @@ const getDynamicRoutes = (accountMenu) => {
           name: 'Layout',
           component: () => import(`@src/layouts/${window.configuration.layout.type}`),
           children: []
+        },
+        //数据大屏
+        {
+          path: '/dataScreen',
+          name: 'DataScreen',
+          component: () => import('@src/views/data-screen')
         }
       ]
     }

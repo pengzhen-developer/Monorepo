@@ -114,6 +114,7 @@ export default {
           })
           .catch((error) => {
             Peace.util.error(error?.msg ?? '登录失败')
+            Peace.identity.auth.removeAll()
           })
           .finally(() => {
             this.isLoading = false
