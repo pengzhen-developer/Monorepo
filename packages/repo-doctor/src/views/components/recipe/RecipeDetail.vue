@@ -83,14 +83,24 @@
 
       <div class="q-mb-xs row q-col-gutter-md">
         <div class="row col-12">
+
           <span class="text-justify"
                 style="width: 4em;">疾病诊断</span>
+
           <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold"
-                v-for="diagnosis in data.DiagnosisInfos"
-                v-bind:key="diagnosis.DiagnosisName">
-            {{ diagnosis.DiagnosisName }}
-          </span>
+
+          <div class="info-row-content">
+            <template v-if="data.diagnoseList">
+              <el-tag :key="item"
+                      class="q-mr-6 q-mt-6"
+                      type="info"
+                      v-for="item in data.diagnoseList">{{item.diagnoseName}}</el-tag>
+            </template>
+            <template v-else>
+              <span>无</span>
+            </template>
+          </div>
+
         </div>
       </div>
     </div>

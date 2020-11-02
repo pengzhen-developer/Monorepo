@@ -72,8 +72,24 @@
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">初步诊断</span>
           <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.diagnose }}</span>
+          <!-- <span>{{ caseInfo.diagnose }}</span> -->
+
+          <template v-if="diagnoseList && diagnoseList.length > 0">
+            <el-tag :key="item.id"
+                    class="tag-style"
+                    type="info"
+                    v-for="item in diagnoseList">{{ item.name }}</el-tag>
+            <el-button @click="changeDialog('疾病诊断')"
+                       type="text">修改</el-button>
+          </template>
+
+          <template v-else>
+            <el-button @click="showDialog('疾病诊断')"
+                       type="text">请选择</el-button>
+          </template>
+
         </div>
+
       </div>
 
       <div class="row q-mb-md">
@@ -106,6 +122,7 @@
       </div>
     </div>
 
+    <!-- 系统审方结果 -->
     <peace-dialog title="系统审方结果"
                   v-bind:visible.sync="audit.visible">
       <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
@@ -116,6 +133,61 @@
                    v-on:click="audit.visible = false">返回修改</el-button>
       </div>
     </peace-dialog>
+
+    <!-- 修改诊断 -->
+    <peace-dialog :title="'添加' + dialog.title"
+                  :visible.sync="dialog.visible">
+      <div class="q-mb-10">
+
+        <el-select :remote-method="getPresent"
+                   @change="chooseItem"
+                   allow-create
+                   filterable
+                   placeholder="请输入疾病诊断"
+                   remote
+                   style="width: 100%;"
+                   v-model="dialog.chooseItem">
+          <el-option :key="item.id"
+                     :label="item.name"
+                     :value="item.name"
+                     v-for="item in dialog.source.present_history"></el-option>
+        </el-select>
+      </div>
+
+      <div class="q-mx-10"
+           v-if="dialog.chooseData.length > 0">
+        <p>已选{{ dialog.title }}</p>
+
+        <div class="q-ma-10">
+          <el-tag :key="item.id"
+                  @close="closeItem(item)"
+                  closable
+                  class="tag-style"
+                  v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
+        </div>
+      </div>
+
+      <template>
+        <div class="q-mx-10">
+          <p>常见{{ dialog.title }}</p>
+
+          <div class="q-ma-10">
+            <el-tag :key="item.code"
+                    :type="selectTagClass(item)"
+                    @click="chooseItem(item)"
+                    class="tag-style cursor-pointer"
+                    v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
+          </div>
+        </div>
+      </template>
+
+      <div class="q-mb-10 text-center">
+        <el-button @click="dialog.visible = false">取消</el-button>
+        <el-button @click="saveItem"
+                   type="primary">保存</el-button>
+      </div>
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -153,6 +225,28 @@ export default {
         data: {}
       },
 
+      /** 诊断 */
+      diagnoseList: [],
+
+      model: {
+        present_history: [],
+        allergy_history: []
+      },
+
+      dialog: {
+        visible: false,
+        chooseData: [],
+        // 当前选中项
+        chooseItem: '',
+
+        // 远程搜素数据源
+        source: {
+          present_history: [],
+          allergy_history: [],
+          IllnessList: []
+        }
+      },
+
       sending: false
     }
   },
@@ -181,7 +275,13 @@ export default {
 
   created() {
     this.resetModel()
-    this.getCase()
+  },
+
+  beforeMount() {
+    this.$nextTick(function () {
+      this.getCase()
+      this.getCommonDiagnosis()
+    })
   },
 
   methods: {
@@ -190,7 +290,8 @@ export default {
 
       const params = {
         weight: this.weight,
-        drugList: drugList
+        drugList: drugList,
+        diagnoseList: this.diagnoseList
       }
 
       Peace.cache.sessionStorage.set(this.inquiryNo, params)
@@ -202,7 +303,16 @@ export default {
       if (recipeCache) {
         this.weight = recipeCache.weight
         this.drugList = recipeCache.drugList
+        this.diagnoseList = recipeCache.diagnoseList
       }
+    },
+
+    /**
+     * 设置tag的选中样式
+     *
+     */
+    selectTagClass(item) {
+      return this.dialog.chooseData.findIndex((existItem) => existItem.code === item.code) === -1 ? 'info' : 'primary'
     },
 
     /**
@@ -218,7 +328,46 @@ export default {
 
       return Service.getCase(params).then((res) => {
         this.caseInfo = res.data
+
+        // 判断是否存在本地缓存数据，如果有本地缓存数据设置成本地缓存的
+        if (this.diagnoseList && this.diagnoseList.length > 0) {
+          this.dialog.chooseData = [...this.diagnoseList]
+        } else {
+          const tmp = res.data.diagnoseList.map((item) => {
+            item.name = item.diagnoseName
+            item.code = item.diagnoseCode
+            return item
+          })
+
+          this.diagnoseList = tmp
+          this.dialog.chooseData = tmp
+        }
       })
+    },
+
+    /**
+     * 获取常见断
+     *
+     */
+    getCommonDiagnosis() {
+      peace.service.patient.IllnessList().then((res) => {
+        this.dialog.source.IllnessList = res.data.list
+      })
+    },
+
+    /**
+     * 获取诊断
+     *
+     */
+    getPresent(query) {
+      if (query !== '' && query.length > 0) {
+        const params = { name: query }
+        peace.service.patient.getDiseaseInfo(params).then((res) => {
+          this.dialog.source.present_history = res.data.list
+        })
+      } else {
+        this.dialog.source.present_history = []
+      }
     },
 
     /**
@@ -243,12 +392,20 @@ export default {
       }
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
+        // 诊断上传 JSON 数据 ，此处需要转换上传参数
+        const diagnoseInfos = [...this.diagnoseList].map((item) => {
+          item.diagnoseCode = item.code
+          item.diagnoseName = item.name
+          return item
+        })
+
         const params = {
           openId: this.docInfo?.openid,
           weight: this.weight,
           inquiryNo: this.inquiryNo,
           consultNo: this.consultNo,
           diagnose: this.caseInfo.diagnose,
+          diagnoseList: diagnoseInfos,
           allergyHistory: this.caseInfo.allergy_history,
           drugList: drugList
         }
@@ -327,6 +484,56 @@ export default {
       this.setModel()
 
       this.$emit('close')
+    },
+
+    showDialog(title) {
+      this.dialog.title = title
+      this.dialog.chooseData = []
+
+      this.dialog.visible = true
+    },
+
+    changeDialog(title) {
+      this.showDialog(title)
+      this.$nextTick(function () {
+        this.dialog.chooseData = [...this.diagnoseList]
+      })
+    },
+
+    chooseItem(item) {
+      if (!item.code) {
+        item = {
+          name: item,
+          code: item.code
+        }
+      }
+
+      const index = this.dialog.chooseData.findIndex((existItem) => {
+        return existItem.code === item.code && existItem.name === item.name
+      })
+
+      if (index === -1) {
+        this.dialog.chooseData.push(item)
+
+        // 选中后， 清空状态
+        this.dialog.chooseItem = ''
+        this.dialog.source.present_history = []
+        this.dialog.source.allergy_history = []
+      }
+    },
+
+    closeItem(item) {
+      const index = this.dialog.chooseData.findIndex((existItem) => existItem === item)
+
+      if (index !== -1) {
+        this.dialog.chooseData.splice(index, 1)
+      }
+    },
+
+    saveItem() {
+      this.diagnoseList = [...this.dialog.chooseData]
+
+      this.dialog.visible = false
     }
   }
 }
@@ -340,5 +547,15 @@ export default {
 
 .el-divider--horizontal {
   margin: 12px 0;
+}
+
+.tag-style {
+  margin: 2px 10px 2px 0;
+  min-width: 62px;
+  text-align: center;
+  border: none;
+  border-radius: 2px;
+  height: 28px;
+  line-height: 28px;
 }
 </style>

@@ -508,19 +508,6 @@ export default {
     sendMedical() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          //
-          //
-          // fix bug 【病历中的辅助检查取消最少10字的限制】
-          // bug 地址：https://www.tapd.cn/56564185/bugtrace/bugs/view/1156564185001003085
-          //
-          //
-          // if (
-          //   this.medical.model.Inspection_index.More &&
-          //   this.medical.model.Inspection_index.More.length < 10
-          // ) {
-          //   $peace.util.warning('请输入至少 10 个字的辅助检查')
-          //   return
-          // }
           if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
             $peace.util.warning('请输入正确的体温，最多保留一位小数')
             return
@@ -571,6 +558,7 @@ export default {
 
             ...this.medical.model
           }
+
           // 病历模板
           const type = this.medical.type
           if (type) {
@@ -581,9 +569,16 @@ export default {
           params.present_history = params.present_history.toString()
           params.allergy_history = params.allergy_history && params.allergy_history.map((item) => item.name).toString()
           params.past_history = params.past_history && params.past_history.map((item) => item.name).toString()
+
+          // 诊断上传 JSON 数据 ，此处需要转换上传参数
+          params.diagnoseList = params.diagnose.map((item) => {
+            item.diagnoseCode = item.code
+            item.diagnoseName = item.name
+            return item
+          })
+
           params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
           params.diagnose = params.diagnose.replace(/,/g, ' | ')
-          // console.log(params)
 
           // 兼容会诊和问诊
           if (this.inquiryNo) {
@@ -627,7 +622,8 @@ export default {
     chooseItem(item) {
       if (!item.id) {
         item = {
-          name: item
+          name: item,
+          code: item.code
         }
       }
       if (this.dialog.title === '过敏史') {
