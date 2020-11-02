@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"
              label-position="right"
-             label-width="94px"
+             label-width="110px"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
@@ -10,22 +10,45 @@
         <el-form-item label="云仓名称"
                       prop="Name">
           <el-input placeholder="请输入"
-                    v-model.trim="model.Name "></el-input>
+                    v-model.trim="model.Name"></el-input>
         </el-form-item>
-        <el-form-item label="branchid"
-                      prop="CodeIn3PartPlatform">
+        <el-form-item label="系统名称"
+                      prop="SystemCode">
+          <el-select v-model="model.SystemCode"
+                     @change="selectSystem"
+                     :disabled="model.PrentCustList.length > 0"
+                     clearable
+                     placeholder="请选择"
+                     style="width:100%;">
+            <el-option v-for="item in systemConfig"
+                       :key="item.SystemCode"
+                       :label="item.Name"
+                       :value="item.SystemCode"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-for="item in currentSystem.item"
+                      :key="item.Name"
+                      :label="item.Label"
+                      :prop="item.Name"
+                      :rules="[
+      { required: true, message: `请输入${item.Label}`, trigger: 'blur' },
+      { validator: validateSystemField, trigger: 'blur' }
+    ]">
           <el-input placeholder="请输入"
-                    v-model.trim="model.CodeIn3PartPlatform"
-                    maxlength="40"></el-input>
+                    v-model.trim="model[item.Name]"
+                    maxlength="20"></el-input>
         </el-form-item>
+
       </div>
       <div class="text-center">
-        <el-button type="primary"
-                   class="large hasmargin "
-                   v-bind:disabled="saveing"
-                   v-on:click="save">确 定</el-button>
-        <el-button class="large"
+
+        <el-button class="large hasmargin"
                    v-on:click="cancelDialog">取 消</el-button>
+        <el-button type="primary"
+                   class="large"
+                   v-bind:disabled="saveing"
+                   v-on:click="save">提 交</el-button>
       </div>
     </el-form>
   </div>
@@ -34,24 +57,43 @@
 <script>
 import Service from '../service'
 
+// 云仓基本信息
+const DEFAULT_MODEL = {
+  Id: '',
+  Name: '',
+  SystemCode: '',
+  Type: '',
+  PrentCustList: []
+}
+
+// 系统配置
+const DEFAULT_SYSTEM = {
+  SystemCode: '',
+  Name: '',
+  Type: '',
+  item: []
+}
+
 export default {
   name: 'add-ware-house',
   components: {},
   props: {
     data: {
       type: Object
+    },
+    config: {
+      type: Array
     }
   },
   data() {
     return {
       saveing: false,
-      model: {
-        Name: '', //云仓名称
-        NameIn3PartPlatform: '', //云仓名称
-        CodeIn3PartPlatform: '', // branchid
-        Type: 0, //类型
-        Effective: 1 //是否启用，默认传1
-      },
+      // 云仓信息
+      model: DEFAULT_MODEL,
+      // 系统配置
+      systemConfig: [],
+      // 当前所选系统配置
+      currentSystem: DEFAULT_SYSTEM,
 
       rules: {
         Name: [
@@ -61,70 +103,90 @@ export default {
             trigger: 'blur'
           }
         ],
-        CodeIn3PartPlatform: [
+        SystemCode: [
           {
             required: true,
-            message: '请填写branchid',
-            trigger: 'blur'
+            message: '请选择系统',
+            trigger: 'change'
           }
         ]
       }
     }
   },
-
-  created() {},
-
-  computed: {},
-
-  watch: {
-    data: {
-      handler(val) {
-        if (val) {
-          this.model.Name = this.data.Name
-          this.model.CodeIn3PartPlatform = this.data.BranchId
+  mounted() {
+    this.model = Object.assign({}, DEFAULT_MODEL, this.data)
+    this.systemConfig = Peace.util.deepClone(this.config)
+    this.$nextTick(() => {
+      // 初始化系统名称
+      if (this.model.Id) {
+        this.selectSystem(this.model.SystemCode, true)
+      } else {
+        let hasErp = this.systemConfig.find((item) => item.SystemCode === 'erp')
+        if (hasErp) {
+          this.model.SystemCode = 'erp'
+          this.selectSystem('erp', true)
         }
-      },
-      immediate: true
-    }
+      }
+    })
   },
 
   methods: {
+    // 选择系统
+    selectSystem(code, init) {
+      if (code) {
+        let currentSystem = this.systemConfig.find((item) => item.SystemCode === code)
+        this.currentSystem = currentSystem
+        this.model.Type = currentSystem.Type
+        // 清除校验结果
+        this.$refs.form.clearValidate()
+        // 动态设置表单字段
+        currentSystem.item.forEach((item) => {
+          if (init) {
+            this.model = Object.assign({}, this.model, { [item.Name]: this.data[item.Name] })
+          } else {
+            this.model = Object.assign({}, this.model, { [item.Name]: '' })
+          }
+        })
+      } else {
+        this.model.SystemCode = ''
+        this.model.Type = ''
+        this.currentSystem = DEFAULT_SYSTEM
+      }
+    },
+    validateSystemField(rule, value, callBack) {
+      console.log(rule)
+      let reg = /[a-zA-Z]|[0-9]|[\u4e00-\u9fa5]/
+      if (!reg.test(value)) {
+        return callBack('请输入中英文数字')
+      } else {
+        return callBack()
+      }
+    },
     save() {
       this.validateForm().then(() => {
         this.saveing = true
+
+        const params = Peace.util.deepClone(this.model)
         if (this.data?.Id) {
-          this.update()
+          Service.updateWarehouseInfo(params)
+            .then(() => {
+              Peace.util.success('修改云仓信息成功')
+              this.cancelDialog()
+            })
+            .finally(() => {
+              this.saveing = false
+            })
         } else {
-          this.create()
+          Service.InsertCircconfig(params)
+            .then(() => {
+              Peace.util.success('新建成功')
+              this.cancelDialog()
+            })
+            .finally(() => {
+              this.saveing = false
+            })
         }
       })
-    },
-    create() {
-      const params = Peace.util.deepClone(this.model)
-      params.NameIn3PartPlatform = params.Name
-      Service.InsertCircconfig(params)
-        .then(() => {
-          Peace.util.success('新建成功')
-          this.cancelDialog()
-        })
-        .finally(() => {
-          this.saveing = false
-        })
-    },
-    update() {
-      const params = {
-        id: this.data.Id,
-        name: this.model.Name,
-        codeIn3PartPlatform: this.model.CodeIn3PartPlatform
-      }
-      Service.updateWarehouseInfo(params)
-        .then(() => {
-          Peace.util.success('修改云仓信息成功')
-          this.cancelDialog()
-        })
-        .finally(() => {
-          this.saveing = false
-        })
     },
     validateForm() {
       return new Promise((resolve) => {

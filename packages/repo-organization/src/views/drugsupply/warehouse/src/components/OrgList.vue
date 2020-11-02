@@ -9,14 +9,14 @@
             <p class="title-key">开户机构：</p>
             <p class="title-value">{{item.Name}}</p>
           </div>
-          <div class="title-wrap">
-            <p class="title-key">内码（custid）：</p>
-            <p class="title-value">{{item.IDIn3PartPlatform}}</p>
+
+          <div class="title-wrap"
+               v-for="orgDictItem in orgDict.find(orgDictItem => orgDictItem.SystemCode === item.SystemCode)"
+               :key="orgDictItem.Label">
+            <p class="title-key">{{orgDictItem.Label}}：</p>
+            <p class="title-value">{{item[orgDictItem.Name]}}</p>
           </div>
-          <div class="title-wrap">
-            <p class="title-key">编码（custno）：</p>
-            <p class="title-value">{{item.CodeIn3PartPlatform}}</p>
-          </div>
+
           <div class="title-wrap">
             <p class="title-key">使用状态：</p>
             <p class="title-value">{{item.Effective==1?"已启用":"已禁用"}} </p>
@@ -28,22 +28,29 @@
              v-on:click="updateOrgan(item)" />
       </div>
     </div>
-    <PeaceDialog v-if="oragnVisible"
+    <PeaceDialog v-if="orgVisible"
                  width="516px"
-                 v-bind:visible.sync="oragnVisible"
+                 v-bind:visible.sync="orgVisible"
                  title="修改机构">
-      <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
-                v-bind:data="custItem"></AddOrgan>
+      <AddOrgan v-on:onCloseOrgan="onCloseOrgan"
+                v-bind:data="orgItem"
+                v-bind:config="currentOrgForm"></AddOrgan>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
 import AddOrgan from '../components/AddOrgan'
+import Service from '../service'
 
 export default {
   props: {
-    prentCustList: Array
+    prentCustList: {
+      type: Array
+    },
+    orgDict: {
+      type: Array
+    }
   },
   components: {
     AddOrgan
@@ -51,23 +58,41 @@ export default {
 
   data() {
     return {
-      oragnVisible: false,
-      custItem: {}
+      orgVisible: false,
+      orgItem: {},
+
+      // 当前机构使用的表单配置
+      currentOrgForm: {
+        Code: '',
+        Name: '',
+        Type: '',
+        item: []
+      }
     }
   },
 
-  created() {},
-
-  computed: {},
-
   methods: {
     updateOrgan(item) {
-      this.oragnVisible = true
-      this.custItem = item
+      this.orgItem = item
+      this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.orgItem.SystemCode)
+      this.orgVisible = true
     },
-    oncloseOrgan() {
-      this.oragnVisible = false
+    onCloseOrgan() {
+      this.orgVisible = false
       this.$emit('onUpdateOrgan')
+    },
+    deleteWarehouseOrg(item) {
+      this.$confirm('确定删除此机构？', '提示', { closeOnClickModal: false })
+        .then(() => {
+          const params = {
+            Id: item.Id
+          }
+          Service.deleteWarehouseOrg(params).then((res) => {
+            Peace.util.success(res.msg)
+            this.$emit('onUpdateOrgan')
+          })
+        })
+        .catch(() => {})
     }
   }
 }

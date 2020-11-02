@@ -76,6 +76,25 @@ export default {
   },
 
   /**
+   * 删除云仓机构
+   *
+   * @param {*} params
+   */
+  deleteWarehouseOrg(params) {
+    const isMock = false
+
+    const apiPath = 'psd/CircConfig/Delete'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 加载机构下拉框
    *
    * @param {*} params

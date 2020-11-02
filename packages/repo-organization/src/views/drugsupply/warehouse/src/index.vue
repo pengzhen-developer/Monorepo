@@ -1,30 +1,38 @@
 <template>
   <div class="flex full-width">
-    <div class="layout-route full-width">
+    <div class="layout-route full-width"
+         v-loading="loading">
       <div class="q-pa-lg  bg-white full-height">
         <div class="item-content">
           <div class="item-title">
             <div class="title-left"></div>
             <p class="title">云仓信息</p>
           </div>
-          <div v-if="!ishasWare">
+          <div v-if="!isHasWare">
             <el-button type="primary"
                        icon="el-icon-plus"
-                       v-on:click="bulidWarehouse">新增云仓</el-button>
+                       v-on:click="wareVisible = true">新增云仓</el-button>
             <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
           </div>
           <div v-else>
             <div class="item-child">
               <p class="child-key">云仓名称</p>
               <p>：</p>
-              <p class="child-value">{{warehoseInfo.Name}}</p>
+              <p class="child-value">{{warehouseInfo.Name}}</p>
               <el-image :src="require('./assets/img/zyy-icon-xiugai.png')"
-                        v-on:click="bulidWarehouse"></el-image>
+                        v-on:click="wareVisible = true"></el-image>
             </div>
             <div class="item-child">
-              <p class="child-key">branchid</p>
+              <p class="child-key">系统名称</p>
               <p>：</p>
-              <p class="child-value">{{warehoseInfo.BranchId}}</p>
+              <p class="child-value">{{currentSystemForm.Name}}</p>
+            </div>
+            <div class="item-child"
+                 v-for="item in currentSystemForm.item"
+                 :key="item.Label">
+              <p class="child-key">{{item.Label}}</p>
+              <p>：</p>
+              <p class="child-value">{{warehouseInfo[item.Name]}}</p>
             </div>
           </div>
         </div>
@@ -34,28 +42,31 @@
             <div class="title-left"></div>
             <p class="title">机构开户信息</p>
           </div>
-          <div v-if="ishasWare">
+          <div v-if="isHasWare">
             <el-button type="primary"
                        icon="el-icon-plus"
-                       v-on:click="bulidOrgan">新增开户机构</el-button>
+                       v-on:click="orgVisible = true">新增开户机构</el-button>
           </div>
           <p class="noInfo"
-             v-if="!ishasOrgan">暂无机构开户信息</p>
-          <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"
-                         v-on:onUpdateOrgan="updateOrgan"></AccountDetail>
+             v-if="!isHasOrg">暂无机构开户信息</p>
+          <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
+                   v-bind:orgDict="orgDict"
+                   v-on:onUpdateOrgan="getInfo()"></OrgList>
           <PeaceDialog v-if="wareVisible"
-                       width="470px"
+                       width="400px"
                        v-bind:visible.sync="wareVisible"
-                       :title="ishasWare?'修改云仓信息':'新建云仓'">
+                       :title="isHasWare?'修改云仓信息':'新建云仓'">
             <AddWarehouse v-on:onCloseWare="oncloseWare"
-                          v-bind:data="warehoseInfo"></AddWarehouse>
+                          v-bind:data="warehouseInfo"
+                          v-bind:config="systemDict"></AddWarehouse>
           </PeaceDialog>
-          <PeaceDialog v-if="oragnVisible"
+          <PeaceDialog v-if="orgVisible"
                        width="516px"
-                       v-bind:visible.sync="oragnVisible"
+                       v-bind:visible.sync="orgVisible"
                        title="新增机构">
             <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
-                      v-bind:data="custItem"></AddOrgan>
+                      v-bind:data="currentOrg"
+                      v-bind:config="currentOrgForm"></AddOrgan>
           </PeaceDialog>
         </div>
       </div>
@@ -64,37 +75,70 @@
 </template>
 
 <script>
-//
 import Service from './service'
 
-import AccountDetail from './components/AccountDetail'
+import OrgList from './components/OrgList'
 import AddWarehouse from './components/AddWarehouse'
 import AddOrgan from './components/AddOrgan'
 
 export default {
   name: 'Warehouse',
   components: {
-    AccountDetail,
+    OrgList,
     AddWarehouse,
     AddOrgan
   },
 
   data() {
     return {
-      oragnVisible: false,
+      loading: true,
+      // 是否开通云仓
+      isHasWare: false,
+      // 是否有机构
+      isHasOrg: false,
+      // 是否显示云仓信息
       wareVisible: false,
-      ishasOrgan: false,
-      ishasWare: false,
-      warehoseInfo: {},
-      custItem: {
+      // 是否显示机构信息
+      orgVisible: false,
+      // 云仓详情
+      warehouseInfo: {
+        Id: '', // 云仓唯一标识
+        Name: '', // 名称
+        SystemCode: '', // 系统编码
+        Type: '', // 系统类型 0 ERP  2 九州云仓
+        CodeIn3PartPlatform: '', // 物流中心ID  / branchid
+        IDIn3PartPlatform: '', // 运营方ID
+        PrentCustList: [] // 机构数据信息
+      },
+      // 选中的机构
+      currentOrg: {
+        PrentId: '', // 云仓唯一标识
+        Id: '', // 机构唯一标识
+        Name: '', // 机构名称
+        Code: '', // 机构编码
+        IDIn3PartPlatform: '', // 内码 / 委托方ID
+        Type: '', // 类型  1 erp   4 九州云仓
+        CodeIn3PartPlatform: '', // 编码
+        Effective: '' // 启用状态 1 已启用 0已禁用
+      },
+      // 云仓-系统 字典 （返回表单配置）
+      systemDict: [],
+      // 云仓-系统 对应机构 字典（返回表单配置）
+      orgDict: [],
+
+      // 当前云仓使用的表单配置
+      currentSystemForm: {
         Code: '',
-        CodeIn3PartPlatform: '',
-        Effective: '',
-        IDIn3PartPlatform: '',
-        Id: 0,
         Name: '',
-        Type: 1,
-        PrentId: ''
+        Type: '',
+        item: []
+      },
+      // 当前机构使用的表单配置
+      currentOrgForm: {
+        Code: '',
+        Name: '',
+        Type: '',
+        item: []
       }
     }
   },
@@ -103,34 +147,33 @@ export default {
     this.getInfo()
   },
 
-  computed: {},
-
   methods: {
     getInfo() {
-      Service.getInfo().then((res) => {
-        if (res.data !== null) {
-          this.ishasWare = true
-          this.warehoseInfo = res.data
-          this.ishasOrgan = res.data.PrentCustList.length > 0 ? true : false
-          this.custItem.PrentId = res.data.Id
-        }
-      })
-    },
-    bulidWarehouse() {
-      this.wareVisible = true
-    },
-    bulidOrgan() {
-      this.oragnVisible = true
+      Service.getInfo()
+        .then((res) => {
+          this.systemDict = res.data.CloudStructure
+          this.orgDict = res.data.CustomerStructure
+          if (res.data.GetCustIn3PartRes !== null) {
+            this.isHasWare = true
+            this.warehouseInfo = res.data.GetCustIn3PartRes
+            this.isHasOrg = res.data.GetCustIn3PartRes.PrentCustList.length > 0 ? true : false
+            this.currentOrg.PrentId = res.data.GetCustIn3PartRes.Id
+
+            // 根据当前系统取对应配置
+            this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
+            this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     oncloseWare() {
       this.wareVisible = false
       this.getInfo()
     },
     oncloseOrgan() {
-      this.oragnVisible = false
-      this.getInfo()
-    },
-    updateOrgan() {
+      this.orgVisible = false
       this.getInfo()
     }
   }
