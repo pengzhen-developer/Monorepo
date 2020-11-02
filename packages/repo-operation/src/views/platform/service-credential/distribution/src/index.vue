@@ -10,30 +10,47 @@
       <PeaceTable ref="table"
                   size="mini"
                   v-bind:page-size="5"
+                  :tableProps="{
+                    pageIndex: 'current',
+                    pageSize: 'size'
+                  }"
                   pagination>
         <el-table-column type="index"
                          width="100px"
                          label="序号"
                          align="center"></el-table-column>
         <el-table-column label="主体名称"
-                         prop="hospitalName"></el-table-column>
+                         prop="name"></el-table-column>
         <el-table-column label="主体属性"
-                         prop="role"></el-table-column>
+                         prop="attributeName"></el-table-column>
         <el-table-column label="Accesskey  ID"
-                         prop="source"></el-table-column>
-        <el-table-column label="AccessKey Secret "
-                         prop="role"></el-table-column>
+                         prop="accessId"></el-table-column>
+        <el-table-column label="AccessKey Secret">
+
+          <template slot-scope="scope">
+            <div class="status-item">
+              <span v-if='scope.row.isHide'>
+                ******
+              </span>
+              <span v-else>
+                {{ scope.row.accessSecret }}
+              </span>
+              <i class="icon el-icon-view eyes"
+                 @click="showAndHid(scope.row)"></i>
+            </div>
+          </template>
+
+        </el-table-column>
         <el-table-column label="创建时间"
-                         prop="role"></el-table-column>
+                         prop="createTime"></el-table-column>
 
         <el-table-column fixed="right"
                          width="150px"
                          label="使用状态">
           <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="toDetail(scope.row)">基本信息</el-button>
-            <el-button type="text"
-                       v-on:click="toService(scope.row)">服务管理</el-button>
+            {{scope.row.enableStatus ? '已启动':'未启动'}}
+            <el-switch v-model="scope.row.enableStatus"
+                       @change="changeStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
       </PeaceTable>
@@ -43,6 +60,7 @@
     <PeaceDialog width="475px"
                  append-to-body
                  v-bind:visible.sync="addMechanismDialog.visible"
+                 :typeData="addMechanismDialog.typeData"
                  title="新增">
       <AddMechanismDialog v-if="addMechanismDialog.visible"
                           v-on:onCancel="addMechanismDialog.visible = false"></AddMechanismDialog>
@@ -63,7 +81,8 @@ export default {
   data() {
     return {
       addMechanismDialog: {
-        visible: false
+        visible: false,
+        typeData: []
       }
     }
   },
@@ -78,17 +97,58 @@ export default {
     get() {
       const fetch = Service.getConfigureList
       const params = {}
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+      const filter = (res) => {
+        for (var i = 0; i < res.data.list.length; i++) {
+          res.data.list[i].isHide = true
+        }
         return res
-      })
+      }
+      this.$refs.table.reloadData({ fetch, params, filter })
     },
 
     addItem() {
+      this.addMechanismDialog.typeData = await Peace.identity.dictionary.getList('sysattribute')
       this.addMechanismDialog.visible = true
+      // const params = {
+      //   type: 'sysattribute'
+      // }
+      // Service.getDictType(params).then((res) => {
+      //   // if (res.data.length > 0) {
+      //   this.addMechanismDialog.typeData = res.data
+      //   this.addMechanismDialog.visible = true
+      //   // } else {
+      //   //   Peace.util.error('缺少服务凭证主体属性类型列表')
+      //   // }
+      // })
+    },
+    showAndHid(row) {
+      debugger
+      row.isHide = !row.isHide
+    },
+    changeStatus(row) {
+      const params = {
+        id: row.id,
+        enableStatus: row.enableStatus
+      }
+      Service.updateStatus(params)
+        .then((res) => {
+          Peace.util.success(res.msg)
+          this.get()
+        })
+        .catch(() => {
+          row.enableStatus = !row.enableStatus
+        })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.status-item {
+  display: flex;
+  align-items: center;
+}
+.eyes {
+  margin-left: 5px;
+}
 </style>

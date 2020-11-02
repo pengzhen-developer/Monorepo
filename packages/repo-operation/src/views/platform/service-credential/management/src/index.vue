@@ -10,26 +10,30 @@
       <PeaceTable ref="table"
                   size="mini"
                   v-bind:page-size="5"
+                  :tableProps="{
+                    pageIndex: 'current',
+                    pageSize: 'size'
+                  }"
                   pagination>
         <el-table-column type="index"
                          width="100px"
                          label="序号"
                          align="center"></el-table-column>
         <el-table-column label="凭证来源"
-                         prop="hospitalName"></el-table-column>
+                         prop="sourceName"></el-table-column>
         <el-table-column label="凭证详情"
-                         prop="role"></el-table-column>
+                         prop="configDetails"></el-table-column>
         <el-table-column label="创建时间"
-                         prop="source"></el-table-column>
+                         prop="createTime"></el-table-column>
 
         <el-table-column fixed="right"
                          width="150px"
                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="toDetail(scope.row)">修改</el-button>
+                       v-on:click="changeItem(scope.row)">修改</el-button>
             <el-button type="text"
-                       v-on:click="toService(scope.row)">删除</el-button>
+                       v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
@@ -39,10 +43,11 @@
     <PeaceDialog width="475px"
                  append-to-body
                  v-bind:visible.sync="addCredentialDialog.visible"
-                 title="新增">
-      <AddCredentialDialog v-if="addCredentialDialog.visible"
-                           v-on:onCancel="addCredentialDialog.visible = false"></AddCredentialDialog>
-      <!-- v-on:onSucess="addDrugSuccess"  -->
+                 :title="addCredentialDialog.title">
+      <AddCredentialDialog :dataInfo="addCredentialDialog.dataInfo"
+                           v-if="addCredentialDialog.visible"
+                           v-on:onCancel="addCredentialDialog.visible = false"
+                           v-on:onSucess="addItemSuccess"></AddCredentialDialog>
 
     </PeaceDialog>
   </div>
@@ -50,6 +55,7 @@
 
 <script>
 import AddCredentialDialog from './components/AddCredentialDialog'
+import Service from './service'
 
 export default {
   name: 'management',
@@ -59,14 +65,47 @@ export default {
   data() {
     return {
       addCredentialDialog: {
-        visible: false
+        visible: false,
+        title: '新增',
+        dataInfo: {}
       }
     }
   },
 
+  mounted() {
+    this.$nextTick().then(() => {
+      this.get()
+    })
+  },
+
   methods: {
+    get() {
+      const fetch = Service.getConfiguretoselfList
+      const params = {}
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        return res
+      })
+    },
     addItem() {
+      this.addCredentialDialog.title = '新增'
+      this.addCredentialDialog.dataInfo = {}
       this.addCredentialDialog.visible = true
+    },
+    addItemSuccess() {
+      this.addCredentialDialog.visible = false
+      this.get()
+    },
+    changeItem(data) {
+      this.addCredentialDialog.title = '修改'
+      this.addCredentialDialog.dataInfo = data
+      this.addCredentialDialog.visible = true
+    },
+    deleteItem(data) {
+      const params = { id: data.id }
+      Service.configuretoselfRemove(params).then((res) => {
+        Peace.util.success(res.msg)
+        this.get()
+      })
     }
   }
 }

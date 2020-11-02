@@ -14,7 +14,7 @@
           <el-option :key="item.label"
                      :label="item.label"
                      :value="item.value"
-                     v-for="item in source.ENUM_MECHANISM"></el-option>
+                     v-for="item in typeData"></el-option>
         </el-select>
       </el-form-item>
 
@@ -22,11 +22,12 @@
         <el-form-item label="主体名称："
                       prop="name2">
           <el-select v-model="mechanism.name2"
+                     filterable
                      placeholder="请选择">
-            <el-option :key="item.value"
-                       :label="item.value"
-                       :value="item.value"
-                       v-for="item in source.ENUM_MECHANISM"></el-option>
+            <el-option :key="item.Name"
+                       :label="item.Name"
+                       :value="item.Name"
+                       v-for="item in custNameList"></el-option>
           </el-select>
         </el-form-item>
       </template>
@@ -51,19 +52,21 @@
 </template>
 
 <script>
-import CONSTANT from '../constant'
+import Service from '../service'
 
 export default {
+  name: 'AddMechanismDialog',
+  props: {
+    typeData: Array
+  },
   data() {
     return {
-      source: {
-        ENUM_MECHANISM: CONSTANT.ENUM_MECHANISM
-      },
       mechanism: {
         mechanismType: '0',
         name: '',
         name2: ''
       },
+      custNameList: [],
       rules: {
         mechanismType: [
           {
@@ -94,7 +97,22 @@ export default {
       return this.mechanism.mechanismType == '0'
     }
   },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.getCustByVoucher()
+    })
+  },
+
   methods: {
+    getCustByVoucher() {
+      const params = {
+        Name: this.mechanism.name2
+      }
+      Service.getCustByVoucher(params).then((res) => {
+        this.custNameList = res.data.list
+      })
+    },
     onCancel() {
       this.$emit('onCancel')
     },
