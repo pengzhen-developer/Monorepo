@@ -44,7 +44,7 @@ export default {
     return {
       // 查询树形菜单
       menuTree(params) {
-        apiPath = `admin/menu/userMenuOfTree`
+        apiPath = `admin/menu/tree`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
       }
