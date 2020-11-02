@@ -198,7 +198,8 @@ export default {
 
       dictItemList: {
         visible: false,
-        dictId: ''
+        dictId: '',
+        type: ''
       },
 
       dictTypeDialog: {
@@ -223,6 +224,7 @@ export default {
         model: {
           id: 0,
           dictId: '',
+          type: '',
           label: '',
           value: '',
           description: '',
@@ -256,9 +258,9 @@ export default {
       this.$refs.dictTypeTable.reloadData({ fetch, params })
     },
     // 查询
-    fetchDictItem(dictId) {
+    fetchDictItem(dictId, type) {
       const fetch = Service.dict().pageItem
-      const params = { dictId: dictId }
+      const params = { dictId: dictId, type: type }
 
       this.$refs.dictItemTable.reloadData({ fetch, params })
     },
@@ -321,18 +323,13 @@ export default {
       })
     },
 
-    showDictItemList(item) {
-      this.dictItemList.visible = true
-      this.dictItemList.dictId = item.id
-
-      this.$nextTick().then(() => this.fetchDictItem(item.id))
-    },
-
     selectDict(row) {
+      console.log(row)
       this.dictItemList.visible = true
       this.dictItemList.dictId = row.id
+      this.dictItemList.type = row.type
 
-      this.$nextTick().then(() => this.fetchDictItem(row.id))
+      this.$nextTick().then(() => this.fetchDictItem(row.id, row.type))
     },
 
     addDictItem() {
@@ -357,6 +354,7 @@ export default {
       this.dictItemDialog.model = {
         id: 0,
         dictId: this.dictItemList.dictId || '',
+        type: this.dictItemList.type || '',
         label: '',
         value: '',
         description: '',
@@ -375,7 +373,7 @@ export default {
           .deleteItem(params)
           .then((res) => {
             Peace.util.success(res.msg)
-            this.fetchDictItem(this.dictItemList.dictId)
+            this.fetchDictItem(this.dictItemList.dictId, this.dictItemList.type)
           })
       })
     },
@@ -389,7 +387,7 @@ export default {
               .then((res) => {
                 Peace.util.success(res.msg)
                 this.closeDictItemDialog()
-                this.fetchDictItem(this.dictItemList.dictId)
+                this.fetchDictItem(this.dictItemList.dictId, this.dictItemList.type)
               })
           } else {
             Service.dict()
@@ -397,7 +395,7 @@ export default {
               .then((res) => {
                 Peace.util.success(res.msg)
                 this.closeDictItemDialog()
-                this.fetchDictItem(this.dictItemList.dictId)
+                this.fetchDictItem(this.dictItemList.dictId, this.dictItemList.type)
               })
           }
         } else {
