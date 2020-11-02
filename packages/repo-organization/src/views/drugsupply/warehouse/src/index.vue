@@ -51,6 +51,7 @@
              v-if="!isHasOrg">暂无机构开户信息</p>
           <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
                    v-bind:orgDict="orgDict"
+                   v-bind:systemCode="warehouseInfo.SystemCode"
                    v-on:onUpdateOrgan="getInfo()"></OrgList>
           <PeaceDialog v-if="wareVisible"
                        width="400px"
@@ -66,6 +67,7 @@
                        title="新增机构">
             <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
                       v-bind:data="currentOrg"
+                      v-bind:systemCode="warehouseInfo.systemCode"
                       v-bind:config="currentOrgForm"></AddOrgan>
           </PeaceDialog>
         </div>

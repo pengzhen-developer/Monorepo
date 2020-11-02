@@ -11,7 +11,7 @@
           </div>
 
           <div class="title-wrap"
-               v-for="orgDictItem in orgDict.find(orgDictItem => orgDictItem.SystemCode === item.SystemCode)"
+               v-for="orgDictItem in orgConfig"
                :key="orgDictItem.Label">
             <p class="title-key">{{orgDictItem.Label}}：</p>
             <p class="title-value">{{item[orgDictItem.Name]}}</p>
@@ -23,9 +23,15 @@
           </div>
         </div>
         <div class="child-tips">开户详情</div>
-        <img src="../assets/img/zyy-icon-xiugai.png"
-             class="zyy-icon-xiugai"
-             v-on:click="updateOrgan(item)" />
+        <div class="child-operate">
+          <el-button type="text"
+                     icon="el-icon-edit"
+                     v-on:click="updateOrg(item)">修改</el-button>
+          <span class="split-line">|</span>
+          <el-button type="text"
+                     icon="el-icon-delete"
+                     v-on:click="deleteOrg(item)">删除</el-button>
+        </div>
       </div>
     </div>
     <PeaceDialog v-if="orgVisible"
@@ -50,6 +56,9 @@ export default {
     },
     orgDict: {
       type: Array
+    },
+    systemCode: {
+      type: String
     }
   },
   components: {
@@ -71,24 +80,31 @@ export default {
     }
   },
 
+  computed: {
+    orgConfig() {
+      let config = this.orgDict.find((item) => item.SystemCode === this.systemCode)
+      return config ? config.item : []
+    }
+  },
+
   methods: {
-    updateOrgan(item) {
+    updateOrg(item) {
       this.orgItem = item
-      this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.orgItem.SystemCode)
+      this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.systemCode)
       this.orgVisible = true
     },
     onCloseOrgan() {
       this.orgVisible = false
       this.$emit('onUpdateOrgan')
     },
-    deleteWarehouseOrg(item) {
+    deleteOrg(item) {
       this.$confirm('确定删除此机构？', '提示', { closeOnClickModal: false })
         .then(() => {
           const params = {
             Id: item.Id
           }
-          Service.deleteWarehouseOrg(params).then((res) => {
-            Peace.util.success(res.msg)
+          Service.deleteWarehouseOrg(params).then(() => {
+            Peace.util.success('删除成功')
             this.$emit('onUpdateOrgan')
           })
         })
@@ -146,10 +162,15 @@ p {
   left: 0;
   top: 10px;
 }
-.zyy-icon-xiugai {
+
+.child-operate {
   position: absolute;
-  right: 17px;
-  top: 11px;
-  cursor: pointer;
+  top: 14px;
+  right: 16px;
+  .split-line {
+    padding: 0 12px;
+    text-align: center;
+    color: var(--q-color-primary);
+  }
 }
 </style>

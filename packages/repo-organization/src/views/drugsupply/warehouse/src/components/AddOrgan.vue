@@ -170,7 +170,7 @@ export default {
         if (params.Id == 0) {
           Service.InsertCircconfig(params)
             .then(() => {
-              Peace.util.alert('新建成功')
+              Peace.util.success('新建成功')
               this.cancelDialog()
             })
             .finally(() => {
@@ -179,7 +179,7 @@ export default {
         } else {
           Service.updateCircconfig(params)
             .then(() => {
-              Peace.util.alert('修改成功')
+              Peace.util.success('修改成功')
               this.cancelDialog()
             })
             .finally(() => {
