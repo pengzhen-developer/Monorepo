@@ -4,9 +4,9 @@ export default {
     const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
-      //获取用户byID
-      get(params) {
-        apiPath = `admin/user/${params.id}`
+      //获取用户基本信息
+      get() {
+        apiPath = `admin/user/getUserInfo`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi)
       },

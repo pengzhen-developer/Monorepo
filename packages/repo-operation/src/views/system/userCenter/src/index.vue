@@ -111,12 +111,12 @@
 import Service from './service'
 
 export default {
+  name: 'UserCenter',
   data() {
     return {
       model: {
         userName: '',
-        realName: '',
-        sectorName: ''
+        realName: ''
       },
 
       dialog: {
@@ -128,7 +128,8 @@ export default {
         model: {
           password: '',
           newpassword1: '',
-          clientId: process.env.VUE_APP_AUTH_CLIENT_ID
+          clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
+          userId: ''
         },
 
         rules: {
@@ -158,23 +159,19 @@ export default {
       this._$data = Peace.util.deepClone(this.$data)
     },
 
-    async getPersonBaseInfo() {
-      const params = {
-        id: await Peace.identity.auth.getAccountInfo()?.id
-      }
-
+    getPersonBaseInfo() {
       Service.user()
-        .get(params)
+        .get()
         .then((res) => {
           const data = res.data
           this.model.userName = data.username
           this.model.realName = data.name
+          this._$data.dialog.model.userId = data.id
         })
     },
 
     openDialog() {
       this.dialog.visible = true
-
       this.dialog.model = Peace.util.deepClone(this._$data.dialog.model)
     },
 

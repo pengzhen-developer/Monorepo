@@ -131,8 +131,8 @@ export default {
     signOut() {
       Peace.identity.auth.logout().then(() => {
         Util.user.removeUserInfo()
-
-        this.$router.push({ name: 'Login' }).then(() => window.location.reload())
+        this.$router.replace({ name: 'Login' })
+        // this.$router.push({ name: 'Login' }).then(() => window.location.reload())
       })
     }
   }
