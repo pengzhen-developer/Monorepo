@@ -82,6 +82,18 @@
 import peace from '@src/library'
 
 import TheRecipe from '@src/views/components/TheRecipe'
+import { Dialog } from 'vant'
+const ENUM = {
+  //处方购药状态 0."已预审",1."待审核", 2."质疑中", 3."未通过", 4."已作废",5."已通过"
+  ORDER_DRUG_STATUS: {
+    已预审: 0,
+    待审核: 1,
+    质疑中: 2,
+    未通过: 3,
+    已作废: 4,
+    已通过: 5
+  }
+}
 
 export default {
   components: {
@@ -105,7 +117,9 @@ export default {
       recipeDetail: {
         visible: false,
         data: {}
-      }
+      },
+
+      ENUM
     }
   },
 
@@ -137,6 +151,14 @@ export default {
     },
 
     goprescripDetailPage(item) {
+      if (item.orderDrugStatuskey == this.ENUM.ORDER_DRUG_STATUS.已作废) {
+        return Dialog.confirm({
+          title: '温馨提示',
+          message: '该处方已作废被回收，请查看其他处方',
+          onfirmButtonText: '确定',
+          showCancelButton: false
+        })
+      }
       const params = peace.util.encode({
         prescribeId: item.prescribeId
       })
