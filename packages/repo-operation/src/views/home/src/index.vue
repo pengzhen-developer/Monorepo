@@ -27,7 +27,6 @@ import OrderCountChart from './components/OrderCountChart'
 import DataOverview from './components/DataOverview'
 import WareHouseMap from './components/WareHouseMap'
 
-import Axios from 'axios'
 import Service from './service/index'
 import OtherSerice from './service/data'
 import CONSTANT from './constant'
@@ -70,29 +69,13 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let httpMap = [
-        this.getTodoList(),
-        this.getPreCountOfSevenDays(),
-        this.get7DaysOrderNum(),
-        this.getOverview(),
-        this.getMedicalNum(),
-        this.getPrescriptionCountOfAll(),
-        this.getDrugStoreList()
-      ]
-      Axios.all(httpMap)
-        .then(() => {
-          //warehouse 云仓-智药云统计；store 门店-处方平台统计 ；故  drugSupply 药品供应机构 = warehouse + store
-          this.overViewData.drugSupply = this.overViewData.warehouse + this.overViewData.store
-        })
-        .catch((err) => {
-          if (err?.data?.code === 201) {
-            Peace.util.warning(err.data.msg)
-          } else if (err?.data?.code === 403) {
-            this.$router.push('/401')
-          } else {
-            Peace.util.warning('服务器异常，请稍后再试')
-          }
-        })
+      this.getTodoList()
+      this.getPreCountOfSevenDays()
+      this.get7DaysOrderNum()
+      this.getOverview()
+      this.getMedicalNum()
+      this.getPrescriptionCountOfAll()
+      this.getDrugStoreList()
     })
   },
 

@@ -128,11 +128,8 @@ import OrderPriceChart from './components/OrderPriceChart'
 import ScreenGoodsRanking from './components/ScreenGoodsRanking'
 import OrderSalesChart from './components/OrderSalesChart'
 
-import Axios from 'axios'
 import Service from './service/data'
 import CONSTANT from './constant'
-
-import LibraryUtil from '@src/util'
 
 export default {
   name: 'data-screen',
@@ -208,30 +205,14 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let httpMap = [
-        this.getPrescriptionCountOfAll(),
-        this.getDrugCount(),
-        this.getMechanismCount(),
-        this.getMapData(),
-        this.getData(),
-        this.getPreCountOfSevenDays(),
-        this.getPreSortOfSevenDays(),
-        this.getPreDiagnosisKeyOfSevenDays()
-      ]
-      Axios.all(httpMap).catch((err) => {
-        debugger
-        if (err.data.code === 201) {
-          Peace.util.warning(err.data.msg)
-        } else if (err.data.code === 403) {
-          Peace.util.warning(err.data.msg)
-          LibraryUtil.user.removeUserInfo()
-          setTimeout(() => {
-            LibraryUtil.user.replaceToLogin()
-          }, 1000)
-        } else {
-          Peace.util.warning('服务器异常，请稍后再试')
-        }
-      })
+      this.getPrescriptionCountOfAll()
+      this.getDrugCount()
+      this.getMechanismCount()
+      this.getMapData()
+      this.getData()
+      this.getPreCountOfSevenDays()
+      this.getPreSortOfSevenDays()
+      this.getPreDiagnosisKeyOfSevenDays()
     })
   },
   methods: {
