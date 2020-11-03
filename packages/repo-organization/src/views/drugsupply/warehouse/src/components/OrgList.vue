@@ -101,7 +101,7 @@ export default {
       this.$confirm('确定删除此机构？', '提示', { closeOnClickModal: false })
         .then(() => {
           const params = {
-            Id: item.Id
+            ID: item.Id
           }
           Service.deleteWarehouseOrg(params).then(() => {
             Peace.util.success('删除成功')
@@ -169,8 +169,16 @@ p {
   right: 16px;
   .split-line {
     padding: 0 12px;
-    text-align: center;
+    font-size: 16px;
     color: var(--q-color-primary);
+    text-align: center;
   }
+}
+
+::v-deep .el-icon-edit {
+  font-size: 14px;
+}
+::v-deep .el-icon-delete {
+  font-size: 14px;
 }
 </style>

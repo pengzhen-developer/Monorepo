@@ -1,53 +1,33 @@
 <template>
-  <div class="layout-route">
-    <div class="q-pa-lg bg-white">
-      <PeaceTable :data="tableData"
-                  style="width: 100%"
-                  max-height="600">
-        <el-table-column fixed
-                         prop="serviceName"
-                         width="300"
-                         align="center"
-                         label="服务名称">
-        </el-table-column>
-        <el-table-column prop="accessKeyId"
-                         align="center"
-                         label="Accesskey  ID">
-        </el-table-column>
-        <el-table-column label="AccessKey Secret "
-                         align="center">
-          <template slot-scope="scope">
-            <div class="status-item">
-              <span v-if='scope.row.isHide'>
-                ******
-              </span>
-              <span v-else>
-                {{ scope.row.accesskeySecret }}
-              </span>
-              <i class="icon el-icon-view eyes"
-                 @click="showAndHid(scope.row)"></i>
-            </div>
-
-          </template>
-        </el-table-column>
-        <el-table-column prop="createdTime"
-                         align="center"
-                         width="200"
-                         label="创建时间">
-        </el-table-column>
-        <el-table-column fixed="right"
-                         label="操作"
-                         align="center"
-                         width="150">
-          <template slot-scope="scope">
-            <el-button @click.native.prevent="redText(scope.row)"
-                       type="text"
-                       size="small">
-              开发文档
-            </el-button>
-          </template>
-        </el-table-column>
-      </PeaceTable>
+  <div class="layout-route flex"
+       v-loading="loading">
+    <div v-if="detail.accessId"
+         class="q-pa-lg full-width bg-white">
+      <div class="info-item flex justify-start items-center">
+        <div class="info-label">Accesskey ID：</div>
+        <div class="info-value">{{detail.accessId}}</div>
+      </div>
+      <div class="info-item flex justify-start items-center">
+        <div class="info-label">AccessKey Secret ：</div>
+        <div class="info-value flex justify-start items-center">
+          <span v-if="isHide">
+            ******
+          </span>
+          <span v-else>
+            {{ detail.accessSecret }}
+          </span>
+          <i class="icon el-icon-view eyes"
+             @click="showAndHid()"></i>
+        </div>
+      </div>
+      <div class="info-item flex justify-start items-center">
+        <div class="info-label">创建时间：</div>
+        <div class="info-value">{{detail.createTime}}</div>
+      </div>
+    </div>
+    <div v-else
+         class="q-pa-lg full-width bg-white flex justify-center items-start">
+      <div class="q-pa-lg text-subtitle1">暂无数据</div>
     </div>
   </div>
 
@@ -61,45 +41,57 @@ export default {
 
   data() {
     return {
-      tableData: []
+      loading: false,
+      detail: {},
+      isHide: true
     }
   },
 
   mounted() {
     this.$nextTick().then(() => {
-      this.getMyCertificationList()
+      this.getCertification()
     })
   },
 
   methods: {
-    getMyCertificationList() {
-      Service.getMyCertificationList().then((res) => {
-        const tmp = res.data.list
-        for (var i = 0; i < tmp.length; i++) {
-          tmp[i].isHide = true
-        }
-        this.tableData = tmp
-      })
+    getCertification() {
+      this.loading = true
+      Service.getCertification()
+        .then((res) => {
+          this.detail = res.data || {}
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
 
-    redText(row) {
-      window.open(row.pdfUrl)
-    },
-
-    showAndHid(row) {
-      row.isHide = !row.isHide
+    showAndHid() {
+      this.isHide = !this.isHide
     }
   }
 }
 </script>
 
-<style scoped>
-.status-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+<style lang="scss" scoped>
+.info {
+  &-item {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    line-height: 24px;
+    margin-bottom: 20px;
+  }
+  &-label {
+    opacity: 0.85;
+  }
+  &-value {
+    opacity: 0.65;
+    margin-left: 8px;
+  }
 }
 .eyes {
-  margin-left: 5px;
+  margin-left: 12px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

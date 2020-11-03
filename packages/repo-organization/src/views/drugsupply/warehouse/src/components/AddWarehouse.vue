@@ -16,7 +16,6 @@
                       prop="SystemCode">
           <el-select v-model="model.SystemCode"
                      @change="selectSystem"
-                     :disabled="model.PrentCustList.length > 0"
                      clearable
                      placeholder="请选择"
                      style="width:100%;">
@@ -168,6 +167,12 @@ export default {
 
         const params = Peace.util.deepClone(this.model)
         if (this.data?.Id) {
+          if (params.SystemCode != this.data.SystemCode && this.data.PrentCustList.length > 0) {
+            Peace.util.warning('已创建开户机构的云仓不支持修改系统')
+            this.saveing = false
+            return false
+          }
+
           Service.updateWarehouseInfo(params)
             .then(() => {
               Peace.util.success('修改云仓信息成功')
