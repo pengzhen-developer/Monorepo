@@ -290,7 +290,7 @@
     <template v-if="internalData&&
                internalData.inquiryInfo">
       <div class="footer"
-           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
+           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊&&canShowCancelButton">
         <div class="footer-btn wait-btn"
              @click="showCancellPop(internalData)">
           {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预约':'取消订单'}}</div>
@@ -320,8 +320,10 @@
         </div>
         <div class="pay-item">
           <div class="pay-btn btn-cancel"
+               v-if="canShowCancelButton"
                @click="showCancellPop(internalData)">取消订单</div>
           <div class="pay-btn btn-pay"
+               :class="{'flex-1':!canShowCancelButton}"
                @click="goToPay(internalData)">立即支付</div>
         </div>
       </div>
@@ -329,8 +331,10 @@
       <div class="report fixedBottom"
            v-if="canShowReportBottom">
         <van-button class="cancel-btn"
+                    v-if="canShowCancelButton"
                     @click="showCancellPop(internalData)">取消订单</van-button>
         <van-button class="report-btn"
+                    :class="{'flex-1':!canShowCancelButton}"
                     @click="report(internalData)"
                     :disabled="internalData.inquiryInfo.reportButton!=1">报到</van-button>
         <div class="report-tip"
@@ -399,6 +403,11 @@ const ENUM = {
     已退诊: 4,
     已完成: 5,
     已取消: 6
+  },
+  /** isShowCancelButton 0不显示1显示 */
+  CANCEL_BUTTON_STATUS: {
+    不显示: 0,
+    显示: 1
   }
 }
 export default {
@@ -484,6 +493,9 @@ export default {
     },
     canShowYibao() {
       return this.internalData?.orderInfo?.medicalMoney
+    },
+    canShowCancelButton() {
+      return this.internalData?.orderInfo?.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示
     },
     canShowInfo() {
       return (
@@ -770,6 +782,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flex-1 {
+  flex: 1;
+}
 .case-card {
   display: flex;
 

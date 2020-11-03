@@ -333,6 +333,11 @@ const ENUM = {
     分院: 40,
     云药房: 50,
     对接机构: 60
+  },
+  /** isShowCancelButton 0不显示1显示 */
+  CANCEL_BUTTON_STATUS: {
+    不显示: 0,
+    显示: 1
   }
 }
 
@@ -400,7 +405,7 @@ export default {
     canShowCancel() {
       return (
         this.order &&
-        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
           this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
@@ -411,7 +416,7 @@ export default {
     canShowCancelTop() {
       return (
         this.order &&
-        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
+        this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
         (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
           (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) &&
         this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
