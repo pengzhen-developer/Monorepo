@@ -132,8 +132,6 @@ import Axios from 'axios'
 import Service from '../service/data'
 import CONSTANT from '../constant'
 
-import LibraryUtil from '@src/util'
-
 export default {
   name: 'data-screen',
   components: {
@@ -218,19 +216,7 @@ export default {
         this.getPreSortOfSevenDays(),
         this.getPreDiagnosisKeyOfSevenDays()
       ]
-      Axios.all(httpMap).catch((err) => {
-        if (err.data.code === 201) {
-          Peace.util.warning(err.data.msg)
-        } else if (err.data.code === 403) {
-          Peace.util.warning(err.data.msg)
-          LibraryUtil.user.removeUserInfo()
-          setTimeout(() => {
-            LibraryUtil.user.replaceToLogin()
-          }, 1000)
-        } else {
-          Peace.util.warning('服务器异常，请稍后再试')
-        }
-      })
+      Axios.all(httpMap)
     })
   },
   methods: {

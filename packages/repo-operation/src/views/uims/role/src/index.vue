@@ -13,7 +13,7 @@
           <el-input v-model="model.roleName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button type="primary"
                      v-on:click="get">查询</el-button>
         </el-form-item>

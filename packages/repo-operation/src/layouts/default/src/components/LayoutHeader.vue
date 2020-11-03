@@ -47,7 +47,7 @@
 
         <!-- 用户名称 -->
         <span class="q-mr-sm">
-          {{ user.username }}
+          {{ user.name || user.username }}
         </span>
 
         <!-- 用户控制 -->

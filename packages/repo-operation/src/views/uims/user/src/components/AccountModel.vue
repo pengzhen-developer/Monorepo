@@ -50,7 +50,7 @@
           <el-radio label="1">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button type="primary"
                    v-bind:loading="isLoading"
                    v-on:click="submit">提 交</el-button>

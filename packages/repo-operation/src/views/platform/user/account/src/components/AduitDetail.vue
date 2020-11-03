@@ -44,7 +44,7 @@
                       v-model="model.reasonsFailure"></el-input>
           </el-form-item>
 
-          <el-form-item label=" ">
+          <el-form-item label="">
             <el-button v-on:click="visible = false">取 消</el-button>
             <el-button type="primary"
                        v-bind:loading="isLoading"

@@ -4,14 +4,19 @@
  * @param {string} [referer=''] 重定向地址
  * @returns
  */
-export const replaceToReferer = (referer) => {
-  if (Peace.validate.isUrl(referer)) {
-    window.location.href = referer
-  } else {
-    window.location.href = process.env.VUE_APP_RELEASE_FLODER_PATH
+export const redirectToReferer = (type = 'home') => {
+  switch (type) {
+    case 'home':
+      window.location.href = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH
+      break
+    case 'login':
+      window.location.href = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH + 'login'
+      break
+    default:
+      break
   }
 }
 
 export default {
-  replaceToReferer
+  redirectToReferer
 }

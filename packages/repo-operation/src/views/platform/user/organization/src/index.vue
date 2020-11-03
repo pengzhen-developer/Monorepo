@@ -11,7 +11,7 @@
 
           <el-form-item>
             <template slot="label">
-              <span class="em-6-justify">机构名称</span>
+              <span class="em-4-justify">机构名称</span>
               <span>：</span>
             </template>
             <el-input v-model.trim="model.hospitalName"
@@ -20,7 +20,7 @@
 
           <el-form-item>
             <template slot="label">
-              <span class="em-6-justify">机构类型</span>
+              <span class="em-4-justify">机构类型</span>
               <span>：</span>
             </template>
 
@@ -36,7 +36,7 @@
 
           <el-form-item>
             <template slot="label">
-              <span class="em-6-justify">对接系统</span>
+              <span class="em-4-justify">对接系统</span>
               <span>：</span>
             </template>
 
@@ -50,6 +50,8 @@
             </el-select>
           </el-form-item>
 
+          <br>
+
           <el-form-item>
 
             <template slot="label">
@@ -57,7 +59,7 @@
               <span>：</span>
             </template>
 
-            <el-select style="width: 510px;"
+            <el-select style="width: 515px;"
                        clearable
                        multiple
                        v-model.trim="model.serviceType">
