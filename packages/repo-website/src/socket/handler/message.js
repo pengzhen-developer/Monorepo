@@ -10,7 +10,7 @@ const strategy = {
    */
   ['logout']: (/** message */) => {
     Util.user.removeUserInfo()
-    Util.referer.redirectToReferer('login&clear')
+    Util.referer.redirectToReferer('home')
   },
 
   /**
@@ -22,7 +22,7 @@ const strategy = {
     Peace.util.warning('您的账号已被禁用，请联系管理员')
 
     setTimeout(() => {
-      Util.referer.redirectToReferer('login&clear')
+      Util.referer.redirectToReferer('home')
     }, 3000)
   },
 
@@ -36,7 +36,7 @@ const strategy = {
     Peace.util.warning('您的登录状态已失效，请重新登录')
 
     setTimeout(() => {
-      Util.referer.redirectToReferer('login&clear')
+      Util.referer.redirectToReferer('home')
     }, 3000)
   }
 }
