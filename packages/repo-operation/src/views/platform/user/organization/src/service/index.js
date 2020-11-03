@@ -209,5 +209,43 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取对接配置
+   *
+   * @param {*} params
+   */
+  getDockingConfig(params) {
+    const isMock = false
+
+    const apiPath = `zyy-psd/docking/details/${params.custCode}`
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 保存对接配置
+   *
+   * @param {*} params
+   */
+  saveDockingConfig(params) {
+    const isMock = false
+
+    const apiPath = `zyy-psd/docking/save`
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

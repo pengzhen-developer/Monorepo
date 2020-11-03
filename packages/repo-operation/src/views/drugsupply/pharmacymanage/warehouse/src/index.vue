@@ -5,6 +5,7 @@
       <div v-if="visible"
            class="bg-white full-height q-pa-lg">
         <el-button type="primary"
+                   plain
                    class="q-mb-lg"
                    v-on:click="back"
                    style="margin-bottom:24px">
@@ -21,12 +22,19 @@
           <div class="item-child">
             <p class="child-key">云仓名称</p>
             <p>：</p>
-            <p class="child-value">{{warehoseInfo.Name}}</p>
+            <p class="child-value">{{warehouseInfo.Name}}</p>
           </div>
           <div class="item-child">
-            <p class="child-key">branchid</p>
+            <p class="child-key">系统名称</p>
             <p>：</p>
-            <p class="child-value">{{warehoseInfo.BranchId}}</p>
+            <p class="child-value">{{currentSystemForm.Name}}</p>
+          </div>
+          <div class="item-child"
+               v-for="item in currentSystemForm.item"
+               :key="item.Label">
+            <p class="child-key">{{item.Label}}</p>
+            <p>：</p>
+            <p class="child-value">{{warehouseInfo[item.Name]}}</p>
           </div>
         </div>
         <div class="line"></div>
@@ -35,7 +43,11 @@
             <div class="title-left"></div>
             <p class="title">机构开户信息</p>
           </div>
-          <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"></AccountDetail>
+          <p class="noInfo"
+             v-if="warehouseInfo.PrentCustList && warehouseInfo.PrentCustList.length === 0">暂无机构开户信息</p>
+          <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
+                   v-bind:orgDict="orgDict"
+                   v-bind:systemCode="warehouseInfo.SystemCode"></OrgList>
         </div>
       </div>
 
@@ -51,19 +63,39 @@
 <script>
 import Service from './service/index'
 import WarehouseList from './components/WarehouseList'
-import AccountDetail from './components/AccountDetail'
+import OrgList from './components/OrgList'
 
 export default {
   name: 'Warehouse',
   components: {
     WarehouseList,
-    AccountDetail
+    OrgList
   },
 
   data() {
     return {
       visible: false,
-      warehoseInfo: {}
+      // 云仓详情
+      warehouseInfo: {
+        Id: '', // 云仓唯一标识
+        Name: '', // 名称
+        SystemCode: '', // 系统编码
+        Type: '', // 系统类型 0 ERP  2 九州云仓
+        CodeIn3PartPlatform: '', // 物流中心ID  / branchid
+        IDIn3PartPlatform: '', // 运营方ID
+        PrentCustList: [] // 机构数据信息
+      },
+      // 云仓-系统 字典 （返回表单配置）
+      systemDict: [],
+      // 云仓-系统 对应机构 字典（返回表单配置）
+      orgDict: [],
+      // 当前云仓使用的表单配置
+      currentSystemForm: {
+        Code: '',
+        Name: '',
+        Type: '',
+        item: []
+      }
     }
   },
 
@@ -72,13 +104,20 @@ export default {
   methods: {
     goDetail(code) {
       this.visible = true
-      Service.getDetail({ code: code }).then((res) => {
-        this.warehoseInfo = res.data
+      Service.getDetail({ Code: code }).then((res) => {
+        this.systemDict = res.data.CloudStructure
+        this.orgDict = res.data.CustomerStructure
+        if (res.data.GetCustIn3PartRes !== null) {
+          this.warehouseInfo = res.data.GetCustIn3PartRes
+
+          // 根据当前系统取对应配置
+          this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
+        }
       })
     },
     back() {
       this.visible = false
-      this.warehoseInfo = {}
+      this.warehouseInfo = {}
     }
   }
 }
@@ -116,6 +155,14 @@ p {
   height: 24px;
   font-size: 16px;
 }
+.noInfo {
+  height: 22px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 22px;
+  margin-top: 10px;
+}
 .line {
   width: 100%;
   margin: 30px 0 30px 0;
@@ -130,7 +177,6 @@ p {
   margin-bottom: 0;
 }
 .child-key {
-  width: 4em;
   font-size: 14px;
   color: var(--q-color-grey-333);
   text-align: justify;

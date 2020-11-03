@@ -9,13 +9,11 @@
             <p class="title-key">开户机构：</p>
             <p class="title-value">{{item.Name}}</p>
           </div>
-          <div class="title-wrap">
-            <p class="title-key">内码（custid）：</p>
-            <p class="title-value">{{item.IDIn3PartPlatform}}</p>
-          </div>
-          <div class="title-wrap">
-            <p class="title-key">编码（custno）：</p>
-            <p class="title-value">{{item.CodeIn3PartPlatform}}</p>
+          <div class="title-wrap"
+               v-for="orgDictItem in orgConfig"
+               :key="orgDictItem.Label">
+            <p class="title-key">{{orgDictItem.Label}}：</p>
+            <p class="title-value">{{item[orgDictItem.Name]}}</p>
           </div>
           <div class="title-wrap">
             <p class="title-key">使用状态：</p>
@@ -31,9 +29,16 @@
 <script>
 export default {
   props: {
-    prentCustList: Array
+    prentCustList: {
+      type: Array
+    },
+    orgDict: {
+      type: Array
+    },
+    systemCode: {
+      type: String
+    }
   },
-  components: {},
 
   data() {
     return {}
@@ -41,7 +46,12 @@ export default {
 
   created() {},
 
-  computed: {},
+  computed: {
+    orgConfig() {
+      let config = this.orgDict.find((item) => item.SystemCode === this.systemCode)
+      return config ? config.item : []
+    }
+  },
 
   methods: {}
 }

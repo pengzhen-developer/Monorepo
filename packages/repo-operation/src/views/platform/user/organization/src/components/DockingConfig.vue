@@ -13,11 +13,11 @@
           <div class="flex">
             <el-select class="col"
                        clearable
-                       v-model.trim="model.DockingSystem">
-              <el-option v-for="item in source.DockingSystem"
-                         v-bind:key="item.id"
-                         v-bind:label="item.name"
-                         v-bind:value="item.id"></el-option>
+                       v-model.trim="model.sysCode">
+              <el-option v-for="item in dockingSystemDict"
+                         v-bind:key="item.value"
+                         v-bind:label="item.label"
+                         v-bind:value="item.value"></el-option>
             </el-select>
           </div>
         </el-form-item>
@@ -27,11 +27,11 @@
           <div class="flex">
             <el-select class="col"
                        clearable
-                       v-model.trim="model.SystemAttribute">
-              <el-option v-for="item in source.SystemAttribute"
-                         v-bind:key="item.id"
-                         v-bind:label="item.name"
-                         v-bind:value="item.id"></el-option>
+                       v-model.trim="model.sysAttributeCode">
+              <el-option v-for="item in systemAttributeDict"
+                         v-bind:key="item.value"
+                         v-bind:label="item.label"
+                         v-bind:value="item.value"></el-option>
             </el-select>
           </div>
         </el-form-item>
@@ -54,40 +54,47 @@
 <script>
 import Service from '../service/index'
 
+const DEFAULT_MODEL = {
+  custCode: '', // 机构编码
+  sysAttributeCode: '', // 属性编码
+  sysAttributeName: '', // 属性名称
+  sysCode: '', // 系统编码
+  sysName: '' // 系统名称
+}
+
 export default {
   props: {},
 
   data() {
     return {
-      model: {
-        id: '',
-        DockingSystem: '',
-        SystemAttribute: ''
-      },
+      model: DEFAULT_MODEL,
 
       rules: {
-        DockingSystem: [{ required: true, message: '请选择对接系统', trigger: 'change' }],
-        SystemAttribute: [{ required: true, message: '请选择系统属性', trigger: 'change' }]
+        sysCode: [{ required: true, message: '请选择对接系统', trigger: 'change' }],
+        sysAttributeCode: [{ required: true, message: '请选择系统属性', trigger: 'change' }]
       },
 
-      source: {
-        DockingSystem: [],
-        SystemAttribute: []
-      }
+      // 对接系统 字典
+      dockingSystemDict: [],
+      // 系统属性 字典
+      systemAttributeDict: []
     }
   },
 
-  created() {},
+  async created() {
+    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysattribute')
+    this.systemAttributeDict = await Peace.identity.dictionary.getList('sysattribute')
+  },
 
   methods: {
-    init(id) {
-      this.model.id = id || 0
+    init(custCode) {
+      this.model.custCode = custCode
       this.$nextTick(() => {
         this.$refs.form.resetFields()
 
-        if (this.model.id) {
-          Service.getOrganizationInfo({ id: this.model.id }).then((res) => {
-            this.model = res.data
+        if (this.model.custCode) {
+          Service.getDockingConfig({ custCode: this.model.custCode }).then((res) => {
+            this.model = res.data ? res.data : DEFAULT_MODEL
           })
         }
       })
@@ -96,9 +103,8 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          const request = Peace.validate.isEmpty(this.model.id) ? Service.addUseAccount : Service.editUseAccount
           const params = this.model
-          request(params).then((res) => {
+          Service.saveDockingConfig(params).then((res) => {
             Peace.util.success(res.msg)
             this.$emit('close')
             this.$emit('refresh')

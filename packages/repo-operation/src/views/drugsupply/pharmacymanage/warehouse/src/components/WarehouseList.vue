@@ -17,7 +17,7 @@
         <el-form-item label="启用状态：">
           <el-select clearable
                      v-model.trim="model.EnableStatus"
-                     placeholder="请输入">
+                     placeholder="请选择">
             <el-option v-for="(value,label) in source.ORGANIZATION_STATUS"
                        :key="value"
                        :label="label"

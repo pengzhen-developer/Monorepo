@@ -1,22 +1,26 @@
 <template>
-  <div>
-    <div class="content-item">
+  <div v-loading="isLoading">
+    <div v-if="operateData.Shipping !== 0"
+         class="content-item">
       <div class="item-title">
         <div class="title-left"></div>
         <p class="title ">配送服务</p>
       </div>
       <div class="item-content">
-        <div class="item-child">
+        <div v-if="operateData.Shipping === 1"
+             class="item-child">
           <i class="el-icon-success"></i>
           <div class="item-text-grey">免费配送</div>
         </div>
-        <div class="item-child">
+        <div v-if="operateData.Shipping === 2"
+             class="item-child">
           <i class="el-icon-success"></i>
-          <div class="item-text-grey">收费配送，配送费<span class="item-text-primary">10</span>元</div>
+          <div class="item-text-grey">收费配送，配送费<span class="item-text-primary">{{operateData.ShippingFee}}</span>元</div>
         </div>
-        <div class="item-child">
+        <div v-if="operateData.Shipping === 3"
+             class="item-child">
           <i class="el-icon-success"></i>
-          <div class="item-text-grey">满<span class="item-text-primary">10</span>元免配送费，否则收配送费<span class="item-text-primary">10</span>元</div>
+          <div class="item-text-grey">满<span class="item-text-primary">{{operateData.ShippingFull}}</span>元免配送费，否则收配送费<span class="item-text-primary">{{operateData.ShippingFeeByFull}}</span>元</div>
         </div>
       </div>
     </div>
@@ -29,13 +33,15 @@
         <p class="title">优惠活动</p>
       </div>
       <div class="item-content">
-        <div class="item-child">
+        <div v-if="operateData.Promotions === 0"
+             class="item-child">
           <i class="el-icon-success"></i>
           <div class="item-text-grey">没有优惠活动</div>
         </div>
-        <div class="item-child">
+        <div v-if="operateData.Promotions === 1"
+             class="item-child">
           <i class="el-icon-success"></i>
-          <div class="item-text-grey">满减活动，满<span class="item-text-primary">10</span>元减<span class="item-text-primary">10</span>元</div>
+          <div class="item-text-grey">满减活动，满<span class="item-text-primary">{{operateData.PromotionsFull}}</span>元减<span class="item-text-primary">{{operateData.PromotionsCut}}</span>元</div>
         </div>
       </div>
     </div>
@@ -49,18 +55,11 @@
       </div>
       <div class="item-content">
         <div class="item-child">
-          <el-tag class="item-tag"
-                  type="info"
-                  effect="plain">政府监管</el-tag>
-          <el-tag class="item-tag item-tag-primary"
-                  type=""
-                  effect="light">正品保证</el-tag>
-          <el-tag class="item-tag"
-                  type="info"
-                  effect="plain">到店医保</el-tag>
-          <el-tag class="item-tag"
-                  type="info"
-                  effect="plain">到店有礼</el-tag>
+          <el-tag v-for="item in tagList"
+                  :key="item"
+                  :class="{'item-tag': true, 'item-tag-primary': operateData.Tags.includes(item)}"
+                  :type="operateData.Tags.includes(item) ? '':'info'"
+                  :effect="operateData.Tags.includes(item) ? 'light':'plain'">{{item}}</el-tag>
         </div>
       </div>
     </div>
@@ -72,23 +71,25 @@
 import Service from '../service'
 export default {
   props: {
-    data: String
+    data: {
+      type: [String, Number]
+    }
   },
   data() {
     return {
-      operateData: {},
-      DistributSelfList: [{ code: 0, name: '自提' }],
-      DistributionList: [{ code: 1, name: '配送' }],
-      DistributSelfMode: [],
-      DistributMode: [],
-      PayselfList: [
-        { code: 4, name: '在线支付' },
-        { code: 2, name: '到店支付' }
-      ],
-      PayList: [
-        { code: 1, name: '在线支付' },
-        { code: 3, name: '货到付款' }
-      ]
+      operateData: {
+        ID: 0,
+        Shipping: '', // 配送方式 0没有方式 1 免费配送 2 收费  3 满xx元免费配送，收费xx元
+        Promotions: '', // 优惠活动 0没有优惠活动  1满减活动
+        ShippingFull: '', // 满多少元
+        ShippingFee: '', // 配送费
+        PromotionsFull: '', // 满多少元
+        ShippingFeeByFull: '',
+        PromotionsCut: '', // 优惠金额
+        Tags: [] // 标签
+      },
+      tagList: ['政府监督', '正品保证', '到店医保', '到店有礼'],
+      isLoading: false
     }
   },
 
@@ -97,10 +98,16 @@ export default {
   },
   methods: {
     fetch() {
-      const params = { UserID: this.data }
-      Service.operate(params).then((res) => {
-        this.operateData = res.data
-      })
+      this.isLoading = true
+      const params = { CustID: this.data }
+      Service.getOperateDetail(params)
+        .then((res) => {
+          this.operateData = res.data
+          this.operateData.Tags = res.data.Tags ? res.data.Tags.split(',') : []
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     }
   }
 }

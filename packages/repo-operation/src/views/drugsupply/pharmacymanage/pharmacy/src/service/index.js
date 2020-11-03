@@ -27,7 +27,7 @@ export default {
   changeStatus(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/GetDetailsByZYY'
+    const apiPath = 'psd//Cust/UpdateEnableStatusByZYY'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -62,10 +62,10 @@ export default {
    * @param {*} params
    * @returns {Object}
    */
-  operate(params) {
+  getOperateDetail(params) {
     const isMock = false
 
-    const apiPath = 'mds/openapi/webapi/api/Customer/GetDetailsByZYY'
+    const apiPath = 'psd/Pharmacy/GetOperationInfoByZYY'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

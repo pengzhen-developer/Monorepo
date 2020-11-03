@@ -35,7 +35,7 @@
               <el-input v-model.trim="model.Name"
                         placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="药房类型：">
+            <el-form-item label="药房性质：">
               <el-select v-model="model.CustType"
                          placeholder="全部"
                          clearable>
@@ -105,7 +105,7 @@
                              prop="Name"
                              min-width="180px"></el-table-column>
             <el-table-column label="药房性质"
-                             prop="CustNature"
+                             prop="CustType"
                              min-width="100px"></el-table-column>
             <el-table-column label="药房类型"
                              prop="CustType"
@@ -114,10 +114,10 @@
                              prop="CustName"
                              min-width="140px"></el-table-column>
             <el-table-column label="对接系统"
-                             prop="DockingSystem"
+                             prop="sys_name"
                              min-width="100px"></el-table-column>
             <el-table-column label="系统属性"
-                             prop="SystemAttribute"
+                             prop="sys_attribute_name"
                              min-width="100px"></el-table-column>
             <el-table-column label="已上架商品数量"
                              prop="GoodNums"
@@ -227,7 +227,10 @@ export default {
 
       this.$confirm(message, '提示', { closeOnClickModal: false })
         .then(() => {
-          const params = row
+          const params = {
+            custId: row.ID,
+            status: row.EnableStatus
+          }
           Service.changeStatus(params).then((res) => {
             Peace.util.success(res.msg)
             this.fetch()
@@ -243,7 +246,7 @@ export default {
     },
     pharmacyOperate(row) {
       this.operateVisible = true
-      this.id = row.UserID
+      this.id = row.ID
     },
     back() {
       this.detailVisible = false

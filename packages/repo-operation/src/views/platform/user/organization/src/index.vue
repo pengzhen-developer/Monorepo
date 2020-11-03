@@ -294,7 +294,7 @@ export default {
     dockingConfig(row) {
       this.dockingDialog.visible = true
       this.$nextTick(() => {
-        this.$refs.dockingConfig.init(row.id)
+        this.$refs.dockingConfig.init(row.custCode)
       })
     },
 

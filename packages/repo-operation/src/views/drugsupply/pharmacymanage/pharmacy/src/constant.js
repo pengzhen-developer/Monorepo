@@ -1,6 +1,6 @@
 export default {
   /**
-   * 药房类型
+   * 药房性质
    */
   PHARMACY_TYPE: {
     院内药房: 0,
