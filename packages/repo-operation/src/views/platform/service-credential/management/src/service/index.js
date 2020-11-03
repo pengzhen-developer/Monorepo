@@ -8,7 +8,7 @@ export default {
 
     const apiPath = 'zyy-psd/configuretoself/list'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -26,7 +26,7 @@ export default {
 
     const apiPath = 'zyy-psd/configuretoself/save'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -44,7 +44,7 @@ export default {
 
     const apiPath = `zyy-psd/configuretoself/remove/${params.id}`
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_BASE_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

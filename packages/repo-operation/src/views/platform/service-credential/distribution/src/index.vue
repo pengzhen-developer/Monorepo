@@ -60,11 +60,11 @@
     <PeaceDialog width="475px"
                  append-to-body
                  v-bind:visible.sync="addMechanismDialog.visible"
-                 :typeData="addMechanismDialog.typeData"
                  title="新增">
       <AddMechanismDialog v-if="addMechanismDialog.visible"
+                          :typeData="addMechanismDialog.typeData"
+                          v-on:onSucess="addItemSuccess"
                           v-on:onCancel="addMechanismDialog.visible = false"></AddMechanismDialog>
-      <!-- v-on:onSucess="addDrugSuccess"  -->
 
     </PeaceDialog>
   </div>
@@ -106,25 +106,23 @@ export default {
       this.$refs.table.reloadData({ fetch, params, filter })
     },
 
-    addItem() {
+    async addItem() {
       this.addMechanismDialog.typeData = await Peace.identity.dictionary.getList('sysattribute')
-      this.addMechanismDialog.visible = true
-      // const params = {
-      //   type: 'sysattribute'
-      // }
-      // Service.getDictType(params).then((res) => {
-      //   // if (res.data.length > 0) {
-      //   this.addMechanismDialog.typeData = res.data
-      //   this.addMechanismDialog.visible = true
-      //   // } else {
-      //   //   Peace.util.error('缺少服务凭证主体属性类型列表')
-      //   // }
-      // })
+      if (this.addMechanismDialog.typeData.length == 0) {
+        Peace.util.error('缺少主体属性类型列表')
+      } else {
+        this.addMechanismDialog.visible = true
+      }
     },
     showAndHid(row) {
-      debugger
       row.isHide = !row.isHide
     },
+
+    addItemSuccess() {
+      this.addMechanismDialog.visible = false
+      this.get()
+    },
+
     changeStatus(row) {
       const params = {
         id: row.id,

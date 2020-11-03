@@ -11,7 +11,7 @@
         <el-select v-model="mechanism.mechanismType"
                    @change="typeChange"
                    placeholder="请选择">
-          <el-option :key="item.label"
+          <el-option :key="item.code"
                      :label="item.label"
                      :value="item.value"
                      v-for="item in typeData"></el-option>
@@ -24,7 +24,7 @@
           <el-select v-model="mechanism.name2"
                      filterable
                      placeholder="请选择">
-            <el-option :key="item.Name"
+            <el-option :key="item.Code"
                        :label="item.Name"
                        :value="item.Name"
                        v-for="item in custNameList"></el-option>
@@ -59,10 +59,11 @@ export default {
   props: {
     typeData: Array
   },
+
   data() {
     return {
       mechanism: {
-        mechanismType: '0',
+        mechanismType: 'system',
         name: '',
         name2: ''
       },
@@ -94,7 +95,7 @@ export default {
   },
   computed: {
     mechanismChoiceType() {
-      return this.mechanism.mechanismType == '0'
+      return this.mechanism.mechanismType == 'system'
     }
   },
 
@@ -119,16 +120,34 @@ export default {
     onCreate(mechanism) {
       this.$refs[mechanism].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          var params
+          if (this.mechanism.mechanismType == 'system') {
+            params = {
+              attributeCode: this.mechanism.mechanismType,
+              attributeName: this.typeData.find((item) => item.value == this.mechanism.mechanismType).label,
+              code: this.custNameList.find((item) => item.Name == this.mechanism.name2).Code,
+              name: this.mechanism.name2
+            }
+          } else {
+            params = {
+              attributeCode: this.mechanism.mechanismType,
+              attributeName: this.typeData.find((item) => item.value == this.mechanism.mechanismType).label,
+              code: '',
+              name: this.mechanism.name
+            }
+          }
+          Service.configureSave(params).then((res) => {
+            Peace.util.success(res.msg)
+            this.$emit('onSucess')
+          })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
     },
     typeChange(value) {
       this.$refs['mechanism'].clearValidate()
-      if (value == 0) {
+      if (value == 'system') {
         this.mechanism.name = ''
       } else {
         this.mechanism.name2 = ''

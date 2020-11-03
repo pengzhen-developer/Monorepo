@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.9.4",
-    "@jk998/identity": "^0.1.17",
+    "@jk998/identity": "^0.2.1",
     "@jk998/library": "^0.1.17",
     "@jk998/peace-element-ui": "^0.1.7",
     "@quasar/extras": "^1.0.0",
