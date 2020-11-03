@@ -1,7 +1,7 @@
 /**
- * 回到官网
+ * 回到首页
  *
- * @param {string} [type=''] 回到官网打开方式
+ * @param {string} [type=''] 回到首页类型
  * @returns
  */
 export const redirectToReferer = (type = 'home') => {
