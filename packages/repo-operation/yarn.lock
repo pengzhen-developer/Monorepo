@@ -891,10 +891,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@jk998/identity@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.1.tgz#9600717cf1daaea679c572848dfccde8bd0b9738"
-  integrity sha512-ZwnDHCKERegGMNWAAkKqq5urueIZSd0oYE1jZNrc1NuNSpJRreVNpp8VMB1R4jdwrJotFk+Q7Sv76/QeP2OeLw==
+"@jk998/identity@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
+  integrity sha512-LS1swhR6oFA7xV8LirsR7inac2Cwe6vrdMZOJw9zL3ob6Gte2Z38dhNL0v5lZvJnvDImSXbMri3cG4IHKrtsxw==
   dependencies:
     "@jk998/library" "^0.1.17"
     crypto-js "^4.0.0"
