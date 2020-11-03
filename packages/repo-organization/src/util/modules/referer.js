@@ -4,18 +4,22 @@
  * @param {string} [type=''] 回到官网打开方式
  * @returns
  */
-export const redirectToReferer = (type = '_self') => {
+export const redirectToReferer = (type = 'home') => {
   switch (type) {
-    case '_self':
+    case 'home':
       window.location.href = process.env.VUE_APP_SITE_OFFCIAL
       break
-    case '_blank':
-      window.open(process.env.VUE_APP_SITE_OFFCIAL)
+    case 'home&clear':
+      window.location.href = process.env.VUE_APP_SITE_OFFCIAL + '?clear=true'
       break
     case 'login':
       window.location.href = process.env.VUE_APP_SITE_OFFCIAL + process.env.VUE_APP_SITE_OFFCIAL_LOGIN
       break
+    case 'login&clear':
+      window.location.href = process.env.VUE_APP_SITE_OFFCIAL + process.env.VUE_APP_SITE_OFFCIAL_LOGIN + '?clear=true'
+      break
     default:
+      window.location.href = process.env.VUE_APP_SITE_OFFCIAL
       break
   }
 }

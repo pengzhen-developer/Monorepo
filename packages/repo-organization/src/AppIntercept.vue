@@ -1,6 +1,7 @@
 /** 
+ * AppIntercept
  * 应用程序拦截器
- * 当作为 '/' 根路由
+ * 做为权限的动态路由 root component
  * 可控制其所有 children 的访问权限
 
  * 场景 ：
@@ -11,24 +12,48 @@
  */
 
 <template>
-  <router-view />
+  <div class="window-width window-height overflow-hidden">
+    <q-spinner v-if="showLoading"
+               class="absolute-center"
+               size="24"
+               color="primary"></q-spinner>
+
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import Util from '@src/util'
-
 export default {
+  data() {
+    return {
+      showLoading: false
+    }
+  },
+
+  watch: {
+    '$route.path'() {
+      if (this.$route.name === 'AppIntercept') {
+        this.showLoading = true
+      } else {
+        this.showLoading = false
+      }
+    }
+  },
+
   beforeRouteEnter(to, from, next) {
-    // 验证身份
-    if (Util.user.isSignIn()) {
-      if (to.path === '/') {
-        next('/layout')
+    if (Peace.identity.auth.isLogin()) {
+      if (to.name === 'AppIntercept') {
+        next((vm) => vm.$router.replace({ name: 'Layout' }))
       } else {
         next()
       }
     } else {
-      next((vm) => vm.$router.replace({ name: 'Login' }))
+      if (to.name !== 'Login') {
+        next((vm) => vm.$router.replace({ name: 'Login' }))
+      }
     }
+
+    next()
   },
 
   beforeRouteUpdate(to, from, next) {

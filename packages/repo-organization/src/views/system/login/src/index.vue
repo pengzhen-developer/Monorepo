@@ -52,7 +52,8 @@ export default {
         .then(this.getAccountMenuList)
         .then(this.redirectToOriginal)
         .catch(() => {
-          Util.referer.redirectToReferer()
+          Util.user.removeUserInfo()
+          Util.referer.redirectToReferer('login&clear')
         })
         .finally(() => {
           this.isLoading = false
@@ -89,7 +90,6 @@ export default {
 
       return Peace.identity.auth.getAccountMenu(params).then((res) => {
         Util.user.setAccountMenuList(res)
-        return Promise.resolve()
       })
     },
 

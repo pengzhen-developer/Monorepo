@@ -1,5 +1,4 @@
 /*
- * @Author: PengZhen
  * @Description: vue router
  * @Date: 2019-11-26
  */
@@ -13,7 +12,7 @@ import generateRoutes from './generateRoutes'
 export default async function({ configuration }) {
   Vue.use(VueRouter)
 
-  const routes = await generateRoutes(configuration)
+  const routes = await generateRoutes({ configuration })
 
   const router = new VueRouter({
     mode: 'history',

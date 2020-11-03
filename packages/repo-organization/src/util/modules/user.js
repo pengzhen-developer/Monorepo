@@ -24,9 +24,8 @@ export const getUserInfo = () => {
  *
  */
 export const removeUserInfo = () => {
-  Peace.identity.auth.removeAll()
-  Peace.cache.localStorage.remove(USER_INFO)
-  Peace.cache.sessionStorage.clear()
+  window.localStorage.clear()
+  window.sessionStorage.clear()
 }
 
 /**
