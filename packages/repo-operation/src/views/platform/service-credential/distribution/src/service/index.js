@@ -7,7 +7,7 @@ export default {
     const isMock = false
 
     const apiPath = 'zyy-psd/configure/list'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
@@ -25,7 +25,7 @@ export default {
     const isMock = false
 
     const apiPath = 'zyy-psd/configure/save'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
@@ -42,7 +42,7 @@ export default {
     const isMock = false
 
     const apiPath = 'zyy-psd/configure/updateStatus'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
@@ -60,7 +60,7 @@ export default {
     const isMock = false
 
     const apiPath = `admin/dict/type/${params.type}`
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
@@ -78,7 +78,7 @@ export default {
     const isMock = false
 
     const apiPath = 'psd/Cust/GetCustByVoucher'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
