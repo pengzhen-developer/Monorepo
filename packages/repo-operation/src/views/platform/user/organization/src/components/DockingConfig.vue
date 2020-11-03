@@ -8,7 +8,7 @@
                v-on:keyup.enter.native="save"
                v-on:submit.native.prevent>
 
-        <el-form-item prop="DockingSystem"
+        <el-form-item prop="sysCode"
                       label="对接系统：">
           <div class="flex">
             <el-select class="col"
@@ -22,7 +22,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item prop="SystemAttribute"
+        <el-form-item prop="sysAttributeCode"
                       label="系统属性：">
           <div class="flex">
             <el-select class="col"
@@ -67,6 +67,7 @@ export default {
 
   data() {
     return {
+      custCode: '',
       model: DEFAULT_MODEL,
 
       rules: {
@@ -82,27 +83,27 @@ export default {
   },
 
   async created() {
-    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysattribute')
+    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysdocking')
     this.systemAttributeDict = await Peace.identity.dictionary.getList('sysattribute')
   },
 
   methods: {
     init(custCode) {
-      this.model.custCode = custCode
+      this.custCode = custCode
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-
-        if (this.model.custCode) {
-          Service.getDockingConfig({ custCode: this.model.custCode }).then((res) => {
-            this.model = res.data ? res.data : DEFAULT_MODEL
-          })
-        }
+        Service.getDockingConfig({ custCode: this.custCode }).then((res) => {
+          this.model = res.data ? res.data : DEFAULT_MODEL
+          this.model.custCode = this.custCode
+        })
       })
     },
 
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
+          this.model.sysAttributeName = this.systemAttributeDict.find((item) => item.value === this.model.sysAttributeCode).label
+          this.model.sysName = this.dockingSystemDict.find((item) => item.value === this.model.sysCode).label
           const params = this.model
           Service.saveDockingConfig(params).then((res) => {
             Peace.util.success(res.msg)

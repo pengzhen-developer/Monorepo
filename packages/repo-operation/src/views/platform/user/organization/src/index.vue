@@ -40,10 +40,10 @@
               <span>：</span>
             </template>
 
-            <el-select v-model="model.DockingSystem"
+            <el-select v-model="model.dockSystem"
                        placeholder="全部"
                        clearable>
-              <el-option v-for="item in source.serviceType"
+              <el-option v-for="item in dockingSystemDict"
                          v-bind:key="item.value"
                          v-bind:label="item.label"
                          v-bind:value="item.value"></el-option>
@@ -97,7 +97,11 @@
           <el-table-column min-width="180px"
                            align="left"
                            label="机构名称"
-                           prop="hospitalName"></el-table-column>
+                           prop="hospitalName">
+            <template slot-scope="scope">
+              {{scope.row.hospitalName || '——'}}
+            </template>
+          </el-table-column>
           <el-table-column min-width="120px"
                            label="机构类型"
                            prop="role"
@@ -109,11 +113,19 @@
           <el-table-column min-width="100px"
                            label="对接系统"
                            align="center"
-                           prop="DockingSystem"></el-table-column>
+                           prop="dockSystem">
+            <template slot-scope="scope">
+              {{scope.row.dockSystem || '——'}}
+            </template>
+          </el-table-column>
           <el-table-column min-width="100px"
                            label="系统属性"
                            align="center"
-                           prop="SystemAttribute"></el-table-column>
+                           prop="systemProperties">
+            <template slot-scope="scope">
+              {{scope.row.systemProperties || '——'}}
+            </template>
+          </el-table-column>
           <el-table-column min-width="160px"
                            label="使用中的服务"
                            align="center"
@@ -216,7 +228,7 @@ export default {
         hospitalName: '',
         orgType: '',
         serviceType: [],
-        DockingSystem: ''
+        dockSystem: ''
       },
 
       source: {
@@ -251,11 +263,14 @@ export default {
 
       addDialog: {
         visible: false
-      }
+      },
+
+      dockingSystemDict: []
     }
   },
 
-  mounted() {
+  async mounted() {
+    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysdocking')
     this.$nextTick().then(() => {
       this.get()
     })
@@ -266,14 +281,7 @@ export default {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
 
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
-        res?.data?.list?.forEach((row) => {
-          row.hospitalName = Peace.validate.isEmpty(row.hospitalName) ? '——' : row.hospitalName
-          row.DockingSystem = Peace.validate.isEmpty(row.DockingSystem) ? '——' : row.DockingSystem
-          row.SystemAttribute = Peace.validate.isEmpty(row.SystemAttribute) ? '——' : row.SystemAttribute
-        })
-        return res
-      })
+      this.$refs.table.reloadData({ fetch, params })
     },
 
     // 基本信息

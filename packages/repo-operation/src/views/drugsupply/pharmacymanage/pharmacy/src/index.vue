@@ -67,23 +67,23 @@
                                  v-model.trim="DateValue"></peace-date-picker>
             </el-form-item>
             <el-form-item label="对接系统：">
-              <el-select v-model="model.DockingSystem"
+              <el-select v-model="model.sys_name"
                          placeholder="全部"
                          clearable>
-                <el-option v-for="(value, label) in source.PHARMACY_TYPE"
-                           v-bind:key="value"
-                           v-bind:label="label"
-                           v-bind:value="value"></el-option>
+                <el-option v-for="item in dockingSystemDict"
+                           v-bind:key="item.value"
+                           v-bind:label="item.label"
+                           v-bind:value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="系统属性：">
-              <el-select v-model="model.SystemAttribute"
+              <el-select v-model="model.sys_attribute_name"
                          placeholder="全部"
                          clearable>
-                <el-option v-for="(value, label) in source.PHARMACY_TYPE"
-                           v-bind:key="value"
-                           v-bind:label="label"
-                           v-bind:value="value"></el-option>
+                <el-option v-for="item in systemAttributeDict"
+                           v-bind:key="item.value"
+                           v-bind:label="item.label"
+                           v-bind:value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label-width="0">
@@ -182,15 +182,17 @@ export default {
         EnableStatus: '',
         CustType: '',
         CustName: '',
-        DockingSystem: '',
-        SystemAttribute: '',
+        sys_name: '',
+        sys_attribute_name: '',
         StarTime: '',
         EndTime: ''
       },
       source: {
         PHARMACY_TYPE: CONSTANT.PHARMACY_TYPE,
         ENABLE_STATUS: CONSTANT.ENABLE_STATUS
-      }
+      },
+      dockingSystemDict: [],
+      systemAttributeDict: []
     }
   },
   watch: {
@@ -204,7 +206,10 @@ export default {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
-  mounted() {
+  async mounted() {
+    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysdocking')
+    this.systemAttributeDict = await Peace.identity.dictionary.getList('sysattribute')
+
     this.$nextTick().then(() => {
       this.fetch()
     })
