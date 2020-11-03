@@ -6,7 +6,7 @@ export const path = {
   /** Server Error */
   ['EXCEPTION-500']: '/exception/500',
   /** 首页 */
-  HOME: '/home',
+  HOME: '/',
   /** 完善信息-机构注册 */
   ORGREGISTER: '/compliteInfo/OrgRegister',
   /** 完善信息-等待审核 */

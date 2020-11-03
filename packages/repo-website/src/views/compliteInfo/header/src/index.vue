@@ -50,7 +50,7 @@ export default {
       if (command == 'loginOut') {
         this.peace.identity.auth.logout().then(() => {
           Util.user.removeUserInfo()
-          this.$router.replace(path.LOGIN)
+          Util.referer.redirectToReferer('home')
         })
       }
     },

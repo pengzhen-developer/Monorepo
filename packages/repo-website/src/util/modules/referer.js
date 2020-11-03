@@ -34,9 +34,9 @@ export const removeReferrer = () => {
  * @param {string} [type=''] 回到官网打开方式
  * @returns
  */
-export const redirectToReferer = (type = '_self') => {
+export const redirectToReferer = (type = 'home') => {
   switch (type) {
-    case '_self':
+    case 'home':
       window.location.href = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH
       break
     case 'login':

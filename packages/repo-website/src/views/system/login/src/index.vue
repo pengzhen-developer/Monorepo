@@ -14,7 +14,8 @@
                   v-on:click="goHome">
         </el-image>
       </div>
-      <div v-on:click="goHome">
+      <div class="cursor-pointer"
+           v-on:click="goHome">
         返回首页
       </div>
     </div>

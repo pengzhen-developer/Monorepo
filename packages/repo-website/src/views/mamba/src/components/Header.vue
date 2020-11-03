@@ -81,9 +81,6 @@ export default {
     goRegister() {
       this.$router.push(path.REGISTER)
     },
-    goToText1() {
-      window.open(process.env.VUE_APP_1)
-    },
     goConsole() {
       //跳转前刷新一次checkStatus
       Service.getAccountInfo().then((res) => {
@@ -95,7 +92,7 @@ export default {
       if (command == 'loginOut') {
         this.peace.identity.auth.logout().then(() => {
           Util.user.removeUserInfo()
-          window.location.reload()
+          Util.referer.redirectToReferer('home')
         })
       }
     }
