@@ -55,7 +55,7 @@
 import Service from '../service/index'
 
 const DEFAULT_MODEL = {
-  custCode: '', // 机构编码
+  custcode: '', // 机构编码
   sysAttributeCode: '', // 属性编码
   sysAttributeName: '', // 属性名称
   sysCode: '', // 系统编码
@@ -67,7 +67,6 @@ export default {
 
   data() {
     return {
-      custCode: '',
       model: DEFAULT_MODEL,
 
       rules: {
@@ -89,12 +88,11 @@ export default {
 
   methods: {
     init(custCode) {
-      this.custCode = custCode
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-        Service.getDockingConfig({ custCode: this.custCode }).then((res) => {
+        Service.getDockingConfig({ custcode: custCode }).then((res) => {
           this.model = res.data ? res.data : DEFAULT_MODEL
-          this.model.custCode = this.custCode
+          this.model.custcode = custCode
         })
       })
     },
