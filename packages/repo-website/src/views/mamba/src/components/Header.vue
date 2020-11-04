@@ -85,14 +85,14 @@ export default {
       //跳转前刷新一次checkStatus
       Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
-        Util.user.replaceToCompliteInfo(res.data.checkStatus)
+        Util.location.redirectToCompliteInfo(res.data.checkStatus)
       })
     },
     handleCommand(command) {
       if (command == 'loginOut') {
         this.peace.identity.auth.logout().then(() => {
           Util.user.removeUserInfo()
-          Util.referer.redirectToReferer('home')
+          Util.location.redirectToLogin()
         })
       }
     }

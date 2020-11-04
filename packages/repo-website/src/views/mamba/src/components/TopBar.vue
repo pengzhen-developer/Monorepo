@@ -32,10 +32,11 @@ import Util from '@src/util'
 export default {
   methods: {
     gotoDoctorWorkbench() {
-      Util.route.redirectToDoctorWorkbench()
+      Util.location.redirectToDoctorWorkbench()
     },
+
     gotoPharmacistWorkbench() {
-      Util.route.redirectTOPharmacistWorkbench()
+      Util.location.redirectToPharmacistWorkbench()
     }
   }
 }

@@ -1,5 +1,3 @@
-import { path } from '@src/router/generateRoutes'
-
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
 
@@ -12,6 +10,7 @@ const USER_INFO = 'user_info'
 export const setUserInfo = (userInfo) => {
   return Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
+
 /**
  * 更新用户信息
  *
@@ -26,6 +25,7 @@ export const updateUserInfo = (userInfo) => {
 
   return setUserInfo(updatedUserInfo)
 }
+
 /**
  * 获取用户信息（缓存）
  *
@@ -34,61 +34,22 @@ export const updateUserInfo = (userInfo) => {
 export const getUserInfo = () => {
   return Peace.cache.localStorage.get(USER_INFO)
 }
+
 /**
  * 清空用户信息（缓存）
  *
  */
 export const removeUserInfo = () => {
-  Peace.identity.auth.removeAll()
-  Peace.cache.localStorage.remove(USER_INFO)
+  // To be optimized
+  // 一些业务需要持久化信息，例如登录账号等
+  // 因此只需要清除用户相关信息，而非所有数据
+
+  // 移除当前站点所有 localStorage 存储的数据
+  // 移除当前站点所有 sessionStorage 存储的数据
+  Peace.cache.localStorage.clear()
   Peace.cache.sessionStorage.clear()
 }
 
-/**
- * 重定向到登录页，并且记录当前页面地址
- * 请注意，此方法只记录 url 参数
- * 如需做更多自定义操作，请自行记录参数
- *
- * @param {string} [referrer=''] 重定向地址
- * @returns
- */
-export const replaceToLogin = (referrer = '') => {
-  return $peace.$router.push({
-    name: path.LOGIN,
-    query: {
-      referrer: referrer || $peace.$router.history.current.fullPath
-    }
-  })
-}
-
-/**
- * 跳转控制台
- *
- */
-export const redirectToConsole = async () => {
-  let token = (await Peace.identity.auth.getAuth()).access_token
-  const CONSOLE_SITE_PATH = process.env.VUE_APP_SITE_CONSOLE + '?token=' + token
-
-  window.location.href = CONSOLE_SITE_PATH
-}
-/**
- * 跳转医生工作台
- *
- */
-export const redirectToDoctorWorkbench = () => {
-  const CONSOLE_DOCTOR_WORKBENCH_PATH = process.env.VUE_APP_SITE_DOCTOR_WORKBENCH
-
-  window.open(CONSOLE_DOCTOR_WORKBENCH_PATH)
-}
-/**
- * 跳转药师工作台
- *
- */
-export const redirectTOPharmacistWorkbench = () => {
-  const CONSOLE_PHARMACIST_WORKBENCH_PATH = process.env.VUE_APP_SITE_PHARMACIST_WORKBENCH
-
-  window.open(CONSOLE_PHARMACIST_WORKBENCH_PATH)
-}
 /**
  * 是否已登录
  *
@@ -96,51 +57,12 @@ export const redirectTOPharmacistWorkbench = () => {
 export const isSignIn = () => {
   return !!Peace.cache.localStorage.get(USER_INFO)
 }
-/**
- * 机构入驻跳转
- *
- */
-export const replaceToCompliteInfo = (status) => {
-  const checkStatus = {
-    未申请: 1,
-    待审核: 2,
-    已通过: 3,
-    未通过: 4
-  }
-  status = status || getUserInfo()?.checkStatus
-  //重新提交则不跳转
-  const resubmit = Peace.cache.sessionStorage.get('resubmit') ?? false
-
-  switch (status) {
-    case checkStatus.待审核:
-      $peace.$router.replace(path.CHECKWAITING)
-      break
-    case checkStatus.未通过:
-      if (!resubmit) {
-        $peace.$router.replace(path.CHECKFAILURE)
-      } else {
-        Peace.cache.sessionStorage.remove('resubmit')
-      }
-      break
-    case checkStatus.未申请:
-      $peace.$router.replace(path.ORGREGISTER)
-      break
-    default:
-      redirectToConsole()
-      break
-  }
-}
 
 export default {
   getUserInfo,
   setUserInfo,
   updateUserInfo,
   removeUserInfo,
-  isSignIn,
 
-  replaceToLogin,
-  redirectToConsole,
-  redirectToDoctorWorkbench,
-  redirectTOPharmacistWorkbench,
-  replaceToCompliteInfo
+  isSignIn
 }

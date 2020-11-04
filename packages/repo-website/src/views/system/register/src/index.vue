@@ -393,7 +393,7 @@ export default {
     completeInfomation() {
       Service.getAccountInfo().then((res) => {
         Util.user.updateUserInfo(res.data)
-        Util.user.replaceToCompliteInfo(res.data.checkStatus)
+        Util.location.redirectToCompliteInfo(res.data.checkStatus)
       })
     },
     changePasswordStatus() {
