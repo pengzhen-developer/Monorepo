@@ -43,6 +43,10 @@ export default {
     }
   },
 
+  activated() {
+    this.loading = true
+  },
+
   data() {
     return {
       loading: true

@@ -2,7 +2,6 @@
 import { version, name } from '@/package'
 
 import Peace from '@jk998/library'
-import Identity from '@jk998/identity'
 
 // export boot install function
 // async is optional
@@ -12,10 +11,6 @@ export default async ({ Vue }) => {
       appName: name,
       appVersion: version
     }
-  })
-
-  Vue.use(Identity, {
-    baseApi: process.env.VUE_APP_API_BASE
   })
 
   console.log(
