@@ -909,6 +909,16 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
+"@jk998/library@^0.1.18":
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.18.tgz#aeb8b160cf6cf0fb7ac5fbf753b57c5f6eb34bc5"
+  integrity sha512-/0RoTqr1xvv9RwGrXmeEizpTLVr5NcLxmvqRR1XIByacXz8q86d8Z3S6frvNDChYBE2HTzs07n++dSH5hcPvzA==
+  dependencies:
+    axios "^0.20.0"
+    dayjs "^1.8.35"
+    js-base64 "^3.5.2"
+    numeral "^2.0.6"
+
 "@jk998/peace-element-ui@^0.1.7":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.7.tgz#ba04823cddf7013849d35b3cf8e8d31da6f2c569"
