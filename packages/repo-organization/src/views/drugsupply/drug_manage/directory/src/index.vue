@@ -42,6 +42,32 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
 
+        <el-form-item>
+          <span slot="label">
+            <span>创建日期</span>
+            <span>：</span>
+          </span>
+          <peace-date-picker type="daterange"
+                             v-model="model.createDate"
+                             value-format="yyyy-MM-dd"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期">
+          </peace-date-picker>
+        </el-form-item>
+
+        <el-form-item>
+          <span slot="label">
+            <span>更新日期</span>
+            <span>：</span>
+          </span>
+          <peace-date-picker type="daterange"
+                             v-model="model.upDateDate"
+                             value-format="yyyy-MM-dd"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期">
+          </peace-date-picker>
+        </el-form-item>
+
         <el-form-item label=" ">
           <el-button type="primary"
                      @click="get()">查询</el-button>
@@ -73,20 +99,38 @@
                          label="药品名称">
         </el-table-column>
         <el-table-column prop="DrugSpecifications"
+                         align="center"
                          label="药品规格">
-        </el-table-column>
-        <el-table-column prop="PackUnit"
-                         label="包装单位">
         </el-table-column>
         <el-table-column prop="EnterpriseName"
                          label="生产厂家">
         </el-table-column>
-        <el-table-column prop="ApprovalNumber"
-                         label="批准文号">
+        <el-table-column label="剂型"
+                         align="center">
+          <template slot-scope="scope">
+            {{ scope.row.DrugDosageForm ? scope.row.DrugDosageForm : "——"  }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center"
+                         label="包装单位">
+          <template slot-scope="scope">
+            {{ scope.row.PackUnit ? scope.row.PackUnit : "——"  }}
+          </template>
+        </el-table-column>
+        <el-table-column label="批准文号">
+          <template slot-scope="scope">
+            {{ scope.row.ApprovalNumber ? scope.row.ApprovalNumber : "——"  }}
+          </template>
         </el-table-column>
 
         <el-table-column prop="CreateTime"
                          label="创建时间">
+        </el-table-column>
+
+        <el-table-column label="更新时间">
+          <template slot-scope="scope">
+            {{ scope.row.LastModifyTime ? scope.row.LastModifyTime : "——"  }}
+          </template>
         </el-table-column>
 
         <el-table-column align="center"
@@ -104,7 +148,7 @@
 
     <!-- 药品详情 -->
     <PeaceDialog v-if="detailDialog.visible"
-                 width="644px"
+                 width="380px"
                  :close-on-click-modal="false"
                  :close-on-press-escape="false"
                  v-bind:visible.sync="detailDialog.visible"
@@ -176,7 +220,13 @@ export default {
         EnterpriseName: '',
         Circulate: '',
         MappingStatus: '',
-        MappingExamineStatus: ''
+        MappingExamineStatus: '',
+        createDate: [],
+        upDateDate: [],
+        StarCreateDate: '',
+        EndCreateDate: '',
+        StarUpdateDate: '',
+        EndUpdateDate: ''
       },
       tableData: [],
       detailDialog: {
@@ -203,6 +253,20 @@ export default {
     get() {
       const fetch = Service.GetDrugListPaing
       const params = this.model
+
+      if (this.model.createDate == null) {
+        this.model.createDate = ['', '']
+      }
+      const [startCreate, endCreate] = this.model.createDate
+      params.StarCreateDate = startCreate
+      params.EndCreateDate = endCreate
+
+      if (this.model.upDateDate == null) {
+        this.model.upDateDate = ['', '']
+      }
+      const [startUpdate, endUpdate] = this.model.upDateDate
+      params.StarUpdateDate = startUpdate
+      params.EndUpdateDate = endUpdate
 
       this.$refs.table.reloadData({ fetch, params })
     },
