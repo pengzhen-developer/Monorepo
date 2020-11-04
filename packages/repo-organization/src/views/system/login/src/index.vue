@@ -53,7 +53,7 @@ export default {
         .then(this.redirectToOriginal)
         .catch(() => {
           Util.user.removeUserInfo()
-          Util.referer.redirectToReferer('login&clear')
+          Util.location.redirectToLoginAndClear()
         })
         .finally(() => {
           this.isLoading = false

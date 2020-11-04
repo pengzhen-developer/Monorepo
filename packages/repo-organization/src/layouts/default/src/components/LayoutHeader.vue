@@ -96,12 +96,12 @@ export default {
     signOut() {
       Peace.identity.auth.logout().then(() => {
         Util.user.removeUserInfo()
-        Util.referer.redirectToReferer('login&clear')
+        Util.location.redirectToLoginAndClear()
       })
     },
 
     goWebSite() {
-      Util.referer.redirectToReferer('home')
+      Util.location.redirectToWebSite()
     }
   }
 }
