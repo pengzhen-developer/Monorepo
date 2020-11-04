@@ -127,7 +127,8 @@
             <el-tag :key="item"
                     style="margin: 0px 5px 0 0; "
                     type="info"
-                    v-for="item in internalData.diagnoseList">{{item.diagnoseName}}</el-tag>
+                    v-for="item in internalData.diagnose.split('|')">{{item}}</el-tag>
+            <!-- v-for="item in internalData.diagnoseList">{{item.diagnoseName}}</el-tag> -->
           </template>
           <template v-else>
             <span>无</span>

@@ -570,24 +570,28 @@ export default {
           params.allergy_history = params.allergy_history && params.allergy_history.map((item) => item.name).toString()
           params.past_history = params.past_history && params.past_history.map((item) => item.name).toString()
 
-          // 诊断上传 JSON 数据 ，此处需要转换上传参数
-          params.diagnoseList = params.diagnose.map((item) => {
-            item.diagnoseCode = item.code
-            item.diagnoseName = item.name
-            return item
-          })
-
-          params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
-          params.diagnose = params.diagnose.replace(/,/g, ' | ')
-
           // 兼容会诊和问诊
           if (this.inquiryNo) {
+            // 诊断上传 JSON 数据 ，此处需要转换上传参数
+            params.diagnoseList = params.diagnose.map((item) => {
+              item.diagnoseCode = item.code
+              item.diagnoseName = item.name
+              return item
+            })
+
+            params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
+            params.diagnose = params.diagnose.replace(/,/g, ' | ')
+
             peace.service.inquiry.addCase(params).then((res) => {
               $peace.util.success(res.msg)
 
               this.$emit('close')
             })
           } else if (this.consultNo) {
+            //TODO: 会诊当前版本区分处理
+            params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
+            params.diagnose = params.diagnose.replace(/,/g, ' | ')
+            debugger
             peace.service.inquiry.offlineAddCase(params).then((res) => {
               $peace.util.success(res.msg)
 

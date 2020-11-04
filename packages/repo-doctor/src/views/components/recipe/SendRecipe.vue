@@ -303,7 +303,17 @@ export default {
       if (recipeCache) {
         this.weight = recipeCache.weight
         this.drugList = recipeCache.drugList
-        this.diagnoseList = recipeCache.diagnoseList
+
+        if (this.inquiryNo) {
+          this.diagnoseList = recipeCache.diagnoseList
+        } else {
+          const tmp = recipeCache.diagnoseList?.name?.split('|') ?? []
+          this.diagnoseList = tmp.map((item) => {
+            item.name = item
+            item.code = ''
+            return item
+          })
+        }
       }
     },
 
@@ -392,26 +402,27 @@ export default {
       }
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
-        // 诊断上传 JSON 数据 ，此处需要转换上传参数
-        const diagnoseInfos = [...this.diagnoseList].map((item) => {
-          item.diagnoseCode = item.code
-          item.diagnoseName = item.name
-          return item
-        })
-
         const params = {
           openId: this.docInfo?.openid,
           weight: this.weight,
           inquiryNo: this.inquiryNo,
           consultNo: this.consultNo,
           diagnose: this.caseInfo.diagnose,
-          diagnoseList: diagnoseInfos,
           allergyHistory: this.caseInfo.allergy_history,
           drugList: drugList
         }
 
         this.sending = true
         if (this.inquiryNo) {
+          // 诊断上传 JSON 数据 ，此处需要转换上传参数
+          const diagnoseInfos = [...this.diagnoseList].map((item) => {
+            item.diagnoseCode = item.code
+            item.diagnoseName = item.name
+            return item
+          })
+
+          params['diagnoseList'] = diagnoseInfos
+
           Service.subPrescrip(params)
             .then((res) => {
               // 前置审方不合法，显示前置审方审核结果
