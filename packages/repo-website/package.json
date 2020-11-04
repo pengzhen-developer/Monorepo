@@ -11,6 +11,7 @@
     "build:pre": "vue-cli-service build --mode pre",
     "build:prod": "vue-cli-service build --mode prod",
     "build": "vue-cli-service build --mode prod",
+    "upgrade:jk998": "yarn add @jk998/library @jk998/identity @jk998/peace-element-ui",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
