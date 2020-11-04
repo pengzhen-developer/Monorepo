@@ -19,7 +19,7 @@
         </div>
         <div class="span"
              style="width: 50%; text-align: right;">
-          <span>开具日期：</span>
+          <span>开具时间：</span>
           <span>{{internalData.prescriptionTime}} </span>
         </div>
       </div>
