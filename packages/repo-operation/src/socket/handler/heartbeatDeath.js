@@ -6,6 +6,6 @@ export default () => {
   Util.user.removeUserInfo()
 
   setTimeout(() => {
-    Util.referer.redirectToReferer('home&clear')
+    Util.referer.redirectToReferer('home')
   }, 3000)
 }

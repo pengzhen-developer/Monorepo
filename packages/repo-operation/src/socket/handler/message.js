@@ -14,12 +14,25 @@ const strategy = {
   },
 
   /**
+   * 该用户在其它地方登陆
+   *
+   */
+  ['concurrentlogin']: () => {
+    Util.user.removeUserInfo()
+    Peace.util.warning('您的账号在其它地方登录')
+
+    setTimeout(() => {
+      Util.referer.redirectToReferer('home')
+    }, 3000)
+  },
+
+  /**
    * 账号被禁用
    *
    */
   ['userlock']: (/** message */) => {
     Util.user.removeUserInfo()
-    Peace.util.warning('您的账号已被禁用，请联系管理员')
+    Peace.util.warning('您的账号已被禁用')
 
     setTimeout(() => {
       Util.referer.redirectToReferer('home')
