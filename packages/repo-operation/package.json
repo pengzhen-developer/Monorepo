@@ -7,15 +7,11 @@
     "start": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build:dev": "vue-cli-service build --mode dev",
-    "deploy:dev": "vue-cli-service build --mode dev && cross-env NODE_ENV=dev node ./deploy",
     "build:test": "vue-cli-service build --mode test",
-    "deploy:test": "vue-cli-service build --mode test && cross-env NODE_ENV=test node ./deploy",
     "build:pre": "vue-cli-service build --mode pre",
-    "deploy:pre": "vue-cli-service build --mode pre && cross-env NODE_ENV=pre node ./deploy",
     "build:prod": "vue-cli-service build --mode prod",
-    "deploy:prod": "vue-cli-service build --mode prod && cross-env NODE_ENV=prod node ./deploy",
     "build": "vue-cli-service build --mode prod",
-    "deploy": "vue-cli-service build --mode prod && cross-env NODE_ENV=prod node ./deploy",
+    "upgrade:jk998": "yarn add @jk998/library @jk998/identity @jk998/peace-element-ui",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
