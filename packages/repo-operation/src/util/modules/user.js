@@ -3,32 +3,16 @@
  *
  */
 export const removeUserInfo = () => {
-  // 移除认证信息
-  Peace.identity.auth.removeAll()
+  // To be optimized
+  // 一些业务需要持久化信息，例如登录账号等
+  // 因此只需要清除用户相关信息，而非所有数据
 
-  window.localStorage.clear()
-  window.sessionStorage.clear()
-}
-
-/**
- * 重定向到登录页，并且记录当前页面地址
- * 请注意，此方法只记录 url 参数
- * 如需做更多自定义操作，请自行记录参数
- *
- * @param {string} [referer=''] 重定向地址
- * @returns
- */
-export const replaceToLogin = (referer = '') => {
-  return $peace.$router.push({
-    name: '/login',
-    query: {
-      referer: referer || $peace.$router.history.current.fullPath
-    }
-  })
+  // 移除当前站点所有 localStorage 存储的数据
+  // 移除当前站点所有 sessionStorage 存储的数据
+  Peace.cache.localStorage.clear()
+  Peace.cache.sessionStorage.clear()
 }
 
 export default {
-  removeUserInfo,
-
-  replaceToLogin
+  removeUserInfo
 }

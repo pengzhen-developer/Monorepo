@@ -117,10 +117,11 @@ export default {
   },
 
   async created() {
-    this.user = await Peace.identity.auth.getAccountInfo()
+    const accountInfo = await Peace.identity.auth.getAccountInfo()
+    const accouontMenu = await Peace.identity.auth.getAccountMenu()
 
-    const result = (await Peace.identity.auth.getAccountMenu()).find((item) => item.menuAlias == '个人中心')
-    this.canShowUserCenter = result ? true : false
+    this.user = accountInfo
+    this.canShowUserCenter = accouontMenu.find((item) => item.menuAlias == '个人中心')
   },
 
   methods: {
@@ -131,8 +132,7 @@ export default {
     signOut() {
       Peace.identity.auth.logout().then(() => {
         Util.user.removeUserInfo()
-        this.$router.replace({ name: 'Login' })
-        // this.$router.push({ name: 'Login' }).then(() => window.location.reload())
+        Util.location.redirectToLogin()
       })
     }
   }
