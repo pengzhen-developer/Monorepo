@@ -298,13 +298,16 @@
 
       <div class="footer fixedBottom"
            v-if="canShowBottom">
+        <div class="footer-btn wait-btn"
+             @click="changeInvoiceModel(internalData)"
+             v-if="canShowInvoiceBtn">申请发票</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
              v-if="canShowChatBtn">咨询记录</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
-             v-if="
-            internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中">进入咨询</div>
+             v-if="cnaShowEnterChat">进入咨询</div>
+
       </div>
       <div class="pay fixedBottom"
            v-if="canShowPayBottom">
@@ -336,9 +339,9 @@
         <van-button class="report-btn"
                     :class="{'flex-1':!canShowCancelButton}"
                     @click="report(internalData)"
-                    :disabled="internalData.inquiryInfo.reportButton!=1">报到</van-button>
+                    :disabled="canReport">报到</van-button>
         <div class="report-tip"
-             v-if="internalData.inquiryInfo.reportButton!=1"><img :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报到</div>
+             v-if="canReport"><img :src="require('@src/assets/images/ic_help.png')"> 复诊当日可报到</div>
       </div>
     </template>
 
@@ -372,6 +375,13 @@
     <ExpenseDetail v-model="dialog.visible"
                    @changeFlag="changeFlag"
                    :info="dialog.data"></ExpenseDetail>
+
+    <!-- 发票弹窗 -->
+    <template v-if="internalData&&internalData.orderInfo">
+      <InvoiceModel v-model="showInvoiceModel"
+                    :receiptNumber="internalData.orderInfo.divisionId"></InvoiceModel>
+    </template>
+
   </div>
 </template>
 
@@ -381,10 +391,13 @@ import peace from '@src/library'
 import Vue from 'vue'
 import { Dialog, CountDown } from 'vant'
 Vue.use(CountDown)
+
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
+import InvoiceModel from '@src/views/components/InvoiceModel'
+
 const ENUM = {
   // 支付类型
   // wxpay（微信）
@@ -416,6 +429,7 @@ export default {
     TheRecipeList,
     MessageList,
     ExpenseDetail,
+    InvoiceModel,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -461,7 +475,9 @@ export default {
         images: []
       },
       fromChatRoom: false,
-      reportHeight: '0px'
+      reportHeight: '0px',
+
+      showInvoiceModel: false
     }
   },
   watch: {
@@ -568,6 +584,15 @@ export default {
           this.internalData.inquiryInfo.quitStatus != '2') ||
         this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已完成
       )
+    },
+    cnaShowEnterChat() {
+      return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中
+    },
+    canReport() {
+      return this.internalData?.inquiryInfo?.reportButton != 1
+    },
+    canShowInvoiceBtn() {
+      return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.已完成 && this.internalData?.orderInfo?.divisionId
     }
   },
 
@@ -577,6 +602,9 @@ export default {
   },
 
   methods: {
+    changeInvoiceModel() {
+      this.showInvoiceModel = true
+    },
     changeFlag() {
       this.dialog.visible = false
       this.get()
@@ -941,11 +969,13 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #fff;
+  padding: 0 16px;
   .footer-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 343px;
+    // width: 343px;
+    flex: 1;
     height: 45px;
     border-radius: 40px;
     &.chat-btn {
@@ -956,6 +986,12 @@ export default {
     &.wait-btn {
       color: #999;
       border: 1px solid #ccc;
+    }
+    &:first-child {
+      margin-right: 12px;
+    }
+    &:last-child {
+      margin-right: 0;
     }
   }
 }

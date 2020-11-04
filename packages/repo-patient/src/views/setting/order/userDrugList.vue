@@ -99,7 +99,11 @@
                      @click="payOrder(item)">
                   继续支付
                 </div>
-                <div class="label"
+                <div class="label blue"
+                     v-if="canShowApplyBtn(item)"
+                     @click="changeInvoiceModel(item)">申请发票
+                </div>
+                <div class="label blue"
                      v-if="ifShowLogistics(item)"
                      @click="goDrugLogiPage(item)">查看物流
                 </div>
@@ -122,6 +126,10 @@
                 v-model="showQRCode"
                 :PickUpCode="PickUpCode"></QRCode>
 
+        <!-- 发票弹窗 -->
+        <InvoiceModel v-model="showInvoiceModel"
+                      :receiptNumber="receiptNumber"></InvoiceModel>
+
       </div>
     </template>
 
@@ -137,7 +145,7 @@
 <script>
 import peace from '@src/library'
 import QRCode from '@src/views/components/QRCode'
-
+import InvoiceModel from '@src/views/components/InvoiceModel'
 const ENUM = {
   SHIPPING_METHOD: {
     SELF: 0,
@@ -168,34 +176,29 @@ export default {
       showQRCode: false,
       PickUpCode: null,
       QRCodeURL: null,
+      //发票弹框
+      showInvoiceModel: false,
+      receiptNumber: '',
 
       ENUM
     }
   },
 
-  components: { QRCode },
+  components: { QRCode, InvoiceModel },
 
   activated() {
     this.getDrugItems()
   },
-  mounted() {
-    //this.appid = config.APPID
-    // if (this.$route.query.code) {
-    //   let code = this.$route.query.code
-    //   let orderNo = this.$route.query.orderId
-    //   let params = { code, orderNo }
-    //   peace.service.index.GetWxLoginStatus(params).then(res => {
-    //     let data = res.data
-    //     peace.wx.payInvoke(data, this.payCallback)
-    //   })
-    // }
-  },
+
   methods: {
     finishHander(item) {
       const params = { OrderId: item.OrderId }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.getDrugItems()
       })
+    },
+    canShowApplyBtn(item) {
+      return item.OrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
     },
     ifShowLogistics(item) {
       return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.PickUpCode
@@ -219,7 +222,10 @@ export default {
 
       this.getDrugItems()
     },
-
+    changeInvoiceModel(item) {
+      this.showInvoiceModel = true
+      this.receiptNumber = item.divisionId
+    },
     getDrugItems() {
       const params = {
         OrderType: this.tabIndex == '1' ? '6' : this.tabIndex
@@ -245,11 +251,6 @@ export default {
       this.currentOrderId = item.OrderId
       let params = { orderNo }
       peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
-      // let orderType = 'drug'
-      // let money = item.OrderMoney
-      // let params = { orderNo, orderType, money }
-      // const json = peace.util.encode(params)
-      // this.$router.replace(`/components/ExpenseDetail/${json}`)
     },
     payCallback() {
       let orderId = ''
@@ -305,6 +306,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .overlay-container {
+    width: 80%;
+    height: 151px;
+    background: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 23px 45px;
+  }
+  .overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 13px;
+    line-height: 21px;
+  }
+  .overlay-botton {
+    color: #ccc;
+    > a {
+      color: $primary;
+    }
+  }
+}
 .count-down {
   display: flex;
   flex: 1;

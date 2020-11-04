@@ -216,6 +216,12 @@
       <div class='bottom-1'
            :class="order.OrderStatus !== ENUM.ORDER_STATUS.待下单&&'other'"
            v-if="canShowBtnBox">
+        <template v-if="canShowApplyBtn">
+          <div @click="changeInvoiceModel"
+               class="btn block btn-blue">
+            申请发票
+          </div>
+        </template>
         <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
           <div @click="submitOrder"
                class="btn block btn-blue"
@@ -261,6 +267,11 @@
       <QRCode :QRCodeURL="QRCodeURL"
               v-model="showQRCode"
               :PickUpCode="PickUpCode"></QRCode>
+
+      <!-- 发票弹窗 -->
+      <InvoiceModel v-model="showInvoiceModel"
+                    :receiptNumber="order.divisionId"></InvoiceModel>
+
     </div>
   </div>
 
@@ -270,6 +281,7 @@
 import peace from '@src/library'
 import TheRecipe from '@src/views/components/TheRecipe'
 import QRCode from '@src/views/components/QRCode'
+import InvoiceModel from '@src/views/components/InvoiceModel'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -344,7 +356,8 @@ const ENUM = {
 export default {
   components: {
     TheRecipe,
-    QRCode
+    QRCode,
+    InvoiceModel
   },
 
   data() {
@@ -363,6 +376,7 @@ export default {
       showQRCode: false,
       QRCodeURL: null,
       PickUpCode: null,
+      showInvoiceModel: false,
       recipeDetail: {
         visible: false,
         data: {}
@@ -447,7 +461,7 @@ export default {
     },
     canShowBtnBox() {
       return (
-        (this.order && this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单 && (this.canShowReceive || this.canShowSign)) ||
+        (this.order && this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单 && (this.canShowReceive || this.canShowSign || this.canShowApplyBtn)) ||
         this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
       )
     },
@@ -460,7 +474,10 @@ export default {
     canShowSign() {
       return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus == ENUM.ORDER_STATUS.已自提_已签收
     },
-
+    //是否显示申请发票
+    canShowApplyBtn() {
+      return this.order && this.order.OrderStatus === ENUM.ORDER_STATUS.已完成 && this.order.divisionId
+    },
     curPayMoney() {
       const order = this.order
       const payMoney = order.OrderMoney
@@ -485,6 +502,9 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    changeInvoiceModel() {
+      this.showInvoiceModel = true
+    },
     onClickSeeQRCode() {
       this.showQRCode = true
     },
@@ -499,13 +519,6 @@ export default {
     },
     payOrder(order) {
       let orderNo = order.OrderId
-      // this.orderId = order.OrderId
-      // let orderType = 'drug'
-      // let money = this.curPayMoney
-      // let params = { orderNo, orderType, money }
-
-      // const json = peace.util.encode(params)
-      // this.$router.push(`/components/ExpenseDetail/${json}`)
       peace.wx.pay({ orderNo }, this.orderExp, this.payCallback, this.payCallback)
     },
     orderExp(res) {

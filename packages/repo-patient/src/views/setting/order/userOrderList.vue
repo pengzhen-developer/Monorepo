@@ -63,7 +63,7 @@
             </div>
             <div class="panel-bottom"
                  style="padding-left: 0"
-                 v-if="item.close&&OrderCloseCountDown(item)||OrderReceptCountDown(item) ">
+                 v-if="canShowPanelBottomInquiry(item)">
               <div class="count-down">
                 <template v-if="OrderCloseCountDown(item)">
                   <span>订单关闭倒计时：</span>
@@ -84,8 +84,11 @@
               <!-- <div class="label gary"
                    @click="showCancellPop(item,index)">取消订单</div> -->
               <div class="label blue"
-                   v-if="item.inquiryInfo.inquiryStatus === 1&&(item.inquiryInfo.appointmentStatus =='0'||(item.inquiryInfo.reportTime&&item.inquiryInfo.appointmentStatus =='1'))"
+                   v-if="canShowPaybutton(item)"
                    @click="goPay(item,index,'countDown_inquiry_')">继续支付</div>
+              <div class="label blue"
+                   @click="changeInvoiceModel(item)"
+                   v-if="item.inquiryInfo.inquiryStatus == '5'&&item.orderInfo.divisionId">申请发票</div>
             </div>
           </div>
 
@@ -111,10 +114,11 @@
               <div class="small">
                 <div class="small-item">
                   <div class="small-item-key">就诊人:</div>
-                  <div class="small-item-val">
-                    {{item.familyInfo&&item.familyInfo.name||item.familyName}}
-                    {{item.familyInfo&&item.familyInfo.sex||''}}
-                    {{item.familyInfo&&item.familyInfo.age+'岁'||''}}</div>
+                  <div class="small-item-val"
+                       v-if="item.familyInfo">
+                    {{item.familyInfo.name||item.familyName}}
+                    {{item.familyInfo.sex||''}}
+                    {{item.familyInfo.age+'岁'||''}}</div>
                 </div>
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
@@ -130,7 +134,7 @@
               </div>
             </div>
             <div class="panel-bottom "
-                 v-if="(item.orderStatus == '1'&&item.close)||(item.orderStatus == '3'&& item.cancelState)">
+                 v-if="canShowPanelBottomRegister(item)">
               <div class="count-down"
                    v-if="item.orderStatus == '1'&&item.close">
                 <span>订单关闭倒计时:</span>
@@ -144,16 +148,13 @@
                    v-if="item.orderStatus == '3'"></div>
               <!-- <div class="label gary"
                    @click="canselOrder(item,index)"
-                   data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'&&item.close">取消订单
               </div> -->
               <div class="label blue"
                    @click="goPay(item,index,'countDown_register_')"
-                   data-orderid="item.orderId"
                    v-if="item.orderStatus == '1'&&item.close">继续支付</div>
               <!-- <div class="label blue"
                    @click="canselOrder(item,index)"
-                   data-orderid="item.orderId"
                    v-if="item.orderStatus == '3' && item.cancelState">申请退号</div> -->
             </div>
           </div>
@@ -165,6 +166,10 @@
       <div class="icon icon_none_consult"></div>
       <div class="none-text">暂无订单记录</div>
     </div>
+
+    <!-- 发票弹窗 -->
+    <InvoiceModel v-model="showInvoiceModel"
+                  :receiptNumber="receiptNumber"></InvoiceModel>
   </div>
 </template>
 
@@ -175,8 +180,11 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 
+import InvoiceModel from '@src/views/components/InvoiceModel'
+
 export default {
   props: {},
+  components: { InvoiceModel },
   data() {
     return {
       page: {
@@ -223,7 +231,10 @@ export default {
       timer: null,
       orderType: '',
       orderNo: '',
-      inquiryId: ''
+      inquiryId: '',
+
+      showInvoiceModel: false,
+      receiptNumber: ''
     }
   },
   activated() {
@@ -234,6 +245,26 @@ export default {
   },
 
   methods: {
+    changeInvoiceModel(item) {
+      this.showInvoiceModel = true
+      this.receiptNumber = item.orderInfo.divisionId
+    },
+    cnaShowApplyBtn(item) {
+      return item.inquiryInfo.inquiryStatus == '5' && item.orderInfo.divisionId
+    },
+    canShowPaybutton(item) {
+      console.log(item)
+      return (
+        item.inquiryInfo.inquiryStatus === 1 &&
+        (item.inquiryInfo.appointmentStatus == '0' || (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == '1'))
+      )
+    },
+    canShowPanelBottomRegister(item) {
+      return (item.orderStatus == '1' && item.close) || (item.orderStatus == '3' && item.cancelState)
+    },
+    canShowPanelBottomInquiry(item) {
+      return (item.close && this.OrderCloseCountDown(item)) || this.OrderReceptCountDown(item) || this.cnaShowApplyBtn(item)
+    },
     OrderCloseCountDown(item) {
       return (
         item.inquiryInfo.inquiryStatus == 1 &&
@@ -279,27 +310,12 @@ export default {
         const countDown = this.$refs[type + index][0]
         countDown.pause()
       }
-      // let orderNo = ''
-      // let typeName = '',
-      //   orderNo = '',
-      //   money = '',
-      //   orderType = '',
-      //   json = {}
-      // let doctorId = data.doctorInfo.doctorId
-      // let doctorName = data.doctorInfo.name
-      // orderType = data.orderType
-      // typeName = data.inquiryType
       if (data.orderType == 'register') {
         this.orderNo = data.orderNo
-        // money = data.orderMoney
-        // json = { money, typeName, doctorName, orderNo, doctorId, orderType }
       } else if (data.orderType == 'inquiry') {
         this.orderNo = data.orderInfo.orderNo
-        // money = data.orderInfo.orderMoney
         this.inquiryId = data.inquiryInfo.inquiryId
-        // json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       }
-      // json = peace.util.encode(json)
       this.orderType = data.orderType
       peace.wx.pay({ orderNo: this.orderNo }, null, this.payCallback, this.payCallback)
     },
