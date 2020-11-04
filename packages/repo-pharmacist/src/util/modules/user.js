@@ -3,11 +3,14 @@
  *
  */
 export const removeUserInfo = () => {
-  // 移除认证信息
-  Peace.identity.auth.removeAll()
+  // To be optimized
+  // 一些业务需要持久化信息，例如登录账号等
+  // 因此只需要清除用户相关信息，而非所有数据
 
-  window.localStorage.clear()
-  window.sessionStorage.clear()
+  // 移除当前站点所有 localStorage 存储的数据
+  // 移除当前站点所有 sessionStorage 存储的数据
+  Peace.cache.localStorage.clear()
+  Peace.cache.sessionStorage.clear()
 }
 
 export default {

@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import Util from '@src/util'
 import Service from './../service'
 
 export default {
@@ -80,10 +81,8 @@ export default {
   methods: {
     logout() {
       Peace.identity.auth.logout().then(() => {
-        Peace.cache.localStorage.clear()
-        Peace.cache.sessionStorage.clear()
-
-        this.$router.replace({ name: 'AppRedirect' }).then(() => window.location.reload())
+        Util.user.removeUserInfo()
+        Util.location.redirectToLogin()
       })
     }
   }

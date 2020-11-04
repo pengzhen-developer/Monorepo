@@ -18,15 +18,18 @@
 </template>
 
 <script >
+import Util from '@src/util'
+
 export default {
-  name: 'Error403',
+  name: 'Error401',
+
+  created() {
+    Util.user.removeUserInfo()
+  },
 
   methods: {
     back() {
-      Peace.cache.localStorage.clear()
-      Peace.cache.sessionStorage.clear()
-
-      this.$router.replace({ name: 'Login' }).then(() => window.location.reload())
+      Util.location.redirectToLogin()
     }
   }
 }
