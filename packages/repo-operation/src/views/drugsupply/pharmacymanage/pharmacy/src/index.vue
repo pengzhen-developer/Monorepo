@@ -67,7 +67,7 @@
                                  v-model.trim="DateValue"></peace-date-picker>
             </el-form-item>
             <el-form-item label="对接系统：">
-              <el-select v-model="model.sys_name"
+              <el-select v-model="model.DockingSys"
                          placeholder="全部"
                          clearable>
                 <el-option v-for="item in dockingSystemDict"
@@ -77,7 +77,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="系统属性：">
-              <el-select v-model="model.sys_attribute_name"
+              <el-select v-model="model.SysAttribute"
                          placeholder="全部"
                          clearable>
                 <el-option v-for="item in systemAttributeDict"
@@ -108,8 +108,12 @@
                              prop="CustType"
                              min-width="100px"></el-table-column>
             <el-table-column label="药房类型"
-                             prop="CustType"
-                             min-width="100px"></el-table-column>
+                             prop="DrugStoreType"
+                             min-width="120px">
+              <template slot-scope="scope">
+                {{scope.row.DrugStoreType | getEnumLabel(source.DRUG_STORE_TYPE)}}
+              </template>
+            </el-table-column>
             <el-table-column label="所属机构"
                              prop="CustName"
                              min-width="140px"></el-table-column>
@@ -182,13 +186,14 @@ export default {
         EnableStatus: '',
         CustType: '',
         CustName: '',
-        sys_name: '',
-        sys_attribute_name: '',
+        DockingSys: '',
+        SysAttribute: '',
         StarTime: '',
         EndTime: ''
       },
       source: {
         PHARMACY_TYPE: CONSTANT.PHARMACY_TYPE,
+        DRUG_STORE_TYPE: CONSTANT.DRUG_STORE_TYPE,
         ENABLE_STATUS: CONSTANT.ENABLE_STATUS
       },
       dockingSystemDict: [],

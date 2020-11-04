@@ -7,6 +7,13 @@ export default {
     院外药房: 30
   },
   /**
+   * 药房类型
+   */
+  DRUG_STORE_TYPE: {
+    线下实体药房: 10,
+    线上电商平台: 80
+  },
+  /**
    * 启用状态
    */
   ENABLE_STATUS: {
