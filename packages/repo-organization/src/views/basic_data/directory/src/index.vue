@@ -162,16 +162,14 @@
     </PeaceDialog>
 
     <!-- 导入药品 -->
-    <PeaceDialog :before-close="close"
-                 :close-on-click-modal="false"
+    <PeaceDialog :close-on-click-modal="false"
                  :close-on-press-escape="false"
                  :visible.sync="importDialogVisible"
                  title="批量新增药品"
                  v-if="importDialogVisible"
                  append-to-body
                  width="500px">
-      <DrugsImport @close="closeImportDialog"
-                   @success="get()" />
+      <DrugsImport @success="get()" />
     </PeaceDialog>
 
   </div>
@@ -241,14 +239,6 @@ export default {
     // 打开 Dialog
     openImportDialog() {
       this.importDialogVisible = true
-    },
-    // 关闭 Dialog
-    closeImportDialog() {
-      this.importDialogVisible = false
-    },
-    close(done) {
-      this.get()
-      done()
     },
     getMappingStatus(code) {
       return this.source.ENUM_MATCH_CODE.find((item) => item.value == code).label

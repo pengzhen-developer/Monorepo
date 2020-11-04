@@ -85,7 +85,7 @@ import structureModel from './components/structureModel'
 import Service from './service'
 
 export default {
-  name: 'RoleManagement',
+  name: 'DepartManagement',
   components: {
     departmentModel,
     structureModel

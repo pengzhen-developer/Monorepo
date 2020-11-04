@@ -9,8 +9,8 @@ export default {
     const isMock = false
 
     const apiPath = 'webapi/api/Depart/List'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -28,8 +28,8 @@ export default {
     const isMock = false
 
     const apiPath = 'webapi/api/Depart/Tree'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -47,8 +47,8 @@ export default {
     const isMock = false
 
     const apiPath = 'webapi/api/Depart/Get'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -66,8 +66,8 @@ export default {
     const isMock = false
 
     const apiPath = 'webapi/api/Depart/Create'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -85,8 +85,8 @@ export default {
     const isMock = false
 
     const apiPath = 'webapi/api/Depart/Update'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_MDS_API + apiPath
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

@@ -76,9 +76,6 @@ export default {
     clearFiles() {
       this.$refs.upload.clearFiles()
     },
-    close() {
-      this.$emit('close')
-    },
 
     submit() {
       if (this.canClick) {
@@ -94,7 +91,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_BASE}Template/DrugListTemplate.xls`
+        const url = `${process.env.VUE_APP_API_BASE}psd/Template/DrugListTemplate.xls`
         window.open(url, '_blank')
         this.$alert('', '药品批量导入模板获取成功！', {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>
@@ -129,7 +126,7 @@ export default {
     onSuccess(res) {
       if (res.code === 200 && res.success) {
         Peace.util.success(res.msg)
-        this.$emit('onSucess')
+        this.$emit('success')
       } else {
         this.tipText = res.msg
       }

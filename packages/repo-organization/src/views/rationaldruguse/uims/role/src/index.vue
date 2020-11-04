@@ -109,7 +109,6 @@ export default {
       },
       roleDialog: {
         visible: false,
-        // type: '',
         title: '',
         data: {}
       }
@@ -153,7 +152,6 @@ export default {
     },
     toRole(type, row) {
       this.roleDialog.visible = true
-      // this.roleDialog.type = type
       this.roleDialog.data = row ? row : {}
       if (type === 'detail') {
         this.roleDialog.title = '查看详情'

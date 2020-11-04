@@ -22,21 +22,6 @@
                   maxlength="10"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <!-- <el-form-item >
-        <span slot="label"
-              class="form-label">服务名称</span>
-      
-        <el-select 
-                   v-model="model.productCode"
-                   @change="getMenuList"
-                   placeholder="请选择"
-                   style="width: 100%;">
-          <el-option v-for="item in productDict"
-                     v-bind:key="item.productId"
-                     v-bind:label="item.productName"
-                     v-bind:value="item.productId"></el-option>
-        </el-select>
-      </el-form-item> -->
       <div class="select-menu">
         <div class="title">可选菜单</div>
         <div class="menu-tree">
@@ -100,13 +85,9 @@ export default {
       menuTree: [],
       roleMenu: [],
 
-      // 产品字典
-      // productDict: Util.user.getUserInfo().productNameList,
-
       model: {
         clientId: 'pharmacist',
         organCode: Util.user.getUserInfo().custCode,
-        productCode: 'hlyygl',
 
         roleId: '',
         roleName: '',
@@ -121,17 +102,10 @@ export default {
           { validator: validateChinese, message: '角色名称仅支持中文字符', trigger: 'blur' }
         ],
         roleDesc: [{ min: 0, max: 10, message: '备注最多输入10个字符', trigger: 'blur' }],
-        // productCode: [{ required: true, message: '请选择服务', trigger: 'change' }],
         menuIds: [{ required: true, message: '请选择菜单', trigger: 'change' }]
       }
     }
   },
-
-  // filters: {
-  //   formatProduct(type, dictList) {
-  //     return dictList.find((item) => item.productId == type)?.productName
-  //   }
-  // },
 
   methods: {
     init(type, roleId) {
@@ -139,17 +113,16 @@ export default {
       this.model.roleId = roleId || ''
 
       this.$nextTick(() => {
-        this.getMenuList()
         if (this.type !== 'detail') {
           this.$refs.form.resetFields()
         }
+
         if (this.model.roleId) {
           Service.role()
             .get({ id: this.model.roleId })
             .then((res) => {
               this.model = res.data
               this.model.menuIds = res.data.menuIds ? res.data.menuIds.split(',') : []
-
               this.getMenuList().then(() => {
                 if (this.type !== 'detail') {
                   let checked = this.resolveAllEunuchNodeId(this.menuTree, this.model.menuIds, [])
@@ -161,6 +134,8 @@ export default {
                 }
               })
             })
+        } else {
+          this.getMenuList()
         }
       })
     },
@@ -168,40 +143,14 @@ export default {
     getMenuList() {
       let params = {
         lazy: false,
-        clientId: this.model.clientId,
-        productCode: this.model.productCode
+        clientId: this.model.clientId
       }
       return Service.menu()
         .menuTree(params)
         .then((res) => {
-          this.menuTree = this.filterMenuTree(res.data)
+          this.menuTree = res.data
           this.roleMenu = []
         })
-    },
-    filterMenuTree(tree) {
-      //临时处理运营端服务设置控制菜单
-      const menuSettingMap = {
-        处方审核: '处方管理',
-        处方点评: '处方点评',
-        审方引擎: '',
-        系统对接: '',
-        非系统对接: '药房接单'
-      }
-      const accountMenuList = Util.user.getUserInfo()?.accountMenuList
-      const menuBefore = []
-      accountMenuList.map((menu) => {
-        if (!menu.status && menu.title) {
-          menuBefore.push(menuSettingMap[menu.title])
-        }
-      })
-      menuBefore.map((temp) => {
-        tree.map((menu, index) => {
-          if (temp == menu.name) {
-            tree.splice(index, 1)
-          }
-        })
-      })
-      return tree
     },
 
     /**

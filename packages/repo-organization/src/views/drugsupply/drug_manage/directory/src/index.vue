@@ -115,16 +115,14 @@
     </PeaceDialog>
 
     <!-- 导入药品 -->
-    <PeaceDialog :before-close="close"
-                 :close-on-click-modal="false"
+    <PeaceDialog :close-on-click-modal="false"
                  :close-on-press-escape="false"
                  :visible.sync="importDialogVisible"
                  title="批量新增药品"
                  v-if="importDialogVisible"
                  append-to-body
                  width="500px">
-      <DrugsImport @close="closeImportDialog"
-                   @success="get()" />
+      <DrugsImport @success="get()" />
     </PeaceDialog>
 
     <!-- 导入药品编码 -->

@@ -4,6 +4,7 @@
     <el-upload action=""
                :auto-upload="false"
                :multiple="false"
+               :on-error="onError"
                :on-remove="onRemove"
                :on-change="onChange"
                :http-request="uploadFiles"
@@ -20,7 +21,7 @@
       </div>
       <div class="el-upload__text"
            v-else>
-        请点击下方导入按钮，开始导入药品数据
+        请点击下方导入按钮，开始导入药师账号
       </div>
       <div class="el-upload__tip"
            slot="tip">
@@ -76,7 +77,10 @@ export default {
     clearFiles() {
       this.$refs.upload.clearFiles()
     },
-
+    onError() {
+      this.tipText = '文件上传失败!'
+      this.clearFiles()
+    },
     submit() {
       if (this.canClick) {
         this.fullscreenLoading = true
@@ -86,21 +90,20 @@ export default {
 
     /* 下载导入模板 */
     download() {
-      this.$confirm('下载 <strong>药品批量导入模板<strong> ？', '文件下载', {
+      this.$confirm('下载 <strong>药师账号批量导入模板<strong> ？', '文件下载', {
         dangerouslyUseHTMLString: true,
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_BASE}psd/Template/DrugListTemplate.xls`
+        const url = `${process.env.VUE_APP_API_BASE}psd/Template/PharmacistListTemplate.xls`
         window.open(url, '_blank')
-        this.$alert('', '药品批量导入模板获取成功！', {
+        this.$alert('', '药师账号批量导入模板获取成功！', {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>
         })
       })
     },
 
     uploadFiles(file) {
-      let _this = this
       let files = file.file
       let format = files.name.substring(files.name.lastIndexOf('.') + 1)
       let reader = new FileReader()
@@ -111,21 +114,24 @@ export default {
         let param = {
           Format: format,
           Basic64: dataURL,
-          billType: 4
+          billType: 15
         }
         Service.ImportExcelByZYY(param)
           .then((res) => {
-            _this.onSuccess(res)
+            this.onSuccess(res)
+          })
+          .catch((res) => {
+            this.onError(res)
           })
           .finally(() => {
-            _this.fullscreenLoading = false
+            this.fullscreenLoading = false
           })
       }
     },
     // 批量导入成功回调
     onSuccess(res) {
       if (res.code === 200 && res.success) {
-        Peace.util.success(res.msg)
+        Peace.util.success('成功')
         this.$emit('success')
       } else {
         this.tipText = res.msg

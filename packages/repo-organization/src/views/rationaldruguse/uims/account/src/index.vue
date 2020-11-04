@@ -6,8 +6,32 @@
                v-bind:model="model"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent>
-        <el-form-item label="角色名称：">
-          <el-input v-model.trim="model.roleName"></el-input>
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span>账号</span>
+            <span class="text-center">：</span>
+          </div>
+          <el-input v-model="model.UserName"
+                    placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span>姓名</span>
+            <span class="text-center">：</span>
+          </div>
+          <el-input v-model="model.RealName"
+                    placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span>所在部门</span>
+            <span class="text-center">：</span>
+          </div>
+          <el-input v-model="model.DepartName"
+                    placeholder="请输入所在部门"></el-input>
         </el-form-item>
 
         <el-form-item label="">
@@ -19,34 +43,42 @@
     </div>
 
     <div class="card">
-      <el-button type="primary"
-                 icon="el-icon-plus"
-                 style="margin-bottom: 20px;"
-                 v-on:click="add">新增</el-button>
+
+      <div class="q-mb-md">
+        <el-button type="primary"
+                   icon="el-icon-plus"
+                   v-on:click="toAccount('')">新增</el-button>
+        <el-button v-on:click="openImportDialog">批量导入</el-button>
+      </div>
+
       <PeaceTable ref="table"
-                  style="width: 100%"
-                  pagination
-                  :tableProps="{
-                    pageIndex: 'current',
-                    pageSize: 'size'
-                  }"
-                  max-height="600">
+                  pagination>
         <el-table-column type="index"
                          fixed
                          align="center"
                          label=" "
                          width="60"></el-table-column>
-        <el-table-column prop="roleName"
-                         label="角色名称"></el-table-column>
-        <el-table-column prop="roleDesc"
+        <el-table-column prop="UserName"
+                         label="账号"></el-table-column>
+        <el-table-column prop="Note"
                          label="备注">
           <template slot-scope="scope">
-            {{scope.row.roleDesc}}
+            {{scope.row.Note}}
           </template>
         </el-table-column>
-
-        <el-table-column prop="createTime"
-                         label="创建时间">
+        <el-table-column prop="DepartName"
+                         label="所在部门"></el-table-column>
+        <el-table-column prop="RealName"
+                         label="姓名"></el-table-column>
+        <el-table-column prop="RoleNames"
+                         label="角色"></el-table-column>
+        <el-table-column label="账号状态">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.EnableStatus"
+                       :active-value="true"
+                       :inactive-value="false"
+                       v-on:change="changeStatus(scope.row)"></el-switch>
+          </template>
         </el-table-column>
         <el-table-column min-width="100px"
                          align="center"
@@ -54,7 +86,7 @@
                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="toRole( scope.row)">修改</el-button>
+                       v-on:click="toAccount(scope.row)">修改</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
@@ -62,11 +94,23 @@
     <!--角色 -->
     <PeaceDialog width="696px"
                  v-bind:visible.sync="dialog.visible"
-                 :title="dialog.title">
+                 :title="dialog.title"
+                 custom-class='accountDialog'>
       <accountModel v-if="dialog.visible"
-                    ref="roleModel"
                     v-on:close="dialog.visible = false"
-                    v-on:refresh="get"></accountModel>
+                    v-on:refresh="get"
+                    v-bind:data="Id"></accountModel>
+    </PeaceDialog>
+
+    <!-- 导入 -->
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="importDialogVisible"
+                 title="批量导入药师账号"
+                 v-if="importDialogVisible"
+                 append-to-body
+                 width="500px">
+      <DrugsImport v-on:success="get()" />
     </PeaceDialog>
   </div>
 
@@ -74,24 +118,27 @@
 
 <script>
 import accountModel from './components/accountModel'
-import Util from '@src/util'
+import DrugsImport from './components/DrugsImport'
 import Service from './service'
 
 export default {
-  name: 'RoleManagement',
+  name: 'AccountManagement',
   components: {
-    accountModel
+    accountModel,
+    DrugsImport
   },
   data() {
     return {
+      Id: '',
       model: {
-        clientId: Util.user.getUserInfo().clientId,
-        organCode: Util.user.getUserInfo().custCode,
-        roleName: ''
+        UserName: '',
+        RealName: '',
+        DepartName: ''
       },
+      importDialogVisible: false,
       dialog: {
         visible: false,
-        title: '新建部门'
+        title: '账户信息'
       }
     }
   },
@@ -106,26 +153,36 @@ export default {
 
   methods: {
     get() {
-      const fetch = Service.role().page
+      const fetch = Service.getPharmacistList
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
     },
-    add() {
+
+    toAccount(row) {
       this.dialog.visible = true
+      this.Id = row ? row.UserId : ''
     },
-    toRole() {}
+    changeStatus(row) {
+      const message = row.EnableStatus ? '确定启用该账号？' : '确定禁用该账号？'
+
+      this.$confirm(message, '提示', { closeOnClickModal: false })
+        .then(() => {
+          const params = { UserId: row.UserId, Enabled: row.EnableStatus }
+          Service.EnablePharmacist(params).then(() => {
+            Peace.util.success('操作成功')
+            this.get()
+          })
+        })
+        .catch(() => {
+          row.EnableStatus = row.EnableStatus ? false : true
+        })
+    },
+    openImportDialog() {
+      this.importDialogVisible = true
+    }
   }
 }
 </script>
 
 <style scoped>
-.table-status {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.table-status-text {
-  margin-right: 10px;
-}
 </style>
