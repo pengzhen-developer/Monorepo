@@ -839,7 +839,7 @@
 
 "@jk998/identity@^0.2.2":
   version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
+  resolved "https://registry.npmjs.org/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
   integrity sha512-LS1swhR6oFA7xV8LirsR7inac2Cwe6vrdMZOJw9zL3ob6Gte2Z38dhNL0v5lZvJnvDImSXbMri3cG4IHKrtsxw==
   dependencies:
     "@jk998/library" "^0.1.17"
@@ -855,10 +855,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.18.tgz#aeb8b160cf6cf0fb7ac5fbf753b57c5f6eb34bc5"
-  integrity sha512-/0RoTqr1xvv9RwGrXmeEizpTLVr5NcLxmvqRR1XIByacXz8q86d8Z3S6frvNDChYBE2HTzs07n++dSH5hcPvzA==
+"@jk998/library@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.npmjs.org/@jk998/library/-/library-0.1.19.tgz#19d869c1511280a818b04dfdd0fbd5a37efae4cf"
+  integrity sha512-oMarK2oxvOURjE6NMeWB8WuAXqSzbueWpkT+rxPNUP5M1pCD3y32xkl01k5AcMa4MCyw8l1Sq3R/kpUmGB5ppA==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
@@ -867,7 +867,7 @@
 
 "@jk998/peace-element-ui@^0.1.7":
   version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.7.tgz#ba04823cddf7013849d35b3cf8e8d31da6f2c569"
+  resolved "https://registry.npmjs.org/@jk998/peace-element-ui/-/peace-element-ui-0.1.7.tgz#ba04823cddf7013849d35b3cf8e8d31da6f2c569"
   integrity sha512-WQVdQMDCjseP/XvC8+ufRrTRir6e5kwrVgDCGNph4gEoLINevj0SDHzXtGdNWpqgcJIS0nTDI0cqLyN9mbTEWg==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
