@@ -154,32 +154,32 @@
       <div class="pop-title">
         <span>请选择您的支付方式</span>
       </div>
-
+      <div class="pop-box">
+        <div class="pop-subtitle">配送方式</div>
+        <div class="pop-list">
+          <div class="pop-tag"
+               :class="{'active':json.tabIndex==item.Value,'disabled':!item.Visible}"
+               v-for="(item,index) in NewShippingMethod"
+               :key="index"
+               @click="changeTab(item)">
+            {{item.Label}}
+          </div>
+        </div>
+      </div>
       <div class="pop-box">
         <div class="pop-subtitle">支付方式</div>
         <div class="pop-list">
           <div class="pop-tag"
-               :class="{'active':item.checked=='1'&&json.payIndex==item.key,'disabled':item.checked=='0'}"
+               :class="{'active':json.payIndex==item.Value,'disabled':!item.Visible}"
                v-for="(item,index) in payList"
                :key="index"
                @click="selectPay(item)">
-            {{item.value}}
+            {{item.Label}}
           </div>
 
         </div>
       </div>
-      <div class="pop-box">
-        <div class="pop-subtitle">配送方式</div>
-        <div class="pop-list">
-          <div class=" pop-tag"
-               :class="{'active':!item.disabled&&json.tabIndex==item.index,'disabled':item.disabled}"
-               v-for="(item,index) in tabList"
-               :key="index"
-               @click="changeTab(item.index,item.disabled)">
-            {{item.name}}
-          </div>
-        </div>
-      </div>
+
       <van-button type="primary"
                   round
                   @click="changeShowPopup"
@@ -210,6 +210,8 @@ export default {
   data() {
     return {
       payList: [],
+      NewShippingMethod: [],
+      payName: '',
       showPopup: false,
       colseIcon: require('@src/assets/images/ic_close@2x.png'),
       hasSubmitOrder: false,
@@ -217,8 +219,6 @@ export default {
       orderId: '',
       showBtn: true,
       page: {
-        url: '',
-        accessToken: '',
         json: {},
         tabIndex: '',
         payIndex: '',
@@ -297,24 +297,12 @@ export default {
       } else {
         return '暂无可用'
       }
-    },
-    payName() {
-      return this.payList.find((item) => item.key == this.page.payIndex)?.value
-    },
-    tabList() {
-      let list = [
-        { index: 1, name: '配送到家', disabled: false },
-        { index: 0, name: '到店取药', disabled: false }
-      ]
-      const ShippingMethod = this.page.json.ShippingMethod
-      if (ShippingMethod == '0' || ShippingMethod == '1') {
-        list.map((item) => (item.disabled = true))
-        list.find((item) => item.index == ShippingMethod).disabled = false
-      }
-      return list
     }
   },
   methods: {
+    getPayName() {
+      this.payName = this.payList.find((item) => item.Value == this.page.payIndex)?.Label
+    },
     onReset() {
       /** 重置医保相关信息*/
       this.$refs.yibaoCardSelect.selected = false
@@ -332,76 +320,6 @@ export default {
     chooseYibao() {
       if (!this.order.medicalCardNo) {
         this.showCard = true
-      }
-    },
-    changeShippingMethod(tabIndex) {
-      //选择支付方式 则重置系统配置得支付方式
-      const ShippingMethod = this.page?.json?.ShippingMethod
-      if (ShippingMethod == 2) {
-        switch (tabIndex) {
-          //1.在线支付 支持 配送到家，到店取药
-          case '1':
-            this.tabList.map((item) => (item.disabled = false))
-            break
-          //2.到店支付 支持 到店取药
-          case '2':
-            this.tabList.map((item) => (item.disabled = true))
-            this.tabList.find((item) => item.index == 0).disabled = false
-            this.json.tabIndex = 0
-            break
-          //3.货到付款 支持 配送到家
-          case '3':
-            this.tabList.map((item) => (item.disabled = true))
-            this.tabList.find((item) => item.index == 1).disabled = false
-            this.json.tabIndex = 1
-            break
-
-          default:
-            break
-        }
-      }
-      /** 0 到店取药  不支持 货到付款 若货到付款可选 则 配送方式为2*/
-      //1 在线支付  2 到店支付  3 货到付款
-      else if (ShippingMethod == 0) {
-        this.payList.map((item) => {
-          if (item.key == 3 && item.checked == 1) {
-            this.json.tabIndex = 2
-          }
-        })
-      }
-      /**  1 配送到家 不支持 到店支付 若到店支付可选 则 配送方式为2*/
-      //1 在线支付  2 到店支付  3 货到付款
-      else if (ShippingMethod == 1) {
-        this.payList.map((item) => {
-          if (item.key == 2 && item.checked == 1) {
-            this.json.tabIndex = 2
-          }
-        })
-      }
-    },
-    cahngePaymentWay(ShippingMethod) {
-      // if (this.page?.json?.ShippingMethod != 2) {
-      //   return
-      // }
-      let tabIndex = ShippingMethod || this.json.tabIndex
-      //1 在线支付  2 到店支付  3 货到付款
-      //配送到家 - 到店支付不可用
-      if (tabIndex == 1) {
-        this.payList.map((item) => {
-          item.checked = 1
-          if (item.key == 2) {
-            item.checked = 0
-          }
-        })
-      }
-      //到店取药 - 货到付款不可用
-      else if (tabIndex == 0) {
-        this.payList.map((item) => {
-          item.checked = 1
-          if (item.key == 3) {
-            item.checked = 0
-          }
-        })
       }
     },
     selectAddressCallback(json) {
@@ -430,12 +348,12 @@ export default {
         if (this.page.payIndex != this.json.payIndex || this.page.tabIndex != this.json.tabIndex) {
           this.onReset()
         }
-        this.page.payIndex = this.json.payIndex
         this.page.tabIndex = this.json.tabIndex
+        this.page.payIndex = this.json.payIndex
+        this.getPayName()
       } else {
-        this.json.payIndex = this.page.payIndex
         this.json.tabIndex = this.page.tabIndex
-        this.cahngePaymentWay()
+        this.json.payIndex = this.page.payIndex
       }
     },
     goDrugPhaHomePage() {
@@ -543,14 +461,11 @@ export default {
           let moneyRecord = res.data.moneyRecord //费用明细
           let params = { orderNo, orderType, money, moneyRecord }
 
-          // if (paymentType === 'yibaopay') {
           if (this.page.payIndex > 1) {
             this.payCallback()
           } else {
             this.dialog.visible = true
             this.dialog.data = params
-            // const json = peace.util.encode(params)
-            // this.$router.replace(`/components/ExpenseDetail/${json}`)
           }
         })
         .finally(() => {
@@ -571,43 +486,43 @@ export default {
     },
 
     selectPay(item) {
-      if (item.checked == 0) {
+      if (!item.Visible) {
         return
       }
-      if (item.key == this.json.payIndex) {
+      if (item.Value == this.json.payIndex) {
         return
       }
-      this.json.payIndex = item.key
-      this.json.payName = item.name
-      this.changeShippingMethod(item.key)
+      this.json.payIndex = item.Value
     },
-    changeTab(index, disabled) {
-      if (index == this.json.tabIndex) {
+    changeTab(item) {
+      if (!item.Visible) {
         return
       }
-      if (disabled) {
+      if (item.Value == this.json.tabIndex) {
         return
       }
-      // if (this.page.json.ShippingMethod == '0' && index == '1') {
-      //   peace.util.alert('该药店不支持配送到家。')
-      //   return
-      // }
-      // if (this.page.json.ShippingMethod == '1' && index == '0') {
-      //   peace.util.alert('该药店不支持到店配药。')
-      //   return
-      // }
-      this.json.tabIndex = index
-      this.cahngePaymentWay()
+      this.json.tabIndex = item.Value
+      this.payList = [].concat(item.PayModel)
+      this.json.payIndex = this.payList.find((pay) => pay.Visible)?.Value
     },
-
     getPhaOrder() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.patient.getOrderBefore(params).then((res) => {
         this.order = res.data
-        this.payList = peace.util.deepClone(res.data.paymentTypeArr)
-        this.payList.map((item) => (item.disabled = false))
+        //货到付款 暂无业务 不可选
+        res.data.NewShippingMethod.map((item) => {
+          item.PayModel.map((pay) => {
+            if (pay.Value == 3) {
+              pay.Visible = false
+            }
+          })
+        })
 
-        this.page.payIndex = this.payList.find((item) => item.checked == 1)?.key
+        this.NewShippingMethod = peace.util.deepClone(res.data.NewShippingMethod)
+        this.payList = res.data.NewShippingMethod.find((item) => item.Visible)?.PayModel
+        this.page.payIndex = this.payList.find((item) => item.Visible)?.Value
+
+        this.getPayName()
       })
     },
 

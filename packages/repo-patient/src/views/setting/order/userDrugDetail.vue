@@ -354,6 +354,7 @@ const ENUM = {
 }
 
 export default {
+  name: 'UserDrugDetail',
   components: {
     TheRecipe,
     QRCode,
