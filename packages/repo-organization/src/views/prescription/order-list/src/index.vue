@@ -7,15 +7,15 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
 
-        <el-form-item label="订单来源">
+        <!-- <el-form-item label="订单来源">
           <el-input v-model="model.Source"></el-input>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="订单编号">
           <el-input v-model="model.OrderNumber"></el-input>
         </el-form-item>
 
-        <el-form-item label="处方类型">
+        <!-- <el-form-item label="处方类型">
           <el-select clearable
                      placeholder="全部"
                      v-model="model.OrderType">
@@ -24,9 +24,9 @@
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
-        <el-form-item label="系统属性">
+        <!-- <el-form-item label="系统属性">
           <el-select clearable
                      placeholder="全部"
                      v-model="model.sys_attribute_code">
@@ -35,24 +35,24 @@
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
           </el-select>
+        </el-form-item> -->
+
+        <el-form-item label="客户姓名">
+          <el-input v-model="model.CustName"></el-input>
+        </el-form-item>
+
+        <!-- <el-form-item label="手机号码">
+          <el-input v-model="model.Phone"></el-input>
+        </el-form-item> -->
+
+        <el-form-item label="药房">
+          <el-input v-model="model.DrugName"></el-input>
         </el-form-item>
 
         <el-form-item label="下单日期">
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="model.TimeRange"></peace-date-picker>
-        </el-form-item>
-
-        <el-form-item label="客户姓名">
-          <el-input v-model="model.CustName"></el-input>
-        </el-form-item>
-
-        <el-form-item label="手机号码">
-          <el-input v-model="model.Phone"></el-input>
-        </el-form-item>
-
-        <el-form-item label="药房">
-          <el-input v-model="model.DrugName"></el-input>
         </el-form-item>
 
         <el-form-item label="取货方式">
@@ -77,7 +77,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="支付状态">
+        <!-- <el-form-item label="支付状态">
           <el-select clearable
                      placeholder="全部"
                      v-model="model.PayStatus">
@@ -86,7 +86,7 @@
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-button type="primary"
                    style="width: 80px;"
@@ -140,6 +140,14 @@
           </template>
         </el-table-column>
 
+        <el-table-column label="支付状态"
+                         align="center"
+                         width="120px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '--') }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="订单状态"
                          align="center"
                          width="120px">
@@ -148,20 +156,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="支付状态"
-                         align="center"
-                         width="120px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.PayMode | filterDictionary(remoteSource.PayStatus, '--') }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="Source"
+        <!-- <el-table-column prop="Source"
                          label="订单来源"
                          align="center"
-                         width="120px"></el-table-column>
+                         width="120px"></el-table-column> -->
 
-        <el-table-column label="处方类型"
+        <!-- <el-table-column label="处方类型"
                          align="center"
                          width="120px">
           <template slot-scope="scope">
@@ -179,11 +179,11 @@
                          label="系统属性"
                          align="center"
                          width="120px">
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column label="操作"
                          align="center"
-                         min-width="120px"
+                         width="120px"
                          fixed="right">
           <template slot-scope="scope">
             <el-button :disabled="!scope.row.JZTClaimNo"
@@ -212,46 +212,6 @@
                   v-bind:visible.sync="dialog2.visible">
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>
     </peace-dialog>
-
-    <!-- <peace-dialog title="发货信息"
-                  width="1000px"
-                  :v-if="dialog3.visible"
-                  v-bind:visible.sync="dialog3.visible">
-      <peace-table :data="dialog3.data">
-        <el-table-column prop="DrugCode"
-                         label="药品编码"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="DrugName"
-                         label="药品名称"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="DrugSpecifications"
-                         label="药品规格"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="PackUnit"
-                         label="包装单位"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="EnterpriseName"
-                         label="生产厂家"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="BatchNumber"
-                         label="批次号"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="ValidityDate"
-                         label="有效期"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column prop="ManufactureDate"
-                         label="生产日期"
-                         align="center"
-                         width="120px"></el-table-column>
-      </peace-table>
-    </peace-dialog> -->
 
   </div>
 </template>
@@ -307,15 +267,15 @@ export default {
 
       remoteSource: {
         //处方类型
-        OrderType: [],
+        // OrderType: [],
         //订单状态；
         OrderStatus: [],
         //支付状态
         PayStatus: [],
         //取货方式
-        ShippingMethod: [],
+        ShippingMethod: []
         //系统属性
-        SysAttributeCode: []
+        // SysAttributeCode: []
       }
     }
   },
@@ -328,11 +288,11 @@ export default {
   },
 
   async mounted() {
-    this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
-    this.remoteSource.OrderStatus = await peace.identity.dictionary.getList('OrderStatus')
-    this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
-    this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
-    this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
+    //this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
+    //this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
+    this.remoteSource.OrderStatus = await Peace.identity.dictionary.getList('OrderStatus')
+    this.remoteSource.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
+    this.remoteSource.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
 
     this.$nextTick().then(() => {
       this.fetch()
@@ -373,14 +333,6 @@ export default {
         this.dialog.visible = true
       })
     },
-
-    // showLogistics(row) {
-    //   const params = { OrderId: row.OrderId }
-    //   Service.getLogisticsInfo(params).then((res) => {
-    //     this.dialog3.data = res.data.list
-    //     this.dialog3.visible = true
-    //   })
-    // },
 
     onLoad() {
       this.dialog.data.show = true
