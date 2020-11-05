@@ -103,12 +103,11 @@ export default {
     },
 
     uploadFiles(file) {
-      let _this = this
       let files = file.file
       let format = files.name.substring(files.name.lastIndexOf('.') + 1)
       let reader = new FileReader()
       reader.readAsDataURL(files) //将文件读取为 DataURL,也就是base64编码
-      reader.onload = function (ev) {
+      reader.onload = (ev) => {
         //文件读取成功完成时触发
         let dataURL = ev.target.result //获得文件读取成功后的DataURL,也就是base64编码
         let param = {
@@ -118,10 +117,15 @@ export default {
         }
         Service.ImportExcelByZYY(param)
           .then((res) => {
-            _this.onSuccess(res)
+            this.onSuccess(res)
+          })
+          .catch((res) => {
+            Peace.util.error(res.data.msg)
+            this.canClick = false
           })
           .finally(() => {
-            _this.fullscreenLoading = false
+            this.clearFiles()
+            this.fullscreenLoading = false
           })
       }
     },

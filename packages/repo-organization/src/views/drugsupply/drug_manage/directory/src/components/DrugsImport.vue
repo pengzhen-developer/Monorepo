@@ -116,6 +116,10 @@ export default {
           .then((res) => {
             this.onSuccess(res)
           })
+          .catch((res) => {
+            Peace.util.error(res.data.msg)
+            this.canClick = false
+          })
           .finally(() => {
             this.clearFiles()
             this.fullscreenLoading = false
