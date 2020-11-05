@@ -125,7 +125,7 @@
         <div class="info-row-content">
           <template v-if="internalData.diagnoseList">
             <el-tag :key="item"
-                    style="margin: 0px 5px 0 0; "
+                    class="q-mr-6 q-mb-4"
                     type="info"
                     v-for="item in internalData.diagnose.split('|')">{{item}}</el-tag>
             <!-- v-for="item in internalData.diagnoseList">{{item.diagnoseName}}</el-tag> -->
