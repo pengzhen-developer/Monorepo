@@ -65,4 +65,13 @@ export default {
 div.jsoneditor-contextmenu div.jsoneditor-icon {
   position: relative;
 }
+::v-deep div.jsoneditor-outer {
+  min-height: 500px !important;
+  .ace-jsoneditor {
+    min-height: 500px !important;
+    .ace_content {
+      min-height: 500px !important;
+    }
+  }
+}
 </style>
