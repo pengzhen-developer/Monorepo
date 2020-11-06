@@ -205,7 +205,7 @@ export default {
           item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
         })
 
-        this.dialog2.data = res.data
+        this.dialog2.data = res.data.list
       })
     },
 
@@ -216,7 +216,7 @@ export default {
         const params = { OrderId: row.OrderId }
 
         Service.getOrderCancelRecord(params).then((res) => {
-          this.dialog.data = res.data
+          this.dialog.data = res.data.list
         })
       })
     },
