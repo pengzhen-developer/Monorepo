@@ -77,50 +77,25 @@
           <p class="child-key">配送方式</p>
           <p>：</p>
           <div>
-            <div class="row"
-                 v-if="detailData.CustomerType==10">
-              <el-checkbox-group v-model="DistributSelfMode"
-                                 class="q-mb-10">
-                <el-checkbox v-for="(item) in  DistributSelfList"
-                             :label="item.code"
-                             :key="item.code"
-                             disabled>{{item.name}}</el-checkbox>
-              </el-checkbox-group>
-              <div class="q-ml-xl">
-                <div class="row"
-                     v-if="DistributSelfMode.length > 0">
+            <div v-for="item in detailData.NewDistributionMode"
+                 v-bind:key="item.Value"
+                 class="row">
+              <template v-if="canShow(item)">
+                <el-checkbox v-bind:label="item.Value"
+                             disabled
+                             v-model="item.Visible"
+                             class="q-mb-8">{{item.Label}}</el-checkbox>
+                <div class="row q-ml-48"
+                     v-if="item.Visible">
                   <p class="child-key">支付方式</p>
                   <p>：</p>
-                  <el-checkbox-group v-model="detailData.PayModeSelf"
-                                     class="q-mb-10">
-                    <el-checkbox v-for="(item) in  PayselfList"
-                                 :label="item.code"
-                                 :key="item.code"
-                                 disabled>{{item.name}}</el-checkbox>
-                  </el-checkbox-group>
+                  <el-checkbox v-for="item2 in item.PayModel"
+                               v-bind:key="item2.Value"
+                               v-bind:label="item2.Value"
+                               v-model="item2.Visible"
+                               disabled>{{item2.Label}}</el-checkbox>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <el-checkbox-group v-model="DistributMode">
-                <el-checkbox v-for="(item) in  DistributionList"
-                             :label="item.code"
-                             :key="item.code"
-                             disabled>{{item.name}}</el-checkbox>
-              </el-checkbox-group>
-              <div class="q-ml-xl">
-                <div class="row"
-                     v-if="DistributMode.length>0">
-                  <p class="child-key">支付方式</p>
-                  <p>：</p>
-                  <el-checkbox-group v-model="detailData.PayMode">
-                    <el-checkbox v-for="(item) in  PayList"
-                                 :label="item.code"
-                                 :key="item.code"
-                                 disabled>{{item.name}}</el-checkbox>
-                  </el-checkbox-group>
-                </div>
-              </div>
+              </template>
             </div>
           </div>
         </div>
@@ -288,18 +263,7 @@ export default {
     return {
       saveing: false,
       detailData: {},
-      DistributSelfList: [{ code: 0, name: '自提' }],
-      DistributionList: [{ code: 1, name: '配送' }],
-      DistributSelfMode: [],
-      DistributMode: [],
-      PayselfList: [
-        { code: 4, name: '在线支付' },
-        { code: 2, name: '到店支付' }
-      ],
-      PayList: [
-        { code: 1, name: '在线支付' },
-        { code: 3, name: '货到付款' }
-      ],
+
       model: {
         ExamineStatus: '',
         Reason: ''
@@ -341,13 +305,20 @@ export default {
       const params = { Id: this.data.id }
       return fetch(params).then((res) => {
         this.detailData = res.data
-        this.DistributSelfMode = res.data.DistributionMode.filter((item) => item === 0)
-        this.DistributMode = res.data.DistributionMode.filter((item) => item === 1)
         this.detailData.logoUrlList = [res.data.logoUrl]
         this.detailData.BusinesslicenseUrlList = [res.data.BusinesslicenseUrl]
         this.detailData.DrugManagementlicenseUrlList = [res.data.DrugManagementlicenseUrl]
         this.detailData.GSPCertificationUrlList = [res.data.GSPCertificationUrl]
       })
+    },
+    //是否能显示自提
+    canShow(item) {
+      if (this.detailData.CustomerType == 80) {
+        if (item.Value == 0) {
+          return false
+        }
+      }
+      return true
     },
     changeRadio() {
       if (this.model.ExamineStatus == 15) {
