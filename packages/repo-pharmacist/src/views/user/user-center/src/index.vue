@@ -21,7 +21,7 @@ export default {
 
   created() {
     Peace.identity.auth.getAuth().then((res) => {
-      this.src = `${process.env.VUE_APP_SITE_BASE}Suborganization/PharmacistPersonalCenter?token=${res.access_token}`
+      this.src = `${process.env.VUE_APP_SITE_PHARMACIST}Suborganization/PharmacistPersonalCenter?token=${res.access_token}`
     })
   }
 }
