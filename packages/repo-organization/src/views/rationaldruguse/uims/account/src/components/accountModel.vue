@@ -397,7 +397,7 @@ export default {
           params.UserId = this.data
           Service.UpdatePharmacist(params)
             .then(() => {
-              Peace.util.success('提交成功')
+              Peace.util.success('保存成功')
               this.$emit('close')
               this.$emit('refresh')
             })
@@ -407,7 +407,7 @@ export default {
         } else {
           Service.CreatePharmacist(params)
             .then(() => {
-              Peace.util.success('提交成功')
+              Peace.util.success('保存成功')
               this.$emit('close')
               this.$emit('refresh')
             })

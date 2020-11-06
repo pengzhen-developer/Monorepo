@@ -15,8 +15,9 @@
         </el-form-item>
         <el-form-item label="">
           <el-button type="primary"
-                     v-on:click="get">确定</el-button>
-          <el-button v-on:click="view">查看部门结构</el-button>
+                     v-on:click="get">查询</el-button>
+          <el-button v-on:click="view"
+                     style="border-color:#3099A6;color:#3099A6;">查看部门结构</el-button>
         </el-form-item>
       </el-form>
     </div>

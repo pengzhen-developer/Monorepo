@@ -15,7 +15,7 @@
         </el-form-item>
         <el-form-item label="">
           <el-button type="primary"
-                     v-on:click="get">确定</el-button>
+                     v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -43,7 +43,7 @@
         <el-table-column prop="roleDesc"
                          label="备注">
           <template slot-scope="scope">
-            {{scope.row.roleDesc}}
+            {{scope.row.roleDesc||'——'}}
           </template>
         </el-table-column>
         <el-table-column label="使用状态">

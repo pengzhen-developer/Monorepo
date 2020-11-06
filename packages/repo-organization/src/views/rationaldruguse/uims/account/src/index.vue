@@ -63,7 +63,7 @@
         <el-table-column prop="Note"
                          label="备注">
           <template slot-scope="scope">
-            {{scope.row.Note}}
+            {{scope.row.Note||'——'}}
           </template>
         </el-table-column>
         <el-table-column prop="DepartName"

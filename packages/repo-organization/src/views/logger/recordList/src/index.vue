@@ -7,36 +7,38 @@
                v-bind:model="model">
         <el-form-item label="业务名称：">
           <el-select placeholder="全部"
-                     v-model="model.businessModule"
+                     v-model="model.bizModule"
                      clearable>
-            <el-option v-for="(value, label) in source.ENUM_BUSINESSSYSTEM_STATUS"
-                       v-bind:key="value"
-                       v-bind:label="label"
-                       v-bind:value="value"></el-option>
+            <el-option v-for="item in source.ENUM_BIZMODULE_STATUS"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="功能名称：">
-          <el-input placeholder="请输入"></el-input>
+          <el-input placeholder="请输入"
+                    v-model="model.functionName"></el-input>
         </el-form-item>
         <el-form-item label="操作类型：">
           <el-select placeholder="全部"
-                     v-model="model.operationType"
+                     v-model="model.optType"
                      clearable>
-            <el-option v-for="(value, label) in source.ENUM_ACTIONTYPE_STATUS"
-                       v-bind:key="value"
-                       v-bind:label="label"
-                       v-bind:value="value"></el-option>
+            <el-option v-for="item in source.ENUM_OPTTYPE_STATUS"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item label="操作日期：">
           <peace-date-picker type="daterange"
-                             v-model="model.timeRange"
+                             v-model="timeRange"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
 
         <el-form-item label="">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary"
+                     v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -50,25 +52,28 @@
                          align="center"
                          type="index"></el-table-column>
         <el-table-column min-width="200px"
-                         align="center"
                          label="业务名称"
-                         prop=""></el-table-column>
+                         prop="bizModule">
+          <template slot-scope="scope">
+            {{scope.row.bizModule | getLabel(source.ENUM_BIZMODULE_STATUS)}}
+          </template>
+        </el-table-column>
         <el-table-column min-width="200px"
-                         align="center"
                          label="功能名称"
-                         prop=""></el-table-column>
+                         prop="functionName"></el-table-column>
         <el-table-column min-width="160px"
-                         align="center"
                          label="操作类型"
-                         prop=""></el-table-column>
+                         prop="optType">
+          <template slot-scope="scope">
+            {{scope.row.optType | getLabel(source.ENUM_OPTTYPE_STATUS)}}
+          </template>
+        </el-table-column>
         <el-table-column min-width="160px"
-                         align="center"
                          label="操作人"
-                         prop=""></el-table-column>
+                         prop="createBy"></el-table-column>
         <el-table-column width="160px"
-                         align="center"
                          label="操作时间"
-                         prop=""></el-table-column>
+                         prop="createTime"></el-table-column>
 
       </PeaceTable>
     </div>
@@ -77,7 +82,7 @@
 </template>
 
 <script>
-import CONSTANT from './constant'
+import Service from './service'
 export default {
   name: 'LoggerRecordList',
 
@@ -85,12 +90,14 @@ export default {
     return {
       timeRange: [],
       source: {
-        ENUM_BUSINESSSYSTEM_STATUS: CONSTANT.ENUM_BUSINESSSYSTEM_STATUS,
-        ENUM_ACTIONTYPE_STATUS: CONSTANT.ENUM_ACTIONTYPE_STATUS
+        ENUM_BIZMODULE_STATUS: [],
+        ENUM_OPTTYPE_STATUS: []
       },
       model: {
-        businessModule: '',
-        operationType: '',
+        serviceId: 'console',
+        bizModule: '',
+        functionName: '',
+        optType: '',
         startTime: '',
         endTime: ''
       }
@@ -100,6 +107,23 @@ export default {
     timeRange(timeRange) {
       this.model.startTime = timeRange?.[0] ?? ''
       this.model.endTime = timeRange?.[1] ?? ''
+    }
+  },
+  filters: {
+    getLabel: function (value, list) {
+      return list.find((item) => item.value === value)?.label
+    }
+  },
+  async created() {
+    this.source.ENUM_BIZMODULE_STATUS = await Peace.identity.dictionary.getList('console_business_module')
+    this.source.ENUM_OPTTYPE_STATUS = await Peace.identity.dictionary.getList('operate_type')
+    this.get()
+  },
+  methods: {
+    get() {
+      const fetch = Service.recordList
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
     }
   }
 }

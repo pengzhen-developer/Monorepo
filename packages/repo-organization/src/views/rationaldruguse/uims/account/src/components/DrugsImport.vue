@@ -4,7 +4,6 @@
     <el-upload action=""
                :auto-upload="false"
                :multiple="false"
-               :on-error="onError"
                :on-remove="onRemove"
                :on-change="onChange"
                :http-request="uploadFiles"
@@ -77,10 +76,7 @@ export default {
     clearFiles() {
       this.$refs.upload.clearFiles()
     },
-    onError() {
-      this.tipText = '文件上传失败!'
-      this.clearFiles()
-    },
+
     submit() {
       if (this.canClick) {
         this.fullscreenLoading = true
@@ -95,7 +91,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_BASE}psd/Template/PharmacistListTemplate.xls`
+        const url = `${process.env.VUE_APP_API_BASE}psd/Template/PharmacistListTemplate.xlsx`
         window.open(url, '_blank')
         this.$alert('', '药师账号批量导入模板获取成功！', {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>
@@ -108,7 +104,7 @@ export default {
       let format = files.name.substring(files.name.lastIndexOf('.') + 1)
       let reader = new FileReader()
       reader.readAsDataURL(files) //将文件读取为 DataURL,也就是base64编码
-      reader.onload = function (ev) {
+      reader.onload = (ev) => {
         //文件读取成功完成时触发
         let dataURL = ev.target.result //获得文件读取成功后的DataURL,也就是base64编码
         let param = {
@@ -121,9 +117,12 @@ export default {
             this.onSuccess(res)
           })
           .catch((res) => {
-            this.onError(res)
+            Peace.util.error(res.data.Msg)
+            this.canClick = false
+            this.hasExceed = false
           })
           .finally(() => {
+            this.clearFiles()
             this.fullscreenLoading = false
           })
       }
@@ -133,8 +132,6 @@ export default {
       if (res.code === 200 && res.success) {
         Peace.util.success('成功')
         this.$emit('success')
-      } else {
-        this.tipText = res.msg
       }
       setTimeout(() => {
         this.fullscreenLoading = false
@@ -176,7 +173,9 @@ export default {
   text-align: left !important;
 }
 .download {
+  width: 15%;
   color: #3099a6;
+  cursor: pointer;
 }
 ::v-deep .el-notification {
   width: 500px !important;
