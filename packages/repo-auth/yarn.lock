@@ -902,10 +902,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/identity@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.1.tgz#9600717cf1daaea679c572848dfccde8bd0b9738"
-  integrity sha512-ZwnDHCKERegGMNWAAkKqq5urueIZSd0oYE1jZNrc1NuNSpJRreVNpp8VMB1R4jdwrJotFk+Q7Sv76/QeP2OeLw==
+"@jk998/identity@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
+  integrity sha512-LS1swhR6oFA7xV8LirsR7inac2Cwe6vrdMZOJw9zL3ob6Gte2Z38dhNL0v5lZvJnvDImSXbMri3cG4IHKrtsxw==
   dependencies:
     "@jk998/library" "^0.1.17"
     crypto-js "^4.0.0"
@@ -914,6 +914,16 @@
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
   integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
+  dependencies:
+    axios "^0.20.0"
+    dayjs "^1.8.35"
+    js-base64 "^3.5.2"
+    numeral "^2.0.6"
+
+"@jk998/library@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.19.tgz#19d869c1511280a818b04dfdd0fbd5a37efae4cf"
+  integrity sha512-oMarK2oxvOURjE6NMeWB8WuAXqSzbueWpkT+rxPNUP5M1pCD3y32xkl01k5AcMa4MCyw8l1Sq3R/kpUmGB5ppA==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"

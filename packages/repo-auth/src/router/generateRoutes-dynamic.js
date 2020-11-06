@@ -6,28 +6,7 @@ const getAccountMenu = () => {
     processEnv: process.env
   }
 
-  return Peace.identity.auth.getAccountMenu(params).catch((error) => {
-    // 本应在 peace => http => interceptors 处理
-    // 如下：
-    // if (response.data.code === 401 || response.data.code === 403) {
-    //   if (peace && peace.hasOwnProperty('$router')) {
-    //     peace.$router.push('/401')
-    //   }
-
-    //   return Promise.reject(response)
-    // }
-    //
-    // 但 generateRoutes-dynamic 在 new vue() 前，router 未生成
-    // 因此自行处理 401 错误
-    if (error?.response?.status === 401 || error?.response?.status === 403 || error?.response?.data?.code === 401 || error?.response?.data?.code === 403) {
-      // 清理账户信息
-      Peace.identity.auth.removeAuth()
-      Peace.identity.auth.removeAccountInfo()
-
-      // 跳转 401 提示页
-      window.location.href = process.env.VUE_APP_ROUTE_EXCEPTION_401
-    }
-  })
+  return Peace.identity.auth.getAccountMenu(params)
 }
 
 const getDynamicRoutes = (accountMenu) => {
