@@ -56,7 +56,11 @@
                          min-width="180px"></el-table-column>
         <el-table-column label="系统名称"
                          prop="sys_name"
-                         min-width="80px"></el-table-column>
+                         min-width="80px">
+          <template slot-scope="scope">
+            {{ scope.row.sys_name || '——' }}
+          </template>
+        </el-table-column>
         <el-table-column label="创建时间"
                          prop="CreateTime"
                          min-width="160px"></el-table-column>

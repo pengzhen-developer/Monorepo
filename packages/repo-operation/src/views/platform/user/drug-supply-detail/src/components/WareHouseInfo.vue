@@ -1,21 +1,33 @@
 <template>
   <div class="bg-white q-pa-lg">
+
     <div class="item-content">
-      <h2 class="cust-Name ">{{warehoseInfo.CustName}}</h2>
       <div class="item-title">
         <div class="title-left"></div>
         <p class="title">云仓信息</p>
       </div>
-      <div class="item-child">
-        <p class="child-key">云仓名称</p>
-        <p>：</p>
-        <p class="child-value">{{warehoseInfo.Name}}</p>
+      <div v-if="!warehouseInfo.Id">
+        <p class="noInfo">您还未创建云仓~</p>
       </div>
-      <div class="item-child">
-        <p class="child-key">branchid</p>
-        <p>：</p>
-        <p class="child-value">{{warehoseInfo.BranchId}}</p>
-      </div>
+      <template v-else>
+        <div class="item-child">
+          <p class="child-key">云仓名称</p>
+          <p>：</p>
+          <p class="child-value">{{warehouseInfo.Name}}</p>
+        </div>
+        <div class="item-child">
+          <p class="child-key">系统名称</p>
+          <p>：</p>
+          <p class="child-value">{{currentSystemForm.Name}}</p>
+        </div>
+        <div class="item-child"
+             v-for="item in currentSystemForm.item"
+             :key="item.Label">
+          <p class="child-key">{{item.Label}}</p>
+          <p>：</p>
+          <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+        </div>
+      </template>
     </div>
     <div class="line"></div>
     <div class="item-content">
@@ -23,7 +35,11 @@
         <div class="title-left"></div>
         <p class="title">机构开户信息</p>
       </div>
-      <AccountDetail v-bind:prentCustList="warehoseInfo.PrentCustList"></AccountDetail>
+      <p class="noInfo"
+         v-if="warehouseInfo.PrentCustList && warehouseInfo.PrentCustList.length === 0">暂无机构开户信息</p>
+      <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
+               v-bind:orgDict="orgDict"
+               v-bind:systemCode="warehouseInfo.SystemCode"></OrgList>
     </div>
   </div>
 
@@ -31,7 +47,7 @@
 
 <script>
 import Service from '../service/index'
-import AccountDetail from './AccountDetail'
+import OrgList from './OrgList'
 export default {
   name: 'WareHouseInfo',
   props: {
@@ -43,12 +59,32 @@ export default {
     }
   },
   components: {
-    AccountDetail
+    OrgList
   },
 
   data() {
     return {
-      warehoseInfo: {}
+      // 云仓详情
+      warehouseInfo: {
+        Id: '', // 云仓唯一标识
+        Name: '', // 名称
+        SystemCode: '', // 系统编码
+        Type: '', // 系统类型 0 ERP  2 九州云仓
+        CodeIn3PartPlatform: '', // 物流中心ID  / branchid
+        IDIn3PartPlatform: '', // 运营方ID
+        PrentCustList: [] // 机构数据信息
+      },
+      // 云仓-系统 字典 （返回表单配置）
+      systemDict: [],
+      // 云仓-系统 对应机构 字典（返回表单配置）
+      orgDict: [],
+      // 当前云仓使用的表单配置
+      currentSystemForm: {
+        Code: '',
+        Name: '',
+        Type: '',
+        item: []
+      }
     }
   },
   mounted() {
@@ -59,8 +95,13 @@ export default {
   methods: {
     fetch() {
       Service.getDetail({ code: this.data.custcode }).then((res) => {
-        if (res.data !== null) {
-          this.warehoseInfo = res.data
+        this.systemDict = res.data.CloudStructure
+        this.orgDict = res.data.CustomerStructure
+        if (res.data.GetCustIn3PartRes !== null) {
+          this.warehouseInfo = res.data.GetCustIn3PartRes
+
+          // 根据当前系统取对应配置
+          this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
         }
       })
     }
