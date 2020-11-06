@@ -117,7 +117,7 @@ export default {
             this.onSuccess(res)
           })
           .catch((res) => {
-            Peace.util.error(res.data.Msg)
+            Peace.util.error(res.data.msg)
             this.canClick = false
             this.hasExceed = false
           })
@@ -132,6 +132,7 @@ export default {
       if (res.code === 200 && res.success) {
         Peace.util.success('成功')
         this.$emit('success')
+        this.hasExceed = false
       }
       setTimeout(() => {
         this.fullscreenLoading = false
