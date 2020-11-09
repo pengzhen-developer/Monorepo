@@ -223,9 +223,9 @@ export default {
           if (res.data.status === 1) {
             let message = ''
             if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
-              message = '您与患者尚未进行视频通话，此时结束咨询将做退诊处理'
+              message = '您与患者未进行视频通话，此时结束咨询将做退诊处理，费用将自动返回给患者！'
             } else {
-              message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
+              message = '您与患者未进行有效沟通，此时结束咨询将做退诊处理，费用将自动返回给患者！'
             }
 
             const confirmOption = { type: 'warning', confirmButtonText: '退诊' }

@@ -115,7 +115,7 @@ export default {
         Service.checkOverInquiry(params).then((res) => {
           // 无效会话
           if (res.data.status === 1) {
-            const message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
+            const message = '您与患者未进行有效沟通，此时结束咨询将做退诊处理，费用将自动返回给患者！'
             const confirmOption = { type: 'warning', confirmButtonText: '退诊' }
 
             Peace.util.confirm(message, undefined, confirmOption, () => {
