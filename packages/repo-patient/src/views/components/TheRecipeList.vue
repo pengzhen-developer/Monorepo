@@ -86,6 +86,13 @@ import { Dialog } from 'vant'
 const ENUM = {
   //处方购药状态 0."已预审",1."待审核", 2."质疑中", 3."未通过", 4."已作废",5."已通过"
   ORDER_DRUG_STATUS: {
+    待购药: 1,
+    已下单: 2,
+    已购药: 3,
+    已失效: 4
+  },
+  // prescription_status  新处方状态   0."已预审",1."待审核", 2."质疑中", 3."未通过", 4."已作废",5."已通过"
+  PRESCRIPTION_STATUS: {
     已预审: 0,
     待审核: 1,
     质疑中: 2,
@@ -151,7 +158,7 @@ export default {
     },
 
     goprescripDetailPage(item) {
-      if (item.orderDrugStatuskey == this.ENUM.ORDER_DRUG_STATUS.已作废) {
+      if (item?.prescriptionStatus?.key == this.ENUM.PRESCRIPTION_STATUS.已作废 || item?.prescriptionStatus?.key == this.ENUM.PRESCRIPTION_STATUS.未通过) {
         return Dialog.confirm({
           title: '温馨提示',
           message: '该处方已作废被回收，请查看其他处方',
