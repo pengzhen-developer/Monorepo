@@ -138,7 +138,8 @@
                             show-password
                             minlength="6"
                             maxlength="20"
-                            placeholder="不输入则默认使用12345678可登录"></el-input>
+                            placeholder="不输入则默认使用12345678可登录"
+                            auto-complete="new-password"></el-input>
                 </el-form-item>
 
               </el-col>
