@@ -135,11 +135,11 @@
                   <span slot="label"
                         class="form-label">密码</span>
                   <el-input v-model="model.Pwd"
-                            show-password
+                            v-bind:show-password="showPassword"
                             minlength="6"
                             maxlength="20"
                             placeholder="不输入则默认使用12345678可登录"
-                            auto-complete="new-password"></el-input>
+                            v-on:focus="showPassword=true"></el-input>
                 </el-form-item>
 
               </el-col>
@@ -200,6 +200,7 @@ export default {
       callback()
     }
     return {
+      showPassword: false,
       model: {
         UserName: '',
         RealName: '',
