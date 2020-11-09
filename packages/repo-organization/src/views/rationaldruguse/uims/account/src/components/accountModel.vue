@@ -139,6 +139,7 @@
                             minlength="6"
                             maxlength="20"
                             placeholder="不输入则默认使用12345678可登录"
+                            auto-complete="new-password"
                             v-on:focus="showPassword=true"></el-input>
                 </el-form-item>
 

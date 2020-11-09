@@ -17,9 +17,11 @@
       <el-form-item label="新密码："
                     prop="newPassword">
         <el-input v-model="form.newPassword"
-                  show-password
+                  v-bind:show-password="showPassword"
                   v-bind:minlength="6"
                   v-bind:maxlength="20"
+                  auto-complete="new-password"
+                  v-on:focus="showPassword=true"
                   placeholder="6-20位字母、数字"></el-input>
       </el-form-item>
 
@@ -41,6 +43,7 @@ import Service from '.././service'
 export default {
   data() {
     return {
+      showPassword: false,
       form: {
         oldPassword: '',
         newPassword: ''

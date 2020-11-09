@@ -92,7 +92,7 @@
       </PeaceTable>
     </div>
     <!--角色 -->
-    <PeaceDialog width="696px"
+    <PeaceDialog width="716px"
                  v-bind:visible.sync="dialog.visible"
                  :title="dialog.title"
                  custom-class='accountDialog'>
