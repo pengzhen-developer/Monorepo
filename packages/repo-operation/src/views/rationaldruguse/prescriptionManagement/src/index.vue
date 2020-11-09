@@ -13,7 +13,8 @@
 
         <el-form-item label="机构名称：">
           <el-select v-model="model.hosCode"
-                     placeholder="全部">
+                     placeholder="全部"
+                     clearable="ture">
             <el-option v-for="item in remoteSource.organizationList"
                        v-bind:key="item.Code"
                        v-bind:label="item.Name"
@@ -63,7 +64,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="审核模式：">
+        <el-form-item label="审核通过方式：">
           <el-select v-model="model.pharmacistCheckMode"
                      placeholder="全部">
             <el-option v-for="(value, label) in source.AUDIT_MODE_TYPE"
