@@ -1,21 +1,20 @@
 <template>
   <div class="page">
-    <div class="consult-detatil"
-         v-if="canShowInfo">
+    <div class="consult-detatil">
       <!--医生名片-->
       <div class="module card">
         <div class="card-avatar avatar-circular">
-          <img :src="internalData.doctorInfo.avartor"
+          <img :src="doctorInfo.avartor"
                style="height:100%;" />
         </div>
         <div class="card-body">
           <div class="card-name">
-            {{ internalData.doctorInfo.name }}
+            {{ doctorInfo.name }}
             <div class="card-small">
-              {{ internalData.doctorInfo.doctorTitle }}
-              {{ internalData.doctorInfo.deptName }}
+              {{ doctorInfo.doctorTitle }}
+              {{ doctorInfo.deptName }}
               <div class="label label-private"
-                   v-if="internalData.doctorInfo.isPrivateDoctor">
+                   v-if="doctorInfo.isPrivateDoctor">
                 私人医生
               </div>
               <van-image width=13
@@ -26,7 +25,7 @@
                          :src="require('@src/assets/images/ic_video_open.png')"></van-image>
             </div>
           </div>
-          <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
+          <div class="card-small">{{ doctorInfo.hospitalName }}</div>
         </div>
         <!-- 咨询类别 -->
         <div class="inquriyStyle"
@@ -47,23 +46,23 @@
           <div class="b">个人信息</div>
           <div class="form-dl">
             <div class="form-dt"><span>姓名</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.name}}</div>
+            <div class="form-dd">{{familyInfo.name}}</div>
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>年龄</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.age + "岁"}}</div>
+            <div class="form-dd">{{familyInfo.age + "岁"}}</div>
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>性别</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.sex}}
+            <div class="form-dd">{{familyInfo.sex}}
             </div>
           </div>
           <div class="form-dl"
-               v-if="internalData.familyInfo.guardianName">
+               v-if="familyInfo.guardianName">
             <div class="form-dt"><span>监 护 人</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.guardianName}} |
-              {{internalData.familyInfo.guardianSex}} |
-              {{internalData.familyInfo.guardianAge+'岁'}}
+            <div class="form-dd">{{familyInfo.guardianName}} |
+              {{familyInfo.guardianSex}} |
+              {{familyInfo.guardianAge+'岁'}}
             </div>
           </div>
         </div>
@@ -236,12 +235,11 @@
       </template>
     </van-image-preview>
     <!-- 医保 -->
-    <template v-if="canShowInfo">
-      <YibaoCaedSelect v-model="showCard"
-                       :info="info"
-                       @onSuccess="onSuccess"></YibaoCaedSelect>
 
-    </template>
+    <YibaoCaedSelect v-model="showCard"
+                     :info="info"
+                     @onSuccess="onSuccess"></YibaoCaedSelect>
+
     <!-- 确认支付弹框 -->
     <ExpenseDetail v-model="dialog.visible"
                    :info="dialog.data"></ExpenseDetail>
@@ -304,8 +302,8 @@ export default {
   data() {
     return {
       ENUM: ENUM,
-      internalData: {},
-
+      doctorInfo: {},
+      familyInfo: {},
       imagePreview: {
         visible: false,
         position: 0,
@@ -335,8 +333,8 @@ export default {
         familyName: this.params?.familyName,
         familyId: this.params?.familyId,
         serviceType: 'inquiry',
-        doctorId: this.internalData?.doctorInfo?.doctorId,
-        netdeptChildId: this.internalData?.doctorInfo?.netdeptChildId,
+        doctorId: this.doctorInfo?.doctorId,
+        netdeptChildId: this.doctorInfo?.netdeptChildId,
         appointmentDate: this.params?.appointmentDate,
         appointmentStartTime: this.params?.appointmentStartTime,
         appointmentEndTime: this.params?.appointmentEndTime,
@@ -375,18 +373,15 @@ export default {
       return this.params?.confirmIllness
     },
 
-    canShowInfo() {
-      return this.internalData && this.params && this.internalData.doctorInfo && this.internalData.familyInfo
-    },
     canShowSupplementaryInfo() {
       return this.params && (this.params.affectedImages.length > 0 || this.pregnancyText || this.params.allergicHistory)
     },
     canShowYibao() {
-      return this.params?.serviceType == 'returnVisit' && this.internalData?.insuranceConfig?.medicalInsuranceConfig != null ? true : false
+      return this.params?.serviceType == 'returnVisit' && this.insuranceConfig?.medicalInsuranceConfig != null ? true : false
     },
     canShowShangbao() {
       //H5暂无商保对接
-      // return this.internalData?.insuranceConfig?.commercialInsuranceConfig!=null ? true : false
+      // return this.insuranceConfig?.commercialInsuranceConfig!=null ? true : false
       return false
     },
     canShowDiscount() {
@@ -424,8 +419,8 @@ export default {
     //修改号源
     changeSource() {
       let json = peace.util.encode({
-        doctorId: this.internalData.doctorInfo.doctorId,
-        hospitalCode: this.internalData.doctorInfo.nethospitalId,
+        doctorId: this.doctorInfo.doctorId,
+        hospitalCode: this.doctorInfo.nethospitalId,
         time: this.params.appointmentDate.substring(5),
         date: new Date(),
         from: true,
@@ -578,7 +573,8 @@ export default {
         sourceCode: this.params.sourceCode //预约号源编码
       }
       peace.service.inquiry.getFamilyDoctorInfo(params).then((res) => {
-        this.internalData = res.data
+        this.doctorInfo = res.data.doctorInfo
+        this.familyInfo = res.data.familyInfo
       })
     },
     getFirstOptionList() {
