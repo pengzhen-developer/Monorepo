@@ -60,12 +60,6 @@
                          width="60"></el-table-column>
         <el-table-column prop="UserName"
                          label="账号"></el-table-column>
-        <el-table-column prop="Note"
-                         label="备注">
-          <template slot-scope="scope">
-            {{scope.row.Note||'——'}}
-          </template>
-        </el-table-column>
         <el-table-column prop="DepartName"
                          label="所在部门"></el-table-column>
         <el-table-column prop="RealName"
@@ -78,6 +72,12 @@
                        :active-value="true"
                        :inactive-value="false"
                        v-on:change="changeStatus(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column prop="Note"
+                         label="备注">
+          <template slot-scope="scope">
+            {{scope.row.Note||'——'}}
           </template>
         </el-table-column>
         <el-table-column min-width="100px"

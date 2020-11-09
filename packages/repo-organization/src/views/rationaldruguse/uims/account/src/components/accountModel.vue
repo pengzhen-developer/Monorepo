@@ -214,7 +214,7 @@ export default {
       },
       typeList: [
         { label: '药学专业技术资格证书', value: '0' },
-        { label: '职业药师资格证书', value: '1' }
+        { label: '执业药师资格证书', value: '1' }
       ],
       selectList: [],
       departTree: [],
