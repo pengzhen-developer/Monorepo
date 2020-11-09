@@ -95,7 +95,7 @@
         </el-form-item>
 
         <el-form-item label="患者名称：">
-          <el-input v-model="model.actionMsg"
+          <el-input v-model="model.patientName"
                     placeholder="请输入"
                     clearable></el-input>
         </el-form-item>
@@ -108,7 +108,9 @@
 
         <el-form-item label="操作药师：">
           <el-select v-model="model.pharmacistCode"
-                     placeholder="请选择">
+                     placeholder="请选择"
+                     clearable="true">
+
             <el-option v-for="item in remoteSource.pharmacistList"
                        v-bind:key="item.Code"
                        v-bind:label="item.Name"
@@ -131,7 +133,10 @@
                      style="width: 80px;"
                      v-on:click="get">查询</el-button>
 
+          <el-button style="width: 80px;"
+                     v-on:click="resert">重置</el-button>
         </el-form-item>
+
       </el-form>
     </div>
 
@@ -397,6 +402,28 @@ export default {
         return res
       })
     },
+
+    resert() {
+      this.model = {
+        actionMsg: '',
+        auditorSettings: '',
+        deptCode: '',
+        hosCode: '',
+        pharmacistCode: '',
+        prescription: '',
+        prescriptionNo: '',
+        pharmacistCheckMode: '',
+        prescriptionSource: -1,
+        timeRange: [],
+        startTime: '',
+        endTime: '',
+        submitType: '',
+        patientName: '',
+        pharmacistCheckResult: 0,
+        prescriptionType: -1
+      }
+      this.get()
+    },
     //获取机构列表
     remoteOrganizationList() {
       Service.getOrganizationList({}).then((res) => {
@@ -460,5 +487,13 @@ export default {
   }
 
   margin-bottom: 20px;
+}
+
+::v-deep .el-select .el-input__inner {
+  padding-right: 52px !important;
+}
+
+::v-deep .el-input--suffix .el-input__inner {
+  padding-right: 52px !important;
 }
 </style>
