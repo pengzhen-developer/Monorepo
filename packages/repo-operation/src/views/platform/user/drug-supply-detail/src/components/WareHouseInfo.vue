@@ -157,7 +157,6 @@ p {
   margin-bottom: 0;
 }
 .child-key {
-  width: 4em;
   font-size: 14px;
   color: var(--q-color-grey-333);
   text-align: justify;
