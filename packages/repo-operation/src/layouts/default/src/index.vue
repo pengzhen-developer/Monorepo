@@ -86,7 +86,10 @@ export default {
       defaultHeanderNavActive: '',
       defaultDrawerNavActive: '',
 
-      showDrawerModel: true
+      showDrawerModel: true,
+
+      hasFind: false,
+      firstMenu: {}
     }
   },
 
@@ -169,12 +172,31 @@ export default {
         // 并且默认加载第一个有效的功能
         else {
           this.childrenMenuTree = currentMenu.children
-          this.$nextTick().then(() => {
-            const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
-            firstMenuNode?.click()
-          })
+          this.hasFind = false
+          this.firstMenuNode(this.childrenMenuTree)
+          this.addTab(this.firstMenu)
+          // this.$nextTick().then(() => {
+          //   const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
+          //   firstMenuNode?.click()
+          // })
         }
       })
+    },
+
+    firstMenuNode(nodes) {
+      for (let index = 0; index < nodes.length; index++) {
+        const node = nodes[index]
+        if (this.hasFind) {
+          return
+        }
+        if (node.children) {
+          this.firstMenuNode(node.children)
+        } else {
+          this.hasFind = true
+          this.firstMenu = node
+          return
+        }
+      }
     },
 
     menuSelect(index) {

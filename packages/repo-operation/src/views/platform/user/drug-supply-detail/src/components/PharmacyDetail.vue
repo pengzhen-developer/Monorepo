@@ -7,6 +7,11 @@
       </div>
       <div class="item-content">
         <div class="item-child">
+          <p class="child-key">药房类型</p>
+          <p>：</p>
+          <p class="child-value">{{detailData.CustomerType==10?"线下实体药房":"线上电商平台"}}</p>
+        </div>
+        <div class="item-child">
           <p class="child-key">药房编码</p>
           <p>：</p>
           <p class="child-value">{{detailData.SuborganizationCode}}</p>
