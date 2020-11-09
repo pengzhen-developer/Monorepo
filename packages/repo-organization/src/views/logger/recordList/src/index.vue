@@ -95,6 +95,7 @@ export default {
       },
       model: {
         serviceId: 'console',
+        logType: 1,
         bizModule: '',
         functionName: '',
         optType: '',
