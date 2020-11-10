@@ -356,7 +356,7 @@ export default {
   },
 
   async mounted() {
-    this.remoteSource.OrderStatus = await peace.identity.dictionary.getList('OrderStatus')
+    this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
@@ -379,7 +379,7 @@ export default {
         //SelfOrderStatus  自提订单状态  0
         const requestKey = this.model.OrderMethod === 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
         this.model.OrderStatus = ''
-        this.remoteSource.OrderType = await peace.identity.dictionary.getList(requestKey)
+        this.remoteSource.OrderStatus = await peace.identity.dictionary.getList(requestKey)
       }
     }
   },
