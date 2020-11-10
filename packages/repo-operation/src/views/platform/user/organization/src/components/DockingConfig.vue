@@ -67,7 +67,7 @@ export default {
 
   data() {
     return {
-      model: DEFAULT_MODEL,
+      model: Object.assign({}, DEFAULT_MODEL),
 
       rules: {
         sysCode: [{ required: true, message: '请选择对接系统', trigger: 'change' }],
@@ -91,7 +91,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
         Service.getDockingConfig({ custcode: custCode }).then((res) => {
-          this.model = res.data ? res.data : DEFAULT_MODEL
+          this.model = res.data ? res.data : Object.assign({}, DEFAULT_MODEL)
           this.model.custcode = custCode
         })
       })
