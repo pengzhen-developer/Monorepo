@@ -1,7 +1,7 @@
 <template>
   <div class="layout-route ">
 
-    <div class="card card-search text-center q-mb-md">
+    <div class="card card-search text-center ">
       <el-radio-group v-model="tabPosition">
         <el-radio-button label="left">{{ activeName }}配码</el-radio-button>
         <el-radio-button label="right">配码审核</el-radio-button>
