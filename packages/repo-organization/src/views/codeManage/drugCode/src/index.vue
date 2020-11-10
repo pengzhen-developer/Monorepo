@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-route bg-white">
+  <div class="layout-route ">
 
     <div class="card card-search text-center q-mb-md">
       <el-radio-group v-model="tabPosition">
@@ -9,6 +9,7 @@
     </div>
 
     <iframeContainer ref="iframe"
+                     class="bg-white q-pa-md"
                      v-bind:src="src"></iframeContainer>
   </div>
 </template>
@@ -27,7 +28,7 @@ export default {
 
   data() {
     return {
-      avtiveName: '药品信息',
+      activeName: '药品信息',
       tabPosition: '',
       src: ''
     }
@@ -35,7 +36,7 @@ export default {
 
   watch: {
     tabPosition() {
-      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + CONSTANT.IFRAME_URL[this.avtiveName][this.tabPosition]
+      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + CONSTANT.IFRAME_URL[this.activeName][this.tabPosition]
     }
   },
 

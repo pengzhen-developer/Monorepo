@@ -8,92 +8,69 @@
       <div v-bind:class="{ active: activeName === '用药单位', normal: activeName !== '用药单位'}"
            v-on:click="handleClick('用药单位')">用药单位</div>
     </div>
+
     <div class="card card-search text-center">
       <el-radio-group v-model="tabPosition">
         <el-radio-button label="left">{{ activeName }}配码</el-radio-button>
         <el-radio-button label="right">配码审核</el-radio-button>
       </el-radio-group>
     </div>
-    <div class="card"
-         v-bind:style="routerViewIframeStyle">
 
-      <div v-show="loading"
-           class="flex full-width full-height justify-center items-center"
-           v-loading="loading">
+    <iframeContainer class="bg-white q-pa-md"
+                     ref="iframe"
+                     v-bind:src="src"></iframeContainer>
 
-      </div>
-
-      <iframe v-show="!loading"
-              ref="iframe"
-              :src="iframeSrc"
-              width="100%"
-              height="100%"
-              frameborder="no"
-              border="0"
-              marginwidth="0"
-              marginheight="0"
-              allowtransparency="yes"></iframe>
-    </div>
   </div>
 </template>
 
 <script>
 import CONSTANT from './../constant'
+import iframeContainer from '@src/views/iframe'
+
 import { dom } from 'quasar'
 
 export default {
+  components: {
+    iframeContainer
+  },
+
   data() {
     return {
-      iframeSrc: '',
-      loading: true,
-      activeName: '给药途径',
-      tabPosition: 'left',
+      src: '',
+      activeName: '',
+      tabPosition: '',
       model: {
         words: '',
         status: '',
         checkStatus: ''
-      },
-      source: {
-        IFRAME_SRC_MAP: CONSTANT.IFRAME_SRC_MAP
-      },
-      routerViewIframeStyle: {}
+      }
     }
-  },
-
-  mounted() {
-    this.$nextTick().then(async () => {
-      // 设定滚动区域样式
-      this.setScrollAreaStyle()
-      // 设定路由区域样式
-      this.setRouterViewStyle()
-
-      const iframe = this.$refs.iframe
-
-      if (iframe.attachEvent) {
-        iframe.attachEvent('onload', () => {
-          this.loading = false
-        })
-      } else {
-        iframe.onload = () => {
-          this.loading = false
-        }
-      }
-
-      const url = this.source.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
-      const token = (await Peace.identity.auth.getAuth()).access_token
-      if (url) {
-        this.iframeSrc = process.env.VUE_APP_SITE_PRESCRIPTION + url + '?sso=true&token=' + token
-      } else {
-        this.iframeSrc = ''
-      }
-    })
   },
 
   watch: {
-    // 路由更新，还原 nav
-    iframeSrc() {
-      this.loading = true
+    tabPosition() {
+      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + CONSTANT.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
+    },
+
+    activeName() {
+      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + CONSTANT.IFRAME_SRC_MAP[this.activeName][this.tabPosition]
     }
+  },
+
+  created() {
+    this.activeName = '给药途径'
+    this.tabPosition = 'left'
+  },
+
+  mounted() {
+    this.$nextTick(function () {
+      // dom.offset 是 quasar 提供的工具类
+      // 自行了解相关 api 文档
+      const offset = dom.offset(this.$refs.iframe.$el)
+
+      // iframe 铺满全屏
+      this.$refs.iframe.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
+    })
   },
 
   methods: {
@@ -102,24 +79,6 @@ export default {
         this.loading = true
         this.activeName = title
         this.tabPosition = 'left'
-      }
-    },
-    setScrollAreaStyle() {
-      const offset = dom.offset(this?.$el)
-
-      this.scrollAreaStyle = {
-        height: `${document.body.clientHeight - offset?.top}px`
-      }
-    },
-
-    setRouterViewStyle() {
-      // dom.offset 是 quasar 提供的工具类
-      // 自行了解相关 api 文档
-      const offset = dom.offset(this?.$el)
-
-      // 外部 iframe 设定高度，由 iframe 具体功能控制滚动
-      this.routerViewIframeStyle = {
-        ['height']: `${document.body.clientHeight - offset?.top}px`
       }
     }
   }
