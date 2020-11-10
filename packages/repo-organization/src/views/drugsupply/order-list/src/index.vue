@@ -127,7 +127,7 @@
                          width="120px"
                          fixed="right">
           <template slot-scope="scope">
-            <el-button :disabled="!scope.row.prescriptionImageUrl"
+            <el-button :disabled="!scope.row.PrescriptionImageUrl"
                        type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
           </template>
@@ -279,7 +279,7 @@ export default {
     },
 
     showCancelRecord(row) {
-      this.dialog.data.prescriptionImageUrl = row.prescriptionImageUrl
+      this.dialog.data.prescriptionImageUrl = row.PrescriptionImageUrl
       this.dialog.visible = true
     },
 
