@@ -135,7 +135,7 @@ export default {
       }
 
       return Service.CloudStoreList(params).then((res) => {
-        this.cloudStoreList = res.data
+        this.cloudStoreList = res.data.list
       })
     },
 
