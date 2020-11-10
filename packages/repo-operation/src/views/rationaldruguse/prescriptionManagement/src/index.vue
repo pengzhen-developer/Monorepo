@@ -302,6 +302,7 @@ export default {
         hosCode: '',
         pharmacistCode: '',
         prescription: '',
+        prescriptionState: '',
         prescriptionNo: '',
         pharmacistCheckMode: '',
         prescriptionSource: -1,
@@ -387,8 +388,8 @@ export default {
     },
 
     'model.timeRange'(value) {
-      this.model.StartTime = value?.[0] ?? ''
-      this.model.EndTime = value?.[1] ?? ''
+      this.model.startTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
     }
   },
 
