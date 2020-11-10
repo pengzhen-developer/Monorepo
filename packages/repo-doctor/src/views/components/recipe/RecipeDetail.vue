@@ -18,8 +18,7 @@
       <img v-if="data.stampUrl"
            v-bind:src="data.stampUrl"
            class="absolute"
-           style="width: 72px; height: 72px; right: 36px; bottom: -10px;"
-           alt="医师签名" />
+           style="width: 72px; height: 72px; right: 36px; bottom: -10px;" />
 
       <div class="q-mt-md"
            style="border-bottom: 1px dashed #e2e2e2;"></div>

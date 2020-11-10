@@ -338,19 +338,30 @@ export default {
 
       return Service.getCase(params).then((res) => {
         this.caseInfo = res.data
-
         // 判断是否存在本地缓存数据，如果有本地缓存数据设置成本地缓存的
         if (this.diagnoseList && this.diagnoseList.length > 0) {
           this.dialog.chooseData = [...this.diagnoseList]
         } else {
-          const tmp = res.data.diagnoseList.map((item) => {
-            item.name = item.diagnoseName
-            item.code = item.diagnoseCode
-            return item
-          })
+          // 获取上一张处方中的诊断， 没有就取病历里面的诊断
+          if (res.data && res.data.newDiagnoseList && res.data.newDiagnoseList.length > 0) {
+            const tmp = res.data.newDiagnoseList.map((item) => {
+              item.name = item.diagnoseName
+              item.code = item.diagnoseCode
+              return item
+            })
 
-          this.diagnoseList = tmp
-          this.dialog.chooseData = tmp
+            this.diagnoseList = tmp
+            this.dialog.chooseData = tmp
+          } else {
+            const tmp = res.data.diagnoseList.map((item) => {
+              item.name = item.diagnoseName
+              item.code = item.diagnoseCode
+              return item
+            })
+
+            this.diagnoseList = tmp
+            this.dialog.chooseData = tmp
+          }
         }
       })
     },
