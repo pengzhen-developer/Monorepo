@@ -7,46 +7,22 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
 
-        <!-- <el-form-item label="订单来源">
-          <el-input v-model="model.Source"></el-input>
-        </el-form-item> -->
-
         <el-form-item label="订单编号">
-          <el-input v-model="model.OrderNumber"></el-input>
+          <el-input v-model="model.OrderNumber"
+                    placeholder="请输入订单编号"
+                    clearable="true"></el-input>
         </el-form-item>
-
-        <!-- <el-form-item label="处方类型">
-          <el-select clearable
-                     placeholder="全部"
-                     v-model="model.OrderType">
-            <el-option v-for="item in remoteSource.OrderType"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item> -->
-
-        <!-- <el-form-item label="系统属性">
-          <el-select clearable
-                     placeholder="全部"
-                     v-model="model.sys_attribute_code">
-            <el-option v-for="item in remoteSource.SysAttributeCode"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item> -->
 
         <el-form-item label="客户姓名">
-          <el-input v-model="model.CustName"></el-input>
+          <el-input v-model="model.CustName"
+                    placeholder="请输入客户姓名"
+                    clearable="true"></el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="手机号码">
-          <el-input v-model="model.Phone"></el-input>
-        </el-form-item> -->
-
         <el-form-item label="药房">
-          <el-input v-model="model.DrugName"></el-input>
+          <el-input v-model="model.DrugName"
+                    placeholder="请输入药房名称"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="下单日期">
@@ -77,17 +53,6 @@
           </el-select>
         </el-form-item>
 
-        <!-- <el-form-item label="支付状态">
-          <el-select clearable
-                     placeholder="全部"
-                     v-model="model.PayStatus">
-            <el-option v-for="item in remoteSource.PayStatus"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item> -->
-
         <el-button type="primary"
                    style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
@@ -105,7 +70,7 @@
         <el-table-column prop="OrderId"
                          label="订单编号"
                          align="center"
-                         width="180px">
+                         min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
@@ -114,26 +79,26 @@
         <el-table-column prop="UserName"
                          label="客户姓名"
                          align="center"
-                         width="120px"></el-table-column>
+                         min-width="120px"></el-table-column>
 
         <el-table-column prop="TotalAmoun"
                          label="订单总额"
                          align="center"
-                         width="120px"></el-table-column>
+                         min-width="120px"></el-table-column>
 
         <el-table-column prop="CreateTime"
                          label="下单时间"
                          align="center"
-                         width="160px"></el-table-column>
+                         min-width="160px"></el-table-column>
 
         <el-table-column prop="DrugStoreName"
                          label="药房"
                          align="center"
-                         width="160px"></el-table-column>
+                         min-width="160px"></el-table-column>
 
         <el-table-column label="取货方式"
                          align="center"
-                         width="120px">
+                         min-width="120px">
 
           <template slot-scope="scope">
             <span>{{ scope.row.ShippingMethod | filterDictionary(remoteSource.ShippingMethod, '--') }}</span>
@@ -142,7 +107,7 @@
 
         <el-table-column label="支付状态"
                          align="center"
-                         width="120px">
+                         min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '--') }}</span>
           </template>
@@ -150,36 +115,11 @@
 
         <el-table-column label="订单状态"
                          align="center"
-                         width="120px">
+                         min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderStatus | filterDictionary(remoteSource.OrderStatus, '--') }}</span>
           </template>
         </el-table-column>
-
-        <!-- <el-table-column prop="Source"
-                         label="订单来源"
-                         align="center"
-                         width="120px"></el-table-column> -->
-
-        <!-- <el-table-column label="处方类型"
-                         align="center"
-                         width="120px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.OrderType | filterDictionary(remoteSource.OrderType, '--') }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="sys_name"
-                         label="系统名称"
-                         align="center"
-                         width="120px">
-        </el-table-column>
-
-        <el-table-column prop="sys_attribute_name"
-                         label="系统属性"
-                         align="center"
-                         width="120px">
-        </el-table-column> -->
 
         <el-table-column label="操作"
                          align="center"
@@ -190,8 +130,6 @@
                        type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
 
-            <!-- <el-button type="text"
-                       v-on:click="showLogistics(scope.row)">发货信息</el-button> -->
           </template>
         </el-table-column>
       </peace-table>
@@ -274,8 +212,6 @@ export default {
         PayStatus: [],
         //取货方式
         ShippingMethod: []
-        //系统属性
-        // SysAttributeCode: []
       }
     }
   },
@@ -288,8 +224,6 @@ export default {
   },
 
   async mounted() {
-    //this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
-    //this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
     this.remoteSource.OrderStatus = await Peace.identity.dictionary.getList('OrderStatus')
     this.remoteSource.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
@@ -341,5 +275,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep .el-select .el-input__inner {
+  padding-right: 52px !important;
+}
+
+::v-deep .el-input--suffix .el-input__inner {
+  padding-right: 52px !important;
+}
 </style>
