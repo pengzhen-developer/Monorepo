@@ -10,7 +10,7 @@
     <iframe v-show="!loading"
             class="iframe"
             ref="iframe"
-            v-bind:src="src"
+            v-bind:src="iframeUrl"
             width="100%"
             height="100%"
             frameborder="no"
@@ -23,44 +23,65 @@
 
 <script>
 export default {
+  props: {
+    ['src']: String,
+    ['full-height']: Boolean
+  },
+
   data() {
     return {
       loading: true,
-
-      src: ''
+      internalSrc: '',
+      iframeUrl: ''
     }
   },
 
-  async created() {
-    this.src = this.$route.meta.menuPath
+  watch: {
+    src() {
+      this.loading = true
+      this.internalSrc = this.src
+    },
 
-    const token = (await Peace.identity.auth.getAuth()).access_token
+    async internalSrc() {
+      const auth = await Peace.identity.auth.getAuth()
+      const token = auth.access_token
 
-    if (this.src.indexOf('?') === -1) {
-      this.src = this.src + '?sso=true&token=' + token
+      if (this.internalSrc.indexOf('?') === -1) {
+        this.iframeUrl = this.internalSrc + '?sso=true&token=' + token
+      } else {
+        this.iframeUrl = this.internalSrc + '&sso=true&token=' + token
+      }
+    }
+  },
+
+  created() {
+    if (this.src) {
+      this.internalSrc = this.src
     } else {
-      this.src = this.src + '&sso=true&token=' + token
+      this.internalSrc = this.$route.meta.menuPath
     }
   },
 
   mounted() {
     this.$nextTick().then(() => {
+      this.initEvent()
+    })
+  },
+
+  methods: {
+    initEvent() {
       const iframe = this.$refs.iframe
 
       if (iframe.attachEvent) {
         iframe.attachEvent('onload', () => {
-          // alert('Local iframe is now loaded.')
-
           this.loading = false
         })
       } else {
         iframe.onload = () => {
-          // alert('Local iframe is now loaded.')
-
           this.loading = false
         }
       }
-    })
+    }
   }
 }
 </script>
