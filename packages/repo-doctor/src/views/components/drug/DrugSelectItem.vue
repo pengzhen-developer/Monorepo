@@ -109,7 +109,7 @@
                         required>
             <el-input-number class="full-width inline-block"
                              controls-position="right"
-                             v-bind:min="0"
+                             v-bind:min="0.001"
                              v-bind:precision="3"
                              v-model="data.drugNum">
             </el-input-number>
