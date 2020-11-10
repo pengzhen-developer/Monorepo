@@ -238,7 +238,7 @@ export default {
       async handler() {
         //DistributionOrderStatus  配送订单状态    1
         //SelfOrderStatus  自提订单状态  0
-        const requestKey = this.model.OrderMethod === 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
+        const requestKey = this.model.OrderMethod == 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
         this.model.OrderStatus = ''
         this.remoteSource.OrderStatus = await Peace.identity.dictionary.getList(requestKey)
       }
