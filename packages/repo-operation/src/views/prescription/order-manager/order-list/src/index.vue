@@ -8,11 +8,15 @@
                v-on:submit.native.prevent>
 
         <el-form-item label="订单来源">
-          <el-input v-model="model.Source"></el-input>
+          <el-input v-model="model.Source"
+                    placeholder="请输入订单来源"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="订单编号">
-          <el-input v-model="model.OrderNumber"></el-input>
+          <el-input v-model="model.OrderNumber"
+                    placeholder="请输入订单编号"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="处方类型">
@@ -44,15 +48,21 @@
         </el-form-item>
 
         <el-form-item label="客户姓名">
-          <el-input v-model="model.CustName"></el-input>
+          <el-input v-model="model.CustName"
+                    placeholder="请输入客户姓名"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="手机号码">
-          <el-input v-model="model.Phone"></el-input>
+          <el-input v-model="model.Phone"
+                    placeholder="请输入手机号码"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="药房">
-          <el-input v-model="model.DrugName"></el-input>
+          <el-input v-model="model.DrugName"
+                    placeholder="请输入药房名称"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="取货方式">
@@ -413,5 +423,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep .el-select .el-input__inner {
+  padding-right: 52px !important;
+}
+
+::v-deep .el-input--suffix .el-input__inner {
+  padding-right: 52px !important;
+}
 </style>

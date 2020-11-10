@@ -7,7 +7,9 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
         <el-form-item label="订单来源">
-          <el-input v-model="model.Source"></el-input>
+          <el-input v-model="model.Source"
+                    placeholder="请输入订单来源"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="申请取消日期">
@@ -17,7 +19,9 @@
         </el-form-item>
 
         <el-form-item label="药房">
-          <el-input v-model="model.DrugsStoreName"></el-input>
+          <el-input v-model="model.DrugsStoreName"
+                    placeholder="请输入药房名称"
+                    clearable="true"></el-input>
         </el-form-item>
 
         <el-form-item label="取消结果">
