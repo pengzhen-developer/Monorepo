@@ -10,19 +10,19 @@
         <el-form-item label="订单编号">
           <el-input v-model="model.OrderNumber"
                     placeholder="请输入订单编号"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="客户姓名">
           <el-input v-model="model.CustName"
                     placeholder="请输入客户姓名"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="药房">
           <el-input v-model="model.DrugName"
                     placeholder="请输入药房名称"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="下单日期">
@@ -45,7 +45,8 @@
         <el-form-item label="订单状态">
           <el-select clearable
                      placeholder="全部"
-                     v-model="model.OrderStatus">
+                     v-model="model.OrderStatus"
+                     :disabled="orderTypeDisabled">
             <el-option v-for="item in remoteSource.OrderStatus"
                        v-bind:key="item.value"
                        v-bind:label="item.label"
@@ -126,10 +127,9 @@
                          width="120px"
                          fixed="right">
           <template slot-scope="scope">
-            <el-button :disabled="!scope.row.JZTClaimNo"
+            <el-button :disabled="!scope.row.prescriptionImageUrl"
                        type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
-
           </template>
         </el-table-column>
       </peace-table>
@@ -212,25 +212,43 @@ export default {
         PayStatus: [],
         //取货方式
         ShippingMethod: []
+        //系统属性
+        // SysAttributeCode: []
       }
     }
   },
 
-  watch: {
-    'model.TimeRange'(value) {
-      this.model.StartTime = value?.[0] ?? ''
-      this.model.EndTime = value?.[1] ?? ''
-    }
-  },
-
   async mounted() {
-    this.remoteSource.OrderStatus = await Peace.identity.dictionary.getList('OrderStatus')
     this.remoteSource.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
 
     this.$nextTick().then(() => {
       this.fetch()
     })
+  },
+
+  watch: {
+    'model.TimeRange'(value) {
+      this.model.StartTime = value?.[0] ?? ''
+      this.model.EndTime = value?.[1] ?? ''
+    },
+    /**
+     * 当配送方式更改时，需要切换对应的订单状态
+     */ 'model.OrderMethod': {
+      async handler() {
+        //DistributionOrderStatus  配送订单状态    1
+        //SelfOrderStatus  自提订单状态  0
+        const requestKey = this.model.OrderMethod === 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
+        this.model.OrderStatus = ''
+        this.remoteSource.OrderStatus = await Peace.identity.dictionary.getList(requestKey)
+      }
+    }
+  },
+
+  computed: {
+    orderTypeDisabled() {
+      return this.model.OrderMethod === ''
+    }
   },
 
   methods: {
@@ -261,11 +279,8 @@ export default {
     },
 
     showCancelRecord(row) {
-      const params = { JZTClaimNo: row.JZTClaimNo }
-      Service.getPrescriptionDetail(params).then((res) => {
-        this.dialog.data.prescriptionImageUrl = res.data.prescriptionImageUrl
-        this.dialog.visible = true
-      })
+      this.dialog.data.prescriptionImageUrl = row.prescriptionImageUrl
+      this.dialog.visible = true
     },
 
     onLoad() {
