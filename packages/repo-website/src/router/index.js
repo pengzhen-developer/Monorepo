@@ -64,7 +64,7 @@ export default function({ configuration }) {
           next(path.ORGREGISTER)
           break
         default:
-          Util.user.redirectToConsole()
+          Util.location.redirectToConsole()
           next(path.HOME)
           break
       }
