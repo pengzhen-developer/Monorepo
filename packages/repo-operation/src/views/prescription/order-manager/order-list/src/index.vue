@@ -10,13 +10,13 @@
         <el-form-item label="订单来源">
           <el-input v-model="model.Source"
                     placeholder="请输入订单来源"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="订单编号">
           <el-input v-model="model.OrderNumber"
                     placeholder="请输入订单编号"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="处方类型">
@@ -50,19 +50,19 @@
         <el-form-item label="客户姓名">
           <el-input v-model="model.CustName"
                     placeholder="请输入客户姓名"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="手机号码">
           <el-input v-model="model.Phone"
                     placeholder="请输入手机号码"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="药房">
           <el-input v-model="model.DrugName"
                     placeholder="请输入药房名称"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="取货方式">
@@ -79,6 +79,7 @@
         <el-form-item label="订单状态">
           <el-select clearable
                      placeholder="全部"
+                     :disabled="orderTypeDisabled"
                      v-model="model.OrderStatus">
             <el-option v-for="item in remoteSource.OrderStatus"
                        v-bind:key="item.value"
@@ -197,7 +198,7 @@
                          fixed="right">
           <template slot-scope="scope">
 
-            <el-button :disabled="!scope.row.JZTClaimNo"
+            <el-button :disabled="!scope.row.PrescriptionImageUrl"
                        type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
 
@@ -354,23 +355,39 @@ export default {
     }
   },
 
-  watch: {
-    'model.TimeRange'(value) {
-      this.model.StartTime = value?.[0] ?? ''
-      this.model.EndTime = value?.[1] ?? ''
-    }
-  },
-
   async mounted() {
-    this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.OrderStatus = await peace.identity.dictionary.getList('OrderStatus')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
-
     this.$nextTick().then(() => {
       this.fetch()
     })
+  },
+
+  watch: {
+    'model.TimeRange'(value) {
+      this.model.StartTime = value?.[0] ?? ''
+      this.model.EndTime = value?.[1] ?? ''
+    },
+    /**
+     * 当配送方式更改时，需要切换对应的订单状态
+     */
+    'model.OrderMethod': {
+      async handler() {
+        //DistributionOrderStatus  配送订单状态    1
+        //SelfOrderStatus  自提订单状态  0
+        const requestKey = this.model.OrderMethod === 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
+        this.model.OrderStatus = ''
+        this.remoteSource.OrderType = await peace.identity.dictionary.getList(requestKey)
+      }
+    }
+  },
+
+  computed: {
+    orderTypeDisabled() {
+      return this.model.OrderMethod === ''
+    }
   },
 
   methods: {
@@ -401,11 +418,8 @@ export default {
     },
 
     showCancelRecord(row) {
-      const params = { JZTClaimNo: row.JZTClaimNo }
-      Service.getPrescriptionDetail(params).then((res) => {
-        this.dialog.data.prescriptionImageUrl = res.data.prescriptionImageUrl
-        this.dialog.visible = true
-      })
+      this.dialog.data.prescriptionImageUrl = row.PrescriptionImageUrl
+      this.dialog.visible = true
     },
 
     showLogistics(row) {
