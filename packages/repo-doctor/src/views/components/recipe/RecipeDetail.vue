@@ -55,9 +55,10 @@
           <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
         </div>
       </div>
-      <div class="q-mb-xs row q-col-gutter-md">
-        <div class="row col-6"
-             v-if="data.weight">
+
+      <div class="q-mb-xs row q-col-gutter-md"
+           v-if="data.weight">
+        <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">体重</span>
           <span class="q-mx-xs">：</span>
