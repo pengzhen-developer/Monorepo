@@ -20,8 +20,8 @@ const duration = 10000
 
 export default {
   created() {
-    const original = Peace.cache.sessionStorage.get('original-href')
-    const configuration = Peace.util.queryUrlParam('configuration', original)
+    const originalHref = Peace.cache.sessionStorage.get('original-href')
+    const configuration = Peace.util.queryUrlParam('configuration', originalHref)
 
     if (configuration === 'drugsupplie') {
       this.initialDelayId = setTimeout(() => {

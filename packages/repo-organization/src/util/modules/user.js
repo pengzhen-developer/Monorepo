@@ -11,6 +11,7 @@ const ACCOUNT_MENU_LIST = 'account_menu_list'
 export const setUserInfo = (userInfo) => {
   return Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
+
 /**
  * 获取用户信息（缓存）
  *
@@ -18,6 +19,15 @@ export const setUserInfo = (userInfo) => {
  */
 export const getUserInfo = () => {
   return Peace.cache.localStorage.get(USER_INFO)
+}
+
+/**
+ * 清空用户信息（session 缓存）
+ *
+ * @returns
+ */
+export const removeSessionUserInfo = () => {
+  Peace.cache.sessionStorage.clear()
 }
 
 /**
@@ -75,6 +85,7 @@ export default {
   setUserInfo,
   getUserInfo,
   removeUserInfo,
+  removeSessionUserInfo,
 
   setAccountMenuList,
   getAccountMenuList,
