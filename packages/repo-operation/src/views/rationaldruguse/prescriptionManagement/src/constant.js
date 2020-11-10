@@ -51,7 +51,7 @@ export default {
    */
   SUBMISSION_TYPE: {
     全部: '',
-    提交: 1,
+    一次提交: 1,
     双签提交: 2
   },
 

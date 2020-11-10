@@ -249,7 +249,7 @@
                          prop="pharmacistCheckMode"
                          min-width="100px"></el-table-column>
 
-        <el-table-column label="提交模式"
+        <el-table-column label="提交方式"
                          align="center"
                          prop="submitMode"
                          min-width="100px"></el-table-column>
