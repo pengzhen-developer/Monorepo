@@ -100,13 +100,13 @@
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="操作日期：">
+        <el-form-item label="处方创建日期：">
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="model.timeRange"></peace-date-picker>
         </el-form-item>
 
-        <el-form-item label="操作药师：">
+        <el-form-item label="审方药师：">
           <el-select v-model="model.pharmacistCode"
                      placeholder="请选择"
                      clearable="true">
@@ -254,7 +254,7 @@
                          prop="submitMode"
                          min-width="100px"></el-table-column>
 
-        <el-table-column label="操作药师"
+        <el-table-column label="审方药师"
                          align="center"
                          prop="pharmacyName"
                          min-width="100px"></el-table-column>
