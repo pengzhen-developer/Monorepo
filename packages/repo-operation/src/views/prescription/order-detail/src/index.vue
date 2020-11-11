@@ -35,15 +35,17 @@
 
         <div class="row">
           <div class="col-6">
-            <span>订单类型（病症）</span>
+            <span>处方类型</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.DiseaseOrderType | formatDictionary(source.DiseaseOrderType, '--')  }}</span>
+            <span class="text-grey-6">{{ data.OrderType | formatDictionary(source.OrderType, '--')  }}</span>
           </div>
+
           <div class="col-6">
-            <span>订单类型（品种）</span>
+            <span>取货方式</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.VarietiesOrderType | formatDictionary(source.VarietiesOrderType, '--')  }}</span>
+            <span class="text-grey-6">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
           </div>
+
         </div>
 
         <div class="row">
@@ -52,11 +54,7 @@
             <span>：</span>
             <span class="text-grey-6">{{ data.CreateTime }}</span>
           </div>
-          <div class="col-6">
-            <span>取货方式</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
-          </div>
+
         </div>
       </div>
     </div>
@@ -410,6 +408,15 @@ export default {
           { label: '在线支付', value: 1 },
           { label: '到店支付', value: 2 },
           { label: '货到付款', value: 3 }
+        ],
+
+        OrderType: [
+          { label: '其他', value: 0 },
+          { label: '普通', value: 10 },
+          { label: '重症', value: 20 },
+          { label: '院内', value: 30 },
+          { label: '院外', value: 40 },
+          { label: '机构', value: 50 }
         ]
       }
     }
