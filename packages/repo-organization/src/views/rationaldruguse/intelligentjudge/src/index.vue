@@ -3,7 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
+               label-width="auto"
                label-position="right"
                label-suffix
                size="mini">
@@ -36,8 +36,7 @@
                        v-bind:value="item.MedicalDepartmentCode">{{item.MedicalDepartmentName}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="智能审方结果："
-                      label-width="110px">
+        <el-form-item label="智能审方结果：">
           <el-select v-model="model.actionMsg"
                      placeholder="全部"
                      clearable>
@@ -53,11 +52,8 @@
           <el-input v-model.trim="model.patientName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="处方审核时间："
-                      label-width="110px">
-          <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
-                             v-bind:default-time="['00:00:00', '23:59:59']"
-                             format="yyyy-MM-dd"
+        <el-form-item label="处方审核时间：">
+          <peace-date-picker value-format="yyyy-MM-dd "
                              type="daterange"
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
@@ -163,7 +159,7 @@ export default {
     this.$nextTick().then(() => {
       //获取科室列表
       Service.GetDepartment().then((res) => {
-        this.deptlist = res.data
+        this.deptlist = res.data.list
       })
       //处方统计
       const params = Peace.util.deepClone(this.model)
