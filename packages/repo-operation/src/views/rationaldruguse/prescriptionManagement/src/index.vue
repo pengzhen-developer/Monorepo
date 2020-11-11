@@ -263,7 +263,7 @@
 
         <el-table-column label="审方时间"
                          align="center"
-                         prop="prescriptionTime"
+                         prop="pharmacistExamTime"
                          min-width="160px"></el-table-column>
 
         <el-table-column label="操作"
