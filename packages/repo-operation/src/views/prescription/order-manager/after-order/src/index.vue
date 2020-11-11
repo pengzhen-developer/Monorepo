@@ -9,7 +9,7 @@
         <el-form-item label="订单来源">
           <el-input v-model="model.Source"
                     placeholder="请输入订单来源"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="申请取消日期">
@@ -21,7 +21,7 @@
         <el-form-item label="药房">
           <el-input v-model="model.DrugsStoreName"
                     placeholder="请输入药房名称"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="取消结果">

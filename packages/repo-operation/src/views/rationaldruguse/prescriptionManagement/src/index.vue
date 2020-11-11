@@ -14,7 +14,7 @@
         <el-form-item label="机构名称：">
           <el-select v-model="model.hosCode"
                      placeholder="全部"
-                     clearable="ture">
+                     clearable>
             <el-option v-for="item in remoteSource.organizationList"
                        v-bind:key="item.Code"
                        v-bind:label="item.Name"
@@ -109,7 +109,7 @@
         <el-form-item label="审方药师：">
           <el-select v-model="model.pharmacistCode"
                      placeholder="请选择"
-                     clearable="true">
+                     clearable>
 
             <el-option v-for="item in remoteSource.pharmacistList"
                        v-bind:key="item.Code"
