@@ -359,7 +359,7 @@ export default {
     this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
-    this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sys_attr')
+    this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sysattribute')
     this.$nextTick().then(() => {
       this.fetch()
     })
