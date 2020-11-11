@@ -299,7 +299,7 @@
                  v-bind:visible.sync="dialog4.visible"
                  v-bind:title="dialog4.title">
       <el-form ref="form"
-               label-width="120px"
+               label-width="auto"
                v-bind:model="dialog4.model"
                v-bind:rules="dialog4.rules">
 
