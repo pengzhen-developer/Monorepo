@@ -399,8 +399,8 @@ export default {
         ],
         // 配送方式
         ShippingMethod: [
-          { label: '自提订单', value: 0 },
-          { label: '配送订单', value: 1 }
+          { label: '自提', value: 0 },
+          { label: '配送', value: 1 }
         ],
         // 订单状态 => 见 watch 'data.ShippingMethod'
         OrderStatus: [],
