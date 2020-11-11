@@ -291,11 +291,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-select .el-input__inner {
-  padding-right: 52px !important;
-}
-
-::v-deep .el-input--suffix .el-input__inner {
-  padding-right: 52px !important;
-}
 </style>
