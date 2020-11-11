@@ -184,20 +184,26 @@
                   size="mini"
                   pagination
                   stripe>
-        <el-table-column label="系统审方结果"
+
+        <el-table-column label="处方编号"
                          align="center"
-                         prop="examineResult"
-                         min-width="120px"></el-table-column>
+                         prop="prescriptionNo"
+                         min-width="160px"></el-table-column>
+
+        <el-table-column label="处方状态"
+                         align="center"
+                         prop="stateName"
+                         min-width="100px"></el-table-column>
 
         <el-table-column label="药师审方结果"
                          align="center"
                          prop="pharmacistExamineResult"
                          min-width="120px"></el-table-column>
 
-        <el-table-column label="处方号"
+        <el-table-column label="系统审方结果"
                          align="center"
-                         prop="prescriptionNo"
-                         min-width="160px"></el-table-column>
+                         prop="examineResult"
+                         min-width="120px"></el-table-column>
 
         <el-table-column label="处方创建时间"
                          align="center"
@@ -214,12 +220,7 @@
                          prop="patientName"
                          min-width="100px"></el-table-column>
 
-        <el-table-column label="处方来源"
-                         align="center"
-                         prop="prescriptionSource"
-                         min-width="100px"></el-table-column>
-
-        <el-table-column label="医生名称"
+        <el-table-column label="开方医生"
                          min-width="100px"
                          prop="doctorName"
                          align="center"></el-table-column>
@@ -234,20 +235,18 @@
                          prop="prescriptionType"
                          min-width="100px"></el-table-column>
 
-        <el-table-column label="处方执行时间"
+        <el-table-column label="处方来源"
                          align="center"
-                         prop="prescriptionTime"
-                         min-width="160px"></el-table-column>
-
-        <el-table-column label="处方状态"
-                         align="center"
-                         prop="stateName"
+                         prop="prescriptionSource"
                          min-width="100px"></el-table-column>
 
-        <el-table-column label="审核模式"
+        <el-table-column label="审核通过方式"
                          align="center"
-                         prop="pharmacistCheckMode"
-                         min-width="100px"></el-table-column>
+                         min-width="120px">
+          <template slot-scope="scope">
+            {{ scope.row.pharmacistCheckMode || '--' }}
+          </template>
+        </el-table-column>
 
         <el-table-column label="提交方式"
                          align="center"
@@ -256,8 +255,16 @@
 
         <el-table-column label="审方药师"
                          align="center"
-                         prop="pharmacyName"
-                         min-width="100px"></el-table-column>
+                         min-width="100px">
+          <template slot-scope="scope">
+            {{ scope.row.pharmacyName || '--' }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="审方时间"
+                         align="center"
+                         prop="prescriptionTime"
+                         min-width="160px"></el-table-column>
 
         <el-table-column label="操作"
                          align="center"
