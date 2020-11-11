@@ -496,12 +496,4 @@ export default {
 
   margin-bottom: 20px;
 }
-
-::v-deep .el-select .el-input__inner {
-  padding-right: 52px !important;
-}
-
-::v-deep .el-input--suffix .el-input__inner {
-  padding-right: 52px !important;
-}
 </style>
