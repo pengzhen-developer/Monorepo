@@ -460,8 +460,8 @@ export default {
           let money = res.data.orderMoney
           let moneyRecord = res.data.moneyRecord //费用明细
           let params = { orderNo, orderType, money, moneyRecord }
-
-          if (this.page.payIndex > 1) {
+          //payModel 1 配送在线支付  2 自提到店支付  3 配送货到付款  4自提在线支付
+          if (this.page.payIndex == 2 || this.page.payIndex == 3) {
             this.payCallback()
           } else {
             this.dialog.visible = true

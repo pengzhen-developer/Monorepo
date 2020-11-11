@@ -215,8 +215,8 @@ export default {
 .close {
   margin: 0;
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 2px;
+  right: 14px;
   width: 20px;
   height: 20px;
   z-index: 2003;
@@ -229,7 +229,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 15px 70px;
+    padding: 30px 15px 70px;
     width: 100%;
     background-color: #fff;
     .cost-code {
