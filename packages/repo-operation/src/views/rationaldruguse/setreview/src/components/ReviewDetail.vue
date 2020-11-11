@@ -71,7 +71,7 @@ export default {
       const params = { ClientID: this.data.code }
 
       return fetch(params).then((res) => {
-        const array = JSON.parse(res?.data?.list?.RelationJson ?? '[]')
+        const array = JSON.parse(res?.data?.RelationJson ?? '[]')
         this.nowArray = array
         array.map((item) => {
           this.checkedList.push(item.patentid)
