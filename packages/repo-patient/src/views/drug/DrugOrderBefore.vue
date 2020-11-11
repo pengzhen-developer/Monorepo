@@ -329,32 +329,12 @@ export default {
     },
     initData(json) {
       const params = peace.util.decode(json)
-      // this.page.tabIndex = params.ShippingMethod == '1' ? '1' : '0'
       /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
       /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
       this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
       this.page.json = params
       this.CustomerType = params.CustomerType
       this.Detailed = params.Detailed
-    },
-    changeShowPopup() {
-      if (!this.showBtn) {
-        return
-      }
-      this.showPopup = !this.showPopup
-      if (!this.showPopup) {
-        //仅 在线支付可用医保抵扣
-        //故 重置选择医保
-        if (this.page.payIndex != this.json.payIndex || this.page.tabIndex != this.json.tabIndex) {
-          this.onReset()
-        }
-        this.page.tabIndex = this.json.tabIndex
-        this.page.payIndex = this.json.payIndex
-        this.getPayName()
-      } else {
-        this.json.tabIndex = this.page.tabIndex
-        this.json.payIndex = this.page.payIndex
-      }
     },
     goDrugPhaHomePage() {
       if (!this.showBtn) {
@@ -386,13 +366,8 @@ export default {
 
       this.$router.push(`/setting/SelectAddressManger/${param}`)
     },
-    /**
-     * 创建购药订单，并根据支付类型调起支付
-     * @param {string} [paymentType='wxpay'] 支付类型
-     *                                       可选：wxpay（微信） alipay（支付宝） yibaopay（医保支付）
-     *                                       默认：wxpay（微信）
-     */
-    submitOrder(paymentType = 'wxpay') {
+
+    submitOrder() {
       if (this.canShowYibao) {
         this.yibaoInfo.medCardNo = this.order.medicalCardNo
       }
@@ -401,12 +376,14 @@ export default {
         peace.util.alert('请选择支付方式')
         return
       }
+      let paymentType = ''
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
-      //1 在线支付  2 到店支付  3 货到付款
+      //payMode 1 配送在线支付  2 自提到店支付  3 配送货到付款  4自提在线支付
       const paymentTypeMap = {
         1: 'wxpay',
         2: 'shoppay',
-        3: 'deliverypay'
+        3: 'deliverypay',
+        4: 'wxpay'
       }
       if (this.payPrice > 0) {
         paymentType = paymentTypeMap[this.page.payIndex]
@@ -449,18 +426,16 @@ export default {
         cardno: this.page.cardno,
         medCardNo: this.yibaoInfo.medCardNo || ''
       }
-      // return
       peace.service.patient
         .submitOrder(params)
         .then((res) => {
           let orderNo = res.data.OrderId
           this.orderId = res.data.OrderId
           let orderType = 'drug'
-          // let money = this.page.tabIndex == '1' ? res.data.orderMoney : this.order.pickOrderMoney
           let money = res.data.orderMoney
           let moneyRecord = res.data.moneyRecord //费用明细
           let params = { orderNo, orderType, money, moneyRecord }
-          //payModel 1 配送在线支付  2 自提到店支付  3 配送货到付款  4自提在线支付
+          //payMode 1 配送在线支付  2 自提到店支付  3 配送货到付款  4自提在线支付
           if (this.page.payIndex == 2 || this.page.payIndex == 3) {
             this.payCallback()
           } else {
@@ -504,6 +479,26 @@ export default {
       this.json.tabIndex = item.Value
       this.payList = [].concat(item.PayModel)
       this.json.payIndex = this.payList.find((pay) => pay.Visible)?.Value
+    },
+    changeShowPopup() {
+      if (!this.showBtn) {
+        return
+      }
+      this.showPopup = !this.showPopup
+      if (!this.showPopup) {
+        //仅 在线支付可用医保抵扣
+        //故 重置选择医保
+        if (this.page.payIndex != this.json.payIndex || this.page.tabIndex != this.json.tabIndex) {
+          this.onReset()
+        }
+        this.page.tabIndex = this.json.tabIndex
+        this.page.payIndex = this.json.payIndex
+        this.getPayName()
+      } else {
+        this.json.tabIndex = this.page.tabIndex
+        this.payList = [].concat(this.NewShippingMethod.find((item) => item.Value == this.json.tabIndex).PayModel)
+        this.json.payIndex = this.page.payIndex
+      }
     },
     getPhaOrder() {
       const params = peace.util.decode(this.$route.params.json)
