@@ -93,9 +93,9 @@
       </div>
     </div>
 
-    <peace-dialog title="选择仓库"
-                  width="600px"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="选择仓库"
+                 width="600px"
+                 v-bind:visible.sync="dialog.visible">
       <peace-table ref="table"
                    height="400px"
                    class="q-mb-lg"
@@ -128,7 +128,7 @@
           <div class="q-py-xs q-px-xl">提交</div>
         </el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

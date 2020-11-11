@@ -105,10 +105,10 @@
       </peace-table>
     </div>
 
-    <peace-dialog title="取消记录"
-                  width="400px"
-                  v-if="dialog.visible"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="取消记录"
+                 width="400px"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
       <el-timeline>
         <el-timeline-item v-for="(activity, index) in dialog.data"
                           v-bind:key="index"
@@ -116,14 +116,14 @@
           {{ activity.Remark }}
         </el-timeline-item>
       </el-timeline>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="订单详情"
-                  width="800px"
-                  v-if="dialog2.visible"
-                  v-bind:visible.sync="dialog2.visible">
+    <PeaceDialog title="订单详情"
+                 width="800px"
+                 v-if="dialog2.visible"
+                 v-bind:visible.sync="dialog2.visible">
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

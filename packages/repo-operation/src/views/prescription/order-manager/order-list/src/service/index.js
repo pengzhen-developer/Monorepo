@@ -78,6 +78,20 @@ export default {
     })
   },
 
+  setOrderLogistics(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Logistics/SetOrderLogistics'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
   exportFile(params) {
     const isMock = false
 

@@ -39,9 +39,9 @@
       </div>
     </div>
 
-    <peace-dialog title="选择药店"
-                  v-if="dialog.visible"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="选择药店"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
       <el-tree style="height: 600px; overflow: auto;"
                class="q-mb-md"
                node-key="DrugStoreKeyId"
@@ -71,7 +71,7 @@
           <div class="q-py-xs q-px-xl">提交</div>
         </el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

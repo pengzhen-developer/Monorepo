@@ -46,10 +46,10 @@
       </el-form-item>
     </el-form>
 
-    <peace-dialog title="修改密码"
-                  width="470px"
-                  v-if="dialog.visible"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="修改密码"
+                 width="470px"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
       <el-form ref="form"
                size="larger"
                label-width="auto"
@@ -103,7 +103,7 @@
         </div>
 
       </el-form>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

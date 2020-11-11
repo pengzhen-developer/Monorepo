@@ -284,13 +284,13 @@
 
     <!-- 原始处方 -->
     <template>
-      <peace-dialog title="原始处方"
-                    :visible.sync="dialog.visible"
-                    append-to-body
-                    v-show="dialog.visible&&dialog.data.show">
+      <PeaceDialog title="原始处方"
+                   :visible.sync="dialog.visible"
+                   append-to-body
+                   v-show="dialog.visible&&dialog.data.show">
         <el-image v-bind:src="dialog.data.prescriptionImageUrl"
                   v-on:load="onLoad"></el-image>
-      </peace-dialog>
+      </PeaceDialog>
     </template>
   </div>
 </template>

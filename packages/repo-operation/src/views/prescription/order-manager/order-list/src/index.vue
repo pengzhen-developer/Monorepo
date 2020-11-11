@@ -205,32 +205,38 @@
             <el-button v-if="scope.row.DrugCode"
                        type="text"
                        v-on:click="showLogistics(scope.row)">发货信息</el-button>
+
+            <el-button v-if="showChangeOrderNo(scope.row)"
+                       type="text"
+                       v-on:click="showChangeOrderNoDialog(scope.row)">
+              修改运单号
+            </el-button>
           </template>
         </el-table-column>
       </peace-table>
     </div>
 
     <!-- 原始处方 -->
-    <peace-dialog title="原始处方"
-                  :visible.sync="dialog.visible"
-                  append-to-body
-                  v-show="dialog.visible&&dialog.data.show">
+    <PeaceDialog title="原始处方"
+                 :visible.sync="dialog.visible"
+                 append-to-body
+                 v-show="dialog.visible&&dialog.data.show">
       <el-image v-bind:src="dialog.data.prescriptionImageUrl"
                 v-on:load="onLoad"></el-image>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="订单详情"
-                  width="800px"
-                  v-if="dialog2.visible"
-                  v-bind:visible.sync="dialog2.visible">
+    <PeaceDialog title="订单详情"
+                 width="800px"
+                 v-if="dialog2.visible"
+                 v-bind:visible.sync="dialog2.visible">
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
     <!-- 发货信息 -->
-    <peace-dialog title="发货信息"
-                  width="1100px"
-                  :v-if="dialog3.visible"
-                  v-bind:visible.sync="dialog3.visible">
+    <PeaceDialog title="发货信息"
+                 width="1100px"
+                 :v-if="dialog3.visible"
+                 v-bind:visible.sync="dialog3.visible">
 
       <peace-table :data="dialog3.data">
 
@@ -286,7 +292,44 @@
                          align="center"
                          width="160px"></el-table-column>
       </peace-table>
-    </peace-dialog>
+    </PeaceDialog>
+
+    <PeaceDialog width="400px"
+                 v-if="dialog4.visible"
+                 v-bind:visible.sync="dialog4.visible"
+                 v-bind:title="dialog4.title">
+      <el-form ref="form"
+               label-width="120px"
+               v-bind:model="dialog4.model"
+               v-bind:rules="dialog4.rules">
+
+        <el-form-item prop="logisticsCompany">
+          <template slot="label">
+            <span>物流公司名称</span>
+            <span>：</span>
+          </template>
+
+          <el-input v-model="dialog4.model.logisticsCompany"></el-input>
+        </el-form-item>
+        <el-form-item prop="expressNo">
+          <template slot="label">
+            <span>物流单号</span>
+            <span>：</span>
+          </template>
+
+          <el-input v-model="dialog4.model.expressNo"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer"
+           class="text-center">
+        <el-button style="min-width: 120px;"
+                   type="primary"
+                   v-on:click="changeOrderNo">确定</el-button>
+        <el-button style="min-width: 120px;"
+                   v-on:click="closeChangeOrderNoDialog">取消</el-button>
+      </div>
+    </PeaceDialog>
 
   </div>
 </template>
@@ -338,6 +381,22 @@ export default {
       dialog3: {
         visible: false,
         data: undefined
+      },
+
+      dialog4: {
+        visible: false,
+        title: '',
+
+        model: {
+          platOrderID: '',
+          logisticsCompany: '',
+          expressNo: ''
+        },
+
+        rules: {
+          logisticsCompany: [{ required: true, message: '请输入物流公司名称', trigger: 'change' }],
+          expressNo: [{ required: true, message: '请输入物流单号', trigger: 'change' }]
+        }
       },
 
       remoteSource: {
@@ -415,6 +474,45 @@ export default {
 
         this.dialog2.data = res.data
       })
+    },
+
+    showChangeOrderNo(row) {
+      // 临时处理
+      // 当 药房为：‘xxx 药房’ & 取货方式为： ‘配送’ & 订单状态： ‘已发货’
+      return (
+        this.remoteSource.ShippingMethod.find((item) => item.value === row.ShippingMethod)?.label === '配送' &&
+        this.remoteSource.OrderStatus.find((item) => item.value === row.OrderStatus)?.label === '已发货'
+      )
+    },
+
+    changeOrderNo() {
+      this.$refs.form.validate().then(() => {
+        const params = this.dialog4.model
+
+        Service.setOrderLogistics(params).then(() => {
+          Peace.util.success('操作成功')
+
+          this.closeChangeOrderNoDialog()
+          this.fetch()
+        })
+      })
+    },
+
+    showChangeOrderNoDialog(row) {
+      this.dialog4.visible = true
+
+      this.dialog4.model = {
+        platOrderID: '',
+        logisticsCompany: '',
+        expressNo: ''
+      }
+
+      this.dialog4.model.platOrderID = row.OrderId
+      this.dialog4.title = '修改物流信息'
+    },
+
+    closeChangeOrderNoDialog() {
+      this.dialog4.visible = false
     },
 
     showCancelRecord(row) {

@@ -82,15 +82,15 @@
       </el-table>
     </div>
 
-    <peace-dialog width="800px"
-                  v-if="dialog.visible"
-                  v-bind:title="dialog.title"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog width="800px"
+                 v-if="dialog.visible"
+                 v-bind:title="dialog.title"
+                 v-bind:visible.sync="dialog.visible">
       <MenuModel v-bind:menuTree="menuTree"
                  v-bind:data="dialog.data"
                  v-on:save="save"
                  v-on:cancel="cancel"></MenuModel>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
