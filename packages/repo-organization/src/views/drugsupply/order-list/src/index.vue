@@ -7,21 +7,15 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
 
+        <el-form-item label="订单来源">
+          <el-input v-model="model.Source"
+                    placeholder="请输入订单来源"
+                    clearable></el-input>
+        </el-form-item>
+
         <el-form-item label="订单编号">
           <el-input v-model="model.OrderNumber"
                     placeholder="请输入订单编号"
-                    clearable="true"></el-input>
-        </el-form-item>
-
-        <el-form-item label="客户姓名">
-          <el-input v-model="model.CustName"
-                    placeholder="请输入客户姓名"
-                    clearable="true"></el-input>
-        </el-form-item>
-
-        <el-form-item label="药房">
-          <el-input v-model="model.DrugName"
-                    placeholder="请输入药房名称"
                     clearable="true"></el-input>
         </el-form-item>
 
@@ -54,6 +48,18 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="客户姓名">
+          <el-input v-model="model.CustName"
+                    placeholder="请输入客户姓名"
+                    clearable="true"></el-input>
+        </el-form-item>
+
+        <el-form-item label="电话号码">
+          <el-input v-model="model.Phone"
+                    placeholder="请输入手机号码"
+                    clearable></el-input>
+        </el-form-item>
+
         <el-button type="primary"
                    style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
@@ -77,10 +83,21 @@
                        v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
           </template>
         </el-table-column>
+
+        <el-table-column prop="Source"
+                         label="订单来源"
+                         align="center"
+                         width="120px"></el-table-column>
+
         <el-table-column prop="UserName"
                          label="客户姓名"
                          align="center"
                          min-width="120px"></el-table-column>
+
+        <el-table-column prop="UserPhone"
+                         label="电话号码"
+                         align="center"
+                         min-width="160px"></el-table-column>
 
         <el-table-column prop="TotalAmoun"
                          label="订单总额"
@@ -89,11 +106,6 @@
 
         <el-table-column prop="CreateTime"
                          label="下单时间"
-                         align="center"
-                         min-width="160px"></el-table-column>
-
-        <el-table-column prop="DrugStoreName"
-                         label="药房"
                          align="center"
                          min-width="160px"></el-table-column>
 
