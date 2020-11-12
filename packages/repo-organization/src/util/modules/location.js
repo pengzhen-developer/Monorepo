@@ -14,10 +14,12 @@
                                 false - URL 在浏览历史中创建新的条目。
  * @returns
  */
-export const redirectToPath = (URL, name = '_self', specs, replace) => {
-  console.log(URL, name, specs, replace)
-  alert('redirectToPath  open')
+export const redirectToPath = async (URL, name = '_self', specs, replace) => {
   window.open(URL, name, specs, replace)
+
+  if (name === '_self') {
+    throw new Error('等待重定向.......')
+  }
 }
 
 /**

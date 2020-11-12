@@ -38,14 +38,6 @@ export default async () => {
     Peace.cache.sessionStorage.set('original-href', currentHref)
 
     // 再次刷新，重新获取用户数据
-    window.location.reload()
-
-    // sleep
-
-    const sleep = (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    }
-
-    await sleep(10000000000)
+    Util.location.redirectToIndex()
   }
 }
