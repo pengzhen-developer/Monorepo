@@ -22,79 +22,43 @@
 import Util from '@src/util'
 import Service from './service'
 
-// import configurationNavConsole from '@src/router/configuration_nav_console'
 export default {
   name: 'Login',
 
   data() {
     return {
-      original: '',
-
-      isLoading: false
+      isLoading: true
     }
   },
 
   created() {
     // session cache to data
     this.original = Peace.cache.sessionStorage.get('original-href')
+    this.token = Peace.util.queryUrlParam('token', this.original)
   },
 
   mounted() {
-    // 静默登录
     this.doLogin()
   },
 
   methods: {
+    // 静默登录
     doLogin() {
-      this.isLoading = true
+      if (!this.token) {
+        throw new Error('缺少必要参数【token】，请重新登录。')
+      }
 
-      this.login()
-        .then(this.getAccountMenuList)
-        .then(this.redirectToOriginal)
-        .catch(() => {
-          Util.user.removeUserInfo()
-          Util.location.redirectToLoginAndClear()
+      Peace.identity.auth.setAuth({ access_token: this.token })
+      Peace.identity.auth.setHeaderAfterAuth(this.token)
+
+      Service.doLogin()
+        .then((res) => {
+          Util.user.setUserInfo(res.data)
+          Util.location.redirectToIndex()
         })
         .finally(() => {
           this.isLoading = false
         })
-    },
-
-    login() {
-      const token = Peace.util.queryUrlParam('token', this.original)
-
-      if (token) {
-        Peace.identity.auth.setAuth({
-          access_token: token
-        })
-        Peace.identity.auth.setHeaderAfterAuth(token)
-
-        return Service.doLogin().then((res) => {
-          Util.user.setUserInfo(res.data)
-
-          return Promise.resolve()
-        })
-      } else {
-        return Promise.reject('缺少必要参数【token】，请重新登录。')
-      }
-    },
-
-    getAccountMenuList() {
-      const productId = Peace.util.queryUrlParam('productId', this.original) || ''
-      // 获取子系统
-      const params = {
-        type: 'left',
-        productCode: productId || 'kzt',
-        processEnv: process.env
-      }
-
-      return Peace.identity.auth.getAccountMenu(params).then((res) => {
-        Util.user.setAccountMenuList(res)
-      })
-    },
-
-    redirectToOriginal() {
-      window.location.href = this.original
     }
   }
 }
