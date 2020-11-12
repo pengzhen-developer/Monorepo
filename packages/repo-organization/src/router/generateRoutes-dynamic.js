@@ -10,11 +10,39 @@ const getAccountMenu = () => {
     processEnv: process.env
   }
 
-  return Peace.identity.auth.getAccountMenu(params).then((res) => {
-    Util.user.setAccountMenuList(res)
+  return Peace.identity.auth
+    .getAccountMenu(params)
+    .then((res) => {
+      Util.user.setAccountMenuList(res)
 
-    return res
-  })
+      return res
+    })
+    .catch((error) => {
+      // 本应在 peace => http => interceptors 处理
+      // 如下：
+      // if (response.data.code === 401 || response.data.code === 403) {
+      //   if (peace && peace.hasOwnProperty('$router')) {
+      //     peace.$router.push('/401')
+      //   }
+
+      //   return Promise.reject(response)
+      // }
+      //
+      // 但 generateRoutes-dynamic 在 new vue() 前，router 未生成
+      // 因此自行处理 401 错误
+      if (error.response.status === 401 || error.response.status === 403 || error.response.data.code === 401 || error.response.data.code === 403) {
+        // 提示用户，引导下一步
+        Peace.util.warning('您的登录状态已失效，请重新登录')
+
+        // 清除用户信息
+        Util.user.removeUserInfo()
+
+        // 给出反应时间，重定向到登录页
+        setTimeout(() => {
+          Util.location.redirectToLogin()
+        }, 3000)
+      }
+    })
 }
 
 const getDynamicRoutes = (accountMenu) => {

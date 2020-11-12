@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import CreateSocket from '@src/socket'
 import Util from '@src/util'
 // 定时任务
 import Timer from './timer'
@@ -54,6 +55,10 @@ export default {
       // 再次刷新，重新获取用户数据
       window.location.reload()
     }
+  },
+
+  created() {
+    CreateSocket()
   }
 }
 </script>
