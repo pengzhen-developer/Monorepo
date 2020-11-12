@@ -58,6 +58,8 @@ const install = async () => {
       })
     } catch (error) {
       console.error('[Library] boot error:', error)
+
+      throw error
     }
   }
 
