@@ -7,6 +7,6 @@ export default async () => {
   if (Peace.util.queryUrlParam('clear') === 'true') {
     Util.user.removeUserInfo()
 
-    window.location.href = window.location.href.replace('?clear=true', '').replace('clear=true', '')
+    Util.location.redirectToPath(window.location.href.replace('?clear=true', '').replace('clear=true', ''))
   }
 }

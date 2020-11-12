@@ -19,6 +19,10 @@ import User from './user'
  */
 export const redirectToPath = (URL, name = '_self', specs, replace) => {
   window.open(URL, name, specs, replace)
+
+  if (name === '_self') {
+    throw new Error('等待重定向.......')
+  }
 }
 
 /**
