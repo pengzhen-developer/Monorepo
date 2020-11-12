@@ -144,12 +144,12 @@ export default {
     get() {
       const params = peace.util.decode(this.$route.params.json)
       if (params.type === 'starDoctorList' || params.type === 'departDoctorList') {
-        peace.service.patient.getNetHospitalDoctorList(params).then(res => {
+        peace.service.patient.getNetHospitalDoctorList(params).then((res) => {
           this.doctorList = res.data
           this.loaded = true
         })
       } else {
-        peace.service.patient.getDoctorList(params).then(res => {
+        peace.service.patient.getDoctorList(params).then((res) => {
           this.doctorList = res.data
           this.loaded = true
         })
@@ -168,7 +168,7 @@ export default {
 
     canShowImg(doctor, type) {
       if (doctor.serviceManage && doctor.serviceManage.length > 0) {
-        const serviceManage = doctor.serviceManage.find(item => item.serviceType == type)
+        const serviceManage = doctor.serviceManage.find((item) => item.serviceType == type)
         if (typeof serviceManage == 'undefined') {
           return true
         } else {
@@ -181,7 +181,7 @@ export default {
 
     canShowInquiry(doctor, type) {
       const params = peace.util.decode(this.$route.params.json)
-      const consultation = doctor.consultationList.filter(item => item.tag == type)[0]
+      const consultation = doctor.consultationList.filter((item) => item.tag == type)[0]
       if (params.doctorTag === 'freeConsult') {
         return consultation && consultation.status && consultation.money === 0
       } else {
@@ -335,7 +335,8 @@ export default {
         .title-description-detail {
           margin: 0 0 0 40px;
           display: block;
-
+          word-wrap: break-word;
+          word-break: break-all;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;

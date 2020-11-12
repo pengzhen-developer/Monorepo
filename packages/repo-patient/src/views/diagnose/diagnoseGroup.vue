@@ -49,33 +49,6 @@
       <!--        </div>-->
     </div>
 
-    <!-- <div class="card" v-for="(item, index) in doctorList" @click="goHomeIndex(item)" data-id="item.doctorId" :key="index">
-            <div class="card-avatar avatar-circular">
-                <img class="" :src="item.avartor" />
-            </div>
-            <div class="card-body">
-                <div class="card-name">{{item.name}}
-                    <div class="card-small">
-                        {{item.doctorTitle}}
-                            <div :class="['label', 'label-'+it]" v-for="(it, i) in item.serviceList" :key="i">
-                                {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                            </div>
-                    </div>
-                    <span class="tag tag-online"
-                        v-if="item.workStatus==1">接诊中</span>
-                    <span class="tag tag-outline"
-                        v-else-if="item.workStatus==2">休息中</span>
-                </div>
-                <div class="card-small">
-                    {{item.netHospitalName}} {{item.deptName}}
-                </div>
-                <div class="card-brief" v-if="item.specialSkill">
-                    <div class="span s">擅长：</div>
-                    <div class="span xl">
-                        {{item.specialSkill}}</div>
-                </div>
-            </div>
-        </div> -->
     <van-list v-model="showLoadingType"
               :finished="finished"
               :finished-text="!nodata&&'没有更多了'"
@@ -187,7 +160,7 @@ export default {
         .groupDetail({
           code: this.params.serviceCode
         })
-        .then(res => {
+        .then((res) => {
           this.data = res.data
           this.txt = this.delHtml(res.data.intro)
         })
@@ -229,7 +202,7 @@ export default {
           p: this.p,
           size: this.size
         })
-        .then(res => {
+        .then((res) => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
 
           // res.data.list.map(item=>{
@@ -369,7 +342,7 @@ export default {
 .card-brief .span.xl {
   flex: 0 1 auto;
   word-wrap: break-word;
-  /* white-space: pre-wrap; */
+  word-break: break-all;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;

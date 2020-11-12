@@ -209,7 +209,7 @@ export default {
             this.nodata = true
           }
 
-          if (res.data.list.length==0 || this.p * this.size >= res.data.total) {
+          if (res.data.list.length == 0 || this.p * this.size >= res.data.total) {
             this.finished = true
           }
         })
@@ -338,7 +338,7 @@ export default {
 .card-brief .span.xl {
   flex: 0 1 auto;
   word-wrap: break-word;
-  /* white-space: pre-wrap; */
+  word-break: break-all;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;

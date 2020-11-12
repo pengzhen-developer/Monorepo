@@ -1272,6 +1272,7 @@ export default {
         display: -webkit-box;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        word-wrap: break-word;
         word-break: break-all;
         &.fold {
           -webkit-line-clamp: 2;

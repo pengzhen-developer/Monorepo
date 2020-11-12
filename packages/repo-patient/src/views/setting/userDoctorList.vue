@@ -93,7 +93,7 @@ export default {
   },
 
   created() {
-    peace.service.patient.getUserDctList().then(res => {
+    peace.service.patient.getUserDctList().then((res) => {
       this.doctorList = res.data
       this.loaded = true
     })
@@ -234,7 +234,7 @@ export default {
 .card-brief .span.xl {
   flex: 0 1 auto;
   word-wrap: break-word;
-  white-space: pre-wrap;
+  word-break: break-all;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
