@@ -14,7 +14,7 @@
                                 false - URL 在浏览历史中创建新的条目。
  * @returns
  */
-export const redirectToPath = async (URL, name = '_self', specs, replace) => {
+export const redirectToPath = (URL, name = '_self', specs, replace) => {
   window.open(URL, name, specs, replace)
 
   if (name === '_self') {
