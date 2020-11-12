@@ -48,6 +48,7 @@ export default {
     doLogin() {
       this.isLoading = true
 
+      alert('准备 login')
       this.login()
         .then(this.getAccountMenuList)
         .then(this.redirectToOriginal)
