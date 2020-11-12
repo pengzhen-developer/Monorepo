@@ -54,7 +54,7 @@
                  v-if="dialog.visible"
                  v-bind:visible.sync="dialog.visible">
       <el-form ref="form"
-               label-width="120px"
+               label-width="auto"
                v-bind:model="dialog.model"
                v-bind:rules="dialog.rules">
         <el-form-item>
