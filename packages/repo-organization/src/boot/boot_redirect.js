@@ -37,6 +37,7 @@ export default async () => {
     // 保存 original-href
     Peace.cache.sessionStorage.set('original-href', currentHref)
 
+    alert('boot_redirect  reload')
     // 再次刷新，重新获取用户数据
     window.location.reload()
   }

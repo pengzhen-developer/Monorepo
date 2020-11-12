@@ -15,6 +15,8 @@
  * @returns
  */
 export const redirectToPath = (URL, name = '_self', specs, replace) => {
+  console.log(URL, name, specs, replace)
+  alert('redirectToPath  open')
   window.open(URL, name, specs, replace)
 }
 
