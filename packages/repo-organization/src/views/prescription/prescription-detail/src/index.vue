@@ -124,12 +124,7 @@
                     style="width: 4em;">审方药师</span>
               <span class="q-mx-xs">：</span>
               <span class="col text-weight-bold">
-                <el-image style="width: 56px;"
-                          fit="contain"
-                          v-if="data.base64uniqueImage"
-                          v-bind:title="data.PrescriptionPharmacistName"
-                          v-bind:src="data.base64uniqueImage"
-                          v-bind:preview-src-list="[data.base64uniqueImage]"></el-image>
+                {{ data.PrescriptionPharmacistName }}
               </span>
             </div>
           </div>
