@@ -86,6 +86,7 @@
 
 <script>
 import Service from './service'
+import Util from '@src/util'
 export default {
   name: 'LoggerRecordList',
 
@@ -98,6 +99,7 @@ export default {
       },
       model: {
         serviceId: 'console',
+        organCode: Util.user.getUserInfo().custCode + 23,
         logType: 1,
         bizModule: '',
         functionName: '',
@@ -114,7 +116,7 @@ export default {
     }
   },
   filters: {
-    getLabel: function (value, list) {
+    getLabel: function(value, list) {
       return list.find((item) => item.value === value)?.label
     }
   },
