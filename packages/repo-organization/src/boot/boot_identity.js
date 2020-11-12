@@ -1,5 +1,5 @@
 import Identity from '@jk998/identity'
-import CreateSocket from '@src/socket'
+// import CreateSocket from '@src/socket'
 
 // export boot install function
 // async is optional
@@ -10,7 +10,7 @@ export default async ({ Vue }) => {
     }
   })
 
-  CreateSocket()
+  // CreateSocket()
 
   console.log(
     `%c ${'Identity'} %c ${Identity.version} %c`,
