@@ -8,7 +8,7 @@ export default {
   getOrderList(params) {
     const isMock = false
 
-    const apiPath = 'psd/Order/OrderListByCust'
+    const apiPath = 'psd/Order/OrderListByCustNew'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -61,7 +61,7 @@ export default {
   exportFile(params) {
     const isMock = false
 
-    const apiPath = 'psd/Excel/OOrderAllField'
+    const apiPath = 'psd/Excel/OOrderAllFieldNew'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
