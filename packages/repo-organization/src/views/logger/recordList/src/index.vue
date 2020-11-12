@@ -68,6 +68,9 @@
             {{scope.row.optType | getLabel(source.ENUM_OPTTYPE_STATUS)}}
           </template>
         </el-table-column>
+        <el-table-column min-width="200px"
+                         label="备注"
+                         prop="remarks"></el-table-column>
         <el-table-column min-width="160px"
                          label="操作人"
                          prop="createBy"></el-table-column>
