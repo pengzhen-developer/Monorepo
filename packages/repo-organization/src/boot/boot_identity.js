@@ -1,13 +1,16 @@
 import Identity from '@jk998/identity'
+import CreateSocket from '@src/socket'
 
 // export boot install function
 // async is optional
-export default async ({ Vue }) => {
+export default async ({ Vue, configuration }) => {
   Vue.use(Identity, {
     auth: {
       baseApi: process.env.VUE_APP_API_AUTH
     }
   })
+
+  CreateSocket({ Vue, configuration })
 
   console.log(
     `%c ${'Identity'} %c ${Identity.version} %c`,
