@@ -274,6 +274,7 @@
           <template slot-scope="scope">
 
             <el-button type="text"
+                       v-bind:disabled="!scope.row.prescriptionImageUrl"
                        v-on:click="detail(scope.row)">查看详情</el-button>
 
           </template>
@@ -468,12 +469,8 @@ export default {
     },
     //处方详情
     detail(row) {
-      const params = { JZTClaimNo: row.jztClaimNo }
-      Service.getPrescriptionDetail(params).then((res) => {
-        this.dialog.data.prescriptionImageUrl = res.data.prescriptionImageUrl
-
-        this.dialog.visible = true
-      })
+      this.dialog.data.prescriptionImageUrl = row.prescriptionImageUrl
+      this.dialog.visible = true
     },
 
     onLoad() {
