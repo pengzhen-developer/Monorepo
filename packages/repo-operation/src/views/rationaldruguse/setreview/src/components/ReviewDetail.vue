@@ -103,7 +103,7 @@ export default {
         ClientName: this.data.name,
         teams: this.nowArray
       }
-      Service.save(JSON.stringify(obj))
+      Service.save(obj)
         .then(() => {
           Peace.util.alert('保存成功')
 
