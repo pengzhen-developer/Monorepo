@@ -48,7 +48,7 @@
                          width="150px"
                          label="使用状态">
           <template slot-scope="scope">
-            {{scope.row.enableStatus ? '已启动':'未启动'}}
+            {{scope.row.enableStatus ? '已启用':'未启用'}}
             <el-switch v-model="scope.row.enableStatus"
                        @change="changeStatus(scope.row)"></el-switch>
           </template>
