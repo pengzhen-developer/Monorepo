@@ -99,7 +99,7 @@ export default {
       },
       model: {
         serviceId: 'console',
-        organCode: Util.user.getUserInfo().custCode + 23,
+        organCode: Util.user.getUserInfo().custCode,
         logType: 1,
         bizModule: '',
         functionName: '',
