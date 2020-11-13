@@ -5,7 +5,7 @@
       <el-form inline
                label-width="auto"
                v-bind:model="model">
-        <el-form-item label="处方编码：">
+        <el-form-item label="处方编号：">
           <el-input v-model="model.prescriptionNo"
                     placeholder="请输入"
                     clearable></el-input>
