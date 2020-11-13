@@ -422,7 +422,7 @@ export default {
   watch: {
     'data.ShippingMethod': {
       handler() {
-        if (this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
+        if (this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()) {
           this.source.OrderStatus = [
             { label: '全部', value: '' },
             { label: '等待接单', value: 1 },

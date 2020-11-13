@@ -56,7 +56,7 @@
 
         <el-form-item label="电话号码">
           <el-input v-model="model.Phone"
-                    placeholder="请输入手机号码"
+                    placeholder="请输入电话号码"
                     clearable></el-input>
         </el-form-item>
 
