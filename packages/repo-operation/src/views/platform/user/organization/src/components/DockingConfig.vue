@@ -39,7 +39,7 @@
       </el-form>
     </div>
 
-    <div class="tips"><i class="el-icon-warning"></i>切换对接系统后，订单将流向对应系统，请谨慎操作！</div>
+    <div class="tips"><i class="el-icon-warning"></i>切换对接系统可能会影响业务数据流向，请谨慎操作</div>
 
     <div class="text-center">
       <el-button style="width: 80px;"

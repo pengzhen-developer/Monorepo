@@ -99,7 +99,7 @@
                            label="机构名称"
                            prop="hospitalName">
             <template slot-scope="scope">
-              {{scope.row.hospitalName || '——'}}
+              {{scope.row.hospitalName || '—'}}
             </template>
           </el-table-column>
           <el-table-column min-width="120px"
@@ -115,7 +115,7 @@
                            align="center"
                            prop="dockSystem">
             <template slot-scope="scope">
-              {{scope.row.dockSystem || '——'}}
+              {{scope.row.dockSystem || '—'}}
             </template>
           </el-table-column>
           <el-table-column min-width="100px"
@@ -123,7 +123,7 @@
                            align="center"
                            prop="systemProperties">
             <template slot-scope="scope">
-              {{scope.row.systemProperties || '——'}}
+              {{scope.row.systemProperties || '—'}}
             </template>
           </el-table-column>
           <el-table-column min-width="160px"
@@ -141,7 +141,7 @@
             <template slot-scope="scope">
               {{ 
                 scope.row.source == '运营添加' ? scope.row.createdTime : 
-                scope.row.source == '机构注册' ? scope.row.checkTime : '——'
+                scope.row.source == '机构注册' ? scope.row.checkTime : '—'
               }}
             </template>
           </el-table-column>
@@ -217,7 +217,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
