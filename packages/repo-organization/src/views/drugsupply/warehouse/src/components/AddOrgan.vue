@@ -33,7 +33,7 @@
     ]">
           <el-input placeholder="请输入"
                     v-model.trim="model[item.Name]"
-                    maxlength="20"></el-input>
+                    maxlength="50"></el-input>
         </el-form-item>
 
         <el-form-item label="使用状态"
