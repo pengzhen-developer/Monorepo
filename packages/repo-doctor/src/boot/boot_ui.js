@@ -26,14 +26,25 @@
 
 import ElementUI from 'element-ui'
 import PeaceElementUI from '@jk998/peace-element-ui'
+import Viewer from 'v-viewer'
 
 export default ({ Vue }) => {
   // 异步引入 ui css
   // require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
   require(`@jk998/peace-element-ui/dist/peace-element-ui.css`)
+  require(`viewerjs/dist/viewer.css`)
 
   Vue.use(ElementUI, { size: 'mini' })
   Vue.use(PeaceElementUI)
+  Vue.use(Viewer, {
+    defaultOptions: {
+      zIndex: 9999,
+      navbar: false,
+      title: false,
+      toolbar: false,
+      tooltip: false
+    }
+  })
 
   console.log(
     `%c ${'ElementUI'} %c ${ElementUI.version} %c`,
