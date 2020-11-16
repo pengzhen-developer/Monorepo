@@ -2,7 +2,7 @@
 import { version, name } from './../../package.json'
 import PeaceLibrary from '@jk998/library'
 
-import util from '@src/util'
+import Util from '@src/util'
 
 // prototype
 import '@src/library/prototype/date'
@@ -36,7 +36,7 @@ export default async ({ Vue }) => {
       interceptors: {
         requestInterceptor: {
           then(request) {
-            const userInfo = util.user.getUserInfo()
+            const userInfo = Util.user.getUserInfo()
             request.headers.accesstoken = userInfo?.list?.loginInfo?.token
 
             const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/

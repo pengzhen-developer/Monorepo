@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import util from '@src/util'
+import Util from '@src/util'
 
 import InquirySessionReceive from './InquirySessionReceive'
 
@@ -236,8 +236,8 @@ export default {
                 .then((res) => {
                   Peace.util.success(res.msg)
 
-                  util.IM.inquiryHelper.resetInquirySession()
-                  util.IM.inquiryHelper.resetInquirySessionMessages()
+                  Util.IM.inquiryHelper.resetInquirySession()
+                  Util.IM.inquiryHelper.resetInquirySessionMessages()
                 })
                 .finally(() => {
                   this.over.visible = false
@@ -261,8 +261,8 @@ export default {
               .then((res) => {
                 Peace.util.success(res.msg)
 
-                util.IM.inquiryHelper.resetInquirySession()
-                util.IM.inquiryHelper.resetInquirySessionMessages()
+                Util.IM.inquiryHelper.resetInquirySession()
+                Util.IM.inquiryHelper.resetInquirySessionMessages()
               })
               .finally(() => {
                 this.over.visible = false
@@ -286,8 +286,8 @@ export default {
             .then((res) => {
               Peace.util.success(res.msg)
 
-              util.IM.inquiryHelper.resetInquirySession()
-              util.IM.inquiryHelper.resetInquirySessionMessages()
+              Util.IM.inquiryHelper.resetInquirySession()
+              Util.IM.inquiryHelper.resetInquirySessionMessages()
             })
             .finally(() => {
               this.over.visible = false

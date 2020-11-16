@@ -1,4 +1,4 @@
-import util from '@src/util'
+import Util from '@src/util'
 
 import NIM from '@public/static/IM/NIM_Web_NIM_v7.0.0'
 import WebRTC from '@public/static/IM/NIM_Web_WebRTC_v7.0.0'
@@ -31,8 +31,8 @@ export const IMHelper = {
       case 'kicked':
         Peace.util.warning(disConnectObject.message)
 
-        util.user.removeUserInfo()
-        util.user.replaceToLogin()
+        Util.user.removeUserInfo()
+        Util.user.replaceToLogin()
 
         // 刷新页面，确保 vuex store 被清空
         setTimeout(() => {
@@ -66,8 +66,8 @@ export const IMHelper = {
 
     Peace.util.warning(`通讯异常，请重新登录`)
 
-    util.user.removeUserInfo()
-    util.user.replaceToLogin()
+    Util.user.removeUserInfo()
+    Util.user.replaceToLogin()
 
     // 刷新页面，确保 vuex store 被清空
     setTimeout(() => {
@@ -585,7 +585,7 @@ export const consultationHelper = {
  *
  */
 export const initIM = () => {
-  const user = util.user.getUserInfo()
+  const user = Util.user.getUserInfo()
 
   const appKey = process.env.VUE_APP_IM_KEY
   const account = user.list.registerInfo.user_id

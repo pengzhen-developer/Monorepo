@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import util from '@src/util'
+import Util from '@src/util'
 
 export default {
   computed: {
@@ -141,11 +141,11 @@ export default {
           throw new Error(error)
         }
 
-        util.IM.inquiryHelper.resetInquirySession()
-        util.IM.inquiryHelper.resetInquirySessionMessages()
+        Util.IM.inquiryHelper.resetInquirySession()
+        Util.IM.inquiryHelper.resetInquirySessionMessages()
 
-        util.IM.inquiryHelper.setInquirySession(session)
-        util.IM.inquiryHelper.setInquirySessionMessages(message.msgs)
+        Util.IM.inquiryHelper.setInquirySession(session)
+        Util.IM.inquiryHelper.setInquirySessionMessages(message.msgs)
       }
 
       Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作)

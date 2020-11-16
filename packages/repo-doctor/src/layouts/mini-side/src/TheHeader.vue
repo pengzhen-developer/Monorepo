@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import util from '@src/util'
+import Util from '@src/util'
 import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import SignNotice from '@src/views/components/SignNotice'
 import OrgNotice from '@src/views/components/OrgNotice'
@@ -176,11 +176,11 @@ export default {
     },
     setWorkstatus(status) {
       Peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
-        const userInfo = util.user.getUserInfo()
+        const userInfo = Util.user.getUserInfo()
         userInfo.list.docInfo.workStatus = status
 
         // 储存用户信息
-        util.user.setUserInfo(userInfo)
+        Util.user.setUserInfo(userInfo)
         // 更新 vuex
         this.$store.commit('user/setUserInfo', userInfo)
       })
@@ -211,9 +211,9 @@ export default {
       })
     },
     signOut() {
-      util.user.removeUserInfo()
+      Util.user.removeUserInfo()
 
-      util.user.replaceToLogin()
+      Util.user.replaceToLogin()
 
       // 刷新页面，确保 vuex store 被清空
       setTimeout(() => {

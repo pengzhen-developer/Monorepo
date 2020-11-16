@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import util from '@src/util'
+import Util from '@src/util'
 
 export default {
   methods: {
@@ -109,11 +109,11 @@ export default {
           throw new Error(error)
         }
 
-        util.IM.consultationHelper.resetConsultationSession()
-        util.IM.consultationHelper.resetConsultationSessionMessages()
+        Util.IM.consultationHelper.resetConsultationSession()
+        Util.IM.consultationHelper.resetConsultationSessionMessages()
 
-        util.IM.consultationHelper.setConsultationSession(session)
-        util.IM.consultationHelper.setConsultationSessionMessages(message.msgs)
+        Util.IM.consultationHelper.setConsultationSession(session)
+        Util.IM.consultationHelper.setConsultationSessionMessages(message.msgs)
       }
 
       // 重置会话未读数
