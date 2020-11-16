@@ -1,5 +1,15 @@
 /** 用户信息常量 */
-const USER_INFO = 'userInfo'
+const USER_INFO = 'USER_INFO'
+const USER_PHONE = 'USER_PHONE'
+
+/**
+ * 获取用户信息（缓存）
+ *
+ * @returns
+ */
+export const getUserPhone = () => {
+  return Peace.cache.localStorage.get(USER_PHONE)
+}
 
 /**
  * 获取用户信息（缓存）
@@ -8,6 +18,16 @@ const USER_INFO = 'userInfo'
  */
 export const getUserInfo = () => {
   return Peace.cache.localStorage.get(USER_INFO)
+}
+
+/**
+ * 缓存用户手机号
+ *
+ * @param {*} userInfo
+ * @returns
+ */
+export const setUserPhone = (userPhone) => {
+  return Peace.cache.localStorage.set(USER_PHONE, userPhone)
 }
 
 /**
@@ -100,6 +120,8 @@ export const isSignIn = () => {
 }
 
 export default {
+  setUserPhone,
+  getUserPhone,
   setUserInfo,
   getUserInfo,
   removeUserInfo,

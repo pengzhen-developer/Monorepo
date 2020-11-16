@@ -881,20 +881,20 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/library@^0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
-  integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
+"@jk998/library@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.20.tgz#c1798c3313f94045379af8b4838417fd63e546b9"
+  integrity sha512-qxusXZrlRuR3duhGv+Hl+f17wnEs2jhBX02mv7qVtWRfGH76jnSdZ057jVPTijVpYl5Jlsfd3AMJ19fjN/X38A==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.3.tgz#867b033b0f0c6b82a242c45dfbc01244b42d84e9"
-  integrity sha512-51u3s08ZwbX1DLYLglq9wyX3aL0g3CNhpLbdAn5Tx3b9/oyOYVfnZ0+tHlKK4j7S9n3RyXIjXRsdPy93kLRPsg==
+"@jk998/peace-element-ui@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.8.tgz#6bcfa266a6a39d91a4827a4dbc4c3430a0afc16e"
+  integrity sha512-wA9ga9BjM8R4FZ5m2UupJBBEOi/H0pzDcqAkHmG0U8m1QEEl5r/LeMrsKxF40XhjBbGoiH7kibipir51spkAgA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

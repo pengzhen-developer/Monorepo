@@ -101,8 +101,8 @@
 <script>
 import util from '@src/util'
 import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
-import SignNotice from '../SignNotice'
-import OrgNotice from '../OrgNotice'
+import SignNotice from '@src/views/components/SignNotice'
+import OrgNotice from '@src/views/components/OrgNotice'
 
 export default {
   components: {

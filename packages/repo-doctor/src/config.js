@@ -218,7 +218,7 @@ export const config = {
    * api 配置项
    */
   api: {
-    base: process.env.VUE_APP_BASE_API
+    base: process.env.VUE_APP_API_BASE
   },
 
   /**

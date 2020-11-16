@@ -9,6 +9,7 @@ import CreateConfiguration from './createConfiguration'
 import CreateApp from './createApp'
 
 import boot_Library from './boot_library'
+import boot_Redirect from './boot_redirect'
 
 // Quasar is required
 // Some libraries depend on it
@@ -32,6 +33,9 @@ const install = async () => {
     // Library
     boot_Library,
 
+    // Redirect
+    boot_Redirect,
+
     // Framework
     boot_Quasar,
 
@@ -44,12 +48,11 @@ const install = async () => {
 
   for (const boot of boots) {
     try {
-      await boot({
-        Vue,
-        configuration
-      })
+      await boot({ Vue, configuration })
     } catch (error) {
       console.error('[Library] boot error:', error)
+
+      throw error
     }
   }
 

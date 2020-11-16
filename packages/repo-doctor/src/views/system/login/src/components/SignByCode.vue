@@ -44,12 +44,12 @@
             <template v-if="showCountdown">
               <el-divider direction="vertical"></el-divider>
 
-              <peaceCountdown v-bind:time="countdownTime"
+              <PeaceCountdown v-bind:time="countdownTime"
                               v-on:end="onCountdownEnd">
                 <template slot-scope="props">
                   {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
                 </template>
-              </peaceCountdown>
+              </PeaceCountdown>
             </template>
             <template v-else>
               <el-divider direction="vertical"></el-divider>
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import util from '@src/util'
+import Util from '@src/util'
 import Service from './../service'
 
 export default {
@@ -87,7 +87,7 @@ export default {
       passwordActive: false,
 
       model: {
-        tel: Peace.cache.localStorage.get(Peace.type.USER.PHONE) ?? '',
+        tel: Util.user.getUserPhone(),
         smsCode: ''
       },
 
@@ -161,23 +161,13 @@ export default {
 
         Service.login(this.model)
           .then((res) => {
-            const userInfo = res.data
-
+            debugger
             // 储存用户信息
-            util.user.setUserInfo(userInfo)
+            Util.user.setUserInfo(res.data)
+            Util.user.setUserPhone(res.data.list.docInfo.tel)
 
-            // 储存登录手机号
-            Peace.cache.localStorage.set(Peace.type.USER.PHONE, userInfo.list.docInfo.tel)
-
-            // 更新 vuex
-            this.$store.commit('user/setUserInfo', res.data)
-
-            // 加载 IM SDK
-            Peace.NIM = util.IM.initIM()
-            Peace.WebRTC = util.IM.initWebRTC(Peace.NIM)
-
-            // 登陆后跳转
-            util.user.replaceToReffer()
+            // 重定向
+            Util.location.redirectToIndex()
           })
           .finally(() => {
             this.isLoging = false
@@ -196,11 +186,11 @@ export default {
     },
 
     goProtocal() {
-      window.open(`${process.env.VUE_APP_HYBRID_API}hybrid/agreements/userAgreement/PC`)
+      window.open(`${process.env.VUE_APP_API_HYBRID}hybrid/agreements/userAgreement/PC`)
     },
 
     goPrivacy() {
-      window.open(`${process.env.VUE_APP_HYBRID_API}hybrid/agreements/privacyAgreement/PC`)
+      window.open(`${process.env.VUE_APP_API_HYBRID}hybrid/agreements/privacyAgreement/PC`)
     }
   }
 }
