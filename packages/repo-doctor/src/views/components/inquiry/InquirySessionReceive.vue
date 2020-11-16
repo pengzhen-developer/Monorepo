@@ -2,7 +2,7 @@
   <div class="inquiry-session-receive">
     <div class="tip">
       <span>请在</span>
-      <span class="count-down">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
+      <span class="count-down">{{ Peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span>
       <span>内接诊，倒计时结束未接诊将自动退诊</span>
     </div>
     <div class="control">
@@ -73,7 +73,7 @@ export default {
   computed: {
     canSubmit() {
       if (this.over.description == '其他') {
-        return peace.validate.isEmpty(this.over.otherDescription.trim())
+        return Peace.validate.isEmpty(this.over.otherDescription.trim())
       } else {
         return !this.over.description
       }
@@ -95,8 +95,8 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
       }
 
-      peace.service.inquiry.receiveInquiry(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.inquiry.receiveInquiry(params).then((res) => {
+        Peace.util.success(res.msg)
       })
     },
 
@@ -118,8 +118,8 @@ export default {
         inquiryNo: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
         overCause: this.over.description == '其他' ? this.over.otherDescription : this.over.description
       }
-      peace.service.inquiry.quitInquiry(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.inquiry.quitInquiry(params).then((res) => {
+        Peace.util.success(res.msg)
       })
     }
   }

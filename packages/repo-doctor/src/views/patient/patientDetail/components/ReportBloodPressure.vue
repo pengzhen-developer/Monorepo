@@ -152,7 +152,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -161,7 +161,7 @@ export default {
     changeActive(activeName) {
       this.view.active = activeName
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -188,10 +188,10 @@ export default {
         dataId: this.$route.params.dataId,
         type: this.$route.params.type
       }
-      peace.service.health.getOscillogram(params).then((res) => {
-        const options = peace.util.deepClone(reportChatOption)
+      Peace.service.health.getOscillogram(params).then((res) => {
+        const options = Peace.util.deepClone(reportChatOption)
 
-        options.formatter = function (params) {
+        options.formatter = function(params) {
           return `<span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血压：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.value}/${params[1].data.value}mmHg</span>
                   <br/>
@@ -219,7 +219,7 @@ export default {
     },
 
     getReport() {
-      const fetch = peace.service.health.getWeekList
+      const fetch = Peace.service.health.getWeekList
       const params = {
         idCard: this.$route.params.idCard,
         serviceId: this.$route.params.serviceId,
@@ -229,7 +229,7 @@ export default {
     },
 
     getHistory() {
-      const fetch = peace.service.health.getOneRecord
+      const fetch = Peace.service.health.getOneRecord
       const params = {
         idCard: this.$route.params.idCard,
         serviceId: this.$route.params.serviceId,
@@ -240,7 +240,7 @@ export default {
 
     openReport(row) {
       const params = { reportId: row.id, idCard: this.$route.params.idCard }
-      peace.service.health.getWeekDetail(params).then((res) => {
+      Peace.service.health.getWeekDetail(params).then((res) => {
         var win = window.open()
         win.document.write(res.data.message)
         win.document.close()

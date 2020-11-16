@@ -107,25 +107,25 @@ export default {
   },
 
   created() {
-    peace.service.follow.getFollowStatus().then((res) => {
+    Peace.service.follow.getFollowStatus().then((res) => {
       this.dataSource.status = res.data
       this.viewModel.status = res.data[0] && res.data[0].key
     })
 
-    peace.service.follow.getTags({ type: 'disease' }).then((res) => {
+    Peace.service.follow.getTags({ type: 'disease' }).then((res) => {
       this.dataSource.tag = res.data
     })
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
 
   methods: {
     get() {
-      const fetch = peace.service.follow.followPatientList
+      const fetch = Peace.service.follow.followPatientList
       const params = this.viewModel
 
       this.$refs.table.loadData({
@@ -139,7 +139,7 @@ export default {
         this.dialog.visible = true
         this.dialog.id = row.familyId
       } else {
-        peace.util.success('暂无病程管理')
+        Peace.util.success('暂无病程管理')
       }
     },
 

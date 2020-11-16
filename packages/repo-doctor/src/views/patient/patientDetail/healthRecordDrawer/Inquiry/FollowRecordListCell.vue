@@ -26,7 +26,7 @@ export default {
     item: {
       type: Object,
       require: true,
-      default: function () {
+      default: function() {
         return {
           id: '',
           followNo: '',
@@ -52,7 +52,7 @@ export default {
       const params = {
         followNo: this.item.followNo
       }
-      peace.service.patient.getOneInquiry(params).then((res) => {
+      Peace.service.patient.getOneInquiry(params).then((res) => {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {

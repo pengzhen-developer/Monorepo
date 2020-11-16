@@ -162,7 +162,7 @@ export default {
   },
 
   created() {
-    this.netcall = $peace.WebRTC
+    this.netcall = Peace.WebRTC
   },
 
   mounted() {

@@ -47,12 +47,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.随访][this.selectIndex]
+      return Peace.type.HEALTH_RECORD.EMPTY_TEXT[Peace.type.HEALTH_RECORD.ACTION_TYPE.随访][this.selectIndex]
     }
   },
   methods: {
     addFollowUp() {
-      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案 })
+      Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案 })
     }
   }
 }

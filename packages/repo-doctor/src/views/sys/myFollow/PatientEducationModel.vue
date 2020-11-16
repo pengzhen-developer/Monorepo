@@ -142,7 +142,7 @@ export default {
 
     // base64 转换为
     replaceImageToLinks(content) {
-      return formatImgSrc(content, peace.service.patient.uploadImage)
+      return formatImgSrc(content, Peace.service.patient.uploadImage)
         .then((res) => {
           return Promise.resolve(res)
         })

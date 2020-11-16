@@ -44,21 +44,21 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      $peace.$on('showDrawer', (params) => {
+      Peace.$on('showDrawer', (params) => {
         this.$refs.showRecordDrawer.show(params)
       })
     })
   },
 
   destroyed() {
-    $peace.$off('showDrawer')
+    Peace.$off('showDrawer')
   },
 
   methods: {
     getPatientInfo() {
       const params = { patientNo: this.id }
 
-      peace.service.patient.getOneHealth(params).then((res) => {
+      Peace.service.patient.getOneHealth(params).then((res) => {
         const params = res.data
         params.id = this.id
         this.patientData = params

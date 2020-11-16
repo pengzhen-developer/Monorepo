@@ -9,12 +9,13 @@
         <div class="count-down">
           <span>距会诊开始时间还剩</span>
           <span class="count-down-time">
-            <span style="margin: 0 5px; color: #00C6AE;">{{ $peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
+            <span style="margin: 0 5px; color: #00C6AE;">{{ Peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
           </span>
         </div>
         <div class="count-down-message">
           <span>请在</span>
-          <span class="count-down-time" style="margin: 0 5px;">
+          <span class="count-down-time"
+                style="margin: 0 5px;">
             <span>{{ $store.getters['consultation/consultInfo'].expectTime.toDate().formatDate('yyyy-MM-dd HH:mm') }}</span>
             <span>-</span>
             <span>{{ $store.getters['consultation/consultInfo'].expectOverTime.toDate().formatDate('HH:mm') }}</span>

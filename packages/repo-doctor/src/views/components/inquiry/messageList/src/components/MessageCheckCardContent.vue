@@ -46,7 +46,7 @@ export default {
         checkOrderNo: this.message.content.data.checkOrderInfo.checkOrderNo
       }
 
-      peace.service.inquiry.getOrderDetail(params).then((res) => {
+      Peace.service.inquiry.getOrderDetail(params).then((res) => {
         this.checkOrder.visible = true
         this.checkOrder.data = res.data.info
       })

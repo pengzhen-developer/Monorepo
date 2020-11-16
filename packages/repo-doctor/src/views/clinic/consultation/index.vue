@@ -10,7 +10,7 @@
     </div>
     <div class="consultation-right"
          v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
-               $store.getters['consultation/consultInfo'].consultStatus !== $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
+               $store.getters['consultation/consultInfo'].consultStatus !== Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
       <ConsultationPatient></ConsultationPatient>
     </div>
   </div>
@@ -66,7 +66,7 @@ export default {
   },
 
   created() {
-    $peace.consultationComponent = this
+    Peace.consultationComponent = this
   },
 
   methods: {
@@ -80,12 +80,12 @@ export default {
     intervalHandler(intervalObject, session) {
       // 等待会诊, 未到期望时间, 显示倒计时
       if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
-        new Date() < peace.dayjs(session.content.consultInfo.expectTime).toDate()
+        session.content.consultInfo.consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
+        new Date() < Peace.dayjs(session.content.consultInfo.expectTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectTime.toDate().getTime()
 
-        const durationObject = peace.util.getDuration(new Date(), overEndTime)
+        const durationObject = Peace.util.getDuration(new Date(), overEndTime)
 
         // 时间从大到小显示
         if (durationObject.dd > 0) {
@@ -98,18 +98,18 @@ export default {
           intervalObject.value = `${durationObject.ss} 秒`
         }
 
-        intervalObject.status = peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始
+        intervalObject.status = Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始
       }
 
       // 等待接诊, 已到期望时间, 未到结束时间, 显示会诊结束倒计时
       else if (
-        session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
-        new Date() > peace.dayjs(session.content.consultInfo.expectTime).toDate() &&
-        new Date() < peace.dayjs(session.content.consultInfo.expectOverTime).toDate()
+        session.content.consultInfo.consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核 &&
+        new Date() > Peace.dayjs(session.content.consultInfo.expectTime).toDate() &&
+        new Date() < Peace.dayjs(session.content.consultInfo.expectOverTime).toDate()
       ) {
         const overEndTime = session.content.consultInfo.expectOverTime.toDate().getTime()
 
-        const durationObject = peace.util.getDuration(new Date(), overEndTime)
+        const durationObject = Peace.util.getDuration(new Date(), overEndTime)
 
         // 时间从大到小显示
         if (durationObject.dd > 0) {
@@ -122,21 +122,21 @@ export default {
           intervalObject.value = `${durationObject.ss} 秒`
         }
 
-        intervalObject.status = peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束
+        intervalObject.status = Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束
       }
 
       // 会诊中, 显示正记时
-      else if (session.content.consultInfo.consultStatus === peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中) {
+      else if (session.content.consultInfo.consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中) {
         const overEndTime = session.content.consultInfo.startTime.toDate().getTime()
 
-        intervalObject.value = peace.util.getDuration(overEndTime, new Date())
-        intervalObject.status = peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中
+        intervalObject.value = Peace.util.getDuration(overEndTime, new Date())
+        intervalObject.status = Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中
       }
     },
 
     getConsultStatus() {
-      return Object.keys(peace.type.CONSULTATION.CONSULTATION_STATUS).find(
-        (key) => peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
+      return Object.keys(Peace.type.CONSULTATION.CONSULTATION_STATUS).find(
+        (key) => Peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
       )
     },
 

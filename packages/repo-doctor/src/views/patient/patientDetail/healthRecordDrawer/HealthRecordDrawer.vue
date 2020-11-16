@@ -41,57 +41,57 @@ export default {
     show(parameter) {
       this.currentIndex = parameter.index
       switch (parameter.index) {
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
           {
             this.ComponentInstance = InquiryRecord
             this.titleStr = '咨询记录'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
           {
             this.ComponentInstance = DiseaseRecord
             this.titleStr = '病程管理'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
           {
             this.ComponentInstance = FollowUpRecord
             this.titleStr = '随访记录'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
           {
             this.ComponentInstance = ReferralRecord
             this.titleStr = '转诊记录'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
           {
             this.ComponentInstance = ConsultationRecord
             this.titleStr = '会诊记录'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
           {
             this.ComponentInstance = ApplyReferral
             this.titleStr = '发起转诊'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
           {
             this.ComponentInstance = ApplyConsultation
             this.titleStr = '发起会诊'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案:
           {
             this.ComponentInstance = FollowUpScheme
             this.titleStr = '随访方案库'
           }
           break
-        case peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程:
+        case Peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程:
           {
-            if (!peace.validate.isEmpty(parameter.item)) {
+            if (!Peace.validate.isEmpty(parameter.item)) {
               this.params.item = parameter.item
             }
             this.ComponentInstance = AddDiseaseRecord
@@ -102,7 +102,7 @@ export default {
 
       this.drawer = true
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         setTimeout(() => {
           this.clearFocus()
         }, 60)
@@ -116,7 +116,7 @@ export default {
     },
     isAllEmpty(params) {
       for (const key in params) {
-        if (!peace.validate.isEmpty(params[key])) {
+        if (!Peace.validate.isEmpty(params[key])) {
           return false // 终止程序
         }
       }
@@ -126,7 +126,7 @@ export default {
       if (this.ComponentInstance === ApplyReferral && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            $peace.$emit('hideDrawer', this.currentIndex)
+            Peace.$emit('hideDrawer', this.currentIndex)
             done()
           })
           .catch(() => {
@@ -135,7 +135,7 @@ export default {
       } else if (this.ComponentInstance === ApplyConsultation && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            $peace.$emit('hideDrawer', this.currentIndex)
+            Peace.$emit('hideDrawer', this.currentIndex)
             done()
           })
           .catch(() => {
@@ -144,14 +144,14 @@ export default {
       } else if (this.ComponentInstance === AddDiseaseRecord && !this.isAllEmpty(this.$refs.checkInput.model)) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            $peace.$emit('hideDrawer', this.currentIndex)
+            Peace.$emit('hideDrawer', this.currentIndex)
             done()
           })
           .catch(() => {
             this.clearFocus()
           })
       } else {
-        $peace.$emit('hideDrawer', this.currentIndex)
+        Peace.$emit('hideDrawer', this.currentIndex)
         done()
       }
     }

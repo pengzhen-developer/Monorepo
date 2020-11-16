@@ -146,7 +146,7 @@ export default {
 
   computed: {
     internalData() {
-      const temp = peace.util.deepClone(this.data)
+      const temp = Peace.util.deepClone(this.data)
 
       return temp
     }

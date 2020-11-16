@@ -94,7 +94,7 @@ export default {
         sort: this.titleTabsCctive === '最新病程置顶' ? 'desc' : 'asc'
       }
 
-      peace.service.follow.getDiseaseCourse(params).then((res) => {
+      Peace.service.follow.getDiseaseCourse(params).then((res) => {
         this.data = res.data
       })
     },

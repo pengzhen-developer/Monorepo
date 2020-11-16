@@ -78,7 +78,7 @@
          v-show="view.active === source.active['历史数据']">
       <peace-table pagination
                    ref="tableHistory"
-                   v-show="this.$route.params.type === $peace.type.HEALTH.TYPE.血氧">
+                   v-show="this.$route.params.type === Peace.type.HEALTH.TYPE.血氧">
         <peace-table-column label="血氧浓度（%）"
                             prop="bloodOxygen"></peace-table-column>
         <peace-table-column label="分析结果"
@@ -126,7 +126,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -135,7 +135,7 @@ export default {
     changeActive(activeName) {
       this.view.active = activeName
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -162,10 +162,10 @@ export default {
         dataId: this.$route.params.dataId,
         type: this.$route.params.type
       }
-      peace.service.health.getOscillogram(params).then((res) => {
-        const options = peace.util.deepClone(reportChatOption)
+      Peace.service.health.getOscillogram(params).then((res) => {
+        const options = Peace.util.deepClone(reportChatOption)
 
-        options.tooltip.formatter = function (params) {
+        options.tooltip.formatter = function(params) {
           return `<span style="width: 6rem; text-align: right; display: inline-block; color:rgba(153,153,153,1); margin: 0 0 10px 0;">血氧浓度：</span> 
                   <span style="color: rgba(51,51,51,1);">${params[0].data.bloodOxygen}%</span>
                   <br/>
@@ -192,7 +192,7 @@ export default {
     },
 
     getReport() {
-      const fetch = peace.service.health.getWeekList
+      const fetch = Peace.service.health.getWeekList
       const params = {
         idCard: this.$route.params.idCard,
         serviceId: this.$route.params.serviceId,
@@ -202,7 +202,7 @@ export default {
     },
 
     getHistory() {
-      const fetch = peace.service.health.getOneRecord
+      const fetch = Peace.service.health.getOneRecord
       const params = {
         idCard: this.$route.params.idCard,
         serviceId: this.$route.params.serviceId,
@@ -213,7 +213,7 @@ export default {
 
     openReport(row) {
       const params = { reportId: row.id, idCard: this.$route.params.idCard }
-      peace.service.health.getWeekDetail(params).then((res) => {
+      Peace.service.health.getWeekDetail(params).then((res) => {
         var win = window.open()
         win.document.write(res.message)
         win.document.close()

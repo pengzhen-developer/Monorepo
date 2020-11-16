@@ -177,7 +177,13 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
+              return (
+                time.getTime() <
+                new Date()
+                  .formatDate('yyyy-MM-dd 00:00:00')
+                  .toDate()
+                  .getTime()
+              )
             }
           },
 
@@ -203,14 +209,14 @@ export default {
     const paramsForCase = {
       inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
     }
-    peace.service.inquiry.getCase(paramsForCase).then((res) => {
+    Peace.service.inquiry.getCase(paramsForCase).then((res) => {
       this.view.model.diagnose = res.data.diagnose
     })
   },
 
   methods: {
     get() {
-      const fetch = peace.service.consult.chooseDoctor
+      const fetch = Peace.service.consult.chooseDoctor
       const params = {
         inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
         keyword: this.dialog.model.name
@@ -225,7 +231,7 @@ export default {
     choseConsultaltion() {
       this.dialog.visible = true
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -242,8 +248,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证会诊时间
-          if (peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
-            $peace.util.warning('期望会诊时间不能小于当前时间')
+          if (Peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+            Peace.util.warning('期望会诊时间不能小于当前时间')
           }
           // 开始会诊
           else {
@@ -258,7 +264,7 @@ export default {
             }
 
             this.isSending = true
-            peace.service.consult
+            Peace.service.consult
               .doApply(params)
               .then(() => {
                 const redirect = () => {

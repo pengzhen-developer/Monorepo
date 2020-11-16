@@ -125,7 +125,7 @@ export default {
     }
   },
   created() {
-    peace.service.patient.IllnessList().then((res) => {
+    Peace.service.patient.IllnessList().then((res) => {
       this.diagnoseDialog.source.IllnessList = res.data.list
     })
   },
@@ -142,7 +142,7 @@ export default {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
 
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.diagnoseDialog.source.present_history = res.data.list
         })
       } else {
@@ -193,14 +193,14 @@ export default {
           consultSuggest: this.model.consultSuggest
         }
 
-        peace.service.consult.submitSuggest(params).then(() => {
-          // $peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
+        Peace.service.consult.submitSuggest(params).then(() => {
+          // Peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.$emit('close')
           this.visible = false
         })
       } else {
-        $peace.util.success('请完整填写会诊所见、目前疾病诊断、建议')
+        Peace.util.success('请完整填写会诊所见、目前疾病诊断、建议')
       }
     }
   }

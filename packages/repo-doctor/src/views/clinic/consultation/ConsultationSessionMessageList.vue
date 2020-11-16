@@ -2,7 +2,7 @@
   <div class="consultation-session-message-list">
 
     <!-- 待接诊 -->
-    <template v-if="type === 'consult' && !data && $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
+    <template v-if="type === 'consult' && !data && $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
       <ConsultationSessionReceiveDetail></ConsultationSessionReceiveDetail>
     </template>
 
@@ -13,8 +13,8 @@
            class="message"
            v-for="(message ,index) in messageList">
         <!-- 文本消息 -->
-        <template v-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
-              getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊">
+        <template v-if="getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 || 
+              getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -29,8 +29,8 @@
         </template>
 
         <!-- 解散频道时，推送会诊时长 -->
-        <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 || 
-                             getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录">
+        <template v-else-if="getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 || 
+                             getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -52,7 +52,7 @@
         </template>
 
         <!-- 会诊小结 -->
-        <template v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.会诊所见">
+        <template v-else-if="getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.会诊所见">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -93,7 +93,7 @@
         <!-- 
           病例
           <template
-                  v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.病历">
+                  v-else-if="getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.病历">
           
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -129,7 +129,7 @@
 
         处方
         <template
-                  v-else-if="getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.处方">
+                  v-else-if="getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.处方">
          
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -266,13 +266,13 @@ export default {
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
           if (
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.病历 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.处方 &&
-            message.content.code !== peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.会诊所见
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.邀请协同会诊 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.解散频道 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.病历 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.处方 &&
+            message.content.code !== Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.会诊所见
           )
             return false
         }
@@ -312,7 +312,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })
@@ -325,7 +325,7 @@ export default {
         size: 999
       }
 
-      peace.service.prescribePrescrip.getConsultPrescripList(params).then((res) => {
+      Peace.service.prescribePrescrip.getConsultPrescripList(params).then((res) => {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })
@@ -336,14 +336,14 @@ export default {
         consultNo: message.content.data.consultInfo.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultDetail.visible = true
         this.consultDetail.data = res.data.info
       })
     },
 
     scrollMessageToBottom() {
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {
@@ -387,7 +387,7 @@ export default {
       // system
       if (message.type === 'custom') {
         if (message.content && message.content.code) {
-          if (message.content.code === peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
+          if (message.content.code === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.结束会诊) {
             return 'system'
           }
         }
@@ -400,7 +400,7 @@ export default {
       if (message.content && message.content.data && message.content.data.showTextInfo) {
         // 视频记录需要区分发起与受邀
 
-        if (this.getMessageType(message) === $peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录) {
+        if (this.getMessageType(message) === Peace.type.CONSULTATION.CONSULTATION_MESSAGE_TYPE.视频记录) {
           if (this.getHangupConsultRole(message) === 'from') {
             return message.content.data.showTextInfo.doctorClientText
           } else {

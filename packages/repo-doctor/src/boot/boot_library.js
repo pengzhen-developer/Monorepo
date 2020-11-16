@@ -1,6 +1,6 @@
 // import library plugin
 import { version, name } from './../../package.json'
-import Peace from '@jk998/library'
+import PeaceLibrary from '@jk998/library'
 
 import util from '@src/util'
 
@@ -26,7 +26,7 @@ import service from '@src/service'
 // export boot install function
 // async is optional
 export default async ({ Vue }) => {
-  Vue.use(Peace, {
+  Vue.use(PeaceLibrary, {
     config: {
       appName: name,
       appVersion: version
@@ -41,7 +41,7 @@ export default async ({ Vue }) => {
 
             const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
             if (!isUrl.test(request.url)) {
-              request.url = $peace.config.api.base + request.url
+              request.url = Peace.config.api.base + request.url
             }
 
             return request
@@ -58,15 +58,15 @@ export default async ({ Vue }) => {
   })
 
   /* eslint-disable */
-  peace.config = config
-  peace.type = type
-  peace.service = service
-  peace.util.formatDuration = formatDuration
-  peace.util.getDuration = getDuration
-  peace.util.confirm = confirm
+  Peace.config = config
+  Peace.type = type
+  Peace.service = service
+  Peace.util.formatDuration = formatDuration
+  Peace.util.getDuration = getDuration
+  Peace.util.confirm = confirm
 
   console.log(
-    `%c ${'Library'} %c ${Peace.version} %c`,
+    `%c ${'Library'} %c ${PeaceLibrary.version} %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'

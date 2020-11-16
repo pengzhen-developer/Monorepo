@@ -115,7 +115,7 @@ export default {
   watch: {
     // 根据身份证解析性别和生日
     'ruleForm.idCard'(val) {
-      if (peace.validate.isIDCard(val)) {
+      if (Peace.validate.isIDCard(val)) {
         if (val.length == 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
           this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     getNational() {
-      peace.service.patient.getNationList().then((res) => {
+      Peace.service.patient.getNationList().then((res) => {
         this.nationals = res.data.list || []
       })
     },
@@ -145,8 +145,8 @@ export default {
           } else {
             this.ruleForm.sex = 2
           }
-          peace.service.patient.addPatient(this.ruleForm).then((res) => {
-            $peace.util.success(res.msg)
+          Peace.service.patient.addPatient(this.ruleForm).then((res) => {
+            Peace.util.success(res.msg)
             if (res.success) {
               this.isSave = true
               this.closeMenu()
@@ -163,12 +163,12 @@ export default {
         return false
       } else {
         return !(
-          peace.validate.isEmpty(this.ruleForm.name) &&
-          peace.validate.isEmpty(this.ruleForm.idCard) &&
-          peace.validate.isEmpty(this.ruleForm.tel) &&
-          peace.validate.isEmpty(this.ruleForm.sexStr) &&
-          peace.validate.isEmpty(this.ruleForm.birthday) &&
-          peace.validate.isEmpty(this.ruleForm.nation)
+          Peace.validate.isEmpty(this.ruleForm.name) &&
+          Peace.validate.isEmpty(this.ruleForm.idCard) &&
+          Peace.validate.isEmpty(this.ruleForm.tel) &&
+          Peace.validate.isEmpty(this.ruleForm.sexStr) &&
+          Peace.validate.isEmpty(this.ruleForm.birthday) &&
+          Peace.validate.isEmpty(this.ruleForm.nation)
         )
       }
     },

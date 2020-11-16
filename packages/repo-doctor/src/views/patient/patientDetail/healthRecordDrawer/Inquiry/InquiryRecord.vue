@@ -50,7 +50,7 @@ export default {
     return {
       selectIndex: 'inquiry',
       inquiryRequestData: {
-        request: peace.service.health.getPatientInquiryList,
+        request: Peace.service.health.getPatientInquiryList,
         data: {
           // 请求列表参数
           tag: 'inquiry',
@@ -58,7 +58,7 @@ export default {
         }
       },
       followRequestData: {
-        request: peace.service.health.getPatientInquiryList,
+        request: Peace.service.health.getPatientInquiryList,
         data: {
           // 请求列表参数
           tag: 'follow',
@@ -69,12 +69,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][this.selectIndex]
+      return Peace.type.HEALTH_RECORD.EMPTY_TEXT[Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][this.selectIndex]
     }
   },
   methods: {
     sendMessage() {
-      peace.util.info('暂未开通')
+      Peace.util.info('暂未开通')
     }
   }
 }

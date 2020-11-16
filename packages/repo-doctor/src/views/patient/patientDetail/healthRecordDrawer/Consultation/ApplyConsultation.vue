@@ -222,7 +222,7 @@ export default {
     params: undefined
   },
   created() {
-    peace.service.patient.IllnessList().then((res) => {
+    Peace.service.patient.IllnessList().then((res) => {
       this.dialog.source.IllnessList = res.data.list
     })
   },
@@ -251,7 +251,13 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
+              return (
+                time.getTime() <
+                new Date()
+                  .formatDate('yyyy-MM-dd 00:00:00')
+                  .toDate()
+                  .getTime()
+              )
             }
           },
 
@@ -285,7 +291,7 @@ export default {
   },
   methods: {
     get() {
-      const fetch = peace.service.inquiry.referralDocListPc
+      const fetch = Peace.service.inquiry.referralDocListPc
       const params = {
         sourceAction: 'offline',
         name: this.dialog.model.name
@@ -300,7 +306,7 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.dialog.source.present_history = res.data.list
         })
       } else {
@@ -311,7 +317,7 @@ export default {
     choseTransfer() {
       this.dialog.visible = true
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -324,7 +330,7 @@ export default {
     changeDialog() {
       this.choseDiagnose()
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.dialog.chooseData = [...this.view.model.diagnose]
       })
     },
@@ -365,8 +371,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证转诊时间
-          if (peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
-            $peace.util.warning('期望转诊时间不能小于当前时间')
+          if (Peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+            Peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
           else {
@@ -380,10 +386,10 @@ export default {
               diagnose: tmp.replace(/,/g, ' | ')
             }
 
-            peace.service.health.offlineAddConsult(params).then(() => {
-              $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊 })
+            Peace.service.health.offlineAddConsult(params).then(() => {
+              Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊 })
 
-              peace.util.success('发起会诊成功')
+              Peace.util.success('发起会诊成功')
             })
           }
         }

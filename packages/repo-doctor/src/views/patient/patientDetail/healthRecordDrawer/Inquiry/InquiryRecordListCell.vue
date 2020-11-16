@@ -69,7 +69,7 @@ export default {
     item: {
       type: Object,
       require: true,
-      default: function () {
+      default: function() {
         return {
           updatedTime: '',
           inquiryWay: '',
@@ -115,7 +115,7 @@ export default {
       const params = {
         inquiryNo: this.item.inquiryNo
       }
-      peace.service.patient.getOneInquiry(params).then((res) => {
+      Peace.service.patient.getOneInquiry(params).then((res) => {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {

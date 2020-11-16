@@ -8,7 +8,7 @@ const state = {
 // mutations
 const mutations = {
   restoreTab(state) {
-    state.tabList = peace.cache.sessionStorage.get(peace.type.USER.TAB_LIST) || []
+    state.tabList = Peace.cache.sessionStorage.get(Peace.type.USER.TAB_LIST) || []
   },
 
   /**

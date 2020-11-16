@@ -91,7 +91,7 @@ export default {
   },
 
   created() {
-    $peace.videoComponent = this
+    Peace.videoComponent = this
 
     this.initWebRTCEventListener()
   },
@@ -101,7 +101,7 @@ export default {
       window.clearInterval(this.beCalledTimeInterval)
 
       // 发起视频邀请
-      if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.邀请) {
+      if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.邀请) {
         this.video.title = '正在为您呼叫，请稍后......'
         this.video.visible = true
 
@@ -109,7 +109,7 @@ export default {
         this.playSenderAudio()
       }
       // 收到视频邀请
-      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.收到) {
+      else if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.收到) {
         this.video.title = ''
         this.video.visible = false
 
@@ -118,10 +118,10 @@ export default {
         this.playReceiverAudio()
       }
       // 同意视频邀请
-      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.接听) {
+      else if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.接听) {
         if (this.beCalledTime) {
           this.beCalledTimeInterval = setInterval(() => {
-            this.video.title = peace.util.formatDuration(this.beCalledTime, new Date())
+            this.video.title = Peace.util.formatDuration(this.beCalledTime, new Date())
           }, 500)
         }
 
@@ -129,7 +129,7 @@ export default {
         this.pauseAudio()
       }
       // 拒绝视频邀请
-      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.拒绝) {
+      else if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.拒绝) {
         this.video.title = ''
         this.video.visible = false
 
@@ -145,7 +145,7 @@ export default {
         this.hangupVideo()
       }
       // 挂断视频
-      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.挂断) {
+      else if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.挂断) {
         this.video.title = ''
         this.video.visible = false
 
@@ -153,7 +153,7 @@ export default {
         this.hangupVideo()
       }
       // 呼叫超时
-      else if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.超时) {
+      else if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.超时) {
         this.video.title = ''
         this.video.visible = false
 
@@ -176,21 +176,21 @@ export default {
      * Web RTC Event
      */
     initWebRTCEventListener() {
-      if ($peace.WebRTC && $peace.WebRTC.hadAddEventListener) {
+      if (Peace.WebRTC && Peace.WebRTC.hadAddEventListener) {
         return
       }
 
-      $peace.WebRTC.on('beCalling', this.onBeCalling)
-      $peace.WebRTC.on('callAccepted', this.onCallAccepted)
-      $peace.WebRTC.on('callRejected', this.onCallRejected)
-      $peace.WebRTC.on('remoteTrack', this.onRemoteTrack)
-      $peace.WebRTC.on('control', this.onControl)
-      $peace.WebRTC.on('hangup', this.onHangup)
-      $peace.WebRTC.on('callerAckSync', this.onCallerAckSync)
-      $peace.WebRTC.on('error', this.onError)
+      Peace.WebRTC.on('beCalling', this.onBeCalling)
+      Peace.WebRTC.on('callAccepted', this.onCallAccepted)
+      Peace.WebRTC.on('callRejected', this.onCallRejected)
+      Peace.WebRTC.on('remoteTrack', this.onRemoteTrack)
+      Peace.WebRTC.on('control', this.onControl)
+      Peace.WebRTC.on('hangup', this.onHangup)
+      Peace.WebRTC.on('callerAckSync', this.onCallerAckSync)
+      Peace.WebRTC.on('error', this.onError)
 
       console.log('监听监听!!!!!!!!!!!!!!!!!!!!!!!')
-      $peace.WebRTC.hadAddEventListener = true
+      Peace.WebRTC.hadAddEventListener = true
     },
 
     playSenderAudio() {
@@ -223,7 +223,7 @@ export default {
      */
     call(session, type) {
       if (this.beCallState !== '') {
-        return peace.util.success('当前正在通话中')
+        return Peace.util.success('当前正在通话中')
       }
 
       // 当前为主叫
@@ -253,7 +253,7 @@ export default {
         session: session
       })
 
-      $peace.WebRTC.call({
+      Peace.WebRTC.call({
         type: WebRTC.NETCALL_TYPE_VIDEO,
         account: toAccount,
         pushConfig: this.pushConfig,
@@ -268,7 +268,7 @@ export default {
           console.warn('【 WebRTC 】【 call success】', new Date(), callObject)
 
           this.beCalledInfo = callObject
-          this.beCallState = peace.type.VIDEO.BE_CALL_STATE.邀请
+          this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.邀请
         })
         .catch((callObject) => {
           // 发起呼叫失败
@@ -276,7 +276,7 @@ export default {
 
           // 被叫不在线
           if (callObject.code === 11000) {
-            $peace.util.warning('对方已离线')
+            Peace.util.warning('对方已离线')
           }
 
           this.hangupVideo()
@@ -287,11 +287,11 @@ export default {
      * 被叫接受呼叫请求
      */
     accept() {
-      $peace.WebRTC.response({
+      Peace.WebRTC.response({
         accepted: true,
         beCalledInfo: this.beCalledInfo,
         sessionConfig: this.sessionConfig
-      }).catch(function (callObject) {
+      }).catch(function(callObject) {
         console.warn('【 WebRTC 】【 response - accepted 】', new Date(), callObject)
       })
     },
@@ -302,17 +302,17 @@ export default {
     reject() {
       this.hangUpBy = 'Doctor'
       this.hangUpConsultBy = 'Own'
-      this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+      this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.拒绝
 
       if (this.beCalledInfo) {
         // 通知主叫拒绝通话
-        $peace.WebRTC.response({
+        Peace.WebRTC.response({
           accepted: false,
           beCalledInfo: this.beCalledInfo
         })
 
         // 通知主叫正忙
-        $peace.WebRTC.control({
+        Peace.WebRTC.control({
           channelId: this.beCalledInfo.channelId,
           command: WebRTC.NETCALL_CONTROL_COMMAND_BUSY
         })
@@ -326,11 +326,11 @@ export default {
       if (this.beCalledInfo === undefined) {
         this.hangUpBy = 'Doctor'
         this.hangUpConsultBy = 'Own'
-        this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+        this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.拒绝
       } else {
         this.hangUpBy = 'Doctor'
         this.hangUpConsultBy = 'Own'
-        this.beCallState = peace.type.VIDEO.BE_CALL_STATE.挂断
+        this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.挂断
       }
     },
 
@@ -347,33 +347,33 @@ export default {
       const channelId = beCallingObject.channelId
 
       // 被叫回应主叫自己已经收到了通话请求
-      $peace.WebRTC.control({
+      Peace.WebRTC.control({
         channelId: channelId,
         command: WebRTC.NETCALL_CONTROL_COMMAND_START_NOTIFY_RECEIVED
       })
 
       // 只有在没有通话并且没有被叫的时候才记录被叫信息, 否则通知对方忙并拒绝通话
-      if (!$peace.WebRTC.calling && !this.beCalling) {
+      if (!Peace.WebRTC.calling && !this.beCalling) {
         this.beCalling = true
         this.beCalledInfo = beCallingObject
-        this.beCallState = peace.type.VIDEO.BE_CALL_STATE.收到
+        this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.收到
       } else {
-        if ($peace.WebRTC.calling) {
-          this.busy = $peace.WebRTC.notCurrentChannelId(beCallingObject)
+        if (Peace.WebRTC.calling) {
+          this.busy = Peace.WebRTC.notCurrentChannelId(beCallingObject)
         } else if (this.beCalling) {
           this.busy = this.beCalledInfo.channelId !== channelId
         }
 
         if (this.busy) {
-          this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+          this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.拒绝
 
           // 通知对方正忙
-          $peace.WebRTC.control({
+          Peace.WebRTC.control({
             channelId: channelId,
             command: WebRTC.NETCALL_CONTROL_COMMAND_BUSY
           })
           // 拒绝通话
-          $peace.WebRTC.response({
+          Peace.WebRTC.response({
             accepted: false,
             beCalledInfo: beCallingObject
           })
@@ -394,7 +394,7 @@ export default {
       this.beCalledTime = new Date()
 
       // 设定呼叫状态
-      this.beCallState = peace.type.VIDEO.BE_CALL_STATE.接听
+      this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.接听
       this.beCalledInfo = callAcceptedObject
 
       // 养老端
@@ -414,7 +414,7 @@ export default {
 
       this.hangUpBy = 'Patient'
       this.hangUpConsultBy = 'Other'
-      this.beCallState = peace.type.VIDEO.BE_CALL_STATE.拒绝
+      this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.拒绝
     },
 
     /**
@@ -423,11 +423,11 @@ export default {
     onRemoteTrack(remoteTrackObject) {
       console.warn('【 WebRTC 】【 onRemoteTrack 】', new Date(), remoteTrackObject)
 
-      if (this.beCallState === peace.type.VIDEO.BE_CALL_STATE.接听) {
+      if (this.beCallState === Peace.type.VIDEO.BE_CALL_STATE.接听) {
         // 音频：播放对方的音频
         if (remoteTrackObject.track.kind === 'audio') {
           // 播放对方声音
-          $peace.WebRTC.startDevice({
+          Peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_OUT_CHAT
           }).catch((err) => {
             console.log('播放对方的声音失败')
@@ -438,13 +438,13 @@ export default {
         // 视频：展示对方的画面
         if (remoteTrackObject.track.kind === 'video') {
           // 预览加入的视频流
-          $peace.WebRTC.startRemoteStream({
+          Peace.WebRTC.startRemoteStream({
             account: remoteTrackObject.account,
             node: document.getElementById('remoteContainer')
           })
 
           // 设置对方预览画面大小
-          $peace.WebRTC.setVideoViewRemoteSize({
+          Peace.WebRTC.setVideoViewRemoteSize({
             account: remoteTrackObject.account,
             width: 800,
             height: 600,
@@ -461,7 +461,7 @@ export default {
       console.warn('【 WebRTC 】【 onControl 】', new Date(), controlObject)
 
       // 如果不是当前通话的指令, 直接丢掉
-      if ($peace.WebRTC.notCurrentChannelId(controlObject)) {
+      if (Peace.WebRTC.notCurrentChannelId(controlObject)) {
         return
       }
 
@@ -493,7 +493,7 @@ export default {
         case WebRTC.NETCALL_CONTROL_COMMAND_BUSY:
           console.warn('【 WebRTC 】【 onControl 】【 对方占线 】', new Date(), controlObject)
 
-          $peace.util.warning('对方正忙')
+          Peace.util.warning('对方正忙')
 
           this.hangupVideo()
           break
@@ -514,7 +514,7 @@ export default {
 
       // 判断需要挂断的通话是否是当前正在进行中的通话
       if (!this.beCalledInfo || this.beCalledInfo.channelId === hangupObject.channelId) {
-        $peace.util.warning('通话已结束')
+        Peace.util.warning('通话已结束')
 
         this.hangupVideo()
       }
@@ -527,7 +527,7 @@ export default {
       console.warn('【 WebRTC 】【 onCallerAckSync 】', new Date(), callerAckObject)
 
       if (this.beCalledInfo && callerAckObject.channelId === this.beCalledInfo.channelId) {
-        $peace.util.warning('当前通话已经其它终端处理')
+        Peace.util.warning('当前通话已经其它终端处理')
 
         this.closeMessageNofity()
         this.hangupVideo()
@@ -547,9 +547,9 @@ export default {
      * 建立视频连接流
      */
     startRtc() {
-      return $peace.WebRTC.startRtc()
+      return Peace.WebRTC.startRtc()
         .then(() => {
-          return $peace.WebRTC.startDevice({
+          return Peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_AUDIO_IN
           })
             .then((startDevice) => {
@@ -565,9 +565,9 @@ export default {
         })
         .then(() => {
           // 设置采集音量
-          $peace.WebRTC.setCaptureVolume(255)
+          Peace.WebRTC.setCaptureVolume(255)
           // 开启摄像头
-          return $peace.WebRTC.startDevice({
+          return Peace.WebRTC.startDevice({
             type: WebRTC.DEVICE_TYPE_VIDEO,
             width: 200,
             height: 125
@@ -585,10 +585,10 @@ export default {
         })
         .then(() => {
           //预览本地画面
-          $peace.WebRTC.startLocalStream(document.getElementById('localContainer'))
+          Peace.WebRTC.startLocalStream(document.getElementById('localContainer'))
 
           // 设置本地预览画面大小
-          $peace.WebRTC.setVideoViewSize({
+          Peace.WebRTC.setVideoViewSize({
             width: 200,
             height: 125,
             cut: true
@@ -660,13 +660,13 @@ export default {
       this.clearState()
 
       // 挂断视频流
-      $peace.WebRTC.hangup()
+      Peace.WebRTC.hangup()
     },
 
     setHangupTimeout() {
       this.hangupTimeout = setTimeout(() => {
-        if (!$peace.WebRTC.callAccepted) {
-          this.beCallState = peace.type.VIDEO.BE_CALL_STATE.超时
+        if (!Peace.WebRTC.callAccepted) {
+          this.beCallState = Peace.type.VIDEO.BE_CALL_STATE.超时
 
           this.hangUpBy = 'System'
           this.hangUpConsultBy = 'System'
@@ -706,7 +706,7 @@ export default {
           inquiryNo: inquiryNo,
           action: 'start'
         }
-        peace.service.video.process(params)
+        Peace.service.video.process(params)
       }
 
       // 会诊开始
@@ -718,7 +718,7 @@ export default {
           action: 'start'
         }
 
-        peace.service.video.processConsult(params).then((res) => {
+        Peace.service.video.processConsult(params).then((res) => {
           if (res.code !== 200) {
             this.hangupVideo()
           }
@@ -737,7 +737,7 @@ export default {
           action: 'over'
         }
 
-        peace.service.video.process(params)
+        Peace.service.video.process(params)
       }
 
       // 会诊结束
@@ -749,7 +749,7 @@ export default {
           action: 'over'
         }
 
-        return peace.service.video.processConsult(params)
+        return Peace.service.video.processConsult(params)
       }
     },
 
@@ -785,7 +785,7 @@ export default {
       }
 
       if (params.action && params.sponsor) {
-        return peace.service.video.process(params)
+        return Peace.service.video.process(params)
       }
     },
 
@@ -843,7 +843,7 @@ export default {
       }
 
       if (params.sonAction && params.role) {
-        return peace.service.video.processConsult(params)
+        return Peace.service.video.processConsult(params)
       }
     },
 

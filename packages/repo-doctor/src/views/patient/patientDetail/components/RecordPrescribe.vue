@@ -46,7 +46,7 @@ export default {
     get() {
       const params = { prescriptionId: this.data.id }
 
-      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.prescribeDialog.visible = true
         this.prescribeDialog.data = res.data
       })

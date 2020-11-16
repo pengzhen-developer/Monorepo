@@ -50,7 +50,7 @@ export default {
     return {
       selectIndex: 'out',
       outRequestData: {
-        request: peace.service.health.getConsultRecordList,
+        request: Peace.service.health.getConsultRecordList,
         data: {
           // 请求列表参数
           action: 'out',
@@ -58,7 +58,7 @@ export default {
         }
       },
       inRequestData: {
-        request: peace.service.health.getConsultRecordList,
+        request: Peace.service.health.getConsultRecordList,
         data: {
           // 请求列表参数
           action: 'in',
@@ -69,12 +69,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][this.selectIndex]
+      return Peace.type.HEALTH_RECORD.EMPTY_TEXT[Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊][this.selectIndex]
     }
   },
   methods: {
     startConsult() {
-      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊 })
+      Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊 })
     }
   }
 }

@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     selectScheme() {
-      $peace.util.info('暂未开通')
+      Peace.util.info('暂未开通')
     }
   }
 }

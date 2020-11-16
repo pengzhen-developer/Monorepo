@@ -74,7 +74,7 @@ export default {
         consultNo: this.message.content.data.consultInfo.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultation.data = res.data.info
       })
     }

@@ -8,7 +8,7 @@
 export function prescripList(params) {
   const prescripList = 'client/v1/Prescribeprescrip/prescripList'
 
-  return peace.http.post(prescripList, params)
+  return Peace.http.post(prescripList, params)
 }
 
 /**
@@ -28,7 +28,7 @@ export function subPrescrip({ allergy_history, diagnose, drugsJson, openId, inqu
   }
   const subPrescrip = 'client/v1/Prescribeprescrip/subPrescrip'
 
-  return peace.http.post(subPrescrip, params)
+  return Peace.http.post(subPrescrip, params)
 }
 
 /**
@@ -48,7 +48,7 @@ export function offlineSubPrescrip({ allergy_history, diagnose, drugsJson, openI
   }
   const offlineSubPrescrip = 'client/v1/Prescribeprescrip/offlineSubPrescrip'
 
-  return peace.http.post(offlineSubPrescrip, params)
+  return Peace.http.post(offlineSubPrescrip, params)
 }
 
 /**
@@ -61,7 +61,7 @@ export function offlineSubPrescrip({ allergy_history, diagnose, drugsJson, openI
 export function drugsList(params) {
   const drugsList = 'client/v1/Prescribeprescrip/drugsList'
 
-  return peace.http.get(drugsList, { params })
+  return Peace.http.get(drugsList, { params })
 }
 
 /**
@@ -74,7 +74,7 @@ export function drugsList(params) {
 export function drugUsageList(params) {
   const drugUsageList = 'client/v1/Prescribeprescrip/drugUsageList'
 
-  return peace.http.get(drugUsageList, { params })
+  return Peace.http.get(drugUsageList, { params })
 }
 
 /**
@@ -87,7 +87,7 @@ export function drugUsageList(params) {
 export function drugFrequencyList(params) {
   const drugFrequencyList = 'client/v1/Prescribeprescrip/drugFrequencyList'
 
-  return peace.http.get(drugFrequencyList, { params })
+  return Peace.http.get(drugFrequencyList, { params })
 }
 
 /**
@@ -100,7 +100,7 @@ export function drugFrequencyList(params) {
 export function getPrescripInfo(params) {
   const getPrescripInfo = 'client/v1/Prescribeprescrip/getPrescripInfo'
 
-  return peace.http.get(getPrescripInfo, { params })
+  return Peace.http.get(getPrescripInfo, { params })
 }
 
 /**
@@ -112,7 +112,7 @@ export function getPrescripInfo(params) {
  */
 export function getConsultPrescripList(params) {
   const getConsultPrescripList = 'client/v1/Consult/getConsultPrescripList'
-  return peace.http.post(getConsultPrescripList, params)
+  return Peace.http.post(getConsultPrescripList, params)
 }
 
 export default {

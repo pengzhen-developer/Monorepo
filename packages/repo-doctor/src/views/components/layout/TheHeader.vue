@@ -169,13 +169,13 @@ export default {
       this.get(params)
     },
     get(params) {
-      peace.service.personalCenter.getMsgList(params).then((res) => {
+      Peace.service.personalCenter.getMsgList(params).then((res) => {
         this.messageList = res.data.list
         this.unread = res.data.unRead
       })
     },
     setWorkstatus(status) {
-      peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
+      Peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
         const userInfo = util.user.getUserInfo()
         userInfo.list.docInfo.workStatus = status
 
@@ -190,7 +190,7 @@ export default {
       let sysId = item.sysId
       let params = { tag, sysId }
       // this.interval && this.clearInterval();
-      peace.service.personalCenter.getDetail(params).then((res) => {
+      Peace.service.personalCenter.getDetail(params).then((res) => {
         this.$store.dispatch('notification/getList')
         // this.getRoundMsg();
         switch (item.tag) {

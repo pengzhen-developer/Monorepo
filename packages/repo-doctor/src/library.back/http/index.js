@@ -24,7 +24,7 @@ axios.download = download
 
 // 定义 http request 拦截器
 axios.interceptors.request.use(
-  function (request) {
+  function(request) {
     httpCount++
     nprogress.start()
 
@@ -41,7 +41,7 @@ axios.interceptors.request.use(
       // 数组中的最后一个函数必须返回一个字符串，一个 ArrayBuffer或一个 Stream
       if (request.headers[request.method]['Content-Type'] === 'application/x-www-form-urlencoded') {
         request.transformRequest = [
-          function (data) {
+          function(data) {
             const formData = new FormData()
             for (const key in data) {
               if (data.hasOwnProperty(key)) {
@@ -67,14 +67,14 @@ axios.interceptors.request.use(
       // 配置 base url
       const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
       if (!isUrl.test(request.url)) {
-        request.url = $peace.config.api.base + request.url
+        request.url = Peace.config.api.base + request.url
       }
 
       return request
     }
   },
 
-  function (error) {
+  function(error) {
     httpCount--
     if (httpCount === 0) {
       nprogress.done(false)
@@ -86,7 +86,7 @@ axios.interceptors.request.use(
 
 // 定义 http response 拦截器
 axios.interceptors.response.use(
-  function (response) {
+  function(response) {
     httpCount--
     if (httpCount === 0) {
       nprogress.done(false)
@@ -111,14 +111,14 @@ axios.interceptors.response.use(
 
       // 请求正常，并且逻辑验证失败
       else if (response.data && parseInt(response.data.code) === 201) {
-        $peace.util.success(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+        Peace.util.success(response.data.msg, null, Peace.type.SYSTEM.MESSAGE.ERROR)
 
         return Promise.reject(response)
       }
 
       // 请求正常，IM 状态异常
       else if (response.data && parseInt(response.data.code) === 2002) {
-        $peace.util.success('通讯异常, 将于 3 秒后刷新重连')
+        Peace.util.success('通讯异常, 将于 3 秒后刷新重连')
 
         setTimeout(() => {
           window.location.reload()
@@ -130,11 +130,11 @@ axios.interceptors.response.use(
       // 鉴权失败
       else if (response.data && parseInt(response.data.code) === 601) {
         // 提示鉴权失败消息
-        $peace.util.success(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+        Peace.util.success(response.data.msg, null, Peace.type.SYSTEM.MESSAGE.ERROR)
         // 清空用户缓存
         util.user.removeUserInfo()
         // 跳转提示页
-        router.replace($peace.config.system.noAuthPage)
+        router.replace(Peace.config.system.noAuthPage)
 
         setTimeout(() => {
           window.location.reload()
@@ -144,7 +144,7 @@ axios.interceptors.response.use(
       }
       // 逻辑验证失败
       else {
-        $peace.util.success(response.data.msg, null, $peace.type.SYSTEM.MESSAGE.ERROR)
+        Peace.util.success(response.data.msg, null, Peace.type.SYSTEM.MESSAGE.ERROR)
 
         return Promise.reject(response)
       }
@@ -157,7 +157,7 @@ axios.interceptors.response.use(
     }
   },
 
-  function (error) {
+  function(error) {
     httpCount--
     if (httpCount === 0) {
       nprogress.done(false)
@@ -176,11 +176,11 @@ axios.interceptors.response.use(
     if (error.response && error.response.status) {
       switch (error.response.status) {
         default:
-          $peace.util.success('服务器异常，请稍后再试', '提示', 'error')
+          Peace.util.success('服务器异常，请稍后再试', '提示', 'error')
           break
       }
     } else {
-      $peace.util.success('服务器异常，请稍后再试', '提示', 'error')
+      Peace.util.success('服务器异常，请稍后再试', '提示', 'error')
     }
 
     return Promise.reject(error)

@@ -8,7 +8,7 @@
 export function processConsult(params) {
   const processConsult = 'client/v1/video/processConsult'
 
-  return peace.http.post(processConsult, params)
+  return Peace.http.post(processConsult, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function processConsult(params) {
 export function process(params) {
   const process = 'client/v1/video/process'
 
-  return peace.http.post(process, params)
+  return Peace.http.post(process, params)
 }
 
 export default {

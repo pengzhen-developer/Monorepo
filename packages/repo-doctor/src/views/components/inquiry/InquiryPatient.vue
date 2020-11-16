@@ -116,7 +116,7 @@ export default {
         ) {
           const params = { familyId: newValue.content.patientInfo.familyId }
 
-          peace.service.health.getOneHealth(params).then((res) => {
+          Peace.service.health.getOneHealth(params).then((res) => {
             this.healthRecord = res.data.personalInfo
           })
         }

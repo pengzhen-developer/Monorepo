@@ -174,7 +174,13 @@ export default {
 
           pickerOptionsDate: {
             disabledDate(time) {
-              return time.getTime() < new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
+              return (
+                time.getTime() <
+                new Date()
+                  .formatDate('yyyy-MM-dd 00:00:00')
+                  .toDate()
+                  .getTime()
+              )
             }
           },
 
@@ -200,14 +206,14 @@ export default {
     const paramsForCase = {
       inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo
     }
-    peace.service.inquiry.getCase(paramsForCase).then((res) => {
+    Peace.service.inquiry.getCase(paramsForCase).then((res) => {
       this.view.model.diagnose = res.data.diagnose
     })
   },
 
   methods: {
     get() {
-      const fetch = peace.service.inquiry.referralDocListPc
+      const fetch = Peace.service.inquiry.referralDocListPc
       const params = {
         inquiry_no: this.$store.getters['inquiry/inquiryInfo'].inquiryNo,
         name: this.dialog.model.name
@@ -222,7 +228,7 @@ export default {
     choseTransfer() {
       this.dialog.visible = true
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.get()
       })
     },
@@ -239,8 +245,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // 验证转诊时间
-          if (peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
-            $peace.util.warning('期望转诊时间不能小于当前时间')
+          if (Peace.dayjs(this.view.model.expectDate + ' ' + this.view.model.expectTime).toDate() <= new Date()) {
+            Peace.util.warning('期望转诊时间不能小于当前时间')
           }
           // 开始转诊
           else {
@@ -253,7 +259,7 @@ export default {
               expect_time: this.view.model.expectDate + ' ' + this.view.model.expectTime
             }
 
-            peace.service.inquiry.addReferral(params).then(() => {
+            Peace.service.inquiry.addReferral(params).then(() => {
               const redirect = () => {
                 this.$msgbox.close()
                 this.$router.push('/record/transfer')
@@ -277,7 +283,7 @@ export default {
                 center: true
               })
 
-              $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+              Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
             })
           }
         }
@@ -285,7 +291,7 @@ export default {
     },
 
     close() {
-      $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+      Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
     }
   }
 }

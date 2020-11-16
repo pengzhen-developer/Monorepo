@@ -21,7 +21,7 @@ export default {
     item: {
       type: Object,
       require: true,
-      default: function () {
+      default: function() {
         return {
           id: '',
           courseType: '',
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     editItem() {
-      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程, item: peace.util.deepClone(this.item) })
+      Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程, item: Peace.util.deepClone(this.item) })
     }
   }
 }

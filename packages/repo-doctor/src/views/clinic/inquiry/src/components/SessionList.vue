@@ -78,7 +78,7 @@ export default {
     // 选中一条会话
     selectSession(session) {
       // 重置当前会话未读数
-      $peace.NIM.resetSessionUnread(session.id)
+      Peace.NIM.resetSessionUnread(session.id)
 
       Util.IM.inquiryHelper.resetInquirySession()
       Util.IM.inquiryHelper.setInquirySession(session)
@@ -88,7 +88,7 @@ export default {
 
     // 获取当前选中会话的历史消息
     getHistoryMsgs(session) {
-      $peace.NIM.getHistoryMsgs({
+      Peace.NIM.getHistoryMsgs({
         beginTime: session.content?.inquiryInfo?.startTime?.toDate()?.getTime(),
         scene: session.scene,
         to: session.to,

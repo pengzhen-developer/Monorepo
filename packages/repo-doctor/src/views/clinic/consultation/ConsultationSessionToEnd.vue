@@ -9,7 +9,7 @@
         <div class="count-down">
           <span>距会诊结束时间还剩</span>
           <span class="count-down-time">
-            <span style="margin: 0 5px; color: #FF0000;">{{ $peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
+            <span style="margin: 0 5px; color: #FF0000;">{{ Peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
           </span>
         </div>
         <div class="count-down-message">

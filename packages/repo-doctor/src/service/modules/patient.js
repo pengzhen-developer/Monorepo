@@ -7,7 +7,7 @@
 export function waitList() {
   const waitList = 'client/v1/Patient/waitList'
 
-  return peace.http.post(waitList)
+  return Peace.http.post(waitList)
 }
 
 /**
@@ -19,7 +19,7 @@ export function waitList() {
 export function getSource() {
   const getSource = 'client/v1/Patient/getSource'
 
-  return peace.http.post(getSource)
+  return Peace.http.post(getSource)
 }
 
 /**
@@ -32,7 +32,7 @@ export function getSource() {
 export function patientListPc(params) {
   const patientListPc = 'client/v1/Patient/patientListPc'
 
-  return peace.http.post(patientListPc, params)
+  return Peace.http.post(patientListPc, params)
 }
 
 /**
@@ -45,7 +45,7 @@ export function patientListPc(params) {
 export function patientListDescPc(params) {
   const patientListDescPc = 'client/v1/Patient/patientListDescPc'
 
-  return peace.http.get(patientListDescPc, { params })
+  return Peace.http.get(patientListDescPc, { params })
 }
 
 /**
@@ -58,7 +58,7 @@ export function patientListDescPc(params) {
 export function getOneHealth(params) {
   const getOneHealth = 'client/v1/Health/getOneHealth'
 
-  return peace.http.post(getOneHealth, params)
+  return Peace.http.post(getOneHealth, params)
 }
 
 /**
@@ -71,7 +71,7 @@ export function getOneHealth(params) {
 export function getPatientHome(params) {
   const getPatientHome = 'client/v1/Patient/getPatientHome'
 
-  return peace.http.post(getPatientHome, params)
+  return Peace.http.post(getPatientHome, params)
 }
 
 /**
@@ -84,7 +84,7 @@ export function getPatientHome(params) {
 export function allergens(params) {
   const allergens = 'client/v1/Patient/allergens'
 
-  return peace.http.post(allergens, params)
+  return Peace.http.post(allergens, params)
 }
 
 /**
@@ -97,7 +97,7 @@ export function allergens(params) {
 export function IllnessList(params) {
   const IllnessList = 'client/v1/Patient/IllnessList'
 
-  return peace.http.post(IllnessList, params)
+  return Peace.http.post(IllnessList, params)
 }
 
 /**
@@ -110,7 +110,7 @@ export function IllnessList(params) {
 export function OldIllnessList(params) {
   const OldIllnessList = 'client/v1/Patient/OldIllnessList'
 
-  return peace.http.post(OldIllnessList, params)
+  return Peace.http.post(OldIllnessList, params)
 }
 
 /**
@@ -123,7 +123,7 @@ export function OldIllnessList(params) {
 export function getDiseaseInfo(params) {
   const getDiseaseInfo = 'client/v1/Patient/getDiseaseInfo'
 
-  return peace.http.post(getDiseaseInfo, params)
+  return Peace.http.post(getDiseaseInfo, params)
 }
 
 /**
@@ -136,7 +136,7 @@ export function getDiseaseInfo(params) {
 export function allergenList(params) {
   const allergenList = 'client/v1/Patient/allergenList'
 
-  return peace.http.post(allergenList, params)
+  return Peace.http.post(allergenList, params)
 }
 
 /**
@@ -149,7 +149,7 @@ export function allergenList(params) {
 export function getOneInquiry(params) {
   const getOneInquiry = 'client/v1/Patient/getOneInquiry'
 
-  return peace.http.get(getOneInquiry, { params })
+  return Peace.http.get(getOneInquiry, { params })
 }
 
 /**
@@ -162,7 +162,7 @@ export function getOneInquiry(params) {
 export function getAdvisoryRecord(params) {
   const getAdvisoryRecord = 'client/v1/Patient/getPatientInquiryList'
 
-  return peace.http.post(getAdvisoryRecord, params)
+  return Peace.http.post(getAdvisoryRecord, params)
 }
 
 /**
@@ -175,7 +175,7 @@ export function getAdvisoryRecord(params) {
 export function myInstructionLists(params) {
   const myLists = 'client/v1/patient_instruction/myLists'
 
-  return peace.http.post(myLists, params)
+  return Peace.http.post(myLists, params)
 }
 
 /**
@@ -188,7 +188,7 @@ export function myInstructionLists(params) {
 export function getPatientInquiryList(params) {
   const getPatientInquiryList = 'client/v1/Patient/getPatientInquiryList'
 
-  return peace.http.post(getPatientInquiryList, params)
+  return Peace.http.post(getPatientInquiryList, params)
 }
 
 /**
@@ -198,7 +198,7 @@ export function getPatientInquiryList(params) {
 export function addMyInstruction(params) {
   const addMyInstruction = '/client/v1/Patient_instruction/addMyInstruction'
 
-  return peace.http.post(addMyInstruction, params)
+  return Peace.http.post(addMyInstruction, params)
 }
 
 /**
@@ -208,7 +208,7 @@ export function addMyInstruction(params) {
 export function delInstruction(params) {
   const del = '/client/v1/Patient_instruction/del'
 
-  return peace.http.post(del, params)
+  return Peace.http.post(del, params)
 }
 
 /**
@@ -218,7 +218,7 @@ export function delInstruction(params) {
 export function uploadImage(image) {
   const uploadImage = '/client/v1/Patient_instruction/upload'
 
-  return peace.http.post(uploadImage, image)
+  return Peace.http.post(uploadImage, image)
 }
 
 /**
@@ -228,7 +228,7 @@ export function uploadImage(image) {
 export function getNationList() {
   const nationList = '/client/v1/Patient/getNationList'
 
-  return peace.http.post(nationList)
+  return Peace.http.post(nationList)
 }
 
 /**
@@ -241,7 +241,7 @@ export function getNationList() {
 export function addPatient(params) {
   const addPatient = 'client/v1/patient/addData'
 
-  return peace.http.post(addPatient, params)
+  return Peace.http.post(addPatient, params)
 }
 
 export default {

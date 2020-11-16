@@ -185,7 +185,7 @@ export default {
 
     fetch() {
       // 当远端数据请求成功时
-      const fetchThenFunction = res => {
+      const fetchThenFunction = (res) => {
         if (this.pagination) {
           this.internalData = (res.data && res.data.list) || []
           this.Pagination.internalTotal = (res.data && res.data.count) || (res.data && res.data.total) || 0
@@ -204,7 +204,7 @@ export default {
       // 传递了远端api， 使用 api 加载
       else if (this.config.api) {
         console.warn('【 Components 】【 PeaceTable 】', new Date(), 'api 请求形式已过期，请使用 fetch 定义数据加载方式')
-        return $peace.http[this.config.method](this.config.api, this.config.params).then(fetchThenFunction)
+        return Peace.http[this.config.method](this.config.api, this.config.params).then(fetchThenFunction)
       }
 
       // 异常

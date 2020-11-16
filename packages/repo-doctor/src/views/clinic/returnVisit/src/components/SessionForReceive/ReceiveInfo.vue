@@ -273,22 +273,22 @@ export default {
     get() {
       const params = { dataNo: this.data.dataNo }
       // const params = { inquiryNo: 'WZ2722845337239667' }
-      peace.service.inquiry.getHealthCase(params).then((res) => {
+      Peace.service.inquiry.getHealthCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
         // console.log(this.caseDialog.data)
       })
     },
     getOptionList(val) {
-      if (peace.validate.isEmpty(val)) {
+      if (Peace.validate.isEmpty(val)) {
         return
       }
 
       const params = { inquiryNo: val }
 
-      peace.service.inquiry.getFirstOptionList(params).then((res) => {
+      Peace.service.inquiry.getFirstOptionList(params).then((res) => {
         const tmpTimes = []
-        const tmp = res.data.firstOptionList.map(function (item) {
+        const tmp = res.data.firstOptionList.map(function(item) {
           const tmpTime = item.createdTime.substring(0, 10)
           if (tmpTimes.includes(tmpTime)) {
             item.showTimeLabel = false
@@ -304,7 +304,7 @@ export default {
 
     showHealthRecode() {
       this.optionDialog.visible = true
-      this.optionDialog.data = peace.util.deepClone(this.items)
+      this.optionDialog.data = Peace.util.deepClone(this.items)
     },
 
     showCaseInfo(info) {

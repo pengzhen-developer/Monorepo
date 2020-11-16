@@ -79,7 +79,7 @@ export default {
   },
 
   created() {
-    $peace.inquiryComponent = this
+    Peace.inquiryComponent = this
   },
 
   methods: {
@@ -93,20 +93,20 @@ export default {
     intervalHandler(intervalObject, session) {
       // 待接诊, 未到自动退诊时间, 倒计时
       if (
-        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
-        new Date() < session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+        session.content.inquiryInfo.inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+        new Date() < session.content.inquiryInfo.startTime.toDate().getTime() + Peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
       ) {
-        const overEndTime = session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+        const overEndTime = session.content.inquiryInfo.startTime.toDate().getTime() + Peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
 
-        intervalObject.value = peace.util.formatDuration(new Date(), overEndTime)
+        intervalObject.value = Peace.util.formatDuration(new Date(), overEndTime)
       }
 
       // 待接诊, 已到到自动退诊时间, 等待服务端同步
       else if (
-        session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
-        new Date() > session.content.inquiryInfo.startTime.toDate().getTime() + peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+        session.content.inquiryInfo.inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊 &&
+        new Date() > session.content.inquiryInfo.startTime.toDate().getTime() + Peace.type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
       ) {
-        this.loading = $peace.$loading({
+        this.loading = Peace.$loading({
           lock: true,
           text: '正在同步数据，请稍后······',
           spinner: 'el-icon-loading',
@@ -122,10 +122,10 @@ export default {
       }
 
       // 已接诊, 正计时
-      else if (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
+      else if (session.content.inquiryInfo.inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         const acceptTime = session.content.inquiryInfo.acceptTime.toDate().getTime()
 
-        intervalObject.value = peace.util.formatDuration(acceptTime, new Date())
+        intervalObject.value = Peace.util.formatDuration(acceptTime, new Date())
       }
 
       // 异常

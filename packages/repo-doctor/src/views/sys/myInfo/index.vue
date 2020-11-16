@@ -81,8 +81,8 @@ export default {
   data() {
     return {
       api: {
-        uploadAvatar: peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
-        uploadCertFile: peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
+        uploadAvatar: Peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
+        uploadCertFile: Peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
       },
 
       extraHeaders: {
@@ -114,7 +114,7 @@ export default {
     get() {
       const params = this.extraUploadData
 
-      peace.service.personalCenter.getDoctorInfo(params).then((res) => {
+      Peace.service.personalCenter.getDoctorInfo(params).then((res) => {
         res.data.cert_file = JSON.parse(res.data.cert_file)
         res.data.cert_file = res.data.cert_file.map((item) => {
           return {
@@ -127,7 +127,7 @@ export default {
     },
 
     uploadAvatarSuccess(res) {
-      peace.util.success(res.msg)
+      Peace.util.success(res.msg)
 
       this.get()
     },
@@ -157,7 +157,7 @@ export default {
       })
 
       if (cert_file.length !== 2) {
-        peace.util.warning('请上传正反面，共2张医师资格证书')
+        Peace.util.warning('请上传正反面，共2张医师资格证书')
 
         return
       }
@@ -168,8 +168,8 @@ export default {
         cert_file: cert_file
       }
 
-      peace.service.personalCenter.upDoctorInfo(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.personalCenter.upDoctorInfo(params).then((res) => {
+        Peace.util.success(res.msg)
 
         this.get()
       })

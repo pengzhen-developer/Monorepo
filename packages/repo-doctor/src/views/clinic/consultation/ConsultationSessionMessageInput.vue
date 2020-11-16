@@ -5,7 +5,7 @@
       <el-button @click="sendInvited"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
         <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
@@ -18,9 +18,9 @@
       <el-button @click="sendCase"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
         <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />
         <span>写病历</span>
       </el-button>
@@ -28,9 +28,9 @@
       <el-button @click="sendRecipe"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已完成 ||
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
         <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
         <span>开处方</span>
       </el-button>
@@ -39,7 +39,7 @@
       <el-button @click="sendConsultSuggest"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
-                         $peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
+                         Peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
         <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊小结
       </el-button>
     </div>
@@ -214,7 +214,7 @@ export default {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
 
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.diagnoseDialog.source.present_history = res.data.list
         })
       } else {
@@ -260,7 +260,7 @@ export default {
       this.invitedDialog.chooseList = []
       this.invitedDialog.chooseListForCheckBox = []
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.getInvitedDoctor()
       })
     },
@@ -280,11 +280,11 @@ export default {
             : session.content.consultInfo.receiveDoctor[0].doctorId
       }
 
-      peace.service.consult.doctorStatus(params).then((res) => {
+      Peace.service.consult.doctorStatus(params).then((res) => {
         if (res.data.fromDoctorConsultStatus === 1) {
-          return peace.util.warning('您正在会诊中，不可开始新的会诊')
+          return Peace.util.warning('您正在会诊中，不可开始新的会诊')
         } else if (res.data.toDoctorConsultStatus === 1) {
-          return peace.util.warning('医生正在会诊中，无法接听您的视频')
+          return Peace.util.warning('医生正在会诊中，无法接听您的视频')
         } else {
           this.injectCall(this.$store.state.consultation?.session, 'consult')
         }
@@ -293,7 +293,7 @@ export default {
 
     sendCase() {
       if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
-        $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+        Peace.consultationComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发病历)
       } else {
         this.getCaseDetail(this.$store.getters['consultation/consultInfo'].consultNo)
       }
@@ -301,15 +301,15 @@ export default {
 
     sendRecipe() {
       if (this.$store.getters['consultation/consultInfo'].isSendCase === 0) {
-        peace.util.warning('尚未填写病历，无法开具处方')
+        Peace.util.warning('尚未填写病历，无法开具处方')
       } else {
-        $peace.consultationComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发处方)
+        Peace.consultationComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发处方)
       }
     },
 
     sendConsultSuggest() {
       if (this.$store.getters['consultation/consultInfo'].isCommit) {
-        return peace.util.success('您已填写会诊意见')
+        return Peace.util.success('您已填写会诊意见')
       }
 
       // 验证当前频道信息
@@ -317,21 +317,21 @@ export default {
         const message = '您参与的视频会话其他参与者还未挂断，填写会诊意见将关闭视频会话'
         const confirmOption = { type: 'warning' }
 
-        peace.util.confirm(message, undefined, confirmOption, () => {
+        Peace.util.confirm(message, undefined, confirmOption, () => {
           const consultNo = this.$store.getters['consultation/consultInfo'].consultNo
 
           // 强制解散 （仅为了通知相关人）
-          const dissolveHandler = function () {
+          const dissolveHandler = function() {
             const params = { consultNo: consultNo, action: 'dissolve' }
 
-            return peace.service.video.processConsult(params)
+            return Peace.service.video.processConsult(params)
           }
 
           // 结束视频会诊
-          const overHandler = function () {
+          const overHandler = function() {
             const params = { consultNo: consultNo, action: 'over' }
 
-            return peace.service.video.processConsult(params)
+            return Peace.service.video.processConsult(params)
           }
 
           // 1. 强制解散，通知对方
@@ -351,7 +351,7 @@ export default {
     },
 
     getInvitedDoctor() {
-      const fetch = peace.service.consult.inviteDoctor
+      const fetch = Peace.service.consult.inviteDoctor
 
       const params = {
         keyword: this.invitedDialog.model.keyword
@@ -391,8 +391,8 @@ export default {
         inviteDoctorIds: this.invitedDialog.chooseList.map((item) => item.doctorId)
       }
 
-      peace.service.consult.chooseInviteDoctor(params).then((res) => {
-        $peace.util.success(res.msg)
+      Peace.service.consult.chooseInviteDoctor(params).then((res) => {
+        Peace.util.success(res.msg)
 
         this.invitedDialog.visible = false
       })
@@ -409,13 +409,13 @@ export default {
           consultSuggest: this.consultSuggestDialog.model.consultSuggest
         }
 
-        peace.service.consult.submitSuggest(params).then(() => {
-          // $peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
+        Peace.service.consult.submitSuggest(params).then(() => {
+          // Peace.util.success('提交成功，会诊已完成，感谢您的辛苦付出')
 
           this.consultSuggestDialog.visible = false
         })
       } else {
-        $peace.util.success('请完整填写会诊所见、疾病诊断、建议')
+        Peace.util.success('请完整填写会诊所见、疾病诊断、建议')
       }
     },
 
@@ -424,14 +424,14 @@ export default {
         consultNo: consultNo
       }
 
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
       })
     }
   },
   created() {
-    peace.service.patient.IllnessList().then((res) => {
+    Peace.service.patient.IllnessList().then((res) => {
       this.diagnoseDialog.source.IllnessList = res.data.list
     })
   }

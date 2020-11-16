@@ -158,7 +158,7 @@ export default {
       const message = (text || this.editorMessage).replace(/^\s+|\s+$/g, '')
 
       if (message) {
-        $peace.NIM.sendText({
+        Peace.NIM.sendText({
           scene: this.$store.state.inquiry?.session?.scene,
           to: this.$store.state.inquiry?.session?.content?.patientInfo?.familyId,
           text: message,
@@ -177,7 +177,7 @@ export default {
 
     sendImage(file) {
       if (file) {
-        $peace.NIM.sendFile({
+        Peace.NIM.sendFile({
           scene: this.$store.state.inquiry?.session?.scene,
           to: this.$store.state.inquiry?.session?.content?.patientInfo?.familyId,
           type: 'image',

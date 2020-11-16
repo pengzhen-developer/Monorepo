@@ -45,7 +45,7 @@ export default {
         checkId: this.data.id
       }
 
-      peace.service.report.pacsDetail(params).then((res) => {
+      Peace.service.report.pacsDetail(params).then((res) => {
         this.recordPACSDetailDialog.visible = true
         this.recordPACSDetailDialog.data = res.data
       })

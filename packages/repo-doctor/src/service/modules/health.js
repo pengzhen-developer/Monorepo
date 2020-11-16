@@ -8,7 +8,7 @@
 export function getFamilyList(params) {
   const getFamilyList = 'client/v1/health/getFamilyList'
 
-  return peace.http.post(getFamilyList, params)
+  return Peace.http.post(getFamilyList, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function getFamilyList(params) {
 export function getOneHealth(params) {
   const getOneHealth = 'client/v1/health/getOneHealth'
 
-  return peace.http.post(getOneHealth, params)
+  return Peace.http.post(getOneHealth, params)
 }
 
 /**
@@ -34,7 +34,7 @@ export function getOneHealth(params) {
 export function allHealthList(params) {
   const allHealthList = 'client/v1/health/allHealthList'
 
-  return peace.http.post(allHealthList, params)
+  return Peace.http.post(allHealthList, params)
 }
 
 /**
@@ -47,7 +47,7 @@ export function allHealthList(params) {
 export function getOscillogram(params) {
   const getOscillogram = 'client/v1/health/getOscillogram'
 
-  return peace.http.post(getOscillogram, params)
+  return Peace.http.post(getOscillogram, params)
 }
 
 /**
@@ -60,7 +60,7 @@ export function getOscillogram(params) {
 export function getWeekList(params) {
   const getWeekList = 'client/v1/health/getWeekList'
 
-  return peace.http.post(getWeekList, params)
+  return Peace.http.post(getWeekList, params)
 }
 
 /**
@@ -73,7 +73,7 @@ export function getWeekList(params) {
 export function getWeekDetail(params) {
   const getWeekDetail = 'client/v1/health/getWeekDetail'
 
-  return peace.http.post(getWeekDetail, params)
+  return Peace.http.post(getWeekDetail, params)
 }
 
 /**
@@ -86,7 +86,7 @@ export function getWeekDetail(params) {
 export function getOneRecord(params) {
   const getOneRecord = 'client/v1/health/getOneRecord'
 
-  return peace.http.post(getOneRecord, params)
+  return Peace.http.post(getOneRecord, params)
 }
 
 /**
@@ -292,7 +292,7 @@ export function consultDetail({ dataNo }) {
   }
   const path = 'client/v1/health/consultDetail'
 
-  return peace.http.post(path, params)
+  return Peace.http.post(path, params)
 }
 
 /**
@@ -305,7 +305,7 @@ export function consultDetail({ dataNo }) {
 export function getReferralRecordList(params) {
   const getReferralRecordList = 'client/v1/patient/DoctorReferralList'
 
-  return peace.http.post(getReferralRecordList, params)
+  return Peace.http.post(getReferralRecordList, params)
 }
 
 /**
@@ -318,7 +318,7 @@ export function getReferralRecordList(params) {
 export function offlineAddReferral(params) {
   const offlineAddReferral = 'client/v1/inquiry/offlineAddReferral'
 
-  return peace.http.post(offlineAddReferral, params)
+  return Peace.http.post(offlineAddReferral, params)
 }
 
 /**
@@ -331,7 +331,7 @@ export function offlineAddReferral(params) {
 export function getConsultRecordList(params) {
   const getConsultRecordList = 'client/v1/consult/getConsultListByPc'
 
-  return peace.http.post(getConsultRecordList, params)
+  return Peace.http.post(getConsultRecordList, params)
 }
 
 /**
@@ -344,7 +344,7 @@ export function getConsultRecordList(params) {
 export function offlineAddConsult(params) {
   const offlineAddConsult = 'client/v1/consult/offlineDoApply'
 
-  return peace.http.post(offlineAddConsult, params)
+  return Peace.http.post(offlineAddConsult, params)
 }
 
 /**
@@ -357,7 +357,7 @@ export function offlineAddConsult(params) {
 export function getFollowUpSchemeList(params) {
   const getFollowUpSchemeList = 'client/v1/followup/scheme'
 
-  return peace.http.post(getFollowUpSchemeList, params)
+  return Peace.http.post(getFollowUpSchemeList, params)
 }
 
 /**
@@ -370,7 +370,7 @@ export function getFollowUpSchemeList(params) {
 export function AddFollowUpScheme(params) {
   const addFollowUpScheme = 'client/v1/followup/addScenario'
 
-  return peace.http.post(addFollowUpScheme, params, {
+  return Peace.http.post(addFollowUpScheme, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -387,7 +387,7 @@ export function AddFollowUpScheme(params) {
  */
 export function getPatientInquiryList(params) {
   const getPatientInquiryList = 'client/v1/inquiry/getPatientInquiryListByPc'
-  return peace.http.post(getPatientInquiryList, params)
+  return Peace.http.post(getPatientInquiryList, params)
 }
 
 export default {

@@ -8,7 +8,7 @@
 export function inspectionDetail(params) {
   const inspectionDetail = 'client/report/v110/check/inspectionDetail'
 
-  return peace.http.post(inspectionDetail, params)
+  return Peace.http.post(inspectionDetail, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function inspectionDetail(params) {
 export function pacsDetail(params) {
   const pacsDetail = 'client/report/v110/check/pacsDetail'
 
-  return peace.http.post(pacsDetail, params)
+  return Peace.http.post(pacsDetail, params)
 }
 
 export default {

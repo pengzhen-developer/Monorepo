@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     get() {
-      const fetch = peace.service.patient.myInstructionLists
+      const fetch = Peace.service.patient.myInstructionLists
       const params = {}
 
       this.$refs.table.loadData({ fetch, params })
@@ -105,7 +105,7 @@ export default {
     },
 
     submit(params) {
-      peace.service.patient
+      Peace.service.patient
         .addMyInstruction(params)
         .then(() => {
           this.$message.success('患教内容新增成功')
@@ -117,7 +117,7 @@ export default {
     },
 
     edit(params) {
-      peace.service.patient
+      Peace.service.patient
         .addMyInstruction(params)
         .then(() => {
           this.$message.success('患教内容编辑成功')
@@ -129,13 +129,13 @@ export default {
     },
 
     remove(row) {
-      peace.util.confirm('确定删除吗？', undefined, undefined, () => {
+      Peace.util.confirm('确定删除吗？', undefined, undefined, () => {
         const params = {
           id: row.id
         }
 
-        peace.service.patient.delInstruction(params).then((res) => {
-          peace.util.success(res.msg)
+        Peace.service.patient.delInstruction(params).then((res) => {
+          Peace.util.success(res.msg)
 
           this.get()
         })

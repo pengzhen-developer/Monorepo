@@ -54,14 +54,14 @@ export default {
 
   data() {
     return {
-      menuList: peace.config.menu.menuList
+      menuList: Peace.config.menu.menuList
     }
   },
 
   watch: {
     '$route.path': {
       handler() {
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           if (this.$store.state.layout.tabList.length === 0) {
             // 将首页加载到 tab list
             this.pushTab('/home')
@@ -83,7 +83,7 @@ export default {
 
     '$store.state.layout.tabList': {
       handler() {
-        peace.cache.sessionStorage.set(peace.type.USER.TAB_LIST, this.$store.state.layout.tabList)
+        Peace.cache.sessionStorage.set(Peace.type.USER.TAB_LIST, this.$store.state.layout.tabList)
       },
 
       immediate: true

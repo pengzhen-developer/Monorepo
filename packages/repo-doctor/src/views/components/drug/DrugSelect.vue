@@ -209,7 +209,7 @@ export default {
 
           // 验证用药天数
           // 用药天数为可选项，暂不开放验证
-          // if (peace.validate.isEmpty(drug.medication_days)) {
+          // if (Peace.validate.isEmpty(drug.medication_days)) {
           //   validObj = {
           //     isValid: false,
           //     message: `[${drug.drug_name}]请输入用药天数`

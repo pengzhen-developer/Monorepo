@@ -273,9 +273,9 @@ export default {
   methods: {
     getOptionList() {
       const params = { inquiryNo: this.data.inquiryInfo.inquiryNo }
-      peace.service.inquiry.getFirstOptionList(params).then((res) => {
+      Peace.service.inquiry.getFirstOptionList(params).then((res) => {
         const tmpTimes = []
-        const tmp = res.data.firstOptionList.map(function (item) {
+        const tmp = res.data.firstOptionList.map(function(item) {
           const tmpTime = item.createdTime.substring(0, 10)
           if (tmpTimes.includes(tmpTime)) {
             item.showTimeLabel = false
@@ -291,7 +291,7 @@ export default {
 
     showHealthRecode() {
       this.optionDialog.visible = true
-      this.optionDialog.data = peace.util.deepClone(this.items)
+      this.optionDialog.data = Peace.util.deepClone(this.items)
     },
 
     showCaseInfo(info) {

@@ -253,7 +253,7 @@ export default {
 
   computed: {
     docInfo() {
-      return $peace.$store.state.user?.userInfo?.list?.docInfo
+      return Peace.$store.state.user?.userInfo?.list?.docInfo
     },
 
     inquiryNo() {
@@ -278,7 +278,7 @@ export default {
   },
 
   beforeMount() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.getCase()
       this.getCommonDiagnosis()
     })
@@ -371,7 +371,7 @@ export default {
      *
      */
     getCommonDiagnosis() {
-      peace.service.patient.IllnessList().then((res) => {
+      Peace.service.patient.IllnessList().then((res) => {
         this.dialog.source.IllnessList = res.data.list
       })
     },
@@ -383,7 +383,7 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.dialog.source.present_history = res.data.list
         })
       } else {
@@ -517,7 +517,7 @@ export default {
 
     changeDialog(title) {
       this.showDialog(title)
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.dialog.chooseData = [...this.diagnoseList]
       })
     },

@@ -102,13 +102,13 @@ export default {
 
     showReport() {
       if (this.data.noData) {
-        return peace.util.info('暂无数据')
+        return Peace.util.info('暂无数据')
       }
 
       const dataId = this.type == 1 ? this.data.dataNo : this.data.id
       const idCard = this.data.idCard
-      const serviceId = peace.type.HEALTH.SERVICE_ID.无
-      const type = peace.type.HEALTH.TYPE.血氧
+      const serviceId = Peace.type.HEALTH.SERVICE_ID.无
+      const type = Peace.type.HEALTH.TYPE.血氧
       const path = `/patient/patientDetail/report/${dataId}/${idCard}/${serviceId}/${type}`
 
       this.$router.push(path)

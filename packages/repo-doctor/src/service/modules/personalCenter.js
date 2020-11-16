@@ -8,7 +8,7 @@
 export function getDoctorInfo(params) {
   const getDoctorInfo = 'client/v1/Personalcenter/getDoctorInfo'
 
-  return peace.http.get(getDoctorInfo, { params })
+  return Peace.http.get(getDoctorInfo, { params })
 }
 
 /**
@@ -21,7 +21,7 @@ export function getDoctorInfo(params) {
 export function upDoctorInfo(params) {
   const upDoctorInfo = 'client/v1/Personalcenter/upDoctorInfo'
 
-  return peace.http.post(upDoctorInfo, params)
+  return Peace.http.post(upDoctorInfo, params)
 }
 
 /**
@@ -34,7 +34,7 @@ export function upDoctorInfo(params) {
 export function upDoctorIntroduce(params) {
   const upDoctorIntroduce = 'client/v1/Personalcenter/upDoctorIntroduce'
 
-  return peace.http.post(upDoctorIntroduce, params)
+  return Peace.http.post(upDoctorIntroduce, params)
 }
 
 /**
@@ -47,7 +47,7 @@ export function upDoctorIntroduce(params) {
 export function upDoctorWork(params) {
   const upDoctorWork = 'client/v1/Personalcenter/upDoctorWork'
 
-  return peace.http.post(upDoctorWork, params)
+  return Peace.http.post(upDoctorWork, params)
 }
 
 /**
@@ -60,7 +60,7 @@ export function upDoctorWork(params) {
 export function upConsultationSet(params) {
   const upConsultationSet = 'client/v1/Personalcenter/upConsultationSet'
 
-  return peace.http.post(upConsultationSet, params)
+  return Peace.http.post(upConsultationSet, params)
 }
 
 /**
@@ -73,7 +73,7 @@ export function upConsultationSet(params) {
 export function getMsgList(params) {
   const getMsgList = 'client/v1/Notice/getMsgList'
 
-  return peace.http.post(getMsgList, params)
+  return Peace.http.post(getMsgList, params)
 }
 
 /**
@@ -86,7 +86,7 @@ export function getMsgList(params) {
 export function getDetail(params) {
   const getDetail = 'client/v1/Notice/getDetail'
 
-  return peace.http.post(getDetail, params)
+  return Peace.http.post(getDetail, params)
 }
 
 /**
@@ -99,7 +99,7 @@ export function getDetail(params) {
 export function updateWorkStatus(params) {
   const updateWorkStatus = 'client/v1/Personalcenter/updateWorkStatus'
 
-  return peace.http.post(updateWorkStatus, params)
+  return Peace.http.post(updateWorkStatus, params)
 }
 
 export default {

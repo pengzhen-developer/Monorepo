@@ -100,7 +100,7 @@ export default {
   },
 
   created() {
-    peace.service.patient.getSource().then((res) => {
+    Peace.service.patient.getSource().then((res) => {
       this.source.group_name = res.data
     })
   },
@@ -116,7 +116,7 @@ export default {
       this.addPatientDialog.visible = true
     },
     get() {
-      const fetch = peace.service.patient.patientListPc
+      const fetch = Peace.service.patient.patientListPc
       const params = this.view.model
       this.$refs.table.loadData({ fetch, params })
     },
@@ -140,7 +140,7 @@ export default {
       this.$router.push(currentMenu.path)
     },
     updateList() {
-      const fetch = peace.service.patient.patientListPc
+      const fetch = Peace.service.patient.patientListPc
       const params = this.view.model
       this.$refs.table.reloadData({ fetch, params })
     },

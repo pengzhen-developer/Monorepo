@@ -166,8 +166,8 @@ export default {
             title: this.model.projectName,
             content: tmpMap
           }
-          peace.service.health.AddFollowUpScheme(params).then(() => {
-            peace.util.success('新建自定义方案成功')
+          Peace.service.health.AddFollowUpScheme(params).then(() => {
+            Peace.util.success('新建自定义方案成功')
             this.isSave = true
             this.closeMenu()
             this.$emit('updateList')
@@ -184,7 +184,7 @@ export default {
           console.log(this)
           const refName = Object.keys(validObj)[0]
 
-          if ($peace.validate.isEmpty(this.model.projectName)) {
+          if (Peace.validate.isEmpty(this.model.projectName)) {
             // 如果方案名称为空、获取Dom的方式和其他的不一样
             // 造成不同的原因是因为 rules: 中的层级
             // rules: {
@@ -207,11 +207,11 @@ export default {
         return false
       } else {
         //是否输入了方案名称
-        if (!peace.validate.isEmpty(this.model.projectName)) {
+        if (!Peace.validate.isEmpty(this.model.projectName)) {
           return true
         }
         for (const item of this.model.list) {
-          if (!peace.validate.isEmpty(item.content)) {
+          if (!Peace.validate.isEmpty(item.content)) {
             //是否输入了方案名称
             return true
           }

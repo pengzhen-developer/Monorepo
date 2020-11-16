@@ -34,11 +34,11 @@
               <el-tag effect="plain"
                       style="border-radius: 20px; border-color: #4395f5; color: #4395f5; background: #e3f0f0;"
                       type="warning"
-                      v-if="session.content.inquiryInfo.inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">{{ getInquiryStatus(session) }}</el-tag>
+                      v-if="session.content.inquiryInfo.inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊">{{ getInquiryStatus(session) }}</el-tag>
               <el-tag effect="plain"
                       style="border-radius: 20px; border-color: #00c6ae; color: #00c6ae; background: #dafaf6;"
                       type="primary"
-                      v-if="session.content.inquiryInfo.inquiryStatus  === $peace.type.INQUIRY.INQUIRY_STATUS.问诊中">{{ getInquiryStatus(session) }}</el-tag>
+                      v-if="session.content.inquiryInfo.inquiryStatus  === Peace.type.INQUIRY.INQUIRY_STATUS.问诊中">{{ getInquiryStatus(session) }}</el-tag>
             </div>
           </div>
 
@@ -49,14 +49,14 @@
           <div class="inquiry-status">
             <div class="inquiry-status-left">
               <img src="~@src/assets/images/inquiry/chat_icon_pic.png"
-                   v-if="session.content.inquiryInfo.inquiryType === $peace.type.INQUIRY.INQUIRY_TYPE.图文问诊">
+                   v-if="session.content.inquiryInfo.inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.图文问诊">
               <img src="~@src/assets/images/inquiry/chat_icon_video.png"
-                   v-if="session.content.inquiryInfo.inquiryType === $peace.type.INQUIRY.INQUIRY_TYPE.视频问诊">
+                   v-if="session.content.inquiryInfo.inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊">
               <span>{{ getInquiryType(session) }}</span>
               <span class="private-doctor"
                     v-if="session.content.inquiryInfo.isPrivateDoctor">私</span>
             </div>
-            <div>{{ $peace.inquiryComponent.getIntervalValue(session) }}</div>
+            <div>{{ Peace.inquiryComponent.getIntervalValue(session) }}</div>
           </div>
         </div>
       </el-scrollbar>
@@ -80,7 +80,7 @@ export default {
       const filterSessions = sessions.filter(
         (session) => session?.content?.inquiryInfo?.inquiryType === 'image' || session?.content?.inquiryInfo?.inquiryType === 'video'
       )
-      const cloneSessions = peace.util.deepClone(filterSessions)
+      const cloneSessions = Peace.util.deepClone(filterSessions)
 
       return cloneSessions
     }
@@ -99,15 +99,15 @@ export default {
           return '【视频】'
         case 'custom':
           // 病历
-          if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历) {
+          if (session.lastMsg.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历) {
             return '【病历】'
           }
           // 处方
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方) {
+          else if (session.lastMsg.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方) {
             return '【处方】'
           }
           // 视频通话
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
+          else if (session.lastMsg.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '【视频通话】'
           }
           // 其它
@@ -118,11 +118,11 @@ export default {
     },
 
     getInquiryStatus(session) {
-      return Object.keys(peace.type.INQUIRY.INQUIRY_STATUS).find((key) => peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.inquiryInfo.inquiryStatus)
+      return Object.keys(Peace.type.INQUIRY.INQUIRY_STATUS).find((key) => Peace.type.INQUIRY.INQUIRY_STATUS[key] === session.content.inquiryInfo.inquiryStatus)
     },
 
     getInquiryType(session) {
-      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find((key) => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
+      const text = Object.keys(Peace.type.INQUIRY.INQUIRY_TYPE).find((key) => Peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
 
       const isAgain = session.content.inquiryInfo.isAgain
 
@@ -148,12 +148,12 @@ export default {
         util.IM.inquiryHelper.setInquirySessionMessages(message.msgs)
       }
 
-      $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
+      Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作)
 
       // 重置会话未读数
-      $peace.NIM.resetSessionUnread(session.id)
+      Peace.NIM.resetSessionUnread(session.id)
       // 获取本次问诊历史消息
-      $peace.NIM.getHistoryMsgs({
+      Peace.NIM.getHistoryMsgs({
         beginTime: session.content.inquiryInfo.startTime.toDate().getTime(),
         scene: session.scene,
         to: session.to,

@@ -67,7 +67,7 @@ export default {
         doctorId: this.$store.state.user.userInfo.list.docInfo.doctor_id
       }
 
-      peace.service.personalCenter.getDoctorInfo(params).then((res) => {
+      Peace.service.personalCenter.getDoctorInfo(params).then((res) => {
         this.view.model = res.data
       })
     },
@@ -80,8 +80,8 @@ export default {
         special_skill: this.view.model.special_skill
       }
 
-      peace.service.personalCenter.upDoctorIntroduce(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.personalCenter.upDoctorIntroduce(params).then((res) => {
+        Peace.util.success(res.msg)
 
         this.get()
       })

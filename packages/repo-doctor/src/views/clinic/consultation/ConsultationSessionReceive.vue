@@ -2,7 +2,7 @@
   <div class="consultation-session-receive">
     <div class="tip">
       <span>请在</span>
-      <span class="count-down">{{ $peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
+      <span class="count-down">{{ Peace.consultationComponent.getIntervalValue($store.state.consultation.session) }}</span>
       <span>内接诊，倒计时结束未接诊将自动退诊</span>
     </div>
     <div class="control">
@@ -37,7 +37,7 @@ export default {
           action: 'accept'
         }
 
-        return peace.service.consult.doctorAudit(params)
+        return Peace.service.consult.doctorAudit(params)
       }
 
       const receiveMessage = () => {
@@ -48,7 +48,7 @@ export default {
           cancelButtonText: '暂不开始'
         }
 
-        peace.util.confirm(message, undefined, option, () => {
+        Peace.util.confirm(message, undefined, option, () => {
           this.injectCall(this.$store.state.consultation.session, 'consult')
         })
       }
@@ -62,7 +62,7 @@ export default {
               ? session.content.consultInfo.startDoctor[0].doctorId
               : session.content.consultInfo.receiveDoctor[0].doctorId
         }
-        peace.service.consult.doctorStatus(params).then((res) => {
+        Peace.service.consult.doctorStatus(params).then((res) => {
           if (res.data.fromDoctorConsultStatus !== 1 && res.data.toDoctorConsultStatus !== 1) {
             receiveMessage()
           }
@@ -81,7 +81,7 @@ export default {
           if (value) {
             confirmCallback(value)
           } else {
-            peace.util.success('请输入退诊原因')
+            Peace.util.success('请输入退诊原因')
           }
         })
       }
@@ -93,7 +93,7 @@ export default {
           action: 'reject'
         }
 
-        peace.service.consult.doctorAudit(params)
+        Peace.service.consult.doctorAudit(params)
       }
 
       refuseMessage(refuseHandler)

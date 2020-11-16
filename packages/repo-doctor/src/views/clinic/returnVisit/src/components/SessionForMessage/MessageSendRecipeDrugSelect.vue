@@ -295,22 +295,22 @@ export default {
         hospitalId: this.$store.state.user.userInfo.list.docInfo.netHospital_id
       }
 
-      peace.service.prescribePrescrip.drugUsageList(params).then((res) => {
+      Peace.service.prescribePrescrip.drugUsageList(params).then((res) => {
         this.dict.dic_usage = res.data
       })
-      peace.service.prescribePrescrip.drugFrequencyList(params).then((res) => {
+      Peace.service.prescribePrescrip.drugFrequencyList(params).then((res) => {
         this.dict.dic_frequency = res.data
       })
     },
 
     addDrug() {
-      const row = peace.util.deepClone(this.model)
+      const row = Peace.util.deepClone(this.model)
 
       this.drugList.push(row)
     },
 
     deleteDrug(scope) {
-      peace.util.confirm('确定删除吗', '提示', {}, () => {
+      Peace.util.confirm('确定删除吗', '提示', {}, () => {
         this.drugList.splice(scope.$index, 1)
       })
     },
@@ -328,7 +328,7 @@ export default {
           drugname: queryString
         }
 
-        peace.service.prescribePrescrip
+        Peace.service.prescribePrescrip
           .drugsList(params)
           .then((res) => {
             if (res.data && res.data.length > 0) {
@@ -352,7 +352,7 @@ export default {
     handleSelectDrug(item, scope) {
       // 当药品已存在，提示
       if (this.drugList.filter((drug) => drug.drugid === item.id).length === 1) {
-        peace.util.warning('药品已存在，请勿重复添加')
+        Peace.util.warning('药品已存在，请勿重复添加')
 
         if (scope.$index !== this.drugList.length - 1) {
           this.deleteDrug(scope)
@@ -409,7 +409,7 @@ export default {
 
         if (drug.drugid && drug.drug_name) {
           // 验证给药途径
-          if (peace.validate.isEmpty(drug.dic_usage_id) || peace.validate.isEmpty(drug.dic_usage)) {
+          if (Peace.validate.isEmpty(drug.dic_usage_id) || Peace.validate.isEmpty(drug.dic_usage)) {
             validObj = {
               isValid: false,
               message: `[${drug.drug_name}]请选择给药途径`
@@ -419,7 +419,7 @@ export default {
           }
 
           // 验证用药频次
-          if (peace.validate.isEmpty(drug.dic_frequency_id) || peace.validate.isEmpty(drug.dic_frequency)) {
+          if (Peace.validate.isEmpty(drug.dic_frequency_id) || Peace.validate.isEmpty(drug.dic_frequency)) {
             validObj = {
               isValid: false,
               message: `[${drug.drug_name}]请选择用药频次`
@@ -429,7 +429,7 @@ export default {
           }
 
           // 验证单次剂量
-          if (peace.validate.isEmpty(drug.consump) || drug.consump === 0) {
+          if (Peace.validate.isEmpty(drug.consump) || drug.consump === 0) {
             validObj = {
               isValid: false,
               message: `[${drug.drug_name}]请输入单次剂量`
@@ -439,7 +439,7 @@ export default {
           }
 
           // 验证数量
-          if (peace.validate.isEmpty(drug.number) || drug.number === 0) {
+          if (Peace.validate.isEmpty(drug.number) || drug.number === 0) {
             validObj = {
               isValid: false,
               message: `[${drug.drug_name}]请输入数量`
@@ -450,7 +450,7 @@ export default {
 
           // 验证用药天数
           // 用药天数为可选项，暂不开放验证
-          // if (peace.validate.isEmpty(drug.medication_days)) {
+          // if (Peace.validate.isEmpty(drug.medication_days)) {
           //   validObj = {
           //     isValid: false,
           //     message: `[${drug.drug_name}]请输入用药天数`
@@ -465,7 +465,7 @@ export default {
     },
 
     getModel() {
-      const drugs = peace.util.deepClone(this.drugList)
+      const drugs = Peace.util.deepClone(this.drugList)
       const lastDrug = drugs[drugs.length - 1]
 
       // 移除最后一行（为空行）

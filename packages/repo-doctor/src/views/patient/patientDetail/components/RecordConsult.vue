@@ -72,7 +72,7 @@ export default {
         dataNo: consultNo
       }
 
-      peace.service.health.consultDetail(params).then((res) => {
+      Peace.service.health.consultDetail(params).then((res) => {
         this.consultData = res.data
         console.log(this.consultData)
       })

@@ -15,27 +15,27 @@
              v-for="session in $store.state.consultation.sessions">
           <div class="consultation-title">
             <div class="status">
-              <div v-if="$peace.consultationComponent.getIntervalStatus(session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
+              <div v-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
                 <i class="icon_ic_wait_groupconsultation"></i>
                 <span>距开始还剩</span>
 
-                <span style="margin: 0 5px; color: #00C6AE;">{{ $peace.consultationComponent.getIntervalValue(session) }}</span>
+                <span style="margin: 0 5px; color: #00C6AE;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
               </div>
 
-              <!-- <div v-else-if="$peace.consultationComponent.getIntervalStatus(session) === $peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
+              <!-- <div v-else-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
                 <i class="icon_ic_wait_groupconsultation"></i>
                 <span>距关闭还剩</span>
 
-                <span style="margin: 0 5px; color: #FF0000;">{{ $peace.consultationComponent.getIntervalValue(session) }}</span>
+                <span style="margin: 0 5px; color: #FF0000;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
               </div> -->
 
               <div v-else>
                 <i class="icon_ic_ing_groupconsultation"></i>
                 <span style="color: #00C6AE;">
                   {{ 
-                    Object.keys($peace.type.CONSULTATION.CONSULTATION_STATUS).find(
+                    Object.keys(Peace.type.CONSULTATION.CONSULTATION_STATUS).find(
                       key =>
-                        $peace.type.CONSULTATION.CONSULTATION_STATUS[key] === session.content.consultInfo.consultStatus
+                        Peace.type.CONSULTATION.CONSULTATION_STATUS[key] === session.content.consultInfo.consultStatus
                     ) 
                   }}
                 </span>
@@ -117,9 +117,9 @@ export default {
       }
 
       // 重置会话未读数
-      // $peace.NIM.resetSessionUnread(session.id)
+      // Peace.NIM.resetSessionUnread(session.id)
       // 获取本次会诊历史消息
-      $peace.NIM.getHistoryMsgs({
+      Peace.NIM.getHistoryMsgs({
         scene: session.scene,
         to: session.to,
         done: doneHandler

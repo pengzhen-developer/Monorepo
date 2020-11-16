@@ -219,18 +219,18 @@ export default {
       }
     },
     gotoDoctorDetail(roleId) {
-      const json = peace.util.encode({
+      const json = Peace.util.encode({
         doctorId: roleId
       })
-      $peace.$router.push(`/components/DoctorDetail/${json}`)
+      Peace.$router.push(`/components/DoctorDetail/${json}`)
     },
     gotoFamilyPage(roleId, flag) {
       let familyId = roleId
       if (flag) {
-        peace.cache.localStorage.set('familyId', familyId)
-        $peace.$router.push(`/file/index/`)
+        Peace.cache.localStorage.set('familyId', familyId)
+        Peace.$router.push(`/file/index/`)
       } else {
-        $peace.util.success('该就诊人已从您的家人列表移除，不可查看其健康档案')
+        Peace.util.success('该就诊人已从您的家人列表移除，不可查看其健康档案')
       }
     }
   }

@@ -62,11 +62,11 @@ export default {
     }
   },
   created() {
-    peace.service.follow.getCourseType({}).then((res) => {
+    Peace.service.follow.getCourseType({}).then((res) => {
       this.recordTypeList = res.data
     })
 
-    if (!peace.validate.isEmpty(this.params.item)) {
+    if (!Peace.validate.isEmpty(this.params.item)) {
       //item 不为空，为编辑项目
       const [type, record, date] = [this.params.item.courseType, this.params.item.courseRecord, this.params.item.courseTime]
       this.model = {
@@ -105,13 +105,13 @@ export default {
           }
           const params = Object.assign(tmp, this.params.familyInfo)
 
-          if (this.params.item && !peace.validate.isEmpty(this.params.item.id)) {
+          if (this.params.item && !Peace.validate.isEmpty(this.params.item.id)) {
             params.courseId = this.params.item.id
           }
 
-          peace.service.follow.addEditCourse(params).then((res) => {
-            $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程 })
-            peace.util.success(res.msg)
+          Peace.service.follow.addEditCourse(params).then((res) => {
+            Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.病程 })
+            Peace.util.success(res.msg)
           })
         } else {
           return false

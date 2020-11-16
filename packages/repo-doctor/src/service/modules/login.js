@@ -8,7 +8,7 @@
 export function sendSms(params) {
   const sendSms = 'client/v1/Login/sendSms'
 
-  return peace.http.post(sendSms, params)
+  return Peace.http.post(sendSms, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function sendSms(params) {
 export function login(params) {
   const login = 'client/v1/Login/login'
 
-  return peace.http.post(login, params)
+  return Peace.http.post(login, params)
 }
 
 export default {

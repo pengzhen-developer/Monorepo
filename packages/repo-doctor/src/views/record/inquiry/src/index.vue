@@ -149,7 +149,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -158,7 +158,7 @@ export default {
     get() {
       const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
 
-      const fetch = peace.service.inquiry.recordList
+      const fetch = Peace.service.inquiry.recordList
       const params = { doctorId, ...this.view.model }
 
       this.$refs.table.loadData({ fetch, params })
@@ -169,7 +169,7 @@ export default {
         inquiryNo: row.inquiry_no
       }
 
-      peace.service.patient.getOneInquiry(params).then((res) => {
+      Peace.service.patient.getOneInquiry(params).then((res) => {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {

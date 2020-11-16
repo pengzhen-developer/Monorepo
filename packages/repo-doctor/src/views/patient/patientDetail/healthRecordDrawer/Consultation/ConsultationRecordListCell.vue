@@ -82,7 +82,7 @@ export default {
       const params = {
         consultNo: this.item.consultNo
       }
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.dialog.data = res.data.info
       })
     }

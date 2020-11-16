@@ -388,7 +388,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.get()
     })
   },
@@ -398,7 +398,7 @@ export default {
       if (this.view.model.type !== this.source.state[type]) {
         this.view.model.type = this.source.state[type]
 
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           this.get()
         })
       }
@@ -406,7 +406,7 @@ export default {
 
     get() {
       if (this.view.model.type === 1) {
-        const fetch = peace.service.privateDoctor.privateDoctorOrderList
+        const fetch = Peace.service.privateDoctor.privateDoctorOrderList
         const params = { ...this.view.modelForReceive, type: this.view.model.type }
 
         this.$refs.table.loadData({
@@ -414,7 +414,7 @@ export default {
           params
         })
       } else if (this.view.model.type === 2) {
-        const fetch = peace.service.privateDoctor.privateDoctorOrderList
+        const fetch = Peace.service.privateDoctor.privateDoctorOrderList
         const params = { ...this.view.modelForReceive, type: this.view.model.type }
 
         this.$refs.table.loadData({
@@ -422,7 +422,7 @@ export default {
           params
         })
       } else if (this.view.model.type === 3) {
-        const fetch = peace.service.privateDoctor.acceptRecordList
+        const fetch = Peace.service.privateDoctor.acceptRecordList
         const params = this.view.modelForRecord
 
         this.$refs.table.loadData({
@@ -430,7 +430,7 @@ export default {
           params
         })
       } else {
-        const fetch = peace.service.privateDoctor.privateDoctorOrderList
+        const fetch = Peace.service.privateDoctor.privateDoctorOrderList
         const params = this.view.model
 
         this.$refs.table.loadData({
@@ -449,14 +449,14 @@ export default {
         orderId: row.orderId
       }
 
-      peace.service.privateDoctor.privateDoctorOrderInfo(params).then((res) => {
+      Peace.service.privateDoctor.privateDoctorOrderInfo(params).then((res) => {
         this.receiveDialog.data = res.data.info
       })
     },
 
     confirmReceipt() {
       if (this.receiveDialog.model.acceptOpinion === '') {
-        peace.util.warning('请选择接单意见')
+        Peace.util.warning('请选择接单意见')
 
         return
       }
@@ -467,11 +467,11 @@ export default {
         refuseReason: this.receiveDialog.model.acceptOpinion === 1 ? '' : this.receiveDialog.model.refuseReason
       }
 
-      peace.service.privateDoctor.confirmReceipt(params).then((res) => {
+      Peace.service.privateDoctor.confirmReceipt(params).then((res) => {
         this.receiveDialog.visible = false
         this.get()
 
-        peace.util.success(res.msg)
+        Peace.util.success(res.msg)
       })
     },
 

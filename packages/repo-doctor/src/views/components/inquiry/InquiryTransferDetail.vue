@@ -214,7 +214,7 @@ export default {
 
   computed: {
     internalData() {
-      const temp = $peace.util.deepClone(this.data)
+      const temp = Peace.util.deepClone(this.data)
 
       return temp
     }
@@ -246,8 +246,8 @@ export default {
         referral_suggest: this.view.model.referral_suggest
       }
 
-      peace.service.inquiry.receiveReferralPc(params).then((res) => {
-        $peace.util.success(res.msg)
+      Peace.service.inquiry.receiveReferralPc(params).then((res) => {
+        Peace.util.success(res.msg)
 
         this.$emit('close')
       })

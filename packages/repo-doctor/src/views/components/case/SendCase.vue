@@ -441,15 +441,15 @@ export default {
   created() {
     this.getOptions()
 
-    peace.service.patient.allergens().then((res) => {
+    Peace.service.patient.allergens().then((res) => {
       this.dialog.source.allergens = res.data.list
     })
 
-    peace.service.patient.IllnessList().then((res) => {
+    Peace.service.patient.IllnessList().then((res) => {
       this.dialog.source.IllnessList = res.data.list
     })
 
-    peace.service.patient.OldIllnessList().then((res) => {
+    Peace.service.patient.OldIllnessList().then((res) => {
       this.dialog.source.OldIllnessList = res.data.list
     })
   },
@@ -460,17 +460,17 @@ export default {
     handleChangeType(val) {
       if (!val) return
       const templateKey = 'templateChangeTips'
-      const currentTemplate = peace.cache.localStorage.get(templateKey)
+      const currentTemplate = Peace.cache.localStorage.get(templateKey)
       if (currentTemplate !== val) {
         this.$alert('肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)', '提示', {
           confirmButtonText: '知道了'
         })
-        peace.cache.localStorage.set(templateKey, val)
+        Peace.cache.localStorage.set(templateKey, val)
       }
     },
 
     getOptions() {
-      peace.service.inquiry.getRecordTemplate().then((res) => {
+      Peace.service.inquiry.getRecordTemplate().then((res) => {
         const data = res.data.info
 
         this.typeOptions = data.templateList
@@ -482,7 +482,7 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.dialog.source.present_history = res.data.list
         })
       } else {
@@ -493,7 +493,7 @@ export default {
     getAllergy(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.allergenList(params).then((res) => {
+        Peace.service.patient.allergenList(params).then((res) => {
           this.dialog.source.allergy_history = res.data.list
         })
       } else {
@@ -509,27 +509,27 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
-            $peace.util.warning('请输入正确的体温，最多保留一位小数')
+            Peace.util.warning('请输入正确的体温，最多保留一位小数')
             return
           }
           if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
-            $peace.util.warning('请输入正确的体重，最多保留一位小数')
+            Peace.util.warning('请输入正确的体重，最多保留一位小数')
             return
           }
           if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
-            $peace.util.warning('请输入正确的心率，最多保留一位小数')
+            Peace.util.warning('请输入正确的心率，最多保留一位小数')
             return
           }
           if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
-            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            Peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
           if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
-            $peace.util.warning('请输入正确的血压，最多保留一位小数')
+            Peace.util.warning('请输入正确的血压，最多保留一位小数')
             return
           }
 
-          if (peace.validate.isEmpty(this.medical.model.blood_pressure_end) || peace.validate.isEmpty(this.medical.model.blood_pressure_begin)) {
+          if (Peace.validate.isEmpty(this.medical.model.blood_pressure_end) || Peace.validate.isEmpty(this.medical.model.blood_pressure_begin)) {
             this.medical.model.Inspection_index.blood_pressure = ''
           }
 
@@ -538,11 +538,11 @@ export default {
           // const hbv = this.medical.model.HBV
 
           if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
-            $peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
+            Peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
           if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
-            $peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
+            Peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
             return
           }
 
@@ -582,8 +582,8 @@ export default {
             params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
             params.diagnose = params.diagnose.replace(/,/g, ' | ')
 
-            peace.service.inquiry.addCase(params).then((res) => {
-              $peace.util.success(res.msg)
+            Peace.service.inquiry.addCase(params).then((res) => {
+              Peace.util.success(res.msg)
 
               this.$emit('close')
             })
@@ -592,8 +592,8 @@ export default {
             params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
             params.diagnose = params.diagnose.replace(/,/g, ' | ')
             debugger
-            peace.service.inquiry.offlineAddCase(params).then((res) => {
-              $peace.util.success(res.msg)
+            Peace.service.inquiry.offlineAddCase(params).then((res) => {
+              Peace.util.success(res.msg)
 
               this.$emit('close')
             })
@@ -612,7 +612,7 @@ export default {
     changeDialog(title) {
       this.showDialog(title)
 
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         if (title === '过敏史') {
           this.dialog.chooseData = [...this.medical.model.allergy_history]
         } else if (title === '既往史') {
@@ -688,7 +688,7 @@ export default {
         this.medical.model.Inspection_index.More ||
         this.medical.model.summary
       ) {
-        $peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
+        Peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
           this.$emit('close')
         })
       } else {

@@ -8,7 +8,7 @@
 export function getDiseaseCourse(params) {
   const getDiseaseCourse = 'client/v1/followup/getDiseaseCourse'
 
-  return peace.http.post(getDiseaseCourse, params)
+  return Peace.http.post(getDiseaseCourse, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function getDiseaseCourse(params) {
 export function getFollowStatus(params) {
   const getFollowStatus = 'client/v1/followup/getFollowStatus'
 
-  return peace.http.post(getFollowStatus, params)
+  return Peace.http.post(getFollowStatus, params)
 }
 
 /**
@@ -34,7 +34,7 @@ export function getFollowStatus(params) {
 export function followPatientList(params) {
   const followPatientList = 'client/v1/followup/followPatientList'
 
-  return peace.http.post(followPatientList, params)
+  return Peace.http.post(followPatientList, params)
 }
 
 /**
@@ -47,7 +47,7 @@ export function followPatientList(params) {
 export function getTags(params) {
   const getTags = 'client/v1/followup/getTags'
 
-  return peace.http.post(getTags, params)
+  return Peace.http.post(getTags, params)
 }
 
 /**
@@ -60,7 +60,7 @@ export function getTags(params) {
 export function addTads(params) {
   const addTags = 'client/v1/followup/addEditTag'
 
-  return peace.http.post(addTags, params)
+  return Peace.http.post(addTags, params)
 }
 
 /**
@@ -73,7 +73,7 @@ export function addTads(params) {
 export function getCourseType(params) {
   const getCourseType = 'client/v1/followup/getCourseType'
 
-  return peace.http.post(getCourseType, params)
+  return Peace.http.post(getCourseType, params)
 }
 
 /**
@@ -86,7 +86,7 @@ export function getCourseType(params) {
 export function addEditIllness(params) {
   const addEditIllness = 'client/v1/followup/addEditIllness'
 
-  return peace.http.post(addEditIllness, params)
+  return Peace.http.post(addEditIllness, params)
 }
 
 /**
@@ -99,7 +99,7 @@ export function addEditIllness(params) {
 export function addEditCourse(params) {
   const addEditCourse = 'client/v1/followup/addEditCourse'
 
-  return peace.http.post(addEditCourse, params)
+  return Peace.http.post(addEditCourse, params)
 }
 
 export default {

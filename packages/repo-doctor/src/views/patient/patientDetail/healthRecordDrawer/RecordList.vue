@@ -68,7 +68,7 @@ export default {
   watch: {
     data: {
       handler(newName) {
-        if (!$peace.validate.isEmpty(newName) && newName.length > 0) {
+        if (!Peace.validate.isEmpty(newName) && newName.length > 0) {
           this.list = newName
         }
       },
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     load(isReload = false) {
-      if ($peace.validate.isEmpty(this.requestData) || Object.keys(this.requestData).length === 0) {
+      if (Peace.validate.isEmpty(this.requestData) || Object.keys(this.requestData).length === 0) {
         return
       }
       //data 外部传入的请求参数、 request请求函数

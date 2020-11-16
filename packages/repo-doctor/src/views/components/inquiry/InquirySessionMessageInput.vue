@@ -142,7 +142,7 @@ export default {
           }
         }
 
-        $peace.NIM.sendText({
+        Peace.NIM.sendText({
           scene: this.$store.state.inquiry.session.scene,
           to: this.$store.getters['inquiry/patientInfo'].familyId,
           text: text,
@@ -161,7 +161,7 @@ export default {
           }
         }
 
-        $peace.NIM.sendFile({
+        Peace.NIM.sendFile({
           scene: this.$store.state.inquiry.session.scene,
           to: this.$store.getters['inquiry/patientInfo'].familyId,
           type: 'image',
@@ -172,10 +172,10 @@ export default {
     },
 
     sendVideo() {
-      if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+      if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
         this.injectCall(this.$store.state.inquiry.session, 'inquiry')
       } else {
-        peace.util.warning('只有视频问诊才能进行发起视频邀请')
+        Peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
     },
 
@@ -185,18 +185,18 @@ export default {
       }
 
       if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
-        peace.service.inquiry.checkOverInquiry(params).then((res) => {
+        Peace.service.inquiry.checkOverInquiry(params).then((res) => {
           if (res.data.status === 1) {
             let message = ''
-            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
               message = '您与患者尚未进行视频通话，暂时无法发送病历。'
             } else {
               message = '当前为无效会话，暂时无法发送病历。请先与患者进行病情沟通'
             }
 
-            $peace.util.warning(message)
+            Peace.util.warning(message)
           } else if (res.data.caseStatus === 1) {
-            $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发病历)
+            Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发病历)
           }
         })
       } else {
@@ -206,11 +206,11 @@ export default {
 
     sendRecipe() {
       if (!this.$store.getters['inquiry/inquiryInfo'].isAgain) {
-        peace.util.warning('该患者未提供线下复诊材料，不可开具线上处方')
+        Peace.util.warning('该患者未提供线下复诊材料，不可开具线上处方')
       } else if (this.$store.getters['inquiry/inquiryInfo'].isSendCase === 0) {
-        peace.util.warning('尚未填写病历，无法开具处方')
+        Peace.util.warning('尚未填写病历，无法开具处方')
       } else {
-        $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发处方)
+        Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发处方)
       }
     },
 
@@ -220,16 +220,16 @@ export default {
       }
 
       // 验证是否有效会话
-      peace.service.inquiry.checkOverInquiry(params).then((res) => {
+      Peace.service.inquiry.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
           let message = ''
-          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行转诊。'
           } else {
             message = '当前为无效会话，暂时无法进行转诊。请先与患者进行病情沟通'
           }
 
-          $peace.util.warning(message)
+          Peace.util.warning(message)
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
@@ -239,13 +239,13 @@ export default {
             confirmButtonText: '去填写'
           }
 
-          peace.util.confirm(message, undefined, confirmOption, () => {
+          Peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
           })
         }
         // 正常问诊
         else if (res.data.caseStatus === 2 && res.data.status === 2) {
-          $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发转诊)
+          Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发转诊)
         }
       })
     },
@@ -256,16 +256,16 @@ export default {
       }
 
       // 验证是否有效会话
-      peace.service.inquiry.checkOverInquiry(params).then((res) => {
+      Peace.service.inquiry.checkOverInquiry(params).then((res) => {
         if (res.data.status === 1) {
           let message = ''
-          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+          if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
             message = '您与患者尚未进行视频通话，暂时无法进行会诊。'
           } else {
             message = '当前为无效会话，暂时无法进行会诊。请先与患者进行病情沟通'
           }
 
-          $peace.util.warning(message)
+          Peace.util.warning(message)
         }
         // 未填写病历，提示填写病历
         else if (res.data.caseStatus === 1) {
@@ -275,13 +275,13 @@ export default {
             confirmButtonText: '去填写'
           }
 
-          peace.util.confirm(message, undefined, confirmOption, () => {
+          Peace.util.confirm(message, undefined, confirmOption, () => {
             this.sendCase()
           })
         }
         // 正常问诊
         else if (res.data.caseStatus === 2 && res.data.status === 2) {
-          $peace.inquiryComponent.$emit(peace.type.INQUIRY.INQUIRY_ACTION.发会诊)
+          Peace.inquiryComponent.$emit(Peace.type.INQUIRY.INQUIRY_ACTION.发会诊)
         }
       })
     },
@@ -290,7 +290,7 @@ export default {
       const params = {
         inquiry_no: inquiryNo
       }
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })

@@ -227,7 +227,7 @@ export default {
   created() {
     this.view.action = this.$route.params.type || this.source.action.OUT
 
-    peace.service.consult.getConsultStatusMap().then((res) => {
+    Peace.service.consult.getConsultStatusMap().then((res) => {
       this.source.consultStatus = res.data
     })
   },
@@ -249,12 +249,12 @@ export default {
 
     get() {
       if (this.view.action === this.source.action.OUT) {
-        const fetch = peace.service.consult.getOutConsultList
+        const fetch = Peace.service.consult.getOutConsultList
         const params = this.view.outModel
 
         this.$refs.table.loadData({ fetch, params })
       } else {
-        const fetch = peace.service.consult.getInConsultList
+        const fetch = Peace.service.consult.getInConsultList
         const params = this.view.inModel
 
         this.$refs.table.loadData({ fetch, params })
@@ -269,7 +269,7 @@ export default {
         consultNo: row.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.dialog.data = res.data.info
       })
     },
@@ -279,7 +279,7 @@ export default {
         consultNo: row.consultNo
       }
 
-      peace.service.consult.getChatRecord(params).then((res) => {
+      Peace.service.consult.getChatRecord(params).then((res) => {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {

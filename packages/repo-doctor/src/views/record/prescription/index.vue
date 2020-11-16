@@ -120,7 +120,7 @@ export default {
 
   methods: {
     get() {
-      const fetch = peace.service.prescribePrescrip.prescripList
+      const fetch = Peace.service.prescribePrescrip.prescripList
       const params = this.view.model
 
       this.$refs.table.loadData({ fetch, params })
@@ -133,7 +133,7 @@ export default {
       const params = {
         prescriptionId: row.id
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.dialog.data = res.data
       })
     }

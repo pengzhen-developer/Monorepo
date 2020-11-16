@@ -188,13 +188,13 @@ export default function() {
     // 2. 需要验证权限的情况下
     if (to.meta.Auth === true) {
       // 记录 referrer
-      peace.referrer = to
+      Peace.referrer = to
 
       // 验证权限
       if (util.user.isSignIn()) {
         return next()
       } else {
-        return next(peace.config.system.noAuthPage)
+        return next(Peace.config.system.noAuthPage)
       }
     }
   })

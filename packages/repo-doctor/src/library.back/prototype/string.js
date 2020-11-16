@@ -124,7 +124,7 @@ String.prototype.formatDate = function(format) {
   if (arguments.length === 3 && arguments[0][arguments[1].property] === arguments[2]) {
     date = arguments[2]
   }
-  if ($peace.valid.isEmpty(date)) throw Error('日期不能为空')
+  if (Peace.valid.isEmpty(date)) throw Error('日期不能为空')
   if (typeof format !== 'string') format = 'yyyy-MM-dd'
 
   if (date instanceof Date) {

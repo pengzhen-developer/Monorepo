@@ -46,7 +46,7 @@ export default {
       const params = {
         inquiry_no: this.message.content.data.inquiryInfo.inquiryNo
       }
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })

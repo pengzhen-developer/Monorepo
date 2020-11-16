@@ -21,56 +21,56 @@
                       :span="8"
                       v-for="healthItem in health.list">
                 <!--                {{healthItem.healthType}}-->
-                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.病历">
+                <template v-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.病历">
                   <div class="time-line-content-card">
                     <RecordCase :data="healthItem"
                                 :type="type"></RecordCase>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.处方">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.处方">
                   <div class="time-line-content-card">
                     <RecordPrescribe :data="healthItem"
                                      :type="type"></RecordPrescribe>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血压">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.血压">
                   <div class="time-line-content-card">
                     <RecordBloodPressure :data="healthItem"
                                          :type="type"></RecordBloodPressure>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血糖">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.血糖">
                   <div class="time-line-content-card">
                     <RecordBloodSugar :data="healthItem"
                                       :type="type"></RecordBloodSugar>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.血氧">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.血氧">
                   <div class="time-line-content-card">
                     <RecordBloodOxygen :data="healthItem"
                                        :type="type"></RecordBloodOxygen>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.体脂">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.体脂">
                   <div class="time-line-content-card">
                     <RecordBodyFat :data="healthItem"
                                    :type="type"></RecordBodyFat>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.会诊">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.会诊">
                   <div class="time-line-content-card">
                     <RecordConsult :data="healthItem"
                                    :type="type"></RecordConsult>
                   </div>
                 </template>
 
-                <template v-else-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.转诊">
+                <template v-else-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.转诊">
                   <div class="time-line-content-card">
                     <RecordReferral :data="healthItem"
                                     :type="type"></RecordReferral>
@@ -144,14 +144,14 @@
               <el-col :key="healthItem.id"
                       :span="8"
                       v-for="healthItem in health.list">
-                <template v-if="healthItem.checkType === $peace.type.HEALTH.CHECK_TYPE.检验">
+                <template v-if="healthItem.checkType === Peace.type.HEALTH.CHECK_TYPE.检验">
                   <div class="time-line-content-card">
                     <RecordInspection :data="healthItem"
                                       :type="type"></RecordInspection>
                   </div>
                 </template>
 
-                <template v-if="healthItem.checkType === $peace.type.HEALTH.CHECK_TYPE.检验">
+                <template v-if="healthItem.checkType === Peace.type.HEALTH.CHECK_TYPE.检验">
                   <div class="time-line-content-card">
                     <RecordPACS :data="healthItem"
                                 :type="type"></RecordPACS>
@@ -182,7 +182,7 @@
                       :span="8"
                       v-for="healthItem in health.list">
                 <!--                {{healthItem.healthType}}-->
-                <template v-if="healthItem.healthType === $peace.type.HEALTH.HEALTH_TYPE.诊疗记录">
+                <template v-if="healthItem.healthType === Peace.type.HEALTH.HEALTH_TYPE.诊疗记录">
                   <div class="time-line-content-card">
                     <RecordFirstOption :data="healthItem"
                                        :type="type"></RecordFirstOption>
@@ -250,7 +250,7 @@ export default {
   methods: {
     get() {
       const params = { patientNo: this.id, type: this.type, p: 1, size: 9999 }
-      peace.service.health.allHealthList(params).then((res) => {
+      Peace.service.health.allHealthList(params).then((res) => {
         // 格式化时间线
         if (this.type === '1' || this.type === '3' || this.type === '6') {
           const data = []

@@ -53,7 +53,7 @@ export default {
         inquiry_no: this.message.content.data.inquiryInfo.inquiryNo,
         prescriptionId: this.message.content.data.recipeInfo.recipeId
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })

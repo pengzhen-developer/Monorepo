@@ -195,7 +195,7 @@ export default {
   },
 
   created() {
-    peace.service.inquiry.getRefferStatus().then((res) => {
+    Peace.service.inquiry.getRefferStatus().then((res) => {
       this.source.transfer_status = res.data
     })
   },
@@ -211,14 +211,14 @@ export default {
       if (this.view.model.referral_type !== this.source.state[action]) {
         this.view.model.referral_type = this.source.state[action]
 
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           this.get()
         })
       }
     },
 
     get() {
-      const fetch = peace.service.inquiry.doctorReferralListPc
+      const fetch = Peace.service.inquiry.doctorReferralListPc
       const params = this.view.model
 
       this.$refs.table.loadData({ fetch, params })
@@ -233,7 +233,7 @@ export default {
         referral_type: this.view.model.referral_type
       }
 
-      peace.service.inquiry.referralDocPc(params).then((res) => {
+      Peace.service.inquiry.referralDocPc(params).then((res) => {
         this.dialog.data = res.data
       })
     },

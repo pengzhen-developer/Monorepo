@@ -11,7 +11,7 @@ export default {
   name: 'app',
 
   created() {
-    document.title = peace.config.system.title
+    document.title = Peace.config.system.title
 
     setImmediate(() => {
       // restore user info and user token
@@ -22,8 +22,8 @@ export default {
         this.$store.commit('layout/restoreTab')
 
         // 加载 IM SDK
-        $peace.NIM = util.IM.initIM()
-        $peace.WebRTC = util.IM.initWebRTC($peace.NIM)
+        Peace.NIM = util.IM.initIM()
+        Peace.WebRTC = util.IM.initWebRTC(Peace.NIM)
       } else {
         util.user.replaceToLogin()
       }

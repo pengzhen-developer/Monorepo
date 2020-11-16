@@ -7,7 +7,7 @@ const USER_INFO = 'userInfo'
  * @returns
  */
 export const getUserInfo = () => {
-  return peace.cache.localStorage.get(USER_INFO)
+  return Peace.cache.localStorage.get(USER_INFO)
 }
 
 /**
@@ -17,7 +17,7 @@ export const getUserInfo = () => {
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  peace.cache.localStorage.set(USER_INFO, userInfo)
+  Peace.cache.localStorage.set(USER_INFO, userInfo)
 }
 
 /**
@@ -25,9 +25,9 @@ export const setUserInfo = (userInfo) => {
  *
  */
 export const removeUserInfo = () => {
-  $peace.$store.commit('user/removeUserInfo')
+  Peace.$store.commit('user/removeUserInfo')
 
-  peace.cache.localStorage.remove(USER_INFO)
+  Peace.cache.localStorage.remove(USER_INFO)
 }
 
 /**
@@ -40,7 +40,7 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const replaceToLogin = (referrer = '') => {
-  const $router = $peace.$router
+  const $router = Peace.$router
 
   return $router.push({
     name: '/login',
@@ -57,8 +57,8 @@ export const replaceToLogin = (referrer = '') => {
  * @returns
  */
 export const replaceToReffer = () => {
-  const $route = $peace.$route
-  const $router = $peace.$router
+  const $route = Peace.$route
+  const $router = Peace.$router
   const reffer = $route?.query?.referrer
 
   if (reffer) {
@@ -74,7 +74,7 @@ export const replaceToReffer = () => {
  * @returns
  */
 export const replaceToHome = () => {
-  const $router = $peace.$router
+  const $router = Peace.$router
 
   return $router.push('/')
 }
@@ -85,7 +85,7 @@ export const replaceToHome = () => {
  * @returns
  */
 export const replaceToRoot = () => {
-  const $router = $peace.$router
+  const $router = Peace.$router
 
   return $router.push({
     name: '/'
@@ -96,7 +96,7 @@ export const replaceToRoot = () => {
  *
  */
 export const isSignIn = () => {
-  return !!peace.cache.localStorage.get(USER_INFO)
+  return !!Peace.cache.localStorage.get(USER_INFO)
 }
 
 export default {

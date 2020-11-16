@@ -11,13 +11,13 @@
         </el-tag>
       </div>
       <div class="header-control">
-        <!-- <span class="time">{{ $peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span> -->
+        <!-- <span class="time">{{ Peace.inquiryComponent.getIntervalValue($store.state.inquiry.session) }}</span> -->
         <el-button @click="overConfirm"
                    plain
                    type="primary"
                    v-if="
             $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
-              $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+              Peace.type.INQUIRY.INQUIRY_STATUS.问诊中
           ">
           结束问诊</el-button>
       </div>
@@ -25,21 +25,21 @@
 
     <div class="content">
       <!-- 写病历 -->
-      <InquirySessionCase v-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"
+      <InquirySessionCase v-if="inquiryAction === Peace.type.INQUIRY.INQUIRY_ACTION.发病历"
                           v-bind:session="this.$store.state.inquiry.session">
       </InquirySessionCase>
 
       <!-- 写处方 -->
-      <InquirySessionRecipe v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"
+      <InquirySessionRecipe v-else-if="inquiryAction === Peace.type.INQUIRY.INQUIRY_ACTION.发处方"
                             v-bind:session="this.$store.state.inquiry.session">
       </InquirySessionRecipe>
 
       <!-- 转诊 -->
-      <InquirySessionTransfer v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发转诊">
+      <InquirySessionTransfer v-else-if="inquiryAction === Peace.type.INQUIRY.INQUIRY_ACTION.发转诊">
       </InquirySessionTransfer>
 
       <!-- 会诊 -->
-      <InquirySessionConsultation v-else-if="inquiryAction === $peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
+      <InquirySessionConsultation v-else-if="inquiryAction === Peace.type.INQUIRY.INQUIRY_ACTION.发会诊">
       </InquirySessionConsultation>
 
       <!-- 待接诊 / 问诊中 -->
@@ -54,13 +54,13 @@
           <!-- 待接诊 -->
           <InquirySessionReceive v-if="
               $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
-                $peace.type.INQUIRY.INQUIRY_STATUS.待接诊
+                Peace.type.INQUIRY.INQUIRY_STATUS.待接诊
             ">
           </InquirySessionReceive>
           <!-- 问诊中 -->
           <InquirySessionMessageInput v-if="
               $store.getters['inquiry/inquiryInfo'].inquiryStatus ===
-                $peace.type.INQUIRY.INQUIRY_STATUS.问诊中
+                Peace.type.INQUIRY.INQUIRY_STATUS.问诊中
             ">
           </InquirySessionMessageInput>
         </div>
@@ -153,17 +153,17 @@ export default {
 
   created() {
     // 在 inquiry/index.vue 的组件实例上挂载所有子组件间监听方法
-    $peace.inquiryComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发病历, this.sendCase)
-    $peace.inquiryComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发处方, this.sendRecipe)
-    $peace.inquiryComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发转诊, this.sendTransfer)
-    $peace.inquiryComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发会诊, this.sendConsultation)
+    Peace.inquiryComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发病历, this.sendCase)
+    Peace.inquiryComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发处方, this.sendRecipe)
+    Peace.inquiryComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发转诊, this.sendTransfer)
+    Peace.inquiryComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发会诊, this.sendConsultation)
 
-    $peace.inquiryComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.重置操作, this.resetAction)
+    Peace.inquiryComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作, this.resetAction)
   },
 
   methods: {
     getInquiryType(session) {
-      const text = Object.keys(peace.type.INQUIRY.INQUIRY_TYPE).find((key) => peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
+      const text = Object.keys(Peace.type.INQUIRY.INQUIRY_TYPE).find((key) => Peace.type.INQUIRY.INQUIRY_TYPE[key] === session.content.inquiryInfo.inquiryType)
 
       const isAgain = session.content.inquiryInfo.isAgain
 
@@ -185,19 +185,19 @@ export default {
     },
 
     sendCase() {
-      this.inquiryAction = peace.type.INQUIRY.INQUIRY_ACTION.发病历
+      this.inquiryAction = Peace.type.INQUIRY.INQUIRY_ACTION.发病历
     },
 
     sendRecipe() {
-      this.inquiryAction = peace.type.INQUIRY.INQUIRY_ACTION.发处方
+      this.inquiryAction = Peace.type.INQUIRY.INQUIRY_ACTION.发处方
     },
 
     sendTransfer() {
-      this.inquiryAction = peace.type.INQUIRY.INQUIRY_ACTION.发转诊
+      this.inquiryAction = Peace.type.INQUIRY.INQUIRY_ACTION.发转诊
     },
 
     sendConsultation() {
-      this.inquiryAction = peace.type.INQUIRY.INQUIRY_ACTION.发会诊
+      this.inquiryAction = Peace.type.INQUIRY.INQUIRY_ACTION.发会诊
     },
 
     resetAction() {
@@ -219,10 +219,10 @@ export default {
 
       if (this.over.state === '已解决') {
         // 验证是否有效会话
-        peace.service.inquiry.checkOverInquiry(params).then((res) => {
+        Peace.service.inquiry.checkOverInquiry(params).then((res) => {
           if (res.data.status === 1) {
             let message = ''
-            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
+            if (this.$store.getters['inquiry/inquiryInfo'].inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频问诊) {
               message = '您与患者未进行视频通话，此时结束咨询将做退诊处理，费用将自动返回给患者！'
             } else {
               message = '您与患者未进行有效沟通，此时结束咨询将做退诊处理，费用将自动返回给患者！'
@@ -230,11 +230,11 @@ export default {
 
             const confirmOption = { type: 'warning', confirmButtonText: '退诊' }
 
-            peace.util.confirm(message, undefined, confirmOption, () => {
-              peace.service.inquiry
+            Peace.util.confirm(message, undefined, confirmOption, () => {
+              Peace.service.inquiry
                 .quitInquiry(params)
                 .then((res) => {
-                  peace.util.success(res.msg)
+                  Peace.util.success(res.msg)
 
                   util.IM.inquiryHelper.resetInquirySession()
                   util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -249,17 +249,17 @@ export default {
             const message = '给用户发送病历后才能选择【已解决】，是否立即填写病历？'
             const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
 
-            peace.util.confirm(message, undefined, confirmOption, () => {
+            Peace.util.confirm(message, undefined, confirmOption, () => {
               this.over.visible = false
               this.sendCase()
             })
           }
           // 正常问诊
           else if (res.data.caseStatus === 2 && res.data.status === 2) {
-            peace.service.inquiry
+            Peace.service.inquiry
               .overInquiry(params)
               .then((res) => {
-                peace.util.success(res.msg)
+                Peace.util.success(res.msg)
 
                 util.IM.inquiryHelper.resetInquirySession()
                 util.IM.inquiryHelper.resetInquirySessionMessages()
@@ -273,18 +273,18 @@ export default {
         const description = this.over.description === '其他' ? this.over.otherDescription.trim() : this.over.description
 
         if (!description) {
-          return peace.util.warning('请选择未解决原因。')
+          return Peace.util.warning('请选择未解决原因。')
         } else {
           params.overCause = description
         }
 
         const message = '未解决用户问题，此时结束咨询将做退诊处理，确定退诊吗？'
         const confirmOption = { type: 'warning', confirmButtonText: '退诊' }
-        peace.util.confirm(message, undefined, confirmOption, () => {
-          peace.service.inquiry
+        Peace.util.confirm(message, undefined, confirmOption, () => {
+          Peace.service.inquiry
             .quitInquiry(params)
             .then((res) => {
-              peace.util.success(res.msg)
+              Peace.util.success(res.msg)
 
               util.IM.inquiryHelper.resetInquirySession()
               util.IM.inquiryHelper.resetInquirySessionMessages()

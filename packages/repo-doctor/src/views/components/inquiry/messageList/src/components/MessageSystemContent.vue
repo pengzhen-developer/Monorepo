@@ -39,16 +39,16 @@ export default {
     },
     onClickText() {
       //去评价
-      if (this.type === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示) {
-        const json = peace.util.encode({
+      if (this.type === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示) {
+        const json = Peace.util.encode({
           inquiryNo: this.message.content.data.inquiryInfo.inquiryNo
         })
 
         this.$router.push(`/components/CommentForDoctor/${json}`)
       }
       //去购药
-      if (this.type === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过) {
-        const params = peace.util.encode({
+      if (this.type === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过) {
+        const params = Peace.util.encode({
           prescribeId: this.message.content.data.recipeInfo.recipeId
         })
 

@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       requestData: {
-        request: peace.service.health.getFollowUpSchemeList,
+        request: Peace.service.health.getFollowUpSchemeList,
         data: {}
       },
       addSchemeDialog: {

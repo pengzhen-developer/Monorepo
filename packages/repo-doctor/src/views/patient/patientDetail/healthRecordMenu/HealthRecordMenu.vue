@@ -24,45 +24,45 @@
 export default {
   mounted() {
     this.$nextTick().then(() => {
-      $peace.$on('hideDrawer', () => {
+      Peace.$on('hideDrawer', () => {
         this.selectIndex = -1
       })
     })
   },
 
   destroyed() {
-    $peace.$off('hideDrawer')
+    Peace.$off('hideDrawer')
   },
   data() {
     return {
       menuList: [
         {
           name: '咨询',
-          index: peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
+          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_talk.png')
         },
         {
           name: '病程',
-          index: peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
+          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_course.png')
         },
         {
           name: '随访',
-          index: peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
+          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_follow.png')
         },
         {
           name: '转诊',
-          index: peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
+          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_referral.png')
         },
         {
           name: '会诊',
-          index: peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
+          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
         }
@@ -74,11 +74,11 @@ export default {
     menuSelect(index) {
       const tmp = this.menuList[parseInt(index) - 1]
       if (tmp.disable) {
-        $peace.util.success('暂未开放')
+        Peace.util.success('暂未开放')
         return
       }
       this.selectIndex = index
-      $peace.$emit('showDrawer', { index: index })
+      Peace.$emit('showDrawer', { index: index })
     }
   }
 }

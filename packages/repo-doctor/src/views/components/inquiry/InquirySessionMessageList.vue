@@ -1,7 +1,7 @@
 <template>
   <div class="inquiry-session-message-list">
     <!-- 待接诊 -->
-    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === $peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
+    <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
       <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
                                     :data="messageList[0].content.data">
       </InquiryPreliminaryForReceive>
@@ -16,14 +16,14 @@
            v-for="(message ,index) in messageList">
         <!-- 文本消息 -->
         <template v-if="getMessageType(message) === 'text' || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 || 
-              getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 || 
+              getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -38,7 +38,7 @@
         </template>
 
         <!-- 问诊卡片 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -78,7 +78,7 @@
         </template>
 
         <!-- 转诊单 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊单">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -131,7 +131,7 @@
         </template>
 
         <!-- 会诊单 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊单">
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊单">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -190,7 +190,7 @@
         </template>
 
         <!-- 检查单 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检查单">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -224,8 +224,8 @@
         </template>
 
         <!-- 视频消息 -->
-        <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话 || 
-                        getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频记录">
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话 || 
+                        getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频记录">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -265,7 +265,7 @@
         </template>
 
         <!-- 病历消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+        <template v-else-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -300,7 +300,7 @@
         </template>
 
         <!-- 处方消息 -->
-        <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+        <template v-else-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message ,index)">
             <div class="message time">
@@ -479,9 +479,9 @@ export default {
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
           if (
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.会诊提示
           )
             return false
         }
@@ -508,7 +508,7 @@ export default {
 
   methods: {
     scrollMessageToBottom() {
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {
@@ -560,14 +560,14 @@ export default {
       if (message.type === 'custom') {
         if (message.content && message.content.code) {
           if (
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
-            message.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.结束问诊 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.评价提示 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.转诊提示 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
+            message.content.code === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
           ) {
             return 'system'
           }
@@ -591,7 +591,7 @@ export default {
       const params = {
         inquiry_no: message.content.data.inquiryInfo.inquiryNo
       }
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDetail.visible = true
         this.caseDetail.data = res.data
       })
@@ -602,7 +602,7 @@ export default {
         inquiry_no: message.content.data.inquiryInfo.inquiryNo,
         prescriptionId: message.content.data.recipeInfo.recipeId
       }
-      peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })
@@ -617,7 +617,7 @@ export default {
         referral_type: 'out'
       }
 
-      peace.service.inquiry.referralDocPc(params).then((res) => {
+      Peace.service.inquiry.referralDocPc(params).then((res) => {
         this.transfer.data = res.data
       })
     },
@@ -630,7 +630,7 @@ export default {
         consultNo: message.content.data.consultInfo.consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultation.data = res.data.info
       })
     },
@@ -645,7 +645,7 @@ export default {
         checkOrderNo: message.content.data.checkOrderInfo.checkOrderNo
       }
 
-      peace.service.inquiry.getOrderDetail(params).then((res) => {
+      Peace.service.inquiry.getOrderDetail(params).then((res) => {
         this.checkOrder.visible = true
         this.checkOrder.data = res.data.info
       })

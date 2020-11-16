@@ -38,13 +38,13 @@
 export default {
   data() {
     return {
-      menuList: peace.config.menu.menuList
+      menuList: Peace.config.menu.menuList
     }
   },
 
   computed: {
     menuListTree() {
-      return peace.util.arrayToTree(peace.util.deepClone(this.menuList), 'id', 'pid', 'children')
+      return Peace.util.arrayToTree(Peace.util.deepClone(this.menuList), 'id', 'pid', 'children')
     }
   },
 

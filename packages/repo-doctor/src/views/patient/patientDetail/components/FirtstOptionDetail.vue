@@ -153,7 +153,7 @@ export default {
       const params = {
         prescriptionCode: this.prescriptionCode
       }
-      peace.service.inquiry.getFirstOptionDetail(params).then((res) => {
+      Peace.service.inquiry.getFirstOptionDetail(params).then((res) => {
         this.data = res.data.prescriptionInfo
       })
     }

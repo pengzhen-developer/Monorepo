@@ -355,7 +355,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.inquiry.getCase(params).then((res) => {
+      Peace.service.inquiry.getCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
       })
@@ -368,7 +368,7 @@ export default {
         size: 999
       }
 
-      peace.service.prescribePrescrip.getConsultPrescripList(params).then((res) => {
+      Peace.service.prescribePrescrip.getConsultPrescripList(params).then((res) => {
         this.recipeDialog.visible = true
         this.recipeDialog.data = res.data
       })
@@ -379,7 +379,7 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.consultDetail.visible = true
         this.consultDetail.data = res.data.info
       })
@@ -390,21 +390,21 @@ export default {
         consultNo: this.$store.getters['consultation/consultInfo'].consultNo
       }
 
-      peace.service.consult.getConsultInfo(params).then((res) => {
+      Peace.service.consult.getConsultInfo(params).then((res) => {
         this.data = res.data.info
       })
     },
 
     showDetail() {
-      if (this.data.inquiryStatus !== peace.type.INQUIRY.INQUIRY_STATUS.已完成) {
-        return peace.util.success('问诊尚未结束，无法查看记录')
+      if (this.data.inquiryStatus !== Peace.type.INQUIRY.INQUIRY_STATUS.已完成) {
+        return Peace.util.success('问诊尚未结束，无法查看记录')
       }
 
       const params = {
         inquiryNo: this.data.inquiryNo
       }
 
-      peace.service.patient.getOneInquiry(params).then((res) => {
+      Peace.service.patient.getOneInquiry(params).then((res) => {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {

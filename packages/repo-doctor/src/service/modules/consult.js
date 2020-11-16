@@ -8,7 +8,7 @@
 export function getInfoByTeamId(params) {
   const getChatRecord = 'client/v1/consult/getInfoByTeamId'
 
-  return peace.http.post(getChatRecord, params, {
+  return Peace.http.post(getChatRecord, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -24,7 +24,7 @@ export function getInfoByTeamId(params) {
 export function getConsultStatusMap() {
   const getConsultStatusMap = 'client/v1/consult/getConsultStatusMap'
 
-  return peace.http.post(getConsultStatusMap)
+  return Peace.http.post(getConsultStatusMap)
 }
 
 /**
@@ -37,7 +37,7 @@ export function getConsultStatusMap() {
 export function getOutConsultList(params) {
   const getOutConsultList = 'client/v1/consult/getOutConsultList'
 
-  return peace.http.post(getOutConsultList, params)
+  return Peace.http.post(getOutConsultList, params)
 }
 
 /**
@@ -50,7 +50,7 @@ export function getOutConsultList(params) {
 export function getInConsultList(params) {
   const getInConsultList = 'client/v1/consult/getInConsultList'
 
-  return peace.http.post(getInConsultList, params)
+  return Peace.http.post(getInConsultList, params)
 }
 
 /**
@@ -63,7 +63,7 @@ export function getInConsultList(params) {
 export function chooseDoctor(params) {
   const chooseDoctor = 'client/v1/consult/chooseDoctor'
 
-  return peace.http.post(chooseDoctor, params)
+  return Peace.http.post(chooseDoctor, params)
 }
 
 /**
@@ -76,7 +76,7 @@ export function chooseDoctor(params) {
 export function doApply(params) {
   const doApply = 'client/v1/consult/doApply'
 
-  return peace.http.post(doApply, params)
+  return Peace.http.post(doApply, params)
 }
 
 /**
@@ -89,7 +89,7 @@ export function doApply(params) {
 export function getConsultInfo(params) {
   const getConsultInfo = 'client/v1/consult/getConsultInfo'
 
-  return peace.http.post(getConsultInfo, params)
+  return Peace.http.post(getConsultInfo, params)
 }
 
 /**
@@ -102,7 +102,7 @@ export function getConsultInfo(params) {
 export function getChatRecord(params) {
   const getChatRecord = 'client/v1/consult/getChatRecord'
 
-  return peace.http.post(getChatRecord, params)
+  return Peace.http.post(getChatRecord, params)
 }
 
 /**
@@ -115,7 +115,7 @@ export function getChatRecord(params) {
 export function inviteDoctor(params) {
   const inviteDoctor = 'client/v1/consult/inviteDoctor'
 
-  return peace.http.post(inviteDoctor, params)
+  return Peace.http.post(inviteDoctor, params)
 }
 
 /**
@@ -128,7 +128,7 @@ export function inviteDoctor(params) {
 export function chooseInviteDoctor(params) {
   const chooseInviteDoctor = 'client/v1/consult/chooseInviteDoctor'
 
-  return peace.http.post(chooseInviteDoctor, params, {
+  return Peace.http.post(chooseInviteDoctor, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -145,7 +145,7 @@ export function chooseInviteDoctor(params) {
 export function submitSuggest(params) {
   const submitSuggest = 'client/v1/consult/submitSuggest'
 
-  return peace.http.post(submitSuggest, params, {
+  return Peace.http.post(submitSuggest, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -162,7 +162,7 @@ export function submitSuggest(params) {
 export function getConsultNo(params) {
   const getConsultNo = 'client/v1/consult/getConsultNo'
 
-  return peace.http.post(getConsultNo, params, {
+  return Peace.http.post(getConsultNo, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -179,7 +179,7 @@ export function getConsultNo(params) {
 export function doctorAudit(params) {
   const doctorAudit = 'client/v1/consult/doctorAudit'
 
-  return peace.http.post(doctorAudit, params)
+  return Peace.http.post(doctorAudit, params)
 }
 
 /**
@@ -192,7 +192,7 @@ export function doctorAudit(params) {
 export function overConsult(params) {
   const overConsult = 'client/v1/consult/overConsult'
 
-  return peace.http.post(overConsult, params)
+  return Peace.http.post(overConsult, params)
 }
 
 /**
@@ -205,7 +205,7 @@ export function overConsult(params) {
 export function doctorStatus(params) {
   const doctorStatus = 'client/v1/consult/doctorStatus'
 
-  return peace.http.post(doctorStatus, params)
+  return Peace.http.post(doctorStatus, params)
 }
 
 export default {

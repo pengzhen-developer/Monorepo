@@ -185,7 +185,7 @@ export default {
 
   computed: {
     internalData() {
-      const temp = $peace.util.deepClone(this.data)
+      const temp = Peace.util.deepClone(this.data)
 
       if (temp.Inspection_index) {
         temp.Inspection_index = JSON.parse(temp.Inspection_index)

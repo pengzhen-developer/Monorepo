@@ -270,7 +270,7 @@ export default {
         isAsc: true
       },
       requestData: {
-        request: peace.service.health.getPatientInquiryList,
+        request: Peace.service.health.getPatientInquiryList,
         data: {
           // 请求列表参数
           tag: 'inquiry',
@@ -306,7 +306,7 @@ export default {
   },
   computed: {
     showIllness() {
-      return !this.action.isEditDisease && peace.validate.isEmpty(this.model.illnessInfo.illness)
+      return !this.action.isEditDisease && Peace.validate.isEmpty(this.model.illnessInfo.illness)
     }
   },
   methods: {
@@ -342,7 +342,7 @@ export default {
     getPresent(query) {
       if (query !== '' && query.length > 0) {
         const params = { name: query }
-        peace.service.patient.getDiseaseInfo(params).then((res) => {
+        Peace.service.patient.getDiseaseInfo(params).then((res) => {
           this.dialog.source.present_history = res.data.list
         })
       } else {
@@ -363,8 +363,8 @@ export default {
       }
       const params = Object.assign(tmp, this.params.familyInfo)
 
-      peace.service.follow.addTads(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.follow.addTads(params).then((res) => {
+        Peace.util.success(res.msg)
       })
     },
     saveLabel() {
@@ -381,8 +381,8 @@ export default {
       }
       const params = Object.assign(tmp, this.params.familyInfo)
 
-      peace.service.follow.addTads(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.follow.addTads(params).then((res) => {
+        Peace.util.success(res.msg)
       })
     },
     endEditDisease() {
@@ -396,8 +396,8 @@ export default {
         illnessInfo: this.model.illnessInfo?.illness || ''
       }
       const params = Object.assign(tmp, this.params.familyInfo)
-      peace.service.follow.addEditIllness(params).then((res) => {
-        peace.util.success(res.msg)
+      Peace.service.follow.addEditIllness(params).then((res) => {
+        Peace.util.success(res.msg)
       })
     },
     ascDisease() {
@@ -405,10 +405,10 @@ export default {
       this.getDiseaseData()
     },
     addItem() {
-      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程 })
+      Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程 })
     },
     sendMessage() {
-      peace.util.info('暂未开通')
+      Peace.util.info('暂未开通')
     },
     getDiseaseData() {
       const tmp = {
@@ -419,7 +419,7 @@ export default {
       }
       const params = Object.assign(tmp, this.params.familyInfo)
 
-      peace.service.follow.getDiseaseCourse(params).then((res) => {
+      Peace.service.follow.getDiseaseCourse(params).then((res) => {
         const tmpInfo = res.data.upInfo.couseInfo
         this.model.diagnoseInfo = Object.assign(this.model.diagnoseInfo, tmpInfo?.diagnoseInfo)
         this.model.diseaseInfo = Object.assign(this.model.diseaseInfo, tmpInfo?.diseaseInfo)
@@ -428,12 +428,12 @@ export default {
       })
     },
     getOption() {
-      peace.service.follow.getTags({ type: 'diagnose' }).then((res) => {
+      Peace.service.follow.getTags({ type: 'diagnose' }).then((res) => {
         this.dialog.source.IllnessList = res.data.map((item) => {
           return item.tag
         })
       })
-      peace.service.follow.getTags({ type: 'disease' }).then((res) => {
+      Peace.service.follow.getTags({ type: 'disease' }).then((res) => {
         this.dialog.source.labelList = res.data.map((item) => {
           return item.tag
         })

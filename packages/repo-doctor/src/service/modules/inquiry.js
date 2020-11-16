@@ -1,7 +1,7 @@
 export function getList(params) {
   const getList = 'client/v1/session/getList'
 
-  return peace.http.post(getList, params, {
+  return Peace.http.post(getList, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -18,7 +18,7 @@ export function getList(params) {
 export function recordList(params) {
   const recordList = 'client/v1/inquiry/recordList'
 
-  return peace.http.post(recordList, params)
+  return Peace.http.post(recordList, params)
 }
 
 /**
@@ -30,7 +30,7 @@ export function recordList(params) {
 export function getRefferStatus() {
   const getRefferStatus = 'client/v1/inquiry/getRefferStatus'
 
-  return peace.http.post(getRefferStatus)
+  return Peace.http.post(getRefferStatus)
 }
 
 /**
@@ -43,7 +43,7 @@ export function getRefferStatus() {
 export function doctorReferralListPc(params) {
   const doctorReferralListPc = 'client/v1/inquiry/DoctorReferralListPc'
 
-  return peace.http.post(doctorReferralListPc, params)
+  return Peace.http.post(doctorReferralListPc, params)
 }
 
 /**
@@ -56,7 +56,7 @@ export function doctorReferralListPc(params) {
 export function receiveInquiry(params) {
   const receiveInquiry = 'client/v1/patient/receiveInquiry'
 
-  return peace.http.post(receiveInquiry, params)
+  return Peace.http.post(receiveInquiry, params)
 }
 
 /**
@@ -69,7 +69,7 @@ export function receiveInquiry(params) {
 export function quitInquiry(params) {
   const quitInquiry = 'client/v1/patient/quitInquiry'
 
-  return peace.http.post(quitInquiry, params)
+  return Peace.http.post(quitInquiry, params)
 }
 
 /**
@@ -82,7 +82,7 @@ export function quitInquiry(params) {
 export function overInquiry(params) {
   const overInquiry = 'client/v1/patient/overInquiry'
 
-  return peace.http.post(overInquiry, params)
+  return Peace.http.post(overInquiry, params)
 }
 
 /**
@@ -95,7 +95,7 @@ export function overInquiry(params) {
 export function checkOverInquiry(params) {
   const checkOverInquiry = 'client/v1/patient/checkOverInquiry'
 
-  return peace.http.post(checkOverInquiry, params)
+  return Peace.http.post(checkOverInquiry, params)
 }
 
 /**
@@ -108,7 +108,7 @@ export function checkOverInquiry(params) {
 export function getRecordTemplate() {
   const getRecordTemplate = 'client/v1/Prescribeprescrip/getCaseTemplate'
 
-  return peace.http.post(getRecordTemplate)
+  return Peace.http.post(getRecordTemplate)
 }
 
 /**
@@ -144,7 +144,7 @@ export function offlineAddCase({
   }
   const offlineAddCase = 'client/v1/Prescribeprescrip/offlineAddCase'
 
-  return peace.http.post(offlineAddCase, params)
+  return Peace.http.post(offlineAddCase, params)
 }
 
 /**
@@ -180,7 +180,7 @@ export function addCase({
   }
   const addCase = 'client/v1/Prescribeprescrip/addCase'
 
-  return peace.http.post(addCase, params)
+  return Peace.http.post(addCase, params)
 }
 
 /**
@@ -193,7 +193,7 @@ export function addCase({
 export function getCase(params) {
   const getCase = 'client/v1/inquiry/getCase'
 
-  return peace.http.post(getCase, params)
+  return Peace.http.post(getCase, params)
 }
 
 /**
@@ -207,7 +207,7 @@ export function getHealthCase({ dataNo }) {
   const params = { dataNo }
   const getHealthCase = 'client/v1/health/getHealthCase'
 
-  return peace.http.post(getHealthCase, params)
+  return Peace.http.post(getHealthCase, params)
 }
 
 /**
@@ -220,7 +220,7 @@ export function getHealthCase({ dataNo }) {
 export function referralDocListPc(params) {
   const referralDocListPc = 'client/v1/inquiry/referralDocListPc'
 
-  return peace.http.post(referralDocListPc, params)
+  return Peace.http.post(referralDocListPc, params)
 }
 
 /**
@@ -233,7 +233,7 @@ export function referralDocListPc(params) {
 export function addReferral(params) {
   const addReferral = 'client/v1/inquiry/addReferral'
 
-  return peace.http.post(addReferral, params)
+  return Peace.http.post(addReferral, params)
 }
 
 /**
@@ -246,7 +246,7 @@ export function addReferral(params) {
 export function referralDocPc(params) {
   const referralDocPc = 'client/v1/inquiry/referralDocPc'
 
-  return peace.http.post(referralDocPc, params)
+  return Peace.http.post(referralDocPc, params)
 }
 
 /**
@@ -259,7 +259,7 @@ export function referralDocPc(params) {
 export function receiveReferralPc(params) {
   const receiveReferralPc = 'client/v1/inquiry/receiveReferralPc'
 
-  return peace.http.post(receiveReferralPc, params)
+  return Peace.http.post(receiveReferralPc, params)
 }
 
 /**
@@ -272,7 +272,7 @@ export function receiveReferralPc(params) {
 export function getOrderDetail(params) {
   const getOrderDetail = 'client/v1/Checklist/getOrderDetail'
 
-  return peace.http.post(getOrderDetail, params)
+  return Peace.http.post(getOrderDetail, params)
 }
 
 /**
@@ -292,7 +292,7 @@ export function getFirstOptionList(params) {
 
   const requestApi = isMock ? mockPath : serverPath
 
-  return peace.http.post(requestApi, params)
+  return Peace.http.post(requestApi, params)
 }
 
 /**
@@ -312,7 +312,7 @@ export function getFirstOptionDetail(params) {
 
   const requestApi = isMock ? mockPath : serverPath
 
-  return peace.http.post(requestApi, params)
+  return Peace.http.post(requestApi, params)
 }
 
 export default {

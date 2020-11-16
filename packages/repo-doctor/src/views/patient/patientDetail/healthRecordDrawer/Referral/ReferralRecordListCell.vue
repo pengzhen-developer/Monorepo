@@ -87,7 +87,7 @@ export default {
         referral_no: this.item.referralNo,
         referral_type: this.type
       }
-      peace.service.inquiry.referralDocPc(params).then((res) => {
+      Peace.service.inquiry.referralDocPc(params).then((res) => {
         this.dialog.data = res.data
       })
     }

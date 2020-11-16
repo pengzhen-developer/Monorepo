@@ -8,7 +8,7 @@
         <el-button type="text"
                    @click="overConsultation"
                    v-if="$store.getters['consultation/consultInfo'].receiveDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id && 
-                         $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
+                         $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
           结束会诊</el-button>
       </div>
     </div>
@@ -20,7 +20,7 @@
                 show-icon
                 title="请尽快发起视频会诊"
                 type="warning"
-                v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
+                v-if="$store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
         <span style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
           <span>会诊期望时间为 </span>
           <span style="color: #FFAA00"> {{ $store.getters['consultation/consultInfo'].expectTime }} </span>
@@ -37,7 +37,7 @@
                 title
                 type="warning"
                 v-if="$store.getters['consultation/consultInfo'].receiveDoctor[0].doctorId === $store.state.user.userInfo.list.docInfo.doctor_id &&
-                      $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
+                      $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中">
         <div slot="title"
              style="color: rgba(102,102,102,1); font-size: 12px; background: rgba(255,170,0,1) rgba(255,255,255,0.9); ">
           <span>
@@ -49,13 +49,13 @@
       </el-alert>
 
       <!-- 写病历 -->
-      <ConsultationSessionCase v-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发病历"
+      <ConsultationSessionCase v-if="consultationAction === Peace.type.INQUIRY.INQUIRY_ACTION.发病历"
                                v-bind:session="this.$store.state.consultation.session"
                                v-on:close="resetAction">
       </ConsultationSessionCase>
 
       <!-- 写处方 -->
-      <ConsultationSessionRecipe v-else-if="consultationAction === $peace.type.INQUIRY.INQUIRY_ACTION.发处方"
+      <ConsultationSessionRecipe v-else-if="consultationAction === Peace.type.INQUIRY.INQUIRY_ACTION.发处方"
                                  v-bind:session="this.$store.state.consultation.session"
                                  v-on:close="resetAction">
       </ConsultationSessionRecipe>
@@ -69,12 +69,12 @@
 
         <div class="message-input">
           <!-- 待接诊 -->
-          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
+          <ConsultationSessionReceive v-if="$store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
           </ConsultationSessionReceive>
           <!-- 问诊中 -->
           <ConsultationSessionMessageInput ref="ConsultationSessionMessageInput"
-                                           v-if="$store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
-                                                 $store.getters['consultation/consultInfo'].consultStatus === $peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ">
+                                           v-if="$store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊中 || 
+                                                 $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊 ">
           </ConsultationSessionMessageInput>
         </div>
       </template>
@@ -140,25 +140,25 @@ export default {
     this.checkStatus(this.$store.state.consultation.session)
 
     // 在 consultation/index.vue 的组件实例上挂载所有子组件间监听方法
-    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发病历, this.sendCase)
-    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.发处方, this.sendRecipe)
+    Peace.consultationComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发病历, this.sendCase)
+    Peace.consultationComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.发处方, this.sendRecipe)
 
-    $peace.consultationComponent.$on(peace.type.INQUIRY.INQUIRY_ACTION.重置操作, this.resetAction)
+    Peace.consultationComponent.$on(Peace.type.INQUIRY.INQUIRY_ACTION.重置操作, this.resetAction)
   },
 
   methods: {
     getConsultStatus() {
-      return Object.keys(peace.type.CONSULTATION.CONSULTATION_STATUS).find(
-        (key) => peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
+      return Object.keys(Peace.type.CONSULTATION.CONSULTATION_STATUS).find(
+        (key) => Peace.type.CONSULTATION.CONSULTATION_STATUS[key] === this.$store.getters['consultation/consultInfo'].consultStatus
       )
     },
 
     sendCase() {
-      this.consultationAction = peace.type.INQUIRY.INQUIRY_ACTION.发病历
+      this.consultationAction = Peace.type.INQUIRY.INQUIRY_ACTION.发病历
     },
 
     sendRecipe() {
-      this.consultationAction = peace.type.INQUIRY.INQUIRY_ACTION.发处方
+      this.consultationAction = Peace.type.INQUIRY.INQUIRY_ACTION.发处方
     },
 
     resetAction() {
@@ -167,17 +167,17 @@ export default {
 
     overConsultation() {
       if (!this.$store.getters['consultation/consultInfo'].isCommit) {
-        $peace.util.confirm('尚未填写会诊小结，去填写？', undefined, undefined, () => {
+        Peace.util.confirm('尚未填写会诊小结，去填写？', undefined, undefined, () => {
           this.$refs.ConsultationSessionMessageInput.sendConsultSuggest()
         })
       } else {
-        $peace.util.confirm('确定要结束会诊吗？', undefined, undefined, () => {
+        Peace.util.confirm('确定要结束会诊吗？', undefined, undefined, () => {
           const params = {
             consultNo: this.$store.getters['consultation/consultInfo'].consultNo
           }
 
-          peace.service.consult.overConsult(params).then(() => {
-            $peace.util.success('会诊已完成，感谢您的辛苦付出')
+          Peace.service.consult.overConsult(params).then(() => {
+            Peace.util.success('会诊已完成，感谢您的辛苦付出')
           })
         })
       }
@@ -189,10 +189,10 @@ export default {
 
       if (session && session.id) {
         // 判断是否存在未完成的会诊编号
-        peace.service.consult.getConsultNo().then((res) => {
+        Peace.service.consult.getConsultNo().then((res) => {
           // 存在正在进行中的会诊，并且选中的不是当前正在会诊中的会诊
           if (res.data.consultNo && res.data.teamId && res.data.consultNo !== session.content.consultInfo.consultNo) {
-            peace.service.consult.getInfoByTeamId({ teamIdList: [res.data.teamId] }).then((consult) => {
+            Peace.service.consult.getInfoByTeamId({ teamIdList: [res.data.teamId] }).then((consult) => {
               const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
 
               consult.data.list.forEach((item) => {

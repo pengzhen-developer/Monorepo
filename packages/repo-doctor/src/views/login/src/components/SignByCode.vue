@@ -87,14 +87,14 @@ export default {
       passwordActive: false,
 
       model: {
-        tel: Peace.cache.localStorage.get(peace.type.USER.PHONE) ?? '',
+        tel: Peace.cache.localStorage.get(Peace.type.USER.PHONE) ?? '',
         smsCode: ''
       },
 
       rules: {
         tel: [
           { required: true, message: '请输入手机号' },
-          { pattern: peace.validate.pattern.mobile, message: '请输入手机号' }
+          { pattern: Peace.validate.pattern.mobile, message: '请输入手机号' }
         ],
         smsCode: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -114,7 +114,7 @@ export default {
 
   computed: {
     isVerifyPhone() {
-      return !peace.validate.isMobile(this.model.tel)
+      return !Peace.validate.isMobile(this.model.tel)
     },
 
     showCountdown() {
@@ -146,7 +146,7 @@ export default {
     sendCode() {
       Service.sendSms(this.model)
         .then((res) => {
-          peace.util.success(res.msg)
+          Peace.util.success(res.msg)
 
           this.$refs.smsCode.focus()
         })
@@ -167,14 +167,14 @@ export default {
             util.user.setUserInfo(userInfo)
 
             // 储存登录手机号
-            peace.cache.localStorage.set(peace.type.USER.PHONE, userInfo.list.docInfo.tel)
+            Peace.cache.localStorage.set(Peace.type.USER.PHONE, userInfo.list.docInfo.tel)
 
             // 更新 vuex
             this.$store.commit('user/setUserInfo', res.data)
 
             // 加载 IM SDK
-            $peace.NIM = util.IM.initIM()
-            $peace.WebRTC = util.IM.initWebRTC($peace.NIM)
+            Peace.NIM = util.IM.initIM()
+            Peace.WebRTC = util.IM.initWebRTC(Peace.NIM)
 
             // 登陆后跳转
             util.user.replaceToReffer()

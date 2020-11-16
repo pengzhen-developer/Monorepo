@@ -46,7 +46,7 @@ export default {
     get() {
       const params = { dataNo: this.data.dataNo }
       // const params = { inquiryNo: 'WZ2722845337239667' }
-      peace.service.inquiry.getHealthCase(params).then((res) => {
+      Peace.service.inquiry.getHealthCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
         // console.log(this.caseDialog.data)

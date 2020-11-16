@@ -51,7 +51,7 @@ export default {
     return {
       selectIndex: 'out',
       outRequestData: {
-        request: peace.service.health.getReferralRecordList,
+        request: Peace.service.health.getReferralRecordList,
         data: {
           // 请求列表参数
           referral_type: 'out',
@@ -59,7 +59,7 @@ export default {
         }
       },
       inRequestData: {
-        request: peace.service.health.getReferralRecordList,
+        request: Peace.service.health.getReferralRecordList,
         data: {
           // 请求列表参数
           referral_type: 'in',
@@ -70,12 +70,12 @@ export default {
   },
   computed: {
     noDataText() {
-      return peace.type.HEALTH_RECORD.EMPTY_TEXT[peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][this.selectIndex]
+      return Peace.type.HEALTH_RECORD.EMPTY_TEXT[Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊][this.selectIndex]
     }
   },
   methods: {
     startReferral() {
-      $peace.$emit('showDrawer', { index: peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊 })
+      Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊 })
     }
   }
 }

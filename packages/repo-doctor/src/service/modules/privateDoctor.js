@@ -8,7 +8,7 @@
 export function privateDoctorOrderList(params) {
   const privateDoctorOrderList = 'client/v1/Privatedoctor/privateDoctorOrderList'
 
-  return peace.http.post(privateDoctorOrderList, params)
+  return Peace.http.post(privateDoctorOrderList, params)
 }
 
 /**
@@ -21,7 +21,7 @@ export function privateDoctorOrderList(params) {
 export function acceptRecordList(params) {
   const acceptRecordList = 'client/v1/Privatedoctor/acceptRecordList'
 
-  return peace.http.post(acceptRecordList, params)
+  return Peace.http.post(acceptRecordList, params)
 }
 
 /**
@@ -34,7 +34,7 @@ export function acceptRecordList(params) {
 export function privateDoctorOrderInfo(params) {
   const privateDoctorOrderInfo = 'client/v1/Privatedoctor/privateDoctorOrderInfo'
 
-  return peace.http.post(privateDoctorOrderInfo, params)
+  return Peace.http.post(privateDoctorOrderInfo, params)
 }
 
 /**
@@ -47,7 +47,7 @@ export function privateDoctorOrderInfo(params) {
 export function privateDoctorInfo(params) {
   const privateDoctorInfo = 'client/v1/Privatedoctor/privateDoctorInfo'
 
-  return peace.http.post(privateDoctorInfo, params)
+  return Peace.http.post(privateDoctorInfo, params)
 }
 
 /**
@@ -60,7 +60,7 @@ export function privateDoctorInfo(params) {
 export function confirmReceipt(params) {
   const confirmReceipt = 'client/v1/Privatedoctor/confirmReceipt'
 
-  return peace.http.post(confirmReceipt, params)
+  return Peace.http.post(confirmReceipt, params)
 }
 
 export default {
