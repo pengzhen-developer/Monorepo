@@ -5,16 +5,16 @@ import PeaceLibrary from '@jk998/library'
 import util from '@src/util'
 
 // prototype
-import '@src/library.back/prototype/date'
-import '@src/library.back/prototype/number'
-import '@src/library.back/prototype/string'
+import '@src/library/prototype/date'
+import '@src/library/prototype/number'
+import '@src/library/prototype/string'
 
 // helper
-import { formatDuration, getDuration, confirm } from '@src/library.back/helper/util'
+import { formatDuration, getDuration, confirm } from '@src/library/helper/util'
 
 // directive
-import drag from '@src/library.back/directive/drag'
-import focus from '@src/library.back/directive/focus'
+import drag from '@src/library/directive/drag'
+import focus from '@src/library/directive/focus'
 
 // type
 import config from '@src/config'

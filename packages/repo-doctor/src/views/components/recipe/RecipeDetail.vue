@@ -252,8 +252,6 @@
 </template>
 
 <script>
-import util from '@src/library.back/helper/util'
-import { isEmpty } from '@src/library.back/helper/validate'
 import RecipeAudit from './RecipeAudit'
 import ImgViewer from './components/ImageViewer'
 
@@ -312,8 +310,8 @@ export default {
     },
 
     showOriginInfo() {
-      if (this.data && isEmpty(this.data.pngUrl)) {
-        util.error({ msg: 'PDF地址不存在' })
+      if (this.data && Peace.validate.isEmpty(this.data.pngUrl)) {
+        Peace.util.error({ msg: 'PDF地址不存在' })
       }
       // this.originVisible = true
       this.$refs.viewer.show([{ thumbnail: this.data.pngUrl, source: this.data.pngUrl }])
