@@ -103,17 +103,28 @@
                          label="药品名称">
         </el-table-column>
         <el-table-column prop="DrugSpecifications"
+                         align="center"
                          label="药品规格">
         </el-table-column>
-        <el-table-column prop="PackUnit"
-                         width="100px"
+        <el-table-column label="剂型"
+                         align="center">
+          <template slot-scope="scope">
+            {{ scope.row.DrugDosageForm ? scope.row.DrugDosageForm : "——"  }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center"
                          label="包装单位">
+          <template slot-scope="scope">
+            {{ scope.row.PackUnit ? scope.row.PackUnit : "——"  }}
+          </template>
         </el-table-column>
         <el-table-column prop="EnterpriseName"
                          label="生产厂家">
         </el-table-column>
-        <el-table-column prop="ApprovalNumber"
-                         label="批准文号">
+        <el-table-column label="批准文号">
+          <template slot-scope="scope">
+            {{ scope.row.ApprovalNumber ? scope.row.ApprovalNumber : "——"  }}
+          </template>
         </el-table-column>
 
         <el-table-column prop="CreateTime"
@@ -151,7 +162,7 @@
     </div>
 
     <PeaceDialog v-if="detailDialog.visible"
-                 width="644px"
+                 width="380px"
                  :close-on-click-modal="false"
                  :close-on-press-escape="false"
                  v-bind:visible.sync="detailDialog.visible"

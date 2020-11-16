@@ -2,38 +2,51 @@
   <div>
     <el-form :model="drug"
              :rules="rules"
-             class="content"
              inline
              ref="drug">
       <el-form-item label="药品编号："
+                    label-width="100px"
                     prop="CustDrugsCode">
         <el-input v-model.trim="drug.CustDrugsCode"
                   maxlength="20"
                   placeholder="请输入药品编号"></el-input>
       </el-form-item>
       <el-form-item label="药品名称："
+                    label-width="100px"
                     prop="ProductName">
         <el-input v-model.trim="drug.ProductName"
                   placeholder="请输入药品名称"></el-input>
       </el-form-item>
       <el-form-item label="药品规格："
+                    label-width="100px"
                     prop="DrugSpecifications">
         <el-input v-model.trim="drug.DrugSpecifications"
                   placeholder="请输入药品规格"></el-input>
       </el-form-item>
-      <el-form-item label="包装单位："
-                    prop="PackUnit">
-        <el-input v-model.trim="drug.PackUnit"
-                  placeholder="请输入包装单位"></el-input>
-      </el-form-item>
+
       <el-form-item label="生产厂家："
+                    label-width="100px"
                     prop="EnterpriseName">
         <el-input v-model.trim="drug.EnterpriseName"
                   placeholder="请输入生产厂家"></el-input>
       </el-form-item>
-      <el-form-item label="批准文号：">
+
+      <el-form-item label="剂型："
+                    label-width="100px">
+        <el-input v-model.trim="drug.DrugDosageForm"
+                  placeholder="请输入剂型"></el-input>
+      </el-form-item>
+
+      <el-form-item label="批准文号："
+                    label-width="100px">
         <el-input v-model.trim="drug.ApprovalNumber"
                   placeholder="请输入批准文号"></el-input>
+      </el-form-item>
+
+      <el-form-item label="包装单位："
+                    label-width="100px">
+        <el-input v-model.trim="drug.PackUnit"
+                  placeholder="请输入包装单位"></el-input>
       </el-form-item>
 
     </el-form>
@@ -71,7 +84,8 @@ export default {
         DrugSpecifications: '',
         PackUnit: '',
         EnterpriseName: '',
-        ApprovalNumber: ''
+        ApprovalNumber: '',
+        DrugDosageForm: ''
       },
       rules: {
         CustDrugsCode: [
@@ -95,14 +109,6 @@ export default {
             trigger: 'blur'
           }
         ],
-        PackUnit: [
-          {
-            required: true,
-            message: '请输入包装单位',
-            trigger: 'blur'
-          }
-        ],
-
         EnterpriseName: [
           {
             required: true,
@@ -150,17 +156,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  .el-form-item {
-    width: 48%;
-    margin-right: 0px !important;
-  }
-}
-
 .bottom {
   margin-top: 40px;
   display: flex;
@@ -170,44 +165,5 @@ export default {
     width: 150px;
     height: 40px;
   }
-}
-
-.el-upload {
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-  border: 1px dashed #c0ccda;
-}
-.avatar {
-  width: 120px;
-  height: 120px;
-  display: block;
-}
-
-.content-img {
-  display: flex;
-  flex-wrap: wrap;
-}
-.content-img-item {
-  width: 25%;
-  margin-top: 10px;
-  position: relative;
-}
-.content-img-delete {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  right: 22px;
-  top: -8px;
 }
 </style>
