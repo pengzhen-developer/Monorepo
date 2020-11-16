@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import DiseaseCourse from './../patientDetail/components/DiseaseCourse'
+import DiseaseCourse from '@src/views/patient/patientDetail/components/DiseaseCourse'
 
 export default {
   components: {

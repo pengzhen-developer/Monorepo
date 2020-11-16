@@ -627,7 +627,7 @@ export const initIM = () => {
  */
 export const initWebRTC = (IMInstance) => {
   return WebRTC.getInstance({
-    debug: true,
+    debug: false,
     nim: IMInstance
   })
 }

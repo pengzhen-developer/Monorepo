@@ -1,165 +1,184 @@
 <template>
-  <div class="layout">
-    <TheVideo>
+  <q-layout class="layout"
+            view="hHh lpR lFf">
 
-      <div class="layout-header">
-        <TheHeader></TheHeader>
-      </div>
+    <q-header class="layout-header bg-white q-mb-xs">
+      <LayoutHeader></LayoutHeader>
+    </q-header>
 
-      <div class="layout-body">
-        <div class="layout-body-left">
-          <TheNav ref="layoutNav"></TheNav>
-        </div>
-        <div class="layout-body-right">
-          <div class="layout-body-right-tab">
-            <TheTab></TheTab>
-          </div>
+    <q-drawer class="layout-drawer"
+              side="left"
+              show-if-above
+              v-bind:width="64"
+              v-bind:breakpoint="0"
+              v-model="showDrawerModel">
+      <LayoutNav v-bind:defaultActive="defaultActive"></LayoutNav>
+    </q-drawer>
 
-          <div class="layout-body-right-content">
-            <el-scrollbar class="layout-body-right-content-scrollbar">
-              <transition mode="out-in"
-                          name="el-fade-in-linear">
-                <router-view :key="$route.fullPath"
-                             class="layout-body-right-content-app">
-                </router-view>
-              </transition>
-            </el-scrollbar>
-          </div>
-        </div>
-      </div>
-
-    </TheVideo>
-
-    <el-backtop target=".layout-body-right-content-scrollbar .el-scrollbar__wrap"></el-backtop>
-  </div>
+    <q-page-container>
+      <q-page class="bg-grey-1">
+        <LayoutTabs class="bg-white"></LayoutTabs>
+        <LayoutView class="bg-grey-2"></LayoutView>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script>
-import TheHeader from './TheHeader'
-import TheNav from './TheNav'
-import TheTab from './TheTab'
-
-import TheVideo from './TheVideo'
+/** 布局 - 顶部 */
+import LayoutHeader from './components/LayoutHeader'
+/** 布局 - 左侧导航 */
+import LayoutNav from './components/LayoutNav'
+/** 布局 - 已打开功能标签 */
+import LayoutTabs from './components/LayoutTabs'
+/** 布局 - 已打开功能 */
+import LayoutView from './components/LayoutView'
 
 export default {
-  name: 'layout',
-
   components: {
-    TheHeader,
-    TheNav,
-    TheTab,
-
-    TheVideo
+    LayoutHeader,
+    LayoutNav,
+    LayoutTabs,
+    LayoutView
   },
 
+  provide() {
+    return {
+      // provide function
+      provideToggleDrawer: this.toggleDrawer,
+      provdeMenuSelect: this.menuSelect,
+
+      provideGetTab: this.getTab,
+      provideAddTab: this.addTab,
+
+      // provide property
+      // provide function for computed
+      provideMenuList: () => this.menuList,
+      provideMenuTree: () => this.menuTree
+    }
+  },
+  watch: {
+    // 路由更新，还原 nav
+    '$route.path'() {
+      this.$nextTick().then(() => {
+        this.resetNavSelect()
+      })
+    }
+  },
   data() {
     return {
-      menuList: Peace.config.menu.menuList
+      configuration: window.configuration,
+      menuList: [],
+      menuTree: [],
+
+      showDrawerModel: true,
+      defaultActive: ''
     }
   },
 
-  watch: {
-    '$route.path': {
-      handler() {
-        this.$nextTick(function() {
-          if (this.$store.state.layout.tabList.length === 0) {
-            // 将首页加载到 tab list
-            this.pushTab('/home')
-          }
+  created() {
+    this.getMenu()
+  },
 
-          const path = this.$route.path === '/' ? '/home' : this.$route.path
-
-          // 加载当前页
-          this.pushTab(path)
-
-          // 跳转当前路由
-          if (this.$route.path !== path) {
-            this.$router.push(path)
-          }
-        })
-      },
-      immediate: true
-    },
-
-    '$store.state.layout.tabList': {
-      handler() {
-        Peace.cache.sessionStorage.set(Peace.type.USER.TAB_LIST, this.$store.state.layout.tabList)
-      },
-
-      immediate: true
-    }
+  mounted() {
+    this.$nextTick().then(() => {
+      if (this.$route.fullPath !== '/layout') {
+        this.resetActive()
+      } else {
+        // 默认选中第一个
+        const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
+        firstMenuNode?.click()
+      }
+    })
   },
 
   methods: {
-    pushTab(path) {
-      const currentMenu = this.menuList.find((item) => item.path === path) || this.$store.state.layout.tabList.find((item) => item.path === path)
+    getMenu() {
+      // 避免浅拷贝导致数据源被污染
+      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
+      const menuTreeSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
 
-      if (currentMenu) {
-        // 将当前选中的项，添加到 tab
-        this.$store.commit('layout/pushTab', currentMenu)
+      this.menuList = menuListSource
+      const tree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
+      this.menuTree = tree
+    },
 
-        // 选中当前 tab
-        this.$store.commit('layout/selectTab', currentMenu.path)
+    toggleDrawer(state) {
+      if (Peace.util.isType(state).isBoolean) {
+        this.showDrawerModel = state
+      } else {
+        this.showDrawerModel = !this.showDrawerModel
       }
+    },
+
+    getTab(index) {
+      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu)
+
+      const currentMenu = menuListSource.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
+
+      return currentMenu
+    },
+
+    addTab(tab) {
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', tab)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', tab)
+    },
+
+    menuSelect(index) {
+      const currentMenu = this.menuList.find((menu) => menu.id === index)
+
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', currentMenu)
+      // 选中当前 tab
+      this.$store.commit('tabs/selectTab', currentMenu)
+    },
+
+    resetNavSelect() {
+      // 初始化进入？ 默认选中第一项
+      if (this.$route.path === '/layout') {
+        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+
+        firstMenuNode?.click()
+      }
+
+      // 页面被刷新？ 恢复菜单选中
+      else if (this.$route.path && this.$route.name) {
+        this.resetActive()
+      }
+    },
+
+    resetActive() {
+      const router = this.$route?.meta
+
+      //还原 nav active
+      this.defaultActive = router?.id.toString()
+
+      //还原 tabs active
+      this.$store.commit('tabs/selectTab', router)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$--layout-header-height: 56px;
-$--layout-body-right-tab-height: 40px;
-
 .layout {
-  background: #f9f9f9;
+  position: relative;
+  margin: 0 auto;
 
   .layout-header {
-    background: #00c6ae;
-    height: $--layout-header-height;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
   }
 
-  .layout-body {
-    min-width: 1200px;
-    height: calc(100vh - #{$--layout-header-height});
-    margin: 0 auto;
-    box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
-
-    display: flex;
-    justify-content: center;
-
-    .layout-body-left {
-      width: 63px;
+  .layout-drawer {
+    ::v-deep .q-drawer {
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
     }
 
-    .layout-body-right {
-      min-width: calc(1200px - 63px);
-      flex: 1;
-      background: #f9f9f9;
-      overflow: auto;
-
-      .layout-body-right-tab {
-        display: flex;
-        align-items: center;
-
-        height: $--layout-body-right-tab-height;
-      }
-
-      .layout-body-right-content {
-        margin: 10px 10px 0 10px;
-        height: calc(100% - #{$--layout-body-right-tab-height} - 10px);
-        background: #f9f9f9;
-
-        .layout-body-right-content-scrollbar {
-          height: 100%;
-        }
-
-        .layout-body-right-content-app {
-          background: #fff;
-          padding: 20px;
-        }
-      }
+    ::v-deep .q-layout--prevent-focus {
+      visibility: visible;
     }
   }
 }
 </style>
-

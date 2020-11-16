@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import PatientEducationModel from './PatientEducationModel'
-import PatientEducationPreview from './PatientEducationPreview'
+import PatientEducationModel from './components/PatientEducationModel'
+import PatientEducationPreview from './components/PatientEducationPreview'
 
 export default {
   components: { PatientEducationModel, PatientEducationPreview },

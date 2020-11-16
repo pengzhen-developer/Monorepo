@@ -38,191 +38,247 @@ export default {
      *
      */
     layoutNavMenu: [
-      // .e.g
-      // {
-      //   title: 'title',
-      //   menuRouteName: 'route name',
-      //   menuRoute: 'health/pacs',
-      //   menuPath: 'views/health/pacs'
-      // }
-
       {
-        id: 1,
-        pid: null,
+        id: '1',
         closable: false,
-        name: '首页',
-        title: '首页',
-        path: '/home',
-        icon: 'icon_nav_icon_homecopy'
+        icon: 'icon_nav_icon_homecopy',
+        menuName: '首页',
+        menuRoute: '/home',
+        menuPath: 'views/home',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 2,
-        pid: null,
+        id: '2',
         closable: true,
-        name: '诊室',
-        title: '诊室',
-        path: '',
-        icon: 'icon_ic_consultingroom'
+        icon: 'icon_ic_consultingroom',
+        menuName: '诊室',
+        menuRoute: '',
+        enable: true,
+        menuAlias: '',
+        virtual: 0,
+        menuPath: ''
       },
       {
-        id: 21,
-        pid: 2,
+        id: '21',
         closable: true,
-        name: '在线咨询',
-        title: '在线咨询',
-        path: '/clinic/inquiry'
+        menuName: '在线咨询',
+        menuRoute: '/clinic/inquiry',
+        menuPath: 'views/clinic/inquiry',
+        parentId: '2',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 21,
-        pid: 2,
+        id: '22',
         closable: true,
-        name: '复诊续方',
-        title: '复诊续方',
-        path: '/clinic/returnVisit'
+        menuName: '复诊续方',
+        menuRoute: '/clinic/returnVisit',
+        menuPath: 'views/clinic/returnVisit',
+        parentId: '2',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 23,
-        pid: 2,
+        id: '23',
         closable: true,
-        name: '我的会诊',
-        title: '我的会诊',
-        path: '/clinic/consultation'
+        menuName: '我的会诊',
+        menuRoute: '/clinic/consultation',
+        menuPath: 'views/clinic/consultation',
+        parentId: '2',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 3,
-        pid: null,
+        id: '3',
         closable: true,
-        name: '患者',
-        path: '患者',
-        icon: 'icon_ic_huanzhe'
+        icon: 'icon_ic_huanzhe',
+        menuName: '患者',
+        menuRoute: '患者',
+        enable: true,
+        menuAlias: '',
+        virtual: 0,
+        menuPath: '患者'
       },
       {
-        id: 31,
-        pid: 3,
+        id: '31',
         closable: true,
-        name: '我的患者',
-        title: '我的患者',
-        path: '/patient/myPatient'
+        menuName: '我的患者',
+        menuRoute: '/patient/myPatient',
+        menuPath: 'views/patient/myPatient',
+        parentId: '3',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 32,
-        pid: 3,
+        id: '32',
         closable: true,
-        name: '私人医生',
-        title: '私人医生',
-        path: '/patient/privateDoctor'
+        menuName: '私人医生',
+        menuRoute: '/patient/privateDoctor',
+        menuPath: 'views/patient/privateDoctor',
+        parentId: '3',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 33,
-        pid: 3,
+        id: '33',
         closable: true,
-        name: '患者随访',
-        title: '患者随访',
-        path: '/patient/follow'
+        menuName: '患者随访',
+        menuRoute: '/patient/follow',
+        menuPath: 'views/patient/follow',
+        parentId: '3',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 4,
-        pid: null,
+        id: '4',
         closable: true,
-        name: '记录',
-        path: '记录',
-        icon: 'icon_ic_inquiry'
+        icon: 'icon_ic_inquiry',
+        menuName: '记录',
+        menuRoute: '记录',
+        enable: true,
+        menuAlias: '',
+        virtual: 0,
+        menuPath: '记录'
       },
       {
-        id: 41,
-        pid: 4,
+        id: '41',
         closable: true,
-        name: '咨询记录',
-        title: '咨询记录',
-        path: '/record/inquiry'
+        menuName: '咨询记录',
+        menuRoute: '/record/inquiry',
+        menuPath: 'views/record/inquiry',
+        parentId: '4',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 42,
-        pid: 4,
+        id: '42',
         closable: true,
-        name: '复诊记录',
-        title: '复诊记录',
-        path: '/record/returnVisit'
+        menuName: '复诊记录',
+        menuRoute: '/record/returnVisit',
+        menuPath: 'views/record/returnVisit',
+        parentId: '4',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 43,
-        pid: 4,
+        id: '43',
         closable: true,
-        name: '处方记录',
-        title: '处方记录',
-        path: '/record/prescription'
+        menuName: '处方记录',
+        menuRoute: '/record/prescription',
+        menuPath: 'views/record/prescription',
+        parentId: '4',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 44,
-        pid: 4,
+        id: '44',
         closable: true,
-        name: '转诊记录',
-        title: '转诊记录',
-        path: '/record/transfer'
+        menuName: '转诊记录',
+        menuRoute: '/record/transfer',
+        menuPath: 'views/record/transfer',
+        parentId: '4',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 45,
-        pid: 4,
+        id: '45',
         closable: true,
-        name: '会诊记录',
-        title: '会诊记录',
-        path: '/record/consultation'
+        menuName: '会诊记录',
+        menuRoute: '/record/consultation',
+        menuPath: 'views/record/consultation',
+        parentId: '4',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 5,
-        pid: null,
+        id: '5',
         closable: true,
-        name: '我的',
-        path: '我的',
-        icon: 'icon_ic_my'
+        icon: 'icon_ic_my',
+        menuName: '我的',
+        menuRoute: '我的',
+        enable: true,
+        menuAlias: '',
+        virtual: 0,
+        menuPath: '我的'
       },
       {
-        id: 51,
-        pid: 5,
+        id: '51',
         closable: true,
-        name: '信息查看',
-        title: '信息查看',
-        path: '/sys/myInfo'
+        menuName: '信息查看',
+        menuRoute: '/sys/myInfo',
+        menuPath: 'views/sys/myInfo',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 52,
-        pid: 5,
+        id: '52',
         closable: true,
-        name: '我的介绍',
-        title: '我的介绍',
-        path: '/sys/myIntroduce'
+        menuName: '我的介绍',
+        menuRoute: '/sys/myIntroduce',
+        menuPath: 'views/sys/myIntroduce',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 53,
-        pid: 5,
+        id: '53',
         closable: true,
-        name: '出诊时间',
-        title: '出诊时间',
-        path: '/sys/myServiceTime'
+        menuName: '出诊时间',
+        menuRoute: '/sys/myServiceTime',
+        menuPath: 'views/sys/myServiceTime',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 54,
-        pid: 5,
+        id: '54',
         closable: true,
-        name: '服务设置',
-        title: '服务设置',
-        path: '/sys/myServiceSetting'
+        menuName: '服务设置',
+        menuRoute: '/sys/myServiceSetting',
+        menuPath: 'views/sys/myServiceSetting',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 55,
-        pid: 5,
+        id: '55',
         closable: true,
-        name: '我的药房',
-        title: '我的药房',
-        path: '/sys/myPharmacy'
+        menuName: '我的药房',
+        menuRoute: '/sys/myPharmacy',
+        menuPath: 'views/sys/myPharmacy',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       },
       {
-        id: 56,
-        pid: 5,
+        id: '56',
         closable: true,
-        name: '我的随访',
-        title: '我的随访',
-        path: '/sys/myFollow'
+        menuName: '我的随访',
+        menuRoute: '/sys/myFollow',
+        menuPath: 'views/sys/myFollow',
+        parentId: '5',
+        enable: true,
+        menuAlias: '',
+        virtual: 0
       }
     ],
 

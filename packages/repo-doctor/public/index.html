@@ -181,10 +181,12 @@
     }
   </script>
 
-  <script src="static/IM/NIM_Web_NIM_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
-  <script src="static/IM/NIM_Web_WebRTC_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
+
   <link href="https://cdn.bootcss.com/quill/2.0.0-dev.3/quill.snow.css" rel="stylesheet" />
   <link href="//at.alicdn.com/t/font_1945938_5jfq7qrf1da.css" rel="stylesheet">
+
+  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_NIM_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
+  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
 </head>
 
 <body>

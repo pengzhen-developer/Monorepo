@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import ConsultationSessions from './ConsultationSessions'
-import ConsultationSession from './ConsultationSession'
-import ConsultationPatient from './ConsultationPatient'
+import ConsultationSessions from './components/ConsultationSessions'
+import ConsultationSession from './components/ConsultationSession'
+import ConsultationPatient from './components/ConsultationPatient'
 
 export default {
   components: {

@@ -41,7 +41,7 @@ export default async ({ Vue }) => {
 
             const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
             if (!isUrl.test(request.url)) {
-              request.url = Peace.config.api.base + request.url
+              request.url = process.env.VUE_APP_API_BASE + request.url
             }
 
             return request

@@ -177,7 +177,7 @@
 
 <script>
 import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
-import ConsultationSessionMessageList from '@src/views/clinic/consultation/ConsultationSessionMessageList'
+import ConsultationSessionMessageList from '@src/views/clinic/consultation/src/components/ConsultationSessionMessageList'
 
 export default {
   components: {

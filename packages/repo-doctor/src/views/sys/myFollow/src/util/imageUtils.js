@@ -11,7 +11,7 @@ const srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
 // }
 
 // 获取 图片Src 数组
-const getImageSrcArray = content => {
+const getImageSrcArray = (content) => {
   const arr = content.match(imgReg) || []
   const rsArr = []
 
@@ -56,7 +56,7 @@ const formatImgSrc = (content, uploadApi) => {
   console.log(srcArray)
   return axios.all(generateRequest(srcArray, uploadApi)).then(
     axios.spread((...args) => {
-      const srcArr = args.map(val => val.data.fileName)
+      const srcArr = args.map((val) => val.data.fileName)
       return replaceImgSrc(content, srcArr)
     })
   )

@@ -18,8 +18,11 @@ import boot_Quasar from './boot_quasar'
 // UI Library
 import boot_UI from './boot_ui'
 
-//global style
+// global style
 import boot_styles from './boot_styles'
+
+// Version
+import boot_Version from './boot_version'
 
 /**
  * Boot install
@@ -30,19 +33,19 @@ const install = async () => {
   const { configuration } = await CreateConfiguration()
 
   const boots = [
+    // Framework
+    boot_Quasar,
+
     // Library
     boot_Library,
 
     // Redirect
     boot_Redirect,
 
-    // Framework
-    boot_Quasar,
-
     // UI
     boot_UI,
 
-    //global style
+    // global style
     boot_styles
   ]
 
@@ -58,7 +61,11 @@ const install = async () => {
 
   const { app } = await CreateApp(configuration)
 
-  return new Vue(app)
+  // 初始化成功后
+  // 检查版本信息
+  if (boot_Version.validVersion()) {
+    return new Vue(app)
+  }
 }
 
 export default {
