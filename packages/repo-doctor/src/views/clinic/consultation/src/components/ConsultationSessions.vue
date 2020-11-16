@@ -1,88 +1,91 @@
 <template>
-  <div class="consultation-sessions">
-    <div class="header">
-      <img src="~@src/assets/images/inquiry/inquirylist_icon.png" />
-      <span>会诊列表</span>
-    </div>
+  <SessionListContainer active="consultation">
+    <div class="consultation-sessions">
+      <div class="body"
+           v-if="$store.state.consultation.sessions && $store.state.consultation.sessions.length > 0">
+        <el-scrollbar class="body-scrollbar">
+          <div :class="{ active: $store.state.consultation.session && $store.state.consultation.session.id === session.id }"
+               :key="session.id"
+               @click="selectSession(session)"
+               class="consultation"
+               v-for="session in $store.state.consultation.sessions">
+            <div class="consultation-title">
+              <div class="status">
+                <div v-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
+                  <i class="icon_ic_wait_groupconsultation"></i>
+                  <span>距开始还剩</span>
 
-    <div class="body"
-         v-if="$store.state.consultation.sessions && $store.state.consultation.sessions.length > 0">
-      <el-scrollbar class="body-scrollbar">
-        <div :class="{ active: $store.state.consultation.session && $store.state.consultation.session.id === session.id }"
-             :key="session.id"
-             @click="selectSession(session)"
-             class="consultation"
-             v-for="session in $store.state.consultation.sessions">
-          <div class="consultation-title">
-            <div class="status">
-              <div v-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距开始">
-                <i class="icon_ic_wait_groupconsultation"></i>
-                <span>距开始还剩</span>
+                  <span style="margin: 0 5px; color: #00C6AE;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
+                </div>
 
-                <span style="margin: 0 5px; color: #00C6AE;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
-              </div>
-
-              <!-- <div v-else-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
+                <!-- <div v-else-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
                 <i class="icon_ic_wait_groupconsultation"></i>
                 <span>距关闭还剩</span>
 
                 <span style="margin: 0 5px; color: #FF0000;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
               </div> -->
 
-              <div v-else>
-                <i class="icon_ic_ing_groupconsultation"></i>
-                <span style="color: #00C6AE;">
-                  {{ 
+                <div v-else>
+                  <i class="icon_ic_ing_groupconsultation"></i>
+                  <span style="color: #00C6AE;">
+                    {{ 
                     Object.keys(Peace.type.CONSULTATION.CONSULTATION_STATUS).find(
                       key =>
                         Peace.type.CONSULTATION.CONSULTATION_STATUS[key] === session.content.consultInfo.consultStatus
                     ) 
                   }}
-                </span>
+                  </span>
+                </div>
+              </div>
+              <div class="time">
+                <span></span>
               </div>
             </div>
-            <div class="time">
-              <span></span>
+
+            <div class="consultation-doctor">
+              <!-- 发起方 -->
+              <template v-if="session.content.consultInfo.startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
+                <span>受邀医生：</span>
+                <span class="name">{{ session.content.consultInfo.receiveDoctor.map(item => item.doctorName).toString() }}</span>
+                <el-tag type="parmary">我邀请的</el-tag>
+              </template>
+
+              <!-- 受邀方 -->
+              <template v-if="session.content.consultInfo.receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
+                <span>发起医生：</span>
+                <span class="name">{{ session.content.consultInfo.startDoctor.map(item => item.doctorName).toString() }}</span>
+                <el-tag type="parmary">邀请我的</el-tag>
+              </template>
+            </div>
+            <div class="consultation-patient">
+              <span>患者信息：</span>
+              <span>{{ session.content.patientInfo.familyName }}</span>
+              <span>{{ session.content.patientInfo.familySex }}</span>
+              <span>{{ session.content.patientInfo.familyAge }}岁</span>
             </div>
           </div>
+        </el-scrollbar>
+      </div>
 
-          <div class="consultation-doctor">
-            <!-- 发起方 -->
-            <template v-if="session.content.consultInfo.startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
-              <span>受邀医生：</span>
-              <span class="name">{{ session.content.consultInfo.receiveDoctor.map(item => item.doctorName).toString() }}</span>
-              <el-tag type="parmary">我邀请的</el-tag>
-            </template>
-
-            <!-- 受邀方 -->
-            <template v-if="session.content.consultInfo.receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id)">
-              <span>发起医生：</span>
-              <span class="name">{{ session.content.consultInfo.startDoctor.map(item => item.doctorName).toString() }}</span>
-              <el-tag type="parmary">邀请我的</el-tag>
-            </template>
-          </div>
-          <div class="consultation-patient">
-            <span>患者信息：</span>
-            <span>{{ session.content.patientInfo.familyName }}</span>
-            <span>{{ session.content.patientInfo.familySex }}</span>
-            <span>{{ session.content.patientInfo.familyAge }}岁</span>
-          </div>
-        </div>
-      </el-scrollbar>
+      <div class="body-no-data"
+           v-else>
+        <img src="~@src/assets/images/inquiry/ic_no one.png" />
+        <span>暂无会诊</span>
+      </div>
     </div>
-
-    <div class="body-no-data"
-         v-else>
-      <img src="~@src/assets/images/inquiry/ic_no one.png" />
-      <span>暂无会诊</span>
-    </div>
-  </div>
+  </SessionListContainer>
 </template>
 
 <script>
 import Util from '@src/util'
 
+import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
+
 export default {
+  components: {
+    SessionListContainer
+  },
+
   methods: {
     getLastMessage(session) {
       const messageType = session.lastMsg.type

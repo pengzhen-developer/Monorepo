@@ -1,18 +1,10 @@
 <template>
-  <SessionListContainer active="inquiry">
+  <SessionListContainer active="faceToFace">
     <div class="flex column content">
       <template v-if="storeSessions.length">
         <q-scroll-area class="col"
                        v-bind:thumb-style="thumbStyle">
-
-          <div v-for="session in storeSessions"
-               v-bind:key="session.id"
-               class="col">
-            <SessionListItem v-on:click.native="selectSession(session)"
-                             v-bind:active="session.id === storeSession.id"
-                             v-bind:session="session"></SessionListItem>
-          </div>
-
+          xxxxxxx
         </q-scroll-area>
       </template>
 
@@ -31,12 +23,10 @@
 import Util from '@src/util'
 
 import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
-import SessionListItem from './SessionListItem'
 
 export default {
   components: {
-    SessionListContainer,
-    SessionListItem
+    SessionListContainer
   },
 
   data() {

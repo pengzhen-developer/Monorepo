@@ -16,9 +16,9 @@
     </q-drawer>
 
     <q-page-container>
-      <q-page class="bg-grey-1">
+      <q-page class="bg-grey-2">
         <LayoutTabs class="bg-white"></LayoutTabs>
-        <LayoutView class="bg-grey-2"></LayoutView>
+        <LayoutView class="bg-white"></LayoutView>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -57,6 +57,7 @@ export default {
       provideMenuTree: () => this.menuTree
     }
   },
+
   watch: {
     // 路由更新，还原 nav
     '$route.path'() {
@@ -65,9 +66,9 @@ export default {
       })
     }
   },
+
   data() {
     return {
-      configuration: window.configuration,
       menuList: [],
       menuTree: [],
 
@@ -86,7 +87,7 @@ export default {
         this.resetActive()
       } else {
         // 默认选中第一个
-        const firstMenuNode = this.$el.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
+        const firstMenuNode = document.body.querySelector(`.q-drawer li.el-menu-item:not(.is-disabled)`)
         firstMenuNode?.click()
       }
     })
@@ -99,8 +100,7 @@ export default {
       const menuTreeSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu).filter((item) => !item.virtual)
 
       this.menuList = menuListSource
-      const tree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
-      this.menuTree = tree
+      this.menuTree = Peace.util.arrayToTree(menuTreeSource, 'id', 'parentId')
     },
 
     toggleDrawer(state) {
@@ -138,7 +138,7 @@ export default {
     resetNavSelect() {
       // 初始化进入？ 默认选中第一项
       if (this.$route.path === '/layout') {
-        const firstMenuNode = this.$el.querySelector(`li.el-menu-item:not(.is-disabled)`)
+        const firstMenuNode = document.body.querySelector(`li.el-menu-item:not(.is-disabled)`)
 
         firstMenuNode?.click()
       }
@@ -155,7 +155,9 @@ export default {
       //还原 nav active
       this.defaultActive = router?.id.toString()
 
-      //还原 tabs active
+      // 新增到当前 tab
+      this.$store.commit('tabs/addTab', router)
+      // 还原 tabs active
       this.$store.commit('tabs/selectTab', router)
     }
   }
@@ -165,6 +167,7 @@ export default {
 <style lang="scss" scoped>
 .layout {
   position: relative;
+  min-width: 1200px;
   margin: 0 auto;
 
   .layout-header {

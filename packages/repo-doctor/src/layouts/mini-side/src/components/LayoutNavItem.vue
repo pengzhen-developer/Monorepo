@@ -1,23 +1,24 @@
 <template>
-  <div>
+  <fragment>
     <!-- 存在多层节点 -->
     <template v-if="data.children">
       <el-submenu v-bind:index="data.id"
                   v-bind:router="data.id"
-                  v-bind:disabled="data.enable === false">
+                  v-bind:disabled="data.enable === false"
+                  v-bind:class="`level-${level}`">
 
-        <template slot="title">
+        <div class="menu-item"
+             slot="title">
           <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md menu-icon"></i>
+             class="menu-icon"></i>
           <label class="menu-name"
-                 v-bind:class="{'sub-name':league>0}"
                  slot="title">{{ data.menuName }}</label>
-        </template>
+        </div>
 
         <LayoutNavItem v-for="menu in data.children"
                        v-bind:key="menu.id"
-                       v-bind:league="currentLeague"
-                       v-bind:data="menu"></LayoutNavItem>
+                       v-bind:data="menu"
+                       v-bind:level="level + 1"></LayoutNavItem>
       </el-submenu>
     </template>
 
@@ -27,17 +28,18 @@
                     v-bind:index="data.id"
                     v-bind:router="data.id"
                     v-bind:disabled="data.enable === false"
-                    v-bind:style="{'padding-left':paddingLeft}"
-                    v-bind:class="{'sub-item':league>1}">
-        <template v-if="data.menuIcon">
-          <i v-bind:class="{[data.menuIcon]: true }"
-             class="q-mr-md menu-icon"></i>
-        </template>
-        <label class="menu-name cursor-pointer">{{ data.menuName }}</label>
+                    v-bind:class="`level-${level}`">
+        <div class="menu-item">
+          <template v-if="data.menuIcon">
+            <i v-bind:class="{[data.menuIcon]: true }"
+               class="menu-icon"></i>
+          </template>
+          <label class="menu-name cursor-pointer">{{ data.menuName }}</label>
+        </div>
       </el-menu-item>
     </template>
 
-  </div>
+  </fragment>
 
 </template>
 
@@ -47,114 +49,71 @@ export default {
 
   props: {
     data: Object,
-    league: {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    }
-  },
-  computed: {
-    currentLeague() {
-      let league = this.league
-      return (league += 1)
-    },
-    paddingLeft() {
-      return this.league > 0 ? 20 * this.league + 56 + 'px!important' : '0'
-    }
+    level: Number
   }
 }
 </script>
 
-<style lang="scss" scoped>
-::v-deep {
-  .el-submenu__title {
-    padding-left: 32px !important;
-    height: 60px;
-    line-height: 60px;
-  }
-
-  .el-icon-arrow-down {
-    color: #555555;
-  }
-}
-
-.menu-icon {
-  display: inline-block;
-  width: 28px;
-  font-size: 24px;
-  color: #555555;
-}
-
-.menu-name {
-  font-size: 16px;
-  font-weight: 400;
-  color: #333330;
-  line-height: 24px;
-  &.sub-name {
-    font-size: 14px;
-  }
-}
-
-.el-submenu {
-  &.is-opened {
-    background: linear-gradient(#ffffff, #f9f9f9);
-
-    .el-menu-item {
-      background: #f9f9f9;
-      &.sub-item {
-        background: #f1f1f1;
-      }
-    }
-  }
+<style lang="scss">
+.el-menu.el-menu--popup {
+  box-shadow: 0 0 4px 1px #d0d0d0;
+  min-width: 50px;
+  padding: 0;
 
   .el-menu-item {
-    padding-left: 76px !important;
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
 
-    .menu-name {
-      font-size: 14px;
-      color: #333330;
-      line-height: 28px;
-    }
-
-    &.is-active {
-      .menu-name {
-        color: var(--q-color-primary);
-      }
+    label {
+      cursor: pointer;
+      display: block;
+      border-bottom: 1px solid #ececec;
     }
   }
 }
+</style>
 
-.el-menu-item {
-  padding-left: 34px !important;
-  height: 60px;
-  line-height: 60px;
-
-  &:hover {
-    color: var(--q-color-primary);
-  }
+<style lang="scss" scoped>
+.level-0 {
+  height: 64px;
+  line-height: 1;
+  color: #cecece;
 
   &.is-active {
-    background: rgba(0, 166, 206, 0.1) !important;
+    color: var(--q-color-primary);
+
+    ::v-deep .el-submenu__title {
+      color: var(--q-color-primary);
+    }
+  }
+
+  ::v-deep .el-submenu__title {
+    height: 64px;
+    line-height: 1;
+    color: #cecece;
+
+    &.is-active {
+      color: var(--q-color-primary);
+    }
+  }
+
+  .menu-item {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .menu-icon {
-      color: var(--q-color-primary);
+      font-size: 24px;
+      margin: 0 0 4px 0;
+      color: inherit;
     }
 
     .menu-name {
-      color: var(--q-color-primary);
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      display: inline-block;
-      height: 100%;
-      width: 4px;
-      background: var(--q-color-primary);
+      font-size: 12px;
+      color: inherit;
     }
   }
 }

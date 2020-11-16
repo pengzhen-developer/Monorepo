@@ -256,15 +256,15 @@ export default {
     },
 
     goTransfer(params) {
-      this.$router.push({ name: '/record/transfer', params })
+      this.$router.push({ name: 'Transfer', params })
     },
 
     goPrivateDoctor(params) {
-      this.$router.push({ name: '/patient/privateDoctor', params })
+      this.$router.push({ name: 'PrivateDoctor', params })
     },
 
     goConsultation(params) {
-      this.$router.push({ name: '/record/consultation', params })
+      this.$router.push({ name: 'Consultation', params })
     }
   }
 }

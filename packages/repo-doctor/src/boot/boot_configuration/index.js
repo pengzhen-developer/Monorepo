@@ -41,18 +41,18 @@ export default {
       {
         id: '1',
         closable: false,
-        icon: 'icon_nav_icon_homecopy',
+        menuIcon: 'icon_nav_icon_homecopy',
         menuName: '首页',
         menuRoute: '/home',
         menuPath: 'views/home',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Home',
         virtual: 0
       },
       {
         id: '2',
         closable: true,
-        icon: 'icon_ic_consultingroom',
+        menuIcon: 'icon_ic_consultingroom',
         menuName: '诊室',
         menuRoute: '',
         enable: true,
@@ -68,7 +68,7 @@ export default {
         menuPath: 'views/clinic/inquiry',
         parentId: '2',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'ClinicInquiry',
         virtual: 0
       },
       {
@@ -79,24 +79,35 @@ export default {
         menuPath: 'views/clinic/returnVisit',
         parentId: '2',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'ClinicReturnVisit',
         virtual: 0
       },
       {
         id: '23',
+        closable: true,
+        menuName: '面诊开方',
+        menuRoute: '/clinic/faceToFace',
+        menuPath: 'views/clinic/faceToFace',
+        parentId: '2',
+        enable: true,
+        menuAlias: 'ClinicfaceToFace',
+        virtual: 0
+      },
+      {
+        id: '24',
         closable: true,
         menuName: '我的会诊',
         menuRoute: '/clinic/consultation',
         menuPath: 'views/clinic/consultation',
         parentId: '2',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'ClinicConsultation',
         virtual: 0
       },
       {
         id: '3',
         closable: true,
-        icon: 'icon_ic_huanzhe',
+        menuIcon: 'icon_ic_huanzhe',
         menuName: '患者',
         menuRoute: '患者',
         enable: true,
@@ -112,7 +123,7 @@ export default {
         menuPath: 'views/patient/myPatient',
         parentId: '3',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyPatient',
         virtual: 0
       },
       {
@@ -123,7 +134,7 @@ export default {
         menuPath: 'views/patient/privateDoctor',
         parentId: '3',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'PrivateDoctor',
         virtual: 0
       },
       {
@@ -134,13 +145,13 @@ export default {
         menuPath: 'views/patient/follow',
         parentId: '3',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Follow',
         virtual: 0
       },
       {
         id: '4',
         closable: true,
-        icon: 'icon_ic_inquiry',
+        menuIcon: 'icon_ic_inquiry',
         menuName: '记录',
         menuRoute: '记录',
         enable: true,
@@ -156,7 +167,7 @@ export default {
         menuPath: 'views/record/inquiry',
         parentId: '4',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Inquiry',
         virtual: 0
       },
       {
@@ -167,7 +178,7 @@ export default {
         menuPath: 'views/record/returnVisit',
         parentId: '4',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'ReturnVisit',
         virtual: 0
       },
       {
@@ -178,7 +189,7 @@ export default {
         menuPath: 'views/record/prescription',
         parentId: '4',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Prescription',
         virtual: 0
       },
       {
@@ -189,7 +200,7 @@ export default {
         menuPath: 'views/record/transfer',
         parentId: '4',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Transfer',
         virtual: 0
       },
       {
@@ -200,13 +211,13 @@ export default {
         menuPath: 'views/record/consultation',
         parentId: '4',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'Consultation',
         virtual: 0
       },
       {
         id: '5',
         closable: true,
-        icon: 'icon_ic_my',
+        menuIcon: 'icon_ic_my',
         menuName: '我的',
         menuRoute: '我的',
         enable: true,
@@ -222,7 +233,7 @@ export default {
         menuPath: 'views/sys/myInfo',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyInfo',
         virtual: 0
       },
       {
@@ -233,7 +244,7 @@ export default {
         menuPath: 'views/sys/myIntroduce',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyIntroduce',
         virtual: 0
       },
       {
@@ -244,7 +255,7 @@ export default {
         menuPath: 'views/sys/myServiceTime',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyServiceTime',
         virtual: 0
       },
       {
@@ -255,7 +266,7 @@ export default {
         menuPath: 'views/sys/myServiceSetting',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyServiceSetting',
         virtual: 0
       },
       {
@@ -266,7 +277,7 @@ export default {
         menuPath: 'views/sys/myPharmacy',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyPharmacy',
         virtual: 0
       },
       {
@@ -277,7 +288,7 @@ export default {
         menuPath: 'views/sys/myFollow',
         parentId: '5',
         enable: true,
-        menuAlias: '',
+        menuAlias: 'MyFollow',
         virtual: 0
       }
     ],

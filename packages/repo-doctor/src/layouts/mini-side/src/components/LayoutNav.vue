@@ -7,7 +7,8 @@
 
       <LayoutNavItem v-for="menu in menuTree"
                      v-bind:key="menu.id"
-                     v-bind:data="menu"></LayoutNavItem>
+                     v-bind:data="menu"
+                     v-bind:level="0"></LayoutNavItem>
 
     </el-menu>
   </q-scroll-area>
@@ -75,7 +76,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .el-menu {

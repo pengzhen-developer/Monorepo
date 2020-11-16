@@ -28,6 +28,7 @@
     "v-viewer": "^1.4.1",
     "vue": "^2.6.10",
     "vue-echarts": "^4.0.3",
+    "vue-fragment": "^1.5.1",
     "vue-router": "^3.0.6",
     "vuex": "^3.1.1"
   },

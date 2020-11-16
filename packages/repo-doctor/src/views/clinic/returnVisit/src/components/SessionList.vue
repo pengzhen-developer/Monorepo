@@ -1,11 +1,5 @@
 <template>
-  <div class="column">
-    <div class="flex justify-center items-center header">
-      <q-icon class="q-mr-md"
-              v-bind:name="`img:${require('./../assets/img/inquirylist_icon@2x.png')}`"></q-icon>
-      <span class="text-subtitle1">复诊续方</span>
-    </div>
-
+  <SessionListContainer active="returnVisit">
     <div class="flex column content">
       <template v-if="storeSessions.length">
         <q-scroll-area class="col"
@@ -33,16 +27,18 @@
       <!-- 预约列表 -->
       <slot name="reservation"></slot>
     </div>
-  </div>
+  </SessionListContainer>
 </template>
 
 <script>
 import Util from '@src/util'
 
+import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
 import SessionListItem from './SessionListItem'
 
 export default {
   components: {
+    SessionListContainer,
     SessionListItem
   },
 

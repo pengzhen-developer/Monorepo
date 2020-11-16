@@ -26,6 +26,7 @@
 
 import ElementUI from 'element-ui'
 import PeaceElementUI from '@jk998/peace-element-ui'
+import Fragment from 'vue-fragment'
 import Viewer from 'v-viewer'
 
 export default ({ Vue }) => {
@@ -36,6 +37,7 @@ export default ({ Vue }) => {
 
   Vue.use(ElementUI, { size: 'mini' })
   Vue.use(PeaceElementUI)
+  Vue.use(Fragment.Plugin)
   Vue.use(Viewer, {
     defaultOptions: {
       zIndex: 9999,
