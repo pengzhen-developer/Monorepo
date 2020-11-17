@@ -1,7 +1,6 @@
 <template>
   <div class="layout-route">
-
-    <template v-show="!dialog.visible">
+    <div v-show="!dialog.visible">
       <div class="card card-search q-mb-md">
         <el-form inline
                  label-width="auto"
@@ -275,7 +274,6 @@
             <template slot-scope="scope">
 
               <el-button type="text"
-                         v-bind:disabled="!scope.row.prescriptionImageUrl"
                          v-on:click="detail(scope.row)">查看详情</el-button>
 
             </template>
@@ -283,9 +281,9 @@
           </el-table-column>
         </PeaceTable>
       </div>
-    </template>
+    </div>
 
-    <!-- 原始处方 -->
+    <!-- 详情 -->
     <template>
       <!-- <PeaceDialog title="原始处方"
                    :visible.sync="dialog.visible"
@@ -294,8 +292,9 @@
         <el-image v-bind:src="dialog.data.prescriptionImageUrl"
                   v-on:load="onLoad"></el-image>
       </PeaceDialog> -->
-      <prescriptionDetails @goback="goback"
-                           v-show="dialog.visible"></prescriptionDetails>
+      <prescriptionDetails v-on:goback="goback"
+                           v-bind:info="dialog.data"
+                           v-if="dialog.visible"></prescriptionDetails>
     </template>
   </div>
 </template>
@@ -478,15 +477,12 @@ export default {
     },
     //处方详情
     detail(row) {
-      this.dialog.data.prescriptionImageUrl = row.prescriptionImageUrl
+      this.dialog.data.jztClaimNo = row.jztClaimNo
       this.dialog.visible = true
     },
     //关闭详情回到列表
     goback() {
       this.dialog.visible = false
-    },
-    onLoad() {
-      this.dialog.data.show = true
     }
   }
 }

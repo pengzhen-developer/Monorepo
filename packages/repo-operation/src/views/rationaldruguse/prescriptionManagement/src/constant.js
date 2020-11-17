@@ -9,7 +9,15 @@ export default {
     慎用: 'R',
     提示: 'I'
   },
-
+  /**
+   * 系统审核结果类型-map
+   */
+  SYSTEM_AUDIT_RESULTS_DETAIL_TYPE_MAP: [
+    { label: '通过', value: 'OK', color: 'rgb(25, 190, 107)' },
+    { label: '禁用', value: 'D', color: 'rgb(237, 64, 20)' },
+    { label: '慎用', value: 'R', color: 'rgb(240, 152, 21)' },
+    { label: '提示', value: 'I', color: 'rgb(45, 183, 245)' }
+  ],
   /**
    * 处方状态
    */
@@ -64,6 +72,14 @@ export default {
     通过: 2,
     未通过: 3
   },
+  /**
+   * 药师审核结果-map
+   */
+  RESULTS_AUDIT_PHARMACIST_DETAIL_TYPE_MAP: [
+    { label: '质疑', value: 2 },
+    { label: '通过', value: 5 },
+    { label: '未通过', value: 3 }
+  ],
 
   /**
    * 处方类型
