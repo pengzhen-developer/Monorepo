@@ -63,7 +63,7 @@ export default {
   .session-detail {
     flex: 1;
 
-    border: 1px solid #efefef;
+    border-right: 1px solid #efefef;
     border-left: none;
   }
 
@@ -72,7 +72,7 @@ export default {
     min-width: 230px;
     max-width: 230px;
 
-    border: 1px solid #efefef;
+    border-right: 1px solid #efefef;
     border-left: none;
   }
 }
