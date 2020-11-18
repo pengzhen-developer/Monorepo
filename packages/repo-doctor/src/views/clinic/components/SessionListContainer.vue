@@ -9,16 +9,17 @@
                         v-bind:name="item.name"
                         disabled>
         <div slot="title"
-             class="flex justify-between items-center full-width q-px-md"
+             class="flex justify-between items-center full-width"
              v-on:click="gotoPath(item)">
           <div class="flex items-center">
             <img class="q-mr-md"
-                 v-bind:src="require('@src/assets/images/inquiry/archives_icon_baby.png')">
-            <span>{{ item.title }}</span>
+                 style="width: 20px; height: 20px;"
+                 v-bind:src="item.icon">
+            <span class="text-subtitle1">{{ item.title }}</span>
           </div>
 
           <div>
-            ( <span class="text-red">2</span> )
+            <!-- ( <span class="text-red">2</span> ) -->
           </div>
 
         </div>
@@ -49,21 +50,25 @@ export default {
         {
           name: 'inquiry',
           title: '在线咨询',
+          icon: require('./assets/img/ic_online@2x.png'),
           routePath: '/clinic/inquiry'
         },
         {
           name: 'returnVisit',
           title: '复诊续方',
+          icon: require('./assets/img/ic_return visit@2x.png'),
           routePath: '/clinic/returnVisit'
         },
         {
           name: 'faceToFace',
           title: '面诊开方',
+          icon: require('./assets/img/ic_face to face@2x.png'),
           routePath: '/clinic/faceToFace'
         },
         {
           name: 'consultation',
           title: '我的会诊',
+          icon: require('./assets/img/ic_consultation@2x.png'),
           routePath: '/clinic/consultation'
         }
       ]
@@ -96,6 +101,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-collapse {
+  border: 0;
+}
+
 ::v-deep .el-collapse-item {
   &.is-disabled .el-collapse-item__header {
     color: rgb(39, 39, 39);
@@ -107,14 +116,32 @@ export default {
     flex-direction: column;
     flex: 1;
 
-    .el-collapse-item__wrap,
+    .el-collapse-item__header {
+      padding: 0 16px;
+    }
+
+    .el-collapse-item__wrap {
+      height: 100%;
+      border-top: 1px solid #ebeef5;
+      border-bottom: 1px solid #ebeef5;
+    }
+
     .el-collapse-item__content {
       height: 100%;
     }
   }
 
+  &:not(.is-active) {
+    padding: 0 0 0 16px;
+
+    .el-collapse-item__header {
+      padding: 0 16px 0 0;
+    }
+  }
+
   .el-collapse-item__content {
     margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .el-collapse-item__arrow.el-icon-arrow-right {

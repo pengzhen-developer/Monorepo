@@ -56,7 +56,8 @@ export default {
     min-width: 230px;
     max-width: 230px;
 
-    border: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
   }
 
   .session-detail {

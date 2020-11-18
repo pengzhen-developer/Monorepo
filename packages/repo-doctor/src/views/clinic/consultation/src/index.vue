@@ -164,7 +164,8 @@ export default {
   .consultation-left {
     width: 230px;
 
-    border: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
   }
 
   .consultation-right {

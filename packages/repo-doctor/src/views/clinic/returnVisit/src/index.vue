@@ -7,10 +7,12 @@
     </SessionList>
 
     <!-- 复诊续方会话详情 -->
-    <SessionDetail v-if="canShowDetail" class="session-detail"></SessionDetail>
+    <SessionDetail v-if="canShowDetail"
+                   class="session-detail"></SessionDetail>
 
     <!-- 复诊续方患者详情 -->
-    <SessionExtend v-if="canShowExtend" class="session-extend"></SessionExtend>
+    <SessionExtend v-if="canShowExtend"
+                   class="session-extend"></SessionExtend>
   </div>
 </template>
 
@@ -50,7 +52,8 @@ export default {
     min-width: 230px;
     max-width: 230px;
 
-    border: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
   }
 
   .session-detail {
