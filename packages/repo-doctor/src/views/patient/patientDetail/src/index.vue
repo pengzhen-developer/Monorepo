@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import HealthRecordDrawer from './healthRecordDrawer/HealthRecordDrawer'
-import HealthRecordMenu from './healthRecordMenu/HealthRecordMenu'
+import HealthRecordDrawer from './components/healthRecordDrawer/HealthRecordDrawer'
+import HealthRecordMenu from './components/healthRecordMenu/HealthRecordMenu'
 
-import HealthRecordHeader from './healthRecordHeader/HeaderRecordHeader'
-import HealthRecordDetail from './healthRecordDetail/HealthRecordDetail'
+import HealthRecordHeader from './components/healthRecordHeader/HeaderRecordHeader'
+import HealthRecordDetail from './components/healthRecordDetail/HealthRecordDetail'
 
 export default {
   components: {

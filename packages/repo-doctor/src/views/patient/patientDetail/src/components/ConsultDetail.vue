@@ -398,7 +398,7 @@ export default {
         display: inline-block;
         width: 16px;
         height: 16px;
-        background: url('../../../../assets/images/ic_time.png');
+        background: url('../../../../../assets/images/ic_time.png');
         vertical-align: middle;
         margin-right: 10px;
       }
@@ -548,7 +548,7 @@ export default {
     // padding: 0 40px;
     padding-left: 40px;
     padding-right: 13px;
-    background: rgba(249, 249, 249, 1) url('../../../../assets/images/ic_tixing.png') no-repeat;
+    background: rgba(249, 249, 249, 1) url('../../../../../assets/images/ic_tixing.png') no-repeat;
     background-position: 13px 11px;
     display: flex;
     flex-direction: row;
@@ -559,7 +559,7 @@ export default {
         width: 4px;
         height: 8px;
         display: inline-block;
-        background: rgba(249, 249, 249, 1) url('../../../../assets/images/systen-Triangle.png') no-repeat;
+        background: rgba(249, 249, 249, 1) url('../../../../../assets/images/systen-Triangle.png') no-repeat;
         margin-left: 10px;
       }
     }

@@ -195,7 +195,7 @@
 <script>
 import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
 import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
-import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/src/components/FirtstOptionDetail.vue'
 import Type from '@src/type'
 
 export default {

@@ -25,7 +25,7 @@
 <script>
 import get from 'lodash/get'
 
-import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
+import TheTransferDetail from '@src/views/record/transfer/src/TheTransferDetail'
 
 export default {
   name: 'RecordReferral',

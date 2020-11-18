@@ -281,6 +281,8 @@
 
 <script>
 export default {
+  inject: ['provideGetTab', 'provideAddTab'],
+
   data() {
     return {
       view: {
@@ -393,6 +395,16 @@ export default {
     })
   },
 
+  computed: {
+    getTab() {
+      return this.provideGetTab
+    },
+
+    addTab() {
+      return this.provideAddTab
+    }
+  },
+
   methods: {
     changeActive(type) {
       if (this.view.model.type !== this.source.state[type]) {
@@ -476,24 +488,12 @@ export default {
     },
 
     showPatientDetail(row) {
-      const currentMenu = {
-        id: 1,
-        pid: null,
-        closable: true,
-        name: row.patientRemarks || row.patientName || row.patientWxName,
-        title: row.patientRemarks || row.patientName || row.patientWxName,
-        path: '/patient/patientDetail/' + row.patientId,
-        icon: 'icon_nav_icon_homecopy'
-      }
-
-      // 将当前选中的项，添加到 tab
-      this.$store.commit('layout/pushTab', currentMenu)
-
-      // 选中当前 tab
-      this.$store.commit('layout/selectTab', currentMenu.path)
+      const currentMenu = this.getTab('PatientDetail')
+      currentMenu.menuName = row.patientRemarks || row.patientName || row.patientWxName
+      currentMenu.menuRoute = '/patient/patientDetail/' + row.patientId
 
       // 跳转当前路由
-      this.$router.push(currentMenu.path)
+      this.addTab(currentMenu)
     }
   }
 }

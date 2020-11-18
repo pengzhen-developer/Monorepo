@@ -24,6 +24,7 @@ const getDynamicRoutes = (accountMenu) => {
   accountMenu?.forEach((route) => {
     if (route.menuPath) {
       const component = () => import(`@src/${route.menuPath}/index.js`)
+
       routeDynamic[0].children[0].children.push({
         path: route.menuRoute,
         name: route.menuAlias,

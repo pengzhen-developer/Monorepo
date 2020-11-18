@@ -7,6 +7,7 @@
                  v-on:click="sendRecipe"
                  round>开具新处方</el-button>
       <el-button type="primary"
+                 v-on:click="showPatientDetail"
                  round
                  plain>查看档案详情</el-button>
     </div>
@@ -59,15 +60,37 @@
 <script>
 import { mutations, store } from '../../store'
 export default {
+  inject: ['provideGetTab', 'provideAddTab'],
   computed: {
     recipeList() {
       return store.patientRecipeList
+    },
+
+    patientInfo() {
+      return store.activePatient
+    },
+
+    getTab() {
+      return this.provideGetTab
+    },
+
+    addTab() {
+      return this.provideAddTab
     }
   },
 
   methods: {
     sendRecipe() {
       mutations.setShowWriteRecipe(true)
+    },
+
+    showPatientDetail() {
+      const currentMenu = this.getTab('PatientDetail')
+      currentMenu.menuName = this.patientInfo.name
+      currentMenu.menuRoute = '/patient/patientDetail/' + this.patientInfo.patientId
+
+      // 跳转当前路由
+      this.addTab(currentMenu)
     }
   }
 }

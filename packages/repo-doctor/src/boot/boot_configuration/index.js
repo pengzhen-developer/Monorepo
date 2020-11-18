@@ -149,6 +149,18 @@ export default {
         virtual: 0
       },
       {
+        // 患者 - 患者详情
+        id: '34',
+        closable: true,
+        menuName: '患者详情',
+        menuRoute: '/patient/patientDetail/:id',
+        menuPath: 'views/patient/patientDetail',
+        parentId: '3',
+        enable: true,
+        menuAlias: 'PatientDetail',
+        virtual: 1
+      },
+      {
         id: '4',
         closable: true,
         menuIcon: 'icon_ic_inquiry',

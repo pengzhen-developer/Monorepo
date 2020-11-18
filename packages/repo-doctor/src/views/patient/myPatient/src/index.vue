@@ -81,6 +81,9 @@ export default {
   components: {
     AddPatient
   },
+
+  inject: ['provideGetTab', 'provideAddTab'],
+
   data() {
     return {
       view: {
@@ -96,6 +99,16 @@ export default {
       source: {
         group_name: []
       }
+    }
+  },
+
+  computed: {
+    getTab() {
+      return this.provideGetTab
+    },
+
+    addTab() {
+      return this.provideAddTab
     }
   },
 
@@ -121,23 +134,12 @@ export default {
       this.$refs.table.loadData({ fetch, params })
     },
     showDetail(row) {
-      const currentMenu = {
-        id: 1,
-        pid: null,
-        closable: true,
-        name: row.name,
-        title: row.name,
-        path: '/patient/patientDetail/' + row.patientNo
-      }
-
-      // 将当前选中的项，添加到 tab
-      this.$store.commit('layout/pushTab', currentMenu)
-
-      // 选中当前 tab
-      this.$store.commit('layout/selectTab', currentMenu.path)
+      const currentMenu = this.getTab('PatientDetail')
+      currentMenu.menuName = row.name
+      currentMenu.menuRoute = '/patient/patientDetail/' + row.patientNo
 
       // 跳转当前路由
-      this.$router.push(currentMenu.path)
+      this.addTab(currentMenu)
     },
     updateList() {
       const fetch = Peace.service.patient.patientListPc

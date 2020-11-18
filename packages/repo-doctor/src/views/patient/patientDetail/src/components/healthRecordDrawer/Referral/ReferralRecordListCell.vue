@@ -48,7 +48,7 @@
 <script>
 import { getReferralStatus, getReferralStatusTextBorderColor, getReferralStatusBgColor } from '@src/views/filters/index'
 
-import TheTransferDetail from '@src/views/record/transfer/TheTransferDetail'
+import TheTransferDetail from '@src/views/record/transfer/src/TheTransferDetail'
 
 export default {
   props: {

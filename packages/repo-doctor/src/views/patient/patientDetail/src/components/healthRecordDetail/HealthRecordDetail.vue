@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import RecordAll from './../components/RecordAll'
+import RecordAll from './../RecordAll'
 export default {
   components: {
     RecordAll

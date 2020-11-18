@@ -25,7 +25,7 @@
 
 <script>
 //
-import FirstOptionDetail from '@src/views/patient/patientDetail/components/FirtstOptionDetail.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/src/components/FirtstOptionDetail.vue'
 
 export default {
   props: {
