@@ -17,8 +17,6 @@ import drag from '@src/library/directive/drag'
 import focus from '@src/library/directive/focus'
 
 // type
-import config from '@src/config'
-// type
 import type from '@src/type'
 // service
 import service from '@src/service'
@@ -58,7 +56,6 @@ export default async ({ Vue }) => {
   })
 
   /* eslint-disable */
-  Peace.config = config
   Peace.type = type
   Peace.service = service
   Peace.util.formatDuration = formatDuration

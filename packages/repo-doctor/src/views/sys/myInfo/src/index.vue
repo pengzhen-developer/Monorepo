@@ -81,8 +81,8 @@ export default {
   data() {
     return {
       api: {
-        uploadAvatar: Peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadAvatar',
-        uploadCertFile: Peace.config.api.base + '/' + 'client/v1/Personalcenter/uploadCertFile'
+        uploadAvatar: process.env.VUE_APP_API_BASE + '/' + 'client/v1/Personalcenter/uploadAvatar',
+        uploadCertFile: process.env.VUE_APP_API_BASE + '/' + 'client/v1/Personalcenter/uploadCertFile'
       },
 
       extraHeaders: {

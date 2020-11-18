@@ -591,7 +591,6 @@ export default {
             //TODO: 会诊当前版本区分处理
             params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
             params.diagnose = params.diagnose.replace(/,/g, ' | ')
-            debugger
             Peace.service.inquiry.offlineAddCase(params).then((res) => {
               Peace.util.success(res.msg)
 

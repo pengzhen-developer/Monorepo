@@ -2,7 +2,7 @@
   <div class="body">
     <div class="title">
       <div class="center">
-        <span>{{ Peace.config.system.title }}</span>
+        <span>{{ window.configuration.application.title }}</span>
       </div>
     </div>
 
@@ -161,7 +161,6 @@ export default {
 
         Service.login(this.model)
           .then((res) => {
-            debugger
             // 储存用户信息
             Util.user.setUserInfo(res.data)
             Util.user.setUserPhone(res.data.list.docInfo.tel)

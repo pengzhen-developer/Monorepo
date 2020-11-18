@@ -93,26 +93,22 @@ export default {
         return
       }
 
-      // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu)
+      const tabs = this.$store.state.tabs.tabs
+      const currentTab = tabs.find((menu) => menu.id === tab.name)
 
-      // 选中最后 tab
-      const currentMenu = menuListSource.find((menu) => menu.id === tab.name)
-      this.$store.commit('tabs/selectTab', currentMenu)
+      this.$store.commit('tabs/selectTab', currentTab)
     },
 
     tabRemove(name) {
-      // 避免浅拷贝导致数据源被污染
-      const menuListSource = Peace.util.deepClone(window.configuration.routes.layoutNavMenu)
+      const tabs = this.$store.state.tabs.tabs
+      const currentTab = tabs.find((menu) => menu.id === name)
 
-      // 删除当前 tab
-      const currentMenu = menuListSource.find((menu) => menu.id === name)
-      this.$store.commit('tabs/removeTab', currentMenu)
+      this.$store.commit('tabs/removeTab', currentTab)
 
       // 选中最后 tab
       if (this.tabs.length > 0) {
-        const lastMenu = menuListSource.find((menu) => menu.id === this.tabs[this.tabs.length - 1].id)
-        this.$store.commit('tabs/selectTab', lastMenu)
+        const lastTab = tabs.find((menu) => menu.id === this.tabs[this.tabs.length - 1].id)
+        this.$store.commit('tabs/selectTab', lastTab)
       }
     }
   }
