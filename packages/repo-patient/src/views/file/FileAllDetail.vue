@@ -17,7 +17,7 @@
                       height="13"
                       :name="require('@src/assets/images/file/ic_girls_white.png')" />
             <span style="font-size: 14px; color: #fff; margin: 0 8px;">
-              {{ patientInfo.age + '岁' }}
+              {{ patientInfo.age }}
             </span>
             <van-tag color="#06B8AE"
                      text-color="#FFFFFF">门诊</van-tag>
@@ -108,7 +108,7 @@ export default {
     getHealthCase() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.health.getHealthCase(params).then(res => {
+      peace.service.health.getHealthCase(params).then((res) => {
         this.loading = true
         this.caseInfo = res.data.caseInfo
         this.patientInfo = res.data.patientInfo
