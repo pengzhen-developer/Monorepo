@@ -37,6 +37,24 @@ export default {
       return res
     })
   },
+  /**
+   * 获处方信息
+   * @param { string } jztClaimNo 平台处方编号
+   * @returns { Object }
+   */
+  getPrescriptionInfo(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Prescription/GetPrescriptionInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
 
   /**
    * 获取订单详情

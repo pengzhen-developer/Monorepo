@@ -198,8 +198,7 @@
                          fixed="right">
           <template slot-scope="scope">
 
-            <el-button :disabled="!scope.row.PrescriptionImageUrl"
-                       type="text"
+            <el-button type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
 
             <el-button v-if="scope.row.DrugCode"
@@ -216,13 +215,12 @@
       </peace-table>
     </div>
 
-    <!-- 原始处方 -->
-    <PeaceDialog title="原始处方"
+    <!-- 处方详情 -->
+    <PeaceDialog title="处方详情"
                  :visible.sync="dialog.visible"
                  append-to-body
-                 v-show="dialog.visible&&dialog.data.show">
-      <el-image v-bind:src="dialog.data.prescriptionImageUrl"
-                v-on:load="onLoad"></el-image>
+                 v-show="dialog.visible">
+      <prescriptionDetail v-bind:prescriptionInfo="dialog.data"></prescriptionDetail>
     </PeaceDialog>
 
     <PeaceDialog title="订单详情"
@@ -330,7 +328,6 @@
                    v-on:click="closeChangeOrderNoDialog">取消</el-button>
       </div>
     </PeaceDialog>
-
   </div>
 </template>
 
@@ -339,12 +336,13 @@ import Service from './service'
 import { date } from 'quasar'
 
 import OrderDetail from '@src/views/prescription/order-detail'
-
+import prescriptionDetail from './components/prescription-detail'
 export default {
   name: 'OrderList',
 
   components: {
-    OrderDetail
+    OrderDetail,
+    prescriptionDetail
   },
 
   data() {
@@ -516,8 +514,11 @@ export default {
     },
 
     showCancelRecord(row) {
-      this.dialog.data.prescriptionImageUrl = row.PrescriptionImageUrl
-      this.dialog.visible = true
+      // this.dialog.data.JZTClaimNo = row.JZTClaimNo
+      Service.getPrescriptionInfo({ JZTClaimNo: row.JZTClaimNo }).then((res) => {
+        this.dialog.data = Object.assign({}, res.data)
+        this.dialog.visible = true
+      })
     },
 
     showLogistics(row) {
