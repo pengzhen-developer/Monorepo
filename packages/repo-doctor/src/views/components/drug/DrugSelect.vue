@@ -251,12 +251,22 @@ export default {
     },
 
     checkCommonlyPrescription(row) {
-      Peace.util.confirm('选择常用处方，将清除已选药品', '提示', {}, () => {
+      if (this.drugList && this.drugList.length > 0) {
+        Peace.util.confirm('选择常用处方，将清除已选药品', '提示', {}, () => {
+          const drugList = Peace.util.deepClone(row.drugList)
+          drugList.forEach((drug) => {
+            drug.drugNum = drug.drugNum ?? undefined
+            drug.singleDose = drug.singleDose ?? undefined
+            drug.useDrugDays = drug.useDrugDays ?? undefined
+          })
+
+          this.drugList = []
+          this.drugList = drugList
+
+          this.visible = false
+        })
+      } else {
         const drugList = Peace.util.deepClone(row.drugList)
-
-        // el-input-number bug
-        // v-model 绑定值为 null 时 ，绑定之被更新为组件最小值， undefined 则正常
-
         // null to undefined
         drugList.forEach((drug) => {
           drug.drugNum = drug.drugNum ?? undefined
@@ -268,7 +278,7 @@ export default {
         this.drugList = drugList
 
         this.visible = false
-      })
+      }
     },
 
     onAddDrug(drug) {

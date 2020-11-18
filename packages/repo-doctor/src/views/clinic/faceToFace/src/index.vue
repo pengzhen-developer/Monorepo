@@ -1,26 +1,23 @@
 <template>
   <div class="inquiry flex">
-    <!-- 在线咨询会话列表 -->
+
+    <!-- 面诊患者列表 -->
     <SessionList class="session-list"></SessionList>
 
-    <!-- 在线咨询会话详情 -->
+    <!-- 患者处方详情 -->
     <SessionDetail class="session-detail"></SessionDetail>
 
-    <!-- 在线咨询患者详情 -->
-    <SessionExtend class="session-extend"></SessionExtend>
   </div>
 </template>
 
 <script>
 import SessionList from './components/SessionList'
 import SessionDetail from './components/SessionDetail'
-import SessionExtend from './components/SessionExtend'
 
 export default {
   components: {
     SessionList,
-    SessionDetail,
-    SessionExtend
+    SessionDetail
   }
 }
 </script>
@@ -45,6 +42,7 @@ export default {
     border-right: 1px solid #efefef;
     border-left: none;
   }
+<<<<<<< HEAD
 
   .session-extend {
     width: 230px;
@@ -54,5 +52,7 @@ export default {
     border-right: 1px solid #efefef;
     border-left: none;
   }
+=======
+>>>>>>> 添加患者界面
 }
 </style>

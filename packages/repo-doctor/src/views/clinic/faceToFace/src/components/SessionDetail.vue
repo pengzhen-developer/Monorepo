@@ -1,9 +1,27 @@
 <template>
-  <div>Deetail</div>
+  <div>
+    <SendReceive v-if="showWriteRecipe"></SendReceive>
+    <ReceiveList v-else></ReceiveList>
+  </div>
 </template>
 
 <script>
-export default {}
+import SendReceive from './SendRecipe/index'
+import ReceiveList from './RecipeList/index'
+import { store } from '../store'
+
+export default {
+  components: {
+    SendReceive,
+    ReceiveList
+  },
+
+  computed: {
+    showWriteRecipe() {
+      return store.showWriteRecipe
+    }
+  }
+}
 </script>
 
 <style>
