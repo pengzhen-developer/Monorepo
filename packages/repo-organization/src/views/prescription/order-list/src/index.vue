@@ -8,7 +8,7 @@
                v-on:submit.native.prevent>
 
         <el-form-item label="订单编号">
-          <el-input v-model="model.OrderNumber"
+          <el-input v-model.trim="model.OrderNumber"
                     placeholder="请输入订单编号"
                     clearable></el-input>
         </el-form-item>
