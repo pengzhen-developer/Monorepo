@@ -27,20 +27,24 @@
                icon="el-icon-circle-plus-outline">添加患者</el-button>
     <hr />
 
-    <PeaceTable pagination
-                ref="table">
+    <peace-table pagination
+                 ref="table">
+
       <peace-table-column label="患者姓名"
                           prop="name"
                           width="140"></peace-table-column>
+
       <peace-table-column label="基本信息"
                           width="140">
         <template slot-scope="scope">
           <span>{{ `${scope.row.sex} , ${scope.row.age}岁` }}</span>
         </template>
       </peace-table-column>
+
       <peace-table-column label="手机号码"
                           prop="tel"
                           width="120"></peace-table-column>
+
       <peace-table-column label="疾病标签"
                           min-width="340"
                           show-overflow-tooltip>
@@ -48,20 +52,21 @@
           <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
         </template>
       </peace-table-column>
-      <peace-table-column :formatter="
-          (r, c, v) => {
-            return this.source.group_name.find(item => item.key === v).source
-          }
-        "
-                          label="患者来源"
-                          prop="source"></peace-table-column>
+
+      <peace-table-column label="患者来源">
+        <template slot-scope="scope">
+          <span>{{ getSourceStr(scope.row.source) }}</span>
+        </template>
+
+      </peace-table-column>
+
       <peace-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">查看详情</el-button>
         </template>
       </peace-table-column>
-    </PeaceTable>
+    </peace-table>
 
     <peace-dialog :before-close="handleClose"
                   :visible.sync="addPatientDialog.visible"
@@ -88,9 +93,9 @@ export default {
     return {
       view: {
         model: {
-          name: undefined,
-          source: undefined,
-          group_name: undefined
+          name: '',
+          source: '',
+          group_name: ''
         }
       },
       addPatientDialog: {
@@ -118,11 +123,13 @@ export default {
     addPatient() {
       this.addPatientDialog.visible = true
     },
+
     get() {
       const fetch = Peace.service.patient.patientListPc
-      const params = this.view.model
+      const params = Object.assign({}, this.view.model)
       this.$refs.table.loadData({ fetch, params })
     },
+
     showDetail(row) {
       const currentMenu = this.provideGetTab('PatientDetail')
       currentMenu.menuName = row.name
@@ -131,11 +138,18 @@ export default {
       // 跳转当前路由
       this.provideAddTab(currentMenu)
     },
+
+    getSourceStr(key) {
+      const item = this.source.group_name.find((item) => item.key === key)
+      return item.source
+    },
+
     updateList() {
       const fetch = Peace.service.patient.patientListPc
       const params = this.view.model
       this.$refs.table.reloadData({ fetch, params })
     },
+
     handleClose() {
       const tmp = this.$refs.checkInput.isShouldSave()
       if (tmp) {
