@@ -1,13 +1,5 @@
 <template>
   <div>
-    <iframe id="geoPage"
-            width=0
-            height=0
-            frameborder=0
-            style="display:none;"
-            scrolling="no"
-            :src="'https://apis.map.qq.com/tools/geolocation?key=' + key + '&referer=myapp'">
-    </iframe>
     <div class="top">
       <div class="button"
            @click.prevent="goMapPage">{{locationStr}}</div>
@@ -100,88 +92,146 @@ export default {
       key: config.MAP.key,
       phaList: [],
       phaAddrList: [],
-      userLocation: '',
+      userLocation: {
+        lat: 0,
+        lng: 0
+      },
+      JZTClaimNo: '',
       isGet: false,
-      messageOn: false,
       locationStr: '我的位置'
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('message', () => {})
-    peace.cache.remove('location')
+
+  destroyed() {
+    $peace.$off('location')
   },
-  created() {
-    peace.cache.set('location', null)
-  },
-  activated() {
-    let location = peace.cache.get('location')
-    if (location != null) {
-      location = peace.util.decode(location)
-      //从地图页面返回
-      let { Latitude, Longitude, addr, JZTClaimNo } = location
-      this.userLocation = { lat: Latitude, lng: Longitude }
-      this.locationStr = addr
-      this.messageOn = true
-      this.getPhaList(JZTClaimNo)
-    }
-  },
-  mounted() {
+
+  async mounted() {
     /* eslint-disable */
-
-    // this.key = config.MAP.key;
+    $peace.$on('location', this.mapCallback)
+    await this.getMapScript()
+    await this.getLocation()
     let paramsRoute = peace.util.decode(this.$route.params.json)
-
-    if (paramsRoute.addr) {
-      //从地图页面返回
-      let { Latitude, Longitude, addr, JZTClaimNo } = paramsRoute
-      this.userLocation = { lat: Latitude, lng: Longitude }
-      this.locationStr = addr
-      this.messageOn = true
-      this.getPhaList(JZTClaimNo)
-    } else {
-      let { claimNo } = paramsRoute
-      window.addEventListener(
-        'message',
-        (event) => {
-          // 接收位置信息
-          if (!this.messageOn) {
-            if (event.data && event.data != 'isAxure') {
-              var loc = event.data
-              // console.log(loc)
-              let lat = loc.lat
-              let lng = loc.lng
-              this.userLocation = { lat, lng }
-              this.messageOn = true
-              this.getPhaList(claimNo)
-            }
-          }
-        },
-        false
-      )
-    }
+    this.JZTClaimNo = paramsRoute.JZTClaimNo || paramsRoute.claimNo
   },
-  updated() {},
+
   methods: {
+    mapCallback(params) {
+      if (params) {
+        let { lat, lng, addr, JZTClaimNo } = params
+        this.userLocation = { lat: lat, lng: lng }
+        this.JZTClaimNo = JZTClaimNo
+        this.locationStr = addr
+        this.getPhaList()
+      }
+    },
+    //H5 location获取用户gps定位
+    getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.successCallBack, this.errorCallBack)
+      } else {
+        peace.util.alert('该浏览器不支持获取地理位置')
+      }
+    },
+    async successCallBack(pos) {
+      let crd = pos.coords
+      this.userLocation = await this.convertorCoordinate(crd.latitude, crd.longitude)
+      console.log('userLocation', this.userLocation)
+      this.getPhaList()
+    },
+    errorCallBack(error) {
+      this.getPhaList()
+      console.log('Error code ' + error.code + '. ' + error.message)
+      // switch (error.code) {
+      //   case error.PERMISSION_DENIED:
+      //     alert('定位失败,用户拒绝请求地理定位')
+      //     break
+      //   case error.POSITION_UNAVAILABLE:
+      //     alert('定位失败,位置信息是不可用')
+      //     break
+      //   case error.TIMEOUT:
+      //     alert('定位失败,请求获取用户位置超时')
+      //     break
+      //   case error.UNKNOWN_ERROR:
+      //     alert('定位失败,定位系统失效')
+      //     break
+      // }
+    },
+    getMapScript() {
+      const qqMapKey = this.key
+      if (!global.QMap) {
+        global.QMap = {}
+        global.QMap._preloader = new Promise((resolve) => {
+          global._initQMap = function() {
+            resolve(global.QMap)
+            global.document.body.removeChild(script)
+            global.QMap._preloader = null
+            global._initQMap = null
+          }
+          const script = document.createElement('script')
+          global.document.body.appendChild(script)
+          script.src = `https://map.qq.com/api/js?v=2.exp&key=${qqMapKey}&libraries=convertor&callback=_initQMap`
+        })
+        return global.QMap._preloader
+      } else if (!global.QMap._preloader) {
+        return Promise.resolve(global.QMap)
+      } else {
+        return global.QMap._preloader
+      }
+    },
+    initMap() {
+      if (!this.map) {
+        // var center = await this.getCenter();
+        this.map = new qq.maps.Map(this.$refs.jkMap, {
+          // center: center,
+          // 缩放类型，可设置以地图中心点或双指中心点为焦点（移动端）:qq.maps.MapZoomType.DEFAULT,中心点位置：qq.maps.MapZoomType.CENTER
+          mapZoomType: qq.maps.MapZoomType.DEFAULT,
+          // 地图缩放控件
+          zoomControl: false,
+          minZoom: 10,
+          maxzoom: 18,
+          zoom: 16,
+          // 用作地图 div 的背景颜色。当用户进行平移时，如果尚未载入图块，则显示此颜色
+          backgroundColor: '#f6f7f9',
+          // 平移控件
+          panControl: false,
+          // 地图类型控件
+          mapTypeControl: false,
+          // 地图比例尺控件
+          scaleControl: false
+        })
+      }
+    },
+    // 坐标 GPS转QQ
+    convertorCoordinate(latitude, longitude) {
+      return new Promise((resolve) => {
+        new qq.maps.convertor.translate(new qq.maps.LatLng(latitude, longitude), 1, (res) => {
+          resolve(res[0])
+        })
+      })
+    },
+    //跳转地图选点页面
     goMapPage() {
       let paramsRoute = peace.util.decode(this.$route.params.json)
-      // console.log(paramsRoute);
       let JZTClaimNo = paramsRoute.claimNo || paramsRoute.JZTClaimNo
       let familyId = paramsRoute.familyId
       let json = {
         JZTClaimNo,
-        familyId
+        familyId,
+        lat: this.userLocation.lat,
+        lng: this.userLocation.lng
       }
       json = peace.util.encode(json)
       this.$router.push(`/drug/selectMap/${json}`)
     },
-    showErr() {},
-    getPhaList(claimNo) {
-      let JZTClaimNo = claimNo
+    //获取药房列表
+    getPhaList() {
       let params = {
         Latitude: this.userLocation.lat,
         Longitude: this.userLocation.lng,
-        JZTClaimNo
+        JZTClaimNo: this.JZTClaimNo
       }
+      console.log(params)
       peace.service.patient.getStoresList(params).then((res) => {
         if (res.data == null) {
           this.phaList = []
@@ -205,13 +255,12 @@ export default {
           }
         }
 
-        this.messageOn = true
         this.mapDistance()
       })
     },
+    //距离转换
     mapDistance: function() {
       let userLoc = this.userLocation
-      //console.log('location', this.userLocation);
       this.phaAddrList.map((item) => {
         let loc = item.location
         item.distance = this.getDistance(loc.lat, loc.lng, userLoc.lat, userLoc.lng)
@@ -243,6 +292,7 @@ export default {
       }
       return Number(s).toFixed(2) + 'km'
     },
+    //跳转预售订单页面
     goDrugOrderBeforePage: function(index) {
       let item = this.phaList[index]
       const params = peace.util.decode(this.$route.params.json)

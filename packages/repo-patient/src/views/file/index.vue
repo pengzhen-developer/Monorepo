@@ -211,7 +211,6 @@ export default {
     changeSwipeTrack(index) {
       this.index = index
       if (this.$refs.swipe) {
-        console.log(this.$refs.swipe)
         if (this.myFamilyList) {
           this.familyId = this.myFamilyList[index].familyId
           this.idCard = this.myFamilyList[index].idCard

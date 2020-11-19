@@ -13,7 +13,9 @@ module.exports = {
     // 框架
     $peace: true,
     // 微信
-    WeixinJSBridge: true
+    WeixinJSBridge: true,
+    //qq
+    qq: true
   },
   parserOptions: {
     parser: 'babel-eslint'

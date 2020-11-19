@@ -7,12 +7,13 @@
       <span @click="save"
             class="save">确定</span>
     </div>
+    <!-- <div ref="jkMap"></div> -->
     <iframe id="mapPage"
             width="100%"
             height="100%"
             frameborder=0
             class="frame"
-            :src="'https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=' + key + '&referer=hospital'">
+            :src="src">
     </iframe>
   </div>
 </template>
@@ -24,32 +25,31 @@ export default {
   name: 'DrugMapSelect',
   data() {
     return {
-      key: '',
-      loc: null
+      loc: null,
+      src: ''
     }
   },
   beforeDestroy() {
     window.removeEventListener('message', () => {})
   },
-  updated() {
-    console.log('updated')
-  },
-  
   mounted() {
-    let that = this
-    this.key = config.MAP.key
-    // const params = peace.util.decode(this.$route.params.json);
-    // console.log(params);
+    const key = config.MAP.key
+    const params = peace.util.decode(this.$route.params.json)
+    if (params.lat && params.lng) {
+      const coord = params.lat + ',' + params.lng
+      this.src = `https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=${key}&coord= ${coord} &referer=hospital`
+    } else {
+      this.src = `https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=${key} &referer=hospital`
+    }
+
     window.addEventListener(
       'message',
-      function(event) {
+      (event) => {
         // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
         var loc = event.data
-        // console.log('message111');
         if (loc && loc.module == 'locationPicker') {
           //防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
-          // console.log('location', loc);
-          that.loc = loc
+          this.loc = loc
         }
       },
       false
@@ -60,31 +60,17 @@ export default {
       this.$router.go(-1)
     },
     save() {
-      // console.log(this.loc);
-      
-      // if (this.loc) {
-      //   let routeParam = peace.util.decode(this.$route.params.json)
-      //   let addr = this.loc.poiname
-      //   let Latitude = this.loc.latlng.lat
-      //   let Longitude = this.loc.latlng.lng
-      //   let params = { addr, Latitude, Longitude, ...routeParam }
-      //   params = peace.util.encode(params)
-      //   this.$router.push(`/drug/list/${params}`)
-      // } else {
-      //   this.$router.go(-1)
-      // }
-      let params=null
+      let params = null
       if (this.loc) {
         let routeParam = peace.util.decode(this.$route.params.json)
         let addr = this.loc.poiname
-        let Latitude = this.loc.latlng.lat
-        let Longitude = this.loc.latlng.lng
-        params = { addr, Latitude, Longitude, ...routeParam }
-        params = peace.util.encode(params)
-      }else{
-        params=null
+        let lat = this.loc.latlng.lat
+        let lng = this.loc.latlng.lng
+        params = { addr, lat, lng, ...routeParam }
+      } else {
+        params = null
       }
-      peace.cache.set('location',params)
+      $peace.$emit('location', params)
       this.$router.go(-1)
     }
   }
