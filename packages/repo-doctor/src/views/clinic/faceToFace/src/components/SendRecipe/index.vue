@@ -2,10 +2,10 @@
   <div>
     <div class="patient-title-style">{{ patientInfo.name }}</div>
 
-    <el-alert type="success"
-              v-bind:closable="false">
+    <el-alert v-bind:closable="false">
       <div slot="title">
-        <span>开处方</span>
+        <span class="text-grey-333"
+              style="font-size: 14px;">开处方</span>
         <i v-on:click="close"
            class="el-alert__closebtn el-icon-error"></i>
       </div>
@@ -13,11 +13,11 @@
 
     <div class="q-px-md q-mt-sm">
       <div class="q-mb-md text-center">
-        <p class="text-subtitle1">{{ caseInfo.doctorInfo.doctorName }}</p>
+        <p class="text-subtitle1">{{ caseInfo.doctorInfo.hospitalName }}</p>
         <p class="text-h5">普通处方笺</p>
       </div>
 
-      <div class="row q-mb-md">
+      <div class="row q-mb-md items-center">
 
         <div class="col">
           <span class="text-grey-7">姓名</span>
@@ -44,11 +44,10 @@
         </div>
 
         <div class="col row items-center">
-          <span class="text-grey-7 text-justify"
-                style="width: 60px;">体重</span>
+          <span class="text-grey-7 text-justify">体重</span>
           <span class="q-mx-sm">：</span>
 
-          <div class="flex">
+          <div class="row">
             <el-input-number style="width: 100px;"
                              controls-position="right"
                              v-bind:min="0"
@@ -69,7 +68,7 @@
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">诊断</span>
-          <span class="q-mx-sm">：</span>
+          <span class="q-mx-sm require-style">：</span>
 
           <template v-if="diagnoseList && diagnoseList.length > 0">
             <el-tag :key="item.id"
@@ -93,7 +92,7 @@
         <div class="col-12 flex items-center">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">过敏史</span>
-          <span class="q-mx-sm">：</span>
+          <span class="q-mx-sm require-style">：</span>
 
           <template v-if="allergyHistory && allergyHistory.length > 0">
             <el-tag :key="item.id"
@@ -116,7 +115,7 @@
         <div class="col-12 flex items-start">
           <span class="text-grey-7 text-justify"
                 style="width: 60px;">主诉</span>
-          <span class="q-mx-sm">：</span>
+          <span class="q-mx-sm require-style">：</span>
 
           <el-input class="col"
                     type="textarea"
@@ -625,6 +624,14 @@ export default {
   font-size: 18px;
   margin: 0px;
 }
+
+.require-style {
+  &::after {
+    content: '*';
+    color: red;
+  }
+}
+
 .text-justify {
   text-align: justify;
   text-align-last: justify;

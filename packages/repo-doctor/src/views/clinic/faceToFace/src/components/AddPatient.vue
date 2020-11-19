@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 1000px">
+  <div>
     <el-form :model="ruleForm"
              :rules="rules"
              label-position="right"
