@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.9.4",
-    "@jk998/identity": "^0.2.2",
+    "@jk998/identity": "^0.2.4",
     "@jk998/library": "^0.1.20",
     "@jk998/peace-element-ui": "^0.1.8",
     "@quasar/extras": "^1.0.0",

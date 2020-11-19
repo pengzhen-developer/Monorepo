@@ -891,35 +891,17 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@jk998/identity@^0.2.2":
-  version "0.2.2"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
-=======
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.2.tgz#823e7440d452500a02798d201a788f0acc709718"
->>>>>>> e75f635999e2a77e3918218f76f71313d56a5d94
-  integrity sha512-LS1swhR6oFA7xV8LirsR7inac2Cwe6vrdMZOJw9zL3ob6Gte2Z38dhNL0v5lZvJnvDImSXbMri3cG4IHKrtsxw==
+"@jk998/identity@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
+  integrity sha512-k6H1CP4qDMWNWsNYl2IWNTCuiHUNR2PK1B5Mj+UJkR7vComImS2LiIJchue3eKvpcz8HS3FPglBAo7HhAUvwwA==
   dependencies:
-    "@jk998/library" "^0.1.17"
+    "@jk998/library" "^0.1.20"
     crypto-js "^4.0.0"
-
-"@jk998/library@^0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.17.tgz#f9302de4f3a45dfc86c50138bfa473e717b9d5bd"
-  integrity sha512-5Y0JlhURY1+c/VuYSBpvrtFXNLGh2cjOs/VBwO2Zb9/IFzV+HtyYR+zjy6OsmKoQ7o7gqgie8rDBgPELmYd7uQ==
-  dependencies:
-    axios "^0.20.0"
-    dayjs "^1.8.35"
-    js-base64 "^3.5.2"
-    numeral "^2.0.6"
 
 "@jk998/library@^0.1.20":
   version "0.1.20"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@jk998/library/-/library-0.1.20.tgz#c1798c3313f94045379af8b4838417fd63e546b9"
-=======
   resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.20.tgz#c1798c3313f94045379af8b4838417fd63e546b9"
->>>>>>> e75f635999e2a77e3918218f76f71313d56a5d94
   integrity sha512-qxusXZrlRuR3duhGv+Hl+f17wnEs2jhBX02mv7qVtWRfGH76jnSdZ057jVPTijVpYl5Jlsfd3AMJ19fjN/X38A==
   dependencies:
     axios "^0.20.0"
@@ -929,11 +911,7 @@
 
 "@jk998/peace-element-ui@^0.1.8":
   version "0.1.8"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@jk998/peace-element-ui/-/peace-element-ui-0.1.8.tgz#6bcfa266a6a39d91a4827a4dbc4c3430a0afc16e"
-=======
   resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.8.tgz#6bcfa266a6a39d91a4827a4dbc4c3430a0afc16e"
->>>>>>> e75f635999e2a77e3918218f76f71313d56a5d94
   integrity sha512-wA9ga9BjM8R4FZ5m2UupJBBEOi/H0pzDcqAkHmG0U8m1QEEl5r/LeMrsKxF40XhjBbGoiH7kibipir51spkAgA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
