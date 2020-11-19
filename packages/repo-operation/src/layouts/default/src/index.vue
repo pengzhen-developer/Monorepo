@@ -146,7 +146,9 @@ export default {
     },
 
     getTab(index) {
-      const currentMenu = this.allMenuList.find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
+      const currentMenu = Peace.util
+        .deepClone(this.allMenuList)
+        .find((menu) => menu.id.toString() === index.toString() || menu.menuAlias.toString() === index.toString())
 
       return currentMenu
     },
