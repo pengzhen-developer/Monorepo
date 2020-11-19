@@ -1,6 +1,5 @@
 <template>
-  <div class="q-mx-20 column"
-       v-if="recipeList && recipeList.length > 0">
+  <div class="q-mx-20 column">
 
     <div class="q-mt-30 q-mb-12">
       <el-button type="primary"
@@ -14,53 +13,76 @@
 
     <peace-table ref="table"
                  :data="recipeList">
+
       <peace-table-column align="center"
                           label="处方编号"
-                          prop="prescriptionNo"
-                          width="160px"></peace-table-column>
+                          min-width="160px">
+        <template slot-scope="scope">
+          <el-button @click="showDetail(scope.row)"
+                     type="text">{{scope.row.prescriptionNo}}</el-button>
+        </template>
+      </peace-table-column>
 
       <peace-table-column align="center"
                           label="患者姓名"
                           prop="patientName"
-                          width="100px"></peace-table-column>
+                          min-width="100px"></peace-table-column>
 
       <peace-table-column align="center"
                           label="性别"
                           prop="sex"
-                          width="100px"></peace-table-column>
+                          min-width="100px"></peace-table-column>
 
       <peace-table-column align="center"
                           label="年龄"
                           prop="age"
-                          width="100px"></peace-table-column>
+                          min-width="100px"></peace-table-column>
 
       <peace-table-column align="center"
                           label="身份证号"
                           prop="idCard"
-                          width="160px"></peace-table-column>
+                          min-width="160px"></peace-table-column>
 
       <peace-table-column align="center"
                           label="处方状态"
                           prop="status"
-                          width="100px"></peace-table-column>
+                          min-width="100px"></peace-table-column>
 
       <peace-table-column align="center"
                           label="开具时间"
                           prop="createdTime"
-                          width="160px"></peace-table-column>
+                          min-width="160px"></peace-table-column>
     </peace-table>
 
+    <peace-dialog :visible.sync="dialog.visible"
+                  append-to-body
+                  title="处方详情">
+      <RecipeDetail :data="dialog.data"></RecipeDetail>
+    </peace-dialog>
+
   </div>
 
-  <div v-else>
-    暂无
-  </div>
 </template>
 
 <script>
 import { mutations, store } from '../../store'
+import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 export default {
   inject: ['provideGetTab', 'provideAddTab'],
+
+  components: {
+    RecipeDetail
+  },
+
+  data() {
+    return {
+      dialog: {
+        visible: false,
+        data: {}
+      }
+    }
+  },
+
   computed: {
     recipeList() {
       return store.patientRecipeList
@@ -68,14 +90,6 @@ export default {
 
     patientInfo() {
       return store.activePatient
-    },
-
-    getTab() {
-      return this.provideGetTab
-    },
-
-    addTab() {
-      return this.provideAddTab
     }
   },
 
@@ -85,12 +99,24 @@ export default {
     },
 
     showPatientDetail() {
-      const currentMenu = this.getTab('PatientDetail')
+      const currentMenu = this.provideGetTab('PatientDetail')
       currentMenu.menuName = this.patientInfo.name
-      currentMenu.menuRoute = '/patient/patientDetail/' + this.patientInfo.patientId
+      currentMenu.menuRoute = '/patient/patientDetail/' + this.patientInfo.patientNo
 
       // 跳转当前路由
-      this.addTab(currentMenu)
+      this.provideAddTab(currentMenu)
+    },
+
+    showDetail(row) {
+      this.dialog.visible = true
+      this.dialog.data = {}
+
+      const params = {
+        prescriptionId: row.prescriptionId
+      }
+      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+        this.dialog.data = res.data
+      })
     }
   }
 }

@@ -4,7 +4,7 @@ export default {
    *
    */
   getPatientList() {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'client/face/prescription/patient/getMyList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
@@ -26,8 +26,8 @@ export default {
    * * @param {string} age 年龄
    * * @param {string} tel 手机号
    */
-  addPatientList(params) {
-    const isMock = true
+  addPatient(params) {
+    const isMock = false
 
     const apiPath = 'client/face/prescription/patient/addMyPatient'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
@@ -41,11 +41,11 @@ export default {
   },
 
   /**
-   * 获取患者列表
+   * 发送处方
    *
    */
   sendRecipe(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'client/face/prescription/prescribeprescrip/submit'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
@@ -63,7 +63,7 @@ export default {
    *
    */
   getRecipeList(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'client/face/prescription/prescribeprescrip/getList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
@@ -82,7 +82,7 @@ export default {
    *
    */
   getBaseInfo(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'client/face/prescription/patient/getBaseInfo'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath

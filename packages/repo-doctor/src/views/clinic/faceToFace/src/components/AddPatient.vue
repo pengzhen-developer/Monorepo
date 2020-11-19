@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-width: 1000px">
     <el-form :model="ruleForm"
              :rules="rules"
              label-position="right"
@@ -18,9 +18,9 @@
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
-                    prop="sexStr">
+                    prop="sex">
         <span slot="label">性别</span>
-        <el-input v-model="ruleForm.sexStr"
+        <el-input v-model="ruleForm.sex"
                   :disabled="true"></el-input>
       </el-form-item>
 
@@ -47,12 +47,14 @@
       </el-form-item>
     </el-form>
 
-    <div class="q-pt-16">
+    <div class="q-pt-16"
+         v-if="tips.showTips">
       <div class="tip-style row items-center justify-between">
         <i class="el-icon-warning q-ml-16"
            type="warning"> 该就诊人已是您的患者，无需重复添加！</i>
 
         <el-button type="text"
+                   v-on:click="goToRecipe"
                    class="text-color">去开处方</el-button>
       </div>
     </div>
@@ -60,6 +62,9 @@
 </template>
 
 <script>
+import Service from '../service/index'
+import { mutations } from '../store'
+
 export default {
   data() {
     return {
@@ -68,9 +73,7 @@ export default {
         idCard: '',
         tel: '',
         sex: '',
-        sexStr: '',
-        birthday: '',
-        source: '3'
+        birthday: ''
       },
 
       isSave: false, //是否保存
@@ -83,8 +86,12 @@ export default {
           { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
-        nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
         tel: [{ required: true, message: '请输入手机号码', trigger: 'blur' }]
+      },
+
+      tips: {
+        showTips: false,
+        patientInfo: {}
       }
     }
   },
@@ -95,12 +102,12 @@ export default {
       if (Peace.validate.isIDCard(val)) {
         if (val.length == 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
-          this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
         if (val.length == 18) {
           this.ruleForm.sexKey = val.toString().charAt(16) % 2
-          this.ruleForm.sexStr = this.ruleForm.sexKey ? '男' : '女'
+          this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
       }
@@ -112,17 +119,19 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           //提交
-          if (this.ruleForm.sexStr == '男') {
-            this.ruleForm.sex = 1
-          } else {
-            this.ruleForm.sex = 2
-          }
-          Peace.service.patient.addPatient(this.ruleForm).then((res) => {
-            Peace.util.success(res.msg)
-            if (res.success) {
+          Service.addPatient(this.ruleForm).then((res) => {
+            if (res.success && res.data.status === 1) {
               this.isSave = true
               this.closeMenu()
               this.$emit('updateList')
+            } else if (res.success && res.data.status === 2) {
+              this.tips.showTips = true
+              this.tips.patientInfo = {
+                patientNo: res.data.patientNo,
+                patientId: res.data.patientId,
+                familyId: res.data.familyId,
+                tel: res.data.tel
+              }
             }
           })
         } else {
@@ -139,15 +148,20 @@ export default {
           Peace.validate.isEmpty(this.ruleForm.name) &&
           Peace.validate.isEmpty(this.ruleForm.idCard) &&
           Peace.validate.isEmpty(this.ruleForm.tel) &&
-          Peace.validate.isEmpty(this.ruleForm.sexStr) &&
-          Peace.validate.isEmpty(this.ruleForm.birthday) &&
-          Peace.validate.isEmpty(this.ruleForm.nation)
+          Peace.validate.isEmpty(this.ruleForm.sex) &&
+          Peace.validate.isEmpty(this.ruleForm.birthday)
         )
       }
     },
 
     closeMenu() {
-      this.$emit('handleClose')
+      this.$emit('closeMenu')
+    },
+
+    goToRecipe() {
+      // 选中当前患者
+      mutations.setActivePatient(this.tips.patientInfo)
+      this.closeMenu()
     }
   }
 }

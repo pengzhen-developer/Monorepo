@@ -26,7 +26,7 @@ export default {
 .inquiry {
   height: calc(100vh - 56px - 40px - 20px);
   padding: 0px !important;
-
+  min-width: 1150px;
   .session-list {
     width: 230px;
     min-width: 230px;
@@ -38,8 +38,13 @@ export default {
 
   .session-detail {
     flex: 1;
+<<<<<<< HEAD
 
     border-right: 1px solid #efefef;
+=======
+    min-width: 920px;
+    border: 1px solid #efefef;
+>>>>>>> 新增面诊处方详情
     border-left: none;
   }
 <<<<<<< HEAD

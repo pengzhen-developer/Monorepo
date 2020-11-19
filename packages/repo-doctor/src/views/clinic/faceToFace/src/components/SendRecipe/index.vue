@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="patient-title-style">{{ patientInfo.name }}</div>
 
     <el-alert type="success"
@@ -278,7 +277,10 @@ export default {
       weight: undefined,
 
       /** 病历详情 */
-      caseInfo: {},
+      caseInfo: {
+        doctorInfo: {},
+        patientInfo: {}
+      },
 
       /** 药品列表 */
       drugList: [],
@@ -471,8 +473,7 @@ export default {
         })
       }
 
-      const reducer = (lhs, rhs) => lhs.name + rhs.name
-      const allergyHistoryString = this.chiefComplaint.reduce(reducer)
+      const allergyHistoryString = this.allergyHistory.map((item) => item.name).join(',')
 
       const diagnoseInfos = [...this.diagnoseList].map((item) => {
         return {
@@ -483,6 +484,7 @@ export default {
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
         const params = {
+          openId: this.docInfo?.openid,
           patientNo: this.caseInfo.patientInfo.patientNo,
           patientId: this.caseInfo.patientInfo.patientId,
           familyId: this.caseInfo.patientInfo.familyId,
@@ -505,7 +507,7 @@ export default {
             } else {
               Peace.cache.sessionStorage.remove(this.patientInfo.patientNo)
               Peace.util.success(res.msg)
-              this.$emit('close')
+              mutations.setShowWriteRecipe(false)
             }
           })
           .finally(() => {
@@ -530,8 +532,7 @@ export default {
         .then((res) => {
           Peace.cache.sessionStorage.remove(this.inquiryNo)
           Peace.util.success(res.msg)
-
-          this.$emit('close')
+          mutations.setShowWriteRecipe(false)
         })
         .finally(() => {
           this.sending = false

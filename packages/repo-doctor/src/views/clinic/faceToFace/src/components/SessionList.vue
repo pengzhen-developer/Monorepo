@@ -13,10 +13,11 @@
                        v-bind:thumb-style="thumbStyle">
 
           <div v-for="patient in patientList"
-               v-bind:key="patient.patientId"
+               v-bind:key="patient.patientNo"
                class="col">
+            <!-- active： 当前选中的样式 -->
             <SessionListItem v-on:click.native="selectPatient(patient)"
-                             v-bind:active="patient.patientId === storePatient.patientId"
+                             v-bind:active="patient.patientNo === storePatient.patientNo"
                              v-bind:patient="patient"></SessionListItem>
           </div>
 
@@ -33,14 +34,14 @@
 
     </div>
 
-    <peace-dialog :before-close="handleClose"
-                  :visible.sync="addPatientDialog.visible"
+    <peace-dialog :visible.sync="addPatientDialog.visible"
+                  v-if="addPatientDialog.visible"
                   append-to-body
                   width="387px"
                   title="添加患者">
 
       <AddPatient ref="checkInput"
-                  @handleClose="handleClose"
+                  v-on:closeMenu="closeMenu"
                   v-on:updateList="updateList">
       </AddPatient>
 
@@ -72,14 +73,24 @@ export default {
     }
   },
 
+  // 监听当前选中的患者
   watch: {
     storePatient: {
       handler() {
         this.$nextTick(function() {
-          this.getRecipeList()
+          this.updateInfo()
         })
       },
       immediate: true
+    },
+
+    // 监听到开处方页面关闭，刷新处方列表
+    closeWriteRecipe: {
+      handler(val) {
+        if (!val) {
+          this.getRecipeList()
+        }
+      }
     }
   },
 
@@ -96,27 +107,43 @@ export default {
 
     storePatient() {
       return store.activePatient
+    },
+
+    closeWriteRecipe() {
+      return store.showWriteRecipe
     }
   },
 
   created() {
+    // 获取患者列表
     this.getPatientList()
   },
 
   methods: {
     // 选中一个患者
     selectPatient(patient) {
-      mutations.setPatientRecipeList([])
+      // 修改当前选中的患者, 刷新操作由 watch 监听触发
       mutations.setActivePatient(patient)
+    },
+
+    // 刷新右侧页面数据
+    updateInfo() {
+      // 1、清空当前处方列表
+      mutations.setPatientRecipeList([])
+      // 2、隐藏开处方界面
       mutations.setShowWriteRecipe(false)
+      // 3、重新请求处方列表
       this.getRecipeList()
     },
 
     // 获取当前患者的处方列表
     getRecipeList() {
+      if (Peace.validate.isEmpty(this.storePatient?.patientNo)) {
+        return
+      }
+
       const params = {
-        patientNo: this.storePatient.patientNo,
-        patientId: this.storePatient.patientId
+        patientNo: this.storePatient.patientNo
       }
       Service.getRecipeList(params).then((res) => {
         mutations.setPatientRecipeList(res.data.list)
@@ -128,6 +155,7 @@ export default {
       Service.getPatientList().then((res) => {
         this.patientList = res.data.list
         if (this.patientList && this.patientList.length > 0) {
+          // 刷新列表时，默认选中第一个患者
           mutations.setActivePatient(this.patientList[0])
         }
       })
@@ -138,9 +166,16 @@ export default {
       this.addPatientDialog.visible = true
     },
 
-    handleClose() {},
+    // 关闭添加患者界面
+    closeMenu() {
+      this.addPatientDialog.visible = false
+    },
 
-    updateList() {}
+    // 添加患者的回调
+    updateList() {
+      // 刷新患者列表，新加患者应该在列表第一个
+      this.getPatientList()
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@
       <peace-table-column label="身份证号"
                           prop="idcard"
                           width="200"></peace-table-column>
-      <peace-table-column align="right"
+      <peace-table-column align="center"
                           label="处方状态"
                           prop="prescription_status"
                           width="140"></peace-table-column>

@@ -102,16 +102,6 @@ export default {
     }
   },
 
-  computed: {
-    getTab() {
-      return this.provideGetTab
-    },
-
-    addTab() {
-      return this.provideAddTab
-    }
-  },
-
   created() {
     Peace.service.patient.getSource().then((res) => {
       this.source.group_name = res.data
@@ -134,12 +124,12 @@ export default {
       this.$refs.table.loadData({ fetch, params })
     },
     showDetail(row) {
-      const currentMenu = this.getTab('PatientDetail')
+      const currentMenu = this.provideGetTab('PatientDetail')
       currentMenu.menuName = row.name
       currentMenu.menuRoute = '/patient/patientDetail/' + row.patientNo
 
       // 跳转当前路由
-      this.addTab(currentMenu)
+      this.provideAddTab(currentMenu)
     },
     updateList() {
       const fetch = Peace.service.patient.patientListPc
