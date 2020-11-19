@@ -59,7 +59,7 @@
               <span>：</span>
             </template>
 
-            <el-select style="width: 515px;"
+            <el-select style="width: 240px;"
                        clearable
                        multiple
                        v-model.trim="model.serviceType">
