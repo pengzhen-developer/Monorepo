@@ -63,7 +63,6 @@
 
 <script>
 import Service from '../service/index'
-import { mutations } from '../store'
 
 export default {
   data() {
@@ -160,8 +159,8 @@ export default {
 
     goToRecipe() {
       // 选中当前患者
-      mutations.setActivePatient(this.tips.patientInfo)
       this.closeMenu()
+      this.$emit('sendRecipe')
     }
   }
 }

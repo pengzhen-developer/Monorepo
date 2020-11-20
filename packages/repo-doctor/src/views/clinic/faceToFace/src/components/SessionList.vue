@@ -42,6 +42,7 @@
 
       <AddPatient ref="checkInput"
                   v-on:closeMenu="closeMenu"
+                  v-on:sendRecipe="sendRecipe"
                   v-on:updateList="updateList">
       </AddPatient>
 
@@ -69,7 +70,8 @@ export default {
       addPatientDialog: {
         visible: false
       },
-      patientList: []
+      patientList: [],
+      showWriteRecipe: false
     }
   },
 
@@ -134,6 +136,13 @@ export default {
       mutations.setShowWriteRecipe(false)
       // 3、重新请求处方列表
       this.getRecipeList()
+
+      // 新增患者已经存在，点击开处方按钮的情况
+      if (this.showWriteRecipe) {
+        this.showWriteRecipe = false
+        // 显示开处方页面
+        mutations.setShowWriteRecipe(true)
+      }
     },
 
     // 获取当前患者的处方列表
@@ -173,6 +182,13 @@ export default {
 
     // 添加患者的回调
     updateList() {
+      // 刷新患者列表，新加患者应该在列表第一个
+      this.getPatientList()
+    },
+
+    sendRecipe() {
+      // 设置开处方标记
+      this.showWriteRecipe = true
       // 刷新患者列表，新加患者应该在列表第一个
       this.getPatientList()
     }
