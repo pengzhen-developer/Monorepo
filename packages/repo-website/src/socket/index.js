@@ -35,12 +35,16 @@ export default async function() {
         Util.user.removeUserInfo()
         Peace.util.warning('您的账号已被禁用')
         setTimeout(Util.location.redirectToIndex(), 3000)
+
+        return
       }
 
       if (message.code === 401) {
         Peace.util.warning('您的登录状态已失效，请重新登录')
         Util.user.removeUserInfo()
         setTimeout(Util.location.redirectToLogin(), 3000)
+
+        return
       }
     }
 
