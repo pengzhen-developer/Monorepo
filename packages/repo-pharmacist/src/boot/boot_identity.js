@@ -7,6 +7,9 @@ export default async ({ Vue, configuration }) => {
   Vue.use(Identity, {
     auth: {
       baseApi: process.env.VUE_APP_API_AUTH
+    },
+    socket: {
+      debug: true
     }
   })
 
