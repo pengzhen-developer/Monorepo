@@ -167,13 +167,15 @@ export default {
       this.longitude = parseFloat(event.latLng.getLng())
       this.latitude = parseFloat(event.latLng.getLat())
       this.myLatlng = new qq.maps.LatLng(this.latitude, this.longitude)
-
-      this.qqMapGeocoder.getAddress(this.myLatlng)
+      this.map.panTo(this.myLatlng)
+      // this.qqMapGeocoder.getAddress(this.myLatlng)
     },
     changedMap() {
       this.myLatlng = this.map.getCenter()
+      // this.map.panTo(this.myLatlng)
       this.qqMapGeocoder.getAddress(this.myLatlng)
     },
+
     debounce(fn, wait) {
       var timer = null
       return function() {
@@ -226,7 +228,8 @@ export default {
   }
   .list {
     flex: 1;
-    padding: 10px 0;
+    padding: 20px 0;
+    overflow: auto;
     .item {
       padding: 5px 15px;
       display: flex;
