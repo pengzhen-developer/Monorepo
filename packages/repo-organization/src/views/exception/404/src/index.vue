@@ -11,14 +11,27 @@
       <q-btn color="secondary"
              style="width:200px;"
              label="返回"
-             to="/"
-             replace />
+             replace
+             v-on:click="back" />
     </div>
   </div>
 </template>
 
 <script >
+import Util from '@src/util'
+
 export default {
-  name: 'Error404'
+  name: 'Error404',
+
+  methods: {
+    back() {
+      if (Peace.identity.auth.isLogin()) {
+        Util.location.redirectToIndex()
+      } else {
+        Util.user.removeUserInfo()
+        Util.location.redirectToLoginAndClear()
+      }
+    }
+  }
 }
 </script>
