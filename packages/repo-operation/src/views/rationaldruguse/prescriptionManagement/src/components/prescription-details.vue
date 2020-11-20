@@ -1,16 +1,18 @@
 <template>
-  <div class="layout-route bg-white full-width ">
-    <div class="full-height">
-      <el-button plain
-                 class="q-mb-24"
-                 v-on:click="back"
-                 style="padding:1px 4px">
-        <div class="q-px-md q-py-sm">
-          <i class="el-icon-arrow-left"></i>
-          <span>返回上一页</span>
-        </div>
-      </el-button>
-      <div class="flex full-width ">
+  <div class="q-pt-20 q-pr-28 q-pb-30 q-pl-16  bg-white full-height ">
+    <div class="full-height column">
+      <div>
+        <el-button plain
+                   class="q-mb-24"
+                   v-on:click="back"
+                   style="padding:1px 4px">
+          <div class="q-px-md q-py-sm">
+            <i class="el-icon-arrow-left"></i>
+            <span>返回上一页</span>
+          </div>
+        </el-button>
+      </div>
+      <div class="flex full-width col">
         <!-- 处方详情 -->
         <div class="pre-content left">
           <PrescriptionDetail v-bind:prescriptionInfo="prescriptionInfo"></PrescriptionDetail>

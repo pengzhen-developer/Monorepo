@@ -1,302 +1,298 @@
 <template>
-  <div class="layout-route">
-    <div v-show="!dialog.visible">
-      <div class="card card-search q-mb-md">
-        <el-form inline
-                 label-width="auto"
-                 v-bind:model="model">
-          <el-form-item label="处方编号：">
-            <el-input v-model="model.prescriptionNo"
-                      placeholder="请输入"
-                      clearable></el-input>
-          </el-form-item>
+  <div class="flex">
+    <div class="layout-route full-width">
+      <div v-show="!dialog.visible">
+        <div class="card card-search q-mb-md">
+          <el-form inline
+                   label-width="auto"
+                   v-bind:model="model">
+            <el-form-item label="处方编号：">
+              <el-input v-model="model.prescriptionNo"
+                        placeholder="请输入"
+                        clearable></el-input>
+            </el-form-item>
 
-          <el-form-item label="机构名称：">
-            <el-select v-model="model.hosCode"
-                       placeholder="全部"
-                       clearable>
-              <el-option v-for="item in remoteSource.organizationList"
-                         v-bind:key="item.Code"
-                         v-bind:label="item.Name"
-                         v-bind:value="item.Code"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="机构名称：">
+              <el-select v-model="model.hosCode"
+                         placeholder="全部"
+                         clearable>
+                <el-option v-for="item in remoteSource.organizationList"
+                           v-bind:key="item.Code"
+                           v-bind:label="item.Name"
+                           v-bind:value="item.Code"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="处方来源：">
-            <el-select v-model="model.prescriptionSource"
-                       placeholder="不限">
-              <el-option v-for="(value, label) in source.SOURCES_PRESCRIPTION_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="处方来源：">
+              <el-select v-model="model.prescriptionSource"
+                         placeholder="不限">
+                <el-option v-for="(value, label) in source.SOURCES_PRESCRIPTION_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="科室：">
+            <el-form-item label="科室：">
 
-            <el-autocomplete v-bind:readonly="true"
-                             v-model="localModel.deptName"
-                             :fetch-suggestions="remoteDepartmentList"
-                             value-key="Name"
-                             placeholder="请选择"
-                             @select="handleDeptCodeSelect"
-                             clearable></el-autocomplete>
+              <el-autocomplete v-bind:readonly="true"
+                               v-model="localModel.deptName"
+                               :fetch-suggestions="remoteDepartmentList"
+                               value-key="Name"
+                               placeholder="请选择"
+                               @select="handleDeptCodeSelect"
+                               clearable></el-autocomplete>
 
-          </el-form-item>
+            </el-form-item>
 
-          <el-form-item label="提交方式：">
-            <el-select v-model="model.submitType"
-                       placeholder="全部">
-              <el-option v-for="(value, label) in source.SUBMISSION_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="提交方式：">
+              <el-select v-model="model.submitType"
+                         placeholder="全部">
+                <el-option v-for="(value, label) in source.SUBMISSION_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="处方状态：">
-            <el-select v-model="model.prescriptionState"
-                       placeholder="全部">
-              <el-option v-for="(value, label) in source.PRESCRIPTION_STATUS"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="处方状态：">
+              <el-select v-model="model.prescriptionState"
+                         placeholder="全部">
+                <el-option v-for="(value, label) in source.PRESCRIPTION_STATUS"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="审核通过方式：">
-            <el-select v-model="model.pharmacistCheckMode"
-                       placeholder="全部">
-              <el-option v-for="(value, label) in source.AUDIT_MODE_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="审核通过方式：">
+              <el-select v-model="model.pharmacistCheckMode"
+                         placeholder="全部">
+                <el-option v-for="(value, label) in source.AUDIT_MODE_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="系统审方结果：">
-            <el-select v-model="model.actionMsg"
-                       placeholder="全部">
-              <el-option v-for="(value, label) in source.SYSTEM_AUDIT_RESULTS_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="系统审方结果：">
+              <el-select v-model="model.actionMsg"
+                         placeholder="全部">
+                <el-option v-for="(value, label) in source.SYSTEM_AUDIT_RESULTS_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="药师审方结果：">
-            <el-select v-model="model.pharmacistCheckResult"
-                       placeholder="全部">
-              <el-option v-for="(value, label) in source.RESULTS_AUDIT_PHARMACIST_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="药师审方结果：">
+              <el-select v-model="model.pharmacistCheckResult"
+                         placeholder="全部">
+                <el-option v-for="(value, label) in source.RESULTS_AUDIT_PHARMACIST_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="患者名称：">
-            <el-input v-model="model.patientName"
-                      placeholder="请输入"
-                      clearable></el-input>
-          </el-form-item>
+            <el-form-item label="患者名称：">
+              <el-input v-model="model.patientName"
+                        placeholder="请输入"
+                        clearable></el-input>
+            </el-form-item>
 
-          <el-form-item label="处方创建日期：">
-            <peace-date-picker type="daterange"
-                               value-format="yyyy-MM-dd"
-                               v-model="model.timeRange"></peace-date-picker>
-          </el-form-item>
+            <el-form-item label="处方创建日期：">
+              <peace-date-picker type="daterange"
+                                 value-format="yyyy-MM-dd"
+                                 v-model="model.timeRange"></peace-date-picker>
+            </el-form-item>
 
-          <el-form-item label="审方药师：">
-            <el-select v-model="model.pharmacistCode"
-                       placeholder="请选择"
-                       clearable>
+            <el-form-item label="审方药师：">
+              <el-select v-model="model.pharmacistCode"
+                         placeholder="请选择"
+                         clearable>
 
-              <el-option v-for="item in remoteSource.pharmacistList"
-                         v-bind:key="item.Code"
-                         v-bind:label="item.Name"
-                         v-bind:value="item.Code"></el-option>
-            </el-select>
-          </el-form-item>
+                <el-option v-for="item in remoteSource.pharmacistList"
+                           v-bind:key="item.Code"
+                           v-bind:label="item.Name"
+                           v-bind:value="item.Code"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="处方类别：">
-            <el-select v-model="model.prescriptionType"
-                       placeholder="请选择">
-              <el-option v-for="(value, label) in source.PRESCRIPTION_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="处方类别：">
+              <el-select v-model="model.prescriptionType"
+                         placeholder="请选择">
+                <el-option v-for="(value, label) in source.PRESCRIPTION_TYPE"
+                           v-bind:key="value"
+                           v-bind:label="label"
+                           v-bind:value="value"></el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item label="">
-            <el-button type="primary"
-                       style="width: 80px;"
-                       v-on:click="get">查询</el-button>
+            <el-form-item label="">
+              <el-button type="primary"
+                         style="width: 80px;"
+                         v-on:click="get">查询</el-button>
 
-            <el-button style="width: 80px;"
-                       v-on:click="resert">重置</el-button>
-          </el-form-item>
+              <el-button style="width: 80px;"
+                         v-on:click="resert">重置</el-button>
+            </el-form-item>
 
-        </el-form>
-      </div>
-
-      <div class="card">
-
-        <div class="data-over">
-
-          <div class="item">
-            <span>全部处方：</span>
-            <span>{{ dataOver.total || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>待审核处方：</span>
-            <span>{{ dataOver.noCheck || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>质疑中处方：</span>
-            <span>{{ dataOver.question || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>双签提交处方：</span>
-            <span>{{ dataOver.pass || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>未通过处方：</span>
-            <span>{{ dataOver.reject || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>已通过处方：</span>
-            <span>{{ dataOver.pass || 0 }}</span>
-          </div>
-
-          <div class="item">
-            <span>已作废处方：</span>
-            <span>{{ dataOver.invalid || 0 }}</span>
-          </div>
+          </el-form>
         </div>
 
-        <PeaceTable ref="table"
-                    size="mini"
-                    pagination
-                    stripe>
+        <div class="card">
 
-          <el-table-column label="处方编号"
-                           align="center"
-                           prop="prescriptionNo"
-                           min-width="160px"></el-table-column>
+          <div class="data-over">
 
-          <el-table-column label="处方状态"
-                           align="center"
-                           prop="stateName"
-                           min-width="100px"></el-table-column>
+            <div class="item">
+              <span>全部处方：</span>
+              <span>{{ dataOver.total || 0 }}</span>
+            </div>
 
-          <el-table-column label="药师审方结果"
-                           align="center"
-                           prop="pharmacistExamineResult"
-                           min-width="120px"></el-table-column>
+            <div class="item">
+              <span>待审核处方：</span>
+              <span>{{ dataOver.noCheck || 0 }}</span>
+            </div>
 
-          <el-table-column label="系统审方结果"
-                           align="center"
-                           prop="examineResult"
-                           min-width="120px"></el-table-column>
+            <div class="item">
+              <span>质疑中处方：</span>
+              <span>{{ dataOver.question || 0 }}</span>
+            </div>
 
-          <el-table-column label="处方创建时间"
-                           align="center"
-                           prop="createTime"
-                           min-width="160px"></el-table-column>
+            <div class="item">
+              <span>双签提交处方：</span>
+              <span>{{ dataOver.pass || 0 }}</span>
+            </div>
 
-          <el-table-column label="机构名称"
-                           align="center"
-                           prop="organName"
-                           min-width="120px"></el-table-column>
+            <div class="item">
+              <span>未通过处方：</span>
+              <span>{{ dataOver.reject || 0 }}</span>
+            </div>
 
-          <el-table-column label="患者姓名"
-                           align="center"
-                           prop="patientName"
-                           min-width="100px"></el-table-column>
+            <div class="item">
+              <span>已通过处方：</span>
+              <span>{{ dataOver.pass || 0 }}</span>
+            </div>
 
-          <el-table-column label="开方医生"
-                           min-width="100px"
-                           prop="doctorName"
-                           align="center"></el-table-column>
+            <div class="item">
+              <span>已作废处方：</span>
+              <span>{{ dataOver.invalid || 0 }}</span>
+            </div>
+          </div>
 
-          <el-table-column label="科室"
-                           align="center"
-                           prop="deptName"
-                           min-width="100px"></el-table-column>
+          <PeaceTable ref="table"
+                      size="mini"
+                      pagination
+                      stripe>
 
-          <el-table-column label="处方类别"
-                           align="center"
-                           prop="prescriptionType"
-                           min-width="100px"></el-table-column>
+            <el-table-column label="处方编号"
+                             align="center"
+                             prop="prescriptionNo"
+                             min-width="160px"></el-table-column>
 
-          <el-table-column label="处方来源"
-                           align="center"
-                           prop="prescriptionSource"
-                           min-width="100px"></el-table-column>
+            <el-table-column label="处方状态"
+                             align="center"
+                             prop="stateName"
+                             min-width="100px"></el-table-column>
 
-          <el-table-column label="审核通过方式"
-                           align="center"
-                           min-width="120px">
-            <template slot-scope="scope">
-              {{ scope.row.pharmacistCheckMode || '--' }}
-            </template>
-          </el-table-column>
+            <el-table-column label="药师审方结果"
+                             align="center"
+                             prop="pharmacistExamineResult"
+                             min-width="120px"></el-table-column>
 
-          <el-table-column label="提交方式"
-                           align="center"
-                           prop="submitMode"
-                           min-width="100px"></el-table-column>
+            <el-table-column label="系统审方结果"
+                             align="center"
+                             prop="examineResult"
+                             min-width="120px"></el-table-column>
 
-          <el-table-column label="审方药师"
-                           align="center"
-                           min-width="100px">
-            <template slot-scope="scope">
-              {{ scope.row.pharmacyName || '--' }}
-            </template>
-          </el-table-column>
+            <el-table-column label="处方创建时间"
+                             align="center"
+                             prop="createTime"
+                             min-width="160px"></el-table-column>
 
-          <el-table-column label="审方时间"
-                           align="center"
-                           prop="pharmacistExamTime"
-                           min-width="160px"></el-table-column>
+            <el-table-column label="机构名称"
+                             align="center"
+                             prop="organName"
+                             min-width="120px"></el-table-column>
 
-          <el-table-column label="操作"
-                           align="center"
-                           fixed="right"
-                           width="100px">
+            <el-table-column label="患者姓名"
+                             align="center"
+                             prop="patientName"
+                             min-width="100px"></el-table-column>
 
-            <template slot-scope="scope">
+            <el-table-column label="开方医生"
+                             min-width="100px"
+                             prop="doctorName"
+                             align="center"></el-table-column>
 
-              <el-button type="text"
-                         v-on:click="detail(scope.row)">查看详情</el-button>
+            <el-table-column label="科室"
+                             align="center"
+                             prop="deptName"
+                             min-width="100px"></el-table-column>
 
-            </template>
+            <el-table-column label="处方类别"
+                             align="center"
+                             prop="prescriptionType"
+                             min-width="100px"></el-table-column>
 
-          </el-table-column>
-        </PeaceTable>
+            <el-table-column label="处方来源"
+                             align="center"
+                             prop="prescriptionSource"
+                             min-width="100px"></el-table-column>
+
+            <el-table-column label="审核通过方式"
+                             align="center"
+                             min-width="120px">
+              <template slot-scope="scope">
+                {{ scope.row.pharmacistCheckMode || '--' }}
+              </template>
+            </el-table-column>
+
+            <el-table-column label="提交方式"
+                             align="center"
+                             prop="submitMode"
+                             min-width="100px"></el-table-column>
+
+            <el-table-column label="审方药师"
+                             align="center"
+                             min-width="100px">
+              <template slot-scope="scope">
+                {{ scope.row.pharmacyName || '--' }}
+              </template>
+            </el-table-column>
+
+            <el-table-column label="审方时间"
+                             align="center"
+                             prop="pharmacistExamTime"
+                             min-width="160px"></el-table-column>
+
+            <el-table-column label="操作"
+                             align="center"
+                             fixed="right"
+                             width="100px">
+
+              <template slot-scope="scope">
+
+                <el-button type="text"
+                           v-on:click="detail(scope.row)">查看详情</el-button>
+
+              </template>
+
+            </el-table-column>
+          </PeaceTable>
+        </div>
       </div>
-    </div>
 
-    <!-- 详情 -->
-    <template>
-      <!-- <PeaceDialog title="原始处方"
-                   :visible.sync="dialog.visible"
-                   append-to-body
-                   v-show="dialog.visible&&dialog.data.show">
-        <el-image v-bind:src="dialog.data.prescriptionImageUrl"
-                  v-on:load="onLoad"></el-image>
-      </PeaceDialog> -->
-      <prescriptionDetails v-on:goback="goback"
-                           v-bind:info="dialog.data"
-                           v-if="dialog.visible"></prescriptionDetails>
-    </template>
+      <!-- 详情 -->
+      <template>
+        <prescriptionDetails v-on:goback="goback"
+                             v-bind:info="dialog.data"
+                             v-if="dialog.visible"></prescriptionDetails>
+      </template>
+    </div>
   </div>
+
 </template>
 
 <script>
