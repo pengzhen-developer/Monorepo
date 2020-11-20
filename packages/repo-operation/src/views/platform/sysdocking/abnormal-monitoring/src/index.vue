@@ -56,7 +56,7 @@ export default {
   },
   async created() {
     this.source.bizTypeDict = await Peace.identity.dictionary.getList('biz_type')
-    this.source.synSysDict = await Peace.identity.dictionary.getList('syn_sys')
+    this.source.synSysDict = await Peace.identity.dictionary.getList('sysdocking')
     this.source.synStatusDict = await Peace.identity.dictionary.getList('syn_status')
     this.source.synModeDict = await Peace.identity.dictionary.getList('syn_mode')
   },
