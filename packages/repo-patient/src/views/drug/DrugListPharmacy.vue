@@ -117,7 +117,6 @@ export default {
 
   methods: {
     mapCallback(params) {
-      console.log('params', params)
       if (params) {
         let { lat, lng, addr, JZTClaimNo } = params
         this.userLocation = { lat: lat, lng: lng }
@@ -138,6 +137,9 @@ export default {
       let crd = pos.coords
       this.userLocation = await this.convertorCoordinate(crd.latitude, crd.longitude)
       console.log('userLocation', this.userLocation)
+      if (this.userLocation.lat > 0 && this.userLocation.lng > 0) {
+        this.getAddress(this.userLocation.lat, this.userLocation.lng)
+      }
       this.getPhaList()
     },
     errorCallBack(error) {
@@ -209,6 +211,13 @@ export default {
         new qq.maps.convertor.translate(new qq.maps.LatLng(latitude, longitude), 1, (res) => {
           resolve(res[0])
         })
+      })
+    },
+    getAddress(latitude, longitude) {
+      const qqMapsGeocoder = new qq.maps.Geocoder()
+      qqMapsGeocoder.getAddress(new qq.maps.LatLng(latitude, longitude))
+      qqMapsGeocoder.setComplete((res) => {
+        this.locationStr = res.detail?.nearPois[0]?.name || '我的位置'
       })
     },
     //跳转地图选点页面
