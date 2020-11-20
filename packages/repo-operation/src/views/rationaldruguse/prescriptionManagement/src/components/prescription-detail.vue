@@ -156,7 +156,7 @@
                     style="width: 5em;">调配</span>
               <span class="q-mx-xs text-color-grey-999">：</span>
               <span class="col text-color-grey-333">
-                {{ data.DispensemeDicineName }}
+                {{ data.DispensemeDicineName||'-' }}
               </span>
             </div>
             <div class="row col-6">
@@ -164,7 +164,7 @@
                     style="width: 5em;">核对发药</span>
               <span class="q-mx-xs text-color-grey-999">：</span>
               <span class="col text-color-grey-333">
-                {{ data.DispensingPharmacistName }}
+                {{ data.DispensingPharmacistName||'-' }}
               </span>
             </div>
           </div>
