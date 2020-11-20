@@ -5,7 +5,7 @@ const webpack = require('webpack')
 
 module.exports = {
   // https://cli.vuejs.org/config/#vue-config-js
-  publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/',
 
   // https://cli.vuejs.org/config/#assetsdir
   assetsDir: 'static',
