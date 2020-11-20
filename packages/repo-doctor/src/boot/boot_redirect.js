@@ -11,9 +11,12 @@ export default async () => {
       Peace.$store.commit('user/setUserInfo', userInfo)
 
       if (!Peace?.NIM?.isConnected()) {
-        // 加载 IM SDK
-        Peace.NIM = Util.IM.initIM()
-        Peace.WebRTC = Util.IM.initWebRTC(Peace.NIM)
+        // 同步执行会造成 quasar loading bar 无限加载状态
+        // 追加在次轮循环执行
+        setImmediate(() => {
+          Peace.NIM = Util.IM.initIM()
+          Peace.WebRTC = Util.IM.initWebRTC(Peace.NIM)
+        })
       }
     })
   }
