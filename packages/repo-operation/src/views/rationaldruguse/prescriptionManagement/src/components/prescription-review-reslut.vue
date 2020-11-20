@@ -22,65 +22,35 @@
                 <span class="text-color-grey-333 "
                       v-html="getText(log.action,log.code)"></span>
               </div>
-              <div class="subtitle text-color-grey-999">{{log.name}}</div>
+              <div class="subtitle text-color-grey-999"
+                   v-html="getLogNameText(log.name,log.code)"></div>
             </div>
-            <div class="col q-pl-lg">
-              {{log.note}}
-            </div>
-          </div>
-        </div>
-        <!-- <div class="timeline-item">
-          <div class="time text-color-grey-999">2019-01-21 12:21:23</div>
-          <div class="flex row justify-betwee">
-            <div class="col-2">
-              <div class="title">
-                <el-image v-bind:src="getSystemAuditResultsImage('I')"></el-image>
-                <span class="text-color-grey-333"
-                      v-html="getSystemAuditResultsText('I')"></span>
-              </div>
-              <div class="subtitle text-color-grey-999">系统</div>
-            </div>
-            <div class="col">
-              系统审方结果系统审方结果系统审方结果系统审方结果系统审方结果系统审方结果系统审方结果系统审方结果
+            <div class="col q-pl-lg"
+                 v-html="getLogNoteText(log.note,log.code)">
             </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="time text-color-grey-999">2019-01-21 11:21:23</div>
-          <div class="flex row justify-betwee">
-            <div class="col-2">
-              <div class="title other">
-                <el-image v-bind:src="getPharmacistAuditResultsImage(2)"></el-image>
-              </div>
-              <div class="subtitle text-color-grey-999">药师</div>
-            </div>
-            <div class="col">
-              药师审方结果药师审方结果药师审方结果药师审方结果药师审方结果药师审方结果药师审方结果药师审方结果
-            </div>
-          </div>
-        </div>-->
       </div>
     </div>
     <!-- 系统审方结果 -->
-    <div class="card"
+    <div class="card result"
          v-show="active===1">
-      <div class="header q-pl-16">系统审方结果</div>
-      <div class="q-pl-20 q-pt-24 flex contenter">
-        <el-image v-bind:src="getSystemAuditResultsBigImage(actionCode)"></el-image>
-        <span v-html="getSystemAuditResultsText(actionCode)"
-              v-bind:style="{'color':getSystemAuditResultsTextColor(actionCode)}"></span>
-      </div>
+      <PrescriptionAudit v-bind:data="actionDetail"></PrescriptionAudit>
     </div>
   </div>
 </template>
 
 <script>
 import CONSTANT from '../constant'
+import PrescriptionAudit from './prescription-audit.vue'
 export default {
   name: 'PrescriptionReviewReslut',
   props: {
     actionDetail: Object,
     prescriptionLog: Object
+  },
+  components: {
+    PrescriptionAudit
   },
   data() {
     return {
@@ -147,6 +117,24 @@ export default {
         return this.getPharmacistAuditResultsText(action)
       }
     },
+    getLogNameText(name, code) {
+      //系统审方 code == 'HDY' || code == 'DST' || code == 'YFZL' || code == 'WSF'
+      const systemCodes = ['HDY', 'DST', 'YFZL', 'WSF']
+      if (systemCodes.includes(code)) {
+        return '系统'
+      } else {
+        return name
+      }
+    },
+    getLogNoteText(note, code) {
+      //系统审方 code == 'HDY' || code == 'DST' || code == 'YFZL' || code == 'WSF'
+      const systemCodes = ['HDY', 'DST', 'YFZL', 'WSF']
+      if (systemCodes.includes(code)) {
+        return '系统审方结果'
+      } else {
+        return note
+      }
+    },
     //药师审方icon
     getPharmacistAuditResultsImage(status) {
       return require(`../assets/img/pharmacist_review_status_${status}.png`)
@@ -159,17 +147,9 @@ export default {
     getSystemAuditResultsImage(status) {
       return require(`../assets/img/system_audit_status_${status}.png`)
     },
-    //系统审方icon_big
-    getSystemAuditResultsBigImage(status) {
-      return require(`../assets/img/system_audit_status_big_${status}.png`)
-    },
     //系统审方text
     getSystemAuditResultsText(status) {
       return this.source.SYSTEM_AUDIT_RESULTS_DETAIL_TYPE_MAP.find((item) => item.value === status)?.label
-    },
-    //系统审方color
-    getSystemAuditResultsTextColor(status) {
-      return this.source.SYSTEM_AUDIT_RESULTS_DETAIL_TYPE_MAP.find((item) => item.value === status)?.color
     },
 
     changeTab(value, index) {
@@ -191,9 +171,13 @@ export default {
 .card {
   margin-top: 16px;
   padding: 24px;
+
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   min-height: 374px;
+  &.result {
+    padding: 0 0 10px 0;
+  }
   .header {
     background-color: #eaf4f6;
     height: 50px;

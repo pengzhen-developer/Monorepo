@@ -91,5 +91,14 @@ export default {
     临时医嘱: 2,
     长期医嘱: 3,
     其它: 4
+  },
+  /**
+   * 系统审核结果背景色-map
+   */
+  ADIUT_THEME_MAP: {
+    ['OK']: 'green',
+    ['I']: 'info',
+    ['R']: 'warning',
+    ['D']: 'negative'
   }
 }
