@@ -107,6 +107,7 @@ export default {
     initMap() {
       if (!this.map) {
         const params = peace.util.decode(this.$route.params.json)
+        //默认中心点暂为 30.549754，114.203674
         const lat = params.lat > 0 ? params.lat : 30.549754
         const lng = params.lng > 0 ? params.lng : 114.203674
         var center = new qq.maps.LatLng(lat, lng)
@@ -132,13 +133,12 @@ export default {
         //创建实例
         this.qqMapMarker = new qq.maps.Marker({ map: this.map })
         this.qqMapGeocoder = new qq.maps.Geocoder()
-        // this.qqMapSearch = new qq.maps.SearchService()
         this.qqMapMarker.setPosition(center)
         this.qqMapGeocoder.getAddress(center)
         this.qqMapGeocoder.setComplete(this.geocoderComplete)
-        // this.qqMapSearch.setComplete(this.searchComplete)
         //地图点击事件
         qq.maps.event.addListener(this.map, 'click', this.clickMap)
+        //中心点移动事件
         qq.maps.event.addListener(this.map, 'center_changed', this.debounce(this.changedMap, 300))
       }
     },
@@ -152,16 +152,7 @@ export default {
       this.params.lat = item.latLng.lat
       this.hasSelect = true
     },
-    //搜索
-    // searchComplete(result) {
-    //   if (result.type === 'CITY_LIST') {
-    //     this.cities = result.detail.cities
-    //     this.cityoff = true
-    //   } else {
-    //     this.poisarr = result.detail.pois
-    //     this.cityoff = false
-    //   }
-    // },
+
     //解析器
     geocoderComplete(result) {
       console.log(result)

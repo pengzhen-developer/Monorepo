@@ -136,7 +136,7 @@ export default {
     async successCallBack(pos) {
       let crd = pos.coords
       this.userLocation = await this.convertorCoordinate(crd.latitude, crd.longitude)
-      console.log('userLocation', this.userLocation)
+      // console.log('userLocation', this.userLocation)
       if (this.userLocation.lat > 0 && this.userLocation.lng > 0) {
         this.getAddress(this.userLocation.lat, this.userLocation.lng)
       }
