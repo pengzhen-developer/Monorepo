@@ -199,6 +199,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-popup {
+  padding: 23px 15px 15px 15px;
+}
 .header {
   display: flex;
   justify-content: center;

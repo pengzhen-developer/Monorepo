@@ -117,6 +117,7 @@ export default {
 
   methods: {
     mapCallback(params) {
+      console.log('params', params)
       if (params) {
         let { lat, lng, addr, JZTClaimNo } = params
         this.userLocation = { lat: lat, lng: lng }
