@@ -103,7 +103,7 @@ export default {
   confirmSend(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Prescribeprescrip/confirmSend'
+    const apiPath = 'client/face/prescription/prescribeprescrip/confirmSend'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

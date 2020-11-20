@@ -4,7 +4,7 @@
       <div class="left">
         <span class="name">{{data.patientInfo.familyName}}</span>
         <span class="sex">{{data.patientInfo.sex}}</span>
-        <span class="age">{{data.patientInfo.age+'岁'}}</span>
+        <span class="age">{{data.patientInfo.age}}</span>
         <span class="dept">门诊</span>
       </div>
       <div class="right">
