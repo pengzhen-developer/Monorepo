@@ -1,37 +1,40 @@
 <template>
   <div class="layout-route">
 
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <div class="card card-search">
-          <el-form inline
-                   label-width="auto"
-                   v-bind:model="dictTypeModel">
-            <el-form-item label="字典类型">
-              <el-input v-model="dictTypeModel.type"
-                        placeholder=""></el-input>
-            </el-form-item>
+    <div class="card q-mb-md">
+      <el-form inline
+               label-width="auto"
+               v-bind:model="dictTypeModel">
+        <el-form-item label="字典类型">
+          <el-input v-model="dictTypeModel.type"
+                    placeholder=""></el-input>
+        </el-form-item>
 
-            <el-form-item label="字典描述">
-              <el-input v-model="dictTypeModel.description"
-                        placeholder=""></el-input>
-            </el-form-item>
+        <el-form-item label="字典描述">
+          <el-input v-model="dictTypeModel.description"
+                    placeholder=""></el-input>
+        </el-form-item>
 
-            <el-form-item label="">
-              <el-button type="primary"
-                         v-on:click="fetchDictType">查询</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
+        <el-form-item label="">
+          <el-button type="primary"
+                     v-on:click="fetchDictType">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-        <div class="card q-mb-md">
-          <div class="q-mb-sm">
+    <div class="row q-col-gutter-md  bg-grey-2">
+
+      <div class="col">
+        <div class="card">
+
+          <div class="q-mb-md">
             <el-button style="min-width: 80px;"
-                       type="primary"
                        v-on:click="addDictType">新增</el-button>
           </div>
 
-          <PeaceTable ref="dictTypeTable"
+          <PeaceTable layout="pager"
+                      v-bind:page-size="5"
+                      ref="dictTypeTable"
                       v-bind:tableProps="{ pageIndex: 'current', pageSize: 'size' }"
                       @row-click="selectDict"
                       highlight-current-row
@@ -57,21 +60,19 @@
             </PeaceTableColumn>
           </PeaceTable>
         </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="card q-mb-md"
-             v-if="!dictItemList.visible">
-          <div class="text-subtitle1">点击字典类型查看对应字典项</div>
-        </div>
-        <div class="card q-mb-md"
-             v-else>
-          <div class="q-mb-sm">
+      </div>
+
+      <div class="col">
+        <div class="card"
+             v-if="dictItemList.visible">
+          <div class="q-mb-md">
             <el-button style="min-width: 80px;"
-                       type="primary"
                        v-on:click="addDictItem">新增</el-button>
           </div>
 
-          <PeaceTable ref="dictItemTable"
+          <PeaceTable layout="pager"
+                      v-bind:page-size="5"
+                      ref="dictItemTable"
                       v-bind:tableProps="{ pageIndex: 'current', pageSize: 'size' }"
                       pagination>
             <PeaceTableColumn label="ID"
@@ -100,8 +101,19 @@
             </PeaceTableColumn>
           </PeaceTable>
         </div>
-      </el-col>
-    </el-row>
+
+        <div class="card q-mb-md"
+             v-else>
+          <div class="q-mb-md"></div>
+          <p class="text-subtitle1 flex items-center content-center">
+            点击查看明细
+          </p>
+          <p class="text-subtitle1 flex items-center content-center">
+            👈
+          </p>
+        </div>
+      </div>
+    </div>
 
     <PeaceDialog title="字典类型维护"
                  width="360px"
