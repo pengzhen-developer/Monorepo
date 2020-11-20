@@ -14,7 +14,7 @@ export default async function({ configuration }) {
 
   const routes = await generateRoutes({ configuration })
 
-  const router = new VueRouter({his
+  const router = new VueRouter({
     mode: 'history',
     base: process.env.VUE_APP_RELEASE_FLODER_PATH,
     routes: routes,
