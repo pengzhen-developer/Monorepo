@@ -115,7 +115,7 @@ export default {
       }
       Service.CustDrugsTotal(params).then((res) => {
         let data = res.data
-        this.totalStatis.AwaitExamineCount = Peace.numeral(data.AwaitExamineCount).format('0,0')
+        this.auditStatis.AwaitExamineCount = Peace.numeral(data.AwaitExamineCount).format('0,0')
         this.auditStatis.MappingCount = Peace.numeral(data.MappingCount).format('0,0')
         this.auditStatis.NotMappingCount = Peace.numeral(data.NotMappingCount).format('0,0')
       })
