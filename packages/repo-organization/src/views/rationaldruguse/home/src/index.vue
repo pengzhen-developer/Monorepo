@@ -58,66 +58,46 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.getDrugCount()
-      this.getPharCount()
-      this.getPrescriptionCount()
-      this.getRuleCount(1)
-      this.getRuleCount(2)
-      this.getCustDrugsTotal()
+      this.getAll()
     })
   },
   methods: {
-    //药品总数
-    getDrugCount() {
+    getAll() {
       const params = {
         custCode: Util.user.getUserInfo().custCode
       }
-      Service.drugCount(params).then((res) => {
-        this.totalStatis.custDrugCount = Peace.numeral(res.data).format('0,0')
-      })
-    },
-    //药师总数
-    getPharCount() {
-      const params = {
-        custCode: Util.user.getUserInfo().custCode
-      }
-      Service.PharCount(params).then((res) => {
-        this.totalStatis.PharCount = Peace.numeral(res.data).format('0,0')
-      })
-    },
-    //处方数量统计-处方/医嘱总数 未审处方 已审处方
-    getPrescriptionCount() {
-      Service.PrescriptionCount().then((res) => {
-        let data = res.data
-        this.totalStatis.totalCount = Peace.numeral(data.totalCount).format('0,0')
-        this.auditStatis.checkedCount = Peace.numeral(data.checkedCount).format('0,0')
-        this.auditStatis.uncheckedCount = Peace.numeral(data.uncheckedCount).format('0,0')
-      })
-    },
-    //通用规则传type为1，自定义规则传type为2
-    getRuleCount(type) {
-      const params = {
+
+      const paramsRuleCount1 = {
         hosCode: Util.user.getUserInfo().custCode,
-        ruleType: type
+        ruleType: 1
       }
-      Service.ruleCount(params).then((res) => {
-        if (type == 1) {
-          this.auditStatis.applyCount = Peace.numeral(res.data).format('0,0')
-        } else {
-          this.auditStatis.customCust = Peace.numeral(res.data).format('0,0')
-        }
-      })
-    },
-    //药品数量统计
-    getCustDrugsTotal() {
-      const params = {
-        custCode: Util.user.getUserInfo().custCode
+
+      const paramsRuleCount2 = {
+        hosCode: Util.user.getUserInfo().custCode,
+        ruleType: 2
       }
-      Service.CustDrugsTotal(params).then((res) => {
-        let data = res.data
-        this.auditStatis.AwaitExamineCount = Peace.numeral(data.AwaitExamineCount).format('0,0')
-        this.auditStatis.MappingCount = Peace.numeral(data.MappingCount).format('0,0')
-        this.auditStatis.NotMappingCount = Peace.numeral(data.NotMappingCount).format('0,0')
+
+      const iterable = [
+        Service.drugCount(params),
+        Service.PharCount(params),
+        Service.PrescriptionCount(),
+        Service.ruleCount(paramsRuleCount1),
+        Service.ruleCount(paramsRuleCount2),
+        Service.CustDrugsTotal(params)
+      ]
+
+      // 因为是历史遗留接口，所以使用多接口获取数据， 使用 Promise.all 合并请求
+      Promise.all(iterable).then((values) => {
+        this.totalStatis.custDrugCount = Peace.numeral(values[0].data).format('0,0')
+        this.totalStatis.PharCount = Peace.numeral(values[1].data).format('0,0')
+        this.totalStatis.totalCount = Peace.numeral(values[2].data.totalCount).format('0,0')
+        this.auditStatis.checkedCount = Peace.numeral(values[2].data.checkedCount).format('0,0')
+        this.auditStatis.uncheckedCount = Peace.numeral(values[2].data.uncheckedCount).format('0,0')
+        this.auditStatis.applyCount = Peace.numeral(values[3].data).format('0,0')
+        this.auditStatis.customCust = Peace.numeral(values[4].data).format('0,0')
+        this.auditStatis.AwaitExamineCount = Peace.numeral(values[5].data.AwaitExamineCount).format('0,0')
+        this.auditStatis.MappingCount = Peace.numeral(values[5].data.MappingCount).format('0,0')
+        this.auditStatis.NotMappingCount = Peace.numeral(values[5].data.NotMappingCount).format('0,0')
       })
     }
   }
