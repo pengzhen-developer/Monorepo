@@ -159,7 +159,12 @@ axios.interceptors.response.use(
         $peace.cache.remove($peace.type.USER.INFO)
 
         // 跳转登录页
-        router.replace($peace.config.system.loginPage)
+        router.replace({
+          path: $peace.config.system.loginPage,
+          query: {
+            referrer: $peace.$route.fullPath
+          }
+        })
 
         return Promise.reject(response)
       }
