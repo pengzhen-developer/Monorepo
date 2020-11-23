@@ -19,11 +19,11 @@
          v-for="checkItem in data.resultMsgs"
          v-bind:key="checkItem.productCode">
       <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
-        <div v-bind:style="{'background':getSystemAuditResultsTextColor()}"
+        <div v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
              class="relative-position"
              style="width: 4px; height: 16px; left: -24px"></div>
         <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.productName }}</span>
-        <span v-bind:style="{'background':getSystemAuditResultsTextColor()}"
+        <span v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
               class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionMsg }}</span>
       </div>
 
