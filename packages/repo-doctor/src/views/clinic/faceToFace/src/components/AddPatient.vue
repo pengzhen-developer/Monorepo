@@ -36,6 +36,7 @@
                     prop="tel">
         <span slot="label">手机号码</span>
         <el-input v-model="ruleForm.tel"
+                  onkeyup="value=value.replace(/[^\d]/g,'')"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
@@ -85,7 +86,13 @@ export default {
           { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
-        tel: [{ required: true, message: '请输入手机号码', trigger: 'blur' }]
+        tel: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          {
+            pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+            message: '请输入正确的手机号码或者座机号'
+          }
+        ]
       },
 
       tips: {
