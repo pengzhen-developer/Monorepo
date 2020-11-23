@@ -131,6 +131,7 @@ export default {
               this.closeMenu()
               this.$emit('updateList')
             } else if (res.success && res.data.status === 2) {
+              this.isSave = true
               this.tips.showTips = true
               this.tips.patientInfo = {
                 patientNo: res.data.patientNo,

@@ -36,6 +36,7 @@
 
     <peace-dialog :visible.sync="addPatientDialog.visible"
                   v-if="addPatientDialog.visible"
+                  :before-close="closeMenu"
                   append-to-body
                   width="387px"
                   title="添加患者">
@@ -177,7 +178,16 @@ export default {
 
     // 关闭添加患者界面
     closeMenu() {
-      this.addPatientDialog.visible = false
+      const tmp = this.$refs.checkInput.isShouldSave()
+      if (tmp) {
+        this.$confirm('关闭后将不保存当前内容，是否关闭？')
+          .then(() => {
+            this.addPatientDialog.visible = false
+          })
+          .catch(() => {})
+      } else {
+        this.addPatientDialog.visible = false
+      }
     },
 
     // 添加患者的回调
