@@ -288,7 +288,7 @@ export default {
       json.PickUpCode = item.PickUpCode
       const params = peace.util.encode(json)
 
-      this.$router.replace(`/order/userDrugLogistics/${params}`)
+      this.$router.push(`/order/userDrugLogistics/${params}`)
     },
 
     submitOrder(item) {
