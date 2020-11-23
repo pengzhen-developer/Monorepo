@@ -322,12 +322,18 @@
           <div class="right">应付金额 :<span>{{'￥'+internalData.orderInfo.orderMoney}}</span> </div>
         </div>
         <div class="pay-item">
-          <div class="pay-btn btn-cancel"
-               v-if="canShowCancelButton"
-               @click="showCancellPop(internalData)">取消订单</div>
-          <div class="pay-btn btn-pay"
-               :class="{'flex-1':!canShowCancelButton}"
-               @click="goToPay(internalData)">立即支付</div>
+          <van-button class="pay-btn btn-cancel"
+                      v-if="canShowCancelButton"
+                      @click="showCancellPop(internalData)">取消订单</van-button>
+          <peace-button class="pay-btn btn-pay"
+                        :class="{'flex-1':!canShowCancelButton}"
+                        @click="goToPay(internalData)"
+                        round
+                        type="primary"
+                        throttle
+                        :throttleTime="3000">
+            立即支付
+          </peace-button>
         </div>
       </div>
       <!-- 复诊-报到 -->

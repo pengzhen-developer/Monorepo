@@ -139,9 +139,11 @@
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
       </div>
       <div class="bottom">
-        <van-button v-on:click="submitOrder('wxpay')"
-                    size="large"
-                    type="primary">提交订单</van-button>
+        <peace-button v-on:click="submitOrder('wxpay')"
+                      size="large"
+                      throttle
+                      :throttleTime="3000"
+                      type="primary">提交订单</peace-button>
       </div>
 
     </div>

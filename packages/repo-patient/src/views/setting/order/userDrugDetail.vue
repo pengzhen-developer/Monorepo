@@ -243,19 +243,19 @@
               待药店联系您进行医保支付
             </div>
 
-            <div @click="canselOrder"
-                 class="pay cancel"
-                 v-if="canShowCancel"
-                 style="background: #fff; border: 1px solid #CCCCCC;color: #999;">
-              取消订单
-            </div>
-
-            <div @click="payOrder(order)"
-                 class="pay"
-                 v-if="canShowPay"
-                 style="background: #00C6AE; ">
+            <van-button class="pay cancel"
+                        round
+                        v-if="canShowCancel"
+                        @click="canselOrder">取消订单</van-button>
+            <peace-button class="pay"
+                          @click="payOrder(order)"
+                          v-if="canShowPay"
+                          round
+                          type="primary"
+                          throttle
+                          :throttleTime="3000">
               立即支付
-            </div>
+            </peace-button>
           </div>
         </template>
       </div>
@@ -520,36 +520,9 @@ export default {
     },
     payOrder(order) {
       let orderNo = order.OrderId
-      peace.wx.pay({ orderNo }, this.orderExp, this.payCallback, this.payCallback)
+      peace.wx.pay({ orderNo }, null, this.payCallback, this.payCallback)
     },
-    orderExp(res) {
-      if (res && res.data) {
-        return Dialog.confirm({
-          title: '提示',
-          message: res.data.msg,
-          confirmButtonText: '去看看'
-        }).then(() => {
-          if (res.data.code == 202) {
-            //只有在202时才可进入catch流程
-            let inquiryId = res.data.data.inquiryId
-            const params = {
-              inquiryId
-            }
-            if (inquiryId != '') {
-              // 去咨询界面
-              let json = peace.util.encode(params)
-              this.$router.replace(`/setting/userConsultDetail/${json}`)
-            } else {
-              // 去挂号界面
-              let orderNo = res.data.data.orderNo
-              let orderType = 'register'
-              let json = peace.util.encode({ orderInfo: { orderNo, orderType } })
-              this.$router.replace(`/setting/order/userOrderDetail/${json}`)
-            }
-          }
-        })
-      }
-    },
+
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
 
@@ -660,17 +633,11 @@ export default {
   font-weight: 400;
 }
 .pay {
-  width: 75px;
+  width: 7.2em;
   height: 30px;
   background: rgba(0, 198, 174, 1);
-  border-radius: 15px;
   font-size: 13px;
   color: rgba(255, 255, 255, 1);
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   margin-left: 10px;
   &.cancel {
     border: 1px solid rgba(204, 204, 204, 1);

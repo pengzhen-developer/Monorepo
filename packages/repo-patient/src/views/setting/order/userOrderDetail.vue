@@ -94,12 +94,18 @@
          v-if="info.orderInfo.orderStatus == '1' ">
       <div class="left">应付金额：<span class="money">¥{{info.orderInfo.orderMoney}}</span></div>
       <div class="right">
-        <div class="pay cancel"
-             @click="canselOrder">
+        <van-button class="pay cancel"
+                    @click="canselOrder">
           取消订单
-        </div>
-        <div class="pay"
-             @click="goToPay(info)">继续支付</div>
+        </van-button>
+        <peace-button class="pay"
+                      @click="goToPay(info)"
+                      round
+                      type="primary"
+                      throttle
+                      :throttleTime="3000">
+          继续支付
+        </peace-button>
       </div>
     </div>
     <div class="module pdtb"
@@ -284,7 +290,7 @@ export default {
     display: flex;
   }
   .pay {
-    width: 75px;
+    width: 7.2em;
     height: 30px;
     background: rgba(0, 198, 174, 1);
     border-radius: 2px;

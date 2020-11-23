@@ -85,36 +85,36 @@
                                   :time="item.time"
                                   format="mm:ss" />
                 </div>
-                <div class="label blue"
-                     @click="onClickSeeQRCode(item)"
-                     v-if="checkQRCodeBtn(item)">
-                  取药码
-                </div>
-                <!-- <div class="label gary"
+                <van-button class="label blue"
+                            @click="onClickSeeQRCode(item)"
+                            v-if="checkQRCodeBtn(item)">取药码</van-button>
+                <!-- <van-button lass="label gary"
                     v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
-                    @click="canselOrder(item)">取消订单
-                </div> -->
-                <div class="label blue-full"
-                     v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
-                     @click="payOrder(item)">
-                  继续支付
-                </div>
-                <div class="label blue"
-                     v-if="canShowApplyBtn(item)"
-                     @click="changeInvoiceModel(item)">申请发票
-                </div>
-                <div class="label blue"
-                     v-if="ifShowLogistics(item)"
-                     @click="goDrugLogiPage(item)">查看物流
-                </div>
-                <div class="label blue"
-                     v-if="item.OrderStatus == '4' && item.ShippingMethod != '0'"
-                     @click="submitOrder(item)">确认收货
-                </div>
-                <div class="label blue"
-                     v-if="item.OrderStatus == '4' && item.ShippingMethod == '0'"
-                     @click="submitOrder(item)">确认取药
-                </div>
+                    @click="canselOrder(item)">
+                  取消订单
+                </van-button> -->
+                <peace-button class="label blue-full"
+                              v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
+                              @click="payOrder(item)"
+                              throttle
+                              :throttleTime="3000">继续支付</peace-button>
+                <van-button class="label blue"
+                            v-if="canShowApplyBtn(item)"
+                            @click="changeInvoiceModel(item)">
+                  申请发票
+                </van-button>
+                <van-button class="label blue"
+                            v-if="ifShowLogistics(item)"
+                            @click="goDrugLogiPage(item)">查看物流
+                </van-button>
+                <van-button class="label blue"
+                            v-if="item.OrderStatus == '4' && item.ShippingMethod != '0'"
+                            @click="submitOrder(item)">确认收货
+                </van-button>
+                <van-button class="label blue"
+                            v-if="item.OrderStatus == '4' && item.ShippingMethod == '0'"
+                            @click="submitOrder(item)">确认取药
+                </van-button>
               </div>
             </template>
 
@@ -656,10 +656,11 @@ export default {
   }
 }
 .label {
+  height: 30px;
   font-size: 13px;
-  padding: 5px 12px;
+  padding: 0px 12px;
   margin-left: 10px;
-  border-radius: 20px;
+  border-radius: 15px;
 }
 .label.label-private {
   font-size: 8px;

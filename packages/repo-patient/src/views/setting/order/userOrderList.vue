@@ -81,14 +81,20 @@
                                   format="HH:mm:ss" />
                 </template>
               </div>
-              <!-- <div class="label gary"
-                   @click="showCancellPop(item,index)">取消订单</div> -->
-              <div class="label blue"
-                   v-if="canShowPaybutton(item)"
-                   @click="goPay(item,index,'countDown_inquiry_')">继续支付</div>
-              <div class="label blue"
-                   @click="changeInvoiceModel(item)"
-                   v-if="item.inquiryInfo.inquiryStatus == '5'&&item.orderInfo.divisionId">申请发票</div>
+              <!-- <van-button class="label gary"
+                   @click="showCancellPop(item,index)">取消订单</van-button> -->
+              <peace-button class="label blue"
+                            v-if="canShowPaybutton(item)"
+                            @click="goPay(item,index,'countDown_inquiry_')"
+                            throttle
+                            :throttleTime="3000">
+                继续支付
+              </peace-button>
+              <van-button class="label blue"
+                          @click="changeInvoiceModel(item)"
+                          v-if="item.inquiryInfo.inquiryStatus == '5'&&item.orderInfo.divisionId">
+                申请发票
+              </van-button>
             </div>
           </div>
 

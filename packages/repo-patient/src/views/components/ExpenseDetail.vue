@@ -24,10 +24,12 @@
         </div>
       </div>
       <div class="cost-footer">
-        <van-button class="cost-submit"
-                    round
-                    type="primary"
-                    @click="pay">确认支付</van-button>
+        <peace-button class="cost-submit"
+                      round
+                      type="primary"
+                      throttle
+                      :throttleTime="3000"
+                      @click="pay">确认支付</peace-button>
       </div>
     </div>
   </van-popup>

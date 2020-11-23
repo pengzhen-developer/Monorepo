@@ -219,9 +219,11 @@
     </div>
 
     <div class="footer ">
-      <van-button @click="apply"
-                  type="primary"
-                  size="large">提交订单</van-button>
+      <peace-button @click="apply"
+                    type="primary"
+                    throttle
+                    :throttleTime="3000"
+                    size="large">提交订单</peace-button>
     </div>
 
     <van-image-preview v-model="imagePreview.visible"
