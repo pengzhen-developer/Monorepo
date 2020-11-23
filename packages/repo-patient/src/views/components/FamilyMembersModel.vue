@@ -704,10 +704,6 @@ export default {
         .bindFamily(params)
         .then((res) => {
           const params = peace.util.decode(this.$route.params.json)
-          if (params.emit) {
-            $peace.$emit(params.emit, res)
-          }
-
           if (this.addGardian) {
             this.gardianName = this.model.name
             this.gardianId = this.model.idcard
@@ -723,8 +719,13 @@ export default {
             //新增家人后断连接IM
             peace.service.IM.initNIMS({ type: 'add', ...res.data })
             this.familyId = res.data.accid
-            this.getFamilyInfo({ id: res.data.accid, source: 2 })
-            this.from = ''
+            if (params.emit) {
+              $peace.$emit(params.emit, res)
+              this.$router.go(-1)
+            } else {
+              this.getFamilyInfo({ id: res.data.accid, source: 2 })
+              this.from = ''
+            }
           }
         })
         .finally(() => {
