@@ -15,8 +15,6 @@
           <el-select v-model="model.role"
                      placeholder="全部"
                      clearable>
-            <el-option label="全部"
-                       value></el-option>
             <el-option v-for="(value, label) in source.ENUM_ORGANIZATION_TYPE"
                        v-bind:key="value"
                        v-bind:label="label"
@@ -27,8 +25,6 @@
           <el-select v-model="model.checkStatus"
                      placeholder="全部"
                      clearable>
-            <el-option label="全部"
-                       value></el-option>
             <el-option v-for="(value, label) in source.ENUM_CHECK_STATUS"
                        v-bind:key="value"
                        v-bind:label="label"
@@ -124,7 +120,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },

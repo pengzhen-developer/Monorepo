@@ -27,8 +27,6 @@
           <el-select clearable
                      v-model.trim="model.OnShelves"
                      placeholder="全部">
-            <el-option label="全部"
-                       value></el-option>
             <el-option v-for="(value,label) in source.ON_SHELF_STATUS"
                        :key="value"
                        :label="label"
@@ -40,8 +38,6 @@
           <el-select clearable
                      v-model.trim="model.MappingExamineStatus"
                      placeholder="全部">
-            <el-option label="全部"
-                       value></el-option>
             <el-option v-for="(value,label) in source.MAPPING_EXAMINE_STATUS"
                        :key="value"
                        :label="label"
@@ -153,7 +149,7 @@ export default {
     }
   },
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
