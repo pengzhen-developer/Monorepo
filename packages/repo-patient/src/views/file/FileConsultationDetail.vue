@@ -17,7 +17,7 @@
                       height="13"
                       :name="require('@src/assets/images/file/ic_girls_white.png')" />
             <span style="font-size: 14px; color: #fff; margin: 0 8px;">
-              {{ familyInfo.familyAge + '岁' }}
+              {{ familyInfo.familyAge }}
             </span>
             <van-tag color="#06B8AE"
                      text-color="#FFFFFF">远程会诊</van-tag>
@@ -112,7 +112,7 @@ export default {
     unread() {
       let readPatient = 0
       if (this.prescribeInfos.list && this.prescribeInfos.list.length > 0) {
-        this.prescribeInfos.list.forEach(item => {
+        this.prescribeInfos.list.forEach((item) => {
           if (item.readPatient == 1) {
             readPatient += item.readPatient
           }
@@ -129,7 +129,7 @@ export default {
   methods: {
     getHealthCase() {
       const params = peace.util.decode(this.$route.params.json)
-      peace.service.group.consultDetail(params).then(res => {
+      peace.service.group.consultDetail(params).then((res) => {
         this.loading = true
         this.caseInfo = res.data.caseInfo
         this.familyInfo = res.data.familyInfo
@@ -187,10 +187,7 @@ export default {
     },
     getCurrent(index) {
       this.currentIndex = index
-      if (
-        this.prescribeInfos.list[this.currentIndex].prescriptionNo &&
-        this.prescribeInfos.list[this.currentIndex].readPatient == 1
-      ) {
+      if (this.prescribeInfos.list[this.currentIndex].prescriptionNo && this.prescribeInfos.list[this.currentIndex].readPatient == 1) {
         this.updateCounsultRedDot(this.prescribeInfos.list[this.currentIndex].prescriptionNo, 'prescribeInfo')
       }
     }

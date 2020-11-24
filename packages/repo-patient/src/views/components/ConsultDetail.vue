@@ -78,7 +78,7 @@
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>年龄</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familyAge + "岁"}}</div>
+            <div class="form-dd">{{internalData.familyInfo.familyAge }}</div>
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>性别</span> :</div>
@@ -90,7 +90,7 @@
             <div class="form-dt"><span>监 护 人</span> :</div>
             <div class="form-dd">{{internalData.familyInfo.guardianName}} |
               {{internalData.familyInfo.guardianSex}} |
-              {{internalData.familyInfo.guardianAge+'岁'}}
+              {{internalData.familyInfo.guardianAge}}
             </div>
           </div>
         </div>

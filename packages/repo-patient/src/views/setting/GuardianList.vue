@@ -20,7 +20,7 @@
                       name="ic_girls"
                       v-else-if="item.sex === '女'" />
             <span class="custom-age"
-                  v-if="item.age">{{ item.age }}岁</span>
+                  v-if="item.age">{{ item.age }}</span>
             <van-tag plain
                      round>{{ item.relation }}</van-tag>
           </template>
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     get() {
-      peace.service.patient.getGuardianList().then(res => {
+      peace.service.patient.getGuardianList().then((res) => {
         this.guardianList = res.data.list
         this.loaded = true
       })

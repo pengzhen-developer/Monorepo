@@ -1260,7 +1260,7 @@ export default {
               }
             }
 
-            answer = params[0].label + '，' + params[0].sex + '，' + params[0].age + '岁'
+            answer = params[0].label + '，' + params[0].sex + '，' + params[0].age
             this.model.familyName = params[0].label
             this.model.familyId = params[0].value
             const data = this.supplementaryList.find((item) => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)

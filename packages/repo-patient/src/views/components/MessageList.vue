@@ -10,8 +10,7 @@
           <!-- 文本消息 -->
           <template v-if="textMessage(message)">
             <!-- 消息时间 -->
-            <template
-                      v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
+            <template v-if="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]">
               <div class="message time">
                 <div class="message-body">
                   <span>{{ (message.time || message.sendtime).toDate().calcTimeHeader() }}</span>
@@ -47,8 +46,7 @@
           </template>
 
           <!-- 问诊卡片 -->
-          <template
-                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.问诊卡片">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -76,7 +74,7 @@
                   <span>
                     {{ patientInfo.familyName }} |
                     {{ patientInfo.familySex }} |
-                    {{ patientInfo.familyAge }}岁
+                    {{ patientInfo.familyAge }}
                   </span>
                   <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
                        src="~@/assets/images/ic_fz.png"
@@ -148,7 +146,7 @@
                     <div class="right other">
                       {{ patientInfo.familyName }}
                       {{ patientInfo.familySex }}
-                      {{ patientInfo.familyAge }}岁
+                      {{ patientInfo.familyAge }}
                     </div>
                   </div>
 
@@ -222,7 +220,7 @@
                     <div class="right other">
                       {{ patientInfo.familyName }}
                       {{ patientInfo.familySex }}
-                      {{ patientInfo.familyAge }}岁
+                      {{ patientInfo.familyAge }}
                     </div>
                   </div>
                   <div class="item">
@@ -259,8 +257,7 @@
           </template>
 
           <!-- 病历消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
+          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -313,8 +310,7 @@
           </template>
 
           <!-- 处方消息 -->
-          <template
-                    v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
+          <template v-else-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -425,8 +421,7 @@
           </template>
 
           <!-- 视频消息 -->
-          <template
-                    v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
+          <template v-if="getMessageType(message) === $peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话">
             <!-- 消息时间 -->
             <template v-if="isShowMessageTime(message ,index)">
               <div class="message time">
@@ -724,7 +719,7 @@ export default {
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
       // 过滤无效数据
-      sessionMessages = sessionMessages.filter(message => {
+      sessionMessages = sessionMessages.filter((message) => {
         // 屏蔽系统消息
         if (message.type === 'notification') {
           return false
@@ -771,11 +766,7 @@ export default {
       return (
         this.infoData &&
         (this.infoData.inquiryStatus == '4' || this.infoData.inquiryStatus == '5') &&
-        (this.infoData.consultNo ||
-          this.infoData.referralNo ||
-          this.infoData.isCase ||
-          this.infoData.isPrescrip ||
-          this.infoData.checkOrderNo)
+        (this.infoData.consultNo || this.infoData.referralNo || this.infoData.isCase || this.infoData.isPrescrip || this.infoData.checkOrderNo)
       )
     }
   },
@@ -800,11 +791,7 @@ export default {
           this.IM = this.$store.state.inquiry.sessionsFamily[this.params.familyId].im
           const interval = setInterval(() => {
             // 等待 IM 初始化完成，并且 sessions 已经获取到
-            if (
-              this.IM &&
-              this.IM.isConnected() &&
-              this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions.length > 0
-            ) {
+            if (this.IM && this.IM.isConnected() && this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions.length > 0) {
               window.clearInterval(interval)
               this.getInquiryInfo()
               this.getHistoryMsgsByIM()
@@ -828,7 +815,7 @@ export default {
         sessionIdList: [this.params.id],
         familyId: this.params.familyId
       }
-      peace.service.inquiry.getList(params).then(res => {
+      peace.service.inquiry.getList(params).then((res) => {
         this.internalDoctorInfo = res.data.list[0].doctorInfo
         this.internalPatientInfo = res.data.list[0].patientInfo
         this.checkFamilyIsInFlamilyList()
@@ -836,7 +823,7 @@ export default {
     },
     //获取历史会话问诊状态、医生信息、患者信息及5个按钮是否展示
     getInfoData(inquiryId) {
-      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then((res) => {
         res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
         this.infoData = res.data.inquiryInfo
         this.internalPatientInfo = res.data.familyInfo
@@ -848,10 +835,10 @@ export default {
 
     //获取历史会话数据
     getHistoryMsgsByDB() {
-      peace.service.patient.chatDetail(this.params).then(res => {
-        const historyMessageFormatHandler = messages => {
+      peace.service.patient.chatDetail(this.params).then((res) => {
+        const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
-            messages.forEach(message => {
+            messages.forEach((message) => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
@@ -877,7 +864,7 @@ export default {
     getHistoryMsgsByIM() {
       const currrentSession = this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions
       const doneHandler = (error, message) => {
-        const session = currrentSession.find(item => item.id === message.scene + '-' + message.to)
+        const session = currrentSession.find((item) => item.id === message.scene + '-' + message.to)
 
         console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
@@ -1032,7 +1019,7 @@ export default {
         new Compressor(file.file, {
           quality: 0.6,
           convertSize: 50000,
-          success: fileBlob => {
+          success: (fileBlob) => {
             const blob = new File([fileBlob], fileBlob.name, { type: fileBlob.type })
 
             this.IM.sendFile({
@@ -1086,7 +1073,7 @@ export default {
       this.$router.push(`/components/DoctorDetail/${json}`)
     },
     checkFamilyIsInFlamilyList() {
-      peace.service.health.familyLists().then(res => {
+      peace.service.health.familyLists().then((res) => {
         for (let i = 0; i < res.data.list.length; i++) {
           if (res.data.list[i].id == this.patientInfo.familyId) {
             this.IsInFlamilyList = true

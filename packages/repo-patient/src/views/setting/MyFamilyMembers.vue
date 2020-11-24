@@ -22,7 +22,7 @@
                       name="ic_girls"
                       v-else-if="item.sex === '女'" />
             <span class="custom-age"
-                  v-if="item.age">{{ item.age }}岁</span>
+                  v-if="item.age">{{ item.age }}</span>
             <van-tag plain
                      round>{{ item.relation }}</van-tag>
           </template>
@@ -96,9 +96,9 @@ export default {
   methods: {
     get() {
       // 获取现有家人
-      peace.service.patient.getMyFamilyList().then(res => {
+      peace.service.patient.getMyFamilyList().then((res) => {
         if (res.data.length > 0) {
-          res.data.map(item => {
+          res.data.map((item) => {
             if (item.sex === '1') {
               item.sex = '男'
             } else if (item.sex === '0') {
@@ -141,7 +141,7 @@ export default {
       if (this.members && this.members.length >= 4) {
         return peace.util.alert('您最多可添加 4 位家人')
       }
-      let canShowSelf = this.members && !this.members.find(item => item.relation === '本人') ? 1 : 2
+      let canShowSelf = this.members && !this.members.find((item) => item.relation === '本人') ? 1 : 2
       let json = peace.util.encode({ type: 'add', canShowSelf: canShowSelf })
       this.$router.push(`/setting/familyMember/${json}`)
     }
@@ -189,12 +189,14 @@ export default {
       display: inline-block;
     }
     .custom-title {
-      width: 60px;
+      min-width: 60px;
+      flex: 0 1 auto;
     }
     .custom-age {
       margin-left: 24px;
       margin-right: 10px;
-      width: 40px;
+      min-width: 40px;
+      flex: 0 1 auto;
     }
   }
 }

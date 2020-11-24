@@ -103,7 +103,7 @@
                   <span :class="checkId==index&&'checked'">{{item.relation}}</span>
                 </div>
                 <div class="item-bottom"
-                     :class="checkId==index&&'checked'">{{item.sex}} {{item.age+'岁'}}</div>
+                     :class="checkId==index&&'checked'">{{item.sex}} {{item.age}}</div>
               </div>
               <div class="addWrap"
                    @click="addFamily"
@@ -296,11 +296,11 @@ export default {
       peace.cache.remove('isEwm')
     },
     getFamilyList() {
-      peace.service.patient.getMyFamilyList().then(res => {
+      peace.service.patient.getMyFamilyList().then((res) => {
         this.familyList = res.data
         if (res.data.length > 0) {
           this.hasFamily = 2
-          res.data.map(item => {
+          res.data.map((item) => {
             if (item.sex === '1') {
               item.sex = '男'
             } else if (item.sex === '0') {
@@ -332,18 +332,14 @@ export default {
         strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
       }
       if (len == 15) {
-        strBirthday =
-          '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
+        strBirthday = '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
       }
       //时间字符串里，必须是“/”
       var birthDate = new Date(strBirthday)
       var nowDateTime = new Date()
       var age = nowDateTime.getFullYear() - birthDate.getFullYear()
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
-      if (
-        nowDateTime.getMonth() < birthDate.getMonth() ||
-        (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())
-      ) {
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
         age--
       }
       return age
@@ -355,24 +351,24 @@ export default {
       if (this.model.isExistCard) {
         let familyId = this.model.id
         let params = { familyId }
-        peace.service.patient.getCardList(params).then(res => {
+        peace.service.patient.getCardList(params).then((res) => {
           this.cardList = res.data.list
           this.firstLoad = true
         })
       }
     },
     getNationList() {
-      peace.service.patient.getNationList().then(res => {
+      peace.service.patient.getNationList().then((res) => {
         let nations = res.data.list
         this.nationsMap = nations
-        this.nations = nations.map(item => {
+        this.nations = nations.map((item) => {
           return item.name
         })
       })
     },
     getNationCodeByName(name) {
       let code = ''
-      this.nationsMap.map(item => {
+      this.nationsMap.map((item) => {
         if (item.name == name) {
           code = item.code
         }
@@ -474,7 +470,7 @@ export default {
       if (this.type == 'doctorDetail') {
         peace.service.group
           .addData(params)
-          .then(res => {
+          .then((res) => {
             peace.util.alert(res.msg)
             this.changeFlag(true)
           })
@@ -494,7 +490,7 @@ export default {
           params.source = params.nethospitalid && params.nethospitalid != '' ? 2 : 1
           peace.service.patient
             .bindFamily(params)
-            .then(res => {
+            .then((res) => {
               peace.util.alert(res.msg)
               //新增家人后断连接IM
               peace.service.IM.initNIMS({ type: 'add', ...res.data })

@@ -32,13 +32,9 @@
                             :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
                   <van-icon v-if="item.sex === '女'"
                             :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
-                  <span style="font-size: 14px; margin: 0 10px;">{{
-                    item.age + "岁"
-                  }}</span>
+                  <span style="font-size: 14px; margin: 0 10px;">{{ item.age }}</span>
                   <van-tag color="#F2F2F2"
-                           text-color="#999999">{{
-                    item.relation
-                  }}</van-tag>
+                           text-color="#999999">{{ item.relation }}</van-tag>
                 </div>
                 <van-image round
                            v-if="item.sex === '男'"

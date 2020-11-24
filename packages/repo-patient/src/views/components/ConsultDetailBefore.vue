@@ -50,7 +50,7 @@
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>年龄</span> :</div>
-            <div class="form-dd">{{familyInfo.age + "岁"}}</div>
+            <div class="form-dd">{{familyInfo.age}}</div>
           </div>
           <div class="form-dl">
             <div class="form-dt"><span>性别</span> :</div>
@@ -62,7 +62,7 @@
             <div class="form-dt"><span>监 护 人</span> :</div>
             <div class="form-dd">{{familyInfo.guardianName}} |
               {{familyInfo.guardianSex}} |
-              {{familyInfo.guardianAge+'岁'}}
+              {{familyInfo.guardianAge}}
             </div>
           </div>
         </div>

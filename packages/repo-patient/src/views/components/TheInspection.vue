@@ -35,7 +35,7 @@
         </div>
         <div class="patient-item">
           <div class="patient-item-key">年龄</div>
-          <div class="patient-item-val">{{data[current].patientInfo.familyAge}}岁</div>
+          <div class="patient-item-val">{{data[current].patientInfo.familyAge}}</div>
         </div>
       </div>
     </div>
@@ -98,12 +98,12 @@ export default {
     },
 
     getList(inquiryNo) {
-      peace.service.group.getInspectList({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.getInspectList({ inquiryNo: inquiryNo }).then((res) => {
         this.data = res.data.info || []
       })
     },
     getDetail(checkOrderNo) {
-      peace.service.group.getInspectDetail({ checkOrderNo: checkOrderNo }).then(res => {
+      peace.service.group.getInspectDetail({ checkOrderNo: checkOrderNo }).then((res) => {
         this.data.push(res.data.info)
       })
     },

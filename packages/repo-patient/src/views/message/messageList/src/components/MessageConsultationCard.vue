@@ -13,7 +13,7 @@
         <div class="right other">
           {{ familyName }}
           {{ familySex }}
-          {{ familyAge }}岁
+          {{ familyAge }}
         </div>
       </div>
       <div class="item">

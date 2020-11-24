@@ -9,7 +9,7 @@
       <span>
         {{ familyName }} |
         {{ familySex }} |
-        {{ familyAge }}岁
+        {{ familyAge }}
       </span>
       <img v-if="isReturnVisit"
            src="../assets/images/ic_fz.png"

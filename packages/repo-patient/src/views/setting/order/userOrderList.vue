@@ -38,7 +38,7 @@
                   <div class="small-item-val"
                        v-if="item.familyInfo">{{item.familyInfo.familyName}}
                     {{item.familyInfo.familySex}}
-                    {{item.familyInfo.familyAge}}岁</div>
+                    {{item.familyInfo.familyAge}}</div>
                 </div>
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
@@ -124,7 +124,7 @@
                        v-if="item.familyInfo">
                     {{item.familyInfo.name||item.familyName}}
                     {{item.familyInfo.sex||''}}
-                    {{item.familyInfo.age+'岁'||''}}</div>
+                    {{item.familyInfo.age||''}}</div>
                 </div>
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
