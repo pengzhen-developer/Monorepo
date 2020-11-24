@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/*eslint no-prototype-builtins: "off"*/
 import Observable_Layout from './../observable'
 
 export default {
@@ -50,20 +51,31 @@ export default {
 
   methods: {
     pushRoute(tab) {
-      // 重复跳转
-      if (tab.menuRoute === this.$route.path) {
-        return
+      const routePath = tab.menuRoute
+      const realPath = tab.menuPath
+
+      if (this.$route.path !== routePath) {
+        this.$router.push(routePath).then((route) => {
+          /** 动态修改 route meta */
+          for (const key in route.meta) {
+            if (route.meta.hasOwnProperty(key)) {
+              route.meta[key] = tab[key]
+            }
+          }
+        })
       }
 
-      this.$router.push(tab.menuRoute).then((route) => {
-        /* eslint-disable */
-        /* tab to meta */
-        for (const key in route.meta) {
-          if (route.meta.hasOwnProperty(key)) {
-            route.meta[key] = tab[key]
+      // Fixed iFrame parameter lost
+      if (Peace.validate.isUrl(realPath)) {
+        this.$router.push({ path: routePath, query: { t: Date.now() } }).then((route) => {
+          /** 动态修改 route meta */
+          for (const key in route.meta) {
+            if (route.meta.hasOwnProperty(key)) {
+              route.meta[key] = tab[key]
+            }
           }
-        }
-      })
+        })
+      }
     },
 
     tabClick(tabComponent) {
