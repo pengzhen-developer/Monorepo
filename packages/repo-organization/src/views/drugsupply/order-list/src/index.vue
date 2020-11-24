@@ -16,7 +16,7 @@
         <el-form-item label="订单编号">
           <el-input v-model.trim="model.OrderNumber"
                     placeholder="请输入订单编号"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="下单日期">
@@ -51,7 +51,7 @@
         <el-form-item label="客户姓名">
           <el-input v-model="model.CustName"
                     placeholder="请输入客户姓名"
-                    clearable="true"></el-input>
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="电话号码">
@@ -281,7 +281,8 @@ export default {
 
       Service.getOrderInfo(params).then((res) => {
         // 处理 Stream timeline
-        res.data.list?.LogisticsInfo?.Stream?.forEach((item) => {
+
+        res.data?.LogisticsInfo?.Stream?.forEach((item) => {
           item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
           item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
         })

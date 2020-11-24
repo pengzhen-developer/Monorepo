@@ -211,7 +211,8 @@
 
     <!-- 物流信息 -->
     <div class="q-mb-lg"
-         v-if="data.LogisticsInfo">
+         v-if="data.LogisticsInfo || data.ExpressName || data.PickUpCode">
+
       <div class="title q-mb-md">
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">物流信息</span>
       </div>
@@ -221,12 +222,13 @@
           <span class="text-grey-7">物流配送方式：</span>
           <span class="text-grey-7 q-mr-xl">快递公司配送</span>
           <span class="text-grey-7">物流公司名称：</span>
-          <span class="text-grey-7 q-mr-xl">{{ data.LogisticsInfo.Name }}</span>
+          <span class="text-grey-7 q-mr-xl">{{ data.LogisticsInfo && data.LogisticsInfo.Name || data.ExpressName }}</span>
           <span class="text-grey-7">物流单号：</span>
-          <span class="text-grey-7">{{ data.LogisticsInfo.Number }}</span>
+          <span class="text-grey-7">{{ data.LogisticsInfo && data.LogisticsInfo.Number || data.PickUpCode }}</span>
         </div>
 
-        <ul class="el-timeline">
+        <ul class="el-timeline"
+            v-if="data.LogisticsInfo">
           <li class="el-timeline-item"
               v-for="(timeline, index) in data.LogisticsInfo.Stream"
               v-bind:key="timeline.Time">
