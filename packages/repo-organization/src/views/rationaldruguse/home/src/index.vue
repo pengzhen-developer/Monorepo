@@ -81,7 +81,7 @@ export default {
         Service.drugCount(params),
         Service.PharCount(params),
         Service.PrescriptionCount(),
-        Service.ruleCount(paramsRuleCount1),
+        Service.ruleCountOfOrgan(paramsRuleCount1),
         Service.ruleCount(paramsRuleCount2),
         Service.CustDrugsTotal(params)
       ]

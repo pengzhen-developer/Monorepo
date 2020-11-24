@@ -114,7 +114,26 @@ export default {
     })
   },
   /**
-   * 通用规则、自定义规则
+   * 通用规则
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  ruleCountOfOrgan(params) {
+    const isMock = false
+
+    const apiPath = `durjztdurengine/billMain/ruleCountOfOrgan?ruleType=${params.ruleType}&hosCode=${params.hosCode}`
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 自定义规则
    *
    * @param {*} params
    * @returns {Object}
