@@ -73,6 +73,15 @@ export default {
   methods: {
     changeRoute(tab) {
       const routePath = tab.menuRoute
+      const realPath = tab.menuPath
+
+      // Fixed iFrame parameter lost
+      if (Peace.validate.isUrl(realPath)) {
+        const iframe = document.body.querySelector('.q-page-container .iframe')
+        setImmediate(() => {
+          iframe.src = realPath
+        })
+      }
 
       if (this.$route.path !== routePath) {
         this.$router.push(routePath).then((route) => {
@@ -93,18 +102,21 @@ export default {
         return
       }
 
-      const currentTab = this.tabs.find((item) => item.id.toString() === tab.name.toString())
+      const tabs = this.$store.state.tabs.tabs
+      const currentTab = tabs.find((menu) => menu.id === tab.name)
+
       this.$store.commit('tabs/selectTab', currentTab)
     },
 
     tabRemove(id) {
-      // 删除当前 tab
-      const currentTab = this.tabs.find((item) => item.id.toString() === id.toString())
+      const tabs = this.$store.state.tabs.tabs
+      const currentTab = tabs.find((menu) => menu.id === name)
+
       this.$store.commit('tabs/removeTab', currentTab)
 
       // 选中最后 tab
       if (this.tabs.length > 0) {
-        const lastTab = this.tabs[this.tabs.length - 1]
+        const lastTab = tabs.find((menu) => menu.id === this.tabs[this.tabs.length - 1].id)
         this.$store.commit('tabs/selectTab', lastTab)
       }
     }
