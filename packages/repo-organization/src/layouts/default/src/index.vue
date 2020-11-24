@@ -168,9 +168,9 @@ export default {
     resetActive() {
       // 优先从缓存获取 route
       const tabs = this.$store.state.tabs.tabs
-      const currentTab = tabs.find((item) => item.menuRoute === this.$route.fullPath) ?? this.$route?.meta
+      const currentTab = tabs.find((item) => item.menuRoute === this.$route.path) ?? this.$route?.meta
 
-      //还原 nav active
+      // 还原 nav active
       this.defaultActive = currentTab?.id.toString()
 
       // 新增到当前 tab

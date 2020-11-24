@@ -26,6 +26,8 @@
 </template>
 
 <script>
+/*eslint no-prototype-builtins: "off"*/
+
 export default {
   data() {
     return {
@@ -75,18 +77,21 @@ export default {
       const routePath = tab.menuRoute
       const realPath = tab.menuPath
 
-      // Fixed iFrame parameter lost
-      if (Peace.validate.isUrl(realPath)) {
-        const iframe = document.body.querySelector('.q-page-container .iframe')
-        setImmediate(() => {
-          iframe.src = realPath
-        })
-      }
-
       if (this.$route.path !== routePath) {
         this.$router.push(routePath).then((route) => {
           /** 动态修改 route meta */
-          /* eslint-disable */
+          for (const key in route.meta) {
+            if (route.meta.hasOwnProperty(key)) {
+              route.meta[key] = tab[key]
+            }
+          }
+        })
+      }
+
+      // Fixed iFrame parameter lost
+      if (Peace.validate.isUrl(realPath)) {
+        this.$router.push({ path: routePath, query: { t: Date.now() } }).then((route) => {
+          /** 动态修改 route meta */
           for (const key in route.meta) {
             if (route.meta.hasOwnProperty(key)) {
               route.meta[key] = tab[key]
