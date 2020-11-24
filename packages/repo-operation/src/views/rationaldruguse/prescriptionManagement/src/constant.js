@@ -16,7 +16,8 @@ export default {
     { label: '通过', value: 'OK', color: 'rgb(25, 190, 107)' },
     { label: '禁用', value: 'D', color: 'rgb(237, 64, 20)' },
     { label: '慎用', value: 'R', color: 'rgb(240, 152, 21)' },
-    { label: '提示', value: 'I', color: 'rgb(45, 183, 245)' }
+    { label: '提示', value: 'I', color: 'rgb(45, 183, 245)' },
+    { label: '暂无结果', value: 'ERR', color: 'rgb(153, 153, 153)' }
   ],
   /**
    * 处方状态
@@ -99,6 +100,7 @@ export default {
     ['OK']: 'green',
     ['I']: 'info',
     ['R']: 'warning',
-    ['D']: 'negative'
+    ['D']: 'negative',
+    ['ERR']: 'grey'
   }
 }

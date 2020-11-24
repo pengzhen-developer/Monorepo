@@ -16,23 +16,28 @@
     </div>
 
     <div class="card q-mb-md q-mx-sm"
-         v-for="checkItem in data.resultMsgs"
-         v-bind:key="checkItem.productCode">
+         v-for="(checkItem,index) in data.resultMsgs"
+         v-bind:key="index">
       <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
         <div v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
              class="relative-position"
              style="width: 4px; height: 16px; left: -24px"></div>
-        <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.productName }}</span>
+        <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.title }}</span>
         <span v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
-              class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionMsg }}</span>
+              class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionName }}</span>
       </div>
 
-      <div class="content q-px-lg q-py-md">
+      <div class="content q-px-lg q-py-md"
+           v-for="actionItem in checkItem.list"
+           v-bind:key="actionItem.id">
         <div class="row">
-          <div class="col-2 text-weight-bold">{{ checkItem.ruleMsg }}</div>
+          <div class="col-2 text-weight-bold text-justify"
+               style="min-width:4.4em ;padding-right:0.4em ;">{{ actionItem.ruleMsg }}</div>
           <div class="col-1 text-weight-bold"
-               v-bind:style="{'color':getSystemAuditResultsTextColor(checkItem.actionCode)}">{{ checkItem.actionMsg }}</div>
-          <div class="col q-pl-sm">{{ checkItem.ruleMsgText }}</div>
+               style="min-width:2.2em ;"
+               v-bind:style="{'color':getSystemAuditResultsTextColor(actionItem.actionCode)}">{{ actionItem.actionMsg }}</div>
+          <div class="col q-pl-sm"
+               style="word-break: break-all;">{{ actionItem.ruleMsgText }}</div>
         </div>
       </div>
     </div>

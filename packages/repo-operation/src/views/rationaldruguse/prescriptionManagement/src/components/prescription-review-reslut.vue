@@ -15,7 +15,8 @@
              v-bind:key="index">
           <div class="time text-color-grey-999">{{log.CreateTime}}</div>
           <div class="flex row justify-betwee">
-            <div class="col-2">
+            <div class="col-2"
+                 style="min-width: 6em;">
               <div class="title"
                    v-bind:class="{'other':getImageStyle(log.code)}">
                 <el-image v-bind:src="getImage(log.action,log.code)"></el-image>
@@ -25,7 +26,7 @@
               <div class="subtitle text-color-grey-999"
                    v-html="getLogNameText(log.name,log.code)"></div>
             </div>
-            <div class="col q-pl-lg"
+            <div class="col q-pl-sm"
                  v-html="getLogNoteText(log.note,log.code)">
             </div>
           </div>
