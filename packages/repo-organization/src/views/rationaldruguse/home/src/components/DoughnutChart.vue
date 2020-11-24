@@ -28,17 +28,12 @@ export default {
       handler(val) {
         let total = Number(val.subject) + Number(val.other)
 
-        if (total == 0) {
+        if (val.subject == 0 || val.other == 0) {
           this.polar.series[0].data[0].value = '0.00'
           this.polar.series[0].data[1].value = '1.00'
         } else {
-          if (val.subject == 0 || val.other == 0) {
-            this.polar.series[0].data[0].value = '0.00'
-            this.polar.series[0].data[1].value = '1.00'
-          } else {
-            this.polar.series[0].data[0].value = ((Number(val.subject) / total) * 100).toFixed(2)
-            this.polar.series[0].data[1].value = ((Number(val.other) / total) * 100).toFixed(2)
-          }
+          this.polar.series[0].data[0].value = ((Number(val.subject) / total) * 100).toFixed(2)
+          this.polar.series[0].data[1].value = ((Number(val.other) / total) * 100).toFixed(2)
         }
       },
       immediate: true,
