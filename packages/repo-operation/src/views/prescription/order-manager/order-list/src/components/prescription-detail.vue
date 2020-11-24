@@ -73,7 +73,7 @@
             <span class="text-justify text-color-grey-666"
                   style="width: 5em;">住院(门诊)</span>
             <span class="q-mx-xs">：</span>
-            <span class="col text-weight-bold">{{data.ClientCardCode}}</span>
+            <span class="col text-weight-bold">{{data.CaseNumber}}</span>
           </div>
         </div>
 
