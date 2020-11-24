@@ -28,7 +28,7 @@
             <div class="form-dt"><span>年龄</span></div>
             <span class="form-dt"
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
-            <div class="form-dd">{{internalData.inquiryOrderInfo.age + "岁"}}</div>
+            <div class="form-dd">{{internalData.inquiryOrderInfo.age}}</div>
           </el-col>
         </el-row>
         <el-row class="row">

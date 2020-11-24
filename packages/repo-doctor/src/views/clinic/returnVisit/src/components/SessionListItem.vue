@@ -15,7 +15,7 @@
         </template>
 
         <span class="q-mr-sm text-caption"> {{ patientInfo.familySex }} </span>
-        <span class="q-mr-sm text-caption"> {{ `${ patientInfo.familyAge }岁` }} </span>
+        <span class="q-mr-sm text-caption"> {{ `${ patientInfo.familyAge }` }} </span>
       </div>
       <div>
         <el-tag effect="plain"

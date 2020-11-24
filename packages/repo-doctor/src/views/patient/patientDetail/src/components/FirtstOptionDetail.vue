@@ -39,7 +39,7 @@
           <span class="text-justify"
                 style="width: 4em;">年龄</span>
           <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.patientAge }}岁</span>
+          <span class="col text-weight-bold">{{ data.patientAge }}</span>
         </div>
         <div class="row col-6">
           <span class="text-justify"

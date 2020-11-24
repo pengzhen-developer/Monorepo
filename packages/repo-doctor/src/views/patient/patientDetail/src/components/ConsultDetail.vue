@@ -4,7 +4,7 @@
       <div class="left">
         <span class="name">{{ familyName }}</span>
         <span class="sex">{{ sex }}</span>
-        <span class="age">{{ age+'岁' }}</span>
+        <span class="age">{{ age }}</span>
         <span class="dept">远程会诊</span>
       </div>
       <div class="right">

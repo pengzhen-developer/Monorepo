@@ -24,7 +24,7 @@
           <span class="label">年龄</span>
           <span class="divider">:</span>
           <span class="value">
-            {{internalData.inquiryOrderInfo.age + "岁"}}
+            {{internalData.inquiryOrderInfo.age}}
           </span>
         </el-col>
         <el-col :span="8">
@@ -41,7 +41,7 @@
         <div class="value">
           {{internalData.inquiryOrderInfo.guardianName}} |
           {{internalData.inquiryOrderInfo.guardianSex}}|
-          {{internalData.inquiryOrderInfo.guardianAge+'岁'}}
+          {{internalData.inquiryOrderInfo.guardianAge}}
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@
       <span class="name">{{ data.upInfo.familyInfo.name }}</span>
       <span class="sex">{{ data.upInfo.familyInfo.sex }}</span>
       <span class="age"
-            v-if="data.upInfo.familyInfo.age">{{ data.upInfo.familyInfo.age }}岁</span>
+            v-if="data.upInfo.familyInfo.age">{{ data.upInfo.familyInfo.age }}</span>
     </div>
 
     <hr class="dashed" />

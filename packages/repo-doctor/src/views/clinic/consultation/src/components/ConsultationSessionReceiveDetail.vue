@@ -15,7 +15,7 @@
           <span class="label w4">年龄</span>
           <span class="divider">:</span>
           <span class="value">
-            {{ injectConsultInfo.familyAge + "岁"}}
+            {{ injectConsultInfo.familyAge}}
           </span>
         </el-col>
         <el-col :span="8">

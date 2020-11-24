@@ -9,7 +9,7 @@
         <el-form-item label="转诊患者">
           <span slot="label">转诊患者</span>
           <span class="patientStyle">{{ params.familyInfo.name }} {{ params.familyInfo.sex }}
-            {{ params.familyInfo.age }}岁</span>
+            {{ params.familyInfo.age }}</span>
         </el-form-item>
       </el-row>
       <el-row>

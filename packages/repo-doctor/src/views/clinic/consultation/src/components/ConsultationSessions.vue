@@ -61,7 +61,7 @@
               <span>患者信息：</span>
               <span>{{ session.content.patientInfo.familyName }}</span>
               <span>{{ session.content.patientInfo.familySex }}</span>
-              <span>{{ session.content.patientInfo.familyAge }}岁</span>
+              <span>{{ session.content.patientInfo.familyAge }}</span>
             </div>
           </div>
         </el-scrollbar>

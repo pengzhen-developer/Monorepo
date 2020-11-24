@@ -193,7 +193,7 @@
                style="margin: 0 10px 0 0;" />
           <span style="margin: 0 20px 0 0; font-size: 16px;">{{ receiveDialog.data.patientRemarks || receiveDialog.data.patientName || receiveDialog.data.patientWxName }}</span>
           <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientSex }}</span>
-          <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientAge && receiveDialog.data.patientAge + '岁' }}</span>
+          <span style="margin: 0 20px 0 0; color:rgba(153,153,153,1);">{{ receiveDialog.data.patientAge && receiveDialog.data.patientAge  }}</span>
           <el-tag :type="receiveDialog.data.orderStatus === 3 ? 'primary' : receiveDialog.data.orderStatus === 4 ? 'danger' : 'info' "
                   size="large"
                   style="position: absolute; left: 370px; border-radius: 60px; width:68px; text-align: center;"

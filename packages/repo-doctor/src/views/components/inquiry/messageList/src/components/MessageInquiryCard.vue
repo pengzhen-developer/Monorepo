@@ -10,14 +10,13 @@
       <span v-text="familySex"></span>
       <span>|</span>
       <span v-text="familyAge"></span>
-      <span>岁</span>
 
       <span v-if="paymentType != 1"
             class="tag-style">{{ payTypeText }}</span>
       <!-- <span>
         {{ familyName }} |
         {{ familySex }} |
-        {{ familyAge }}岁
+        {{ familyAge }}
       </span> -->
       <img v-if="isAgain"
            src="../assets/images/ic_fz.png"

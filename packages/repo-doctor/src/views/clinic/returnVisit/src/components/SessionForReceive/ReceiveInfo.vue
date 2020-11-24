@@ -27,7 +27,7 @@
         </div>
         <div class="col-4">
           <span class="label-4 q-mr-sm text-grey-7">年龄：</span>
-          <span>{{ inquiryOrderInfo.age + '岁' }}</span>
+          <span>{{ inquiryOrderInfo.age  }}</span>
         </div>
         <div class="col-4">
           <span class="label-4 q-mr-sm text-grey-7">性别：</span>
@@ -41,7 +41,7 @@
           <span class="label-4 q-mr-sm text-grey-7">监护人：</span>
           <span>{{ inquiryOrderInfo.guardianName }} |
             {{ inquiryOrderInfo.guardianSex }} |
-            {{ inquiryOrderInfo.guardianAge + '岁'}}
+            {{ inquiryOrderInfo.guardianAge }}
           </span>
         </div>
       </div>

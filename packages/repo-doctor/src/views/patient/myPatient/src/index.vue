@@ -37,7 +37,7 @@
       <peace-table-column label="基本信息"
                           width="140">
         <template slot-scope="scope">
-          <span>{{ `${scope.row.sex} , ${scope.row.age}岁` }}</span>
+          <span>{{ `${scope.row.sex} , ${scope.row.age}` }}</span>
         </template>
       </peace-table-column>
 

@@ -59,7 +59,6 @@
               <span v-text="message.content.data.patientInfo.familySex"></span>
               <span>|</span>
               <span v-text="message.content.data.patientInfo.familyAge"></span>
-              <span>岁</span>
               <img v-if="!message.content.data.inquiryOrderInfo.isAgain"
                    :src="require('@src/assets/images/ic_zx.png')"
                    class="fz" />
@@ -100,7 +99,7 @@
                 <div class="right other">
                   {{ message.content.data.patientInfo.familyName }}
                   {{ message.content.data.patientInfo.familySex }}
-                  {{ message.content.data.patientInfo.familyAge }}岁
+                  {{ message.content.data.patientInfo.familyAge }}
                 </div>
               </div>
 
@@ -153,7 +152,7 @@
                 <div class="right other">
                   <span>{{ message.content.data.patientInfo.familyName }} </span>
                   <span>{{ message.content.data.patientInfo.familySex }} </span>
-                  <span>{{ message.content.data.patientInfo.familyAge }}岁</span>
+                  <span>{{ message.content.data.patientInfo.familyAge }}</span>
                 </div>
               </div>
               <div class="item">

@@ -27,7 +27,7 @@
                 <span>{{ session.content.patientInfo.familyName }}</span>
               </template>
               <span>{{ session.content.patientInfo.familySex }}</span>
-              <span>{{ session.content.patientInfo.familyAge }}岁</span>
+              <span>{{ session.content.patientInfo.familyAge }}</span>
             </div>
 
             <div class="inquiry-patient-right">
