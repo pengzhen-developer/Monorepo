@@ -2,29 +2,34 @@
   <q-layout class="layout"
             view="hHh lpR lFf">
 
-    <q-header class="layout-header bg-white q-mb-xs">
-      <LayoutHeader></LayoutHeader>
-    </q-header>
+    <TheVideo>
 
-    <q-drawer class="layout-drawer"
-              side="left"
-              show-if-above
-              v-bind:width="64"
-              v-bind:breakpoint="0"
-              v-model="showDrawerModel">
-      <LayoutNav v-bind:defaultActive="defaultActive"></LayoutNav>
-    </q-drawer>
+      <q-header class="layout-header bg-white q-mb-xs">
+        <LayoutHeader></LayoutHeader>
+      </q-header>
 
-    <q-page-container>
-      <q-page class="bg-grey-2">
-        <LayoutTabs class="bg-white"></LayoutTabs>
-        <LayoutView class="bg-white"></LayoutView>
-      </q-page>
-    </q-page-container>
+      <q-drawer class="layout-drawer"
+                side="left"
+                show-if-above
+                v-bind:width="64"
+                v-bind:breakpoint="0"
+                v-model="showDrawerModel">
+        <LayoutNav v-bind:defaultActive="defaultActive"></LayoutNav>
+      </q-drawer>
+
+      <q-page-container>
+        <q-page class="bg-grey-2">
+          <LayoutTabs class="bg-white"></LayoutTabs>
+          <LayoutView class="bg-white"></LayoutView>
+        </q-page>
+      </q-page-container>
+    </TheVideo>
   </q-layout>
 </template>
 
 <script>
+import TheVideo from './components/TheVideo'
+
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
 /** 布局 - 左侧导航 */
@@ -36,6 +41,7 @@ import LayoutView from './components/LayoutView'
 
 export default {
   components: {
+    TheVideo,
     LayoutHeader,
     LayoutNav,
     LayoutTabs,
