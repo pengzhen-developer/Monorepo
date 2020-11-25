@@ -830,11 +830,11 @@ export default {
 
 <style lang="scss" scoped>
 .video {
-  ::v-depp .el-dialog__wrapper {
+  ::v-deep .el-dialog__wrapper {
     // position: unset !important;
   }
 
-  ::v-depp .video-dialog {
+  ::v-deep .video-dialog {
     // position: absolute;
     // z-index: 2001;
     top: 50%;
@@ -863,13 +863,13 @@ export default {
     }
   }
 
-  .video-container {
+  ::v-deep .video-container {
     display: inline-flex;
     justify-content: center;
     align-items: center;
   }
 
-  .video-control {
+  ::v-deep .video-control {
     position: absolute;
     bottom: 20px;
     width: 100%;
@@ -897,7 +897,7 @@ export default {
     }
   }
 
-  #local {
+  ::v-deep #local {
     position: absolute;
     top: 60px;
     right: 10px;
@@ -906,7 +906,7 @@ export default {
     z-index: 1;
   }
 
-  #remote {
+  ::v-deep #remote {
     width: 800px;
     height: 600px;
   }
@@ -914,7 +914,7 @@ export default {
 </style>
 
 <style lang="scss">
-.video-class {
+::v-deep .video-class {
   .el-notification__group {
     width: 100%;
   }
