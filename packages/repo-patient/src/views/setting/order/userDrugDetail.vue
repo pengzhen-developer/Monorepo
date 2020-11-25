@@ -70,7 +70,8 @@
                  :key="index">
               <div class="list-icon"
                    :class="item.DrugImage ? '' : 'list-icon-none'">
-                <img :src="item.DrugImage" />
+                <img :src="item.DrugImage"
+                     v-if="item.DrugImage" />
               </div>
               <div class="list-content">
                 <div class="content-title">{{item.DrugName}}</div>

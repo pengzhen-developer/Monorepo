@@ -32,7 +32,8 @@
                  v-for="item in item.drugmain"
                  :key="item.DrugStoreMainImage">
               <div :class="item.DrugStoreMainImage ? 'item-icon ' : 'item-icon  item-icon-none'">
-                <img :src="item.DrugStoreMainImage" />
+                <img :src="item.DrugStoreMainImage"
+                     v-if="item.DrugStoreMainImage" />
               </div>
               <div class="item-text">￥{{item.Price}}</div>
             </div>
@@ -472,8 +473,8 @@ export default {
   padding: 5px 10px;
 }
 .card .card-avatar {
-  border-radius: 8rpx;
-  border: 2rpx solid #e5e5e5;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
   overflow: hidden;
 }
 .card .card-name .card-more {
@@ -508,18 +509,18 @@ export default {
 .card-imgs .imgs-item {
   flex: 0 1 auto;
   text-align: center;
-  margin: 15rpx 0 5rpx 20rpx;
+  margin: 8px 0 3px 10px;
 }
 .card-imgs .imgs-item:first-child {
   margin-left: 0;
 }
 .imgs-item .item-icon {
   box-sizing: border-box;
-  width: 92rpx;
-  height: 92rpx;
-  border: 2rpx solid #e5e5e5;
-  border-radius: 8rpx;
-  padding: 4rpx;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 2px;
 }
 .imgs-item .item-icon.item-icon-none {
   padding: 0;
@@ -533,7 +534,7 @@ export default {
 }
 .imgs-item .item-text {
   color: #ff344d;
-  font-size: 22rpx;
-  margin-top: 8rpx;
+  font-size: 11px;
+  margin-top: 4px;
 }
 </style>

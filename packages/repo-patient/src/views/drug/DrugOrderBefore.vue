@@ -59,7 +59,8 @@
                  v-for="(item, index) in order.OrderDet"
                  :key="index">
               <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
-                <img :src="item.DrugImage" />
+                <img :src="item.DrugImage"
+                     v-if="item.DrugImage" />
               </div>
               <div class="list-content">
                 <div class="content-title">{{item.DrugName}}</div>
