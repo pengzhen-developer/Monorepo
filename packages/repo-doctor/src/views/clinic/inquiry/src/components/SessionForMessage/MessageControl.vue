@@ -196,10 +196,10 @@ export default {
     sendVideo() {
       // sourcePatient
       // h5 / wx
-      if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.sourcePatient === 'h5') {
-        Peace.util.warning('对方版本过低')
-      } else {
+      if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频) {
         this.injectCall(this.$store.state.inquiry?.session, 'inquiry')
+      } else {
+        peace.util.warning('只有视频问诊才能进行发起视频邀请')
       }
     },
 
