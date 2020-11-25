@@ -107,6 +107,7 @@ export default {
       return Service.getOverview().then((res) => {
         this.overViewData.order = res.data.OrderNum
         this.overViewData.store = res.data.DrugShopNum
+        this.overViewData.drugSupply = res.data.DrugSupplyNum
       })
     },
     // 获取数据  医疗机构、仓配机构
