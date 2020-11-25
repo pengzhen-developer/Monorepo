@@ -942,7 +942,7 @@ export default {
   padding: 0;
   background-color: #f7f7f7;
   background-size: cover;
-  background-image: url('~@src/assets/images/icons/nocontent.jpg');
+  background-image: url('~@src/assets/images/icons/ic_none_drug.png');
 }
 .count-down {
   position: fixed;

@@ -526,7 +526,7 @@ export default {
   padding: 0;
   background-color: #f7f7f7;
   background-size: cover;
-  background-image: url('../../assets/images/icons/item-icon-none.jpg');
+  background-image: url('../../assets/images/icons/ic_none_drug.png');
 }
 .imgs-item .item-icon image {
   width: 100%;

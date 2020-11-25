@@ -56,7 +56,8 @@
                      :key="det.DrugImage">
                   <div class="item-icon"
                        :class="{ 'item-icon-none': !item.DrugImage }">
-                    <img :src="det.DrugImage" />
+                    <img :src="det.DrugImage"
+                         v-if="det.DrugImage" />
                   </div>
                 </div>
               </div>
