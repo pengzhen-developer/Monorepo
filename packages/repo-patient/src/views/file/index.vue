@@ -59,7 +59,7 @@
                    @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
-                  <van-progress style="display: inline-block; width: 231px; margin: 0 10px 0 0;"
+                  <van-progress style="display: inline-block; width: 80%; margin: 0 10px 0 0;"
                                 color="#5B9EFF"
                                 track-color="#D7E9FF"
                                 pivot-color="#D7E9FF"
