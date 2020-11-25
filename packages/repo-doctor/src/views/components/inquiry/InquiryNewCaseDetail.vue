@@ -150,22 +150,12 @@
             <div class="line">
               <div class="dataItem">
                 <span class="title">医 师：</span>
-                <!-- <img :src="item.doctorSignImage"
-                     class="content"
-                     alt="医师签名"
-                     style="height: 20px;"
-                     v-if="item.doctorSignImage" /> -->
                 <span class="content">
                   {{ item.doctorName }}
                 </span>
               </div>
               <div class="dataItem">
                 <span class="title">审方药师：</span>
-                <!-- <img :src="item.prescriptionSign"
-                     class="content"
-                     alt="医师签名"
-                     style="height: 20px;"
-                     v-if="item.prescriptionSign" /> -->
                 <span class="content">
                   {{ item.prescriptionPharmacistName }}
                 </span>

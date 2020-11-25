@@ -15,8 +15,7 @@
       <img v-if="data.consultStatus"
            v-bind:src="`./static/images/consultation/${data.consultStatus}.png`"
            class="absolute"
-           style="width: 102px; height: 55px; right: 36px; bottom: -10px;"
-           alt="医师签名" />
+           style="width: 102px; height: 55px; right: 36px; bottom: -10px;" />
     </div>
 
     <div class="q-mb-lg"
@@ -269,8 +268,7 @@
             <span class="text-justify"
                   style="width: 4em;">医生签名</span>
             <span class="q-mx-xs">：</span>
-            <img alt="医生签名"
-                 style="height: 20px"
+            <img style="height: 20px"
                  v-bind:src="data.doctorSignImg" />
           </div>
           <div class="row q-mb-xs">

@@ -168,10 +168,6 @@
             <span class="q-mx-xs">：</span>
             <span class="col text-weight-bold">
               {{data.DoctorName}}
-              <!-- <img v-if="data.DoctorSignImage"
-                   v-bind:src="data.DoctorSignImage"
-                   style="max-height: 16px;"
-                   alt="医师签名" /> -->
             </span>
           </div>
           <div class="row col-6">
@@ -180,10 +176,6 @@
             <span class="q-mx-xs">：</span>
             <span class="col text-weight-bold">
               {{data.PrescriptionPharmacistName}}
-              <!-- <img v-if="data.PrescriptionSign"
-                   v-bind:src="data.PrescriptionSign"
-                   style="max-height: 16px;"
-                   alt="审方药师签名" /> -->
             </span>
           </div>
         </div>
@@ -245,8 +237,7 @@
                   append-to-body>
       <img v-if="data.pngUrl"
            v-bind:src="data.pngUrl"
-           class="full-width"
-           alt="原始处方" />
+           class="full-width" />
     </peace-dialog>
   </div>
 </template>

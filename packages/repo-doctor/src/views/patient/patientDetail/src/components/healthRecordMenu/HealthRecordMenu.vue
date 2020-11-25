@@ -9,8 +9,7 @@
              @click="menuSelect(menu.index)">
           <div class="nav-submenu">
             <img :class="{ isDisable: menu.disable }"
-                 v-bind:src="menu.icon"
-                 alt="" />
+                 v-bind:src="menu.icon" />
             <label :class="{ isDisable: menu.disable }">{{ menu.name }}</label>
             <div class="line"></div>
           </div>
