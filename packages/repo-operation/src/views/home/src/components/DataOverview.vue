@@ -41,7 +41,7 @@
                   v-bind:src="require('../assets/img/drugRoomCount.png')"> </el-image>
         <div>
           <p class="title-label">药品供应机构</p>
-          <p class="count-label">{{ overView.drugSupply }}</p>
+          <p class="count-label">{{ drugSupplyOrg }}</p>
         </div>
       </div>
     </div>
@@ -65,6 +65,8 @@ export default {
         this.overView.order = val.order
         this.overView.medical = val.medical
         this.overView.drugSupply = val.drugSupply
+        this.overView.store = val.store
+        this.overView.warehouse = val.warehouse
       },
       immediate: true,
       deep: true
@@ -77,11 +79,17 @@ export default {
         prescription: 0, // 处方量
         order: 0, // 订单量
         medical: 0, // 医疗机构
-        drugSupply: 0 // 药品供应机构
+        drugSupply: 0, // 药品供应机构
+        store: 0, // 店配机构
+        warehouse: 0 //仓配机构
       }
     }
   },
-
+  computed: {
+    drugSupplyOrg() {
+      return this.overView.store + this.overView.warehouse
+    }
+  },
   methods: {
     showDataScreen() {
       const url = process.env.VUE_APP_RELEASE_FLODER_PATH + 'dataScreen'
