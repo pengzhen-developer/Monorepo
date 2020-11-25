@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="status-image">
-      <img :src="`./static/images/transfer/${ internalData.transfer_status }.png`"
+      <img v-bind:src="require(`@public/static/images/transfer/${internalData.transfer_status}.png`)"
            v-if="getState()" />
     </div>
 

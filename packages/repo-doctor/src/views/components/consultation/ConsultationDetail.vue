@@ -13,7 +13,7 @@
       <p class="text-h5 text-weight-bolder">会诊单</p>
 
       <img v-if="data.consultStatus"
-           v-bind:src="`./static/images/consultation/${data.consultStatus}.png`"
+           v-bind:src="require(`@public/static/images/consultation/${data.consultStatus}.png`)"
            class="absolute"
            style="width: 102px; height: 55px; right: 36px; bottom: -10px;" />
     </div>
