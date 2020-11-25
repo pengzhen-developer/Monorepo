@@ -24,18 +24,6 @@
                           :key="item.id">
             <div class="file-famliy-swiper-item">
               <div class="header flex between">
-                <div class="flex center">
-                  <span style="font-size: 20px; margin: 0 10px 0 0;">{{
-                    item.name
-                  }}</span>
-                  <van-icon v-if="item.sex === '男'"
-                            :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
-                  <van-icon v-if="item.sex === '女'"
-                            :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
-                  <span style="font-size: 14px; margin: 0 10px;">{{ item.age }}</span>
-                  <van-tag color="#F2F2F2"
-                           text-color="#999999">{{ item.relation }}</van-tag>
-                </div>
                 <van-image round
                            v-if="item.sex === '男'"
                            width="50px"
@@ -46,18 +34,41 @@
                            width="50px"
                            height="50px"
                            :src="require('@src/assets/images/img_head girl.png')" />
+                <div class="flex column flex-1 start between"
+                     style="padding-left:12px;height: 50px;">
+                  <div class="flex "
+                       style="height: 50%;">
+                    <span style="font-size: 20px;line-height:1; margin-right: 10px;color:#0E302D;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;">{{
+                    item.name
+                  }}</span>
+                    <van-icon v-if="item.sex === '男'"
+                              :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
+                    <van-icon v-if="item.sex === '女'"
+                              :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
+                  </div>
+                  <div class="flex ">
+                    <span style="font-size: 14px; margin-right: 10px;color:#999;">{{ item.age }}</span>
+                    <van-tag color="#F2F2F2"
+                             text-color="#999999"
+                             style="font-size: 12px;border-radius: 4px;">{{ item.relation }}</van-tag>
+                  </div>
+                </div>
+
               </div>
               <div class="content"
                    @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
-                  <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;background: #eee;"
+                  <van-progress style="display: inline-block; width: 190px; margin: 0 10px 0 0;"
                                 color="#5B9EFF"
+                                track-color="#D7E9FF"
+                                pivot-color="#D7E9FF"
                                 :percentage="Number(item.percentage)"
                                 :show-pivot="false"
                                 stroke-width="8" />
                   <van-tag color="rgba(244,248,255,1)"
-                           text-color="rgba(74,131,247,1)">
+                           text-color="rgba(74,131,247,1)"
+                           style="border:1px solid #4A83F7;">
                     {{ item.percentage }}%</van-tag>
                 </div>
               </div>
@@ -224,7 +235,6 @@ export default {
 .flex {
   display: flex;
   align-items: center;
-
   &.column {
     flex-direction: column;
   }
@@ -233,6 +243,15 @@ export default {
   }
   &.center {
     justify-content: center;
+  }
+  &.flex-1 {
+    flex: 1;
+  }
+  &.start {
+    align-items: flex-start;
+  }
+  &.end {
+    align-items: flex-end;
   }
 }
 
@@ -296,11 +315,11 @@ export default {
         }
 
         .content {
-          padding: 10px 15px 0 15px;
+          padding: 13.5px 15px;
 
           h4 {
             font-size: 13px;
-            color: rgba(91, 158, 255, 1);
+            color: #5b9eff;
           }
         }
       }
