@@ -4,37 +4,44 @@
     <template v-if="loading">
       <!-- 身份证 -->
       <template>
-        <div class="id-card">
-          <div class="edit"
-               v-if="!isNationExist">
-            <van-icon :name="require('@src/assets/images/ic_edit.png')"
-                      size="15px"
-                      color="#00C6AE"
-                      @click="updataInfo" />
+        <div class="id-card-container">
+          <div class="id-card">
+            <div class="edit"
+                 v-if="!isNationExist">
+              <van-icon :name="require('@src/assets/images/ic_edit.png')"
+                        size="15px"
+                        color="#00C6AE"
+                        @click="updataInfo" />
+            </div>
+            <van-image class="id-card-logo"
+                       :src="model.sex=='男'?require('@src/assets/images/avatar_boy.png'):require('@src/assets/images/avatar_girl.png')"></van-image>
+            <div class="id-card-content">
+              <div class="id-card-content-item">
+                <div class="key"><span>姓名</span>:</div>
+                <div class="value">{{model.name}}</div>
+              </div>
+              <div class="id-card-content-item">
+                <div class="key"><span>关系</span>:</div>
+                <div class="value">{{model.relation}}</div>
+              </div>
+              <div class="id-card-content-item">
+                <div class="key"><span>性别</span>:</div>
+                <div class="value">{{model.sex}}</div>
+              </div>
+              <div class="id-card-content-item">
+                <div class="key"><span>民族</span>:</div>
+                <div class="value">{{model.nationName}}</div>
+              </div>
+              <div class="id-card-content-item">
+                <div class="key"><span>身份证</span>:</div>
+                <div class="value">{{model.idcard}}</div>
+              </div>
+            </div>
+
           </div>
-          <van-image class="id-card-logo"
-                     :src="model.sex=='男'?require('@src/assets/images/avatar_boy.png'):require('@src/assets/images/avatar_girl.png')"></van-image>
-          <div class="id-card-content">
-            <div class="id-card-content-item">
-              <div class="key"><span>姓名</span>:</div>
-              <div class="value">{{model.name}}</div>
-            </div>
-            <div class="id-card-content-item">
-              <div class="key"><span>关系</span>:</div>
-              <div class="value">{{model.relation}}</div>
-            </div>
-            <div class="id-card-content-item">
-              <div class="key"><span>性别</span>:</div>
-              <div class="value">{{model.sex}}</div>
-            </div>
-            <div class="id-card-content-item">
-              <div class="key"><span>民族</span>:</div>
-              <div class="value">{{model.nationName}}</div>
-            </div>
-            <div class="id-card-content-item">
-              <div class="key"><span>身份证</span>:</div>
-              <div class="value">{{model.idcard}}</div>
-            </div>
+          <div class="id-gardian"
+               v-if="model.guardianName&&model.guardianIdCard">
+            <span>监护人：</span><span>{{model.guardianName}} | {{model.guardianIdCard}}</span>
           </div>
         </div>
       </template>
@@ -322,7 +329,7 @@ export default {
       },
       familyId: '',
       isNationExist: false,
-      ageLimit: 7, //测试为7 上线为6
+      ageLimit: 6,
       age: null,
       gardianSet: false,
       gardianId: '',
@@ -774,14 +781,18 @@ export default {
   flex-direction: column;
   width: 100%;
   padding-top: 10px;
-  .id-card {
+  .id-card-container {
     width: 343px;
+    margin: 0 auto 0;
+    border-radius: 4px;
+    background-color: rgb(245, 245, 245);
+    overflow: hidden;
+  }
+  .id-card {
     display: flex;
     height: 160px;
     align-items: center;
     padding: 20px;
-    margin: 0 auto 0;
-    background-color: rgb(245, 245, 245);
     position: relative;
     .edit {
       width: 22px;
@@ -831,6 +842,19 @@ export default {
         color: #666;
         line-height: 13px;
         height: 13px;
+      }
+    }
+  }
+  .id-gardian {
+    border-top: 1px dashed rgba(0, 0, 0, 0.2);
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    span {
+      color: #999;
+      &:last-child {
+        color: #666;
       }
     }
   }
