@@ -198,7 +198,8 @@
                          fixed="right">
           <template slot-scope="scope">
 
-            <el-button type="text"
+            <el-button :disabled="!scope.row.JZTClaimNo"
+                       type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
 
             <el-button v-if="scope.row.DrugCode"
