@@ -3,11 +3,10 @@
  */
 
 <template>
-  <div>
-    <el-button class="full-width"
-               size="large"
+  <div class="text-center q-mt-lg">
+    <el-button size="large"
                type="primary"
-               v-on:click="getReservationList">复诊预约</el-button>
+               v-on:click="getReservationList">查看预约记录</el-button>
 
     <peace-dialog title="复诊预约记录"
                   v-drag

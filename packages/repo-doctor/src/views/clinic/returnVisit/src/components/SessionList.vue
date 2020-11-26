@@ -13,6 +13,9 @@
                              v-bind:session="session"></SessionListItem>
           </div>
 
+          <!-- 预约列表 -->
+          <slot name="reservation"></slot>
+
         </q-scroll-area>
       </template>
 
@@ -21,11 +24,13 @@
           <img class="q-mb-md"
                src="~@src/assets/images/inquiry/ic_no one.png">
           <span class="text-grey-5">暂无会话</span>
+
+          <!-- 预约列表 -->
+          <slot name="reservation"></slot>
         </div>
+
       </template>
 
-      <!-- 预约列表 -->
-      <slot name="reservation"></slot>
     </div>
   </SessionListContainer>
 </template>
