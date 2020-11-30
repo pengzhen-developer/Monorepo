@@ -507,6 +507,8 @@ export default {
               title: '提示',
               message: res.data.msg,
               confirmButtonText: '确定'
+            }).then(() => {
+              this.changeSource()
             })
           }
           //205 医保不可用
