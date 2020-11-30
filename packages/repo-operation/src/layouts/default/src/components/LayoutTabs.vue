@@ -9,18 +9,7 @@
                    v-bind:name="tab.id.toString()"
                    v-bind:label="tab.menuName"
                    v-bind:closable="tabs.length > 1 && !!tab.closable">
-
       </el-tab-pane>
-
-      <q-popup-proxy context-menu>
-        <q-banner>
-          <template v-slot:avatar>
-            <q-icon name="signal_wifi_off"
-                    color="primary" />
-          </template>
-          You have lost connection to the internet. This app is offline.
-        </q-banner>
-      </q-popup-proxy>
     </el-tabs>
   </div>
 </template>
@@ -176,4 +165,108 @@ export default {
     }
   }
 }
+</style>
+
+
+
+
+
+<template>
+  <div>
+    <el-input-number v-model="num"
+                     v-bind:min="1"
+                     v-bind:max="9999"
+                     v-on:blur="blurNum"
+                     placeholder=""></el-input-number>
+
+    {{ num }}
+
+    <PeaceTable v-bind:data="data"
+                v-on:cell-click="cellClick">
+      <PeaceTableColumn property="药品名称">
+        <template slot="header">
+          <span class="text-red">药品名称</span>
+        </template>
+        <template slot-scope="scope">
+          <el-input v-if="scope.row.编辑状态 === '药品名称'"
+                    v-model="scope.row.药品名称"
+                    v-on:blur="blur(scope.row)"
+                    v-on:enter="enter( scope.row)"></el-input>
+          <span v-else>{{ scope.row.药品名称 }}</span>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn label="规格"
+                        prop="规格"></PeaceTableColumn>
+      <PeaceTableColumn>
+        <template slot="header">
+          <span class="text-red">剂量</span>
+        </template>
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.剂量"></el-input>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn>
+        <template slot="header">
+          <span class="text-red">频次</span>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn>
+        <template slot="header">
+          <span class="text-red">天数</span>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn>
+        <template slot="header">
+          <span class="text-red">总量</span>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn label="单位"></PeaceTableColumn>
+    </PeaceTable>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      num: 0,
+
+      data: [
+        {
+          药品名称: '123123',
+          规格: '',
+          剂量: '',
+          频次: '',
+          天数: '',
+          总量: '',
+          单位: '',
+          编辑状态: ''
+        }
+      ]
+    }
+  },
+
+  methods: {
+    blurNum() {
+      this.num = parseFloat(Peace.numeral(this.num).format('0.000'))
+    },
+
+    cellClick(row, column) {
+      row.编辑状态 = column.property
+    },
+
+    enter(row) {
+      row.编辑状态 = ''
+    },
+
+    blur(row, e) {
+      row.编辑状态 = ''
+
+      console.log(e)
+    }
+  }
+}
+</script>
+
+<style>
 </style>
