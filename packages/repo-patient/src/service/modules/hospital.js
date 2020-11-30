@@ -8,9 +8,9 @@ import peace from '@src/library'
  * @returns
  */
 export function getNethospitalList(params) {
-    const url = 'client/v1/Nethospital/getNethospitalList'
+  const url = 'client/v1/Nethospital/getNethospitalList'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
 /**
  * 获取医院主页接口
@@ -20,10 +20,23 @@ export function getNethospitalList(params) {
  * @returns
  */
 export function getHospitalInfo(params) {
-    const url = 'client/v1/Doctor/getHospitalInfo'
+  const url = 'client/v1/Doctor/getHospitalInfo'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
+/**
+ * 判断机构下是否有号源
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function isRegisterData(params) {
+  const url = 'register/v1/Register/isRegisterData'
+
+  return peace.http.post(url, params)
+}
+
 /**
  * 获取医院科室二联动接口（咨询业务）
  *
@@ -32,9 +45,9 @@ export function getHospitalInfo(params) {
  * @returns
  */
 export function getDeptList(params) {
-    const url = 'wap/v1/Hospital/getNewDeptLists'
+  const url = 'wap/v1/Hospital/getNewDeptLists'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
 /**
  * 获取预约挂号医院列表
@@ -44,9 +57,9 @@ export function getDeptList(params) {
  * @returns
  */
 export function getHospitalByRegister(params) {
-    const url = 'register/v1/Register/getHospitalByRegister'
+  const url = 'register/v1/Register/getHospitalByRegister'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
 /**
  * 获取预约挂号医院科室
@@ -56,17 +69,19 @@ export function getHospitalByRegister(params) {
  * @returns
  */
 export function getRealDeptByRegister(params) {
-    const url = 'register/v1/Register/getRealDeptByRegister'
+  const url = 'register/v1/Register/getRealDeptByRegister'
 
-    return peace.http.post(url, params)
+  return peace.http.post(url, params)
 }
 export default {
-    getNethospitalList, // 医院列表 [取单业务]
+  getNethospitalList, // 医院列表 [取单业务]
 
-    getHospitalInfo, // 医院详情
+  getHospitalInfo, // 医院详情
 
-    getDeptList, // 科室列表[咨询业务]
+  isRegisterData, //判断机构下是否有号源
 
-    getHospitalByRegister, // 医院列表[预约业务]
-    getRealDeptByRegister, // 科室列表[预约业务]
+  getDeptList, // 科室列表[咨询业务]
+
+  getHospitalByRegister, // 医院列表[预约业务]
+  getRealDeptByRegister // 科室列表[预约业务]
 }

@@ -187,7 +187,7 @@ export default {
   data() {
     return {
       hospitalInfo: undefined,
-
+      hasRegisterData: null,
       brief: {
         visible: false
       },
@@ -200,6 +200,7 @@ export default {
 
   activated() {
     this.getHospitalInfo()
+    this.isRegisterData()
   },
 
   mounted() {
@@ -310,12 +311,23 @@ export default {
       switch (item.serviceName) {
         // 预约挂号
         case '预约挂号':
-          json = peace.util.encode({
-            netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            id: 'appointment',
-            Date: new Date()
-          })
-          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+          if (this.hasRegisterData) {
+            //有挂号信息
+            json = peace.util.encode({
+              netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+              id: 'appointment',
+              Date: new Date()
+            })
+            this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+          } else {
+            let json = peace.util.encode({
+              hospitalCode: this.hospitalInfo.nethospitalInfo.netHospitalId,
+              Date: new Date()
+            })
+            // 预约入口
+            this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
+          }
+
           break
 
         // 在线咨询
@@ -363,6 +375,15 @@ export default {
           peace.util.alert('该功能正在建设中，敬请期待')
           break
       }
+    },
+    //判断机构下是否有号源
+    isRegisterData() {
+      const params = peace.util.decode(this.$route.params.json)
+      const hospitalCode = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      peace.service.hospital.isRegisterData({ hospitalCode }).then((res) => {
+        console.log(res)
+        this.hasRegisterData = res.data == null ? false : true
+      })
     }
   }
 }

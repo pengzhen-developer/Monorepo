@@ -68,9 +68,9 @@ export default {
       data = {
         netHospitalId: this.params.netHospitalId
       }
-      peace.service.hospital[this.idMappingServe[this.params.id]](data).then(res => {
+      peace.service.hospital[this.idMappingServe[this.params.id]](data).then((res) => {
         this.hospitalInfo = res.data.hospitalInfo
-        res.data.list.map(item => {
+        res.data.list.map((item) => {
           if (item.childDept.length === 0) {
             items.push({
               text: item.netdeptName,
@@ -86,7 +86,7 @@ export default {
             items.push({
               text: item.netdeptName,
               id: item.id,
-              children: item.childDept.map(it => {
+              children: item.childDept.map((it) => {
                 return {
                   text: it.netdeptName,
                   id: it.id
@@ -140,7 +140,6 @@ export default {
       }
       if (this.params.id == 'appointment') {
         let json = peace.util.encode(obj)
-
         // 预约入口
         this.$router.push(`/appoint/doctor/appointDoctorList/${json}`)
         return
