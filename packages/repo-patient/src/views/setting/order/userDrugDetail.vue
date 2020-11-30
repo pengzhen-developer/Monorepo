@@ -55,11 +55,15 @@
       <div class="module"
            v-if="order.DrugStoreName">
         <div class="panel-pha">
-          <div class="panel-head icon-next">
-            <div class="head-ico">
+          <div class="panel-head">
+            <div class="head-ico"
+                 @click="goDrugPhaHomePage">
               <img :src="order.DrugStoreLogo" />
             </div>
-            <div class="head-tit">{{ order.DrugStoreName }}</div>
+            <div class="head-tit"
+                 @click="goDrugPhaHomePage">{{ order.DrugStoreName }}</div>
+            <div class="head-ico-arrow"
+                 :class="{'icon-next':isCloudPharmacy==false}"></div>
             <div class="head-Rp"
                  @click="goPrescripDetailPage">查看处方
             </div>
@@ -438,6 +442,9 @@ export default {
         this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
       )
     },
+    isCloudPharmacy() {
+      return this.order.DrugStoreType === ENUM.DRUG_STORE_TYPE.云药房
+    },
     // 是否显示继续支付
     canShowPay() {
       return (
@@ -504,6 +511,19 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    goDrugPhaHomePage() {
+      //云药房不跳转店铺详情
+      if (this.isCloudPharmacy) {
+        return
+      }
+      const parmas = peace.util.encode({
+        AccessCode: this.order.AccessCode,
+        JZTClaimNo: this.order.JZTClaimNo,
+        DrugStoreId: this.order.DrugStoreCode
+      })
+
+      this.$router.push(`/drug/drugPhaHome/${parmas}`)
+    },
     changeInvoiceModel() {
       this.showInvoiceModel = true
     },
@@ -796,13 +816,29 @@ export default {
   }
 }
 .panel-head .head-tit {
-  flex: 1;
   color: #333333;
   font-size: 14px;
   padding-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 62%;
+}
+.head-ico-arrow {
+  position: relative;
+  flex: 1;
+  min-width: 7px;
+}
+.head-ico-arrow.icon-next::before {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 12px;
+  display: block;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-size: cover;
 }
 .head-Rp {
   color: #999;

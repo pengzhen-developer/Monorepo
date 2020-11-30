@@ -733,11 +733,12 @@ export default {
 .panel-head.icon-next::before {
   content: '';
   position: absolute;
-  width: 14rpx;
-  height: 24rpx;
+  width: 7px;
+  height: 12px;
   display: block;
-  right: 20rpx;
-  top: 38rpx;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background-size: cover;
 }
 .panel-head .head-tit {
@@ -865,19 +866,6 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   right: 0px;
-  width: 6px;
-  height: 10px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url('~@src/assets/images/icons/icon-next.jpg');
-}
-.panel-head.icon-next::after {
-  content: '';
-  position: absolute;
-  display: block;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 15px;
   width: 6px;
   height: 10px;
   background-size: cover;

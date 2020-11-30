@@ -19,7 +19,10 @@
   content: '';
   background-image: url('../../assets/images/icons/icon-next.jpg');
 }
-
+.icon-next::after {
+  content: '';
+  background-image: url('../../assets/images/icons/icon-next.jpg');
+}
 .icon_01_01_01::before {
   content: '';
   background-image: url('../../assets/images/icons/icon_01_01_01.jpg');

@@ -383,12 +383,12 @@ export function inquiryStatus(doctorId, familyId, consultingType, serviceType) {
  * @param {*DrugStoreId} params
  * @returns
  */
-export function getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore) {
+export function getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo) {
   const getDrugStoreApi = 'client/v1/Purchasedrug/GetDrugStoreApi'
 
   return peace.http.post(
     getDrugStoreApi,
-    { AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore },
+    { AccessCode, DrugStoreId, JZTClaimNo },
     {
       headers: {
         post: { 'Content-Type': 'application/json' }

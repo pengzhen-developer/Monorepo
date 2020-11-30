@@ -13,11 +13,28 @@
       <div class="form-dd blue"> <a :href="'tel:'+phaInfo.Phone">{{phaInfo.Phone}}</a> </div>
     </div>
     <div class="form-dl">
-      <div class="form-dt">商家：</div>
-      <div class="form-dd">{{phaInfo.Detailed}}</div>
+      <div class="form-dt">商家地址：</div>
+      <div class="form-dd">{{phaInfo.Province}}{{phaInfo.City}}{{phaInfo.County}}{{phaInfo.Detailed}}</div>
     </div>
-    <div class="module">
-      <div class="form-dl">
+    <van-swipe>
+      <van-swipe-item v-for="(img,index) in phaInfo.imgArr"
+                      :key="index">
+        <img :src="img.logo" />
+        <div class="name">{{img.name}}</div>
+      </van-swipe-item>
+    </van-swipe>
+    <!-- <div class="module">
+      <div class="form-dl"
+           v-if="phaInfo.DrugStoreLogo">
+        <div class="form-dt w">药店门头照片：
+          <div class="box-img"
+               @click="preview(phaInfo.DrugStoreLogo)">
+            <img :src="phaInfo.DrugStoreLogo" />
+          </div>
+        </div>
+      </div>
+      <div class="form-dl"
+           v-if="phaInfo.BusinessLicenseImage">
         <div class="form-dt w">营业执照：
           <div class="box-img"
                @click="preview(phaInfo.BusinessLicenseImage)">
@@ -25,7 +42,8 @@
           </div>
         </div>
       </div>
-      <div class="form-dl">
+      <div class="form-dl"
+           v-if="phaInfo.PermitImage">
         <div class="form-dt w">药品经营许可证：
           <div class="box-img"
                @click="preview(phaInfo.PermitImage)">
@@ -33,7 +51,16 @@
           </div>
         </div>
       </div>
-    </div>
+      <div class="form-dl"
+           v-if="phaInfo.GSPImage">
+        <div class="form-dt w">药店经营质量管理规范认证证书
+          <div class="box-img"
+               @click="preview(phaInfo.GSPImage)">
+            <img :src="phaInfo.GSPImage" />
+          </div>
+        </div>
+      </div>
+    </div> -->
     <van-image-preview v-model="imagePreview.visible"
                        :start-position="imagePreview.position"
                        :images="imagePreview.images">
@@ -55,11 +82,23 @@ export default {
   },
   mounted() {
     const params = peace.util.decode(this.$route.params.json)
-    this.getDrugStoreApi(params.AccessCode, params.DrugStoreId, params.JZTClaimNo, params.IsMergeStore)
+    this.getDrugStoreApi(params.AccessCode, params.DrugStoreId, params.JZTClaimNo)
   },
   methods: {
-    getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore) {
-      peace.service.patient.getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo, IsMergeStore).then((res) => {
+    getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo) {
+      peace.service.patient.getDrugStoreApi(AccessCode, DrugStoreId, JZTClaimNo).then((res) => {
+        let imgArr = [
+          { title: 'DrugStoreLogo', logo: '', name: '药店门头照片' },
+          { title: 'BusinessLicenseImage', logo: '', name: '营业执照' },
+          { title: 'PermitImage', logo: '', name: '药品经营许可证' },
+          { title: 'GSPImage', logo: '', name: '药品经营质量管理规范认证证书' }
+        ]
+        imgArr.map((img) => {
+          if (res.data[img.title]) {
+            img.logo = res.data[img.title]
+          }
+        })
+        res.data.imgArr = imgArr
         this.phaInfo = res.data
       })
     },
@@ -73,7 +112,24 @@ export default {
   }
 }
 </script>
-<style >
+<style lang="scss" scoped>
+.van-swipe {
+  width: calc(100% - 40px);
+  margin: 0 auto;
+  padding: 20px 0;
+  img {
+    width: 100%;
+    height: 225px;
+  }
+  .name {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 15px;
+  }
+  /deep/.van-swipe__indicators {
+    bottom: 44px;
+  }
+}
 .form-dl .form-dd {
   text-align: left;
 }
