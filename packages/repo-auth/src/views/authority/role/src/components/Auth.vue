@@ -66,7 +66,8 @@ export default {
     getAllMenu() {
       let params = {
         clientId: this.$store.state.info.role.clientId,
-        productCode: this.$store.state.info.role.productCode || ''
+        productCode: this.$store.state.info.role.productCode || '',
+        whole: true
       }
       return Service.menu()
         .allMenuTree(params)

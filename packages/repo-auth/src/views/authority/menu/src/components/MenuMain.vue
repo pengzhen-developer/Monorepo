@@ -18,6 +18,15 @@
                          align="left">
 
         </el-table-column>
+        <el-table-column align="center"
+                         width="120px"
+                         prop="isDisplay">
+          <template slot="header">
+            <span>是否显示 </span>
+            <el-tooltip content="不显示时，脱离权限控制，但拥有访问权限"><i class="el-icon-question cursor-pointer"></i>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column label="图标"
                          align="center"
                          min-width="100px"
@@ -100,7 +109,11 @@ export default {
 
   methods: {
     getList() {
-      const params = { clientId: this.$store.state.info.menu.clientId, productCode: this.$store.state.info.menu.productCode }
+      const params = {
+        clientId: this.$store.state.info.menu.clientId,
+        productCode: this.$store.state.info.menu.productCode,
+        whole: true
+      }
       Service.menu()
         .getList(params)
         .then((res) => {

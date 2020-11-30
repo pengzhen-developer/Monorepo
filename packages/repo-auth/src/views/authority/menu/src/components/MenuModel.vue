@@ -44,6 +44,14 @@
           <el-input v-model.trim="query.sort"
                     type="number"></el-input>
         </el-form-item>
+        <el-form-item label="是否显示">
+          <el-tooltip content="不显示时，脱离权限控制，但拥有访问权限"
+                      placement="top">
+            <el-switch v-model="query.isDisplay"
+                       active-value="1"
+                       inactive-value="0"></el-switch>
+          </el-tooltip>
+        </el-form-item>
       </div>
       <div class="text-center">
         <el-button type="primary"
