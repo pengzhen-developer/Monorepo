@@ -54,10 +54,10 @@
               </div>
               <van-image width=13
                          v-if="internalData.orderInfo.inquiryType=='image'|| internalData.inquiryInfo.isAgain.toString() === '1'"
-                         :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
+                         :src="require('@src/assets/images/icons/icon_01_01_07.jpg')"></van-image>
               <van-image width=13
                          v-if="internalData.orderInfo.inquiryType=='video'"
-                         :src="require('@src/assets/images/ic_video_open.png')"></van-image>
+                         :src="require('@src/assets/images/icons/icon_01_01_06.jpg')"></van-image>
             </div>
           </div>
           <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>

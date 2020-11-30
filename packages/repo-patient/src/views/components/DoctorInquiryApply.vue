@@ -107,7 +107,6 @@
                       :offset-top="offsetTop"
                       @scroll="hasFixed">
             <van-row type="flex"
-                     align="center"
                      justify="space-between"
                      class="doctor"
                      :class="isFixed&&'nmp'">
@@ -119,8 +118,8 @@
                              round
                              :src="doctor.doctorInfo.avartor"
                              v-if="!isFixed" />
-                  <van-image width="35"
-                             height="35"
+                  <van-image width="38"
+                             height="38"
                              round
                              :src="doctor.doctorInfo.avartor"
                              v-else />
@@ -137,8 +136,11 @@
                       {{ doctor.doctorInfo.doctorTitle }}
                     </span>
                   </div>
-                  <div>
-                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <div style="display:flex;align-items:center;">
+                    <van-image :src="getServiceImage()"
+                               width="16px"
+                               height="16px"></van-image>
+                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 12px 0 5px;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <span style=" font-size: 11px; color: #F2223B;">
@@ -151,15 +153,18 @@
                 </van-row>
                 <van-row type="flex"
                          justify="center"
-                         align="center"
+                         style="flex-direction: column;"
                          v-else>
                   <div>
                     <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
+                    <span style="color: #666666; font-size: 14px; ">
+                      {{ doctor.doctorInfo.doctorTitle }}
+                    </span>
                   </div>
-                  <div>
-                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 8px 0 0;">
+                  <div style="display:flex;align-items:center;">
+                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 4px 0 0;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <span style=" font-size: 11px; color: #F2223B;">
@@ -171,18 +176,25 @@
                   </div>
                 </van-row>
               </van-row>
-              <van-row>
-                <van-button style="width: 90px; height: 32px; line-height: 1;"
+              <div>
+                <van-button style="width: 72px; height: 25px; line-height: 1;box-shadow: -1px 2px 4px 0px rgba(255, 126, 107, 0.5);"
                             @click="apply"
-                            type="primary"
+                            color="linear-gradient(143deg, #FE7057 0%, #FA9882 100%)"
                             :round="true"
-                            :disabled="sending">{{model.serviceType=='returnVisit'?'去预约':'去咨询'}}
+                            size="mini"
+                            :disabled="sending">
+                  <div slot="default"
+                       style="display:flex;align-items:center;">
+                    <span>立即咨询</span>
+                    <van-icon name="arrow"
+                              size="10" />
+                  </div>
+
                 </van-button>
-              </van-row>
+              </div>
             </van-row>
           </van-sticky>
         </transition-group>
-
         <transition-group tag="div"
                           name="van-slide-left">
           <div class="message-layout left"
@@ -1042,7 +1054,11 @@ export default {
 
       return consultInfo && consultInfo.tagName
     },
-
+    getServiceImage() {
+      return this.model.consultingType == 'video'
+        ? require('@src/assets/images/icons/icon_01_01_07.jpg')
+        : require('@src/assets/images/icons/icon_01_01_06.jpg')
+    },
     getSerivceUnit() {
       return '￥'
     },
@@ -1264,7 +1280,7 @@ export default {
             this.model.familyName = params[0].label
             this.model.familyId = params[0].value
             const data = this.supplementaryList.find((item) => item.mode == this.SUPPLEMENTARY_MODE.WOMAN)
-            data.hidden = params[0].sex === '女' && params[0].age >= 14 ? false : true
+            data.hidden = params[0].sex === '女' && params[0].intAge >= 14 ? false : true
 
             //更换家人-重置家人已选择的补充信息
 
@@ -1785,7 +1801,7 @@ export default {
         &.nmp {
           margin: 0;
           padding: 7.5px 10px;
-          border-radius: 0 0 7px 7px;
+          border-radius: 0;
           border-top: 1px solid #eee;
         }
       }
