@@ -90,7 +90,8 @@ export default {
         //排序值 	integer($int32)
         sort: '',
         //菜单类型,0:菜单 1:按钮 2:顶菜单
-        type: ''
+        type: '',
+        isDisplay: '1'
       },
       loading: false,
       rules: {
