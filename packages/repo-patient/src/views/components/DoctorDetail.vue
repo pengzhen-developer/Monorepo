@@ -633,7 +633,7 @@ export default {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
       if (type === 'image' || type === 'video') {
-        if (!serviceInfo.status) {
+        if (serviceInfo.status !== 1) {
           return peace.util.alert('暂未开通')
         }
         this.dialog.data = Object.assign({}, serviceInfo, { type: type })
@@ -778,7 +778,7 @@ export default {
     },
 
     goApply(serviceInfo, type) {
-      if (!serviceInfo.status) {
+      if (serviceInfo.status !== 1) {
         return peace.util.alert('暂未开通')
       }
 

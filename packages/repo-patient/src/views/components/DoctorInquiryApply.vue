@@ -2,9 +2,8 @@
   <div class="inquriy layout">
     <div class="layout-header"
          ref="layoutHeader">
-      <span class="text avtive">导诊接待</span>
-      <span class="space">------</span>
-      <span class="text">医生接诊</span>
+      <InquiryStageMark :type="model.serviceType"
+                        :current="'smartAssistant'"></InquiryStageMark>
     </div>
 
     <div class="layout-content">
@@ -401,6 +400,7 @@ import peace from '@src/library'
 import { Dialog } from 'vant'
 import Compressor from 'compressorjs'
 
+import InquiryStageMark from '@src/views/components/InquiryStageMark'
 const ANSWER_MODE = {
   /** 输入 */
   INPUT: 'input',
@@ -536,7 +536,8 @@ const FUZHEN__QUESTION_LISI = [
 
 export default {
   components: {
-    [Dialog.Component.name]: Dialog.Component
+    [Dialog.Component.name]: Dialog.Component,
+    InquiryStageMark
   },
 
   data() {
@@ -1705,7 +1706,7 @@ export default {
 
     .layout-header {
       background: #fff;
-      padding: 10px;
+      // padding: 10px;
       text-align: center;
 
       .text {

@@ -2,6 +2,24 @@
 <template>
   <div class="message-list-chat-room">
     <template v-if="messageList && messageList.length">
+      <!-- 问诊阶段标记 -->
+      <template>
+        <InquiryStageMark :type="inquiryInfo.inquiryType||inquiryInfo.serviceType"
+                          :current="'consultationRoom'"
+                          :position="true"></InquiryStageMark>
+      </template>
+      <!-- 顶部状态栏 -->
+      <template>
+        <div class="header">
+          <div class="header-left"
+               v-html="inquiryStatusText"></div>
+          <div class="header-right"
+               @click="callPhone">
+            <van-image :src="require('@src/assets/images/ic_call.png')"></van-image>
+            <span>联系客服</span>
+          </div>
+        </div>
+      </template>
       <div @click="hideTools"
            class="item">
         <div :key="message.time"
@@ -105,6 +123,15 @@ Vue.use(Toast)
 import Compressor from 'compressorjs'
 
 import MessageContainer from './components/MessageContainer'
+import InquiryStageMark from '@src/views/components/InquiryStageMark'
+const INQUIRY_STATUS = {
+  1: '待支付',
+  2: '待接诊',
+  3: '问诊中',
+  4: '已退诊',
+  5: '已完成',
+  6: '已取消'
+}
 export default {
   props: {
     data: {
@@ -123,11 +150,13 @@ export default {
   },
 
   components: {
-    MessageContainer
+    MessageContainer,
+    InquiryStageMark
   },
 
   data() {
     return {
+      inquiryInfo: {},
       internalData: undefined,
       internalDoctorInfo: undefined,
       internalPatientInfo: undefined,
@@ -203,11 +232,11 @@ export default {
   },
 
   computed: {
+    inquiryStatusText() {
+      return INQUIRY_STATUS[this.inquiryInfo.inquiryStatus]
+    },
     IM() {
-      return (
-        this.$store.state.inquiry.sessionsFamily[this.params.familyId] &&
-        this.$store.state.inquiry.sessionsFamily[this.params.familyId].im
-      )
+      return this.$store.state.inquiry.sessionsFamily[this.params.familyId] && this.$store.state.inquiry.sessionsFamily[this.params.familyId].im
     },
     patientInfo() {
       return this.internalPatientInfo || this.$store.getters['inquiry/patientInfo']
@@ -218,7 +247,7 @@ export default {
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
       // 过滤无效数据
-      sessionMessages = sessionMessages.filter(message => {
+      sessionMessages = sessionMessages.filter((message) => {
         // 屏蔽系统消息
         if (message.type === 'notification') {
           return false
@@ -265,11 +294,7 @@ export default {
       return (
         this.infoData &&
         (this.infoData.inquiryStatus == '4' || this.infoData.inquiryStatus == '5') &&
-        (this.infoData.consultNo ||
-          this.infoData.referralNo ||
-          this.infoData.isCase ||
-          this.infoData.isPrescrip ||
-          this.infoData.checkOrderNo)
+        (this.infoData.consultNo || this.infoData.referralNo || this.infoData.isCase || this.infoData.isPrescrip || this.infoData.checkOrderNo)
       )
     }
   },
@@ -331,24 +356,27 @@ export default {
     // })
   },
   methods: {
+    callPhone() {},
     getInquiryInfo() {
       let params = {
         sessionIdList: [this.params.id],
         familyId: this.params.familyId
       }
-      peace.service.inquiry.getList(params).then(res => {
+      peace.service.inquiry.getList(params).then((res) => {
         this.internalDoctorInfo = res.data.list[0].doctorInfo
         this.internalPatientInfo = res.data.list[0].patientInfo
+        this.inquiryInfo = res.data.list[0].inquiryInfo
         this.checkFamilyIsInFlamilyList()
       })
     },
     //获取历史会话问诊状态、医生信息、患者信息及5个按钮是否展示
     getInfoData(inquiryId) {
-      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(res => {
+      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then((res) => {
         res.data.inquiryInfo.familyId = res.data.familyInfo.familyId
         this.infoData = res.data.inquiryInfo
         this.internalPatientInfo = res.data.familyInfo
         this.internalDoctorInfo = res.data.doctorInfo
+        this.inquiryInfo = res.data.inquiryInfo
         this.checkFamilyIsInFlamilyList()
       })
     },
@@ -356,10 +384,10 @@ export default {
 
     //获取历史会话数据
     getHistoryMsgsByDB() {
-      peace.service.patient.chatDetail(this.params).then(res => {
-        const historyMessageFormatHandler = messages => {
+      peace.service.patient.chatDetail(this.params).then((res) => {
+        const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
-            messages.forEach(message => {
+            messages.forEach((message) => {
               const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
 
               message.time = message.sendtime
@@ -385,7 +413,7 @@ export default {
     getHistoryMsgsByIM() {
       const currrentSession = this.$store.state.inquiry.sessionsFamily[this.params.familyId].sessions
       const doneHandler = (error, message) => {
-        const session = currrentSession.find(item => item.id === message.scene + '-' + message.to)
+        const session = currrentSession.find((item) => item.id === message.scene + '-' + message.to)
 
         console.warn('【 IM 】【 getHistoryMsgs 】', new Date(), message)
 
@@ -514,7 +542,7 @@ export default {
         new Compressor(file.file, {
           quality: 0.6,
           convertSize: 50000,
-          success: fileBlob => {
+          success: (fileBlob) => {
             const blob = new File([fileBlob], fileBlob.name, { type: fileBlob.type })
 
             this.IM.sendFile({
@@ -548,7 +576,7 @@ export default {
     },
 
     checkFamilyIsInFlamilyList() {
-      peace.service.health.familyLists().then(res => {
+      peace.service.health.familyLists().then((res) => {
         for (let i = 0; i < res.data.list.length; i++) {
           if (res.data.list[i].id == this.patientInfo.familyId) {
             this.IsInFlamilyList = true
@@ -619,5 +647,41 @@ export default {
   border-radius: 3px;
   border: 1px solid #d2d2d2;
   background-color: #fff;
+}
+.message-list-chat-room .header {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  .header-left {
+    font-size: 13px;
+    color: #000;
+    padding-left: 12px;
+    position: relative;
+    &::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 4px;
+      background: $primary;
+      position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    color: $primary;
+    font-size: 14px;
+    cursor: pointer;
+    .van-image {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+  }
 }
 </style>

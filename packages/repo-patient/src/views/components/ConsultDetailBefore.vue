@@ -1,5 +1,8 @@
 <template>
   <div class="page">
+    <InquiryStageMark :type="params.serviceType"
+                      :current="'preSaleOrder'"
+                      :position="true"></InquiryStageMark>
     <div class="consult-detatil">
       <!--医生名片-->
       <div class="module card">
@@ -251,6 +254,7 @@
 <script>
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
+import InquiryStageMark from '@src/views/components/InquiryStageMark'
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
@@ -289,7 +293,8 @@ export default {
   components: {
     [Dialog.Component.name]: Dialog.Component,
     YibaoCaedSelect,
-    ExpenseDetail
+    ExpenseDetail,
+    InquiryStageMark
   },
 
   props: {
@@ -786,7 +791,7 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 5px 10px 77px;
+  padding: 10px 10px 77px;
   box-sizing: border-box;
   .module {
     border-radius: 3px;

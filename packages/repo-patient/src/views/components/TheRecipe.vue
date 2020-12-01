@@ -1,6 +1,10 @@
 <template>
+
   <div class="the-recipe"
        v-if="internalData">
+    <InquiryStageMark :type="'returnVisit'"
+                      :current="'prescribeMedicine'"
+                      :position="true"></InquiryStageMark>
     <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : canShowPrescriptionStatus }"
          class="prescript icon-status">
       <div class="prescript-no">
@@ -162,6 +166,7 @@
 
 <script>
 import peace from '@src/library'
+import InquiryStageMark from '@src/views/components/InquiryStageMark'
 const OrderDrugStatus = {
   待购药: 1,
   已下单: 2,
@@ -192,7 +197,7 @@ export default {
       }
     }
   },
-
+  components: { InquiryStageMark },
   data() {
     return {
       OrderDrugStatus: OrderDrugStatus,
@@ -411,12 +416,13 @@ export default {
 <style lang="scss" scoped>
 .the-recipe {
   background: #f5f5f5;
-  position: absolute;
+  position: relative;
   overflow: auto;
   height: 100%;
 
   .prescript {
     width: 100%;
+    position: relative;
   }
 
   .prescript.icon-status::after {
