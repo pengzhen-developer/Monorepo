@@ -44,6 +44,39 @@ export default async ({ Vue }) => {
 
             return request
           }
+        },
+        responseInterceptor: {
+          then(response) {
+            // 文件下载 ，由 download.js 处理
+            if (response.config.isDownload) {
+              return response
+            }
+
+            if (response.data) {
+              switch (response.data.code) {
+                case 200:
+                  return Promise.resolve(response.data)
+
+                case 201:
+                  Peace.util.warning(response.data.msg)
+
+                  return Promise.reject(response)
+
+                case 601:
+                  Peace.util.error(response.data.msg)
+
+                  Util.user.removeUserInfo()
+
+                  setTimeout(() => {
+                    Util.location.redirectToLogin()
+                  }, 3000)
+
+                  return Promise.reject(response)
+              }
+            }
+
+            return Promise.reject(response)
+          }
         }
       }
     }
