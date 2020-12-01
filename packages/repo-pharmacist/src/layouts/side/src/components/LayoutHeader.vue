@@ -74,8 +74,11 @@ export default {
   },
 
   async beforeCreate() {
-    this.accountInfo = await Peace.identity.auth.getAccountInfo()
-    this.custName = (await Service.getCustName()).data.list
+    const custInfo = await Service.getCustName()
+    const accountInfo = await Peace.identity.auth.getAccountInfo()
+
+    this.accountInfo = accountInfo
+    this.custName = custInfo.data
   },
 
   methods: {
