@@ -11,6 +11,9 @@
                          type="index"
                          align="center"
                          width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
         </el-table-column>
         <el-table-column label="药房名称"
                          prop="Name"
@@ -82,7 +85,7 @@ export default {
     }
   },
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },

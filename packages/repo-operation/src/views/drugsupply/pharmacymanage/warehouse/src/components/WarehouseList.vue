@@ -47,6 +47,9 @@
                          type="index"
                          align="center"
                          width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
         </el-table-column>
         <el-table-column label="云仓名称"
                          prop="CloudName"

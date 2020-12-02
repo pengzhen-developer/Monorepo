@@ -24,8 +24,14 @@
       <PeaceTable ref="table"
                   pagination
                   size="mini">
-        <el-table-column label=""
-                         type="index"></el-table-column>
+        <el-table-column label="序号"
+                         type="index"
+                         align="center"
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column label="机构名称"
                          prop="Name"></el-table-column>
         <el-table-column label="已配置药品供应方"

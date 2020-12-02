@@ -52,10 +52,14 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column type="index"
-                         width="100"
-                         label="序号"
-                         align="center"></el-table-column>
+        <el-table-column label="序号"
+                         type="index"
+                         align="center"
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="100px"
                          label="联系人"
                          prop="linkman"></el-table-column>

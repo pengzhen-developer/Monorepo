@@ -33,11 +33,14 @@
                     pageSize: 'size'
                   }"
                   max-height="600">
-        <el-table-column type="index"
-                         fixed
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         label=" "
-                         width="60"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="roleName"
                          label="角色名称"></el-table-column>
         <el-table-column prop="roleDesc"
@@ -115,7 +118,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },

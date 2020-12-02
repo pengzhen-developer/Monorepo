@@ -64,11 +64,14 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column min-width="100px"
-                         width="100px"
-                         label="序号"
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         type="index"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="150px"
                          align="center"
                          label="调用来源"

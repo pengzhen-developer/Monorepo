@@ -44,10 +44,14 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column width="100"
-                         label="序号"
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         prop="code"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="180px"
                          label="机构名称"
                          prop="hospitalName"></el-table-column>

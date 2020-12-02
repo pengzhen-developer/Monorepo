@@ -47,10 +47,14 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column width="60px"
-                         label="序号"
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         type="index"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="200px"
                          label="业务名称"
                          prop="bizModule">
@@ -114,7 +118,7 @@ export default {
     }
   },
   filters: {
-    getLabel: function (value, list) {
+    getLabel: function(value, list) {
       return list.find((item) => item.value === value)?.label
     }
   },

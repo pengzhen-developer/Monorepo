@@ -10,15 +10,15 @@
       <PeaceTable ref="table"
                   size="mini"
                   v-bind:page-size="5"
-                  :tableProps="{
-                    pageIndex: 'current',
-                    pageSize: 'size'
-                  }"
                   pagination>
-        <el-table-column type="index"
-                         width="100px"
-                         label="序号"
-                         align="center"></el-table-column>
+        <el-table-column label="序号"
+                         type="index"
+                         align="center"
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column label="主体名称"
                          prop="name"></el-table-column>
         <el-table-column label="主体属性"

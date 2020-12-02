@@ -89,11 +89,11 @@
                     size="mini"
                     v-bind:page-size="5"
                     pagination>
-          <el-table-column type="index"
-                           width="60px"
-                           label="序号"
+          <el-table-column label="序号"
+                           type="index"
                            align="center"
-                           :index="indexMethod"></el-table-column>
+                           width="80px">
+          </el-table-column>
           <el-table-column min-width="180px"
                            align="left"
                            label="机构名称"
