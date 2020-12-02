@@ -82,7 +82,7 @@ export default {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 99999;
+    z-index: 99;
     box-sizing: border-box;
   }
   span {

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="consult-detatil"
-         :style="{'margin-bottom':canShowPayBottom?'115px':canShowBottom?'64px':'0','padding-bottom':canShowReportBottom?reportHeight:'10px'}"
+         :style="{'margin-bottom':marginBottom,'padding-bottom':canShowReportBottom?reportHeight:'10px'}"
          v-if="canShowInfo">
       <!--TOP-->
       <div class="module top">
@@ -286,11 +286,16 @@
           </div>
         </template>
       </div>
+      <div class="module phone"
+           @click="callPhone">
+        <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
+        <span>联系客服</span>
+      </div>
     </div>
     <template v-if="internalData&&
                internalData.inquiryInfo">
-      <div class="footer"
-           v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊&&canShowCancelButton">
+      <div class="footer fixedBottom"
+           v-if="canShowCancelBottom">
         <div class="footer-btn wait-btn"
              @click="showCancellPop(internalData)">
           {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预约':'取消订单'}}</div>
@@ -387,7 +392,11 @@
       <InvoiceModel v-model="showInvoiceModel"
                     :receiptNumber="internalData.orderInfo.divisionId"></InvoiceModel>
     </template>
-
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
   </div>
 </template>
 
@@ -403,6 +412,7 @@ import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InvoiceModel from '@src/views/components/InvoiceModel'
+import CallPhone from '@src/views/components/CallPhone'
 
 const ENUM = {
   // 支付类型
@@ -436,6 +446,7 @@ export default {
     MessageList,
     ExpenseDetail,
     InvoiceModel,
+    CallPhone,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -461,7 +472,12 @@ export default {
         visible: false,
         data: {}
       },
-
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
+      },
       recipeList: {
         visible: false,
         data: []
@@ -504,6 +520,9 @@ export default {
     }
   },
   computed: {
+    marginBottom() {
+      return this.canShowPayBottom ? '115px' : this.canShowBottom ? '64px' : this.canShowCancelBottom ? '64px' : '0'
+    },
     paymentTypeText() {
       return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
     },
@@ -519,6 +538,7 @@ export default {
     canShowCancelButton() {
       return this.internalData?.orderInfo?.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示
     },
+
     canShowInfo() {
       return (
         this.firstLoad &&
@@ -547,6 +567,12 @@ export default {
         (this.internalData.supplementaryInfo.affectedImages.length > 0 ||
           this.internalData.supplementaryInfo.pregnancyText ||
           this.internalData.supplementaryInfo.allergicHistory)
+      )
+    },
+    canShowCancelBottom() {
+      return (
+        this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊 &&
+        this.internalData?.orderInfo?.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示
       )
     },
     canShowBottom() {
@@ -608,6 +634,10 @@ export default {
   },
 
   methods: {
+    callPhone() {
+      this.phoneDialog.data.phone = this.internalData.orderInfo.phoneNumber
+      this.phoneDialog.visible = true
+    },
     changeInvoiceModel() {
       this.showInvoiceModel = true
     },
@@ -1100,6 +1130,19 @@ export default {
     padding: 10px;
     &:last-child {
       margin-bottom: 5px;
+    }
+    &.phone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 12px;
+      .van-image {
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
+        cursor: pointer;
+      }
     }
     &.top {
       padding-top: 12px;

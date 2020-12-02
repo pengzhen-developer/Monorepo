@@ -209,6 +209,11 @@
           </div>
         </div>
       </div>
+      <div class="module phone"
+           @click="callPhone">
+        <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
+        <span>联系客服</span>
+      </div>
       <div class="count-down"
            v-if="canShowCountDown">
         <span>订单 </span>
@@ -268,15 +273,23 @@
       <peace-dialog :visible.sync="recipeDetail.visible">
         <TheRecipe :data="recipeDetail.data"></TheRecipe>
       </peace-dialog>
-
-      <QRCode :QRCodeURL="QRCodeURL"
-              v-model="showQRCode"
-              :PickUpCode="PickUpCode"></QRCode>
+      <template>
+        <QRCode :QRCodeURL="QRCodeURL"
+                v-model="showQRCode"
+                :PickUpCode="PickUpCode"></QRCode>
+      </template>
 
       <!-- 发票弹窗 -->
-      <InvoiceModel v-model="showInvoiceModel"
-                    :receiptNumber="order.divisionId"></InvoiceModel>
+      <template>
+        <InvoiceModel v-model="showInvoiceModel"
+                      :receiptNumber="order.divisionId"></InvoiceModel>
+      </template>
 
+      <!-- 电话弹框 -->
+      <template>
+        <CallPhone v-model="phoneDialog.visible"
+                   :phone="phoneDialog.data.phone"></CallPhone>
+      </template>
     </div>
   </div>
 
@@ -287,6 +300,7 @@ import peace from '@src/library'
 import TheRecipe from '@src/views/components/TheRecipe'
 import QRCode from '@src/views/components/QRCode'
 import InvoiceModel from '@src/views/components/InvoiceModel'
+import CallPhone from '@src/views/components/CallPhone'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -363,7 +377,8 @@ export default {
   components: {
     TheRecipe,
     QRCode,
-    InvoiceModel
+    InvoiceModel,
+    CallPhone
   },
 
   data() {
@@ -386,6 +401,12 @@ export default {
       recipeDetail: {
         visible: false,
         data: {}
+      },
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
       }
     }
   },
@@ -511,6 +532,10 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    callPhone() {
+      this.phoneDialog.data.phone = this.order.phoneNumber
+      this.phoneDialog.visible = true
+    },
     goDrugPhaHomePage() {
       //云药房不跳转店铺详情
       if (this.isCloudPharmacy) {
@@ -701,6 +726,20 @@ export default {
     overflow: hidden;
     background-color: #fff;
     margin-bottom: 10px;
+    &.phone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 12px;
+      padding: 10px 15px;
+      .van-image {
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
+        cursor: pointer;
+      }
+    }
   }
 }
 

@@ -4,7 +4,7 @@
     <template v-if="messageList && messageList.length">
       <!-- 问诊阶段标记 -->
       <template>
-        <InquiryStageMark :type="inquiryInfo.inquiryType||inquiryInfo.serviceType"
+        <InquiryStageMark :type="serviceType"
                           :current="'consultationRoom'"
                           :position="true"></InquiryStageMark>
       </template>
@@ -12,6 +12,7 @@
       <template>
         <div class="header">
           <div class="header-left"
+               :class="{'active':canShowInput}"
                v-html="inquiryStatusText"></div>
           <div class="header-right"
                @click="callPhone">
@@ -110,6 +111,12 @@
         <!-- <el-loading></el-loading> -->
       </div>
     </template>
+
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
   </div>
 </template>
 <script>
@@ -124,14 +131,8 @@ import Compressor from 'compressorjs'
 
 import MessageContainer from './components/MessageContainer'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
-const INQUIRY_STATUS = {
-  1: '待支付',
-  2: '待接诊',
-  3: '问诊中',
-  4: '已退诊',
-  5: '已完成',
-  6: '已取消'
-}
+import CallPhone from '@src/views/components/CallPhone'
+
 export default {
   props: {
     data: {
@@ -151,12 +152,12 @@ export default {
 
   components: {
     MessageContainer,
-    InquiryStageMark
+    InquiryStageMark,
+    CallPhone
   },
 
   data() {
     return {
-      inquiryInfo: {},
       internalData: undefined,
       internalDoctorInfo: undefined,
       internalPatientInfo: undefined,
@@ -165,6 +166,12 @@ export default {
       loading: false,
       tools: {
         visible: false
+      },
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
       },
       showTimeDic: {
         710: true, // 接诊
@@ -232,8 +239,11 @@ export default {
   },
 
   computed: {
+    serviceType() {
+      return this.infoData && (this.infoData.inquiryType || this.infoData.serviceType)
+    },
     inquiryStatusText() {
-      return INQUIRY_STATUS[this.inquiryInfo.inquiryStatus]
+      return this.serviceType == 'returnVisit' ? Constant.RETURNVISIT_STATUS_MAP[this.inquiryStatus] : Constant.INQUIRY_STATUS_MAP[this.inquiryStatus]
     },
     IM() {
       return this.$store.state.inquiry.sessionsFamily[this.params.familyId] && this.$store.state.inquiry.sessionsFamily[this.params.familyId].im
@@ -243,6 +253,9 @@ export default {
     },
     doctorInfo() {
       return this.internalDoctorInfo || this.$store.getters['inquiry/doctorInfo']
+    },
+    inquiryStatus() {
+      return this.$store.getters['inquiry/inquiryInfo'].inquiryStatus || this.infoData.inquiryStatus
     },
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
@@ -356,7 +369,9 @@ export default {
     // })
   },
   methods: {
-    callPhone() {},
+    callPhone() {
+      this.phoneDialog.visible = true
+    },
     getInquiryInfo() {
       let params = {
         sessionIdList: [this.params.id],
@@ -365,7 +380,8 @@ export default {
       peace.service.inquiry.getList(params).then((res) => {
         this.internalDoctorInfo = res.data.list[0].doctorInfo
         this.internalPatientInfo = res.data.list[0].patientInfo
-        this.inquiryInfo = res.data.list[0].inquiryInfo
+        this.infoData = res.data.list[0].inquiryInfo
+        this.phoneDialog.data.phone = res.data.list[0].inquiryInfo.phoneNumber
         this.checkFamilyIsInFlamilyList()
       })
     },
@@ -376,7 +392,7 @@ export default {
         this.infoData = res.data.inquiryInfo
         this.internalPatientInfo = res.data.familyInfo
         this.internalDoctorInfo = res.data.doctorInfo
-        this.inquiryInfo = res.data.inquiryInfo
+        this.phoneDialog.data.phone = res.data.orderInfo.phoneNumber || res.data.inquiryInfo.phoneNumber
         this.checkFamilyIsInFlamilyList()
       })
     },
@@ -659,12 +675,17 @@ export default {
     color: #000;
     padding-left: 12px;
     position: relative;
+    &.active {
+      &::before {
+        background: $primary;
+      }
+    }
     &::before {
       content: '';
       width: 4px;
       height: 4px;
       border-radius: 4px;
-      background: $primary;
+      background: #999;
       position: absolute;
       left: 4px;
       top: 50%;

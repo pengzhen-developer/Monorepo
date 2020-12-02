@@ -19,7 +19,7 @@ export const INQUIRY_MESSAGE_TYPE = {
   会诊单: '792',
   检查单: '793',
   问诊卡片: '794',
-  转诊卡片: '795',
+  转诊卡片: '795'
 }
 /** 问诊状态 */
 export const INQUIRY_STATUS = {
@@ -28,9 +28,22 @@ export const INQUIRY_STATUS = {
   问诊中: 3,
   已退诊: 4,
   已完成: 5,
-  已取消: 6,
+  已取消: 6
+}
+/**  咨询状态文字字典 */
+export const INQUIRY_STATUS_MAP = {
+  3: '咨询中',
+  4: '已退诊',
+  5: '已结束'
+}
+export const RETURNVISIT_STATUS_MAP = {
+  3: '问诊中',
+  4: '已退诊',
+  5: '已结束'
 }
 export default {
   INQUIRY_MESSAGE_TYPE,
   INQUIRY_STATUS,
+  INQUIRY_STATUS_MAP,
+  RETURNVISIT_STATUS_MAP
 }
