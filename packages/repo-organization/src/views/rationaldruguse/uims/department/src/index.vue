@@ -30,11 +30,14 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column type="index"
-                         fixed
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         label=" "
-                         width="60"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="DepartName"
                          label="部门名称"></el-table-column>
         <el-table-column prop="ParentDepartName"

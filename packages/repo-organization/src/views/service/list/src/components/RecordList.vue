@@ -47,11 +47,13 @@
                   style="width: 100%"
                   pagination
                   max-height="600">
-        <el-table-column type="index"
-                         fixed
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         label="序号"
-                         width="60">
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
         </el-table-column>
         <el-table-column prop="serviceName"
                          label="服务名称"

@@ -49,16 +49,15 @@
       <PeaceTable ref="table"
                   style="width: 100%"
                   pagination
-                  :tableProps="{
-                    pageIndex: 'current',
-                    pageSize: 'size'
-                  }"
                   max-height="600">
-        <el-table-column type="index"
-                         fixed
+        <el-table-column label="序号"
+                         type="index"
                          align="center"
-                         label=" "
-                         width="60"></el-table-column>
+                         width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="username"
                          label="账号"></el-table-column>
         <el-table-column prop="name"
@@ -144,10 +143,10 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     },
-    getRoleNames: function (roleList) {
+    getRoleNames: function(roleList) {
       return roleList.map((item) => item.roleName).join('，')
     }
   },
