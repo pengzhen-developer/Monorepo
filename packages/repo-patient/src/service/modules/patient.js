@@ -254,7 +254,7 @@ export function getOrderDetail(params) {
  * @returns
  */
 export function getStoresList(params) {
-  const getStoreLists = 'client/v1/Purchasedrug/SelectDrugStoreApi'
+  const getStoreLists = 'client/v1/MedicineOrder/matchDrugStore'
 
   return peace.http.post(getStoreLists, params)
 }

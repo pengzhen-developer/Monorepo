@@ -18,7 +18,7 @@
         <div class="card-body">
           <div class="card-name">{{item.DrugStoreName}}
             <div class="card-more"
-                 v-if="item.distance">{{item.distance}}</div>
+                 v-if="item.distanceKm">{{item.distanceKm}}</div>
           </div>
           <div class="block">
             <div class="card-small"
@@ -27,13 +27,13 @@
                  v-if="item.ShippingMethod!='0'">配送到家</div>
           </div>
           <div class="card-imgs"
-               v-if="item.drugmain && item.drugmain.length">
+               v-if="item.Drugs && item.Drugs.length">
             <div class="imgs-item"
-                 v-for="item in item.drugmain"
-                 :key="item.DrugStoreMainImage">
-              <div :class="item.DrugStoreMainImage ? 'item-icon ' : 'item-icon  item-icon-none'">
-                <img :src="item.DrugStoreMainImage"
-                     v-if="item.DrugStoreMainImage" />
+                 v-for="item in item.Drugs"
+                 :key="item.DrugImage">
+              <div :class="item.DrugImage ? 'item-icon ' : 'item-icon  item-icon-none'">
+                <img :src="item.DrugImage"
+                     v-if="item.DrugImage" />
               </div>
               <div class="item-text">￥{{item.Price}}</div>
             </div>
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="text-addr"
+    <!-- <div class="text-addr"
          v-if="phaAddrList.length">
       <div class="text-head">
         <div class="head-tit">附近的药店</div>
@@ -79,7 +79,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -97,7 +97,7 @@ export default {
         lat: 0,
         lng: 0
       },
-      JZTClaimNo: '',
+      jztClaimNo: '',
       isGet: false,
       locationStr: '我的位置'
     }
@@ -113,15 +113,15 @@ export default {
     await this.getMapScript()
     await this.getLocation()
     let paramsRoute = peace.util.decode(this.$route.params.json)
-    this.JZTClaimNo = paramsRoute.JZTClaimNo || paramsRoute.claimNo
+    this.jztClaimNo = paramsRoute.jztClaimNo || paramsRoute.claimNo
   },
 
   methods: {
     mapCallback(params) {
       if (params) {
-        let { lat, lng, addr, JZTClaimNo } = params
+        let { lat, lng, addr, jztClaimNo } = params
         this.userLocation = { lat: lat, lng: lng }
-        this.JZTClaimNo = JZTClaimNo
+        this.jztClaimNo = jztClaimNo
         this.locationStr = addr
         this.getPhaList()
       }
@@ -224,10 +224,10 @@ export default {
     //跳转地图选点页面
     goMapPage() {
       let paramsRoute = peace.util.decode(this.$route.params.json)
-      let JZTClaimNo = paramsRoute.claimNo || paramsRoute.JZTClaimNo
+      let jztClaimNo = paramsRoute.claimNo || paramsRoute.jztClaimNo
       let familyId = paramsRoute.familyId
       let json = {
-        JZTClaimNo,
+        jztClaimNo,
         familyId,
         lat: this.userLocation.lat,
         lng: this.userLocation.lng
@@ -238,9 +238,9 @@ export default {
     //获取药房列表
     getPhaList() {
       let params = {
-        Latitude: this.userLocation.lat,
-        Longitude: this.userLocation.lng,
-        JZTClaimNo: this.JZTClaimNo
+        latitude: this.userLocation.lat,
+        longitude: this.userLocation.lng,
+        jztClaimNo: this.jztClaimNo
       }
       console.log(params)
       peace.service.patient.getStoresList(params).then((res) => {
@@ -249,24 +249,16 @@ export default {
           this.phaAddrList = []
           this.isGet = true
         } else {
-          if (res.data.Type == '1') {
-            this.phaList = res.data.JoinJnt
-            this.phaAddrList = []
-            this.isGet = true
+          this.phaList = res.data
+          this.isGet = true
 
-            // 仅存在一个药房符合条件时，直接跳转订单确认页面
-            // if (this.phaList.length === 1) {
-            //   this.goDrugOrderBeforePage(0)
-            // }
-          }
-          if (res.data.Type == '2') {
-            this.phaList = []
-            this.phaAddrList = res.data.OutJnt
-            this.isGet = true
-          }
+          // 仅存在一个药房符合条件时，直接跳转订单确认页面
+          // if (this.phaList.length === 1) {
+          //   this.goDrugOrderBeforePage(0)
+          // }
         }
 
-        this.mapDistance()
+        // this.mapDistance()
       })
     },
     //距离转换
@@ -307,11 +299,11 @@ export default {
     goDrugOrderBeforePage: function(index) {
       let item = this.phaList[index]
       const params = peace.util.decode(this.$route.params.json)
-      let JZTClaimNo = params.claimNo || params.JZTClaimNo
+      let jztClaimNo = params.claimNo || params.jztClaimNo
       let familyId = params.familyId
       let familyName = params.familyName
       let json = {
-        JZTClaimNo,
+        jztClaimNo,
         DrugStoreId: item.DrugStoreId,
         AccessCode: item.AccessCode,
         CustomerType: item.CustomerType,
