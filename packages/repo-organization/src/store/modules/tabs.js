@@ -9,8 +9,12 @@ const mutations = {
   },
 
   addTab(state, menu) {
-    if (state.tabs.findIndex((stateTab) => stateTab.id === menu.id) === -1) {
+    const tabIndex = state.tabs.findIndex((stateTab) => stateTab.id === menu.id)
+
+    if (tabIndex === -1) {
       state.tabs.push(menu)
+    } else {
+      state.tabs.splice(tabIndex, 1, menu)
     }
   },
 
