@@ -159,7 +159,7 @@ export default {
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
     drugPayCallback() {
-      const json = peace.util.encode({ OrderId: this.orderNo })
+      const json = peace.util.encode({ orderNo: this.orderNo })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     finishHander() {

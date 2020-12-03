@@ -13,133 +13,128 @@
            :class="{ active: tabIndex == '0' }">
         <div class="span">全部</div>
       </div>
-      <!-- <div @click="changeTab('2')"
+      <div @click="changeTab('6')"
            class="tab-item"
-           :class="{ active: tabIndex == '2' }">
-        <div class="span">进行中</div>
-      </div> -->
-      <div @click="changeTab('1')"
-           class="tab-item"
-           :class="{ active: tabIndex == '1' }">
+           :class="{ active: tabIndex == '6' }">
         <div class="span">已完成</div>
       </div>
     </div>
-    <template v-if="drugItems && drugItems.length">
-      <div class="content"
-           :class="{ nbg :drugItems.length,
-                   h100 : !drugItems.length
-                 }">
-        <div v-if="drugItems.length">
-          <div class="panel"
-               v-for="item in drugItems"
-               :key="item.OrderId">
-            <div class="panel-head">
-              <div class="card-strip">
-                <div class="avatar">
-                  <img :src="item.DrugStoreLogo"
-                       class="avatar-cicular" />
-                </div>
-                <div class="strip-info">{{item.DrugStoreName}}</div>
-                <div :class="{ [`color-a${item.OrderStatus}`] : true }"
-                     class="strip-eye">
-                  {{item.OrderStatusText}}
-                </div>
-              </div>
-            </div>
-            <div class="panel-body"
-                 @click="goUserDrugDetailPage(item)"
-                 style="padding-top: 0">
-              <div class="card-imgs"
-                   v-if="item.OrderDet && item.OrderDet.length">
-                <div class="imgs-item"
-                     v-for="det in item.OrderDet"
-                     :key="det.DrugImage">
-                  <div class="item-icon"
-                       :class="{ 'item-icon-none': !item.DrugImage }">
-                    <img :src="det.DrugImage"
-                         v-if="det.DrugImage" />
-                  </div>
-                </div>
-              </div>
-              <div class="small">
-                <div class="small-time">{{item.CreateTime}}</div>
-                <div class="small-price default">
-                  共{{item.TotalNumber}}件药品 合计：
-                  <span class="b">￥{{item.OrderMoney.toString().toFixed(2) }}</span>
-                </div>
-              </div>
-              <div class="small"
-                   v-if="item.refundTime">
-                <div class="small-price refund">{{'已退款：￥' + item.OrderMoney.toString().toFixed(2)}}
-                </div>
-              </div>
-            </div>
-            <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
-            <template v-if="!(item.paymentType === 'yibaopay' && item.OrderStatus == '0')">
-              <div class="panel-bottom"
-                   v-if="item.OrderStatus != 5">
-                <div class="count-down"
-                     v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'">
-                  <span>订单关闭倒计时：</span>
-                  <van-count-down millisecond
-                                  @finish="finishHander(item)"
-                                  :time="item.time"
-                                  format="mm:ss" />
-                </div>
-                <van-button class="label blue"
-                            @click="onClickSeeQRCode(item)"
-                            v-if="checkQRCodeBtn(item)">取药码</van-button>
-                <!-- <van-button lass="label gary"
-                    v-if=" item.OrderStatus == '1' || item.OrderStatus == '2' || item.OrderStatus == '0'"
-                    @click="canselOrder(item)">
-                  取消订单
-                </van-button> -->
-                <peace-button class="label blue-full"
-                              v-if="item.paymentType !== 'yibaopay' && item.OrderStatus == '0'"
-                              @click="payOrder(item)"
-                              throttle
-                              :throttleTime="3000">继续支付</peace-button>
-                <van-button class="label blue"
-                            v-if="canShowApplyBtn(item)"
-                            @click="changeInvoiceModel(item)">
-                  申请发票
-                </van-button>
-                <van-button class="label blue"
-                            v-if="ifShowLogistics(item)"
-                            @click="goDrugLogiPage(item)">查看物流
-                </van-button>
-                <van-button class="label blue"
-                            v-if="item.OrderStatus == '4' && item.ShippingMethod != '0'"
-                            @click="submitOrder(item)">确认收货
-                </van-button>
-                <van-button class="label blue"
-                            v-if="item.OrderStatus == '4' && item.ShippingMethod == '0'"
-                            @click="submitOrder(item)">确认取药
-                </van-button>
-              </div>
-            </template>
 
-          </div>
-          <!-- <div class="bottom">客服电话：4009020365</div> -->
-        </div>
-        <!--二维码弹窗-->
-        <QRCode :QRCodeURL="QRCodeURL"
-                v-model="showQRCode"
-                :PickUpCode="PickUpCode"></QRCode>
-
-        <!-- 发票弹窗 -->
-        <InvoiceModel v-model="showInvoiceModel"
-                      :receiptNumber="receiptNumber"></InvoiceModel>
-
-      </div>
-    </template>
-
-    <template v-if="loaded && drugItems.length==0">
+    <template v-if="loaded && drugList.length==0">
       <div class="none-page">
         <div class="icon icon_none_drugOrder"></div>
         <div class="none-text">暂无订单</div>
       </div>
     </template>
+
+    <van-list v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="get"
+              class="content">
+      <template v-for="item in drugList">
+
+        <div class="panel"
+             :key="item.orderNo">
+          <div class="panel-head">
+            <div class="card-strip">
+              <div class="avatar">
+                <img :src="item.drugStoreLogo"
+                     class="avatar-cicular" />
+              </div>
+              <div class="strip-info">{{item.drugStoreName}}</div>
+              <div :class="{ [`color-a${item.callOrderStatus}`] : true }"
+                   class="strip-eye">
+                {{item.callOrderStatusTxt}}
+              </div>
+            </div>
+          </div>
+          <div class="panel-body"
+               @click="goUserDrugDetailPage(item)"
+               style="padding-top: 0">
+            <div class="card-imgs"
+                 v-if="item.drugJson && item.drugJson.length">
+              <div class="imgs-item"
+                   v-for="det in item.drugJson"
+                   :key="det.DrugImage">
+                <div class="item-icon"
+                     :class="{ 'item-icon-none': !item.DrugImage }">
+                  <img :src="det.DrugImage"
+                       v-if="det.DrugImage" />
+                </div>
+              </div>
+            </div>
+            <div class="small">
+              <div class="small-time">{{item.createdTime}}</div>
+              <div class="small-price default">
+                共{{item.totalNumber}}件药品 合计：
+                <span class="b">￥{{item.orderMoney.toString().toFixed(2) }}</span>
+              </div>
+            </div>
+            <div class="small"
+                 v-if="item.refundTime">
+              <div class="small-price refund">{{'已退款：￥' + item.orderMoney.toString().toFixed(2)}}
+              </div>
+            </div>
+          </div>
+          <!-- 0未付款 1已付款 2已接单 3 已发货 4已签收 5 已取消 6已自提 7，已打包（配药中） 8 已完成)-->
+          <!-- <template v-if="!( item.callOrderStatus == '0')"> -->
+          <div class="panel-bottom"
+               v-if="item.callOrderStatus != 5">
+            <div class="count-down"
+                 v-if=" item.callOrderStatus == '0'&&item.time>0">
+              <span>订单关闭倒计时：</span>
+              <van-count-down millisecond
+                              @finish="finishHander(item)"
+                              :time="item.time"
+                              format="mm:ss" />
+            </div>
+            <van-button class="label blue"
+                        @click="onClickSeeQRCode(item)"
+                        v-if="checkQRCodeBtn(item)">取药码</van-button>
+            <!-- <van-button lass="label gary"
+                    v-if=" item.callOrderStatus == '1' || item.callOrderStatus == '2' || item.callOrderStatus == '0'"
+                    @click="canselOrder(item)">
+                  取消订单
+                </van-button> -->
+            <peace-button class="label blue-full"
+                          v-if=" item.callOrderStatus == '0'"
+                          @click="payOrder(item)"
+                          throttle
+                          :throttleTime="3000">继续支付</peace-button>
+            <van-button class="label blue"
+                        v-if="canShowApplyBtn(item)"
+                        @click="changeInvoiceModel(item)">
+              申请发票
+            </van-button>
+            <van-button class="label blue"
+                        v-if="ifShowLogistics(item)"
+                        @click="goDrugLogiPage(item)">查看物流
+            </van-button>
+            <van-button class="label blue"
+                        v-if="item.callOrderStatus == '4' && item.ShippingMethod != '0'"
+                        @click="submitOrder(item)">确认收货
+            </van-button>
+            <van-button class="label blue"
+                        v-if="item.callOrderStatus == '4' && item.ShippingMethod == '0'"
+                        @click="submitOrder(item)">确认取药
+            </van-button>
+          </div>
+          <!-- </template> -->
+        </div>
+      </template>
+    </van-list>
+
+    <!-- <div class="bottom">客服电话：4009020365</div> -->
+    <!--二维码弹窗-->
+    <QRCode :QRCodeURL="QRCodeURL"
+            v-model="showQRCode"
+            :PickUpCode="PickUpCode"></QRCode>
+
+    <!-- 发票弹窗 -->
+    <InvoiceModel v-model="showInvoiceModel"
+                  :receiptNumber="receiptNumber"></InvoiceModel>
+
   </div>
 </template>
 
@@ -167,12 +162,9 @@ const ENUM = {
 export default {
   data() {
     return {
-      loaded: false,
-      appid: '',
       tabIndex: '0',
       currentOrderId: '',
-      drugItems: undefined,
-      consultList: undefined,
+      drugList: [],
       // 控制二维码弹窗显示
       showQRCode: false,
       PickUpCode: null,
@@ -180,26 +172,34 @@ export default {
       //发票弹框
       showInvoiceModel: false,
       receiptNumber: '',
-
-      ENUM
+      model: {
+        p: 0,
+        size: 10,
+        callOrderStatus: 0
+      },
+      loading: false,
+      finished: false,
+      loaded: false,
+      ENUM,
+      timer: null
     }
   },
 
   components: { QRCode, InvoiceModel },
 
   activated() {
-    this.getDrugItems()
+    this.get('init')
   },
 
   methods: {
     finishHander(item) {
-      const params = { OrderId: item.OrderId }
+      const params = { orderNo: item.OrderId }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
-        this.getDrugItems()
+        this.get('init')
       })
     },
     canShowApplyBtn(item) {
-      return item.OrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
+      return item.callOrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
     },
     ifShowLogistics(item) {
       return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.PickUpCode
@@ -207,49 +207,64 @@ export default {
 
     checkQRCodeBtn(order) {
       const ShippingMethod = order.ShippingMethod
-      const OrderStatus = order.OrderStatus
+      const OrderStatus = order.callOrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
       return ShippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
 
     onClickSeeQRCode(order) {
-      this.PickUpCode = order.PickUpCode
+      this.PickUpCode = order.pickUpCode
       this.QRCodeURL = order.QRCodeURL
       this.showQRCode = true
     },
 
     changeTab(item) {
       this.tabIndex = item
-
-      this.getDrugItems()
+      this.get('init')
     },
     changeInvoiceModel(item) {
       this.showInvoiceModel = true
       this.receiptNumber = item.divisionId
     },
-    getDrugItems() {
-      const params = {
-        OrderType: this.tabIndex == '1' ? '6' : this.tabIndex
+    get(type = '') {
+      if (!this.timer) {
+        this.timer = setTimeout(() => {
+          this.getDrugList(type)
+          this.timer = null
+        }, 300)
       }
-
-      peace.service.purchasedrug.SelectOrderListApi(params).then((res) => {
-        res.data.map((item) => {
+    },
+    getDrugList(type = '') {
+      if (type == 'init') {
+        this.model.p = 0
+        this.drugList = []
+        this.finished = false
+        this.loaded = false
+      }
+      this.model.p++
+      this.model.callOrderStatus = this.tabIndex
+      peace.service.purchasedrug.SelectOrderListApi(this.model).then((res) => {
+        res.data.list.map((item) => {
           if (item.expireTime > item.currentTime) {
-            item.time = (item.expireTime - item.currentTime) * 1000
+            item.time = item.expireTime - item.currentTime
           }
         })
-        this.drugItems = res.data
+        this.drugList = this.drugList.concat(res.data.list)
+        this.loading = false
         this.loaded = true
+        if (res.data.list.length == 0 || this.p * this.size >= res.data.total) {
+          this.finished = true
+        }
       })
     },
 
     goUserDrugDetailPage(item) {
-      const json = peace.util.encode({ OrderId: item.OrderId })
+      const json = peace.util.encode({ orderNo: item.orderNo })
       this.$router.push(`/order/userDrugDetail/${json}`)
     },
     payOrder(item) {
-      let orderNo = item.OrderId
-      this.currentOrderId = item.OrderId
+      let orderNo = item.orderNo
+      this.currentOrderId = item.orderNo
       let params = { orderNo }
       peace.wx.pay(params, null, this.payCallback, null, '?' + 'orderId=' + orderNo)
     },
@@ -266,9 +281,9 @@ export default {
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     canselOrder(item) {
-      const params = { OrderId: item.OrderId }
+      const params = { orderNo: item.orderNo }
       let resTxt = ''
-      if (item.OrderStatus == 0) {
+      if (item.callOrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
         resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
@@ -276,16 +291,16 @@ export default {
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.CancelOrder(params).then((res) => {
           peace.util.alert(res.msg)
-          this.getDrugItems()
+          this.get('init')
         })
       })
     },
 
     goDrugLogiPage(item) {
       const json = {}
-      json.OrderId = item.OrderId
+      json.OrderNo = item.orderNo
       json.shippingMethod = item.ShippingMethod
-      json.orderStatus = item.OrderStatus
+      json.orderStatus = item.callOrderStatus
       json.PickUpCode = item.PickUpCode
       const params = peace.util.encode(json)
 
@@ -293,12 +308,12 @@ export default {
     },
 
     submitOrder(item) {
-      const params = { OrderId: item.OrderId }
+      const params = { OrderId: item.orderNo }
       let resTxt = item.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then((res) => {
           peace.util.alert(res.msg)
-          this.getDrugItems()
+          this.get('init')
         })
       })
     }
@@ -424,7 +439,7 @@ export default {
   flex-direction: column;
   background: #f5f5f5;
   color: #999;
-  height: 100%;
+  min-height: 100%;
 }
 
 .tab {
@@ -436,8 +451,8 @@ export default {
   }
 }
 .content {
-  flex: 1;
-  overflow: auto;
+  // flex: 1;
+  // overflow: auto;
 }
 .none-page {
   flex: 1;

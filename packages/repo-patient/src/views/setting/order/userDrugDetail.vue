@@ -3,23 +3,23 @@
        :style="{'padding-bottom':canShowBtnBox &&canShowCountDown?'96px':'60px'}"
        v-if="order">
     <div class="warn-tip"
-         v-if="order&&order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货||order.OrderStatus==ENUM.ORDER_STATUS.待下单">
+         v-if="order&&order.callOrderStatus==ENUM.ORDER_STATUS.已备药_已发货||order.callOrderStatus==ENUM.ORDER_STATUS.待下单">
       <img :src="require('@src/assets/images/warn.png')">
-      <span v-if="order.OrderStatus==ENUM.ORDER_STATUS.已备药_已发货">{{order.ShippingMethod ==ENUM.SHIPPING_METHOD.配送到家?'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再签收。':'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再取走药品。'}}</span>
-      <span v-if="order.OrderStatus==ENUM.ORDER_STATUS.待下单">药品为特殊商品，一经售出不退不换</span>
+      <span v-if="order.callOrderStatus==ENUM.ORDER_STATUS.已备药_已发货">{{order.shippingMethod ==ENUM.SHIPPING_METHOD.配送到家?'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再签收。':'药品为特殊商品，一经售出不退不换。请确认药品完好无损之后再取走药品。'}}</span>
+      <span v-if="order.callOrderStatus==ENUM.ORDER_STATUS.待下单">药品为特殊商品，一经售出不退不换</span>
     </div>
     <div class="user-drug-detail"
          v-if="order != null">
       <div class="top"
-           v-if="order.OrderStatusText">
+           v-if="order.callOrderStatusTxt">
         <!--tab^content-->
 
         <div class="order"
              @click="goDrugLogiPage">
           <div class="order-card">
             <div class="icon icon-status"
-                 :class="{ [`icon-status-${ order.OrderStatus }`] : true }"></div>
-            <div class="text">{{order.OrderStatusText + '  '}}</div>
+                 :class="{ [`icon-status-${ order.callOrderStatus }`] : true }"></div>
+            <div class="text">{{order.callOrderStatusTxt + '  '}}</div>
             <div v-if="showQRCodeBtn"
                  class="btn-wrapper">
               <div @click.stop
@@ -30,38 +30,33 @@
           <div class="order-text"></div>
         </div>
         <div class="cancelText"
-             v-if="order.OrderStatus ==ENUM.ORDER_STATUS.已取消 && order.payMoney != 0 ">
+             v-if="order.callOrderStatus ==ENUM.ORDER_STATUS.已取消 && order.payMoney != 0 ">
           订单取消后退款将在1-3个工作日内原路返回，请注意查收
         </div>
         <div class="divider"></div>
-        <div class="tab-content"
-             v-if="order.ShippingMethod ==ENUM.SHIPPING_METHOD.到店取药">
-          <div class="addr-tit">到店取药</div>
-          <div class="addr-p icon-next">{{order.DrugStoreDetailed}}</div>
-        </div>
-        <div class="tab-content"
-             v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
-          <div class="addr-tit">配送到家</div>
+        <div class="tab-content">
+          <div class="addr-tit">{{order.shippingMethodTxt}}</div>
           <div class="userAddr">
-            <div class="addr-p">{{order.Detailed}}</div>
-            <div class="addr-user">
-              <span>{{order.UserName}}</span>
-              <span>{{order.UserPhone}}</span>
+            <div class="addr-p">{{order.consigneeAddress}}</div>
+            <div class="addr-user"
+                 v-if="order.shippingMethod ==ENUM.SHIPPING_METHOD.配送到家">
+              <span>{{order.consignee}}</span>
+              <span>{{order.tel}}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="module"
-           v-if="order.DrugStoreName">
+           v-if="order.drugStoreName">
         <div class="panel-pha">
           <div class="panel-head">
             <div class="head-ico"
                  @click="goDrugPhaHomePage">
-              <img :src="order.DrugStoreLogo" />
+              <img :src="order.drugStoreLogo" />
             </div>
             <div class="head-tit"
-                 @click="goDrugPhaHomePage">{{ order.DrugStoreName }}</div>
+                 @click="goDrugPhaHomePage">{{ order.drugStoreName }}</div>
             <div class="head-ico-arrow"
                  :class="{'icon-next':isCloudPharmacy==false}"></div>
             <div class="head-Rp"
@@ -70,7 +65,7 @@
           </div>
           <div class="panel-body">
             <div class="list-three"
-                 v-for="(item, index) in order.OrderDet"
+                 v-for="(item, index) in order.drugJson"
                  :key="index">
               <div class="list-icon"
                    :class="item.DrugImage ? '' : 'list-icon-none'">
@@ -87,8 +82,8 @@
                   说明书
                 </div>
                 <div class="other-price">
-                  <div class="price">¥{{item.DrugPrice}}</div>
-                  x{{item.DrugNumber}}
+                  <div class="price">¥{{item.DrugUnitPrice}}</div>
+                  x{{item.DrugQty}}
                 </div>
               </div>
             </div>
@@ -97,10 +92,10 @@
         </div>
       </div>
       <div class="module box"
-           v-if="order.OrderId">
+           v-if="order.orderNo">
         <div class="dl-packet">
           <div class="dt">订单编号：</div>
-          <div class="dd">{{order.OrderId}}</div>
+          <div class="dd">{{order.orderNo}}</div>
           <!-- 待下单状态的取消订单在底部 已接单 -->
           <div class="cancel-btn"
                @click="canselOrder"
@@ -108,42 +103,27 @@
         </div>
         <div class="dl-packet">
           <div class="dt">订单时间：</div>
-          <div class="dd">{{order.ords.legnth>0?order.ords[0].CreateTime:order.CreateTime}}</div>
+          <div class="dd">{{order.purchaseDrugOrderStreams.length>0&&order.purchaseDrugOrderStreams[0].createdTime||order.createdTime}}</div>
         </div>
         <div class="dl-packet">
           <div class="dt">配送方式：</div>
           <div class="dd">
-            {{order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 ? '到店取药': '配送到家'}}
+            {{order.shippingMethod == ENUM.SHIPPING_METHOD.到店取药 ? '到店取药': '配送到家'}}
           </div>
         </div>
         <div class="dl-packet">
           <div class="dt">支付方式：</div>
           <div class="dd">
-            {{ order.paymentTypeStr }}</div>
+            {{ order.paymentTypeTxt }}</div>
         </div>
-        <template v-if="canShowPayway">
-          <div class="dl-packet">
-            <div class="dt">支付时间：</div>
-            <div class="dd">
-              {{ order.payTime||'--' }}</div>
-          </div>
-        </template>
-        <!-- 医保支付-支付时间补丁 -->
-        <!-- <template v-if="showByYiBao">
-          <div class="dl-packet">
-            <div class="dt">支付时间:</div>
-            <div class="dd">线下药店支付</div>
-          </div>
-        </template> -->
-
-        <template v-for="(item,index) in order.ords">
+        <template v-for="(stream,index) in order.purchaseDrugOrderStreams">
           <div class="dl-packet"
                :key="index"
-               v-if="item.ServiceStates>0">
+               v-if="stream.status>0">
             <div class="dt">
-              {{timeTags[order.ShippingMethod][parseInt(item.ServiceStates)]||'运单编号'}}：
+              {{stream.timeStatusTxt}}:
             </div>
-            <div class="dd">{{item.CreateTime}}</div>
+            <div class="dd">{{stream.createdTime}}</div>
           </div>
         </template>
         <div class="dl-packet"
@@ -169,29 +149,9 @@
         <div class="dl-packet">
           <div class="dt">药品金额</div>
           <div class="dd">
-            ¥{{order.TotalAmount}}
+            ¥{{order.totalMoney.toFixed(2)}}
           </div>
         </div>
-        <!-- <div class="dl-packet"
-             v-if="order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家">
-          <div class="dt">配送费</div>
-          <div class="dd">¥{{order.Freight.toString().toFixed(2)}}</div>
-        </div>
-        <div class="dl-packet"
-             v-if="canShowDiscount">
-          <div class="dt">优惠金额</div>
-          <div class="dd">-¥{{order.PromotionsCut.toString().toFixed(2)}}</div>
-        </div>
-        <div class="dl-packet"
-             v-if="canShowShangbao">
-          <div class="dt">商保权益抵扣</div>
-          <div class="dd">-¥0.00</div>
-        </div>
-        <div class="dl-packet"
-             v-if="canShowYibao">
-          <div class="dt">医保划扣</div>
-          <div class="dd">-¥{{order.medicalMoney.toString().toFixed(2)}}</div>
-        </div> -->
       </div>
 
       <div class="module str"
@@ -210,6 +170,7 @@
         </div>
       </div>
       <div class="module phone"
+           v-if="canShowPhoneBox"
            @click="callPhone">
         <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
         <span>联系客服</span>
@@ -224,7 +185,7 @@
       </div>
 
       <div class='bottom-1'
-           :class="order.OrderStatus !== ENUM.ORDER_STATUS.待下单&&'other'"
+           :class="order.callOrderStatus !== ENUM.ORDER_STATUS.待下单&&'other'"
            v-if="canShowBtnBox">
         <template v-if="canShowApplyBtn">
           <div @click="changeInvoiceModel"
@@ -232,7 +193,7 @@
             申请发票
           </div>
         </template>
-        <template v-if="order.OrderStatus !== ENUM.ORDER_STATUS.待下单">
+        <template v-if="order.callOrderStatus !== ENUM.ORDER_STATUS.待下单">
           <div @click="submitOrder"
                class="btn block btn-blue"
                v-if="canShowReceive">
@@ -355,7 +316,7 @@ const ENUM = {
     退款中: 4,
     已退款: 5
   },
-  /**DrugStoreType 机构类型：0是医院，10是药店，20是JNT运营,30连锁药店，40分院，50云药房,60对接机构 */
+  /**CustomerType 机构类型：0是医院，10是药店，20是JNT运营,30连锁药店，40分院，50云药房,60对接机构 */
   DRUG_STORE_TYPE: {
     医院: 0,
     药店: 10,
@@ -384,20 +345,15 @@ export default {
   data() {
     return {
       ENUM,
-
       time: 0,
       orderId: '',
       // ServiceStates 0创建时间 -1用户完成支付 2接单时间 3发货时间 4收货时间 5取消时间 6完成时间
-      timeTags: {
-        [ENUM.SHIPPING_METHOD.到店取药]: ['创建时间', '', '接单时间', '备药时间', '收货时间', '取消时间', '完成时间'],
-        [ENUM.SHIPPING_METHOD.配送到家]: ['创建时间', '', '接单时间', '发货时间', '收货时间', '取消时间', '完成时间']
-      },
-      appid: '',
       order: null,
       showQRCode: false,
       QRCodeURL: null,
       PickUpCode: null,
       showInvoiceModel: false,
+      phaInfo: null,
       recipeDetail: {
         visible: false,
         data: {}
@@ -434,12 +390,7 @@ export default {
     },
     //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
     showByYiBao() {
-      return (
-        this.order &&
-        // this.order.paymentType == ENUM.PAYMENT_TYPE.医保支付 &&
-        this.order.payTime == '' &&
-        this.order.OrderStatus > ENUM.ORDER_STATUS.待下单
-      )
+      return this.order && this.order.payTime == '' && this.order.callOrderStatus > ENUM.ORDER_STATUS.待下单
     },
 
     // 是否显示取消订单
@@ -447,9 +398,9 @@ export default {
       return (
         this.order &&
         this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
-        (this.order.OrderStatus === ENUM.ORDER_STATUS.待下单 ||
-          this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          (this.order.OrderStatus === ENUM.ORDER_STATUS.已接单 && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家))
+        (this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单 ||
+          this.order.callOrderStatus === ENUM.ORDER_STATUS.已下单 ||
+          (this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单 && this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家))
       )
     },
     //是否显示取消订单 - top
@@ -458,73 +409,68 @@ export default {
       return (
         this.order &&
         this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
-        (this.order.OrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          (this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus === ENUM.ORDER_STATUS.已接单)) &&
-        this.order.DrugStoreType != ENUM.DRUG_STORE_TYPE.云药房
+        (this.order.callOrderStatus === ENUM.ORDER_STATUS.已下单 ||
+          (this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单)) &&
+        this.order.CustomerType != ENUM.DRUG_STORE_TYPE.云药房
       )
     },
     isCloudPharmacy() {
-      return this.order.DrugStoreType === ENUM.DRUG_STORE_TYPE.云药房
+      return this.order.CustomerType === ENUM.DRUG_STORE_TYPE.云药房
+    },
+    canShowPhoneBox() {
+      return this.phoneDialog?.data?.phone
     },
     // 是否显示继续支付
     canShowPay() {
-      return (
-        this.order &&
-        //  this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
-        this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
-      )
+      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单
     },
 
     // 是否显示倒计时
     canShowCountDown() {
-      return this.order && this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
-      // && this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付
+      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单 && this.order.time > 0
     },
 
     // 是否显示应付金额
     canShowPayMoney() {
-      return (
-        this.order &&
-        // this.order.paymentType !== ENUM.PAYMENT_TYPE.医保支付 &&
-        this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单
-      )
+      return this.order && this.order.callOrderStatus !== ENUM.ORDER_STATUS.待下单
     },
     canShowBtnBox() {
       return (
-        (this.order && this.order.OrderStatus !== ENUM.ORDER_STATUS.待下单 && (this.canShowReceive || this.canShowSign || this.canShowApplyBtn)) ||
-        this.order.OrderStatus === ENUM.ORDER_STATUS.待下单
+        (this.order && this.order.callOrderStatus !== ENUM.ORDER_STATUS.待下单 && (this.canShowReceive || this.canShowSign || this.canShowApplyBtn)) ||
+        this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单
       )
     },
     // 是否显示确认取药
     canShowReceive() {
-      return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.到店取药 && this.order.OrderStatus == ENUM.ORDER_STATUS.已自提_已签收
+      return this.order && this.order.shippingMethod == ENUM.SHIPPING_METHOD.到店取药 && this.order.callOrderStatus == ENUM.ORDER_STATUS.已自提_已签收
     },
 
     // 是否显示确认签收
     canShowSign() {
-      return this.order && this.order.ShippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.OrderStatus == ENUM.ORDER_STATUS.已自提_已签收
+      return this.order && this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.callOrderStatus == ENUM.ORDER_STATUS.已自提_已签收
     },
     //是否显示申请发票
     canShowApplyBtn() {
-      return this.order && this.order.OrderStatus === ENUM.ORDER_STATUS.已完成 && this.order.divisionId
+      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.已完成 && this.order.divisionId
     },
     curPayMoney() {
-      const order = this.order
-      const payMoney = order.OrderMoney
+      const payMoney = this.order.orderMoney
       return payMoney.toFixed(2)
     },
 
     showQRCodeBtn() {
-      const ShippingMethod = this.order.ShippingMethod
-      const OrderStatus = this.order.OrderStatus
-      if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 && OrderStatus >= ENUM.ORDER_STATUS.已接单 && OrderStatus !== ENUM.ORDER_STATUS.已取消
+      const ShippingMethod = this.order.shippingMethod
+      const callOrderStatus = this.order.callOrderStatus
+      if (ShippingMethod === undefined || callOrderStatus === undefined) return false
+      return ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 && callOrderStatus >= ENUM.ORDER_STATUS.已接单 && callOrderStatus !== ENUM.ORDER_STATUS.已取消
     },
     showTrackingNumber() {
-      const ShippingMethod = this.order.ShippingMethod
-      const OrderStatus = this.order.OrderStatus
-      if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.配送到家 && OrderStatus >= ENUM.ORDER_STATUS.已备药_已发货 && OrderStatus !== ENUM.ORDER_STATUS.已取消
+      const ShippingMethod = this.order.shippingMethod
+      const callOrderStatus = this.order.callOrderStatus
+      if (ShippingMethod === undefined || callOrderStatus === undefined) return false
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.配送到家 && callOrderStatus >= ENUM.ORDER_STATUS.已备药_已发货 && callOrderStatus !== ENUM.ORDER_STATUS.已取消
+      )
     }
   },
 
@@ -533,7 +479,6 @@ export default {
   },
   methods: {
     callPhone() {
-      this.phoneDialog.data.phone = this.order.phoneNumber
       this.phoneDialog.visible = true
     },
     goDrugPhaHomePage() {
@@ -541,13 +486,8 @@ export default {
       if (this.isCloudPharmacy) {
         return
       }
-      const parmas = peace.util.encode({
-        AccessCode: this.order.AccessCode,
-        JZTClaimNo: this.order.JZTClaimNo,
-        DrugStoreId: this.order.DrugStoreCode
-      })
-
-      this.$router.push(`/drug/drugPhaHome/${parmas}`)
+      const json = peace.util.encode(this.phaInfo)
+      this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     changeInvoiceModel() {
       this.showInvoiceModel = true
@@ -565,13 +505,12 @@ export default {
       this.getDrugOrderDetail()
     },
     payOrder(order) {
-      let orderNo = order.OrderId
+      let orderNo = order.orderNo
       peace.wx.pay({ orderNo }, null, this.payCallback, this.payCallback)
     },
 
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
-
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         //防止 Freight  PromotionsCut 无此字段
         res.data.Freight = res.data.Freight || 0
@@ -580,19 +519,27 @@ export default {
         this.PickUpCode = res.data.PickUpCode
         this.QRCodeURL = res.data.QRCodeURL
         if (this.order.expireTime > this.order.currentTime) {
-          this.time = (this.order.expireTime - this.order.currentTime) * 1000
+          this.time = this.order.expireTime - this.order.currentTime
         }
-        if (this.order.ords.length > 0) {
-          this.order.ords.map((item, index) => {
+        if (this.order.purchaseDrugOrderStreams.length > 0) {
+          this.order.purchaseDrugOrderStreams.map((item, index) => {
             /**拼接 运单编号 */
             if (item.ServiceStates == 3 && this.showTrackingNumber) {
-              return this.order.ords.splice(index, 1, item, { CreateTime: this.order.PickUpCode, ServiceStates: 9 })
+              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.PickUpCode, states: 9, timeStatusTxt: '运单编号' })
             }
           })
         }
+        this.getPhaOrder(this.order.accessCode, this.order.jztClaimNo, this.order.drugStoreId)
       })
     },
-
+    //预售订单+店铺详情
+    getPhaOrder(accessCode, jztClaimNo, drugStoreId) {
+      const params = { accessCode, jztClaimNo, drugStoreId }
+      peace.service.patient.getOrderBefore(params).then((res) => {
+        this.phaInfo = res.data
+        this.phoneDialog.data.phone = this.isCloudPharmacy ? this.order.phoneNumber : this.phaInfo.ContractTel
+      })
+    },
     goInterDrugPage(item) {
       const params = peace.util.encode({ name: item.DrugName })
       this.$router.push(`/inter/drugInterList/${params}`)
@@ -608,21 +555,14 @@ export default {
     },
 
     goDrugLogiPage() {
-      const shippingMethod = this.order.ShippingMethod
-      const orderStatus = this.order.OrderStatus
-      const json = peace.util.decode(this.$route.params.json)
-      json.shippingMethod = shippingMethod
-      json.orderStatus = orderStatus
-      json.PickUpCode = this.order.PickUpCode
-      const afterJson = peace.util.encode(json)
-
+      const afterJson = peace.util.encode({ orderNo: this.order.orderNo })
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
     },
 
     canselOrder() {
       const params = peace.util.decode(this.$route.params.json)
       let resTxt = ''
-      if (this.order.OrderStatus == 0) {
+      if (this.order.callOrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
       } else {
         resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
@@ -637,7 +577,7 @@ export default {
 
     submitOrder() {
       const params = peace.util.decode(this.$route.params.json)
-      let resTxt = this.order.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
+      let resTxt = this.order.shippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then((res) => {
           peace.util.alert(res.msg)

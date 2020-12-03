@@ -15,6 +15,7 @@
                :class="{'active':canShowInput}"
                v-html="inquiryStatusText"></div>
           <div class="header-right"
+               v-if="canShowPhoneBox"
                @click="callPhone">
             <van-image :src="require('@src/assets/images/ic_call.png')"></van-image>
             <span>联系客服</span>
@@ -239,6 +240,9 @@ export default {
   },
 
   computed: {
+    canShowPhoneBox() {
+      return this.phoneDialog?.data?.phone
+    },
     serviceType() {
       return this.infoData && (this.infoData.inquiryType || this.infoData.serviceType)
     },

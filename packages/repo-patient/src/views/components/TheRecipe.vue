@@ -278,7 +278,7 @@ export default {
         return
       }
       if (key == OrderDrugStatus.已下单 || key == OrderDrugStatus.已购药) {
-        const json = peace.util.encode({ OrderId: data.orderId })
+        const json = peace.util.encode({ orderNo: data.orderId })
         this.$router.push(`/order/userDrugDetail/${json}`)
         return
       }

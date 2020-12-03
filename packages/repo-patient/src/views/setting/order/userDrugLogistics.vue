@@ -1,26 +1,30 @@
 <template>
   <div class="user-drug-logistics"
-       v-if="data">
+       v-if="info">
     <div class="box">
       <div class="card">
         <div class="card-avatar">
-          <img :src="data.DrugStoreLogo" />
+          <img :src="info.drugStoreLogo" />
         </div>
         <div class="card-body">
-          <div class="card-name"> {{ data.ords.length>0&&data.ords[0].Notes }}</div>
+          <div class="card-name"
+               v-if="info&&info.purchaseDrugOrderStreams.length>0"> {{ info.purchaseDrugOrderStreams[0].remark }}</div>
           <div class="card-small"
-               style="word-break: break-all;">
-            {{ data.ShippingMethod == '1' ? 
-                 '【配送地址】' + data.Detailed + ',' + data.UserName + ',' + data.UserPhone : 
-                 '【自提地址】' + data.DrugStoreDetailed
-            }}
+               style="word-break: break-all;"
+               v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME">
+            {{ '【配送地址】'+ info.consigneeAddress + ',' + info.consignee + ',' + info.tel}}
+          </div>
+          <div class="card-small"
+               style="word-break: break-all;"
+               v-else>
+            {{  '【自提地址】'+info.consigneeAddress }}
           </div>
           <div class="text">
-            订单编号：{{data.OrderId}}
+            订单编号：{{info.orderNo}}
           </div>
           <div v-if="showTrackingNumber"
                class="text">
-            运单编号：{{ PickUpCode }}
+            运单编号：{{ info.PickUpCode }}
           </div>
         </div>
       </div>
@@ -34,7 +38,7 @@
     <div class="module"
          v-if="loading">
       <div class="time-line express"
-           v-if="data.ShippingMethod == '1'&&expressList.length>0">
+           v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME &&expressList.length>0">
         <div class="item"
              v-for="(item,index) in expressList"
              :class="{ 'active' : index == 0 }"
@@ -63,19 +67,19 @@
         <div class="item"
              v-for="(item,index) in timeLine"
              :class="{ 'active' : index == 0&&expressList.length==0 }"
-             :key="item.Notes">
+             :key="index">
           <div class="time">
-            <div class="y">{{ item.CreateTime.toDate().formatDate('MM-dd') }}</div>
-            <div class="s">{{ item.CreateTime.toDate().formatDate('HH:mm') }}</div>
+            <div class="y">{{ item.createdTime.toDate().formatDate('MM-dd') }}</div>
+            <div class="s">{{ item.createdTime.toDate().formatDate('HH:mm') }}</div>
           </div>
           <div class="text">
-            <div class="status">{{item.Notes}}</div>
+            <div class="status">{{item.remark}}</div>
             <div class="note"
-                 v-if="item.ServiceStates == '4'">
-              {{ data.ShippingMethod == '0' ? '您在'+ data.DrugStoreName +'已自提' : '' }}
+                 v-if="item.states == '4'">
+              {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
             </div>
 
-            <div v-if="item.ServiceStates === '2' && orderStatus != 5 && shippingMethod === 0"
+            <div v-if="item.states === '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
                  class="note">
               <div class="qr-btn"
                    :class="{ 'active' : index == 0 }"
@@ -98,9 +102,9 @@
     </div>
 
     <!--二维码弹窗-->
-    <QRCode :QRCodeURL="QRCodeURL"
+    <QRCode :QRCodeURL="info.QRCodeURL"
             v-model="showQRCode"
-            :PickUpCode="PickUpCode"></QRCode>
+            :PickUpCode="info.PickUpCode"></QRCode>
 
     <!-- 电话列表弹框 -->
     <van-action-sheet v-model="action.visible"
@@ -143,12 +147,8 @@ export default {
   data() {
     return {
       ENUM,
-      PickUpCode: '',
-      data: undefined,
-      shippingMethod: null,
-      orderStatus: null,
       showQRCode: false,
-      QRCodeURL: null,
+      info: {},
       //快递物流信息
       expressList: [],
       loading: false,
@@ -161,18 +161,24 @@ export default {
   components: { QRCode },
   computed: {
     showTrackingNumber() {
-      const ShippingMethod = this.shippingMethod
-      const OrderStatus = this.orderStatus
+      const ShippingMethod = this.info.shippingMethod
+      const OrderStatus = this.info.callOrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.PickUpCode
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.info.PickUpCode
     },
     timeLine() {
-      const ShippingMethod = this.shippingMethod
-      if (ShippingMethod === undefined) return false
+      const ShippingMethod = this.info.shippingMethod
+      if (ShippingMethod === undefined) {
+        return false
+      }
+      const list = this.info.purchaseDrugOrderStreams
+      if (list && Array.isArray(list)) {
+        list.reverse()
+      }
       if (ShippingMethod === ENUM.SHIPPING_METHOD.SELF) {
-        return this.data.ords
+        return list
       } else {
-        return this.data.ords.filter(item => item.ServiceStates != 4 && item.ServiceStates != 6)
+        return list.filter((item) => item.status != 4 && item.status != 6)
       }
     }
   },
@@ -189,19 +195,14 @@ export default {
     //获取时间轴
     async getData() {
       const params = peace.util.decode(this.$route.params.json)
-      const data = await peace.service.purchasedrug.SelectOrderStreamApi(params)
-      this.data = data.data
-      const info = await peace.service.purchasedrug.SelectOrderDetApi(params)
-      this.PickUpCode = info.data.PickUpCode
-      this.orderStatus = info.data.OrderStatus
-      this.shippingMethod = info.data.ShippingMethod
-      if (this.shippingMethod == ENUM.SHIPPING_METHOD.HOME) {
-        if (!this.PickUpCode) {
+      const data = await peace.service.purchasedrug.SelectOrderDetApi(params)
+      this.info = data.data
+      if (this.info.shippingMethod == ENUM.SHIPPING_METHOD.HOME) {
+        if (!this.info.pickUpCode) {
           this.loading = true
           return
         }
-        const expressNo = this.PickUpCode
-        // const expressNo = 'YT4543884635668'
+        const expressNo = this.info.pickUpCode
         let expressData = null
         try {
           expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })
@@ -230,10 +231,10 @@ export default {
       return list
     },
     matchPhone(list) {
-      list.map(item => {
+      list.map((item) => {
         item.tels = item.Content.match(/(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g)
         if (item.tels && item.tels.length > 0) {
-          item.tels.map(tel => {
+          item.tels.map((tel) => {
             // const temp = `<a style="color: #00c6ae;" href="tel:${tel}">${tel}</a>`
             const temp = `<span style="color: #00c6ae;">${tel}</span>`
             item.Content = item.Content.replace(tel, temp)

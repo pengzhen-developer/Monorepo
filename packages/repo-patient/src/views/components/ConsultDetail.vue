@@ -287,6 +287,7 @@
         </template>
       </div>
       <div class="module phone"
+           v-if="canShowPhoneBox"
            @click="callPhone">
         <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
         <span>联系客服</span>
@@ -625,6 +626,9 @@ export default {
     },
     canShowInvoiceBtn() {
       return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.已完成 && this.internalData?.orderInfo?.divisionId
+    },
+    canShowPhoneBox() {
+      return this.phoneDialog?.data?.phone
     }
   },
 

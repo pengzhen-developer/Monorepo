@@ -394,31 +394,26 @@ export default {
 
       this.showBtn = false
       let params = {
-        formId: '',
         paymentType,
-        JZTClaimNo: this.page.json.JZTClaimNo,
-        DrugStoreId: this.page.json.DrugStoreId,
-        AccessCode: this.page.json.AccessCode,
-        familyId: this.page.json.familyId,
-        IsMergeStore: this.page.json.IsMergeStore,
-        MergeStoreInfo: this.page.json.MergeStoreInfo,
-        ShippingMethod: +this.page.tabIndex, // 0 自提 1配送
-        Detailed: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
-        ProvincialCity: +this.page.tabIndex
-          ? this.userAddr.province + ',' + this.userAddr.city + ',' + this.userAddr.district
-          : this.order.Province + ',' + this.order.City + ',' + this.order.County,
-        UserName: +this.page.tabIndex ? this.userAddr.consignee : '',
-        UserPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
-        TargetPlatformCodes: this.order.TargetPlatformCodes,
-        PayMode: this.page.payIndex,
-        cardno: this.page.cardno,
-        medCardNo: this.yibaoInfo.medCardNo || ''
+        jztClaimNo: this.order.jztClaimNo,
+        drugStoreId: this.order.DrugStoreId,
+        accessCode: this.order.AccessCode,
+        shippingMethod: +this.page.tabIndex, // 0 自提 1配送
+        receiverState: +this.page.tabIndex ? this.userAddr.province : this.order.Province,
+        receiverCity: +this.page.tabIndex ? this.userAddr.city : this.order.City,
+        receiverDistrict: +this.page.tabIndex ? this.userAddr.district : this.order.County,
+        receiverAddress: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
+        receiver: this.userAddr.consignee || '',
+        receiverPhone: this.userAddr.mobile || '',
+        payMode: this.page.payIndex,
+        cardNo: this.page.cardno,
+        medCardNo: this.yibaoInfo.medCardNofu
       }
       peace.service.patient
         .submitOrder(params)
         .then((res) => {
-          let orderNo = res.data.OrderId
-          this.orderId = res.data.OrderId
+          let orderNo = res.data.orderNo
+          this.orderId = res.data.orderNo
           let orderType = 'drug'
           let money = res.data.orderMoney
           let moneyRecord = res.data.moneyRecord //费用明细

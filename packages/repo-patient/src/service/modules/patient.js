@@ -277,7 +277,7 @@ export function getOrderBefore(params) {
 }
 
 export function submitOrder(params) {
-  const submitOrder = 'client/v1/Purchasedrug/CreateOrderApi'
+  const submitOrder = 'client/v1/MedicineOrder/createOrder'
 
   return peace.http.post(submitOrder, params, {
     headers: {

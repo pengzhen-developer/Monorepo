@@ -34,7 +34,7 @@ export function getDrugbookinfo(params) {
  * @returns
  */
 export function SelectOrderDetApi(params) {
-  const SelectOrderDetApi = 'client/v1/Purchasedrug/SelectOrderDetApi'
+  const SelectOrderDetApi = 'client/v1/MedicineOrder/detail'
 
   return peace.http.post(SelectOrderDetApi, params)
 }
@@ -47,7 +47,7 @@ export function SelectOrderDetApi(params) {
  * @returns
  */
 export function CancelOrder(params) {
-  const CancelOrder = 'client/v1/Purchasedrug/CancelOrder'
+  const CancelOrder = 'client/v1/MedicineOrder/CancelOrder'
 
   return peace.http.post(CancelOrder, params)
 }
@@ -86,7 +86,7 @@ export function SelectOrderStreamApi(params) {
  * @returns
  */
 export function SelectOrderListApi(params) {
-  const SelectOrderListApi = 'client/v1/Purchasedrug/SelectOrderListApi'
+  const SelectOrderListApi = 'client/v1/MedicineOrder/lists'
 
   return peace.http.post(SelectOrderListApi, params)
 }
@@ -120,5 +120,5 @@ export default {
   /** 购药列表 */
   SelectOrderListApi,
   /**快递信息 */
-  ExpressQuery,
+  ExpressQuery
 }
