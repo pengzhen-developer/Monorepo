@@ -4,6 +4,7 @@
     <van-list :loading="loading"
               v-model="loading"
               :finished="finish"
+              finished-text="没有更多了"
               @load="get"
               class="content"
               :class="orderList.length>0&&'min'">
