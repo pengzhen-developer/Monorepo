@@ -59,7 +59,7 @@
                              v-model="weight"
                              v-bind:precision="1">
             </el-input-number>
-            <div class="flex items-center bg-grey-2 q-px-sm"
+            <div class="flex items-center q-px-sm"
                  style="border-radius: 5px">
               kg
             </div>
@@ -121,6 +121,30 @@
                    type="primary">发送</el-button>
       </div>
     </div>
+
+    <peace-dialog width="500px"
+                  title="库存提示"
+                  v-bind:visible.sync="stock.visible">
+      <div class="q-pa-md">
+        <div class="q-mb-md">
+          <p v-for="(item, index) in stock.data"
+             v-bind:key="index">
+            {{ item }}
+          </p>
+          <p>以上药品不可开具处方！请修改~</p>
+        </div>
+
+        <div class="q-mb-lg">
+          <span>缺货药品已登记，联系电话：</span>
+          <span class="text-primary">{{ stock.operatorContact }}</span>
+        </div>
+
+        <div class="text-center">
+          <el-button type="primary"
+                     v-on:click="stock.visible = false">知道了</el-button>
+        </div>
+      </div>
+    </peace-dialog>
 
     <!-- 系统审方结果 -->
     <peace-dialog title="系统审方结果"
@@ -218,6 +242,13 @@ export default {
 
       /** 药品列表 */
       drugList: [],
+
+      /** 库存提示 */
+      stock: {
+        visible: false,
+        operatorContact: '',
+        data: []
+      },
 
       /** 前置审方 */
       audit: {
@@ -413,6 +444,9 @@ export default {
       }
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
+        this.sending = true
+
+        const fetch = this.inquiryNo ? Service.subPrescrip : this.consultNo ? Service.offlineSubPrescrip : ''
         const params = {
           openId: this.docInfo?.openid,
           weight: this.weight,
@@ -423,7 +457,6 @@ export default {
           drugList: drugList
         }
 
-        this.sending = true
         if (this.inquiryNo) {
           // 诊断上传 JSON 数据 ，此处需要转换上传参数
           const diagnoseInfos = [...this.diagnoseList].map((item) => {
@@ -433,48 +466,41 @@ export default {
           })
 
           params['diagnoseList'] = diagnoseInfos
-
-          Service.subPrescrip(params)
-            .then((res) => {
-              // 前置审方不合法，显示前置审方审核结果
-              if (res.data.isAdopt === false) {
-                this.audit.visible = true
-                this.audit.data = res.data.result
-                this.audit.prescriptionNo = res.data.result.prescriptionNo
-              } else {
-                Peace.cache.sessionStorage.remove(this.inquiryNo)
-                Peace.util.success(res.msg)
-
-                this.$emit('close')
-              }
-            })
-            .finally(() => {
-              this.sending = false
-            })
-        } else if (this.consultNo) {
-          Service.offlineSubPrescrip(params)
-            .then((res) => {
-              // 前置审方不合法，显示前置审方审核结果
-              if (res.data.isAdopt === false) {
-                this.audit.visible = true
-                this.audit.data = res.data.result
-                this.audit.prescriptionNo = res.data.result.prescriptionNo
-              } else {
-                Peace.cache.sessionStorage.remove(this.inquiryNo)
-                Peace.util.success(res.msg)
-
-                this.$emit('close')
-              }
-            })
-            .finally(() => {
-              this.sending = false
-            })
         }
+
+        fetch(params)
+          .then((res) => {
+            // 缺货提醒
+            if (res.data.stockWarnStatus === 1) {
+              const config = Peace.cache.sessionStorage.get('config')
+              const operatorContact = config?.operatorContact
+
+              this.stock.visible = true
+              this.stock.data = res.data.noticeList
+              this.stock.operatorContact = operatorContact
+            }
+            // 前置审方
+            else if (res.data.isAdopt === false) {
+              this.audit.visible = true
+              this.audit.data = res.data.result
+              this.audit.prescriptionNo = res.data.result.prescriptionNo
+            }
+            // 系统验证成功，发送处方成功
+            else {
+              Peace.cache.sessionStorage.remove(this.inquiryNo)
+              Peace.util.success(res.msg)
+
+              this.$emit('close')
+            }
+          })
+          .finally(() => {
+            this.sending = false
+          })
       })
     },
 
     /**
-     * 确认发送处方
+     * 前置审方失败，医生手动确认继续发送处方
      */
     sendConfirm() {
       this.sending = true
@@ -560,6 +586,29 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.message-short-stock {
+  .el-message-box__header {
+    background: #e9edf1;
+    padding-top: 14px;
+
+    .el-message-box__title {
+      justify-content: flex-start;
+    }
+  }
+
+  .el-message-box__content {
+    padding: 24px 16px;
+  }
+
+  .el-message-box__btns {
+    .el-button {
+      min-width: 80px;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .text-justify {

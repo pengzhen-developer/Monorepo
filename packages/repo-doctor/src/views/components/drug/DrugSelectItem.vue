@@ -15,17 +15,16 @@
                        v-bind:fetch-suggestions="getDrugList"
                        v-on:select="drugSelect">
         <template slot-scope="{ item }">
-          <div class="q-py-xs"
-               v-bind:class="{ disabled : item.drugStatus === 'disable'}">
-            <div>
-              <el-tag class="q-mr-sm"
-                      effect="dark"
-                      type="warning"
-                      v-if="item.drugStatus === 'disable'">停用</el-tag>{{ item.drugName }}
+          <div class="flex q-py-sm el-autocomplete-item-drug"
+               v-bind:class="{ disabled: item.drugStock === 0 }">
+            <div class="col">
+              <p class="text-weight-bold text-subtitle2">{{ item.drugName }}</p>
+              <span class="text-grey-6 text-caption">{{ item.specification }}</span>
+              <span class="text-grey-6 text-caption q-ml-sm">{{ item.companyName }}</span>
             </div>
-            <div class="text-caption text-grey-6">
-              <span class="q-mr-sm">{{ item.specification }}</span>
-              <span>{{ item.companyName }}</span>
+            <div v-if="item.drugStock === 0"
+                 class="q-ml-md text-grey-6">
+              <span class="text-weight-bold text-subtitle2">暂无库存</span>
             </div>
           </div>
         </template>
@@ -62,17 +61,20 @@
                  label-position="left"
                  v-bind:model="data">
 
-          <el-form-item label="给药途径："
+          <el-form-item label="单次剂量："
                         required>
-            <el-select class="col inline-block full-width"
-                       placeholder="请选择"
-                       v-model="data.drugRouteId"
-                       v-on:change="drugRouteChange">
-              <el-option v-bind:key="item.id"
-                         v-bind:label="item.drugway_name"
-                         v-bind:value="item.id"
-                         v-for="item in drugRouteList"></el-option>
-            </el-select>
+            <div class="flex">
+              <el-input-number class="col inline-block"
+                               controls-position="right"
+                               v-on:blur="formatNum"
+                               v-bind:min="0.001"
+                               v-model="data.singleDose">
+              </el-input-number>
+              <div class="flex items-center justify-center q-px-xs"
+                   style="border-radius: 5px; min-width: 22px;">
+                {{ data.drugUnit }}
+              </div>
+            </div>
           </el-form-item>
 
           <el-form-item label="用药频次："
@@ -89,32 +91,6 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="单次剂量："
-                        required>
-            <div class="flex">
-              <el-input-number class="col inline-block"
-                               controls-position="right"
-                               v-bind:min="0.001"
-                               v-bind:precision="3"
-                               v-model="data.singleDose">
-              </el-input-number>
-              <div class="flex items-center bg-grey-2 q-px-xs"
-                   style="border-radius: 5px">
-                {{ data.drugUnit }}
-              </div>
-            </div>
-          </el-form-item>
-
-          <el-form-item label="药品数量："
-                        required>
-            <el-input-number class="full-width inline-block"
-                             controls-position="right"
-                             v-bind:min="0.001"
-                             v-bind:precision="3"
-                             v-model="data.drugNum">
-            </el-input-number>
-          </el-form-item>
-
           <el-form-item label="用药天数：">
             <el-input-number class="full-width inline-block"
                              controls-position="right"
@@ -124,6 +100,36 @@
                              v-model="data.useDrugDays">
             </el-input-number>
           </el-form-item>
+
+          <el-form-item label="药品数量："
+                        required>
+            <div class="flex">
+              <el-input-number class="col inline-block"
+                               controls-position="right"
+                               v-bind:min="1"
+                               v-bind:precision="0"
+                               v-model="data.drugNum">
+              </el-input-number>
+              <div class="flex items-center justify-center q-px-xs"
+                   style="border-radius: 5px； min-width: 22px;">
+                {{ data.drugQuantityUnit }}
+              </div>
+            </div>
+          </el-form-item>
+
+          <el-form-item label="给药途径："
+                        required>
+            <el-select class="col inline-block full-width"
+                       placeholder="请选择"
+                       v-model="data.drugRouteId"
+                       v-on:change="drugRouteChange">
+              <el-option v-bind:key="item.id"
+                         v-bind:label="item.drugway_name"
+                         v-bind:value="item.id"
+                         v-for="item in drugRouteList"></el-option>
+            </el-select>
+          </el-form-item>
+
         </el-form>
       </div>
     </el-card>
@@ -181,6 +187,10 @@ export default {
   },
 
   methods: {
+    formatNum() {
+      this.data.singleDose = Peace.numeral(this.data.singleDose).format('0.000')
+    },
+
     getDrugList(queryString, cb) {
       const params = {
         drugName: queryString
@@ -214,14 +224,14 @@ export default {
     drugSelect(drug) {
       const drugObject = Peace.util.deepClone(drug)
 
+      // 库存为 0， 不能选择药品
+      if (drugObject.drugStock === 0) {
+        return
+      }
+
       // 选择药品时，单次剂量不能带入
       drugObject.singleDose = undefined
-
-      if (drugObject.drugStatus !== 'disable') {
-        this.$emit('add', drugObject)
-      } else {
-        Peace.util.warning('药品已停用')
-      }
+      this.$emit('add', drugObject)
     },
 
     remove() {
@@ -240,6 +250,10 @@ export default {
   width: auto !important;
   min-width: 200px !important;
   max-width: 800px !important;
+}
+
+.el-autocomplete-item-drug {
+  border-bottom: 1px solid #f5f5f5;
 }
 </style>
 

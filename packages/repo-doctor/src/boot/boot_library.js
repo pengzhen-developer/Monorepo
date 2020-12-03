@@ -75,6 +75,8 @@ export default async ({ Vue }) => {
               }
             }
 
+            Peace.util.error(response.data.msg)
+
             return Promise.reject(response)
           }
         }
