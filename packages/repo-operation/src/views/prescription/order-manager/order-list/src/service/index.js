@@ -122,5 +122,38 @@ export default {
     return Peace.http.download(requestApi, params, 'post').then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取订单发货提醒信息详情
+   */
+  getByCode(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Order/GetByCode'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 保存订单发货短信提醒信息
+   */
+  smsRemindSave(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Order/SmsRemindSave'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

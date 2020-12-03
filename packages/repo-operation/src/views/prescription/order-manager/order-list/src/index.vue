@@ -108,7 +108,11 @@
     <div class="card">
       <div class="q-mb-md">
         <el-button style="width: 80px;"
+                   type="primary"
                    v-on:click="exportFile">导出</el-button>
+        <el-button style="width: 144px;"
+                   class="q-ml-md"
+                   v-on:click="showSetting">异常提醒设置</el-button>
       </div>
 
       <peace-table pagination
@@ -215,6 +219,14 @@
         </el-table-column>
       </peace-table>
     </div>
+    <!-- 异常提醒设置 -->
+    <PeaceDialog title="异常提醒设置"
+                 :visible.sync="settingDialog.visible"
+                 append-to-body
+                 v-if="settingDialog.visible">
+      <ExceptionReminder v-bind:info="settingDialog.data"
+                         v-on:onCancel="onCancel"></ExceptionReminder>
+    </PeaceDialog>
 
     <!-- 处方详情 -->
     <PeaceDialog title="处方详情"
@@ -338,12 +350,14 @@ import { date } from 'quasar'
 
 import OrderDetail from '@src/views/prescription/order-detail'
 import prescriptionDetail from './components/prescription-detail'
+import ExceptionReminder from './components/exception-reminder'
 export default {
   name: 'OrderList',
 
   components: {
     OrderDetail,
-    prescriptionDetail
+    prescriptionDetail,
+    ExceptionReminder
   },
 
   data() {
@@ -363,7 +377,12 @@ export default {
         sys_attribute_code: '',
         TimeRange: []
       },
-
+      settingDialog: {
+        visible: false,
+        data: {
+          Code: ''
+        }
+      },
       dialog2: {
         visible: false,
         data: undefined
@@ -418,6 +437,7 @@ export default {
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sysattribute')
+    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.label == 'Code').value
     this.$nextTick().then(() => {
       this.fetch()
     })
@@ -454,7 +474,15 @@ export default {
       const params = this.model
       this.$refs.table.reloadData({ fetch, params })
     },
-
+    showSetting() {
+      Service.getByCode({ code: this.settingDialog.data.Code }).then((res) => {
+        this.settingDialog.data = Object.assign(this.settingDialog.data, res.data)
+        this.settingDialog.visible = true
+      })
+    },
+    onCancel() {
+      this.settingDialog.visible = false
+    },
     exportFile() {
       Service.exportFile({ ...this.model })
     },
