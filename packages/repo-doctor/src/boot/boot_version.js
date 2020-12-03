@@ -1,68 +1,55 @@
-import Package from './../../package.json'
+import { version } from './../../package.json'
 
-/**
- * 获取服务端版本信息
- *
- * @param {*} params
- * @returns
- */
-const getServerVersion = (params) => {
-  const isMock = false
+const Service = {
+  Version: {
+    /**
+     * 获取最新版本信息
+     *
+     * @param {*} params
+     * @returns
+     */
+    getInfo(params) {
+      const isMock = false
 
-  const apiPath = 'common/system/getVersionInfo'
-  const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-  const serverPath = process.env.VUE_APP_API_BASE + apiPath
+      const apiPath = 'client/base/version/getInfo'
+      const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+      const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
-  const requestApi = isMock ? mockPath : serverPath
+      const requestApi = isMock ? mockPath : serverPath
 
-  return Peace.http.post(requestApi, params).then((res) => {
-    return res
-  })
-}
-
-/**
- * 获取服务端时间戳
- *
- * @param {*} params
- * @returns
- */
-const getServerTimestamp = (params) => {
-  const isMock = false
-
-  const apiPath = 'common/system/getServerTime'
-  const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-  const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-  const requestApi = isMock ? mockPath : serverPath
-
-  return Peace.http.post(requestApi, params).then((res) => {
-    return res
-  })
-}
-
-export default {
-  /**
-   * 校验版本信息
-   *
-   * @returns
-   */
-  async validVersion() {
-    const serverVersion = await getServerVersion()
-    const serverTimestamp = await getServerTimestamp()
-    const localVersion = Package.version
-
-    if (Math.abs(serverTimestamp.data.timestamp - new Date()) > 60 * 1000) {
-      console.error('当前操作系统时间不正确')
+      return Peace.http.post(requestApi, params, { headers: { deviceType: 'pc' } }).then((res) => {
+        return res
+      })
     }
+  },
 
-    if (serverVersion.data.version === localVersion) {
-      Peace.cache.sessionStorage.set('version', serverVersion, 'sessionStorage')
+  Config: {
+    getInfo(params) {
+      const isMock = false
 
-      return true
-    } else {
-      Peace.util.warning('您当前访问的系统版本过低，请清除浏览器缓存后重新刷新本页面')
+      const apiPath = 'client/base/config/getInfo'
+      const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+      const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
-      return false
+      const requestApi = isMock ? mockPath : serverPath
+
+      return Peace.http.get(requestApi, params).then((res) => {
+        return res
+      })
     }
   }
+}
+
+export default async (/* { Vue, configuration } */) => {
+  // PC 端暂不需要验证
+  // 验证最新版本信息
+  const versionInfo = await Service.Version.getInfo({ versionName: version })
+
+  // 获取应用基础信息
+  const configInfo = await Service.Config.getInfo()
+
+  Peace.cache.sessionStorage.set('version', versionInfo.data)
+  Peace.cache.sessionStorage.set('config', configInfo.data)
+
+  return true
 }

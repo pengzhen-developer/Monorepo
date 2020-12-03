@@ -4,6 +4,8 @@ import Util from '@src/util'
 // async is optional
 export default async () => {
   if (Util.user.isSignIn()) {
+    // Vue 暂未实例化
+    // 追加到此轮循环
     setImmediate(() => {
       const userInfo = Util.user.getUserInfo()
 
@@ -12,11 +14,10 @@ export default async () => {
 
       if (!Peace?.NIM?.isConnected()) {
         // 同步执行会造成 quasar loading bar 无限加载状态
-        // 追加在次轮循环执行
-        setImmediate(() => {
-          Peace.NIM = Util.IM.initIM()
-          Peace.WebRTC = Util.IM.initWebRTC(Peace.NIM)
-        })
+        // 暂时关闭 loading bar
+        Peace.$q.loadingBar.stop()
+        Peace.NIM = Util.IM.initIM()
+        Peace.WebRTC = Util.IM.initWebRTC(Peace.NIM)
       }
     })
   }

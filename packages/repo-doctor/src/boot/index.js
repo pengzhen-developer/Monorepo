@@ -39,6 +39,9 @@ const install = async () => {
     // Library
     boot_Library,
 
+    // Version
+    boot_Version,
+
     // Redirect
     boot_Redirect,
 
@@ -61,11 +64,7 @@ const install = async () => {
 
   const { app } = await CreateApp(configuration)
 
-  // 初始化成功后
-  // 检查版本信息
-  if (boot_Version.validVersion()) {
-    return new Vue(app)
-  }
+  return new Vue(app)
 }
 
 export default {

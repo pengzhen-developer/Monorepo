@@ -42,10 +42,10 @@ export default {
   },
 
   created() {
-    const version = Peace.cache.sessionStorage.get('version')
+    const version = Peace.cache.sessionStorage.get('config')
 
-    this.androidQRCode = version.data.androidQRCode
-    this.iOSQRCode = version.data.iOSQRCode
+    this.androidQRCode = version.androidQRCode
+    this.iOSQRCode = version.iosQRCode
   }
 }
 </script>
