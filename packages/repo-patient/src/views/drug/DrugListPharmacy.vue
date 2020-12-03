@@ -244,72 +244,29 @@ export default {
       }
       console.log(params)
       peace.service.patient.getStoresList(params).then((res) => {
-        if (res.data == null) {
-          this.phaList = []
-          this.phaAddrList = []
-          this.isGet = true
-        } else {
-          this.phaList = res.data
-          this.isGet = true
-
-          // 仅存在一个药房符合条件时，直接跳转订单确认页面
-          // if (this.phaList.length === 1) {
-          //   this.goDrugOrderBeforePage(0)
-          // }
-        }
-
-        // this.mapDistance()
+        this.phaList = res.data == null ? [] : res.data
+        this.isGet = true
       })
     },
-    //距离转换
-    mapDistance: function() {
-      let userLoc = this.userLocation
-      this.phaAddrList.map((item) => {
-        let loc = item.location
-        item.distance = this.getDistance(loc.lat, loc.lng, userLoc.lat, userLoc.lng)
-      })
-      this.phaList.map((item) => {
-        item.distance = this.getDistance(item.Latitude, item.Longitude, userLoc.lat, userLoc.lng)
-      })
-    },
-    bds: function(d) {
-      return (d * Math.PI) / 180.0 //经纬度转换成三角函数中度分表形式。
-    },
-    getDistance: function(lat1, lng1, lat2, lng2) {
-      var me = this,
-        radLat1,
-        radLat2,
-        a,
-        b,
-        s
 
-      if (!lat1 || !lng1 || !lat2 || !lng2) {
-        s = '未知距离'
-        return ''
-      } else {
-        ;(radLat1 = me.bds(lat1)), (radLat2 = me.bds(lat2)), (a = radLat1 - radLat2), (b = me.bds(lng1) - me.bds(lng2))
-        s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)))
-        s = s * 6378.137 // EARTH_RADIUS;
-        s = Math.round(s * 10000) / 10000 //输出为公里
-        //s=s.toFixed(4);
-      }
-      return Number(s).toFixed(2) + 'km'
-    },
     //跳转预售订单页面
-    goDrugOrderBeforePage: function(index) {
+    goDrugOrderBeforePage(index) {
       let item = this.phaList[index]
       const params = peace.util.decode(this.$route.params.json)
       let jztClaimNo = params.claimNo || params.jztClaimNo
       let familyId = params.familyId
       let familyName = params.familyName
       let json = {
-        jztClaimNo,
+        JztClaimNo: jztClaimNo,
         DrugStoreId: item.DrugStoreId,
         AccessCode: item.AccessCode,
         CustomerType: item.CustomerType,
         ShippingMethod: item.ShippingMethod, // 0 门店自提  1 门店配送  2 全部
         Detailed: item.Detailed, // 地址
         ProvincialCity: item.Province + ',' + item.City + ',' + item.County,
+        Province: item.Province,
+        City: item.City,
+        County: item.County,
         familyId,
         familyName,
         IsMergeStore: item.IsMergeStore,

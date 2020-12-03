@@ -267,7 +267,7 @@ export function getStoresList(params) {
  * @returns
  */
 export function getOrderBefore(params) {
-  const getOrderBefore = 'client/v1/Purchasedrug/SelectDrugStoreDetApi'
+  const getOrderBefore = 'client/v1/MedicineOrder/drugStoreInfo'
 
   return peace.http.post(getOrderBefore, params, {
     headers: {

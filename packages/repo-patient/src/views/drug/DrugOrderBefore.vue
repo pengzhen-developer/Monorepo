@@ -20,7 +20,7 @@
           <div class="tab-content"
                v-if="page.tabIndex == '0'">
             <div class="userAddr icon-next">
-              <div class="addr-p">{{order.Detailed}}</div>
+              <div class="addr-p">{{order.Province}}{{order.City}}{{order.County}}{{order.Detailed}}</div>
             </div>
           </div>
           <div class="tab-content"
@@ -56,7 +56,7 @@
           </div>
           <div class="panel-body">
             <div class="list-three"
-                 v-for="(item, index) in order.OrderDet"
+                 v-for="(item, index) in order.Drugs"
                  :key="index">
               <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
                 <img :src="item.DrugImage"
@@ -70,8 +70,8 @@
                 <div class="other-them"
                      @click="goInterDrugPage(item)">说明书</div>
                 <div class="other-price">
-                  <div class="price">￥{{item.DrugPrice}}</div>
-                  x{{item.DrugNumber}}
+                  <div class="price">￥{{item.Price}}</div>
+                  x{{item.DrugQty}}
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@
         <div class="dl-packet"
              v-if="page.tabIndex == '1'">
           <div class="dt">配送费 ：</div>
-          <div class="dd money">￥{{order.Freight.toFixed(2)}}</div>
+          <div class="dd money">￥{{order.OperaShippingFee.toFixed(2)}}</div>
         </div>
         <template v-if="canShowDiscount">
           <div class="line"></div>
@@ -115,8 +115,8 @@
           <div class="dl-packet">
             <div class="dt">使用医保卡 ：</div>
             <div class="dd"
-                 :class="{'money':yibaoChecked||order.medicalCardNo}"
-                 @click="chooseYibao">{{ order.medicalCardNo || yibaoText }}</div>
+                 :class="{'money':yibaoChecked||order.MedicalCardNo}"
+                 @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
           </div>
         </template>
         <template v-if="canShowShangbao">
@@ -126,15 +126,6 @@
             <div class="dd">请选择</div>
           </div>
         </template>
-
-        <!-- <div class="line"></div>
-        <div class="dl-packet">
-          <div class="dt money">应付金额 ：</div>
-          <div class="dd">
-            <div class="strong">
-              ￥{{payPrice}}</div>
-          </div>
-        </div> -->
       </div>
       <div class="tips-bottom">
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -264,15 +255,6 @@ export default {
     this.initData(this.$route.params.json)
   },
   computed: {
-    payPrice() {
-      if (this.yibaoInfo?.totalAmount) {
-        return this.page.tabIndex == '1'
-          ? (this.order?.OrderMoney - this.yibaoInfo?.totalAmount).toFixed(2)
-          : (this.order?.pickOrderMoney - this.yibaoInfo?.totalAmount).toFixed(2)
-      } else {
-        return this.page.tabIndex == '1' ? this.order?.OrderMoney.toFixed(2) : this.order?.pickOrderMoney.toFixed(2)
-      }
-    },
     info() {
       return {
         familyName: this.page?.json?.familyName,
@@ -282,7 +264,7 @@ export default {
       }
     },
     canShowYibao() {
-      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.medicalCardNo ? true : false
+      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.MedicalCardNo ? true : false
     },
     canShowShangbao() {
       //H5暂无商保对接
@@ -291,12 +273,12 @@ export default {
     },
     canShowDiscount() {
       //当前迭代暂无优惠活动
-      // return this.order?.PromotionsCut > 0 ?true : false
+      // return this.order?.OperaPromotionsCut > 0 ?true : false
       return false
     },
     PromotionsCut() {
-      if (this.order.PromotionsCut > 0) {
-        return '-￥' + this.order.PromotionsCut.toFixed(2)
+      if (this.order.OperaPromotionsCut > 0) {
+        return '-￥' + this.order.OperaPromotionsCut.toFixed(2)
       } else {
         return '暂无可用'
       }
@@ -321,7 +303,7 @@ export default {
       this.yibaoInfo = result.yibaoInfo
     },
     chooseYibao() {
-      if (!this.order.medicalCardNo) {
+      if (!this.order.MedicalCardNo) {
         this.showCard = true
       }
     },
@@ -343,11 +325,13 @@ export default {
       if (!this.showBtn) {
         return
       }
-      let json = this.$route.params.json
+
       //云药房不跳转店铺详情
       if (this.CustomerType == '50') {
         return
       }
+      //this.order 包含药店详情信息
+      const json = peace.util.encode(this.order)
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     getDefaultAddress() {
@@ -372,7 +356,7 @@ export default {
 
     submitOrder() {
       if (this.canShowYibao) {
-        this.yibaoInfo.medCardNo = this.order.medicalCardNo
+        this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
       //若未选择支付方式，不能提交订单
       if (this.page.payIndex < 1) {
@@ -388,7 +372,8 @@ export default {
         3: 'deliverypay',
         4: 'wxpay'
       }
-      if (this.payPrice > 0) {
+      const price = this.order.TotalAmount + (this.page.tabIndex == 1 ? this.order.OperaShippingFee : 0)
+      if (price > 0) {
         paymentType = paymentTypeMap[this.page.payIndex]
       }
 
@@ -504,7 +489,12 @@ export default {
       }
     },
     getPhaOrder() {
-      const params = peace.util.decode(this.$route.params.json)
+      const json = peace.util.decode(this.$route.params.json)
+      const params = {
+        accessCode: json.AccessCode,
+        jztClaimNo: json.JztClaimNo,
+        drugStoreId: json.DrugStoreId
+      }
       peace.service.patient.getOrderBefore(params).then((res) => {
         this.order = res.data
         //货到付款 暂无业务 不可选
