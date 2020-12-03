@@ -14,7 +14,7 @@ const mutations = {
     if (tabIndex === -1) {
       state.tabs.push(menu)
     } else {
-      state.tabs[tabIndex] = menu
+      state.tabs.splice(tabIndex, 1, menu)
     }
   },
 
