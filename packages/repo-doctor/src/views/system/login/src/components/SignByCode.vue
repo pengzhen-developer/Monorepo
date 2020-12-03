@@ -47,7 +47,7 @@
               <PeaceCountdown v-bind:time="countdownTime"
                               v-on:end="onCountdownEnd">
                 <template slot-scope="props">
-                  {{ parseInt(props.minutes * 60) + parseInt(props.seconds) }} s
+                  已发送 ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s)
                 </template>
               </PeaceCountdown>
             </template>
@@ -56,7 +56,7 @@
 
               <el-button type="text"
                          v-bind:disabled="isVerifyPhone"
-                         v-on:click="sendCode">获取验证码</el-button>
+                         v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
             </template>
           </template>
         </el-input>
@@ -80,6 +80,7 @@ import Service from './../service'
 export default {
   data() {
     return {
+      sendSmsCode: false,
       countdownTime: 0,
       countdownInterval: 60 * 1000,
       isLoging: false,
@@ -146,6 +147,8 @@ export default {
     sendCode() {
       Service.sendSms(this.model)
         .then((res) => {
+          this.sendSmsCode = true
+
           Peace.util.success(res.msg)
 
           this.$refs.smsCode.focus()

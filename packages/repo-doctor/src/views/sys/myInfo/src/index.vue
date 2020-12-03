@@ -15,12 +15,18 @@
                    class="upload"
                    name="image"
                    ref="uploadAvatar">
-          <img class="modify"
-               slot="trigger"
+          <img slot="trigger"
                src="~@src/assets/images/sys/ic_modify.png" />
         </el-upload>
       </el-form-item>
-      <el-form-item label="帐号：">{{ view.model.tel }}</el-form-item>
+      <el-form-item label="手机号码：">
+        <div class="flex items-center">
+          <span>{{ view.model.tel }}</span>
+          <img class="q-ml-md cursor-pointer"
+               v-on:click="showChangePhoneNumberDialog"
+               src="~@src/assets/images/sys/ic_modify.png" />
+        </div>
+      </el-form-item>
       <el-form-item label="姓名：">{{ view.model.name }}</el-form-item>
       <el-form-item label="医院：">{{ view.model.netHospital_name }}</el-form-item>
       <el-form-item label="科室：">{{ view.model.netdept_child }}</el-form-item>
@@ -73,11 +79,26 @@
            alt
            width="100%" />
     </peace-dialog>
+
+    <PeaceDialog title="更换手机号码"
+                 width="520px"
+                 custom-class="change-phone-number-dialog"
+                 v-if="changePhoneNumberDialog.visible"
+                 v-bind:visible.sync="changePhoneNumberDialog.visible">
+      <ChangePhoneNumber v-on:success="changePhoneNumberSuccess"
+                         v-bind:tel="changePhoneNumberDialog.tel"></ChangePhoneNumber>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
+import ChangePhoneNumber from './components/ChangePhoneNumber'
+
 export default {
+  components: {
+    ChangePhoneNumber
+  },
+
   data() {
     return {
       api: {
@@ -100,6 +121,10 @@ export default {
       dialog: {
         visible: false,
         imageUrl: ''
+      },
+
+      changePhoneNumberDialog: {
+        visible: false
       }
     }
   },
@@ -111,6 +136,17 @@ export default {
   },
 
   methods: {
+    showChangePhoneNumberDialog() {
+      this.changePhoneNumberDialog.visible = true
+      this.changePhoneNumberDialog.tel = this.view.model.tel
+    },
+
+    changePhoneNumberSuccess() {
+      this.changePhoneNumberDialog.visible = false
+
+      this.get()
+    },
+
     get() {
       const params = this.extraUploadData
 
@@ -179,6 +215,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .change-phone-number-dialog {
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+
 .about {
   .el-form {
     /deep/ .el-form-item {
