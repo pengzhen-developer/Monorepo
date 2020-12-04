@@ -385,7 +385,6 @@ export default {
     // 优惠
     canShowDiscount() {
       //当前迭代暂无优惠活动
-      // return this.order?.PromotionsCut > 0 ?true : false
       return false
     },
     //互医暂无法得知医保支付结果，订单详情显示【支付方式】【应付金额】（即使未支付）
@@ -512,9 +511,6 @@ export default {
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
-        //防止 Freight  PromotionsCut 无此字段
-        res.data.Freight = res.data.Freight || 0
-        res.data.PromotionsCut = res.data.PromotionsCut || 0
         this.order = res.data
         this.PickUpCode = res.data.PickUpCode
         this.QRCodeURL = res.data.QRCodeURL
