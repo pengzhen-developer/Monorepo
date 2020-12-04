@@ -299,9 +299,6 @@ export default {
     goDrugLogiPage(item) {
       const json = {}
       json.orderNo = item.orderNo
-      json.shippingMethod = item.ShippingMethod
-      json.orderStatus = item.callOrderStatus
-      json.PickUpCode = item.PickUpCode
       const params = peace.util.encode(json)
 
       this.$router.push(`/order/userDrugLogistics/${params}`)
