@@ -193,7 +193,7 @@ export default {
 
   methods: {
     finishHander(item) {
-      const params = { orderNo: item.OrderId }
+      const params = { orderNo: item.orderNo }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.get('init')
       })
@@ -277,7 +277,7 @@ export default {
         //直接回调
         orderId = this.currentOrderId
       }
-      const json = peace.util.encode({ OrderId: orderId })
+      const json = peace.util.encode({ orderNo: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     canselOrder(item) {
@@ -298,7 +298,7 @@ export default {
 
     goDrugLogiPage(item) {
       const json = {}
-      json.OrderNo = item.orderNo
+      json.orderNo = item.orderNo
       json.shippingMethod = item.ShippingMethod
       json.orderStatus = item.callOrderStatus
       json.PickUpCode = item.PickUpCode
