@@ -437,7 +437,7 @@ export default {
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sysattribute')
-    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.label == 'Code').value
+    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
     this.$nextTick().then(() => {
       this.fetch()
     })
