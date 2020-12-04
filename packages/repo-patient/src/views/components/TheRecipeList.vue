@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 100%;">
+  <div :class="{'h100':internalData.length==0,'mh100':internalData.length>0}">
     <template v-if="$peace.cache.get($peace.type.USER.INFO)">
       <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
         <div :data-index="index"
@@ -185,6 +185,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.h100 {
+  height: 100%;
+}
+.mh100 {
+  min-height: 100%;
+}
 .the-recipe-list {
   min-height: 100%;
   height: 100%;
