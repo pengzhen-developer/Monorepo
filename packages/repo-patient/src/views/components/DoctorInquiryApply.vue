@@ -3,6 +3,7 @@
     <div class="layout-header"
          ref="layoutHeader">
       <InquiryStageMark :type="model.serviceType"
+                        :positon="false"
                         :current="'smartAssistant'"></InquiryStageMark>
     </div>
 

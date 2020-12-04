@@ -14,6 +14,7 @@
       </template>
     </div>
     <div class="h50px"
+         v-if="position==true"
          :style="{'height':height}"></div>
   </div>
 

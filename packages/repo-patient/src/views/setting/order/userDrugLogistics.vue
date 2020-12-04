@@ -8,7 +8,7 @@
         </div>
         <div class="card-body">
           <div class="card-name"
-               v-if="info&&info.purchaseDrugOrderStreams.length>0"> {{ info.purchaseDrugOrderStreams[0].remark }}</div>
+               v-if="info.purchaseDrugOrderStreams&&info.purchaseDrugOrderStreams.length>0"> {{ info.purchaseDrugOrderStreams[0].remark }}</div>
           <div class="card-small"
                style="word-break: break-all;"
                v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME">
@@ -216,6 +216,9 @@ export default {
       }
     },
     assembleList(list) {
+      if (!Array.isArray(list)) {
+        return []
+      }
       for (let i = 0; i < list.length - 1; i++) {
         list[i].isChild = false
         for (let j = i + 1; j < list.length; j++) {
