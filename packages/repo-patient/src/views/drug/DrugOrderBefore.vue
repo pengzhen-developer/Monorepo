@@ -260,7 +260,7 @@ export default {
         familyName: this.page?.json?.familyName,
         familyId: this.page?.json?.familyId,
         serviceType: 'drug',
-        jntPrescriptionNo: this.page?.json?.JZTClaimNo
+        jntPrescriptionNo: this.page?.json?.JztClaimNo
       }
     },
     canShowYibao() {
@@ -407,7 +407,7 @@ export default {
         receiverPhone: this.userAddr.mobile || '',
         payMode: this.page.payIndex,
         cardNo: this.page.cardno,
-        medCardNo: this.yibaoInfo.medCardNofu
+        medCardNo: this.yibaoInfo.medCardNo
       }
       peace.service.patient
         .submitOrder(params)
@@ -439,7 +439,7 @@ export default {
         //直接回调
         orderId = this.orderId
       }
-      const json = peace.util.encode({ OrderId: orderId })
+      const json = peace.util.encode({ orderNo: orderId })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
 
