@@ -88,7 +88,8 @@ export default {
               color: fontColor,
               textStyle: {
                 fontSize: 14
-              }
+              },
+              interval: 0
             }
           }
         ],
