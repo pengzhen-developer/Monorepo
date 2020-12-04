@@ -426,7 +426,7 @@ export default {
 
     // 是否显示倒计时
     canShowCountDown() {
-      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单 && this.order.time > 0
+      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单 && this.time > 0
     },
 
     // 是否显示应付金额
