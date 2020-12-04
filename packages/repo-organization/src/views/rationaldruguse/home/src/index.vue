@@ -2,8 +2,13 @@
   <div class="layout-route bg-grey-2">
     <!-- 药品总数、药师总数、处方/医嘱总数 -->
     <TotalStatistic v-bind:data="totalStatis"></TotalStatistic>
-    <!-- 审核统计 -->
+    <!-- 匹配药品、待审核药品、尚未配码、通用规则、自定义规则 -->
     <AuditStatistic v-bind:data="auditStatis"></AuditStatistic>
+    <!-- 分割线 -->
+    <el-divider></el-divider>
+
+    <!-- 未审处方、已审处方 -->
+    <PrescripStatistic v-bind:data="prescripStatis"></PrescripStatistic>
 
     <div class="row q-gutter-md q-mb-20">
       <!-- 处方审核情况 -->
@@ -25,6 +30,7 @@ import Util from '@src/util'
 import Service from './service'
 import TotalStatistic from './components/TotalStatistic'
 import AuditStatistic from './components/AuditStatistic'
+import PrescripStatistic from './components/PrescripStatistic'
 import PrescripReview from './components/PrescripReview'
 import SystemReview from './components/SystemReview'
 import RuleTrigger from './components/RuleTrigger'
@@ -34,6 +40,7 @@ export default {
   components: {
     TotalStatistic,
     AuditStatistic,
+    PrescripStatistic,
     PrescripReview,
     SystemReview,
     RuleTrigger
@@ -46,13 +53,15 @@ export default {
         totalCount: 0
       },
       auditStatis: {
-        checkedCount: 0,
-        uncheckedCount: 0,
         applyCount: 0,
         customCust: 0,
         AwaitExamineCount: 0,
         MappingCount: 0,
         NotMappingCount: 0
+      },
+      prescripStatis: {
+        checkedCount: 0,
+        uncheckedCount: 0
       }
     }
   },
@@ -91,8 +100,8 @@ export default {
         this.totalStatis.custDrugCount = Peace.numeral(values[0].data).format('0,0')
         this.totalStatis.PharCount = Peace.numeral(values[1].data).format('0,0')
         this.totalStatis.totalCount = Peace.numeral(values[2].data.totalCount).format('0,0')
-        this.auditStatis.checkedCount = Peace.numeral(values[2].data.checkedCount).format('0,0')
-        this.auditStatis.uncheckedCount = Peace.numeral(values[2].data.uncheckedCount).format('0,0')
+        this.prescripStatis.checkedCount = Peace.numeral(values[2].data.checkedCount).format('0,0')
+        this.prescripStatis.uncheckedCount = Peace.numeral(values[2].data.uncheckedCount).format('0,0')
         this.auditStatis.applyCount = Peace.numeral(values[3].data).format('0,0')
         this.auditStatis.customCust = Peace.numeral(values[4].data).format('0,0')
         this.auditStatis.AwaitExamineCount = Peace.numeral(values[5].data.AwaitExamineCount).format('0,0')
@@ -105,4 +114,10 @@ export default {
 </script>
 
 <style scoped>
+.el-divider {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.el-divider--horizontal {
+  margin: 40px 0;
+}
 </style>

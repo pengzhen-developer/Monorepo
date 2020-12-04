@@ -16,13 +16,15 @@
                       class="form-label">姓名</span>
                 <el-input v-model.trim="model.RealName"
                           maxlength="10"
-                          placeholder="请输入药师姓名"></el-input>
+                          placeholder="请输入药师姓名"
+                          v-bind:disabled="data!==''"></el-input>
               </el-form-item>
               <el-form-item prop="IdentityID">
                 <span slot="label"
                       class="form-label">身份证号</span>
                 <el-input v-model.trim="model.IdentityID"
-                          placeholder="请输入药师身份证号"></el-input>
+                          placeholder="请输入药师身份证号"
+                          v-bind:disabled="data!==''"></el-input>
               </el-form-item>
               <el-form-item label-width="120px"
                             prop="PharmacistType"
@@ -439,6 +441,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-input.is-disabled .el-input__inner {
+  background-color: #f7f7f7;
+  border-color: #cccccc;
+  color: rgba(0, 0, 0, 0.25);
+}
 .el-cascader {
   width: 100%;
 }

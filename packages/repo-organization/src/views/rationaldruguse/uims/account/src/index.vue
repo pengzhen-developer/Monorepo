@@ -9,7 +9,7 @@
         <el-form-item>
           <div class="flex inline"
                slot="label">
-            <span>账号</span>
+            <span class="form-label">账号</span>
             <span class="text-center">：</span>
           </div>
           <el-input v-model="model.UserName"
@@ -18,7 +18,7 @@
         <el-form-item>
           <div class="flex inline"
                slot="label">
-            <span>姓名</span>
+            <span class="form-label">姓名</span>
             <span class="text-center">：</span>
           </div>
           <el-input v-model="model.RealName"
@@ -27,11 +27,27 @@
         <el-form-item>
           <div class="flex inline"
                slot="label">
-            <span>所在部门</span>
+            <span class="form-label">所在部门</span>
             <span class="text-center">：</span>
           </div>
           <el-input v-model="model.DepartName"
                     placeholder="请输入所在部门"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <div class="flex inline"
+               slot="label">
+            <span class="form-label">医网信状态</span>
+            <span class="text-center">：</span>
+          </div>
+          <el-select v-model="model.SignStatus"
+                     placeholder="全部"
+                     clearable>
+            <el-option v-for="item in source.SignStatus"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="">
@@ -69,6 +85,12 @@
                          label="姓名"></el-table-column>
         <el-table-column prop="RoleNames"
                          label="角色"></el-table-column>
+        <el-table-column prop="SignStatus"
+                         label="医网信状态">
+          <template slot-scope="scope">
+            {{scope.row.SignStatus | getLabel(source.SignStatus)}}
+          </template>
+        </el-table-column>
         <el-table-column label="账号状态">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.EnableStatus"
@@ -84,12 +106,15 @@
           </template>
         </el-table-column>
         <el-table-column min-width="100px"
-                         align="center"
+                         align="left"
                          fixed="right"
                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="toAccount(scope.row)">修改</el-button>
+            <el-button type="text"
+                       v-on:click="commit(scope.row)"
+                       v-if="scope.row.SignStatus=='-1'">手工提交</el-button>
           </template>
         </el-table-column>
       </PeaceTable>
@@ -136,20 +161,29 @@ export default {
       model: {
         UserName: '',
         RealName: '',
-        DepartName: ''
+        DepartName: '',
+        SignStatus: ''
       },
       importDialogVisible: false,
       dialog: {
         visible: false,
         title: '账户信息'
+      },
+      source: {
+        SignStatus: []
       }
     }
   },
 
-  filters: {},
+  filters: {
+    getLabel: function(value, list) {
+      return list.find((item) => item.value === value)?.label
+    }
+  },
 
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick(async () => {
+      this.source.SignStatus = await Peace.identity.dictionary.getList('pharmacist_ywq_sign_status')
       this.get()
     })
   },
@@ -180,6 +214,18 @@ export default {
           row.EnableStatus = row.EnableStatus ? false : true
         })
     },
+    //手工提交
+    commit(row) {
+      this.$confirm('确定手工提交', '提示', { closeOnClickModal: false }).then(() => {
+        const params = {
+          userId: row.UserId
+        }
+        Service.RequestYwq(params).then((res) => {
+          Peace.util.success(res.msg)
+          this.get()
+        })
+      })
+    },
     openImportDialog() {
       this.importDialogVisible = true
     }
@@ -188,4 +234,9 @@ export default {
 </script>
 
 <style scoped>
+.form-label {
+  width: 70px;
+  text-align: justify;
+  text-align-last: justify;
+}
 </style>

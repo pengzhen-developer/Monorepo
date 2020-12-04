@@ -164,12 +164,7 @@ export default {
       Service.GetDepartment().then((res) => {
         this.deptlist = res.data.list
       })
-      //处方统计
-      const params = Peace.util.deepClone(this.model)
-      Service.PrescriptionStatistics(params).then((res) => {
-        this.statistic = res.data
-      })
-      //获取处方列表
+      //获取处方列表 处方统计
       this.get()
     })
   },
@@ -181,6 +176,11 @@ export default {
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         return res.data.prescriptionVoList
+      })
+      //处方统计
+      const params2 = Peace.util.deepClone(this.model)
+      Service.PrescriptionStatistics(params2).then((res) => {
+        this.statistic = res.data
       })
     },
     detail(row) {
