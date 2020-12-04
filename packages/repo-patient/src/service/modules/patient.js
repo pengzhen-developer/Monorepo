@@ -256,7 +256,11 @@ export function getOrderDetail(params) {
 export function getStoresList(params) {
   const getStoreLists = 'client/v1/MedicineOrder/matchDrugStore'
 
-  return peace.http.post(getStoreLists, params)
+  return peace.http.post(getStoreLists, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**

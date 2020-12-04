@@ -36,7 +36,11 @@ export function getDrugbookinfo(params) {
 export function SelectOrderDetApi(params) {
   const SelectOrderDetApi = 'client/v1/MedicineOrder/detail'
 
-  return peace.http.post(SelectOrderDetApi, params)
+  return peace.http.post(SelectOrderDetApi, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**
@@ -49,7 +53,11 @@ export function SelectOrderDetApi(params) {
 export function CancelOrder(params) {
   const CancelOrder = 'client/v1/MedicineOrder/CancelOrder'
 
-  return peace.http.post(CancelOrder, params)
+  return peace.http.post(CancelOrder, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**
@@ -60,9 +68,13 @@ export function CancelOrder(params) {
  * @returns
  */
 export function ConfirmReceipt(params) {
-  const ConfirmReceipt = 'client/v1/Purchasedrug/ConfirmReceipt'
+  const ConfirmReceipt = 'client/v1/MedicineOrder/ConfirmReceipt'
 
-  return peace.http.post(ConfirmReceipt, params)
+  return peace.http.post(ConfirmReceipt, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**
@@ -88,7 +100,11 @@ export function SelectOrderStreamApi(params) {
 export function SelectOrderListApi(params) {
   const SelectOrderListApi = 'client/v1/MedicineOrder/lists'
 
-  return peace.http.post(SelectOrderListApi, params)
+  return peace.http.post(SelectOrderListApi, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**

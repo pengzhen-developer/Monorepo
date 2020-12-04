@@ -305,7 +305,7 @@ export default {
     },
 
     submitOrder(item) {
-      const params = { OrderId: item.orderNo }
+      const params = { orderNo: item.orderNo }
       let resTxt = item.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then((res) => {
