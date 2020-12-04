@@ -24,7 +24,7 @@
           </div>
           <div v-if="showTrackingNumber"
                class="text">
-            运单编号：{{ info.PickUpCode }}
+            运单编号：{{ info.expressNo }}
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@
     <!--二维码弹窗-->
     <QRCode :QRCodeURL="info.QRCodeURL"
             v-model="showQRCode"
-            :PickUpCode="info.PickUpCode"></QRCode>
+            :PickUpCode="info.pickUpCode"></QRCode>
 
     <!-- 电话列表弹框 -->
     <van-action-sheet v-model="action.visible"
@@ -164,7 +164,7 @@ export default {
       const ShippingMethod = this.info.shippingMethod
       const OrderStatus = this.info.callOrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.info.PickUpCode
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.info.expressNo
     },
     timeLine() {
       const ShippingMethod = this.info.shippingMethod
@@ -198,11 +198,11 @@ export default {
       const data = await peace.service.purchasedrug.SelectOrderDetApi(params)
       this.info = data.data
       if (this.info.shippingMethod == ENUM.SHIPPING_METHOD.HOME) {
-        if (!this.info.pickUpCode) {
+        if (!this.info.expressNo) {
           this.loading = true
           return
         }
-        const expressNo = this.info.pickUpCode
+        const expressNo = this.info.expressNo
         let expressData = null
         try {
           expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })

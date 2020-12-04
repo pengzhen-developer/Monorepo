@@ -512,7 +512,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.order = res.data
-        this.PickUpCode = res.data.PickUpCode
+        this.PickUpCode = res.data.pickUpCode
         this.QRCodeURL = res.data.QRCodeURL
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
@@ -521,7 +521,7 @@ export default {
           this.order.purchaseDrugOrderStreams.map((item, index) => {
             /**拼接 运单编号 */
             if (item.ServiceStates == 3 && this.showTrackingNumber) {
-              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.PickUpCode, states: 9, timeStatusTxt: '运单编号' })
+              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.expressNo, states: 9, timeStatusTxt: '运单编号' })
             }
           })
         }
