@@ -69,7 +69,7 @@ import Service from '../service'
 
 export default {
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
@@ -113,6 +113,7 @@ export default {
         userId: '',
         username: '',
         password: '',
+        phone: '', // phone = username
         name: '',
         role: [],
         lockFlag: ''
@@ -170,6 +171,7 @@ export default {
                 this.model.userId = res.data.userId
                 this.model.username = res.data.username
                 this.model.name = res.data.name
+                this.model.phone = res.data.phone
                 this.model.role = res.data.roleList.map((item) => item.roleId)
                 this.model.lockFlag = res.data.lockFlag
               })
@@ -195,6 +197,8 @@ export default {
         this.isLoading = true
 
         const params = Peace.util.deepClone(this.model)
+
+        params.phone = this.model.username
 
         if (this.model.userId) {
           Service.user()
