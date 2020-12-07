@@ -27,7 +27,7 @@
       <template v-if="editFlag">
         <div class="content-item">
           <span>提醒人号码:</span>
-          <el-input v-model="model.Phone"></el-input>
+          <el-input v-model.trim="model.Phone"></el-input>
         </div>
         <div class="content-item center">
           <el-button @click="cancel">取消</el-button>
