@@ -42,11 +42,12 @@
     <div class="tips"><i class="el-icon-warning"></i>切换对接系统可能会影响业务数据流向，请谨慎操作</div>
 
     <div class="text-center">
-      <el-button style="width: 80px;"
-                 v-on:click="cancel">取消</el-button>
-      <el-button style="width: 80px;"
-                 type="primary"
-                 v-on:click="save">保存</el-button>
+      <peace-button style="width: 80px;"
+                    v-on:click="cancel">取消</peace-button>
+      <peace-button style="width: 80px;"
+                    throttle
+                    type="primary"
+                    v-on:click="save">保存</peace-button>
     </div>
   </div>
 </template>
