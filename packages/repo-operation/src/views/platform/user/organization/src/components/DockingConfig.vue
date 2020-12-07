@@ -42,12 +42,12 @@
     <div class="tips"><i class="el-icon-warning"></i>切换对接系统可能会影响业务数据流向，请谨慎操作</div>
 
     <div class="text-center">
-      <peace-button style="width: 80px;"
-                    v-on:click="cancel">取消</peace-button>
-      <peace-button style="width: 80px;"
-                    throttle
-                    type="primary"
-                    v-on:click="save">保存</peace-button>
+      <el-button style="width: 80px;"
+                 v-on:click="cancel">取消</el-button>
+      <el-button style="width: 80px;"
+                 :loading="loading.save"
+                 type="primary"
+                 v-on:click="save">保存</el-button>
     </div>
   </div>
 </template>
@@ -68,6 +68,9 @@ export default {
 
   data() {
     return {
+      loading: {
+        save: false
+      },
       model: Object.assign({}, DEFAULT_MODEL),
 
       rules: {
@@ -99,17 +102,26 @@ export default {
     },
 
     save() {
+      if (this.loading.save) {
+        return false
+      }
+      this.loading.save = true
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.model.sysAttributeName = this.systemAttributeDict.find((item) => item.value === this.model.sysAttributeCode).label
           this.model.sysName = this.dockingSystemDict.find((item) => item.value === this.model.sysCode).label
           const params = this.model
-          Service.saveDockingConfig(params).then((res) => {
-            Peace.util.success(res.msg)
-            this.$emit('close')
-            this.$emit('refresh')
-          })
+          Service.saveDockingConfig(params)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.$emit('close')
+              this.$emit('refresh')
+            })
+            .finally(() => {
+              this.loading.save = false
+            })
         } else {
+          this.loading.save = false
           return false
         }
       })
