@@ -639,7 +639,6 @@ export default {
 
   methods: {
     callPhone() {
-      this.phoneDialog.data.phone = this.internalData.orderInfo.phoneNumber
       this.phoneDialog.visible = true
     },
     changeInvoiceModel() {
@@ -718,6 +717,7 @@ export default {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
         this.internalData = res.data
+        this.phoneDialog.data.phone = this.internalData.orderInfo.phoneNumber
         if (res.data.inquiryInfo.serviceType == 'returnVisit') {
           await this.getFirstOptionList()
         }
