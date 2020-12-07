@@ -1,12 +1,12 @@
 <template>
   <div class="jzt-chat-container">
-    <template v-for="message in displayList">
+    <template v-for="(message,index) in displayList">
       <chat-images v-if="message.type === MESSAGE_TYPE.IMAGES"
                    :key="message.id"
                    :id="message.id"
                    :position="message.position"
                    :images="message.images"
-                   :ifShowUpdateBtn="message.ifShowUpdateBtn"
+                   :ifShowUpdateBtn="canShowUpdateBtn(index,message,displayList)"
                    @after-enter="onAfterEnter"
                    @click-update-btn="onClickUpdateBtn" />
       <chat-text v-if="message.type === MESSAGE_TYPE.TEXT"
@@ -14,7 +14,7 @@
                  :id="message.id"
                  :position="message.position"
                  :context="message.context"
-                 :ifShowUpdateBtn="message.ifShowUpdateBtn"
+                 :ifShowUpdateBtn="canShowUpdateBtn(index,message,displayList)"
                  @after-enter="onAfterEnter"
                  @click-update-btn="onClickUpdateBtn" />
     </template>
@@ -45,7 +45,7 @@ export default {
         for (let i = 0; i < list.length; i++) {
           const one = list[i]
 
-          const failureOne = validatorList.find(valid => {
+          const failureOne = validatorList.find((valid) => {
             return !valid(one)
           })
           // 失败退出
@@ -78,8 +78,13 @@ export default {
       immediate: true
     }
   },
-
   methods: {
+    canShowUpdateBtn(index, item, list) {
+      if (item.position == 'left') {
+        return false
+      }
+      return index == list.length - 1 ? true : false
+    },
     onClickUpdateBtn(id) {
       this.$emit('click-update-btn', id)
     },
@@ -94,12 +99,12 @@ export default {
 
     animationRemove(chatNode) {
       const { id } = chatNode
-      const chatMessage = this.$children.find(chatMessage => {
+      const chatMessage = this.$children.find((chatMessage) => {
         return chatMessage.id === id
       })
 
       chatMessage.remove(() => {
-        const index = this.displayList.findIndex(v => {
+        const index = this.displayList.findIndex((v) => {
           return v.id === id
         })
         this.displayList.splice(index, 1)
@@ -133,11 +138,11 @@ export default {
       if (this.waitQueue.length > 0) return false
       const { added, removed } = this.diff()
 
-      removed.forEach(el => {
+      removed.forEach((el) => {
         el.action = 'remove'
         this.waitQueue.push(el)
       })
-      added.forEach(el => {
+      added.forEach((el) => {
         el.action = 'add'
         this.waitQueue.push(el)
       })

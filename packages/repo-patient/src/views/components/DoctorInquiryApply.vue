@@ -958,8 +958,7 @@ export default {
           position: 'left',
           type,
           context,
-          images,
-          ifShowUpdateBtn: false
+          images
         })
         this.chatList.push(chat)
       } else {
@@ -971,7 +970,6 @@ export default {
           type,
           context,
           images,
-          ifShowUpdateBtn: true,
           qid: question.id
         })
 
