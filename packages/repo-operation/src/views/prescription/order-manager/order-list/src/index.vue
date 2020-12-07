@@ -111,6 +111,7 @@
                    type="primary"
                    v-on:click="exportFile">导出</el-button>
         <el-button style="width: 144px;"
+                   type="primary"
                    class="q-ml-md"
                    v-on:click="showSetting">异常提醒设置</el-button>
       </div>

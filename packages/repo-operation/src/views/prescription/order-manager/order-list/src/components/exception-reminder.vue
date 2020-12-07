@@ -64,7 +64,6 @@ export default {
     info: {
       handler(val) {
         if (val) {
-          console.log(val)
           this.remarks = Object.assign({}, val.Remarks)
           this.hasSelect = val.Smsremind?.Status ?? false
           this.model.Id = val.Smsremind?.Id ?? 0
@@ -83,7 +82,7 @@ export default {
           Peace.util.warning('手机号码必填')
           return false
         } else if (!/^1[3456789]\d{9}$/.test(this.model.Phone)) {
-          Peace.util.warning('手机号码有误，请重填')
+          Peace.util.warning('请填写正确的手机号')
           return false
         }
       }
@@ -93,6 +92,7 @@ export default {
       const params = peace.util.deepClone(this.model)
       Service.smsRemindSave(params).then((res) => {
         Peace.util.success(res.msg)
+        this.hasSelect = params.Status
         this.editFlag = false
         // this.$emit('onCancel')
       })
