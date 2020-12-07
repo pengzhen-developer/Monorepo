@@ -110,12 +110,12 @@ export default {
         const formatData = []
 
         res.data.list.forEach((item) => {
-          item.label = item.Name + ' ' + (item.Address ?? '')
+          item.label = item.Name
           item.value = item.DrugStoreKeyId
 
           if (item.SimpleStoreSon) {
             item.SimpleStoreSon.forEach((item) => {
-              item.label = item.SonName + ' ' + (item.Address ?? '')
+              item.label = item.SonName + ` (${item.Address})`
               item.value = item.DrugStoreKeyId
             })
 
