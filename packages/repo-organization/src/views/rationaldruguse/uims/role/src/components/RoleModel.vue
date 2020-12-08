@@ -98,7 +98,7 @@ export default {
       rules: {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 1, max: 10, message: '角色名称最多输入10个字符', trigger: 'blur' },
+          { min: 1, max: 20, message: '角色名称最多输入20个字符', trigger: 'blur' },
           { validator: validateChinese, message: '角色名称仅支持中文字符', trigger: 'blur' }
         ],
         roleDesc: [{ min: 0, max: 10, message: '备注最多输入10个字符', trigger: 'blur' }],
