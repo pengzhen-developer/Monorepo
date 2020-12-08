@@ -155,7 +155,7 @@ export default {
   },
 
   methods: {
-    textWrap() {
+    warpText() {
       this.editorMessage += '\n'
     },
 
