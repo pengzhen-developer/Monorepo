@@ -19,23 +19,27 @@
         <el-switch v-if="editFlag"
                    v-model="model.Status"></el-switch>
       </div>
-      <template v-if="hasSelect&&!editFlag">
-        <div class="content-item">
-          <span>提醒人号码:</span>{{model.Phone}}
-        </div>
+      <template v-if="hasSelect">
+
+        <template v-if="!editFlag">
+          <div class="content-item">
+            <span>提醒人号码:</span>{{model.Phone}}
+          </div>
+        </template>
+        <template v-if="editFlag">
+          <div class="content-item">
+            <span>提醒人号码:</span>
+            <el-input v-model.trim="model.Phone"></el-input>
+          </div>
+        </template>
       </template>
       <template v-if="editFlag">
-        <div class="content-item">
-          <span>提醒人号码:</span>
-          <el-input v-model.trim="model.Phone"></el-input>
-        </div>
         <div class="content-item center">
           <el-button @click="cancel">取消</el-button>
           <el-button @click="save"
                      type="primary">保存</el-button>
         </div>
       </template>
-
     </div>
   </div>
 </template>
@@ -65,7 +69,6 @@ export default {
       handler(val) {
         if (val) {
           this.remarks = Object.assign({}, val.Remarks)
-          this.hasSelect = val.Smsremind?.Status ?? false
           this.model.Id = val.Smsremind?.Id ?? 0
           this.model.Status = val.Smsremind?.Status ?? false
           this.model.Phone = val.Smsremind?.Phone ?? ''
@@ -73,6 +76,12 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    'model.Status': {
+      handler(val) {
+        this.hasSelect = val
+      },
+      immediate: true
     }
   },
   methods: {
@@ -92,16 +101,19 @@ export default {
       const params = peace.util.deepClone(this.model)
       Service.smsRemindSave(params).then((res) => {
         Peace.util.success(res.msg)
-        this.hasSelect = params.Status
         this.editFlag = false
-        // this.$emit('onCancel')
       })
     },
     cancel() {
       this.editFlag = false
       this.model.Status = this.info?.Smsremind?.Status
       this.model.Phone = this.info?.Smsremind?.Phone
-      // this.$emit('onCancel')
+      Service.getByCode({ code: this.info.Code }).then((res) => {
+        this.remarks = Object.assign({}, this.remarks, res.data.Remarks)
+        this.model.Id = res.data.Smsremind?.Id ?? 0
+        this.model.Status = res.data.Smsremind?.Status ?? false
+        this.model.Phone = res.data.Smsremind?.Phone ?? ''
+      })
     }
   }
 }
