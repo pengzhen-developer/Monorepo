@@ -18,7 +18,7 @@
       </q-drawer>
 
       <q-page-container>
-        <q-page class="bg-grey-2">
+        <q-page class="layout-content bg-grey-2">
           <LayoutTabs class="bg-white"></LayoutTabs>
           <LayoutView class="bg-white"></LayoutView>
         </q-page>
@@ -175,7 +175,9 @@ export default {
 <style lang="scss" scoped>
 .layout {
   position: relative;
-  min-width: 1200px;
+  min-width: 1366px;
+  max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
 
   .layout-header {
@@ -190,6 +192,10 @@ export default {
     ::v-deep .q-layout--prevent-focus {
       visibility: visible;
     }
+  }
+
+  .layout-content {
+    border-right: 1px solid #f5f5f5;
   }
 }
 </style>

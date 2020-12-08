@@ -1,81 +1,83 @@
 <template>
   <div class="header-container">
-    <div class="header-left">
-      <span class="header-left-title">
-        {{ netHospital_name }}</span>
-    </div>
-    <div class="header-right">
-      <el-dropdown @command="handleNotice">
-        <div class="header-right-message">
-          <el-badge class="mark"
-                    :value="$store.getters['notification/unread']"
-                    :hidden="$store.getters['notification/unread'] == 0">
-            <img src="~@src/assets/images/layout/top_icon_message.png" />
-          </el-badge>
-          <span>消息</span>
-        </div>
-
-        <el-dropdown-menu class="header-right-message-dropdown"
-                          slot="dropdown">
-          <div class="header-right-message-dropdown-content">
-            <h4 v-if="$store.getters['notification/messageList'].length == 0">暂无消息</h4>
-            <el-dropdown-item class="dropdown-item message"
-                              :command="item"
-                              v-for="(item, index) in $store.getters['notification/messageList']"
-                              :key="'item' + index">
-              <el-badge :is-dot="item.isRead == 0">
-                <div :class="'icon icon-' + item.tag"></div>
-              </el-badge>
-              <div class="right">
-                <div class="title">
-                  <span class="caption">{{ item.title }}</span>
-                  <span class="time">{{ item.time }}</span>
-                </div>
-                <div class="content">
-                  {{ item.detail }}
-                </div>
-              </div>
-            </el-dropdown-item>
+    <div class="header-content">
+      <div class="header-left">
+        <span class="header-left-title">
+          {{ netHospital_name }}</span>
+      </div>
+      <div class="header-right">
+        <el-dropdown @command="handleNotice">
+          <div class="header-right-message">
+            <el-badge class="mark"
+                      :value="$store.getters['notification/unread']"
+                      :hidden="$store.getters['notification/unread'] == 0">
+              <img src="~@src/assets/images/layout/top_icon_message.png" />
+            </el-badge>
+            <span>消息</span>
           </div>
-        </el-dropdown-menu>
-      </el-dropdown>
 
-      <el-dropdown>
-        <div class="header-right-title">
-          <el-badge is-dot
-                    type="primary"
-                    :class="workStatus">
-            <el-avatar :size="30"
-                       :src="docInfo.avartor"></el-avatar>
-          </el-badge>
-          <span>欢迎您，</span>
-          <span>{{ docInfo.name }}</span>
-          <i class="el-icon-arrow-down el-icon--right q-mr-md"></i>
-        </div>
+          <el-dropdown-menu class="header-right-message-dropdown"
+                            slot="dropdown">
+            <div class="header-right-message-dropdown-content">
+              <h4 v-if="$store.getters['notification/messageList'].length == 0">暂无消息</h4>
+              <el-dropdown-item class="dropdown-item message"
+                                :command="item"
+                                v-for="(item, index) in $store.getters['notification/messageList']"
+                                :key="'item' + index">
+                <el-badge :is-dot="item.isRead == 0">
+                  <div :class="'icon icon-' + item.tag"></div>
+                </el-badge>
+                <div class="right">
+                  <div class="title">
+                    <span class="caption">{{ item.title }}</span>
+                    <span class="time">{{ item.time }}</span>
+                  </div>
+                  <div class="content">
+                    {{ item.detail }}
+                  </div>
+                </div>
+              </el-dropdown-item>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
 
-        <el-dropdown-menu class="header-right-title-dropdown"
-                          slot="dropdown">
-          <div class="header-right-title-dropdown-content">
-            <p class="text-h7 text-bold q-mb-sm">工作状态</p>
-            <el-dropdown-item @click.native="setWorkstatus(1)"
-                              class="dropdown-item">
-              <div class="icon circle online"></div>
-              <span>接诊中</span>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="setWorkstatus(2)"
-                              class="dropdown-item">
-              <div class="icon circle offline"></div>
-              <span>休息中</span>
-            </el-dropdown-item>
-            <hr />
-            <el-dropdown-item @click.native="signOut"
-                              style="justify-content: center;"
-                              class="dropdown-item">
-              <span>退出登录</span>
-            </el-dropdown-item>
+        <el-dropdown>
+          <div class="header-right-title">
+            <el-badge is-dot
+                      type="primary"
+                      :class="workStatus">
+              <el-avatar :size="30"
+                         :src="docInfo.avartor"></el-avatar>
+            </el-badge>
+            <span>欢迎您，</span>
+            <span>{{ docInfo.name }}</span>
+            <i class="el-icon-arrow-down el-icon--right q-mr-md"></i>
           </div>
-        </el-dropdown-menu>
-      </el-dropdown>
+
+          <el-dropdown-menu class="header-right-title-dropdown"
+                            slot="dropdown">
+            <div class="header-right-title-dropdown-content">
+              <p class="text-h7 text-bold q-mb-sm">工作状态</p>
+              <el-dropdown-item @click.native="setWorkstatus(1)"
+                                class="dropdown-item">
+                <div class="icon circle online"></div>
+                <span>接诊中</span>
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="setWorkstatus(2)"
+                                class="dropdown-item">
+                <div class="icon circle offline"></div>
+                <span>休息中</span>
+              </el-dropdown-item>
+              <hr />
+              <el-dropdown-item @click.native="signOut"
+                                style="justify-content: center;"
+                                class="dropdown-item">
+                <span>退出登录</span>
+              </el-dropdown-item>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
 
     <peace-dialog v-bind:append-to-body="true"
@@ -229,14 +231,22 @@ export default {
 
 <style lang="scss" scoped>
 .header-container {
+  margin: 0 auto;
   height: 100%;
   background: #00c6ae;
   margin: 0 auto;
   padding: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  .header-content {
+    min-width: 1366px;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .header-left {
     margin: 0 0 0 12px;
