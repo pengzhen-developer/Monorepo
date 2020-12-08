@@ -30,8 +30,9 @@
         <el-form-item label="验证码："
                       prop="oldSmsCode">
           <el-input ref="smsCode"
-                    style="width: 120px;"
+                    style="width: 160px;"
                     class="q-mr-md"
+                    placeholder="请输入短信验证码"
                     v-model.trim="model.oldSmsCode"
                     v-bind:maxlength="6"
                     v-bind:minlength="6">
@@ -73,7 +74,9 @@
                v-bind:rules="rules">
         <el-form-item label="新手机号码："
                       prop="tel">
-          <el-input v-bind:maxlength="11"
+          <el-input style="width: 278px;"
+                    placeholder="请输入新的手机号码"
+                    v-bind:maxlength="11"
                     v-bind:minlength="11"
                     v-model.trim="model.tel"></el-input>
         </el-form-item>
@@ -81,8 +84,9 @@
         <el-form-item label="验证码："
                       prop="smsCode">
           <el-input ref="smsCode"
-                    style="width: 120px;"
+                    style="width: 160px;"
                     class="q-mr-md"
+                    placeholder="请输入短信验证码"
                     v-model.trim="model.smsCode"
                     v-bind:maxlength="6"
                     v-bind:minlength="6">
