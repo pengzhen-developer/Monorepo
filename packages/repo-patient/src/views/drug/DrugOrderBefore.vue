@@ -50,7 +50,7 @@
                :class="CustomerType!='50'&&'icon-next'"
                @click="goDrugPhaHomePage">
             <div class="head-ico">
-              <img :src="order.DrugStoreLogo" />
+              <van-image :src="order.DrugStoreLogo"></van-image>
             </div>
             <div class="head-tit">{{order.DrugStoreName}}</div>
           </div>
@@ -58,9 +58,13 @@
             <div class="list-three"
                  v-for="(item, index) in order.Drugs"
                  :key="index">
-              <div :class="item.DrugImage?'list-icon':'list-icon list-icon-none'">
-                <img :src="item.DrugImage"
-                     v-if="item.DrugImage" />
+              <div class="list-icon">
+                <van-image :src="item.DrugImage"
+                           class="error--image">
+                  <template v-slot:error>
+                    <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
+                  </template>
+                </van-image>
               </div>
               <div class="list-content">
                 <div class="content-title">{{item.DrugName}}</div>
@@ -68,7 +72,10 @@
               </div>
               <div class="list-other">
                 <div class="other-them"
-                     @click="goInterDrugPage(item)">说明书</div>
+                     @click="goInterDrugPage(item)">
+                  <span>说明书</span>
+                  <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
+                </div>
                 <div class="other-price">
                   <div class="price">￥{{item.Price}}</div>
                   x{{item.DrugQty}}
@@ -715,9 +722,15 @@ export default {
   width: 28px;
   height: 28px;
   border: 1px solid #e5e5e5;
-  img {
-    width: 100%;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  .van-image {
+    width: 90%;
+    height: 90%;
+    border-radius: 2px;
+    overflow: hidden;
   }
 }
 .panel-head.icon-next::before {
@@ -776,7 +789,6 @@ export default {
   color: #4e4e4e;
 }
 .str {
-  border-top: 1px solid #eee;
   padding: 8px 15px 3px;
 }
 .str .dt {
@@ -873,29 +885,17 @@ export default {
   text-align: right;
 }
 .list-other .other-them {
-  padding-right: 17px;
+  .van-image {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+  }
+  span {
+    line-height: 12px;
+  }
 }
-.list-other .other-them::after {
-  content: '';
-  width: 12px;
-  height: 12px;
-  // display: block;
-  display: inline-block;
-  vertical-align: middle;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  // margin-bottom: 3px;
-  // margin-left: 2px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url('~@src/assets/images/ic_wenhao.png');
-}
-.list-icon.list-icon-none {
-  padding: 0;
-  background-color: #f7f7f7;
-  background-size: cover;
-  background-image: url('~@src/assets/images/icons/ic_none_drug.png');
+.list-icon .van-image {
+  border-radius: 2px;
+  overflow: hidden;
 }
 </style>

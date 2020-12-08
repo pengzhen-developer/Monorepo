@@ -17,3 +17,11 @@
 .van-sidebar-item--select::before {
   background: $primary;
 }
+//vant image 默认加载失败图片不展示
+.van-icon-photo-fail::before {
+  content: '';
+}
+.error--image.van-image {
+  width: 100%;
+  height: 100%;
+}

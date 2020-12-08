@@ -4,7 +4,8 @@
     <div class="box">
       <div class="card">
         <div class="card-avatar">
-          <img :src="info.drugStoreLogo" />
+          <van-image :src="info.drugStoreLogo"
+                     class="avatar-cicular"></van-image>
         </div>
         <div class="card-body">
           <div class="card-name"
@@ -90,15 +91,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="time-line"
-           v-if="expressList.length==0">
-        <div class="none-page"
-             style="background: #fff;">
-          <div class="icon ic_no_wuliu t20"></div>
-          <div class="none-text">暂无物流信息</div>
-        </div>
-      </div> -->
     </div>
 
     <!--二维码弹窗-->
@@ -289,10 +281,12 @@ export default {
   align-items: center;
   justify-content: center;
   margin-left: 0;
+  .van-image,
   img {
     width: 90%;
     height: 90%;
     border-radius: 2px;
+    overflow: hidden;
   }
 }
 .user-drug-logistics {

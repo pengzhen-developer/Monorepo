@@ -53,7 +53,7 @@
           <div class="panel-head">
             <div class="head-ico"
                  @click="goDrugPhaHomePage">
-              <img :src="order.drugStoreLogo" />
+              <van-image :src="order.drugStoreLogo"></van-image>
             </div>
             <div class="head-tit"
                  @click="goDrugPhaHomePage">{{ order.drugStoreName }}</div>
@@ -67,10 +67,13 @@
             <div class="list-three"
                  v-for="(item, index) in order.drugJson"
                  :key="index">
-              <div class="list-icon"
-                   :class="item.DrugImage ? '' : 'list-icon-none'">
-                <img :src="item.DrugImage"
-                     v-if="item.DrugImage" />
+              <div class="list-icon">
+                <van-image :src="item.DrugImage"
+                           class="error--image">
+                  <template v-slot:error>
+                    <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
+                  </template>
+                </van-image>
               </div>
               <div class="list-content">
                 <div class="content-title">{{item.DrugName}}</div>
@@ -606,9 +609,11 @@ export default {
   }
 }
 .head-ico {
-  img {
-    width: 100%;
-    height: 100%;
+  .van-image {
+    width: 90%;
+    height: 90%;
+    border-radius: 2px;
+    overflow: hidden;
   }
 }
 .head-more {
@@ -791,10 +796,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  .van-image,
   img {
     width: 90%;
     height: 90%;
     border-radius: 2px;
+    overflow: hidden;
   }
 }
 .panel-head .head-tit {
@@ -952,11 +959,9 @@ export default {
     line-height: 12px;
   }
 }
-.list-icon.list-icon-none {
-  padding: 0;
-  background-color: #f7f7f7;
-  background-size: cover;
-  background-image: url('~@src/assets/images/icons/ic_none_drug.png');
+.list-icon .van-image {
+  border-radius: 2px;
+  overflow: hidden;
 }
 .count-down {
   position: fixed;
@@ -967,10 +972,6 @@ export default {
   line-height: 36px;
   text-align: center;
   background: #fefceb;
-  // background: #fefceb url('~@src/assets/images/icons/count-down.png') no-repeat;
-  // background-size: 20px 20px;
-  // background-position: 10px 7px;
-  // padding-left: 40px;
   color: #f96a0e;
   font-size: 14px;
   .van-count-down {

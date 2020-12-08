@@ -157,7 +157,12 @@
                    @click="dialog.visible = false"
                    :src="require('@src/assets/images/ic_cha.png')"></van-image>
         <div class="content-auto">
-          <van-image :src="dialog.data.pngUrl+'?'+new Date().getTime()"></van-image>
+          <van-image :src="dialog.data.pngUrl+'?'+new Date().getTime()">
+            <template v-slot:loading>
+              <van-loading type="spinner"
+                           size="20" />
+            </template>
+          </van-image>
         </div>
       </div>
     </div>

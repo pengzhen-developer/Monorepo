@@ -11,9 +11,9 @@
            :key="item.DrugStoreName"
            @click="goDrugOrderBeforePage(index)">
         <div class="card-avatar">
-          <img class=""
-               :src="item.DrugStoreLogo"
-               style="height: 100%;" />
+          <van-image :src="item.DrugStoreLogo">
+
+          </van-image>
         </div>
         <div class="card-body">
           <div class="card-name">{{item.DrugStoreName}}
@@ -29,11 +29,15 @@
           <div class="card-imgs"
                v-if="item.Drugs && item.Drugs.length">
             <div class="imgs-item"
-                 v-for="item in item.Drugs"
-                 :key="item.DrugImage">
-              <div :class="item.DrugImage ? 'item-icon ' : 'item-icon  item-icon-none'">
-                <img :src="item.DrugImage"
-                     v-if="item.DrugImage" />
+                 v-for="(item,index) in item.Drugs"
+                 :key="index">
+              <div class="item-icon">
+                <van-image :src="item.DrugImage?item.DrugImage:''"
+                           class="error--image">
+                  <template v-slot:error>
+                    <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
+                  </template>
+                </van-image>
               </div>
               <div class="item-text">￥{{item.Price}}</div>
             </div>
@@ -424,7 +428,15 @@ export default {
 .card .card-avatar {
   border-radius: 4px;
   border: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card .card-avatar .van-image {
+  width: 90%;
+  height: 90%;
   overflow: hidden;
+  border-radius: 2px;
 }
 .card .card-name .card-more {
   float: right;

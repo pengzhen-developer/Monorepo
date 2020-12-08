@@ -39,8 +39,8 @@
           <div class="panel-head">
             <div class="card-strip">
               <div class="avatar">
-                <img :src="item.drugStoreLogo"
-                     class="avatar-cicular" />
+                <van-image :src="item.drugStoreLogo"
+                           class="avatar-cicular"></van-image>
               </div>
               <div class="strip-info">{{item.drugStoreName}}</div>
               <div :class="{ [`color-a${item.callOrderStatus}`] : true }"
@@ -57,10 +57,15 @@
               <div class="imgs-item"
                    v-for="det in item.drugJson"
                    :key="det.DrugImage">
-                <div class="item-icon"
-                     :class="{ 'item-icon-none': !item.DrugImage }">
-                  <img :src="det.DrugImage"
-                       v-if="det.DrugImage" />
+                <div class="item-icon">
+                  <!-- <img :src="det.DrugImage"
+                       v-if="det.DrugImage" /> -->
+                  <van-image :src="det.DrugImage"
+                             class="error--image">
+                    <template v-slot:error>
+                      <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
+                    </template>
+                  </van-image>
                 </div>
               </div>
             </div>
@@ -565,17 +570,17 @@ export default {
   flex: 0 0 30px;
   height: 30px;
   margin-right: 10px;
-  border: 0;
   background: #fff;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.card-strip .avatar img {
-  padding: 1px;
-  // border-radius: 50%;
-  width: 27px;
-  height: 27px;
-  margin-top: -1px;
-  margin-left: -1px;
-  border: 1px solid #f3f3f3;
+.card-strip .avatar .van-image {
+  width: 90%;
+  height: 90%;
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .strip-info {
