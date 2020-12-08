@@ -117,11 +117,11 @@
                         @click="goDrugLogiPage(item)">查看物流
             </van-button>
             <van-button class="label blue"
-                        v-if="item.callOrderStatus == '4' && item.ShippingMethod != '0'"
+                        v-if="item.callOrderStatus == '4' && item.shippingMethod != '0'"
                         @click="submitOrder(item)">确认收货
             </van-button>
             <van-button class="label blue"
-                        v-if="item.callOrderStatus == '4' && item.ShippingMethod == '0'"
+                        v-if="item.callOrderStatus == '4' && item.shippingMethod == '0'"
                         @click="submitOrder(item)">确认取药
             </van-button>
           </div>
@@ -134,7 +134,7 @@
     <!--二维码弹窗-->
     <QRCode :QRCodeURL="QRCodeURL"
             v-model="showQRCode"
-            :PickUpCode="PickUpCode"></QRCode>
+            :PickUpCode="pickUpCode"></QRCode>
 
     <!-- 发票弹窗 -->
     <InvoiceModel v-model="showInvoiceModel"
@@ -172,7 +172,7 @@ export default {
       drugList: [],
       // 控制二维码弹窗显示
       showQRCode: false,
-      PickUpCode: null,
+      pickUpCode: null,
       QRCodeURL: null,
       //发票弹框
       showInvoiceModel: false,
@@ -207,18 +207,18 @@ export default {
       return item.callOrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
     },
     ifShowLogistics(item) {
-      return item.ShippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.PickUpCode
+      return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.pickUpCode
     },
 
     checkQRCodeBtn(order) {
-      const ShippingMethod = order.ShippingMethod
+      const shippingMethod = order.shippingMethod
       const OrderStatus = order.callOrderStatus
-      if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      if (shippingMethod === undefined || OrderStatus === undefined) return false
+      return shippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
     },
 
     onClickSeeQRCode(order) {
-      this.PickUpCode = order.pickUpCode
+      this.pickUpCode = order.pickUpCode
       this.QRCodeURL = order.QRCodeURL
       this.showQRCode = true
     },
@@ -311,7 +311,7 @@ export default {
 
     submitOrder(item) {
       const params = { orderNo: item.orderNo }
-      let resTxt = item.ShippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
+      let resTxt = item.shippingMethod ? '收到药品确认无误后再确认收货，以免造成损失' : '收到药品确认无误后再确认取药，以免造成损失'
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
         peace.service.purchasedrug.ConfirmReceipt(params).then((res) => {
           peace.util.alert(res.msg)
