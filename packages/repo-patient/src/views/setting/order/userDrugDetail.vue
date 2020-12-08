@@ -79,7 +79,8 @@
               <div class="list-other">
                 <div class="other-them"
                      @click="goInterDrugPage(item)">
-                  说明书
+                  <span>说明书</span>
+                  <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
                 </div>
                 <div class="other-price">
                   <div class="price">¥{{item.DrugUnitPrice}}</div>
@@ -938,22 +939,18 @@ export default {
   flex-direction: column;
   text-align: right;
 }
-.list-other .other-them {
-  padding-right: 17px;
+.list-three:last-child {
+  border-bottom-width: 0px;
 }
-.list-other .other-them::after {
-  content: '';
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  vertical-align: middle;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url('~@src/assets/images/ic_wenhao.png');
+.list-other .other-them {
+  .van-image {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+  }
+  span {
+    line-height: 12px;
+  }
 }
 .list-icon.list-icon-none {
   padding: 0;

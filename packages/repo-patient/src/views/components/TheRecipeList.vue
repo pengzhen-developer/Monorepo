@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'h100':internalData.length==0,'mh100':internalData.length>0}">
+  <div :class="{'h100':internalData &&internalData.length==0,'mh100':internalData &&internalData.length>0}">
     <template v-if="$peace.cache.get($peace.type.USER.INFO)">
       <div :class="['the-recipe-list', internalData && internalData.length ? 'bg' : '']">
         <div :data-index="index"

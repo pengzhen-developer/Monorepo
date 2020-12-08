@@ -1,6 +1,6 @@
 <template>
   <div class="user-drug-logistics"
-       v-if="info">
+       v-if="loading">
     <div class="box">
       <div class="card">
         <div class="card-avatar">

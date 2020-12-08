@@ -3,7 +3,8 @@
     <InquiryStageMark :type="params.serviceType"
                       :current="'preSaleOrder'"
                       :position="true"></InquiryStageMark>
-    <div class="consult-detatil">
+    <div class="consult-detatil"
+         v-if="!loading">
       <!--医生名片-->
       <div class="module card">
         <div class="card-avatar avatar-circular">
@@ -309,6 +310,7 @@ export default {
   data() {
     return {
       ENUM: ENUM,
+      loading: true,
       doctorInfo: {},
       familyInfo: {},
       imagePreview: {
@@ -581,10 +583,15 @@ export default {
         appointmentEndTime: this.params.appointmentEndTime, //预约结束时间
         sourceCode: this.params.sourceCode //预约号源编码
       }
-      peace.service.inquiry.getFamilyDoctorInfo(params).then((res) => {
-        this.doctorInfo = res.data.doctorInfo
-        this.familyInfo = res.data.familyInfo
-      })
+      peace.service.inquiry
+        .getFamilyDoctorInfo(params)
+        .then((res) => {
+          this.doctorInfo = res.data.doctorInfo
+          this.familyInfo = res.data.familyInfo
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     getFirstOptionList() {
       const params = {
