@@ -365,16 +365,21 @@ export default {
       }
       let paymentType = ''
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
-      //payMode 1 配送在线支付  2 自提到店支付  3 配送货到付款  4自提在线支付
-      const paymentTypeMap = {
-        1: 'wxpay',
-        2: 'shoppay',
-        3: 'deliverypay',
-        4: 'wxpay'
-      }
+      //payMode 1 在线支付  2 到店支付  3 货到付款
+
       const price = this.order.TotalAmount + (this.page.tabIndex == 1 ? this.order.OperaShippingFee : 0)
-      if (price > 0) {
-        paymentType = paymentTypeMap[this.page.payIndex]
+      switch (this.page.payIndex) {
+        case 1:
+          if (price > 0) {
+            paymentType = 'wxpay'
+          }
+          break
+        case 2:
+          paymentType = 'shoppay'
+          break
+        case 3:
+          paymentType = 'deliverypay'
+          break
       }
 
       const shangbao = this.shangbaoChecked ? ',shangbao' : ''
