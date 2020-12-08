@@ -74,7 +74,8 @@
         <el-input type="textarea"
                   resize="none"
                   v-model="editorMessage"
-                  v-on:keyup.ctrl.enter.exact.native="sendText()"></el-input>
+                  v-on:keydown.prevent.enter.exact.native="sendText()"
+                  v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"></el-input>
       </div>
     </div>
 
@@ -100,7 +101,7 @@
                  size="mini"
                  type="primary"
                  v-on:click.native="sendText()">
-        <span class="text-caption">发送 (ctrl + enter)</span>
+        <span class="text-caption">发送 ( Enter )</span>
       </el-button>
     </div>
 
@@ -154,6 +155,10 @@ export default {
   },
 
   methods: {
+    textWrap() {
+      this.editorMessage += '\n'
+    },
+
     sendText(text) {
       const message = (text || this.editorMessage).replace(/^\s+|\s+$/g, '')
 
