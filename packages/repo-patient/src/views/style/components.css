@@ -186,6 +186,10 @@ list-three [三列]
   padding: 3px;
   box-sizing: border-box;
 }
+.list-icon img {
+  width: 100%;
+  height: 100%;
+}
 .list-three .list-content {
   flex: 1;
   margin: 0 15px;

@@ -604,6 +604,12 @@ export default {
     line-height: normal;
   }
 }
+.head-ico {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 .head-more {
   .label {
     border-radius: 4px;
