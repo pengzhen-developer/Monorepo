@@ -316,7 +316,7 @@ export default {
     //获取药师部门
     getDepartTree() {
       Service.getDepartTree().then((res) => {
-        this.departTree = res.data.list
+        this.departTree = res.data?.list ?? []
       })
     },
 
@@ -348,11 +348,11 @@ export default {
     getQualificationsLevel(value) {
       if (value == '0') {
         Service.MedicalLevelList().then((res) => {
-          this.selectList = res.data.list
+          this.selectList = res.data?.list ?? []
         })
       } else {
         Service.LicensedLevelList().then((res) => {
-          this.selectList = res.data.list
+          this.selectList = res.data?.list ?? []
         })
       }
     },

@@ -98,7 +98,7 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="处方创建日期：">
-          <peace-date-picker value-format="yyyy-MM-dd "
+          <peace-date-picker value-format="yyyy-MM-dd"
                              type="daterange"
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
