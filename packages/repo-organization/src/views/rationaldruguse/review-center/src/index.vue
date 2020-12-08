@@ -210,7 +210,7 @@
         <el-table-column min-width="150px"
                          label="处方开具机构">
           <template slot-scope="scope">
-            {{scope.row.examineHosName  ||  '--' }}
+            {{scope.row.organName  ||  '--' }}
           </template>
         </el-table-column>
         <el-table-column min-width="90px"
