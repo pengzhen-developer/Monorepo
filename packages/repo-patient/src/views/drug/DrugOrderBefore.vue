@@ -415,8 +415,8 @@ export default {
         receiverCity: +this.page.tabIndex ? this.userAddr.city : this.order.City,
         receiverDistrict: +this.page.tabIndex ? this.userAddr.district : this.order.County,
         receiverAddress: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
-        receiver: this.userAddr.consignee || '',
-        receiverPhone: this.userAddr.mobile || '',
+        receiver: +this.page.tabIndex ? this.userAddr.consignee : '',
+        receiverPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
         payMode: this.page.payIndex,
         cardNo: this.page.cardno,
         medCardNo: this.yibaoInfo.medCardNo
