@@ -96,7 +96,7 @@
     <!--二维码弹窗-->
     <QRCode :QRCodeURL="info.QRCodeURL"
             v-model="showQRCode"
-            :PickUpCode="info.pickUpCode"></QRCode>
+            :PickUpCode="info.expressNo"></QRCode>
 
     <!-- 电话列表弹框 -->
     <van-action-sheet v-model="action.visible"

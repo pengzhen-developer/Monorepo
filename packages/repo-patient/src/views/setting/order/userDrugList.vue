@@ -207,7 +207,7 @@ export default {
       return item.callOrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
     },
     ifShowLogistics(item) {
-      return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.pickUpCode
+      return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.expressNo
     },
 
     checkQRCodeBtn(order) {
@@ -218,7 +218,7 @@ export default {
     },
 
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.pickUpCode
+      this.pickUpCode = order.expressNo
       this.QRCodeURL = order.QRCodeURL
       this.showQRCode = true
     },

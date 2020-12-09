@@ -138,7 +138,7 @@
         </div>
       </div>
       <div class="module intro"
-           v-if="order.moneyRecord&&order.moneyRecord.length>0">
+           v-if="order.moneyRecord&&order.moneyRecord.length>1">
         <div class="dl-packet"
              v-for="(item,index) in order.moneyRecord"
              :key="index">
@@ -151,7 +151,7 @@
       <div class="module intro"
            v-else>
         <div class="dl-packet">
-          <div class="dt">药品金额</div>
+          <div class="dt">订单总额</div>
           <div class="dd">
             ¥{{order.totalMoney.toFixed(2)}}
           </div>
@@ -516,7 +516,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.order = res.data
-        this.PickUpCode = res.data.pickUpCode
+        this.PickUpCode = res.data.expressNo
         this.QRCodeURL = res.data.QRCodeURL
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
