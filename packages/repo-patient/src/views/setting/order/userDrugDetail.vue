@@ -524,8 +524,8 @@ export default {
         if (this.order.purchaseDrugOrderStreams.length > 0) {
           this.order.purchaseDrugOrderStreams.map((item, index) => {
             /**拼接 运单编号 */
-            if (item.states == 3 && this.showTrackingNumber) {
-              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.expressNo, states: 9, timeStatusTxt: '运单编号' })
+            if (item.status == 3 && this.showTrackingNumber) {
+              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.expressNo, status: 9, timeStatusTxt: '运单编号' })
             }
           })
         }
