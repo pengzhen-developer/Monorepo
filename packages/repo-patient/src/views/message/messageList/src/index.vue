@@ -45,6 +45,7 @@
            v-if="canShowInput">
         <van-field :autosize="{ maxHeight: 78, minHeight: 38 }"
                    @focus="hideTools"
+                   ref="chatroom"
                    rows="1"
                    type="textarea"
                    v-model.trim="message"
@@ -494,20 +495,21 @@ export default {
       // out
       // in
       // system
+      const TYPE_CODE_MAP = [
+        Constant.INQUIRY_MESSAGE_TYPE.发起问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.接诊,
+        Constant.INQUIRY_MESSAGE_TYPE.结束问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.评价提示,
+        Constant.INQUIRY_MESSAGE_TYPE.转诊提示,
+        Constant.INQUIRY_MESSAGE_TYPE.会诊提示,
+        Constant.INQUIRY_MESSAGE_TYPE.退诊,
+        Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
+      ]
       if (message.type === 'custom') {
         if (message.content && message.content.code) {
-          if (
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.接诊 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.会诊提示 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.退诊 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.取消问诊 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-            message.content.code === Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
-          ) {
+          if (TYPE_CODE_MAP.includes(message.content.code)) {
             return 'system'
           }
         }
@@ -517,10 +519,12 @@ export default {
     },
 
     sendMessageText() {
+      this.$refs.chatroom.focus()
       if (this.message) {
         if (this.hasSend) {
           return
         }
+
         this.hasSend = true
         const doneHandler = (error, message) => {
           console.warn('【 IM 】【 sendText 】', new Date(), message)
