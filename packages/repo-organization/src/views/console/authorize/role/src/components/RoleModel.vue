@@ -99,7 +99,7 @@ export default {
       roleMenu: [],
 
       // 产品字典
-      productDict: Util.user.getUserInfo().productNameList,
+      productDict: [],
 
       model: {
         clientId: Util.user.getUserInfo().clientId,
@@ -136,6 +136,8 @@ export default {
       this.type = type
       this.model.roleId = roleId || ''
 
+      this.getOpenServiceList()
+
       this.$nextTick(() => {
         if (this.type !== 'detail') {
           this.$refs.form.resetFields()
@@ -160,6 +162,12 @@ export default {
               })
             })
         }
+      })
+    },
+    // 获取开通服务
+    getOpenServiceList() {
+      return Service.getOpenServiceList().then(res => {
+        this.productDict = res.data.list
       })
     },
     // 获取产品对应菜单
