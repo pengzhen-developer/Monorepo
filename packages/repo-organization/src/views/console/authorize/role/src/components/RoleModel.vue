@@ -175,7 +175,8 @@ export default {
       let params = {
         lazy: false,
         clientId: this.model.roleId ? this.model.clientId : Util.user.getUserInfo().clientId,
-        productCode: this.model.productCode
+        productCode: this.model.productCode,
+        isDisplay:0
       }
       return Service.menu()
         .menuTree(params)
