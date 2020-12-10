@@ -190,8 +190,8 @@
                   <div class="text-center">
                     <el-button type="text"
                                v-on:click="gotoPharmacyOrderDetail(scope.row)">订单详情</el-button>
-                    <!-- <el-button type="text"
-                               v-on:click="gotoPrescriptionDetail(scope.row)">处方详情</el-button> -->
+                    <el-button type="text"
+                               v-on:click="gotoPrescriptionDetail(scope.row)">处方详情</el-button>
                   </div>
                 </div>
               </div>
