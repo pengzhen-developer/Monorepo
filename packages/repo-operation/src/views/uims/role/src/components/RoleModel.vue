@@ -161,7 +161,8 @@ export default {
     getMenuList() {
       let params = {
         lazy: false,
-        clientId: process.env.VUE_APP_AUTH_CLIENT_ID
+        clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
+        isDisplay:0
       }
       return Service.menu()
         .menuTree(params)
