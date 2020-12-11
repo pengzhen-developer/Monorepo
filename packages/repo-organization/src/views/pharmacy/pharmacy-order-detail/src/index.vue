@@ -112,9 +112,9 @@
           <span class="title text-subtitle1">订单详情</span>
         </div>
         <div>
-          <el-button plain
+          <!-- <el-button plain
                      type="primary"
-                     v-on:click="gotoPrescriptionDetail">查看处方</el-button>
+                     v-on:click="gotoPrescriptionDetail">查看处方</el-button> -->
         </div>
       </div>
 
