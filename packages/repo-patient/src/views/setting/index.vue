@@ -1,16 +1,17 @@
 <template>
   <div class="setting">
-    <div class="user-card">
+    <div class="user-card"
+         @click="gotoUserInfomation">
       <div class="user-img">
         <img class="img-avatar"
              mode="cover"
-             src="~@/assets/images/ic_head portrait.png" />
+             src="~@/assets/images/ic_personal.png" />
       </div>
       <div class="user-info">
         <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
         <!--        </button>-->
         <div>
-          <div style="font-size: 14px">用户{{userInfo.patientInfo.realName}}</div>
+          <div style="font-size: 14px">用户{{userInfo.patientInfo.nickName||userInfo.patientInfo.realName}}</div>
           <div>{{userInfo.patientInfo.tel}}</div>
         </div>
       </div>
@@ -42,10 +43,10 @@
                 title="收货地址"
                 to="/setting/AdressManger"
                 value />
-      <van-cell @click="signOut"
+      <!-- <van-cell @click="signOut"
                 icon="close"
                 title="退出登录"
-                value></van-cell>
+                value></van-cell> -->
     </van-cell-group>
   </div>
 </template>
@@ -82,14 +83,8 @@ export default {
     }
   },
   methods: {
-    signOut() {
-      // 清空登录缓存
-      peace.cache.remove(peace.type.USER.INFO)
-      peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
-
-      // 跳转登录页
-      this.$router.replace(peace.config.system.loginPage)
-      window.location.reload()
+    gotoUserInfomation() {
+      this.$router.push(`/setting/UserInfomation`)
     },
     goMenuPage(item) {
       switch (item.id) {

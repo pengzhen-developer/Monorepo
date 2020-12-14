@@ -313,7 +313,20 @@ const routers = [
     },
     component: () => import('@src/views/setting/index.vue')
   },
-
+  //用户信息  UserInfomation
+  {
+    path: '/setting/UserInfomation',
+    name: '/setting/UserInfomation',
+    meta: {
+      auth: true,
+      keepAlive: true,
+      tabBar: false,
+      navbar: {
+        title: '用户信息'
+      }
+    },
+    component: () => import('@src/views/setting/UserInfomation.vue')
+  },
   // 我的家人
   {
     path: '/setting/myFamilyMembers',
