@@ -10,6 +10,7 @@
 <script>
 import peace from '@src/library'
 import MessageRecipeCard from './MessageRecipeCard'
+import { Dialog } from 'vant'
 
 export default {
   props: {
@@ -37,8 +38,23 @@ export default {
       const params = peace.util.encode({
         prescribeId: this.message.content.data.recipeInfo.recipeId
       })
+      //跳转前校验当前处方状态--已作废不能调转详情
 
-      this.$router.push(`/components/theRecipe/${params}`)
+      const param = { prescribeId: this.message.content.data.recipeInfo.recipeId }
+
+      peace.service.patient.getPrescripInfo(param).then((res) => {
+        const prescriptionStatus = res.data.prescriptionStatus.key
+        if (prescriptionStatus == 3 || prescriptionStatus == 4) {
+          return Dialog.confirm({
+            title: '温馨提示',
+            message: '处方已作废，不可查看处方详情',
+            onfirmButtonText: '确定',
+            showCancelButton: false
+          })
+        } else {
+          this.$router.push(`/components/theRecipe/${params}`)
+        }
+      })
     }
   }
 }
