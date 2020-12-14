@@ -121,7 +121,6 @@
                   style="width: 320px; margin-right: 40px;"
                   v-model="dialog.model.name"></el-input>
         <el-button @click="get"
-                   round
                    type="primary">查询</el-button>
       </div>
       <hr />

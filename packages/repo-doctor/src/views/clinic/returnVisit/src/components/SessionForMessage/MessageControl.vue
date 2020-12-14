@@ -82,7 +82,7 @@
     <div class="footer q-px-md flex justify-end items-center">
       <el-dropdown placement="top"
                    class="q-mr-sm">
-        <el-button round>
+        <el-button>
           <span class="text-caption">快捷回复</span>
         </el-button>
         <el-dropdown-menu slot="dropdown"
@@ -97,8 +97,7 @@
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button round
-                 size="mini"
+      <el-button size="mini"
                  type="primary"
                  v-on:click.native="sendText()">
         <span class="text-caption">发送 ( Enter )</span>

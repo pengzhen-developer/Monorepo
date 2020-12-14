@@ -148,7 +148,7 @@ export default {
   padding: 0 !important;
   display: flex;
 
-  height: calc(100vh - 56px - 40px - 20px);
+  height: calc(100vh - 56px - 40px - 24px);
 
   .inquiry-left,
   .inquiry-right {

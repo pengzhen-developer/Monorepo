@@ -32,7 +32,6 @@
 
       <el-form-item label=" ">
         <el-button type="primary"
-                   round
                    v-on:click="getTable">查询</el-button>
       </el-form-item>
     </el-form>

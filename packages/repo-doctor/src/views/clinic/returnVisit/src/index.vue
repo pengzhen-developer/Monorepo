@@ -1,18 +1,24 @@
 <template>
-  <div class="inquiry flex">
-    <!-- 复诊续方会话列表 -->
-    <SessionList class="session-list">
-      <!-- 预约挂号 -->
-      <Reservation slot="reservation"></Reservation>
-    </SessionList>
+  <div class="q-pa-md"
+       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+    <div class="inquiry flex"
+         style="border: 1px solid #f4f4f4;">
 
-    <!-- 复诊续方会话详情 -->
-    <SessionDetail v-if="canShowDetail"
-                   class="session-detail"></SessionDetail>
+      <!-- 复诊续方会话列表 -->
+      <SessionList class="session-list">
+        <!-- 预约挂号 -->
+        <Reservation slot="reservation"></Reservation>
+      </SessionList>
 
-    <!-- 复诊续方患者详情 -->
-    <SessionExtend v-if="canShowExtend"
-                   class="session-extend"></SessionExtend>
+      <!-- 复诊续方会话详情 -->
+      <SessionDetail v-if="canShowDetail"
+                     class="session-detail"></SessionDetail>
+
+      <!-- 复诊续方患者详情 -->
+      <SessionExtend v-if="canShowExtend"
+                     class="session-extend"></SessionExtend>
+
+    </div>
   </div>
 </template>
 
@@ -44,8 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 .inquiry {
-  height: calc(100vh - 56px - 40px - 20px);
-  padding: 0px !important;
+  height: calc(100vh - 56px - 40px - 24px);
 
   .session-list {
     width: 230px;

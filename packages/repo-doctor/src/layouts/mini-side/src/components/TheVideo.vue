@@ -63,14 +63,14 @@
                    type="primary"></el-button>
       </div>
       <!-- 
-      <el-button v-if="canShowCallButton"
+      <el-button  v-if="canShowCallButton"
                  v-on:click="call('wwrihbgikw')"
                  type="primary">A发起</el-button>
-      <el-button v-if="canShowCallButton"
+      <el-button  v-if="canShowCallButton"
                  v-on:click="call('unayuzpaar')"
                  type="primary">B发起</el-button>
 
-      <el-button v-if="canShowAcceptButton"
+      <el-button  v-if="canShowAcceptButton"
                  v-on:click="accept"
                  type="primary">接听</el-button>
       -->

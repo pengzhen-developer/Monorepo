@@ -1,17 +1,21 @@
 
 <template>
-  <div class="consultation">
-    <div class="consultation-left">
-      <ConsultationSessions></ConsultationSessions>
-    </div>
-    <div class="consultation-center"
-         v-if="$store.state.consultation.session && $store.state.consultation.session.id">
-      <ConsultationSession></ConsultationSession>
-    </div>
-    <div class="consultation-right"
-         v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
+  <div class="q-pa-md"
+       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+    <div class="consultation flex"
+         style="border: 1px solid #f4f4f4;">
+      <div class="consultation-left">
+        <ConsultationSessions></ConsultationSessions>
+      </div>
+      <div class="consultation-center"
+           v-if="$store.state.consultation.session && $store.state.consultation.session.id">
+        <ConsultationSession></ConsultationSession>
+      </div>
+      <div class="consultation-right"
+           v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
                $store.getters['consultation/consultInfo'].consultStatus !== Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
-      <ConsultationPatient></ConsultationPatient>
+        <ConsultationPatient></ConsultationPatient>
+      </div>
     </div>
   </div>
 </template>
@@ -159,7 +163,7 @@ export default {
   padding: 0 !important;
   display: flex;
 
-  height: calc(100vh - 56px - 40px - 20px);
+  height: calc(100vh - 56px - 40px - 24px);
 
   .consultation-left {
     width: 230px;

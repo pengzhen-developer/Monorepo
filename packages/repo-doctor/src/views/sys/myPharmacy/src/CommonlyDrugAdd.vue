@@ -17,7 +17,6 @@
         <el-button style="width: 80px;"
                    size="mini"
                    type="primary"
-                   round
                    v-on:click="search()">搜索</el-button>
       </div>
     </div>

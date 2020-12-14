@@ -18,7 +18,6 @@
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="updateList"
-                   round
                    type="primary">查询</el-button>
       </el-form-item>
     </el-form>

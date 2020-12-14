@@ -1,12 +1,15 @@
 <template>
-  <div class="inquiry flex">
+  <div class="q-pa-md"
+       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+    <div class="inquiry flex"
+         style="border: 1px solid #f4f4f4;">
 
-    <!-- 面诊患者列表 -->
-    <SessionList class="session-list"></SessionList>
+      <!-- 面诊患者列表 -->
+      <SessionList class="session-list"></SessionList>
 
-    <!-- 患者处方详情 -->
-    <SessionDetail class="session-detail"></SessionDetail>
-
+      <!-- 患者处方详情 -->
+      <SessionDetail class="session-detail"></SessionDetail>
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .inquiry {
-  height: calc(100vh - 56px - 40px - 20px);
+  height: calc(100vh - 56px - 40px - 24px);
   padding: 0px !important;
   min-width: 1150px;
   .session-list {

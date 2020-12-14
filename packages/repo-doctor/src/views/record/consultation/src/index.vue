@@ -35,7 +35,6 @@
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get"
-                     round
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
@@ -111,7 +110,6 @@
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get"
-                     round
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>

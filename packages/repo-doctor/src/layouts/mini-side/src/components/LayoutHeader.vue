@@ -238,8 +238,6 @@ export default {
   padding: 0;
 
   .header-content {
-    min-width: 1366px;
-    max-width: 1440px;
     width: 100%;
     margin: 0 auto;
 

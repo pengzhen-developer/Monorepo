@@ -3,11 +3,9 @@
 
     <div class="q-mt-30 q-mb-12">
       <el-button type="primary"
-                 v-on:click="sendRecipe"
-                 round>开具新处方</el-button>
+                 v-on:click="sendRecipe">开具新处方</el-button>
       <el-button type="primary"
                  v-on:click="showPatientDetail"
-                 round
                  plain>查看档案详情</el-button>
     </div>
 

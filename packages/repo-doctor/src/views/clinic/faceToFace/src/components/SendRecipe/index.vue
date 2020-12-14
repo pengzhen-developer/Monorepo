@@ -131,7 +131,7 @@
 
       <div class="q-mb-sm">
         <span class="text-subtitle1 text-weight-bold">处方药品</span>
-        <span class="text-body2 text-grey-5">（最多可添加 5 种药品）</span>
+        <span class="text-body2 text-grey-5"></span>
       </div>
 
       <div class="q-mb-sm">
