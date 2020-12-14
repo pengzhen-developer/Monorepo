@@ -325,7 +325,7 @@ const routers = [
         back: true
       }
     },
-    component: () => import('@src/views/setting/MyFamilyMembers.vue')
+    component: () => import('@src/views/setting/family/MyFamilyMembers.vue')
   },
   // 我的家人
   {
@@ -338,13 +338,13 @@ const routers = [
         back: true
       }
     },
-    component: () => import('@src/views/components/FamilyMembersModel.vue')
+    component: () => import('@src/views/setting/family/FamilyMembersModel.vue')
   },
 
   // 电子健康卡详情
   {
-    path: '/setting/cardDetail/:json',
-    name: '/setting/cardDetail',
+    path: '/card/cardDetail/:json',
+    name: '/card/cardDetail',
     meta: {
       auth: true,
       navbar: {
@@ -352,7 +352,7 @@ const routers = [
         back: true
       }
     },
-    component: () => import('@src/views/setting/CardDetail.vue')
+    component: () => import('@src/views/card/CardDetail.vue')
   },
   {
     path: '/card/index',

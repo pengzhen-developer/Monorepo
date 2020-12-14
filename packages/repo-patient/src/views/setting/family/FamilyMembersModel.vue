@@ -122,25 +122,30 @@
       <!--      <div class="card no-card"></div>-->
       <div class="form form-for-family">
         <van-field label="姓名"
+                   class="require"
                    placeholder="请输入姓名"
                    v-model="model.name" />
         <van-field label="身份证"
+                   class="require"
                    placeholder="请输入身份证号"
                    v-model="model.idcard" />
         <van-field @click="showPopupRelation"
                    label="关系"
+                   class="require"
                    placeholder="请选择"
                    readonly
                    right-icon="arrow"
                    v-model="model.relation" />
         <van-field @click="showPopupSex"
                    label="性别"
+                   class="require"
                    placeholder="请选择"
                    readonly
                    right-icon="arrow"
                    v-model="model.sex" />
         <van-field @click="showPopupBirthday"
                    label="生日"
+                   class="require"
                    placeholder="请输入"
                    readonly
                    right-icon="arrow"
@@ -294,7 +299,7 @@ import peace from '@src/library'
 
 import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
 import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
-import GuardianList from '../setting/GuardianList'
+import GuardianList from './GuardianList'
 import YibaoCardAdd from '@src/views/components/YibaoCardAdd'
 
 import { Dialog } from 'vant'
@@ -872,7 +877,7 @@ export default {
     font-weight: bold;
     color: rgba(51, 51, 51, 1);
     line-height: 53px;
-    background: url('../../assets/images/card-icon.png') no-repeat;
+    background: url('~@src/assets/images/card-icon.png') no-repeat;
     background-size: 25px 20px;
     background-position: 15px 15px;
     padding-left: 55px;
@@ -929,7 +934,7 @@ export default {
     }
   }
   .jz-card-title {
-    background: url('../../assets/images/huiyuanqia.png') no-repeat;
+    background: url('~@src/assets/images/huiyuanqia.png') no-repeat;
     background-size: 25px 20px;
     background-position: 15px 15px;
   }
@@ -949,7 +954,7 @@ export default {
       .icon {
         width: 30px;
         height: 20px;
-        background: url('../../assets/images/tubiao_huaban.png') no-repeat;
+        background: url('~@src/assets/images/tubiao_huaban.png') no-repeat;
         background-size: cover;
         margin-right: 15px;
       }
@@ -970,11 +975,11 @@ export default {
     width: 343px;
     height: 195px;
     position: relative;
-    background: url('../../assets/images/shangdong.png');
+    background: url('~@src/assets/images/shangdong.png');
     background-size: 100% 100%;
     margin: 0 auto 0;
     &.no-card {
-      background: url('../../assets/images/ic_empty_card.png');
+      background: url('~@src/assets/images/ic_empty_card.png');
       background-size: 100% 100%;
     }
     .qrcode {
@@ -1026,7 +1031,7 @@ export default {
     color: #ccc;
   }
 }
-/deep/.form-for-family .van-cell__title > span::after {
+/deep/.form-for-family .require .van-cell__title > span::after {
   content: '*';
   width: 5px;
   color: #f00;
