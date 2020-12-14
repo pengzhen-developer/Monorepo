@@ -102,7 +102,7 @@
                    pagination
                    v-bind:pageSize="5"
                    v-bind:key="model.ShippingMethod">
-        <el-table-column>
+        <peace-table-column>
           <template slot="header">
             <div class="flex items-start">
               <!-- 单列实现伪表格，为保持样式统一，表头布局与内容布局必须保持一致 (** 宽度) -->
@@ -223,7 +223,7 @@
               </div>
             </div>
           </template>
-        </el-table-column>
+        </peace-table-column>
       </peace-table>
     </div>
   </div>
