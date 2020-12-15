@@ -388,14 +388,14 @@ export default {
       source: {
         // 按病症
         DiseaseOrderType: [
-          { label: '其它订单', value: 0 },
-          { label: '普通订单', value: 10 },
-          { label: '重症订单', value: 20 }
+          { label: '其它', value: 0 },
+          { label: '普通', value: 10 },
+          { label: '重症', value: 20 }
         ],
         // 按品种
         VarietiesOrderType: [
-          { label: '院内订单', value: 30 },
-          { label: '院外订单', value: 40 }
+          { label: '院内', value: 30 },
+          { label: '外延', value: 40 }
         ],
         // 配送方式
         ShippingMethod: [
@@ -414,7 +414,7 @@ export default {
           { label: '普通', value: 10 },
           { label: '重症', value: 20 },
           { label: '院内', value: 30 },
-          { label: '院外', value: 40 },
+          { label: '外延', value: 40 },
           { label: '机构', value: 50 }
         ]
       }
