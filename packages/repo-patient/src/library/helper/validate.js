@@ -28,7 +28,7 @@ export const pattern = {
   nInterger: /^((-\d+)|(0+))$/,
 
   // mobile 验证, 验证手机号码
-  mobile: /^1[34578]\d{9}$/,
+  mobile: /^1[345789]\d{9}$/,
 
   // telephone 验证,验证电话号码
   telephone: /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/,

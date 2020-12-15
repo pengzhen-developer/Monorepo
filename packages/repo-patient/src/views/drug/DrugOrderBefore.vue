@@ -22,6 +22,19 @@
             <div class="userAddr icon-next">
               <div class="addr-p">{{order.Province}}{{order.City}}{{order.County}}{{order.Detailed}}</div>
             </div>
+            <div class="addr-user">
+              <van-field v-model="consigneeInfo.mobile"
+                         :label="consigneeInfo.consignee"
+                         :right-icon="!hasClick?require('@src/assets/images/ic_xiugai.png'):''"
+                         :readonly="!hasClick"
+                         @blur="savePhone"
+                         label-width="2em"
+                         ref="phone"
+                         type="tel"
+                         maxlength="11"
+                         placeholder="请输入"
+                         @click-right-icon="changePhone" />
+            </div>
           </div>
           <div class="tab-content"
                v-if="page.tabIndex == '1'">
@@ -88,14 +101,9 @@
       </div>
       <div class="module intro">
         <div class="dl-packet">
-          <div class="dt">支付方式 ：</div>
+          <div class="dt">支付及配送方式：</div>
           <div class="dd more"
-               @click="changeShowPopup">{{payName}}</div>
-        </div>
-        <div class="dl-packet">
-          <div class="dt"></div>
-          <div class="dd"
-               @click="changeShowPopup">{{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
+               @click="changeShowPopup">{{payName}} - {{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
         </div>
       </div>
       <div class="module str">
@@ -219,6 +227,11 @@ export default {
 
       orderId: '',
       showBtn: true,
+      hasClick: false,
+      consigneeInfo: {
+        consignee: '',
+        mobile: ''
+      },
       page: {
         json: {},
         tabIndex: '',
@@ -292,6 +305,22 @@ export default {
     }
   },
   methods: {
+    changePhone() {
+      this.hasClick = true
+      setTimeout(() => {
+        this.$refs.phone && this.$refs.phone.focus()
+      }, 0)
+    },
+    savePhone() {
+      if (!this.consigneeInfo.mobile) {
+        peace.util.alert('手机号不能为空')
+      }
+
+      if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
+        peace.util.alert('请输入正确的手机号')
+      }
+      this.hasClick = false
+    },
     getPayName() {
       this.payName = this.payList.find((item) => item.Value == this.page.payIndex)?.Label
     },
@@ -362,6 +391,9 @@ export default {
     },
 
     submitOrder() {
+      if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
+        return peace.util.alert('请输入正确的手机号')
+      }
       if (this.canShowYibao) {
         this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
@@ -415,8 +447,8 @@ export default {
         receiverCity: +this.page.tabIndex ? this.userAddr.city : this.order.City,
         receiverDistrict: +this.page.tabIndex ? this.userAddr.district : this.order.County,
         receiverAddress: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
-        receiver: +this.page.tabIndex ? this.userAddr.consignee : '',
-        receiverPhone: +this.page.tabIndex ? this.userAddr.mobile : '',
+        receiver: +this.page.tabIndex ? this.userAddr.consignee : this.consigneeInfo.consignee,
+        receiverPhone: +this.page.tabIndex ? this.userAddr.mobile : this.consigneeInfo.mobile,
         payMode: this.page.payIndex,
         cardNo: this.page.cardno,
         medCardNo: this.yibaoInfo.medCardNo
@@ -516,7 +548,8 @@ export default {
         this.NewShippingMethod = peace.util.deepClone(res.data.NewShippingMethod)
         this.payList = res.data.NewShippingMethod.find((item) => item.Visible)?.PayModel
         this.page.payIndex = this.payList.find((item) => item.Visible)?.Value
-
+        this.consigneeInfo.consignee = res.data.patientName
+        this.consigneeInfo.mobile = res.data.tel
         this.getPayName()
       })
     },
@@ -858,6 +891,16 @@ export default {
   color: #666;
   span + span {
     margin-left: 5px;
+  }
+  .van-field {
+    padding: 0;
+    /deep/.van-field__control {
+      width: 6em;
+    }
+    /deep/.van-field__label,
+    /deep/.van-field__value {
+      color: #666;
+    }
   }
 }
 
