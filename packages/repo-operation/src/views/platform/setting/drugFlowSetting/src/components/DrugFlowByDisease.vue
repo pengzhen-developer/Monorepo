@@ -7,21 +7,21 @@
       <div class="q-mr-md">：</div>
       <div class="col">
         <el-tabs>
-          <el-tab-pane label="普通订单"
+          <el-tab-pane label="普通"
                        lazy>
             <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('普通')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
 
-          <el-tab-pane label="慢病重症订单"
+          <el-tab-pane label="慢病重症"
                        lazy>
             <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('重症')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
 
-          <el-tab-pane label="其它订单"
+          <el-tab-pane label="其它"
                        lazy>
             <PharmacySelect v-bind:pharmacyRule="setRule('按病症')"
                             v-bind:pharmacyConf="setConf('其它')"

@@ -15,10 +15,10 @@
           <PharmacySelectView v-bind:data="inside"></PharmacySelectView>
         </div>
 
-        <!-- 院外品种 -->
+        <!-- 外延品种 -->
         <div v-if="outside.length > 0">
           <div class="inline-block bg-primary text-white q-px-md q-py-sm q-mb-lg"
-               style="border-radius: 0 16px 16px 0">院外品种</div>
+               style="border-radius: 0 16px 16px 0">外延品种</div>
 
           <PharmacySelectView v-bind:data="outside"></PharmacySelectView>
         </div>
@@ -49,7 +49,7 @@ export default {
     },
 
     outside() {
-      const confType = CONSTANT.CONF_TYPE_MAP.find((item) => item.label === '院外')
+      const confType = CONSTANT.CONF_TYPE_MAP.find((item) => item.label === '外延')
 
       return this.data.filter((item) => item.ConfType === confType.value)
     }

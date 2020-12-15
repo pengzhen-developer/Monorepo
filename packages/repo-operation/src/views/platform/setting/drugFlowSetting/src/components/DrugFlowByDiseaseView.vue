@@ -7,26 +7,26 @@
       <div class="q-mr-md">：</div>
       <div class="col bg-grey-2 q-py-md"
            v-if="normal.length || severe.length || other.length">
-        <!-- 普通订单 -->
+        <!-- 普通 -->
         <div v-if="normal.length > 0">
           <div class="inline-block bg-primary text-white q-px-md q-py-sm q-mb-lg"
-               style="border-radius: 0 16px 16px 0">普通订单</div>
+               style="border-radius: 0 16px 16px 0">普通</div>
 
           <PharmacySelectView v-bind:data="normal"></PharmacySelectView>
         </div>
 
-        <!-- 慢病重症订单 -->
+        <!-- 慢病重症 -->
         <div v-if="severe.length > 0">
           <div class="inline-block bg-primary text-white q-px-md q-py-sm q-mb-lg"
-               style="border-radius: 0 16px 16px 0">慢病重症订单</div>
+               style="border-radius: 0 16px 16px 0">慢病重症</div>
 
           <PharmacySelectView v-bind:data="severe"></PharmacySelectView>
         </div>
 
-        <!-- 其它订单 -->
+        <!-- 其它 -->
         <div v-if="other.length > 0">
           <div class="inline-block bg-primary text-white q-px-md q-py-sm q-mb-lg"
-               style="border-radius: 0 16px 16px 0">其它订单</div>
+               style="border-radius: 0 16px 16px 0">其它</div>
 
           <PharmacySelectView v-bind:data="other"></PharmacySelectView>
         </div>

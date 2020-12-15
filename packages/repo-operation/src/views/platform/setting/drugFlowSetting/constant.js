@@ -22,7 +22,7 @@ export default {
    */
   CONF_TYPE_MAP: [
     { label: '不限', value: 50 },
-    { label: '院外', value: 40 },
+    { label: '外延', value: 40 },
     { label: '院内', value: 30 },
     { label: '重症', value: 20 },
     { label: '普通', value: 10 },
@@ -34,6 +34,6 @@ export default {
    */
   VARIETY_LIST: {
     院内品种: '院内品种',
-    院外品种: '院外品种'
+    外延品种: '外延品种'
   }
 }
