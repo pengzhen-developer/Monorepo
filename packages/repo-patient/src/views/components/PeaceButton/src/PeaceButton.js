@@ -1,20 +1,5 @@
 import { Button } from 'vant'
 
-let isAvail = true
-
-const throttle = function(func, delay, context, event) {
-  return (function() {
-    if (isAvail) {
-      func.apply(context, event)
-      isAvail = false
-
-      setTimeout(function() {
-        isAvail = true
-      }, delay)
-    }
-  })()
-}
-
 const ExtendProp = {
   throttle: {
     type: Boolean,
@@ -33,7 +18,11 @@ const ExtendProp = {
 
 export default {
   name: 'PeaceButton',
-
+  data() {
+    return {
+      isAvail: true
+    }
+  },
   props: {
     ...Button.props,
 
@@ -42,7 +31,19 @@ export default {
 
   methods: {
     handleClickLink(event) {
-      throttle(this.$listeners.click, this.throttleTime, this, event)
+      this._throttle(this.$listeners.click, this.throttleTime, this, event)
+    },
+    _throttle(func, delay, context, event) {
+      return (() => {
+        if (context.isAvail) {
+          func.apply(context, event)
+          context.isAvail = false
+
+          setTimeout(function() {
+            context.isAvail = true
+          }, delay)
+        }
+      })()
     }
   },
 
