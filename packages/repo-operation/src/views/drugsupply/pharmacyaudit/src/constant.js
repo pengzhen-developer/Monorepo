@@ -4,7 +4,7 @@ export default {
    */
   PHARMACY_TYPE: {
     院内药房: 0,
-    门店: 30
+    院外药房: 30
   },
   /**
    * 机构类型

@@ -80,7 +80,7 @@ sequence <template>
                          prop="CustomerType"
                          min-width="80px">
           <template slot-scope="scope">
-            {{ scope.row.CustomerType == 0 ? '院内药房' : '门店' }}
+            {{ scope.row.CustomerType == 0 ? '院内药房' : '院外药房' }}
           </template>
         </el-table-column>
         <el-table-column label="所属机构"
