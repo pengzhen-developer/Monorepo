@@ -1,117 +1,33 @@
 <template>
   <div>
-    <el-form ref="form"
-             label-position="right"
-             label-width="140px"
-             label-suffix="："
-             v-bind:model="query"
-             v-bind:rules="rules">
-      <div class="info-content">
-
-        <el-form-item label="路由名称"
-                      class="tow-col"
-                      prop="routeName">
-          <el-input v-model.trim="query.routeName">
-            <el-tooltip slot="suffix"
-                        placement="top">
-              <div slot="content">
-                <p class="text-subtitle2 q-mb-sm">唯一不重复值</p>
-                <p class="text-subtitle2 q-mb-sm">如需实现按标签页缓存，component name 必须和该值保持一致</p>
-                <p>## 也表示 component name，实现按标签页的条件缓存（参考 keep-alive 的 include）</p>
-              </div>
-              <i class="el-input__icon el-icon-warning"></i>
-            </el-tooltip>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="标签名称"
-                      class="tow-col"
-                      prop="name">
-          <el-input v-model.trim="query.name"></el-input>
-        </el-form-item>
-        <el-form-item label="路由地址"
-                      class="tow-col"
-                      prop="routePath">
-          <el-input v-model.trim="query.routePath"></el-input>
-        </el-form-item>
-        <el-form-item label="实际地址"
-                      class="tow-col"
-                      prop="realPath">
-          <el-input v-model.trim="query.realPath"
-                    placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item class="three-col"
-                      prop="routeType">
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify">是否主路由</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-          <el-switch v-model.trim="query.routeType"
-                     :active-value="1"
-                     :inactive-value="2"></el-switch>
-        </el-form-item>
-        <el-form-item class="three-col">
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify">是否启用</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-
-          <el-switch v-model.trim="query.enable"
-                     active-value="1"
-                     inactive-value="0"></el-switch>
-
-        </el-form-item>
-        <el-form-item class="three-col">
-          <div class="flex inline"
-               slot="label">
-            <span class="text-justify">是否可关闭</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-          <el-switch v-model.trim="query.closable"
-                     active-value="1"
-                     inactive-value="0"></el-switch>
-        </el-form-item>
-      </div>
-      <div class="text-center">
-        <el-button type="primary"
-                   class="large hasmargin "
-                   v-bind:disabled="loading"
-                   v-on:click="save">确 定</el-button>
-        <el-button type="default"
-                   class="large hasmargin "
-                   v-bind:disabled="loading"
-                   v-on:click="cancel">取 消</el-button>
-      </div>
-    </el-form>
-    <div class="list q-mt-md">
+    <el-card class="q-mb-md">
       <el-table :data="menuRoutes">
         <el-table-column label="路由类别"
                          align="left"
-                         min-width="100px"
+                         width="100px"
                          prop="routeType">
           <template slot-scope="scope">
-            {{scope.row.routeType==1?'主路由':'子路由'}}
+            {{scope.row.routeType == 1 ?'主路由':'子路由'}}
           </template>
         </el-table-column>
         <el-table-column label="路由名称"
                          align="left"
-                         min-width="100px"
+                         width="100px"
                          prop="routeName">
         </el-table-column>
         <el-table-column label="标签名称"
                          align="left"
-                         min-width="100px"
+                         width="100px"
                          prop="name">
         </el-table-column>
         <el-table-column label="路由地址"
                          align="left"
-                         min-width="100px"
+                         min-width="140px"
                          prop="routePath">
         </el-table-column>
         <el-table-column label="实际地址"
                          align="left"
-                         min-width="100px"
+                         min-width="180px"
                          prop="realPath">
         </el-table-column>
         <el-table-column label="操作"
@@ -127,8 +43,97 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-card>
 
-    </div>
+    <el-card>
+      <el-form ref="form"
+               label-position="right"
+               label-width="auto"
+               label-suffix="："
+               v-bind:model="query"
+               v-bind:rules="rules">
+        <div class="info-content">
+
+          <el-form-item label="路由名称"
+                        class="tow-col"
+                        prop="routeName">
+            <el-input v-model.trim="query.routeName"
+                      placeholder="请输入">
+              <el-tooltip slot="suffix"
+                          placement="top">
+                <div slot="content">
+                  <p class="text-subtitle2 q-mb-sm">唯一不重复值</p>
+                  <p class="text-subtitle2 q-mb-sm">如需实现按标签页缓存，component name 必须和该值保持一致</p>
+                  <p>## 也表示 component name，实现按标签页的条件缓存（参考 keep-alive 的 include）</p>
+                </div>
+                <i class="el-input__icon el-icon-warning"></i>
+              </el-tooltip>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="标签名称"
+                        class="tow-col"
+                        prop="name">
+            <el-input v-model.trim="query.name"
+                      placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="路由地址"
+                        class="tow-col"
+                        prop="routePath">
+            <el-input v-model.trim="query.routePath"
+                      placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="实际地址"
+                        class="tow-col"
+                        prop="realPath">
+            <el-input v-model.trim="query.realPath"
+                      placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item class="three-col"
+                        prop="routeType">
+            <div class="flex inline"
+                 slot="label">
+              <span class="text-justify">是否主路由</span>
+              <span class="text-center q-ml-sm">：</span>
+            </div>
+            <el-switch v-model.trim="query.routeType"
+                       :active-value="1"
+                       :inactive-value="2"></el-switch>
+          </el-form-item>
+          <el-form-item class="three-col">
+            <div class="flex inline"
+                 slot="label">
+              <span class="text-justify">是否启用</span>
+              <span class="text-center q-ml-sm">：</span>
+            </div>
+
+            <el-switch v-model.trim="query.enable"
+                       active-value="1"
+                       inactive-value="0"></el-switch>
+
+          </el-form-item>
+          <el-form-item class="three-col">
+            <div class="flex inline"
+                 slot="label">
+              <span class="text-justify">是否可关闭</span>
+              <span class="text-center q-ml-sm">：</span>
+            </div>
+            <el-switch v-model.trim="query.closable"
+                       active-value="1"
+                       inactive-value="0"></el-switch>
+          </el-form-item>
+        </div>
+        <div class="text-center">
+          <el-button type="primary"
+                     class="large hasmargin "
+                     v-bind:disabled="loading"
+                     v-on:click="save">确 定</el-button>
+          <el-button type="default"
+                     class="large hasmargin "
+                     v-bind:disabled="loading"
+                     v-on:click="cancel">取 消</el-button>
+        </div>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
@@ -207,6 +212,7 @@ export default {
   },
   methods: {
     cancel() {
+      this.routeId = ''
       this.$refs.form.resetFields()
     },
     save() {
