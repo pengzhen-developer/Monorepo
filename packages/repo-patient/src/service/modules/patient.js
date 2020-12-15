@@ -412,6 +412,45 @@ export function getPrescriptionImage(prescriptionId) {
 
   return peace.http.post(getPrescriptionImage, { prescriptionId })
 }
+
+/**
+ * 发送修改手机验证码
+ *
+ * @export
+ * @param {*tel} params
+ * @returns
+ */
+export function getSmsCode(params) {
+  const getSmsCode = 'client/v1/Account/getSmsCode'
+
+  return peace.http.post(getSmsCode, params)
+}
+
+/**
+ * 修改手机号
+ *
+ * @export
+ * @param {*tel，smsCode} params
+ * @returns
+ */
+export function updateTel(params) {
+  const updateTel = 'client/v1/Account/updateTel'
+
+  return peace.http.post(updateTel, params)
+}
+/**
+ * 修改用户基本信息
+ *
+ * @export
+ * @param {*nickname} params
+ * @returns
+ */
+export function editBaseInfo(params) {
+  const editBaseInfo = 'client/v1/Account/editBaseInfo'
+
+  return peace.http.post(editBaseInfo, params)
+}
+
 export default {
   /** 获取医生列表 */
   getDoctorList,
@@ -480,5 +519,15 @@ export default {
   /** 获取药店信息 **/
   getDrugStoreApi,
   /** 获取处方信息电子版本 **/
-  getPrescriptionImage
+  getPrescriptionImage,
+
+  /** 发送修改手机验证码 **/
+
+  getSmsCode,
+  /** 修改手机号 **/
+
+  updateTel,
+  /** 修改用户基本信息 **/
+
+  editBaseInfo
 }

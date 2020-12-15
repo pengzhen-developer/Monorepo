@@ -8,11 +8,9 @@
              src="~@/assets/images/ic_personal.png" />
       </div>
       <div class="user-info">
-        <!--        <button v-if="!userInfo.tel" @click="signIn" class="txt">未登录/注册-->
-        <!--        </button>-->
         <div>
-          <div style="font-size: 14px">用户{{userInfo.patientInfo.nickName||userInfo.patientInfo.realName}}</div>
-          <div>{{userInfo.patientInfo.tel}}</div>
+          <div style="font-size: 14px">用户{{username}}</div>
+          <div>{{usertel | desensitization()}}</div>
         </div>
       </div>
     </div>
@@ -79,9 +77,26 @@ export default {
           icon: 'icon_01_01_21'
         }
       ],
-      userInfo: this.$store.state.user.userInfo || {}
+      username: '',
+      usertel: ''
     }
   },
+  filters: {
+    desensitization: (tel) => {
+      if (tel) {
+        const reg = /^(\d{3})\d{4}(\d{4})$/
+        return tel.replace(reg, '$1****$2')
+      } else {
+        return ''
+      }
+    }
+  },
+  activated() {
+    const userInfo = this.$store.state.user.userInfo
+    this.username = userInfo.patientInfo.nickName || userInfo.patientInfo.realName
+    this.usertel = userInfo.patientInfo.tel
+  },
+
   methods: {
     gotoUserInfomation() {
       this.$router.push(`/setting/UserInfomation`)

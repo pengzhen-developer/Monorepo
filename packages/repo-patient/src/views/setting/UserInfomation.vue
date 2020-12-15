@@ -26,8 +26,7 @@
     <!-- 修改昵称 -->
     <template v-if="nameDialog.visible">
       <div class="dialog name">
-        <van-form @submit="changeNickName"
-                  error-message-align="right"
+        <van-form error-message-align="right"
                   input-align="right"
                   label-width="2.4em">
 
@@ -37,13 +36,16 @@
                      placeholder="6-20位文字、数字或字母、不可使用特殊符号"
                      :error-message="nameDialog.message" />
           <div style="margin: 15px;">
-            <van-button round
-                        block
-                        type="primary"
-                        native-type="submit"
-                        :disabled="!canSubmitName||nameDialog.resultFlag">
+            <peace-button round
+                          block
+                          throttle
+                          :throttleTime="1500"
+                          type="primary"
+                          native-type="submit"
+                          :disabled="!canSubmitName||nameDialog.resultFlag"
+                          @click="changeNickName">
               确认修改
-            </van-button>
+            </peace-button>
           </div>
         </van-form>
       </div>
@@ -52,8 +54,7 @@
     <template v-if="telDialog.visible">
       <div class="dialog">
 
-        <van-form @submit="changeTelephone"
-                  error-message-align="right"
+        <van-form error-message-align="right"
                   input-align="right">
           <van-field v-model="telDialog.model.oldTel"
                      label="当前手机号码"
@@ -99,13 +100,16 @@
           </van-field>
           <div style="margin: 15px;">
             <div class="tip">更换手机号后，下次登录可以使用新手机号登录。</div>
-            <van-button round
-                        block
-                        type="primary"
-                        native-type="submit"
-                        :disabled="!canSubmitTelephone">
+            <peace-button round
+                          block
+                          throttle
+                          :throttleTime="1500"
+                          type="primary"
+                          native-type="submit"
+                          :disabled="!canSubmitTelephone"
+                          @click="changeTelephone">
               确认更改
-            </van-button>
+            </peace-button>
           </div>
         </van-form>
       </div>
@@ -121,9 +125,9 @@ export default {
   data() {
     return {
       model: {
-        realName: 'AK11111',
-        nickName: '月谷',
-        tel: '15671647270'
+        realName: '',
+        nickName: '',
+        tel: ''
       },
       nameDialog: {
         visible: false,
@@ -153,7 +157,7 @@ export default {
       return this.nameDialog.model.nickName && this.nameDialog.model.nickName != this.model.nickName
     },
     canSubmitTelephone() {
-      return this.telDialog.model.oldTel && this.telDialog.model.newTel && this.telDialog.model.code
+      return this.telDialog.model.oldTel && this.telDialog.model.newTel && this.telDialog.model.code && this.telDialog.model.code.length == 6
     }
   },
   mounted() {
@@ -175,16 +179,36 @@ export default {
       this.telDialog.model.oldTel = this.model.tel
     },
     changeNickName() {
-      const errFlag = false
-      if (errFlag) {
-        this.nameDialog.message = '您输入的昵称已存在，请重新输入'
-      } else {
-        this.nameDialog.visible = false
-      }
-      this.nameDialog.resultFlag = errFlag
+      const params = { nickname: this.nameDialog.model.nickName }
+      peace.service.patient
+        .editBaseInfo(params)
+        .then((res) => {
+          peace.util.alert(res.msg)
+          this.userInfo.patientInfo.nickName = this.nameDialog.model.nickName
+          this.model.nickName = this.nameDialog.model.nickName
+          this.nameDialog.visible = false
+          this.setUserInfo()
+        })
+        .catch((err) => {
+          this.nameDialog.message = err.msg
+        })
     },
     changeTelephone() {
-      this.telDialog.visible = false
+      const params = { tel: this.telDialog.model.newTel, smsCode: this.telDialog.model.code }
+      peace.service.patient
+        .updateTel(params)
+        .then((res) => {
+          peace.util.alert(res.msg)
+          this.userInfo.patientInfo.tel = this.telDialog.model.newTel
+          this.model.tel = this.telDialog.model.newTel
+          this.telDialog.visible = false
+          this.telDialog.newTel = ''
+          this.telDialog.code = ''
+          this.setUserInfo()
+        })
+        .catch((err) => {
+          this.telDialog.message = err.msg
+        })
     },
     //修改成功之后缓存最新的用户信息
     setUserInfo() {
@@ -210,8 +234,11 @@ export default {
       }
       this.hasSend = true
       // 发送验证码
-      peace.service.login
-        .sendSms(this.model)
+      const params = {
+        tel: this.telDialog.model.newTel
+      }
+      peace.service.patient
+        .getSmsCode(params)
         .then((res) => {
           // 开启倒计时
           this.countDownTime = 1000 * 60
