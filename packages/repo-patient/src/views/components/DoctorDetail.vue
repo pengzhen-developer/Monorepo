@@ -11,9 +11,9 @@
           <span class="name">{{ doctor.doctorInfo.name }}</span>
           <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
           <div class="tag-work tag-online"
-               v-if="doctor.doctorInfo.workStatus==1">接诊中</div>
+               v-if="doctor.doctorInfo.workStatus==1">在线</div>
           <div class="tag-work tag-outline"
-               v-else-if="doctor.doctorInfo.workStatus==2">休息中</div>
+               v-else-if="doctor.doctorInfo.workStatus==2">离线</div>
         </div>
 
         <div class="header-right">

@@ -113,33 +113,29 @@
         <div class="doc-wrap"
              v-if="hospitalInfo.doctorList.length>0">
           <div class="item-wrap"
-               @click="goDoctorHomeIndexPage(item)"
-               v-for="(item,index) in hospitalInfo.doctorList"
+               @click="goDoctorHomeIndexPage(doctor)"
+               v-for="(doctor,index) in hospitalInfo.doctorList"
                :key="'doctorList'+index">
             <img class="avatar"
-                 :src="item.avartor" />
+                 :src="doctor.avartor" />
             <div class="item">
 
               <img src="@src/assets/images/ic_tag.png"
-                   v-if="item.isAttention==1" />
+                   v-if="doctor.isAttention==1" />
               <span class="tranparent">></span>
-              <span class="name">{{ item.doctorName }}</span>
+              <span class="name">{{ doctor.doctorName }}</span>
               <div class="jd">
-                <div>{{ item.netdeptName + " " + item.doctorTitle }}</div>
+                <div>{{ doctor.netdeptName + " " + doctor.doctorTitle }}</div>
               </div>
-              <span class="tags">
-                <template v-for="item in item.tags">
-                  <span :key="item"
-                        v-if="item === 'register'"
-                        class="tags hao">号</span>
-                  <span :key="item"
-                        v-if="item === 'image' || item === 'video'"
-                        class="tags wen">问</span>
-                  <!-- <span :key="item"
-                        v-if="item === 'prvivateDoctor'"
-                        class="tags bao">服务包</span> -->
+              <div class="title-tag">
+                <template v-for="(tag, index) in doctor.tags">
+                  <div :class="['doc-tags', 'tag-'+tag.key]"
+                       :key="index"
+                       v-if="tag.key!=='prvivateDoctor'">
+                    {{tag.value}}
+                  </div>
                 </template>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -390,6 +386,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title-tag {
+  margin: 0 0 5px 0;
+  .doc-tags {
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 4px;
+    margin-right: 4px;
+    font-size: 10px;
+    line-height: 14px;
+    display: inline-block;
+    font-family: PingFangSC-Regular, PingFang SC;
+    &.tag-consult {
+      color: $primary;
+      background-color: rgba(0, 198, 174, 0.15);
+    }
+    &.tag-returnVisit {
+      color: rgba(64, 178, 255, 1);
+      background-color: rgba(64, 178, 255, 0.15);
+    }
+    &.tag-service {
+      color: rgba(74, 131, 247, 1);
+      background-color: rgba(74, 131, 247, 0.15);
+    }
+    &.tag-register {
+      color: rgba(179, 136, 255, 1);
+      background-color: rgba(179, 136, 255, 0.15);
+    }
+  }
+}
 .intro-shadow {
   position: fixed;
   background: rgba(0, 0, 0, 0.5);

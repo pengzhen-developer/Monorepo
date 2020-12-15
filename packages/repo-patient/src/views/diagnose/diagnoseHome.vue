@@ -66,51 +66,39 @@
               :finished-text="!nodata?'没有更多了':''"
               @load="getDoctList">
       <van-cell class="card"
-                v-for="(item, index) in doctorList"
-                @click="goHomeIndex(item)"
-                data-id="item.doctorId"
+                v-for="(doctor, index) in doctorList"
+                @click="goHomeIndex(doctor)"
                 :key="index">
         <div class="card-avatar avatar-circular">
-          <img class=""
-               :src="item.avartor" />
+          <img :src="doctor.avartor" />
         </div>
         <div class="card-body">
-          <div class="card-name">{{item.name}}
+          <div class="card-name">{{doctor.name}}
             <div class="card-small">
-              {{item.doctorTitle}}
-              <!-- 服务部标签 服务部未开通故屏蔽-->
-              <template v-if="item.serviceList">
-                <template v-for="(it, i) in item.serviceList">
-                  <div :class="['label', 'label-'+it]"
-                       :key="i"
-                       v-if="it!=='prvivateDoctor'">
-                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                  </div>
-                </template>
-              </template>
-              <template v-if="item.tags">
-                <template v-for="(it, i) in item.tags">
-                  <div :class="['label', 'label-'+it]"
-                       :key="i"
-                       v-if="it!=='prvivateDoctor'">
-                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                  </div>
-                </template>
-              </template>
+              {{doctor.doctorTitle}}
             </div>
-            <div class="tag-work tag-online"
-                 v-if="item.workStatus==1">接诊中</div>
-            <div class="tag-work tag-outline"
-                 v-else-if="item.workStatus==2">休息中</div>
+            <div class="tag-work online"
+                 v-if="doctor.workStatus==1">在线</div>
+            <div class="tag-work outline"
+                 v-else-if="doctor.workStatus==2">离线</div>
           </div>
           <div class="card-small">
-            {{item.netHospitalName}} {{item.deptName}}
+            {{doctor.netHospitalName}} {{doctor.deptName}}
+          </div>
+          <div class="title-tag">
+            <template v-for="(tag, index) in doctor.tags">
+              <div :class="['doc-tags', 'tag-'+tag.key]"
+                   :key="index"
+                   v-if="tag.key!=='prvivateDoctor'">
+                {{tag.value}}
+              </div>
+            </template>
           </div>
           <div class="card-brief"
-               v-if="item.specialSkill">
+               v-if="doctor.specialSkill">
             <div class="span s">擅长：</div>
             <div class="span xl">
-              {{item.specialSkill}}</div>
+              {{doctor.specialSkill}}</div>
           </div>
         </div>
       </van-cell>
@@ -158,7 +146,6 @@ export default {
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
-    // document.title = this.params.name;
     this.getBodySymptomDetail()
     this.getDoctList()
   },
@@ -223,9 +210,9 @@ export default {
 
       this.getDoctList(item.name)
     },
-    goHomeIndex(item) {
+    goHomeIndex(doctor) {
       let json = peace.util.encode({
-        doctorId: item.doctorId,
+        doctorId: doctor.doctorId,
         date: new Date()
       })
 
@@ -258,22 +245,61 @@ export default {
   justify-content: center;
   font-size: 11px;
   line-height: normal;
+  margin: 0;
   box-sizing: content-box;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 3px;
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  &.tag-online {
-    color: $primary;
-    border-color: $primary;
-    background-color: rgba(0, 198, 174, 0.1);
+  &::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
   }
-  &.tag-outline {
+  &.online {
+    color: $primary;
+    &::before {
+      background-color: $primary;
+    }
+  }
+  &.outline {
     color: $gary;
-    border-color: $gary;
+    &::before {
+      background-color: #ccc;
+    }
+  }
+}
+.title-tag {
+  margin: 0 0 5px 0;
+  .doc-tags {
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 4px;
+    margin-right: 4px;
+    font-size: 10px;
+    line-height: 14px;
+    display: inline-block;
+    font-family: PingFangSC-Regular, PingFang SC;
+    &.tag-consult {
+      color: $primary;
+      background-color: rgba(0, 198, 174, 0.15);
+    }
+    &.tag-returnVisit {
+      color: rgba(64, 178, 255, 1);
+      background-color: rgba(64, 178, 255, 0.15);
+    }
+    &.tag-service {
+      color: rgba(74, 131, 247, 1);
+      background-color: rgba(74, 131, 247, 0.15);
+    }
+    &.tag-register {
+      color: rgba(179, 136, 255, 1);
+      background-color: rgba(179, 136, 255, 0.15);
+    }
   }
 }
 .banner {

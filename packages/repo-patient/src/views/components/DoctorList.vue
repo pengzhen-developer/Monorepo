@@ -15,33 +15,23 @@
               doctor.doctorName
             }}</span>
             <span>{{ doctor.doctorTitle }}</span>
-            <!-- 服务部标签 服务部未开通故屏蔽-->
-            <template v-if="doctor.serviceList">
-              <template v-for="(it, i) in doctor.serviceList">
-                <div :class="['label', 'label-'+it]"
-                     :key="i"
-                     v-if="it!=='prvivateDoctor'">
-                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                </div>
-              </template>
-            </template>
-            <template v-if="doctor.tags">
-              <template v-for="(it, i) in doctor.tags">
-                <div :class="['label', 'label-'+it]"
-                     :key="i"
-                     v-if="it!=='prvivateDoctor'">
-                  {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                </div>
-              </template>
-            </template>
             <div class="tag-work online"
-                 v-if="doctor.workStatus==1">接诊中</div>
+                 v-if="doctor.workStatus==1">在线</div>
             <div class="tag-work outline"
-                 v-else-if="doctor.workStatus==2">休息中</div>
+                 v-else-if="doctor.workStatus==2">离线</div>
           </div>
           <div class="title-hospital">
             <span>{{ doctor.hospitalName }}</span>
             <span>{{ doctor.deptName }}</span>
+          </div>
+          <div class="title-tag">
+            <template v-for="(tag, index) in doctor.tags">
+              <div :class="['doc-tags', 'tag-'+tag.key]"
+                   :key="index"
+                   v-if="tag.key!=='prvivateDoctor'">
+                {{tag.value}}
+              </div>
+            </template>
           </div>
           <div class="title-description"
                v-if="doctor.specialSkill">
@@ -56,53 +46,10 @@
                     v-if="doctor.money"
                     :class="isFree&&'free'">
                 <template v-if='isFree'>免费 </template>
-                <template v-else>￥<span class="bold">{{doctor.money}}</span>起</template>
+                <template v-else>￥<span class="bold">{{doctor.money}}</span><span style="color:#999;font-size:12px;">起</span></template>
               </span>
             </div>
-
-            <div class="title-service-item">
-              <div class="title-service-item"
-                   :class="canShowImg(doctor,'inquiry')&&'unopen'">
-                <img src="@src/assets/images/ic_free_talk.png"
-                     style="width: 15px;" />
-                <span>咨询</span>
-              </div>
-              <div class="title-service-item"
-                   :class="canShowImg(doctor,'returnVisit')&&'unopen'">
-                <img src="@src/assets/images/ic_online_retalk.png"
-                     style="width: 15px;" />
-                <span>复诊</span>
-              </div>
-            </div>
-
-            <!-- <div class="title-service-item">
-              <div @click.stop="
-                  redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='image'))
-                "
-                   class="title-service-item"
-                   v-if="canShowInquiry(doctor,'image')">
-                <img src="@src/assets/images/ic_tuwen_open.png"
-                     style="width: 20px;" />
-                <span>图文咨询</span>
-              </div>
-              <div @click.stop="
-                  redictToApply(doctor.doctorInfo, doctor.consultationList.find(item=>item.tag=='video'))
-                "
-                   class="title-service-item"
-                   v-if="canShowInquiry(doctor,'video')">
-                <img src="@src/assets/images/ic_video_open.png"
-                     style="width: 20px;" />
-                <span>视频咨询</span>
-              </div>
-            </div> -->
           </div>
-          <!-- 候诊排队人数 -->
-          <!-- <div class="title-wait">
-            <van-image width="14px"
-                       height="13px"
-                       :src="require('@src/assets/images/ic_wenzhen.png')"></van-image>
-            <span>23人正在候诊...</span>
-          </div> -->
         </div>
       </div>
     </template>
@@ -165,20 +112,6 @@ export default {
       }
       return `￥${minMoney || 0}起`
     },
-
-    canShowImg(doctor, type) {
-      if (doctor.serviceManage && doctor.serviceManage.length > 0) {
-        const serviceManage = doctor.serviceManage.find((item) => item.serviceType == type)
-        if (typeof serviceManage == 'undefined') {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return true
-      }
-    },
-
     canShowInquiry(doctor, type) {
       const params = peace.util.decode(this.$route.params.json)
       const consultation = doctor.consultationList.filter((item) => item.tag == type)[0]
@@ -237,23 +170,33 @@ export default {
   line-height: normal;
   margin: 0;
   box-sizing: content-box;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 3px;
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  &::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+  }
   &.online {
     color: $primary;
-    border-color: $primary;
-    background-color: rgba(0, 198, 174, 0.1);
+    &::before {
+      background-color: $primary;
+    }
   }
   &.outline {
     color: $gary;
-    border-color: $gary;
+    &::before {
+      background-color: #ccc;
+    }
   }
 }
+
 .doctor-list {
   height: 100%;
 
@@ -274,6 +217,35 @@ export default {
     .detail {
       width: 100%;
       margin: 0 0 0 10px;
+      .title-tag {
+        margin: 0 0 5px 0;
+        .doc-tags {
+          border-radius: 2px;
+          color: #fff;
+          padding: 1px 4px;
+          margin-right: 4px;
+          font-size: 10px;
+          line-height: 14px;
+          display: inline-block;
+          font-family: PingFangSC-Regular, PingFang SC;
+          &.tag-consult {
+            color: $primary;
+            background-color: rgba(0, 198, 174, 0.15);
+          }
+          &.tag-returnVisit {
+            color: rgba(64, 178, 255, 1);
+            background-color: rgba(64, 178, 255, 0.15);
+          }
+          &.tag-service {
+            color: rgba(74, 131, 247, 1);
+            background-color: rgba(74, 131, 247, 0.15);
+          }
+          &.tag-register {
+            color: rgba(179, 136, 255, 1);
+            background-color: rgba(179, 136, 255, 0.15);
+          }
+        }
+      }
 
       .title-doctor {
         color: #000000;
@@ -283,17 +255,13 @@ export default {
           font-size: 18px;
           font-weight: 600;
         }
-
-        span {
-          margin: 0 10px 0 0;
-        }
-        /*{{it.tag == 'image' ? '问' : it.tag =='prvivateDoctor' ? '服务包' : it.tag == 'appoint' ? '号' : '视频'}}*/
         .label {
           border-radius: 2px;
           color: #fff;
           padding: 0px 2px;
           margin-right: 2.5px;
           font-size: 9px;
+
           &.label-image {
             background: #00c6ae;
             border-color: #00c6ae;
@@ -314,6 +282,9 @@ export default {
             background: #74b0ff;
             border-color: #74b0ff;
           }
+        }
+        span {
+          margin: 0 10px 0 0;
         }
       }
 
@@ -365,18 +336,6 @@ export default {
           color: #fb2828;
           margin: 0 0 0 2px;
           font-size: 14px;
-        }
-        .title-service-item {
-          display: inline-flex;
-          align-items: center;
-          color: #000000;
-          margin: 0 0 0 10px;
-          &.unopen {
-            opacity: 0.3;
-          }
-          span {
-            margin: 0 0 0 5px;
-          }
         }
       }
 

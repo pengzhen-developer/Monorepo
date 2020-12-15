@@ -66,33 +66,23 @@
           <div class="card-name">{{item.name}}
             <div class="card-small">
               {{item.doctorTitle}}
-              <!-- 服务部标签 服务部未开通故屏蔽-->
-              <template v-if="item.serviceList">
-                <template v-for="(it, i) in item.serviceList">
-                  <div :class="['label', 'label-'+it]"
-                       :key="i"
-                       v-if="it!=='prvivateDoctor'">
-                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                  </div>
-                </template>
-              </template>
-              <template v-if="item.tags">
-                <template v-for="(it, i) in item.tags">
-                  <div :class="['label', 'label-'+it]"
-                       :key="i"
-                       v-if="it!=='prvivateDoctor'">
-                    {{it == 'image' || it == 'video' ? '问' : it =='prvivateDoctor' ? '服务包' : it == 'register' ? '号' : ''}}
-                  </div>
-                </template>
-              </template>
             </div>
-            <div class="tag-work tag-online"
-                 v-if="item.workStatus==1">接诊中</div>
-            <div class="tag-work tag-outline"
-                 v-else-if="item.workStatus==2">休息中</div>
+            <div class="tag-work online"
+                 v-if="item.workStatus==1">在线</div>
+            <div class="tag-work outline"
+                 v-else-if="item.workStatus==2">离线</div>
           </div>
           <div class="card-small">
             {{item.netHospitalName}} {{item.deptName}}
+          </div>
+          <div class="title-tag">
+            <template v-for="(tag, index) in item.tags">
+              <div :class="['doc-tags', 'tag-'+tag.key]"
+                   :key="index"
+                   v-if="tag.key!=='prvivateDoctor'">
+                {{tag.value}}
+              </div>
+            </template>
           </div>
           <div class="card-brief"
                v-if="item.specialSkill">
@@ -205,12 +195,6 @@ export default {
         .then((res) => {
           !this.cityDic[1] && res.data.citys && res.data.citys[1] && (this.cityDic = res.data.citys || [])
 
-          // res.data.list.map(item=>{
-          //   if(item.workStatus==1&&item.serviceList==0){
-          //     item.workStatus=3
-          //   }
-          // })
-
           this.doctorList = this.doctorList.concat(res.data.list)
           this.showLoadingType = false
           if (!this.showLoadingType && this.doctorList.length == 0) {
@@ -289,22 +273,61 @@ export default {
   justify-content: center;
   font-size: 11px;
   line-height: normal;
+  margin: 0;
   box-sizing: content-box;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 3px;
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  &.tag-online {
-    color: $primary;
-    border-color: $primary;
-    background-color: rgba(0, 198, 174, 0.1);
+  &::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
   }
-  &.tag-outline {
+  &.online {
+    color: $primary;
+    &::before {
+      background-color: $primary;
+    }
+  }
+  &.outline {
     color: $gary;
-    border-color: $gary;
+    &::before {
+      background-color: #ccc;
+    }
+  }
+}
+.title-tag {
+  margin: 0 0 5px 0;
+  .doc-tags {
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 4px;
+    margin-right: 4px;
+    font-size: 10px;
+    line-height: 14px;
+    display: inline-block;
+    font-family: PingFangSC-Regular, PingFang SC;
+    &.tag-consult {
+      color: $primary;
+      background-color: rgba(0, 198, 174, 0.15);
+    }
+    &.tag-returnVisit {
+      color: rgba(64, 178, 255, 1);
+      background-color: rgba(64, 178, 255, 0.15);
+    }
+    &.tag-service {
+      color: rgba(74, 131, 247, 1);
+      background-color: rgba(74, 131, 247, 0.15);
+    }
+    &.tag-register {
+      color: rgba(179, 136, 255, 1);
+      background-color: rgba(179, 136, 255, 0.15);
+    }
   }
 }
 .card-brief {
