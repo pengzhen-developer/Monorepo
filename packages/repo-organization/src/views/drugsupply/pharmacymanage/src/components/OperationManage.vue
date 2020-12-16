@@ -5,34 +5,60 @@
         <div class="title-left"></div>
         <p class="title">配送服务</p>
       </div>
-      <el-radio-group v-model="model.Shipping">
-        <el-radio v-bind:label=1>免费配送</el-radio>
-        <el-radio v-bind:label=2>
-          收费配送，配送费 <el-input-number placeholder="请输入"
-                           v-bind:min="0"
-                           v-bind:max="99.99"
-                           v-bind:precision="2"
-                           v-bind:controls="false"
-                           v-model="model.ShippingFee"></el-input-number>元
-        </el-radio>
-        <el-radio v-bind:label=3>
-          满<el-input-number placeholder="请输入"
-                           v-bind:min="0"
-                           v-bind:max="99999"
-                           v-bind:precision="2"
-                           v-bind:controls="false"
-                           v-model="model.ShippingFull"></el-input-number>元免配送费，否则收配送费
-          <el-input-number placeholder="请输入"
-                           v-bind:min="0"
-                           v-bind:max="99.99"
-                           v-bind:precision="2"
-                           v-bind:controls="false"
-                           v-model="model.ShippingFeeByFull"></el-input-number>元
-        </el-radio>
-      </el-radio-group>
+
+      <el-form>
+        <el-form-item label="是否收费：">
+          <el-radio-group v-model="model.Shipping"
+                          :change="chargeChange()">
+            <el-radio v-bind:label=0>否</el-radio>
+            <el-radio v-bind:label=1>是</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="收费方式："
+                      v-if="isCharge"
+                      :change="chargeTypeChange()">
+          <el-radio-group v-model="model.ChargeType">
+            <el-radio v-bind:label=0>在线支付</el-radio>
+            <el-radio v-bind:label=1>货到付款</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="费用计算方式："
+                      class="discount"
+                      v-if="isCharge">
+          <el-radio-group v-model="model.CalculationType">
+            <el-radio v-bind:label=0>
+              固定配送费 <el-input-number placeholder="请输入"
+                               v-bind:min="0"
+                               v-bind:max="99.99"
+                               v-bind:precision="2"
+                               v-bind:controls="false"
+                               v-model="model.FixedShippingFee"></el-input-number>元
+            </el-radio>
+            <el-radio v-bind:label=1>
+              满<el-input-number placeholder="请输入"
+                               v-bind:min="0"
+                               v-bind:max="99999"
+                               v-bind:precision="2"
+                               v-bind:controls="false"
+                               v-model="model.ShippingFull"></el-input-number>元免配送费，否则收配送费
+              <el-input-number placeholder="请输入"
+                               v-bind:min="0"
+                               v-bind:max="99.99"
+                               v-bind:precision="2"
+                               v-bind:controls="false"
+                               v-model="model.ShippingFee"></el-input-number>元
+            </el-radio>
+            <el-radio v-bind:label=2
+                      v-if="isChargeOnline">快递公司自行收取</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+
     </div>
     <div class="line"></div>
-    <div class="content-item">
+    <div class="content-item discount">
       <div class="item-title">
         <div class="title-left"></div>
         <p class="title">优惠活动</p>
@@ -83,14 +109,20 @@ export default {
   },
   data() {
     return {
+      isCharge: false, //是否收费
+
+      isChargeOnline: true, //是否是在线支付
+
       model: {
         ID: 0,
-        Shipping: 1,
+        Shipping: 0, //是否收费，0 免费配送 1 收费
+        ChargeType: 0, //收费方式， 0 在线支付  1货到付款
+        CalculationType: 0, //费用计算方式，  0 固定配送费 1 满减   2 快递公司自取
+        FixedShippingFee: '', //固定配送费
+        ShippingFull: '', // 满多少元
+        ShippingFee: '', // 满多少元 配送费
         Promotions: 0,
-        ShippingFull: '',
-        ShippingFee: '',
         PromotionsFull: '',
-        ShippingFeeByFull: '',
         PromotionsCut: '',
         Tags: []
       },
@@ -129,6 +161,17 @@ export default {
         .finally(() => {
           this.isLoading = false
         })
+    },
+
+    //是否收费选中监听
+    chargeChange() {
+      console.log(this.model.Shipping)
+      this.isCharge = this.model.Shipping == 1
+    },
+
+    //收费方式选中监听
+    chargeTypeChange() {
+      this.isChargeOnline = this.model.ChargeType == 0
     }
   }
 }
@@ -168,7 +211,7 @@ p {
   height: 1px;
   background: #e9e9e9;
 }
-.el-radio-group .el-radio {
+.discount .el-radio-group .el-radio {
   display: block;
   margin-bottom: 16px;
 }
