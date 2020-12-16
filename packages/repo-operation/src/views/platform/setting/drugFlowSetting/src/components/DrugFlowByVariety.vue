@@ -10,7 +10,7 @@
           <el-tab-pane label="院内品种"
                        lazy>
             <PharmacySelect v-bind:pharmacyRule="setRule('按品种')"
-                            v-bind:pharmacyConf="setConf('外延')"
+                            v-bind:pharmacyConf="setConf('院内')"
                             v-bind:data.sync="data"></PharmacySelect>
           </el-tab-pane>
 
