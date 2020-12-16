@@ -1,28 +1,56 @@
 <template>
   <div v-loading="isLoading">
-    <div v-if="operateData.Shipping !== 0"
-         class="content-item">
+    <div class="content-item">
+
       <div class="item-title">
         <div class="title-left"></div>
-        <p class="title ">配送服务</p>
+        <p class="title">配送服务</p>
       </div>
-      <div class="item-content">
-        <div v-if="operateData.Shipping === 1"
-             class="item-child">
-          <i class="el-icon-success"></i>
-          <div class="item-text-grey">免费配送</div>
-        </div>
-        <div v-if="operateData.Shipping === 2"
-             class="item-child">
-          <i class="el-icon-success"></i>
-          <div class="item-text-grey">收费配送，配送费<span class="item-text-primary">{{operateData.ShippingFee}}</span>元</div>
-        </div>
-        <div v-if="operateData.Shipping === 3"
-             class="item-child">
-          <i class="el-icon-success"></i>
-          <div class="item-text-grey">满<span class="item-text-primary">{{operateData.ShippingFull}}</span>元免配送费，否则收配送费<span class="item-text-primary">{{operateData.ShippingFeeByFull}}</span>元</div>
-        </div>
+      <div class="item-content"
+           style="margin-top:20px">
+        <el-form>
+          <el-form-item label="是否收费：">
+            <div class="item-child-item">
+              <i class="el-icon-success"></i>
+              <div class="item-text-grey"
+                   v-if="operateData.Shipping === 0">否</div>
+              <div class="item-text-grey"
+                   v-else>是</div>
+            </div>
+          </el-form-item>
+
+          <el-form-item label="收费方式："
+                        v-if="operateData.Shipping !== 0">
+            <div class="item-child-item">
+              <i class="el-icon-success"></i>
+              <div class="item-text-grey"
+                   v-if="operateData.ChargeType === 0">在线支付</div>
+              <div class="item-text-grey"
+                   v-else>货到付款</div>
+            </div>
+          </el-form-item>
+
+          <el-form-item label="费用计算方式："
+                        v-if="operateData.Shipping !== 0">
+            <div class="item-child-item">
+              <i class="el-icon-success"></i>
+              <div class="item-text-grey"
+                   v-if="operateData.CalculationType === 0">
+                固定配送费<span class="item-text-primary">{{operateData.FixedShippingFee}}</span>元
+              </div>
+              <div class="item-text-grey"
+                   v-else-if="operateData.CalculationType === 1">
+                满<span class="item-text-primary">{{operateData.ShippingFull}}</span>元免配送费，否则收配送费
+                <span class="item-text-primary">{{operateData.ShippingFee}}</span>元
+              </div>
+              <div class="item-text-grey"
+                   v-else>快递公司自行收取</div>
+            </div>
+
+          </el-form-item>
+        </el-form>
       </div>
+
     </div>
 
     <div class="line"></div>
@@ -79,10 +107,14 @@ export default {
     return {
       operateData: {
         ID: 0,
-        Shipping: '', // 配送方式 0没有方式 1 免费配送 2 收费  3 满xx元免费配送，收费xx元
-        Promotions: '', // 优惠活动 0没有优惠活动  1满减活动
-        ShippingFull: '', // 满多少元
+        CalculationType: '', //费用计算方式  0 固定配送费  1 满减   2 快递公司自取
+        ChargeType: '', //收费方式  0 在线支付  1货到付款
+        FixedShippingFee: '', //固定配送费
+        Shipping: '', // 配送方式 是否收费  1 免费配送 2 收费
         ShippingFee: '', // 配送费
+        ShippingFull: '', // 满多少元
+
+        Promotions: '', // 优惠活动 0没有优惠活动  1满减活动
         PromotionsFull: '', // 满多少元
         ShippingFeeByFull: '',
         PromotionsCut: '', // 优惠金额
@@ -147,6 +179,11 @@ p {
 }
 .item-child {
   margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.item-child-item {
   display: flex;
   justify-content: flex-start;
   align-items: center;
