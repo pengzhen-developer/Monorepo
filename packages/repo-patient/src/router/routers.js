@@ -1130,6 +1130,24 @@ const routers = [
       auth: false
     },
     component: () => import('@src/views/components/FirstVisitList.vue')
+  },
+  /** 服务提醒 */
+  {
+    path: '/message/service-remind/list',
+    name: '/message/service-remind/list',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/message/service-remind/list.vue')
+  },
+  /** 服务提醒详情 */
+  {
+    path: '/message/service-remind/detail/:json',
+    name: '/message/service-remind/detail',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/message/service-remind/detail.vue')
   }
 ]
 

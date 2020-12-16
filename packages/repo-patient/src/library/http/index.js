@@ -28,7 +28,10 @@ axios.download = download
 axios.interceptors.request.use(
   function(request) {
     httpCount++
-    nprogress.start()
+    if (!request.data?.hideLoad) {
+      // 不显示加载状态
+      nprogress.start()
+    }
 
     // 基于 mock , 直接发送请求
     if (request.url.indexOf('http://mock.eolinker.com/') !== -1) {

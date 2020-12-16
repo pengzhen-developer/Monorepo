@@ -27,7 +27,7 @@
             </van-tabbar-item>
 
             <template v-if="unRead > 0">
-              <van-tabbar-item :info="unRead"
+              <van-tabbar-item :dot="unRead"
                                to="/message/index">
                 <i class="van-icon van-icon-comment"
                    slot="icon"></i>
@@ -107,12 +107,15 @@ export default {
 
   computed: {
     unRead() {
+      let unReadMessage = 0
       if (this.$store.getters['inquiry/sessionList'] && this.$store.getters['inquiry/sessionList'].length > 0) {
         const reduceFunc = (accumulator, currentValue) => accumulator + currentValue.unread
-        return this.$store.getters['inquiry/sessionList'].reduce(reduceFunc, 0)
-      } else {
-        return 0
+        unReadMessage = this.$store.getters['inquiry/sessionList'].reduce(reduceFunc, 0)
       }
+
+      let unReadServiceRemind = this.$store.state.inquiry.serviceRemind.unreadNum
+
+      return unReadMessage + unReadServiceRemind > 0 ? true : false
     }
   },
 

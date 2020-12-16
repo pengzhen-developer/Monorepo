@@ -165,7 +165,8 @@
               <div class="item-text"
                    :class=" data[current].reReferralIn.checkTime ? '' : 'item-time' ">
                 <span v-if="data[current].familyInfo.transferStatus==5">拒接原因：</span>
-                {{data[current].reReferralIn.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}</div>
+                {{data[current].reReferralIn.checkSuggest || '转诊申请正在等待医院审核，请耐心等候'}}
+              </div>
             </div>
           </div>
         </div>
@@ -218,12 +219,16 @@ export default {
     },
 
     getList(inquiryNo) {
-      peace.service.group.getTransferList({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.getTransferList({ inquiryNo: inquiryNo }).then((res) => {
         this.data = res.data || []
       })
     },
     getDetail(referralNo, type) {
-      peace.service.group.getTransferDetail({ referralNo: referralNo }).then(res => {
+      let params = {
+        referralNo: referralNo,
+        sysId: peace.util.decode(this.$route.params.json).sysId
+      }
+      peace.service.group.getTransferDetail(params).then((res) => {
         if (typeof type != 'undefined') {
           this.data.splice(this.current, 1, res.data)
         } else {
@@ -250,7 +255,7 @@ export default {
               referralNo: this.data[this.current].reReferralOut.referralNo,
               inquiryNo: this.data[this.current].familyInfo.inquiryNo
             })
-            .then(res => {
+            .then((res) => {
               // debugger
               if (res.code == '200') {
                 let session = {
@@ -263,7 +268,7 @@ export default {
                 this.selectSession(session)
               }
             })
-            .catch(res => {
+            .catch((res) => {
               if (res.data.code == '202') {
                 Dialog.confirm({
                   title: '温馨提示',

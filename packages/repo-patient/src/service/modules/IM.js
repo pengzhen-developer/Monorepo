@@ -37,10 +37,14 @@ export function initNIMS(info) {
     list.map((item, index) => {
       $peace.NIMS[item.accid] = {
         im: peace.service.IM.initNIM(item, index),
-        sessions: [],
+        sessions: []
       }
     })
     Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
+
+    // 更新服务提醒
+    Store.dispatch('inquiry/getServiceRemind')
+
     return $peace.NIMS
   })
 }
@@ -65,7 +69,7 @@ export function initNIM(args) {
     onmsg: peace.service.IM.onMsg,
 
     // 系统通知
-    oncustomsysmsg: peace.service.IM.onSysmsg,
+    oncustomsysmsg: peace.service.IM.onSysmsg
   }
   if (!$peace.NIMS[account]) {
     // 初始化 IM
@@ -80,7 +84,7 @@ export function initNIM(args) {
       // 过滤所有系统消息
       shouldIgnoreNotification() {
         return true
-      },
+      }
     })
   } else {
     // 更新 IM
@@ -241,6 +245,9 @@ export function onUpdateSession(session) {
         }
       }
     }
+
+    // 更新服务提醒
+    Store.dispatch('inquiry/getServiceRemind')
   }
 }
 
@@ -252,6 +259,8 @@ export function onUpdateSession(session) {
  */
 export function onMsg(message) {
   console.warn('【 IM 】【 onMsg 】', new Date(), message)
+  // 更新服务提醒
+  Store.dispatch('inquiry/getServiceRemind')
 }
 
 /**
@@ -262,6 +271,9 @@ export function onMsg(message) {
  */
 export function onSysmsg(message) {
   console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+
+  // 更新服务提醒
+  Store.dispatch('inquiry/getServiceRemind')
 
   let href = window.location.href
   let tag = JSON.parse(message.content).tag
@@ -296,10 +308,8 @@ export function setInquirySessions(sessions, account) {
       if (
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.待接诊 ||
         session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.已取消 ||
-        (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.已退诊 &&
-          session.content.inquiryInfo.quitStatus === 1) ||
-        (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.已退诊 &&
-          session.content.inquiryInfo.quitStatus === 2)
+        (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.已退诊 && session.content.inquiryInfo.quitStatus === 1) ||
+        (session.content.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.已退诊 && session.content.inquiryInfo.quitStatus === 2)
       ) {
         return false
       }
@@ -385,7 +395,7 @@ export function getInquirySessionsStatus(sessions, familyId) {
 
   const params = {
     sessionIdList: sessions.map((item) => item.id),
-    familyId: familyId,
+    familyId: familyId
   }
 
   return peace.service.inquiry.getList(params).then((res) => {
@@ -436,16 +446,12 @@ export function setInquirySessionStatus(sessionWithStatus, account) {
   sessionWithStatus = peace.service.IM.deSerializationSessions(sessionWithStatus)[0]
 
   // 将 session with status 更新到 session
-  const currrentSession = Store.state.inquiry.sessionsFamily[account].sessions.find(
-    (msg) => msg.id === sessionWithStatus.id
-  )
+  const currrentSession = Store.state.inquiry.sessionsFamily[account].sessions.find((msg) => msg.id === sessionWithStatus.id)
   currrentSession.content = sessionWithStatus.lastMsg.content.data
 
   // 过滤无效 session
 
-  Store.state.inquiry.sessionsFamily[account].sessions = Store.state.inquiry.sessionsFamily[account].sessions.filter(
-    (msg) => msg.content
-  )
+  Store.state.inquiry.sessionsFamily[account].sessions = Store.state.inquiry.sessionsFamily[account].sessions.filter((msg) => msg.content)
 
   return Store.state.inquiry.sessionsFamily[account].sessions
 }
@@ -535,5 +541,5 @@ export default {
   /** 反序列化 sessions */
   deSerializationSessions,
   /** 反序列化 session messages */
-  deSerializationMessages,
+  deSerializationMessages
 }

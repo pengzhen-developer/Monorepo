@@ -20,6 +20,8 @@ import diagnose from './modules/diagnose'
 import purchasedrug from './modules/purchasedrug'
 import group from './modules/group'
 import yibao from './modules/yibao'
+import remind from './modules/remind'
+
 export default {
   IM,
   inquiry,
@@ -35,5 +37,6 @@ export default {
   diagnose,
   purchasedrug,
   group,
-  yibao
+  yibao,
+  remind
 }

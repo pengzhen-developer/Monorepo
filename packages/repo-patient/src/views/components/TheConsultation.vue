@@ -269,11 +269,7 @@ export default {
     canShowResult(data) {
       return (
         (data && data.consultStatus == '7') ||
-        (data.consultStatus == '8' &&
-          data.consultFind &&
-          data.consultDiagnose &&
-          data.consultSuggest &&
-          data.doctorSignImg)
+        (data.consultStatus == '8' && data.consultFind && data.consultDiagnose && data.consultSuggest && data.doctorSignImg)
       )
     },
     getData() {
@@ -286,12 +282,16 @@ export default {
     },
 
     getList(inquiryNo) {
-      peace.service.group.getConsultList({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.getConsultList({ inquiryNo: inquiryNo }).then((res) => {
         this.data = res.data || []
       })
     },
     getDetail(consultNo) {
-      peace.service.group.getConsultDetail({ consultNo: consultNo }).then(res => {
+      let params = {
+        consultNo: consultNo,
+        sysId: peace.util.decode(this.$route.params.json).sysId
+      }
+      peace.service.group.getConsultDetail(params).then((res) => {
         this.data.push(res.data)
       })
     },

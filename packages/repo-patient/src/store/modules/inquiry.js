@@ -1,8 +1,16 @@
+import peace from '@src/library'
+
 const state = {
   sessions: [],
   sessionsFamily: {},
   session: {},
   sessionMessages: [],
+  serviceRemind: {
+    list: [],
+    readNum: 0,
+    total: 0,
+    unreadNum: 0
+  }
 }
 
 const getters = {
@@ -33,11 +41,7 @@ const getters = {
   sessionList(state) {
     let sessions = []
     Object.keys(state.sessionsFamily).forEach((item) => {
-      if (
-        state.sessionsFamily[item] &&
-        state.sessionsFamily[item].sessions &&
-        state.sessionsFamily[item].sessions.length > 0
-      ) {
+      if (state.sessionsFamily[item] && state.sessionsFamily[item].sessions && state.sessionsFamily[item].sessions.length > 0) {
         sessions = sessions.concat(state.sessionsFamily[item].sessions)
       }
     })
@@ -48,7 +52,7 @@ const getters = {
       return val2 - val1
     })
     return sessions
-  },
+  }
 }
 
 const mutations = {
@@ -74,6 +78,32 @@ const mutations = {
   resetInquirySessionMessages() {
     state.sessionMessages = []
   },
+
+  setServiceRemind(state, params) {
+    state.serviceRemind = params
+  }
+}
+
+const actions = {
+  getServiceRemind({ commit }) {
+    return new Promise((resolve) => {
+      let params = {
+        p: 1,
+        size: 10,
+        hideLoad: true
+      }
+      peace.http
+        .post('client/v1/notice/getMsgList', params, {
+          headers: {
+            post: { 'Content-Type': 'application/json' }
+          }
+        })
+        .then((res) => {
+          commit('setServiceRemind', res.data)
+          resolve(res.data)
+        })
+    })
+  }
 }
 
 export default {
@@ -82,4 +112,5 @@ export default {
   state,
   getters,
   mutations,
+  actions
 }

@@ -709,8 +709,11 @@ export default {
       peace.wx.pay({ orderNo }, null, this.getConsultDetail, this.getConsultDetail)
     },
     getConsultDetail() {
-      let inquiryId = peace.util.decode(this.$route.params.json).inquiryId
-      peace.service.patient.inquiryDetail({ inquiryId: inquiryId }).then(async (res) => {
+      let params = {
+        inquiryId: peace.util.decode(this.$route.params.json).inquiryId,
+        sysId: peace.util.decode(this.$route.params.json).sysId
+      }
+      peace.service.patient.inquiryDetail(params).then(async (res) => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
         if (expireTime > inquiryInfo.currentTime) {

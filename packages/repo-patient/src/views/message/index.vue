@@ -1,5 +1,30 @@
 <template>
   <div class="message">
+    <template v-if="serviceRemind.list.length > 0">
+      <div @click="goServiceRemind"
+           class="message-item">
+        <div class="message-item-avatar">
+          <img src="@src/assets/images/message/ic_service_message.png" />
+          <div class="message-item-unread"
+               v-if="serviceRemind.unreadNum !== 0">
+            <div class="van-info van-info-message">{{ serviceRemind.unreadNum }}</div>
+          </div>
+        </div>
+        <div class="message-item-detail">
+          <div class="message-item-detail-title">
+            <div class="message-item-detail-title-doctor">
+              <span>服务提醒{{ serviceRemind.list[0].doctorName }}</span>
+            </div>
+            <div class="message-item-detail-title-time">
+              <span>{{ serviceRemind.list[0].time.toDate().calcTimeHeader() }}</span>
+            </div>
+          </div>
+          <div class="message-item-detail-content">
+            <span v-html="serviceRemind.list[0].title"></span>
+          </div>
+        </div>
+      </div>
+    </template>
     <template v-if="sessionsList.length > 0">
       <div :id="session.id +'-'+ session.updateTime"
            :key="session.id +'-'+ session.updateTime"
@@ -31,7 +56,7 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="sessionsList.length == 0 && serviceRemind.list.length === 0">
       <div class="no-data"
            style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
         <img src="@src/assets/images/ic_no consultation copy@2x.png"
@@ -56,11 +81,16 @@ export default {
         }
       }, 100)
     }
+    // 更新服务提醒
+    this.$store.dispatch('inquiry/getServiceRemind')
   },
 
   computed: {
     sessionsList() {
       return this.$store.getters['inquiry/sessionList']
+    },
+    serviceRemind() {
+      return this.$store.state.inquiry.serviceRemind
     }
   },
   methods: {
@@ -92,11 +122,7 @@ export default {
             return '[自定义消息]'
           }
           // 其它
-          else if (
-            session.lastMsg.content &&
-            session.lastMsg.content.data &&
-            session.lastMsg.content.data.showTextInfo
-          ) {
+          else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
             return session.lastMsg.content.data.showTextInfo.patientClientText
           }
       }
@@ -133,6 +159,9 @@ export default {
 
       // 跳转聊天详情
       this.$router.push(`/components/messageList/${params}`)
+    },
+    goServiceRemind() {
+      this.$router.push(`/message/service-remind/list`)
     }
   }
 }
