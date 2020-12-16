@@ -78,6 +78,11 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="机构名称：">
+          <el-input v-model.trim="model.organName"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
+
         <el-form-item label-width="0">
           <el-button type="primary"
                      v-on:click="fetch">查 询</el-button>
@@ -104,6 +109,12 @@
                          min-width="120px">
           <template slot-scope="scope">
             {{scope.row.bizType | getLabel(dictdata.bizTypeDict)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="机构名称"
+                         prop="organName">
+          <template slot-scope="scope">
+            {{ scope.row.organName || '--' }}
           </template>
         </el-table-column>
         <el-table-column label="对接系统"
@@ -169,7 +180,8 @@ export default {
       query: {
         id: '',
         phone: '',
-        warnSwitch: ''
+        warnSwitch: '',
+        organName: ''
       },
       rules: {
         phone: [
