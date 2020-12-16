@@ -293,7 +293,11 @@
             {{ scope.row.BatchNumber || '--' }}
           </template>
         </el-table-column>
-
+        <el-table-column prop="TotalNumber"
+                         label="数量"
+                         align="center"
+                         min-width="70px">
+        </el-table-column>
         <el-table-column prop="ValidityDate"
                          label="有效期"
                          align="center"
