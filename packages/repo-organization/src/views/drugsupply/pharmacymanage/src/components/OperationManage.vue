@@ -171,6 +171,9 @@ export default {
 
     //收费方式选中监听
     chargeTypeChange() {
+      if (this.model.ChargeType === 1 && this.model.CalculationType === 2) {
+        this.model.CalculationType = 0
+      }
       this.isChargeOnline = this.model.ChargeType == 0
     }
   }
