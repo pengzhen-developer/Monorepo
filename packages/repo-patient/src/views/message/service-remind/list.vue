@@ -4,6 +4,7 @@
                       @refresh="onRefresh">
       <van-list v-model="loading"
                 :finished="finished"
+                finished-text="没有更多了"
                 @load="onLoad">
         <div class="remind-list">
           <div v-for="item in list"
@@ -69,11 +70,8 @@ export default {
   },
   methods: {
     getList() {
-      if (this.loading) {
-        return false
-      }
-      this.loading = true
       let params = {
+        tag: 'yz',
         p: this.query.p + 1,
         size: this.query.size
       }
