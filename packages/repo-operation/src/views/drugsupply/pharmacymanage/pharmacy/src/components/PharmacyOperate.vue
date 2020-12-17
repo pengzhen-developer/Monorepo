@@ -13,14 +13,14 @@
             <div class="item-child-item">
               <i class="el-icon-success"></i>
               <div class="item-text-grey"
-                   v-if="operateData.Shipping === 0">否</div>
+                   v-if="operateData.Shipping === 1">否</div>
               <div class="item-text-grey"
                    v-else>是</div>
             </div>
           </el-form-item>
 
           <el-form-item label="收费方式："
-                        v-if="operateData.Shipping !== 0">
+                        v-if="operateData.Shipping !== 1">
             <div class="item-child-item">
               <i class="el-icon-success"></i>
               <div class="item-text-grey"
@@ -31,7 +31,7 @@
           </el-form-item>
 
           <el-form-item label="费用计算方式："
-                        v-if="operateData.Shipping !== 0">
+                        v-if="operateData.Shipping !== 1">
             <div class="item-child-item">
               <i class="el-icon-success"></i>
               <div class="item-text-grey"
