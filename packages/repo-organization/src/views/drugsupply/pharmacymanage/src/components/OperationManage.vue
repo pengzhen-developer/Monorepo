@@ -9,16 +9,16 @@
       <el-form>
         <el-form-item label="是否收费：">
           <el-radio-group v-model="model.Shipping"
-                          :change="chargeChange()">
+                          @change="chargeChange">
             <el-radio v-bind:label=1>否</el-radio>
             <el-radio v-bind:label=2>是</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="收费方式："
-                      v-if="isCharge"
-                      :change="chargeTypeChange()">
-          <el-radio-group v-model="model.ChargeType">
+                      v-if="model.Shipping===2">
+          <el-radio-group v-model="model.ChargeType"
+                          @change="chargeTypeChange">
             <el-radio v-bind:label=0>在线支付</el-radio>
             <el-radio v-bind:label=1>货到付款</el-radio>
           </el-radio-group>
@@ -26,7 +26,7 @@
 
         <el-form-item label="费用计算方式："
                       class="discount"
-                      v-if="isCharge">
+                      v-if="model.Shipping===2">
           <el-radio-group v-model="model.CalculationType">
             <el-radio v-bind:label=0>
               固定配送费 <el-input-number placeholder="请输入"
@@ -51,7 +51,7 @@
                                v-model="model.ShippingFee"></el-input-number>元
             </el-radio>
             <el-radio v-bind:label=2
-                      v-if="isChargeOnline">快递公司自行收取</el-radio>
+                      v-if="model.ChargeType === 1">快递公司自行收取</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -109,10 +109,6 @@ export default {
   },
   data() {
     return {
-      isCharge: false, //是否收费
-
-      isChargeOnline: true, //是否是在线支付
-
       model: {
         ID: 0,
         Shipping: 1, //是否收费，1 免费配送 2 收费
@@ -165,15 +161,15 @@ export default {
 
     //是否收费选中监听
     chargeChange() {
-      this.isCharge = this.model.Shipping == 2
+      if (this.model.Shipping === 2) {
+        this.model.ChargeType = 0
+        this.model.CalculationType = 0
+      }
     },
 
     //收费方式选中监听
     chargeTypeChange() {
-      if (this.model.ChargeType === 1 && this.model.CalculationType === 2) {
-        this.model.CalculationType = 0
-      }
-      this.isChargeOnline = this.model.ChargeType == 0
+      this.model.CalculationType = 0
     }
   }
 }
