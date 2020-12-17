@@ -39,27 +39,63 @@ export function payInvoke(data, paySuc = null, payCancel = null) {
  * @returns
  */
 export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
-  return service.index
-    .pay(params)
-    .then((res) => {
-      if (res.code === 200) {
-        let data = res.data
-        if (data) {
-          payInvoke(data, paySuc, payCancel)
+  //根据当前浏览器环境 区分支付  JSAPI公众号支付  MWEB H5支付
+  //2020-12-17  H5支付申请中 ，两个接口用以区分 公众号支付 H5支付  待申请通过用 接口 pay
+  const UA = window.navigator.userAgent.toLowerCase()
+  let tradeType = ''
+  if (UA.match(/MicroMessenger/i) == 'micromessenger') {
+    tradeType = 'JSAPI'
+
+    params.tradeType = tradeType
+
+    return service.index
+      .pay(params)
+      .then((res) => {
+        if (res.code === 200) {
+          let data = res.data
+          if (data) {
+            payInvoke(data, paySuc, payCancel)
+          }
         }
-      }
-    })
-    .catch((res) => {
-      if (res.data) {
-        if (res.data.code == 204) {
-          console.warn('订单金额为0：', res.data)
-          paySuc && paySuc()
-        } else {
-          console.warn('订单异常时响应', res.data)
-          orderExp && orderExp(res)
+      })
+      .catch((res) => {
+        if (res.data) {
+          if (res.data.code == 204) {
+            console.warn('订单金额为0：', res.data)
+            paySuc && paySuc()
+          } else {
+            console.warn('订单异常时响应', res.data)
+            orderExp && orderExp(res)
+          }
         }
-      }
-    })
+      })
+  } else {
+    tradeType = 'MWEB'
+
+    params.tradeType = tradeType
+
+    return service.index
+      .payMultiple(params)
+      .then((res) => {
+        if (res.code === 200) {
+          let data = res.data
+          if (data) {
+            payInvoke(data, paySuc, payCancel)
+          }
+        }
+      })
+      .catch((res) => {
+        if (res.data) {
+          if (res.data.code == 204) {
+            console.warn('订单金额为0：', res.data)
+            paySuc && paySuc()
+          } else {
+            console.warn('订单异常时响应', res.data)
+            orderExp && orderExp(res)
+          }
+        }
+      })
+  }
 }
 
 export function auth(appId, redirectUrl) {

@@ -25,7 +25,18 @@ export function pay(params) {
 
   return peace.http.post(pay, params)
 }
+/**
+ * 普通模式支付
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function payMultiple(params) {
+  const payMultiple = 'client/v1/WxApplet/pay'
 
+  return peace.http.post(payMultiple, params)
+}
 /**
  * 获取订单时间
  *
@@ -55,8 +66,10 @@ export function getWXSign(params) {
 export default {
   /** 获取首页接口 */
   getMenu,
-  /** 获取支付 */
+  /** 获取支付-服务商*/
   pay,
+  /** 支付-普通*/
+  payMultiple,
   /** 获取订单时间 **/
   getOrderInfo,
   /*获取微信sdk参数*/

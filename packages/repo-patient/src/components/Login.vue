@@ -183,7 +183,7 @@ export default {
           }
         })
       } else {
-        peace.util.alert('当前不是微信环境')
+        // peace.util.alert('当前不是微信环境')
 
         return this.$router.replace({
           path: this.$route.query.referrer || peace.config.system.homePage

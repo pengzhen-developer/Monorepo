@@ -9,7 +9,7 @@
       </div>
       <div class="user-info">
         <div>
-          <div style="font-size: 14px">用户{{username}}</div>
+          <div style="font-size: 14px">{{username}}</div>
           <div>{{usertel | desensitization()}}</div>
         </div>
       </div>
