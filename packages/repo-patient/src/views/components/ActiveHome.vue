@@ -165,6 +165,7 @@ export default {
     content: '';
     right: -50%;
     top: -50%;
+    background: transparent;
   }
 }
 .assistive-shadow {
@@ -186,29 +187,28 @@ export default {
   align-items: center;
   border-radius: 50%;
   padding: 0 8px;
-  &.other {
-    background: #ebfbf9;
-    &.right {
-      border-radius: 12px 0 0 12px;
-      span {
-        margin-left: 4px;
-      }
-    }
-    &.left {
-      border-radius: 0 12px 12px 0;
-      span {
-        margin-right: 4px;
-      }
-    }
-    .van-image {
-      width: 12px;
-      height: 12px;
-    }
+
+  background: #ebfbf9;
+  &.right {
+    border-radius: 12px 0 0 12px;
     span {
-      font-size: 12px;
-      line-height: normal;
-      color: $-color--primary;
+      margin-left: 4px;
     }
+  }
+  &.left {
+    border-radius: 0 12px 12px 0;
+    span {
+      margin-right: 4px;
+    }
+  }
+  .van-image {
+    width: 12px;
+    height: 12px;
+  }
+  span {
+    font-size: 12px;
+    line-height: normal;
+    color: $-color--primary;
   }
 }
 
