@@ -9,13 +9,14 @@
          v-if="showDockingWay()">
       <div class="title">对接方式：</div>
 
-      <el-radio-group v-model="checkData">
+      <el-radio-group v-model="checkData"
+                      v-if="service.accessModeArr.length>1">
         <el-radio v-for="(item,index) in service.accessModeArr"
                   :label="item"
                   style="display:block;"
                   :key="index">{{ item.name }}</el-radio>
       </el-radio-group>
-
+      <div v-else>{{service.accessModeArr[0].name}}</div>
     </div>
 
     <div class="bottom">
@@ -50,6 +51,9 @@ export default {
       if (!this.showDockingWay()) {
         // 仓配机构默认对接方式
         this.checkData.id = 3
+      } else {
+        // 非仓配机构默认对接方式
+        this.checkData.id = 1
       }
 
       if (this.checkData.id == undefined) {

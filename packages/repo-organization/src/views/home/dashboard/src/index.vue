@@ -148,33 +148,29 @@ export default {
 
     checkPermis(service) {
       const params = { serviceId: service.id }
-      Service.checkServiceType(params)
-        .then(() => {
-          switch (service.serviceType) {
-            case 1:
-              //互联网医院开通
-              this.showHospitalDialog(service)
-              break
-            case 2:
-              //合理用药管理
-              this.serviceDialogBean = service
-              this.useDrugDialog = true
-              break
-            case 3:
-              //处方管理服务
-              this.serviceDialogBean = service
-              this.rpShareDialog = true
-              break
-            case 4:
-              //药品供应管理
-              this.serviceDialogBean = service
-              this.medicineSupplyDialog = true
-              break
-          }
-        })
-        .finally((res) => {
-          Peace.util.error(res.msg)
-        })
+      Service.checkServiceType(params).then(() => {
+        switch (service.serviceType) {
+          case 1:
+            //互联网医院开通
+            this.showHospitalDialog(service)
+            break
+          case 2:
+            //合理用药管理
+            this.serviceDialogBean = service
+            this.useDrugDialog = true
+            break
+          case 3:
+            //处方管理服务
+            this.serviceDialogBean = service
+            this.rpShareDialog = true
+            break
+          case 4:
+            //药品供应管理
+            this.serviceDialogBean = service
+            this.medicineSupplyDialog = true
+            break
+        }
+      })
     },
 
     showHospitalDialog(service) {
