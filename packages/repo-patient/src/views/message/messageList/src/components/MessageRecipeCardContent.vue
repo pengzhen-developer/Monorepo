@@ -58,7 +58,7 @@ export default {
           if (prescriptionStatus == 3 || prescriptionStatus == 4) {
             return Dialog.confirm({
               title: '温馨提示',
-              message: '处方已作废，不可查看处方详情',
+              message: '该处方已作废，不可查看详情',
               onfirmButtonText: '确定',
               showCancelButton: false
             })
