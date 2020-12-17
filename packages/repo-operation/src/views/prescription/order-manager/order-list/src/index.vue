@@ -15,7 +15,7 @@
 
         <el-form-item label="订单编号">
           <el-input v-model.trim="model.OrderNumber"
-                    placeholder="请输入订单编号"
+                    placeholder="医院/平台/物流编号"
                     clearable></el-input>
         </el-form-item>
 
@@ -152,7 +152,7 @@
                          width="120px">
 
           <template slot-scope="scope">
-            <span>{{ scope.row.ShippingMethod | filterDictionary(remoteSource.ShippingMethod, '--') }}</span>
+            <span>{{ scope.row.ShippingMethod | filterDictionary(remoteSource.ShippingMethod, '-') }}</span>
           </template>
         </el-table-column>
 
@@ -168,7 +168,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '--') }}</span>
+            <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '-') }}</span>
           </template>
         </el-table-column>
 
@@ -181,7 +181,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.OrderType | filterDictionary(remoteSource.OrderType, '--') }}</span>
+            <span>{{ scope.row.OrderType | filterDictionary(remoteSource.OrderType, '-') }}</span>
           </template>
         </el-table-column>
 
@@ -238,7 +238,7 @@
     </PeaceDialog>
 
     <PeaceDialog title="订单详情"
-                 width="800px"
+                 width="1000px"
                  v-if="dialog2.visible"
                  v-bind:visible.sync="dialog2.visible">
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>

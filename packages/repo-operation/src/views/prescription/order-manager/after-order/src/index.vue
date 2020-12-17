@@ -119,7 +119,7 @@
     </PeaceDialog>
 
     <PeaceDialog title="订单详情"
-                 width="800px"
+                 width="1000px"
                  v-if="dialog2.visible"
                  v-bind:visible.sync="dialog2.visible">
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>

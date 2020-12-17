@@ -1,17 +1,5 @@
 <template>
   <div class="relative">
-    <div class="absolute flex items-center justify-center"
-         style="right: 20px;
-                width: 108px;
-                height: 34px;
-                background: rgba(48, 153, 166, 0.1);
-                border-radius: 4px;"
-         plain
-         type="primary">
-      <span class="text-body2 text-primary text-weight-medium">
-        {{ data.OrderStatus | formatDictionary(source.OrderStatus) }}
-      </span>
-    </div>
 
     <!-- 订单信息 -->
     <div class="q-mb-lg">
@@ -21,38 +9,62 @@
 
       <div class="content q-gutter-x-xl q-gutter-y-sm">
         <div class="row">
-          <div class="col-6">
-            <span>订单来源</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.MedicalInstitutionName }}</span>
+          <div class="col-4">
+            <span class="label-text">订单来源</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.MedicalInstitutionName }}</span>
           </div>
-          <div class="col-6">
-            <span>订单单号</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.OrderId }}</span>
+          <div class="col-4">
+            <span class="label-text">订单状态</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.OrderStatus | formatDictionary(source.OrderStatus) }}</span>
+          </div>
+          <div class="col-4">
+            <span class="label-text">流转状态</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.SendWarehouseStatus | formatDictionary(source.SendWarehouseStatus) }}</span>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-6">
-            <span>处方类型</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.OrderType | formatDictionary(source.OrderType, '--')  }}</span>
+          <div class="col-4">
+            <span class="label-text">医院订单编号</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.CustOrderKey || '-' }}</span>
           </div>
 
-          <div class="col-6">
-            <span>取货方式</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
+          <div class="col-4">
+            <span class="label-text">平台订单编号</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.OrderId }}</span>
+          </div>
+
+          <div class="col-4">
+            <span class="label-text">物流订单编号</span>
+            <span class="label-text">：</span>
+            <span class="label-value logistics-code">{{ data.LogisticsCodes.length === 0 ? '-':data.LogisticsCodes.join(',')}}</span>
           </div>
 
         </div>
 
         <div class="row">
-          <div class="col-6">
-            <span>下单时间</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.CreateTime }}</span>
+
+          <div class="col-4">
+            <span class="label-text">处方类型</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.OrderType | formatDictionary(source.OrderType, '-')  }}</span>
+          </div>
+
+          <div class="col-4">
+            <span class="label-text">取货方式</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
+          </div>
+
+          <div class="col-4">
+            <span class="label-text">下单时间</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.CreateTime }}</span>
           </div>
 
         </div>
@@ -67,7 +79,7 @@
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">客户信息</span>
       </div>
 
-      <div class="content">
+      <div class="content label-text">
         <span class="q-mr-md">{{ data.UserName }}</span>
         <span class="q-mr-md">{{ data.UserPhone }}</span>
         <span class="q-mr-md">{{ data.Detailed }}</span>
@@ -82,7 +94,12 @@
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">药店信息</span>
       </div>
 
-      <div class="content">
+      <div class="content store-info">
+        <div class="store-logo">
+          <img v-if="data.DrugStoreLogo"
+               class="store-logo-img"
+               :src="data.DrugStoreLogo" />
+        </div>
         <span class="q-mr-md">{{ data.DrugStoreName }}</span>
       </div>
     </div>
@@ -97,9 +114,9 @@
 
       <div class="content">
         <div class="q-mb-md">
-          <span>商品件数</span>
-          <span>:</span>
-          <span>{{ data.TotalNumber }}</span>
+          <span class="label-text">商品件数</span>
+          <span class="label-text">:</span>
+          <span class="label-text">{{ data.TotalNumber }}</span>
         </div>
 
         <peace-table v-bind:data="data.OrderDetail">
@@ -129,83 +146,87 @@
       <div class="content q-gutter-x-xl q-gutter-y-sm">
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify">支付方式</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.PayMode | formatDictionary(source.PayMode) }}</span>
+            <span class="em-5-justify label-text">支付方式</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.PayMode | formatDictionary(source.PayMode) }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify">支付状态</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.IsPay ? '已支付' : '未支付' }}</span>
+            <span class="em-5-justify label-text">支付状态</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.IsPay ? '已支付' : '未支付' }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify">支付时间</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.PayTime ? data.PayTime : '--'  }}</span>
+            <span class="em-5-justify label-text">支付时间</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.PayTime ? data.PayTime : '-'  }}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <span class="em-5-justify label-text">药品总金额</span>
+            <span class="label-text">：</span>
+            <span class="label-value">￥{{ data.TotalAmoun_Yuan }}</span>
+          </div>
+          <div class="col-4">
+            <span class="em-5-justify label-text">订单总金额</span>
+            <span class="label-text">：</span>
+            <span class="label-value">￥{{ data.OrderAmount }}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <span class="em-5-justify label-text">配送费</span>
+            <span class="label-text">：</span>
+            <span class="label-value">￥{{ data.Freight_Yuan }}</span>
+          </div>
+          <div class="col-4">
+            <span class="em-5-justify label-text">满减优惠</span>
+            <span class="label-text">：</span>
+            <span class="label-value">￥{{ data.PromotionsCut_Yuan }}</span>
           </div>
         </div>
 
         <div class="row">
           <div class="col-12">
-            <span class="em-5-justify">流水号</span>
-            <span>：</span>
-            <span class="text-grey-6">{{ data.PaySerialNumber }}</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4">
-            <span class="em-5-justify">药品总金额</span>
-            <span>：</span>
-            <span class="text-grey-6">￥{{ data.TotalAmoun_Yuan }}</span>
-          </div>
-          <div class="col-4">
-            <span class="em-5-justify">满减优惠</span>
-            <span>：</span>
-            <span class="text-grey-6">￥{{ data.PromotionsCut_Yuan }}</span>
-          </div>
-          <div class="col-4">
-            <span class="em-5-justify">配送费</span>
-            <span>：</span>
-            <span class="text-grey-6">￥{{ data.Freight_Yuan }}</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4">
-            <span class="em-5-justify">订单金额</span>
-            <span>：</span>
-            <span class="text-grey-6">￥{{ data.OrderAmount }}</span>
-          </div>
-          <div class="col-4">
-            <span class="em-5-justify">商保抵扣</span>
-            <span>：</span>
-            <span class="text-grey-6"
-                  v-if="data.SbDetails">￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
-            <span class="text-grey-6"
-                  v-else>
-              --
-            </span>
-          </div>
-          <div class="col-4">
-            <span class="em-5-justify">医保抵扣</span>
-            <span>：</span>
-            <span class="text-grey-6"
+            <span class="em-5-justify label-text">医保抵扣</span>
+            <span class="label-text">：</span>
+            <span class="label-value"
                   v-if="data.YbDetails">￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
-            <span class="text-grey-6"
+            <span class="label-value"
                   v-else>
-              --
+              -
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <span class="em-5-justify label-text">商保抵扣</span>
+            <span class="label-text">：</span>
+            <span class="label-value"
+                  v-if="data.SbDetails">￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
+            <span class="label-value"
+                  v-else>
+              -
             </span>
           </div>
         </div>
 
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify">实付金额</span>
-            <span>：</span>
-            <span class="text-grey-6">￥{{ data.PayAmount }}</span>
+            <span class="em-5-justify label-text">实付金额</span>
+            <span class="label-text">：</span>
+            <span class="label-value">￥{{ data.PayAmount }}</span>
+          </div>
+          <div class="col-8">
+            <span class="em-5-justify label-text">流水号</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.PaySerialNumber || '-' }}</span>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -383,6 +404,9 @@ export default {
       return (sign ? '' : '-') + value + '.' + cents
     }
   },
+  async mounted() {
+    this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
+  },
 
   data() {
     return {
@@ -405,6 +429,8 @@ export default {
         ],
         // 订单状态 => 见 watch 'data.ShippingMethod'
         OrderStatus: [],
+        // 流转状态 => 见 created 获取字典
+        SendWarehouseStatus: [],
         PayMode: [
           { label: '在线支付', value: 1 },
           { label: '到店支付', value: 2 },
@@ -458,6 +484,8 @@ export default {
 .before-vertical-line {
   display: flex;
   align-items: center;
+  font-size: 16px;
+  color: #000;
 
   &::before {
     content: ' ';
@@ -468,6 +496,47 @@ export default {
     background: var(--q-color-primary);
     margin: 0 10px 0 0;
   }
+}
+
+.logistics-code {
+  display: inline-block;
+  width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.label-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.label-value {
+  font-size: 14px;
+  color: #666;
+}
+
+.store-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #333;
+}
+
+.store-logo {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+.store-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  // object-fit: contain;
 }
 
 .el-timeline {
