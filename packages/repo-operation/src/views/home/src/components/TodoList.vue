@@ -4,8 +4,9 @@
     <div class="list-container">
       <p class="text-style cursor-pointer"
          v-for="(item,index) in dataList"
-         v-bind:key="index">
-        {{ item }}
+         v-bind:key="index"
+         v-on:click='startDosomething(item.menuRoutes)'>
+        【{{ item.description }}】<span class="text-red">{{item.count}}</span>条数据待处理
       </p>
       <p class="text-style"
          v-if="!dataList.length">
@@ -38,6 +39,16 @@ export default {
       immediate: true,
       deep: true
     }
+  },
+  methods: {
+    async startDosomething(routes) {
+      const menus = await Peace.identity.auth.getAccountMenu()
+      const menuRoute = menus.find((item) => item.id == routes[0].menuId)?.menuRoute
+
+      if (menuRoute) {
+        this.$router.push(menuRoute)
+      }
+    }
   }
 }
 </script>
@@ -63,14 +74,12 @@ export default {
 
   .list-container {
     margin: 10px 0;
-
-    ::before {
-      content: '●';
-    }
-
     .text-style {
       font-size: 14px;
       color: var(--q-color-grey-999) !important;
+    }
+    .text-red {
+      color: #ff344d;
     }
   }
 }

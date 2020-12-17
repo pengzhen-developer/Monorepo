@@ -82,7 +82,10 @@ export default {
   methods: {
     // 获取待办事项列表
     getTodoList() {
-      return Service.getSchedule().then((res) => {
+      const params = {
+        controlledType: 'operation-business-todo'
+      }
+      return Service.getControlledMenuList(params).then((res) => {
         this.todoList = res.data
       })
     },
