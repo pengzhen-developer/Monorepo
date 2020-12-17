@@ -115,7 +115,7 @@
         <div class="dl-packet"
              v-if="page.tabIndex == '1'">
           <div class="dt">配送费 ：</div>
-          <div class="dd money">￥{{order.OperaShippingFee.toFixed(2)}}</div>
+          <div class="dd money">{{order.OperaShippingFee}}</div>
         </div>
         <template v-if="canShowDiscount">
           <div class="line"></div>
@@ -896,6 +896,7 @@ export default {
     padding: 0;
     /deep/.van-field__control {
       width: 6em;
+      color: #666;
     }
     /deep/.van-field__label,
     /deep/.van-field__value {
