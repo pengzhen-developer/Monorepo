@@ -10,8 +10,8 @@
         <el-form-item label="是否收费：">
           <el-radio-group v-model="model.Shipping"
                           :change="chargeChange()">
-            <el-radio v-bind:label=0>否</el-radio>
-            <el-radio v-bind:label=1>是</el-radio>
+            <el-radio v-bind:label=1>否</el-radio>
+            <el-radio v-bind:label=2>是</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -115,7 +115,7 @@ export default {
 
       model: {
         ID: 0,
-        Shipping: 0, //是否收费，0 免费配送 1 收费
+        Shipping: 1, //是否收费，1 免费配送 2 收费
         ChargeType: 0, //收费方式， 0 在线支付  1货到付款
         CalculationType: 0, //费用计算方式，  0 固定配送费 1 满减   2 快递公司自取
         FixedShippingFee: '', //固定配送费
@@ -165,8 +165,7 @@ export default {
 
     //是否收费选中监听
     chargeChange() {
-      console.log(this.model.Shipping)
-      this.isCharge = this.model.Shipping == 1
+      this.isCharge = this.model.Shipping == 2
     },
 
     //收费方式选中监听
