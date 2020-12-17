@@ -190,8 +190,8 @@
                   <div class="text-center">
                     <el-button type="text"
                                v-on:click="gotoPharmacyOrderDetail(scope.row)">订单详情</el-button>
-                    <!-- <el-button type="text"
-                               v-on:click="gotoPrescriptionDetail(scope.row)">处方详情</el-button> -->
+                    <el-button type="text"
+                               v-on:click="gotoPrescriptionDetail(scope.row)">处方详情</el-button>
                   </div>
                 </div>
               </div>
@@ -407,7 +407,7 @@ export default {
     gotoPrescriptionDetail(row) {
       // TODO
       // 带优化项，参数应该使用 route/:id 形式传递，因标签页问题，暂时使用缓存处理
-      Peace.cache.sessionStorage.set('6-6-99-JZTClaimNo', row.JZTClaimNo)
+      Peace.cache.sessionStorage.set('6-6-99-OrderId', row.OrderId)
 
       const menu = this.provideGetTab('处方详情')
       this.provideAddTab(menu)

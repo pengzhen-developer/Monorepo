@@ -112,9 +112,9 @@
           <span class="title text-subtitle1">订单详情</span>
         </div>
         <div>
-          <!-- <el-button plain
+          <el-button plain
                      type="primary"
-                     v-on:click="gotoPrescriptionDetail">查看处方</el-button> -->
+                     v-on:click="gotoPrescriptionDetail">查看处方</el-button>
         </div>
       </div>
 
@@ -474,7 +474,7 @@ export default {
     gotoPrescriptionDetail() {
       // TODO
       // 带优化项，参数应该使用 route/:id 形式传递，因标签页问题，暂时使用缓存处理
-      Peace.cache.sessionStorage.set('6-6-99-JZTClaimNo', this.model.JZTClaimNo)
+      Peace.cache.sessionStorage.set('6-6-99-OrderId', this.model.OrderId)
 
       const menu = this.provideGetTab('处方详情')
       this.provideAddTab(menu)
