@@ -116,7 +116,8 @@
             <el-button type="text"
                        v-on:click="showOrderRecord(scope.row)">订单流转日志</el-button>
 
-            <el-button type="text"
+            <el-button v-if="scope.row.CirculationStatus == 2"
+                       type="text"
                        v-on:click="showSyncOrder(scope.row)">同步订单</el-button>
 
           </template>
