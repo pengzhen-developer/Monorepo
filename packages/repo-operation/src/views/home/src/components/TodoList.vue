@@ -43,7 +43,8 @@ export default {
   methods: {
     async startDosomething(routes) {
       const menus = await Peace.identity.auth.getAccountMenu()
-      const menuRoute = menus.find((item) => item.id == routes[0].menuId)?.menuRoute
+      const menuId = routes.find((route) => route.routeType == 1)?.menuId
+      const menuRoute = menus.find((item) => item.id == menuId)?.menuRoute
 
       if (menuRoute) {
         this.$router.push(menuRoute)
