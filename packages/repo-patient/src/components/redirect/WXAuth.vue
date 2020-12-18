@@ -67,7 +67,7 @@ export default {
     /**
      * step 1，验证跳转参数是否合法
      *
-     *      参数 channelId / netHospitalId 必须同时存在或者同时不存在
+     *      参数 channelId / netHospitalId 必须同时存在或者同时不存在或者处于 H5 环境下channelId可以不存在，
      *      参数 code / codeType 必须同时存在或者同时不存在
      *      参数 code 必须未被使用过
      */
@@ -77,8 +77,9 @@ export default {
       const NETHOSPITALID = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       const code = peace.util.queryUrlParam('code')
       const codeType = peace.util.queryUrlParam('codeType')
-
-      if (!((CHANNELID && NETHOSPITALID) || (!CHANNELID && !NETHOSPITALID))) {
+      const UA = window.navigator.userAgent.toLowerCase()
+      var SOURCE = UA.match(/MicroMessenger/i) !== 'micromessenger' ? 'h5' : 'gzh'
+      if (!((CHANNELID && NETHOSPITALID) || (!CHANNELID && !NETHOSPITALID) || (SOURCE == 'h5' && NETHOSPITALID))) {
         peace.util.alert('渠道参数异常，请退出后重新访问')
 
         return false
@@ -172,7 +173,7 @@ export default {
         .post('/wap/v1/Account/wxAuth', {
           code: peace.util.queryUrlParam('code')
         })
-        .then(res => {
+        .then((res) => {
           peace.cache.set(peace.type.SYSTEM.WX_AUTH_PLATEFORM_OPEN_ID, res.data.openId)
         })
         .finally(() => {
@@ -186,7 +187,7 @@ export default {
         .post('/wap/v1/Account/wxAuth', {
           otherCode: peace.util.queryUrlParam('code')
         })
-        .then(res => {
+        .then((res) => {
           peace.cache.set(peace.type.SYSTEM.WX_AUTH_CHANNEL_OPEN_ID, res.data.openId)
         })
         .finally(() => {
@@ -203,7 +204,7 @@ export default {
 
     /** 渠道微信授权，授权完成后，会重定向，在 url 参数通过 codeType === channel 判断是渠道微信授权 */
     wxChannelAuth() {
-      peace.http.post('/wap/v1/Account/getAppId').then(res => {
+      peace.http.post('/wap/v1/Account/getAppId').then((res) => {
         const prefix = window.location.href.split('&split=1')[0]
         const url = encodeURIComponent(prefix + '&split=1&codeType=channel')
         peace.wx.auth(res.data.appId, url)

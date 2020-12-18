@@ -5,27 +5,25 @@ const state = {
 }
 
 const getters = {
-  appointList: state => {
+  appointList: (state) => {
     return state.appointList
   },
-  loaded: state => {
+  loaded: (state) => {
     return state.loaded
   }
 }
 const mutations = {
   setList(state, params) {
     state.appointList = params
-    console.log('setList', state.appointList)
   },
   setLoaded(state, params) {
     state.loaded = params
-    console.log('setList', state.appointList)
   }
 }
 const actions = {
   getList(context) {
-    $peace.service.patient.getOrderList({}).then(res => {
-      res.data.list.map(item => {
+    $peace.service.patient.getOrderList({}).then((res) => {
+      res.data.list.map((item) => {
         //   item.time =  15 * 60 * 1000;
         if (item.orderType == 'register') {
           if (item.orderExpireTime > item.currentTime) {
@@ -33,10 +31,7 @@ const actions = {
           }
         } else if (item.orderType == 'inquiry') {
           let inquiryInfo = item.inquiryInfo
-          let expireTime =
-            inquiryInfo.inquiryStatus == 1
-              ? inquiryInfo.orderExpireTime
-              : inquiryInfo.orderReceptTime
+          let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
           if (expireTime > inquiryInfo.currentTime) {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }

@@ -480,6 +480,7 @@ export default {
   activated() {
     this.getDrugOrderDetail()
   },
+
   methods: {
     callPhone() {
       this.phoneDialog.visible = true

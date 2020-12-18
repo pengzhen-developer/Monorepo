@@ -25,27 +25,32 @@ export function getImlist() {
  */
 export function initNIMS(info) {
   if (info && info.type == 'delete') {
-    $peace.NIMS[info.accid].im.disconnect()
-    delete $peace.NIMS[info.accid]
+    $peace.config.system.NIMS[info.accid].im.disconnect()
+    delete $peace.config.system.NIMS[info.accid]
     return
   }
 
   peace.service.IM.getImlist().then((res) => {
     let list = res.data
 
-    $peace.NIMS = {}
     list.map((item, index) => {
-      $peace.NIMS[item.accid] = {
-        im: peace.service.IM.initNIM(item, index),
-        sessions: []
+      if ($peace.config.system.NIMS[item.accid] && $peace.config.system.NIMS[item.accid].im) {
+        if (!$peace.config.system.NIMS[item.accid].im.isConnected()) {
+          $peace.config.system.NIMS[item.accid].im.connect()
+        }
+      } else {
+        $peace.config.system.NIMS[item.accid] = {
+          im: peace.service.IM.initNIM(item, index),
+          sessions: []
+        }
       }
     })
-    Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
+    Store.commit('inquiry/setInquirySessionsFamily', $peace.config.system.NIMS)
 
     // 更新服务提醒
     Store.dispatch('inquiry/getServiceRemind')
 
-    return $peace.NIMS
+    return $peace.config.system.NIMS
   })
 }
 export function initNIM(args) {
@@ -71,7 +76,7 @@ export function initNIM(args) {
     // 系统通知
     oncustomsysmsg: peace.service.IM.onSysmsg
   }
-  if (!$peace.NIMS[account]) {
+  if (!$peace.config.system.NIMS[account]) {
     // 初始化 IM
     nim = NIM.getInstance({
       appKey,
@@ -88,9 +93,9 @@ export function initNIM(args) {
     })
   } else {
     // 更新 IM
-    $peace.NIMS[account].disconnect()
-    $peace.NIMS[account].setOptions({ appKey, account, token })
-    $peace.NIMS[account].connect()
+    $peace.config.system.NIMS[account].disconnect()
+    $peace.config.system.NIMS[account].setOptions({ appKey, account, token })
+    $peace.config.system.NIMS[account].connect()
   }
   return nim
 }
@@ -143,7 +148,7 @@ export function onDisConnect(disConnectObject) {
 
       // 登录被 T 出，跳转错误页
       $peace.$router.replace(peace.config.system.errorPage)
-      window.location.reload()
+      // window.location.reload()
       break
     case 'logout':
       //删除家人，主动断联IM
@@ -298,8 +303,8 @@ export function onSysmsg(message) {
  * @param {*} session
  */
 export function setInquirySessions(sessions, account) {
-  const currrentSession = $peace.NIMS[account].sessions
-  const serializationSessions = $peace.NIMS[account].im.mergeSessions(currrentSession, sessions)
+  const currrentSession = $peace.config.system.NIMS[account].sessions
+  const serializationSessions = $peace.config.system.NIMS[account].im.mergeSessions(currrentSession, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [待接诊] 与 [已取消] 与 [医生未接诊直接退诊] 与 [医生未接诊系统直接退诊（超时）] 数据
@@ -334,8 +339,8 @@ export function setInquirySessions(sessions, account) {
       }
     }
   }
-  $peace.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
-  Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
+  $peace.config.system.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
+  Store.commit('inquiry/setInquirySessionsFamily', $peace.config.system.NIMS)
 }
 
 /**
@@ -365,7 +370,7 @@ export function resetInquirySession() {
  * @param {*} message
  */
 export function setInquirySessionMessages(messages, account) {
-  const serializationMessages = $peace.NIMS[account].im.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
+  const serializationMessages = $peace.config.system.NIMS[account].im.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
   Store.commit('inquiry/setInquirySessionMessages', deserializationMessages)

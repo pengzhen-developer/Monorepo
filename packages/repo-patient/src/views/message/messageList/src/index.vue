@@ -12,8 +12,22 @@
       <template>
         <div class="header">
           <div class="header-left"
-               :class="{'active':canShowInput}"
-               v-html="inquiryStatusText"></div>
+               :class="{'active':canShowInput}">
+            <span>{{inquiryStatusText}}</span>
+            <van-count-down :time="countDownTime"
+                            v-if="inquiryStatus==Constant.INQUIRY_STATUS.问诊中">
+              <template #default="timeData">
+                <span class="text-gery"
+                      v-if="countDownTime>=1000*60*60">(<span class="text-red">{{timeData.hours}}小时</span>后结束)</span>
+                <span class="text-gery"
+                      v-else-if="countDownTime<1000*60">(<span class="text-red">1分钟</span>后结束)</span>
+                <span class="text-gery"
+                      v-else>(<span class="text-red">{{timeData.minutes}}分钟</span>后结束)</span>
+
+              </template>
+
+            </van-count-down>
+          </div>
           <div class="header-right"
                v-if="canShowPhoneBox"
                @click="callPhone">
@@ -175,6 +189,9 @@ export default {
           phone: ''
         }
       },
+
+      countDownTime: 0,
+      Constant: Constant,
       showTimeDic: {
         710: true, // 接诊
         731: true, // 审核处方通过
@@ -388,6 +405,7 @@ export default {
         this.infoData = res.data.list[0].inquiryInfo
         this.phoneDialog.data.phone = res.data.list[0].inquiryInfo.phoneNumber
         this.checkFamilyIsInFlamilyList()
+        this.countDownTime = new Date(this.infoData.expireTime) - new Date() - peace.config.system.timeDifference
       })
     },
     //获取历史会话问诊状态、医生信息、患者信息及5个按钮是否展示
@@ -422,7 +440,7 @@ export default {
         }
 
         historyMessageFormatHandler(res.data.msgList)
-        if (res.data.inquiryStatus == '4' || res.data.inquiryStatus == '5') {
+        if (res.data.inquiryStatus == Constant.INQUIRY_STATUS.已退诊 || res.data.inquiryStatus == Constant.INQUIRY_STATUS.已完成) {
           this.getInfoData(res.data.inquiryId)
         }
         this.internalData = res.data.msgList
@@ -654,7 +672,16 @@ export default {
   }
 }
 </script>
-
+<style lang="scss" scoped>
+.text-gery {
+  color: $gary;
+  font-size: 12px;
+}
+.text-red {
+  color: $red;
+  font-size: 12px;
+}
+</style>
 <style lang="scss">
 @import './assets/style.scss';
 .message-header {
@@ -683,6 +710,8 @@ export default {
     color: #000;
     padding-left: 12px;
     position: relative;
+    display: flex;
+    align-items: center;
     &.active {
       &::before {
         background: $primary;

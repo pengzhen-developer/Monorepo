@@ -46,6 +46,30 @@ const netHospitalId = peace.util.queryUrlParam('netHospitalId')
  */
 const doctorId = peace.util.queryUrlParam('doctorId')
 const isEwm = peace.util.queryUrlParam('isEwm')
+
+/**
+ * 处方详情
+ * prescribeId
+ */
+const prescribeId = peace.util.queryUrlParam('prescribeId')
+/**
+ * 购药订单详情-预约挂号详情
+ * orderNo
+ * orderType
+ */
+const orderNo = peace.util.queryUrlParam('orderNo')
+const orderType = peace.util.queryUrlParam('orderType')
+/**
+ * 咨询-复诊详情
+ * prescribeId
+ */
+const inquiryId = peace.util.queryUrlParam('inquiryId')
+/**
+ *
+ * H5支付 回调标识 用以刷新订单详情
+ * tradeType
+ */
+const tradeType = peace.util.queryUrlParam('tradeType')
 export default {
   data() {
     return {
@@ -58,8 +82,18 @@ export default {
         inquiry: '/components/doctorList',
         /** 我的处方 */
         prescription: '/components/theRecipeList',
-        // 医生主页
-        doctorDetail: '/components/doctorDetail'
+        /** 医生主页 */
+
+        doctorDetail: '/components/doctorDetail',
+        /** 处方详情 */
+
+        prescriptionDetail: '/components/theRecipe',
+        /** 购药订单详情 */
+        medicineOrderDetail: '/order/userDrugDetail',
+        /** 复诊-咨询订单详情 */
+        visitOrderDetail: '/setting/userConsultDetail',
+        /** 挂号订单详情 */
+        registerDetail: ' /setting/order/userOrderDetail'
       }
     }
   },
@@ -85,8 +119,15 @@ export default {
         return false
       }
 
-      if (!((channelId && netHospitalId) || (!channelId && !netHospitalId))) {
-        peace.util.alert('参数异常')
+      // if (!((channelId && netHospitalId) || (!channelId && !netHospitalId))) {
+      //   peace.util.alert('参数异常')
+
+      //   return false
+      // }
+      const UA = window.navigator.userAgent.toLowerCase()
+      var SOURCE = UA.match(/MicroMessenger/i) !== 'micromessenger' ? 'h5' : 'gzh'
+      if (!((channelId && netHospitalId) || (!channelId && !netHospitalId) || (SOURCE == 'h5' && netHospitalId))) {
+        peace.util.alert('渠道参数异常，请退出后重新访问')
 
         return false
       }
@@ -104,42 +145,61 @@ export default {
           const json = peace.util.encode({
             netHospitalId: netHospitalId
           })
-          
+
           this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
         } else {
           this.$router.replace(`${this.redirectMap[redirectKey]}`)
         }
-      }
-
-      if (redirectKey === 'registered') {
+      } else if (redirectKey === 'registered') {
         const json = peace.util.encode({
           id: 'appointment',
           netHospitalId: netHospitalId
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
-      }
-
-      if (redirectKey === 'inquiry') {
+      } else if (redirectKey === 'inquiry') {
         const json = peace.util.encode({
           netHospitalId: netHospitalId
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
-      }
-
-      if (redirectKey === 'prescription') {
+      } else if (redirectKey === 'prescription') {
         const json = peace.util.encode({
           netHospitalId: netHospitalId
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
-      }
-
-      if (redirectKey === 'doctorDetail') {
+      } else if (redirectKey === 'doctorDetail') {
         const json = peace.util.encode({
           doctorId,
           isEwm
+        })
+
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      } else if (redirectKey === 'prescriptionDetail') {
+        const json = peace.util.encode({
+          prescribeId
+        })
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      } else if (redirectKey === 'medicineOrderDetail') {
+        const json = peace.util.encode({
+          orderNo,
+          tradeType
+        })
+
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      } else if (redirectKey === 'visitOrderDetail') {
+        const json = peace.util.encode({
+          inquiryId,
+          tradeType
+        })
+
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      } else if (redirectKey === 'registerDetail') {
+        const json = peace.util.encode({
+          orderNo,
+          orderType,
+          tradeType
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
@@ -149,9 +209,11 @@ export default {
     // 清除缓存
     removeCache() {
       // 渠道发生变化（平台 < - > 渠道），清除登录信息，需要重新进行登录并授权
+      // 非微信环境不区分渠道
+      const UA = window.navigator.userAgent.toLowerCase()
       if (
-        peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId ||
-        peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) !== netHospitalId
+        UA.match(/MicroMessenger/i) == 'micromessenger' &&
+        (peace.cache.get(peace.type.SYSTEM.CHANNELID) !== channelId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)) !== netHospitalId
       ) {
         peace.cache.remove(peace.type.USER.INFO)
         peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)

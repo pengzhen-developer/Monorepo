@@ -163,10 +163,7 @@ export default {
   },
 
   created() {
-    this.validateWxAuth()
-
     this.restoreUserInfo()
-
     // 待优化项
     // 当系统初始化时，App.vue 优先于 Component.vue 执行
     // 当访问系统入口 Redirect.vue 时
@@ -175,10 +172,20 @@ export default {
     setTimeout(() => {
       this.initNIM()
       this.initShareConfig()
+      this.getSystemInfo()
     }, 1000)
   },
 
   methods: {
+    getSystemInfo() {
+      peace.service.login.getInfo().then((res) => {
+        if (res.data.timestamp) {
+          peace.config.system.timeDifference = new Date().getTime() - res.data.timestamp
+        } else {
+          peace.config.system.timeDifference = 0
+        }
+      })
+    },
     initShareConfig() {
       let url = location.href.split('#')[0]
       peace.service.index.getWXSign({ url: url }).then((res) => {
@@ -196,12 +203,6 @@ export default {
           }
         })
       })
-    },
-    validateWxAuth() {
-      // 当前页面是中转页，不需要验证授权（系统在中转页进行授权逻辑）
-      if (this.$route.path === '/' || this.$route.path === '/redirect') {
-        return true
-      }
     },
 
     restoreUserInfo() {
@@ -251,7 +252,8 @@ export default {
 
 <style lang="scss" scoped>
 #app {
-  height: 100vh;
+  // height: 100vh;
+  height: 100%;
 }
 </style>
 

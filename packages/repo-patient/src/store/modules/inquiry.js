@@ -90,7 +90,8 @@ const actions = {
       let params = {
         p: 1,
         size: 10,
-        hideLoad: true
+        hideLoad: true,
+        tag: 'yz'
       }
       peace.http
         .post('client/v1/notice/getMsgList', params, {

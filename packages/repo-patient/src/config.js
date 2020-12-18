@@ -13,7 +13,15 @@ export const config = {
      * 系统标题
      */
     title: '互联网医院',
+    /**
+     * 系统时间与本地时间差
+     */
+    timeDifference: 0,
 
+    /**
+     *IM实例集合
+     */
+    NIMS: {},
     /**
      * 微信授权
      */

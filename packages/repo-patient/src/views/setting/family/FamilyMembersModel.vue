@@ -664,9 +664,6 @@ export default {
       if (!this.model.birthday) {
         return peace.util.alert('请选择出生日期')
       }
-      if (!this.model.nationName) {
-        return peace.util.alert('请选择民族')
-      }
       if (this.addGardian) {
         let gardianAge = this.getAgeByIdCard(this.model.idcard)
         if (gardianAge < 18) {

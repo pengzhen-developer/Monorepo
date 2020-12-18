@@ -39,6 +39,17 @@ export function getOPenIdByCode(params) {
   return peace.http.post(getOPenIdByCode, params)
 }
 
+/**
+ * 获取系统信息
+ *
+ * @export
+ * @returns
+ */
+export function getInfo() {
+  const getInfo = 'client/base/config/getInfo'
+
+  return peace.http.get(getInfo)
+}
 
 export default {
   /** 发送验证码 */
@@ -46,5 +57,7 @@ export default {
   /** 登录 */
   login,
   /** 获取openID 登录授权 */
-  getOPenIdByCode
+  getOPenIdByCode,
+  /** 获取系统信息 */
+  getInfo
 }

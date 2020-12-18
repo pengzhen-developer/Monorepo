@@ -79,9 +79,15 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
       .then((res) => {
         if (res.code === 200) {
           let data = res.data
-          if (data) {
-            payInvoke(data, paySuc, payCancel)
+
+          for (const key in $peace.config.system.NIMS) {
+            if (Object.hasOwnProperty.call($peace.config.system.NIMS, key)) {
+              const element = $peace.config.system.NIMS[key]
+              element.im.destroy()
+            }
           }
+
+          window.location.href = data.mwebUrl
         }
       })
       .catch((res) => {
@@ -100,8 +106,6 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
 
 export function auth(appId, redirectUrl) {
   let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect`
-  // alert(url);
-  // window.location.href = url
   window.location.replace(url)
 }
 export default {

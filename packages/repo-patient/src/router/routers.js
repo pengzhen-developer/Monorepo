@@ -44,7 +44,8 @@ const routers = [
       }
     },
     component: () => {
-      if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && $peace.cache.get($peace.type.SYSTEM.CHANNELID)) {
+      // if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && $peace.cache.get($peace.type.SYSTEM.CHANNELID)) {
+      if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID)) {
         return import('@src/views/hospital/HospitalHome.vue')
       } else {
         return import('@src/views/home/index.vue')
