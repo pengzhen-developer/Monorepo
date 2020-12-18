@@ -49,9 +49,9 @@
               </div>
             </el-button>
           </div>
-          <div class="q-editor__toolbar-group">
+          <div v-if="inquiryType === 'video'"
+               class="q-editor__toolbar-group">
             <el-button type="text"
-                       v-if="inquiryType === 'video'"
                        v-on:click="sendVideo">
               <div class="flex items-center">
                 <img class="q-mr-xs"
