@@ -313,6 +313,7 @@ export default {
       loading: true,
       doctorInfo: {},
       familyInfo: {},
+      insuranceConfig: {},
       imagePreview: {
         visible: false,
         position: 0,
@@ -588,6 +589,7 @@ export default {
         .then((res) => {
           this.doctorInfo = res.data.doctorInfo
           this.familyInfo = res.data.familyInfo
+          this.insuranceConfig = res.data.insuranceConfig
         })
         .finally(() => {
           this.loading = false
