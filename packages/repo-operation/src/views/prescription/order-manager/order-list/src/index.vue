@@ -293,7 +293,7 @@
             {{ scope.row.BatchNumber || '--' }}
           </template>
         </el-table-column>
-        <el-table-column prop="TotalNumber"
+        <el-table-column prop="DrugNumber"
                          label="数量"
                          align="center"
                          min-width="70px">
