@@ -270,7 +270,6 @@
                      @click="showPopupNations"
                      label="民族"
                      placeholder="请输入"
-                     required
                      right-icon="arrow"
                      v-model="model.nationName" />
         </template>

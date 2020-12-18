@@ -44,6 +44,7 @@
                        right-icon="arrow"
                        v-model="model.birthday" />
             <van-field @click="showPopupNations"
+                       class="require--not"
                        label="民族"
                        placeholder="请输入"
                        readonly
@@ -440,9 +441,9 @@ export default {
         if (!this.model.birthday) {
           return peace.util.alert('请选择出生日期')
         }
-        if (!this.model.nationName) {
-          return peace.util.alert('请选择民族')
-        }
+        // if (!this.model.nationName) {
+        //   return peace.util.alert('请选择民族')
+        // }
         if (this.age < this.ageLimit) {
           if (!this.model.guardianName) {
             return peace.util.alert('请输入监护人姓名')
@@ -728,12 +729,19 @@ export default {
     }
   }
 }
+.require--not {
+  /deep/.van-field__body {
+    &::before {
+      content: '';
+    }
+  }
+}
 /deep/.van-field__body {
   position: relative;
   padding-left: 30px;
   &::before {
     position: absolute;
-    left: 10px;
+    left: 0;
     top: 0;
     transform: translateY(5px);
     color: #ee0a24;
