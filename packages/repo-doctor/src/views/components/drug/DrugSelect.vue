@@ -319,7 +319,7 @@ export default {
     },
 
     prescriptionTag: {
-      type: Boolean,
+      type: Number,
       default() {
         return 1
       }
@@ -354,6 +354,10 @@ export default {
       this.$emit('input', value)
     },
 
+    prescriptionTag() {
+      this.model.prescriptionTag = this.prescriptionTag
+    },
+
     'model.prescriptionTag'(newValue, oldValue) {
       // 验证安全锁
       if (this.__lockRpCheck !== undefined && this.__lockRpCheck === newValue) {
@@ -376,8 +380,6 @@ export default {
   },
 
   created() {
-    this.model.prescriptionTag = this.prescriptionTag
-
     this.getDictionary()
   },
 

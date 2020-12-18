@@ -235,7 +235,7 @@ export default {
 
   data() {
     return {
-      prescriptionTag: '',
+      prescriptionTag: undefined,
 
       /** 体重 */
       weight: undefined,
