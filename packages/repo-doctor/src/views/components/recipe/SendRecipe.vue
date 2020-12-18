@@ -105,12 +105,13 @@
 
       <div class="q-mb-sm">
         <span class="text-subtitle1 text-weight-bold">处方药品</span>
-        <span class="text-body2 text-grey-5">（最多可添加 5 种药品）</span>
+        <span class="text-body2 text-grey-5"></span>
       </div>
 
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
-                    v-bind:data="drugList"
+                    v-model="drugList"
+                    v-bind:prescriptionTag.sync="prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
@@ -234,6 +235,8 @@ export default {
 
   data() {
     return {
+      prescriptionTag: '',
+
       /** 体重 */
       weight: undefined,
 
@@ -301,34 +304,30 @@ export default {
 
     consultNo() {
       return this.session?.content?.consultInfo?.consultNo
+    },
+
+    familyId() {
+      return this.session?.content?.patientInfo?.familyId
     }
   },
 
   created() {
-    this.resetModel()
-  },
-
-  beforeMount() {
-    this.$nextTick(function() {
-      this.getCase()
-      this.getCommonDiagnosis()
+    Promise.all([this.getCase(), this.getCommonDiagnosis(), this.getPrevInquiry()]).then(() => {
+      this.resetData()
     })
   },
 
   methods: {
-    setModel() {
-      const drugList = this.$refs.drugSelect.getModel()
+    getPrevInquiry() {
+      const params = { familyId: this.familyId }
 
-      const params = {
-        weight: this.weight,
-        drugList: drugList,
-        diagnoseList: this.diagnoseList
-      }
-
-      Peace.cache.sessionStorage.set(this.inquiryNo, params)
+      return Service.getLastInfo(params).then((res) => {
+        this.drugList = res.data.drugList
+        this.prescriptionTag = res.data.prescriptionTag
+      })
     },
 
-    resetModel() {
+    resetData() {
       const recipeCache = Peace.cache.sessionStorage.get(this.inquiryNo)
 
       if (recipeCache) {
@@ -336,14 +335,16 @@ export default {
         this.drugList = recipeCache.drugList
 
         if (this.inquiryNo) {
-          this.diagnoseList = recipeCache.diagnoseList
+          this.diagnoseList = recipeCache.diagnoseList.concat([])
+          this.dialog.chooseData = recipeCache.diagnoseList.concat([])
         } else {
-          const tmp = recipeCache.diagnoseList?.name?.split('|') ?? []
-          this.diagnoseList = tmp.map((item) => {
+          const data = recipeCache.diagnoseList?.name?.split('|') ?? []
+          data.map((item) => {
             item.name = item
             item.code = ''
-            return item
           })
+          this.diagnoseList = data.concat([])
+          this.dialog.chooseData = data.concat([])
         }
       }
     },
@@ -368,37 +369,34 @@ export default {
       }
 
       return Service.getCase(params).then((res) => {
-        this.caseInfo = res.data
-        // 判断是否存在本地缓存数据，如果有本地缓存数据设置成本地缓存的
-        if (this.diagnoseList && this.diagnoseList.length > 0) {
-          this.dialog.chooseData = [...this.diagnoseList]
-        } else {
-          // 获取上一张处方中的诊断， 没有就取病历里面的诊断
-          if (res.data && res.data.newDiagnoseList && res.data.newDiagnoseList.length > 0) {
-            const tmp = res.data.newDiagnoseList.map((item) => {
-              item.name = item.diagnoseName
-              item.code = item.diagnoseCode
-              return item
-            })
+        // 问诊 / 复诊取 [newDiagnoseList]
+        // 会诊取 [diagnose]
+        let data = this.inquiryNo ? res.data.newDiagnoseList : this.consultNo ? res.data.diagnose : []
 
-            this.diagnoseList = tmp
-            this.dialog.chooseData = tmp
-          } else {
-            const tmp = res.data.diagnoseList.map((item) => {
-              item.name = item.diagnoseName
-              item.code = item.diagnoseCode
-              return item
-            })
-
-            this.diagnoseList = tmp
-            this.dialog.chooseData = tmp
-          }
+        if (this.inquiryNo) {
+          data.map((item) => {
+            item.name = item.diagnoseName
+            item.code = item.diagnoseCode
+          })
         }
+
+        if (this.consultNo) {
+          data = data.split('|').map((item) => {
+            return {
+              name: item,
+              code: ''
+            }
+          })
+        }
+
+        this.caseInfo = res.data
+        this.diagnoseList = Peace.util.deepClone(data)
+        this.dialog.chooseData = Peace.util.deepClone(data)
       })
     },
 
     /**
-     * 获取常见断
+     * 获取常见诊断
      *
      */
     getCommonDiagnosis() {
@@ -426,20 +424,19 @@ export default {
      * 发送处方
      */
     send() {
-      const validObject = this.$refs.drugSelect.validModel()
-      const drugList = this.$refs.drugSelect.getModel()
+      const validObject = this.$refs.drugSelect.validDrugList()
 
       if (validObject.isValid === false) {
         return Peace.util.warning(validObject.message)
       }
 
-      if (drugList.length < 1) {
+      if (this.drugList.length < 1) {
         return Peace.util.warning('请添加处方药品')
       }
 
-      if (drugList.some((drug) => drug.drugStatus === 'disable')) {
+      if (this.drugList.some((drug) => drug.drugStatus === 'disable')) {
         return Peace.util.confirm('处方内含有停用药品，是否删除该药品', '提示', { type: 'error' }, () => {
-          this.drugList = drugList.filter((drug) => drug.drugStatus === 'enable')
+          this.drugList = this.drugList.filter((drug) => drug.drugStatus === 'enable')
         })
       }
 
@@ -454,7 +451,7 @@ export default {
           consultNo: this.consultNo,
           diagnose: this.caseInfo.diagnose,
           allergyHistory: this.caseInfo.allergy_history,
-          drugList: drugList
+          drugList: this.drugList
         }
 
         if (this.inquiryNo) {
@@ -528,8 +525,15 @@ export default {
     },
 
     close() {
-      // 处方关闭前，缓存当前处方数据
-      this.setModel()
+      const recipeCache = {
+        weight: this.weight,
+        diagnoseList: this.diagnoseList,
+        drugList: this.drugList
+      }
+
+      if (this.inquiryNo) {
+        Peace.cache.sessionStorage.set(this.inquiryNo, recipeCache)
+      }
 
       this.$emit('close')
     },

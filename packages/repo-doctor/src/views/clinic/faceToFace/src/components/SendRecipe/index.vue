@@ -136,7 +136,7 @@
 
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
-                    v-bind:data="drugList"
+                    v-model="drugList"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
@@ -250,6 +250,30 @@
       </div>
     </peace-dialog>
 
+    <peace-dialog width="500px"
+                  title="库存提示"
+                  v-bind:visible.sync="stock.visible">
+      <div class="q-pa-md">
+        <div class="q-mb-md">
+          <p v-for="(item, index) in stock.data"
+             v-bind:key="index">
+            {{ item }}
+          </p>
+          <p>以上药品不可开具处方！请修改~</p>
+        </div>
+
+        <div class="q-mb-lg">
+          <span>缺货药品已登记，联系电话：</span>
+          <span class="text-primary">{{ stock.operatorContact }}</span>
+        </div>
+
+        <div class="text-center">
+          <el-button type="primary"
+                     v-on:click="stock.visible = false">知道了</el-button>
+        </div>
+      </div>
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -304,6 +328,13 @@ export default {
         allergy_history: []
       },
 
+      /** 库存提示 */
+      stock: {
+        visible: false,
+        operatorContact: '',
+        data: []
+      },
+
       dialog: {
         visible: false,
         chooseData: [],
@@ -335,10 +366,6 @@ export default {
     }
   },
 
-  created() {
-    this.resetModel()
-  },
-
   beforeMount() {
     this.$nextTick(function() {
       this.getCommonDiagnosis()
@@ -359,28 +386,6 @@ export default {
       Service.getBaseInfo(params).then((res) => {
         this.caseInfo = res.data
       })
-    },
-
-    setModel() {
-      const drugList = this.$refs.drugSelect.getModel()
-
-      const params = {
-        weight: this.weight,
-        drugList: drugList,
-        diagnoseList: this.diagnoseList
-      }
-
-      Peace.cache.sessionStorage.set(this.patientInfo.patientNo, params)
-    },
-
-    resetModel() {
-      const recipeCache = Peace.cache.sessionStorage.get(this.patientInfo.patientNo)
-
-      if (recipeCache) {
-        this.weight = recipeCache.weight
-        this.drugList = recipeCache.drugList
-        this.diagnoseList = recipeCache.diagnoseList
-      }
     },
 
     /**
@@ -455,25 +460,23 @@ export default {
         return Peace.util.warning('请输入主诉')
       }
 
-      const validObject = this.$refs.drugSelect.validModel()
-      const drugList = this.$refs.drugSelect.getModel()
+      const validObject = this.$refs.drugSelect.validDrugList()
 
       if (validObject.isValid === false) {
         return Peace.util.warning(validObject.message)
       }
 
-      if (drugList.length < 1) {
+      if (this.drugList.length < 1) {
         return Peace.util.warning('请添加处方药品')
       }
 
-      if (drugList.some((drug) => drug.drugStatus === 'disable')) {
+      if (this.drugList.some((drug) => drug.drugStatus === 'disable')) {
         return Peace.util.confirm('处方内含有停用药品，是否删除该药品', '提示', { type: 'error' }, () => {
-          this.drugList = drugList.filter((drug) => drug.drugStatus === 'enable')
+          this.drugList = this.drugList.filter((drug) => drug.drugStatus === 'enable')
         })
       }
 
       const allergyHistoryString = this.allergyHistory.map((item) => item.name).join(',')
-
       const diagnoseInfos = [...this.diagnoseList].map((item) => {
         return {
           diagnoseCode: item.code,
@@ -482,6 +485,8 @@ export default {
       })
 
       Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
+        this.sending = true
+
         const params = {
           openId: this.docInfo?.openid,
           patientNo: this.caseInfo.patientInfo.patientNo,
@@ -491,22 +496,31 @@ export default {
           allergyHistory: allergyHistoryString,
           baseIllness: this.chiefComplaint,
           diagnoseList: diagnoseInfos,
-          drugList: drugList
+          drugList: this.drugList
         }
-
-        this.sending = true
 
         Service.sendRecipe(params)
           .then((res) => {
-            // 前置审方不合法，显示前置审方审核结果
-            if (res.data.isAdopt === false) {
+            // 缺货提醒
+            if (res.data.stockWarnStatus === 1) {
+              const config = Peace.cache.sessionStorage.get('config')
+              const operatorContact = config?.operatorContact
+
+              this.stock.visible = true
+              this.stock.data = res.data.noticeList
+              this.stock.operatorContact = operatorContact
+            }
+            // 前置审方
+            else if (res.data.isAdopt === false) {
               this.audit.visible = true
               this.audit.data = res.data.result
               this.audit.prescriptionNo = res.data.result.prescriptionNo
-            } else {
-              Peace.cache.sessionStorage.remove(this.patientInfo.patientNo)
+            }
+            // 系统验证成功，发送处方成功
+            else {
               Peace.util.success(res.msg)
-              mutations.setShowWriteRecipe(false)
+
+              this.$emit('close')
             }
           })
           .finally(() => {
@@ -529,7 +543,6 @@ export default {
 
       Service.confirmSend(params)
         .then((res) => {
-          Peace.cache.sessionStorage.remove(this.inquiryNo)
           Peace.util.success(res.msg)
           mutations.setShowWriteRecipe(false)
         })
@@ -539,8 +552,6 @@ export default {
     },
 
     close() {
-      // 处方关闭前，缓存当前处方数据
-      this.setModel()
       mutations.setShowWriteRecipe(false)
     },
 

@@ -61,7 +61,7 @@
               <el-dropdown-item @click.native="setWorkstatus(1)"
                                 class="dropdown-item">
                 <div class="icon circle online"></div>
-                <span>接诊中</span>
+                <span>工作中</span>
               </el-dropdown-item>
               <el-dropdown-item @click.native="setWorkstatus(2)"
                                 class="dropdown-item">

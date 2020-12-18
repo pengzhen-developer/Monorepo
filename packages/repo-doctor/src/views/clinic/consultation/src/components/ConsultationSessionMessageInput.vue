@@ -9,12 +9,6 @@
         <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
-      <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
-      <el-button @click="sendVideo"
-                 type="text">
-        <img src="~@/assets/images/inquiry/chat_icon_video.png" />发起视频
-      </el-button>
-
       <el-button @click="sendCase"
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].startDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
@@ -33,6 +27,12 @@
                          $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.会诊已关闭 ">
         <img src="~@src/assets/images/inquiry/chat_icon_pr.png" />
         <span>开处方</span>
+      </el-button>
+
+      <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
+      <el-button @click="sendVideo"
+                 type="text">
+        <img src="~@/assets/images/inquiry/chat_icon_video.png" />视频通话
       </el-button>
 
       <!-- 会诊生效后, 受邀方医生能够填写会诊小结, 用于结束会诊 -->

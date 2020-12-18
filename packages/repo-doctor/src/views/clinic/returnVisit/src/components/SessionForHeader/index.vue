@@ -2,11 +2,6 @@
   <div class="flex justify-between items-center header q-px-md bg-grey-2">
     <span class="q-mr-md text-subtitle1">{{ patientInfo.familyName }}</span>
 
-    <el-button v-if="canShowOver"
-               plain
-               type="primary"
-               v-on:click="overInquiry">结束问诊</el-button>
-
     <!-- 模态框 - 填写拒绝原因 -->
     <peace-dialog width="348px"
                   top="25vh"
@@ -20,7 +15,6 @@
 
 <script>
 import type from '@src/type'
-
 import OverInquiry from './OverInquiry'
 
 export default {

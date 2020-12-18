@@ -454,7 +454,11 @@ $--header-height: 50px;
   }
 
   .body {
-    height: calc(100% - #{$--header-height});
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: calc(100% - #{$--header-height} - 30px);
+    overflow: auto;
 
     .body-scrollbar {
       height: 100%;

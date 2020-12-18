@@ -13,20 +13,31 @@
                 <div class="flex items-center">
                   <img class="q-mr-xs"
                        src="~@src/assets/images/inquiry/chat_icon_pic.png" />
-                  <span class="text-grey-6">图片</span>
+                  <span class="text-grey-6">发图片</span>
                 </div>
               </el-button>
             </el-upload>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendVideo">
-              <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_video.png" />
-                <span class="text-grey-6">视频</span>
-              </div>
-            </el-button>
+            <el-dropdown szie="medium"
+                         placement="top">
+              <el-button type="text">
+                <div class="flex items-center">
+                  <img class="q-mr-xs"
+                       src="~@src/assets/images/inquiry/chat_icon_language.png" />
+                  <span class="text-grey-6">常用语</span>
+                </div>
+              </el-button>
+
+              <el-dropdown-menu class="el-dropdown-menu-quickReply"
+                                slot="dropdown">
+                <el-dropdown-item v-for="(item, index) in quickReply"
+                                  v-bind:key="item"
+                                  v-on:click.native="sendText(item)">
+                  {{ index + 1 }}. {{ item }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
           <div class="q-editor__toolbar-group">
             <el-button type="text"
@@ -40,11 +51,12 @@
           </div>
           <div class="q-editor__toolbar-group">
             <el-button type="text"
-                       v-on:click="sendRecipe">
+                       v-if="inquiryType === 'video'"
+                       v-on:click="sendVideo">
               <div class="flex items-center">
                 <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_pr.png" />
-                <span class="text-grey-6">开处方</span>
+                     src="~@src/assets/images/inquiry/chat_icon_video.png" />
+                <span class="text-grey-6">视频通话</span>
               </div>
             </el-button>
           </div>
@@ -73,6 +85,7 @@
       <div class="q-editor__content session-detail-input">
         <el-input type="textarea"
                   resize="none"
+                  placeholder="请输入文字..."
                   v-model="editorMessage"
                   v-on:keydown.prevent.enter.exact.native="sendText()"
                   v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"></el-input>
@@ -80,29 +93,27 @@
     </div>
 
     <div class="footer q-px-md flex justify-end items-center">
-      <el-dropdown placement="top"
-                   class="q-mr-sm">
-        <el-button>
-          <span class="text-caption">快捷回复</span>
-        </el-button>
-        <el-dropdown-menu slot="dropdown"
-                          style="overflow: hidden;">
-          <div style="height: 150px; overflow: auto;">
-            <el-dropdown-item v-for="item in quickReplys"
-                              v-bind:key="item"
-                              v-on:click.native="sendText(item)"
-                              style="padding: 5px 10px;">
-              {{ item }}
-            </el-dropdown-item>
-          </div>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <el-button size="mini"
+                 plain
+                 v-on:click="overInquiry">
+        <span class="text-caption">结束问诊</span>
+      </el-button>
+
       <el-button size="mini"
                  type="primary"
                  v-on:click.native="sendText()">
         <span class="text-caption">发送 ( Enter )</span>
       </el-button>
     </div>
+
+    <!-- 模态框 - 填写拒绝原因 -->
+    <peace-dialog width="348px"
+                  top="25vh"
+                  class="no-header"
+                  v-if="overInquiryVisible"
+                  v-bind:visible.sync="overInquiryVisible">
+      <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
+    </peace-dialog>
 
     <peace-dialog v-bind:visible.sync="caseDetail.visible"
                   append-to-body
@@ -115,29 +126,33 @@
 <script>
 import Service from './../../service'
 
+import OverInquiry from './../SessionForHeader/OverInquiry'
 import CaseDetail from '@src/views/components/case/CaseDetail'
 
 export default {
   inject: ['provideCall'],
 
   components: {
-    CaseDetail
+    CaseDetail,
+    OverInquiry
   },
 
   data() {
     return {
+      overInquiryVisible: false,
+
       editorMessage: '',
 
-      quickReplys: [
+      quickReply: [
         '请问您这种情况持续多长时间了？',
-        '请补充您的患处图片',
-        '请详细描述一下您的病症和感受',
-        '您是否有过敏史',
-        '您是否处于备孕期、怀孕期、哺乳期、月经期等特殊时期？',
         '您之前服用过何种药品？',
-        '是否有不良反应',
-        '您这种情况建议去医院找医生面诊',
-        '希望您早日康复'
+        '是否有不良反应？',
+        '请详细描述以下您的病症和感受。',
+        '您是否有过敏史？',
+        '您是否处于备孕期、怀孕期、哺乳期、月经期等特殊时期？',
+        '请补充您的患处图片。',
+        '您这种情况建议去医院找医生面诊。',
+        '希望您早日康复！'
       ],
 
       caseDetail: {
@@ -150,6 +165,18 @@ export default {
   computed: {
     injectCall() {
       return this.provideCall
+    },
+
+    session() {
+      return this.$store.state.inquiry?.session ?? {}
+    },
+
+    inquiryInfo() {
+      return this.session?.content?.inquiryInfo ?? {}
+    },
+
+    inquiryType() {
+      return this.inquiryInfo?.inquiryType
     }
   },
 
@@ -228,11 +255,6 @@ export default {
       })
     },
 
-    sendRecipe() {
-      // 在线咨询无法开处方
-      Peace.util.warning('该患者未提供线下复诊材料，不可开具线上处方')
-    },
-
     sendTransfer() {
       const params = {
         inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
@@ -287,10 +309,38 @@ export default {
 
         this.$emit('control', '申请会诊')
       })
+    },
+
+    overInquiry() {
+      this.overInquiryVisible = true
     }
   }
 }
 </script>
+
+
+<style lang="scss">
+.el-dropdown-menu-quickReply {
+  max-height: 160px;
+  overflow: auto;
+
+  .el-dropdown-menu__item {
+    padding: 6px 16px;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.no-header {
+  /deep/ .el-dialog__header {
+    display: none;
+  }
+
+  /deep/ .el-dialog__body {
+    padding: 20px;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .session-detail-control {
