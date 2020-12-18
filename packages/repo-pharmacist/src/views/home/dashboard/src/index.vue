@@ -2,7 +2,8 @@
   <div class="layout-route bg-grey-2"
        v-if="load">
     <!-- 未审处方、已审处方 -->
-    <PrescripStatistic v-bind:data="prescripStatis"></PrescripStatistic>
+    <PrescripStatistic v-bind:data="prescripStatis"
+                       v-bind:controlledMenuList="controlledMenuList"></PrescripStatistic>
 
     <div class="row q-gutter-md q-mb-20">
       <!-- 处方审核情况 -->
@@ -46,11 +47,20 @@ export default {
       model: {
         hosCode: '',
         phaUserId: 0
-      }
+      },
+      controlledMenuList: []
     }
   },
 
   async created() {
+    // 获取受控菜单
+    const controlledParams = {
+      controlledType: 'pharmacist-dashboard'
+    }
+    Service.getControlledMenuList(controlledParams).then((res) => {
+      this.controlledMenuList = res.data
+    })
+
     const userinfo = await Peace.identity.auth.getAccountInfo()
     this.model.hosCode = userinfo.organCode
     this.model.phaUserId = userinfo.id

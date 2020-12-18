@@ -47,8 +47,8 @@ export default {
   },
   data() {
     return {
-      activeName: '门诊',
-      resource: ['门诊', '急诊', '住院'],
+      activeName: '互联网医院',
+      resource: ['互联网医院', '门诊', '急诊', '住院'],
       polar: {
         grid: {
           top: 10,

@@ -1,12 +1,16 @@
 <template>
   <div class="row q-gutter-md q-mb-20">
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_A')"
+         v-on:click="gotoPage('DASHBOARD_A',{})">
       <div class="card-style">
         <div class="card-title">未审处方</div>
         <div class="uncheckNum">{{data.uncheckedCount}}</div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_B')"
+         v-on:click="gotoPage('DASHBOARD_B',{})">
       <div class="card-style">
         <div class="card-title">已审处方</div>
         <div class="checkedNum">{{data.checkedCount}}</div>
@@ -16,16 +20,39 @@
 </template>
 
 <script>
+import Observable from '@src/layouts/side/src/observable/index'
+import Util from '@src/util'
+
 export default {
   props: {
     data: {
       type: Object
+    },
+    controlledMenuList: {
+      type: Array
+    }
+  },
+
+  methods: {
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    async gotoPage(controlledSign) {
+      const accountMenu = await Peace.identity.auth.getAccountMenu()
+      const controlledItem = this.controlledMenuList?.find((menu) => menu.controlledSign == controlledSign)
+      const menu = Peace.util.deepClone(accountMenu.find((item) => item.id == controlledItem.menuId))
+
+      Observable.mutations.addTab(menu)
+      Observable.mutations.setTab(menu)
     }
   }
 }
 </script>
 
 <style scoped>
+.col {
+  cursor: pointer;
+}
 .card-style {
   height: 72px;
   background: #ffffff;
