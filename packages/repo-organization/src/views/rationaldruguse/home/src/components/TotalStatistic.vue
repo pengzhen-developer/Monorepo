@@ -1,6 +1,8 @@
 <template>
   <div class="row q-gutter-md q-mb-20">
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_A')"
+         v-on:click="gotoPage('DASHBOARD_A',{})">
       <div class="card-style">
         <div class='row'>
           <img class="img "
@@ -13,7 +15,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_B')"
+         v-on:click="gotoPage('DASHBOARD_B',{})">
       <div class="card-style">
         <div class="row">
           <img class="img "
@@ -26,7 +30,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_C')"
+         v-on:click="gotoPage('DASHBOARD_C',{})">
       <div class="card-style">
         <div class="row">
           <img class="img "
@@ -43,10 +49,25 @@
 </template>
 
 <script>
+import Util from '@src/util'
 export default {
   props: {
     data: {
       type: Object
+    },
+    controlledMenuList: {
+      type: Array
+    }
+  },
+  data() {
+    return {}
+  },
+  methods: {
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    gotoPage(controlledSign, query = {}) {
+      Util.control.gotoPage(controlledSign, query, this.controlledMenuList)
     }
   }
 }
@@ -56,6 +77,9 @@ export default {
 p {
   margin: 0;
   padding: 0;
+}
+.col {
+  cursor: pointer;
 }
 .card-style {
   height: 126px;

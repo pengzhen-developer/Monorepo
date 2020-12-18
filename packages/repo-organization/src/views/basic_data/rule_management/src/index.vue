@@ -40,6 +40,11 @@ export default {
     return {
       checkPos: '0'
     }
+  },
+  created() {
+    if (this.$route.query.checkPos) {
+      this.checkPos = this.$route.query.checkPos
+    }
   }
 }
 </script>

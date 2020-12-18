@@ -1,5 +1,6 @@
 <template>
-  <div class="card-style flex column">
+  <div class="card-style flex column"
+       v-if="canShowcard('DASHBOARD_P')">
     <div class="card-title">规则触发统计</div>
     <el-tabs class="element-ui-default"
              v-model="activeName">
@@ -16,7 +17,8 @@
                v-bind:name="item" />
       </q-tabs>
     </el-tabs>
-    <div class="col chart-container">
+    <div class="col chart-container"
+         v-on:click="gotoPage('DASHBOARD_P',{prescriptionSource:activeName})">
       <v-chart :options="polar"
                :autoresize="true" />
     </div>
@@ -43,7 +45,12 @@ import 'echarts/lib/component/tooltip'
 
 export default {
   name: 'order-count-chart',
-
+  inject: ['provideAddTab', 'provideGetTab'],
+  props: {
+    controlledMenuList: {
+      type: Array
+    }
+  },
   components: {
     'v-chart': ECharts
   },
@@ -58,8 +65,8 @@ export default {
   },
   data() {
     return {
-      activeName: '门诊',
-      resource: ['门诊', '急诊', '住院'],
+      activeName: '互联网医院',
+      resource: ['互联网医院', '门诊', '急诊', '住院'],
       polar: {
         backgroundColor: bgColor,
         tooltip: {
@@ -155,6 +162,27 @@ export default {
         this.polar.xAxis[0].data = data.map((v) => v.name)
         this.polar.series[0].data = data.map((v) => v.value)
       })
+    },
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    async gotoPage(controlledSign, query = {}) {
+      const accountMenu = await Peace.identity.auth.getAccountMenu()
+      const controlledItem = this.controlledMenuList?.find((menu) => menu.controlledSign == controlledSign)
+      const menu = Peace.util.deepClone(accountMenu.find((item) => item.id == controlledItem.menuId))
+      const isIFrameMenu = Peace.validate.isUrl(menu.menuPath)
+
+      if (isIFrameMenu) {
+        const queryString = Object.keys(query)
+          .map((key) => `${key}=${query[key]}`)
+          .join('&')
+
+        menu.menuPath = menu.menuPath + '?' + queryString
+
+        this.provideAddTab(menu)
+      } else {
+        Util.control.gotoPage(controlledSign, query, this.controlledMenuList)
+      }
     }
   }
 }

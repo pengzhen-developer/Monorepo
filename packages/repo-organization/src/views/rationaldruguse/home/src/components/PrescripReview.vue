@@ -1,5 +1,6 @@
 <template>
-  <div class="card-style flex column">
+  <div class="card-style flex column"
+       v-if="canShowcard('DASHBOARD_N')">
     <div class="card-title">处方审核情况</div>
     <el-tabs class="element-ui-default"
              v-model="activeName">
@@ -16,7 +17,8 @@
                v-bind:name="item" />
       </q-tabs>
     </el-tabs>
-    <div class="row  col items-center ">
+    <div class="row  col items-center show-pointer"
+         v-on:click="gotoPage('DASHBOARD_N',{prescriptionSource:activeName})">
       <div class="preNums  column items-center justify-center">
         <p>{{prescriptionCount}}</p>
         <div></div>
@@ -43,6 +45,12 @@ import Service from '../service'
 import DoughnutChart from './DoughnutChart'
 
 export default {
+  inject: ['provideAddTab', 'provideGetTab'],
+  props: {
+    controlledMenuList: {
+      type: Array
+    }
+  },
   components: {
     DoughnutChart
   },
@@ -55,10 +63,11 @@ export default {
       deep: true
     }
   },
+  created() {},
   data() {
     return {
-      activeName: '门诊',
-      resource: ['门诊', '急诊', '住院'],
+      activeName: '互联网医院',
+      resource: ['互联网医院', '门诊', '急诊', '住院'],
       prescriptionCount: 0,
       interceptionRatio: {
         title: '预审拦截率',
@@ -99,6 +108,27 @@ export default {
         this.prescriptionPassRatio.subject = data.prescriptionPassRatio.subject
         this.prescriptionPassRatio.other = data.prescriptionPassRatio.other
       })
+    },
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    async gotoPage(controlledSign, query = {}) {
+      const accountMenu = await Peace.identity.auth.getAccountMenu()
+      const controlledItem = this.controlledMenuList?.find((menu) => menu.controlledSign == controlledSign)
+      const menu = Peace.util.deepClone(accountMenu.find((item) => item.id == controlledItem.menuId))
+      const isIFrameMenu = Peace.validate.isUrl(menu.menuPath)
+
+      if (isIFrameMenu) {
+        const queryString = Object.keys(query)
+          .map((key) => `${key}=${query[key]}`)
+          .join('&')
+
+        menu.menuPath = menu.menuPath + '?' + queryString
+
+        this.provideAddTab(menu)
+      } else {
+        Util.control.gotoPage(controlledSign, query, this.controlledMenuList)
+      }
     }
   }
 }
@@ -108,6 +138,9 @@ export default {
 p {
   margin: 0;
   padding: 0;
+}
+.show-pointer {
+  cursor: pointer;
 }
 .q-tab {
   padding: 0 8px;

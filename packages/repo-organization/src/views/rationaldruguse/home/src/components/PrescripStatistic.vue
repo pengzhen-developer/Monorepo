@@ -1,12 +1,16 @@
 <template>
   <div class="row q-gutter-md q-mb-20">
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_J')"
+         v-on:click="gotoPage('DASHBOARD_J',{preState:'1'})">
       <div class="card-style">
         <div class="card-title">未审处方</div>
         <div class="uncheckNum">{{data.uncheckedCount}}</div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_K')"
+         v-on:click="gotoPage('DASHBOARD_K',{preState:'5'})">
       <div class="card-style">
         <div class="card-title">已审处方</div>
         <div class="checkedNum">{{data.checkedCount}}</div>
@@ -16,16 +20,31 @@
 </template>
 
 <script>
+import Util from '@src/util'
 export default {
   props: {
     data: {
       type: Object
+    },
+    controlledMenuList: {
+      type: Array
+    }
+  },
+  methods: {
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    gotoPage(controlledSign, query = {}) {
+      Util.control.gotoPage(controlledSign, query, this.controlledMenuList)
     }
   }
 }
 </script>
 
 <style scoped>
+.col {
+  cursor: pointer;
+}
 .card-style {
   height: 72px;
   background: #ffffff;

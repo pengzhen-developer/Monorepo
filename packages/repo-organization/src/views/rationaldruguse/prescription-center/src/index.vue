@@ -358,7 +358,9 @@ export default {
       Service.CustPharmacistDicts().then((res) => {
         this.source.phaCode = res.data.list
       })
-
+      if (this.$route.query.preState) {
+        this.model.preState = this.$route.query.preState
+      }
       //获取处方列表 处方统计结果
       this.get()
     })

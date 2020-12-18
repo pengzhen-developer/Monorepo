@@ -1,6 +1,8 @@
 <template>
   <div class="row q-gutter-md">
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_E')"
+         v-on:click="gotoPage('DASHBOARD_E',{tabPosition:'left',status:20})">
       <div class="card-style">
         <img src="../assets/img/matchDrug.png" />
         <div>
@@ -9,7 +11,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_F')"
+         v-on:click="gotoPage('DASHBOARD_F',{tabPosition:'right'})">
       <div class="card-style">
         <img src="../assets/img/auditDrug.png" />
         <div>
@@ -18,7 +22,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_G')"
+         v-on:click="gotoPage('DASHBOARD_G',{tabPosition:'left',status:0})">
       <div class="card-style">
         <img src="../assets/img/noMatchDrug.png" />
         <div>
@@ -27,7 +33,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_H')"
+         v-on:click="gotoPage('DASHBOARD_H',{checkPos:'2'})">
       <div class="card-style">
         <img src="../assets/img/applyRule.png" />
         <div>
@@ -36,7 +44,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col"
+         v-if="canShowcard('DASHBOARD_I')"
+         v-on:click="gotoPage('DASHBOARD_I',{checkPos:'2'})">
       <div class="card-style">
         <img src="../assets/img/customRule.png" />
         <div>
@@ -49,10 +59,23 @@
 </template>
 
 <script>
+import Util from '@src/util'
 export default {
   props: {
     data: {
       type: Object
+    },
+    controlledMenuList: {
+      type: Array
+    }
+  },
+
+  methods: {
+    canShowcard(controlledSign) {
+      return Util.control.canShowcard(controlledSign, this.controlledMenuList)
+    },
+    gotoPage(controlledSign, query = {}) {
+      Util.control.gotoPage(controlledSign, query, this.controlledMenuList)
     }
   }
 }
@@ -62,6 +85,9 @@ export default {
 p {
   margin: 0;
   padding: 0;
+}
+.col {
+  cursor: pointer;
 }
 .card-style {
   height: 134px;

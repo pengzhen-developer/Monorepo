@@ -30,22 +30,33 @@ export default {
     return {
       activeName: '药品信息',
       tabPosition: '',
-      src: ''
+      src: '',
+      status: 0
     }
   },
 
   watch: {
     tabPosition() {
       this.src = process.env.VUE_APP_SITE_PRESCRIPTION + CONSTANT.IFRAME_URL[this.activeName][this.tabPosition]
+      if (this.$route.query.tabPosition && this.tabPosition == 'left') {
+        this.src += `?status=${this.status}`
+      }
     }
   },
 
   created() {
-    this.tabPosition = 'left'
+    if (this.$route.query.tabPosition) {
+      this.tabPosition = this.$route.query.tabPosition
+    } else {
+      this.tabPosition = 'left'
+    }
+    if (this.$route.query.status) {
+      this.status = this.$route.query.status
+    }
   },
 
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       // dom.offset 是 quasar 提供的工具类
       // 自行了解相关 api 文档
       const offset = dom.offset(this.$refs.iframe.$el)
