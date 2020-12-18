@@ -16,7 +16,11 @@ export default {
         sysId: '',
         tag: ''
       },
-      detail: {}
+      detail: {
+        info: {
+          content: ''
+        }
+      }
     }
   },
   created() {
@@ -32,12 +36,7 @@ export default {
       peace.service.remind
         .getServiceRemindDetail(params)
         .then((res) => {
-          console.log(res)
-          this.detail = {
-            info: {
-              content: 'asdsadasdsadasdadas'
-            }
-          }
+          this.detail = res.data
         })
         .finally(() => {
           this.loading = false

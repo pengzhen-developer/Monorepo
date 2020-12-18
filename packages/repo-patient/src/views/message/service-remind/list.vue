@@ -1,8 +1,10 @@
 <template>
-  <div class="remind-page">
+  <div v-if="show"
+       class="remind-page">
     <van-pull-refresh v-model="refreshing"
                       @refresh="onRefresh">
-      <van-list v-model="loading"
+      <van-list v-if="show"
+                v-model="loading"
                 :finished="finished"
                 finished-text="没有更多了"
                 @load="onLoad">
@@ -51,6 +53,7 @@ export default {
         tz: '/setting/userConsultDetail/',
         wz: '/setting/userConsultDetail/'
       },
+      show: false,
       loading: false,
       refreshing: false,
       query: {
@@ -63,10 +66,25 @@ export default {
     }
   },
   activated() {
+    // 每次进入都刷新一下页面
+    this.loading = false
+    this.refreshing = false
+    this.finished = false
     this.query.p = 0
     this.query.total = 0
     this.list = []
-    this.onLoad()
+
+    this.show = true
+  },
+  deactivated() {
+    this.show = false
+
+    this.loading = false
+    this.refreshing = false
+    this.finished = false
+    this.query.p = 0
+    this.query.total = 0
+    this.list = []
   },
   methods: {
     getList() {
@@ -85,20 +103,22 @@ export default {
         })
         .finally(() => {
           this.loading = false
+          this.refreshing = false
         })
     },
     onLoad() {
       if (this.refreshing) {
-        this.query.p = 0
-        this.query.total = 0
-        this.list = []
-        this.refreshing = false
+        return false
       }
       this.getList()
     },
     onRefresh() {
       this.finished = false
-      this.onLoad()
+      this.query.p = 0
+      this.query.total = 0
+      this.list = []
+
+      this.getList()
     },
     goPage(item) {
       let json = {
