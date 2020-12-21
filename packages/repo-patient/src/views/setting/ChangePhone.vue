@@ -112,6 +112,7 @@ export default {
         .then((res) => {
           peace.util.alert(res.msg)
           this.setUserInfo({ tel: this.model.newTel })
+          this.$router.go(-1)
         })
         .catch((err) => {
           this.message = err.msg
