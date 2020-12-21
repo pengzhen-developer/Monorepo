@@ -371,12 +371,18 @@ export default {
         this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
           .then(() => {
             this.value.splice(0, this.value.length)
+
+            this.$emit('update:prescriptionTag', newValue)
           })
           .catch(() => {
             // 设定互斥锁
             this.__lockRpCheck = oldValue
             this.model.prescriptionTag = oldValue
+
+            this.$emit('update:prescriptionTag', oldValue)
           })
+      } else {
+        this.$emit('update:prescriptionTag', newValue)
       }
     }
   },

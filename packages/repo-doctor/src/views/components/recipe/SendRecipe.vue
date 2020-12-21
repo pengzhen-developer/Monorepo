@@ -333,6 +333,7 @@ export default {
       if (recipeCache) {
         this.weight = recipeCache.weight
         this.drugList = recipeCache.drugList
+        this.prescriptionTag = recipeCache.prescriptionTag
 
         if (this.inquiryNo) {
           this.diagnoseList = recipeCache.diagnoseList.concat([])
@@ -527,6 +528,7 @@ export default {
     close() {
       const recipeCache = {
         weight: this.weight,
+        prescriptionTag: this.prescriptionTag,
         diagnoseList: this.diagnoseList,
         drugList: this.drugList
       }
