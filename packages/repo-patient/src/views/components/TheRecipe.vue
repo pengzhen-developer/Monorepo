@@ -267,9 +267,16 @@ export default {
     getPrescripInfo() {
       const params = peace.util.decode(this.$route.params.json)
 
-      peace.service.patient.getPrescripInfo(params).then((res) => {
-        this.internalData = res.data
-      })
+      peace.service.patient
+        .getPrescripInfo(params)
+        .then((res) => {
+          this.internalData = res.data
+        })
+        .catch((err) => {
+          if (err.data.code == '205') {
+            this.$router.replace('/setting/index')
+          }
+        })
     },
     goMenuPage(data) {
       const key = data.orderDrugStatus
