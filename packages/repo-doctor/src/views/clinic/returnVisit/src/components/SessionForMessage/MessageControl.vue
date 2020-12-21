@@ -94,6 +94,7 @@
       <div class="q-editor__content session-detail-input">
         <el-input type="textarea"
                   resize="none"
+                  placeholder="请输入文字..."
                   v-model="editorMessage"
                   v-on:keydown.prevent.enter.exact.native="sendText()"
                   v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"></el-input>
