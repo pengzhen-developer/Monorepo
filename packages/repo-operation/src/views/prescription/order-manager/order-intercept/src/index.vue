@@ -151,7 +151,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            {{scope.row.InterceptCode || '-'}}
+            {{scope.row.InterceptCode || '——'}}
 
           </template>
         </el-table-column>
@@ -159,7 +159,7 @@
         <el-table-column label="备注"
                          width="360px">
           <template slot-scope="scope">
-            <div v-if="scope.row.RemarkList === null || scope.row.RemarkList.length === 0">-</div>
+            <div v-if="scope.row.RemarkList === null || scope.row.RemarkList.length === 0">——</div>
             <div v-else>
               <div v-popover="'popover' + scope.row.ID"
                    class="order-remark">{{scope.row.RemarkList.join('')}}</div>
