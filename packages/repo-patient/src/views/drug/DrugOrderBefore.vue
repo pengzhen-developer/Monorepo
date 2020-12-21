@@ -895,7 +895,7 @@ export default {
   .van-field {
     padding: 0;
     /deep/.van-field__control {
-      width: 6em;
+      width: 6.2em;
       color: #666;
     }
     /deep/.van-field__label,
