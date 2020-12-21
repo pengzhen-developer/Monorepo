@@ -355,13 +355,13 @@ export default {
     },
 
     prescriptionTag() {
-      // 由 props 传递的处方类型, 设定安全锁
+      // 由 props 传递的处方类型, 设定互斥锁
       this.__lockRpCheck = this.prescriptionTag
       this.model.prescriptionTag = this.prescriptionTag
     },
 
     'model.prescriptionTag'(newValue, oldValue) {
-      // 验证安全锁
+      // 验证互斥锁
       if (this.__lockRpCheck !== undefined && this.__lockRpCheck === newValue) {
         this.__lockRpCheck = undefined
         return
@@ -373,7 +373,7 @@ export default {
             this.value.splice(0, this.value.length)
           })
           .catch(() => {
-            // 设定安全锁
+            // 设定互斥锁
             this.__lockRpCheck = oldValue
             this.model.prescriptionTag = oldValue
           })
