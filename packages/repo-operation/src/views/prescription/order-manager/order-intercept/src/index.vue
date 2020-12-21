@@ -151,7 +151,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            {{scope.row.InterceptCode || '——'}}
+            {{scope.row.InterceptName || '——'}}
 
           </template>
         </el-table-column>
