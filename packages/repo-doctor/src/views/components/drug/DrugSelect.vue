@@ -355,6 +355,8 @@ export default {
     },
 
     prescriptionTag() {
+      // 由 props 传递的处方类型, 设定安全锁
+      this.__lockRpCheck = this.prescriptionTag
       this.model.prescriptionTag = this.prescriptionTag
     },
 
