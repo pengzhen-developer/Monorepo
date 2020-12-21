@@ -25,7 +25,7 @@
             <div class="addr-user">
               <van-field v-model="consigneeInfo.mobile"
                          :label="consigneeInfo.consignee"
-                         :right-icon="!hasClick?require('@src/assets/images/ic_xiugai.png'):''"
+                         :right-icon="require('@src/assets/images/ic_xiugai.png')"
                          :readonly="!hasClick"
                          @blur="savePhone"
                          label-width="auto"
