@@ -28,7 +28,7 @@
                          :right-icon="!hasClick?require('@src/assets/images/ic_xiugai.png'):''"
                          :readonly="!hasClick"
                          @blur="savePhone"
-                         label-width="2em"
+                         label-width="auto"
                          ref="phone"
                          type="tel"
                          maxlength="11"
@@ -402,6 +402,7 @@ export default {
         peace.util.alert('请选择支付方式')
         return
       }
+      debugger
       let paymentType = ''
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
       //payMode 1 在线支付  2 到店支付  3 货到付款
