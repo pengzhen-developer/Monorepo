@@ -25,103 +25,24 @@
     </div>
     <!-- 修改昵称 -->
     <template v-if="nameDialog.visible">
-      <div class="dialog name">
-        <van-form error-message-align="right"
-                  input-align="right"
-                  label-width="2.4em">
-
-          <van-field v-model="nameDialog.model.nickName"
-                     label="昵称"
-                     clearable
-                     placeholder="6-20位文字、数字或字母、不可使用特殊符号"
-                     :error-message="nameDialog.message" />
-          <div style="margin: 15px;">
-            <peace-button round
-                          block
-                          throttle
-                          :throttleTime="1500"
-                          type="primary"
-                          native-type="submit"
-                          :disabled="!canSubmitName||nameDialog.resultFlag"
-                          @click="changeNickName">
-              确认修改
-            </peace-button>
-          </div>
-        </van-form>
-      </div>
+      <ChangeNickName v-bind:nickName="nameDialog.model.nickName"
+                      v-on:onSuccess="changeNickNameCallback"></ChangeNickName>
     </template>
     <!-- 修改手机号 -->
     <template v-if="telDialog.visible">
-      <div class="dialog">
-
-        <van-form error-message-align="right"
-                  input-align="right">
-          <van-field v-model="telDialog.model.oldTel"
-                     label="当前手机号码"
-                     type="tel"
-                     readonly
-                     placeholder="请输入"
-                     :value="telDialog.model.oldTel" />
-          <van-field v-model="telDialog.model.newTel"
-                     label="新手机号"
-                     type="tel"
-                     maxlength="11"
-                     placeholder="请输入"
-                     clearable
-                     :error-message="telDialog.message" />
-          <van-field v-model="telDialog.model.code"
-                     clearable
-                     ref="sms"
-                     maxlength="6"
-                     pattern="\d*"
-                     type="number"
-                     label="验证码">
-            <template #button
-                      v-if="!countDownTime">
-              <div @click="getCode"
-                   :class="telDialog.model.newTel.length==11?'text-primary':'text-gery'">获取验证码</div>
-            </template>
-
-          </van-field>
-          <van-field class="noBorder">
-            <template #button>
-              <van-row v-if="countDownTime"
-                       type="flex"
-                       justify="end"
-                       align="center">重新发送 <span class="text-primary"
-                      style="display: flex;align-items:center;justify-content:flex-end;">(
-                  <van-count-down :time="countDownTime"
-                                  class="text-primary"
-                                  @finish="countDownFinished"
-                                  format="ss" />
-                  )s
-                </span></van-row>
-            </template>
-          </van-field>
-          <div style="margin: 15px;">
-            <div class="tip">更换手机号后，下次登录可以使用新手机号登录。</div>
-            <peace-button round
-                          block
-                          throttle
-                          :throttleTime="1500"
-                          type="primary"
-                          native-type="submit"
-                          :disabled="!canSubmitTelephone"
-                          @click="changeTelephone">
-              确认更改
-            </peace-button>
-          </div>
-        </van-form>
-      </div>
+      <ChangePhone v-bind:phone="telDialog.model.oldTel"
+                   v-on:onSuccess="changePhoneCallback"></ChangePhone>
     </template>
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
-
+import ChangeNickName from '@src/views/setting/ChangeNickName'
+import ChangePhone from '@src/views/setting/ChangePhone'
 export default {
   name: 'UserInfomation',
+  components: { ChangeNickName, ChangePhone },
   data() {
     return {
       model: {
@@ -131,35 +52,20 @@ export default {
       },
       nameDialog: {
         visible: false,
-        resultFlag: false,
-        message: '',
         model: {
           nickName: ''
         }
       },
       telDialog: {
         visible: false,
-        resultFlag: false,
-        message: '',
         model: {
-          oldTel: '',
-          newTel: '',
-          code: ''
+          oldTel: ''
         }
       },
-      countDownTime: undefined,
-      hasSend: false,
       userInfo: undefined
     }
   },
-  computed: {
-    canSubmitName() {
-      return this.nameDialog.model.nickName && this.nameDialog.model.nickName != this.model.nickName
-    },
-    canSubmitTelephone() {
-      return this.telDialog.model.oldTel && this.telDialog.model.newTel && this.telDialog.model.code && this.telDialog.model.code.length == 6
-    }
-  },
+
   mounted() {
     this.userInfo = peace.cache.get(peace.type.USER.INFO)
     this.model.realName = this.userInfo.patientInfo.realName
@@ -167,92 +73,13 @@ export default {
     this.model.tel = this.userInfo.patientInfo.tel
   },
   methods: {
-    countDownFinished() {
-      this.countDownTime = undefined
-    },
     showNickNameDialog() {
-      this.nameDialog.visible = true
-      this.nameDialog.model.nickName = this.model.nickName
+      const parmas = peace.util.encode({ nickName: this.model.nickName })
+      this.$router.push(`/setting/ChangeNickName/${parmas}`)
     },
     showTelphoneDialog() {
-      this.telDialog.visible = true
-      this.telDialog.model.oldTel = this.model.tel
-    },
-    changeNickName() {
-      const params = { nickname: this.nameDialog.model.nickName }
-      peace.service.patient
-        .editBaseInfo(params)
-        .then((res) => {
-          peace.util.alert(res.msg)
-          this.userInfo.patientInfo.nickName = this.nameDialog.model.nickName
-          this.model.nickName = this.nameDialog.model.nickName
-          this.nameDialog.visible = false
-          this.setUserInfo()
-        })
-        .catch((err) => {
-          this.nameDialog.message = err.msg
-        })
-    },
-    changeTelephone() {
-      const params = { tel: this.telDialog.model.newTel, smsCode: this.telDialog.model.code }
-      peace.service.patient
-        .updateTel(params)
-        .then((res) => {
-          peace.util.alert(res.msg)
-          this.userInfo.patientInfo.tel = this.telDialog.model.newTel
-          this.model.tel = this.telDialog.model.newTel
-          this.telDialog.visible = false
-          this.telDialog.newTel = ''
-          this.telDialog.code = ''
-          this.setUserInfo()
-        })
-        .catch((err) => {
-          this.telDialog.message = err.msg
-        })
-    },
-    //修改成功之后缓存最新的用户信息
-    setUserInfo() {
-      // 存储用户信息
-      this.$store.commit('user/setUserInfo', this.userInfo)
-      peace.cache.set(peace.type.USER.INFO, this.userInfo)
-    },
-    getCode() {
-      if (this.telDialog.model.newTel.length != 11) {
-        return
-      }
-      // 正在倒计时中，不重复发送验证码
-      if (this.countDownTime !== undefined) {
-        return
-      }
-      // 验证
-      if (!(this.telDialog.model.newTel && peace.validate.pattern.mobile.test(this.telDialog.model.newTel))) {
-        this.telDialog.message = '您输入的手机号错误，请重新输入'
-        return
-      }
-      if (this.hasSend) {
-        return
-      }
-      this.hasSend = true
-      // 发送验证码
-      const params = {
-        tel: this.telDialog.model.newTel
-      }
-      peace.service.patient
-        .getSmsCode(params)
-        .then((res) => {
-          // 开启倒计时
-          this.countDownTime = 1000 * 60
-          peace.util.alert(res.msg)
-          setTimeout(() => {
-            // 获取到焦点
-            this.$refs.sms && this.$refs.sms.focus()
-          }, 500)
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.hasSend = false
-          }, 500)
-        })
+      const parmas = peace.util.encode({ oldTel: this.model.tel })
+      this.$router.push(`/setting/ChangePhone/${parmas}`)
     },
     signOut() {
       // 清空登录缓存

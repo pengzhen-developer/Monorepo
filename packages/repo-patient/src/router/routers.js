@@ -328,6 +328,34 @@ const routers = [
     },
     component: () => import('@src/views/setting/UserInfomation.vue')
   },
+  //修改昵称  ChangeNickName
+  {
+    path: '/setting/ChangeNickName/:json',
+    name: '/setting/ChangeNickName/:json',
+    meta: {
+      auth: true,
+      keepAlive: true,
+      tabBar: false,
+      navbar: {
+        title: '修改昵称'
+      }
+    },
+    component: () => import('@src/views/setting/ChangeNickName.vue')
+  },
+  //修改手机号  ChangePhone
+  {
+    path: '/setting/ChangePhone/:json',
+    name: '/setting/ChangePhone/:json',
+    meta: {
+      auth: true,
+      keepAlive: true,
+      tabBar: false,
+      navbar: {
+        title: '修改手机号'
+      }
+    },
+    component: () => import('@src/views/setting/ChangePhone.vue')
+  },
   // 我的家人
   {
     path: '/setting/myFamilyMembers',
