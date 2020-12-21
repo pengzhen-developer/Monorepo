@@ -76,7 +76,7 @@
                          align="center"
                          width="120px"></el-table-column>
 
-        <el-table-column prop="CreateTime"
+        <el-table-column prop="CreateOrderTime"
                          label="下单时间"
                          align="center"
                          width="160px"></el-table-column>
@@ -102,7 +102,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="Source"
+        <el-table-column prop="OrderSource"
                          label="订单来源"
                          align="center"
                          width="120px"></el-table-column>
