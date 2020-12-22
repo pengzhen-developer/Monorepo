@@ -40,8 +40,10 @@
           </div>
 
           <div class="col-4">
-            <span class="label-text">物流订单编号</span>
-            <span class="label-text">：</span>
+            <span class="label-text"
+                  style="display: inline-block; vertical-align: middle;">物流订单编号</span>
+            <span class="label-text"
+                  style="display: inline-block; vertical-align: middle;">：</span>
             <span class="label-value logistics-code">{{ data.LogisticsCodes.length === 0 ? '-':data.LogisticsCodes.join(',')}}</span>
           </div>
 
@@ -405,7 +407,7 @@ export default {
     }
   },
   async mounted() {
-    this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('OrderDetailsSendStatus')
+    this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
   },
 
   data() {
