@@ -127,6 +127,7 @@ export default {
     },
     clearMessage() {
       this.message = ''
+      this.resultFlag = false
     },
     checkPhone() {
       if (this.model.newTel.length != 11) {
