@@ -73,6 +73,7 @@ export default {
   data() {
     return {
       message: '',
+      resultFlag: false,
       model: {
         oldTel: '',
         newTel: '',
@@ -84,7 +85,7 @@ export default {
   },
   computed: {
     canGetCode() {
-      return this.model.newTel.length == 11 && this.model.newTel != this.model.oldTel
+      return this.resultFlag && this.model.newTel != this.model.oldTel
     },
     canSubmitTelephone() {
       return this.model.oldTel && this.model.newTel && this.model.oldTel != this.model.newTel && this.model.code && this.model.code.length == 6
@@ -129,11 +130,14 @@ export default {
     },
     checkPhone() {
       if (this.model.newTel.length != 11) {
-        return (this.message = '请输入正确的手机号码')
+        this.message = '请输入正确的手机号码'
+        this.resultFlag = false
       } else {
         if (!(this.model.newTel && peace.validate.pattern.mobile.test(this.model.newTel))) {
           this.message = '请输入正确的手机号码'
-          return
+          this.resultFlag = false
+        } else {
+          this.resultFlag = true
         }
       }
     },
