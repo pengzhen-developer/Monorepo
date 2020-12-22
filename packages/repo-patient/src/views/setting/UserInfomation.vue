@@ -66,7 +66,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     this.userInfo = peace.cache.get(peace.type.USER.INFO)
     this.model.realName = this.userInfo.patientInfo.realName
     this.model.nickName = this.userInfo.patientInfo.nickName || this.userInfo.patientInfo.realName

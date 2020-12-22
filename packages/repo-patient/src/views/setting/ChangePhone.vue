@@ -15,8 +15,11 @@
                  maxlength="11"
                  placeholder="请输入"
                  clearable
-                 :error-message="message" />
+                 :error-message="message"
+                 @blur="checkPhone"
+                 @focus="clearMessage" />
       <van-field v-model="model.code"
+                 placeholder="请输入"
                  clearable
                  ref="sms"
                  maxlength="6"
@@ -26,7 +29,7 @@
         <template #button
                   v-if="!countDownTime">
           <div @click="getCode"
-               :class="model.newTel.length==11?'text-primary':'text-gery'">获取验证码</div>
+               :class="canGetCode?'text-primary':'text-gery'">获取验证码</div>
         </template>
 
       </van-field>
@@ -80,8 +83,11 @@ export default {
     }
   },
   computed: {
+    canGetCode() {
+      return this.model.newTel.length == 11 && this.model.newTel != this.model.oldTel
+    },
     canSubmitTelephone() {
-      return this.model.oldTel && this.model.newTel && this.model.code && this.model.code.length == 6
+      return this.model.oldTel && this.model.newTel && this.model.oldTel != this.model.newTel && this.model.code && this.model.code.length == 6
     }
   },
   created() {
@@ -118,17 +124,25 @@ export default {
           this.message = err.msg
         })
     },
-    getCode() {
+    clearMessage() {
+      this.message = ''
+    },
+    checkPhone() {
       if (this.model.newTel.length != 11) {
+        return (this.message = '请输入正确的手机号码')
+      } else {
+        if (!(this.model.newTel && peace.validate.pattern.mobile.test(this.model.newTel))) {
+          this.message = '请输入正确的手机号码'
+          return
+        }
+      }
+    },
+    getCode() {
+      if (!this.canGetCode) {
         return
       }
       // 正在倒计时中，不重复发送验证码
       if (this.countDownTime !== undefined) {
-        return
-      }
-      // 验证
-      if (!(this.model.newTel && peace.validate.pattern.mobile.test(this.model.newTel))) {
-        this.message = '您输入的手机号错误，请重新输入'
         return
       }
       if (this.hasSend) {

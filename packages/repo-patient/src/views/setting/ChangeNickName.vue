@@ -6,8 +6,7 @@
       <van-field v-model="model.nickName"
                  label="昵称"
                  clearable
-                 clear-trigger="always"
-                 placeholder="6-20位文字、数字或字母、不可使用特殊符号"
+                 placeholder="1-20位文字、数字或字母，不可使用特殊符号"
                  :error-message="message" />
       <div style="margin: 15px;">
         <peace-button round
@@ -114,6 +113,22 @@ export default {
   /deep/.van-field__label {
     font-size: 15px;
     color: #000;
+  }
+  /deep/.van-field__body {
+    input::-webkit-input-placeholder {
+      /*WebKit browsers*/
+      font-size: 13px;
+    }
+
+    input::-moz-input-placeholder {
+      /*Mozilla Firefox*/
+      font-size: 13px;
+    }
+
+    input::-ms-input-placeholder {
+      /*Internet Explorer*/
+      font-size: 13px;
+    }
   }
   .tip {
     color: #999;

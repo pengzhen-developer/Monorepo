@@ -9,7 +9,7 @@
       </div>
       <div class="user-info">
         <div>
-          <div style="font-size: 14px">{{username}}</div>
+          <div class="user-name">{{username}}</div>
           <div>{{usertel | desensitization()}}</div>
         </div>
       </div>
@@ -136,40 +136,43 @@ export default {
 .user-card {
   background-image: url('~@/assets/images/ic_my doctor.png');
   background-size: 100% 100%;
-  padding: (32px/2);
-  font-size: (34px/2);
-  line-height: (34px/2);
+  padding: 16px;
+  font-size: 17px;
+  line-height: 17px;
   color: #fff;
   display: flex;
 }
 
 .user-card .user-img,
 .user-card .user-info {
-  margin: (10px/2) (20px/2) (20px/2) (10px/2);
+  margin: 5px 10px 10px 5px;
 }
-
+.user-info .user-name {
+  font-size: 14px;
+  width: 90%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .user-card .user-img .img-avatar {
-  width: (126px/2);
-  height: (126px/2);
+  width: 63px;
+  height: 63px;
   border-radius: 50%;
-  /*box-shadow: (5px/2) (5px/2) #DDE1EA;*/
   flex: 0;
 }
 
 .user-card .user-info {
   flex: 1 0 auto;
-  line-height: (65px/2);
+  line-height: 38px;
 }
 
 /*block*/
 .block {
-  /*margin-bottom: (20px/2);*/
   background-color: #fff;
   display: flex;
-  font-size: (30px/2);
-  // border-top: (16px/2) solid #fff;
-  border-bottom: (20px/2) solid #fff;
-  padding: (30px/2) (40px/2) (20px/2) (40px/2);
+  font-size: 15px;
+  border-bottom: 10px solid #fff;
+  padding: 15px 20px 10px 20px;
   border-top-color: #7ce7da;
   border-bottom-color: #f5f5f5;
 }
@@ -178,24 +181,24 @@ export default {
   flex: 1 1 30%;
   align-items: center;
   text-align: center;
-  min-height: (80px/2);
+  min-height: 40px;
 }
 
 .block-transverse-icon {
-  min-height: (160px/2);
+  min-height: 80px;
 }
 
 .block-transverse-icon .icon {
   display: block;
-  height: (60px/2);
-  width: (60px/2);
-  margin: (20px/2) auto;
+  height: 30px;
+  width: 30px;
+  margin: 10px auto;
 }
 
 .block-transverse-icon .icon::before {
   content: '';
-  width: (60px/2);
-  height: (60px/2);
+  width: 30px;
+  height: 30px;
 }
 .van-cell {
   padding: 0.4rem;
