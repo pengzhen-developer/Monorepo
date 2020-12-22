@@ -104,6 +104,12 @@
         <el-table-column label="业务编号"
                          prop="bizCode"
                          min-width="180px"></el-table-column>
+        <el-table-column label="机构名称"
+                         prop="organName">
+          <template slot-scope="scope">
+            {{ scope.row.organName || '--' }}
+          </template>
+        </el-table-column>
         <el-table-column label="业务类型"
                          prop="bizType"
                          min-width="120px">
@@ -111,12 +117,7 @@
             {{scope.row.bizType | getLabel(dictdata.bizTypeDict)}}
           </template>
         </el-table-column>
-        <el-table-column label="机构名称"
-                         prop="organName">
-          <template slot-scope="scope">
-            {{ scope.row.organName || '--' }}
-          </template>
-        </el-table-column>
+
         <el-table-column label="对接系统"
                          prop="dockingSystem">
           <template slot-scope="scope">
