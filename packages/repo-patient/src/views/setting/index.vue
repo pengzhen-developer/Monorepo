@@ -43,10 +43,6 @@
                 title="收货地址"
                 to="/setting/AdressManger"
                 value />
-      <!-- <van-cell @click="signOut"
-                icon="close"
-                title="退出登录"
-                value></van-cell> -->
     </van-cell-group>
   </div>
 </template>
@@ -132,6 +128,14 @@ export default {
 .setting {
   width: 100%;
   height: 100%;
+}
+
+.van-cell {
+  border-bottom: 1px solid #dedede;
+
+  &::after {
+    border-width: 0;
+  }
 }
 
 /*user-card*/

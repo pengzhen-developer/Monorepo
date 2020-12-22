@@ -895,12 +895,13 @@ export default {
   .van-field {
     padding: 0;
     /deep/.van-field__control {
-      width: 6.2em;
+      width: 82px;
       color: #666;
     }
     /deep/.van-field__label,
     /deep/.van-field__value {
       color: #666;
+      font-size: 12px;
     }
   }
 }
