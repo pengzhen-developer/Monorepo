@@ -125,7 +125,7 @@
               <span class="tranparent">></span>
               <span class="name">{{ doctor.doctorName }}</span>
               <div class="jd">
-                <div>{{ doctor.netdeptName + " " + doctor.doctorTitle }}</div>
+                <div>{{ doctor.deptName + " " + doctor.doctorTitle }}</div>
               </div>
               <div class="title-tag">
                 <template v-for="(tag, index) in doctor.tags">
@@ -405,11 +405,11 @@ export default {
       color: rgba(64, 178, 255, 1);
       background-color: rgba(64, 178, 255, 0.15);
     }
-    &.tag-service {
+    &.tag-register {
       color: rgba(74, 131, 247, 1);
       background-color: rgba(74, 131, 247, 0.15);
     }
-    &.tag-register {
+    &.tag-service {
       color: rgba(179, 136, 255, 1);
       background-color: rgba(179, 136, 255, 0.15);
     }
