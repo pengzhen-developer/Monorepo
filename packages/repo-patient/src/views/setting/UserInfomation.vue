@@ -86,9 +86,12 @@ export default {
       peace.cache.remove(peace.type.USER.INFO)
       peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
 
+      //销毁IM实例
+      peace.service.IM.destroyNIMS()
+
       // 跳转登录页
-      this.$router.replace(peace.config.system.loginPage)
-      window.location.reload()
+      this.$router.replace({ path: peace.config.system.loginPage, query: { referrer: '/setting/index' } })
+      // window.location.reload()
     }
   }
 }

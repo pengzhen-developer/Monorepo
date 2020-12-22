@@ -1,17 +1,19 @@
 <template>
   <div class="setting">
-    <div class="user-card"
-         @click="gotoUserInfomation">
+    <div class="user-card">
       <div class="user-img">
         <img class="img-avatar"
              mode="cover"
              src="~@/assets/images/ic_personal.png" />
       </div>
       <div class="user-info">
-        <div>
-          <div class="user-name">{{username}}</div>
-          <div>{{usertel | desensitization()}}</div>
+        <div class="user-name">
+          <span class="name">{{username}}</span>
+          <span class="edit"
+                @click="gotoUserInfomation">编辑</span>
         </div>
+        <div>{{usertel | desensitization()}}</div>
+
       </div>
     </div>
     <!--菜单-->
@@ -141,29 +143,57 @@ export default {
   line-height: 17px;
   color: #fff;
   display: flex;
-}
-
-.user-card .user-img,
-.user-card .user-info {
-  margin: 5px 10px 10px 5px;
-}
-.user-info .user-name {
-  font-size: 14px;
-  width: 90%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.user-card .user-img .img-avatar {
-  width: 63px;
-  height: 63px;
-  border-radius: 50%;
-  flex: 0;
-}
-
-.user-card .user-info {
-  flex: 1 0 auto;
-  line-height: 38px;
+  .user-img,
+  .user-info {
+    padding: 5px 10px 10px 5px;
+  }
+  .user-img {
+    .img-avatar {
+      width: 63px;
+      height: 63px;
+      border-radius: 50%;
+    }
+  }
+  .user-info {
+    flex: 1;
+    line-height: 38px;
+    .user-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      .name {
+        font-size: 14px;
+        width: 13em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .edit {
+        font-size: 12px;
+        line-height: normal;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #fff;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        width: 44px;
+        height: 18px;
+        border-radius: 9px;
+        position: relative;
+        &::after {
+          position: absolute;
+          width: 64px;
+          height: 38px;
+          left: -10px;
+          top: -12px;
+          background: transparent;
+          content: '';
+        }
+      }
+    }
+  }
 }
 
 /*block*/

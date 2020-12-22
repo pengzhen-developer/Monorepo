@@ -80,13 +80,10 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
         if (res.code === 200) {
           let data = res.data
 
-          for (const key in $peace.config.system.NIMS) {
-            if (Object.hasOwnProperty.call($peace.config.system.NIMS, key)) {
-              const element = $peace.config.system.NIMS[key]
-              element.im.destroy()
-            }
-          }
+          //销毁IM实例
+          service.IM.destroyNIMS()
 
+          //跳转微信H5支付中间页
           window.location.href = data.mwebUrl
         }
       })

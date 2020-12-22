@@ -101,6 +101,23 @@ export function initNIM(args) {
 }
 
 /**
+ * 主动销毁所有IM实例
+ *
+ * @export
+ * @param {*} 回调函数
+ * @returns
+ */
+export function destroyNIMS() {
+  for (const key in $peace.config.system.NIMS) {
+    if (Object.hasOwnProperty.call($peace.config.system.NIMS, key)) {
+      const element = $peace.config.system.NIMS[key]
+      element.im.destroy()
+      delete $peace.config.system.NIMS[key]
+    }
+  }
+}
+
+/**
  * 初始化 WebRTC
  *
  * @export
@@ -514,6 +531,7 @@ export default {
   getImlist,
   initNIM,
   initNIMS,
+  destroyNIMS,
   initWebRTC,
   onConnect,
   onDisConnect,
