@@ -500,6 +500,7 @@ export default {
 
 .logistics-code {
   display: inline-block;
+  vertical-align: middle;
   width: 200px;
   text-overflow: ellipsis;
   overflow: hidden;
