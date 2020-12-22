@@ -253,10 +253,7 @@ export default {
 
   async mounted() {
     this.remoteSource.OrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
-
-    let sendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
-    // 过滤未流转状态
-    this.remoteSource.SendWarehouseStatus = sendWarehouseStatus.filter((item) => item.value !== '0')
+    this.remoteSource.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
 
     this.$nextTick().then(() => {
       this.fetch()

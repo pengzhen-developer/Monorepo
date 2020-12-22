@@ -405,7 +405,7 @@ export default {
     }
   },
   async mounted() {
-    this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
+    this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('OrderDetailsSendStatus')
   },
 
   data() {
