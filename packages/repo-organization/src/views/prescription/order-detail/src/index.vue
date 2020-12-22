@@ -37,7 +37,7 @@
           <div class="col-6">
             <span>处方类型</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.OrderType | formatDictionary(source.OrderType, '--')  }}</span>
+            <span class="text-grey-6">{{ data.OrderTypeDisplay }}</span>
           </div>
           <div class="col-6">
             <span>取货方式</span>
@@ -409,14 +409,7 @@ export default {
           { label: '到店支付', value: 2 },
           { label: '货到付款', value: 3 }
         ],
-        OrderType: [
-          { label: '其他', value: 0 },
-          { label: '普通', value: 10 },
-          { label: '重症', value: 20 },
-          { label: '院内', value: 30 },
-          { label: '外延', value: 40 },
-          { label: '机构', value: 50 }
-        ]
+        OrderType: []
       }
     }
   },
@@ -448,6 +441,13 @@ export default {
       },
       immediate: true
     }
+  },
+
+  async created() {
+    this.source.OrderType = await Peace.identity.dictionary.getList('OrderType')
+    this.source.OrderType.map((item) => {
+      item.value = parseInt(item.value)
+    })
   }
 }
 </script>
