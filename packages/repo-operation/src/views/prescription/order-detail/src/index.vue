@@ -44,7 +44,7 @@
                   style="display: inline-block; vertical-align: middle;">物流订单编号</span>
             <span class="label-text"
                   style="display: inline-block; vertical-align: middle;">：</span>
-            <span class="label-value logistics-code">{{ data.LogisticsCodes.length === 0 ? '-':data.LogisticsCodes.join(',')}}</span>
+            <span class="label-value logistics-code">{{ data.LogisticsCodes && data.LogisticsCodes.length === 0 ? '-' : data.LogisticsCodes.join(',')}}</span>
           </div>
 
         </div>
@@ -54,7 +54,7 @@
           <div class="col-4">
             <span class="label-text">处方类型</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.OrderType | formatDictionary(source.OrderType, '-')  }}</span>
+            <span class="label-value">{{ data.OrderTypeDisplay }}</span>
           </div>
 
           <div class="col-4">
@@ -439,14 +439,7 @@ export default {
           { label: '货到付款', value: 3 }
         ],
 
-        OrderType: [
-          { label: '其他', value: 0 },
-          { label: '普通', value: 10 },
-          { label: '重症', value: 20 },
-          { label: '院内', value: 30 },
-          { label: '外延', value: 40 },
-          { label: '机构', value: 50 }
-        ]
+        OrderType: []
       }
     }
   },
@@ -478,6 +471,13 @@ export default {
       },
       immediate: true
     }
+  },
+
+  async created() {
+    this.source.OrderType = await Peace.identity.dictionary.getList('OrderType')
+    this.source.OrderType.map((item) => {
+      item.value = parseInt(item.value)
+    })
   }
 }
 </script>

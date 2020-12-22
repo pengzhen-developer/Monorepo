@@ -181,7 +181,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.OrderType | filterDictionary(remoteSource.OrderType, '-') }}</span>
+            <span>{{ scope.row.OrderTypeDisplay }}</span>
           </template>
         </el-table-column>
 
