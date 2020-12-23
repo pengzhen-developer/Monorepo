@@ -107,7 +107,7 @@
         <el-table-column label="机构名称"
                          prop="organName"
                          min-width="160px">
-          <template slot-scope="scope">1920
+          <template slot-scope="scope">
             {{ scope.row.organName || '--' }}
           </template>
         </el-table-column>
