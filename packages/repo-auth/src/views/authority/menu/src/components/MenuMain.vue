@@ -12,12 +12,12 @@
                 v-bind:data='list'
                 size="mini">
 
-        <el-table-column label="菜单名称"
-                         min-width="140px"
-                         prop="name"
-                         align="left">
+        <PeaceTableColumnTree label="菜单名称"
+                              min-width="140px"
+                              prop="name"
+                              align="left">
 
-        </el-table-column>
+        </PeaceTableColumnTree>
         <el-table-column align="center"
                          width="120px"
                          prop="isDisplay">

@@ -19,7 +19,6 @@ export default {
 <style lang="scss" scoped>
 .aside {
   min-width: 200px;
-  margin-top: 20px;
 }
 .main {
   flex: 1;
