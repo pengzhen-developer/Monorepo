@@ -201,6 +201,7 @@
                                    placeholder="请输入"
                                    controls-position="right"
                                    v-bind:min="1"
+                                   v-bind:precision="0"
                                    v-model="row.drugNum"></el-input-number>
                   <span class="text-caption text-grey-7 q-mx-xs">{{ row.drugQuantityUnit }}</span>
                 </div>
