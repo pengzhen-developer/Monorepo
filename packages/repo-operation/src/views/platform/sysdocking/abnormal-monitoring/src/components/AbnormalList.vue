@@ -83,7 +83,7 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label-width="0">
+        <el-form-item>
           <el-button type="primary"
                      v-on:click="fetch">查 询</el-button>
         </el-form-item>
@@ -103,41 +103,47 @@
         </el-table-column>
         <el-table-column label="业务编号"
                          prop="bizCode"
-                         min-width="180px"></el-table-column>
+                         width="260px"></el-table-column>
         <el-table-column label="机构名称"
-                         prop="organName">
-          <template slot-scope="scope">
+                         prop="organName"
+                         min-width="160px">
+          <template slot-scope="scope">1920
             {{ scope.row.organName || '--' }}
           </template>
         </el-table-column>
         <el-table-column label="业务类型"
                          prop="bizType"
-                         min-width="120px">
+                         min-width="180px">
           <template slot-scope="scope">
             {{scope.row.bizType | getLabel(dictdata.bizTypeDict)}}
           </template>
         </el-table-column>
 
         <el-table-column label="对接系统"
-                         prop="dockingSystem">
+                         prop="dockingSystem"
+                         width="160px">
           <template slot-scope="scope">
             {{scope.row.dockingSystem | getLabel(dictdata.synSysDict)}}
           </template>
         </el-table-column>
-        <el-table-column label="首次同步时间"
-                         prop="firstSynTime"
-                         min-width="100px"></el-table-column>
         <el-table-column label="同步状态"
-                         prop="synStatus">
+                         prop="synStatus"
+                         width="100px"
+                         align="center">
           <template slot-scope="scope">
             <div v-bind:class="scope.row.synStatus==0?'red':'grey'">
               {{scope.row.synStatus | getLabel(dictdata.synStatusDict)}}
             </div>
           </template>
         </el-table-column>
+
+        <el-table-column label="首次同步时间"
+                         prop="firstSynTime"
+                         width="180px"></el-table-column>
+
         <el-table-column label="操作"
                          align="left"
-                         width="180px"
+                         width="160px"
                          fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
