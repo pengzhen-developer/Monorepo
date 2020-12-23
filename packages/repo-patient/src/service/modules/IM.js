@@ -24,7 +24,6 @@ export function getImlist() {
  * @returns
  */
 export function initNIMS(info) {
-  $peace.NIMS = {}
   if (info && info.type == 'delete') {
     $peace.NIMS[info.accid].im.disconnect()
     delete $peace.NIMS[info.accid]
@@ -33,7 +32,7 @@ export function initNIMS(info) {
 
   peace.service.IM.getImlist().then((res) => {
     let list = res.data
-
+    $peace.NIMS = {}
     list.map((item, index) => {
       if ($peace.NIMS[item.accid] && $peace.NIMS[item.accid].im) {
         if (!$peace.NIMS[item.accid].im.isConnected()) {
