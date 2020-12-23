@@ -416,28 +416,14 @@ export default {
 
   watch: {
     'data.ShippingMethod': {
-      handler() {
-        if (this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()) {
-          this.source.OrderStatus = [
-            { label: '全部', value: '' },
-            { label: '等待接单', value: 1 },
-            { label: '已接单', value: 2 },
-            { label: '已备药', value: 3 },
-            { label: '已自提', value: 4 },
-            { label: '已完成', value: 6 },
-            { label: '已取消', value: 5 }
-          ]
-        } else {
-          this.source.OrderStatus = [
-            { label: '全部', value: '' },
-            { label: '等待接单', value: 1 },
-            { label: '已接单', value: 2 },
-            { label: '已发货', value: 3 },
-            { label: '已签收', value: 4 },
-            { label: '已完成', value: 6 },
-            { label: '已取消', value: 5 }
-          ]
-        }
+      async handler() {
+        //DistributionOrderStatus  配送订单状态    1
+        //SelfOrderStatus  自提订单状态  0
+        const requestKey =
+          this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()
+            ? 'SelfOrderStatus'
+            : 'DistributionOrderStatus'
+        this.source.OrderStatus = await Peace.identity.dictionary.getList(requestKey)
       },
       immediate: true
     }
