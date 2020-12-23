@@ -139,7 +139,7 @@ export default {
         // 当前问诊【已完成】【已退诊】【已取消】
         // 获取数据库记录，无法在 service/IM.js 重置未读数，因此手动重置为 0
 
-        $peace.config.system.NIMS[account].im.resetSessionUnread(session.id)
+        $peace.NIMS[account].im.resetSessionUnread(session.id)
 
         params = peace.util.encode({
           inquiryNo: session.content.inquiryInfo.inquiryNo,

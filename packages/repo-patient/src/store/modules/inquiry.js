@@ -38,7 +38,7 @@ const getters = {
     }
   },
 
-  sessionList(state) {
+  sessionList: (state) => {
     let sessions = []
     Object.keys(state.sessionsFamily).forEach((item) => {
       if (state.sessionsFamily[item] && state.sessionsFamily[item].sessions && state.sessionsFamily[item].sessions.length > 0) {

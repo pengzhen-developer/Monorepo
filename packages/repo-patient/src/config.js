@@ -19,10 +19,6 @@ export const config = {
     timeDifference: 0,
 
     /**
-     *IM实例集合
-     */
-    NIMS: {},
-    /**
      * 微信授权
      */
     authPage: '/WXAuth',

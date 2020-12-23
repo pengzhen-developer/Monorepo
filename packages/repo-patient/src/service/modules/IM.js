@@ -24,9 +24,10 @@ export function getImlist() {
  * @returns
  */
 export function initNIMS(info) {
+  $peace.NIMS = {}
   if (info && info.type == 'delete') {
-    $peace.config.system.NIMS[info.accid].im.disconnect()
-    delete $peace.config.system.NIMS[info.accid]
+    $peace.NIMS[info.accid].im.disconnect()
+    delete $peace.NIMS[info.accid]
     return
   }
 
@@ -34,23 +35,23 @@ export function initNIMS(info) {
     let list = res.data
 
     list.map((item, index) => {
-      if ($peace.config.system.NIMS[item.accid] && $peace.config.system.NIMS[item.accid].im) {
-        if (!$peace.config.system.NIMS[item.accid].im.isConnected()) {
-          $peace.config.system.NIMS[item.accid].im.connect()
+      if ($peace.NIMS[item.accid] && $peace.NIMS[item.accid].im) {
+        if (!$peace.NIMS[item.accid].im.isConnected()) {
+          $peace.NIMS[item.accid].im.connect()
         }
       } else {
-        $peace.config.system.NIMS[item.accid] = {
+        $peace.NIMS[item.accid] = {
           im: peace.service.IM.initNIM(item, index),
           sessions: []
         }
       }
     })
-    Store.commit('inquiry/setInquirySessionsFamily', $peace.config.system.NIMS)
+    Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
 
     // 更新服务提醒
     Store.dispatch('inquiry/getServiceRemind')
 
-    return $peace.config.system.NIMS
+    return $peace.NIMS
   })
 }
 export function initNIM(args) {
@@ -76,7 +77,7 @@ export function initNIM(args) {
     // 系统通知
     oncustomsysmsg: peace.service.IM.onSysmsg
   }
-  if (!$peace.config.system.NIMS[account]) {
+  if (!$peace.NIMS[account]) {
     // 初始化 IM
     nim = NIM.getInstance({
       appKey,
@@ -93,9 +94,9 @@ export function initNIM(args) {
     })
   } else {
     // 更新 IM
-    $peace.config.system.NIMS[account].disconnect()
-    $peace.config.system.NIMS[account].setOptions({ appKey, account, token })
-    $peace.config.system.NIMS[account].connect()
+    $peace.NIMS[account].disconnect()
+    $peace.NIMS[account].setOptions({ appKey, account, token })
+    $peace.NIMS[account].connect()
   }
   return nim
 }
@@ -108,11 +109,11 @@ export function initNIM(args) {
  * @returns
  */
 export function destroyNIMS() {
-  for (const key in $peace.config.system.NIMS) {
-    if (Object.hasOwnProperty.call($peace.config.system.NIMS, key)) {
-      const element = $peace.config.system.NIMS[key]
+  for (const key in $peace.NIMS) {
+    if (Object.hasOwnProperty.call($peace.NIMS, key)) {
+      const element = $peace.NIMS[key]
       element.im.destroy()
-      delete $peace.config.system.NIMS[key]
+      delete $peace.NIMS[key]
     }
   }
 }
@@ -320,8 +321,8 @@ export function onSysmsg(message) {
  * @param {*} session
  */
 export function setInquirySessions(sessions, account) {
-  const currrentSession = $peace.config.system.NIMS[account].sessions
-  const serializationSessions = $peace.config.system.NIMS[account].im.mergeSessions(currrentSession, sessions)
+  const currrentSession = $peace.NIMS[account].sessions
+  const serializationSessions = $peace.NIMS[account].im.mergeSessions(currrentSession, sessions)
   const deserializationSessions = peace.service.IM.deSerializationSessions(serializationSessions)
 
   // 过滤 [待接诊] 与 [已取消] 与 [医生未接诊直接退诊] 与 [医生未接诊系统直接退诊（超时）] 数据
@@ -356,8 +357,8 @@ export function setInquirySessions(sessions, account) {
       }
     }
   }
-  $peace.config.system.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
-  Store.commit('inquiry/setInquirySessionsFamily', $peace.config.system.NIMS)
+  $peace.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
+  Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
 }
 
 /**
@@ -387,7 +388,7 @@ export function resetInquirySession() {
  * @param {*} message
  */
 export function setInquirySessionMessages(messages, account) {
-  const serializationMessages = $peace.config.system.NIMS[account].im.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
+  const serializationMessages = $peace.NIMS[account].im.mergeMsgs(Store.state.inquiry.sessionMessages, messages)
   const deserializationMessages = peace.service.IM.deSerializationMessages(serializationMessages)
 
   Store.commit('inquiry/setInquirySessionMessages', deserializationMessages)

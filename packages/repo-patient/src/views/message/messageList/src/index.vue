@@ -277,7 +277,7 @@ export default {
       return this.internalDoctorInfo || this.$store.getters['inquiry/doctorInfo']
     },
     inquiryStatus() {
-      return this.$store.getters['inquiry/inquiryInfo'].inquiryStatus || this.infoData.inquiryStatus
+      return this.$store.getters['inquiry/inquiryInfo']?.inquiryStatus || this.infoData?.inquiryStatus
     },
     messageList() {
       let sessionMessages = this.internalData || this.$store.state.inquiry.sessionMessages
@@ -316,8 +316,8 @@ export default {
 
     canShowInput() {
       if (
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === Constant.INQUIRY_STATUS.待接诊 ||
-        this.$store.getters['inquiry/inquiryInfo'].inquiryStatus === Constant.INQUIRY_STATUS.问诊中
+        this.$store.getters['inquiry/inquiryInfo']?.inquiryStatus === Constant.INQUIRY_STATUS.待接诊 ||
+        this.$store.getters['inquiry/inquiryInfo']?.inquiryStatus === Constant.INQUIRY_STATUS.问诊中
       ) {
         return true
       } else {
