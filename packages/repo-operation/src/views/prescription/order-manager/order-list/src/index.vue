@@ -203,8 +203,7 @@
                          fixed="right">
           <template slot-scope="scope">
 
-            <el-button :disabled="!scope.row.JZTClaimNo"
-                       type="text"
+            <el-button type="text"
                        v-on:click="showCancelRecord(scope.row)">处方详情</el-button>
 
             <el-button v-if="scope.row.DrugCode"
@@ -548,8 +547,7 @@ export default {
     },
 
     showCancelRecord(row) {
-      // this.dialog.data.JZTClaimNo = row.JZTClaimNo
-      Service.getPrescriptionInfo({ JZTClaimNo: row.JZTClaimNo }).then((res) => {
+      Service.GetPresByOrderId({ OrderId: row.OrderId }).then((res) => {
         this.dialog.data = Object.assign({}, res.data)
         this.dialog.visible = true
       })

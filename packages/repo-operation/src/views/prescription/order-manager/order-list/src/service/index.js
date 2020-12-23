@@ -20,38 +20,20 @@ export default {
   },
 
   /**
-   * 获处方详情
-   * @param { string } prescribeId 处方编号
-   * @returns { Object }
-   */
-  getPrescriptionDetail(params) {
-    const isMock = false
-
-    const apiPath = 'psd/Prescription/GetPrescriptionInfo'
-    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-  /**
    * 获处方信息
-   * @param { string } jztClaimNo 平台处方编号
+   * @param { string } OrderId 订单号
    * @returns { Object }
    */
-  getPrescriptionInfo(params) {
+  GetPresByOrderId(params) {
     const isMock = false
 
-    const apiPath = 'psd/Prescription/GetPrescriptionInfo'
+    const apiPath = 'psd/Prescription/GetPresByOrderId'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   },
