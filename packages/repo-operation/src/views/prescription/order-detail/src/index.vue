@@ -382,34 +382,13 @@ export default {
       }
     }
   },
-
-  filters: {
-    formatDictionary(value, source, format = '') {
-      if (!Peace.validate.isEmpty(value)) {
-        return source.find((item) => item.value.toString() === value.toString())?.label
-      }
-
-      return format
-    },
-
-    formatCurrency(value) {
-      /* eslint-disable no-useless-escape */
-      value = value.toString().replace(/\$|\,/g, '')
-      if (isNaN(value)) value = '0'
-      let sign = value == (value = Math.abs(value))
-      value = Math.floor(value * 100 + 0.50000000001)
-      let cents = value % 100
-      value = Math.floor(value / 100).toString()
-      if (cents < 10) cents = '0' + cents
-      for (var i = 0; i < Math.floor((value.length - (1 + i)) / 3); i++)
-        value = value.substring(0, value.length - (4 * i + 3)) + ',' + value.substring(value.length - (4 * i + 3))
-      return (sign ? '' : '-') + value + '.' + cents
-    }
-  },
   async mounted() {
+    this.source.OrderType = await Peace.identity.dictionary.getList('OrderType')
+    this.source.OrderType.map((item) => {
+      item.value = parseInt(item.value)
+    })
     this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
   },
-
   data() {
     return {
       source: {
@@ -443,41 +422,42 @@ export default {
       }
     }
   },
-
   watch: {
     'data.ShippingMethod': {
-      handler() {
-        if (this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()) {
-          this.source.OrderStatus = [
-            { label: '全部', value: '' },
-            { label: '等待接单', value: 1 },
-            { label: '已接单', value: 2 },
-            { label: '已备药', value: 3 },
-            { label: '已自提', value: 4 },
-            { label: '已完成', value: 6 },
-            { label: '已取消', value: 5 }
-          ]
-        } else {
-          this.source.OrderStatus = [
-            { label: '全部', value: '' },
-            { label: '等待接单', value: 1 },
-            { label: '已接单', value: 2 },
-            { label: '已发货', value: 3 },
-            { label: '已签收', value: 4 },
-            { label: '已完成', value: 6 },
-            { label: '已取消', value: 5 }
-          ]
-        }
+      async handler() {
+        //DistributionOrderStatus  配送订单状态    1
+        //SelfOrderStatus  自提订单状态  0
+        const requestKey =
+          this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()
+            ? 'SelfOrderStatus'
+            : 'DistributionOrderStatus'
+        this.source.OrderStatus = await peace.identity.dictionary.getList(requestKey)
       },
       immediate: true
     }
   },
+  filters: {
+    formatDictionary(value, source, format = '') {
+      if (!Peace.validate.isEmpty(value)) {
+        return source.find((item) => item.value.toString() === value.toString())?.label
+      }
 
-  async created() {
-    this.source.OrderType = await Peace.identity.dictionary.getList('OrderType')
-    this.source.OrderType.map((item) => {
-      item.value = parseInt(item.value)
-    })
+      return format
+    },
+
+    formatCurrency(value) {
+      /* eslint-disable no-useless-escape */
+      value = value.toString().replace(/\$|\,/g, '')
+      if (isNaN(value)) value = '0'
+      let sign = value == (value = Math.abs(value))
+      value = Math.floor(value * 100 + 0.50000000001)
+      let cents = value % 100
+      value = Math.floor(value / 100).toString()
+      if (cents < 10) cents = '0' + cents
+      for (var i = 0; i < Math.floor((value.length - (1 + i)) / 3); i++)
+        value = value.substring(0, value.length - (4 * i + 3)) + ',' + value.substring(value.length - (4 * i + 3))
+      return (sign ? '' : '-') + value + '.' + cents
+    }
   }
 }
 </script>
