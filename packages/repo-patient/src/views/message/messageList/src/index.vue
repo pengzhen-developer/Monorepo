@@ -18,14 +18,13 @@
                             v-if="inquiryStatus==Constant.INQUIRY_STATUS.问诊中">
               <template #default="timeData">
                 <span class="text-gery"
-                      v-if="countDownTime>=1000*60*60">(<span class="text-red">{{timeData.hours}}小时</span>后结束)</span>
+                      v-if="timeData.hours>=1">(<span class="text-red">{{timeData.hours}}小时</span>后结束)</span>
                 <span class="text-gery"
-                      v-else-if="countDownTime<1000*60">(<span class="text-red">1分钟</span>后结束)</span>
+                      v-else-if="timeData.minutes>=1&&timeData.hours<1">(<span class="text-red">{{timeData.minutes}}分钟</span>后结束)</span>
                 <span class="text-gery"
-                      v-else>(<span class="text-red">{{timeData.minutes}}分钟</span>后结束)</span>
-
+                      v-else-if="timeData.minutes<1&&timeData.seconds>0">(<span class="text-red">1分钟</span>后结束)</span>
+                <span v-else></span>
               </template>
-
             </van-count-down>
           </div>
           <div class="header-right"
