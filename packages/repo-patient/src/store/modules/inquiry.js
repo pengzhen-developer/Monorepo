@@ -62,20 +62,7 @@ const mutations = {
     state.sessionsFamily = params
   },
   setInquirySessions(state, params) {
-    let sessions = []
-    Object.keys(params).forEach((item) => {
-      if (params[item] && params[item].sessions && params[item].sessions.length > 0) {
-        sessions = sessions.concat(params[item].sessions)
-      }
-    })
-    // 按时间排序
-    sessions.sort(function(a, b) {
-      var val1 = a.updateTime
-      var val2 = b.updateTime
-      return val2 - val1
-    })
-    debugger
-    state.sessions = state.sessions.concat(sessions)
+    state.sessions = state.sessions.concat(params)
   },
 
   setInquirySession(state, params) {

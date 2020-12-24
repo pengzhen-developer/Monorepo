@@ -50,7 +50,6 @@ export function initNIMS(info) {
       }
     })
     Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
-    // Store.commit('inquiry/setInquirySessions', $peace.NIMS)
 
     // 更新服务提醒
     Store.dispatch('inquiry/getServiceRemind')
@@ -363,7 +362,6 @@ export function setInquirySessions(sessions, account) {
   }
   $peace.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)
   Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
-  // Store.commit('inquiry/setInquirySessions', $peace.NIMS)
 }
 
 /**
