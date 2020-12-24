@@ -114,7 +114,7 @@
         </div>
         <div class="dl-packet"
              v-if="page.tabIndex == '1'">
-          <div class="dt">配送费 ：</div>
+          <div class="dt money">配送费 ：</div>
           <div class="dd money">{{order.OperaShippingFee}}</div>
         </div>
         <template v-if="canShowDiscount">
@@ -811,7 +811,10 @@ export default {
   padding: 2px 15px 2px 0;
 }
 .dl-packet .dt {
-  width: 140px;
+  width: 6em;
+}
+.dl-packet .dt.money {
+  width: 6em;
 }
 .dl-packet .dd,
 .dl-packet .dt {
