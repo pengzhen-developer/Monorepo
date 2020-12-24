@@ -25,8 +25,8 @@ export function getImlist() {
 export function initNIMS(info) {
   if (info && info.type == 'delete') {
     $peace.NIMS[info.accid].im.destroy()
-    $peace.NIMS[info.accid].sessions = []
     delete $peace.NIMS[info.accid]
+    Store.commit('inquiry/setInquirySessionsFamily', $peace.NIMS)
     return
   }
 
