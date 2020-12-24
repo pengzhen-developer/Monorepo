@@ -860,7 +860,7 @@ export default {
   padding: 3px 0;
 }
 .intro .dl-packet .dt {
-  min-width: 50%;
+  min-width: 30%;
 }
 .dl-packet .dt {
   min-width: 70px;
