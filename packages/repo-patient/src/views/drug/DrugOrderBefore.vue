@@ -811,7 +811,7 @@ export default {
   padding: 2px 15px 2px 0;
 }
 .dl-packet .dt {
-  width: 6em;
+  width: 140px;
 }
 .dl-packet .dt.money {
   width: 6em;
