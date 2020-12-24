@@ -520,7 +520,7 @@ export default {
             else {
               Peace.util.success(res.msg)
 
-              this.$emit('close')
+              mutations.setShowWriteRecipe(false)
             }
           })
           .finally(() => {
