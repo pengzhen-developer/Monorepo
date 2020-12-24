@@ -4,7 +4,6 @@ import Store from '@src/store'
 
 import NIM from '/public/static/IM/NIM_Web_NIM_v6.5.5'
 // import WebRTC from '/public/static/IM/NIM_Web_WebRTC_v6.5.5'
-// NIM.use(WebRTC)
 
 /**
  * 获取用户下的im账号
@@ -30,9 +29,13 @@ export function initNIMS(info) {
     return
   }
 
+  if (!$peace.NIMS) {
+    //初始话 NIMS
+    $peace.NIMS = {}
+  }
   peace.service.IM.getImlist().then((res) => {
     let list = res.data
-    $peace.NIMS = {}
+
     list.map((item, index) => {
       if ($peace.NIMS[item.accid] && $peace.NIMS[item.accid].im) {
         if (!$peace.NIMS[item.accid].im.isConnected()) {
