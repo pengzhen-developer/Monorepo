@@ -18,17 +18,22 @@
         <div class="col full-width text-weight-bold">{{ data.companyName }}</div>
       </el-form-item>
 
-      <el-form-item label="给药途径："
+      <el-form-item label="单次剂量："
                     required>
-        <el-select class="col inline-block full-width"
-                   placeholder="请选择"
-                   v-model="model.drugRouteId"
-                   v-on:change="drugRouteChange">
-          <el-option v-bind:key="item.id"
-                     v-bind:label="item.drugway_name"
-                     v-bind:value="item.id"
-                     v-for="item in drugRouteList"></el-option>
-        </el-select>
+        <div class="flex">
+          <el-input-number class="col inline-block"
+                           controls-position="right"
+                           placeholder="请输入"
+                           v-on:change="calculateCount"
+                           v-on:blur="formatNumeral( model.singleDose,'singleDose', '0.000')"
+                           v-bind:min="0.001"
+                           v-model="model.singleDose">
+          </el-input-number>
+          <div class="flex items-center bg-grey-2 q-px-sm"
+               style="border-radius: 5px">
+            {{ data.drugUnit }}
+          </div>
+        </div>
       </el-form-item>
 
       <el-form-item label="用药频次："
@@ -45,41 +50,51 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="单次剂量："
+      <el-form-item label="给药途径："
                     required>
-        <div class="flex">
-          <el-input-number class="col inline-block"
-                           controls-position="right"
-                           v-bind:min="0"
-                           v-bind:precision="2"
-                           v-model="model.singleDose">
-          </el-input-number>
-          <div class="flex items-center bg-grey-2 q-px-sm"
-               style="border-radius: 5px">
-            {{ data.drugUnit }}
-          </div>
-        </div>
+        <el-select class="col inline-block full-width"
+                   placeholder="请选择"
+                   v-model="model.drugRouteId"
+                   v-on:change="drugRouteChange">
+          <el-option v-bind:key="item.id"
+                     v-bind:label="item.drugway_name"
+                     v-bind:value="item.id"
+                     v-for="item in drugRouteList"></el-option>
+        </el-select>
       </el-form-item>
 
-      <el-form-item label="药品数量："
+      <el-form-item label="用药天数："
                     required>
-        <el-input-number class="full-width inline-block"
-                         controls-position="right"
-                         v-bind:min="0"
-                         v-bind:precision="0"
-                         v-model="model.drugNum">
-        </el-input-number>
-      </el-form-item>
-
-      <el-form-item label="用药天数：">
         <el-input-number class="full-width inline-block"
                          controls-position="right"
                          v-bind:min="1"
                          v-bind:max="60"
+                         placeholder="请输入"
                          v-bind:precision="0"
+                         v-on:change="calculateCount"
                          v-model="model.useDrugDays">
         </el-input-number>
       </el-form-item>
+
+      <el-form-item label="药品数量："
+                    required>
+        <div class="flex">
+          <el-input-number class="col inline-block"
+                           controls-position="right"
+                           v-bind:min="1"
+                           placeholder="请输入"
+                           v-bind:precision="0"
+                           v-model="model.drugNum">
+          </el-input-number>
+
+          <div class="flex items-center bg-grey-2 q-px-sm"
+               style="border-radius: 5px">
+            {{ data.drugQuantityUnit }}
+          </div>
+        </div>
+
+      </el-form-item>
+
     </el-form>
 
     <div class="text-center">
@@ -117,7 +132,9 @@ export default {
         drugFrequencyId: undefined,
         drugNum: undefined,
         singleDose: undefined,
-        useDrugDays: undefined
+        useDrugDays: undefined,
+        drugNature: undefined,
+        drugSpecNum: undefined
       }
     }
   },
@@ -132,7 +149,7 @@ export default {
     },
 
     nextButtonDisabled() {
-      return !(this.model.drugNum && this.model.singleDose && this.model.drugFrequencyId && this.model.drugRouteId)
+      return !(this.model.drugNum && this.model.singleDose && this.model.drugFrequencyId && this.model.drugRouteId && this.model.useDrugDays)
     }
   },
 
@@ -156,6 +173,8 @@ export default {
       this.model.singleDose = this.data.singleDose ?? undefined
       this.model.useDrugDays = this.data.useDrugDays ?? undefined
       this.model.drugQuantityUnit = this.data.drugQuantityUnit ?? undefined
+      this.model.drugNature = this.data.drugNature ?? undefined
+      this.model.drugSpecNum = this.data.drugSpecNum ?? undefined
     },
 
     drugRouteChange(id) {
@@ -170,6 +189,7 @@ export default {
 
       this.model.drugFrequency = drugFrequency.drugtimes_name
       this.model.drugFrequencyId = drugFrequency.id
+      this.calculateCount()
     },
 
     prev() {
@@ -180,6 +200,27 @@ export default {
       const data = Peace.util.deepClone(this.model)
 
       this.$emit('success', data)
+    },
+
+    formatNumeral(object, property, formatString) {
+      if (object) {
+        object = Peace.numeral(object).format(formatString)
+      }
+    },
+
+    calculateCount() {
+      if (this.model.drugNature === 1) {
+        // 药品数量 = (单次剂量 * 用药天数 * 用药频次) /（基础规格 * 包装规格)
+        const 单次剂量 = parseFloat(this.model.singleDose)
+        const 用药天数 = parseFloat(this.model.useDrugDays)
+        const 用药频次 = parseFloat(this.drugFrequencyList.find((item) => item.id === this.model.drugFrequencyId)?.frequencyValue)
+        const 基础规格_包装规格 = parseFloat(this.model.drugSpecNum)
+        const 药品数量 = (单次剂量 * 用药天数 * 用药频次) / 基础规格_包装规格
+
+        if (!Number.isNaN(药品数量) && Number.isFinite(药品数量)) {
+          this.model.drugNum = Math.ceil(药品数量)
+        }
+      }
     }
   }
 }
