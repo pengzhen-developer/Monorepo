@@ -41,7 +41,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="下单日期">
+        <el-form-item label="同步日期">
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="model.TimeRange"></peace-date-picker>
@@ -138,7 +138,7 @@
                          width="120px"></el-table-column>
 
         <el-table-column prop="CreateTime"
-                         label="下单时间"
+                         label="同步时间"
                          align="center"
                          width="160px"></el-table-column>
 
