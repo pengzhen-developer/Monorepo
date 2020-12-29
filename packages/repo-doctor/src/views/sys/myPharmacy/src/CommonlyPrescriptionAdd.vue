@@ -50,7 +50,8 @@
       </div>
     </div>
 
-    <div class="q-mb-md row">
+    <div class="q-mb-md row"
+         v-show="!detailedly">
       <span class="text-justify em-4">Rp类型</span>
       <span class="q-mx-sm">：</span>
       <div>
@@ -62,7 +63,6 @@
           </el-radio>
         </el-radio-group>
         <div class="q-mt-md cursor-pointer text-primary text-add-drug"
-             v-show="!detailedly"
              v-on:click="addCommonlyPrescriptionDrug">+添加药品</div>
       </div>
     </div>
