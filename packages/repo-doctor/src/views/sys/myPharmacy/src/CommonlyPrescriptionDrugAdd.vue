@@ -108,6 +108,12 @@ export default {
       default() {
         return []
       }
+    },
+    prescriptionTag: {
+      type: Number,
+      default() {
+        return 1
+      }
     }
   },
 
@@ -144,7 +150,8 @@ export default {
       if (this.queryString) {
         const fetch = Service.getDrugList
         const params = {
-          drugName: this.queryString
+          drugName: this.queryString,
+          prescriptionTag: this.prescriptionTag
         }
 
         this.$refs.table

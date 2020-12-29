@@ -67,6 +67,7 @@
                   v-if="addDialog.visible"
                   v-bind:visible.sync="addDialog.visible">
       <CommonlyPrescriptionAdd v-bind:data="addDialog.data"
+                               v-bind:prescriptionTag="addDialog.prescriptionTag"
                                v-on:success="onAddSuccess"
                                v-on:cancel="onAddCancel"></CommonlyPrescriptionAdd>
     </peace-dialog>
@@ -96,7 +97,8 @@ export default {
 
       addDialog: {
         visible: false,
-        data: {}
+        data: {},
+        prescriptionTag: 1
       },
 
       detailedlyDialog: {
@@ -133,12 +135,14 @@ export default {
       this.addDialog.visible = true
 
       this.addDialog.data = {}
+      this.addDialog.prescriptionTag = 1
     },
 
     editCommonlyPrescription(row) {
       this.addDialog.visible = true
 
       this.addDialog.data = Peace.util.deepClone(row)
+      this.addDialog.prescriptionTag = row.prescriptionTag
     },
 
     removeCommonlyPrescription(row) {

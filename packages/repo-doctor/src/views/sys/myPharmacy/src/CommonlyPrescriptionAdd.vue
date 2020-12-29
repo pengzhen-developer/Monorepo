@@ -50,12 +50,21 @@
       </div>
     </div>
 
-    <div class="q-mb-md">
-      <span class="text-justify em-4">Rp</span>
+    <div class="q-mb-md row">
+      <span class="text-justify em-4">Rp类型</span>
       <span class="q-mx-sm">：</span>
-      <span class="cursor-pointer text-primary"
-            v-show="!detailedly"
-            v-on:click="addCommonlyPrescriptionDrug">添加药品</span>
+      <div>
+        <el-radio-group v-model="model.prescriptionTag">
+          <el-radio v-for="item in source.prescriptionTag"
+                    v-bind:key="item.value"
+                    v-bind:label="item.value">
+            {{ item.label }}
+          </el-radio>
+        </el-radio-group>
+        <div class="q-mt-md cursor-pointer text-primary text-add-drug"
+             v-show="!detailedly"
+             v-on:click="addCommonlyPrescriptionDrug">+添加药品</div>
+      </div>
     </div>
 
     <div class="q-mb-md">
@@ -121,6 +130,7 @@
                   v-if="drugAddDialog.visible"
                   v-bind:visible.sync="drugAddDialog.visible">
       <CommonlyPrescriptionDrugAdd v-bind:addedList="drugAddDialog.addedList"
+                                   v-bind:prescriptionTag="model.prescriptionTag"
                                    v-on:success="onDrugAddSuccess"
                                    v-on:cancel="onDrugAddCancel"></CommonlyPrescriptionDrugAdd>
     </peace-dialog>
@@ -153,7 +163,14 @@ export default {
     },
 
     // 展示性质的
-    detailedly: Boolean
+    detailedly: Boolean,
+
+    prescriptionTag: {
+      type: Number,
+      default() {
+        return 1
+      }
+    }
   },
 
   components: {
@@ -169,7 +186,8 @@ export default {
       model: {
         diagnosis: '',
         sex: '不限',
-        age: '不限'
+        age: '不限',
+        prescriptionTag: 1
       },
 
       prescriptionDrugList: [],
@@ -184,6 +202,13 @@ export default {
 
       drugUsageAddDialog: {
         visible: false
+      },
+
+      source: {
+        prescriptionTag: [
+          { label: '院内处方', value: 1 },
+          { label: '外延处方', value: 2 }
+        ]
       }
     }
   },
@@ -192,12 +217,42 @@ export default {
     this.setPropsToModel()
   },
 
+  watch: {
+    'model.prescriptionTag'(newValue, oldValue) {
+      // 验证互斥锁
+      if (this.__lockRpCheck !== undefined && this.__lockRpCheck === newValue) {
+        this.__lockRpCheck = undefined
+        return
+      }
+
+      if (this.prescriptionDrugList.length) {
+        this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
+          .then(() => {
+            this.prescriptionDrugList.splice(0, this.prescriptionDrugList.length)
+
+            this.$emit('update:prescriptionTag', newValue)
+          })
+          .catch(() => {
+            // 设定互斥锁
+            this.__lockRpCheck = oldValue
+            this.model.prescriptionTag = oldValue
+
+            this.$emit('update:prescriptionTag', oldValue)
+          })
+      } else {
+        this.$emit('update:prescriptionTag', newValue)
+      }
+    }
+  },
+
   methods: {
     setPropsToModel() {
       this.model.diagnosis = this.data.diagnosis ?? ''
       this.model.age = this.data.age ?? '不限'
       this.model.sex = this.data.sex ?? '不限'
 
+      this.__lockRpCheck = this.prescriptionTag
+      this.model.prescriptionTag = this.prescriptionTag
       this.prescriptionDrugList = this.data.drugList ?? []
     },
 
@@ -363,5 +418,12 @@ export default {
 
 /deep/ .el-input.is-disabled .el-input__inner {
   color: #000;
+}
+
+.text-add-drug {
+  border: 1px dashed #000;
+  border-radius: 4px;
+  padding: 6px 12px;
+  width: fit-content;
 }
 </style>
