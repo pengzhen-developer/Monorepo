@@ -9,7 +9,7 @@ import peace from '@src/library'
  */
 export function getList(params) {
   const getList = 'client/v1/session/getList'
-
+  params.hideLoad = true
   return peace.http.post(getList, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }

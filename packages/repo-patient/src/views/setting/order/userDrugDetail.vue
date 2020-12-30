@@ -255,6 +255,13 @@
         <CallPhone v-model="phoneDialog.visible"
                    :phone="phoneDialog.data.phone"></CallPhone>
       </template>
+
+      <!-- H5支付回跳确认弹窗 -->
+      <template>
+        <PayCallback v-model="cbDialog.visible"
+                     :money="cbDialog.data.money"
+                     @H5PayCallback="H5PayCallback"></PayCallback>
+      </template>
     </div>
   </div>
 
@@ -266,6 +273,7 @@ import TheRecipe from '@src/views/components/TheRecipe'
 import QRCode from '@src/views/components/QRCode'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 import CallPhone from '@src/views/components/CallPhone'
+import PayCallback from '@src/views/components/PayCallback'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -343,7 +351,8 @@ export default {
     TheRecipe,
     QRCode,
     InvoiceModel,
-    CallPhone
+    CallPhone,
+    PayCallback
   },
 
   data() {
@@ -367,11 +376,21 @@ export default {
         data: {
           phone: ''
         }
-      }
+      },
+      cbDialog: {
+        visible: false,
+        data: {
+          money: ''
+        }
+      },
+      refreshTimer: null
     }
   },
 
   computed: {
+    currentStatus() {
+      return this.order?.callOrderStatus
+    },
     //是否显示应付金额  微信支付 ： 待支付为应付 其他的为实付
     //payStatus 1：待支付 2：已取消 3：已付款  4：退款中  5：已退款
     canShowPayway() {
@@ -480,7 +499,12 @@ export default {
   activated() {
     this.getDrugOrderDetail()
   },
-
+  created() {
+    const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
+    if (tradeType && this.currentStatus != ENUM.ORDER_STATUS.已下单) {
+      this.cbDialog.visible = true
+    }
+  },
   methods: {
     callPhone() {
       this.phoneDialog.visible = true
@@ -505,6 +529,21 @@ export default {
         this.getDrugOrderDetail()
       })
     },
+    H5PayCallback() {
+      this.refreshOrder()
+    },
+    refreshOrder() {
+      let n = 0
+      this.refreshTimer = setInterval(() => {
+        n = n + 1
+        if (this.currentStatus != ENUM.ORDER_STATUS.已下单 && n < 10) {
+          this.getDrugOrderDetail('hideLoad')
+        } else {
+          clearInterval(this.refreshTimer)
+          this.refreshTimer = null
+        }
+      }, 1000)
+    },
     payCallback() {
       this.getDrugOrderDetail()
     },
@@ -513,12 +552,16 @@ export default {
       peace.wx.pay({ orderNo }, null, this.payCallback, this.payCallback)
     },
 
-    getDrugOrderDetail() {
+    getDrugOrderDetail(type = '') {
       const params = peace.util.decode(this.$route.params.json)
+      if (type == 'hideLoad') {
+        params.hideLoad = true
+      }
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.order = res.data
         this.PickUpCode = res.data.expressNo
         this.QRCodeURL = res.data.QRCodeURL
+        this.cbDialog.data.money = this.order.orderMoney.toFixed(2)
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
         }
@@ -530,12 +573,15 @@ export default {
             }
           })
         }
-        this.getPhaOrder(this.order.accessCode, this.order.jztClaimNo, this.order.drugStoreId)
+        this.getPhaOrder(this.order.accessCode, this.order.jztClaimNo, this.order.drugStoreId, type)
       })
     },
     //预售订单+店铺详情
-    getPhaOrder(accessCode, jztClaimNo, drugStoreId) {
+    getPhaOrder(accessCode, jztClaimNo, drugStoreId, type) {
       const params = { accessCode, jztClaimNo, drugStoreId }
+      if (type == 'hideLoad') {
+        params.hideLoad = true
+      }
       peace.service.patient.getOrderBefore(params).then((res) => {
         this.phaInfo = res.data
         this.phoneDialog.data.phone = this.isCloudPharmacy ? this.order.phoneNumber : this.phaInfo.ContractTel

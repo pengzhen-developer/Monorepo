@@ -138,6 +138,13 @@
         </div>
       </template>
     </div>
+
+    <!-- H5支付回跳确认弹窗 -->
+    <template>
+      <PayCallback v-model="cbDialog.visible"
+                   :money="cbDialog.data.money"
+                   @H5PayCallback="H5PayCallback"></PayCallback>
+    </template>
   </div>
 </template>
 
@@ -145,7 +152,9 @@
 import peace from '@src/library'
 import { Dialog } from 'vant'
 
+import PayCallback from '@src/views/components/PayCallback'
 export default {
+  components: { PayCallback },
   props: {},
   data() {
     return {
@@ -196,16 +205,46 @@ export default {
       },
       info: {},
       data: {},
-      params: {}
+      params: {},
+      cbDialog: {
+        visible: false,
+        data: {
+          money: ''
+        }
+      },
+      refreshTimer: null
     }
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
     this.getData()
+    const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
+    if (tradeType && this.currentStatus != 1) {
+      this.cbDialog.visible = true
+    }
+  },
+  computed: {
+    currentStatus() {
+      return this.info?.orderInfo?.orderStatus
+    }
   },
   methods: {
+    H5PayCallback() {
+      this.refreshOrder()
+    },
+    refreshOrder() {
+      let n = 0
+      this.refreshTimer = setInterval(() => {
+        n = n + 1
+        if (this.currentStatus != 1 && n < 10) {
+          this.getData('hideLoad')
+        } else {
+          clearInterval(this.refreshTimer)
+          this.refreshTimer = null
+        }
+      }, 1000)
+    },
     goToPay(data) {
-      //debugger;
       let doctorId = data.doctorInfo.doctorId
       let order = data.orderInfo
       let money = order.orderMoney
@@ -215,18 +254,20 @@ export default {
       let orderType = 'register'
       let json = { money, typeName, doctorName, orderNo, doctorId, orderType }
       json = peace.util.encode(json)
-      // this.$router.push(`/components/doctorInquiryPay/${json}`)
       this.$router.push(`/components/ExpenseDetail/${json}`)
     },
-    getData() {
-      peace.service.patient
-        .getOrderDetail({
-          orderNo: this.params.orderInfo.orderNo,
-          orderType: this.params.orderInfo.orderType
-        })
-        .then((res) => {
-          this.info = res.data || {}
-        })
+    getData(type = '') {
+      const params = {
+        orderNo: this.params.orderInfo.orderNo,
+        orderType: this.params.orderInfo.orderType
+      }
+      if (type == 'hideLoad') {
+        params.hideLoad = true
+      }
+      peace.service.patient.getOrderDetail(params).then((res) => {
+        this.info = res.data || {}
+        this.cbDialog.data.money = this.info.orderInfo.orderMoney.toFixed(2)
+      })
     },
     canselOrder() {
       if (!this.info.orderInfo.cancelState && this.info.orderInfo.orderStatus != 1) {

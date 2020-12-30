@@ -398,6 +398,13 @@
       <CallPhone v-model="phoneDialog.visible"
                  :phone="phoneDialog.data.phone"></CallPhone>
     </template>
+
+    <!-- H5支付回跳确认弹窗 -->
+    <template>
+      <PayCallback v-model="cbDialog.visible"
+                   :money="cbDialog.data.money"
+                   @H5PayCallback="H5PayCallback"></PayCallback>
+    </template>
   </div>
 </template>
 
@@ -414,7 +421,7 @@ import MessageList from '@src/views/components/MessageList'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 import CallPhone from '@src/views/components/CallPhone'
-
+import PayCallback from '@src/views/components/PayCallback'
 const ENUM = {
   // 支付类型
   // wxpay（微信）
@@ -448,6 +455,7 @@ export default {
     ExpenseDetail,
     InvoiceModel,
     CallPhone,
+    PayCallback,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -479,6 +487,12 @@ export default {
           phone: ''
         }
       },
+      cbDialog: {
+        visible: false,
+        data: {
+          money: ''
+        }
+      },
       recipeList: {
         visible: false,
         data: []
@@ -500,7 +514,8 @@ export default {
       fromChatRoom: false,
       reportHeight: '0px',
 
-      showInvoiceModel: false
+      showInvoiceModel: false,
+      refreshTimer: null
     }
   },
   watch: {
@@ -629,6 +644,9 @@ export default {
     },
     canShowPhoneBox() {
       return this.phoneDialog?.data?.phone
+    },
+    currentStatus() {
+      return this.internalData?.inquiryInfo?.inquiryStatus
     }
   },
 
@@ -636,8 +654,28 @@ export default {
     this.fromChatRoom = peace.util.decode(this.$route.params.json).fromChatRoom ? true : false
     this.get()
   },
-
+  created() {
+    const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
+    if (tradeType && this.currentStatus != ENUM.INQUIRY_STATUS.待接诊) {
+      this.cbDialog.visible = true
+    }
+  },
   methods: {
+    H5PayCallback() {
+      this.refreshOrder()
+    },
+    refreshOrder() {
+      let n = 0
+      this.refreshTimer = setInterval(() => {
+        n = n + 1
+        if (this.currentStatus != ENUM.INQUIRY_STATUS.待接诊 && n < 10) {
+          this.getConsultDetail('hideLoad')
+        } else {
+          clearInterval(this.refreshTimer)
+          this.refreshTimer = null
+        }
+      }, 1000)
+    },
     callPhone() {
       this.phoneDialog.visible = true
     },
@@ -708,10 +746,13 @@ export default {
       let orderNo = order.orderNo
       peace.wx.pay({ orderNo }, null, this.getConsultDetail, this.getConsultDetail)
     },
-    getConsultDetail() {
+    getConsultDetail(type = '') {
       let params = {
         inquiryId: peace.util.decode(this.$route.params.json).inquiryId,
         sysId: peace.util.decode(this.$route.params.json).sysId
+      }
+      if (type == 'hideLoad') {
+        params.hideLoad = true
       }
       peace.service.patient.inquiryDetail(params).then(async (res) => {
         let inquiryInfo = res.data.inquiryInfo
@@ -719,8 +760,9 @@ export default {
         if (expireTime > inquiryInfo.currentTime) {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
-        this.internalData = res.data
+        this.internalData = Object.assign({}, res.data)
         this.phoneDialog.data.phone = this.internalData.orderInfo.phoneNumber
+        this.cbDialog.data.money = this.internalData.orderInfo.orderMoney
         if (res.data.inquiryInfo.serviceType == 'returnVisit') {
           await this.getFirstOptionList()
         }

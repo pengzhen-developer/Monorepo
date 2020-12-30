@@ -197,8 +197,11 @@ export default {
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
       } else if (redirectKey === 'registerDetail') {
         const json = peace.util.encode({
-          orderNo,
-          orderType,
+          orderInfo: {
+            orderNo,
+            orderType
+          },
+
           tradeType
         })
 
