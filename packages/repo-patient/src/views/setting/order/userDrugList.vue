@@ -204,7 +204,12 @@ export default {
       })
     },
     canShowApplyBtn(item) {
-      return item.callOrderStatus == this.ENUM.ORDER_STATUS.COMPLETE && item.divisionId
+      return (
+        (item.callOrderStatus == this.ENUM.ORDER_STATUS.COMPLETE ||
+          item.callOrderStatus == this.ENUM.ORDER_STATUS.SIGNED ||
+          item.callOrderStatus == this.ENUM.ORDER_STATUS.SEND) &&
+        item.divisionId
+      )
     },
     ifShowLogistics(item) {
       return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.expressNo

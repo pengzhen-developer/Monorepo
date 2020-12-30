@@ -405,6 +405,13 @@
                    :money="cbDialog.data.money"
                    @H5PayCallback="H5PayCallback"></PayCallback>
     </template>
+
+    <!-- 取消申请发票提示 -->
+    <template>
+      <ApplyForInvoice v-model="invoiceDialog.visible"
+                       :message="invoiceDialog.data.message"></ApplyForInvoice>
+    </template>
+
   </div>
 </template>
 
@@ -422,6 +429,7 @@ import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
+import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
 const ENUM = {
   // 支付类型
   // wxpay（微信）
@@ -456,6 +464,7 @@ export default {
     InvoiceModel,
     CallPhone,
     PayCallback,
+    ApplyForInvoice,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -503,6 +512,10 @@ export default {
         data: []
       },
       dialog: {
+        visible: false,
+        data: {}
+      },
+      invoiceDialog: {
         visible: false,
         data: {}
       },
@@ -640,7 +653,11 @@ export default {
       return this.internalData?.inquiryInfo?.reportButton != 1
     },
     canShowInvoiceBtn() {
-      return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.已完成 && this.internalData?.orderInfo?.divisionId
+      return (
+        (this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.已完成 ||
+          this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中) &&
+        this.internalData?.orderInfo?.divisionId
+      )
     },
     canShowPhoneBox() {
       return this.phoneDialog?.data?.phone
@@ -875,11 +892,19 @@ export default {
           const params = {
             orderNo: item.orderInfo.orderNo
           }
-          peace.service.patient.cancel(params).then((res) => {
-            peace.util.alert(res.msg)
+          peace.service.patient
+            .cancel(params)
+            .then((res) => {
+              peace.util.alert(res.msg)
 
-            this.get()
-          })
+              this.get()
+            })
+            .catch((res) => {
+              if (res.data.code == '202') {
+                this.invoiceDialog.visible = true
+                this.invoiceDialog.data.message = res.data.msg
+              }
+            })
         })
         .catch(() => {
           // on cancel

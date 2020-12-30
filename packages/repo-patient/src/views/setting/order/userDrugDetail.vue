@@ -262,6 +262,12 @@
                      :money="cbDialog.data.money"
                      @H5PayCallback="H5PayCallback"></PayCallback>
       </template>
+
+      <!-- 取消申请发票提示 -->
+      <template>
+        <ApplyForInvoice v-model="invoiceDialog.visible"
+                         :message="invoiceDialog.data.message"></ApplyForInvoice>
+      </template>
     </div>
   </div>
 
@@ -274,6 +280,8 @@ import QRCode from '@src/views/components/QRCode'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
+import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
+
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -352,7 +360,8 @@ export default {
     QRCode,
     InvoiceModel,
     CallPhone,
-    PayCallback
+    PayCallback,
+    ApplyForInvoice
   },
 
   data() {
@@ -376,6 +385,10 @@ export default {
         data: {
           phone: ''
         }
+      },
+      invoiceDialog: {
+        visible: false,
+        data: {}
       },
       cbDialog: {
         visible: false,
@@ -473,7 +486,13 @@ export default {
     },
     //是否显示申请发票
     canShowApplyBtn() {
-      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.已完成 && this.order.divisionId
+      return (
+        this.order &&
+        (this.order.callOrderStatus === ENUM.ORDER_STATUS.已备药_已发货 ||
+          this.order.callOrderStatus === ENUM.ORDER_STATUS.已自提_已签收 ||
+          this.order.callOrderStatus === ENUM.ORDER_STATUS.已完成) &&
+        this.order.divisionId
+      )
     },
     curPayMoney() {
       const payMoney = this.order.orderMoney
@@ -615,10 +634,18 @@ export default {
         resTxt = '取消订单后药房将不再为您预留药品, 所付款项将在1-3个工作日内原路返回，是否取消订单？'
       }
       peace.util.confirm(resTxt, '温馨提醒', undefined, () => {
-        peace.service.purchasedrug.CancelOrder(params).then((res) => {
-          peace.util.alert(res.msg)
-          this.getDrugOrderDetail()
-        })
+        peace.service.purchasedrug
+          .CancelOrder(params)
+          .then((res) => {
+            peace.util.alert(res.msg)
+            this.getDrugOrderDetail()
+          })
+          .catch((res) => {
+            if (res.data.code == '202') {
+              this.invoiceDialog.visible = true
+              this.invoiceDialog.data.message = res.data.msg
+            }
+          })
       })
     },
 
@@ -1039,6 +1066,7 @@ export default {
   align-items: center;
   padding: 0 15px;
   justify-content: space-between;
+
   &.other {
     height: 69px;
   }
@@ -1066,6 +1094,9 @@ export default {
     border-radius: 45px;
     margin: 0;
     box-shadow: 0px 1px 10px 0px rgba(0, 198, 174, 0.3);
+    &:nth-child(2) {
+      margin-left: 15px;
+    }
   }
 }
 .box .dl-packet {

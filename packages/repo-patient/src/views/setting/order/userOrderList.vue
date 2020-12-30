@@ -82,8 +82,6 @@
                                   format="HH:mm:ss" />
                 </template>
               </div>
-              <!-- <van-button class="label gary"
-                   @click="showCancellPop(item,index)">取消订单</van-button> -->
               <peace-button class="label blue"
                             v-if="canShowPaybutton(item)"
                             @click="goPay(item,index,'countDown_inquiry_')"
@@ -93,7 +91,7 @@
               </peace-button>
               <van-button class="label blue"
                           @click="changeInvoiceModel(item)"
-                          v-if="item.inquiryInfo.inquiryStatus == '5'&&item.orderInfo.divisionId">
+                          v-if="cnaShowApplyBtn(item)">
                 申请发票
               </van-button>
             </div>
@@ -256,11 +254,11 @@ export default {
       this.showInvoiceModel = true
       this.receiptNumber = item.orderInfo.divisionId
     },
+
     cnaShowApplyBtn(item) {
-      return item.inquiryInfo.inquiryStatus == '5' && item.orderInfo.divisionId
+      return (item.inquiryInfo.inquiryStatus == '5' || item.inquiryInfo.inquiryStatus == '3') && item.orderInfo.divisionId
     },
     canShowPaybutton(item) {
-      console.log(item)
       return (
         item.inquiryInfo.inquiryStatus === 1 &&
         (item.inquiryInfo.appointmentStatus == '0' || (item.inquiryInfo.reportTime && item.inquiryInfo.appointmentStatus == '1'))
