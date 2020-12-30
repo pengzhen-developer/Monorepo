@@ -233,6 +233,23 @@
     </div>
 
     <el-divider></el-divider>
+    <!-- 订单流水 -->
+
+    <div class="q-mb-lg">
+      <div class="title q-mb-md">
+        <span class="before before-vertical-line text-subtitle1 text-weight-bold">订单流水</span>
+      </div>
+      <div class="content q-mb-32">
+        <div class="row"
+             v-for="(time,index) in data.TimeLine"
+             v-bind:key="index">
+          <span class="label-text q-mr-md">{{time.Time}}</span>
+          <span class="label-value">{{time.Text}}</span>
+        </div>
+      </div>
+    </div>
+
+    <el-divider></el-divider>
 
     <!-- 物流信息 -->
     <div class="q-mb-lg"
@@ -377,7 +394,8 @@ export default {
           MappingDrugUserId: '',
           MappingDrugUserName: null,
           DispensingUserId: '',
-          DispensingUserName: ''
+          DispensingUserName: '',
+          TimeLine: []
         }
       }
     }
