@@ -50,19 +50,20 @@
       </div>
     </div>
 
-    <div class="q-mb-md row"
-         v-show="!detailedly">
+    <div class="q-mb-md row">
       <span class="text-justify em-4">Rp类型</span>
       <span class="q-mx-sm">：</span>
       <div>
-        <el-radio-group v-model="model.prescriptionTag">
+        <el-radio-group v-model="model.prescriptionTag"
+                        v-bind:disabled="detailedly">
           <el-radio v-for="item in source.prescriptionTag"
                     v-bind:key="item.value"
                     v-bind:label="item.value">
             {{ item.label }}
           </el-radio>
         </el-radio-group>
-        <div class="q-mt-md cursor-pointer text-primary text-add-drug"
+        <div v-show="!detailedly"
+             class="q-mt-md cursor-pointer text-primary text-add-drug"
              v-on:click="addCommonlyPrescriptionDrug">+添加药品</div>
       </div>
     </div>
@@ -421,7 +422,7 @@ export default {
 }
 
 .text-add-drug {
-  border: 1px dashed #000;
+  border: 1px dashed #ccc;
   border-radius: 4px;
   padding: 6px 12px;
   width: fit-content;
