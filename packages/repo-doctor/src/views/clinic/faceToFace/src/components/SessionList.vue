@@ -2,13 +2,18 @@
   <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
       <el-autocomplete v-model="search"
-                       popper-class="my-autocomplete"
                        prefix-icon="el-icon-search"
                        :fetch-suggestions="querySearchAsync"
                        @select="handleSelect"
                        placeholder="请输入患者名字">
         <template slot-scope="{ item }">
-          <span class="item">{{ item.name }} {{ item.sex }} {{ item.age }}</span>
+
+          <div class="flex items-center autocomplete-item">
+            <span class="q-mr-10 text-bold"> {{ item.name }} </span>
+            <span class="q-mr-10 text-bold"> {{ item.sex }} </span>
+            <span class="q-mr-10 text-bold"> {{ item.age }} </span>
+          </div>
+
         </template>
       </el-autocomplete>
     </div>
@@ -265,11 +270,7 @@ export default {
   flex: 1;
 }
 
-.my-autocomplete {
-  li {
-    .highlighted .item {
-      color: var(--q-color-primary);
-    }
-  }
+.autocomplete-item:hover {
+  color: var(--q-color-primary);
 }
 </style>
