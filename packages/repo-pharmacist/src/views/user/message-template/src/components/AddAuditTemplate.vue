@@ -5,7 +5,7 @@
              label-width=""
              v-bind:model="model"
              v-bind:rules="rules">
-      <el-form-item>
+      <el-form-item prop="templateContent">
         <el-input type="textarea"
                   placeholder="请输入模版内容（1-50字）"
                   maxlength="50"
@@ -45,7 +45,7 @@ export default {
       },
       rules: {
         templateContent: [
-          { required: false, message: '请输入模版内容（1-50字）', trigger: 'blur' },
+          { required: true, message: '请输入模版内容（1-50字）', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
               if (Peace.validate.isEmpty(value)) {
@@ -77,31 +77,37 @@ export default {
       this.$emit('close')
     },
     save() {
-      const params = Peace.util.deepClone(this.model)
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          const params = Peace.util.deepClone(this.model)
 
-      if (!Peace.validate.isEmpty(this.data)) {
-        params['id'] = this.data.id
+          if (!Peace.validate.isEmpty(this.data)) {
+            params['id'] = this.data.id
 
-        Service.editAuditingTemplates(params)
-          .then(() => {
-            Peace.util.success('编辑成功')
-            this.$emit('close')
-            this.$emit('refresh')
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      } else {
-        Service.addAuditingTemplates(params)
-          .then(() => {
-            Peace.util.success('保存成功')
-            this.$emit('close')
-            this.$emit('refresh')
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      }
+            Service.editAuditingTemplates(params)
+              .then(() => {
+                Peace.util.success('编辑成功')
+                this.$emit('close')
+                this.$emit('refresh')
+              })
+              .finally(() => {
+                this.isLoading = false
+              })
+          } else {
+            Service.addAuditingTemplates(params)
+              .then(() => {
+                Peace.util.success('保存成功')
+                this.$emit('close')
+                this.$emit('refresh')
+              })
+              .finally(() => {
+                this.isLoading = false
+              })
+          }
+        } else {
+          return false
+        }
+      })
     }
   }
 }

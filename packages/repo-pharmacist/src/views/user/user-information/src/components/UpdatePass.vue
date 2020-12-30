@@ -6,7 +6,7 @@
              v-bind:model="model"
              v-bind:rules="rules"
              class="q-pl-20 form-padding">
-      <el-form-item prop="UserName">
+      <el-form-item prop="pwd">
         <span slot="label"
               class="form-label">原密码</span>
         <el-input v-bind:show-password="showPassword"
@@ -16,7 +16,7 @@
                   v-model="model.pwd"
                   v-on:focus="showPassword=true"></el-input>
       </el-form-item>
-      <el-form-item prop="UserName">
+      <el-form-item prop="newPwd">
         <span slot="label"
               class="form-label">新密码</span>
         <el-input v-bind:show-password="showPassword"
@@ -39,6 +39,7 @@
 
 <script>
 import Service from '../service/index'
+import Util from '@src/util'
 export default {
   data() {
     return {
@@ -92,19 +93,32 @@ export default {
       this.$emit('close')
     },
     save() {
-      const params = {
-        Pwd: this.model.pwd,
-        NewPwd: this.model.newPwd
-      }
-      Service.modifyAccount(params)
-        .then(() => {
-          Peace.util.success('密码修改成功')
-          this.$emit('close')
-          this.$emit('refresh')
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          const params = {
+            Pwd: this.model.pwd,
+            NewPwd: this.model.newPwd
+          }
+          Service.modifyAccount(params)
+            .then(() => {
+              Peace.util.success('密码修改成功')
+              this.$emit('close')
+              //this.$emit('refresh')
+              this.logout()
+            })
+            .finally(() => {
+              this.isLoading = false
+            })
+        } else {
+          return false
+        }
+      })
+    },
+    logout() {
+      Peace.identity.auth.logout().then(() => {
+        Util.user.removeUserInfo()
+        Util.location.redirectToLogin()
+      })
     }
   }
 }

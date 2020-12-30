@@ -22,7 +22,7 @@
                   v-bind:disabled="model.IdentityID!==''"></el-input>
       </el-form-item>
       <el-form-item label-width="110px"
-                    prop="PharmacistType"
+                    prop="ProveType"
                     label="任职资格类型：">
         <el-radio-group v-model="model.ProveType"
                         v-on:change="changePharmacistType">
@@ -54,7 +54,7 @@
                   placeholder="请输入证书编号"
                   maxlength="20"></el-input>
       </el-form-item>
-      <el-form-item class="pic">
+      <el-form-item class="CertificateImageUrl">
         <span slot="label"
               class="form-label ">证书图片</span>
         <div class="upload-list">
@@ -88,7 +88,7 @@
 
 <script>
 import Service from '../service'
-// import Util from '@src/util'
+
 export default {
   props: {
     data: undefined
@@ -171,6 +171,13 @@ export default {
           {
             required: true,
             message: '请选择任职资格类型',
+            trigger: 'change'
+          }
+        ],
+        CertificateImageUrl: [
+          {
+            required: true,
+            message: '请选择图片',
             trigger: 'change'
           }
         ]

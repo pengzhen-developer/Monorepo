@@ -57,6 +57,7 @@
 
 <script>
 import Service from '../service'
+import Util from '@src/util'
 export default {
   name: 'UpdateAccount',
   props: {
@@ -112,14 +113,28 @@ export default {
 
   methods: {
     save() {
-      const params = {
-        Phone: this.model.tel,
-        SMSCode: this.model.SMSCode
-      }
-      Service.modifyAccount(params).then(() => {
-        Peace.util.success('账号修改成功')
-        this.$emit('close')
-        this.$emit('refresh')
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          const params = {
+            Phone: this.model.tel,
+            SMSCode: this.model.SMSCode
+          }
+          Service.modifyAccount(params).then(() => {
+            Peace.util.success('账号修改成功')
+            this.$emit('close')
+            //this.$emit('refresh')
+            this.logout()
+          })
+        } else {
+          return false
+        }
+      })
+    },
+
+    logout() {
+      Peace.identity.auth.logout().then(() => {
+        Util.user.removeUserInfo()
+        Util.location.redirectToLogin()
       })
     },
     cancel() {

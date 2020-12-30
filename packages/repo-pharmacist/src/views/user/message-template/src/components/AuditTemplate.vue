@@ -87,14 +87,19 @@ export default {
       this.dialog.visible = true
     },
     deleted(row) {
-      const params = {
-        templatesId: row.id,
-        organCode: this.organCode
-      }
+      this.$confirm('确定删除模板？', '提示', {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
+      }).then(() => {
+        const params = {
+          templatesId: row.id,
+          organCode: this.organCode
+        }
 
-      Service.delAuditingTemplates(params).then(() => {
-        Peace.util.success('删除成功')
-        this.fetch()
+        Service.delAuditingTemplates(params).then(() => {
+          Peace.util.success('删除成功')
+          this.fetch()
+        })
       })
     },
     edit(row) {
