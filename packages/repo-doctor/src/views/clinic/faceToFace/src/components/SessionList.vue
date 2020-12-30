@@ -1,25 +1,33 @@
 <template>
-  <SessionListContainer active="faceToFace">
+  <FaceToFaceSessionListContainer active="faceToFace">
 
-    <el-button type="text"
-               class="q-my-10"
-               icon="el-icon-circle-plus"
-               v-on:click="addPatient">新增患者</el-button>
+    <div class="q-ma-8">
+      <el-autocomplete v-model="search"
+                       popper-class="my-autocomplete"
+                       prefix-icon="el-icon-search"
+                       :fetch-suggestions="querySearchAsync"
+                       @select="handleSelect"
+                       placeholder="请输入患者名字">
+
+        <template slot-scope="{ item }">
+          <span class="item">{{ item.name }} {{ item.sex }} {{ item.age }}</span>
+        </template>
+
+      </el-autocomplete>
+    </div>
 
     <div class="flex column content">
 
       <template v-if="patientList.length">
         <q-scroll-area class="col"
+                       ref='scrollArea'
                        v-bind:thumb-style="thumbStyle">
 
-          <div v-for="patient in patientList"
-               v-bind:key="patient.patientNo"
-               class="col">
-            <!-- active： 当前选中的样式 -->
-            <SessionListItem v-on:click.native="selectPatient(patient)"
-                             v-bind:active="patient.patientNo === storePatient.patientNo"
-                             v-bind:patient="patient"></SessionListItem>
-          </div>
+          <SessionListItem v-for="patient in patientList"
+                           v-bind:key="patient.patientNo"
+                           v-on:click.native="selectPatient(patient)"
+                           v-bind:active="patient.patientNo === storePatient.patientNo"
+                           v-bind:patient="patient"></SessionListItem>
 
         </q-scroll-area>
       </template>
@@ -49,38 +57,55 @@
 
     </peace-dialog>
 
-  </SessionListContainer>
+  </FaceToFaceSessionListContainer>
 </template>
 
 <script>
 import SessionListItem from './SessionListItem'
-import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
+import FaceToFaceSessionListContainer from '@src/views/clinic/components/FaceToFaceSessionListContainer'
 import AddPatient from './AddPatient'
 import Service from '../service/index'
 import { mutations, store } from '../store'
 
 export default {
   components: {
-    SessionListContainer,
+    FaceToFaceSessionListContainer,
     AddPatient,
     SessionListItem
   },
 
   data() {
     return {
+      thumbStyle: {
+        right: '2px',
+        borderRadius: '5px',
+        background: '#bdbdbd',
+        width: '5px',
+        opacity: 0.75
+      },
+
       addPatientDialog: {
         visible: false
       },
       patientList: [],
-      showWriteRecipe: false
+      showWriteRecipe: false,
+      search: ''
+      //position: 0
     }
   },
 
   // 监听当前选中的患者
   watch: {
     storePatient: {
-      handler() {
+      handler(val) {
         this.$nextTick(function() {
+          const activePatient = function(el) {
+            return el.patientNo == val.patientNo
+          }
+          const index = this.patientList.findIndex(activePatient)
+          const position = index > 0 ? index : 0
+          this.scrollPosition(position * 80)
+
           this.updateInfo()
         })
       },
@@ -94,32 +119,41 @@ export default {
           this.getRecipeList()
         }
       }
+    },
+
+    showAddPatient: {
+      handler(val) {
+        this.$nextTick(function() {
+          if (val) {
+            this.addPatient()
+          }
+        })
+      },
+      immediate: true
     }
   },
 
   computed: {
-    thumbStyle() {
-      return {
-        right: '2px',
-        borderRadius: '5px',
-        background: '#bdbdbd',
-        width: '5px',
-        opacity: 0.75
-      }
-    },
-
     storePatient() {
       return store.activePatient
     },
 
     closeWriteRecipe() {
       return store.showWriteRecipe
+    },
+
+    showAddPatient() {
+      return store.showAddPatient
     }
   },
 
   created() {
     // 获取患者列表
     this.getPatientList()
+
+    setTimeout(() => {
+      window.sc = this?.$refs.scrollArea
+    }, 3000)
   },
 
   methods: {
@@ -176,17 +210,22 @@ export default {
       this.addPatientDialog.visible = true
     },
 
+    hiddenPatient() {
+      this.addPatientDialog.visible = false
+      mutations.setShowAddPatient(false)
+    },
+
     // 关闭添加患者界面
     closeMenu() {
       const tmp = this.$refs.checkInput.isShouldSave()
       if (tmp) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
-            this.addPatientDialog.visible = false
+            this.hiddenPatient()
           })
           .catch(() => {})
       } else {
-        this.addPatientDialog.visible = false
+        this.hiddenPatient()
       }
     },
 
@@ -201,6 +240,21 @@ export default {
       this.showWriteRecipe = true
       // 刷新患者列表，新加患者应该在列表第一个
       this.getPatientList()
+    },
+
+    querySearchAsync(queryString, cb) {
+      Service.searchPatient(queryString).then((res) => {
+        cb(res?.data?.list)
+      })
+    },
+
+    handleSelect(item) {
+      mutations.setActivePatient(item)
+    },
+
+    scrollPosition(position) {
+      console.log(this.$refs?.scrollArea)
+      this.$refs?.scrollArea?.setScrollPosition(position, 300)
     }
   }
 }
@@ -214,5 +268,13 @@ export default {
 
 .content {
   flex: 1;
+}
+
+.my-autocomplete {
+  li {
+    .highlighted .item {
+      color: var(--q-color-primary);
+    }
+  }
 }
 </style>

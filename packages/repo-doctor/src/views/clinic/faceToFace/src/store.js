@@ -6,7 +6,9 @@ export const store = Vue.observable({
   // 患者的处方列表
   patientRecipeList: [],
   // 显示开具处方
-  showWriteRecipe: false
+  showWriteRecipe: false,
+  // 添加患者动作
+  showAddPatient: false
 })
 
 export const mutations = {
@@ -20,5 +22,9 @@ export const mutations = {
 
   setShowWriteRecipe(show) {
     store.showWriteRecipe = show
+  },
+
+  setShowAddPatient(show) {
+    store.showAddPatient = show
   }
 }

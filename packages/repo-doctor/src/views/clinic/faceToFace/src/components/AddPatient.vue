@@ -89,7 +89,7 @@ export default {
         tel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           {
-            pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+            pattern: /^((0\d{2,3}-\d{7,8})|(1[3567894]\d{9}))$/,
             message: '请输入正确的手机号码或者座机号'
           }
         ]

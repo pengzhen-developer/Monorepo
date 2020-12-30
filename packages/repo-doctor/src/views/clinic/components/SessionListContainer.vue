@@ -11,6 +11,7 @@
         <div slot="title"
              class="flex justify-between items-center full-width"
              v-on:click="gotoPath(item)">
+
           <div class="flex items-center">
             <img class="q-mr-md"
                  style="width: 20px; height: 20px;"
@@ -18,9 +19,12 @@
             <span class="text-subtitle1">{{ item.title }}</span>
           </div>
 
-          <div>
-            <!-- ( <span class="text-red">2</span> ) -->
-          </div>
+          <el-button type="text"
+                     v-if="showAddButton(item)"
+                     v-on:click="addPatient">
+            <img class="add_button_style"
+                 src="~@src/assets/images/add_button.png">
+          </el-button>
 
         </div>
         <div class="flex column full-height">
@@ -32,6 +36,8 @@
 
 </template>
 <script>
+import { mutations } from '../faceToFace/src/store'
+
 export default {
   props: {
     active: {
@@ -95,6 +101,14 @@ export default {
       this.activeName = this.active
 
       this.$router.push(item.routePath)
+    },
+
+    showAddButton(item) {
+      return item.name == 'faceToFace'
+    },
+
+    addPatient() {
+      mutations.setShowAddPatient(true)
     }
   }
 }
@@ -103,6 +117,10 @@ export default {
 <style lang="scss" scoped>
 .el-collapse {
   border: 0;
+}
+
+.add_button_style {
+  width: 20px;
 }
 
 ::v-deep .el-collapse-item {
