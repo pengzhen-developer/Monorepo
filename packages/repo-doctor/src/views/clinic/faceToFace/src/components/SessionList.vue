@@ -1,6 +1,5 @@
 <template>
-  <FaceToFaceSessionListContainer active="faceToFace">
-
+  <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
       <el-autocomplete v-model="search"
                        popper-class="my-autocomplete"
@@ -8,38 +7,32 @@
                        :fetch-suggestions="querySearchAsync"
                        @select="handleSelect"
                        placeholder="请输入患者名字">
-
         <template slot-scope="{ item }">
           <span class="item">{{ item.name }} {{ item.sex }} {{ item.age }}</span>
         </template>
-
       </el-autocomplete>
     </div>
 
     <div class="flex column content">
-
       <template v-if="patientList.length">
         <q-scroll-area class="col"
-                       ref='scrollArea'
+                       id="scrollView"
                        v-bind:thumb-style="thumbStyle">
-
           <SessionListItem v-for="patient in patientList"
                            v-bind:key="patient.patientNo"
                            v-on:click.native="selectPatient(patient)"
                            v-bind:active="patient.patientNo === storePatient.patientNo"
                            v-bind:patient="patient"></SessionListItem>
-
         </q-scroll-area>
       </template>
 
       <template v-else>
         <div class="col flex column justify-center items-center">
           <img class="q-mb-md"
-               src="~@src/assets/images/inquiry/ic_no one.png">
+               src="~@src/assets/images/inquiry/ic_no one.png" />
           <span class="text-grey-5">暂无会话</span>
         </div>
       </template>
-
     </div>
 
     <peace-dialog :visible.sync="addPatientDialog.visible"
@@ -48,28 +41,27 @@
                   append-to-body
                   width="387px"
                   title="添加患者">
-
       <AddPatient ref="checkInput"
                   v-on:closeMenu="closeMenu"
                   v-on:sendRecipe="sendRecipe"
-                  v-on:updateList="updateList">
-      </AddPatient>
-
+                  v-on:updateList="updateList"> </AddPatient>
     </peace-dialog>
-
-  </FaceToFaceSessionListContainer>
+  </SessionListContainer>
 </template>
 
 <script>
 import SessionListItem from './SessionListItem'
-import FaceToFaceSessionListContainer from '@src/views/clinic/components/FaceToFaceSessionListContainer'
+import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
 import AddPatient from './AddPatient'
 import Service from '../service/index'
 import { mutations, store } from '../store'
 
+import { scroll } from 'quasar'
+const { getScrollTarget, setScrollPosition } = scroll
+
 export default {
   components: {
-    FaceToFaceSessionListContainer,
+    SessionListContainer,
     AddPatient,
     SessionListItem
   },
@@ -253,8 +245,11 @@ export default {
     },
 
     scrollPosition(position) {
-      console.log(this.$refs?.scrollArea)
-      this.$refs?.scrollArea?.setScrollPosition(position, 300)
+      const ele = document.getElementById('scrollView')?.firstChild
+      if (ele) {
+        const target = getScrollTarget(ele)
+        setScrollPosition(target, position, 300)
+      }
     }
   }
 }
