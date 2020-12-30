@@ -141,18 +141,8 @@ export default {
       if (type == this.status) {
         return
       }
-      if (type === '1') {
-        this.$confirm('您尚未开启工作状态，是否现在开启？', '提示', {
-          confirmButtonText: '开始工作',
-          cancelButtonText: '取消'
-        }).then(() => {
-          this.status = type
-          this.updateUserStatus()
-        })
-      } else {
-        this.status = type
-        this.updateUserStatus()
-      }
+      this.status = type
+      this.updateUserStatus()
     },
     logout() {
       Peace.identity.auth.logout().then(() => {
