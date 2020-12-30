@@ -32,7 +32,24 @@
         <span class="q-mr-sm">
           {{ accountInfo.name }}
         </span>
+        <!-- 账户状态 -->
 
+        <div class="q-mx-sm"
+             v-if="status==='1'">
+          <q-avatar rounded
+                    style="font-size:12px;">
+            <img :src="require('../assets/img/ic_work.png')">
+          </q-avatar>
+          <span class="q-ml-4">工作中</span>
+        </div>
+        <div class="q-mx-sm"
+             v-else-if="status==='0'">
+          <q-avatar rounded
+                    style="font-size:12px;">
+            <img :src="require('../assets/img/ic_rest.png')">
+          </q-avatar>
+          <span class="q-ml-4">休息中</span>
+        </div>
         <!-- 账户名称 -->
         <q-btn class="q-mr-sm"
                flat
@@ -44,10 +61,45 @@
                     bordered
                     padding
                     class="rounded-borders">
-
+              <q-item clickable
+                      v-ripple
+                      v-bind:active="status === '1'"
+                      active-class="status"
+                      v-on:click="changeState('1')">
+                <q-item-section avatar>
+                  <q-avatar rounded
+                            size="xs">
+                    <img :src="require('../assets/img/ic_work.png')">
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  工作中
+                </q-item-section>
+              </q-item>
+              <q-item clickable
+                      v-ripple
+                      v-bind:active="status === '0'"
+                      active-class="status"
+                      v-on:click="changeState('0')">
+                <q-item-section avatar>
+                  <q-avatar rounded
+                            size="xs">
+                    <img :src="require('../assets/img/ic_rest.png')">
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  休息中
+                </q-item-section>
+              </q-item>
               <q-item clickable
                       v-ripple
                       v-on:click="logout">
+                <q-item-section avatar>
+                  <q-avatar rounded
+                            size="xs">
+                    <img :src="require('../assets/img/ic_logout.png')">
+                  </q-avatar>
+                </q-item-section>
                 <q-item-section>
                   退出登录
                 </q-item-section>
@@ -69,7 +121,9 @@ export default {
     return {
       configuration: window.configuration,
       accountInfo: {},
-      custName: ''
+      custName: '',
+      status: '',
+      userId: ''
     }
   },
 
@@ -79,14 +133,64 @@ export default {
 
     this.accountInfo = accountInfo
     this.custName = custInfo.data
+    this.getUserStatus()
   },
 
   methods: {
+    changeState(type) {
+      if (type == this.status) {
+        return
+      }
+      if (type === '1') {
+        this.$confirm('您尚未开启工作状态，是否现在开启？', '提示', {
+          confirmButtonText: '开始工作',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.status = type
+          this.updateUserStatus()
+        })
+      } else {
+        this.status = type
+        this.updateUserStatus()
+      }
+    },
     logout() {
       Peace.identity.auth.logout().then(() => {
         Util.user.removeUserInfo()
         Util.location.redirectToLogin()
       })
+    },
+    //获取用户状态
+    getUserStatus() {
+      Service.getUserStatus().then((res) => {
+        this.userId = res.data.userId
+        this.status = res.data.status
+      })
+    },
+    //更新用户状态
+    updateUserStatus() {
+      const params = {
+        userId: this.userId,
+        status: this.status
+      }
+      const formData = new FormData()
+      Object.keys(params).forEach((key) => {
+        formData.append(key, params[key])
+      })
+      Service.updateUserStatus(formData)
+        .then(() => {
+          const message = this.status == '1' ? '您已切换为工作中，可以审核处方啦~' : '您已切换为休息中，不可进行处方审核工作'
+          Peace.util.success(message)
+        })
+        .catch((res) => {
+          Peace.util.alert(res.msg)
+          this.status = params.status == '1' ? '0' : '1'
+        })
+        .finally(() => {
+          setTimeout(() => {
+            window.location.reload()
+          }, 500)
+        })
     }
   }
 }
@@ -103,5 +207,18 @@ export default {
   color: #ffffff;
   line-height: 32px;
   text-align: center;
+}
+::v-deep .q-item__section--avatar {
+  min-width: auto;
+}
+
+.status {
+  background: var(--q-color-primary-light-1);
+}
+.q-item {
+  &:hover {
+    background: var(--q-color-primary-light-1);
+    color: var(--q-color-primary);
+  }
 }
 </style>
