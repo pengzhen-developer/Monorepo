@@ -48,7 +48,7 @@
 
         <div class="row">
           <div class="col-6">
-            <span>下单时间</span>
+            <span>同步时间</span>
             <span>：</span>
             <span class="text-grey-6">{{ data.CreateTime }}</span>
           </div>
