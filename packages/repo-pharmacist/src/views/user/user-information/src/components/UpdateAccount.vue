@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import Service from '../service'
 export default {
   name: 'UpdateAccount',
   props: {
@@ -85,8 +86,8 @@ export default {
           { required: false, message: '请输入验证码', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
-              if (value.length !== 6) {
-                cb(new Error('请输入6位验证码'))
+              if (value.length !== 4) {
+                cb(new Error('请输入4位验证码'))
               }
 
               cb()
@@ -110,8 +111,20 @@ export default {
   },
 
   methods: {
-    save() {},
-    cancel() {},
+    save() {
+      const params = {
+        Phone: this.model.tel,
+        SMSCode: this.model.SMSCode
+      }
+      Service.modifyAccount(params).then(() => {
+        Peace.util.success('账号修改成功')
+        this.$emit('close')
+        this.$emit('refresh')
+      })
+    },
+    cancel() {
+      this.$emit('close')
+    },
     passwordFocus() {
       this.passwordActive = true
     },
@@ -125,17 +138,11 @@ export default {
     },
 
     sendCode() {
-      // Service.sendSms(this.model)
-      //   .then((res) => {
-      this.sendSmsCode = true
-
-      // Peace.util.success(res.msg)
-      Peace.util.success('77777777777777777')
-      this.$refs.smsCode.focus()
-      // })
-      // .finally(() => {
-      this.countdownTime = this.countdownInterval
-      // })
+      this.countdownTime = 60 * 1000
+      Service.sendSms({ ManagerPhone: this.model.tel }).then(() => {
+        Peace.util.success('验证码发送成功')
+        this.$refs.smsCode.focus()
+      })
     },
     validateForm() {
       return new Promise((resolve) => {

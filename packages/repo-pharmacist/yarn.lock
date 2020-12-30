@@ -904,8 +904,8 @@
 
 "@jk998/identity@^0.2.4":
   version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
-  integrity sha512-k6H1CP4qDMWNWsNYl2IWNTCuiHUNR2PK1B5Mj+UJkR7vComImS2LiIJchue3eKvpcz8HS3FPglBAo7HhAUvwwA==
+  resolved "https://registry.npm.taobao.org/@jk998/identity/download/@jk998/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
+  integrity sha1-lOEaRZeMOAwYJ9T86VRlHf0jVRE=
   dependencies:
     "@jk998/library" "^0.1.20"
     crypto-js "^4.0.0"
@@ -920,10 +920,20 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.8.tgz#6bcfa266a6a39d91a4827a4dbc4c3430a0afc16e"
-  integrity sha512-wA9ga9BjM8R4FZ5m2UupJBBEOi/H0pzDcqAkHmG0U8m1QEEl5r/LeMrsKxF40XhjBbGoiH7kibipir51spkAgA==
+"@jk998/library@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.npm.taobao.org/@jk998/library/download/@jk998/library-0.1.22.tgz#7dfbca3afd4ea0423c9089f310de30c905b8cac2"
+  integrity sha1-ffvKOv1OoEI8kInzEN4wyQW4ysI=
+  dependencies:
+    axios "^0.20.0"
+    dayjs "^1.8.35"
+    js-base64 "^3.5.2"
+    numeral "^2.0.6"
+
+"@jk998/peace-element-ui@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.npm.taobao.org/@jk998/peace-element-ui/download/@jk998/peace-element-ui-0.1.12.tgz#0a121f5c7af7b00fba1d0f1d33ddc7258dc17005"
+  integrity sha1-ChIfXHr3sA+6HQ8dM93HJY3BcAU=
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

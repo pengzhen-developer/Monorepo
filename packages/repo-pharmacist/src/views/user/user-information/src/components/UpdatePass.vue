@@ -13,7 +13,7 @@
                   minlength="6"
                   maxlength="20"
                   placeholder="请输入原密码"
-                  auto-complete="new-password"
+                  v-model="model.pwd"
                   v-on:focus="showPassword=true"></el-input>
       </el-form-item>
       <el-form-item prop="UserName">
@@ -23,13 +23,14 @@
                   minlength="6"
                   maxlength="20"
                   placeholder="请输入新密码"
-                  auto-complete="new-password"
+                  v-model="model.newPwd"
                   v-on:focus="showPassword=true"></el-input>
       </el-form-item>
       <div class="text-center q-pt-14">
         <el-button v-on:click="cancel">取消</el-button>
         <el-button type="primary"
                    v-on:click="save"
+                   v-bind:disabled="canSave"
                    v-bind:loading="isLoading">确定</el-button>
       </div>
     </el-form>
@@ -37,16 +38,75 @@
 </template>
 
 <script>
+import Service from '../service/index'
 export default {
   data() {
     return {
-      showPassword: false
+      isLoading: false,
+      showPassword: false,
+
+      model: {
+        pwd: '',
+        newPwd: ''
+      },
+
+      rules: {
+        pwd: [
+          { required: false, message: '请输入原始密码' },
+          {
+            validator: (rule, value, cb) => {
+              if (value.length == 0) {
+                cb(new Error('请输入原始密码'))
+              }
+
+              cb()
+            }
+          }
+        ],
+        newPwd: [
+          { required: false, message: '请输入新密码', trigger: 'blur' },
+          {
+            validator: (rule, value, cb) => {
+              if (value.length == 0) {
+                cb(new Error('请输入新密码'))
+              }
+
+              cb()
+            }
+          }
+        ]
+      }
     }
   },
 
   created() {},
 
-  methods: {}
+  computed: {
+    canSave() {
+      return Peace.validate.isEmpty(this.model.pwd) || Peace.validate.isEmpty(this.model.newPwd)
+    }
+  },
+
+  methods: {
+    cancel() {
+      this.$emit('close')
+    },
+    save() {
+      const params = {
+        Pwd: this.model.pwd,
+        NewPwd: this.model.newPwd
+      }
+      Service.modifyAccount(params)
+        .then(() => {
+          Peace.util.success('密码修改成功')
+          this.$emit('close')
+          this.$emit('refresh')
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
+    }
+  }
 }
 </script>
 

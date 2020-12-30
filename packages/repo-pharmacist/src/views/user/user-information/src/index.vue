@@ -1,5 +1,6 @@
 <template>
-  <div class="layout-route bg-grey-2">
+  <div class="layout-route bg-grey-2"
+       v-loading="loading">
     <!-- 基本信息 -->
     <div class="personal bg-white  q-mb-20 q-pb-44">
       <div class="personal-item row justify-between q-mb-26">
@@ -12,27 +13,27 @@
         <el-col style="width:400px">
           <div class="row q-mb-26">
             <div class="form-label">
-              <span class="em-4">姓名</span>
+              <span class="a4">姓名</span>
             </div>
-            <div class="form-value">梁晓艳</div>
+            <div class="form-value">{{ userInfo.RealName }}</div>
           </div>
           <div class="row  q-mb-26">
             <div class="form-label ">
               <span class="em-4">身份证号</span>
             </div>
-            <div class="form-value">422823*******0248</div>
+            <div class="form-value">{{ userInfo.IdentityID }}</div>
           </div>
           <div class="row  q-mb-26">
             <div class="form-label">
               <span class="em-6">任职资格类型</span>
             </div>
-            <div class="form-value">药学专业技术资格证书</div>
+            <div class="form-value">{{ userInfo.PharmacistType | filterDictionary(typeList, '--') }}</div>
           </div>
           <div class="row  q-mb-26">
             <div class="form-label ">
               <span class="em-4">资质级别</span>
             </div>
-            <div class="form-value">中级（主管中药师）</div>
+            <div class="form-value">{{ userInfo.QualificationsLevelText }}</div>
           </div>
         </el-col>
         <el-col style="flex:1">
@@ -40,23 +41,32 @@
             <div class="form-label">
               <span class="em-4">证书编号</span>
             </div>
-            <div class="form-value">422823</div>
+            <div class="form-value">{{ userInfo.CertificateCode }}</div>
           </div>
           <div class="row ">
             <div class="form-label">
               <span class="em-4">证书图片</span>
             </div>
             <div class="form-upload">
-              <!-- <img :src='require("./assets/img/add.png")'> -->
-              <img class="icon-add"
-                   :src='require("./assets/img/add.png")'>
+              <el-image class="icon-add"
+                        :src='userInfo.CertificatesUrl'
+                        :preview-src-list="srcList">
+                <div slot="placeholder"
+                     class="image-slot placeholderStyle">
+                  加载中<span class="dot">...</span>
+                </div>
+              </el-image>
             </div>
           </div>
         </el-col>
       </el-row>
     </div>
     <!-- 账户信息 -->
-    <div class="personal bg-white  q-mb-20 q-pb-4">
+    <div class="
+                   personal
+                   bg-white
+                   q-mb-20
+                   q-pb-4">
       <div class="personal-item row q-mb-26">
         <div class="personal-title">账户信息</div>
       </div>
@@ -65,19 +75,19 @@
           <div class="form-label left ">
             <span class="em-4">所属部门</span>
           </div>
-          <div class="form-value">药师顶级部门</div>
+          <div class="form-value">{{ userInfo.DepartName }}</div>
         </div>
         <div class="row  q-mb-26">
           <div class="form-label  left">
-            <span class="em-4">账户角度</span>
+            <span class="em-4">账户角色</span>
           </div>
-          <div class="form-value">审方药师</div>
+          <div class="form-value">{{ userInfo.roleNames }}</div>
         </div>
         <div class="row  q-mb-26">
           <div class="form-label  left">
             <span class="em-4">账户</span>
           </div>
-          <div class="form-value form-width">13812345678</div>
+          <div class="form-value form-width">{{ userInfo.Phone }}</div>
           <i class="zyy-icon zyy-xiugai1 text-primary "
              size="12"
              v-on:click="updateAccount">修改</i>
@@ -101,15 +111,16 @@
       <div class="row justify-between flex-start">
         <div>
           <p>根据《医疗机构处方审核规范》中关于处方审核流程的规定，药师需在电子处方上进行电子签名，处方才能进入收费环节。</p>
-          <span class="el-icon-warning text-warning">系统检测到您尚未设置数字签名，请设置签名。否则您将无法在线审方</span>
-          <!-- <span>您已设置数字签名，可正常进行医嘱点评、处方点评、处方审核等工作</span> -->
+          <span v-if="showSetSignTips"
+                class="el-icon-warning text-warning">系统检测到您尚未设置数字签名，请设置签名。否则您将无法在线审方</span>
+          <span>您已设置数字签名，可正常进行医嘱点评、处方点评、处方审核等工作</span>
         </div>
         <el-popover placement="top"
                     width="247"
                     trigger="click"
                     offset=100>
           <div class="sign-tips">设置数字签名指引</div>
-          <el-timeline :reverse="reverse">
+          <el-timeline reverse>
             <div class="el-timeline-item"
                  v-for="(activity, index) in activities"
                  :key="index.toString()">
@@ -123,6 +134,8 @@
           <el-button type="primary"
                      style="width:88px;"
                      class="q-mt-4"
+                     v-if="showSetSignTips"
+                     v-on:click="updateStatus"
                      slot="reference">设置签名</el-button>
         </el-popover>
 
@@ -134,6 +147,8 @@
                  :title="dialog.title"
                  custom-class='accountDialog'>
       <EditBasicinfo v-if="dialog.visible"
+                     v-on:refresh="fetch"
+                     v-bind:data="dialog.data"
                      v-on:close="dialog.visible = false"></EditBasicinfo>
     </PeaceDialog>
 
@@ -143,6 +158,8 @@
                  :title="accountDialog.title"
                  custom-class='accountDialog'>
       <UpdateAccount v-if="accountDialog.visible"
+                     v-bind:phone="userInfo.Phone"
+                     v-on:refresh="fetch"
                      v-on:close="accountDialog.visible = false"></UpdateAccount>
     </PeaceDialog>
 
@@ -152,6 +169,7 @@
                  :title="passDialog.title"
                  custom-class='accountDialog'>
       <UpdatePass v-if="passDialog.visible"
+                  v-on:refresh="fetch"
                   v-on:close="passDialog.visible = false"></UpdatePass>
     </PeaceDialog>
 
@@ -162,6 +180,7 @@
 import EditBasicinfo from './components/EditBasicinfo'
 import UpdateAccount from './components/UpdateAccount'
 import UpdatePass from './components/UpdatePass'
+import Service from './service/index'
 export default {
   name: 'UserInformation',
 
@@ -175,7 +194,8 @@ export default {
     return {
       dialog: {
         title: '修改基本信息',
-        visible: false
+        visible: false,
+        data: {}
       },
       accountDialog: {
         title: '修改账号',
@@ -185,6 +205,12 @@ export default {
         title: '修改密码',
         visible: false
       },
+      userInfo: {},
+      typeList: [
+        { label: '药学专业技术资格证书', value: '0' },
+        { label: '执业药师资格证书', value: '1' }
+      ],
+      loading: false,
       activities: [
         {
           content: '下载【医网信】APP'
@@ -201,23 +227,59 @@ export default {
       ]
     }
   },
+  //医网签签名状态 -1 未提交 0：身份审核通过  1：证书签发   2：设置签章  4：申请拒绝
+  computed: {
+    showSetSignTips() {
+      return this.userInfo.SignStatus === '-1'
+    },
+    srcList() {
+      return [this.userInfo.CertificatesUrl]
+    }
+  },
 
-  created() {},
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+
   methods: {
     editBasicinfo() {
       this.dialog.visible = true
+      this.dialog.data = Object.assign({}, this.userInfo)
     },
     updateAccount() {
       this.accountDialog.visible = true
     },
     updatePass() {
       this.passDialog.visible = true
+    },
+
+    updateStatus() {
+      Service.updateYwqStatus().then(() => {
+        this.fetch()
+      })
+    },
+
+    fetch() {
+      this.loading = true
+      Service.getUserInformations().then((res) => {
+        this.userInfo = res.data
+        this.loading = false
+      })
     }
   }
 }
 </script>
 
 <style  lang="scss" scoped>
+.placeholderStyle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--q-color-grey-999);
+}
 .personal {
   border-radius: 4px;
   padding-left: 32px;
@@ -282,8 +344,8 @@ export default {
     height: 100%;
   }
   .icon-add {
-    width: 54px !important;
-    height: 54px !important;
+    width: 128px !important;
+    height: 128px !important;
     display: block;
   }
 }

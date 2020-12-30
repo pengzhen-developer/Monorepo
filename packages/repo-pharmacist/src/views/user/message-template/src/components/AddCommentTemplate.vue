@@ -11,6 +11,7 @@
                   maxlength="50"
                   :autosize="{ minRows: 4, maxRows: 4}"
                   show-word-limit
+                  v-model.trim="model.commonContent"
                   resize="none" />
       </el-form-item>
       <div class="text-center q-pt-14">
@@ -24,14 +25,85 @@
 </template>
 
 <script>
+import Service from '../service/index'
 export default {
-  data() {
-    return {}
+  props: {
+    data: {
+      id: undefined,
+      commonCode: undefined,
+      commonContent: ''
+    }
   },
 
-  created() {},
+  data() {
+    return {
+      isLoading: false,
+      model: {
+        organCode: '',
+        commonCode: undefined,
+        commonContent: ''
+      },
+      rules: {
+        commonContent: [
+          { required: false, message: '请输入模版内容（1-50字）', trigger: 'blur' },
+          {
+            validator: (rule, value, cb) => {
+              if (Peace.validate.isEmpty(value)) {
+                cb(new Error('请输入模版内容（1-50字）'))
+              }
 
-  methods: {}
+              cb()
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  created() {
+    if (!Peace.validate.isEmpty(this.data)) {
+      this.model.commonCode = this.data.commonCode
+      this.model.commonContent = this.data.commonContent
+    }
+  },
+
+  async mounted() {
+    const userinfo = await Peace.identity.auth.getAccountInfo()
+    this.model.organCode = userinfo.organCode
+  },
+
+  methods: {
+    cancel() {
+      this.$emit('close')
+    },
+    save() {
+      const params = Peace.util.deepClone(this.model)
+
+      if (!Peace.validate.isEmpty(this.data)) {
+        params['id'] = this.data.id
+
+        Service.updateCommentTempTemplates(params)
+          .then(() => {
+            Peace.util.success('编辑成功')
+            this.$emit('close')
+            this.$emit('refresh')
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
+      } else {
+        Service.addCommentTemplates(params)
+          .then(() => {
+            Peace.util.success('保存成功')
+            this.$emit('close')
+            this.$emit('refresh')
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
+      }
+    }
+  }
 }
 </script>
 

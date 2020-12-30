@@ -12,19 +12,19 @@
         <el-input v-model.trim="model.RealName"
                   maxlength="10"
                   placeholder="请输入药师姓名"
-                  v-bind:disabled="data!==''"></el-input>
+                  v-bind:disabled="model.RealName!==''"></el-input>
       </el-form-item>
       <el-form-item>
         <span slot="label"
               class="form-label">身份证号</span>
         <el-input v-model.trim="model.IdentityID"
                   placeholder="请输入药师身份证号"
-                  v-bind:disabled="data!==''"></el-input>
+                  v-bind:disabled="model.IdentityID!==''"></el-input>
       </el-form-item>
       <el-form-item label-width="110px"
                     prop="PharmacistType"
                     label="任职资格类型：">
-        <el-radio-group v-model="model.PharmacistType"
+        <el-radio-group v-model="model.ProveType"
                         v-on:change="changePharmacistType">
           <el-form-item v-for="item  in  typeList"
                         v-bind:key="item.value">
@@ -36,13 +36,13 @@
         <span slot="label"
               class="form-label">资质级别</span>
         <el-select v-model="model.QualificationsLevel"
-                   placeholder="请选择药师资质级别"
+                   :placeholder="model.QualificationsLevel | filterDictionary(source, '--')"
                    style="width: 100%;"
                    clearable>
-          <el-option v-for="item in selectList"
-                     v-bind:key="item.Value"
-                     v-bind:label="item.Text"
-                     v-bind:value="item.Value">
+          <el-option v-for="item in source"
+                     v-bind:key="item.value"
+                     v-bind:label="item.label"
+                     v-bind:value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -88,10 +88,10 @@
 
 <script>
 import Service from '../service'
-import Util from '@src/util'
+// import Util from '@src/util'
 export default {
   props: {
-    data: String
+    data: undefined
   },
 
   data() {
@@ -120,22 +120,18 @@ export default {
         UserName: '',
         RealName: '',
         IdentityID: '',
-        PharmacistType: '',
+        ProveType: '',
         DepartId: '',
-        RoleIds: [],
         CertificateCode: '',
         QualificationsLevel: '',
-        CertificateImageUrl: '',
-        Pwd: '',
-        Note: ''
+        CertificateImageUrl: ''
       },
+      imageParamsFormat: undefined,
+      imageParamsBase64: undefined,
       typeList: [
         { label: '药学专业技术资格证书', value: '0' },
         { label: '执业药师资格证书', value: '1' }
       ],
-      selectList: [],
-      departTree: [],
-      roleList: [],
       isLoading: false,
       rules: {
         QualificationsLevel: [
@@ -159,14 +155,6 @@ export default {
             validator: validateDepart
           }
         ],
-        Pwd: [{ min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }],
-        RoleIds: [
-          {
-            required: true,
-            message: '请选择账号角色',
-            trigger: 'change'
-          }
-        ],
         UserName: [
           {
             required: true,
@@ -179,76 +167,53 @@ export default {
             trigger: 'blur'
           }
         ],
-        PharmacistType: [
+        ProveType: [
           {
             required: true,
             message: '请选择任职资格类型',
             trigger: 'change'
           }
         ]
-      }
-    }
-  },
-
-  watch: {
-    'model.PharmacistType'() {
-      this.getQualificationsLevel(this.model.PharmacistType)
+      },
+      remoteSource: {
+        PharmaceuticalType: [],
+        LicensedPharmacistType: []
+      },
+      source: []
     }
   },
 
   created() {
-    this.getDepartTree()
-    this.getRoleList()
-    this.getPharmacistInfo()
+    const tmp = {
+      UserName: this.data.Phone,
+      RealName: this.data.RealName,
+      IdentityID: this.data.IdentityID,
+      ProveType: this.data.PharmacistType,
+      DepartId: this.data.DepartId,
+      CertificateCode: this.data.CertificateCode,
+      QualificationsLevel: this.data.QualificationsLevel,
+      CertificateImageUrl: this.data.CertificatesUrl
+    }
+
+    /// 赋值
+    this.model = Peace.util.deepClone(tmp)
+    // this.getDepartTree()
+    // this.getRoleList()
+    // this.getPharmacistInfo()
+  },
+
+  async mounted() {
+    // 药学专业技术资格证书  pptqc
+    // 执业药师资格证书   lpqc
+    this.remoteSource.PharmaceuticalType = await peace.identity.dictionary.getList('pptqc')
+    this.remoteSource.LicensedPharmacistType = await peace.identity.dictionary.getList('lpqc')
+    this.source = this.model.ProveType == 0 ? this.remoteSource.PharmaceuticalType : this.remoteSource.LicensedPharmacistType
   },
 
   methods: {
-    changePharmacistType() {
-      this.model.QualificationsLevel = ''
-    },
-
-    //获取药师部门
-    getDepartTree() {
-      Service.getDepartTree().then((res) => {
-        this.departTree = res.data?.list ?? []
-      })
-    },
-
-    //获取药师校色
-    getRoleList() {
-      const params = {
-        clientId: 'pharmacist',
-        organCode: Util.user.getUserInfo().custCode
-      }
-      Service.roleList(params).then((res) => {
-        this.roleList = res.data
-      })
-    },
-
-    // 获取药师信息
-    getPharmacistInfo() {
-      if (this.data) {
-        const params = { Id: this.data }
-        Service.PharmacistInfo(params).then((res) => {
-          Object.keys(this.model).forEach((key) => {
-            this.model[key] = res.data[key]
-          })
-          this.model.Pwd = ''
-        })
-      }
-    },
-
-    //获取资质级别
-    getQualificationsLevel(value) {
-      if (value == '0') {
-        Service.MedicalLevelList().then((res) => {
-          this.selectList = res.data?.list ?? []
-        })
-      } else {
-        Service.LicensedLevelList().then((res) => {
-          this.selectList = res.data?.list ?? []
-        })
-      }
+    changePharmacistType(value) {
+      this.model.QualificationsLevel = undefined
+      this.source = value == 0 ? this.remoteSource.PharmaceuticalType : this.remoteSource.LicensedPharmacistType
     },
 
     // 校验上传文件
@@ -266,54 +231,50 @@ export default {
 
     // 上传药房门头照片
     uploadlogoUrl(file) {
-      this.uploadFile(file, 'CertificateImageUrl')
+      this.uploadFile(file)
     },
 
     // 上传文件
-    uploadFile(file, title) {
+    uploadFile(file) {
       let files = file.file
-      let format = files.name.substring(files.name.lastIndexOf('.') + 1)
+      let format = files.name.substring(files.name.lastIndexOf('.'))
+
       let reader = new FileReader()
       reader.readAsDataURL(files) //将文件读取为 DataURL,也就是base64编码
       reader.onload = (ev) => {
         //文件读取成功完成时触发
         let dataURL = ev.target.result //获得文件读取成功后的DataURL,也就是base64编码
-        let param = {
-          ImgFormat: format,
-          Base64: dataURL
-        }
-        Service.uploadImage(param).then((res) => {
-          this.model[title] = res.data.SignUrl
-        })
+        // data:image/png;base64,
+        this.model.CertificateImageUrl = dataURL
+        let base64 = dataURL.substring(dataURL.indexOf(',') + 1)
+
+        this.imageParamsFormat = format
+        this.imageParamsBase64 = base64
       }
     },
 
     save() {
       this.validateForm().then(() => {
         this.isLoading = true
-        const params = Peace.util.deepClone(this.model)
-        if (this.data) {
-          params.UserId = this.data
-          Service.UpdatePharmacist(params)
-            .then(() => {
-              Peace.util.success('保存成功')
-              this.$emit('close')
-              this.$emit('refresh')
-            })
-            .finally(() => {
-              this.isLoading = false
-            })
-        } else {
-          Service.CreatePharmacist(params)
-            .then(() => {
-              Peace.util.success('保存成功')
-              this.$emit('close')
-              this.$emit('refresh')
-            })
-            .finally(() => {
-              this.isLoading = false
-            })
+        const params = {
+          CertificateCode: this.model.CertificateCode,
+          QualificationsLevel: this.model.QualificationsLevel,
+          ProveType: this.model.ProveType
         }
+        if (!Peace.validate.isEmpty(this.imageParamsFormat) && !Peace.validate.isEmpty(this.imageParamsBase64)) {
+          params['CertificateImage'] = this.imageParamsBase64
+          params['CertificateImageFileSuffix'] = this.imageParamsFormat
+        }
+
+        Service.updateInformations(params)
+          .then(() => {
+            Peace.util.success('保存成功')
+            this.$emit('close')
+            this.$emit('refresh')
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
       })
     },
 
