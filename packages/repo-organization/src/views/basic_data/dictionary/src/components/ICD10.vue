@@ -7,7 +7,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span>疾病编码</span>
+            <span>ICD-10编码</span>
             <span>：</span>
           </span>
           <el-input v-model=" model.dieaseCode"
@@ -16,7 +16,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span>疾病查询</span>
+            <span>ICD名称</span>
             <span>：</span>
           </span>
           <el-input v-model=" model.dieaseName"
@@ -51,13 +51,9 @@
                   style="width: 100%"
                   pagination
                   max-height="600">
-        <el-table-column prop="dieaseCode"
-                         align="center"
-                         label="系统编码">
-        </el-table-column>
         <el-table-column prop="dieaseName"
                          align="center"
-                         label="疾病名称">
+                         label="ICD名称">
         </el-table-column>
         <el-table-column prop="icdCode"
                          align="center"
@@ -70,10 +66,6 @@
               {{ showAddCode(scope.row.addCode) }}
             </span>
           </template>
-        </el-table-column>
-        <el-table-column prop="organName"
-                         align="center"
-                         label="机构名称">
         </el-table-column>
         <!-- <el-table-column align="center"
                          label="匹配状态">
@@ -88,6 +80,7 @@
 <script>
 import Service from '../service'
 import CONSTANT from '../constant'
+import Util from '@src/util'
 
 export default {
   data() {
@@ -98,7 +91,8 @@ export default {
       mathcCode: '',
       model: {
         dieaseCode: '',
-        dieaseName: ''
+        dieaseName: '',
+        organCode: Util.user.getUserInfo().custCode
       },
       tableData: []
     }

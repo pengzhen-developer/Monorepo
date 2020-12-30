@@ -7,7 +7,12 @@ export default {
     const serverPath = process.env.VUE_APP_API_AUTH
     let requestApi = serverPath + apiPath
     return {
-      //获取用户byID
+      //获取控制台操作账号页面数据
+      toOptUserOfConsole() {
+        apiPath = 'admin/user/toOptUserOfConsole'
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      },
       get(params) {
         apiPath = `admin/user/${params.id}`
         requestApi = serverPath + apiPath
@@ -15,10 +20,14 @@ export default {
       },
       //添加
       add(params) {
+        apiPath = 'admin/user'
+        requestApi = serverPath + apiPath
         return Peace.http.post(requestApi, params)
       },
       //编辑
       edit(params) {
+        apiPath = 'admin/user'
+        requestApi = serverPath + apiPath
         return Peace.http.put(requestApi, params)
       },
       // 更新账号状态
@@ -36,23 +45,6 @@ export default {
       //分页获取用户列表
       page(params) {
         apiPath = `admin/user/page`
-        requestApi = serverPath + apiPath
-        return Peace.http.get(requestApi, { params })
-      }
-    }
-  },
-
-  /**
-   * 角色
-   */
-  role() {
-    let apiPath = `admin/role`
-    const serverPath = process.env.VUE_APP_API_AUTH
-    let requestApi = serverPath + apiPath
-    return {
-      //获取角色列表
-      list(params) {
-        apiPath = `admin/role/list`
         requestApi = serverPath + apiPath
         return Peace.http.get(requestApi, { params })
       }

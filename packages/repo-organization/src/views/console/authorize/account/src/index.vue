@@ -97,11 +97,11 @@
     </div>
 
     <!-- 账号 -->
-    <PeaceDialog width="360px"
+    <PeaceDialog width="699px"
                  v-bind:visible.sync="accountDialog.visible"
-                 :title="`${accountDialog.data.userId ? '修改':'新建'}账号`">
+                 :title="getDialogTitle()">
       <AccountModel v-if="accountDialog.visible"
-                    ref="accountModel"
+                    v-bind:userId="accountDialog.userId"
                     v-on:close="accountDialog.visible = false"
                     v-on:refresh="get"></AccountModel>
     </PeaceDialog>
@@ -137,7 +137,7 @@ export default {
       },
       accountDialog: {
         visible: false,
-        data: {}
+        userId: ''
       }
     }
   },
@@ -204,12 +204,14 @@ export default {
         })
         .catch(() => {})
     },
+
     toAccount(row) {
       this.accountDialog.visible = true
-      this.accountDialog.data = row ? row : {}
-      this.$nextTick(() => {
-        this.$refs.accountModel.init(row ? row.userId : '')
-      })
+      this.accountDialog.userId = row?.userId
+    },
+
+    getDialogTitle() {
+      return this.accountDialog.userId ? '修改账号' : '新建账号'
     }
   }
 }
