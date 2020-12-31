@@ -37,7 +37,7 @@
         <div class="q-mx-sm"
              v-if="status==='1'">
           <q-avatar rounded
-                    style="font-size:12px;">
+                    style="font-size:14px;">
             <img :src="require('../assets/img/ic_work.png')">
           </q-avatar>
           <span class="q-ml-4">工作中</span>
@@ -45,7 +45,7 @@
         <div class="q-mx-sm"
              v-else-if="status==='0'">
           <q-avatar rounded
-                    style="font-size:12px;">
+                    style="font-size:14px;">
             <img :src="require('../assets/img/ic_rest.png')">
           </q-avatar>
           <span class="q-ml-4">休息中</span>
@@ -68,7 +68,7 @@
                       v-on:click="changeState('1')">
                 <q-item-section avatar>
                   <q-avatar rounded
-                            size="xs">
+                            style="font-size:14px;">
                     <img :src="require('../assets/img/ic_work.png')">
                   </q-avatar>
                 </q-item-section>
@@ -83,7 +83,7 @@
                       v-on:click="changeState('0')">
                 <q-item-section avatar>
                   <q-avatar rounded
-                            size="xs">
+                            style="font-size:14px;">
                     <img :src="require('../assets/img/ic_rest.png')">
                   </q-avatar>
                 </q-item-section>
@@ -96,7 +96,7 @@
                       v-on:click="logout">
                 <q-item-section avatar>
                   <q-avatar rounded
-                            size="xs">
+                            style="font-size:14px;">
                     <img :src="require('../assets/img/ic_logout.png')">
                   </q-avatar>
                 </q-item-section>
