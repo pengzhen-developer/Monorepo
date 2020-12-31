@@ -224,10 +224,13 @@ export default {
   },
 
   watch: {
-    inquiryNo(val) {
-      if (val && val.length > 0) {
-        this.getOptionList(val)
-      }
+    inquiryNo: {
+      handler(val) {
+        if (val && val.length > 0) {
+          this.getOptionList(val)
+        }
+      },
+      immediate: true
     }
   },
 
