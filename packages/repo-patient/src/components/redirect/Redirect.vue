@@ -73,6 +73,7 @@ const tradeType = peace.util.queryUrlParam('tradeType')
 export default {
   data() {
     return {
+      lockEventPopstate: false,
       redirectMap: {
         /** 首页 */
         home: '/home/index',
@@ -93,12 +94,22 @@ export default {
         /** 复诊-咨询订单详情 */
         visitOrderDetail: '/setting/userConsultDetail',
         /** 挂号订单详情 */
-        registerDetail: ' /setting/order/userOrderDetail'
+        registerDetail: '/setting/order/userOrderDetail'
       }
     }
   },
 
   created() {
+    // step_1 替换浏览器历史
+    history.pushState(null, null, document.URL)
+
+    // step_2 监听回退
+    if (!peace.lockEventPopstate) {
+      peace.lockEventPopstate = true
+
+      window.addEventListener('popstate', this.goBack, false)
+    }
+
     if (this.validateParams()) {
       this.removeCache()
       this.cacheParams()
@@ -107,6 +118,15 @@ export default {
   },
 
   methods: {
+    goBack(e) {
+      // 回到中间页，跳转首页
+      const pathNameList = ['/order/userDrugDetail', '/setting/userConsultDetail', '/setting/order/userOrderDetail']
+      pathNameList.forEach((pathName) => {
+        if (e.currentTarget.location.pathname.indexOf(pathName) != -1) {
+          this.$router.push(peace.config.system.homePage)
+        }
+      })
+    },
     /**
      * 验证跳转参数是否合法
      * 参数 redirect 必须
