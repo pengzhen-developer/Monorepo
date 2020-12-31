@@ -1,19 +1,19 @@
 <template>
   <div>
-    <SendReceive v-if="showWriteRecipe"></SendReceive>
-    <ReceiveList v-else></ReceiveList>
+    <SendRecipe v-if="showWriteRecipe"></SendRecipe>
+    <RecipeList v-else></RecipeList>
   </div>
 </template>
 
 <script>
-import SendReceive from './SendRecipe/index'
-import ReceiveList from './RecipeList/index'
+import SendRecipe from './SendRecipe/index'
+import RecipeList from './RecipeList/index'
 import { store } from '../store'
 
 export default {
   components: {
-    SendReceive,
-    ReceiveList
+    SendRecipe,
+    RecipeList
   },
 
   computed: {

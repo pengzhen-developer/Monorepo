@@ -60,7 +60,8 @@ export const INQUIRY = {
   /** 问诊类型 */
   INQUIRY_TYPE: {
     图文: 'image',
-    视频: 'video'
+    视频: 'video',
+    复诊: 'returnVisit'
   },
 
   /** 问诊支付类型 */

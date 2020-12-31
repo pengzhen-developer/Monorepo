@@ -1,5 +1,3 @@
-// 发处方
-
 <template>
   <div>
     <el-alert type="success"
@@ -75,16 +73,16 @@
           <!-- <span>{{ caseInfo.diagnose }}</span> -->
 
           <template v-if="diagnoseList && diagnoseList.length > 0">
-            <el-tag :key="item.id"
+            <el-tag v-bind:key="item.id"
                     class="tag-style"
                     type="info"
                     v-for="item in diagnoseList">{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('疾病诊断')"
+            <el-button v-on:click="changeDialog('疾病诊断')"
                        type="text">修改</el-button>
           </template>
 
           <template v-else>
-            <el-button @click="showDialog('疾病诊断')"
+            <el-button v-on:click="showDialog('疾病诊断')"
                        type="text">请选择</el-button>
           </template>
 
@@ -160,21 +158,21 @@
     </peace-dialog>
 
     <!-- 修改诊断 -->
-    <peace-dialog :title="'添加' + dialog.title"
-                  :visible.sync="dialog.visible">
+    <peace-dialog v-bind:title="'添加' + dialog.title"
+                  v-bind:visible.sync="dialog.visible">
       <div class="q-mb-10">
 
-        <el-select :remote-method="getPresent"
-                   @change="chooseItem"
+        <el-select v-bind:remote-method="getPresent"
+                   v-on:change="chooseItem"
                    allow-create
                    filterable
                    placeholder="请输入疾病诊断"
                    remote
                    style="width: 100%;"
                    v-model="dialog.chooseItem">
-          <el-option :key="item.id"
-                     :label="item.name"
-                     :value="item.name"
+          <el-option v-bind:key="item.id"
+                     v-bind:label="item.name"
+                     v-bind:value="item.name"
                      v-for="item in dialog.source.present_history"></el-option>
         </el-select>
       </div>
@@ -184,8 +182,8 @@
         <p>已选{{ dialog.title }}</p>
 
         <div class="q-ma-10">
-          <el-tag :key="item.id"
-                  @close="closeItem(item)"
+          <el-tag v-bind:key="item.id"
+                  v-on:close="closeItem(item)"
                   closable
                   class="tag-style"
                   v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
@@ -197,9 +195,9 @@
           <p>常见{{ dialog.title }}</p>
 
           <div class="q-ma-10">
-            <el-tag :key="item.code"
-                    :type="selectTagClass(item)"
-                    @click="chooseItem(item)"
+            <el-tag v-bind:key="item.code"
+                    v-bind:type="selectTagClass(item)"
+                    v-on:click="chooseItem(item)"
                     class="tag-style cursor-pointer"
                     v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
           </div>
@@ -207,8 +205,8 @@
       </template>
 
       <div class="q-mb-10 text-center">
-        <el-button @click="dialog.visible = false">取消</el-button>
-        <el-button @click="saveItem"
+        <el-button v-on:click="dialog.visible = false">取消</el-button>
+        <el-button v-on:click="saveItem"
                    type="primary">保存</el-button>
       </div>
     </peace-dialog>
@@ -230,7 +228,11 @@ export default {
   },
 
   props: {
-    session: Object
+    // 会话对象
+    session: Object,
+
+    // 缓存键，处理【问诊】、【复诊】、【面诊】、【会诊】等场景下的处方缓存
+    cacheKey: String
   },
 
   data() {
@@ -295,7 +297,7 @@ export default {
     },
 
     showPayType() {
-      return this.session?.content?.inquiryInfo?.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+      return this.inquiryNo && this.session?.content?.inquiryInfo?.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
     },
 
     payTypeText() {
@@ -312,52 +314,12 @@ export default {
   },
 
   created() {
-    Promise.all([this.getCase(), this.getCommonDiagnosis(), this.getPrevInquiry()]).then(() => {
-      this.resetData()
+    Promise.all([this.getCommonDiagnosis(), this.getCase(), this.getPrevInquiry()]).then(() => {
+      this.resetDataFromCache()
     })
   },
 
   methods: {
-    getPrevInquiry() {
-      const params = { familyId: this.familyId }
-
-      return Service.getLastInfo(params).then((res) => {
-        this.drugList = res.data.drugList
-        this.prescriptionTag = res.data.prescriptionTag
-      })
-    },
-
-    resetData() {
-      const recipeCache = Peace.cache.sessionStorage.get(this.inquiryNo)
-
-      if (recipeCache) {
-        this.weight = recipeCache.weight
-        this.drugList = recipeCache.drugList
-        this.prescriptionTag = recipeCache.prescriptionTag
-
-        if (this.inquiryNo) {
-          this.diagnoseList = recipeCache.diagnoseList.concat([])
-          this.dialog.chooseData = recipeCache.diagnoseList.concat([])
-        } else {
-          const data = recipeCache.diagnoseList?.name?.split('|') ?? []
-          data.map((item) => {
-            item.name = item
-            item.code = ''
-          })
-          this.diagnoseList = data.concat([])
-          this.dialog.chooseData = data.concat([])
-        }
-      }
-    },
-
-    /**
-     * 设置tag的选中样式
-     *
-     */
-    selectTagClass(item) {
-      return this.dialog.chooseData.findIndex((existItem) => existItem.code === item.code) === -1 ? 'info' : 'primary'
-    },
-
     /**
      * 获取病历，展示患者基本信息
      *
@@ -394,6 +356,45 @@ export default {
         this.diagnoseList = Peace.util.deepClone(data)
         this.dialog.chooseData = Peace.util.deepClone(data)
       })
+    },
+
+    getPrevInquiry() {
+      const params = { familyId: this.familyId }
+      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
+
+      if (recipeCache) {
+        return Promise.resolve()
+      } else {
+        return Service.getLastInfo(params).then((res) => {
+          if (res.data.drugList?.length > 0) {
+            Peace.util.success('当前预填处方信息是带入了就诊人上一次的处方，仅作为参考，可修改！')
+
+            this.drugList = res.data.drugList
+            this.prescriptionTag = res.data.prescriptionTag
+          }
+        })
+      }
+    },
+
+    resetDataFromCache() {
+      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
+
+      if (recipeCache) {
+        this.weight = recipeCache.weight
+        this.drugList = recipeCache.drugList
+        this.prescriptionTag = recipeCache.prescriptionTag
+
+        this.diagnoseList = recipeCache.diagnoseList.concat([])
+        this.dialog.chooseData = recipeCache.diagnoseList.concat([])
+      }
+    },
+
+    /**
+     * 设置tag的选中样式
+     *
+     */
+    selectTagClass(item) {
+      return this.dialog.chooseData.findIndex((existItem) => existItem.code === item.code) === -1 ? 'info' : 'primary'
     },
 
     /**
@@ -485,7 +486,7 @@ export default {
             }
             // 系统验证成功，发送处方成功
             else {
-              Peace.cache.sessionStorage.remove(this.inquiryNo)
+              this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
               Peace.util.success(res.msg)
 
               this.$emit('close')
@@ -515,7 +516,7 @@ export default {
 
       Service.confirmSend(params)
         .then((res) => {
-          Peace.cache.sessionStorage.remove(this.inquiryNo)
+          this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
           Peace.util.success(res.msg)
 
           this.$emit('close')
@@ -533,9 +534,7 @@ export default {
         drugList: this.drugList
       }
 
-      if (this.inquiryNo) {
-        Peace.cache.sessionStorage.set(this.inquiryNo, recipeCache)
-      }
+      this.cacheKey && Peace.cache.sessionStorage.set(this.cacheKey, recipeCache)
 
       this.$emit('close')
     },

@@ -881,6 +881,14 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@jk998/identity@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
+  integrity sha512-k6H1CP4qDMWNWsNYl2IWNTCuiHUNR2PK1B5Mj+UJkR7vComImS2LiIJchue3eKvpcz8HS3FPglBAo7HhAUvwwA==
+  dependencies:
+    "@jk998/library" "^0.1.20"
+    crypto-js "^4.0.0"
+
 "@jk998/library@^0.1.20":
   version "0.1.20"
   resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.20.tgz#c1798c3313f94045379af8b4838417fd63e546b9"
@@ -891,10 +899,20 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.8.tgz#6bcfa266a6a39d91a4827a4dbc4c3430a0afc16e"
-  integrity sha512-wA9ga9BjM8R4FZ5m2UupJBBEOi/H0pzDcqAkHmG0U8m1QEEl5r/LeMrsKxF40XhjBbGoiH7kibipir51spkAgA==
+"@jk998/library@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.22.tgz#7dfbca3afd4ea0423c9089f310de30c905b8cac2"
+  integrity sha512-N+py3nKKoOjXHlbPWORpITeeUL17FT+aGaSYkCJ18eflbmol1av6I3HT/WV1N9HHyTE4csF21RLhBPStPfbpgQ==
+  dependencies:
+    axios "^0.20.0"
+    dayjs "^1.8.35"
+    js-base64 "^3.5.2"
+    numeral "^2.0.6"
+
+"@jk998/peace-element-ui@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.12.tgz#0a121f5c7af7b00fba1d0f1d33ddc7258dc17005"
+  integrity sha512-z8TIAiesIGb/DpbLpVbVQniO9K5q9QCGOnwQzVkF1i2ekCLFx/gUgSPdezScn6FG+W6vg3jRrJn2nqCSBH+5xA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -2744,6 +2762,11 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
+  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
 
 css-color-names@0.0.4, css-color-names@^0.0.4:
   version "0.0.4"

@@ -1,7 +1,12 @@
 <template>
   <div>
-    <div class="q-mb-md">
-      <span class="text-subtitle1 text-bold">待办事项</span>
+    <div class="q-mb-md flex justify-between">
+      <div class="text-subtitle1 text-bold">待办事项</div>
+      <div class="flex items-center">
+        <span class="q-mr-sm">声音提醒</span>
+        <el-switch v-model="orderVoiceRemind"
+                   v-on:change="changeOrderVoiceRemind"></el-switch>
+      </div>
     </div>
 
     <div class="row q-col-gutter-x-lg q-mb-lg">
@@ -206,6 +211,7 @@ import Service from './service'
 export default {
   data() {
     return {
+      orderVoiceRemind: undefined,
       data: {}
     }
   },
@@ -237,8 +243,19 @@ export default {
   },
 
   methods: {
+    changeOrderVoiceRemind() {
+      Service.setBaseConfig({ tag: 'orderVoiceRemind', switch: this.orderVoiceRemind })
+    },
+
     initialize() {
       this.getDashboard()
+      this.getBaseConfig()
+    },
+
+    getBaseConfig() {
+      Service.getBaseConfig({ tag: 'orderVoiceRemind' }).then((res) => {
+        this.orderVoiceRemind = res.data.switch
+      })
     },
 
     getDashboard() {

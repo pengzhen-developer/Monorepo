@@ -183,6 +183,7 @@ export default {
 
   .consultation-center {
     flex: 1;
+    height: 100%;
 
     border: 1px solid #efefef;
     border-left: none;

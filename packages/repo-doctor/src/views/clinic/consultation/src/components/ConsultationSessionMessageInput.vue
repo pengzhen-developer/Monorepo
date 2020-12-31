@@ -189,7 +189,7 @@ export default {
 
   computed: {
     injectCall() {
-      return this.provideCall
+      return this.provideCall()
     },
 
     summaryMaxLength() {

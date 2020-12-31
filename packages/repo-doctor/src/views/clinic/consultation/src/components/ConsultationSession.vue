@@ -57,6 +57,7 @@
       <!-- 写处方 -->
       <ConsultationSessionRecipe v-else-if="consultationAction === Peace.type.INQUIRY.INQUIRY_ACTION.发处方"
                                  v-bind:session="this.$store.state.consultation.session"
+                                 v-bind:cacheKey="this.$store.state.consultation.session.content.consultInfo.consultNo"
                                  v-on:close="resetAction">
       </ConsultationSessionRecipe>
 
@@ -223,10 +224,11 @@ export default {
 
 <style lang="scss" scoped>
 $--header-height: 50px;
-$--control-height: 150px;
+$--control-height: 200px;
 
 .consultation-session {
   height: 100%;
+  overflow: auto;
 
   .header {
     height: $--header-height;
@@ -271,11 +273,7 @@ $--control-height: 150px;
   }
 
   .content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: calc(100% - #{$--header-height} - 30px);
-    overflow: auto;
+    height: calc(100% - #{$--header-height});
 
     .message-notify {
       height: auto;
@@ -283,7 +281,7 @@ $--control-height: 150px;
 
     .message-list {
       flex: 1;
-      min-height: calc(100% - #{$--control-height} - 60px);
+      height: calc(100% - #{$--control-height} - 60px);
 
       .message-list-scrollbar {
         height: 100%;

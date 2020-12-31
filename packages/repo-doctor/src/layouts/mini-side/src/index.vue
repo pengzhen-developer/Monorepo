@@ -2,7 +2,7 @@
   <q-layout class="layout"
             view="hHh lpR lFf">
 
-    <TheVideo>
+    <LayoutNotify>
 
       <q-header class="layout-header bg-white q-mb-xs">
         <LayoutHeader></LayoutHeader>
@@ -23,12 +23,13 @@
           <LayoutView class="bg-white"></LayoutView>
         </q-page>
       </q-page-container>
-    </TheVideo>
+
+    </LayoutNotify>
   </q-layout>
 </template>
 
 <script>
-import TheVideo from './components/TheVideo'
+import LayoutNotify from './components/LayoutNotify'
 
 /** 布局 - 顶部 */
 import LayoutHeader from './components/LayoutHeader'
@@ -41,7 +42,7 @@ import LayoutView from './components/LayoutView'
 
 export default {
   components: {
-    TheVideo,
+    LayoutNotify,
     LayoutHeader,
     LayoutNav,
     LayoutTabs,

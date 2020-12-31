@@ -66,9 +66,10 @@
 
       <div class="row q-mb-md">
         <div class="col-12 flex items-center">
+          <span class="require-style"></span>
           <span class="text-grey-7 text-justify"
-                style="width: 60px;">诊断</span>
-          <span class="q-mx-sm require-style">：</span>
+                style="width: 50px;">诊断</span>
+          <span class="q-mx-sm">：</span>
 
           <template v-if="diagnoseList && diagnoseList.length > 0">
             <el-tag :key="item.id"
@@ -90,9 +91,10 @@
 
       <div class="row q-mb-md">
         <div class="col-12 flex items-center">
+          <span class="require-style"></span>
           <span class="text-grey-7 text-justify"
-                style="width: 60px;">过敏史</span>
-          <span class="q-mx-sm require-style">：</span>
+                style="width: 50px;">过敏史</span>
+          <span class="q-mx-sm">：</span>
 
           <template v-if="allergyHistory && allergyHistory.length > 0">
             <el-tag :key="item.id"
@@ -113,9 +115,10 @@
 
       <div class="row q-mb-md">
         <div class="col-12 flex items-start">
+          <span class="require-style"></span>
           <span class="text-grey-7 text-justify"
-                style="width: 60px;">主诉</span>
-          <span class="q-mx-sm require-style">：</span>
+                style="width: 50px;">主诉</span>
+          <span class="q-mx-sm">：</span>
 
           <el-input class="col"
                     type="textarea"
@@ -137,6 +140,7 @@
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
                     v-model="drugList"
+                    v-bind:prescriptionTag.sync="prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
 
@@ -296,6 +300,8 @@ export default {
 
   data() {
     return {
+      prescriptionTag: undefined,
+
       /** 体重 */
       weight: undefined,
 
@@ -366,15 +372,26 @@ export default {
     }
   },
 
-  beforeMount() {
-    this.$nextTick(function() {
-      this.getCommonDiagnosis()
-      this.getCommonAllergy()
-      this.getPatientDetailInfo()
+  created() {
+    Promise.all([this.getCommonDiagnosis(), this.getCommonAllergy(), this.getPatientDetailInfo()]).then(() => {
+      this.resetDataFromCache()
     })
   },
 
   methods: {
+    resetDataFromCache() {
+      const recipeCache = store.activePatient.patientId && Peace.cache.sessionStorage.get(store.activePatient.patientId)
+
+      if (recipeCache) {
+        this.weight = recipeCache.weight
+        this.drugList = recipeCache.drugList
+        this.prescriptionTag = recipeCache.prescriptionTag
+        this.allergyHistory = recipeCache.allergyHistory
+        this.chiefComplaint = recipeCache.chiefComplaint
+        this.diagnoseList = recipeCache.diagnoseList
+      }
+    },
+
     // 获取患者信息
     getPatientDetailInfo() {
       const params = {
@@ -552,6 +569,17 @@ export default {
     },
 
     close() {
+      const recipeCache = {
+        weight: this.weight,
+        prescriptionTag: this.prescriptionTag,
+        diagnoseList: this.diagnoseList,
+        allergyHistory: this.allergyHistory,
+        chiefComplaint: this.chiefComplaint,
+        drugList: this.drugList
+      }
+
+      store.activePatient.patientId && Peace.cache.sessionStorage.set(store.activePatient.patientId, recipeCache)
+
       mutations.setShowWriteRecipe(false)
     },
 
@@ -637,9 +665,10 @@ export default {
 }
 
 .require-style {
-  &::after {
+  &::before {
     content: '*';
     color: red;
+    margin: 0 4px 0 0;
   }
 }
 

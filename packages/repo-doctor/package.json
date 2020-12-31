@@ -11,11 +11,13 @@
     "build:pre": "vue-cli-service build --mode pre",
     "build:prod": "vue-cli-service build --mode prod",
     "build:test": "vue-cli-service build --mode test",
+    "upgrade:jk998": "yarn add @jk998/library @jk998/identity @jk998/peace-element-ui",
     "start": "npm run serve"
   },
   "dependencies": {
-    "@jk998/library": "^0.1.20",
-    "@jk998/peace-element-ui": "^0.1.8",
+    "@jk998/identity": "^0.2.4",
+    "@jk998/library": "^0.1.22",
+    "@jk998/peace-element-ui": "^0.1.12",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.0",
     "core-js": "^3.6.4",

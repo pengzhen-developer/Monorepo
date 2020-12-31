@@ -9,6 +9,7 @@ import CreateConfiguration from './createConfiguration'
 import CreateApp from './createApp'
 
 import boot_Library from './boot_library'
+import boot_Identity from './boot_identity'
 import boot_Redirect from './boot_redirect'
 
 // Quasar is required
@@ -38,6 +39,9 @@ const install = async () => {
 
     // Library
     boot_Library,
+
+    // Identity
+    boot_Identity,
 
     // Version
     boot_Version,
