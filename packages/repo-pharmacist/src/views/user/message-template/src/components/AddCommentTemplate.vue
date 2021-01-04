@@ -30,7 +30,7 @@ export default {
   props: {
     data: {
       id: undefined,
-      commonCode: undefined,
+      commonCode: '',
       commonContent: ''
     }
   },
@@ -40,7 +40,7 @@ export default {
       isLoading: false,
       model: {
         organCode: '',
-        commonCode: undefined,
+        commonCode: '',
         commonContent: ''
       },
       rules: {

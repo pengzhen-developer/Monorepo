@@ -113,7 +113,7 @@
           <p>根据《医疗机构处方审核规范》中关于处方审核流程的规定，药师需在电子处方上进行电子签名，处方才能进入收费环节。</p>
           <span v-if="showSetSignTips"
                 class="el-icon-warning text-warning">系统检测到您尚未设置数字签名，请设置签名。否则您将无法在线审方</span>
-          <span>您已设置数字签名，可正常进行医嘱点评、处方点评、处方审核等工作</span>
+          <span v-else>您已设置数字签名，可正常进行医嘱点评、处方点评、处方审核等工作</span>
         </div>
         <el-popover placement="top"
                     width="247"

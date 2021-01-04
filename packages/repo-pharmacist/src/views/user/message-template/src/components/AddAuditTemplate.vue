@@ -30,7 +30,7 @@ export default {
   props: {
     data: {
       id: undefined,
-      templateCode: undefined,
+      templateCode: '',
       templateContent: ''
     }
   },
@@ -40,7 +40,7 @@ export default {
       isLoading: false,
       model: {
         organCode: '',
-        templateCode: undefined,
+        templateCode: '',
         templateContent: ''
       },
       rules: {
@@ -69,7 +69,9 @@ export default {
 
   async mounted() {
     const userinfo = await Peace.identity.auth.getAccountInfo()
+
     this.model.organCode = userinfo.organCode
+    this.model.organName = '医疗机构test'
   },
 
   methods: {
