@@ -11,7 +11,7 @@
                  @focus="querySearchAsync('')"
                  @change="handleSelect">
         <el-option v-bind:key="item.patientNo"
-                   v-bind:label="item.name"
+                   v-bind:label="item.text"
                    v-bind:value="item.patientNo"
                    v-for="item in searchPatientList">
           <div class="flex items-center autocomplete-item">
@@ -248,9 +248,9 @@ export default {
 
     querySearchAsync(queryString) {
       Service.searchPatient(queryString).then((res) => {
-        // const tmp = res?.data?.list.forEach((item) => {
-        //   item.text =
-        // })
+        res?.data?.list.forEach((item) => {
+          item.text = item.name + ' ' + item.sex + ' ' + item.age
+        })
         this.searchPatientList = res?.data?.list
       })
     },
