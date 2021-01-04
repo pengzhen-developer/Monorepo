@@ -144,10 +144,8 @@
             <span class="em-5-justify label-text">医保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
-                  v-if="data.YbDetails">
-              ￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
-              <span v-html="getReduceText(data.YbDetails)"></span>
-            </span>
+                  v-if="data.YbDetails">-￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+              <span v-html="getReduceText(data.YbDetails)"></span></span>
             <span class="label-value"
                   v-else>
               -
@@ -160,10 +158,8 @@
             <span class="em-5-justify label-text">商保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
-                  v-if="data.SbDetails">
-              ￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
-              <span v-html="getReduceText(data.SbDetails)"></span>
-            </span>
+                  v-if="data.SbDetails">-￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+              <span v-html="getReduceText(data.SbDetails)"></span></span>
             <span class="label-value"
                   v-else>
               -
