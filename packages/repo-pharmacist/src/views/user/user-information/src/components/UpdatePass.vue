@@ -53,7 +53,7 @@ export default {
 
       rules: {
         pwd: [
-          { required: false, message: '请输入原始密码' },
+          { required: true, message: '请输入原始密码' },
           {
             validator: (rule, value, cb) => {
               if (value.length == 0) {
@@ -65,11 +65,11 @@ export default {
           }
         ],
         newPwd: [
-          { required: false, message: '请输入新密码', trigger: 'blur' },
+          { required: true, message: '请输入6-20位数字或字母', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
-              if (value.length == 0) {
-                cb(new Error('请输入新密码'))
+              if (value.length < 6) {
+                cb(new Error('请输入6-20位数字或字母'))
               }
 
               cb()
@@ -139,6 +139,11 @@ export default {
     right: 0;
   }
 }
+
+::v-deep .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
+  content: none;
+}
+
 .form-padding {
   padding-right: 40px;
 }

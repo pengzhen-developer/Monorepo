@@ -80,11 +80,11 @@ export default {
       },
       rules: {
         tel: [
-          { required: false, message: '请输入手机号' },
+          { required: true, message: '请输入手机号' },
           { pattern: Peace.validate.pattern.mobile, message: '请输入手机号' }
         ],
         smsCode: [
-          { required: false, message: '请输入验证码', trigger: 'blur' },
+          { required: true, message: '请输入验证码', trigger: 'blur' },
           {
             validator: (rule, value, cb) => {
               if (value.length !== 4) {
@@ -187,6 +187,11 @@ export default {
     right: 0;
   }
 }
+
+::v-deep .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
+  content: none;
+}
+
 .form-padding {
   padding-right: 40px;
 }
