@@ -91,6 +91,7 @@ export default {
       })
     }
   },
+
   computed: {
     CanSignIn() {
       return this.model.tel && this.model.smsCode && this.model.tel.length == 11 && this.model.smsCode.length == 6
@@ -251,10 +252,13 @@ export default {
     font-size: 13px;
   }
   /deep/ .van-cell {
-    padding: 14px 10px;
+    height: 50px;
+    padding: 0;
+    align-items: center;
     margin-top: 11px;
     &::after {
       left: 0;
+      width: 100%;
     }
   }
   /deep/ .van-cell__value {
