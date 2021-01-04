@@ -536,6 +536,7 @@ export default {
             // 系统验证成功，发送处方成功
             else {
               Peace.util.success(res.msg)
+              Peace.cache.sessionStorage.remove(store.activePatient.patientId)
 
               mutations.setShowWriteRecipe(false)
             }
@@ -560,6 +561,7 @@ export default {
 
       Service.confirmSend(params)
         .then((res) => {
+          Peace.cache.sessionStorage.remove(store.activePatient.patientId)
           Peace.util.success(res.msg)
           mutations.setShowWriteRecipe(false)
         })
