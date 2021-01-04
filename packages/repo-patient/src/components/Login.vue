@@ -45,11 +45,13 @@
           </template>
         </div>
       </van-field>
+      <div class="login-form-sign-in">
+        <van-button @click="signIn"
+                    size="large"
+                    :disabled="!CanSignIn"
+                    type="primary">登录</van-button>
+      </div>
 
-      <van-button @click="signIn"
-                  :disabled="!CanSignIn"
-                  class="login-form-sign-in"
-                  type="primary">登录</van-button>
     </div>
 
     <div class="login-footer">
@@ -233,6 +235,7 @@ export default {
     }
 
     .login-form-sign-in {
+      width: 100%;
       margin: 30px 0 15px 0;
     }
   }
