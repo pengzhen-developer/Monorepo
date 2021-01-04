@@ -36,7 +36,7 @@
           <div class="col-4">
             <span class="label-text">科室</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.MedicalDepartmentName }}</span>
+            <span class="label-value">{{ data.MedicalDepartmentName||'-' }}</span>
           </div>
 
         </div>
@@ -144,7 +144,10 @@
             <span class="em-5-justify label-text">医保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
-                  v-if="data.YbDetails">￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
+                  v-if="data.YbDetails">
+              ￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+              <span v-html="getReduceText(data.YbDetails)"></span>
+            </span>
             <span class="label-value"
                   v-else>
               -
@@ -157,7 +160,10 @@
             <span class="em-5-justify label-text">商保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
-                  v-if="data.SbDetails">￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
+                  v-if="data.SbDetails">
+              ￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
+              <span v-html="getReduceText(data.SbDetails)"></span>
+            </span>
             <span class="label-value"
                   v-else>
               -
@@ -325,6 +331,22 @@ export default {
         this.source.OrderStatus = await peace.identity.dictionary.getList(requestKey)
       },
       immediate: true
+    }
+  },
+  methods: {
+    getReduceText(data) {
+      if (!data || !Array.isArray(data) || data.length == 0) {
+        return ''
+      }
+
+      let txt = '【'
+      data.forEach((item, index) => {
+        if (index > 0) {
+          txt += '&emsp;&emsp;'
+        }
+        txt += `${item.Name}（-￥${item.Amount.toFixed(2)}）`
+      })
+      return (txt += '】')
     }
   },
   filters: {
