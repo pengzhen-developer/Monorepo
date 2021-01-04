@@ -1,6 +1,8 @@
 <template>
-  <div class="login">
-    <div class="login-form">
+  <div class="login"
+       id="login">
+    <div class="login-form"
+         :style="{height:scrollerHeight}">
       <h4 class="login-form-title"
           v-if="!isEwm">
         <div class="title">手机快捷登录</div>
@@ -83,6 +85,9 @@ export default {
     this.isEwm = peace.cache.get('isEwm') ? true : false
   },
   mounted() {
+    //处理安卓机键盘弹出使布局错乱
+    document.body.querySelector('#login').style.height = window.innerHeight + 'px'
+
     if (peace.cache.get(peace.type.USER.TEL) != null) {
       this.model.tel = peace.cache.get(peace.type.USER.TEL)
     } else {
@@ -91,7 +96,6 @@ export default {
       })
     }
   },
-
   computed: {
     CanSignIn() {
       return this.model.tel && this.model.smsCode && this.model.tel.length == 11 && this.model.smsCode.length == 6
@@ -254,17 +258,14 @@ export default {
   /deep/ .van-cell {
     height: 50px;
     padding: 0;
-
+    align-items: center;
     margin-top: 11px;
     &::after {
       left: 0;
-      width: 100%;
     }
   }
   /deep/ .van-cell__value {
     font-size: 17px;
-    height: 50px;
-    line-height: 50px;
   }
   /deep/ .van-button--disabled {
     opacity: 0.4;
