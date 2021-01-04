@@ -254,7 +254,7 @@ export default {
   /deep/ .van-cell {
     height: 50px;
     padding: 0;
-    align-items: center;
+
     margin-top: 11px;
     &::after {
       left: 0;
@@ -263,6 +263,8 @@ export default {
   }
   /deep/ .van-cell__value {
     font-size: 17px;
+    height: 50px;
+    line-height: 50px;
   }
   /deep/ .van-button--disabled {
     opacity: 0.4;
