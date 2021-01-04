@@ -1,21 +1,27 @@
 <template>
   <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
-      <el-autocomplete v-model="search"
-                       prefix-icon="el-icon-search"
-                       :fetch-suggestions="querySearchAsync"
-                       @select="handleSelect"
-                       placeholder="请输入患者名字">
-        <template slot-scope="{ item }">
 
+      <el-select class="col"
+                 remote
+                 filterable
+                 v-model="search"
+                 placeholder="请输入患者名字"
+                 v-bind:remote-method="querySearchAsync"
+                 @focus="querySearchAsync('')"
+                 @change="handleSelect">
+        <el-option v-bind:key="item.patientNo"
+                   v-bind:label="item.name"
+                   v-bind:value="item.patientNo"
+                   v-for="item in searchPatientList">
           <div class="flex items-center autocomplete-item">
             <span class="q-mr-10 text-bold"> {{ item.name }} </span>
             <span class="q-mr-10 text-bold"> {{ item.sex }} </span>
             <span class="q-mr-10 text-bold"> {{ item.age }} </span>
           </div>
+        </el-option>
+      </el-select>
 
-        </template>
-      </el-autocomplete>
     </div>
 
     <div class="flex column content">
@@ -86,7 +92,8 @@ export default {
       },
       patientList: [],
       showWriteRecipe: false,
-      search: ''
+      search: '',
+      searchPatientList: []
       //position: 0
     }
   },
@@ -239,13 +246,17 @@ export default {
       this.getPatientList()
     },
 
-    querySearchAsync(queryString, cb) {
+    querySearchAsync(queryString) {
       Service.searchPatient(queryString).then((res) => {
-        cb(res?.data?.list)
+        // const tmp = res?.data?.list.forEach((item) => {
+        //   item.text =
+        // })
+        this.searchPatientList = res?.data?.list
       })
     },
 
-    handleSelect(item) {
+    handleSelect(patientNo) {
+      const item = this.searchPatientList.find((element) => element.patientNo == patientNo)
       mutations.setActivePatient(item)
     },
 
