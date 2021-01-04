@@ -92,6 +92,9 @@ export default {
                 this.$emit('close')
                 this.$emit('refresh')
               })
+              .catch((error) => {
+                Peace.util.error(error?.data?.msg ?? '编辑失败')
+              })
               .finally(() => {
                 this.isLoading = false
               })
@@ -101,6 +104,9 @@ export default {
                 Peace.util.success('保存成功')
                 this.$emit('close')
                 this.$emit('refresh')
+              })
+              .catch((error) => {
+                Peace.util.error(error?.data?.msg ?? '保存失败')
               })
               .finally(() => {
                 this.isLoading = false
