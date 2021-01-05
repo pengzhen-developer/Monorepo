@@ -217,6 +217,7 @@ export default {
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
+    alert(JSON.stringify(this.params))
     this.getData()
     const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
     if (tradeType && this.currentStatus != 1) {
@@ -245,16 +246,8 @@ export default {
       }, 1000)
     },
     goToPay(data) {
-      let doctorId = data.doctorInfo.doctorId
-      let order = data.orderInfo
-      let money = order.orderMoney
-      let typeName = '预约挂号'
-      let doctorName = data.doctorInfo.doctorName
-      let orderNo = order.orderNo
-      let orderType = 'register'
-      let json = { money, typeName, doctorName, orderNo, doctorId, orderType }
-      json = peace.util.encode(json)
-      this.$router.push(`/components/ExpenseDetail/${json}`)
+      let orderNo = data.orderInfo.orderNo
+      peace.wx.pay({ orderNo }, null, this.getData, this.getData)
     },
     getData(type = '') {
       const params = {

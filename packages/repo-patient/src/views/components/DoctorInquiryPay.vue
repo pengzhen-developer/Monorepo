@@ -99,7 +99,7 @@ export default {
       let that = this
       this.params = peace.util.decode(this.$route.params.json)
       let orderNo = this.params.orderNo
-      peace.service.index.getOrderInfo({ orderNo }).then(res => {
+      peace.service.index.getOrderInfo({ orderNo }).then((res) => {
         let data = res.data
         this.createdTime = data.createdTime
         if (data.expireTime > data.currentTime) {
@@ -112,7 +112,7 @@ export default {
     pay() {
       let { orderNo } = peace.util.decode(this.$route.params.json)
       let params = { orderNo }
-      let orderExp = res => {
+      let orderExp = (res) => {
         if (res && res.data) {
           return Dialog.confirm({
             title: '提示',
@@ -202,9 +202,10 @@ export default {
       .left {
         i.wechat {
           width: 28px;
-          height: 26px;
+          height: 28px;
           display: inline-block;
           background: url('~@/assets/images/ic_wechat payment.png') no-repeat;
+          background-size: 100%;
           vertical-align: middle;
           margin-right: 8px;
         }
@@ -214,6 +215,7 @@ export default {
         height: 21px;
         display: inline-block;
         background: url('~@/assets/images/ic_choose.png') no-repeat;
+        background-size: 100%;
         vertical-align: middle;
       }
     }
