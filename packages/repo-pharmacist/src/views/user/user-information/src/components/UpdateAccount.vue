@@ -117,8 +117,9 @@ export default {
         if (valid) {
           const params = {
             Phone: this.model.tel,
-            SMSCode: this.model.SMSCode
+            SMSCode: this.model.smsCode
           }
+
           Service.modifyAccount(params).then(() => {
             Peace.util.success('账号修改成功')
             this.$emit('close')
