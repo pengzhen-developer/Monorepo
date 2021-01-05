@@ -49,6 +49,7 @@
             </div>
             <div class="form-upload">
               <el-image class="icon-add"
+                        v-if="userInfo.CertificatesUrl"
                         :src='userInfo.CertificatesUrl'
                         :preview-src-list="srcList">
                 <div slot="placeholder"
@@ -56,6 +57,11 @@
                   加载中<span class="dot">...</span>
                 </div>
               </el-image>
+
+              <el-image class="icon-add"
+                        style="padding: 35px"
+                        :src='require("./assets/img/add.png")' />
+
             </div>
           </div>
         </el-col>

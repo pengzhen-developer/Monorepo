@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"
              label-position="right"
-             label-width="75px"
+             label-width="85px"
              v-bind:model="model"
              v-bind:rules="rules"
              class="q-pl-20 form-padding">
@@ -80,8 +80,8 @@ export default {
       },
       rules: {
         tel: [
-          { required: true, message: '请输入手机号' },
-          { pattern: Peace.validate.pattern.mobile, message: '请输入手机号' }
+          { required: true, message: '请输入正确的手机号码' },
+          { pattern: Peace.validate.pattern.mobile, message: '请输入正确的手机号码' }
         ],
         smsCode: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -189,7 +189,7 @@ export default {
 }
 
 ::v-deep .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
-  content: none;
+  margin-right: 5px;
 }
 
 .form-padding {
