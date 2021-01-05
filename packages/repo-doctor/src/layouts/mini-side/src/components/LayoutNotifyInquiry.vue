@@ -147,10 +147,6 @@ export default {
         duration: 5000
       })
 
-      this.$nextTick(() => {
-        message.instance.$el.style.bottom = '20px'
-      })
-
       return message
     },
 
