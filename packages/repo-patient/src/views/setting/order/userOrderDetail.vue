@@ -217,7 +217,6 @@ export default {
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
-    alert(JSON.stringify(this.params))
     this.getData()
     const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
     if (tradeType && this.currentStatus != 1) {
