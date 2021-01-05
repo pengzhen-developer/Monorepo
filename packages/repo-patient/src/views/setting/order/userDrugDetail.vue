@@ -593,6 +593,9 @@ export default {
           })
         }
         this.getPhaOrder(this.order.accessCode, this.order.jztClaimNo, this.order.drugStoreId, type)
+
+        //H5支付返回- 缓存处方id 点击返回回到处方详情
+        peace.cache.set('h5.prescribeId', this.order.prescribeId)
       })
     },
     //预售订单+店铺详情

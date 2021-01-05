@@ -123,7 +123,15 @@ export default {
       const pathNameList = ['/order/userDrugDetail', '/setting/userConsultDetail', '/setting/order/userOrderDetail']
       pathNameList.forEach((pathName) => {
         if (e.currentTarget.location.pathname.indexOf(pathName) != -1) {
-          this.$router.push(peace.config.system.homePage)
+          //购药订单-单独处理 回到处方详情 - 处方id 在缓存取
+          if (e.currentTarget.location.pathname.indexOf('/order/userDrugDetail') != -1) {
+            const json = peace.util.encode({
+              tradeType: 'tradeType'
+            })
+            this.$router.replace(`/components/theRecipe/${json}`)
+          } else {
+            this.$router.push(peace.config.system.homePage)
+          }
         }
       })
     },
