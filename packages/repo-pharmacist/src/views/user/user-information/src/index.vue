@@ -238,7 +238,7 @@ export default {
   //医网签签名状态 -1 未提交 0：身份审核通过  1：证书签发   2：设置签章  4：申请拒绝
   computed: {
     showSetSignTips() {
-      return this.userInfo.SignStatus === '-1'
+      return this.userInfo.SignStatus !== '2'
     },
     srcList() {
       return [this.userInfo.CertificatesUrl]
@@ -264,9 +264,11 @@ export default {
     },
 
     updateStatus() {
-      Service.updateYwqStatus().then(() => {
-        this.fetch()
-      })
+      if (this.userInfo.SignStatus === '-1') {
+        Service.updateYwqStatus().then(() => {
+          this.fetch()
+        })
+      }
     },
 
     fetch() {
