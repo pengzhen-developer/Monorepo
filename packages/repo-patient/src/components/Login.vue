@@ -1,8 +1,7 @@
 <template>
   <div class="login"
        id="login">
-    <div class="login-form"
-         :style="{height:scrollerHeight}">
+    <div class="login-form">
       <h4 class="login-form-title"
           v-if="!isEwm">
         <div class="title">手机快捷登录</div>
@@ -262,6 +261,7 @@ export default {
     margin-top: 11px;
     &::after {
       left: 0;
+      width: 100%;
     }
   }
   /deep/ .van-cell__value {
