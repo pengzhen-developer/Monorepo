@@ -87,7 +87,7 @@ import ServiceItem from './components/ServiceItem'
 import ProductItem from './components/ProductItem'
 import UseDrugDialog from './components/UseDrugDialog'
 import RpShareManagementDialog from './components/RpShareManagementDialog'
-import MedicineSupplyDialog from './components/RpShareManagementDialog'
+import MedicineSupplyDialog from './components/MedicineSupplyDialog'
 
 export default {
   name: 'HomeDashboard',
