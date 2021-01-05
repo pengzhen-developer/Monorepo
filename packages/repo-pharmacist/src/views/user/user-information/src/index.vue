@@ -128,7 +128,7 @@
                     trigger="click"
                     offset=100>
           <div class="sign-tips">设置数字签名指引</div>
-          <el-timeline reverse>
+          <el-timeline>
             <div class="el-timeline-item"
                  v-for="(activity, index) in activities"
                  :key="index.toString()">
