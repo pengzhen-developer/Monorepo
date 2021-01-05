@@ -46,10 +46,10 @@ export default {
   },
 
   methods: {
-    fecth() {
+    async fecth() {
       this.notifiedInquiryList = Peace.cache.sessionStorage.get(notifyInquiryCacheKey) ?? []
 
-      Service.getBaseConfig({ tag: 'orderVoiceRemind' }).then((res) => {
+      await Service.getBaseConfig({ tag: 'orderVoiceRemind' }).then((res) => {
         this.orderVoiceRemind = res.data.switch
       })
     },
@@ -61,7 +61,9 @@ export default {
       return inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊 && !this.notifiedInquiryList.includes(inquiryNo)
     },
 
-    notify(session) {
+    async notify(session) {
+      await this.fecth()
+
       // 已提醒在本次 session 中，不再提醒
       const inquiryNo = session.content.inquiryInfo.inquiryNo
       this.notifiedInquiryList.push(inquiryNo)
