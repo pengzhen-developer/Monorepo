@@ -51,6 +51,7 @@
               <el-image class="icon-add"
                         v-if="userInfo.CertificatesUrl"
                         :src='userInfo.CertificatesUrl'
+                        :fit="'fill'"
                         :preview-src-list="srcList">
                 <div slot="placeholder"
                      class="image-slot placeholderStyle">
@@ -58,7 +59,8 @@
                 </div>
               </el-image>
 
-              <el-image class="icon-add"
+              <el-image v-else
+                        class="icon-add"
                         style="padding: 35px"
                         :src='require("./assets/img/add.png")' />
 
