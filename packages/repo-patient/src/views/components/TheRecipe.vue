@@ -258,9 +258,7 @@ export default {
       this.get()
     }
   },
-  destroyed() {
-    peace.cache.remove('h5.prescribeId')
-  },
+
   methods: {
     get() {
       this.getPrescripInfo()
