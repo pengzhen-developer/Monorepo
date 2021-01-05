@@ -221,6 +221,8 @@ export default {
 
 <style lang="scss">
 .notify-menssage {
+  bottom: 20px !important;
+
   .el-notification__title {
     height: 32px;
     line-height: 32px;
