@@ -220,8 +220,8 @@ export default {
         const params = {
           userId: row.UserId
         }
-        Service.RequestYwq(params).then((res) => {
-          Peace.util.success(res.msg)
+        Service.RequestYwq(params).then(() => {
+          Peace.util.success('提交成功')
           this.get()
         })
       })
