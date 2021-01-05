@@ -286,9 +286,11 @@ export default {
     },
 
     removeCommonlyPrescriptionDrugUsage(row) {
-      const drugIndex = this.prescriptionDrugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === row.drugId)
+      this.$confirm(`确定从处方中删除【${row.drugName}】`, '提示', { center: true }).then(() => {
+        const drugIndex = this.prescriptionDrugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === row.drugId)
 
-      this.prescriptionDrugList.splice(drugIndex, 1)
+        this.prescriptionDrugList.splice(drugIndex, 1)
+      })
     },
 
     cancelCommonlyPrescription() {
