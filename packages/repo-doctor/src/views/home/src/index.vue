@@ -238,6 +238,10 @@ export default {
     }
   },
 
+  activated() {
+    this.initialize()
+  },
+
   created() {
     this.initialize()
   },
