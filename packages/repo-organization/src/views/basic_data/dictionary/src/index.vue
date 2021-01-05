@@ -15,7 +15,7 @@
                    lazy>
         <DrugUnit></DrugUnit>
       </el-tab-pane>
-      <el-tab-pane label="ICD-10"
+      <el-tab-pane label="ICD"
                    lazy>
         <ICD10></ICD10>
       </el-tab-pane>

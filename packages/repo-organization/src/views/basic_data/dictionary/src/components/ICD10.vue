@@ -7,7 +7,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span>ICD-10编码</span>
+            <span>ICD编码</span>
             <span>：</span>
           </span>
           <el-input v-model=" model.dieaseCode"
@@ -51,13 +51,10 @@
                   style="width: 100%"
                   pagination
                   max-height="600">
-        <el-table-column prop="dieaseName"
-                         align="center"
-                         label="ICD名称">
-        </el-table-column>
+
         <el-table-column prop="icdCode"
                          align="center"
-                         label="ICD-10编码">
+                         label="ICD编码">
         </el-table-column>
         <el-table-column align="center"
                          label="附加编码">
@@ -66,6 +63,10 @@
               {{ showAddCode(scope.row.addCode) }}
             </span>
           </template>
+        </el-table-column>
+        <el-table-column prop="dieaseName"
+                         align="center"
+                         label="ICD名称">
         </el-table-column>
         <!-- <el-table-column align="center"
                          label="匹配状态">
