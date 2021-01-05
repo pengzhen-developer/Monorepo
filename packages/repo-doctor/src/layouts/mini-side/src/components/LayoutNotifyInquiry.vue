@@ -99,21 +99,17 @@ export default {
 
         // 在线咨询
         if (inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.图文 || inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频) {
-          if (this.$route.path === '/clinic/inquiry') {
-            this.validSession(session) && this.selectSession(session)
-          } else {
+          if (this.validSession(session)) {
             this.$router.push('/clinic/inquiry').then(() => {
-              this.validSession(session) && this.selectSession(session)
+              this.selectSession(session)
             })
           }
         }
         // 复诊续方
         else if (inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.复诊) {
-          if (this.$route.path === '/clinic/returnVisit') {
-            this.validSession(session) && this.selectSession(session)
-          } else {
+          if (this.validSession(session)) {
             this.$router.push('/clinic/returnVisit').then(() => {
-              this.validSession(session) && this.selectSession(session)
+              this.selectSession(session)
             })
           }
         }
