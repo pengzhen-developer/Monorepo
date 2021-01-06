@@ -187,7 +187,6 @@ import Util from '@src/util'
 
 import { path } from '@src/router/generateRoutes'
 import Service from './service'
-// import Constant from './constant'
 
 export default {
   data() {
@@ -316,7 +315,11 @@ export default {
       this.showPassword = !this.showPassword
     },
     goHome() {
-      this.$router.push(path.HOME)
+      this.$router.push(path.HOME).then(() => {
+        if (Util.user.isSignIn()) {
+          window.location.reload()
+        }
+      })
     },
     goLogin() {
       this.$router.push(path.LOGIN)

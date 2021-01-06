@@ -39,6 +39,7 @@ export default function({ configuration }) {
     } else {
       if (to.path === path.LOGIN && Util.user.isSignIn()) {
         next(path.HOME)
+        window.location.reload()
       }
     }
     next()

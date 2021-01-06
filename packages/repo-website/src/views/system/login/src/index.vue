@@ -37,6 +37,7 @@ import SignByPhone from './components/SignByPhone'
 import SignByUserName from './components/SignByUserName'
 import ResetPassword from './components/ResetPassword'
 import Constant from './constant'
+import Util from '@src/util/index'
 
 export default {
   components: {
@@ -55,7 +56,11 @@ export default {
 
   methods: {
     goHome() {
-      this.$router.push(path.HOME)
+      this.$router.push(path.HOME).then(() => {
+        if (Util.user.isSignIn()) {
+          window.location.reload()
+        }
+      })
     },
 
     changeMode(mode) {

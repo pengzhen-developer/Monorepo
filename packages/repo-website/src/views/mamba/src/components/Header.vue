@@ -103,6 +103,7 @@ export default {
       return Util.user.isSignIn()
     },
     username() {
+      debugger
       return Util.user.getUserInfo()?.username
     },
     checkStatus() {
