@@ -441,6 +441,8 @@ export default {
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sysattribute')
+    this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
+    this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
     this.$nextTick().then(() => {
       this.fetch()
@@ -457,11 +459,9 @@ export default {
      */
     'model.OrderMethod': {
       async handler() {
-        //DistributionOrderStatus  配送订单状态    1
-        //SelfOrderStatus  自提订单状态  0
-        const requestKey = this.model.OrderMethod == 0 ? 'SelfOrderStatus' : 'DistributionOrderStatus'
-        this.model.OrderStatus = ''
-        this.remoteSource.OrderStatus = await peace.identity.dictionary.getList(requestKey)
+        // DistributionOrderStatus  配送订单状态    1
+        // SelfOrderStatus  自提订单状态  0
+        this.remoteSource.OrderStatus = this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
   },
@@ -512,7 +512,7 @@ export default {
       // 当 药房为：‘xxx 药房’ & 取货方式为： ‘配送’ & 订单状态： ‘已发货’
       return (
         this.remoteSource.ShippingMethod.find((item) => item.value === row.ShippingMethod)?.label === '配送' &&
-        this.remoteSource.OrderStatus.find((item) => item.value === row.OrderStatus)?.label === '已发货'
+        this.remoteSource.DistributionOrderStatus.find((item) => item.value === row.OrderStatus)?.label === '已发货'
       )
     },
 
