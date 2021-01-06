@@ -28,6 +28,7 @@ export default function({ configuration }) {
     已通过: 3,
     未通过: 4
   }
+
   router.beforeEach(async (to, from, next) => {
     // set title
     document.title = to.meta?.title ?? window.configuration.application.title
@@ -39,7 +40,6 @@ export default function({ configuration }) {
     } else {
       if (to.path === path.LOGIN && Util.user.isSignIn()) {
         next(path.HOME)
-        window.location.reload()
       }
     }
     next()

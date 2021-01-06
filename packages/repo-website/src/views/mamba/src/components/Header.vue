@@ -76,7 +76,11 @@ import Service from '../service'
 export default {
   methods: {
     goLogin() {
-      this.$router.push(path.LOGIN)
+      if (!Util.user.isSignIn()) {
+        this.$router.push(path.LOGIN)
+      } else {
+        window.location.reload()
+      }
     },
     goRegister() {
       this.$router.push(path.REGISTER)
