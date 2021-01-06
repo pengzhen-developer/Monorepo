@@ -107,7 +107,7 @@ export default {
         .create()
         .get(invokeExtDLLAPI, { params: { ...this.invoke.invokeExtDLLInfo }, timeout: 5000 })
         .then((res) => {
-          if (res.Code !== 200) {
+          if (res.data.Code !== 200) {
             Peace.util.alert(res.data.Msg)
 
             this.invoke.visible = true
