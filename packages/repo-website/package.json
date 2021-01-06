@@ -15,9 +15,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@jk998/identity": "^0.2.4",
-    "@jk998/library": "^0.1.20",
-    "@jk998/peace-element-ui": "^0.1.8",
+    "@jk998/identity": "^0.2.5",
+    "@jk998/library": "^0.1.22",
+    "@jk998/peace-element-ui": "^0.1.12",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
