@@ -197,6 +197,7 @@ export default {
     next(row) {
       this.drugUsageDialog.visible = true
       this.prescriptionDrug = Peace.util.deepClone(row)
+      this.prescriptionDrug.singleDose = undefined
     },
 
     onDrugUsageSuccess(drug) {
