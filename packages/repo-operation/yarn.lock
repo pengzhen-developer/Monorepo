@@ -891,10 +891,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@jk998/identity@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
-  integrity sha512-k6H1CP4qDMWNWsNYl2IWNTCuiHUNR2PK1B5Mj+UJkR7vComImS2LiIJchue3eKvpcz8HS3FPglBAo7HhAUvwwA==
+"@jk998/identity@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
+  integrity sha512-PNxspL344eYPWnizv0z/I3/x00wi6Fae71TvQSGBtGCV5CNhrTeJhHIdYhbTm82WKGrB9hNLFHNvKDdQAwmLRg==
   dependencies:
     "@jk998/library" "^0.1.20"
     crypto-js "^4.0.0"
@@ -919,10 +919,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.10.tgz#4d4352d8bea8b9232dcaa9417b3100504e8392b1"
-  integrity sha512-raglPaaLli6nf8dPmc9HkYxEaHdYigQWxvpixlHUA070aJkr4isTJLsKoaILycswJMSbuWMzsegxfj5HDqH+EQ==
+"@jk998/peace-element-ui@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.12.tgz#0a121f5c7af7b00fba1d0f1d33ddc7258dc17005"
+  integrity sha512-z8TIAiesIGb/DpbLpVbVQniO9K5q9QCGOnwQzVkF1i2ekCLFx/gUgSPdezScn6FG+W6vg3jRrJn2nqCSBH+5xA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
