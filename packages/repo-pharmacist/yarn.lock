@@ -904,8 +904,13 @@
 
 "@jk998/identity@^0.2.5":
   version "0.2.5"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/@jk998/identity/download/@jk998/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
   integrity sha1-2DzLAXIXL1rswbfqj4xOL8kRorY=
+=======
+  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
+  integrity sha512-PNxspL344eYPWnizv0z/I3/x00wi6Fae71TvQSGBtGCV5CNhrTeJhHIdYhbTm82WKGrB9hNLFHNvKDdQAwmLRg==
+>>>>>>> d22910fb5b3acf891cd2d824300bc32fc9608517
   dependencies:
     "@jk998/library" "^0.1.20"
     crypto-js "^4.0.0"
@@ -922,8 +927,8 @@
 
 "@jk998/library@^0.1.22":
   version "0.1.22"
-  resolved "https://registry.npm.taobao.org/@jk998/library/download/@jk998/library-0.1.22.tgz#7dfbca3afd4ea0423c9089f310de30c905b8cac2"
-  integrity sha1-ffvKOv1OoEI8kInzEN4wyQW4ysI=
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.22.tgz#7dfbca3afd4ea0423c9089f310de30c905b8cac2"
+  integrity sha512-N+py3nKKoOjXHlbPWORpITeeUL17FT+aGaSYkCJ18eflbmol1av6I3HT/WV1N9HHyTE4csF21RLhBPStPfbpgQ==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
@@ -932,8 +937,13 @@
 
 "@jk998/peace-element-ui@^0.1.14":
   version "0.1.14"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/@jk998/peace-element-ui/download/@jk998/peace-element-ui-0.1.14.tgz#af5aac36155b9d19ec677e2dbfad62d38bb4ca93"
   integrity sha1-r1qsNhVbnRnsZ34tv61i04u0ypM=
+=======
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.14.tgz#af5aac36155b9d19ec677e2dbfad62d38bb4ca93"
+  integrity sha512-H5bouVJlXUXI+n0As5kaTk8Olq57D8K2nKhuSjymJvBW5Rn8yKPFxBmlRvyIs94J001FOjR+gqjVNJf7JF/A8A==
+>>>>>>> d22910fb5b3acf891cd2d824300bc32fc9608517
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
