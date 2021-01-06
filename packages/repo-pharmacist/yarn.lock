@@ -902,10 +902,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@jk998/identity@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.npm.taobao.org/@jk998/identity/download/@jk998/identity-0.2.4.tgz#94e11a45978c380c1827d4fce954651dfd235511"
-  integrity sha1-lOEaRZeMOAwYJ9T86VRlHf0jVRE=
+"@jk998/identity@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.npm.taobao.org/@jk998/identity/download/@jk998/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
+  integrity sha1-2DzLAXIXL1rswbfqj4xOL8kRorY=
   dependencies:
     "@jk998/library" "^0.1.20"
     crypto-js "^4.0.0"
@@ -930,10 +930,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.npm.taobao.org/@jk998/peace-element-ui/download/@jk998/peace-element-ui-0.1.12.tgz#0a121f5c7af7b00fba1d0f1d33ddc7258dc17005"
-  integrity sha1-ChIfXHr3sA+6HQ8dM93HJY3BcAU=
+"@jk998/peace-element-ui@^0.1.14":
+  version "0.1.14"
+  resolved "https://registry.npm.taobao.org/@jk998/peace-element-ui/download/@jk998/peace-element-ui-0.1.14.tgz#af5aac36155b9d19ec677e2dbfad62d38bb4ca93"
+  integrity sha1-r1qsNhVbnRnsZ34tv61i04u0ypM=
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

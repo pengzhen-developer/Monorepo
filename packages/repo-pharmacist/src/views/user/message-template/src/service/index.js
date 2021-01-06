@@ -8,7 +8,7 @@ export default {
   getAuditingTemplatesList(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/getAuditingTemplatesList'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/getAuditingTemplatesList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -32,7 +32,7 @@ export default {
   addAuditingTemplates(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/addAuditingTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/addAuditingTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -56,7 +56,7 @@ export default {
   editAuditingTemplates(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/updateAuditingTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/updateAuditingTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -77,7 +77,7 @@ export default {
    */
   delAuditingTemplates(params) {
     const isMock = false
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/delAuditingTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/delAuditingTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -97,7 +97,7 @@ export default {
   getCommentTemplatesList(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/getCommentTemplatesList'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/getCommentTemplatesList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -121,7 +121,7 @@ export default {
   addCommentTemplates(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/addCommentTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/addCommentTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -145,7 +145,7 @@ export default {
   updateCommentTempTemplates(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/updateCommentTempTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/updateCommentTempTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -167,7 +167,7 @@ export default {
   delCommentTemplates(params) {
     const isMock = false
 
-    const apiPath = 'durprescription-comment/api/v1/prescription-comment/delCommentTemplates'
+    const apiPath = 'prescription-comment/api/v1/prescription-comment/delCommentTemplates'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
