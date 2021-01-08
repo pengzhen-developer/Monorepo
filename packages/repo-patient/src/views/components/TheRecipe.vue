@@ -306,7 +306,7 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       //h5.prescribeId  h5支付-购药订单返回
       const prescribeId = params.tradeType ? peace.cache.get('h5.prescribeId') : params.prescribeId
-      peace.service.patient.getPrescriptionImage({ prescribeId: prescribeId }).then((res) => {
+      peace.service.patient.getPrescriptionImage(prescribeId).then((res) => {
         this.dialog.data = res.data
       })
     }
