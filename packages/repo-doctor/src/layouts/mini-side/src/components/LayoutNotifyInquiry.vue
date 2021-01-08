@@ -140,7 +140,7 @@ export default {
           <div>有新的患者【{familyName}】进入您的诊室，是否接诊？</div>
           <div class="q-mb-md">
             <div class="flex items-center">
-              <input id={inquiryNo} class="q-mr-xs" type="checkbox" checked={this.orderVoiceRemind} on-input={message.onChangeOrderVoiceRemind}></input>
+              <input id={inquiryNo} class="q-mr-xs" type="checkbox" checked={this.orderVoiceRemind} on-change={message.onChangeOrderVoiceRemind}></input>
               <label for={inquiryNo}>开启声音提醒</label>
             </div>
           </div>
