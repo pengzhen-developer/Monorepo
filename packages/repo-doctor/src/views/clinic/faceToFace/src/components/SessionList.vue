@@ -5,6 +5,7 @@
       <el-select class="col"
                  remote
                  filterable
+                 clearable
                  v-model="search"
                  placeholder="请输入患者名字"
                  v-bind:remote-method="querySearchAsync"
@@ -256,8 +257,10 @@ export default {
     },
 
     handleSelect(patientNo) {
-      const item = this.searchPatientList.find((element) => element.patientNo == patientNo)
-      mutations.setActivePatient(item)
+      if (!Peace.validate.isEmpty(patientNo)) {
+        const item = this.searchPatientList.find((element) => element.patientNo == patientNo)
+        mutations.setActivePatient(item)
+      }
     },
 
     scrollPosition(position) {
