@@ -241,6 +241,7 @@ export default {
             this.$emit('update:prescriptionTag', oldValue)
           })
       } else {
+        this.__lockRpCheck = newValue
         this.$emit('update:prescriptionTag', newValue)
       }
     }
