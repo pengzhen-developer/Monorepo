@@ -426,7 +426,7 @@ export default {
         const historyMessageFormatHandler = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
+              const messageTypeMap = { 0: 'text', 1: 'image', 2: 'audio', 100: 'custom' }
 
               message.time = message.sendtime
               message.flow = this.params.familyId === message.from ? 'out' : 'in'

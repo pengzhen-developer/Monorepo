@@ -57,6 +57,8 @@ import MessageRecipeCardContent from './MessageRecipeCardContent'
 import MessageReferralCardContent from './MessageReferralCardContent'
 import MessageCheckCardContent from './MessageCheckCardContent'
 import MessageVideoContent from './MessageVideoContent'
+import MessageAudioContent from './MessageAudioContent'
+
 export default {
   components: {
     MessageTextContent,
@@ -68,7 +70,8 @@ export default {
     MessageRecipeCardContent,
     MessageReferralCardContent,
     MessageCheckCardContent,
-    MessageVideoContent
+    MessageVideoContent,
+    MessageAudioContent
   },
   props: {
     /**消息 */
@@ -152,6 +155,7 @@ export default {
       const messageTypeComponents = {
         ['text']: MessageTextContent,
         ['image']: MessageImageContent,
+        ['audio']: MessageAudioContent,
         [Constant.INQUIRY_MESSAGE_TYPE.发起问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.接诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
@@ -180,20 +184,22 @@ export default {
       // out
       // in
       // system
+      const customCodeList = [
+        Constant.INQUIRY_MESSAGE_TYPE.发起问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.接诊,
+        Constant.INQUIRY_MESSAGE_TYPE.结束问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.评价提示,
+        Constant.INQUIRY_MESSAGE_TYPE.转诊提示,
+        Constant.INQUIRY_MESSAGE_TYPE.会诊提示,
+        Constant.INQUIRY_MESSAGE_TYPE.退诊,
+        Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
+        Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
+      ]
+
       if (this.message.type === 'custom') {
         if (this.message.content && this.message.content.code) {
-          if (
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.发起问诊 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.接诊 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.结束问诊 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.会诊提示 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.退诊 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.取消问诊 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
-          ) {
+          if (customCodeList.includes(this.message.content.code)) {
             return 'system'
           }
         }
