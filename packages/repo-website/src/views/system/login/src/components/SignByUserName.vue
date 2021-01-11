@@ -30,8 +30,6 @@
       <el-form-item prop="tel">
         <el-input v-model.trim="model.tel"
                   v-bind:class="{ 'active' : usernameActive }"
-                  v-bind:minlength="11"
-                  v-bind:maxlength="11"
                   v-on:focus="usernameFocus"
                   v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
