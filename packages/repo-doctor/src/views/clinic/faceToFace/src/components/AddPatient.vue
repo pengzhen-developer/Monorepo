@@ -35,8 +35,8 @@
       <el-form-item label="联系方式"
                     prop="tel">
         <span slot="label">手机号码</span>
-        <el-input v-model="ruleForm.tel"
-                  onkeyup="value=value.replace(/[^\d]/g,'')"
+        <el-input v-model.number="ruleForm.tel"
+                  v-bind:maxlength="11"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
@@ -88,10 +88,7 @@ export default {
         idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
         tel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
-          {
-            pattern: /^((0\d{2,3}-\d{7,8})|(1[3567894]\d{9}))$/,
-            message: '请输入正确的手机号码或者座机号'
-          }
+          { pattern: Peace.validate.pattern.mobile, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
         ]
       },
 

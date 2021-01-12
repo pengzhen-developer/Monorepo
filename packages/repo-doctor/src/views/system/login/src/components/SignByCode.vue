@@ -16,7 +16,6 @@
       <el-form-item prop="tel">
         <el-input v-model.trim="model.tel"
                   v-bind:class="{ 'active': usernameActive }"
-                  v-bind:minlength="11"
                   v-bind:maxlength="11"
                   v-on:focus="usernameFocus"
                   v-on:blur="usernameBlur"
@@ -55,7 +54,7 @@
               <el-divider direction="vertical"></el-divider>
 
               <el-button type="text"
-                         v-bind:disabled="isVerifyPhone"
+                         v-bind:disabled="!isVerifyPhone"
                          v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
             </template>
           </template>
@@ -115,7 +114,7 @@ export default {
 
   computed: {
     isVerifyPhone() {
-      return !Peace.validate.isMobile(this.model.tel)
+      return this.model.tel.length === 11
     },
 
     showCountdown() {

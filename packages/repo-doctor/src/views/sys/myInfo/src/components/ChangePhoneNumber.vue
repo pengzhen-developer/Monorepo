@@ -106,7 +106,7 @@
           <template v-else>
 
             <el-button type="primary"
-                       v-bind:disabled="isVerifyForNewMobile"
+                       v-bind:disabled="!isVerifyForNewMobile"
                        v-on:click="sendCodeForNewMobile">{{ sendSmsCodeForNewMobile ? '重新发送' : '发送验证码' }}</el-button>
           </template>
         </el-form-item>
@@ -186,7 +186,7 @@ export default {
 
   computed: {
     isVerifyForNewMobile() {
-      return !Peace.validate.isMobile(this.model.tel)
+      return this.model.tel.length === 11
     },
 
     showCountdown() {
