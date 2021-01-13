@@ -11,7 +11,7 @@
           <el-input v-model="model.hosName"
                     placeholder=""></el-input>
         </el-form-item>
-        <el-form-item label="医生姓名：">
+        <el-form-item label="开方医生：">
           <el-input v-model="model.docName"
                     placeholder=""></el-input>
         </el-form-item>
@@ -36,53 +36,79 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
-          <template slot-scope="{ $index, _self }">
-            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+        <PeaceTableColumn label="序号"
+                          prop="orderNumber"
+                          align="center"
+                          width="80px">
+        </PeaceTableColumn>
+        <PeaceTableColumn width="100px"
+                          align="center"
+                          label="来源"
+                          prop="source"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          align="center"
+                          label="医院名称"
+                          prop="hosName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="120px"
+                          align="center"
+                          label="医生姓名"
+                          prop="docName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="120px"
+                          align="center"
+                          label="科别"
+                          prop="deptName"></PeaceTableColumn>
+        <PeaceTableColumn width="120px"
+                          align="center"
+                          label="开方药品数量"
+                          prop="drugNum"></PeaceTableColumn>
+        <PeaceTableColumn min-width="80px"
+                          align="center"
+                          label="商品件数"
+                          prop="drugTypeNum"></PeaceTableColumn>
+        <PeaceTableColumn width="160px"
+                          align="center"
+                          label="操作时间"
+                          prop="createdTime"></PeaceTableColumn>
+        <PeaceTableColumn width="120px"
+                          align="center"
+                          label="操作"
+                          fixed="right">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="showDetail(scope.row)">查看详情</el-button>
           </template>
-        </el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="医院名称"
-                         prop="hosName"></el-table-column>
-        <el-table-column min-width="80px"
-                         align="center"
-                         label="医生姓名"
-                         prop="docName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="科别"
-                         prop="deptName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="药品名称"
-                         prop="drugName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="药品规格"
-                         prop="drugSpec"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="药品厂家"
-                         prop="drugFactory"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="剂型"
-                         prop="drugForm"></el-table-column>
-        <el-table-column min-width="80px"
-                         align="center"
-                         label="开方数量"
-                         prop="prescripNum"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="提交时间"
-                         prop="createdTime"></el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 
+    <PeaceDialog v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible"
+                 title="缺货登记处方药品详情"
+                 width="800px">
+      <PeaceTable ref="detailTable"
+                  v-bind:data="dialog.data">
+        <PeaceTableColumn min-width="180px"
+                          align="center"
+                          label="药品名称"
+                          prop="drugName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="120px"
+                          align="center"
+                          label="药品规格"
+                          prop="drugSpec"></PeaceTableColumn>
+        <PeaceTableColumn min-width="180px"
+                          align="center"
+                          label="药品厂家"
+                          prop="drugFactory"></PeaceTableColumn>
+        <PeaceTableColumn width="120px"
+                          align="center"
+                          label="剂型"
+                          prop="drugForm"></PeaceTableColumn>
+        <PeaceTableColumn width="120px"
+                          align="center"
+                          label="开方药品数量"
+                          prop="prescripNum"></PeaceTableColumn>
+      </PeaceTable>
+    </PeaceDialog>
   </div>
 </template>
 
@@ -92,7 +118,13 @@ import Service from './service'
 export default {
   data() {
     return {
-      model: {}
+      model: {},
+
+      dialog: {
+        visible: false,
+
+        data: []
+      }
     }
   },
 
@@ -108,6 +140,17 @@ export default {
       const params = this.model
 
       this.$refs.table.reloadData({ fetch, params })
+    },
+
+    showDetail(row) {
+      this.dialog.visible = true
+
+      this.$nextTick().then(() => {
+        const fetch = Service.getStockDrugList
+        const params = { stockId: row.stockId }
+
+        this.$refs.detailTable.reloadData({ fetch, params })
+      })
     },
 
     exportFile() {
