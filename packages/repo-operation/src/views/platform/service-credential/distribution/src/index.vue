@@ -19,9 +19,9 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="主体名称"
+        <el-table-column label="系统名称"
                          prop="name"></el-table-column>
-        <el-table-column label="主体属性"
+        <el-table-column label="系统属性"
                          prop="attributeName"></el-table-column>
         <el-table-column label="Accesskey  ID"
                          prop="accessId"></el-table-column>
@@ -62,7 +62,6 @@
                  v-bind:visible.sync="addMechanismDialog.visible"
                  title="新增">
       <AddMechanismDialog v-if="addMechanismDialog.visible"
-                          :typeData="addMechanismDialog.typeData"
                           v-on:onSucess="addItemSuccess"
                           v-on:onCancel="addMechanismDialog.visible = false"></AddMechanismDialog>
 
@@ -81,8 +80,7 @@ export default {
   data() {
     return {
       addMechanismDialog: {
-        visible: false,
-        typeData: []
+        visible: false
       }
     }
   },
@@ -106,13 +104,8 @@ export default {
       this.$refs.table.reloadData({ fetch, params, filter })
     },
 
-    async addItem() {
-      this.addMechanismDialog.typeData = await Peace.identity.dictionary.getList('sysattribute')
-      if (this.addMechanismDialog.typeData.length == 0) {
-        Peace.util.error('缺少主体属性类型列表')
-      } else {
-        this.addMechanismDialog.visible = true
-      }
+    addItem() {
+      this.addMechanismDialog.visible = true
     },
     showAndHid(row) {
       row.isHide = !row.isHide

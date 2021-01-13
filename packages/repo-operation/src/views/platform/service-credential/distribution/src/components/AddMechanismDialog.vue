@@ -6,47 +6,32 @@
              label-width="180px"
              class="element-ui-default"
              ref="mechanism">
-      <el-form-item label="服务凭证主体属性："
-                    prop="mechanismType">
-        <el-select v-model="mechanism.mechanismType"
-                   @change="typeChange"
+      <el-form-item label="系统名称："
+                    prop="nameCode">
+        <el-select v-model="mechanism.nameCode"
+                   filterable
                    placeholder="请选择">
-          <el-option :key="item.code"
+          <el-option :key="item.value"
                      :label="item.label"
                      :value="item.value"
-                     v-for="item in typeData"></el-option>
+                     v-for="item in sysDockingDict"></el-option>
         </el-select>
       </el-form-item>
-
-      <template v-if="mechanismChoiceType">
-        <el-form-item label="主体名称："
-                      prop="name2">
-          <el-select v-model="mechanism.name2"
-                     filterable
-                     placeholder="请选择">
-            <el-option :key="item.Code"
-                       :label="item.Name"
-                       :value="item.Name"
-                       v-for="item in custNameList"></el-option>
-          </el-select>
-        </el-form-item>
-      </template>
-
-      <template v-else>
-        <el-form-item label="主体名称："
-                      prop="name">
-          <el-input v-model.trim="mechanism.name"
-                    maxlength="20"
-                    placeholder="请输入主体名称"></el-input>
-        </el-form-item>
-      </template>
+      <el-form-item label="系统属性："
+                    prop="attrCode">
+        <el-radio-group v-model="mechanism.attrCode">
+          <el-radio v-for="item in sysAttributeDict"
+                    :key="item.value"
+                    :label="item.value">{{item.label}}</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
     </el-form>
 
     <div class="bottom">
       <el-button v-on:click="onCancel">取消</el-button>
       <el-button type="primary"
-                 v-on:click="onCreate('mechanism')">创建凭证</el-button>
+                 v-on:click="onCreate">创建凭证</el-button>
     </div>
   </div>
 </template>
@@ -56,85 +41,54 @@ import Service from '../service'
 
 export default {
   name: 'AddMechanismDialog',
-  props: {
-    typeData: Array
-  },
+  props: {},
 
   data() {
     return {
       mechanism: {
-        mechanismType: 'system',
-        name: '',
-        name2: ''
+        nameCode: '',
+        attrCode: ''
       },
-      custNameList: [],
+      // 系统名称
+      sysDockingDict: [],
+      // 系统属性
+      sysAttributeDict: [],
       rules: {
-        mechanismType: [
-          {
-            required: true,
-            message: '请选择服务凭证主体属性',
-            trigger: 'change'
-          }
-        ],
         name: [
           {
             required: true,
-            message: '请输入主体名称',
-            trigger: 'blur'
+            message: '请选择系统名称',
+            trigger: 'change'
           }
         ],
-        name2: [
+        attr: [
           {
             required: true,
-            message: '请选择主体名称',
-            trigger: 'blur'
+            message: '请选择系统属性',
+            trigger: 'change'
           }
         ]
       }
     }
   },
-  computed: {
-    mechanismChoiceType() {
-      return this.mechanism.mechanismType == 'system'
-    }
-  },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      this.getCustByVoucher()
-    })
+  async created() {
+    this.sysDockingDict = await Peace.identity.dictionary.getList('sysdocking')
+    this.sysAttributeDict = await Peace.identity.dictionary.getList('sysattribute')
   },
 
   methods: {
-    getCustByVoucher() {
-      const params = {
-        Name: this.mechanism.name2
-      }
-      Service.getCustByVoucher(params).then((res) => {
-        this.custNameList = res.data.list
-      })
-    },
     onCancel() {
       this.$emit('onCancel')
     },
-    onCreate(mechanism) {
-      this.$refs[mechanism].validate((valid) => {
+    onCreate() {
+      this.$refs['mechanism'].validate((valid) => {
         if (valid) {
-          var params
-          if (this.mechanism.mechanismType == 'system') {
-            params = {
-              attributeCode: this.mechanism.mechanismType,
-              attributeName: this.typeData.find((item) => item.value == this.mechanism.mechanismType).label,
-              code: this.custNameList.find((item) => item.Name == this.mechanism.name2).Code,
-              name: this.mechanism.name2
-            }
-          } else {
-            params = {
-              attributeCode: this.mechanism.mechanismType,
-              attributeName: this.typeData.find((item) => item.value == this.mechanism.mechanismType).label,
-              code: '',
-              name: this.mechanism.name
-            }
+          var params = {
+            attributeCode: this.mechanism.attrCode,
+            attributeName: this.sysAttributeDict.find((item) => item.value === this.mechanism.attrCode).label,
+            code: this.mechanism.nameCode,
+            name: this.sysDockingDict.find((item) => item.value == this.mechanism.nameCode).label
           }
           Service.configureSave(params).then((res) => {
             Peace.util.success(res.msg)
@@ -144,14 +98,6 @@ export default {
           return false
         }
       })
-    },
-    typeChange(value) {
-      this.$refs['mechanism'].clearValidate()
-      if (value == 'system') {
-        this.mechanism.name = ''
-      } else {
-        this.mechanism.name2 = ''
-      }
     }
   }
 }

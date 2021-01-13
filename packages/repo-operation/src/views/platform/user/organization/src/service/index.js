@@ -219,13 +219,13 @@ export default {
   getDockingConfig(params) {
     const isMock = false
 
-    const apiPath = `zyy-psd/docking/details/${params.custcode}`
+    const apiPath = `psd/CircConfig/GetChannelSysDockingsByCustCode`
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   },
@@ -238,7 +238,7 @@ export default {
   saveDockingConfig(params) {
     const isMock = false
 
-    const apiPath = `zyy-psd/docking/save`
+    const apiPath = `psd/CircConfig/InsertCheelSysDock`
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

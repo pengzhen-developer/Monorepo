@@ -17,6 +17,16 @@ export default {
   },
 
   /**
+   * 机构服务类型字典
+   */
+  ENUM_ORGANIZATION_SERVICE: {
+    互联网云医院: 1,
+    合理用药管理: 2,
+    处方共享服务: 3,
+    药品供应服务: 4
+  },
+
+  /**
    * 机构入驻方式字典
    */
   ENUM_ORGANIZATION_SOURCE: {
@@ -69,7 +79,7 @@ export default {
    * 商保配置
    */
   ENUM_COMMERICAL_CONFIG: {
-    '犇思（药事链）': '1',
+    '犇思（药事联）': '1',
     珮文: '2'
   },
 

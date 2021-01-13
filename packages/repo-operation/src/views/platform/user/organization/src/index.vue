@@ -27,30 +27,12 @@
             <el-select clearable
                        v-model.trim="model.orgType"
                        placeholder="全部">
-              <el-option v-for="item in source.orgType"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
+              <el-option v-for="(value, label) in CONSTANT.ENUM_ORGANIZATION_TYPE"
+                         v-bind:key="value"
+                         v-bind:label="label"
+                         v-bind:value="value"></el-option>
             </el-select>
           </el-form-item>
-
-          <el-form-item>
-            <template slot="label">
-              <span class="em-4-justify">对接系统</span>
-              <span>：</span>
-            </template>
-
-            <el-select v-model="model.dockSystem"
-                       placeholder="全部"
-                       clearable>
-              <el-option v-for="item in dockingSystemDict"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <br>
 
           <el-form-item>
 
@@ -63,10 +45,10 @@
                        clearable
                        multiple
                        v-model.trim="model.serviceType">
-              <el-option v-for="item in source.serviceType"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
+              <el-option v-for="(value, label) in CONSTANT.ENUM_ORGANIZATION_SERVICE"
+                         v-bind:key="value"
+                         v-bind:label="label"
+                         v-bind:value="value"></el-option>
             </el-select>
           </el-form-item>
 
@@ -90,9 +72,9 @@
                     v-bind:page-size="5"
                     pagination>
           <el-table-column label="序号"
-                           type="index"
                            align="center"
-                           width="80px">
+                           width="80px"
+                           prop="orderNumber">
           </el-table-column>
           <el-table-column min-width="180px"
                            align="left"
@@ -110,26 +92,9 @@
                            label="入驻方式"
                            align="center"
                            prop="source"></el-table-column>
-          <el-table-column min-width="100px"
-                           label="对接系统"
-                           align="center"
-                           prop="dockSystem">
-            <template slot-scope="scope">
-              {{scope.row.dockSystem || '—'}}
-            </template>
-          </el-table-column>
-          <el-table-column min-width="100px"
-                           label="系统属性"
-                           align="center"
-                           prop="systemProperties">
-            <template slot-scope="scope">
-              {{scope.row.systemProperties || '—'}}
-            </template>
-          </el-table-column>
           <el-table-column min-width="160px"
                            label="使用中的服务"
-                           align="center"
-                           prop="source">
+                           align="center">
             <template slot-scope="scope">
               <div v-html="formatServiceName(scope.row)"></div>
             </template>
@@ -146,7 +111,8 @@
             </template>
           </el-table-column>
           <el-table-column width="240px"
-                           align="center"
+                           align="left"
+                           header-align="center"
                            fixed="right"
                            label="操作">
             <template slot-scope="scope">
@@ -154,7 +120,8 @@
                          v-on:click="toDetail(scope.row)">基本信息</el-button>
               <el-button type="text"
                          v-on:click="toService(scope.row)">服务管理</el-button>
-              <el-button type="text"
+              <el-button v-if="showDocking(scope.row)"
+                         type="text"
                          v-on:click="dockingConfig(scope.row)">对接配置</el-button>
             </template>
           </el-table-column>
@@ -172,11 +139,11 @@
       </PeaceDialog>
 
       <!-- 对接配置 -->
-      <PeaceDialog width="370px"
+      <PeaceDialog width="450px"
                    v-bind:visible.sync="dockingDialog.visible"
                    title="对接配置">
         <DockingConfig v-if="dockingDialog.visible"
-                       ref="dockingConfig"
+                       v-bind:data="dockingDialog.data"
                        v-on:close="dockingDialog.visible = false"
                        v-on:refresh="get"></DockingConfig>
       </PeaceDialog>
@@ -199,6 +166,8 @@
 </template>
 
 <script>
+import CONSTANT from './constant'
+
 import OrganizationDetail from './components/OrganizationDetail'
 import ServiceList from './components/ServiceList'
 import OrganizationModel from './components/OrganizationModel'
@@ -224,25 +193,11 @@ export default {
 
   data() {
     return {
+      CONSTANT,
       model: {
         hospitalName: '',
         orgType: '',
-        serviceType: [],
-        dockSystem: ''
-      },
-
-      source: {
-        orgType: [
-          { label: '医疗机构', value: 1 },
-          { label: '店配机构', value: 2 },
-          { label: '仓配机构', value: 3 }
-        ],
-        serviceType: [
-          { label: '互联网云医院', value: 1 },
-          { label: '合理用药管理', value: 2 },
-          { label: '处方共享服务', value: 3 },
-          { label: '药品供应服务', value: 4 }
-        ]
+        serviceType: []
       },
 
       detailDialog: {
@@ -262,14 +217,11 @@ export default {
 
       addDialog: {
         visible: false
-      },
-
-      dockingSystemDict: []
+      }
     }
   },
 
   async mounted() {
-    this.dockingSystemDict = await Peace.identity.dictionary.getList('sysdocking')
     this.$nextTick().then(() => {
       this.get()
     })
@@ -297,12 +249,17 @@ export default {
       this.serviceDialog.data = row
     },
 
+    // 是否显示对接配置
+    showDocking(row) {
+      let hasPrescription = row.serviceTypes.find((item) => item == CONSTANT.ENUM_ORGANIZATION_SERVICE.处方共享服务)
+      let hasDrug = row.serviceTypes.find((item) => item == CONSTANT.ENUM_ORGANIZATION_SERVICE.药品供应服务)
+      return hasPrescription || hasDrug
+    },
+
     // 对接配置
     dockingConfig(row) {
       this.dockingDialog.visible = true
-      this.$nextTick(() => {
-        this.$refs.dockingConfig.init(row.custCode)
-      })
+      this.dockingDialog.data = row
     },
 
     // 新增机构
