@@ -15,16 +15,6 @@
                   placeholder="请输入"></el-input>
 
       </el-form-item>
-      <!-- <el-form-item prop="roleDesc">
-        <span slot="label"
-              class="form-label">角色标识</span>
-        <div v-if="type === 'detail'">{{model.roleCode}}</div>
-        <el-input v-else
-                  v-model.trim="model.roleCode"
-                  minlength="3"
-                  maxlength="20"
-                  placeholder="请输入"></el-input>
-      </el-form-item> -->
       <el-form-item prop="roleDesc">
         <span slot="label"
               class="form-label">角色描述</span>
@@ -35,6 +25,19 @@
                   :rows="2"
                   maxlength="50"
                   placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item prop="roleDesc">
+        <span slot="label"
+              class="form-label">所属机构</span>
+        <el-select v-model="model.organCodes"
+                   class="full-width"
+                   multiple=""
+                   clearable="">
+          <el-option v-for="item in source.organs"
+                     v-bind:key="item.organCode"
+                     v-bind:label="item.organName"
+                     v-bind:value="item.organCode"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item prop="service">
         <span slot="label"
@@ -84,11 +87,16 @@ export default {
       dictList: [],
 
       model: {
+        organCodes: [],
         roleId: '',
         roleName: '',
         roleCode: '',
         roleDesc: '',
         roleType: ''
+      },
+
+      source: {
+        organs: []
       },
 
       rules: {
@@ -130,6 +138,8 @@ export default {
             .get({ id: this.model.roleId })
             .then((res) => {
               this.model = res.data
+
+              this.model.organCodes = this.model.organCodes && this.model.organCodes.split(',')
             })
         }
       })
@@ -141,11 +151,20 @@ export default {
         .then((res) => {
           this.dictList = res.data
         })
+
+      Service.organ()
+        .getOrganList()
+        .then((res) => {
+          this.source.organs = res.data
+        })
     },
 
     submit() {
       this.validateForm().then(() => {
         this.isLoading = true
+
+        this.model.organCodes = this.model.organCodes.toString()
+
         let params = Object.assign({}, this.model, {
           clientId: this.$store.state.info.role.clientId,
           productCode: this.$store.state.info.role.productCode || ''

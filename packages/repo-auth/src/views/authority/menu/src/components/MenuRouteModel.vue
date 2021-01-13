@@ -10,6 +10,11 @@
             {{scope.row.routeType == 1 ?'主路由':'子路由'}}
           </template>
         </el-table-column>
+        <el-table-column label="ID"
+                         align="left"
+                         width="100px"
+                         prop="routeId">
+        </el-table-column>
         <el-table-column label="路由名称"
                          align="left"
                          width="100px"

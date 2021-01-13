@@ -86,5 +86,18 @@ export default {
         return Peace.http.put(requestApi, params)
       }
     }
+  },
+
+  organ() {
+    let apiPath = `admin/organ`
+    const serverPath = process.env.VUE_APP_API_BASE
+    let requestApi = serverPath + apiPath
+    return {
+      getOrganList() {
+        apiPath = `admin/organ/getOrganList`
+        requestApi = serverPath + apiPath
+        return Peace.http.get(requestApi)
+      }
+    }
   }
 }
