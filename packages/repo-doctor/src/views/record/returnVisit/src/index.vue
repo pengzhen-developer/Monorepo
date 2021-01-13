@@ -173,7 +173,7 @@ export default {
         const IMMessageAdapter = (messages) => {
           if (messages && Array.isArray(messages)) {
             messages.forEach((message) => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
+              const messageTypeMap = { 0: 'text', 1: 'image', 2: 'audio', 100: 'custom' }
 
               message.time = message.sendtime
               message.flow = row.familyId === message.from ? 'in' : 'out'

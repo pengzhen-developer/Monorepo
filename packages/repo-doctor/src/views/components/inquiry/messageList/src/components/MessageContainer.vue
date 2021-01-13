@@ -57,6 +57,8 @@ import MessageReferralCardContent from './MessageReferralCardContent'
 import MessageCheckCardContent from './MessageCheckCardContent'
 import MessageVideoContent from './MessageVideoContent'
 import MessageFirstOptionCardContent from './MessageFirstOptionCardContent.vue'
+import MessageAudioContent from './MessageAudioContent'
+
 export default {
   components: {
     MessageTextContent,
@@ -68,7 +70,8 @@ export default {
     MessageRecipeCardContent,
     MessageReferralCardContent,
     MessageCheckCardContent,
-    MessageVideoContent
+    MessageVideoContent,
+    MessageAudioContent
   },
   props: {
     /**消息 */
@@ -160,6 +163,7 @@ export default {
       const messageTypeComponents = {
         ['text']: MessageTextContent,
         ['image']: MessageImageContent,
+        ['audio']: MessageAudioContent,
         [Constant.INQUIRY_MESSAGE_TYPE.发起问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.接诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
