@@ -41,16 +41,19 @@ export default {
     }
   },
   methods: {
+    formatDur(dur) {
+      return dur > 60 * 1000 ? 60 * 1000 : dur
+    },
     getMessageText() {
       if (this.message?.content?.dur >= 0 || this.message?.file?.dur >= 0) {
         const dur = this.message?.content?.dur || this.message?.file?.dur
-        return Math.round(dur / 1000) + 's"'
+        return Math.round(this.formatDur(dur) / 1000) + 's"'
       }
     },
     getAudioWidth() {
       if (this.message?.content?.dur >= 0 || this.message?.file?.dur >= 0) {
         const dur = this.message?.content?.dur || this.message?.file?.dur
-        return (4 + Math.round(dur / 1000) * 0.1).toFixed(2) + 'rem'
+        return (4 + Math.round(this.formatDur(dur) / 1000) * 0.1).toFixed(2) + 'rem'
       }
     },
     getAudioUrl() {
