@@ -114,7 +114,7 @@ export default {
 
   computed: {
     isVerifyPhone() {
-      return this.model.tel.length === 11
+      return this.model.tel?.length === 11
     },
 
     showCountdown() {
