@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { dom } from 'quasar'
+
 export default {
   props: {
     ['src']: String,
@@ -64,11 +66,24 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
+      this.initStyle()
+
       this.initEvent()
     })
   },
 
   methods: {
+    initStyle() {
+      if (this.fullHeight) {
+        // dom.offset 是 quasar 提供的工具类
+        // 自行了解相关 api 文档
+        const offset = dom.offset(this.$el)
+
+        // iframe 铺满全屏
+        this.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
+      }
+    },
+
     initEvent() {
       const iframe = this.$refs.iframe
 

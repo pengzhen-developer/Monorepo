@@ -74,30 +74,20 @@ export default {
 
   methods: {
     changeRoute(tab) {
-      const routePath = tab.menuRoute
-      const realPath = tab.menuPath
+      if (this.$route.path === tab.menuRoute) {
+        // 更新缓存
+        const storeTabs = Peace.cache.sessionStorage.get('tabs')
+        const storeTab = storeTabs.find((item) => item.id === tab.id)
 
-      if (this.$route.path !== routePath) {
-        this.$router.push(routePath).then((route) => {
-          /** 动态修改 route meta */
-          for (const key in route.meta) {
-            if (route.meta.hasOwnProperty(key)) {
-              route.meta[key] = tab[key]
-            }
-          }
-        })
-      }
+        storeTab.path = this.$route.path
+        storeTab.query = this.$route.query
 
-      // Fixed iFrame parameter lost
-      if (Peace.validate.isUrl(realPath)) {
-        this.$router.push({ path: routePath, query: { t: Date.now() } }).then((route) => {
-          /** 动态修改 route meta */
-          for (const key in route.meta) {
-            if (route.meta.hasOwnProperty(key)) {
-              route.meta[key] = tab[key]
-            }
-          }
-        })
+        this.$store.commit('tabs/setTabs', storeTabs)
+      } else {
+        const path = tab.path || tab.menuRoute
+        const query = tab.query
+
+        this.$router.push({ path, query })
       }
     },
 
