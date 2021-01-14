@@ -6,14 +6,14 @@
     <peace-dialog :visible.sync="optionDialog.visible"
                   append-to-body
                   title="诊疗记录">
-      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
+      <FirstOptionDetail :prescriptionCode="optionDialog.data"></FirstOptionDetail>
     </peace-dialog>
   </div>
 </template>
 
 <script>
 import MessageFirstOptionCard from './MessageFirstOptionCard'
-import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
+import FirstOptionDetail from '@src/views/patient/patientDetail/src/components/FirtstOptionDetail.vue'
 export default {
   props: {
     message: {
@@ -23,7 +23,7 @@ export default {
   },
   components: {
     MessageFirstOptionCard,
-    InquiryOptionRecord
+    FirstOptionDetail
   },
   computed: {
     firstInfo() {
@@ -71,7 +71,7 @@ export default {
     },
     showHealthRecode() {
       this.optionDialog.visible = true
-      this.optionDialog.data = Peace.util.deepClone(this.items)
+      this.optionDialog.data = Peace.util.deepClone(this.items)[0].dataNo
     }
   }
 }
