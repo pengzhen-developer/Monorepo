@@ -69,7 +69,6 @@
 
         <PeaceTable ref="table"
                     size="mini"
-                    v-bind:page-size="5"
                     pagination>
           <el-table-column label="序号"
                            align="center"

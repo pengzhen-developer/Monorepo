@@ -68,8 +68,24 @@
             <span class="label-text">：</span>
             <span class="label-value">{{ data.CreateTime }}</span>
           </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-4">
+            <span class="label-text">订单来源系统</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.SourceSysName }}</span>
+          </div>
+
+          <div class="col-4">
+            <span class="label-text">订单承接系统</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.ReceiveSysName }}</span>
+          </div>
 
         </div>
+
       </div>
     </div>
 
@@ -395,7 +411,9 @@ export default {
           MappingDrugUserName: null,
           DispensingUserId: '',
           DispensingUserName: '',
-          TimeLine: []
+          TimeLine: [],
+          SourceSysName: '',
+          ReceiveSysName: ''
         }
       }
     }

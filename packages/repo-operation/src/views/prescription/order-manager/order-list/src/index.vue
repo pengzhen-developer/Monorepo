@@ -30,17 +30,6 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="系统属性">
-          <el-select clearable
-                     placeholder="全部"
-                     v-model="model.sys_attribute_code">
-            <el-option v-for="item in remoteSource.SysAttributeCode"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-
         <el-form-item label="同步日期">
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
@@ -185,14 +174,14 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="sys_name"
-                         label="系统名称"
+        <el-table-column prop="SourceSysName"
+                         label="订单来源系统"
                          align="center"
                          width="120px">
         </el-table-column>
 
-        <el-table-column prop="sys_attribute_name"
-                         label="系统属性"
+        <el-table-column prop="ReceiveSysName"
+                         label="订单承接系统"
                          align="center"
                          width="120px">
         </el-table-column>
@@ -378,7 +367,6 @@ export default {
         EndTime: '',
         PayStatus: '',
         OrderMethod: '',
-        sys_attribute_code: '',
         TimeRange: []
       },
       settingDialog: {
@@ -429,9 +417,7 @@ export default {
         //支付状态
         PayStatus: [],
         //取货方式
-        ShippingMethod: [],
-        //系统属性
-        SysAttributeCode: []
+        ShippingMethod: []
       }
     }
   },
@@ -440,7 +426,6 @@ export default {
     this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
-    this.remoteSource.SysAttributeCode = await peace.identity.dictionary.getList('sysattribute')
     this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
     this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
