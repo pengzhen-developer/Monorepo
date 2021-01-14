@@ -149,7 +149,7 @@
                          align="center"
                          width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.OrderStatusStr || '--' }}</span>
+            <span>{{ scope.row.OrderStatusStr || '-' }}</span>
           </template>
         </el-table-column>
 
@@ -178,12 +178,18 @@
                          label="订单来源系统"
                          align="center"
                          width="120px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.SourceSysName || '-' }}</span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="ReceiveSysName"
                          label="订单承接系统"
                          align="center"
                          width="120px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.ReceiveSysName || '-' }}</span>
+          </template>
         </el-table-column>
 
         <el-table-column label="操作"
