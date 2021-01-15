@@ -120,8 +120,9 @@ export default {
       if (!(this.model.tel && peace.validate.pattern.mobile.test(this.model.tel))) {
         setTimeout(() => {
           this.$refs.tel && this.$refs.tel.focus()
-          return peace.util.alert('请输入正确的手机号')
+          peace.util.alert('请输入正确的手机号')
         }, 500)
+        return
       }
       if (this.hasSend) {
         return
