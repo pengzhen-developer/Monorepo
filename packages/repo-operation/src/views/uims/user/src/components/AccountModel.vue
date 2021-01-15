@@ -9,7 +9,6 @@
               class="form-label">账号</span>
         <el-input v-model.trim="model.username"
                   :disabled="model.userId ? true : false"
-                  maxlength="11"
                   placeholder="请输入"></el-input>
       </el-form-item>
       <!-- <el-form-item v-if="!model.userId"
@@ -67,7 +66,7 @@ import Service from '../service'
 
 export default {
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },

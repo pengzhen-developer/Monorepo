@@ -217,7 +217,6 @@
             <el-form-item label="手机号码"
                           prop="tel">
               <el-input v-model.trim="model.tel"
-                        maxlength="11"
                         placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="邮箱"
@@ -258,7 +257,7 @@ import RegionSelector from './RegionSelector'
 
 export default {
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
