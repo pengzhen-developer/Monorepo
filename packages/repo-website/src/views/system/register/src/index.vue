@@ -49,8 +49,6 @@
             <el-form-item prop="tel"
                           class="el-form-phone">
               <el-input v-model.trim="model.tel"
-                        v-bind:minlength="11"
-                        v-bind:maxlength="11"
                         v-bind:class="{ 'active' : usernameActive }"
                         v-on:focus="usernameFocus"
                         v-on:blur="usernameBlur"
