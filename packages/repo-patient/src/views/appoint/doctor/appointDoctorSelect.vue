@@ -422,12 +422,11 @@ export default {
 }
 
 .g-two .left {
-  flex: 0 0 auto;
-  width: 3em;
+  max-width: 3em;
   color: #333;
-  font-size: 0.45333rem;
+  font-size: 17px;
   text-align: center;
-  padding: 0.45333rem;
+  padding: 0 1em;
   box-sizing: border-box;
   align-self: center;
   line-height: 3;
