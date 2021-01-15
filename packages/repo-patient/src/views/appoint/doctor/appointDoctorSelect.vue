@@ -499,12 +499,12 @@ export default {
 }
 .right > .btn {
   font-size: 14px;
-  width: 4em;
+  width: 3.6em;
   line-height: 20px;
   margin: 0;
-  margin-right: 1em;
+  margin-right: 0.9em;
   text-align: center;
-  padding: 0.2em 0;
+  padding: 0.15em 0;
   border-radius: 4px;
 }
 .content.disabled + .right > .btn {
