@@ -50,7 +50,7 @@ export default {
     getAudioWidth() {
       if (this.message?.content?.dur >= 0 || this.message?.file?.dur >= 0) {
         const dur = this.message?.content?.dur || this.message?.file?.dur
-        return (1.5 + Math.round(dur / 1000) * 0.1).toFixed(2) + 'rem'
+        return (1.5 + Math.round(dur / 1000) * 0.03).toFixed(2) + 'rem'
       }
     },
     getAudioUrl() {
