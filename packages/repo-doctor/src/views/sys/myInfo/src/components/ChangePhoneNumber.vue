@@ -76,8 +76,6 @@
                       prop="tel">
           <el-input style="width: 278px;"
                     placeholder="请输入新的手机号码"
-                    v-bind:maxlength="11"
-                    v-bind:minlength="11"
                     v-model.trim="model.tel"></el-input>
         </el-form-item>
 
