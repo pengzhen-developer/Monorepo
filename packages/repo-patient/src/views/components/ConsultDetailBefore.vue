@@ -636,16 +636,15 @@ export default {
     .case-card-note-content {
       display: flex;
       align-items: center;
-      padding: 6px 0px 6px 16px;
     }
     .case-left {
       width: 35px;
       height: 35px;
+      margin: 15px 15px 15px 14px;
       text-align: left;
       position: relative;
     }
     .case-right {
-      margin-left: 15px;
       display: flex;
       flex-direction: column;
       justify-content: center;

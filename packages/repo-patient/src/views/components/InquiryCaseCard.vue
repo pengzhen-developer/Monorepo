@@ -26,7 +26,8 @@
               <div class="case-right">
                 <p class="title">
                   <span class="elps">{{item.title}}</span>
-                  <span @click.stop="gotoCaseDetail(item.dataNo)">查看详情</span>
+                  <span @click.stop="gotoCaseDetail(item.dataNo)"
+                        v-if="!hasAnswer">查看详情</span>
                 </p>
                 <p class="name">
                   {{ item.hospitalName }} | {{ item.deptName }}
@@ -145,6 +146,7 @@ export default {
 }
 .select-body {
   padding-top: 2px;
+  margin-bottom: -13px;
   .case-card {
     display: flex;
     min-height: 65px;
@@ -193,16 +195,15 @@ export default {
       .case-card-note-content {
         display: flex;
         align-items: center;
-        padding: 6px 0px 6px 16px;
       }
       .case-left {
         width: 35px;
         height: 35px;
+        margin: 15px 15px 15px 14px;
         text-align: left;
         position: relative;
       }
       .case-right {
-        margin-left: 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -254,6 +255,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 12px 18px 12px;
+  padding: 18px 12px 6px;
 }
 </style>
