@@ -71,6 +71,10 @@ export default async ({ configuration }) => {
   // 基于配置生成 stylesheet, 写入 document.head
   generateStylesheet(configuration)
 
+  // 还原 devicePixelRatio
+  const devicePixelRatio = window.devicePixelRatio
+  document.getElementsByTagName('body')[0].style.zoom = 1 / devicePixelRatio
+
   console.log(
     `%c ${'Styles'} %c N/A %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',

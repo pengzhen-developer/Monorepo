@@ -12,7 +12,7 @@
  */
 
 <template>
-  <div class="window-width window-height overflow-hidden">
+  <div class="full-width full-height overflow-hidden">
     <q-spinner v-if="showLoading"
                class="absolute-center"
                size="24"

@@ -1,5 +1,5 @@
 <template>
-  <div class="window-width window-height overflow-hidden bg-grey-2">
+  <div class="full-width full-height overflow-hidden bg-grey-2">
     <div class="fixed-center text-center">
       <p>
         <img v-bind:src="require('@src/assets/img/sad.svg')"

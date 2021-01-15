@@ -1,6 +1,6 @@
 <template>
   <div id="app"
-       class="window-width window-height overflow-hidden">
+       class="full-width full-height overflow-hidden">
     <router-view />
   </div>
 </template>
