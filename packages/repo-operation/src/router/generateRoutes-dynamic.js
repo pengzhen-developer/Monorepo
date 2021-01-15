@@ -28,7 +28,7 @@ const getDynamicRoutes = (accountMenu) => {
         {
           path: '/dataScreen',
           name: 'DataScreen',
-          component: () => import('@src/views/data-screen')
+          component: () => import('@/src/views/business-overview/data-screen')
         }
       ]
     }
