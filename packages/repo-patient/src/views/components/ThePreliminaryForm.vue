@@ -84,11 +84,11 @@
             <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
             <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
           </div>
-          <div class="case-box"
-               @click="gotoCaseDetail(item.dataNo)">
+          <div class="case-box">
             <div class="case-card-note"
                  v-for="(item,index) in value"
-                 :key="index">
+                 :key="index"
+                 @click="gotoCaseDetail(item.dataNo)">
               <div class="case-card-note-content">
                 <div class="case-left">
                   <van-image width="35px"
