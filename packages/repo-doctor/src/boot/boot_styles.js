@@ -72,8 +72,10 @@ export default async ({ configuration }) => {
   generateStylesheet(configuration)
 
   // 还原 devicePixelRatio
-  const devicePixelRatio = window.devicePixelRatio
-  document.getElementsByTagName('body')[0].style.zoom = 1 / devicePixelRatio
+  if (/windows|win32/i.test(navigator.userAgent)) {
+    const devicePixelRatio = window.devicePixelRatio
+    document.getElementsByTagName('body')[0].style.zoom = 1 / devicePixelRatio
+  }
 
   console.log(
     `%c ${'Styles'} %c N/A %c`,
