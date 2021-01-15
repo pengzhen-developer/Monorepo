@@ -232,7 +232,7 @@
           <!-- Q1: 描述 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
             <van-field ref="input"
-                       v-model.trim="current.answer"
+                       v-model.trim="illnessDescribe"
                        class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
               <!-- <van-button @click="answer"
@@ -550,7 +550,7 @@ export default {
       WOMAN_TYPE,
       WOMAN_TYPE_TEXT_MAP,
       IMAGES_UPLOAD_TYPE,
-
+      illnessDescribe: '',
       model: {
         // 医生 (医生 ID)
         doctorId: '',
@@ -1108,7 +1108,7 @@ export default {
       this.answerList.splice(this.answerList.length - length, length)
       this.questionPath.splice(this.questionPath.length - length, length)
       this.questionIndex = nextQuestionIndex
-
+      this.illnessDescribe = ''
       this.$nextTick(function() {
         this.beginQuestion(nextQuestionIndex)
       })
@@ -1220,16 +1220,16 @@ export default {
 
       // 问诊描述
       if (this.current.field === this.ANSWER_FIELD.ILLNESS_DESCRIBE) {
-        if (typeof this.current.answer == 'undefined' || this.current.answer == '') {
+        if (typeof this.illnessDescribe == 'undefined' || this.illnessDescribe == '') {
           peace.util.alert('请输入您的详细症状')
           return false
         }
-        if (this.current.answer) {
-          if (this.current.answer.length < 5) {
+        if (this.illnessDescribe) {
+          if (this.illnessDescribe.length < 5) {
             peace.util.alert('请输入至少5个字')
             return false
           }
-          answer = this.current.answer
+          answer = this.illnessDescribe
 
           this.model.illnessDescribe = answer
         } else {

@@ -88,6 +88,7 @@ export default {
   }
   span {
     color: #999;
+    font-size: 14px;
     &.active {
       color: $primary;
     }
