@@ -84,8 +84,8 @@
             <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
             <div class="y">{{ key.toDate().formatDate('yyyy') }}</div>
           </div>
-          <div class="case-box">
-            <!-- @click="gotoCaseDetail(item.dataNo)" -->
+          <div class="case-box"
+               @click="gotoCaseDetail(item.dataNo)">
             <div class="case-card-note"
                  v-for="(item,index) in value"
                  :key="index">
@@ -204,6 +204,14 @@ export default {
         }
         this.firstLoad = true
       }
+    },
+    gotoCaseDetail(dataNo) {
+      const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
+      const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
+      const json = peace.util.encode({
+        url
+      })
+      this.$router.push(`/components/mainIframe/${json}`)
     },
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
