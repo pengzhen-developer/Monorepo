@@ -106,16 +106,13 @@
         </div>
         <!-- 诊疗记录 -->
         <div class="module-item"
-             v-if="hasFirstVisitInfo">
+             v-if="caseInfo">
           <div class="module-item-title">
             <div class="b">诊疗记录</div>
-            <div class="module-item-more"
-                 @click="seeMoreCase"
-                 v-if="canSeeMoreCase">查看更多>></div>
           </div>
           <template>
             <div class="case-card"
-                 v-for="(value, key) in firstVisitData"
+                 v-for="(value, key) in caseInfo"
                  :key="key">
               <div class="case-card-time">
                 <div class="m">{{ key.toDate().formatDate('MM-dd') }}</div>
@@ -338,6 +335,9 @@ export default {
     pregnancyText() {
       return this.ENUM.WOMAN_TYPE_TEXT_MAP[this.params.isPregnancy]
     },
+    caseInfo() {
+      return this.params.caseInfo
+    },
     info() {
       return {
         familyName: this.params?.familyName,
@@ -402,9 +402,6 @@ export default {
 
   activated() {
     this.getFamilyDoctorInfo()
-    if (this.params?.serviceType == 'returnVisit') {
-      this.getFirstOptionList()
-    }
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
@@ -595,35 +592,7 @@ export default {
           this.loading = false
         })
     },
-    getFirstOptionList() {
-      const params = {
-        familyId: this.params.familyId,
-        doctorId: this.params.doctorId
-      }
-      peace.service.yibao.GetFirstOptionList(params).then((res) => {
-        if (res.data == null || !res.data.firstOptionList) {
-          return
-        }
-        let list = []
-        if (res.data.firstOptionList.length > 2) {
-          this.canSeeMoreCase = true
-          list = res.data.firstOptionList.slice(0, 2)
-        } else {
-          this.canSeeMoreCase = false
-          list = res.data.firstOptionList
-        }
-        const temp = {}
-        // 遍历时间
-        const timeList = new Set(list.map((item) => item.createdTime))
-        if (timeList.size) {
-          timeList.forEach((time) => {
-            temp[time] = list.filter((item) => item.createdTime === time)
-          })
-        }
-        this.firstVisitData = temp
-        this.hasFirstVisitInfo = res.data.firstOptionList.length > 0 ? true : false
-      })
-    },
+
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
@@ -670,11 +639,13 @@ export default {
       padding: 6px 0px 6px 16px;
     }
     .case-left {
-      width: 50px;
+      width: 35px;
+      height: 35px;
       text-align: left;
       position: relative;
     }
     .case-right {
+      margin-left: 15px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -685,7 +656,7 @@ export default {
         font-size: 14px;
       }
       .name {
-        font-size: 12px;
+        font-size: 13px;
         color: #999;
         overflow: hidden;
         text-overflow: ellipsis;

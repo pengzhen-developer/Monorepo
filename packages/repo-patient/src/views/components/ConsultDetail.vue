@@ -791,7 +791,7 @@ export default {
       const params = {
         familyId: this.internalData?.familyInfo?.familyId,
         doctorId: this.internalData?.doctorInfo?.doctorId,
-        inquiryNo: this.inquiryInfo?.inquiryNo
+        inquiryNo: this.internalData?.inquiryInfo?.inquiryNo
       }
       peace.service.yibao.GetFirstOptionList(params).then((res) => {
         if (res.data == null || !res.data.firstOptionList) {
@@ -974,7 +974,7 @@ export default {
         font-size: 14px;
       }
       .name {
-        font-size: 12px;
+        font-size: 13px;
         color: #999;
         overflow: hidden;
         text-overflow: ellipsis;

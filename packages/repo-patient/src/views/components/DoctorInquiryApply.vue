@@ -39,13 +39,22 @@
       <transition-group tag="div"
                         name="van-slide-left">
         <div v-for="(item, index) in answerList"
-             :key="item.question+index">
+             :key="item.field+index">
           <div class="message-layout left"
-               v-if="item.question">
+               v-if="item.question&&item.field === ANSWER_FIELD.SELECT_CASE">
+
+            <component v-bind:is="item.component"
+                       class="message in select"
+                       v-bind:data="caseList"
+                       v-on:answer="answer"></component>
+          </div>
+
+          <div class="message-layout left"
+               v-if="item.question&&item.field !== ANSWER_FIELD.SELECT_CASE">
             <div class="message in"
                  v-html="item.question"></div>
           </div>
-
+          <!-- 上传图片 -->
           <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
             <van-image-preview v-model="imagePreview.visible"
                                :start-position="imagePreview.position"
@@ -72,6 +81,22 @@
                     @click="backQuestion">点击修改</span>
             </div>
           </template>
+          <!-- 选择病历 -->
+          <div class="message-layout right"
+               v-if="item.answer&&item.field === ANSWER_FIELD.SELECT_CASE">
+            <div class="message out"
+                 v-html="item.answer"
+                 v-if="selectCase==false">
+            </div>
+            <component class="message out"
+                       v-if="selectCase==true"
+                       v-bind:is="item.component"
+                       v-bind:show="true"
+                       v-bind:data="item.answer"></component>
+            <span v-if="canShowChange(index)"
+                  style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                  @click="backQuestion">点击修改</span>
+          </div>
           <template v-else>
             <div class="message-layout right"
                  v-if="item.answer">
@@ -88,7 +113,7 @@
       </transition-group>
 
       <!-- 已完成 -->
-      <template v-if="questionDone">
+      <template v-if="questionDone!=null">
         <transition-group tag="div"
                           name="van-slide-left">
           <div class="message-layout left"
@@ -102,7 +127,8 @@
 
         <!-- 医生卡片 -->
         <transition-group tag="div"
-                          name="van-slide-left">
+                          name="van-slide-left"
+                          v-if="questionDone==true">
           <van-sticky key="doctor"
                       :offset-top="offsetTop"
                       @scroll="hasFixed">
@@ -198,7 +224,7 @@
         <transition-group tag="div"
                           name="van-slide-left">
           <div class="message-layout left"
-               v-if="supplementaryFlag"
+               v-if="questionDone&&supplementaryFlag"
                key="supplementary">
             <div class="supplementary">
               <span class="supplementary__title">补充信息</span>
@@ -226,19 +252,15 @@
       <transition name="van-slide-up">
         <div class="layout-footer-content"
              v-if="current.field"
-             :key="current.question"
+             :key="current.field"
              :class="current.field">
 
-          <!-- Q1: 描述 -->
+          <!--描述 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
             <van-field ref="input"
                        v-model.trim="illnessDescribe"
                        class="inp"
                        placeholder="请输入您的详细症状，至少5个字">
-              <!-- <van-button @click="answer"
-                          slot="button"
-                          round
-                          type="primary">发送</van-button> -->
               <peace-button round
                             slot="button"
                             throttle
@@ -248,12 +270,8 @@
             </van-field>
           </template>
 
-          <!-- Q2: 家人 -->
+          <!--家人 -->
           <template v-if="current.field === ANSWER_FIELD.FAMILY">
-            <!-- <van-button v-for="item in current.answerList"
-                        round
-                        :key="item.value"
-                        @click="answer(item)">{{ item.label }}</van-button> -->
             <peace-button v-for="item in current.answerList"
                           round
                           :key="item.value"
@@ -261,40 +279,13 @@
                           :throttleTime="1000"
                           @click="answer(item)">{{ item.label }}</peace-button>
             <br>
-            <!-- <van-button round 
-                        @click="answer('')">添加新的就诊人</van-button> -->
             <peace-button round
                           throttle
                           :throttleTime="1000"
                           @click="answer('')">添加新的就诊人</peace-button>
           </template>
 
-          <!-- Q3: 是否复诊 -->
-          <template v-if="current.field === ANSWER_FIELD.IS_AGAIN">
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          @click="answer('是')">是</peace-button>
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          @click="answer('否')">否</peace-button>
-          </template>
-
-          <!-- Q4: 是否确认非复诊 -->
-          <template v-if="current.field === ANSWER_FIELD.IS_AGAIN_CONFIRM">
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          type="primary"
-                          @click="answer('继续咨询')">继续咨询</peace-button>
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          @click="answer('我要复诊')">我要复诊</peace-button>
-          </template>
-
-          <!-- Q5 & Q6: 附件与确认遗失 -->
+          <!-- 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
             <peace-button round
                           throttle
@@ -316,7 +307,7 @@
             </template>
           </template>
 
-          <!-- Q7 初步诊断 -->
+          <!-- 初步诊断 -->
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_CONFIRM">
             <peace-button round
                           throttle
@@ -324,6 +315,9 @@
                           type="primary"
                           @click="answer('点击选择初诊诊断')">点击选择初诊诊断</peace-button>
           </template>
+
+          <!-- 选择病历 -->
+
         </div>
       </transition>
       <transition name="van-slide-up"
@@ -412,7 +406,9 @@ const ANSWER_MODE = {
   /** 上传确认 */
   FILE_CONFIRM: 'fileConfirm',
   /** 问诊确认 */
-  ILLNESS_CONFIRM: 'illnessConfirm'
+  ILLNESS_CONFIRM: 'illnessConfirm',
+  /** 选择病历 */
+  SELECT_CASE: 'selectCase'
 }
 
 const WOMAN_TYPE = {
@@ -449,14 +445,12 @@ const ANSWER_FIELD = {
   FAMILY: 'family',
   /** 问诊描述 */
   ILLNESS_DESCRIBE: 'illnessDescribe',
-  /** 是否复诊 */
-  IS_AGAIN: 'isAgain',
-  /** 确认是否继续 */
-  IS_AGAIN_CONFIRM: 'isAgainConfirm',
   /** 附件 */
   ATTACHMENT: 'attachment',
   /** 初诊诊断 */
-  ILLNESS_CONFIRM: 'confirmIllness'
+  ILLNESS_CONFIRM: 'confirmIllness',
+  /** 选择病历 */
+  SELECT_CASE: 'selectCase'
 }
 
 const IMAGES_UPLOAD_TYPE = {
@@ -478,12 +472,11 @@ const INQUIRY_QUESTION_LISI = [
     no: 1,
     answerList: [],
     field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+    question: '请描述您的病情，如发病时间、主要病症、治疗经过、目前状况等。',
     mode: ANSWER_MODE.INPUT
   }
 ]
-/**复诊续方 FUZHEN__QUESTION_LISI*/
-const FUZHEN__QUESTION_LISI = [
+const FUZHEN_HAS_HIS_QUESTION_LISI = [
   {
     no: 0,
     answerList: [],
@@ -494,24 +487,36 @@ const FUZHEN__QUESTION_LISI = [
   {
     no: 1,
     answerList: [],
-    field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
-    mode: ANSWER_MODE.INPUT
+    field: ANSWER_FIELD.SELECT_CASE,
+    question: '选择病历',
+    component: () => import('./InquiryCaseCard'),
+    mode: ANSWER_MODE.SELECT_CASE
   },
-  // {
-  //   no: 2,
-  //   answerList: [],
-  //   field: ANSWER_FIELD.IS_AGAIN,
-  //   question: '就诊人是否为复诊？',
-  //   mode: ANSWER_MODE.CHECK
-  // },
-  // {
-  //   no: 3,
-  //   answerList: [],
-  //   field: ANSWER_FIELD.IS_AGAIN_CONFIRM,
-  //   question: '根据国家相关规定，线上不支持首诊开处方服务，是否继续咨询？',
-  //   mode: ANSWER_MODE.CHECK
-  // },
+  {
+    no: 2,
+    answerList: [],
+    field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+    question: '请描述您的病情，如发病时间、主要病症、治疗经过、目前状况等。',
+    mode: ANSWER_MODE.INPUT
+  }
+]
+/**复诊续方 FUZHEN_QUESTION_LISI*/
+const FUZHEN_QUESTION_LISI = [
+  {
+    no: 0,
+    answerList: [],
+    field: ANSWER_FIELD.FAMILY,
+    question: '请问您要为哪位就诊人咨询？',
+    mode: ANSWER_MODE.CHECK
+  },
+  {
+    no: 1,
+    answerList: [],
+    field: ANSWER_FIELD.SELECT_CASE,
+    question: '选择病历',
+    component: () => import('./InquiryCaseCard'),
+    mode: ANSWER_MODE.SELECT_CASE
+  },
   {
     no: 2,
     answerList: [],
@@ -532,6 +537,13 @@ const FUZHEN__QUESTION_LISI = [
     field: ANSWER_FIELD.ILLNESS_CONFIRM,
     question: '请选择您的初诊诊断(多选)',
     mode: ANSWER_MODE.ILLNESS_CONFIRM
+  },
+  {
+    no: 5,
+    answerList: [],
+    field: ANSWER_FIELD.ILLNESS_DESCRIBE,
+    question: '请描述您的病情，如发病时间、主要病症、治疗经过、目前状况等。',
+    mode: ANSWER_MODE.INPUT
   }
 ]
 
@@ -590,9 +602,11 @@ export default {
         //预约开始时间
         appointmentStartTime: '',
         //预约结束时间
-        appointmentEndTime: ''
+        appointmentEndTime: '',
+        recordNo: ''
       },
-
+      //病历列表
+      caseList: [],
       // 附件
       attachment: [],
 
@@ -606,7 +620,7 @@ export default {
       questionPath: [],
 
       // 答题完毕
-      questionDone: false,
+      questionDone: null,
 
       // 已答题列表
       answerList: [],
@@ -667,7 +681,10 @@ export default {
       debounceParam: {
         wait: 1000,
         start: ''
-      }
+      },
+      selectCase: null,
+      isFirstOptionRecord: null,
+      isAcceptNotHasFirstOptionRecord: null
     }
   },
 
@@ -1004,10 +1021,32 @@ export default {
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
       this.model.price = Number(params.price)
       this.model.AMPM = params.AMPM || ''
-      this.questionList = params.serviceType == 'returnVisit' ? FUZHEN__QUESTION_LISI : INQUIRY_QUESTION_LISI
+      this.questionList = params.serviceType == 'returnVisit' ? FUZHEN_QUESTION_LISI : INQUIRY_QUESTION_LISI
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
-
+    getFirstOptionList(familyId) {
+      const params = {
+        familyId: familyId,
+        doctorId: this.model.doctorId
+      }
+      return peace.service.yibao.GetFirstOptionList(params).then((res) => {
+        if (res.data == null || !res.data.firstOptionList || res.data.firstOptionList.length == 0) {
+          return false
+        } else {
+          let list = res.data.firstOptionList
+          const temp = {}
+          // 遍历时间
+          const timeList = new Set(list.map((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd')))
+          if (timeList.size) {
+            timeList.forEach((time) => {
+              temp[time] = list.filter((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd') === time)
+            })
+          }
+          this.caseList = temp
+          return true
+        }
+      })
+    },
     getFamilyList() {
       peace.service.IM.getImlist().then((res) => {
         const famliyQuestion = this.questionList.find((item) => item.field === this.ANSWER_FIELD.FAMILY)
@@ -1072,7 +1111,7 @@ export default {
     },
 
     canShowChange(index) {
-      return this.questionDone ? index === this.answerList.length - 1 : index === this.answerList.length - 2
+      return this.questionDone != null ? index === this.answerList.length - 1 : index === this.answerList.length - 2
     },
 
     showInformedConsent() {
@@ -1093,17 +1132,18 @@ export default {
           field: this.current.field,
           mode: this.current.mode,
           question: this.current.question,
-          answerList: this.current.answerList
+          answerList: this.current.answerList,
+          component: this.current.component
         })
       })
     },
 
     backQuestion() {
-      const length = this.questionDone ? 1 : 2
+      const length = this.questionDone != null ? 1 : 2
 
       const nextQuestionIndex = this.questionPath[this.questionPath.length - length] || 0
 
-      this.questionDone = false
+      this.questionDone = null
       this.doneList = []
       this.answerList.splice(this.answerList.length - length, length)
       this.questionPath.splice(this.questionPath.length - length, length)
@@ -1116,12 +1156,13 @@ export default {
 
     beginNextQuestion() {
       const nextQuestionIndex = this.getNextQuestionIndex()
-
       // 等待当前效果完成
       // 根据策略模式，开始下一题
       setTimeout(() => {
         if (nextQuestionIndex === -1) {
           this.beginDoneMessage()
+        } else if (nextQuestionIndex === -2) {
+          this.beginDoneMessage('error')
         } else {
           this.beginQuestion(nextQuestionIndex)
         }
@@ -1132,10 +1173,14 @@ export default {
       }, 500)
     },
 
-    beginDoneMessage() {
-      this.questionDone = true
+    beginDoneMessage(type = '') {
+      this.questionDone = type == 'error' ? false : true
+      const message =
+        type == 'error'
+          ? '您未选择任何在院就诊记录，不可以进行在线复诊'
+          : '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
       this.doneList.push({
-        message: '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
+        message: message
       })
     },
     FamilyInquriyStatus(familyId) {
@@ -1254,27 +1299,24 @@ export default {
               //机构是否接收上传有诊疗记录的复诊患者
               // `isAffirmFirstClinicalVisit` tinyint(1) DEFAULT '1' COMMENT '接收系统确认在本院有诊疗记录的复诊患者（1、关闭 2、开启）',
               // `isUploadFirstClinicalVisit` tinyint(1) DEFAULT '2' COMMENT '接收上传有诊疗记录的复诊患者（1、关闭 2、开启）',
-              const isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
+              this.isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
               //是否有his诊疗记录
-              const isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
-              if (isFirstOptionRecord === 1) {
-                this.questionList = [].concat(INQUIRY_QUESTION_LISI)
+              this.isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
 
-                // 重新设置问题列表后，更新家人列表至问题列表
-                this.getFamilyList()
-              } else {
-                if (!isAcceptNotHasFirstOptionRecord) {
-                  Dialog.confirm({
-                    title: '温馨提示',
-                    message: '该就诊人无在本院首诊的资料，不可进行在线复诊',
-                    confirmButtonText: '确认',
-                    // confirmButtonText: '重新选择就诊人',
-                    showCancelButton: false
-                  })
-                  return false
-                }
+              if (!this.isAcceptNotHasFirstOptionRecord && this.isFirstOptionRecord !== 1) {
+                Dialog.confirm({
+                  title: '温馨提示',
+                  message: '该就诊人无在本院的就诊记录，不可进行在线复诊',
+                  confirmButtonText: '确认',
+                  // confirmButtonText: '重新选择就诊人',
+                  showCancelButton: false
+                })
+                return false
               }
             }
+            //选择家人后获取当前家人的病历列表
+            await this.getFirstOptionList(params[0].value)
+            //如果
 
             answer = params[0].label + '，' + params[0].sex + '，' + params[0].age
             this.model.familyName = params[0].label
@@ -1291,6 +1333,11 @@ export default {
             this.model.affectedImages = []
             this.supplementaryList.map((item) => (item.hasAnswer = false))
             this.chatList = []
+            this.selectCase = false
+            //更换家人-先选择第一个家人的病历，然后撤回 重选家人 需重置问题列表
+            if (this.model.serviceType === 'returnVisit') {
+              this.questionList = [].concat(FUZHEN_QUESTION_LISI)
+            }
             //电子健康卡检验仅适用于五莲县人民医院，故屏蔽
             // this.checkHealthCard()
           } else {
@@ -1319,22 +1366,18 @@ export default {
 
           return false
         }
+        //选择病历
+      } else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
+        answer = params[0] || params[1]
+        this.model.recordNo = params[1]
+        this.model.caseInfo = params[0]
+        this.selectCase = !params[0] ? false : true
+        if (this.selectCase) {
+          this.questionList = [].concat(FUZHEN_HAS_HIS_QUESTION_LISI)
+          // 重新设置问题列表后，更新家人列表至问题列表
+          this.getFamilyList()
+        }
       }
-
-      // 是否复诊
-      // else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
-      //   answer = params[0]
-
-      //   this.model.isAgain = params[0] === '是' ? '1' : '0'
-      // }
-
-      // 是否复诊确认
-      // else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
-      //   answer = params[0]
-
-      //   this.model.isAgain = params[0] === '我要复诊' ? '1' : '0'
-      //   this.model.isAgainConfrim = params[0] === '继续咨询' ? '1' : '0'
-      // }
 
       // 上传附件
       else if (this.current.field === this.ANSWER_FIELD.ATTACHMENT) {
@@ -1343,9 +1386,6 @@ export default {
 
           this.attachment = params[0]
           this.model.attachment = Array.isArray(params[0]) ? params[0] : []
-          // this.uploadHandler(params[0], this.IMAGES_UPLOAD_TYPE.ATTACHMENT).then(() => {
-          //   this.attachment = params[0]
-          // })
         } else {
           this.$router.push({
             name: `/components/uploader`,
@@ -1387,19 +1427,11 @@ export default {
       const currentQuestionIndex = this.questionIndex
       let nextQuestionIndex = -1
 
-      // 是否复诊
-      if (this.current.field === this.ANSWER_FIELD.IS_AGAIN) {
-        if (this.model.isAgain === '1') {
+      //选择家人
+      if (this.current.field === this.ANSWER_FIELD.FAMILY) {
+        //是否可以选病历或者上传病历
+        if (this.isAcceptNotHasFirstOptionRecord && this.isFirstOptionRecord != 1) {
           nextQuestionIndex = currentQuestionIndex + 2
-        } else {
-          nextQuestionIndex = currentQuestionIndex + 1
-        }
-      }
-
-      // 非复诊确认
-      else if (this.current.field === this.ANSWER_FIELD.IS_AGAIN_CONFIRM) {
-        if (this.model.isAgainConfrim === '1') {
-          nextQuestionIndex = -1
         } else {
           nextQuestionIndex = currentQuestionIndex + 1
         }
@@ -1413,6 +1445,17 @@ export default {
           nextQuestionIndex = this.questionList.length - 1
         }
       }
+
+      //选择病历
+      else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
+        //医院只允许选择his病历
+        if (!this.selectCase && this.isFirstOptionRecord == 1) {
+          nextQuestionIndex = -2
+        } else {
+          nextQuestionIndex = currentQuestionIndex + 1
+        }
+      }
+
       // 正常情况下一步
       else {
         nextQuestionIndex = currentQuestionIndex + 1
@@ -1553,7 +1596,8 @@ export default {
         sourceCode: json.sourceCode,
         bookingStart: json.appointmentStartTime,
         bookingEnd: json.appointmentEndTime,
-        sourceDisType: 0
+        sourceDisType: 0,
+        caseinfo: this.model.caseInfo
       }
       return peace.service.inquiry
         .checkSource(params)
@@ -1581,39 +1625,6 @@ export default {
         })
     },
 
-    goToPay(data) {
-      const json = peace.util.encode({
-        money: data.orderMoney,
-        typeName: this.doctor.doctorInfo.serviceName,
-        doctorId: data.doctorId,
-        doctorName: data.doctorName,
-        orderNo: data.orderNo,
-        inquiryId: data.inquiryId,
-        orderType: 'inquiry'
-      })
-      this.$router.replace(`/components/doctorInquiryPay/${json}`)
-    },
-
-    goToMessage(data) {
-      const params = peace.util.encode({
-        id: 'p2p-' + this.model.doctorId,
-        scene: 'p2p',
-        beginTime: data.startTime.toDate().getTime(),
-        to: this.model.doctorId
-      })
-
-      // 跳转聊天详情
-      this.$router.replace(`/components/messageList/${params}`)
-    },
-
-    goToConsultDetail(data) {
-      const params = {
-        inquiryId: data.inquiryId
-      }
-
-      let json = peace.util.encode(params)
-      this.$router.replace(`/setting/userConsultDetail/${json}`)
-    },
     goToReSelectSource() {
       const param = {
         doctorId: this.doctor.doctorInfo.doctorId,
@@ -1773,6 +1784,11 @@ export default {
           display: inline-flex;
           padding: 12px 16px;
           max-width: 80%;
+          &.select {
+            max-width: 100%;
+            display: block;
+            width: 100%;
+          }
 
           &.img {
             background: transparent !important;
@@ -1928,6 +1944,10 @@ export default {
 
         &.confirmIllness {
           text-align: center;
+        }
+
+        &.selectCase {
+          padding: 0;
         }
       }
     }
