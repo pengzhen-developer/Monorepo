@@ -184,10 +184,10 @@ export default {
       // box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
       border-radius: 1px;
       margin: 0 0 15px 0;
-      border: 2px solid #e8e8e8;
+      border: 1px solid #e8e8e8;
       &.active {
         background: #f0fcfa;
-        border: 2px solid $primary;
+        border: 1px solid $primary;
       }
 
       .case-card-note-content {
