@@ -9,8 +9,7 @@
       <el-form-item prop="tel">
         <span slot="label"
               class="form-label">账号</span>
-        <el-input maxlength="11"
-                  v-model.trim="model.tel"
+        <el-input v-model.trim="model.tel"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
       <el-form-item prop="smsCode">

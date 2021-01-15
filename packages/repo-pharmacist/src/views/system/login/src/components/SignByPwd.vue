@@ -16,8 +16,6 @@
       <el-form-item prop="username">
         <el-input v-model.trim="model.username"
                   v-bind:class="{ 'active' : usernameActive }"
-                  v-bind:minlength="11"
-                  v-bind:maxlength="11"
                   v-on:focus="usernameFocus"
                   v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
