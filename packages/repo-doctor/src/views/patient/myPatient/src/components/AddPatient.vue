@@ -65,8 +65,7 @@
       <el-form-item label="联系方式"
                     prop="tel">
         <span slot="label">手机号码</span>
-        <el-input v-model="ruleForm.tel"
-                  v-bind:maxlength="11"
+        <el-input v-model.number.trim="ruleForm.tel"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
