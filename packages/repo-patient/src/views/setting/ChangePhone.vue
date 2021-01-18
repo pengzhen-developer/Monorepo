@@ -3,16 +3,15 @@
 
     <van-form error-message-align="right"
               input-align="right">
-      <van-field v-model.trim="model.oldTel"
+      <van-field v-model="model.oldTel"
                  label="当前手机号码"
-                 type="tel"
+                 type="number"
                  readonly
                  placeholder="请输入"
                  :value="model.oldTel" />
-      <van-field v-model.trim="model.newTel"
+      <van-field v-model="model.newTel"
                  label="新手机号"
-                 type="tel"
-                 maxlength="11"
+                 type="number"
                  placeholder="请输入"
                  clearable
                  :error-message="message"
