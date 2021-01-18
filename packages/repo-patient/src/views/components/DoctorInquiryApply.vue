@@ -1439,7 +1439,8 @@ export default {
         if (this.attachment === '我已遗失' || this.attachment === '确认遗失') {
           nextQuestionIndex = currentQuestionIndex + 1
         } else {
-          nextQuestionIndex = this.questionList.length - 1
+          //之所以是-2  是因为 选择初诊诊断为倒数第二题
+          nextQuestionIndex = this.questionList.length - 2
         }
       }
 
