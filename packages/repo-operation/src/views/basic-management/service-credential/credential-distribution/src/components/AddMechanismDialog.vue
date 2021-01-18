@@ -54,14 +54,14 @@ export default {
       // 系统属性
       sysAttributeDict: [],
       rules: {
-        name: [
+        nameCode: [
           {
             required: true,
             message: '请选择系统名称',
             trigger: 'change'
           }
         ],
-        attr: [
+        attrCode: [
           {
             required: true,
             message: '请选择系统属性',

@@ -60,7 +60,7 @@
     <PeaceDialog width="475px"
                  append-to-body
                  v-bind:visible.sync="addMechanismDialog.visible"
-                 title="新增">
+                 title="新增凭证">
       <AddMechanismDialog v-if="addMechanismDialog.visible"
                           v-on:onSucess="addItemSuccess"
                           v-on:onCancel="addMechanismDialog.visible = false"></AddMechanismDialog>
