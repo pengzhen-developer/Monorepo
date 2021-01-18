@@ -27,7 +27,7 @@
         <el-form-item v-if="hasDrug"
                       label="订单承接系统："
                       prop="ReceiveSysCode"
-                      :rules="[{ required: true, message: '请选择订单承接属性', trigger: 'change' }]">
+                      :rules="[{ required: true, message: '请选择订单承接系统', trigger: 'change' }]">
           <div class="flex">
             <el-select class="col"
                        clearable
@@ -93,7 +93,7 @@ export default {
       model: Object.assign({}, DEFAULT_MODEL),
 
       ChannelSysCodeRules: [{ required: true, message: '请选择订单来源系统', trigger: 'change' }],
-      ReceiveSysCodeRules: [{ required: true, message: '请选择订单承接属性', trigger: 'change' }],
+      ReceiveSysCodeRules: [{ required: true, message: '请选择订单承接系统', trigger: 'change' }],
 
       // 对接系统 字典
       dockingSystemDict: []
