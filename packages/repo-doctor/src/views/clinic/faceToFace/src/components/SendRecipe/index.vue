@@ -140,6 +140,7 @@
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
                     v-model="drugList"
+                    v-bind:type="`faceToFace`"
                     v-bind:prescriptionTag.sync="prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
@@ -300,7 +301,7 @@ export default {
 
   data() {
     return {
-      prescriptionTag: undefined,
+      prescriptionTag: 2,
 
       /** 体重 */
       weight: undefined,

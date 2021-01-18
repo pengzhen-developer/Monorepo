@@ -2,6 +2,7 @@
   <div>
     <div class="flex justify-between q-my-md">
       <el-form inline
+               v-if="type !== `faceToFace`"
                v-bind:model="model">
         <el-form-item required
                       label="Rp 类型：">
@@ -324,7 +325,9 @@ export default {
       default() {
         return 1
       }
-    }
+    },
+
+    type: String
   },
 
   data() {
@@ -355,10 +358,13 @@ export default {
       this.$emit('input', value)
     },
 
-    prescriptionTag() {
-      // 由 props 传递的处方类型, 设定互斥锁
-      this.__lockRpCheck = this.prescriptionTag
-      this.model.prescriptionTag = this.prescriptionTag
+    prescriptionTag: {
+      handler() {
+        // 由 props 传递的处方类型, 设定互斥锁
+        this.__lockRpCheck = this.prescriptionTag
+        this.model.prescriptionTag = this.prescriptionTag
+      },
+      immediate: true
     },
 
     'model.prescriptionTag'(newValue, oldValue) {
