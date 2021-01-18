@@ -55,7 +55,7 @@
                  v-html="item.question"></div>
           </div>
           <!-- 上传图片 -->
-          <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
+          <template v-if="(item.field === ANSWER_FIELD.ATTACHMENT ||item.field === ANSWER_FIELD.SELECT_CASE)&& Array.isArray(item.answer)">
             <van-image-preview v-model="imagePreview.visible"
                                :start-position="imagePreview.position"
                                :images="item.answer.map(file => file.path)">
@@ -83,7 +83,7 @@
           </template>
           <!-- 选择病历 -->
           <div class="message-layout right"
-               v-if="item.answer&&item.field === ANSWER_FIELD.SELECT_CASE">
+               v-else-if="item.answer&&item.field === ANSWER_FIELD.SELECT_CASE">
             <div class="message out"
                  v-html="item.answer"
                  v-if="selectCase==false">
@@ -1330,7 +1330,7 @@ export default {
             this.model.affectedImages = []
             this.supplementaryList.map((item) => (item.hasAnswer = false))
             this.chatList = []
-            this.selectCase = false
+            this.selectCase = null
             //更换家人-先选择第一个家人的病历，然后撤回 重选家人 需重置问题列表
             if (this.model.serviceType === 'returnVisit') {
               this.questionList = [].concat(FUZHEN_QUESTION_LISI)
