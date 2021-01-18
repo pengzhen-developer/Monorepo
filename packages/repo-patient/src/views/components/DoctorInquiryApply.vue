@@ -1305,11 +1305,8 @@ export default {
 
               if (!this.isAcceptNotHasFirstOptionRecord && this.isFirstOptionRecord !== 1) {
                 Dialog.confirm({
-                  title: '温馨提示',
                   message: '该就诊人无在本院的就诊记录，不可进行在线复诊',
-                  confirmButtonText: '确认',
-                  // confirmButtonText: '重新选择就诊人',
-                  showCancelButton: false
+                  confirmButtonText: '重新选择'
                 })
                 return false
               }
