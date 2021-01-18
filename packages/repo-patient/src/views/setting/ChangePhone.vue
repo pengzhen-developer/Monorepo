@@ -3,13 +3,13 @@
 
     <van-form error-message-align="right"
               input-align="right">
-      <van-field v-model="model.oldTel"
+      <van-field v-model.trim="model.oldTel"
                  label="当前手机号码"
                  type="tel"
                  readonly
                  placeholder="请输入"
                  :value="model.oldTel" />
-      <van-field v-model="model.newTel"
+      <van-field v-model.trim="model.newTel"
                  label="新手机号"
                  type="tel"
                  maxlength="11"
@@ -18,7 +18,7 @@
                  :error-message="message"
                  @blur="checkPhone"
                  @focus="clearMessage" />
-      <van-field v-model="model.code"
+      <van-field v-model.trim="model.code"
                  placeholder="请输入"
                  clearable
                  ref="sms"
