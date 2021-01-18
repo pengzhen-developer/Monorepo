@@ -47,7 +47,7 @@ export default {
     getMessageText() {
       if (this.message?.content?.dur >= 0 || this.message?.file?.dur >= 0) {
         const dur = this.message?.content?.dur || this.message?.file?.dur
-        return Math.ceil(this.formatDur(dur) / 1000) + 's"'
+        return Math.ceil(this.formatDur(dur) / 1000) + '”'
       }
     },
     getAudioWidth() {
