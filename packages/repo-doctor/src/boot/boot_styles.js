@@ -74,7 +74,9 @@ export default async ({ configuration }) => {
   // 还原 devicePixelRatio
   if (/windows|win32/i.test(navigator.userAgent)) {
     const devicePixelRatio = window.devicePixelRatio
-    document.getElementsByTagName('body')[0].style.zoom = 1 / devicePixelRatio
+    if (devicePixelRatio !== 1 && document.documentElement.clientWidth < 1366) {
+      document.body.style.zoom = document.documentElement.clientWidth / 1440
+    }
   }
 
   console.log(
