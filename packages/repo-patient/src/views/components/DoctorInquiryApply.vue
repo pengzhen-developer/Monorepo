@@ -46,6 +46,7 @@
             <component v-bind:is="item.component"
                        class="message in select"
                        v-bind:data="caseList"
+                       v-bind:canShowDialog="!isAcceptNotHasFirstOptionRecord"
                        v-on:answer="answer"></component>
           </div>
 
@@ -1302,7 +1303,6 @@ export default {
               this.isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
               //是否有his诊疗记录
               this.isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
-
               if (!this.isAcceptNotHasFirstOptionRecord && this.isFirstOptionRecord !== 1) {
                 Dialog.confirm({
                   message: '该就诊人无在本院的就诊记录，不可进行在线复诊',
@@ -1313,7 +1313,6 @@ export default {
             }
             //选择家人后获取当前家人的病历列表
             await this.getFirstOptionList(params[0].value)
-            //如果
 
             answer = params[0].label + '，' + params[0].sex + '，' + params[0].age
             this.model.familyName = params[0].label
@@ -1447,7 +1446,7 @@ export default {
       //选择病历
       else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
         //医院只允许选择his病历
-        if (!this.selectCase && this.isFirstOptionRecord == 1) {
+        if (!this.selectCase && !this.isAcceptNotHasFirstOptionRecord) {
           nextQuestionIndex = -2
         } else {
           nextQuestionIndex = currentQuestionIndex + 1

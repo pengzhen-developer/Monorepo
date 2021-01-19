@@ -69,6 +69,12 @@ export default {
       default: () => {
         return false
       }
+    },
+    canShowDialog: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
     }
   },
   components: {
@@ -85,16 +91,21 @@ export default {
     answer(flag) {
       const data = flag ? this.caseInfo : ''
       if (!flag) {
-        Dialog.confirm({
-          title: '温馨提示',
-          message: '复诊患者必须选择本次复诊的病历，不选病历将无法进行复诊',
-          confirmButtonText: '确认不选'
-        })
-          .then(() => {
-            this.hasAnswer = true
-            this.$emit('answer', data, '以上都不是')
+        if (this.canShowDialog) {
+          Dialog.confirm({
+            title: '温馨提示',
+            message: '复诊患者必须选择本次复诊的病历，不选病历将无法进行复诊',
+            confirmButtonText: '确认不选'
           })
-          .catch(() => {})
+            .then(() => {
+              this.hasAnswer = true
+              this.$emit('answer', data, '以上都不是')
+            })
+            .catch(() => {})
+        } else {
+          this.hasAnswer = true
+          this.$emit('answer', data, '以上都不是')
+        }
       } else {
         if (!this.recordNo) {
           return
