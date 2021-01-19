@@ -3,7 +3,7 @@
 */
 .fixed-bottom {
   position: fixed;
-  bottom: 10px;
+  bottom: 15px;
   width: 100%;
 }
 .fixed-bottom .btn {

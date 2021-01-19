@@ -148,7 +148,7 @@
     bottom: 0;
     left: 0;
     z-index: 1;
-    border-top: 1px solid #f5f5f5;
+    border-top: 1px solid $-color--line;
     .van-field {
       background-color: #f7f7f7;
       padding: 16px;
@@ -157,14 +157,14 @@
       padding-left: 10px;
       .van-button {
         height: 38px;
-        border-radius: 4px;
         font-size: 16px;
+        padding: 0 12px;
       }
     }
     /deep/.van-field__left-icon {
       display: flex;
       justify-content: center;
-      margin-right: 10px;
+      margin-right: 8px;
     }
     /deep/.van-field__control {
       line-height: 20px;

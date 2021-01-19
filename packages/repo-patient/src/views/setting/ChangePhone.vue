@@ -15,6 +15,7 @@
                  maxlength="11"
                  placeholder="请输入"
                  clearable
+                 pattern="\d*"
                  :error-message="message"
                  @blur="checkPhone"
                  @focus="clearMessage" />
@@ -33,7 +34,8 @@
         </template>
 
       </van-field>
-      <van-field class="noBorder">
+      <van-field class="noBorder"
+                 readonly>
         <template #button>
           <van-row v-if="countDownTime"
                    type="flex"
@@ -182,7 +184,7 @@ export default {
 <style lang="scss" scoped>
 .van-field {
   padding: 15px;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid $-color--line;
   &.noBorder {
     border-width: 0;
     padding: 2px 15px;

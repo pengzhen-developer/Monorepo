@@ -40,6 +40,8 @@
     <div class="bottom">
       <div class="tips">温馨提示：最多添加4位家人</div>
       <van-button @click="toAdd"
+                  round
+                  size="large"
                   type="primary">新增家人</van-button>
     </div>
 

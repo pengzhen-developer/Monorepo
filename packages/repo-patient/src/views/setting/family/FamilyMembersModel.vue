@@ -109,6 +109,8 @@
 
       <div class="bottom">
         <van-button @click="deleted"
+                    round
+                    size="large"
                     class="bottom-del"
                     plain>删除家人</van-button>
       </div>
@@ -188,6 +190,8 @@
       </div>
       <div class="bottom">
         <van-button @click="submit"
+                    size="large"
+                    round
                     type="primary">保存</van-button>
       </div>
     </template>
@@ -287,6 +291,7 @@
                     :disabled="hasClick"
                     :loading="hasClick"
                     size="large"
+                    round
                     type="primary">保存</van-button>
       </div>
     </van-popup>
@@ -752,6 +757,8 @@ export default {
           this.showUpdateInfo = false
         })
         .finally(() => {
+          //完善家人信息后刷新
+          this.getFamilyInfo({ id: this.model.id, source: 2 })
           this.hasClick = false
         })
     },
@@ -1004,7 +1011,7 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 15px;
+    padding: 15px;
     display: flex;
     .van-button {
       flex: 1;

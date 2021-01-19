@@ -41,16 +41,17 @@
                     <span style="font-size: 20px;line-height:1; margin-right: 10px;color:#0E302D;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;">{{
                     item.name
                   }}</span>
+                    <van-tag color="#F2F2F2"
+                             text-color="#999999"
+                             style="font-size: 12px;border-radius: 4px;">{{ item.relation }}</van-tag>
+                  </div>
+                  <div class="flex ">
+                    <span style="font-size: 14px; margin-right: 10px;color:#999;">{{ item.age }}</span>
                     <van-icon v-if="item.sex === '男'"
                               :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
                     <van-icon v-if="item.sex === '女'"
                               :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
-                  </div>
-                  <div class="flex ">
-                    <span style="font-size: 14px; margin-right: 10px;color:#999;">{{ item.age }}</span>
-                    <van-tag color="#F2F2F2"
-                             text-color="#999999"
-                             style="font-size: 12px;border-radius: 4px;">{{ item.relation }}</van-tag>
+
                   </div>
                 </div>
 
@@ -59,7 +60,7 @@
                    @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
-                  <van-progress style="display: inline-block; width: 80%; margin: 0 10px 0 0;"
+                  <van-progress style="display: inline-block; flex:1;"
                                 color="#5B9EFF"
                                 track-color="#D7E9FF"
                                 pivot-color="#D7E9FF"
@@ -68,7 +69,7 @@
                                 stroke-width="8" />
                   <van-tag color="rgba(244,248,255,1)"
                            text-color="rgba(74,131,247,1)"
-                           style="border:1px solid #4A83F7;">
+                           style="border:1px solid #4A83F7;width:3em;justify-content: center;margin-left:5px;">
                     {{ item.percentage }}%</van-tag>
                 </div>
               </div>

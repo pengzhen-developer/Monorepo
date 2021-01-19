@@ -52,7 +52,7 @@ export default {
       params.p = this.p
       params.size = this.size
 
-      peace.service.advert.getNoticeList(params).then(res => {
+      peace.service.advert.getNoticeList(params).then((res) => {
         this.loading = false
 
         this.list = this.list.concat(res.data.list)
@@ -111,7 +111,7 @@ export default {
 .panel-txt .panel-bottom {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #f5f5f5;
+  border-top: 1px solid $-color--line;
 }
 .small {
   /* text-align: right; */

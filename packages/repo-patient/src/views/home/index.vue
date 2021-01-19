@@ -7,25 +7,24 @@
                     loading-text=" "
                     success-text="刷新成功"
                     @refresh="getHomeInfo">
-    <!-- <div class="home-layout"
-       v-if="data && data.guide"> -->
     <div class="banner">
       <div class="banner-img"></div>
     </div>
     <!--导流-->
-    <div class="panel panel-block panel-block-m panel-home"
+    <div class="guide"
          v-if="data.guide">
-      <div :doctortag="item.id"
-           :key="item.id"
+      <div :key="item.id"
            @click="goMenuPage(item,{type:'guide'})"
-           class="block-items"
-           data-type="guide"
+           class="guide-items"
            v-for="item in data.guide">
-        <div :class="[true ? 'block-ico' : '', item.icon]"></div>
-        <div class="block-tit">{{item.text}}</div>
-        <div class="block-small">{{item.small}}</div>
+        <div :class="[true ? 'guide-ico' : '', item.icon]"></div>
+        <div class="guide-tit">{{item.text}}</div>
+        <div class="guide-small">
+          <div>{{item.small}}</div>
+        </div>
       </div>
     </div>
+
     <!--三方-->
     <div class="panel panel-block panel-clear">
       <div :id="item.id"
@@ -34,8 +33,7 @@
            @click="goMenuPage(item,{type:item.id})"
            class="block-items"
            v-for="item in data.card">
-        <div
-             :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">
+        <div :class="['block-items-card', item.icon, item.id == 'appoint' || item.status ? '' : 'disabled']">
           {{item.text}}</div>
       </div>
     </div>
@@ -60,19 +58,20 @@
     <van-cell @click="goMenuPage({},{type:'crowdLists'})"
               is-link
               value="常见人群"
-              style="border-top:10px solid #f5f5f5" />
+              style="border-top:10px solid #f5f5f5;font-size:18px;padding: 16px;" />
     <Humens :data="data.crowdListsDisease"
             :items="data.crowdLists"
             :max="3"
+            :isHome="true"
             style="padding-bottom:10px"></Humens>
     <van-cell @click="goMenuPage(data.recommendOrgan,{type:'recommendHsp'})"
               :is-link="data.recommendOrgan.length>2"
               value="推荐互联网医院"
-              style="border-top:10px solid #f5f5f5" />
+              style="border-top:10px solid #f5f5f5;font-size:18px;padding: 16px;" />
     <HspPage :items="data.recommendOrgan"
              :max="2"
+             :isHome="true"
              v-if="data.recommendOrgan.length>0"></HspPage>
-    <!-- </div> -->
   </van-pull-refresh>
 </template>
 
@@ -118,7 +117,7 @@ export default {
   },
   methods: {
     getHomeInfo() {
-      peace.service.index.getMenu().then(res => {
+      peace.service.index.getMenu().then((res) => {
         this.data = res.data
         this.isLoading = false
       })
@@ -173,6 +172,8 @@ export default {
 .home-layout {
   min-height: 100%;
   height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .banner {
@@ -180,13 +181,64 @@ export default {
   height: 135.5px;
   background-color: #e5e5e5;
 }
-
+.guide {
+  border-radius: 0.4rem;
+  margin: -1rem 0.42667rem 0.13333rem 0.42667rem;
+  box-shadow: 0 0.05333rem 0.13333rem #efefef;
+  display: flex;
+  background: #fff;
+  .guide-items {
+    flex: 1;
+    font-size: inherit;
+    padding: 17px 12px 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .guide-ico {
+      width: 28px;
+      height: 28px;
+      background-color: #fff;
+      position: relative;
+      display: block;
+      &::before {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-size: cover;
+      }
+    }
+    .guide-tit {
+      font-size: 16px;
+      line-height: 22.5px;
+      color: #000;
+      font-family: PingFang SC;
+      margin: 12.5px 0 2.5px 0;
+    }
+    .guide-small {
+      position: relative;
+      width: 100%;
+      height: 15px;
+      div {
+        left: 0;
+        top: 0;
+        position: absolute;
+        font-size: 22px;
+        color: #999;
+        font-family: PingFang SC;
+        width: 250%;
+        transform: scale(0.5) translate(-50%, -50%);
+      }
+    }
+  }
+}
 .panel {
   position: relative;
   box-sizing: border-box;
   background-color: #fff;
   margin: 0;
-  padding: 10px 10px;
+  padding: 10px 16px;
   border-radius: 0;
   font-size: 15px;
   border-bottom: 0;
@@ -194,8 +246,7 @@ export default {
   &.panel-home {
     box-shadow: none;
     margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
   }
   &.panel-clear {
     box-shadow: none !important;
@@ -280,7 +331,7 @@ export default {
 
   &.panel-block-m {
     border-radius: 15px;
-    margin: -45px 10px 5px 10px;
+    margin: -45px 16px 5px 16px;
   }
 
   .panel-tit {

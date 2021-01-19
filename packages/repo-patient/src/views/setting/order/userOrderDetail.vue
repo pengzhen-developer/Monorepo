@@ -351,7 +351,7 @@ export default {
   }
 }
 .form-dl {
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
   .form-dt {
     font-size: 14px;
   }
@@ -363,16 +363,16 @@ export default {
 }
 .order {
   padding: 10px 15px;
-  border-bottom: 10px solid #f5f5f5;
+  border-bottom: 10px solid $-color--line;
 }
 .nmg {
   margin-top: 0;
-  border-bottom: 10px solid #f5f5f5;
+  border-bottom: 10px solid $-color--line;
 }
 .card.pd {
   margin: 0;
   padding: 5px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
   img {
     height: 100%;
   }
@@ -459,7 +459,7 @@ export default {
 }
 .pdtb {
   padding: (20px/2) 0;
-  border-top: 10px solid #f5f5f5;
+  border-top: 10px solid $-color--line;
 }
 .right {
   text-align: right;

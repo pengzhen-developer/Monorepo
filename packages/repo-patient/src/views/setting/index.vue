@@ -131,11 +131,7 @@ export default {
 }
 
 .van-cell {
-  border-bottom: 1px solid #dedede;
-
-  &::after {
-    border-width: 0;
-  }
+  padding: 16px;
 }
 
 /*user-card*/
@@ -208,7 +204,7 @@ export default {
   border-bottom: 10px solid #fff;
   padding: 15px 20px 10px 20px;
   border-top-color: #7ce7da;
-  border-bottom-color: #f5f5f5;
+  border-bottom-color: $-color--line;
 }
 
 .block .block-items {
@@ -233,8 +229,5 @@ export default {
   content: '';
   width: 30px;
   height: 30px;
-}
-.van-cell {
-  padding: 0.4rem;
 }
 </style>

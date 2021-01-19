@@ -28,6 +28,7 @@
                @blur="formateNumber"
                class="input" />
     <van-button type="primary"
+                round
                 @click="submit"
                 :disabled="loading"
                 :loading="loading"

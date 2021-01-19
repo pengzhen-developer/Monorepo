@@ -123,6 +123,7 @@
 
     <div class="footer">
       <van-button @click="save"
+                  round
                   style="width: 100%;"
                   type="primary">保存</van-button>
     </div>

@@ -489,7 +489,7 @@ export default {
   flex: 1;
   text-align: center;
   position: relative;
-  border-left: 1px solid #f5f5f5;
+  border-left: 1px solid $-color--line;
   height: 30px;
 }
 .box-tab .tab-item:first-child {

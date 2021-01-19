@@ -39,6 +39,7 @@
 
     <div class="save">
       <van-button @click="save"
+                  round
                   style="width: 100%;"
                   type="primary">保存</van-button>
     </div>
@@ -91,8 +92,8 @@ export default {
 
   methods: {
     getAllSurgeryTraumaCommonly() {
-      return peace.service.health.getPersonInfo({ type: 3, keyword: '' }).then(res => {
-        this.allSurgeryTraumaCommonly = res.data.map(item => {
+      return peace.service.health.getPersonInfo({ type: 3, keyword: '' }).then((res) => {
+        this.allSurgeryTraumaCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false
@@ -107,11 +108,11 @@ export default {
           this.internalValue = this.internalValue.split(',')
         }
 
-        this.internalValue.forEach(habit => {
+        this.internalValue.forEach((habit) => {
           this.allSurgeryTrauma.push({ value: habit, checked: true })
 
-          if (this.allSurgeryTraumaCommonly.find(item => item.value === habit)) {
-            this.allSurgeryTraumaCommonly.find(item => item.value === habit).checked = true
+          if (this.allSurgeryTraumaCommonly.find((item) => item.value === habit)) {
+            this.allSurgeryTraumaCommonly.find((item) => item.value === habit).checked = true
           }
         })
       }
@@ -122,15 +123,12 @@ export default {
         keyword: this.searchSurgeryTrauma,
         type: 3
       }
-      peace.service.health.getPersonInfo(params).then(res => {
-        this.allSurgeryTraumaList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchSurgeryTrauma, needAdd: true }]
-        ).map(item => {
+      peace.service.health.getPersonInfo(params).then((res) => {
+        this.allSurgeryTraumaList = (res.data && res.data.length ? res.data : [{ name: this.searchSurgeryTrauma, needAdd: true }]).map((item) => {
           return {
             text: item.name,
             needAdd: item.needAdd,
-            disabled: !!this.allSurgeryTrauma.find(temp => temp.value === item.name)
+            disabled: !!this.allSurgeryTrauma.find((temp) => temp.value === item.name)
           }
         })
 
@@ -152,11 +150,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allSurgeryTrauma = []
-        this.allSurgeryTraumaCommonly.forEach(item => (item.checked = false))
+        this.allSurgeryTraumaCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allSurgeryTrauma.findIndex(item => item.value === this.none)
+        const index = this.allSurgeryTrauma.findIndex((item) => item.value === this.none)
 
         if (index !== -1) {
           this.allSurgeryTraumaCommonly[0].checked = false
@@ -166,8 +164,8 @@ export default {
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.allSurgeryTrauma.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(item => item.value === currentItem.value)
+        const index = this.allSurgeryTrauma.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.allSurgeryTraumaCommonly.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allSurgeryTrauma.splice(index, 1)
@@ -194,14 +192,14 @@ export default {
       currentItem.checked = true
       this.allSurgeryTrauma.push(currentItem)
 
-      const indexCommonly = this.allSurgeryTraumaCommonly.findIndex(item => item.value === currentItem.value)
+      const indexCommonly = this.allSurgeryTraumaCommonly.findIndex((item) => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allSurgeryTraumaCommonly[indexCommonly].checked = true
       }
     },
 
     save() {
-      this.$emit('input', this.allSurgeryTrauma.map(item => item.value).toString())
+      this.$emit('input', this.allSurgeryTrauma.map((item) => item.value).toString())
 
       this.$emit('onSave')
     }

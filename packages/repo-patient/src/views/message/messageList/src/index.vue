@@ -69,6 +69,7 @@
                     :name="require('./assets/images/ic_more_functions.png')"
                     slot="left-icon" />
           <van-button @click="sendMessageText"
+                      round
                       size="small"
                       slot="button"
                       type="primary">发送
@@ -703,7 +704,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px;
+  padding: 6px 16px;
   .header-left {
     font-size: 13px;
     color: #000;
@@ -731,12 +732,13 @@ export default {
   .header-right {
     display: flex;
     align-items: center;
-    color: $primary;
-    font-size: 14px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1;
     cursor: pointer;
     .van-image {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       margin-right: 4px;
     }
   }

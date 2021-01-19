@@ -1035,6 +1035,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    box-shadow: 0 -1px 0.5px rgba(51, 51, 51, 0.16);
   }
 }
 .h64 {
@@ -1431,6 +1432,7 @@ export default {
       background: #00c6ae;
       margin-right: 8px;
       margin-bottom: -2px;
+      border-radius: 2px;
     }
   }
   .b {

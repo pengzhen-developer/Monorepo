@@ -231,3 +231,11 @@ template {
 [hidden] {
   display: none;
 }
+/** 
+*css去除ios中input和textarea的阴影
+*/
+input,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}

@@ -62,7 +62,7 @@ export default {
       this.lists = this.lists.slice(0, this.showNum)
     }
     if (this.lists.length === 0) {
-      peace.service.index.getMenu().then(res => {
+      peace.service.index.getMenu().then((res) => {
         this.lists = res.data.department
         this.showNum = res.data.department.length
       })
@@ -129,12 +129,7 @@ export default {
   }
 }
 .panel-block-s {
-  /*display: block;*/
-  /*width: 100%;*/
   flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -webkit-box-lines: multiple;
-  -moz-flex-wrap: wrap;
-  padding: 5px;
+  padding: 5px 16px;
 }
 </style>

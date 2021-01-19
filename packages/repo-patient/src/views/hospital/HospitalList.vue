@@ -12,19 +12,20 @@
                   v-for="(item,index) in data"
                   v-if="index < showNum">
       <div @click="goMenuPage(item)"
-           class="cards">
+           class="cards"
+           :class="{'isHome':isHome}">
         <div class="card-avatar">
           <img :src="item.icon"
                class />
         </div>
         <div class="card-body">
-          <div class="card-name">{{item.hospitalName}}</div>
-          <div class="block">
+          <div class="card-name els">{{item.hospitalName}}</div>
+          <div class="mb8 els">
             <div :key="tit"
                  class="card-small"
                  v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
           </div>
-          <div class="block">
+          <div class=" els">
             <van-tag :key="it"
                      v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
           </div>
@@ -56,6 +57,12 @@ export default {
       type: Number,
       default: function() {
         return this.items.length
+      }
+    },
+    isHome: {
+      type: Boolean,
+      default: function() {
+        return false
       }
     }
   },
@@ -115,7 +122,7 @@ export default {
     getHspList() {
       // 推荐医院
       if (this.params.type == 'recommendHsp') {
-        peace.service.index.getMenu().then(res => {
+        peace.service.index.getMenu().then((res) => {
           this.data = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
           this.loading = false
@@ -123,7 +130,7 @@ export default {
       }
       // 报告单医院
       if (this.params.type == 'report') {
-        peace.service.hospital.getNethospitalList({ page: 1 }).then(res => {
+        peace.service.hospital.getNethospitalList({ page: 1 }).then((res) => {
           this.data = res.data.netHospitals || []
           this.showNum = this.data.length
           this.loading = false
@@ -132,7 +139,7 @@ export default {
 
       // 预约医院
       if (this.params.type == 'appoint') {
-        peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then(res => {
+        peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then((res) => {
           this.data = res.data.list || []
           this.showNum = this.data.length
           this.loading = false
@@ -150,12 +157,16 @@ export default {
 }
 .cards {
   display: flex;
-  margin: 5px 0;
-  padding: 10px;
+  padding: 15px 16px;
   font-size: 13px;
   color: #000;
   border: 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
+  &.isHome {
+    &:first-child {
+      padding-top: 0;
+    }
+  }
   &:first-child {
     margin-top: 0;
   }
@@ -165,7 +176,6 @@ export default {
     border: 1px solid #dde1ea;
     width: 60px;
     height: 60px;
-    margin: 6px;
     margin-right: 14px;
     position: relative;
     background-color: #f5f5f5;
@@ -195,13 +205,13 @@ export default {
   .card-name {
     font-size: 17px;
     font-weight: 600;
-    line-height: 2;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    line-height: 1.1;
+    margin-bottom: 5px;
   }
-  .block {
+  .mb8 {
     margin-bottom: 8px;
+  }
+  .els {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

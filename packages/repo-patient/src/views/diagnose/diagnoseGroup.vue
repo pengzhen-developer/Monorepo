@@ -238,7 +238,7 @@ export default {
   background-size: cover;
   padding: 0;
   margin: 0;
-  background-color: #f5f5f5;
+  background-color: $-color--line;
 }
 .banner image {
   width: 100%;
@@ -260,7 +260,7 @@ export default {
   background: #fff;
   padding: 10px;
   margin: 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
 }
 .card-name {
   position: relative;
@@ -389,7 +389,7 @@ export default {
   color: #000;
   padding: 10px 15px;
   font-size: 13px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
 }
 
 .box-block .block-left {
@@ -408,7 +408,7 @@ export default {
 .box-bg {
   background: #fff;
   padding: 10px 15px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
   overflow: hidden;
   position: relative;
   box-sizing: border-box;

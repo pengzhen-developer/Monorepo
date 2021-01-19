@@ -72,7 +72,7 @@ export default {
   height: 50px;
 }
 .stage-list {
-  padding: 15px;
+  padding: 15px 16px;
   display: flex;
   align-items: center;
   justify-content: space-around;

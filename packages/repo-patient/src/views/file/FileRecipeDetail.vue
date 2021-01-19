@@ -219,7 +219,7 @@ export default {
 .row-dd {
   font-size: 13px;
   color: #999;
-  width: 65px;
+  width: 5em;
 }
 .row-img {
   img {
@@ -267,8 +267,8 @@ export default {
       .row-header-title {
         display: flex;
         align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #dedede;
+        padding: 8px 0;
+        border-bottom: 1px solid $-color--line;
         &.weight {
           border-width: 0;
         }

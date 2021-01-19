@@ -50,6 +50,7 @@
 
     <div class="file-blood-detail-control">
       <van-button @click="save"
+                  round
                   type="primary"
                   size="large">保存</van-button>
     </div>
@@ -102,7 +103,7 @@ export default {
       params.idCard = json.idCard
       params.familyId = json.familyId
 
-      peace.service.health.addBloodSugar(params).then(res => {
+      peace.service.health.addBloodSugar(params).then((res) => {
         peace.util.alert(res.msg)
 
         const params = $peace.util.decode($peace.$route.params.json)

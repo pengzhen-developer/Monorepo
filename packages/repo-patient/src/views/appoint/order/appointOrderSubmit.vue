@@ -364,7 +364,7 @@ export default {
 }
 .card {
   padding: 0px 10px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
   .card-body {
     align-self: center;
   }
@@ -382,7 +382,7 @@ export default {
   }
 }
 .form-dl {
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid $-color--line;
   .form-dt {
     font-size: 14px;
   }
@@ -394,7 +394,7 @@ export default {
   padding-bottom: 5px;
 }
 .order-check {
-  border-top: 10px solid #f5f5f5;
+  border-top: 10px solid $-color--line;
 }
 .faq {
   font-size: 11px;

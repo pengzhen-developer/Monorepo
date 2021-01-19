@@ -105,11 +105,11 @@ export default {
   width: 100%;
 
   .van-field {
-    padding: 15px;
-    border-bottom: 1px solid #dedede;
+    padding: 16px;
+    border-bottom: 1px solid $-color--line;
     &.noBorder {
       border-width: 0;
-      padding: 2px 15px;
+      padding: 2px 16px;
     }
     &::after {
       border-width: 0;
@@ -119,8 +119,8 @@ export default {
     flex: 1;
 
     .van-cell {
-      padding: 15px;
-      border-bottom: 1px solid #dedede;
+      padding: 16px;
+      border-bottom: 1px solid $-color--line;
       &::after {
         border-width: 0;
       }
@@ -141,7 +141,7 @@ export default {
   }
 
   .footer {
-    padding: 12px 15px;
+    padding: 12px 16px;
     /deep/.van-button__content {
       color: #666;
     }

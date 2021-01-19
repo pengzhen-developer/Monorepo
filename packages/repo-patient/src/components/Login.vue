@@ -51,6 +51,7 @@
         <van-button @click="signIn"
                     size="large"
                     :disabled="!CanSignIn"
+                    round
                     type="primary">登录</van-button>
       </div>
 

@@ -39,6 +39,7 @@
 
     <div class="save">
       <van-button @click="save"
+                  round
                   style="width: 100%;"
                   type="primary">保存</van-button>
     </div>
@@ -91,8 +92,8 @@ export default {
 
   methods: {
     getAllPersonalHabitCommonly() {
-      return peace.service.health.getPersonInfo({ type: 7, keyword: '' }).then(res => {
-        this.allPersonalHabitCommonly = res.data.map(item => {
+      return peace.service.health.getPersonInfo({ type: 7, keyword: '' }).then((res) => {
+        this.allPersonalHabitCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false
@@ -107,11 +108,11 @@ export default {
           this.internalValue = this.internalValue.split(',')
         }
 
-        this.internalValue.forEach(habit => {
+        this.internalValue.forEach((habit) => {
           this.allPersonalHabit.push({ value: habit, checked: true })
 
-          if (this.allPersonalHabitCommonly.find(item => item.value === habit)) {
-            this.allPersonalHabitCommonly.find(item => item.value === habit).checked = true
+          if (this.allPersonalHabitCommonly.find((item) => item.value === habit)) {
+            this.allPersonalHabitCommonly.find((item) => item.value === habit).checked = true
           }
         })
       }
@@ -122,15 +123,12 @@ export default {
         keyword: this.searchPersonalHabit,
         type: 7
       }
-      peace.service.health.getPersonInfo(params).then(res => {
-        this.allPersonalHabitList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchPersonalHabit, needAdd: true }]
-        ).map(item => {
+      peace.service.health.getPersonInfo(params).then((res) => {
+        this.allPersonalHabitList = (res.data && res.data.length ? res.data : [{ name: this.searchPersonalHabit, needAdd: true }]).map((item) => {
           return {
             text: item.name,
             needAdd: item.needAdd,
-            disabled: !!this.allPersonalHabit.find(temp => temp.value === item.name)
+            disabled: !!this.allPersonalHabit.find((temp) => temp.value === item.name)
           }
         })
 
@@ -152,11 +150,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allPersonalHabit = []
-        this.allPersonalHabitCommonly.forEach(item => (item.checked = false))
+        this.allPersonalHabitCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allPersonalHabit.findIndex(item => item.value === this.none)
+        const index = this.allPersonalHabit.findIndex((item) => item.value === this.none)
 
         if (index !== -1) {
           this.allPersonalHabitCommonly[0].checked = false
@@ -166,8 +164,8 @@ export default {
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.allPersonalHabit.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allPersonalHabitCommonly.findIndex(item => item.value === currentItem.value)
+        const index = this.allPersonalHabit.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.allPersonalHabitCommonly.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allPersonalHabit.splice(index, 1)
@@ -193,13 +191,13 @@ export default {
       currentItem.checked = true
       this.allPersonalHabit.push(currentItem)
 
-      const indexCommonly = this.allPersonalHabitCommonly.findIndex(item => item.value === currentItem.value)
+      const indexCommonly = this.allPersonalHabitCommonly.findIndex((item) => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allPersonalHabitCommonly[indexCommonly].checked = true
       }
     },
     save() {
-      this.$emit('input', this.allPersonalHabit.map(item => item.value).toString())
+      this.$emit('input', this.allPersonalHabit.map((item) => item.value).toString())
 
       this.$emit('onSave')
     }

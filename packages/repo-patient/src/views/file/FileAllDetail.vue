@@ -188,9 +188,12 @@ export default {
       flex-direction: column;
 
       height: 100%;
-
+      border-bottom: 1px solid $-color--line;
+      .van-tab--active {
+        color: $primary;
+      }
       .van-tabs__line {
-        background-color: #00c6ae;
+        background-color: $primary;
       }
       .van-tabs__wrap {
         height: 44px;

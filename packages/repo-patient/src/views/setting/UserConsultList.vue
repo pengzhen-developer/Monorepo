@@ -415,7 +415,7 @@ export default {
   flex: 1;
   text-align: center;
   position: relative;
-  border-left: 2rpx solid #f5f5f5;
+  border-left: 2rpx solid $-color--line;
 }
 .box-tab .tab-item:first-child {
   border-left: none;

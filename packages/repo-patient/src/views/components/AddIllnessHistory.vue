@@ -55,6 +55,7 @@
 
     <div class="save">
       <van-button @click="save"
+                  round
                   style="width: 100%;"
                   type="primary">保存</van-button>
     </div>
@@ -112,8 +113,8 @@ export default {
     getIllnessHistoryCommonly() {
       const params = { type: '1', isCommon: '1', methodType: 1 }
 
-      return peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.confirmIllnessCommonly = res.data.map(item => {
+      return peace.service.inquiry.searchIllInfo(params).then((res) => {
+        this.confirmIllnessCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false
@@ -128,12 +129,12 @@ export default {
           this.internalValue = this.internalValue.split(',')
         }
 
-        this.internalValue.forEach(allergic => {
+        this.internalValue.forEach((allergic) => {
           this.confirmIllness.push({ value: allergic, checked: true })
 
           // console.log(this.confirmIllnessCommonly)
-          if (this.confirmIllnessCommonly.find(item => item.value === allergic)) {
-            this.confirmIllnessCommonly.find(item => item.value === allergic).checked = true
+          if (this.confirmIllnessCommonly.find((item) => item.value === allergic)) {
+            this.confirmIllnessCommonly.find((item) => item.value === allergic).checked = true
           }
         })
       }
@@ -149,17 +150,14 @@ export default {
         type: '3',
         methodType: 1
       }
-      peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.confirmIllnessList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchIllnessHistory, needAdd: true }]
-        ).map(item => {
+      peace.service.inquiry.searchIllInfo(params).then((res) => {
+        this.confirmIllnessList = (res.data && res.data.length ? res.data : [{ name: this.searchIllnessHistory, needAdd: true }]).map((item) => {
           return {
             text: item.name,
             value: item.name,
             checked: false,
             needAdd: item.needAdd,
-            disabled: !!this.confirmIllness.find(temp => temp.value === item.name)
+            disabled: !!this.confirmIllness.find((temp) => temp.value === item.name)
           }
         })
         this.hasSearch = true
@@ -195,11 +193,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.confirmIllness = []
-        this.confirmIllnessCommonly.forEach(item => (item.checked = false))
+        this.confirmIllnessCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.confirmIllness.findIndex(item => item.value === '无')
+        const index = this.confirmIllness.findIndex((item) => item.value === '无')
 
         if (index !== -1) {
           this.confirmIllnessCommonly[0].checked = false
@@ -209,9 +207,9 @@ export default {
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.confirmIllness.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
-        const indexSearch = this.confirmIllnessList.findIndex(item => item.value === currentItem.value)
+        const index = this.confirmIllness.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.confirmIllnessCommonly.findIndex((item) => item.value === currentItem.value)
+        const indexSearch = this.confirmIllnessList.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.confirmIllness.splice(index, 1)
@@ -226,8 +224,8 @@ export default {
         currentItem.checked = true
         this.confirmIllness.push(currentItem)
 
-        const indexCommonly = this.confirmIllnessCommonly.findIndex(item => item.value === currentItem.value)
-        const indexSearch = this.confirmIllnessList.findIndex(item => item.value === currentItem.value)
+        const indexCommonly = this.confirmIllnessCommonly.findIndex((item) => item.value === currentItem.value)
+        const indexSearch = this.confirmIllnessList.findIndex((item) => item.value === currentItem.value)
         if (indexCommonly !== -1) {
           this.confirmIllnessCommonly[indexCommonly].checked = true
         }
@@ -239,12 +237,12 @@ export default {
     },
 
     save() {
-      this.$emit('input', this.confirmIllness.map(item => item.value).join(' | '))
+      this.$emit('input', this.confirmIllness.map((item) => item.value).join(' | '))
 
       this.$emit('onSave')
 
       if (this.$route.params.emit) {
-        $peace.$emit(this.$route.params.emit, this.confirmIllness.map(item => item.value).join(' | '))
+        $peace.$emit(this.$route.params.emit, this.confirmIllness.map((item) => item.value).join(' | '))
 
         this.$router.go(-1)
       }

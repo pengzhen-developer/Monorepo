@@ -35,13 +35,13 @@ export default {
     getBodyList() {
       let items = []
 
-      peace.service.diagnose.getAllBodyArea().then(res => {
+      peace.service.diagnose.getAllBodyArea().then((res) => {
         this.data = res.data || []
-        res.data.map(item => {
+        res.data.map((item) => {
           items.push({
             text: item.name,
             id: item.code,
-            children: item.bodySymptomLists.map(it => {
+            children: item.bodySymptomLists.map((it) => {
               return {
                 text: it.name,
                 id: it.code
@@ -60,7 +60,7 @@ export default {
 
       this.activeId = data.id
       json = peace.util.encode({
-        nethospitalid:peace.util.decode(this.$route.params.json).nethospitalid,
+        nethospitalid: peace.util.decode(this.$route.params.json).nethospitalid,
         id: data.id,
         symptomCode: data.id,
         title: data.name,
@@ -85,7 +85,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@src/views/style/style.css';
 .diagnoseSelectBody {
-  border-top: 1px solid #f5f5f5;
+  border-top: 1px solid $-color--line;
 }
 
 .van-tree-select__nav-item--active {

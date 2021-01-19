@@ -40,6 +40,7 @@
 
     <div class="save">
       <van-button @click="save"
+                  round
                   style="width: 100%;"
                   type="primary">保存</van-button>
     </div>
@@ -94,8 +95,8 @@ export default {
     getAllFoodAllergyCommonly() {
       const params = { type: '6', isCommon: '1' }
 
-      return peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allFoodAllergyCommonly = res.data.map(item => {
+      return peace.service.inquiry.searchIllInfo(params).then((res) => {
+        this.allFoodAllergyCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false
@@ -112,11 +113,11 @@ export default {
           this.internalValue = this.internalValue.split(',')
         }
 
-        this.internalValue.forEach(allergic => {
+        this.internalValue.forEach((allergic) => {
           this.allFoodAllergy.push({ value: allergic, checked: true })
 
-          if (this.allFoodAllergyCommonly.find(item => item.value === allergic)) {
-            this.allFoodAllergyCommonly.find(item => item.value === allergic).checked = true
+          if (this.allFoodAllergyCommonly.find((item) => item.value === allergic)) {
+            this.allFoodAllergyCommonly.find((item) => item.value === allergic).checked = true
           }
         })
       }
@@ -127,15 +128,12 @@ export default {
         keyword: this.searchFoodAllergy,
         type: '6'
       }
-      peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allFoodAllergyList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchFoodAllergy, needAdd: true }]
-        ).map(item => {
+      peace.service.inquiry.searchIllInfo(params).then((res) => {
+        this.allFoodAllergyList = (res.data && res.data.length ? res.data : [{ name: this.searchFoodAllergy, needAdd: true }]).map((item) => {
           return {
             text: item.name,
             needAdd: item.needAdd,
-            disabled: !!this.allFoodAllergy.find(temp => temp.value === item.name)
+            disabled: !!this.allFoodAllergy.find((temp) => temp.value === item.name)
           }
         })
 
@@ -156,11 +154,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allFoodAllergy = []
-        this.allFoodAllergyCommonly.forEach(item => (item.checked = false))
+        this.allFoodAllergyCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allFoodAllergy.findIndex(item => item.value === this.none)
+        const index = this.allFoodAllergy.findIndex((item) => item.value === this.none)
 
         if (index !== -1) {
           this.allFoodAllergyCommonly[0].checked = false
@@ -170,10 +168,8 @@ export default {
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.allFoodAllergy.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allFoodAllergyCommonly.findIndex(
-          item => item.value === currentItem.value
-        )
+        const index = this.allFoodAllergy.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.allFoodAllergyCommonly.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allFoodAllergy.splice(index, 1)
@@ -183,15 +179,15 @@ export default {
         }
       } else {
         if (currentItem.needAdd) {
-          if(currentItem.value.length < 50) {
-            peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 }).then(()=> {
-              this.onAddCallback(currentItem);
+          if (currentItem.value.length < 50) {
+            peace.service.inquiry.addAllergen({ name: currentItem.value, type: 2 }).then(() => {
+              this.onAddCallback(currentItem)
             })
           } else {
-            peace.util.alert("您输入的字数过长！")
+            peace.util.alert('您输入的字数过长！')
           }
         } else {
-          this.onAddCallback(currentItem);
+          this.onAddCallback(currentItem)
         }
       }
     },
@@ -199,15 +195,13 @@ export default {
       currentItem.checked = true
       this.allFoodAllergy.push(currentItem)
 
-      const indexCommonly = this.allFoodAllergyCommonly.findIndex(
-              item => item.value === currentItem.value
-      )
+      const indexCommonly = this.allFoodAllergyCommonly.findIndex((item) => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allFoodAllergyCommonly[indexCommonly].checked = true
       }
     },
     save() {
-      this.$emit('input', this.allFoodAllergy.map(item => item.value).toString())
+      this.$emit('input', this.allFoodAllergy.map((item) => item.value).toString())
 
       this.$emit('onSave')
     }

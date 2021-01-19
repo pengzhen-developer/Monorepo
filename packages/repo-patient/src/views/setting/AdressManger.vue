@@ -26,13 +26,13 @@
       <div class="icon icon_none_address"></div>
       <div class="none-text">暂无地址</div>
     </div>
-    <div class="fixed-bottom btn-group"
+    <div class="fixed-bottom"
          v-if="isGet">
-      <div class="btn-group">
-        <van-button class="btn btn-blue"
-                    @click="addressEdit"
-                    type="info">新增地址</van-button>
-      </div>
+      <van-button round
+                  size="large"
+                  class="full"
+                  @click="addressEdit"
+                  type="info">新增地址</van-button>
     </div>
   </div>
 </template>
@@ -56,10 +56,10 @@ export default {
       this.getAddressList()
     },
     getAddressList() {
-      peace.service.patient.getAddressLists().then(res => {
+      peace.service.patient.getAddressLists().then((res) => {
         const tmp = res.data.addressLists
         this.isGet = true
-        this.addr = tmp.map(item => item)
+        this.addr = tmp.map((item) => item)
       })
     },
     goUserAddressEdit(address) {
@@ -98,16 +98,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fixed-bottom .btn {
-  padding: 0;
-  text-align: center;
-}
 .dl-two {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 15px;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid $-color--line;
 }
 .dl-two .dt {
   flex: 1;

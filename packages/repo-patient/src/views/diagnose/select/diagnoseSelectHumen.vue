@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'mg': true,'module': Max == Items.length}"
+  <div :class="{'mg': true,'module': Max == Items.length,'isHome':isHome}"
        v-if="Data && Data.length">
     <div class="grid-two">
       <div class="grid-left">
@@ -96,6 +96,12 @@ export default {
         return this.items.length
       }
     },
+    isHome: {
+      type: Boolean,
+      default: function() {
+        return false
+      }
+    },
     appraise: {
       type: String,
       default: function() {
@@ -134,7 +140,7 @@ export default {
   methods: {
     getData() {
       let me = this
-      peace.service.diagnose.diagnoseList().then(res => {
+      peace.service.diagnose.diagnoseList().then((res) => {
         me.Items = res.data.crowdLists
         me.Data = res.data.crowdListsDisease
         me.Max = me.Items.length
@@ -154,7 +160,10 @@ export default {
 
 <style lang="scss" scoped>
 .mg {
-  margin: 15px !important;
+  margin: 15px 16px !important;
+  &.isHome {
+    margin: 0 16px !important;
+  }
 }
 .module {
   background-color: #fff;
@@ -195,7 +204,7 @@ export default {
   /*margin-right: (20px/2);*/
   width: 100%;
   height: 100%;
-  background-color: #f5f5f5;
+  background-color: $-color--line;
   background-size: cover;
   background-repeat: no-repeat;
   padding: (20px/2) (30px/2);

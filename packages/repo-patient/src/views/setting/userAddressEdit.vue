@@ -1,13 +1,13 @@
 <template>
   <div>
-    <van-field required
+    <van-field class="require"
                label="收货人"
                v-model="internalAddr.consignee"
                data-name="consignee"
                type="text"
                maxlength="12"
                placeholder="请输入收货人的真实姓名" />
-    <van-field required
+    <van-field class="require"
                type="phone"
                label="手机号"
                v-model="internalAddr.mobile"
@@ -15,7 +15,7 @@
                maxlength="11"
                minlength="11"
                placeholder="请输入收货人的手机号码" />
-    <van-field required
+    <van-field class="require"
                readonly
                is-link
                clickable
@@ -31,7 +31,7 @@
                      @onCancel="onCancel"
                      @onConfirm="onConfirm" />
     </van-popup>
-    <van-field required
+    <van-field class="require"
                label="详细地址"
                type="textarea"
                autosize
@@ -40,8 +40,15 @@
                v-model="internalAddr.address"
                data-name="address" />
     <div class="fixed-bottom">
-      <div class="btn btn-blue"
-           @click="submit">保存</div>
+      <!-- <div class="btn btn-blue"
+           @click="submit">保存</div> -->
+      <peace-button round
+                    throttle
+                    :throttleTime="1000"
+                    type="primary"
+                    size="large"
+                    class="full"
+                    @click="submit">保存</peace-button>
     </div>
   </div>
 </template>
@@ -141,7 +148,7 @@ export default {
       }
       peace.service.patient
         .addAddress(data)
-        .then(res => {
+        .then((res) => {
           peace.util.alert(this.internalAddr.addressId ? '编辑成功' : '添加成功')
           this.checkAddr(res.data.address_id)
 

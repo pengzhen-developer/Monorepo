@@ -43,8 +43,8 @@
                 </div>
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
-                  <div class="small-item-val"
-                       :class="item.orderInfo.totalMoney==0||item.orderInfo.totalMoney == null?'price-free':'price'"
+                  <!-- :class="item.orderInfo.totalMoney==0||item.orderInfo.totalMoney == null?'price-free':'price'" -->
+                  <div class="small-item-val price"
                        v-if="item.orderInfo">
                     {{item.orderInfo.totalMoney == 0||item.orderInfo.totalMoney == null ? '免费' : '￥'+ item.orderInfo.totalMoney }}
                     <span v-if="item.orderInfo.refundTime">{{'（已退款￥'+item.orderInfo.payMoney+'）'}}</span>
@@ -127,8 +127,8 @@
                 </div>
                 <div class="small-item">
                   <div class="small-item-key">订单金额:</div>
-                  <div class="small-item-val"
-                       :class="item.totalMoney==0||item.totalMoney == null?'price-free':'price'">
+                  <div class="small-item-val price">
+                    <!-- :class="item.totalMoney==0||item.totalMoney == null?'price-free':'price'" -->
                     {{item.totalMoney == 0||item.totalMoney == null ? '免费' : '￥'+ item.totalMoney }}
                   </div>
                 </div>
@@ -573,7 +573,7 @@ export default {
           color: #999;
           margin-right: 13px;
           // width: 65px;
-          width: 5em;
+          width: 4.6em;
           text-align: justify;
           text-align-last: justify;
           height: 20px;
@@ -654,7 +654,7 @@ export default {
   flex: 1;
   text-align: center;
   position: relative;
-  border-left: (2px/2) solid #f5f5f5;
+  border-left: 1px solid $-color--line;
 }
 .box-tab .tab-item:first-child {
   border-left: none;

@@ -83,7 +83,7 @@ export default {
 <style lang="scss" scoped>
 .van-field {
   padding: 15px;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid $-color--line;
   &.noBorder {
     border-width: 0;
     padding: 2px 15px;

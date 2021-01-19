@@ -54,6 +54,7 @@
 
     <div class="file-blood-detail-control">
       <van-button @click="save"
+                  round
                   type="primary"
                   size="large">保存</van-button>
     </div>
@@ -125,7 +126,7 @@ export default {
       if (!this.selectRate) {
         params.pulseRate = ''
       }
-      peace.service.health.addBloodOxygendata(params).then(res => {
+      peace.service.health.addBloodOxygendata(params).then((res) => {
         peace.util.alert(res.msg)
 
         const params = $peace.util.decode($peace.$route.params.json)

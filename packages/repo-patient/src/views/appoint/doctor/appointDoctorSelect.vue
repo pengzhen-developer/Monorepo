@@ -353,8 +353,8 @@ export default {
 }
 .card {
   padding: 7px 5px;
-  border-top: 1px solid #f5f5f5;
-  border-bottom-color: #f5f5f5;
+  border-top: 1px solid $-color--line;
+  border-bottom-color: $-color--line;
   margin-bottom: 0;
 }
 .card-brief {

@@ -39,7 +39,7 @@ export default {
   mounted() {
     const params = peace.util.decode(this.$route.params.json)
     this.backgroundCode = params.backgroundCode
-    peace.service.patient.healthcardInfo(params).then(res => {
+    peace.service.patient.healthcardInfo(params).then((res) => {
       this.model = res.data.info
     })
   }
@@ -79,7 +79,7 @@ export default {
       top: -10px;
       position: absolute;
       display: block;
-      background: #f5f5f5;
+      background: $-color--line;
       box-shadow: 1px 0 0 #dedede inset;
     }
     .divider::after {
@@ -91,7 +91,7 @@ export default {
       top: -10px;
       position: absolute;
       display: block;
-      background: #f5f5f5;
+      background: $-color--line;
       box-shadow: 1px 0 0 #dedede inset;
     }
     .tip {
@@ -141,12 +141,7 @@ export default {
     margin-right: 10px;
   }
 }
-/deep/
-  .form.form-for-family
-  > .van-cell
-  > .van-cell__value
-  > .van-field__body
-  > .van-field__control {
+/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   text-align: right;
   &::placeholder {
