@@ -93,7 +93,7 @@ export default {
       if (!flag) {
         if (this.canShowDialog) {
           Dialog.confirm({
-            title: '温馨提示',
+            title: '提示',
             message: '复诊患者必须选择本次复诊的病历，不选病历将无法进行复诊',
             confirmButtonText: '确认不选'
           })
