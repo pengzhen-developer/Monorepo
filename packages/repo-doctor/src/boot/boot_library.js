@@ -66,10 +66,7 @@ export default async ({ Vue }) => {
                   Peace.util.error(response.data.msg)
 
                   Util.user.removeUserInfo()
-
-                  setTimeout(() => {
-                    Util.location.redirectToLogin()
-                  }, 3000)
+                  Util.location.redirectToLogin()
 
                   return Promise.reject(response)
               }

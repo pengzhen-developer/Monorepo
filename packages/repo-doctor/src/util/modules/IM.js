@@ -32,12 +32,7 @@ export const IMHelper = {
         Peace.util.warning(disConnectObject.message)
 
         Util.user.removeUserInfo()
-        Util.user.replaceToLogin()
-
-        // 刷新页面，确保 vuex store 被清空
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000 * 3)
+        Util.location.redirectToLogin()
         break
 
       default:
@@ -67,12 +62,7 @@ export const IMHelper = {
     Peace.util.warning(`通讯异常，请重新登录`)
 
     Util.user.removeUserInfo()
-    Util.user.replaceToLogin()
-
-    // 刷新页面，确保 vuex store 被清空
-    setTimeout(() => {
-      window.location.reload()
-    }, 1000 * 3)
+    Util.location.redirectToLogin()
   },
 
   /**
