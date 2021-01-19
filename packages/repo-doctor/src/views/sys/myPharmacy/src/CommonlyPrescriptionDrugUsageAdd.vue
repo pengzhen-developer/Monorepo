@@ -29,7 +29,7 @@
                            v-bind:min="0.001"
                            v-model="model.singleDose">
           </el-input-number>
-          <div class="flex items-center bg-grey-2 q-px-sm"
+          <div class="flex items-center q-px-sm"
                style="border-radius: 5px">
             {{ data.drugUnit }}
           </div>
@@ -87,7 +87,7 @@
                            v-model="model.drugNum">
           </el-input-number>
 
-          <div class="flex items-center bg-grey-2 q-px-sm"
+          <div class="flex items-sm-center q-px-sm"
                style="border-radius: 5px">
             {{ data.drugQuantityUnit }}
           </div>

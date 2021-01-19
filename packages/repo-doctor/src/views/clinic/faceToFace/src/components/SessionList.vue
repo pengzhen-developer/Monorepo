@@ -2,7 +2,7 @@
   <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
 
-      <el-select class="col"
+      <el-select class="col full-width"
                  remote
                  filterable
                  clearable

@@ -32,7 +32,8 @@
                           align="left"
                           min-width="140px">
           <template slot-scope="{ row }">
-            <el-tooltip placement="top">
+            <el-tooltip effect="light"
+                        placement="top">
               <div class="ellipsis">
                 <span>{{ row.drugName }}</span>
               </div>
@@ -40,17 +41,17 @@
               <div style="max-width: 200px;"
                    slot="content">
                 <div class="flex q-mb-sm">
-                  <span class="text-grey-4"
+                  <span class="text-black"
                         style="width: 60px;">药品名称：</span>
                   <span class="col">{{ row.drugName }}</span>
                 </div>
                 <div class="flex q-mb-sm">
-                  <span class="text-grey-3"
+                  <span class="text-black"
                         style="width: 60px;">药品规格：</span>
                   <span class="col">{{ row.specification }}</span>
                 </div>
                 <div class="flex q-mb-sm">
-                  <span class="text-grey-3"
+                  <span class="text-black"
                         style="width: 60px;">生产厂家：</span>
                   <span class="col">{{ row.companyName }}</span>
                 </div>

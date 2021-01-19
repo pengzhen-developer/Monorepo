@@ -57,7 +57,7 @@
                              v-model="weight"
                              v-bind:precision="1">
             </el-input-number>
-            <div class="flex items-center bg-grey-2 q-px-sm"
+            <div class="flex items-center q-px-sm"
                  style="border-radius: 5px">
               kg
             </div>
