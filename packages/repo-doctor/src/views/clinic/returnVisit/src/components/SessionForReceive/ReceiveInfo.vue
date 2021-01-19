@@ -108,7 +108,7 @@
     </el-card>
 
     <el-card class="q-mb-lg bg-grey-2 no-shadow"
-             v-if="inquiryOrderInfo.confirmIllness > 0">
+             v-if="inquiryOrderInfo.confirmIllness">
       <div class="q-mb-sm text-subtitle1 text-bold">
         <span>复诊信息</span>
       </div>
