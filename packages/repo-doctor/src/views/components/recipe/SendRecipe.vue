@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div v-loading="sending"
+       element-loading-text="拼命加载中"
+       element-loading-background="rgba(255, 255, 255, 0)">
     <el-alert type="success"
               v-bind:closable="false">
       <div slot="title">
@@ -633,5 +635,16 @@ export default {
   border-radius: 2px;
   height: 28px;
   line-height: 28px;
+}
+
+::v-deep .el-loading-spinner {
+  z-index: 2005;
+  width: 160px;
+  left: 42%;
+  padding: 30px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 </style>
