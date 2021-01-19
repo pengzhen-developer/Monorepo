@@ -53,7 +53,9 @@ export const redirectToHome = () => {
 export const redirectToLogin = () => {
   const indexPath = window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH + 'login'
 
-  redirectToPath(indexPath)
+  setTimeout(() => {
+    redirectToPath(indexPath)
+  }, 3000)
 }
 
 export default {

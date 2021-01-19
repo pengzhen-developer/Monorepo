@@ -63,7 +63,11 @@ export default async ({ Vue }) => {
                   return Promise.reject(response)
 
                 case 601:
-                  Peace.util.error(response.data.msg)
+                  if (!Peace.ErrorMessageDown) {
+                    Peace.ErrorMessageDown = true
+
+                    Peace.util.warning(response.data.msg)
+                  }
 
                   Util.user.removeUserInfo()
                   Util.location.redirectToLogin()
