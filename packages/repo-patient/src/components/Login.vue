@@ -15,6 +15,7 @@
       <van-field pattern="\d*"
                  placeholder="请输入手机号"
                  ref="tel"
+                 maxlength="11"
                  type="number"
                  v-model="model.tel">
       </van-field>

@@ -12,6 +12,7 @@
       <van-field v-model="model.newTel"
                  label="新手机号"
                  type="number"
+                 maxlength="11"
                  placeholder="请输入"
                  clearable
                  :error-message="message"
