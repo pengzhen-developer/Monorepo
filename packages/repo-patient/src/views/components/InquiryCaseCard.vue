@@ -108,6 +108,11 @@ export default {
         }
       } else {
         if (!this.recordNo) {
+          Dialog.confirm({
+            title: '提示',
+            message: '请选择本次复诊的就诊记录',
+            confirmButtonText: '确认'
+          })
           return
         }
         this.hasAnswer = true
