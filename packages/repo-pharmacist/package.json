@@ -17,7 +17,7 @@
   "dependencies": {
     "@jk998/identity": "^0.2.5",
     "@jk998/library": "^0.1.23",
-    "@jk998/peace-element-ui": "^0.1.14",
+    "@jk998/peace-element-ui": "^0.1.16",
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",

@@ -930,10 +930,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.14.tgz#af5aac36155b9d19ec677e2dbfad62d38bb4ca93"
-  integrity sha512-H5bouVJlXUXI+n0As5kaTk8Olq57D8K2nKhuSjymJvBW5Rn8yKPFxBmlRvyIs94J001FOjR+gqjVNJf7JF/A8A==
+"@jk998/peace-element-ui@^0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.16.tgz#06e7e736f4bc126b548bd5d932a74fbf28eed53c"
+  integrity sha512-YAsIEM+f3ZVUUAlKEV09bpohFeN++kDEwLhjJwyIRPHeKJrwKWj+EFQhMaWmhfOHTdArWAMjxSSY6ks6AzLmRg==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
