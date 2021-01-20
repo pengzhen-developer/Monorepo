@@ -24,16 +24,13 @@
                   v-on:focus="showPassword=true"
                   placeholder="6-20位字母、数字"></el-input>
       </el-form-item>
-
-      <el-form-item>
-        <el-button class="btn"
-                   v-on:click="onCancel">取消</el-button>
-        <el-button type="primary"
-                   class="btn"
-                   v-on:click="onSubmit('form')">提交</el-button>
-
-      </el-form-item>
     </el-form>
+    <div class="text-center">
+      <el-button v-on:click="onCancel">取消</el-button>
+      <el-button type="primary"
+                 v-on:click="onSubmit('form')">提交</el-button>
+
+    </div>
   </div>
 </template>
 
@@ -88,12 +85,5 @@ export default {
 .dialog-content {
   padding-left: 40px;
   padding-right: 70px;
-}
-.btn {
-  font-size: 14px;
-  height: 32px;
-  margin-top: 30px;
-  padding: 0;
-  width: 120px;
 }
 </style>

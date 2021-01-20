@@ -50,7 +50,7 @@
       </el-form-item>
     </el-form>
 
-    <div class="bottom">
+    <div class="text-center">
       <el-button v-on:click="onCancel">取消</el-button>
       <el-button type="primary"
                  v-on:click="onSave('drug')">确定</el-button>
@@ -155,14 +155,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bottom {
-  margin-top: 40px;
-  display: flex;
-  justify-content: space-around;
-
-  .el-button {
-    width: 150px;
-    height: 40px;
-  }
-}
 </style>

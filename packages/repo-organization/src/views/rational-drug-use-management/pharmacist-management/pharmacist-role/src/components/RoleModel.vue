@@ -39,14 +39,15 @@
         </div>
       </div>
 
-      <el-form-item v-if="type !== 'detail'"
-                    label=" ">
+      <div class="text-center"
+           v-if="type !== 'detail'"
+           label=" ">
         <el-button v-on:click="close">取 消</el-button>
         <el-button type="primary"
                    v-bind:loading="isLoading"
                    v-on:click="submit">提 交</el-button>
 
-      </el-form-item>
+      </div>
     </el-form>
 
   </div>
