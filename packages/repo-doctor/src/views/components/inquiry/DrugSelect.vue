@@ -196,7 +196,7 @@
     </el-table-column>
 
     <el-table-column label="操作"
-                     width="80px">
+                     width="50px">
       <template slot-scope="scope">
         <el-button type="text"
                    v-if="scope.row.drugid"

@@ -49,12 +49,10 @@
                             prop="age"></peace-table-column>
         <peace-table-column label="性别"
                             prop="sex"></peace-table-column>
-        <peace-table-column align="left"
-                            label="疾病诊断"
+        <peace-table-column label="疾病诊断"
                             min-width="200px"
                             prop="diagnose"></peace-table-column>
-        <peace-table-column align="left"
-                            label="转入机构"
+        <peace-table-column label="转入机构"
                             min-width="200px"
                             prop="netHospital_name"></peace-table-column>
         <peace-table-column label="转入医生"

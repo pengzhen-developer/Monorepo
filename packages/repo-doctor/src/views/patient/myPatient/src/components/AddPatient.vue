@@ -7,49 +7,34 @@
              ref="ruleForm">
       <el-form-item label="姓名"
                     prop="name">
-        <span slot="label">姓名</span>
+        <span slot="label">姓名：</span>
         <el-input v-model="ruleForm.name"
                   placeholder="请输入姓名"></el-input>
       </el-form-item>
       <el-form-item label="身份证"
                     prop="idCard">
-        <span slot="label">身份证</span>
+        <span slot="label">身份证：</span>
         <el-input v-model.trim="ruleForm.idCard"
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
                     prop="sexStr">
-        <span slot="label">性别</span>
+        <span slot="label">性别：</span>
         <el-input v-model="ruleForm.sexStr"
                   :disabled="true"></el-input>
-        <!-- 禁用选择 -->
-        <!-- <el-select v-model="ruleForm.sexStr"
-                   style="width: 100%;"
-                   placeholder="请选择">
-          <el-option v-for="item in sexs"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
-        </el-select> -->
       </el-form-item>
 
       <el-form-item label="生日"
                     prop="birthday">
-        <span slot="label">生日</span>
-        <!-- <el-date-picker v-model="ruleForm.birthday"
-                        type="date"
-                        style="width: 100%;"
-                        placeholder="选择日期">
-        </el-date-picker> -->
-        <el-input prefix-icon="el-icon-date"
+        <span slot="label">生日：</span>
+        <el-input suffix-icon="el-icon-date"
                   v-model="ruleForm.birthday"
                   :disabled="true"></el-input>
       </el-form-item>
 
       <el-form-item label="民族"
                     prop="nation">
-        <span slot="label">民族</span>
+        <span slot="label">民族：</span>
         <el-select filterable
                    label="民族"
                    style="width: 100%;"
@@ -64,14 +49,13 @@
 
       <el-form-item label="联系方式"
                     prop="tel">
-        <span slot="label">手机号码</span>
+        <span slot="label">手机号码：</span>
         <el-input v-model.number.trim="ruleForm.tel"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="closeMenu"
-                   type="info">取消</el-button>
+        <el-button @click="closeMenu">取消</el-button>
         <el-button @click="submitForm('ruleForm')"
                    type="primary">保存</el-button>
       </el-form-item>
@@ -184,23 +168,11 @@ export default {
 
 <style lang="scss" scoped>
 .el-form {
-  padding-top: 22px;
-  padding-right: 20px;
-
   .el-form-item__label span {
     text-align-last: justify;
     text-align: justify;
     text-justify: distribute-all-lines;
-    width: 4em;
     display: inline-block;
-  }
-}
-
-.el-button {
-  width: 84px;
-  height: 28px;
-  &:nth-child(1) {
-    margin-right: 23px;
   }
 }
 </style>

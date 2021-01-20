@@ -2,10 +2,11 @@
   <div>
     <div class="patient-title-style">{{ patientInfo.name }}</div>
 
-    <el-alert v-bind:closable="false">
+    <el-alert style="border-radius: 0;"
+              type="success"
+              v-bind:closable="false">
       <div slot="title">
-        <span class="text-grey-333"
-              style="font-size: 14px;">开处方</span>
+        <span>开处方</span>
         <i v-on:click="close"
            class="el-alert__closebtn el-icon-error"></i>
       </div>

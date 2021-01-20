@@ -163,3 +163,9 @@ export default {
   }
 }
 </style>
+
+<style>
+.el-tabs:not(.element-ui-default) .el-tabs__nav-wrap {
+  padding: 0 !important;
+}
+</style>

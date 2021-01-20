@@ -7,27 +7,27 @@
       </el-form-item>
 
       <el-form-item label="订单日期">
-        <el-date-picker style="width: 140px"
-                        value-format="yyyy-MM-dd"
-                        v-bind:picker-options="rules.orderTimeBeginOptions"
-                        v-model="model.orderTimeBegin"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           value-format="yyyy-MM-dd"
+                           v-bind:picker-options="rules.orderTimeBeginOptions"
+                           v-model="model.orderTimeBegin"></peace-date-picker>
         <span class="q-mx-sm">-</span>
-        <el-date-picker style="width: 140px"
-                        value-format="yyyy-MM-dd"
-                        v-bind:picker-options="rules.orderTimeEndOptions"
-                        v-model="model.orderTimeEnd"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           value-format="yyyy-MM-dd"
+                           v-bind:picker-options="rules.orderTimeEndOptions"
+                           v-model="model.orderTimeEnd"></peace-date-picker>
       </el-form-item>
 
       <el-form-item label="复诊日期">
-        <el-date-picker style="width: 140px"
-                        value-format="yyyy-MM-dd"
-                        v-bind:picker-options="rules.returnVisitTimeBeginOptions"
-                        v-model="model.returnVisitTimeBegin"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           value-format="yyyy-MM-dd"
+                           v-bind:picker-options="rules.returnVisitTimeBeginOptions"
+                           v-model="model.returnVisitTimeBegin"></peace-date-picker>
         <span class="q-mx-sm">-</span>
-        <el-date-picker style="width: 140px"
-                        value-format="yyyy-MM-dd"
-                        v-bind:picker-options="rules.returnVisitTimeEndOptions"
-                        v-model="model.returnVisitTimeEnd"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           value-format="yyyy-MM-dd"
+                           v-bind:picker-options="rules.returnVisitTimeEndOptions"
+                           v-model="model.returnVisitTimeEnd"></peace-date-picker>
       </el-form-item>
 
       <el-form-item label=" ">
@@ -41,26 +41,33 @@
     <peace-table ref="table"
                  pagination>
       <peace-table-column label="复诊单号"
-                          width="180"
+                          min-width="180"
                           prop="inquiryNo"></peace-table-column>
       <peace-table-column label="患者姓名"
-                          prop="name"></peace-table-column>
+                          prop="name"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="性别"
-                          prop="genderText"></peace-table-column>
+                          prop="genderText"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="年龄"
-                          prop="age"></peace-table-column>
+                          prop="age"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="复诊时间"
                           width="180"
                           prop="returnVisitTime"></peace-table-column>
       <peace-table-column label="订单金额"
                           align="right"
+                          header-align="right"
+                          min-width="120"
                           prop="orderAmount"></peace-table-column>
       <peace-table-column label="订单时间"
-                          width="150"
+                          width="180"
                           prop="createdTime"></peace-table-column>
       <peace-table-column label="订单状态"
-                          prop="orderStatusText"></peace-table-column>
-      <peace-table-column label="操作">
+                          prop="orderStatusText"
+                          min-width="120"></peace-table-column>
+      <peace-table-column label="操作"
+                          width="120">
         <template slot-scope="scope">
           <el-button type="text"
                      v-bind:title="getControlTitleTip(scope.row)"

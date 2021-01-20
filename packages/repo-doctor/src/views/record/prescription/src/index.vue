@@ -3,19 +3,21 @@
     <el-form :model="view.model"
              inline>
       <el-form-item label="患者姓名">
-        <el-input placeholder
-                  v-model="view.model.familyName"></el-input>
+        <el-input v-model="view.model.familyName"></el-input>
       </el-form-item>
+
       <el-form-item label="处方开具时间">
-        <el-date-picker :picker-options="view.rules.pickerOptionsStart"
-                        placeholder
-                        v-model="view.model.s_Date"
-                        value-format="yyyy-MM-dd"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           :picker-options="view.rules.pickerOptionsStart"
+                           placeholder
+                           v-model="view.model.s_Date"
+                           value-format="yyyy-MM-dd"></peace-date-picker>
         <span class="character"></span>
-        <el-date-picker :picker-options="view.rules.pickerOptionsEnd"
-                        placeholder
-                        v-model="view.model.e_Date"
-                        value-format="yyyy-MM-dd"></el-date-picker>
+        <peace-date-picker style="width: 130px"
+                           :picker-options="view.rules.pickerOptionsEnd"
+                           placeholder
+                           v-model="view.model.e_Date"
+                           value-format="yyyy-MM-dd"></peace-date-picker>
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="get"
@@ -29,21 +31,22 @@
                  ref="table">
       <peace-table-column label="处方编号"
                           prop="prescriptionNo"
-                          width="180"></peace-table-column>
-      <peace-table-column align="left"
-                          label="患者姓名"
-                          prop="patient_name"></peace-table-column>
+                          min-width="180"></peace-table-column>
+      <peace-table-column label="患者姓名"
+                          prop="patient_name"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="性别"
-                          prop="patient_sex"></peace-table-column>
+                          prop="patient_sex"
+                          min-width="100"></peace-table-column>
       <peace-table-column label="年龄"
-                          prop="patient_age"></peace-table-column>
+                          prop="patient_age"
+                          min-width="100"></peace-table-column>
       <peace-table-column label="身份证号"
                           prop="idcard"
-                          width="200"></peace-table-column>
-      <peace-table-column align="center"
-                          label="处方状态"
+                          min-width="120"></peace-table-column>
+      <peace-table-column label="处方状态"
                           prop="prescription_status"
-                          width="140"></peace-table-column>
+                          min-width="120"></peace-table-column>
       <peace-table-column label="开具时间"
                           prop="created_time"
                           width="180"></peace-table-column>
@@ -152,12 +155,6 @@ export default {
     position: relative;
     top: -4px;
     margin: 0 10px;
-  }
-}
-.prescription {
-  .el-form.el-form--inline .el-form-item__content > .el-input.el-input--mini,
-  .el-form.el-form--inline .el-form-item__content > .el-select.el-select--mini {
-    width: 140px;
   }
 }
 </style>

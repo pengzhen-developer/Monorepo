@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <el-alert type="success"
+  <div v-loading="sending"
+       element-loading-text="拼命加载中"
+       element-loading-background="rgba(255, 255, 255, 0)">
+    <el-alert style="border-radius: 0;"
+              type="success"
               v-bind:closable="false">
       <div slot="title">
         <span>开处方</span>

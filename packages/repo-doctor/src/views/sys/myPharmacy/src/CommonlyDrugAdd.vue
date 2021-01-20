@@ -14,8 +14,7 @@
                   v-on:keyup.enter.native="search()"></el-input>
       </div>
       <div class="">
-        <el-button style="width: 80px;"
-                   size="mini"
+        <el-button size="mini"
                    type="primary"
                    v-on:click="search()">搜索</el-button>
       </div>

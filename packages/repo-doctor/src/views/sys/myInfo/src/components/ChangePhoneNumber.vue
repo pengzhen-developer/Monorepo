@@ -59,7 +59,6 @@
 
       <div class="text-center q-mb-lg">
         <el-button throttle
-                   style="min-width: 80px;"
                    type="primary"
                    v-on:click="nextStep">下一步</el-button>
       </div>
@@ -112,7 +111,6 @@
 
       <div class="text-center q-mb-lg">
         <el-button throttle
-                   style="min-width: 80px;"
                    type="primary"
                    v-on:click="completeStep">完成</el-button>
       </div>

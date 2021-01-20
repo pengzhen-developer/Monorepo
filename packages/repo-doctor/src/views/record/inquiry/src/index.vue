@@ -3,25 +3,24 @@
     <el-form :model="view.model"
              inline>
       <el-form-item label="患者姓名">
-        <el-input placeholder
-                  style="width: 130px;"
-                  v-model="view.model.name"></el-input>
+        <el-input v-model="view.model.name"></el-input>
       </el-form-item>
+
       <el-form-item label="订单日期">
-        <el-date-picker :picker-options="view.rules.pickerOptionsStart"
-                        style="width: 145px;"
-                        v-model="view.model.time_start"
-                        value-format="yyyy-MM-dd"></el-date-picker>
+        <peace-date-picker :picker-options="view.rules.pickerOptionsStart"
+                           style="width: 130px;"
+                           v-model="view.model.time_start"
+                           value-format="yyyy-MM-dd"></peace-date-picker>
         <span class="q-mx-sm">-</span>
-        <el-date-picker :picker-options="view.rules.pickerOptionsEnd"
-                        style="width: 145px;"
-                        v-model="view.model.time_end"
-                        value-format="yyyy-MM-dd"></el-date-picker>
+        <peace-date-picker :picker-options="view.rules.pickerOptionsEnd"
+                           style="width: 130px;"
+                           v-model="view.model.time_end"
+                           value-format="yyyy-MM-dd">
+        </peace-date-picker>
       </el-form-item>
       <el-form-item label="咨询类型">
         <el-select clearable
                    placeholder="全部"
-                   style="width: 130px;"
                    v-model="view.model.inquiryType">
           <el-option :key="item.value"
                      :label="item.label"
@@ -41,17 +40,20 @@
                  ref="table">
       <peace-table-column label="咨询单号"
                           prop="inquiry_no"
-                          width="180"></peace-table-column>
+                          min-width="180"></peace-table-column>
       <peace-table-column align="left"
                           label="患者姓名"
-                          prop="name"></peace-table-column>
+                          prop="name"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="性别"
-                          prop="sex"></peace-table-column>
+                          prop="sex"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="年龄"
-                          prop="age"></peace-table-column>
+                          prop="age"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="咨询类型"
                           prop="type"
-                          width="120px">
+                          min-width="120">
         <template slot-scope="scope">
           <span class="private-doctor"
                 v-if="scope.row.isPrivateDoctor">私</span>
@@ -59,15 +61,19 @@
         </template>
       </peace-table-column>
       <peace-table-column align="right"
+                          header-align="right"
                           label="订单金额"
-                          prop="order_money"></peace-table-column>
+                          prop="order_money"
+                          min-width="120"></peace-table-column>
       <peace-table-column label="订单时间"
                           prop="created_time"
                           width="180"></peace-table-column>
       <peace-table-column label="订单状态"
-                          prop="status"></peace-table-column>
+                          prop="status"
+                          min-width="120"></peace-table-column>
       <peace-table-column fixed="right"
-                          label="操作">
+                          label="操作"
+                          width="120">
         <template slot-scope="scope">
           <el-button type="text"
                      v-bind:title="getControlTitleTip(scope.row)"

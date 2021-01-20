@@ -98,10 +98,8 @@
     </el-form>
 
     <div class="text-center">
-      <el-button style="width: 80px;"
-                 v-on:click="prev">上一步</el-button>
-      <el-button style="width: 80px;"
-                 type="primary"
+      <el-button v-on:click="prev">上一步</el-button>
+      <el-button type="primary"
                  v-bind:disabled="nextButtonDisabled"
                  v-on:click="next">完成</el-button>
     </div>

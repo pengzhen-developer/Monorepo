@@ -17,15 +17,17 @@
       <el-form :model="view.model"
                inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStartForReceive"
-                          placeholder
-                          v-model="view.modelForReceive.startTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <peace-date-picker style="width: 130px"
+                             :picker-options="view.rules.pickerOptionsStartForReceive"
+                             placeholder
+                             v-model="view.modelForReceive.startTime"
+                             value-format="yyyy-MM-dd"></peace-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEndForReceive"
-                          placeholder
-                          v-model="view.modelForReceive.endTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <peace-date-picker style="width: 130px"
+                             :picker-options="view.rules.pickerOptionsEndForReceive"
+                             placeholder
+                             v-model="view.modelForReceive.endTime"
+                             value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get"
@@ -66,15 +68,17 @@
       <el-form :model="view.model"
                inline>
         <el-form-item label="购买日期">
-          <el-date-picker :picker-options="view.rules.pickerOptionsStartForService"
-                          placeholder
-                          v-model="view.modelForService.startTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <peace-date-picker style="width: 130px"
+                             :picker-options="view.rules.pickerOptionsStartForService"
+                             placeholder
+                             v-model="view.modelForService.startTime"
+                             value-format="yyyy-MM-dd"></peace-date-picker>
           <span class="character">一</span>
-          <el-date-picker :picker-options="view.rules.pickerOptionsEndForService"
-                          placeholder
-                          v-model="view.modelForService.endTime"
-                          value-format="yyyy-MM-dd"></el-date-picker>
+          <peace-date-picker style="width: 130px"
+                             :picker-options="view.rules.pickerOptionsEndForService"
+                             placeholder
+                             v-model="view.modelForService.endTime"
+                             value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
         <el-form-item label=" ">
           <el-button @click="get"

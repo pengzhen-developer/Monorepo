@@ -72,7 +72,7 @@
         <peace-table-column :show-overflow-tooltip="false"
                             fixed="right"
                             label="操作"
-                            width="150px">
+                            width="180px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
@@ -147,7 +147,7 @@
         <peace-table-column :show-overflow-tooltip="false"
                             fixed="right"
                             label="操作"
-                            width="150px">
+                            width="180px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>

@@ -116,11 +116,9 @@
 
     <div class="text-center"
          v-show="!detailedly">
-      <el-button style="width: 80px;"
-                 class="q-mr-md"
+      <el-button class="q-mr-md"
                  v-on:click="cancelCommonlyPrescription">取消</el-button>
-      <el-button style="width: 80px;"
-                 type="primary"
+      <el-button type="primary"
                  v-on:click="saveCommonlyPrescription">保存</el-button>
     </div>
 
