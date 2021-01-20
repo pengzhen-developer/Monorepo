@@ -44,7 +44,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span class="em-5-justify">订单编号</span>
+            <span>订单编号</span>
             <span>：</span>
           </span>
 
@@ -54,9 +54,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span class="em-5-justify">
-              {{ model.ShippingMethod === '0' ? '取件人姓名' : '收件人姓名' }}
-            </span>
+            <span>{{ model.ShippingMethod === '0' ? '取件人姓名' : '收件人姓名' }}</span>
             <span>：</span>
           </span>
 
@@ -66,9 +64,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span class="em-5-justify">
-              {{ model.ShippingMethod === '0' ? '取件人电话' : '收件人电话' }}
-            </span>
+            <span>{{ model.ShippingMethod === '0' ? '取件人电话' : '收件人电话' }}</span>
             <span>：</span>
           </span>
 
@@ -78,7 +74,7 @@
 
         <el-form-item>
           <span slot="label">
-            <span class="em-5-justify">下单时间</span>
+            <span>下单时间</span>
             <span>：</span>
           </span>
 
@@ -89,8 +85,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button style="min-width: 80px;"
-                     type="primary"
+          <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
@@ -106,8 +101,8 @@
           <template slot="header">
             <div class="flex items-start">
               <!-- 单列实现伪表格，为保持样式统一，表头布局与内容布局必须保持一致 (** 宽度) -->
-              <div class="q-px-md q-py-sm col">订单信息</div>
-              <div class="q-px-md q-py-sm"
+              <div class="q-px-md q-py-sm col text-left">订单信息</div>
+              <div class="q-px-md q-py-sm text-left"
                    style="width: 240px;">
                 {{ model.ShippingMethod === '0' ? '取货信息' : '收获信息' }}
               </div>

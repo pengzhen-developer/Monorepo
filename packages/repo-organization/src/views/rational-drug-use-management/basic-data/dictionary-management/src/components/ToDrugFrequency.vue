@@ -14,7 +14,11 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="创建时间">
+        <el-form-item>
+          <span slot="label">
+            <span>创建时间</span>
+            <span>：</span>
+          </span>
           <div class="date-wrap">
             <el-date-picker v-model="model.BeginTime"
                             type="date"
@@ -166,10 +170,7 @@ export default {
       endPickerOptions: {
         disabledDate: (time) => {
           if (this.model.BeginTime) {
-            return (
-              time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) ||
-              time.getTime() > Date.now()
-            )
+            return time.getTime() < new Date(this.model.BeginTime).setDate(new Date(this.model.BeginTime).getDate() - 1) || time.getTime() > Date.now()
           } else {
             return time.getTime() > Date.now() || time.getTime() < new Date('2019-02-28').getTime()
           }

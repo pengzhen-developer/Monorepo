@@ -81,10 +81,8 @@
       <div class="top-menu">
         <el-button type="primary"
                    @click="addDrug">新增</el-button>
-        <el-button type="primary"
-                   @click="openImportDialog">批量新增</el-button>
-        <el-button type="primary"
-                   @click="openImportDrugCodeDialog">批量修改编码</el-button>
+        <el-button @click="openImportDialog">批量新增</el-button>
+        <el-button @click="openImportDrugCodeDialog">批量修改编码</el-button>
       </div>
 
       <PeaceTable ref="table"
