@@ -68,7 +68,7 @@
           </peace-date-picker>
         </el-form-item>
 
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button type="primary"
                      @click="get()">查询</el-button>
         </el-form-item>
