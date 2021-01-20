@@ -1366,7 +1366,7 @@ export default {
         //选择病历
       } else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
         answer = params[0] || params[1]
-        this.model.recordNo = params[1]
+        this.model.recordNo = !params[0] ? '' : params[1]
         this.model.caseInfo = params[0]
         this.selectCase = !params[0] ? false : true
         if (this.selectCase) {
