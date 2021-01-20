@@ -1,7 +1,5 @@
 <template>
-  <div v-loading="sending"
-       element-loading-text="拼命加载中"
-       element-loading-background="rgba(255, 255, 255, 0)">
+  <div>
     <el-alert type="success"
               v-bind:closable="false">
       <div slot="title">
@@ -149,7 +147,10 @@
 
     <!-- 系统审方结果 -->
     <peace-dialog title="系统审方结果"
-                  v-bind:visible.sync="audit.visible">
+                  v-bind:visible.sync="audit.visible"
+                  v-loading="sending"
+                  element-loading-text="拼命加载中"
+                  element-loading-background="rgba(0, 0, 0, 0.4)">
       <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
 
       <div class="q-my-md flex justify-center">
@@ -638,7 +639,6 @@ export default {
 }
 
 ::v-deep .el-loading-spinner {
-  z-index: 2005;
   width: 160px;
   left: 42%;
   padding: 30px;
