@@ -39,7 +39,8 @@
       <transition-group tag="div"
                         name="van-slide-left">
         <div v-for="(item, index) in answerList"
-             :key="item.field+index">
+             :key="item.field+index"
+             :class="{'message-layout-content-case':item.field === ANSWER_FIELD.SELECT_CASE}">
           <div class="message-layout left"
                v-if="item.question&&item.field === ANSWER_FIELD.SELECT_CASE">
 
@@ -1642,7 +1643,12 @@ export default {
 
     scrollToBottom() {
       const $layout = this.$el.querySelector('.layout-content')
-      $layout.scrollTop = $layout.scrollHeight
+      const caseEle = this.$el.querySelector('.message-layout-content-case')
+      if (caseEle && this.current.field == ANSWER_FIELD.SELECT_CASE) {
+        $layout.scrollTop = caseEle.offsetTop - 50 - 16
+      } else {
+        $layout.scrollTop = $layout.scrollHeight
+      }
     }
   }
 }
