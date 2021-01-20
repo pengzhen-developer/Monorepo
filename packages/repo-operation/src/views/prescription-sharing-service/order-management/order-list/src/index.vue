@@ -452,6 +452,7 @@ export default {
       async handler() {
         // DistributionOrderStatus  配送订单状态    1
         // SelfOrderStatus  自提订单状态  0
+        this.model.OrderStatus = ''
         this.remoteSource.OrderStatus = this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
