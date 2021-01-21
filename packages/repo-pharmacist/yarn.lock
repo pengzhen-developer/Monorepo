@@ -920,20 +920,20 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.23":
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.23.tgz#43558778c272c097e416be681ee33c44464658d6"
-  integrity sha512-yKaJPUjdpuNizTmNsfLIIInNhcdkDlun9s13DpB5ky2/AMNTrLqtOQVpnLliWsEN6kMARED79Hlc0LBDI14juQ==
+"@jk998/library@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.24.tgz#d872390b7a22166864bd699e3c4b9db9b4991fb5"
+  integrity sha512-qyGzhxuUR/xQ1uRcXu6Wl9ZlYMhgCjcqqbZ4KCKe/oYqcxMYf04ignlahONpPQsShxu2VGy4MoqNdTbYRbX0kw==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.16":
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.16.tgz#06e7e736f4bc126b548bd5d932a74fbf28eed53c"
-  integrity sha512-YAsIEM+f3ZVUUAlKEV09bpohFeN++kDEwLhjJwyIRPHeKJrwKWj+EFQhMaWmhfOHTdArWAMjxSSY6ks6AzLmRg==
+"@jk998/peace-element-ui@^0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.17.tgz#49582214ab1046d51a26e289176f5096240eef90"
+  integrity sha512-611JnTvV1ZqbYpVR5pFZ0JTnyv+MX7JCp49/MWD7o0qmOw2dIa75KS8IaaW5bRpBiPwP8OxbVf9wGtpDfxyu/w==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
