@@ -607,7 +607,7 @@ export default {
             </div>
             <div>
               <h4>{this.custom.name}</h4>
-              <p>邀请您进行视频会诊</p>
+              <p>邀请您进行视频通话</p>
             </div>
           </div>
           <hr />
