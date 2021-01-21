@@ -45,13 +45,13 @@
                              text-color="#999999"
                              style="font-size: 12px;border-radius: 4px;">{{ item.relation }}</van-tag>
                   </div>
-                  <div class="flex ">
-                    <span style="font-size: 14px; margin-right: 10px;color:#999;">{{ item.age }}</span>
+                  <div class="flex "
+                       style="margin-top:4px;">
                     <van-icon v-if="item.sex === '男'"
                               :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
                     <van-icon v-if="item.sex === '女'"
                               :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
-
+                    <span style="font-size: 14px; margin-left: 10px;color:#999;">{{ item.age }}</span>
                   </div>
                 </div>
 
