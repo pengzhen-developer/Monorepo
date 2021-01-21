@@ -30,9 +30,8 @@ import ElementUI from 'element-ui'
 // 加载 jk998 peace-elemetn-ui
 import PeaceElementUI from '@jk998/peace-element-ui'
 
-export default ({ Vue, configuration }) => {
+export default ({ Vue }) => {
   // 异步引入 ui css
-  require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
   require('@jk998/peace-element-ui/dist/peace-element-ui.css')
 
   Vue.use(ElementUI, { size: 'mini' })
