@@ -42,6 +42,11 @@
   transform: none;
 }
 
+.van-cell:last-child::after,
+.van-cell--borderless::after {
+  display: block;
+}
+
 //.van-button--large   large width: 100%; magin:0 16px;
 .van-button--large.full {
   width: calc(100% - 32px);

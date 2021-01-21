@@ -148,13 +148,13 @@
         <van-field @click="showPopupBirthday"
                    label="生日"
                    class="require"
-                   placeholder="请输入"
+                   placeholder="请选择"
                    readonly
                    right-icon="arrow"
                    v-model="model.birthday" />
         <van-field @click="showPopupNations"
                    label="民族"
-                   placeholder="请输入"
+                   placeholder="请选择"
                    readonly
                    right-icon="arrow"
                    v-model="model.nationName" />
