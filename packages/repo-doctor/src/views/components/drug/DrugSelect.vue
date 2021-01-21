@@ -2,9 +2,9 @@
   <div>
     <div class="flex justify-between q-my-md">
       <el-form inline
-               v-if="type !== `faceToFace`"
                v-bind:model="model">
-        <el-form-item required
+        <el-form-item v-if="type !== `faceToFace`"
+                      required
                       label="Rp 类型：">
 
           <el-radio-group v-model="model.prescriptionTag">
