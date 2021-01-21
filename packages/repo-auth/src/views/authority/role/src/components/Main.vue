@@ -7,39 +7,34 @@
     <div class="card">
       <PeaceTable ref="table"
                   size="mini">
-        <el-table-column type="index"
-                         fixed
-                         align="center"
-                         label="序号"
-                         width="60"></el-table-column>
-        <el-table-column label="角色名称"
-                         min-width="100px"
-                         prop="roleName"
-                         align="left">
-        </el-table-column>
-        <el-table-column label="角色标识"
-                         align="center"
-                         min-width="100px"
-                         prop="roleCode"></el-table-column>
-        <el-table-column label="角色描述"
-                         align="center"
-                         min-width="100px"
-                         prop="roleDesc"></el-table-column>
-        <el-table-column label="角色类型"
-                         align="center"
-                         min-width="100px"
-                         prop="roleType">
+        <PeaceTableColumn type="index"
+                          fixed
+                          label="序号"
+                          width="60"></PeaceTableColumn>
+        <PeaceTableColumn label="角色名称"
+                          min-width="100px"
+                          prop="roleName"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="角色标识"
+                          min-width="100px"
+                          prop="roleCode"></PeaceTableColumn>
+        <PeaceTableColumn label="角色描述"
+                          min-width="100px"
+                          prop="roleDesc"></PeaceTableColumn>
+        <PeaceTableColumn label="角色类型"
+                          min-width="100px"
+                          prop="roleType">
           <template slot-scope="scope">
             {{scope.row.roleType | formatRoleType(dictList)}}
           </template>
-        </el-table-column>
-        <el-table-column label="创建时间"
-                         align="center"
-                         min-width="150px"
-                         prop="createTime"></el-table-column>
-        <el-table-column label="操作"
-                         align="left"
-                         min-width="150px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          min-width="150px"
+                          prop="createTime"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          align="left"
+                          min-width="150px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -54,7 +49,7 @@
                        type="text"
                        v-on:click="del(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

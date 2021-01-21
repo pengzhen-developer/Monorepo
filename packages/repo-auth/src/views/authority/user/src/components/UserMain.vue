@@ -24,41 +24,36 @@
                   size="mini"
                   v-bind:page-size="5"
                   pagination>
-        <el-table-column show-overflow-tooltip
-                         type="index"
-                         label="序号"
-                         width="60"
-                         align="center">
+        <PeaceTableColumn show-overflow-tooltip
+                          type="index"
+                          label="序号"
+                          width="60">
 
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="登录账号"
-                         min-width="120px"
-                         prop="username"
-                         align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="登录账号"
+                          min-width="120px"
+                          prop="username"
+                          align="left">
 
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="角色"
-                         min-width="220px"
-                         prop="roleList"
-                         align="center">
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="角色"
+                          min-width="220px"
+                          prop="roleList">
           <template slot-scope="scope">
             <span>{{getRoleNames(scope.row.roleList)}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label=""
-                         align="center"
-                         min-width="220px"
-                         prop="phone"></el-table-column>
-        <el-table-column label="密码"
-                         align="center"
-                         min-width="220px"
-                         prop="password"></el-table-column>
-        <el-table-column label="创建时间"
-                         align="center"
-                         min-width="220px"
-                         prop="createTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn label=""
+                          min-width="220px"
+                          prop="phone"></PeaceTableColumn>
+        <PeaceTableColumn label="密码"
+                          min-width="220px"
+                          prop="password"></PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          min-width="220px"
+                          prop="createTime"></PeaceTableColumn>
       </PeaceTable>
     </div>
   </div>

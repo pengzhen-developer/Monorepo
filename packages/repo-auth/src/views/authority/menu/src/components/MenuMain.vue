@@ -18,26 +18,26 @@
                               align="left">
 
         </PeaceTableColumnTree>
-        <el-table-column align="center"
-                         width="120px"
-                         prop="isDisplay">
+        <PeaceTableColumn width="120px"
+                          prop="isDisplay">
           <template slot="header">
             <span>是否显示 </span>
             <el-tooltip content="不显示时，脱离权限控制，但拥有访问权限"><i class="el-icon-question cursor-pointer"></i>
             </el-tooltip>
           </template>
-        </el-table-column>
-        <el-table-column label="图标"
-                         align="center"
-                         min-width="100px"
-                         prop="icon"></el-table-column>
-        <el-table-column label="排序"
-                         align="center"
-                         min-width="100px"
-                         prop="sort"></el-table-column>
-        <el-table-column label="操作"
-                         align="left"
-                         min-width="240px">
+          <template slot-scope="scope">
+            {{ scope.row.isDisplay ? '是' : '否' }}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="图标"
+                          min-width="100px"
+                          prop="icon"></PeaceTableColumn>
+        <PeaceTableColumn label="排序"
+                          min-width="100px"
+                          prop="sort"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          align="left"
+                          min-width="240px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -52,7 +52,7 @@
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </el-table>
     </div>
     <el-dialog v-if="dialogMenu.visible"

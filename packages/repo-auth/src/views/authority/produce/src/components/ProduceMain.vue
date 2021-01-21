@@ -11,20 +11,18 @@
                   v-bind:page-size="5"
                   pagination>
 
-        <el-table-column show-overflow-tooltip
-                         label="产品名称"
-                         min-width="220px"
-                         prop="productName"
-                         align="left">
+        <PeaceTableColumn show-overflow-tooltip
+                          label="产品名称"
+                          min-width="220px"
+                          prop="productName"
+                          align="left">
 
-        </el-table-column>
-        <el-table-column label="创建时间"
-                         align="center"
-                         min-width="220px"
-                         prop="createTime"></el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         width="140px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          min-width="220px"
+                          prop="createTime"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          width="140px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -33,7 +31,7 @@
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
     <el-dialog v-if="dialog.visible"

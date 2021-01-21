@@ -2,42 +2,41 @@
   <div>
     <el-card class="q-mb-md">
       <el-table :data="menuRoutes">
-        <el-table-column label="路由类别"
-                         align="left"
-                         width="100px"
-                         prop="routeType">
+        <PeaceTableColumn label="路由类别"
+                          align="left"
+                          width="100px"
+                          prop="routeType">
           <template slot-scope="scope">
             {{scope.row.routeType == 1 ?'主路由':'子路由'}}
           </template>
-        </el-table-column>
-        <el-table-column label="ID"
-                         align="left"
-                         width="100px"
-                         prop="routeId">
-        </el-table-column>
-        <el-table-column label="路由名称"
-                         align="left"
-                         width="100px"
-                         prop="routeName">
-        </el-table-column>
-        <el-table-column label="标签名称"
-                         align="left"
-                         width="100px"
-                         prop="name">
-        </el-table-column>
-        <el-table-column label="路由地址"
-                         align="left"
-                         min-width="140px"
-                         prop="routePath">
-        </el-table-column>
-        <el-table-column label="实际地址"
-                         align="left"
-                         min-width="180px"
-                         prop="realPath">
-        </el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         min-width="100px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="ID"
+                          align="left"
+                          width="100px"
+                          prop="routeId">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="路由名称"
+                          align="left"
+                          width="100px"
+                          prop="routeName">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="标签名称"
+                          align="left"
+                          width="100px"
+                          prop="name">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="路由地址"
+                          align="left"
+                          min-width="140px"
+                          prop="routePath">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="实际地址"
+                          align="left"
+                          min-width="180px"
+                          prop="realPath">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          min-width="100px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -46,7 +45,7 @@
                        type="text"
                        v-on:click="deleteSubRoute(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </el-table>
     </el-card>
 

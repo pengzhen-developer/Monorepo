@@ -9,37 +9,33 @@
                    ref="table"
                    size="mini">
 
-        <el-table-column label="控制类型"
-                         min-width="180px"
-                         prop="controlledType"
-                         align="left">
+        <PeaceTableColumn label="控制类型"
+                          min-width="180px"
+                          prop="controlledType"
+                          align="left">
           <template slot-scope="scope">
             {{ scope.row.controlledType | filterDictionary(controlledType) }}
           </template>
-        </el-table-column>
-        <el-table-column label="控制标识"
-                         align="center"
-                         min-width="120px"
-                         prop="controlledSign"></el-table-column>
-        <el-table-column label="控制菜单"
-                         align="center"
-                         width="140px"
-                         prop="menuId">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="控制标识"
+                          min-width="120px"
+                          prop="controlledSign"></PeaceTableColumn>
+        <PeaceTableColumn label="控制菜单"
+                          width="140px"
+                          prop="menuId">
           <template slot-scope="scope">
             {{ formatMenuName(scope.row) }} - {{ scope.row.menuId }}
           </template>
-        </el-table-column>
-        <el-table-column label="描述"
-                         align="center"
-                         min-width="180px"
-                         prop="description"></el-table-column>
-        <el-table-column label="排序"
-                         align="center"
-                         width="80px"
-                         prop="sort"></el-table-column>
-        <el-table-column label="操作"
-                         align="left"
-                         width="120px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="描述"
+                          min-width="180px"
+                          prop="description"></PeaceTableColumn>
+        <PeaceTableColumn label="排序"
+                          width="80px"
+                          prop="sort"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          align="left"
+                          width="120px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -48,7 +44,7 @@
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </peace-table>
     </div>
     <el-dialog width="450px"

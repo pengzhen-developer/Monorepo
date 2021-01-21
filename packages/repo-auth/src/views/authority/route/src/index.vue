@@ -6,7 +6,7 @@
               type="warning" />
     <vue-json-editor v-model="json"
                      :show-btns="false" />
-    <div align="center">
+    <div>
       <el-button @click="edit()">更新</el-button>
     </div>
   </div>

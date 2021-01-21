@@ -35,20 +35,20 @@
                       class="tow-col"
                       prop="autoapprove">
           <el-radio-group v-model="query.autoapprove">
-            <el-radio :label="false"
-                      border>否</el-radio>
-            <el-radio :label="true"
-                      border>是</el-radio>
+            <el-radio-button :label="false"
+                             border>否</el-radio-button>
+            <el-radio-button :label="true"
+                             border>是</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="授权模式"
                       prop="authorizedGrantTypes">
           <el-checkbox-group v-model="query.authorizedGrantTypes"
                              size="mini">
-            <el-checkbox :label="item.value"
-                         border
-                         v-for="(item,index) in authorizedGrantTypesList"
-                         :key="index">{{item.key}}</el-checkbox>
+            <el-checkbox-button :label="item.value"
+                                border
+                                v-for="(item,index) in authorizedGrantTypesList"
+                                :key="index">{{item.key}}</el-checkbox-button>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="令牌时效"

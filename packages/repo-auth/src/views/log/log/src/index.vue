@@ -6,41 +6,37 @@
                   v-bind:tableProps="{ pageIndex: 'current', pageSize: 'size' }"
                   v-bind:page-size="5"
                   pagination>
-        <el-table-column fixed
-                         align="center"
-                         label="日志编号"
-                         prop="id"
-                         width="100"></el-table-column>
+        <PeaceTableColumn fixed
+                          label="日志编号"
+                          prop="id"
+                          width="100"></PeaceTableColumn>
 
-        <el-table-column label="日志标题"
-                         min-width="100px"
-                         prop="title"
-                         align="left">
-        </el-table-column>
-        <el-table-column label="创建人"
-                         min-width="100px"
-                         prop="createBy"
-                         align="left">
-        </el-table-column>
-        <el-table-column label="操作方式"
-                         align="center"
-                         min-width="100px"
-                         prop="method"></el-table-column>
-        <el-table-column label="日志类型"
-                         align="center"
-                         min-width="100px"
-                         prop="type">
+        <PeaceTableColumn label="日志标题"
+                          min-width="100px"
+                          prop="title"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="创建人"
+                          min-width="100px"
+                          prop="createBy"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="操作方式"
+                          min-width="100px"
+                          prop="method"></PeaceTableColumn>
+        <PeaceTableColumn label="日志类型"
+                          min-width="100px"
+                          prop="type">
           <template slot-scope="scope">
             <span>{{getTypeText(scope.row.type)}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="创建时间"
-                         align="center"
-                         min-width="140px"
-                         prop="createTime"></el-table-column>
-        <el-table-column label="操作"
-                         align="left"
-                         min-width="150px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          min-width="140px"
+                          prop="createTime"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          align="left"
+                          min-width="150px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -49,7 +45,7 @@
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
     <el-dialog v-if="dialog.visible"

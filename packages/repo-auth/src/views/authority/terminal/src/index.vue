@@ -11,66 +11,63 @@
                   size="mini"
                   v-bind:page-size="5"
                   pagination>
-        <el-table-column show-overflow-tooltip
-                         width="70px"
-                         label="序号"
-                         type=index
-                         align="center">
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="终端名称"
-                         min-width="200px"
-                         prop="clientName"
-                         align="left">
+        <PeaceTableColumn show-overflow-tooltip
+                          width="70px"
+                          label="序号"
+                          type=index>
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="终端名称"
+                          min-width="200px"
+                          prop="clientName"
+                          align="left">
 
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="编号"
-                         min-width="200px"
-                         prop="clientId"
-                         align="left">
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="密钥"
-                         min-width="200px"
-                         prop="clientSecret"
-                         align="left">
-        </el-table-column>
-        <el-table-column show-overflow-tooltip
-                         label="域"
-                         min-width="140px"
-                         prop="scope"
-                         align="left">
-        </el-table-column>
-        <el-table-column label="自动放行"
-                         min-width="140px"
-                         prop="autoapprove"
-                         align="center">
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="编号"
+                          min-width="200px"
+                          prop="clientId"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="密钥"
+                          min-width="200px"
+                          prop="clientSecret"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn show-overflow-tooltip
+                          label="域"
+                          min-width="140px"
+                          prop="scope"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="自动放行"
+                          min-width="140px"
+                          prop="autoapprove">
           <template slot-scope="scope">
             <div>{{changeAutoapproveText(scope.row.autoapprove)}}</div>
           </template>
-        </el-table-column>
-        <el-table-column label="授权模式"
-                         min-width="200px"
-                         prop="authorizedGrantTypes"
-                         align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="授权模式"
+                          min-width="200px"
+                          prop="authorizedGrantTypes"
+                          align="left">
           <template slot-scope="scope">
             <div>{{changeAuAthorizedGrantTypesText(scope.row.authorizedGrantTypes)}}</div>
           </template>
-        </el-table-column>
-        <el-table-column label="令牌时效"
-                         min-width="140px"
-                         prop="accessTokenValidity"
-                         align="left">
-        </el-table-column>
-        <el-table-column label="刷新时效"
-                         align="left"
-                         min-width="140px"
-                         prop="refreshTokenValidity"></el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         fixed="right"
-                         width="140px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="令牌时效"
+                          min-width="140px"
+                          prop="accessTokenValidity"
+                          align="left">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="刷新时效"
+                          align="left"
+                          min-width="140px"
+                          prop="refreshTokenValidity"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          fixed="right"
+                          width="140px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -79,7 +76,7 @@
                        type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
     <el-dialog v-if="dialog.visible"
