@@ -533,7 +533,14 @@ export default {
       if (this.isCloudPharmacy) {
         return
       }
-      const json = peace.util.encode(this.phaInfo)
+      const json = peace.util.encode({
+        drugStoreName: this.order.drugStoreName,
+        drugStoreLogo: this.order.drugStoreLogo,
+        businessHours: this.order.businessHours,
+        contractTel: this.order.contractTel,
+        storeDetailsImgs: this.order.storeDetailsImgs,
+        storeAddress: this.order.storeAddress
+      })
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     changeInvoiceModel() {
@@ -592,21 +599,9 @@ export default {
             }
           })
         }
-        this.getPhaOrder(this.order.accessCode, this.order.jztClaimNo, this.order.drugStoreId, type)
 
         //H5支付返回- 缓存处方id 点击返回回到处方详情
         peace.cache.set('h5.prescribeId', this.order.prescribeId)
-      })
-    },
-    //预售订单+店铺详情
-    getPhaOrder(accessCode, jztClaimNo, drugStoreId, type) {
-      const params = { accessCode, jztClaimNo, drugStoreId }
-      if (type == 'hideLoad') {
-        params.hideLoad = true
-      }
-      peace.service.patient.getOrderBefore(params).then((res) => {
-        this.phaInfo = res.data
-        this.phoneDialog.data.phone = this.isCloudPharmacy ? this.order.phoneNumber : this.phaInfo.ContractTel
       })
     },
     goInterDrugPage(item) {

@@ -2,22 +2,22 @@
   <div>
     <div class="form-dl">
       <div class="form-dt">店铺名称：</div>
-      <div class="form-dd">{{phaInfo.DrugStoreName}}</div>
+      <div class="form-dd">{{drugStoreName}}</div>
     </div>
     <div class="form-dl">
       <div class="form-dt">营业时间：</div>
-      <div class="form-dd">{{phaInfo.BusinessHours}}</div>
+      <div class="form-dd">{{businessHours}}</div>
     </div>
     <div class="form-dl">
       <div class="form-dt">商家电话：</div>
-      <div class="form-dd blue"> <a :href="'tel:'+phaInfo.ContractTel">{{phaInfo.ContractTel}}</a> </div>
+      <div class="form-dd blue"> <a :href="'tel:'+contractTel">{{contractTel}}</a> </div>
     </div>
     <div class="form-dl">
       <div class="form-dt">商家地址：</div>
-      <div class="form-dd">{{phaInfo.Province}}{{phaInfo.City}}{{phaInfo.County}}{{phaInfo.Detailed}}</div>
+      <div class="form-dd">{{storeAddress}}</div>
     </div>
     <van-swipe>
-      <van-swipe-item v-for="(img,index) in phaInfo.storeDetailsImgs"
+      <van-swipe-item v-for="(img,index) in storeDetailsImgs"
                       :key="index">
         <img :src="img.logo"
              @click="preview(img.logo)" />
@@ -42,6 +42,28 @@ export default {
         position: 0,
         images: []
       }
+    }
+  },
+  computed: {
+    //联系电话
+    contractTel() {
+      return this.phaInfo.contractTel || this.phaInfo.ContractTel
+    },
+    //营业时间
+    businessHours() {
+      return this.phaInfo.businessHours || this.phaInfo.BusinessHours
+    },
+    //药店地址
+    storeAddress() {
+      return this.phaInfo.storeAddress || this.phaInfo.Province + this.phaInfo.City + this.phaInfo.County + this.phaInfo.Detailed
+    },
+    //药店名称
+    drugStoreName() {
+      return this.phaInfo.drugStoreName || this.phaInfo.DrugStoreName
+    },
+    //药店图片
+    storeDetailsImgs() {
+      return this.phaInfo.storeDetailsImgs
     }
   },
   mounted() {
