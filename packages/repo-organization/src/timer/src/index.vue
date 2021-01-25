@@ -1,15 +1,18 @@
 <template>
   <div>
     <PharmacyOrderTimer></PharmacyOrderTimer>
+    <PharmacyOrderCancelTimer></PharmacyOrderCancelTimer>
   </div>
 </template>
 
 <script>
-import PharmacyOrderTimer from './pharmacy-order-timer'
+import PharmacyOrderTimer from './components/PharmacyOrderTimer'
+import PharmacyOrderCancelTimer from './components/PharmacyOrderCancelTimer'
 
 export default {
   components: {
-    PharmacyOrderTimer
+    PharmacyOrderTimer,
+    PharmacyOrderCancelTimer
   }
 }
 </script>

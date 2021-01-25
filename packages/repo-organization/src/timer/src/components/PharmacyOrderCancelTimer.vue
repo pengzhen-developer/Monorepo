@@ -4,7 +4,7 @@
 <template>
   <div>
     <audio id="ding">
-      <source v-bind:src="require('./assets/ding.mp3')"
+      <source v-bind:src="require('../assets/ding.mp3')"
               type="audio/mp3">
     </audio>
   </div>
@@ -12,7 +12,7 @@
 
 <script>
 import Util from '@src/util'
-import Service from './service'
+import Service from '../service'
 
 const generalDelay = 30000
 const initialDelay = 1000
@@ -56,13 +56,13 @@ export default {
             message: (
               <div class="flex q-mb-md">
                 <div class="q-mr-md">
-                  <i class="el-icon-bell text-orange text-h4"></i>
+                  <i class="el-icon-bell text-red text-h4"></i>
                 </div>
                 <div class="col flex column">
-                  <div class="text-orange text-h6 text-weight-bold q-mb-sm">来单提醒</div>
+                  <div class="text-red text-h6 text-weight-bold q-mb-sm">退单提醒</div>
                   <div class="flex justify-between items-center">
-                    <div class="q-mr-lg">您有新的订单，请及时处理</div>
-                    <div class="text-primary cursor-pointer" on-click={this.gotoPharmacyOrderList}>
+                    <div class="q-mr-lg">您有新的退单申请，请及时处理</div>
+                    <div class="text-primary cursor-pointer" on-click={this.gotoPharmacyOrderCancelList}>
                       查看详情
                     </div>
                   </div>
@@ -82,10 +82,10 @@ export default {
       ding?.play()
     },
 
-    gotoPharmacyOrderList() {
+    gotoPharmacyOrderCancelList() {
       this.notifyObejct?.close()
 
-      this.$router.push('/drug-supply-service/pharmacy-take-order/take-order-list')
+      this.$router.push('/drug-supply-service/pharmacy-take-order/order-cancel-list')
     }
   },
 
