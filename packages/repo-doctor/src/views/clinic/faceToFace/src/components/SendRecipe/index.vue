@@ -407,6 +407,12 @@ export default {
 
       Service.getBaseInfo(params).then((res) => {
         this.caseInfo = res.data
+
+        if (Peace.dayjs().year() - Peace.dayjs(res.data.patientInfo.birthday).year() < 6) {
+          this.$alert('当前患者为 6 岁以下儿童，请先确认患儿有监护人和相关专业医师陪伴，否则请勿开具处方', '提示', {
+            confirmButtonText: '确认'
+          })
+        }
       })
     },
 

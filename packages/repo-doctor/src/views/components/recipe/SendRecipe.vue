@@ -358,6 +358,12 @@ export default {
           })
         }
 
+        if (Peace.dayjs().year() - Peace.dayjs(res.data.birthday).year() < 6) {
+          this.$alert('当前患者为 6 岁以下儿童，请先确认患儿有监护人和相关专业医师陪伴，否则请勿开具处方', '提示', {
+            confirmButtonText: '确认'
+          })
+        }
+
         this.caseInfo = res.data
         this.diagnoseList = Peace.util.deepClone(data)
         this.dialog.chooseData = Peace.util.deepClone(data)
