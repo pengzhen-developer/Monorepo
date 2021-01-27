@@ -59,10 +59,10 @@
                             prop="name"></peace-table-column>
         <peace-table-column label="期望转诊时间"
                             prop="expect_time"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column label="申请时间"
                             prop="created_time"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column :formatter="formatter"
                             label="转诊状态"
                             prop="transfer_status"
@@ -115,10 +115,10 @@
                             prop="name"></peace-table-column>
         <peace-table-column label="期望转诊时间"
                             prop="expect_time"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column label="申请时间"
                             prop="created_time"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column :formatter="formatter"
                             label="转诊状态"
                             prop="transfer_status"

@@ -1,27 +1,29 @@
 <template>
   <div>
-    <el-form :model="ruleForm"
-             :rules="rules"
+    <el-form v-bind:model="ruleForm"
+             v-bind:rules="rules"
              label-position="right"
-             label-width="100px"
+             label-width="110px"
              ref="ruleForm">
       <el-form-item label="姓名"
                     prop="name">
         <span slot="label">姓名：</span>
-        <el-input v-model="ruleForm.name"
+        <el-input v-bind:disabled="isChaperonage"
+                  v-model="ruleForm.name"
                   placeholder="请输入姓名"></el-input>
       </el-form-item>
       <el-form-item label="身份证"
                     prop="idCard">
         <span slot="label">身份证：</span>
-        <el-input v-model.trim="ruleForm.idCard"
+        <el-input v-bind:disabled="isChaperonage"
+                  v-model="ruleForm.idCard"
                   placeholder="请输入身份证号"></el-input>
       </el-form-item>
       <el-form-item label="性别"
                     prop="sex">
         <span slot="label">性别：</span>
         <el-input v-model="ruleForm.sex"
-                  :disabled="true"></el-input>
+                  v-bind:disabled="true"></el-input>
       </el-form-item>
 
       <el-form-item label="生日"
@@ -29,19 +31,46 @@
         <span slot="label">生日：</span>
         <el-input suffix-icon="el-icon-date"
                   v-model="ruleForm.birthday"
-                  :disabled="true"></el-input>
+                  v-bind:disabled="true"></el-input>
       </el-form-item>
 
       <el-form-item label="联系方式"
                     prop="tel">
         <span slot="label">手机号码：</span>
-        <el-input v-model.number.trim="ruleForm.tel"
+        <el-input v-bind:disabled="isChaperonage"
+                  v-model.number.trim="ruleForm.tel"
                   placeholder="请输入手机号码"></el-input>
       </el-form-item>
 
+      <div v-if="isChaperonage">
+        <hr>
+
+        <div class="q-mb-md">
+          <el-alert type="warning"
+                    show-icon=""
+                    v-bind:closable="false"
+                    title="就诊人身份证信息未进入认证库，请填写陪同人信息"></el-alert>
+        </div>
+
+        <el-form-item label=""
+                      prop="chaperonageName">
+          <span slot="label">陪同人姓名：</span>
+          <el-input v-model.trim="ruleForm.chaperonageName"
+                    placeholder="请输入姓名"></el-input>
+        </el-form-item>
+
+        <el-form-item label=""
+                      prop="chaperonageIdCard">
+          <span slot="label">身份证：</span>
+          <el-input v-model.trim="ruleForm.chaperonageIdCard"
+                    placeholder="请输入身份证号"></el-input>
+        </el-form-item>
+
+      </div>
+
       <el-form-item>
         <el-button @click="closeMenu">取消</el-button>
-        <el-button @click="submitForm('ruleForm')"
+        <el-button @click="submitForm"
                    type="primary">保存</el-button>
       </el-form-item>
     </el-form>
@@ -61,17 +90,22 @@
 </template>
 
 <script>
-import Service from '../service/index'
+import Service from '../service'
 
 export default {
   data() {
     return {
+      isChaperonage: false,
+
       ruleForm: {
         name: '',
         idCard: '',
         tel: '',
         sex: '',
-        birthday: ''
+        birthday: '',
+
+        chaperonageName: '',
+        chaperonageIdCard: ''
       },
 
       isSave: false, //是否保存
@@ -80,14 +114,20 @@ export default {
 
       rules: {
         name: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
-          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入姓名' },
+          { min: 2, max: 5, message: '长度在 2 到 5 个字符' }
         ],
-        idCard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
+        idCard: [
+          { required: true, message: '请输入身份证号' },
+          { pattern: Peace.validate.pattern.idCard, message: '请输入正确的身份证号' }
+        ],
         tel: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { pattern: Peace.validate.pattern.mobile, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
-        ]
+          { required: true, message: '请输入手机号码' },
+          { pattern: Peace.validate.pattern.mobile, message: '请输入正确的手机号' }
+        ],
+
+        chaperonageName: [{ min: 2, max: 5, message: '长度在 2 到 5 个字符' }],
+        chaperonageIdCard: [{ pattern: Peace.validate.pattern.idCard, message: '请输入正确的身份证号' }]
       },
 
       tips: {
@@ -116,28 +156,101 @@ export default {
   },
 
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          //提交
-          Service.addPatient(this.ruleForm).then((res) => {
-            if (res.success && res.data.status === 1) {
-              this.isSave = true
-              this.closeMenu()
-              this.$emit('updateList')
-            } else if (res.success && res.data.status === 2) {
-              this.isSave = true
-              this.tips.showTips = true
-              this.tips.patientInfo = {
-                patientNo: res.data.patientNo,
-                patientId: res.data.patientId,
-                familyId: res.data.familyId,
-                tel: res.data.tel
-              }
-            }
-          })
-        } else {
-          return false
+    submitForm() {
+      // step 1 valid form
+      // step 2 valid id idcard and name
+      // step 3 valid chaperonage's idcard and name
+      // step 4 save data
+
+      if (this.isChaperonage) {
+        this.validForm()
+          .then(this.validChaperonageIdCard)
+          .then(this.saveData)
+      } else {
+        this.validForm()
+          .then(this.validIdCard)
+          .then(this.saveData)
+      }
+    },
+
+    validForm() {
+      return this.$refs.ruleForm.validate()
+    },
+
+    validIdCard() {
+      const params = { idCard: this.ruleForm.idCard, name: this.ruleForm.name }
+
+      // 验证身份证合法性
+      return Service.checkIdCard(params).then((res) => {
+        // 验证就诊人身份证合法性
+        // status = 1：正常
+        // status = 2：库中无此身份证号码
+        if (res.data.status === 1) {
+          return Promise.resolve()
+        }
+
+        if (res.data.status === 2) {
+          // 切换监护人表单填写
+          this.isChaperonage = true
+
+          return Promise.reject()
+        }
+
+        return Promise.reject()
+      })
+    },
+
+    validChaperonageIdCard() {
+      if (this.ruleForm.chaperonageIdCard && this.ruleForm.chaperonageName) {
+        const params = { idCard: this.ruleForm.chaperonageIdCard, name: this.ruleForm.chaperonageName }
+
+        // 验证陪护人身份证合法性
+        // status = 1：正常
+        // status = 2：库中无此身份证号码
+        return Service.checkIdCard(params).then((res) => {
+          if (res.data.status === 1) {
+            this.isChaperonage = true
+
+            return Promise.resolve()
+          }
+
+          if (res.data.status === 2) {
+            Peace.util.warning('陪同人' + res.msg)
+
+            return Promise.reject()
+          }
+
+          return Promise.reject()
+        })
+      } else {
+        return Promise.resolve()
+      }
+    },
+
+    saveData() {
+      const params = Peace.util.deepClone(this.ruleForm)
+
+      params.guardianInfo = {
+        name: this.ruleForm.chaperonageName,
+        idCard: this.ruleForm.chaperonageIdCard
+      }
+
+      Service.addPatient(params).then((res) => {
+        if (res.success && res.data.status === 1) {
+          Peace.util.success(res.msg)
+
+          this.isSave = true
+          this.closeMenu()
+          this.$emit('updateList')
+        } else if (res.success && res.data.status === 2) {
+          this.isSave = true
+          this.tips.showTips = true
+          this.tips.patientInfo = {
+            patientNo: res.data.patientNo,
+            patientId: res.data.patientId,
+            familyId: res.data.familyId,
+            tel: res.data.tel
+          }
         }
       })
     },

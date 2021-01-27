@@ -34,7 +34,7 @@
                           prop="companyName"></peace-table-column>
       <peace-table-column label="添加时间"
                           prop="createdTime"
-                          width="150"></peace-table-column>
+                          width="160"></peace-table-column>
       <peace-table-column fixed="right"
                           label="操作"
                           width="150">

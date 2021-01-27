@@ -61,10 +61,10 @@
                             prop="toDoctorName"></peace-table-column>
         <peace-table-column label="期望会诊时间"
                             prop="expectTime"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column label="申请时间"
                             prop="createdTime"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column :formatter="formatterConsultStatus"
                             label="会诊状态"
                             prop="consultStatus"
@@ -136,10 +136,10 @@
                             prop="fromDoctorName"></peace-table-column>
         <peace-table-column label="期望会诊时间"
                             prop="expectTime"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column label="申请时间"
                             prop="createdTime"
-                            width="150px"></peace-table-column>
+                            width="160px"></peace-table-column>
         <peace-table-column :formatter="formatterConsultStatus"
                             label="会诊状态"
                             prop="consultStatus"

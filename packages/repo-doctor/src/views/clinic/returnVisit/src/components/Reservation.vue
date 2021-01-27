@@ -24,7 +24,7 @@
                             width="60"
                             prop="familyAge"></peace-table-column>
         <peace-table-column label="复诊时间"
-                            width="150px"
+                            width="160px"
                             prop="returnVisitTime"></peace-table-column>
         <peace-table-column label="病情描述"
                             min-width="150px"

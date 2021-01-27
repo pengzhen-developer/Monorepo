@@ -51,7 +51,7 @@
                   v-if="addPatientDialog.visible"
                   :before-close="closeMenu"
                   append-to-body
-                  width="387px"
+                  width="420px"
                   title="添加患者">
       <AddPatient ref="checkInput"
                   v-on:closeMenu="closeMenu"

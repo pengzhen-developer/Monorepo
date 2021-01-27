@@ -9,48 +9,41 @@
                  plain>查看档案详情</el-button>
     </div>
 
-    <peace-table ref="table"
-                 :data="recipeList">
+    <PeaceTable ref="table"
+                :data="recipeList">
 
-      <peace-table-column align="center"
-                          label="处方编号"
-                          min-width="160px">
+      <PeaceTableColumn label="处方编号"
+                        min-width="160px">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">{{scope.row.prescriptionNo}}</el-button>
         </template>
-      </peace-table-column>
+      </PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="患者姓名"
-                          prop="patientName"
-                          min-width="100px"></peace-table-column>
+      <PeaceTableColumn label="患者姓名"
+                        prop="patientName"
+                        min-width="100px"></PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="性别"
-                          prop="sex"
-                          min-width="100px"></peace-table-column>
+      <PeaceTableColumn label="性别"
+                        prop="sex"
+                        min-width="100px"></PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="年龄"
-                          prop="age"
-                          min-width="100px"></peace-table-column>
+      <PeaceTableColumn label="年龄"
+                        prop="age"
+                        min-width="100px"></PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="身份证号"
-                          prop="idCard"
-                          min-width="160px"></peace-table-column>
+      <PeaceTableColumn label="身份证号"
+                        prop="idCard"
+                        min-width="160px"></PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="处方状态"
-                          prop="status"
-                          min-width="100px"></peace-table-column>
+      <PeaceTableColumn label="处方状态"
+                        prop="status"
+                        min-width="100px"></PeaceTableColumn>
 
-      <peace-table-column align="center"
-                          label="开具时间"
-                          prop="createdTime"
-                          min-width="160px"></peace-table-column>
-    </peace-table>
+      <PeaceTableColumn label="开具时间"
+                        prop="createdTime"
+                        min-width="160px"></PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog :visible.sync="dialog.visible"
                   append-to-body
