@@ -58,13 +58,13 @@ export default {
           index: Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_referral.png')
-        },
-        {
-          name: '会诊',
-          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
-          disable: false,
-          icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
         }
+        // {
+        //   name: '会诊',
+        //   index: Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
+        //   disable: false,
+        //   icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
+        // }
       ],
       selectIndex: undefined
     }

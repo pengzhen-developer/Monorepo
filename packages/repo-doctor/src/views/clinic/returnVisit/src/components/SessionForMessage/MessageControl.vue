@@ -79,7 +79,8 @@
               </div>
             </el-button>
           </div>
-          <div class="q-editor__toolbar-group">
+          <div v-if="false"
+               class="q-editor__toolbar-group">
             <el-button type="text"
                        v-on:click="sendConsultation">
               <div class="flex items-center">

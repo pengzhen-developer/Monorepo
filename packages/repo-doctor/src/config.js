@@ -67,14 +67,14 @@ export const config = {
         title: '复诊续方',
         path: '/clinic/returnVisit'
       },
-      {
-        id: 23,
-        pid: 2,
-        closable: true,
-        name: '我的会诊',
-        title: '我的会诊',
-        path: '/clinic/consultation'
-      },
+      // {
+      //   id: 23,
+      //   pid: 2,
+      //   closable: true,
+      //   name: '我的会诊',
+      //   title: '我的会诊',
+      //   path: '/clinic/consultation'
+      // },
       {
         id: 3,
         pid: null,

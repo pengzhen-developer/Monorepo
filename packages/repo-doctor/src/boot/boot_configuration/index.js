@@ -93,17 +93,17 @@ export default {
         menuAlias: 'ClinicfaceToFace',
         virtual: 0
       },
-      {
-        id: '24',
-        closable: true,
-        menuName: '我的会诊',
-        menuRoute: '/clinic/consultation',
-        menuPath: 'views/clinic/consultation',
-        parentId: '2',
-        enable: true,
-        menuAlias: 'ClinicConsultation',
-        virtual: 0
-      },
+      // {
+      //   id: '24',
+      //   closable: true,
+      //   menuName: '我的会诊',
+      //   menuRoute: '/clinic/consultation',
+      //   menuPath: 'views/clinic/consultation',
+      //   parentId: '2',
+      //   enable: true,
+      //   menuAlias: 'ClinicConsultation',
+      //   virtual: 0
+      // },
       {
         id: '3',
         closable: true,
