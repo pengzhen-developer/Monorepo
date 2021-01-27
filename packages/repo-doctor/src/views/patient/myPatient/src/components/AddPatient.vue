@@ -56,7 +56,7 @@
 
       <el-form-item>
         <el-button @click="closeMenu">取消</el-button>
-        <el-button @click="submitForm('ruleForm')"
+        <el-button @click="submitForm"
                    type="primary">保存</el-button>
       </el-form-item>
     </el-form>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import Service from './../service'
+
 export default {
   created() {
     this.getNational()
@@ -123,28 +125,48 @@ export default {
         this.nationals = res.data.list || []
       })
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          //提交
-          if (this.ruleForm.sexStr == '男') {
-            this.ruleForm.sex = 1
-          } else {
-            this.ruleForm.sex = 2
-          }
-          Peace.service.patient.addPatient(this.ruleForm).then((res) => {
-            Peace.util.success(res.msg)
-            if (res.success) {
-              this.isSave = true
-              this.closeMenu()
-              this.$emit('updateList')
-            }
-          })
-        } else {
-          return false
+
+    submitForm() {
+      // step 1， valid form
+      // step 2， valid id idcard and name
+      // step 3， save data
+
+      this.validForm()
+        .then(this.validIdCard)
+        .then(this.saveData)
+    },
+
+    validForm() {
+      return this.$refs.ruleForm.validate()
+    },
+
+    validIdCard() {
+      const params = { idCard: this.ruleForm.idCard, name: this.ruleForm.name }
+
+      // 验证患者身份证合法性
+      // status = 1：正常
+      // status = 2：库中无此身份证号码
+      return Service.checkIdCard(params)
+    },
+
+    saveData() {
+      if (this.ruleForm.sexStr == '男') {
+        this.ruleForm.sex = 1
+      } else {
+        this.ruleForm.sex = 2
+      }
+
+      Peace.service.patient.addPatient(this.ruleForm).then((res) => {
+        Peace.util.success(res.msg)
+
+        if (res.success) {
+          this.isSave = true
+          this.closeMenu()
+          this.$emit('updateList')
         }
       })
     },
+
     isShouldSave() {
       if (this.isSave) {
         return false
