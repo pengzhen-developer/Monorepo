@@ -1,7 +1,5 @@
 <template>
-  <div v-loading="sending"
-       element-loading-text="拼命加载中"
-       element-loading-background="rgba(255, 255, 255, 0)">
+  <div>
     <el-alert style="border-radius: 0;"
               type="success"
               v-bind:closable="false">
@@ -112,6 +110,7 @@
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
                     v-model="drugList"
+                    v-bind:isBuilding="isBuilding"
                     v-bind:prescriptionTag.sync="prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
@@ -243,6 +242,7 @@ export default {
 
   data() {
     return {
+      isBuilding: undefined,
       prescriptionTag: undefined,
 
       /** 体重 */
@@ -320,7 +320,7 @@ export default {
   },
 
   created() {
-    Promise.all([this.getCommonDiagnosis(), this.getCase(), this.getPrevInquiry()]).then(() => {
+    Promise.all([this.getCommonDiagnosis(), this.getCase(), this.getPrevInquiry(), this.checkIsBuilding()]).then(() => {
       this.resetDataFromCache()
     })
   },
@@ -361,6 +361,21 @@ export default {
         this.caseInfo = res.data
         this.diagnoseList = Peace.util.deepClone(data)
         this.dialog.chooseData = Peace.util.deepClone(data)
+      })
+    },
+
+    // 检查是否建档
+    checkIsBuilding() {
+      const params = {
+        familyId: this.familyId
+      }
+
+      Service.checkIsBuilding(params).then((res) => {
+        if (res.data.status === 2) {
+          // 未建档，默认选择外延处方
+          this.isBuilding = false
+          this.prescriptionTag = 2
+        }
       })
     },
 

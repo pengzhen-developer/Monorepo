@@ -14,6 +14,24 @@ export default {
   },
 
   /**
+   * 检测当前患者是否建档
+   *
+   */
+  checkIsBuilding(params) {
+    const isMock = false
+
+    const apiPath = 'client/v1/patient/checkIsBuilding'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 获取病历详情
    *
    * @param {*} params

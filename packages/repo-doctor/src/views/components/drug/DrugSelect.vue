@@ -10,8 +10,24 @@
           <el-radio-group v-model="model.prescriptionTag">
             <el-radio v-for="item in source.prescriptionTag"
                       v-bind:key="item.value"
-                      v-bind:label="item.value">
-              {{ item.label }}
+                      v-bind:label="item.value"
+                      v-bind:disabled="disabledInsideDrug(item)">
+              <template v-if="disabledInsideDrug(item)">
+                <el-tooltip content=""
+                            placement="top"
+                            effect="light">
+                  <div class="flex items-center justify-center"
+                       slot="content">
+                    <i style="color: #EA940FFF;"
+                       class="el-alert__icon el-icon-warning q-mr-sm"></i>
+                    <span>该就诊人在 HIS无建档信息，不能开具院内处方</span>
+                  </div>
+                  <span>{{ item.label }}</span>
+                </el-tooltip>
+              </template>
+              <template v-else>
+                <span>{{ item.label }}</span>
+              </template>
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -314,6 +330,8 @@ import Service from './service'
 
 export default {
   props: {
+    isBuilding: Boolean,
+
     value: {
       type: Array,
       default() {
@@ -400,6 +418,16 @@ export default {
   },
 
   methods: {
+    disabledInsideDrug(item) {
+      const config = Peace.cache.sessionStorage.get('config')
+
+      if (this.isBuilding === false && item.label === '院内处方' && config.hospitalTag === 'beichen') {
+        return true
+      } else {
+        return false
+      }
+    },
+
     getDictionary() {
       const userInfo = this.$store.state.user?.userInfo
       const params = {
