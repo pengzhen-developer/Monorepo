@@ -1,6 +1,8 @@
 export default {
   /**
-   * 获取更改手机验证码
+   * 修改手机号
+   *
+   * 获取验证码
    *
    * @param {*} params
    */
@@ -19,14 +21,16 @@ export default {
   },
 
   /**
-   * 修改医生手机号接口
+   * 修改手机号
+   *
+   * 验证验证码有效性
    *
    * @param {*} params
    */
-  updateTel(params) {
+  checkOldSmsCode(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Personalcenter/updateTel'
+    const apiPath = 'client/v1/Personalcenter/checkOldSmsCode'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -38,14 +42,14 @@ export default {
   },
 
   /**
-   * 旧手机号验证码有效性验证接口
+   * 修改手机号
    *
    * @param {*} params
    */
-  checkOldSmsCode(params) {
+  updateTel(params) {
     const isMock = false
 
-    const apiPath = 'client/v1/Personalcenter/checkOldSmsCode'
+    const apiPath = 'client/v1/Personalcenter/updateTel'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

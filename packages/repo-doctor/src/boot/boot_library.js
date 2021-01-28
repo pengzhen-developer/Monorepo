@@ -35,7 +35,10 @@ export default async ({ Vue }) => {
         requestInterceptor: {
           then(request) {
             const userInfo = Util.user.getUserInfo()
-            request.headers.accesstoken = userInfo?.list?.loginInfo?.token
+
+            if (userInfo?.list?.loginInfo?.token) {
+              request.headers.accesstoken = userInfo?.list?.loginInfo?.token
+            }
 
             const isUrl = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
             if (!isUrl.test(request.url)) {
@@ -70,7 +73,10 @@ export default async ({ Vue }) => {
                   }
 
                   Util.user.removeUserInfo()
-                  Util.location.redirectToLogin()
+
+                  setTimeout(() => {
+                    Util.location.redirectToLogin()
+                  }, 2000)
 
                   return Promise.reject(response)
               }

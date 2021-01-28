@@ -240,7 +240,7 @@ export default {
       {
         id: '51',
         closable: true,
-        menuName: '信息查看',
+        menuName: '信息管理',
         menuRoute: '/sys/myInfo',
         menuPath: 'views/sys/myInfo',
         parentId: '5',

@@ -21,10 +21,12 @@
                    type="primary">查询</el-button>
       </el-form-item>
     </el-form>
+
+    <hr />
+
     <el-button @click="addPatient"
                type="primary"
                icon="el-icon-circle-plus-outline">添加患者</el-button>
-    <hr />
 
     <peace-table pagination
                  ref="table">

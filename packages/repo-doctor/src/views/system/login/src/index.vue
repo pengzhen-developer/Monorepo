@@ -12,8 +12,13 @@
 
     <div class="layout">
       <div class="layout-top">
-        <SignByCode></SignByCode>
+        <SignByCode v-show="signBy === 'smsCode'"
+                    v-bind:signBy.sync="signBy"></SignByCode>
+
+        <SignByPassword v-show="signBy === 'password'"
+                        v-bind:signBy.sync="signBy"></SignByPassword>
       </div>
+
     </div>
 
     <div class="bottom">
@@ -29,15 +34,25 @@
 
 <script>
 import SignByCode from './components/SignByCode'
+import SignByPassword from './components/SignByPassword'
 
 export default {
   components: {
-    SignByCode
+    SignByCode,
+    SignByPassword
   },
 
   data() {
     return {
-      logoImage: require('./assets/img/logo.png')
+      logoImage: require('./assets/img/logo.png'),
+
+      /**
+       * 登录类型
+       *
+       * smsCode：验证码登录
+       * password：密码登录
+       */
+      signBy: 'password'
     }
   },
   methods: {}

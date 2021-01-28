@@ -57,7 +57,7 @@
         </el-form-item>
       </el-form>
 
-      <div class="text-center q-mb-lg">
+      <div class="text-center q-pb-lg">
         <el-button throttle
                    type="primary"
                    v-on:click="nextStep">下一步</el-button>
@@ -109,7 +109,7 @@
         </el-form-item>
       </el-form>
 
-      <div class="text-center q-mb-lg">
+      <div class="text-center q-pb-lg">
         <el-button throttle
                    type="primary"
                    v-on:click="completeStep">完成</el-button>

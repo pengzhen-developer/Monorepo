@@ -167,8 +167,8 @@ export const config = {
         id: 51,
         pid: 5,
         closable: true,
-        name: '信息查看',
-        title: '信息查看',
+        name: '信息管理',
+        title: '信息管理',
         path: '/sys/myInfo'
       },
       {

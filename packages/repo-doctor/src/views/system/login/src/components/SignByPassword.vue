@@ -15,9 +15,6 @@
 
       <el-form-item prop="tel">
         <el-input v-model.trim="model.tel"
-                  v-bind:class="{ 'active': usernameActive }"
-                  v-on:focus="usernameFocus"
-                  v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
             <i class="el-icon-mobile-phone"></i>
@@ -25,38 +22,16 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="smsCode">
-        <el-input ref="smsCode"
-                  v-model.trim="model.smsCode"
-                  v-bind:class="{ 'active': passwordActive }"
-                  v-bind:maxlength="6"
-                  v-bind:minlength="6"
-                  v-on:focus="passwordFocus"
-                  v-on:blur="passwordBlur"
-                  placeholder="请输入验证码">
+      <el-form-item prop="password">
+        <el-input ref="password"
+                  v-model.trim="model.password"
+                  show-password
+                  minlength="6"
+                  maxlength="20"
+                  placeholder="请输入登录密码">
           <div slot="prepend">
             <i class="el-icon-lock"></i>
           </div>
-
-          <template slot="suffix">
-            <template v-if="showCountdown">
-              <el-divider direction="vertical"></el-divider>
-
-              <PeaceCountdown v-bind:time="countdownTime"
-                              v-on:end="onCountdownEnd">
-                <template slot-scope="props">
-                  已发送 ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s)
-                </template>
-              </PeaceCountdown>
-            </template>
-            <template v-else>
-              <el-divider direction="vertical"></el-divider>
-
-              <el-button type="text"
-                         v-bind:disabled="!isVerifyPhone"
-                         v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
-            </template>
-          </template>
         </el-input>
       </el-form-item>
 
@@ -71,16 +46,26 @@
     <div class="flex justify-between">
       <el-button class="text-grey-5"
                  type="text"
-                 v-on:click="changeSignByPassword">密码登录</el-button>
+                 v-on:click="changeSignBySmsCode">验证码登录</el-button>
       <el-button class="text-grey-5"
                  type="text"
-                 v-on:click="tooltip">收不到验证码？</el-button>
+                 v-on:click="showChangePasswordDialog">忘记密码？</el-button>
     </div>
+
+    <PeaceDialog title="找回密码"
+                 width="580px"
+                 append-to-body
+                 v-if="changePasswordDialog.visible"
+                 v-bind:visible.sync="changePasswordDialog.visible">
+      <ChangePassword v-on:success="changePhoneNumberSuccess"></ChangePassword>
+    </PeaceDialog>
 
   </div>
 </template>
 
 <script>
+import ChangePassword from './ChangePassword'
+
 import Util from '@src/util'
 import Service from './../service'
 
@@ -89,18 +74,22 @@ export default {
     signBy: String
   },
 
+  components: {
+    ChangePassword
+  },
+
   data() {
     return {
-      sendSmsCode: false,
-      countdownTime: 0,
-      countdownInterval: 60 * 1000,
       isLoging: false,
       usernameActive: false,
-      passwordActive: false,
+
+      changePasswordDialog: {
+        visible: false
+      },
 
       model: {
         tel: Util.user.getUserPhone(),
-        smsCode: ''
+        password: ''
       },
 
       rules: {
@@ -108,91 +97,30 @@ export default {
           { required: true, message: '请输入手机号' },
           { pattern: Peace.validate.pattern.mobile, message: '请输入手机号' }
         ],
-        smsCode: [
-          { required: true, message: '请输入验证码', trigger: 'blur' },
-          {
-            validator: (rule, value, cb) => {
-              if (value.length !== 6) {
-                cb(new Error('请输入6位验证码'))
-              }
-
-              cb()
-            }
-          }
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { pattern: Peace.validate.pattern.password, message: '请输入6-20位数字或密码组合' }
         ]
       }
     }
   },
 
-  computed: {
-    isVerifyPhone() {
-      return this.model.tel?.length === 11
-    },
-
-    showCountdown() {
-      return this.countdownTime !== 0
-    }
-  },
-
   methods: {
-    passwordFocus() {
-      this.passwordActive = true
+    changeSignBySmsCode() {
+      this.$emit('update:signBy', 'smsCode')
     },
 
-    passwordBlur() {
-      this.passwordActive = false
+    showChangePasswordDialog() {
+      this.changePasswordDialog.visible = true
     },
 
-    usernameFocus() {
-      this.usernameActive = true
-    },
-
-    usernameBlur() {
-      this.usernameActive = false
-    },
-
-    onCountdownEnd() {
-      this.countdownTime = 0
-    },
-
-    changeSignByPassword() {
-      this.$emit('update:signBy', 'password')
-    },
-
-    tooltip() {
-      const message = (
-        <div>
-          <p>如您未收到短信，请参考以下方式进行：</p>
-          <p>1、短信可能被拦截进垃圾箱，请打开垃圾短信箱读取短信，并将其添加为白名单 </p>
-          <p>2、运营商通道故障导致发送延迟，请稍等片刻或重新获取验证码</p>
-          <p>3、若上述方式均未解决请联系平台运营人员</p>
-        </div>
-      )
-
-      this.$alert(message, '提示', {
-        confirmButtonText: '知道了'
-      })
-    },
-
-    sendCode() {
-      Service.sendSms(this.model)
-        .then((res) => {
-          this.sendSmsCode = true
-
-          Peace.util.success(res.msg)
-
-          this.$refs.smsCode.focus()
-        })
-        .finally(() => {
-          this.countdownTime = this.countdownInterval
-        })
-    },
+    changePhoneNumberSuccess() {},
 
     login() {
       this.validateForm().then(() => {
         this.isLoging = true
 
-        Service.login(this.model)
+        Service.loginByPass(this.model)
           .then((res) => {
             // 储存用户信息
             Util.user.setUserInfo(res.data)

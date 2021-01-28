@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center full-width">
+  <div class="layout-tabs flex items-center full-width">
     <el-tabs class="layout-tabs"
              v-model="active"
              v-on:tab-click="tabClick"
@@ -164,8 +164,10 @@ export default {
 }
 </style>
 
-<style>
-.el-tabs:not(.element-ui-default) .el-tabs__nav-wrap {
-  padding: 0 !important;
+<style lang="scss">
+.layout-tabs {
+  .el-tabs:not(.element-ui-default) .el-tabs__nav-wrap {
+    padding: 0 !important;
+  }
 }
 </style>
