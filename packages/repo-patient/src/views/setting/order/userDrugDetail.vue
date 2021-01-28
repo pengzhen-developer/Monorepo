@@ -20,6 +20,8 @@
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.callOrderStatus }`] : true }"></div>
             <div class="text">{{order.callOrderStatusTxt + '  '}}</div>
+            <div class="cancel-tip"
+                 v-if="order.callOrderStatus==ENUM.ORDER_STATUS.已取消 &&order.cancelReason">{{order.cancelReason}}</div>
             <div v-if="showQRCodeBtn"
                  class="btn-wrapper">
               <div @click.stop
@@ -38,8 +40,7 @@
           <div class="addr-tit">{{order.shippingMethodTxt}}</div>
           <div class="userAddr">
             <div class="addr-p">{{order.consigneeAddress}}</div>
-            <div class="addr-user"
-                 v-if="order.shippingMethod ==ENUM.SHIPPING_METHOD.配送到家">
+            <div class="addr-user">
               <span>{{order.consignee}}</span>
               <span>{{order.tel}}</span>
             </div>
@@ -622,8 +623,21 @@ export default {
       const afterJson = peace.util.encode({ orderNo: this.order.orderNo })
       this.$router.push(`/order/userDrugLogistics/${afterJson}`)
     },
+    //申请取消订单-跳页面
+    cancelOrderByNext() {
+      const params = peace.util.encode({ orderNo: this.order.orderNo })
+      //取消状态时间轴
+      //1. cancelList.length==0 未发起申请
+      //2. cancelList.length>0    cancelStatus  1取消申请2取消成功3取消失败
 
-    canselOrder() {
+      if (this.order.cancelList.length == 0) {
+        this.$router.push(`/drug/drugCancelOrderBefore/${params}`)
+      } else {
+        this.$router.push(`/drug/drugCancelOrder/${params}`)
+      }
+    },
+    //申请取消订单-当前页面
+    cancelOrderByCurrent() {
       const params = peace.util.decode(this.$route.params.json)
       let resTxt = ''
       if (this.order.callOrderStatus == 0) {
@@ -645,6 +659,15 @@ export default {
             }
           })
       })
+    },
+    canselOrder() {
+      const status = this.order.callOrderStatus
+      const divisionId = this.order.divisionId //北辰医院his对接不需要跳转页面发起申请
+      if (status == ENUM.ORDER_STATUS.待下单 || (status !== ENUM.ORDER_STATUS.待下单 && divisionId)) {
+        this.cancelOrderByCurrent()
+      } else {
+        this.cancelOrderByNext()
+      }
     },
 
     submitOrder() {
@@ -1128,6 +1151,15 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+  .cancel-tip {
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(58, 58, 58, 0.4);
+    line-height: 16px;
+    margin-bottom: 10px;
+    margin-top: -5px;
+  }
   .tracking-number {
     font-size: 12px;
     color: #aaa;

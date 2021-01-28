@@ -580,6 +580,32 @@ const routers = [
     },
     component: () => import('@src/views/drug/DrugOrderBefore.vue')
   },
+  //申请取消订单-购药
+  {
+    path: '/drug/drugCancelOrderBefore/:json',
+    name: 'drugCancelOrderBefore',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '取消订单',
+        back: true
+      }
+    },
+    component: () => import('@src/views/drug/DrugCancelOrderBefore.vue')
+  },
+  //取消订单-购药
+  {
+    path: '/drug/drugCancelOrder/:json',
+    name: 'drugCancelOrder',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '取消订单',
+        back: true
+      }
+    },
+    component: () => import('@src/views/drug/DrugCancelOrder.vue')
+  },
   // 药店信息
   {
     path: '/drug/drugPhaHome/:json',

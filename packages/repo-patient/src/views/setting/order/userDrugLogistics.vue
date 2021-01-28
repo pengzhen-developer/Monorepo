@@ -8,8 +8,8 @@
                      class="avatar-cicular"></van-image>
         </div>
         <div class="card-body">
-          <div class="card-name"
-               v-if="info.purchaseDrugOrderStreams&&info.purchaseDrugOrderStreams.length>0"> {{ info.purchaseDrugOrderStreams[0].remark }}</div>
+          <!-- <div class="card-name"
+               v-if="info.purchaseDrugOrderStreams&&info.purchaseDrugOrderStreams.length>0"> {{ info.purchaseDrugOrderStreams[0].remark }}</div> -->
           <div class="card-small"
                style="word-break: break-all;"
                v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME">
@@ -49,7 +49,8 @@
             <div class="y">{{ item.Time.toDate().formatDate('MM-dd') }}</div>
             <div class="s">{{ item.Time.toDate().formatDate('HH:mm') }}</div>
           </div>
-          <div class="text express">
+          <div class="text express"
+               :class="!item.isChild&&'main'">
             <template v-if="!item.isChild">
               <div class="status">{{item.Status}}</div>
               <div class="context"
@@ -82,10 +83,20 @@
 
             <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
                  class="note">
-              <div class="qr-btn"
+              <div class="qr-btn "
                    :class="{ 'active' : index == 0 }"
                    @click="onClickSeeQRCode">
                 查看取药码
+              </div>
+            </div>
+            <div class="note"
+                 v-if="item.status == '5' &&info.cancelReason"><span>{{info.cancelReason}}</span></div>
+            <div v-if="item.status == '5' && info.cancelList.length>0"
+                 class="note">
+              <div class="qr-btn"
+                   :class="{ 'active' : index == 0 }"
+                   @click="onClickSeeCancelOrderDeatil">
+                查看详情
               </div>
             </div>
           </div>
@@ -183,7 +194,10 @@ export default {
     onClickSeeQRCode() {
       this.showQRCode = true
     },
-
+    onClickSeeCancelOrderDeatil() {
+      const params = peace.util.encode({ orderNo: this.info.orderNo })
+      this.$router.push(`/drug/drugCancelOrder/${params}`)
+    },
     //获取时间轴
     async getData() {
       const params = peace.util.decode(this.$route.params.json)
@@ -230,7 +244,6 @@ export default {
         item.tels = item.Content.match(/(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g)
         if (item.tels && item.tels.length > 0) {
           item.tels.map((tel) => {
-            // const temp = `<a style="color: #00c6ae;" href="tel:${tel}">${tel}</a>`
             const temp = `<span style="color: #00c6ae;">${tel}</span>`
             item.Content = item.Content.replace(tel, temp)
           })
@@ -251,19 +264,26 @@ export default {
 
 <style lang="scss" scoped>
 .qr-btn {
-  margin-top: 3px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  margin-top: 8px;
+  border-radius: 16px;
   color: #999;
-  width: 78px;
-  height: 26px;
+  width: 88px;
+  height: 32px;
   line-height: normal;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  opacity: 0.4;
+  background: rgba(51, 51, 51, 0.05);
+
+  font-size: 14px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 0.6);
+  line-height: 16px;
   &.active {
-    border-color: #00c6ae;
-    color: #00c6ae;
+    opacity: 1;
   }
 }
 .action-item {
@@ -276,17 +296,21 @@ export default {
     display: block;
   }
 }
+
 .card-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0;
+  margin: 0;
+  margin-right: 5px;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
   .van-image,
   img {
-    width: 90%;
-    height: 90%;
-    border-radius: 2px;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
 }
 .user-drug-logistics {
@@ -304,10 +328,24 @@ export default {
 }
 .card {
   background: #fff;
-  padding: 15px;
+  padding: 12px 16px;
   margin: 0 0 10px 0;
+  .card-small {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
+  }
   .card-name {
     font-size: 16px;
+  }
+  .text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 0.4);
+    line-height: 20px;
   }
 }
 .module {
@@ -315,18 +353,15 @@ export default {
   padding: 30px 5px 10px;
   margin: 0 0 10px 0;
 }
-.card .text {
-  color: #999;
-  padding-top: 5px;
-  font-size: 13px;
-}
 .time-line {
   padding-right: 5px;
   &.self {
     .item {
       &:last-child {
         .text {
-          border-left: 2px solid transparent;
+          &::before {
+            background: transparent;
+          }
         }
       }
     }
@@ -343,41 +378,54 @@ export default {
 }
 .time-line .time {
   flex: 0 0 auto;
-  // width: 60px;
   width: 20%;
   padding-right: 5.5%;
   position: relative;
   text-align: right;
 }
-// .time-line .item:last-child .text {
-//   min-height: 20px;
-// }
+
 .time-line .text {
-  border-left: 2px solid #d8d8d8;
-  padding-left: 15px;
+  padding-left: 23px;
   padding-bottom: 30px;
   flex: 1;
   min-height: 74px;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 8px;
+    background: rgba(51, 51, 51, 0.1);
+    width: 2px;
+    height: calc(100% - 8px);
+  }
 }
-
+.text.express.main::before {
+  top: 24px;
+  height: calc(100% - 24px);
+}
+.item.active .text::before {
+  top: 24px;
+  height: calc(100% - 24px);
+}
 .time-line .time::after {
   content: '';
   position: absolute;
-  right: -6px;
-  top: -5px;
-  background: #d8d8d8;
-  width: 10px;
-  height: 10px;
+  right: -5px;
+  top: 0px;
+  background: rgba(51, 51, 51, 0.1);
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 .time-line .time.main::after {
   content: '';
   position: absolute;
-  right: -9px;
-  top: -5px;
-  background: #d8d8d8;
-  width: 16px;
-  height: 16px;
+  right: -13px;
+  top: 0;
+  background: rgba(51, 51, 51, 0.1);
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
 }
 .item.active .text {
@@ -391,20 +439,39 @@ export default {
 }
 .time-line .item.active .time::after {
   content: '';
-  width: 16px;
-  height: 16px;
-  right: -9px;
-  background: #00c6ae;
-}
-.item.active .time .y {
-  color: #000000;
+  width: 24px;
+  height: 24px;
+  right: -13px;
+  top: 0;
+  background-color: #00c6ae;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAEHRSTlMAAgUPGx0kNkxhZqCur+LkX8/PmAAAADNJREFUCNdjYMAFWqA051MoY14CVOAZNoFqBaiAziWoCqazClAVOregWpjOQ7UwCOOwFQCv+A3wpzmUVAAAAABJRU5ErkJggg==');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
 }
 .time-line .time .y {
-  font-size: 16px;
-  margin-top: -10px;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 20px;
+}
+.time-line .time .s {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 20px;
+}
+.item.active .text .status {
+  color: #00c6ae;
 }
 .time-line .text .status {
-  margin-top: -10px;
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #333333;
+  line-height: 24px;
 }
 .time-line .text .status.sub {
   font-size: 12px;
@@ -416,5 +483,14 @@ export default {
 .time .s,
 .text .note {
   font-size: 13px;
+}
+.note {
+  span {
+    font-size: 14px;
+    margin: 4px 0 8px 0;
+    color: #333333;
+    line-height: 20px;
+    margin-top: 4px;
+  }
 }
 </style>
