@@ -157,7 +157,7 @@
       </div>
 
       <!-- 远程会诊卡片 -->
-      <template v-if="consultation.status === 1">
+      <template v-if="consultation.status === 1 && false">
         <div class="col-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">远程会诊</span>
