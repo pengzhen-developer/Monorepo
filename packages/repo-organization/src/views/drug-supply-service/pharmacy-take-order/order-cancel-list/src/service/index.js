@@ -1,51 +1,13 @@
 export default {
   /**
-   * 获取接单列表
+   * 获取退单列表
    *
    * @param {*} params
    */
-  getReceiveOrderList(params) {
+  getOrderChargebackList(params) {
     const isMock = false
 
-    const apiPath = 'psd/ReceiveOrder/List'
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.get(requestApi, { params }).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 获取待处理数量
-   *
-   * @param {*} params
-   */
-  getBubbleInfo(params) {
-    const isMock = false
-
-    const apiPath = 'psd/ReceiveOrder/GetBubbleInfo'
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.get(requestApi, { params }).then((res) => {
-      return res
-    })
-  },
-
-  /**
-   * 更新订单信息
-   *
-   * @param {*} params
-   */
-  UpdateOrderStatus(params) {
-    const isMock = false
-
-    const apiPath = 'psd/ReceiveOrder/UpdateOrderStatus'
+    const apiPath = 'psd/Order/OrderChargebackList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -57,15 +19,35 @@ export default {
   },
 
   /**
-   * 更新快递信息
+   * 同意/拒绝取消
    *
    * @param {*} params
    */
-  UpdateOrderExpressInfo(params) {
+  HasWaitReceiveOrder(params) {
     const isMock = false
 
-    const apiPath = 'psd/ReceiveOrder/UpdateOrderExpressInfo'
+    const apiPath = 'psd/Order/IsAgreeCancel'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取订单详情
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  getOrderInfo(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Order/GetOrderInfo'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
