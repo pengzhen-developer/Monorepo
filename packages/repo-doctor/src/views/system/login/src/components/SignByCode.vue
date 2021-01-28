@@ -20,7 +20,7 @@
                   v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
           <div slot="prepend">
-            <i class="zyy-icon zyy-shouji"></i>
+            <i class="el-icon-mobile-phone"></i>
           </div>
         </el-input>
       </el-form-item>
@@ -35,7 +35,7 @@
                   v-on:blur="passwordBlur"
                   placeholder="请输入验证码">
           <div slot="prepend">
-            <i class="zyy-icon zyy-mima"></i>
+            <i class="el-icon-lock"></i>
           </div>
 
           <template slot="suffix">

@@ -7,6 +7,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
   <title>loading...</title>
+
+
+  <script>
+    function getExplore() {
+      var sys = {},
+        ua = navigator.userAgent.toLowerCase(),
+        s
+        ; (s = ua.match(/rv:([\d.]+)\) like gecko/))
+          ? (sys.ie = s[1])
+          : (s = ua.match(/msie ([\d\.]+)/))
+            ? (sys.ie = s[1])
+            : (s = ua.match(/edge\/([\d\.]+)/))
+              ? (sys.edge = s[1])
+              : (s = ua.match(/firefox\/([\d\.]+)/))
+                ? (sys.firefox = s[1])
+                : (s = ua.match(/(?:opera|opr).([\d\.]+)/))
+                  ? (sys.opera = s[1])
+                  : (s = ua.match(/.*iPhone|iPad|Android|android.*/))
+                    ? (sys.mobile = s[0])
+                    : (s = ua.match(/chrome\/([\d\.]+)/))
+                      ? (sys.chrome = s[1])
+                      : (s = ua.match(/version\/([\d\.]+).*safari/))
+                        ? (sys.safari = s[1])
+                        : 0
+
+      // 根据关系进行判断
+      if (sys.ie) return { explore: 'IE', version: sys.ie }
+      if (sys.edge) return { explore: 'EDGE', version: sys.edge }
+      if (sys.firefox) return { explore: 'FIREFOX', version: sys.firefox }
+      if (sys.chrome) return { explore: 'CHROME', version: sys.chrome }
+      if (sys.opera) return { explore: 'OPERA', version: sys.opera }
+      if (sys.safari) return { explore: 'SAFARI', version: sys.safari }
+      if (sys.mobile) return { explore: 'moliePhone', version: 'Unkown' }
+      return 'Unkonwn'
+    }
+
+    var explore = getExplore()
+
+    if (
+      (explore.explore === 'IE' && parseInt(explore.version) <= 11) ||
+      (explore.explore === 'CHROME' && parseInt(explore.version) < 49) ||
+      (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52)
+    ) {
+      window.location.href = './unCompatible.html'
+    }
+  </script>
+
+
   <style>
     html,
     body,
@@ -136,57 +184,9 @@
     }
   </style>
 
-  <script>
-    function getExplore() {
-      var sys = {},
-        ua = navigator.userAgent.toLowerCase(),
-        s
-        ; (s = ua.match(/rv:([\d.]+)\) like gecko/))
-          ? (sys.ie = s[1])
-          : (s = ua.match(/msie ([\d\.]+)/))
-            ? (sys.ie = s[1])
-            : (s = ua.match(/edge\/([\d\.]+)/))
-              ? (sys.edge = s[1])
-              : (s = ua.match(/firefox\/([\d\.]+)/))
-                ? (sys.firefox = s[1])
-                : (s = ua.match(/(?:opera|opr).([\d\.]+)/))
-                  ? (sys.opera = s[1])
-                  : (s = ua.match(/.*iPhone|iPad|Android|android.*/))
-                    ? (sys.mobile = s[0])
-                    : (s = ua.match(/chrome\/([\d\.]+)/))
-                      ? (sys.chrome = s[1])
-                      : (s = ua.match(/version\/([\d\.]+).*safari/))
-                        ? (sys.safari = s[1])
-                        : 0
-
-      // 根据关系进行判断
-      if (sys.ie) return { explore: 'IE', version: sys.ie }
-      if (sys.edge) return { explore: 'EDGE', version: sys.edge }
-      if (sys.firefox) return { explore: 'FIREFOX', version: sys.firefox }
-      if (sys.chrome) return { explore: 'CHROME', version: sys.chrome }
-      if (sys.opera) return { explore: 'OPERA', version: sys.opera }
-      if (sys.safari) return { explore: 'SAFARI', version: sys.safari }
-      if (sys.mobile) return { explore: 'moliePhone', version: 'Unkown' }
-      return 'Unkonwn'
-    }
-
-    var explore = getExplore()
-
-    if (
-      (explore.explore === 'IE' && parseInt(explore.version) <= 11) ||
-      (explore.explore === 'CHROME' && parseInt(explore.version) < 49) ||
-      (explore.explore === 'FIREFOX' && parseInt(explore.version) < 52)
-    ) {
-      window.location.href = './unCompatible.html'
-    }
-  </script>
 
 
-  <link href="https://cdn.bootcss.com/quill/2.0.0-dev.3/quill.snow.css" rel="stylesheet" />
-  <link href="//at.alicdn.com/t/font_1945938_5jfq7qrf1da.css" rel="stylesheet">
 
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_NIM_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/IM/NIM_Web_WebRTC_v7.0.0.js?t=<%= new Date().getTime() %>"></script>
 </head>
 
 <body>
@@ -212,7 +212,15 @@
       <div class="sub-title">首次加载较慢，请耐心等待</div>
     </div>
   </div>
+
+
   <!-- built files will be auto injected -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vuex/3.1.2/vuex.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.0.6/vue-router.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js"></script>
+  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/js/IM/NIM_Web_NIM_v7.0.0.js"></script>
+  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>static/js/IM/NIM_Web_WebRTC_v7.0.0.js"></script>
 </body>
 
 </html>

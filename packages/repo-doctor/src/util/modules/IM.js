@@ -1,7 +1,7 @@
 import Util from '@src/util'
 
-import NIM from '@public/static/IM/NIM_Web_NIM_v7.0.0'
-import WebRTC from '@public/static/IM/NIM_Web_WebRTC_v7.0.0'
+import NIM from '@public/static/js/IM/NIM_Web_NIM_v7.0.0'
+import WebRTC from '@public/static/js/IM/NIM_Web_WebRTC_v7.0.0'
 NIM.use(WebRTC)
 
 /**

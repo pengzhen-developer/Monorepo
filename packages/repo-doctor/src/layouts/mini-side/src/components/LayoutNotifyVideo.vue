@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import WebRTC from '@public/static/IM/NIM_Web_WebRTC_v7.0.0'
+import WebRTC from '@public/static/js/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
   data() {
@@ -826,10 +826,6 @@ export default {
 
 <style lang="scss" scoped>
 .video {
-  ::v-deep .el-dialog__wrapper {
-    // position: unset !important;
-  }
-
   ::v-deep .video-dialog {
     // position: absolute;
     // z-index: 2001;
