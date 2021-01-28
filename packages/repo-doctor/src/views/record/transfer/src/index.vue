@@ -41,41 +41,41 @@
 
       <hr />
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="患者姓名"
-                            prop="family_name"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="age"></peace-table-column>
-        <peace-table-column label="性别"
-                            prop="sex"></peace-table-column>
-        <peace-table-column label="疾病诊断"
-                            min-width="200px"
-                            prop="diagnose"></peace-table-column>
-        <peace-table-column label="转入机构"
-                            min-width="200px"
-                            prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="转入医生"
-                            prop="name"></peace-table-column>
-        <peace-table-column label="期望转诊时间"
-                            prop="expect_time"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="申请时间"
-                            prop="created_time"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="formatter"
-                            label="转诊状态"
-                            prop="transfer_status"
-                            width="100px"></peace-table-column>
-        <peace-table-column fixed="right"
-                            label="操作"
-                            width="100px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患者姓名"
+                          prop="family_name"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="age"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="sex"></PeaceTableColumn>
+        <PeaceTableColumn label="疾病诊断"
+                          min-width="200px"
+                          prop="diagnose"></PeaceTableColumn>
+        <PeaceTableColumn label="转入机构"
+                          min-width="200px"
+                          prop="netHospital_name"></PeaceTableColumn>
+        <PeaceTableColumn label="转入医生"
+                          prop="name"></PeaceTableColumn>
+        <PeaceTableColumn label="期望转诊时间"
+                          prop="expect_time"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="申请时间"
+                          prop="created_time"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="formatter"
+                          label="转诊状态"
+                          prop="transfer_status"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <div class="content"
@@ -95,43 +95,43 @@
 
       <hr />
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="患者姓名"
-                            prop="family_name"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="age"></peace-table-column>
-        <peace-table-column label="性别"
-                            prop="sex"></peace-table-column>
-        <peace-table-column align="left"
-                            label="疾病诊断"
-                            min-width="200px"
-                            prop="diagnose"></peace-table-column>
-        <peace-table-column align="left"
-                            label="转出机构"
-                            min-width="200px"
-                            prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="转出医生"
-                            prop="name"></peace-table-column>
-        <peace-table-column label="期望转诊时间"
-                            prop="expect_time"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="申请时间"
-                            prop="created_time"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="formatter"
-                            label="转诊状态"
-                            prop="transfer_status"
-                            width="100px"></peace-table-column>
-        <peace-table-column fixed="right"
-                            label="操作"
-                            width="100px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患者姓名"
+                          prop="family_name"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="age"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="sex"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="疾病诊断"
+                          min-width="200px"
+                          prop="diagnose"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="转出机构"
+                          min-width="200px"
+                          prop="netHospital_name"></PeaceTableColumn>
+        <PeaceTableColumn label="转出医生"
+                          prop="name"></PeaceTableColumn>
+        <PeaceTableColumn label="期望转诊时间"
+                          prop="expect_time"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="申请时间"
+                          prop="created_time"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="formatter"
+                          label="转诊状态"
+                          prop="transfer_status"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="100px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <peace-dialog :visible.sync="dialog.visible"

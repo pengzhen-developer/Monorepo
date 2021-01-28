@@ -82,14 +82,14 @@
     <!-- 检查单明细信息 -->
     <div class="q-mb-md">
       <PeaceTable v-bind:data="resultInfoItems">
-        <el-table-column label="项目名称"
-                         prop="itemName"></el-table-column>
-        <el-table-column label="量化结果"
-                         prop="quantitativeResult"></el-table-column>
-        <el-table-column label="参考值"
-                         prop="itemReference"></el-table-column>
-        <el-table-column label="单位"
-                         prop="itemUnit"></el-table-column>
+        <PeaceTableColumn label="项目名称"
+                          prop="itemName"></PeaceTableColumn>
+        <PeaceTableColumn label="量化结果"
+                          prop="quantitativeResult"></PeaceTableColumn>
+        <PeaceTableColumn label="参考值"
+                          prop="itemReference"></PeaceTableColumn>
+        <PeaceTableColumn label="单位"
+                          prop="itemUnit"></PeaceTableColumn>
       </PeaceTable>
     </div>
 

@@ -58,45 +58,41 @@
       <br />
       <br />
 
-      <peace-table :layout="'total,  -> , prev, pager, next, slot'"
-                   :pageSize="5"
-                   pagination
-                   ref="table"
-                   v-if="invitedDialog.visible">
-        <el-table-column align="center"
-                         label=" "
-                         width="45">
+      <PeaceTable :layout="'total,  -> , prev, pager, next, slot'"
+                  :pageSize="5"
+                  pagination
+                  ref="table"
+                  v-if="invitedDialog.visible">
+        <PeaceTableColumn label=" "
+                          width="45">
           <template slot-scope="scope">
             <el-checkbox-group @change="val => invitedChange(val, scope.row)"
                                v-model="invitedDialog.chooseListForCheckBox">
               <el-checkbox :label="scope.row.doctorId"></el-checkbox>
             </el-checkbox-group>
           </template>
-        </el-table-column>
-        <el-table-column align="center"
-                         label="头像"
-                         width="60">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="头像"
+                          width="60">
           <template slot-scope="scope">
             <img :src="scope.row.avartor"
                  height="40px"
                  style="border-radius: 50%;"
                  width="40px" />
           </template>
-        </el-table-column>
-        <el-table-column align="center"
-                         label="姓名"
-                         prop="doctorName"
-                         width="80"></el-table-column>
-        <el-table-column align="center"
-                         label="职称"
-                         prop="doctorTitle"
-                         width="100"></el-table-column>
-        <el-table-column label="科室"
-                         prop="deptName"
-                         width="120"></el-table-column>
-        <el-table-column label="医院"
-                         prop="hospitalName"></el-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="姓名"
+                          prop="doctorName"
+                          width="80"></PeaceTableColumn>
+        <PeaceTableColumn label="职称"
+                          prop="doctorTitle"
+                          width="100"></PeaceTableColumn>
+        <PeaceTableColumn label="科室"
+                          prop="deptName"
+                          width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="医院"
+                          prop="hospitalName"></PeaceTableColumn>
+      </PeaceTable>
 
       <br />
 

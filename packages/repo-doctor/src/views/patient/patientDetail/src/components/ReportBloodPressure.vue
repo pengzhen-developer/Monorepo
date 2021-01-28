@@ -78,42 +78,42 @@
 
     <div class="report-report"
          v-show="view.active === source.active['分析报告']">
-      <peace-table pagination
-                   ref="tableReport">
-        <peace-table-column label="报告名称"
-                            prop="title"></peace-table-column>
-        <peace-table-column label="操作">
+      <PeaceTable pagination
+                  ref="tableReport">
+        <PeaceTableColumn label="报告名称"
+                          prop="title"></PeaceTableColumn>
+        <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="openReport(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <div :key="$route.fullpath + '历史数据'"
          class="report-history"
          v-show="view.active === source.active['历史数据']">
-      <peace-table pagination
-                   ref="tableHistory">
-        <peace-table-column label="收缩压（mmHg）"
-                            prop="systolicPressure"
-                            width="150"></peace-table-column>
-        <peace-table-column label="舒张压（mmHg）"
-                            prop="diastolicPressure"
-                            width="150"></peace-table-column>
-        <peace-table-column label="平均动脉压（mmHg）"
-                            prop="meanArterialPressure"></peace-table-column>
-        <peace-table-column label="脉率"
-                            prop="pulseRate"
-                            width="120"></peace-table-column>
-        <peace-table-column label="分析结果"
-                            prop="result"></peace-table-column>
-        <peace-table-column label="检测时间"
-                            prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源"
-                            prop="measureMethod"></peace-table-column>
-      </peace-table>
+      <PeaceTable pagination
+                  ref="tableHistory">
+        <PeaceTableColumn label="收缩压（mmHg）"
+                          prop="systolicPressure"
+                          width="150"></PeaceTableColumn>
+        <PeaceTableColumn label="舒张压（mmHg）"
+                          prop="diastolicPressure"
+                          width="150"></PeaceTableColumn>
+        <PeaceTableColumn label="平均动脉压（mmHg）"
+                          prop="meanArterialPressure"></PeaceTableColumn>
+        <PeaceTableColumn label="脉率"
+                          prop="pulseRate"
+                          width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="分析结果"
+                          prop="result"></PeaceTableColumn>
+        <PeaceTableColumn label="检测时间"
+                          prop="measureTime"></PeaceTableColumn>
+        <PeaceTableColumn label="来源"
+                          prop="measureMethod"></PeaceTableColumn>
+      </PeaceTable>
     </div>
   </div>
 </template>

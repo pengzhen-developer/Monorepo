@@ -275,21 +275,21 @@
                   v-bind:visible.sync="commonlyPrescriptionDialog.visible"
                   title="常用处方"
                   width="800px">
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="疾病诊断"
-                            min-width="160px"
-                            prop="diagnosis"></peace-table-column>
-        <peace-table-column label="性别"
-                            width="80px"
-                            prop="sex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            width="120px"
-                            prop="age"></peace-table-column>
-        <peace-table-column align="left"
-                            label="处方药品"
-                            min-width="300px"
-                            prop="drugjson">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="疾病诊断"
+                          min-width="160px"
+                          prop="diagnosis"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          width="80px"
+                          prop="sex"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          width="120px"
+                          prop="age"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="处方药品"
+                          min-width="300px"
+                          prop="drugjson">
           <template slot-scope="scope">
             <div v-for="drug in scope.row.drugList"
                  v-bind:key="drug.durgId"
@@ -309,17 +309,17 @@
               <span v-if="drug.useDrugDays">，{{ drug.useDrugDays }}天</span>
             </div>
           </template>
-        </peace-table-column>
-        <peace-table-column v-bind:show-overflow-tooltip="false"
-                            fixed="right"
-                            label="操作"
-                            width="80px">
+        </PeaceTableColumn>
+        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="80px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="checkCommonlyPrescription(scope.row)">选择</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </peace-dialog>
 
   </div>

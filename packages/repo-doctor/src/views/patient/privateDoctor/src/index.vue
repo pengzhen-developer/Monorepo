@@ -35,31 +35,31 @@
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="姓名">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
-        </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="patientSex"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
-        </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"></peace-table-column>
-        <peace-table-column label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
+                          label="服务类型"
+                          prop="type"></PeaceTableColumn>
+        <PeaceTableColumn label="购买时间"
+                          prop="purchaseTime"></PeaceTableColumn>
+        <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="showReceiveDialog(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <div class="body"
@@ -86,40 +86,40 @@
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="姓名">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
-        </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="patientSex"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
-        </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="到期时间"
-                            prop="validityTime"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="接单时间"
-                            prop="acceptTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="服务期间问诊次数"
-                            prop="inquiryCount"
-                            width="80"></peace-table-column>
-        <peace-table-column label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
+                          label="服务类型"
+                          prop="type"></PeaceTableColumn>
+        <PeaceTableColumn label="到期时间"
+                          prop="validityTime"></PeaceTableColumn>
+        <PeaceTableColumn label="购买时间"
+                          prop="purchaseTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="接单时间"
+                          prop="acceptTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="服务期间问诊次数"
+                          prop="inquiryCount"
+                          width="80"></PeaceTableColumn>
+        <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="showPatientDetail(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <div class="body"
@@ -151,39 +151,39 @@
         </el-form-item>
       </el-form>
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="姓名">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="姓名">
           <template slot-scope="scope">
             <span>{{ scope.row.patientRemarks || scope.row.patientName || scope.row.patientWxName }}</span>
           </template>
-        </peace-table-column>
-        <peace-table-column label="性别"
-                            prop="patientSex"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="patientAge">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="patientSex"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="patientAge">
           <template slot-scope="scope">{{ scope.row.patientAge || '-' }}</template>
-        </peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
-                            label="服务类型"
-                            prop="type"></peace-table-column>
-        <peace-table-column label="购买时间"
-                            prop="purchaseTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value"
-                            label="接单状态"
-                            prop="orderStatus"
-                            width="100px"></peace-table-column>
-        <peace-table-column label="操作时间"
-                            prop="acceptTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn :formatter="(r, c, v) => source.type.find(item=> item.key === v).value"
+                          label="服务类型"
+                          prop="type"></PeaceTableColumn>
+        <PeaceTableColumn label="购买时间"
+                          prop="purchaseTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value"
+                          label="接单状态"
+                          prop="orderStatus"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作时间"
+                          prop="acceptTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="showReceiveDialog(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <peace-dialog :visible.sync="receiveDialog.visible"

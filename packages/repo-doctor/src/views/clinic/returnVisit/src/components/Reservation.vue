@@ -11,27 +11,27 @@
     <peace-dialog title="复诊预约记录"
                   v-drag
                   v-bind:visible.sync="dialog.visible">
-      <peace-table ref="table"
-                   pagination
-                   v-bind:data="dialog.data">
-        <peace-table-column label="姓名"
-                            width="80"
-                            prop="familyName"></peace-table-column>
-        <peace-table-column label="性别"
-                            width="60"
-                            prop="familyGenderText"></peace-table-column>
-        <peace-table-column label="年龄"
-                            width="60"
-                            prop="familyAge"></peace-table-column>
-        <peace-table-column label="复诊时间"
-                            width="160px"
-                            prop="returnVisitTime"></peace-table-column>
-        <peace-table-column label="病情描述"
-                            min-width="150px"
-                            align="left"
-                            prop="illDescription"></peace-table-column>
+      <PeaceTable ref="table"
+                  pagination
+                  v-bind:data="dialog.data">
+        <PeaceTableColumn label="姓名"
+                          width="80"
+                          prop="familyName"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          width="60"
+                          prop="familyGenderText"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          width="60"
+                          prop="familyAge"></PeaceTableColumn>
+        <PeaceTableColumn label="复诊时间"
+                          width="160px"
+                          prop="returnVisitTime"></PeaceTableColumn>
+        <PeaceTableColumn label="病情描述"
+                          min-width="150px"
+                          align="left"
+                          prop="illDescription"></PeaceTableColumn>
 
-      </peace-table>
+      </PeaceTable>
     </peace-dialog>
   </div>
 </template>

@@ -77,33 +77,33 @@
 
     <div class="report-report"
          v-show="view.active === source.active['分析报告']">
-      <peace-table pagination
-                   ref="tableReport">
-        <peace-table-column label="报告名称"
-                            prop="title"></peace-table-column>
-        <peace-table-column label="操作">
+      <PeaceTable pagination
+                  ref="tableReport">
+        <PeaceTableColumn label="报告名称"
+                          prop="title"></PeaceTableColumn>
+        <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="openReport(scope.row)"
                        type="text">查看详情</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <div class="report-history"
          v-show="view.active === source.active['历史数据']">
-      <peace-table pagination
-                   ref="tableHistory"
-                   v-show="this.$route.params.type === Peace.type.HEALTH.TYPE.体脂">
-        <peace-table-column label="体脂率（%）"
-                            prop="bfr"></peace-table-column>
-        <peace-table-column label="分析结果"
-                            prop="result"></peace-table-column>
-        <peace-table-column label="检测时间"
-                            prop="createTime"></peace-table-column>
-        <peace-table-column label="来源"
-                            prop="measureMethod"></peace-table-column>
-      </peace-table>
+      <PeaceTable pagination
+                  ref="tableHistory"
+                  v-show="this.$route.params.type === Peace.type.HEALTH.TYPE.体脂">
+        <PeaceTableColumn label="体脂率（%）"
+                          prop="bfr"></PeaceTableColumn>
+        <PeaceTableColumn label="分析结果"
+                          prop="result"></PeaceTableColumn>
+        <PeaceTableColumn label="检测时间"
+                          prop="createTime"></PeaceTableColumn>
+        <PeaceTableColumn label="来源"
+                          prop="measureMethod"></PeaceTableColumn>
+      </PeaceTable>
     </div>
   </div>
 </template>

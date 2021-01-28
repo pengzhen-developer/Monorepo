@@ -35,37 +35,29 @@
         </div>
         <div class="col">
           <div class="q-mb-md">
-            <peace-table border
-                         v-bind:data="source">
-              <el-table-column label=""
-                               align="center">
+            <PeaceTable border
+                        v-bind:data="source">
+              <PeaceTableColumn label="">
                 <template slot-scope="scope">
                   <p>{{ scope.row.timeText }}</p>
                   <p>{{ scope.row.timeRange }}</p>
                 </template>
-              </el-table-column>
-              <el-table-column label="周一"
-                               align="center"
-                               prop="Monday"></el-table-column>
-              <el-table-column label="周二"
-                               align="center"
-                               prop="Tuesday"></el-table-column>
-              <el-table-column label="周三"
-                               align="center"
-                               prop="Wednesday"></el-table-column>
-              <el-table-column label="周四"
-                               align="center"
-                               prop="Thursday"></el-table-column>
-              <el-table-column label="周五"
-                               align="center"
-                               prop="Friday"></el-table-column>
-              <el-table-column label="周六"
-                               align="center"
-                               prop="Saturday"></el-table-column>
-              <el-table-column label="周日"
-                               align="center"
-                               prop="Sunday"></el-table-column>
-            </peace-table>
+              </PeaceTableColumn>
+              <PeaceTableColumn label="周一"
+                                prop="Monday"></PeaceTableColumn>
+              <PeaceTableColumn label="周二"
+                                prop="Tuesday"></PeaceTableColumn>
+              <PeaceTableColumn label="周三"
+                                prop="Wednesday"></PeaceTableColumn>
+              <PeaceTableColumn label="周四"
+                                prop="Thursday"></PeaceTableColumn>
+              <PeaceTableColumn label="周五"
+                                prop="Friday"></PeaceTableColumn>
+              <PeaceTableColumn label="周六"
+                                prop="Saturday"></PeaceTableColumn>
+              <PeaceTableColumn label="周日"
+                                prop="Sunday"></PeaceTableColumn>
+            </PeaceTable>
           </div>
 
           <p class="text-caption text-grey-5 text-right">* 您可以选择使用图文、视频等为患者进行复诊续方</p>

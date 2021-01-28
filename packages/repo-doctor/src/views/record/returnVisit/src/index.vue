@@ -38,44 +38,42 @@
 
     <hr />
 
-    <peace-table ref="table"
-                 pagination>
-      <peace-table-column label="复诊单号"
-                          min-width="180"
-                          prop="inquiryNo"></peace-table-column>
-      <peace-table-column label="患者姓名"
-                          prop="name"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="性别"
-                          prop="genderText"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="年龄"
-                          prop="age"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="复诊时间"
-                          width="180"
-                          prop="returnVisitTime"></peace-table-column>
-      <peace-table-column label="订单金额"
-                          align="right"
-                          header-align="right"
-                          min-width="120"
-                          prop="orderAmount"></peace-table-column>
-      <peace-table-column label="订单时间"
-                          width="180"
-                          prop="createdTime"></peace-table-column>
-      <peace-table-column label="订单状态"
-                          prop="orderStatusText"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="操作"
-                          width="120">
+    <PeaceTable ref="table"
+                pagination>
+      <PeaceTableColumn label="复诊单号"
+                        min-width="180"
+                        prop="inquiryNo"></PeaceTableColumn>
+      <PeaceTableColumn label="患者姓名"
+                        prop="name"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="性别"
+                        prop="genderText"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="年龄"
+                        prop="age"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="复诊时间"
+                        width="180"
+                        prop="returnVisitTime"></PeaceTableColumn>
+      <PeaceTableColumn label="订单金额"
+                        min-width="120"
+                        prop="orderAmount"></PeaceTableColumn>
+      <PeaceTableColumn label="订单时间"
+                        width="180"
+                        prop="createdTime"></PeaceTableColumn>
+      <PeaceTableColumn label="订单状态"
+                        prop="orderStatusText"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="操作"
+                        width="120">
         <template slot-scope="scope">
           <el-button type="text"
                      v-bind:title="getControlTitleTip(scope.row)"
                      v-bind:disabled="getDisabledState(scope.row)"
                      v-on:click="showDetail(scope.row)">查看详情</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog title="复诊续方记录"
                   v-bind:visible.sync="dialog.visible"

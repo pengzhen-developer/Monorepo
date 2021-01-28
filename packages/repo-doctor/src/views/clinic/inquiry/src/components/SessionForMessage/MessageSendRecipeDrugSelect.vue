@@ -1,8 +1,8 @@
 <template>
-  <peace-table v-bind:data="drugList"
-               border>
-    <peace-table-column label="药品名称"
-                        show-overflow-tooltip>
+  <PeaceTable v-bind:data="drugList"
+              border>
+    <PeaceTableColumn label="药品名称"
+                      show-overflow-tooltip>
       <template slot-scope="scope">
 
         <div class="cursor-pointer"
@@ -35,11 +35,11 @@
           </q-popup-edit>
         </div>
       </template>
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="给药途径"
-                        show-overflow-tooltip
-                        width="80px">
+    <PeaceTableColumn label="给药途径"
+                      show-overflow-tooltip
+                      width="80px">
       <template slot-scope="scope">
         <div class="cursor-pointer">
           <!-- 未选择药品，不能选择给药途径 -->
@@ -70,11 +70,11 @@
           </q-popup-edit>
         </div>
       </template>
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="用药频次"
-                        show-overflow-tooltip
-                        width="80px">
+    <PeaceTableColumn label="用药频次"
+                      show-overflow-tooltip
+                      width="80px">
       <template slot-scope="scope">
         <div class="cursor-pointer">
           <!-- 未选择药品，不能选择用药频次 -->
@@ -106,11 +106,11 @@
         </div>
       </template>
 
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="用药天数"
-                        show-overflow-tooltip
-                        width="60px">
+    <PeaceTableColumn label="用药天数"
+                      show-overflow-tooltip
+                      width="60px">
       <template slot-scope="scope">
         <div class="cursor-pointer">
           <!-- 未选择药品，不能选择单次剂量 -->
@@ -135,11 +135,11 @@
           </q-popup-edit>
         </div>
       </template>
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="单次剂量"
-                        show-overflow-tooltip
-                        width="60px">
+    <PeaceTableColumn label="单次剂量"
+                      show-overflow-tooltip
+                      width="60px">
       <template slot-scope="scope">
         <div class="cursor-pointer">
           <!-- 未选择药品，不能选择单次剂量 -->
@@ -167,11 +167,11 @@
           </q-popup-edit>
         </div>
       </template>
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="数量"
-                        show-overflow-tooltip
-                        width="60px">
+    <PeaceTableColumn label="数量"
+                      show-overflow-tooltip
+                      width="60px">
       <template slot-scope="scope">
         <div class="cursor-pointer">
           <!-- 未选择药品，不能选择单次剂量 -->
@@ -198,17 +198,17 @@
           </q-popup-edit>
         </div>
       </template>
-    </peace-table-column>
+    </PeaceTableColumn>
 
-    <peace-table-column label="操作"
-                        width="60px">
+    <PeaceTableColumn label="操作"
+                      width="60px">
       <template slot-scope="scope">
         <el-button type="text"
                    v-if="scope.row.drugid"
                    v-on:click="deleteDrug(scope)">删除</el-button>
       </template>
-    </peace-table-column>
-  </peace-table>
+    </PeaceTableColumn>
+  </PeaceTable>
 </template>
 
 <script>

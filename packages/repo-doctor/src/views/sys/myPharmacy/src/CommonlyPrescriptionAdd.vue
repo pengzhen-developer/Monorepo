@@ -72,7 +72,7 @@
       <PeaceTable style="min-height: 200px"
                   v-bind:data="prescriptionDrugList"
                   v-bind:show-header="false">
-        <el-table-column>
+        <PeaceTableColumn>
           <template slot-scope="scope">
             <div class="q-mb-sm">
               <el-tag class="q-mr-sm"
@@ -94,9 +94,9 @@
               </span>
             </div>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column width="100px">
+        <PeaceTableColumn width="100px">
           <template slot-scope="scope">
             <div class="column items-end q-pa-none justify-space-between">
               <span class="text-grey-333 text-weight-bold">x{{ scope.row.drugNum }}{{ scope.row.drugQuantityUnit }}</span>
@@ -110,7 +110,7 @@
               <br v-else>
             </div>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

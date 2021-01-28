@@ -76,18 +76,18 @@
 
     <div class="report-history"
          v-show="view.active === source.active['历史数据']">
-      <peace-table pagination
-                   ref="tableHistory"
-                   v-show="this.$route.params.type === Peace.type.HEALTH.TYPE.血氧">
-        <peace-table-column label="血氧浓度（%）"
-                            prop="bloodOxygen"></peace-table-column>
-        <peace-table-column label="分析结果"
-                            prop="result"></peace-table-column>
-        <peace-table-column label="检测时间"
-                            prop="measureTime"></peace-table-column>
-        <peace-table-column label="来源"
-                            prop="measureMethod"></peace-table-column>
-      </peace-table>
+      <PeaceTable pagination
+                  ref="tableHistory"
+                  v-show="this.$route.params.type === Peace.type.HEALTH.TYPE.血氧">
+        <PeaceTableColumn label="血氧浓度（%）"
+                          prop="bloodOxygen"></PeaceTableColumn>
+        <PeaceTableColumn label="分析结果"
+                          prop="result"></PeaceTableColumn>
+        <PeaceTableColumn label="检测时间"
+                          prop="measureTime"></PeaceTableColumn>
+        <PeaceTableColumn label="来源"
+                          prop="measureMethod"></PeaceTableColumn>
+      </PeaceTable>
     </div>
   </div>
 </template>

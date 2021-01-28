@@ -24,34 +24,34 @@
 
     <hr />
 
-    <peace-table pagination
-                 ref="table"
-                 v-bind:pageSize="5">
-      <peace-table-column label="疾病诊断"
-                          min-width="200px"
-                          align="left"
-                          prop="diagnosis"></peace-table-column>
+    <PeaceTable pagination
+                ref="table"
+                v-bind:pageSize="5">
+      <PeaceTableColumn label="疾病诊断"
+                        min-width="200px"
+                        align="left"
+                        prop="diagnosis"></PeaceTableColumn>
 
-      <peace-table-column label="性别"
-                          align="left"
-                          prop="sex"></peace-table-column>
+      <PeaceTableColumn label="性别"
+                        align="left"
+                        prop="sex"></PeaceTableColumn>
 
-      <peace-table-column label="年龄"
-                          width="200px"
-                          prop="age"></peace-table-column>
+      <PeaceTableColumn label="年龄"
+                        width="200px"
+                        prop="age"></PeaceTableColumn>
 
-      <peace-table-column align="left"
-                          label="处方药品"
-                          min-width="200px">
+      <PeaceTableColumn align="left"
+                        label="处方药品"
+                        min-width="200px">
         <template slot-scope="scope">
           <span>{{ getDrugInfos(scope.row) }}</span>
         </template>
-      </peace-table-column>
+      </PeaceTableColumn>
 
-      <peace-table-column :show-overflow-tooltip="false"
-                          fixed="right"
-                          label="操作"
-                          width="180px">
+      <PeaceTableColumn :show-overflow-tooltip="false"
+                        fixed="right"
+                        label="操作"
+                        width="180px">
         <template slot-scope="scope">
           <el-button type="text"
                      v-on:click="showCommonlyPrescription(scope.row)">查看详情</el-button>
@@ -60,8 +60,8 @@
           <el-button type="text"
                      v-on:click="removeCommonlyPrescription(scope.row)">删除</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog title="添加处方"
                   v-if="addDialog.visible"

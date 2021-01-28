@@ -45,13 +45,13 @@
     <!-- 搜索结果 -->
     <div v-show="!showHistory">
       <div class="q-mb-lg">
-        <peace-table size="small"
-                     height="300px"
-                     ref="table"
-                     pagination
-                     v-bind:row-class-name="rowClass"
-                     v-bind:show-header="false">
-          <peace-table-column align="left">
+        <PeaceTable size="small"
+                    height="300px"
+                    ref="table"
+                    pagination
+                    v-bind:row-class-name="rowClass"
+                    v-bind:show-header="false">
+          <PeaceTableColumn align="left">
             <template slot-scope="scope">
               <el-tag class="q-mr-sm"
                       effect="dark"
@@ -59,11 +59,10 @@
                       v-if="scope.row.drugStatus === 'disable'">停用</el-tag>
               <span>{{ scope.row.drugName }}</span>
             </template>
-          </peace-table-column>
-          <el-table-column prop="specification"></el-table-column>
-          <el-table-column prop="companyName"></el-table-column>
-          <el-table-column width="60"
-                           align="center">
+          </PeaceTableColumn>
+          <PeaceTableColumn prop="specification"></PeaceTableColumn>
+          <PeaceTableColumn prop="companyName"></PeaceTableColumn>
+          <PeaceTableColumn width="60">
             <template slot-scope="scope">
               <span v-if="inAddedList(scope.row)">已添加</span>
               <span v-else-if="isDisabled(scope.row)">已停用</span>
@@ -71,8 +70,8 @@
                  v-on:click="next(scope.row)"
                  class="el-icon-circle-plus text-h6 text-primary"></i>
             </template>
-          </el-table-column>
-        </peace-table>
+          </PeaceTableColumn>
+        </PeaceTable>
       </div>
     </div>
 

@@ -10,42 +10,41 @@
 
     <hr>
 
-    <peace-table pagination
-                 ref="table">
-      <peace-table-column type="index"
-                          width="60px"
-                          label="序号"></peace-table-column>
-      <peace-table-column width="60px"
-                          align="center">
+    <PeaceTable pagination
+                ref="table">
+      <PeaceTableColumn type="index"
+                        width="60px"
+                        label="序号"></PeaceTableColumn>
+      <PeaceTableColumn width="60px">
         <template slot-scope="scope">
           <el-tag effect="dark"
                   type="warning"
                   v-if="scope.row.drugStatus === 'disable'">停用</el-tag>
         </template>
-      </peace-table-column>
-      <peace-table-column label="药品名称"
-                          min-width="200"
-                          align="left"
-                          prop="drugName"> </peace-table-column>
-      <peace-table-column label="药品规格"
-                          prop="specification"></peace-table-column>
-      <peace-table-column label="厂家"
-                          min-width="200"
-                          prop="companyName"></peace-table-column>
-      <peace-table-column label="添加时间"
-                          prop="createdTime"
-                          width="160"></peace-table-column>
-      <peace-table-column fixed="right"
-                          label="操作"
-                          width="150">
+      </PeaceTableColumn>
+      <PeaceTableColumn label="药品名称"
+                        min-width="200"
+                        align="left"
+                        prop="drugName"> </PeaceTableColumn>
+      <PeaceTableColumn label="药品规格"
+                        prop="specification"></PeaceTableColumn>
+      <PeaceTableColumn label="厂家"
+                        min-width="200"
+                        prop="companyName"></PeaceTableColumn>
+      <PeaceTableColumn label="添加时间"
+                        prop="createdTime"
+                        width="160"></PeaceTableColumn>
+      <PeaceTableColumn fixed="right"
+                        label="操作"
+                        width="150">
         <template slot-scope="scope">
           <el-button @click="showInstructionsList(scope.row)"
                      type="text">查看说明书</el-button>
           <el-button @click="removeCommonlyDrug(scope.row)"
                      type="text">删除</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog title="添加药品"
                   v-if="addCommonlyDrugDialog.visible"

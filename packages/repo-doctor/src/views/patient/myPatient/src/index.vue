@@ -28,46 +28,46 @@
                type="primary"
                icon="el-icon-circle-plus-outline">添加患者</el-button>
 
-    <peace-table pagination
-                 ref="table">
+    <PeaceTable pagination
+                ref="table">
 
-      <peace-table-column label="患者姓名"
-                          prop="name"
-                          width="140"></peace-table-column>
+      <PeaceTableColumn label="患者姓名"
+                        prop="name"
+                        width="140"></PeaceTableColumn>
 
-      <peace-table-column label="基本信息"
-                          width="140">
+      <PeaceTableColumn label="基本信息"
+                        width="140">
         <template slot-scope="scope">
           <span>{{ `${scope.row.sex} , ${scope.row.age}` }}</span>
         </template>
-      </peace-table-column>
+      </PeaceTableColumn>
 
-      <peace-table-column label="手机号码"
-                          prop="tel"
-                          width="120"></peace-table-column>
+      <PeaceTableColumn label="手机号码"
+                        prop="tel"
+                        width="120"></PeaceTableColumn>
 
-      <peace-table-column label="疾病标签"
-                          min-width="340"
-                          show-overflow-tooltip>
+      <PeaceTableColumn label="疾病标签"
+                        min-width="340"
+                        show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
         </template>
-      </peace-table-column>
+      </PeaceTableColumn>
 
-      <peace-table-column label="患者来源">
+      <PeaceTableColumn label="患者来源">
         <template slot-scope="scope">
           <span>{{ getSourceStr(scope.row.source) }}</span>
         </template>
 
-      </peace-table-column>
+      </PeaceTableColumn>
 
-      <peace-table-column label="操作">
+      <PeaceTableColumn label="操作">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">查看详情</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog :before-close="handleClose"
                   :visible.sync="addPatientDialog.visible"

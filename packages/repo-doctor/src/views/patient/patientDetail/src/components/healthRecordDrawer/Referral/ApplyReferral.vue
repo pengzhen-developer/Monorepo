@@ -125,42 +125,36 @@
                    type="primary">查询</el-button>
       </div>
       <hr />
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="医生头像"
-                            prop="name"
-                            width="100px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="医生头像"
+                          prop="name"
+                          width="100px">
           <template slot-scope="scope">
             <img :src="scope.row.photoDoc"
                  style="width: 40px; height: 40px; border-radius: 50%;" />
           </template>
-        </peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="医生姓名"
-                            prop="name"
-                            width="100px"></peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="职称"
-                            prop="doctor_title"
-                            width="100px"></peace-table-column>
-        <peace-table-column label="科室"
-                            prop="netdept_child"
-                            width="100px"></peace-table-column>
-        <peace-table-column align="left"
-                            header-align="left"
-                            label="医院"
-                            prop="netHospital_name"></peace-table-column>
-        <peace-table-column fixed="right"
-                            label="操作"
-                            width="120px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="医生姓名"
+                          prop="name"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn label="职称"
+                          prop="doctor_title"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn label="科室"
+                          prop="netdept_child"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn label="医院"
+                          prop="netHospital_name"></PeaceTableColumn>
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="120px">
           <template slot-scope="scope">
             <el-button @click="chose(scope.row)"
                        type="text">选择</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </peace-dialog>
 
     <peace-dialog :append-to-body="true"

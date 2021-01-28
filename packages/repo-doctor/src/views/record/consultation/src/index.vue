@@ -41,38 +41,38 @@
 
       <hr />
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="患者姓名"
-                            prop="familyName"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="familyAge"></peace-table-column>
-        <peace-table-column label="性别"
-                            prop="familySex"></peace-table-column>
-        <peace-table-column align="left"
-                            label="疾病诊断"
-                            min-width="200px"
-                            prop="familyDisagnose"></peace-table-column>
-        <peace-table-column align="left"
-                            label="邀请机构"
-                            min-width="160px"
-                            prop="toHospitalName"></peace-table-column>
-        <peace-table-column label="邀请医生"
-                            prop="toDoctorName"></peace-table-column>
-        <peace-table-column label="期望会诊时间"
-                            prop="expectTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="申请时间"
-                            prop="createdTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="formatterConsultStatus"
-                            label="会诊状态"
-                            prop="consultStatus"
-                            width="100px"></peace-table-column>
-        <peace-table-column :show-overflow-tooltip="false"
-                            fixed="right"
-                            label="操作"
-                            width="180px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患者姓名"
+                          prop="familyName"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="familyAge"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="familySex"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="疾病诊断"
+                          min-width="200px"
+                          prop="familyDisagnose"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="邀请机构"
+                          min-width="160px"
+                          prop="toHospitalName"></PeaceTableColumn>
+        <PeaceTableColumn label="邀请医生"
+                          prop="toDoctorName"></PeaceTableColumn>
+        <PeaceTableColumn label="期望会诊时间"
+                          prop="expectTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="申请时间"
+                          prop="createdTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="formatterConsultStatus"
+                          label="会诊状态"
+                          prop="consultStatus"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn :show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="180px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
@@ -80,8 +80,8 @@
                        type="text"
                        v-show="scope.row.consultStatus === 7">会诊记录</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <!-- 邀请我的 -->
@@ -116,38 +116,38 @@
 
       <hr />
 
-      <peace-table pagination
-                   ref="table">
-        <peace-table-column label="患者姓名"
-                            prop="familyName"></peace-table-column>
-        <peace-table-column label="年龄"
-                            prop="familyAge"></peace-table-column>
-        <peace-table-column label="性别"
-                            prop="familySex"></peace-table-column>
-        <peace-table-column align="left"
-                            label="疾病诊断"
-                            min-width="200px"
-                            prop="familyDisagnose"></peace-table-column>
-        <peace-table-column align="left"
-                            label="申请机构"
-                            min-width="160px"
-                            prop="fromHospitalName"></peace-table-column>
-        <peace-table-column label="申请医生"
-                            prop="fromDoctorName"></peace-table-column>
-        <peace-table-column label="期望会诊时间"
-                            prop="expectTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column label="申请时间"
-                            prop="createdTime"
-                            width="160px"></peace-table-column>
-        <peace-table-column :formatter="formatterConsultStatus"
-                            label="会诊状态"
-                            prop="consultStatus"
-                            width="100px"></peace-table-column>
-        <peace-table-column :show-overflow-tooltip="false"
-                            fixed="right"
-                            label="操作"
-                            width="180px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患者姓名"
+                          prop="familyName"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="familyAge"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="familySex"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="疾病诊断"
+                          min-width="200px"
+                          prop="familyDisagnose"></PeaceTableColumn>
+        <PeaceTableColumn align="left"
+                          label="申请机构"
+                          min-width="160px"
+                          prop="fromHospitalName"></PeaceTableColumn>
+        <PeaceTableColumn label="申请医生"
+                          prop="fromDoctorName"></PeaceTableColumn>
+        <PeaceTableColumn label="期望会诊时间"
+                          prop="expectTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="申请时间"
+                          prop="createdTime"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="formatterConsultStatus"
+                          label="会诊状态"
+                          prop="consultStatus"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn :show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="180px">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
@@ -155,8 +155,8 @@
                        type="text"
                        v-show="scope.row.consultStatus === 7">会诊记录</el-button>
           </template>
-        </peace-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <peace-dialog :visible.sync="dialog.visible"

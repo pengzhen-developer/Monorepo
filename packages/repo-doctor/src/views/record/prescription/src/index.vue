@@ -27,37 +27,37 @@
 
     <hr />
 
-    <peace-table pagination
-                 ref="table">
-      <peace-table-column label="处方编号"
-                          prop="prescriptionNo"
-                          min-width="180"></peace-table-column>
-      <peace-table-column label="患者姓名"
-                          prop="patient_name"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="性别"
-                          prop="patient_sex"
-                          min-width="100"></peace-table-column>
-      <peace-table-column label="年龄"
-                          prop="patient_age"
-                          min-width="100"></peace-table-column>
-      <peace-table-column label="身份证号"
-                          prop="idcard"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="处方状态"
-                          prop="prescription_status"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="开具时间"
-                          prop="created_time"
-                          width="180"></peace-table-column>
-      <peace-table-column fixed="right"
-                          label="操作">
+    <PeaceTable pagination
+                ref="table">
+      <PeaceTableColumn label="处方编号"
+                        prop="prescriptionNo"
+                        min-width="180"></PeaceTableColumn>
+      <PeaceTableColumn label="患者姓名"
+                        prop="patient_name"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="性别"
+                        prop="patient_sex"
+                        min-width="100"></PeaceTableColumn>
+      <PeaceTableColumn label="年龄"
+                        prop="patient_age"
+                        min-width="100"></PeaceTableColumn>
+      <PeaceTableColumn label="身份证号"
+                        prop="idcard"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="处方状态"
+                        prop="prescription_status"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="开具时间"
+                        prop="created_time"
+                        width="180"></PeaceTableColumn>
+      <PeaceTableColumn fixed="right"
+                        label="操作">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">查看详情</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog :visible.sync="dialog.visible"
                   append-to-body

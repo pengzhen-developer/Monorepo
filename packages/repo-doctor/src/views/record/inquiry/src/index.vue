@@ -36,52 +36,51 @@
 
     <hr />
 
-    <peace-table pagination
-                 ref="table">
-      <peace-table-column label="咨询单号"
-                          prop="inquiry_no"
-                          min-width="180"></peace-table-column>
-      <peace-table-column align="left"
-                          label="患者姓名"
-                          prop="name"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="性别"
-                          prop="sex"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="年龄"
-                          prop="age"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="咨询类型"
-                          prop="type"
-                          min-width="120">
+    <PeaceTable pagination
+                ref="table">
+      <PeaceTableColumn label="咨询单号"
+                        prop="inquiry_no"
+                        min-width="180"></PeaceTableColumn>
+      <PeaceTableColumn align="left"
+                        label="患者姓名"
+                        prop="name"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="性别"
+                        prop="sex"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="年龄"
+                        prop="age"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn label="咨询类型"
+                        prop="type"
+                        min-width="120">
         <template slot-scope="scope">
           <span class="private-doctor"
                 v-if="scope.row.isPrivateDoctor">私</span>
           <span>{{ scope.row.type }}</span>
         </template>
-      </peace-table-column>
-      <peace-table-column align="right"
-                          header-align="right"
-                          label="订单金额"
-                          prop="order_money"
-                          min-width="120"></peace-table-column>
-      <peace-table-column label="订单时间"
-                          prop="created_time"
-                          width="180"></peace-table-column>
-      <peace-table-column label="订单状态"
-                          prop="status"
-                          min-width="120"></peace-table-column>
-      <peace-table-column fixed="right"
-                          label="操作"
-                          width="120">
+      </PeaceTableColumn>
+      <PeaceTableColumn label="订单金额"
+                        prop="order_money"
+                        width="120">
+      </PeaceTableColumn>
+      <PeaceTableColumn label="订单时间"
+                        prop="created_time"
+                        width="180"></PeaceTableColumn>
+      <PeaceTableColumn label="订单状态"
+                        prop="status"
+                        min-width="120"></PeaceTableColumn>
+      <PeaceTableColumn fixed="right"
+                        label="操作"
+                        width="120">
         <template slot-scope="scope">
           <el-button type="text"
                      v-bind:title="getControlTitleTip(scope.row)"
                      v-bind:disabled="getDisabledState(scope.row)"
                      v-on:click="showDetail(scope.row)">查看详情</el-button>
         </template>
-      </peace-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog title="问诊记录"
                   v-bind:visible.sync="dialog.visible"

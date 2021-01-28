@@ -43,15 +43,15 @@
 
     <!-- 搜索结果 -->
     <div v-show="!showHistory">
-      <peace-table height="300"
-                   size="small"
-                   ref="table"
-                   pagination
-                   v-bind:show-header="false">
-        <el-table-column prop="drugName"></el-table-column>
-        <el-table-column prop="specification"></el-table-column>
-        <el-table-column prop="companyName"></el-table-column>
-        <el-table-column width="60">
+      <PeaceTable height="300"
+                  size="small"
+                  ref="table"
+                  pagination
+                  v-bind:show-header="false">
+        <PeaceTableColumn prop="drugName"></PeaceTableColumn>
+        <PeaceTableColumn prop="specification"></PeaceTableColumn>
+        <PeaceTableColumn prop="companyName"></PeaceTableColumn>
+        <PeaceTableColumn width="60">
           <template slot-scope="scope">
             <span class="cursor-pointer"
                   v-if="!scope.row.isAdded">
@@ -60,8 +60,8 @@
             </span>
             <span v-else>已添加</span>
           </template>
-        </el-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
   </div>
 </template>

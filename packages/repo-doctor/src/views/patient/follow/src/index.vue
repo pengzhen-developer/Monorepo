@@ -32,34 +32,33 @@
 
     <hr />
 
-    <peace-table pagination
-                 ref="table">
-      <el-table-column label="患者姓名"
-                       prop="familyName"
-                       width="100"></el-table-column>
-      <el-table-column label="性别"
-                       prop="sex"
-                       width="100"></el-table-column>
-      <el-table-column label="年龄"
-                       prop="age"
-                       width="100"></el-table-column>
-      <el-table-column :formatter="(r, c, v) => formatStatus(r, c, v)"
-                       label="随访状态"
-                       prop="followStatus"
-                       width="100"></el-table-column>
-      <el-table-column label="标签"
-                       prop="tag">
+    <PeaceTable pagination
+                ref="table">
+      <PeaceTableColumn label="患者姓名"
+                        prop="familyName"
+                        width="100"></PeaceTableColumn>
+      <PeaceTableColumn label="性别"
+                        prop="sex"
+                        width="100"></PeaceTableColumn>
+      <PeaceTableColumn label="年龄"
+                        prop="age"
+                        width="100"></PeaceTableColumn>
+      <PeaceTableColumn :formatter="(r, c, v) => formatStatus(r, c, v)"
+                        label="随访状态"
+                        prop="followStatus"
+                        width="100"></PeaceTableColumn>
+      <PeaceTableColumn label="标签"
+                        prop="tag">
         <template slot-scope="scope">
           <el-tag :key="item"
                   class="tag"
                   type="info"
                   v-for="item in scope.row.tag">{{ item }}</el-tag>
         </template>
-      </el-table-column>
-      <el-table-column align="center"
-                       label="病程管理"
-                       prop="courseCount"
-                       width="100">
+      </PeaceTableColumn>
+      <PeaceTableColumn label="病程管理"
+                        prop="courseCount"
+                        width="100">
         <template slot-scope="scope">
           <template v-if="scope.row.courseCount">
             <el-button @click="view(scope.row)"
@@ -69,8 +68,8 @@
             暂无
           </template>
         </template>
-      </el-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog :visible.sync="dialog.visible"
                   title="病程管理">

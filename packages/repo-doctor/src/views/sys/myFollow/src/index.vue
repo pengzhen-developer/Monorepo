@@ -8,18 +8,17 @@
 
     <hr />
 
-    <peace-table pagination
-                 ref="table">
-      <el-table-column align="left"
-                       label="患教标题"
-                       prop="title"></el-table-column>
-      <el-table-column align="left"
-                       label="疾病"
-                       prop="diseaseTag"
-                       width="200"></el-table-column>
-      <el-table-column align="center"
-                       label="操作"
-                       width="200">
+    <PeaceTable pagination
+                ref="table">
+      <PeaceTableColumn align="left"
+                        label="患教标题"
+                        prop="title"></PeaceTableColumn>
+      <PeaceTableColumn align="left"
+                        label="疾病"
+                        prop="diseaseTag"
+                        width="200"></PeaceTableColumn>
+      <PeaceTableColumn label="操作"
+                        width="200">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">查看详情</el-button>
@@ -28,8 +27,8 @@
           <el-button @click="remove(scope.row)"
                      type="text">删除</el-button>
         </template>
-      </el-table-column>
-    </peace-table>
+      </PeaceTableColumn>
+    </PeaceTable>
 
     <peace-dialog :title="dialog.title"
                   :visible.sync="dialog.visible"
