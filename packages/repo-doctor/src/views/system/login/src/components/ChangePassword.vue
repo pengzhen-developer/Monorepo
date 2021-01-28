@@ -247,6 +247,8 @@ export default {
       this.$refs.step2Form.validate().then(() => {
         Service.updateModify(this.step2Model).then(() => {
           this.stepActive++
+
+          Util.user.removeUserInfo()
         })
       })
     },
