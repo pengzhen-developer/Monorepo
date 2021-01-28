@@ -358,7 +358,10 @@ export default {
           })
         }
 
-        if (Peace.dayjs().year() - Peace.dayjs(res.data.birthday).year() < 6) {
+        const date1 = Peace.dayjs()
+        const date2 = Peace.dayjs(res.data.birthday)
+
+        if (date1.diff(date2, 'year') < 6) {
           this.$alert('当前患者为 6 岁以下儿童，请先确认患儿有监护人和相关专业医师陪伴，否则请勿开具处方', '提示', {
             confirmButtonText: '确认'
           })
