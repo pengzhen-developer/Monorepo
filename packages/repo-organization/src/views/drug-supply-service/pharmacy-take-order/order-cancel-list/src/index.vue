@@ -85,13 +85,15 @@
 
         <PeaceTableColumn label="订单状态">
           <template slot-scope="scope">
-            {{ getOrderStatusLabel(scope.row.OrderStatus) }}
+            {{ scope.row.OrderStatus | filterDictionary(source.DistributionOrderStatus, '--') }}
           </template>
         </PeaceTableColumn>
 
         <PeaceTableColumn label="取消状态">
           <template slot-scope="scope">
-            {{ getResultLabel(scope.row.Result) }}
+            <div :class="{operatingColor : isPending(scope.row.Result)}">
+              {{ scope.row.Result | filterDictionary(source.OrderChangeResult, '--') }}
+            </div>
           </template>
         </PeaceTableColumn>
 
@@ -113,7 +115,7 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn min-width="180"
-                          show-overflow-tooltip="true"
+                          :show-overflow-tooltip="true"
                           label="备注">
           <template slot-scope="scope">
             {{ scope.row.Remarks ? scope.row.Remarks : "——"  }}
@@ -125,10 +127,10 @@
                           label="操作">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-if="isShowOperating(scope.row.Result)"
+                       v-if="isPending(scope.row.Result)"
                        v-on:click="agree(scope.row)">同意</el-button>
             <el-button type="text"
-                       v-if="isShowOperating(scope.row.Result)"
+                       v-if="isPending(scope.row.Result)"
                        v-on:click="toRole( scope.row)">拒绝</el-button>
           </template>
         </PeaceTableColumn>
@@ -142,6 +144,19 @@
       <OrderDetail v-bind:data="dialog2.data"></OrderDetail>
     </peace-dialog>
 
+    <peace-dialog title="拒绝取消申请"
+                  width="422px"
+                  top="calc((100vh - 240px) / 2)"
+                  v-if="toRoleDialog.visible"
+                  :close-on-click-modal='true'
+                  v-bind:visible.sync="toRoleDialog.visible">
+      <ToRoleDialog v-bind:data="toRoleDialog.data"
+                    v-on:close="toRoleDialog.visible = false"
+                    v-on:success="roleSuccess()">
+
+      </ToRoleDialog>
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -149,12 +164,15 @@
 import Service from './service'
 import { date } from 'quasar'
 
-import OrderDetail from './../../../../prescription-sharing-service/order-management/order-detail'
+import OrderDetail from '@src/views/prescription-sharing-service/order-management/order-detail'
+import ToRoleDialog from './components/ToRoleDialog'
+
 export default {
   name: 'OrderCancelList',
 
   components: {
-    OrderDetail
+    OrderDetail,
+    ToRoleDialog
   },
 
   data() {
@@ -174,12 +192,18 @@ export default {
         DistributionOrderStatus: [] //配送订单状态
       },
 
+      toRoleDialog: {
+        visible: false,
+        data: undefined
+      },
+
       dialog2: {
         visible: false,
         data: undefined
       }
     }
   },
+
   mounted() {
     this.$nextTick().then(async () => {
       this.source.OrderChangeResult = await Peace.identity.dictionary.getList('order_change_result')
@@ -208,8 +232,8 @@ export default {
     },
 
     agree(row) {
-      this.$confirm('是否同意取消订单?', '提示', {
-        confirmButtonText: '同意取消',
+      this.$confirm('是否确认同意取消订单?', '同意取消申请', {
+        confirmButtonText: '确定',
         cancelButtonText: '再考虑一下'
       }).then(() => {
         const params = {
@@ -227,34 +251,16 @@ export default {
     },
 
     toRole(row) {
-      this.$prompt('是否拒绝取消订单?', '提示', {
-        confirmButtonText: '拒绝取消',
-        cancelButtonText: '再考虑一下',
-        inputType: 'textarea',
-        inputPlaceholder: '请填写拒绝原因，内容将向用户展示',
-        inputPattern: /\S+/,
-        inputErrorMessage: '请先填写拒绝原因!'
-      }).then(({ value }) => {
-        const params = {
-          OrderID: row.OrderId,
-          Operating: 0,
-          CancelReason: value
-        }
-        Service.HasWaitReceiveOrder(params).then(() => {
-          this.fetch()
-        })
-      })
+      this.toRoleDialog.data = row
+      this.toRoleDialog.visible = true
     },
 
-    getResultLabel(code) {
-      return this.source.OrderChangeResult.find((item) => item.value == code).label
+    roleSuccess() {
+      this.toRoleDialog.visible = false
+      this.fetch()
     },
 
-    getOrderStatusLabel(code) {
-      return this.source.DistributionOrderStatus.find((item) => item.value == code).label
-    },
-
-    isShowOperating(code) {
+    isPending(code) {
       return code === 2
     },
 
@@ -278,4 +284,7 @@ export default {
 
 
 <style lang="scss" scoped>
+.operatingColor {
+  color: red;
+}
 </style>
