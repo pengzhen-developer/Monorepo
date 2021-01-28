@@ -43,12 +43,20 @@
 
         <el-dropdown>
           <div class="header-right-title">
-            <el-badge is-dot
-                      type="primary"
-                      :class="workStatus">
-              <el-avatar :size="30"
-                         :src="docInfo.avartor"></el-avatar>
-            </el-badge>
+            <el-avatar class="q-mr-md"
+                       :size="30"
+                       :src="docInfo.avartor"></el-avatar>
+
+            <img v-if="workStatus"
+                 class="q-mr-md"
+                 style="width: 20px; height: 20px;"
+                 src="./../assets/img/work.svg">
+
+            <img v-if="!workStatus"
+                 class="q-mr-md"
+                 style="width: 20px; height: 20px;"
+                 src="./../assets/img/rest.svg">
+
             <span>欢迎您，</span>
             <span>{{ docInfo.name }}</span>
             <i class="el-icon-arrow-down el-icon--right q-mr-md"></i>
@@ -60,18 +68,25 @@
               <p class="text-h7 text-bold q-mb-sm">工作状态</p>
               <el-dropdown-item @click.native="setWorkstatus(1)"
                                 class="dropdown-item">
-                <div class="icon circle online"></div>
+                <img class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/work.svg">
                 <span>工作中</span>
               </el-dropdown-item>
               <el-dropdown-item @click.native="setWorkstatus(2)"
                                 class="dropdown-item">
-                <div class="icon circle offline"></div>
+                <img class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/rest.svg">
                 <span>休息中</span>
               </el-dropdown-item>
               <hr />
               <el-dropdown-item @click.native="signOut"
                                 style="justify-content: center;"
                                 class="dropdown-item">
+                <img class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/ic_sign_out.svg">
                 <span>退出登录</span>
               </el-dropdown-item>
             </div>
@@ -147,17 +162,7 @@ export default {
     },
 
     workStatus() {
-      const workStatus = this.$store.state.user?.userInfo?.list?.docInfo?.workStatus
-
-      if (workStatus === 1) {
-        return { online: true }
-      }
-
-      if (workStatus === 2) {
-        return { offline: true }
-      }
-
-      return ''
+      return this.$store.state.user?.userInfo?.list?.docInfo?.workStatus === 1
     }
   },
   mounted() {
