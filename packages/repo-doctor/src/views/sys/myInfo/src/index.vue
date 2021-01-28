@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <el-tabs v-model="active">
-      <el-tab-pane v-bind:name="0"
+      <el-tab-pane name="0"
                    label="个人资料">
 
         <el-form :model="view.model"
@@ -71,7 +71,7 @@
         </el-form>
       </el-tab-pane>
 
-      <el-tab-pane v-bind:name="1"
+      <el-tab-pane name="1"
                    label="账号设置">
         <el-form :model="view.model"
                  label-suffix
@@ -136,7 +136,7 @@ export default {
 
   data() {
     return {
-      active: this.$route.query.active || 0,
+      active: this.$route.query?.active?.toString() || '0',
 
       api: {
         uploadAvatar: process.env.VUE_APP_API_BASE + '/' + 'client/v1/Personalcenter/uploadAvatar',
