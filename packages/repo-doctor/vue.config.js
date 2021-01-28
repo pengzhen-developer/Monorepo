@@ -17,6 +17,7 @@ module.exports = {
   chainWebpack: (config) => {
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
 
     config.resolve.alias
       .set('@public', path.join(__dirname, 'public'))
@@ -38,8 +39,8 @@ module.exports = {
     },
     plugins: [
       new webpack.ProvidePlugin({
-        'window.Quill': 'quill/dist/quill.js',
-        Quill: 'quill/dist/quill.js'
+        ['window.Quill']: 'quill/dist/quill.js',
+        ['Quill']: 'quill/dist/quill.js'
       })
     ]
   },
