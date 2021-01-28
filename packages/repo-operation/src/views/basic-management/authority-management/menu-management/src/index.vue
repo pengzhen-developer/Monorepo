@@ -1,11 +1,9 @@
 <template>
   <div class="layout-route">
     <div class="card q-mb-md">
-      <el-button style="width: 80px;"
-                 type="primary"
+      <el-button type="primary"
                  v-on:click="fetch">刷新</el-button>
-      <el-button style="width: 80px;"
-                 type="primary"
+      <el-button type="primary"
                  v-on:click="showAdd">新增</el-button>
     </div>
 

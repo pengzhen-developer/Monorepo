@@ -54,10 +54,8 @@
     </el-alert>
 
     <div class="text-right">
-      <el-button style="width: 80px;"
-                 v-on:click="cancel">取消</el-button>
-      <el-button style="width: 80px;"
-                 :loading="loading.save"
+      <el-button v-on:click="cancel">取消</el-button>
+      <el-button :loading="loading.save"
                  type="primary"
                  v-on:click="save">保存</el-button>
     </div>

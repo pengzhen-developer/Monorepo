@@ -3,7 +3,6 @@
     <div class="card">
       <div class="q-mb-lg">
         <el-button type="primary"
-                   style="width: 80px;"
                    v-on:click="addItem">新增</el-button>
       </div>
 

@@ -89,19 +89,15 @@
         </el-form-item>
 
         <el-button type="primary"
-                   style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
       </el-form>
     </div>
 
     <div class="card">
       <div class="q-mb-md">
-        <el-button style="width: 80px;"
-                   type="primary"
+        <el-button type="primary"
                    v-on:click="exportFile">导出</el-button>
-        <el-button style="width: 144px;"
-                   type="primary"
-                   class="q-ml-md"
+        <el-button class="q-ml-md"
                    v-on:click="showSetting">异常提醒设置</el-button>
       </div>
 

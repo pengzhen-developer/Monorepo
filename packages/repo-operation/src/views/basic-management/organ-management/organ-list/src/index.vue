@@ -54,7 +54,6 @@
 
           <el-form-item label="">
             <el-button type="primary"
-                       style="width: 80px;"
                        v-on:click="get">查询</el-button>
           </el-form-item>
         </el-form>
@@ -63,7 +62,6 @@
       <div class="card">
         <div class="q-mb-lg">
           <el-button type="primary"
-                     style="width: 80px;"
                      v-on:click="addOrganization">新增</el-button>
         </div>
 

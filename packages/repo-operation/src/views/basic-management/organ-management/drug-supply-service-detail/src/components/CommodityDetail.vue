@@ -46,11 +46,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label-width="0">
-          <el-button style="width: 80px;"
-                     type="primary"
+          <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
-          <el-button style="width: 80px;"
-                     type="primary"
+          <el-button type="primary"
                      plain
                      v-on:click="reset">重置</el-button>
         </el-form-item>

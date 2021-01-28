@@ -51,9 +51,8 @@
                              v-model="model.timeRange"></peace-date-picker>
         </el-form-item>
 
-        <el-form-item class="q-ml-md">
+        <el-form-item>
           <el-button type="primary"
-                     style="width: 80px;"
                      v-on:click="get">查询</el-button>
 
         </el-form-item>

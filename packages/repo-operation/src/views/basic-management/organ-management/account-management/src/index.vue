@@ -42,7 +42,6 @@
         <el-form-item label
                       label-width="0">
           <el-button type="primary"
-                     style="width: 80px;"
                      v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>

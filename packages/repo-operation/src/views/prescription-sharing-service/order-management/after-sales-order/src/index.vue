@@ -6,16 +6,16 @@
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
+        <el-form-item label="订单编号">
+          <el-input v-model="model.OrderId"
+                    placeholder="请输入医院/平台编号"
+                    clearable></el-input>
+        </el-form-item>
+
         <el-form-item label="订单来源">
           <el-input v-model="model.Source"
                     placeholder="请输入订单来源"
                     clearable></el-input>
-        </el-form-item>
-
-        <el-form-item label="申请取消日期">
-          <peace-date-picker type="daterange"
-                             value-format="yyyy-MM-dd"
-                             v-model="model.TimeRange"></peace-date-picker>
         </el-form-item>
 
         <el-form-item label="药房">
@@ -23,8 +23,12 @@
                     placeholder="请输入药房名称"
                     clearable></el-input>
         </el-form-item>
-
-        <el-form-item label="取消结果">
+        <el-form-item label="申请取消日期">
+          <peace-date-picker type="daterange"
+                             value-format="yyyy-MM-dd"
+                             v-model="model.TimeRange"></peace-date-picker>
+        </el-form-item>
+        <el-form-item label="取消状态">
           <el-select clearable
                      placeholder="全部"
                      v-model="model.Result">
@@ -47,15 +51,13 @@
         </el-form-item>
 
         <el-button type="primary"
-                   style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
       </el-form>
     </div>
 
     <div class="card">
       <div class="q-mb-md">
-        <el-button style="width: 80px;"
-                   v-on:click="exportFile">导出</el-button>
+        <el-button v-on:click="exportFile">导出</el-button>
       </div>
 
       <peace-table pagination
@@ -79,16 +81,16 @@
                          width="120px"></el-table-column>
         <el-table-column prop="DrugStoreName"
                          label="药房"
-                         width="120px"></el-table-column>
+                         width="160px"></el-table-column>
         <el-table-column prop="Sponsor"
                          label="发起人"
                          width="120px"
                          v-bind:formatter="formatSponsor"></el-table-column>
         <el-table-column prop="CreateTime"
-                         label="发起取消时间"
+                         label="申请取消时间"
                          width="180px"></el-table-column>
         <el-table-column prop="Result"
-                         label="取消结果"
+                         label="取消状态"
                          width="120px"
                          v-bind:formatter="formatResult"></el-table-column>
         <el-table-column prop="OrderStatus"
@@ -163,8 +165,9 @@ export default {
 
       source: {
         Result: [
-          { label: '未取消', value: 0 },
-          { label: '已取消', value: 1 }
+          { label: '已拒绝', value: 0 },
+          { label: '已同意', value: 1 },
+          { label: '待处理', value: 2 }
         ],
         Sponsor: [
           { label: '医疗机构', value: 0 },
@@ -235,8 +238,9 @@ export default {
     },
     formatResult(row) {
       const map = [
-        { label: '失败', value: 0 },
-        { label: '成功', value: 1 }
+        { label: '已拒绝', value: 0 },
+        { label: '已同意', value: 1 },
+        { label: '待处理', value: 2 }
       ]
 
       return map.find((item) => item.value === row.Result)?.label

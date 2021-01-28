@@ -14,7 +14,6 @@
 
         <el-form-item label="">
           <el-button type="primary"
-                     style="width: 80px;"
                      v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>

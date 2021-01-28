@@ -54,7 +54,6 @@
         </el-form-item>
 
         <el-button type="primary"
-                   style="width: 80px;"
                    v-on:click="fetch">查询</el-button>
       </el-form>
     </div>
@@ -106,20 +105,16 @@
                          label="订单来源"
                          align="center"
                          width="120px"></el-table-column>
-
         <el-table-column label="操作"
                          align="center"
                          min-width="180px"
                          fixed="right">
           <template slot-scope="scope">
-
             <el-button type="text"
                        v-on:click="showOrderRecord(scope.row)">订单流转日志</el-button>
-
-            <el-button v-if="scope.row.CirculationStatus == 2"
+            <el-button v-if="scope.row.CirculationStatus == 2 && scope.row.OrderStatus !== 5"
                        type="text"
                        v-on:click="showSyncOrder(scope.row)">同步订单</el-button>
-
           </template>
         </el-table-column>
       </peace-table>
@@ -336,5 +331,8 @@ export default {
 
 .order-remark-item:last-child {
   margin-bottom: 0;
+}
+::v-deep .el-table__fixed-right::before {
+  height: 0px;
 }
 </style>

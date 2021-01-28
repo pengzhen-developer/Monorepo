@@ -33,8 +33,7 @@
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
         <el-form-item label="">
-          <el-button style="width: 80px;"
-                     type="primary"
+          <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
