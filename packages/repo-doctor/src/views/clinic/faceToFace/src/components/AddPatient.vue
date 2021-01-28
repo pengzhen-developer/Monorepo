@@ -126,8 +126,14 @@ export default {
           { pattern: Peace.validate.pattern.mobile, message: '请输入正确的手机号' }
         ],
 
-        chaperonageName: [{ min: 2, max: 5, message: '长度在 2 到 5 个字符' }],
-        chaperonageIdCard: [{ pattern: Peace.validate.pattern.idCard, message: '请输入正确的身份证号' }]
+        chaperonageName: [
+          { required: true, message: '请输入陪同人姓名' },
+          { min: 2, max: 5, message: '长度在 2 到 5 个字符' }
+        ],
+        chaperonageIdCard: [
+          { required: true, message: '请输入陪同人身份证号' },
+          { pattern: Peace.validate.pattern.idCard, message: '请输入正确的身份证号' }
+        ]
       },
 
       tips: {
@@ -163,9 +169,7 @@ export default {
       // step 4 save data
 
       if (this.isChaperonage) {
-        this.validForm()
-          .then(this.validChaperonageIdCard)
-          .then(this.saveData)
+        this.validForm().then(this.saveData)
       } else {
         this.validForm()
           .then(this.validIdCard)
@@ -198,33 +202,6 @@ export default {
 
         return Promise.reject()
       })
-    },
-
-    validChaperonageIdCard() {
-      if (this.ruleForm.chaperonageIdCard && this.ruleForm.chaperonageName) {
-        const params = { idCard: this.ruleForm.chaperonageIdCard, name: this.ruleForm.chaperonageName }
-
-        // 验证陪护人身份证合法性
-        // status = 1：正常
-        // status = 2：库中无此身份证号码
-        return Service.checkIdCard(params).then((res) => {
-          if (res.data.status === 1) {
-            this.isChaperonage = true
-
-            return Promise.resolve()
-          }
-
-          if (res.data.status === 2) {
-            Peace.util.warning('陪同人' + res.msg)
-
-            return Promise.reject()
-          }
-
-          return Promise.reject()
-        })
-      } else {
-        return Promise.resolve()
-      }
     },
 
     saveData() {
