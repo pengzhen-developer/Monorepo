@@ -9,10 +9,8 @@
                v-on:click="getReservationList">查看预约记录</el-button>
 
     <peace-dialog title="复诊预约记录"
-                  v-drag
                   v-bind:visible.sync="dialog.visible">
       <PeaceTable ref="table"
-                  pagination
                   v-bind:data="dialog.data">
         <PeaceTableColumn label="姓名"
                           width="80"
