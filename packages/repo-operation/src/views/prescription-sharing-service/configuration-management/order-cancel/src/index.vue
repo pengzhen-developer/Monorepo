@@ -70,10 +70,14 @@ export default {
             Code: row.Code,
             IsSuCancel: row.IsSuCancel
           }
-          Serivce.UpdateCust(params).then((res) => {
-            Peace.util.success(res.msg)
-            this.fetch()
-          })
+          Serivce.UpdateCust(params)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.fetch()
+            })
+            .catch(() => {
+              row.IsSuCancel = row.IsSuCancel == true ? false : true
+            })
         })
         .catch(() => {
           row.IsSuCancel = row.IsSuCancel == true ? false : true
