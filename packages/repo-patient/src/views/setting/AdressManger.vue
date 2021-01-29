@@ -86,7 +86,6 @@ export default {
       }
       peace.service.patient.delAddress(data).then(() => {
         this.get()
-        // console.log(res)
       })
     },
     checkAddr(address) {

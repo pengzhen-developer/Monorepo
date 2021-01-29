@@ -377,7 +377,6 @@ export default {
       const params = peace.util.decode(this.$route.params.json)
       const hospitalCode = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       peace.service.hospital.isRegisterData({ hospitalCode }).then((res) => {
-        console.log(res)
         this.hasRegisterData = res.data == null ? false : true
       })
     }

@@ -62,7 +62,8 @@
                                height="35px"
                                class="van-image"
                                :src="require('@src/assets/images/file/ic_huizhen.png')" />
-                    <div class="small-dot" v-if="item.isExistRedDot==1"></div>
+                    <div class="small-dot"
+                         v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
                     <p style="font-size: 16px; color: #333333; line-height: 32px;">
@@ -111,7 +112,6 @@ export default {
   watch: {
     familyId: {
       handler() {
-        // console.log(this.p)
         if (this.familyId) {
           this.p = 0
           this.allHealthList()
@@ -138,15 +138,15 @@ export default {
         p: this.p,
         size: this.size
       }
-      peace.service.health.allHealthList(param).then(res => {
+      peace.service.health.allHealthList(param).then((res) => {
         const temp = {}
 
         // 遍历时间
-        const timeList = new Set(res.data.list.map(item => item.measureTime))
+        const timeList = new Set(res.data.list.map((item) => item.measureTime))
 
         if (timeList.size) {
-          timeList.forEach(time => {
-            temp[time] = res.data.list.filter(item => item.measureTime === time)
+          timeList.forEach((time) => {
+            temp[time] = res.data.list.filter((item) => item.measureTime === time)
           })
           if (typeof this.data == 'undefined') {
             this.data = temp
@@ -165,7 +165,6 @@ export default {
         if (this.p * this.size >= res.data.total) {
           this.finished = true
         }
-        // console.log(this.finished, this.p)
       })
     }
   }
@@ -244,18 +243,18 @@ export default {
     .case-left {
       width: 50px;
       text-align: left;
-      position:relative;
-      .small-dot{
-        width:8px;
-        height:8px;
-        display:block;
-        border-radius:50%;
-        background:#F2223B;
-        position:absolute;
-        top:-2px;
-        left:31px;
+      position: relative;
+      .small-dot {
+        width: 8px;
+        height: 8px;
+        display: block;
+        border-radius: 50%;
+        background: #f2223b;
+        position: absolute;
+        top: -2px;
+        left: 31px;
       }
-  }
+    }
     .case-right {
       display: flex;
       flex-direction: column;

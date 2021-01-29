@@ -240,8 +240,6 @@ export default {
     goReferrListPage() {},
     goConsultGroupPage() {},
     goToPay(data) {
-      //console.log(data);
-
       let doctorId = data.doctorInfo.doctorId
       let order = data.inquiryInfo
       let money = order.orderMoney
@@ -252,7 +250,6 @@ export default {
       let orderType = 'inquiry'
       let json = { money, typeName, doctorName, orderNo, doctorId, inquiryId, orderType }
       json = peace.util.encode(json)
-      // this.$router.push(`/components/doctorInquiryPay/${json}`)
       this.$router.push(`/components/ExpenseDetail/${json}`)
     },
     getConsultList() {

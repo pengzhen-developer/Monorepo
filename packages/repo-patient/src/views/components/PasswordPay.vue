@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     getIsSetPwd() {
-      peace.service.dc.isSetPwd().then(res => {
+      peace.service.dc.isSetPwd().then((res) => {
         if (!res.data.isWallet) {
           peace.util.alert('您尚未开通钱包支付')
           this.goWalletCreatPage()
@@ -207,7 +207,7 @@ export default {
           money: this.money,
           payPwd: this.password
         })
-        .then(res => {
+        .then((res) => {
           peace.util.alert(res.msg)
           this.loading = false
           this.$emit('onCallback', { success: true, data: res.data })
@@ -223,7 +223,7 @@ export default {
           orderNo: this.params.orderNo,
           payPwd: this.password
         })
-        .then(res => {
+        .then((res) => {
           peace.util.alert(res.msg)
           this.loading = false
           this.$emit('onCallback', { success: true, data: res.data })
@@ -239,7 +239,7 @@ export default {
           orderMoney: this.money,
           paymentType: 'wxpay'
         })
-        .then(res => {
+        .then((res) => {
           peace.util.alert(res.msg)
           this.loading = false
           this.$emit('onCallback', { success: true })
@@ -257,7 +257,7 @@ export default {
           payPwd: this.password,
           remark: this.params.remark
         })
-        .then(res => {
+        .then((res) => {
           peace.util.alert(res.msg)
           this.loading = false
           this.$emit('onCallback', { success: true, data: res.data })
@@ -270,7 +270,6 @@ export default {
   },
   watch: {
     password(val) {
-      // console.log(this.params, this.payType)
       if (val && val.length == 6) {
         this.loading = true
         this.goPay()

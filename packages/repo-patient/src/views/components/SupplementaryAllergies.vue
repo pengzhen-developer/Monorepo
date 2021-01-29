@@ -136,7 +136,6 @@ export default {
     },
 
     addAllergiesInfoCallback(allergy) {
-      // console.log('addAllergiesInfoCallback', allergy)
       if (this.checkUniq(allergy.value)) {
         this.deleteNone()
         this.showCancel = false
@@ -147,7 +146,6 @@ export default {
 
     goAddAllergyInfo(allergy) {
       const sourceJson = peace.util.decode(this.$route.params.json)
-      // console.log(sourceJson, allergy)
       sourceJson.emit = peace.type.EMIT.SUPPLEMENTARY_ALLERGIES
       sourceJson.allergy = allergy
       const json = peace.util.encode(sourceJson)
@@ -161,7 +159,6 @@ export default {
     },
 
     onClickSearched(el) {
-      // console.log(el)
       if (el.needAdd) {
         this.goAddAllergyInfo(el)
       } else {

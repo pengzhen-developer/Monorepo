@@ -155,7 +155,6 @@ export default {
 
     //解析器
     geocoderComplete(result) {
-      console.log(result)
       this.setAndMarkPoi(result.detail.location.lat, result.detail.location.lng)
       this.poisarr = result.detail.nearPois
     },

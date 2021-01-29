@@ -610,7 +610,6 @@ export default {
 
       const interval = setInterval(() => {
         if (innerHeight !== window.innerHeight) {
-          console.log('innerHeight_', innerHeight, 'window.innerHeight', window.innerHeight)
           window.clearInterval(interval)
           this.$el.querySelector('.item').scrollTop = scrollTop + (innerHeight - window.innerHeight)
         }

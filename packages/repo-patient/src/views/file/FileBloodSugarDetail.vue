@@ -139,8 +139,6 @@ export default {
   },
 
   created() {
-    // console.log($peace.util.decode($peace.$route.params.json))
-    // this.tabIndex=$peace.util.decode($peace.$route.params.json).type
     this.getOscillogram(2)
   },
 
@@ -148,7 +146,7 @@ export default {
     getOscillogram(tag, type) {
       // debugger
       const params = $peace.util.decode($peace.$route.params.json)
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
         if (typeof type == 'undefined') {
@@ -161,11 +159,11 @@ export default {
         let xAxisData = null,
           seriesDataOne = null
         if (tag == 1) {
-          xAxisData = downData.bloodSugarDataBefore.map(item => item.measureTime.toDate().formatDate('MM-dd'))
-          seriesDataOne = downData.bloodSugarDataBefore.map(item => item.bloodSugar)
+          xAxisData = downData.bloodSugarDataBefore.map((item) => item.measureTime.toDate().formatDate('MM-dd'))
+          seriesDataOne = downData.bloodSugarDataBefore.map((item) => item.bloodSugar)
         } else {
-          xAxisData = downData.bloodSugarDataAfter.map(item => item.measureTime.toDate().formatDate('MM-dd'))
-          seriesDataOne = downData.bloodSugarDataAfter.map(item => item.bloodSugar)
+          xAxisData = downData.bloodSugarDataAfter.map((item) => item.measureTime.toDate().formatDate('MM-dd'))
+          seriesDataOne = downData.bloodSugarDataAfter.map((item) => item.bloodSugar)
         }
 
         this.data.bloodSugarData = upData.bloodSugarData

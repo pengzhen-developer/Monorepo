@@ -72,7 +72,6 @@ export default {
     },
 
     setGardianInfo(item) {
-      // console.log(item)
       this.$emit('setGardianInfo', item)
     }
   }
